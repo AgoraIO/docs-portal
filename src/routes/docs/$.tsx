@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from '@tanstack/react-router';
+import { createFileRoute, Link, notFound, redirect } from '@tanstack/react-router';
 import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import { createServerFn } from '@tanstack/react-start';
 import { getPageMarkdownUrl, source } from '@/lib/source';
@@ -12,7 +12,7 @@ import {
   ViewOptionsPopover,
 } from 'fumadocs-ui/layouts/docs/page';
 import { baseOptions } from '@/lib/layout.shared';
-import { gitConfig } from '@/lib/shared';
+import { contentGitConfig } from '@/lib/shared';
 import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions';
 import { useFumadocsLoader } from 'fumadocs-core/source/client';
 import { Suspense } from 'react';
@@ -35,7 +35,21 @@ const loader = createServerFn({
   .middleware([staticFunctionMiddleware])
   .handler(async ({ data: slugs }) => {
     const page = source.getPage(slugs);
-    if (!page) throw notFound();
+    if (!page) {
+      if (slugs.length === 0) {
+        const firstPage = source.getPages()[0];
+        if (firstPage) {
+          throw redirect({
+            to: '/docs/$',
+            params: {
+              _splat: firstPage.slugs.join('/'),
+            },
+          });
+        }
+      }
+
+      throw notFound();
+    }
 
     return {
       path: page.path,
@@ -64,7 +78,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
           <MarkdownCopyButton markdownUrl={markdownUrl} />
           <ViewOptionsPopover
             markdownUrl={markdownUrl}
-            githubUrl={`https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/content/docs/${path}`}
+            githubUrl={`https://github.com/${contentGitConfig.user}/${contentGitConfig.repo}/blob/${contentGitConfig.branch}/raw/docs/${path}`}
           />
         </div>
         <DocsBody>

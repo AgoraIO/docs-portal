@@ -3,9 +3,14 @@ export const docsRoute = '/docs';
 export const docsImageRoute = '/og/docs';
 export const docsContentRoute = '/llms.mdx/docs';
 
-// fill this with your actual GitHub info, for example:
-export const gitConfig = {
-  user: 'fuma-nama',
-  repo: 'fumadocs',
+export const portalGitConfig = {
+  user: 'Shengwang-Community',
+  repo: 'docs-portal',
+  branch: 'main',
+};
+
+export const contentGitConfig = {
+  user: 'Shengwang-Community',
+  repo: 'docs-cortex',
   branch: 'main',
 };

@@ -17,14 +17,11 @@ export default defineConfig({
         enabled: true,
         prerender: {
           enabled: true,
-          crawlLinks: true,
+          crawlLinks: false,
         },
       },
 
       pages: [
-        {
-          path: '/docs',
-        },
         {
           path: '/api/search',
         },
