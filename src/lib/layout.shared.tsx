@@ -1,7 +1,7 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '@/lib/i18n/use-locale';
-import { docsRoute, portalGitConfig } from './shared';
+import { docsRoute } from './shared';
 
 function SiteTitle() {
   const { t } = useTranslation('common');
@@ -9,7 +9,7 @@ function SiteTitle() {
   return (
     <div className="flex min-w-0 items-center gap-3">
       <div className="flex size-10 items-center justify-center rounded-2xl border border-fd-border bg-fd-card text-sm font-semibold text-fd-foreground">
-        SW
+        A
       </div>
       <div className="min-w-0">
         <p className="truncate text-sm font-semibold text-fd-foreground">
@@ -44,6 +44,6 @@ export function useBaseLayoutOptions({
       transparentMode: variant === 'home' ? 'top' : 'none',
     },
     i18n: true,
-    githubUrl: `https://github.com/${portalGitConfig.user}/${portalGitConfig.repo}`,
+    githubUrl: '#',
   };
 }

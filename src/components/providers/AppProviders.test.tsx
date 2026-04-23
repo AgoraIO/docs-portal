@@ -54,6 +54,6 @@ describe('AppProviders', () => {
 
     expect(probe).toHaveAttribute('data-language', 'en');
     expect(probe).toHaveAttribute('data-fumadocs-language', 'en');
-    expect(probe).toHaveTextContent('Shengwang Docs');
+    expect(probe).toHaveTextContent('Agora Docs');
   });
 });

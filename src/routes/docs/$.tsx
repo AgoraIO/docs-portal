@@ -20,7 +20,6 @@ import {
 import { Suspense } from 'react';
 import { getMDXComponents } from '@/components/mdx';
 import { useBaseLayoutOptions } from '@/lib/layout.shared';
-import { contentGitConfig } from '@/lib/shared';
 
 export const Route = createFileRoute('/docs/$')({
   component: Page,
@@ -68,7 +67,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
     // you can define props for the component
     {
       markdownUrl,
-      path,
+      path: _path,
     }: {
       markdownUrl: string;
       path: string;
@@ -80,10 +79,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <div className="flex flex-row gap-2 items-center border-b -mt-4 pb-6">
           <MarkdownCopyButton markdownUrl={markdownUrl} />
-          <ViewOptionsPopover
-            markdownUrl={markdownUrl}
-            githubUrl={`https://github.com/${contentGitConfig.user}/${contentGitConfig.repo}/blob/${contentGitConfig.branch}/raw/docs/${path}`}
-          />
+          <ViewOptionsPopover markdownUrl={markdownUrl} githubUrl="#" />
         </div>
         <DocsBody>
           <MDX components={getMDXComponents()} />
@@ -100,7 +96,7 @@ function Page() {
   const options = useBaseLayoutOptions();
 
   return (
-    <DocsLayout {...options} tree={pageTree}>
+    <DocsLayout {...options} tabs={false} tree={pageTree}>
       <Link to={markdownUrl} hidden />
       <Suspense>
         {clientLoader.useContent(path, { markdownUrl, path })}

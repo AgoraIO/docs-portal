@@ -1,8 +1,8 @@
 const zhCnCommon = {
   app: {
-    name: '声网文档',
-    tagline: '面向 Agora 与声网开发者的文档入口',
-    endorsement: 'Documentation Portal',
+    name: 'Agora Docs',
+    tagline: '下一代知识系统',
+    endorsement: 'Knowledge System',
   },
   controls: {
     theme: {
@@ -18,24 +18,37 @@ const zhCnCommon = {
     },
   },
   home: {
-    eyebrow: '文档站',
-    title: '用更克制、更有编辑感的方式阅读声网开发文档',
+    eyebrow: 'Knowledge System',
+    title: 'Agora 下一代知识系统',
     description:
-      '把参考文档、实践指南和 API 学习路径放进和 new console 一脉相承的 Oatmeal 设计语言中，同时保留稳定的文档结构。',
+      '先有 Docs，接下来会把 Wiki、Tools 和 Doc MCP 放进同一个系统。',
     primaryCta: '进入文档',
-    secondaryCta: '查看 GitHub',
-    sections: {
-      explore: {
-        title: '保留强信息架构，但去掉默认文档站的疲劳感',
-        body: '继续使用成熟的导航与目录结构，同时用更柔和的表面层级、留白和排版节奏改善阅读体验。',
+    rail: {
+      wiki: {
+        title: 'Wiki',
+        body: '更长篇、更上下文型的产品知识会进入同一个系统，不再散在外面。',
       },
-      build: {
-        title: '继续沿用当前 ConvoAI 内容源',
-        body: '这个改版不会打断现有 docs source 和 submodule 工作流，内容团队仍然可以照常推进。',
+      tools: {
+        title: '工具',
+        body: '这里先放 Doc MCP，后面可以继续接更多知识工具。',
       },
-      adapt: {
-        title: '先完成双语壳层，再为正文多语言预留能力',
-        body: '当前阶段先支持中英界面切换，正文内容源保持稳定，后续再扩展到完整本地化。',
+    },
+    cards: {
+      docs: {
+        title: 'Docs',
+        body: '参考指南、API 文档和产品使用路径。',
+        cta: '进入文档',
+      },
+      wiki: {
+        title: 'Wiki',
+        body: '更广义的产品知识和上下文内容，后续会接进来。',
+        cta: '即将上线',
+      },
+      tools: {
+        title: '工具',
+        body: '属于同一套知识系统的工具能力入口。',
+        cta: 'Doc MCP',
+        badge: 'Doc MCP',
       },
     },
   },

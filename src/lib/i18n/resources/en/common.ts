@@ -1,8 +1,8 @@
 const enCommon = {
   app: {
-    name: 'Shengwang Docs',
-    tagline: 'Developer documentation for Agora and Shengwang builders',
-    endorsement: 'Documentation Portal',
+    name: 'Agora Docs',
+    tagline: 'Next-generation knowledge system',
+    endorsement: 'Knowledge System',
   },
   controls: {
     theme: {
@@ -18,24 +18,37 @@ const enCommon = {
     },
   },
   home: {
-    eyebrow: 'Documentation Portal',
-    title: 'Build with Shengwang through a calmer, editorial docs experience',
+    eyebrow: 'Knowledge System',
+    title: "Agora's next-generation knowledge system",
     description:
-      'Reference guides, walkthroughs, and API learning paths presented with the same Oatmeal design language used by the new console.',
-    primaryCta: 'Open documentation',
-    secondaryCta: 'Browse GitHub',
-    sections: {
-      explore: {
-        title: 'Read product guides without the default docs chrome fatigue',
-        body: 'Keep the strong navigation structure, but shift the visual language toward softer surfaces, better rhythm, and clearer editorial hierarchy.',
+      'Docs first. Wiki, tools, and Doc MCP are joining the same system.',
+    primaryCta: 'Open docs',
+    rail: {
+      wiki: {
+        title: 'Wiki',
+        body: 'Long-form product knowledge will live in the same system, not beside it.',
       },
-      build: {
-        title: 'Start with the current ConvoAI content path',
-        body: 'The portal still reads from the existing docs source so the redesign does not block content updates or the submodule workflow.',
+      tools: {
+        title: 'Tools',
+        body: 'Doc MCP is the first tool card here. More knowledge tooling can plug in later.',
       },
-      adapt: {
-        title: 'Ready for bilingual shell and future content localization',
-        body: 'The interface layer supports English and Simplified Chinese now, while the content pipeline stays stable for a later full-locale rollout.',
+    },
+    cards: {
+      docs: {
+        title: 'Docs',
+        body: 'Reference guides, API docs, and product walkthroughs.',
+        cta: 'Open docs',
+      },
+      wiki: {
+        title: 'Wiki',
+        body: 'Broader product knowledge and narrative context, coming next.',
+        cta: 'Coming soon',
+      },
+      tools: {
+        title: 'Tools',
+        body: 'Knowledge utilities that belong in the same surface as docs.',
+        cta: 'Doc MCP',
+        badge: 'Doc MCP',
       },
     },
   },
