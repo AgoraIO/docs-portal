@@ -1,8 +1,14 @@
-import { createFileRoute, Link, notFound, redirect } from '@tanstack/react-router';
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  redirect,
+} from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
-import { getPageMarkdownUrl, source } from '@/lib/source';
+import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions';
 import browserCollections from 'collections/browser';
+import { useFumadocsLoader } from 'fumadocs-core/source/client';
+import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import {
   DocsBody,
   DocsDescription,
@@ -11,12 +17,10 @@ import {
   MarkdownCopyButton,
   ViewOptionsPopover,
 } from 'fumadocs-ui/layouts/docs/page';
-import { baseOptions } from '@/lib/layout.shared';
-import { contentGitConfig } from '@/lib/shared';
-import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions';
-import { useFumadocsLoader } from 'fumadocs-core/source/client';
 import { Suspense } from 'react';
-import { useMDXComponents } from '@/components/mdx';
+import { getMDXComponents } from '@/components/mdx';
+import { useBaseLayoutOptions } from '@/lib/layout.shared';
+import { contentGitConfig } from '@/lib/shared';
 
 export const Route = createFileRoute('/docs/$')({
   component: Page,
@@ -34,6 +38,7 @@ const loader = createServerFn({
   .inputValidator((slugs: string[]) => slugs)
   .middleware([staticFunctionMiddleware])
   .handler(async ({ data: slugs }) => {
+    const { getPageMarkdownUrl, source } = await import('@/lib/source');
     const page = source.getPage(slugs);
     if (!page) {
       if (slugs.length === 0) {
@@ -47,7 +52,6 @@ const loader = createServerFn({
           });
         }
       }
-
       throw notFound();
     }
 
@@ -82,7 +86,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
           />
         </div>
         <DocsBody>
-          <MDX components={useMDXComponents()} />
+          <MDX components={getMDXComponents()} />
         </DocsBody>
       </DocsPage>
     );
@@ -90,12 +94,17 @@ const clientLoader = browserCollections.docs.createClientLoader({
 });
 
 function Page() {
-  const { pageTree, path, markdownUrl } = useFumadocsLoader(Route.useLoaderData());
+  const { pageTree, path, markdownUrl } = useFumadocsLoader(
+    Route.useLoaderData(),
+  );
+  const options = useBaseLayoutOptions();
 
   return (
-    <DocsLayout {...baseOptions()} tree={pageTree}>
+    <DocsLayout {...options} tree={pageTree}>
       <Link to={markdownUrl} hidden />
-      <Suspense>{clientLoader.useContent(path, { markdownUrl, path })}</Suspense>
+      <Suspense>
+        {clientLoader.useContent(path, { markdownUrl, path })}
+      </Suspense>
     </DocsLayout>
   );
 }

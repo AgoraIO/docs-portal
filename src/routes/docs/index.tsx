@@ -1,9 +1,10 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
-import { source } from '@/lib/source';
+import { createServerFn } from '@tanstack/react-start';
+import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions';
 
 export const Route = createFileRoute('/docs/')({
-  loader: () => {
-    const firstPage = source.getPages()[0];
+  loader: async () => {
+    const firstPage = await getFirstPage();
     if (!firstPage) throw notFound();
 
     throw redirect({
@@ -15,3 +16,16 @@ export const Route = createFileRoute('/docs/')({
   },
   component: () => null,
 });
+
+const getFirstPage = createServerFn({ method: 'GET' })
+  .middleware([staticFunctionMiddleware])
+  .handler(async () => {
+    const { source } = await import('@/lib/source');
+    const firstPage = source.getPages()[0];
+
+    return firstPage
+      ? {
+          slugs: firstPage.slugs,
+        }
+      : null;
+  });

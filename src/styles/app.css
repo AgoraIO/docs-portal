@@ -1,12 +1,90 @@
-@import 'tailwindcss';
-@import 'fumadocs-ui/css/neutral.css';
-@import 'fumadocs-ui/css/preset.css';
+@import "tailwindcss" source('../');
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+@import "../design-systems/oatmeal/theme.css";
 
-html {
-  scrollbar-gutter: stable;
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-fd-border, currentcolor);
+  }
 }
 
-html > body[data-scroll-locked] {
-  margin-right: 0px !important;
-  --removed-body-scroll-bar-size: 0px !important;
+@layer base {
+  html {
+    scrollbar-gutter: stable;
+    font-family: var(--font-sans);
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(
+        circle at top left,
+        rgb(255 255 255 / 0.32),
+        transparent 28%
+      ),
+      linear-gradient(180deg, rgb(255 255 255 / 0.12), transparent 22%),
+      var(--color-fd-background);
+    color: var(--color-fd-foreground);
+    font-family: var(--font-sans);
+  }
+
+  code,
+  kbd,
+  pre,
+  samp {
+    font-family: var(--font-mono);
+  }
+
+  h1,
+  h2,
+  h3,
+  [data-heading="true"] {
+    font-family: var(--font-heading);
+  }
+
+  html > body[data-scroll-locked] {
+    margin-right: 0 !important;
+    --removed-body-scroll-bar-size: 0px !important;
+  }
+}
+
+@layer components {
+  .prose :where(h1):not(:where(.not-prose, .not-prose *)) {
+    font-size: clamp(2.4rem, 3vw, 3.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+  }
+
+  .prose :where(h2, h3):not(:where(.not-prose, .not-prose *)) {
+    letter-spacing: -0.03em;
+  }
+
+  .prose :where(code):not(:where(.not-prose, .not-prose *)) {
+    border: 1px solid var(--color-fd-border);
+    border-radius: 0.5rem;
+    background: rgb(255 255 255 / 0.4);
+    padding: 0.15rem 0.35rem;
+  }
+
+  .prose :where(pre code):not(:where(.not-prose, .not-prose *)) {
+    border: 0;
+    background: transparent;
+    padding: 0;
+  }
+
+  #nd-sidebar {
+    background: rgb(255 255 255 / 0.26);
+    backdrop-filter: blur(16px);
+  }
+
+  .dark #nd-sidebar {
+    background: rgb(15 18 12 / 0.55);
+  }
 }

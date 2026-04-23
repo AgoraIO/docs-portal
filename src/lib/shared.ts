@@ -1,4 +1,6 @@
-export const appName = 'Tanstack Start';
+export const appName = 'Shengwang Docs';
+export const appDescription =
+  'A calmer, editorial documentation portal for Shengwang and Agora builders.';
 export const docsRoute = '/docs';
 export const docsImageRoute = '/og/docs';
 export const docsContentRoute = '/llms.mdx/docs';
