@@ -1,8 +1,14 @@
-import { createFileRoute, Link, notFound } from '@tanstack/react-router';
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
+import {
+  createFileRoute,
+  Link,
+  notFound,
+  redirect,
+} from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
-import { getPageMarkdownUrl, source } from '@/lib/source';
+import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions';
 import browserCollections from 'collections/browser';
+import { useFumadocsLoader } from 'fumadocs-core/source/client';
+import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import {
   DocsBody,
   DocsDescription,
@@ -11,12 +17,9 @@ import {
   MarkdownCopyButton,
   ViewOptionsPopover,
 } from 'fumadocs-ui/layouts/docs/page';
-import { baseOptions } from '@/lib/layout.shared';
-import { gitConfig } from '@/lib/shared';
-import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions';
-import { useFumadocsLoader } from 'fumadocs-core/source/client';
 import { Suspense } from 'react';
-import { useMDXComponents } from '@/components/mdx';
+import { getMDXComponents } from '@/components/mdx';
+import { useBaseLayoutOptions } from '@/lib/layout.shared';
 
 export const Route = createFileRoute('/docs/$')({
   component: Page,
@@ -34,8 +37,22 @@ const loader = createServerFn({
   .inputValidator((slugs: string[]) => slugs)
   .middleware([staticFunctionMiddleware])
   .handler(async ({ data: slugs }) => {
+    const { getPageMarkdownUrl, source } = await import('@/lib/source');
     const page = source.getPage(slugs);
-    if (!page) throw notFound();
+    if (!page) {
+      if (slugs.length === 0) {
+        const firstPage = source.getPages()[0];
+        if (firstPage) {
+          throw redirect({
+            to: '/docs/$',
+            params: {
+              _splat: firstPage.slugs.join('/'),
+            },
+          });
+        }
+      }
+      throw notFound();
+    }
 
     return {
       path: page.path,
@@ -50,7 +67,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
     // you can define props for the component
     {
       markdownUrl,
-      path,
+      path: _path,
     }: {
       markdownUrl: string;
       path: string;
@@ -62,13 +79,10 @@ const clientLoader = browserCollections.docs.createClientLoader({
         <DocsDescription>{frontmatter.description}</DocsDescription>
         <div className="flex flex-row gap-2 items-center border-b -mt-4 pb-6">
           <MarkdownCopyButton markdownUrl={markdownUrl} />
-          <ViewOptionsPopover
-            markdownUrl={markdownUrl}
-            githubUrl={`https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/content/docs/${path}`}
-          />
+          <ViewOptionsPopover markdownUrl={markdownUrl} githubUrl="#" />
         </div>
         <DocsBody>
-          <MDX components={useMDXComponents()} />
+          <MDX components={getMDXComponents()} />
         </DocsBody>
       </DocsPage>
     );
@@ -76,12 +90,17 @@ const clientLoader = browserCollections.docs.createClientLoader({
 });
 
 function Page() {
-  const { pageTree, path, markdownUrl } = useFumadocsLoader(Route.useLoaderData());
+  const { pageTree, path, markdownUrl } = useFumadocsLoader(
+    Route.useLoaderData(),
+  );
+  const options = useBaseLayoutOptions();
 
   return (
-    <DocsLayout {...baseOptions()} tree={pageTree}>
+    <DocsLayout {...options} tabs={false} tree={pageTree}>
       <Link to={markdownUrl} hidden />
-      <Suspense>{clientLoader.useContent(path, { markdownUrl, path })}</Suspense>
+      <Suspense>
+        {clientLoader.useContent(path, { markdownUrl, path })}
+      </Suspense>
     </DocsLayout>
   );
 }
