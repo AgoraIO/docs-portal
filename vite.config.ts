@@ -27,11 +27,15 @@ export default defineConfig({
       ? [react()]
       : [
           tanstackStart({
+            prerender: {
+              autoStaticPathsDiscovery: false,
+              crawlLinks: false,
+              failOnError: false,
+            },
             spa: {
               enabled: true,
               prerender: {
-                enabled: true,
-                crawlLinks: false,
+                enabled: false,
               },
             },
 
