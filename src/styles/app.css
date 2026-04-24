@@ -40,23 +40,23 @@
 
 @layer base {
   :root {
-    --background: #f6f5f0;
-    --foreground: #111715;
-    --card: rgb(253 252 248 / 0.9);
-    --card-foreground: #111715;
-    --popover: rgb(254 253 250 / 0.96);
-    --popover-foreground: #111715;
-    --primary: #12805f;
-    --primary-foreground: #f5fff8;
-    --secondary: #ece9e1;
-    --secondary-foreground: #1a231f;
-    --muted: #efede6;
-    --muted-foreground: #66716a;
-    --accent: #ebe8df;
-    --accent-foreground: #111715;
-    --border: rgb(17 23 21 / 0.12);
-    --input: rgb(17 23 21 / 0.1);
-    --ring: rgb(18 128 95 / 0.38);
+    --background: #ffffff;
+    --foreground: #171a18;
+    --card: rgb(255 255 255 / 0.92);
+    --card-foreground: #171a18;
+    --popover: rgb(255 255 255 / 0.98);
+    --popover-foreground: #171a18;
+    --primary: #1f8f74;
+    --primary-foreground: #f4fffb;
+    --secondary: #f3f6f4;
+    --secondary-foreground: #171a18;
+    --muted: #f6f8f7;
+    --muted-foreground: #707371;
+    --accent: #eef2f0;
+    --accent-foreground: #171a18;
+    --border: rgb(23 26 24 / 0.1);
+    --input: rgb(23 26 24 / 0.08);
+    --ring: rgb(31 143 116 / 0.28);
     --radius: 1.125rem;
 
     --color-fd-background: var(--background);
@@ -77,23 +77,23 @@
   }
 
   .dark {
-    --background: #0f1110;
-    --foreground: #eef2ec;
-    --card: rgb(20 24 22 / 0.9);
-    --card-foreground: #eef2ec;
-    --popover: rgb(16 20 18 / 0.96);
-    --popover-foreground: #eef2ec;
-    --primary: #4ec39e;
-    --primary-foreground: #08130f;
-    --secondary: #171c19;
-    --secondary-foreground: #dce7df;
-    --muted: #151916;
-    --muted-foreground: #9ea8a1;
-    --accent: #161b18;
-    --accent-foreground: #eef2ec;
-    --border: rgb(236 242 236 / 0.09);
-    --input: rgb(236 242 236 / 0.08);
-    --ring: rgb(78 195 158 / 0.42);
+    --background: #0a0d0d;
+    --foreground: #f1f4f2;
+    --card: rgb(11 14 14 / 0.94);
+    --card-foreground: #f1f4f2;
+    --popover: rgb(12 15 15 / 0.98);
+    --popover-foreground: #f1f4f2;
+    --primary: #36b49f;
+    --primary-foreground: #04100d;
+    --secondary: #101413;
+    --secondary-foreground: #e1e6e3;
+    --muted: #0f1312;
+    --muted-foreground: #9ea3a1;
+    --accent: #121716;
+    --accent-foreground: #f1f4f2;
+    --border: rgb(241 244 242 / 0.08);
+    --input: rgb(241 244 242 / 0.06);
+    --ring: rgb(54 180 159 / 0.28);
 
     --color-fd-background: var(--background);
     --color-fd-foreground: var(--foreground);
@@ -127,8 +127,8 @@
   body {
     min-height: 100vh;
     background:
-      radial-gradient(circle at top, rgb(18 128 95 / 0.045), transparent 24%),
-      linear-gradient(180deg, rgb(255 255 255 / 0.22), transparent 14%),
+      radial-gradient(circle at top, rgb(54 180 159 / 0.035), transparent 20%),
+      linear-gradient(180deg, rgb(255 255 255 / 0.16), transparent 12%),
       var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
@@ -137,8 +137,8 @@
 
   .dark body {
     background:
-      radial-gradient(circle at top, rgb(78 195 158 / 0.045), transparent 24%),
-      linear-gradient(180deg, rgb(255 255 255 / 0.01), transparent 12%),
+      radial-gradient(circle at top, rgb(54 180 159 / 0.045), transparent 20%),
+      linear-gradient(180deg, rgb(255 255 255 / 0.008), transparent 10%),
       var(--background);
   }
 
@@ -202,13 +202,13 @@
   }
 
   .prose :where(p, li):not(:where(.not-prose, .not-prose *)) {
-    color: color-mix(in srgb, var(--foreground) 76%, transparent);
-    line-height: 1.95;
+    color: color-mix(in srgb, var(--foreground) 70%, transparent);
+    line-height: 1.9;
   }
 
   .prose :where(a):not(:where(.not-prose, .not-prose *)) {
-    color: var(--foreground);
-    text-decoration-color: color-mix(in srgb, var(--primary) 55%, transparent);
+    color: color-mix(in srgb, var(--foreground) 92%, var(--primary) 8%);
+    text-decoration-color: color-mix(in srgb, var(--primary) 42%, transparent);
     text-underline-offset: 0.18em;
   }
 
@@ -218,18 +218,18 @@
   }
 
   .prose :where(code):not(:where(.not-prose, .not-prose *)) {
-    border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
-    border-radius: 0.65rem;
-    background: color-mix(in srgb, var(--secondary) 88%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    border-radius: 0.55rem;
+    background: color-mix(in srgb, var(--secondary) 94%, transparent);
     padding: 0.18rem 0.42rem;
-    color: color-mix(in srgb, var(--foreground) 92%, transparent);
+    color: color-mix(in srgb, var(--foreground) 88%, transparent);
   }
 
   .prose :where(pre):not(:where(.not-prose, .not-prose *)) {
-    border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
-    border-radius: 1.25rem;
-    background: color-mix(in srgb, var(--card) 92%, transparent);
-    box-shadow: 0 22px 80px -56px rgb(15 23 42 / 0.45);
+    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--secondary) 82%, var(--background));
+    box-shadow: none;
   }
 
   .prose :where(pre code):not(:where(.not-prose, .not-prose *)) {
@@ -248,18 +248,18 @@
   }
 
   #nd-sidebar {
-    background: color-mix(in srgb, var(--background) 97%, var(--foreground) 3%);
+    background: color-mix(in srgb, var(--background) 98%, var(--foreground) 2%);
     backdrop-filter: none;
     box-shadow: inset -1px 0 0 color-mix(in srgb, var(--border) 92%, transparent);
   }
 
   .dark #nd-sidebar {
-    background: color-mix(in srgb, var(--background) 96%, var(--foreground) 4%);
+    background: color-mix(in srgb, var(--background) 97%, var(--foreground) 3%);
   }
 
   #nd-subnav {
     border-bottom-color: color-mix(in srgb, var(--border) 90%, transparent);
-    background: color-mix(in srgb, var(--background) 96%, var(--foreground) 4%);
+    background: color-mix(in srgb, var(--background) 98%, var(--foreground) 2%);
     backdrop-filter: none;
   }
 
@@ -282,22 +282,17 @@
 
   [data-toc-popover] header {
     border-bottom-color: color-mix(in srgb, var(--border) 90%, transparent);
-    background: color-mix(in srgb, var(--background) 97%, var(--foreground) 3%);
+    background: color-mix(in srgb, var(--background) 98%, var(--foreground) 2%);
   }
 
   #nd-sidebar [data-active="true"] {
-    background: color-mix(in srgb, var(--accent) 42%, transparent);
+    background: color-mix(in srgb, var(--accent) 55%, transparent);
     color: var(--foreground);
   }
 
   #nd-sidebar a:hover,
   #nd-sidebar button:hover {
-    background: color-mix(in srgb, var(--accent) 34%, transparent);
-  }
-
-  #nd-page > header + div + div + .prose,
-  #nd-page > header + div + .prose {
-    border-top-color: color-mix(in srgb, var(--border) 80%, transparent);
+    background: color-mix(in srgb, var(--accent) 42%, transparent);
   }
 
   [data-search-full] {
