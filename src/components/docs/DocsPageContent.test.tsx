@@ -28,6 +28,7 @@ describe('DocsPageContent', () => {
     expect(screen.queryByText('frontmatter.title')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Copy Markdown' })).toBeVisible();
     expect(screen.getByRole('button', { name: 'Open' })).toBeVisible();
+    expect(screen.queryByText('Documentation')).not.toBeInTheDocument();
   });
 
   it('keeps non-duplicate leading content in the body', () => {

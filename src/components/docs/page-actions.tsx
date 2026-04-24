@@ -54,9 +54,10 @@ export function LocalizedMarkdownCopyButton({
       {...props}
       className={cn(
         buttonVariants({
-          className: 'gap-2 [&_svg]:size-3.5 [&_svg]:text-muted-foreground',
+          className:
+            'gap-2 border-border/80 bg-transparent text-muted-foreground shadow-none hover:text-foreground [&_svg]:size-3.5 [&_svg]:text-muted-foreground',
           size: 'sm',
-          variant: 'secondary',
+          variant: 'outline',
         }),
         props.className,
       )}
@@ -113,8 +114,13 @@ export function LocalizedViewOptionsPopover({
       <PopoverTrigger
         {...props}
         className={cn(
-          buttonVariants({ size: 'sm', variant: 'secondary' }),
-          'gap-2 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
+          buttonVariants({
+            className:
+              'border-border/80 bg-transparent text-muted-foreground shadow-none hover:text-foreground',
+            size: 'sm',
+            variant: 'outline',
+          }),
+          'gap-2 data-[state=open]:bg-accent/60 data-[state=open]:text-foreground',
           props.className,
         )}
       >

@@ -6,7 +6,6 @@ import {
   DocsTitle,
 } from 'fumadocs-ui/layouts/docs/page';
 import { Children, Fragment, isValidElement, type ReactNode } from 'react';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import {
   LocalizedMarkdownCopyButton,
@@ -38,22 +37,19 @@ export function DocsPageContent({
       className="gap-0 xl:max-w-[860px]"
       toc={toc}
     >
-      <header className="not-prose mb-10 rounded-[1.75rem] border border-border bg-card/82 px-6 py-6 shadow-[0_20px_80px_-52px_rgba(15,23,42,0.3)] backdrop-blur sm:px-8 sm:py-8">
-        <Badge className="mb-5 w-fit" variant="outline">
-          Documentation
-        </Badge>
-        <DocsTitle className="text-[2.1rem] tracking-[-0.06em] text-foreground sm:text-[2.8rem]">
+      <header className="not-prose mb-8 border-b border-border/70 pb-6 sm:pb-8">
+        <DocsTitle className="text-[2rem] tracking-[-0.06em] text-foreground sm:text-[2.65rem]">
           {title}
         </DocsTitle>
         <DocsDescription className="mt-4 mb-0 max-w-3xl text-base leading-8 text-muted-foreground sm:text-[1.0625rem]">
           {description}
         </DocsDescription>
       </header>
-      <div className="not-prose mb-8 flex flex-wrap items-center gap-2">
+      <div className="not-prose mb-6 flex flex-wrap items-center gap-2">
         <LocalizedMarkdownCopyButton markdownUrl={markdownUrl} />
         <LocalizedViewOptionsPopover markdownUrl={markdownUrl} />
       </div>
-      <Separator className="not-prose mb-8" />
+      <Separator className="not-prose mb-6 opacity-70" />
       <DocsBody className="pb-12">{content}</DocsBody>
     </DocsPage>
   );
