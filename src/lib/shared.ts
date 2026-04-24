@@ -1,6 +1,6 @@
 export const appName = 'Agora Docs';
 export const appDescription =
-  'Agora Docs is the next-generation knowledge system for documentation, wiki, and tools.';
+  'Agora Docs is a protocol-inspired developer documentation surface for product docs, API reference, and AI-readable content.';
 export const docsRoute = '/docs';
 export const docsImageRoute = '/og/docs';
 export const docsContentRoute = '/llms.mdx/docs';

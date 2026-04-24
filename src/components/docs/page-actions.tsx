@@ -1,9 +1,3 @@
-import { buttonVariants } from 'fumadocs-ui/components/ui/button';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from 'fumadocs-ui/components/ui/popover';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
 import {
   Check,
@@ -16,6 +10,12 @@ import {
 } from 'lucide-react';
 import { type ComponentProps, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { buttonVariants } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { cn } from '@/lib/cn';
 
 const markdownCache = new Map<string, Promise<string>>();
@@ -54,9 +54,9 @@ export function LocalizedMarkdownCopyButton({
       {...props}
       className={cn(
         buttonVariants({
-          color: 'secondary',
+          className: 'gap-2 [&_svg]:size-3.5 [&_svg]:text-muted-foreground',
           size: 'sm',
-          className: 'gap-2 [&_svg]:size-3.5 [&_svg]:text-fd-muted-foreground',
+          variant: 'secondary',
         }),
         props.className,
       )}
@@ -113,19 +113,19 @@ export function LocalizedViewOptionsPopover({
       <PopoverTrigger
         {...props}
         className={cn(
-          buttonVariants({ color: 'secondary', size: 'sm' }),
-          'gap-2 data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground',
+          buttonVariants({ size: 'sm', variant: 'secondary' }),
+          'gap-2 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
           props.className,
         )}
       >
         {props.children ?? t('docs.actions.open')}
-        <ChevronDown className="size-3.5 text-fd-muted-foreground" />
+        <ChevronDown className="size-3.5 text-muted-foreground" />
       </PopoverTrigger>
       <PopoverContent className="flex flex-col">
         {items.map((item) =>
           item ? (
             <a
-              className="inline-flex items-center gap-2 rounded-lg p-2 text-sm hover:bg-fd-accent hover:text-fd-accent-foreground [&_svg]:size-4"
+              className="inline-flex items-center gap-2 rounded-xl p-2.5 text-sm hover:bg-accent hover:text-accent-foreground [&_svg]:size-4"
               href={item.href}
               key={item.href}
               rel="noreferrer noopener"
@@ -133,7 +133,7 @@ export function LocalizedViewOptionsPopover({
             >
               {item.icon}
               {item.title}
-              <ExternalLinkIcon className="ms-auto size-3.5 text-fd-muted-foreground" />
+              <ExternalLinkIcon className="ms-auto size-3.5 text-muted-foreground" />
             </a>
           ) : null,
         )}

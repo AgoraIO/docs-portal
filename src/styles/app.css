@@ -1,35 +1,145 @@
 @import "tailwindcss" source('../');
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
-@import "../design-systems/protocol/theme.css";
 
 @custom-variant dark (&:is(.dark *));
 
+@theme inline {
+  --font-sans:
+    "PingFang SC", "Hiragino Sans GB", "SF Pro Display", "SF Pro Text",
+    "Segoe UI", system-ui, sans-serif;
+  --font-heading:
+    "PingFang SC", "Hiragino Sans GB", "SF Pro Display", "SF Pro Text",
+    "Segoe UI", system-ui, sans-serif;
+  --font-mono:
+    "JetBrains Mono", "SFMono-Regular", "SF Mono", "Roboto Mono",
+    ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 0.375rem);
+  --radius-md: calc(var(--radius) - 0.125rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.5rem);
+}
+
 @layer base {
+  :root {
+    --background: #f6f5f0;
+    --foreground: #111715;
+    --card: rgb(253 252 248 / 0.9);
+    --card-foreground: #111715;
+    --popover: rgb(254 253 250 / 0.96);
+    --popover-foreground: #111715;
+    --primary: #12805f;
+    --primary-foreground: #f5fff8;
+    --secondary: #ece9e1;
+    --secondary-foreground: #1a231f;
+    --muted: #efede6;
+    --muted-foreground: #66716a;
+    --accent: #ebe8df;
+    --accent-foreground: #111715;
+    --border: rgb(17 23 21 / 0.12);
+    --input: rgb(17 23 21 / 0.1);
+    --ring: rgb(18 128 95 / 0.38);
+    --radius: 1.125rem;
+
+    --color-fd-background: var(--background);
+    --color-fd-foreground: var(--foreground);
+    --color-fd-card: var(--card);
+    --color-fd-card-foreground: var(--card-foreground);
+    --color-fd-primary: var(--primary);
+    --color-fd-primary-foreground: var(--primary-foreground);
+    --color-fd-secondary: var(--secondary);
+    --color-fd-secondary-foreground: var(--secondary-foreground);
+    --color-fd-muted: var(--muted);
+    --color-fd-muted-foreground: var(--muted-foreground);
+    --color-fd-accent: var(--accent);
+    --color-fd-accent-foreground: var(--accent-foreground);
+    --color-fd-border: var(--border);
+
+    --protocol-home-width: 82rem;
+  }
+
+  .dark {
+    --background: #0f1110;
+    --foreground: #eef2ec;
+    --card: rgb(20 24 22 / 0.9);
+    --card-foreground: #eef2ec;
+    --popover: rgb(16 20 18 / 0.96);
+    --popover-foreground: #eef2ec;
+    --primary: #4ec39e;
+    --primary-foreground: #08130f;
+    --secondary: #171c19;
+    --secondary-foreground: #dce7df;
+    --muted: #151916;
+    --muted-foreground: #9ea8a1;
+    --accent: #161b18;
+    --accent-foreground: #eef2ec;
+    --border: rgb(236 242 236 / 0.09);
+    --input: rgb(236 242 236 / 0.08);
+    --ring: rgb(78 195 158 / 0.42);
+
+    --color-fd-background: var(--background);
+    --color-fd-foreground: var(--foreground);
+    --color-fd-card: var(--card);
+    --color-fd-card-foreground: var(--card-foreground);
+    --color-fd-primary: var(--primary);
+    --color-fd-primary-foreground: var(--primary-foreground);
+    --color-fd-secondary: var(--secondary);
+    --color-fd-secondary-foreground: var(--secondary-foreground);
+    --color-fd-muted: var(--muted);
+    --color-fd-muted-foreground: var(--muted-foreground);
+    --color-fd-accent: var(--accent);
+    --color-fd-accent-foreground: var(--accent-foreground);
+    --color-fd-border: var(--border);
+  }
+
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-fd-border, currentcolor);
+    border-color: var(--border, currentcolor);
   }
-}
 
-@layer base {
   html {
     scrollbar-gutter: stable;
+    background: var(--background);
     font-family: var(--font-sans);
-    background: var(--color-fd-background);
   }
 
   body {
     min-height: 100vh;
     background:
-      radial-gradient(circle at top, rgb(16 185 129 / 0.08), transparent 32%),
-      linear-gradient(180deg, rgb(255 255 255 / 0.7), transparent 22%),
-      var(--color-fd-background);
-    color: var(--color-fd-foreground);
+      radial-gradient(circle at top, rgb(18 128 95 / 0.16), transparent 34%),
+      linear-gradient(180deg, rgb(255 255 255 / 0.72), transparent 26%),
+      var(--background);
+    color: var(--foreground);
     font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  .dark body {
+    background:
+      radial-gradient(circle at top, rgb(78 195 158 / 0.13), transparent 34%),
+      linear-gradient(180deg, rgb(255 255 255 / 0.02), transparent 18%),
+      var(--background);
   }
 
   code,
@@ -47,7 +157,7 @@
   }
 
   ::selection {
-    background: color-mix(in srgb, var(--color-fd-primary) 16%, transparent);
+    background: color-mix(in srgb, var(--primary) 20%, transparent);
   }
 
   html > body[data-scroll-locked] {
@@ -57,27 +167,69 @@
 }
 
 @layer components {
+  .home-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--border) 82%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--border) 82%, transparent) 1px, transparent 1px);
+    background-position: center;
+    background-size: 72px 72px;
+    mask-image: radial-gradient(circle at top, black, transparent 78%);
+  }
+
+  .prose {
+    max-width: 47rem;
+  }
+
   .prose :where(h1):not(:where(.not-prose, .not-prose *)) {
-    font-size: clamp(2.05rem, 2.6vw, 2.9rem);
+    font-size: clamp(2.2rem, 3vw, 3.1rem);
     line-height: 1.02;
-    letter-spacing: -0.045em;
+    letter-spacing: -0.06em;
     font-weight: 600;
   }
 
-  .prose :where(h2, h3):not(:where(.not-prose, .not-prose *)) {
-    letter-spacing: -0.03em;
+  .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 3.25rem;
+    letter-spacing: -0.05em;
+    font-size: clamp(1.55rem, 2vw, 2rem);
+    font-weight: 600;
+  }
+
+  .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
+    margin-top: 2.25rem;
+    letter-spacing: -0.035em;
+    font-size: 1.2rem;
     font-weight: 600;
   }
 
   .prose :where(p, li):not(:where(.not-prose, .not-prose *)) {
-    color: color-mix(in srgb, var(--color-fd-foreground) 78%, transparent);
+    color: color-mix(in srgb, var(--foreground) 76%, transparent);
+    line-height: 1.95;
+  }
+
+  .prose :where(a):not(:where(.not-prose, .not-prose *)) {
+    color: var(--foreground);
+    text-decoration-color: color-mix(in srgb, var(--primary) 55%, transparent);
+    text-underline-offset: 0.18em;
+  }
+
+  .prose :where(strong):not(:where(.not-prose, .not-prose *)) {
+    color: var(--foreground);
+    font-weight: 600;
   }
 
   .prose :where(code):not(:where(.not-prose, .not-prose *)) {
-    border: 1px solid var(--color-fd-border);
-    border-radius: 0.45rem;
-    background: var(--color-fd-secondary);
-    padding: 0.16rem 0.38rem;
+    border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+    border-radius: 0.65rem;
+    background: color-mix(in srgb, var(--secondary) 88%, transparent);
+    padding: 0.18rem 0.42rem;
+    color: color-mix(in srgb, var(--foreground) 92%, transparent);
+  }
+
+  .prose :where(pre):not(:where(.not-prose, .not-prose *)) {
+    border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+    border-radius: 1.25rem;
+    background: color-mix(in srgb, var(--card) 92%, transparent);
+    box-shadow: 0 22px 80px -56px rgb(15 23 42 / 0.45);
   }
 
   .prose :where(pre code):not(:where(.not-prose, .not-prose *)) {
@@ -86,32 +238,68 @@
     padding: 0;
   }
 
+  .prose :where(blockquote):not(:where(.not-prose, .not-prose *)) {
+    border-inline-start-color: color-mix(in srgb, var(--primary) 50%, transparent);
+    color: color-mix(in srgb, var(--foreground) 72%, transparent);
+  }
+
+  .prose :where(hr):not(:where(.not-prose, .not-prose *)) {
+    border-color: color-mix(in srgb, var(--border) 85%, transparent);
+  }
+
   #nd-sidebar {
-    background: color-mix(in srgb, var(--color-fd-card) 92%, transparent);
-    backdrop-filter: blur(18px);
-    box-shadow: inset -1px 0 0 var(--color-fd-border);
+    background: color-mix(in srgb, var(--card) 90%, transparent);
+    backdrop-filter: blur(20px);
+    box-shadow:
+      inset -1px 0 0 color-mix(in srgb, var(--border) 95%, transparent),
+      14px 0 40px -42px rgb(15 23 42 / 0.22);
   }
 
   .dark #nd-sidebar {
-    background: color-mix(in srgb, var(--color-fd-card) 88%, transparent);
+    background: color-mix(in srgb, var(--card) 94%, transparent);
   }
 
-  :where(input, textarea, select) {
-    border-color: var(--color-fd-border);
-    background: var(--color-fd-secondary);
-    color: var(--color-fd-foreground);
+  #nd-subnav {
+    border-bottom-color: color-mix(in srgb, var(--border) 90%, transparent);
+    background: color-mix(in srgb, var(--background) 72%, transparent);
+    backdrop-filter: blur(18px);
   }
 
-  :where(input, textarea, select)::placeholder {
-    color: var(--color-fd-muted-foreground);
+  #nd-page {
+    max-width: 52rem;
+    padding-top: 2.5rem;
   }
 
-  :where(button, [role="button"]):not(:disabled) {
-    border-color: var(--color-fd-border);
+  #nd-toc {
+    color: var(--muted-foreground);
+  }
+
+  #nd-toc #toc-title {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+  }
+
+  [data-toc-popover] header {
+    border-bottom-color: color-mix(in srgb, var(--border) 90%, transparent);
   }
 
   [data-search-full] {
-    backdrop-filter: blur(18px);
+    backdrop-filter: blur(22px);
+  }
+
+  :where(input, textarea, select) {
+    border-color: var(--input);
+    background: color-mix(in srgb, var(--secondary) 82%, transparent);
+    color: var(--foreground);
+  }
+
+  :where(input, textarea, select)::placeholder {
+    color: var(--muted-foreground);
+  }
+
+  :where(button, [role="button"]):not(:disabled) {
+    border-color: var(--border);
   }
 
   .fd-scroll-container::-webkit-scrollbar {
@@ -122,7 +310,7 @@
   .fd-scroll-container::-webkit-scrollbar-thumb {
     border: 2px solid transparent;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--color-fd-foreground) 14%, transparent);
+    background: color-mix(in srgb, var(--foreground) 16%, transparent);
     background-clip: padding-box;
   }
 

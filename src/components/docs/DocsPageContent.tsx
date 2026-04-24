@@ -6,6 +6,8 @@ import {
   DocsTitle,
 } from 'fumadocs-ui/layouts/docs/page';
 import { Children, Fragment, isValidElement, type ReactNode } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import {
   LocalizedMarkdownCopyButton,
   LocalizedViewOptionsPopover,
@@ -33,21 +35,26 @@ export function DocsPageContent({
     <DocsPage
       breadcrumb={{ enabled: false }}
       footer={{ enabled: false }}
+      className="gap-0 xl:max-w-[860px]"
       toc={toc}
     >
-      <header className="not-prose mb-8 border-b border-fd-border/80 pb-5">
-        <DocsTitle className="text-3xl tracking-[-0.035em] text-fd-foreground sm:text-4xl">
+      <header className="not-prose mb-10 rounded-[1.75rem] border border-border bg-card/82 px-6 py-6 shadow-[0_20px_80px_-52px_rgba(15,23,42,0.3)] backdrop-blur sm:px-8 sm:py-8">
+        <Badge className="mb-5 w-fit" variant="outline">
+          Documentation
+        </Badge>
+        <DocsTitle className="text-[2.1rem] tracking-[-0.06em] text-foreground sm:text-[2.8rem]">
           {title}
         </DocsTitle>
-        <DocsDescription className="mt-3 max-w-3xl text-base leading-7 text-fd-muted-foreground sm:text-[1.0625rem]">
+        <DocsDescription className="mt-4 mb-0 max-w-3xl text-base leading-8 text-muted-foreground sm:text-[1.0625rem]">
           {description}
         </DocsDescription>
       </header>
-      <div className="not-prose -mt-1 mb-8 flex flex-row items-center gap-2 border-b border-fd-border/70 pb-5">
+      <div className="not-prose mb-8 flex flex-wrap items-center gap-2">
         <LocalizedMarkdownCopyButton markdownUrl={markdownUrl} />
         <LocalizedViewOptionsPopover markdownUrl={markdownUrl} />
       </div>
-      <DocsBody>{content}</DocsBody>
+      <Separator className="not-prose mb-8" />
+      <DocsBody className="pb-12">{content}</DocsBody>
     </DocsPage>
   );
 }

@@ -11,34 +11,40 @@ describe('HomePage', () => {
     window.localStorage.removeItem(LOCALE_STORAGE_KEY);
   });
 
-  it('renders a restrained english docs landing page', () => {
+  it('renders a protocol-inspired english docs landing page', () => {
     render(
       <I18nextProvider i18n={i18n}>
         <HomePage />
       </I18nextProvider>,
     );
 
-    const heading = screen.getByRole('heading', { name: 'Agora Docs' });
+    const heading = screen.getByRole('heading', {
+      name: 'Documentation that behaves like a product surface.',
+    });
 
     expect(heading).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Open docs' })).toHaveAttribute(
+    expect(screen.getAllByRole('link', { name: 'Open docs' })[0]).toHaveAttribute(
       'href',
       '/docs',
     );
-    expect(screen.getByRole('link', { name: 'Browse API' })).toHaveAttribute(
-      'href',
-      '/api-ref',
-    );
-    expect(screen.getByRole('heading', { name: 'Product docs' })).toBeVisible();
     expect(
-      screen.getByRole('heading', { name: 'API reference' }),
+      screen.getAllByRole('link', { name: 'API reference' })[0],
+    ).toHaveAttribute('href', '/api-ref');
+    expect(
+      screen.getByRole('heading', { name: 'Start with quickstart' }),
     ).toBeVisible();
-    expect(screen.getByRole('heading', { name: 'Agent tools' })).toBeVisible();
-    expect(screen.getByText('Shipping surface')).toBeVisible();
-    expect(screen.getAllByText('Doc MCP')).toHaveLength(1);
+    expect(
+      screen.getByRole('heading', { name: 'Inspect the API surface' }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('heading', { name: 'Use the markdown directly' }),
+    ).toBeVisible();
+    expect(screen.getByText('Current system')).toBeVisible();
+    expect(screen.getByText('Fumadocs + TanStack + shadcn')).toBeVisible();
+    expect(screen.queryByText('Shipping surface')).not.toBeInTheDocument();
   });
 
-  it('renders a restrained chinese docs landing page', async () => {
+  it('renders a protocol-inspired chinese docs landing page', async () => {
     window.localStorage.setItem(LOCALE_STORAGE_KEY, 'zh-CN');
     await i18n.changeLanguage('zh-CN');
 
@@ -48,21 +54,23 @@ describe('HomePage', () => {
       </I18nextProvider>,
     );
 
-    const heading = await screen.findByRole('heading', { name: '声网文档' });
+    const heading = await screen.findByRole('heading', {
+      name: '像产品界面一样工作的文档系统。',
+    });
 
     expect(heading).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: '进入文档' })).toHaveAttribute(
+    expect(screen.getAllByRole('link', { name: '进入文档' })[0]).toHaveAttribute(
       'href',
       '/docs',
     );
-    expect(screen.getByRole('link', { name: '查看 API' })).toHaveAttribute(
-      'href',
-      '/api-ref',
-    );
-    expect(screen.getByRole('heading', { name: '产品文档' })).toBeVisible();
-    expect(screen.getByRole('heading', { name: 'API 参考' })).toBeVisible();
-    expect(screen.getByRole('heading', { name: '智能体工具' })).toBeVisible();
-    expect(screen.getByText('交付界面')).toBeVisible();
-    expect(screen.getAllByText('Doc MCP')).toHaveLength(1);
+    expect(
+      screen.getAllByRole('link', { name: 'API 参考' })[0],
+    ).toHaveAttribute('href', '/api-ref');
+    expect(screen.getByRole('heading', { name: '从快速开始进入' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: '查看接口表面' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: '直接消费 Markdown' })).toBeVisible();
+    expect(screen.getByText('当前系统')).toBeVisible();
+    expect(screen.getByText('Fumadocs + TanStack + shadcn')).toBeVisible();
+    expect(screen.queryByText('交付界面')).not.toBeInTheDocument();
   });
 });

@@ -1,8 +1,8 @@
 const enCommon = {
   app: {
     name: 'Agora Docs',
-    tagline: 'Next-generation knowledge system',
-    endorsement: 'Knowledge System',
+    tagline: 'Documentation that behaves like a product surface',
+    endorsement: 'Developer Surface',
   },
   controls: {
     theme: {
@@ -18,42 +18,42 @@ const enCommon = {
     },
   },
   home: {
-    eyebrow: 'Documentation',
-    title: 'Agora Docs',
+    eyebrow: 'Agora developer documentation',
+    title: 'Documentation that behaves like a product surface.',
     description:
-      'Product docs, API reference, and agent workflows arranged with more signal, less ornament, and enough space to think.',
+      'Quickstarts, API reference, and AI-readable markdown aligned to one source of truth for teams shipping on Agora.',
     primaryCta: 'Open docs',
-    secondaryCta: 'Browse API',
+    secondaryCta: 'API reference',
     panel: {
-      eyebrow: 'Shipping surface',
-      title: 'One source, several reading modes.',
+      eyebrow: 'Current system',
+      title: 'One content source, several reading modes.',
       body: 'Docs, API lookup, and AI-facing content stay aligned to the same source tree instead of drifting apart.',
-      caption: 'Protocol-inspired, adapted for Agora',
+      caption: 'Fumadocs + TanStack + shadcn',
     },
     cards: {
       docs: {
-        eyebrow: 'Docs',
-        title: 'Product docs',
-        body: 'Implementation paths and product concepts, edited down to the decisions teams actually need to make.',
-        cta: 'Open docs',
+        eyebrow: 'Path',
+        title: 'Start with quickstart',
+        body: 'Follow the shortest route from service enablement to the first successful request and keep the high-friction steps visible.',
+        cta: 'Quickstart',
       },
       api: {
         eyebrow: 'Reference',
-        title: 'API reference',
-        body: 'Endpoints, limits, and response behavior kept close to the implementation.',
+        title: 'Inspect the API surface',
+        body: 'Move from product guidance into response codes, limits, and endpoint behavior without leaving the same shell.',
         cta: 'Browse API',
       },
       tools: {
         eyebrow: 'AI',
-        title: 'Agent tools',
-        body: 'Doc MCP and AI-assisted workflows connected to the exact same documentation source.',
-        cta: 'Doc MCP',
+        title: 'Use the markdown directly',
+        body: 'LLM-friendly exports and Doc MCP stay aligned with the human-readable docs instead of becoming a stale side channel.',
+        cta: 'Open MCP guide',
       },
     },
     notes: {
-      eyebrow: 'System',
-      title: 'Built for quiet navigation.',
-      body: 'The new design keeps hierarchy explicit, typography tighter, and surfaces lighter so the content leads. The same tokens apply to home, docs, and future product surfaces.',
+      eyebrow: 'Shell',
+      title: 'Quiet, narrow, and built for reading.',
+      body: 'The new shell keeps the page width disciplined, the chrome low-contrast, and the callouts deliberate so engineering teams can move from overview to implementation without fighting the interface.',
     },
   },
   docs: {
