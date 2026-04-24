@@ -37,7 +37,7 @@ export function DocsPageContent({
       className="gap-0 xl:max-w-[860px]"
       toc={toc}
     >
-      <header className="not-prose mb-8 border-b border-border/70 pb-6 sm:pb-8">
+      <header className="not-prose mb-6 pb-2 sm:pb-3">
         <DocsTitle className="text-[2rem] tracking-[-0.06em] text-foreground sm:text-[2.65rem]">
           {title}
         </DocsTitle>
@@ -45,11 +45,11 @@ export function DocsPageContent({
           {description}
         </DocsDescription>
       </header>
-      <div className="not-prose mb-6 flex flex-wrap items-center gap-2">
+      <div className="not-prose mb-4 flex flex-wrap items-center gap-1.5">
         <LocalizedMarkdownCopyButton markdownUrl={markdownUrl} />
         <LocalizedViewOptionsPopover markdownUrl={markdownUrl} />
       </div>
-      <Separator className="not-prose mb-6 opacity-70" />
+      <Separator className="not-prose mb-6 opacity-45" />
       <DocsBody className="pb-12">{content}</DocsBody>
     </DocsPage>
   );
