@@ -177,33 +177,33 @@
   }
 
   .prose {
-    max-width: 47rem;
+    max-width: 45.5rem;
   }
 
   .prose :where(h1):not(:where(.not-prose, .not-prose *)) {
-    font-size: clamp(2.2rem, 3vw, 3.1rem);
-    line-height: 1.02;
-    letter-spacing: -0.06em;
+    font-size: clamp(2rem, 2.4vw, 2.55rem);
+    line-height: 1.08;
+    letter-spacing: -0.05em;
     font-weight: 600;
   }
 
   .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
-    margin-top: 3.25rem;
-    letter-spacing: -0.05em;
-    font-size: clamp(1.55rem, 2vw, 2rem);
+    margin-top: 3rem;
+    letter-spacing: -0.04em;
+    font-size: clamp(1.4rem, 1.7vw, 1.8rem);
     font-weight: 600;
   }
 
   .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
-    margin-top: 2.25rem;
-    letter-spacing: -0.035em;
-    font-size: 1.2rem;
+    margin-top: 2rem;
+    letter-spacing: -0.03em;
+    font-size: 1.08rem;
     font-weight: 600;
   }
 
   .prose :where(p, li):not(:where(.not-prose, .not-prose *)) {
     color: color-mix(in srgb, var(--foreground) 70%, transparent);
-    line-height: 1.9;
+    line-height: 1.85;
   }
 
   .prose :where(a):not(:where(.not-prose, .not-prose *)) {
@@ -264,8 +264,8 @@
   }
 
   #nd-page {
-    max-width: 52rem;
-    padding-top: 1.6rem;
+    max-width: 49rem;
+    padding-top: 1.2rem;
     background: transparent;
   }
 
@@ -292,6 +292,38 @@
 
   #nd-sidebar a:hover,
   #nd-sidebar button:hover {
+    background: color-mix(in srgb, var(--accent) 42%, transparent);
+  }
+
+  #nd-sidebar a,
+  #nd-sidebar button {
+    border-radius: 0.75rem;
+  }
+
+  #nd-sidebar [data-sidebar-placeholder] aside > * {
+    border-radius: 0;
+  }
+
+  #nd-sidebar [data-sidebar-placeholder] aside [data-search-full],
+  #nd-sidebar [data-sidebar-placeholder] aside [data-search-trigger] {
+    background: color-mix(in srgb, var(--secondary) 82%, transparent);
+    border-color: color-mix(in srgb, var(--border) 78%, transparent);
+    box-shadow: none;
+  }
+
+  #nd-sidebar [data-sidebar-placeholder] aside [data-search-full] input {
+    background: transparent;
+  }
+
+  #nd-sidebar [data-sidebar-placeholder] aside [data-active="true"] {
+    font-weight: 500;
+  }
+
+  #nd-toc a {
+    border-radius: 0.65rem;
+  }
+
+  #nd-toc a:hover {
     background: color-mix(in srgb, var(--accent) 42%, transparent);
   }
 
