@@ -55,7 +55,7 @@ export function LocalizedMarkdownCopyButton({
       className={cn(
         buttonVariants({
           className:
-            'h-8 gap-1.5 border-transparent bg-transparent px-2.5 text-muted-foreground shadow-none hover:bg-accent/45 hover:text-foreground [&_svg]:size-3.5 [&_svg]:text-muted-foreground',
+            'h-7.5 gap-1.5 border-transparent bg-transparent px-2 text-[0.8rem] font-normal text-muted-foreground shadow-none hover:bg-accent/45 hover:text-foreground [&_svg]:size-3.5 [&_svg]:text-muted-foreground',
           size: 'sm',
           variant: 'outline',
         }),
@@ -116,7 +116,7 @@ export function LocalizedViewOptionsPopover({
         className={cn(
           buttonVariants({
             className:
-              'h-8 border-transparent bg-transparent px-2.5 text-muted-foreground shadow-none hover:bg-accent/45 hover:text-foreground',
+              'h-7.5 border-transparent bg-transparent px-2 text-[0.8rem] font-normal text-muted-foreground shadow-none hover:bg-accent/45 hover:text-foreground',
             size: 'sm',
             variant: 'outline',
           }),

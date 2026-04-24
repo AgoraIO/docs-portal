@@ -77,7 +77,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
     {
       description,
       markdownUrl,
-      path: _path,
+      path,
       title,
     }: {
       description?: string;
@@ -90,6 +90,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
       <DocsPageContent
         description={description}
         markdownUrl={markdownUrl}
+        path={path}
         title={title}
         toc={toc}
       >

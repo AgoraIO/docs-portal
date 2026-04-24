@@ -19,16 +19,19 @@ export function DocsPageContent({
   children,
   description,
   markdownUrl,
+  path,
   title,
   toc,
 }: {
   children: ReactNode;
   description?: string;
   markdownUrl: string;
+  path?: string;
   title: string;
   toc: DocsPageProps['toc'];
 }) {
   const content = stripLeadingDocumentMeta(children, title, description);
+  const eyebrow = deriveEyebrow(path);
 
   return (
     <DocsPage
@@ -37,19 +40,27 @@ export function DocsPageContent({
       className="gap-0 xl:max-w-[860px]"
       toc={toc}
     >
-      <header className="not-prose mb-6 pb-2 sm:pb-3">
-        <DocsTitle className="text-[2rem] tracking-[-0.06em] text-foreground sm:text-[2.65rem]">
-          {title}
-        </DocsTitle>
-        <DocsDescription className="mt-4 mb-0 max-w-3xl text-base leading-8 text-muted-foreground sm:text-[1.0625rem]">
-          {description}
-        </DocsDescription>
+      <header className="not-prose mb-4 grid gap-4 border-b border-border/60 pb-4 sm:gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+        <div className="max-w-3xl">
+          {eyebrow ? (
+            <div className="mb-3 flex items-center gap-2 text-[0.72rem] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+              <span className="inline-flex size-1.5 rounded-full bg-primary/70" />
+              <span>{eyebrow}</span>
+            </div>
+          ) : null}
+          <DocsTitle className="text-[2rem] font-medium tracking-[-0.025em] text-foreground sm:text-[2.25rem]">
+            {title}
+          </DocsTitle>
+          <DocsDescription className="mt-3 mb-0 max-w-2xl text-[1.02rem] font-normal leading-7 text-muted-foreground sm:text-[1.08rem]">
+            {description}
+          </DocsDescription>
+        </div>
+        <div className="flex flex-wrap items-center gap-1 lg:justify-end">
+          <LocalizedMarkdownCopyButton markdownUrl={markdownUrl} />
+          <LocalizedViewOptionsPopover markdownUrl={markdownUrl} />
+        </div>
       </header>
-      <div className="not-prose mb-4 flex flex-wrap items-center gap-1.5">
-        <LocalizedMarkdownCopyButton markdownUrl={markdownUrl} />
-        <LocalizedViewOptionsPopover markdownUrl={markdownUrl} />
-      </div>
-      <Separator className="not-prose mb-6 opacity-45" />
+      <Separator className="not-prose mb-6 opacity-35" />
       <DocsBody className="pb-12">{content}</DocsBody>
     </DocsPage>
   );
@@ -139,4 +150,26 @@ function getNodeText(node: ReactNode): string {
 
 function normalizeText(value: string | undefined) {
   return value?.replace(/\s+/g, ' ').trim() ?? '';
+}
+
+function deriveEyebrow(path?: string) {
+  if (!path) {
+    return null;
+  }
+
+  const segments = path
+    .split('/')
+    .map((segment) => segment.replace(/\.mdx?$/, ''))
+    .filter(Boolean);
+
+  const anchor = segments.at(-2) ?? segments.at(-1);
+
+  if (!anchor) {
+    return null;
+  }
+
+  return anchor
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
 }

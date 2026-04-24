@@ -9,11 +9,13 @@ const baseStyles =
 
 const variantStyles: Record<ButtonVariant, string> = {
   default:
-    'bg-primary text-primary-foreground shadow-[0_10px_30px_-18px_color-mix(in_srgb,var(--primary)_60%,transparent)] hover:bg-primary/90',
-  secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+    'bg-primary text-primary-foreground shadow-[0_12px_32px_-20px_color-mix(in_srgb,var(--primary)_54%,transparent)] hover:bg-[color-mix(in_srgb,var(--primary)_88%,black)]',
+  secondary:
+    'bg-secondary text-secondary-foreground hover:bg-[color-mix(in_srgb,var(--secondary)_58%,white)]',
   outline:
-    'border border-border bg-background/80 text-foreground hover:bg-accent hover:text-accent-foreground',
-  ghost: 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
+    'border border-border bg-background/88 text-foreground hover:bg-accent hover:text-accent-foreground',
+  ghost:
+    'text-muted-foreground hover:bg-[color-mix(in_srgb,var(--accent)_72%,transparent)] hover:text-accent-foreground',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

@@ -34,7 +34,7 @@ const iconByKey = {
 function Brand() {
   return (
     <div className="flex min-w-0 items-center gap-3">
-      <div className="flex size-10 items-center justify-center rounded-2xl border border-border bg-card/90 shadow-[0_14px_40px_-26px_rgba(16,185,129,0.45)]">
+      <div className="flex size-10 items-center justify-center rounded-2xl border border-border bg-card/90 shadow-[0_16px_40px_-28px_rgba(33,139,120,0.3)]">
         <div className="flex items-end gap-1">
           <span className="h-3.5 w-1 rounded-full bg-primary/75" />
           <span className="h-5.5 w-1 rounded-full bg-foreground" />
@@ -65,7 +65,7 @@ export function HomePage() {
       <div aria-hidden className="home-grid absolute inset-0 opacity-80" />
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 h-[38rem] bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.15),transparent_42%)]"
+        className="absolute inset-x-0 top-0 h-[38rem] bg-[radial-gradient(circle_at_top,rgba(33,139,120,0.12),transparent_42%)]"
       />
       <div className="relative mx-auto flex min-h-screen w-full max-w-[96rem] flex-col px-4 sm:px-6 lg:px-8">
         <header className="flex items-center justify-between gap-6 border-b border-border/70 py-5">
