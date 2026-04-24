@@ -62,9 +62,11 @@ const loader = createServerFn({
     }
 
     return {
+      description: page.data.description,
       path: page.path,
       markdownUrl: getPageMarkdownUrl(page).url,
       pageTree: await source.serializePageTree(source.getPageTree()),
+      title: page.data.title ?? page.slugs.at(-1) ?? 'Untitled',
     };
   });
 
@@ -73,15 +75,24 @@ const clientLoader = browserCollections.docs.createClientLoader({
     { toc, default: MDX },
     // you can define props for the component
     {
+      description,
       markdownUrl,
       path: _path,
+      title,
     }: {
+      description?: string;
       markdownUrl: string;
       path: string;
+      title: string;
     },
   ) {
     return (
-      <DocsPageContent markdownUrl={markdownUrl} toc={toc}>
+      <DocsPageContent
+        description={description}
+        markdownUrl={markdownUrl}
+        title={title}
+        toc={toc}
+      >
         <MDX components={getMDXComponents()} />
       </DocsPageContent>
     );
@@ -89,7 +100,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
 });
 
 function Page() {
-  const { pageTree, path, markdownUrl } = useFumadocsLoader(
+  const { description, pageTree, path, markdownUrl, title } = useFumadocsLoader(
     Route.useLoaderData(),
   );
   const options = useBaseLayoutOptions();
@@ -98,7 +109,12 @@ function Page() {
     <DocsLayout {...options} tabs={false} tree={pageTree}>
       <Link to={markdownUrl} hidden />
       <Suspense>
-        {clientLoader.useContent(path, { markdownUrl, path })}
+        {clientLoader.useContent(path, {
+          description,
+          markdownUrl,
+          path,
+          title,
+        })}
       </Suspense>
     </DocsLayout>
   );

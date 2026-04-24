@@ -1,7 +1,7 @@
 @import "tailwindcss" source('../');
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
-@import "../design-systems/oatmeal/theme.css";
+@import "../design-systems/protocol/theme.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -19,17 +19,14 @@
   html {
     scrollbar-gutter: stable;
     font-family: var(--font-sans);
+    background: var(--color-fd-background);
   }
 
   body {
     min-height: 100vh;
     background:
-      radial-gradient(
-        circle at top left,
-        rgb(255 255 255 / 0.2),
-        transparent 28%
-      ),
-      linear-gradient(180deg, rgb(255 255 255 / 0.08), transparent 22%),
+      radial-gradient(circle at top, rgb(16 185 129 / 0.08), transparent 32%),
+      linear-gradient(180deg, rgb(255 255 255 / 0.7), transparent 22%),
       var(--color-fd-background);
     color: var(--color-fd-foreground);
     font-family: var(--font-sans);
@@ -49,28 +46,38 @@
     font-family: var(--font-heading);
   }
 
+  ::selection {
+    background: color-mix(in srgb, var(--color-fd-primary) 16%, transparent);
+  }
+
   html > body[data-scroll-locked] {
-    margin-right: 0 !important;
-    --removed-body-scroll-bar-size: 0px !important;
+    margin-right: 0;
+    --removed-body-scroll-bar-size: 0px;
   }
 }
 
 @layer components {
   .prose :where(h1):not(:where(.not-prose, .not-prose *)) {
-    font-size: clamp(2rem, 2.4vw, 2.8rem);
-    line-height: 1.04;
-    letter-spacing: -0.035em;
+    font-size: clamp(2.05rem, 2.6vw, 2.9rem);
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    font-weight: 600;
   }
 
   .prose :where(h2, h3):not(:where(.not-prose, .not-prose *)) {
     letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+
+  .prose :where(p, li):not(:where(.not-prose, .not-prose *)) {
+    color: color-mix(in srgb, var(--color-fd-foreground) 78%, transparent);
   }
 
   .prose :where(code):not(:where(.not-prose, .not-prose *)) {
     border: 1px solid var(--color-fd-border);
-    border-radius: 0.5rem;
-    background: var(--color-fd-muted);
-    padding: 0.15rem 0.35rem;
+    border-radius: 0.45rem;
+    background: var(--color-fd-secondary);
+    padding: 0.16rem 0.38rem;
   }
 
   .prose :where(pre code):not(:where(.not-prose, .not-prose *)) {
@@ -80,21 +87,18 @@
   }
 
   #nd-sidebar {
-    background: color-mix(
-      in oklab,
-      var(--color-fd-background) 82%,
-      transparent
-    );
-    backdrop-filter: blur(16px);
+    background: color-mix(in srgb, var(--color-fd-card) 92%, transparent);
+    backdrop-filter: blur(18px);
+    box-shadow: inset -1px 0 0 var(--color-fd-border);
   }
 
   .dark #nd-sidebar {
-    background: rgb(15 18 12 / 0.55);
+    background: color-mix(in srgb, var(--color-fd-card) 88%, transparent);
   }
 
   :where(input, textarea, select) {
     border-color: var(--color-fd-border);
-    background: var(--color-fd-muted);
+    background: var(--color-fd-secondary);
     color: var(--color-fd-foreground);
   }
 
@@ -104,5 +108,26 @@
 
   :where(button, [role="button"]):not(:disabled) {
     border-color: var(--color-fd-border);
+  }
+
+  [data-search-full] {
+    backdrop-filter: blur(18px);
+  }
+
+  .fd-scroll-container::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .fd-scroll-container::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-fd-foreground) 14%, transparent);
+    background-clip: padding-box;
+  }
+
+  #nd-sidebar [data-active="true"],
+  #nd-sidebar [data-state="open"] {
+    box-shadow: none;
   }
 }
