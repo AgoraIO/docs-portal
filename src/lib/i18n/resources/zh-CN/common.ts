@@ -18,38 +18,37 @@ const zhCnCommon = {
     },
   },
   home: {
-    eyebrow: 'Knowledge System',
-    title: 'Agora 下一代知识系统',
-    description:
-      '先有 Docs，接下来会把 Wiki、Tools 和 Doc MCP 放进同一个系统。',
+    eyebrow: 'Documentation',
+    title: '声网文档',
+    description: '产品文档、API 参考与智能体工作流，收在同一个安静的工作台。',
     primaryCta: '进入文档',
-    rail: {
-      wiki: {
-        title: 'Wiki',
-        body: '更长篇、更上下文型的产品知识会进入同一个系统，不再散在外面。',
-      },
-      tools: {
-        title: '工具',
-        body: '这里先放 Doc MCP，后面可以继续接更多知识工具。',
-      },
-    },
     cards: {
       docs: {
-        title: 'Docs',
-        body: '参考指南、API 文档和产品使用路径。',
+        title: '产品文档',
+        body: '保留必要的接入路径与产品概念，少一点噪音。',
         cta: '进入文档',
       },
-      wiki: {
-        title: 'Wiki',
-        body: '更广义的产品知识和上下文内容，后续会接进来。',
-        cta: '即将上线',
+      api: {
+        title: 'API 参考',
+        body: '接口、限制与响应行为，贴近实现查看。',
+        cta: '查看 API',
       },
       tools: {
-        title: '工具',
-        body: '属于同一套知识系统的工具能力入口。',
+        title: '智能体工具',
+        body: 'Doc MCP 与 AI 辅助工作流连接同一份文档源。',
         cta: 'Doc MCP',
-        badge: 'Doc MCP',
       },
+    },
+  },
+  docs: {
+    actions: {
+      copyMarkdown: '复制 Markdown',
+      open: '打开',
+      openMarkdown: '打开 Markdown',
+      openGithub: '在 GitHub 打开',
+      openChatGPT: '用 ChatGPT 打开',
+      openClaude: '用 Claude 打开',
+      chatPrompt: '阅读 {{url}} 并帮我理解这篇文档。',
     },
   },
 } as const;

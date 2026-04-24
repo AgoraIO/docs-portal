@@ -9,18 +9,11 @@ import { staticFunctionMiddleware } from '@tanstack/start-static-server-function
 import browserCollections from 'collections/browser';
 import { useFumadocsLoader } from 'fumadocs-core/source/client';
 import { DocsLayout } from 'fumadocs-ui/layouts/docs';
-import type { source as docsSource } from '@/lib/source';
-import {
-  DocsBody,
-  DocsDescription,
-  DocsPage,
-  DocsTitle,
-  MarkdownCopyButton,
-  ViewOptionsPopover,
-} from 'fumadocs-ui/layouts/docs/page';
 import { Suspense } from 'react';
+import { DocsPageContent } from '@/components/docs/DocsPageContent';
 import { getMDXComponents } from '@/components/mdx';
 import { useBaseLayoutOptions } from '@/lib/layout.shared';
+import type { source as docsSource } from '@/lib/source';
 
 const legacyRootSections = new Set([
   'api',
@@ -77,7 +70,7 @@ const loader = createServerFn({
 
 const clientLoader = browserCollections.docs.createClientLoader({
   component(
-    { toc, frontmatter, default: MDX },
+    { toc, default: MDX },
     // you can define props for the component
     {
       markdownUrl,
@@ -88,17 +81,9 @@ const clientLoader = browserCollections.docs.createClientLoader({
     },
   ) {
     return (
-      <DocsPage toc={toc}>
-        <DocsTitle>{frontmatter.title}</DocsTitle>
-        <DocsDescription>{frontmatter.description}</DocsDescription>
-        <div className="flex flex-row gap-2 items-center border-b -mt-4 pb-6">
-          <MarkdownCopyButton markdownUrl={markdownUrl} />
-          <ViewOptionsPopover markdownUrl={markdownUrl} githubUrl="#" />
-        </div>
-        <DocsBody>
-          <MDX components={getMDXComponents()} />
-        </DocsBody>
-      </DocsPage>
+      <DocsPageContent markdownUrl={markdownUrl} toc={toc}>
+        <MDX components={getMDXComponents()} />
+      </DocsPageContent>
     );
   },
 });
@@ -119,10 +104,7 @@ function Page() {
   );
 }
 
-function resolvePage(
-  source: typeof docsSource,
-  slugs: string[],
-) {
+function resolvePage(source: typeof docsSource, slugs: string[]) {
   const page = source.getPage(slugs);
   if (!page) {
     return null;
@@ -133,10 +115,7 @@ function resolvePage(
   };
 }
 
-function resolveLegacyPage(
-  source: typeof docsSource,
-  slugs: string[],
-) {
+function resolveLegacyPage(source: typeof docsSource, slugs: string[]) {
   const candidates = buildLegacyCandidates(slugs);
 
   for (const candidate of candidates) {
@@ -165,8 +144,9 @@ function buildLegacyCandidates(slugs: string[]) {
   };
 
   const lastSlug = slugs.at(-1);
-  const lastWithoutMd =
-    lastSlug && lastSlug.endsWith('.md') ? lastSlug.slice(0, -3) : null;
+  const lastWithoutMd = lastSlug?.endsWith('.md')
+    ? lastSlug.slice(0, -3)
+    : null;
 
   if (lastWithoutMd) {
     pushCandidate([...slugs.slice(0, -1), lastWithoutMd]);

@@ -18,38 +18,38 @@ const enCommon = {
     },
   },
   home: {
-    eyebrow: 'Knowledge System',
-    title: "Agora's next-generation knowledge system",
+    eyebrow: 'Documentation',
+    title: 'Agora Docs',
     description:
-      'Docs first. Wiki, tools, and Doc MCP are joining the same system.',
+      'Product docs, API reference, and agent workflows in one quiet workspace.',
     primaryCta: 'Open docs',
-    rail: {
-      wiki: {
-        title: 'Wiki',
-        body: 'Long-form product knowledge will live in the same system, not beside it.',
-      },
-      tools: {
-        title: 'Tools',
-        body: 'Doc MCP is the first tool card here. More knowledge tooling can plug in later.',
-      },
-    },
     cards: {
       docs: {
-        title: 'Docs',
-        body: 'Reference guides, API docs, and product walkthroughs.',
+        title: 'Product docs',
+        body: 'Implementation paths and product concepts, trimmed for focus.',
         cta: 'Open docs',
       },
-      wiki: {
-        title: 'Wiki',
-        body: 'Broader product knowledge and narrative context, coming next.',
-        cta: 'Coming soon',
+      api: {
+        title: 'API reference',
+        body: 'Endpoints, limits, and response behavior close to the code.',
+        cta: 'Browse API',
       },
       tools: {
-        title: 'Tools',
-        body: 'Knowledge utilities that belong in the same surface as docs.',
+        title: 'Agent tools',
+        body: 'Doc MCP and AI-assisted workflows connected to the same source.',
         cta: 'Doc MCP',
-        badge: 'Doc MCP',
       },
+    },
+  },
+  docs: {
+    actions: {
+      copyMarkdown: 'Copy Markdown',
+      open: 'Open',
+      openMarkdown: 'Open Markdown',
+      openGithub: 'Open in GitHub',
+      openChatGPT: 'Open in ChatGPT',
+      openClaude: 'Open in Claude',
+      chatPrompt: 'Read {{url}} and help me understand this document.',
     },
   },
 } as const;
