@@ -19,9 +19,9 @@ const zhCnCommon = {
   },
   home: {
     eyebrow: 'Agora 开发者文档',
-    title: '像产品界面一样工作的文档系统。',
+    title: '声网开发文档',
     description:
-      '把快速开始、API 参考与 AI 可消费的 Markdown 收进同一份内容源，让声网接入文档从概览到实现都保持一致。',
+      '从快速开始、API 参考到 AI 可消费的 Markdown，围绕同一份内容源组织，让接入路径更清楚，细节更容易查。',
     primaryCta: '进入文档',
     secondaryCta: 'API 参考',
     panel: {
@@ -34,26 +34,26 @@ const zhCnCommon = {
       docs: {
         eyebrow: '路径',
         title: '从快速开始进入',
-        body: '把开通服务、鉴权准备和第一条成功请求串成一条最短路径，让高摩擦步骤保持可见。',
+        body: '按开通服务、鉴权准备和第一条成功请求组织，把容易卡住的步骤放在前面。',
         cta: '快速开始',
       },
       api: {
         eyebrow: '参考',
-        title: '查看接口表面',
-        body: '从产品文档直接过渡到响应码、限额和接口行为，不再跳出另一套阅读外壳。',
+        title: '查看 API 参考',
+        body: '从产品说明直接进入响应码、调用限制和接口行为，减少在不同页面之间来回确认。',
         cta: '查看 API',
       },
       tools: {
         eyebrow: 'AI',
-        title: '直接消费 Markdown',
-        body: '给 LLM 的导出内容和给人的文档页面保持同源，不再变成另一条滞后的信息旁路。',
+        title: '给 AI 使用 Markdown',
+        body: '给 LLM 的导出内容和给人的文档页面保持同源，方便在 Coding Agent 里继续使用。',
         cta: '打开 MCP 指南',
       },
     },
     notes: {
       eyebrow: '壳层',
-      title: '更安静、更窄、更适合阅读。',
-      body: '新的壳层压低界面噪声，收紧正文宽度，只把真正帮助工程团队完成接入决策的结构和动作留在视线里。',
+      title: '更安静、更适合长文阅读。',
+      body: '新的壳层降低界面噪声，收紧正文宽度，保留文档目录、页面操作和关键跳转，让工程团队能从概览平顺进入实现。',
     },
   },
   docs: {

@@ -26,9 +26,7 @@ export const Route = createRootRoute({
         content: appDescription,
       },
     ],
-    links: [
-      { rel: 'stylesheet', href: appCss },
-    ],
+    links: [{ rel: 'stylesheet', href: appCss }],
   }),
   component: RootComponent,
 });

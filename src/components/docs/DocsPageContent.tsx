@@ -6,7 +6,6 @@ import {
   DocsTitle,
 } from 'fumadocs-ui/layouts/docs/page';
 import { Children, Fragment, isValidElement, type ReactNode } from 'react';
-import { Separator } from '@/components/ui/separator';
 import {
   LocalizedMarkdownCopyButton,
   LocalizedViewOptionsPopover,
@@ -40,18 +39,18 @@ export function DocsPageContent({
       className="gap-0 xl:max-w-[860px]"
       toc={toc}
     >
-      <header className="not-prose mb-4 grid gap-4 border-b border-border/60 pb-4 sm:gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+      <header className="not-prose mb-7 grid gap-4 border-b border-border/60 pb-6 sm:gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
         <div className="max-w-3xl">
           {eyebrow ? (
-            <div className="mb-3 flex items-center gap-2 text-[0.72rem] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+            <div className="mb-3 flex items-center gap-2 text-[0.72rem] font-medium uppercase tracking-[0.08em] text-muted-foreground">
               <span className="inline-flex size-1.5 rounded-full bg-primary/70" />
               <span>{eyebrow}</span>
             </div>
           ) : null}
-          <DocsTitle className="text-[2rem] font-medium tracking-[-0.025em] text-foreground sm:text-[2.25rem]">
+          <DocsTitle className="text-[1.9rem] font-semibold tracking-[-0.01em] text-foreground sm:text-[2.12rem]">
             {title}
           </DocsTitle>
-          <DocsDescription className="mt-3 mb-0 max-w-2xl text-[1.02rem] font-normal leading-7 text-muted-foreground sm:text-[1.08rem]">
+          <DocsDescription className="mt-3 mb-0 max-w-2xl text-[0.98rem] font-normal leading-8 text-muted-foreground sm:text-[1.02rem]">
             {description}
           </DocsDescription>
         </div>
@@ -60,8 +59,7 @@ export function DocsPageContent({
           <LocalizedViewOptionsPopover markdownUrl={markdownUrl} />
         </div>
       </header>
-      <Separator className="not-prose mb-6 opacity-35" />
-      <DocsBody className="pb-12">{content}</DocsBody>
+      <DocsBody className="docs-body pb-12">{content}</DocsBody>
     </DocsPage>
   );
 }
@@ -98,7 +96,7 @@ function stripLeadingDocumentMeta(
       normalizedDescription &&
       !descriptionRemoved &&
       visibleCount <= DESCRIPTION_SCAN_LIMIT &&
-      isTagMatch(item, 'p', normalizedDescription)
+      isDescriptionMatch(item, normalizedDescription)
     ) {
       descriptionRemoved = true;
       return false;
@@ -130,6 +128,20 @@ function isTagMatch(node: ReactNode, tagName: string, expectedText: string) {
   }
 
   return normalizeText(getNodeText(node)) === expectedText;
+}
+
+function isDescriptionMatch(node: ReactNode, expectedText: string) {
+  if (!expectedText || !isValidElement(node) || node.type !== 'p') {
+    return false;
+  }
+
+  const actualText = normalizeText(getNodeText(node));
+  if (actualText === expectedText) {
+    return true;
+  }
+
+  const truncatedPrefix = expectedText.replace(/(?:\.{3}|…)$/, '').trim();
+  return truncatedPrefix.length > 0 && actualText.startsWith(truncatedPrefix);
 }
 
 function getNodeText(node: ReactNode): string {

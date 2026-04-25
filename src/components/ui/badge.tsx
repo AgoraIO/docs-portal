@@ -19,7 +19,7 @@ export function Badge({
   return (
     <div
       className={cn(
-        'inline-flex items-center rounded-full px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em]',
+        'inline-flex items-center rounded-full px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em]',
         variantStyles[variant],
         className,
       )}

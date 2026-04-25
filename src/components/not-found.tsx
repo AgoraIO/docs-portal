@@ -14,8 +14,8 @@ export function NotFound() {
           The page left the map.
         </h1>
         <p className="text-base leading-8 text-muted-foreground">
-          The route still resolves inside the docs system, but this specific page
-          is not available.
+          The route still resolves inside the docs system, but this specific
+          page is not available.
         </p>
         <div className="flex justify-center">
           <Link className={buttonVariants({ className: 'pl-4 pr-3' })} to="/">
