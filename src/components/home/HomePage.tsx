@@ -6,7 +6,6 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useLocale } from '@/lib/i18n/use-locale';
 import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import {
@@ -17,6 +16,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/cn';
+import { useLocale } from '@/lib/i18n/use-locale';
 
 const cardKeys = ['docs', 'api', 'tools'] as const;
 const hrefByKey = {
@@ -56,16 +57,17 @@ function Brand() {
 export function HomePage() {
   const { t } = useTranslation('common');
   const { locale } = useLocale();
+  const isZh = locale === 'zh-CN';
   const navDocs = locale === 'zh-CN' ? '文档' : 'Docs';
   const navApi = locale === 'zh-CN' ? 'API 参考' : 'API Reference';
   const navAi = locale === 'zh-CN' ? 'AI 工作流' : 'AI Workflows';
 
   return (
     <div className="relative isolate min-h-screen overflow-hidden">
-      <div aria-hidden className="home-grid absolute inset-0 opacity-80" />
+      <div aria-hidden className="home-grid absolute inset-0 opacity-55" />
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 h-[38rem] bg-[radial-gradient(circle_at_top,rgba(33,139,120,0.12),transparent_42%)]"
+        className="absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_top,rgba(22,127,109,0.08),transparent_44%)]"
       />
       <div className="relative mx-auto flex min-h-screen w-full max-w-[96rem] flex-col px-4 sm:px-6 lg:px-8">
         <header className="flex items-center justify-between gap-6 border-b border-border/70 py-5">
@@ -76,7 +78,10 @@ export function HomePage() {
             <a className="transition-colors hover:text-foreground" href="/docs">
               {navDocs}
             </a>
-            <a className="transition-colors hover:text-foreground" href="/api-ref">
+            <a
+              className="transition-colors hover:text-foreground"
+              href="/api-ref"
+            >
               {navApi}
             </a>
             <a
@@ -91,11 +96,30 @@ export function HomePage() {
         <main className="flex-1 py-8 sm:py-10 lg:py-14">
           <section className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
             <div className="max-w-4xl">
-              <Badge variant="outline">{t('home.eyebrow')}</Badge>
-              <h1 className="mt-7 max-w-4xl text-balance text-[2.95rem] font-semibold tracking-[-0.065em] text-foreground sm:text-[4.3rem] lg:text-[5.2rem]">
+              <Badge
+                className={cn(isZh && 'tracking-[0.08em]')}
+                variant="outline"
+              >
+                {t('home.eyebrow')}
+              </Badge>
+              <h1
+                className={cn(
+                  'mt-7 max-w-4xl text-balance font-semibold text-foreground',
+                  isZh
+                    ? 'text-[2.65rem] leading-[1.18] tracking-0 sm:text-[3.25rem] lg:text-[3.9rem]'
+                    : 'text-[2.95rem] tracking-[-0.055em] sm:text-[4.1rem] lg:text-[4.85rem]',
+                )}
+              >
                 {t('home.title')}
               </h1>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-muted-foreground sm:text-[1.0625rem]">
+              <p
+                className={cn(
+                  'mt-6 max-w-2xl text-base text-muted-foreground',
+                  isZh
+                    ? 'leading-8 sm:text-[1rem]'
+                    : 'leading-8 sm:text-[1.0625rem]',
+                )}
+              >
                 {t('home.description')}
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
@@ -125,10 +149,15 @@ export function HomePage() {
 
             <Card className="overflow-hidden bg-card/92">
               <CardHeader className="gap-4">
-                <Badge className="w-fit" variant="secondary">
+                <Badge
+                  className={cn('w-fit', isZh && 'tracking-[0.08em]')}
+                  variant="secondary"
+                >
                   {t('home.panel.eyebrow')}
                 </Badge>
-                <CardTitle className="text-2xl">{t('home.panel.title')}</CardTitle>
+                <CardTitle className="text-[1.55rem] leading-snug">
+                  {t('home.panel.title')}
+                </CardTitle>
                 <CardDescription className="text-sm leading-7">
                   {t('home.panel.body')}
                 </CardDescription>
@@ -154,10 +183,15 @@ export function HomePage() {
                   <Card className="group h-full border-border/85 bg-card/82 transition-transform duration-200 hover:-translate-y-0.5 hover:border-primary/28">
                     <CardHeader>
                       <div className="flex items-center justify-between gap-4">
-                        <Badge variant="outline">{t(`home.cards.${key}.eyebrow`)}</Badge>
+                        <Badge
+                          className={cn(isZh && 'tracking-[0.08em]')}
+                          variant="outline"
+                        >
+                          {t(`home.cards.${key}.eyebrow`)}
+                        </Badge>
                         <Icon className="size-4 text-primary/80" />
                       </div>
-                      <CardTitle className="text-[1.4rem] leading-tight">
+                      <CardTitle className="text-[1.28rem] leading-snug">
                         {t(`home.cards.${key}.title`)}
                       </CardTitle>
                       <CardDescription>
@@ -176,8 +210,13 @@ export function HomePage() {
 
           <section className="grid gap-8 border-t border-border/80 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,18rem)_1fr]">
             <div>
-              <Badge variant="outline">{t('home.notes.eyebrow')}</Badge>
-              <h2 className="mt-5 max-w-sm text-3xl font-semibold tracking-[-0.05em] text-foreground">
+              <Badge
+                className={cn(isZh && 'tracking-[0.08em]')}
+                variant="outline"
+              >
+                {t('home.notes.eyebrow')}
+              </Badge>
+              <h2 className="mt-5 max-w-sm text-3xl font-semibold tracking-[-0.015em] text-foreground">
                 {t('home.notes.title')}
               </h2>
             </div>
