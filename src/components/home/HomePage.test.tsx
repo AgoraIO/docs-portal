@@ -19,7 +19,7 @@ describe('HomePage', () => {
     );
 
     const heading = screen.getByRole('heading', {
-      name: 'Documentation that behaves like a product surface.',
+      name: 'Developer docs, organized like a workspace.',
     });
 
     expect(heading).toBeInTheDocument();
@@ -29,18 +29,19 @@ describe('HomePage', () => {
     expect(
       screen.getAllByRole('link', { name: 'API reference' })[0],
     ).toHaveAttribute('href', '/api-ref');
-    expect(
-      screen.getByRole('heading', { name: 'Start with quickstart' }),
-    ).toBeVisible();
+    expect(screen.getByText('Start here')).toBeVisible();
+    expect(screen.getByText('Primary workflow')).toBeVisible();
+    expect(screen.getByText('Workspace guide')).toBeVisible();
     expect(
       screen.getByRole('heading', { name: 'Inspect the API surface' }),
     ).toBeVisible();
     expect(
       screen.getByRole('heading', { name: 'Use the markdown directly' }),
     ).toBeVisible();
-    expect(screen.getByText('Current system')).toBeVisible();
-    expect(screen.getByText('Fumadocs + TanStack + shadcn')).toBeVisible();
-    expect(screen.queryByText('Shipping surface')).not.toBeInTheDocument();
+    expect(screen.queryByText('Current system')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Fumadocs + TanStack + shadcn'),
+    ).not.toBeInTheDocument();
   });
 
   it('renders a protocol-inspired chinese docs landing page', async () => {
@@ -54,7 +55,7 @@ describe('HomePage', () => {
     );
 
     const heading = await screen.findByRole('heading', {
-      name: '声网开发文档',
+      name: '像知识工作区一样组织的开发文档',
     });
 
     expect(heading).toBeInTheDocument();
@@ -64,17 +65,18 @@ describe('HomePage', () => {
     expect(
       screen.getAllByRole('link', { name: 'API 参考' })[0],
     ).toHaveAttribute('href', '/api-ref');
-    expect(
-      screen.getByRole('heading', { name: '从快速开始进入' }),
-    ).toBeVisible();
+    expect(screen.getByText('从这里开始')).toBeVisible();
+    expect(screen.getByText('主要流程')).toBeVisible();
+    expect(screen.getByText('工作区导览')).toBeVisible();
     expect(
       screen.getByRole('heading', { name: '查看 API 参考' }),
     ).toBeVisible();
     expect(
       screen.getByRole('heading', { name: '给 AI 使用 Markdown' }),
     ).toBeVisible();
-    expect(screen.getByText('当前系统')).toBeVisible();
-    expect(screen.getByText('Fumadocs + TanStack + shadcn')).toBeVisible();
-    expect(screen.queryByText('交付界面')).not.toBeInTheDocument();
+    expect(screen.queryByText('当前系统')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Fumadocs + TanStack + shadcn'),
+    ).not.toBeInTheDocument();
   });
 });

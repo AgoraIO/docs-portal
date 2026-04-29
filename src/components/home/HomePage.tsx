@@ -2,7 +2,7 @@ import {
   ArrowRight,
   BookOpenText,
   Braces,
-  PanelsTopLeft,
+  CheckCircle2,
   Sparkles,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -61,15 +61,45 @@ export function HomePage() {
   const navDocs = locale === 'zh-CN' ? '文档' : 'Docs';
   const navApi = locale === 'zh-CN' ? 'API 参考' : 'API Reference';
   const navAi = locale === 'zh-CN' ? 'AI 工作流' : 'AI Workflows';
+  const guideLinks = [
+    {
+      href: '/docs',
+      description: t('home.guide.links.docs.description'),
+      label: t('home.guide.links.docs.label'),
+    },
+    {
+      href: '/api-ref',
+      description: t('home.guide.links.api.description'),
+      label: t('home.guide.links.api.label'),
+    },
+    {
+      href: '/docs/convoai/restful/mcp-integrate',
+      description: t('home.guide.links.tools.description'),
+      label: t('home.guide.links.tools.label'),
+    },
+  ];
+  const workflowSteps = [
+    t('home.workflow.steps.enable'),
+    t('home.workflow.steps.auth'),
+    t('home.workflow.steps.quickstart'),
+    t('home.workflow.steps.request'),
+    t('home.workflow.steps.debug'),
+    t('home.workflow.steps.expand'),
+  ];
+  const workspacePoints = [
+    t('home.workspace.points.one'),
+    t('home.workspace.points.two'),
+    t('home.workspace.points.three'),
+  ];
 
   return (
     <div className="relative isolate min-h-screen overflow-hidden">
-      <div aria-hidden className="home-grid absolute inset-0 opacity-55" />
+      <div aria-hidden className="home-grid absolute inset-0 opacity-65" />
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_top,rgba(22,127,109,0.08),transparent_44%)]"
+        className="absolute inset-x-0 top-0 h-[26rem] bg-[radial-gradient(circle_at_top,rgba(15,123,108,0.12),transparent_52%)] dark:bg-[radial-gradient(circle_at_top,rgba(76,174,155,0.12),transparent_56%)]"
       />
-      <div className="relative mx-auto flex min-h-screen w-full max-w-[96rem] flex-col px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto flex min-h-screen w-full max-w-[88rem] flex-col px-4 sm:px-6 lg:px-8">
         <header className="flex items-center justify-between gap-6 border-b border-border/70 py-5">
           <a className="min-w-0" href="/">
             <Brand />
@@ -94,8 +124,8 @@ export function HomePage() {
         </header>
 
         <main className="flex-1 py-8 sm:py-10 lg:py-14">
-          <section className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
-            <div className="max-w-4xl">
+          <section className="grid gap-6 border-b border-border/75 pb-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start lg:gap-8">
+            <div className="max-w-3xl">
               <Badge
                 className={cn(isZh && 'tracking-[0.08em]')}
                 variant="outline"
@@ -104,20 +134,20 @@ export function HomePage() {
               </Badge>
               <h1
                 className={cn(
-                  'mt-7 max-w-4xl text-balance font-semibold text-foreground',
+                  'mt-6 max-w-3xl text-balance font-semibold text-foreground',
                   isZh
-                    ? 'text-[2.65rem] leading-[1.18] tracking-0 sm:text-[3.25rem] lg:text-[3.9rem]'
-                    : 'text-[2.95rem] tracking-[-0.055em] sm:text-[4.1rem] lg:text-[4.85rem]',
+                    ? 'text-[2.2rem] leading-[1.22] tracking-0 sm:text-[2.65rem] lg:text-[3.05rem]'
+                    : 'text-[2.45rem] leading-[1.08] tracking-[-0.05em] sm:text-[3.05rem] lg:text-[3.45rem]',
                 )}
               >
                 {t('home.title')}
               </h1>
               <p
                 className={cn(
-                  'mt-6 max-w-2xl text-base text-muted-foreground',
+                  'mt-5 max-w-2xl text-base text-muted-foreground',
                   isZh
-                    ? 'leading-8 sm:text-[1rem]'
-                    : 'leading-8 sm:text-[1.0625rem]',
+                    ? 'leading-8 sm:text-[0.98rem]'
+                    : 'leading-8 sm:text-[1rem]',
                 )}
               >
                 {t('home.description')}
@@ -147,40 +177,113 @@ export function HomePage() {
               </div>
             </div>
 
-            <Card className="overflow-hidden bg-card/92">
+            <Card className="workspace-panel overflow-hidden bg-card/96">
               <CardHeader className="gap-4">
                 <Badge
                   className={cn('w-fit', isZh && 'tracking-[0.08em]')}
-                  variant="secondary"
+                  variant="outline"
                 >
-                  {t('home.panel.eyebrow')}
+                  {t('home.workspace.eyebrow')}
                 </Badge>
-                <CardTitle className="text-[1.55rem] leading-snug">
-                  {t('home.panel.title')}
+                <CardTitle className="text-[1.3rem] leading-snug">
+                  {t('home.workspace.title')}
                 </CardTitle>
                 <CardDescription className="text-sm leading-7">
-                  {t('home.panel.body')}
+                  {t('home.workspace.body')}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="pt-1">
-                <Separator className="mb-5" />
-                <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <PanelsTopLeft className="size-4 text-primary" />
-                  <span>{t('home.panel.caption')}</span>
-                </div>
+              <CardContent className="pt-0">
+                <ul className="grid gap-3 text-sm text-muted-foreground">
+                  {workspacePoints.map((point) => (
+                    <li
+                      className="flex items-start gap-2.5 rounded-2xl bg-secondary/72 px-3.5 py-3"
+                      key={point}
+                    >
+                      <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <span className="leading-6">{point}</span>
+                    </li>
+                  ))}
+                </ul>
               </CardContent>
             </Card>
           </section>
 
-          <Separator className="my-10 sm:my-14" />
+          <section className="grid gap-4 py-8 sm:py-10 lg:grid-cols-[minmax(0,23rem)_minmax(0,1fr)]">
+            <Card className="workspace-panel h-full bg-card/96">
+              <CardHeader>
+                <Badge
+                  className={cn('w-fit', isZh && 'tracking-[0.08em]')}
+                  variant="outline"
+                >
+                  {t('home.guide.eyebrow')}
+                </Badge>
+                <CardTitle className="text-[1.28rem] leading-snug">
+                  {t('home.guide.title')}
+                </CardTitle>
+                <CardDescription>{t('home.guide.body')}</CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-2">
+                {guideLinks.map((item) => (
+                  <a
+                    className="workspace-link group flex items-start justify-between gap-3 rounded-2xl border border-border/85 bg-secondary/68 px-4 py-3 transition-colors hover:bg-accent/72"
+                    href={item.href}
+                    key={item.href}
+                  >
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-foreground">
+                        {item.label}
+                      </p>
+                      <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                        {item.description}
+                      </p>
+                    </div>
+                    <ArrowRight className="mt-1 size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
+                  </a>
+                ))}
+              </CardContent>
+            </Card>
 
-          <section className="grid gap-4 lg:grid-cols-3">
+            <Card className="workspace-panel bg-card/96">
+              <CardHeader>
+                <Badge
+                  className={cn('w-fit', isZh && 'tracking-[0.08em]')}
+                  variant="outline"
+                >
+                  {t('home.workflow.eyebrow')}
+                </Badge>
+                <CardTitle className="text-[1.28rem] leading-snug">
+                  {t('home.workflow.title')}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ol className="grid gap-3">
+                  {workflowSteps.map((step, index) => (
+                    <li
+                      className="workflow-step grid grid-cols-[2rem_minmax(0,1fr)] items-start gap-3 rounded-2xl border border-border/85 bg-background/74 px-4 py-3"
+                      key={step}
+                    >
+                      <span className="inline-flex size-8 items-center justify-center rounded-full bg-accent text-sm font-semibold text-foreground">
+                        {index + 1}
+                      </span>
+                      <span className="pt-1 text-sm leading-6 text-foreground/88">
+                        {step}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </CardContent>
+            </Card>
+          </section>
+
+          <Separator className="my-1 sm:my-2" />
+
+          <section className="grid gap-4 py-8 lg:grid-cols-3">
             {cardKeys.map((key) => {
               const Icon = iconByKey[key];
 
               return (
                 <a href={hrefByKey[key]} key={key}>
-                  <Card className="group h-full border-border/85 bg-card/82 transition-transform duration-200 hover:-translate-y-0.5 hover:border-primary/28">
+                  <Card className="workspace-panel group h-full border-border/85 bg-card/94 transition-transform duration-200 hover:-translate-y-0.5 hover:border-primary/28">
                     <CardHeader>
                       <div className="flex items-center justify-between gap-4">
                         <Badge
@@ -208,21 +311,33 @@ export function HomePage() {
             })}
           </section>
 
-          <section className="grid gap-8 border-t border-border/80 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,18rem)_1fr]">
-            <div>
+          <section className="grid gap-6 border-t border-border/80 pt-8 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_22rem]">
+            <div className="max-w-2xl">
               <Badge
                 className={cn(isZh && 'tracking-[0.08em]')}
                 variant="outline"
               >
-                {t('home.notes.eyebrow')}
+                {t('home.next.eyebrow')}
               </Badge>
-              <h2 className="mt-5 max-w-sm text-3xl font-semibold tracking-[-0.015em] text-foreground">
-                {t('home.notes.title')}
+              <h2 className="mt-5 max-w-xl text-[1.8rem] font-semibold tracking-[-0.02em] text-foreground sm:text-[2.05rem]">
+                {t('home.next.title')}
               </h2>
+              <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground">
+                {t('home.next.body')}
+              </p>
             </div>
-            <p className="max-w-3xl text-base leading-8 text-muted-foreground">
-              {t('home.notes.body')}
-            </p>
+            <Card className="workspace-panel bg-card/94">
+              <CardHeader>
+                <CardTitle className="text-[1.1rem]">
+                  {t('home.next.eyebrow')}
+                </CardTitle>
+                <CardDescription>
+                  {isZh
+                    ? '首页负责引导，正文负责深入，目录与 TOC 负责保持上下文。'
+                    : 'Landing handles guidance, docs handle depth, and the shell keeps the context stable.'}
+                </CardDescription>
+              </CardHeader>
+            </Card>
           </section>
         </main>
       </div>
