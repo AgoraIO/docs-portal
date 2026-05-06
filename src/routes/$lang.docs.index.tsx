@@ -1,6 +1,5 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
-import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions';
 
 export const Route = createFileRoute('/$lang/docs/')({
   loader: async ({ params }) => {
@@ -20,7 +19,6 @@ export const Route = createFileRoute('/$lang/docs/')({
 
 const getFirstPage = createServerFn({ method: 'GET' })
   .inputValidator((lang: string) => lang)
-  .middleware([staticFunctionMiddleware])
   .handler(async ({ data: lang }) => {
     const { source } = await import('@/lib/source');
     const firstPage = source.getPages(lang)[0];

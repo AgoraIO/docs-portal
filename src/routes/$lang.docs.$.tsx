@@ -5,7 +5,6 @@ import {
   redirect,
 } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
-import { staticFunctionMiddleware } from '@tanstack/start-static-server-functions';
 import browserCollections from 'collections/browser';
 import { useFumadocsLoader } from 'fumadocs-core/source/client';
 import { DocsLayout } from 'fumadocs-ui/layouts/docs';
@@ -29,7 +28,6 @@ const loader = createServerFn({
   method: 'GET',
 })
   .inputValidator((input: { lang: string; slugs: string[] }) => input)
-  .middleware([staticFunctionMiddleware])
   .handler(async ({ data }) => {
     const { getPageMarkdownUrl, source } = await import('@/lib/source');
     const resolvedPage = resolvePage(source, data.slugs, data.lang);
