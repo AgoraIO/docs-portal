@@ -215,7 +215,7 @@ function deriveEyebrow(path?: string) {
 }
 
 function deriveGuideItems(toc: DocsPageProps['toc']) {
-  return toc
+  return (toc ?? [])
     .filter((item) => item.depth <= 3)
     .map((item) => ({
       title: normalizeText(getNodeText(item.title)),

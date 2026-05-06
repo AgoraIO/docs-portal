@@ -1,0 +1,693 @@
+---
+title: 发版说明
+description: 该版本于 2026 年 4 月 22 日发布。
+---
+
+# 发版说明
+
+## v2.6
+
+该版本于 2026 年 4 月 22 日发布。
+
+### 升级必看
+
+#### 对话检测与打断能力架构重构
+
+该版本从原有 `turn_detection` 字段剥离了**打断决策**能力，专注于**轮次检测**；同时全新新增同级配置模块 `interruption`，统一管理全局打断策略。
+
+**`turn_detection` 能力精简**
+
+原 `turn_detection` 字段承载语音检测、语义判定、打断开关、关键词打断等逻辑，2.6 版本仅保留纯对话轮次检测能力，专注负责用户开始说话（SOS）、结束说话（EOS）的 VAD 语音检测与语义识别，只输出语音事件信号，不再承载任何业务层打断控制逻辑。
+
+**新增 `interruption` 全局打断模块**
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `properties.interruption` 字段，用于统一配置智能体被用户打断的行为策略。该字段将原有内嵌在 `turn_detection` 中的打断开关与执行能力统一抽离迁移至该模块；支持全局一键开关打断功能，提供人声触发打断、关键词打断两种模式，同时可配置关闭打断后的后置策略（追加录入 / 直接忽略），适配更多业务场景的防误打断、免打扰交互诉求。
+
+**配置迁移说明**
+
+原 V2.5 版本中 `turn_detection.config.start_of_speech` 下的 `keyword` 和 `disabled` 打断模式及对应配置字段废弃，需迁移至 `interruption` 同级配置中完成适配升级。
+
+### 新增特性
+
+#### 配置智能体问候语播报延迟时间
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `llm.greeting_configs.delay_ms` 字段，用于配置智能体问候语的播报延迟时间。配置后，智能体问候语会在用户加入频道后等待指定时间再播报。该功能可用于确保用户正常听到问候语。
+
+#### 自定义 LLM 请求头信息
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `llm.headers` 字段，用于请求 LLM 时附带自定义请求 Header。如果你接入的 LLM 服务要求在请求 Header 中携带特定信息，如租户标识、业务自定义字段等业务相关信息，你可以通过该字段透传这些信息。
+
+#### 新增智能体状态回调
+
+对话式 AI 引擎客户端组件新增三个用于分别监听智能体的倾听 (Listening)、思考 (Thinking) 和说话 (Speaking) 状态变化的细粒度状态回调。这些回调是对原有智能体状态变化回调 (`onAgentStateChanged`) 的补充，便于你更精细地驱动界面状态和业务逻辑。
+
+#### 发送自定义指令
+
+该版本新增 [POST 发送自定义指令](../operations/agent-think.md)接口，用于将一段文本作为用户输入注入现有对话链路，并由对话式 AI 引擎继续按照普通用户输入的处理逻辑进行推理和响应。该能力适用于以下场景：
+
+- 隐式指令注入：在不通过 ASR 模块处理语音输入的情况下静默注入业务提示或前置设定。
+- 客户端事件触发：将按钮点击、页面切换等客户端事件转换为文本注入，让智能体结合当前对话状态做出响应。
+- 语音与文本协同：在用户说话的同时补充文本信息，由对话式 AI 引擎合并输入后，LLM 统一处理。
+
+该接口支持通过 `on_listening_action`、`on_thinking_action` 和 `on_speaking_action` 分别配置智能体处于不同状态时的处理方式：
+
+- `inject`：注入当前轮次，不打断当前轮次。
+- `interrupt`：打断当前状态，并发起新一轮对话。
+- `ignore`：忽略本次请求。
+
+### 改进
+
+该版本为消息通知服务所有事件回调和 [GET 查询智能体状态](../operations/query-agent-status.md)接口响应体新增 `name` 字段，用于返回智能体名称。你可以使用该字段定位和关联业务实例。
+
+### API 变更
+
+#### 废弃
+
+- [POST 创建对话式智能体](../operations/start-agent.md)废弃：
+    - `properties.turn_detection.config.start_of_speech.mode` 的 `keyword` 模式及对应配置字段
+    - `properties.turn_detection.config.start_of_speech.mode` 的 `disabled` 模式及对应配置字段
+
+#### 新增
+
+- [POST 创建对话式智能体](../operations/start-agent.md)新增
+    - `properties.llm.greeting_configs.delay_ms`
+    - `properties.llm.headers`
+    - `properties.interruption`
+- 新增 [POST 发送自定义指令](../operations/agent-think.md)
+- [GET 查询智能体状态](../operations/query-agent-status.md)响应新增 `name`
+- 客户端组件 API：
+
+#### Android
+
+- [`onAgentListeningChanged`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onagentlisteningchanged)
+        - [`onAgentThinkingChanged`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onagentthinkingchanged)
+        - [`onAgentSpeakingChanged`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onagentspeakingchanged)
+
+#### iOS
+
+- [`onAgentListeningChanged`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onagentlisteningchanged)
+        - [`onAgentThinkingChanged`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onagentthinkingchanged)
+        - [`onAgentSpeakingChanged`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onagentspeakingchanged)
+
+#### Web
+
+[`EConversationalAIAPIEvents`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/enum#econversationalaiapievents) 新增
+        - `AGENT_LISTENING_CHANGED`
+        - `AGENT_THINKING_CHANGED`
+        - `AGENT_SPEAKING_CHANGED`
+
+## v2.5
+
+该版本于 2026 年 3 月 30 日发布。
+
+### 新增特性
+
+#### 优雅打断支持判断对话暂停意图
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口的 `turn_detection.config.end_of_speech.semantic_config` 字段新增 `pause_state_enabled` 字段，用于配置智能体是否识别用户的暂停意图。开启后（默认开启），当用户说"等一下"、"稍等"等暂停词时，智能体将判断为暂停意图，等待用户后续输入而非立即响应。
+
+#### 实时更新 TTS 参数
+
+接入[自定义大模型](../user-guides/custom-llm.md)场景下，该版本新增支持在用户和智能体互动期间实时更新 TTS 参数，实现更沉浸的对话交互体验。该功能可应用于以下场景：
+
+- 自定义大模型识别到用户要求智能体换一个声音。
+- 自定义大模型识别到用户高兴的情绪时，实时提高 TTS 的音量、音调和语速等，使智能体的回应更符合用户的心情。
+
+实现方式可参考[实时更新 TTS 参数](../user-guides/custom-llm.md#实时更新-tts-参数)。
+
+#### 查询对话轮次信息
+
+该版本新增 [GET 查询对话轮次信息](../operations/get-turns.md)接口，用于在与智能体对话结束后，查询本次会话的对话轮次信息，包含每个对话轮次的开始信息、结束信息和性能指标。
+
+> 信息
+> 目前仅支持查询 7 天内的会话。
+
+### API 变更
+
+#### 新增
+
+- [POST 创建对话式智能体](../operations/start-agent.md)的 `properties.turn_detection.config.end_of_speech.semantic_config` 字段新增 `pause_state_enabled` 字段
+- [GET 查询对话轮次信息](../operations/get-turns.md)
+
+## v2.4
+
+该版本于 2026 年 2 月 2 日发布。
+
+### 新增特性
+
+#### 接入 MCP 服务器
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `llm.mcp_servers` 字段，用于接入 MCP (Model Context Protocol) 服务器。你可以在创建智能体时配置 MCP 服务器，并开启工具调用 (`advanced_features.enable_tools` 设为 `true`)，让智能体调用外部服务提供的工具 (tools)，实现更复杂的业务逻辑。
+
+#### 垫词功能 (Beta)
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `filler_words` 字段，用于配置垫词功能。垫词功能可在 LLM 响应等待时播报垫词，缓解用户等待焦虑，提升对话流畅度。
+
+### 改进
+
+#### turn_detection 层级优化
+
+该版本对 [POST 创建对话式智能体](../operations/start-agent.md)接口的 `turn_detection` 字段进行了层级优化，采用 `mode` + `config` 的双字段配置方式，提供更灵活的对话轮次检测能力。
+
+新的配置结构包括：
+
+**基础配置**
+- `mode`：对话轮次检测模式（当前支持 `default`）
+- `config.speech_threshold`：语音识别灵敏度
+
+**对话开始检测 (Start of Speech, SoS)**
+
+`config.start_of_speech` 支持三种检测模式：
+- **VAD 模式** (`vad`)：基于语音活动检测触发，支持配置打断阈值、前缀填充和忽略词列表
+- **关键词模式 (Beta)** (`keywords`)：基于关键词触发，智能体听到指定关键词后开始对话
+- **禁用模式** (`disabled`)：禁用打断，支持追加或忽略策略
+
+**对话结束检测 (End of Speech, EoS)**
+
+`config.end_of_speech` 支持两种检测模式：
+- **VAD 模式** (`vad`)：基于静音持续时间判定对话结束
+- **语义模式** (`semantic`)：基于语义理解判定对话结束，支持配置最大等待时间
+
+### API 变更
+
+#### 废弃
+
+- [POST 创建对话式智能体](../operations/start-agent.md)废弃以下字段：
+    - `turn_detection.interrupt_mode`
+    - `turn_detection.interrupt_keywords`
+    - `turn_detection.interrupt_duration_ms`
+    - `turn_detection.prefix_padding_ms`
+    - `turn_detection.silence_duration_ms`
+    - `turn_detection.threshold`
+    - `advanced_features.enable_aivad`
+
+#### 新增
+
+- [POST 创建对话式智能体](../operations/start-agent.md)新增:
+    - `advanced_features.enable_tools`
+    - `llm.mcp_servers`
+    - `filler_words`
+    - `turn_detection.mode`
+    - `turn_detection.config`
+
+## v2.3
+
+该版本于 2026 年 1 月 7 日发布。
+
+### 新增特性
+
+#### 配置 LLM 响应是否可打断
+
+接入自定义大模型并采用流式响应（SSE）的场景下，大模型的单次回复被切分为多个包 (Chunk) 进行传输。自该版本起，对话式 AI 引擎支持处理 `object` 为 `chat.completion.custom_metadata` 的**首包**响应，其中的 `metadata.interruptable` 字段用于配置 TTS 播报本次 LLM 响应时是否能被用户发言打断。该能力可用于确保智能体在播报法规、政策、产品定价等重要信息时，不被用户发言打断。更多信息可参考[配置 LLM 响应是否可打断](../user-guides/custom-llm.md#配置-llm-响应是否可打断)。
+
+#### RTC 媒体内容加密
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `properties.rtc` 字段，用于设置 RTC 媒体内容加密配置。你可以通过该配置加密 RTC 传输的音视频媒体内容，从而保障和智能体对话过程中的数据安全。
+
+### 改进
+
+该版本将 [POST 停止对话式智能体](../operations/stop-agent.md)接口改为异步响应，对话式 AI 引擎会在检查请求参数合法性后立即返回响应，无需等待智能体完全退出频道。
+
+### API 变更
+
+#### 新增
+
+- [POST 创建对话式智能体](../operations/start-agent.md)新增 `properties.rtc` 字段
+
+#### 修改
+
+- [POST 停止对话式智能体](../operations/stop-agent.md)改为异步响应
+
+## v2.2
+
+该版本于 2025 年 12 月 11 日发布。
+
+### 新增特性
+
+#### 智能体问候模式
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `llm.greeting_configs.mode` 字段，用于设置智能体问候语播报模式，目前支持以下选项：
+
+- `"single_every"`：（默认）每次有用户加入空频道时，智能体都播报一次问候语。
+- `"single_first"`：仅首位用户加入空频道时，智能体播报一次问候语。
+
+### API 变更
+
+#### 新增
+
+- [POST 创建对话式智能体](../operations/start-agent.md)新增 `llm.greeting_configs.mode` 字段
+
+## v2.1
+
+该版本于 2025 年 12 月 1 日发布。
+
+### 新增特性
+
+#### 动态变量
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `llm.template_variables` 字段，用于在智能体的 `system_messages`、`greeting_message`、`failure_message` 和 `parameters.silence_config.content` 的文本中插入变量。通过配置变量，对话式 AI 引擎可以自动将其替换为 `llm.template_variables` 中定义的对应值。
+
+#### 自定义标签
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `labels` 字段，用于让智能体携带自定义业务信息。这些自定义的标签会与智能体绑定，并在对话式 AI 引擎所有类型消息通知回调的 `payload` 字段中返回，用于实现自定义业务逻辑，例如标记活动 ID、客户分组、业务场景等。
+
+### API 变更
+
+#### 新增
+
+- [POST 创建对话式智能体](../operations/start-agent.md)新增
+    - `llm.template_variables`
+    - `labels`
+
+## v2.0
+
+该版本于 2025 年 11 月 6 日发布。
+
+### 升级必看
+
+#### 语音活动检测配置更变
+
+该版本废弃了 [POST 创建对话式智能体](../operations/start-agent.md)接口的 `vad` 字段，其中的所有配置项已迁移至 `turn_detection` 字段。
+
+#### 客户端组件字幕 API 更名
+
+该版本对客户端组件字幕 API 中所有使用了 `transcription` 命名的 API、参数等更名为 `transcript`，具体如下：
+
+#### Android
+
+- `onTranscriptionUpdated` 更名为 `onTranscriptUpdated`
+    - `TranscriptionRenderMode` 更名为 `TranscriptRenderMode`
+    - `TranscriptionType` 更名为 `TranscriptType`
+    - `TranscriptionStatus` 更名为 `TranscriptStatus`
+    - `Transcription` 更名为 `Transcript`
+
+#### iOS
+
+- `onTranscriptionUpdated` 更名为 `onTranscriptUpdated`
+    - `TranscriptionRenderMode` 更名为 `TranscriptRenderMode`
+    - `TranscriptionType` 更名为 `TranscriptType`
+    - `TranscriptionStatus` 更名为 `TranscriptStatus`
+    - `Transcription` 更名为 `Transcript`
+
+#### Web
+
+- `TRANSCRIPTION_UPDATED` 更名为 `TRANSCRIPT_UPDATED`
+
+### 新增特性
+
+#### 优雅退出
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `parameters.farewell_config` 字段，用于设置智能体优雅退出功能。开启后，调用 [POST 停止对话式智能体](../operations/stop-agent.md)接口让智能体退出频道时，会确保智能体处于静默状态后再离开频道。
+
+#### 有感声纹识别 (Beta)
+
+该版本为选择性注意力锁定功能新增有感声纹识别模式，你可以在开始与智能体互动前，注册并上传最多 1 个声纹，后续互动期间，智能体将通过声纹识别用户身份，并抑制其他背景人声和环境噪音，确保对话专注度。如需体验有感声纹识别功能，请[联系技术支持](https://ticket.shengwang.cn)。
+
+#### 关键词打断模式
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口的 `turn_detection.interrupt_mode` 字段新增 `"keyword"` 选项，用于将智能体打断模式为关键词打断模式，你可以在 `turn_detection.interrupt_keywords` 字段中设置打断关键词。启用后，智能体听到列表中的关键词后会打断智能体当前行为。
+
+#### 自适应打断模式
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口的 `turn_detection.interrupt_mode` 字段新增 `"adaptive"` 选项，用于将智能体打断模式为自适应打断模式，启用后，智能体说话时，将自动调整打断相关参数，避免智能体被短暂人声误打断。
+
+### 改进
+
+#### MiniMax TTS 支持时间戳
+
+自该版本起，Minimax TTS 在文字转语音的同时会附带时间戳信息。该改进将有助于精确定位用户打断智能体说话的时间点，提升语音打断相关上下文信息的准确度。
+
+#### 新增 TTS/ASR 可选
+
+该版本新增支持了以下供应商或模型，详见 [POST 创建对话式智能体](../operations/start-agent.md)：
+- 新增 TTS：
+    - 阿里云 CosyVoice TTS
+    - 火山引擎双向流式 TTS
+    - 阶跃星辰 TTS
+- 新增 ASR：
+    - 讯飞云传统语音转写识别服务
+    - 讯飞云语音识别大模型服务
+    - 讯飞云方言自由说识别服务
+
+### API 变更
+
+#### 废弃
+
+- [POST 创建对话式智能体](../operations/start-agent.md)废弃 `vad` 字段
+
+#### 新增
+
+- [POST 创建对话式智能体](../operations/start-agent.md)新增：
+    - `parameters.farewell_config`
+    - `turn_detection.interrupt_mode.adaptive`
+    - `turn_detection.interrupt_mode.keyword`
+    - `turn_detection.interrupt_keywords`
+    - `turn_detection.interrupt_duration_ms` （迁移自 `vad.interrupt_duration_ms`）
+    - `turn_detection.prefix_padding_ms` （迁移自 `vad.prefix_padding_ms`）
+    - `turn_detection.silence_duration_ms` （迁移自 `vad.silence_duration_ms`）
+    - `turn_detection.threshold` （迁移自 `vad.threshold`）
+
+## v1.7
+
+该版本于 2025 年 7 月 29 日发布。
+
+### 新增特性
+
+#### 数字人
+
+该版本新增数字人功能，启用后，智能体可以结合第三方数字人供应商提供的能力，为智能体生成口型准确、形象逼真的数字人形象，提升与 AI 对话互动的沉浸感。你可以在调用 [POST 创建对话式智能体](../operations/start-agent.md)接口时，将 `avatar.enable` 设置为 `true`，并配置 `avatar.vendor` 和 `avatar.params` 字段来启用数字人功能。
+
+> 注意
+> 开启数字人功能将产生 RTC 视频通话费用，详见 [RTC 计费说明](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy)。
+
+#### 无感声纹识别
+
+选择性注意力锁定新增无感声纹识别功能，该功能赋予 AI 精准识别用户声纹特征的能力，有效区分不同说话者。用户只需在对话初期大声、清晰地说话，即可提升 AI 对声音的锁定效果。无感声纹识别不仅可以智能屏蔽 95% 的环境人声、噪声，对 AI 对话更准确、高效，同时也适用于多人与 AI 对话的场景，实现更加多元化的对话式 AI 响应与服务。如需体验选择性注意力锁定功能，请[联系技术支持](https://ticket.shengwang.cn)。
+
+#### 发送图片消息（Beta）
+
+对话式 AI 引擎客户端组件新增发送图片消息接口，支持将 URL 图片发送给大模型，并在后续与智能体对话时自动引用图片内容，让大模型根据图片内容生成更符合用户需求的回复。此外，本次客户端组件还新增了图片消息回执回调，用于确认图片消息发送是否成功。你可以参考[发送多模态消息](../user-guides/send-multimodal-message.md)了解如何使用该功能。
+
+> 注意
+> - 发送图片消息功能目前处于 Beta 阶段，限时免费。
+> - 图片处理能力依赖于 LLM 供应商提供的能力，你需要确保你接入对话式 AI 引擎的 LLM 供应商支持图片处理。
+
+### API 变更
+
+#### 新增
+
+- [POST 创建对话式智能体](../operations/start-agent.md)新增
+    - `avatar.enable`
+    - `avatar.vendor`
+    - `avatar.params`
+- 客户端组件 API：
+
+#### Android
+
+- [`chat`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapi#chat)
+        - [`onMessageReceiptUpdated`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onmessagereceiptupdated)
+        - [`onMessageError`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onmessageerror)
+        - [`ChatMessage`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/struct#chatmessage)
+        - [`ChatMessageType`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/struct#chatmessagetype)
+        - [`ImageMessage`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/struct#imagemessage)
+        - [`MessageReceipt`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/struct#messagereceipt)
+        - [`MessageError`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/struct#messageerror)
+
+#### iOS
+
+- [`chat`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapi#chat)
+        - [`onMessageReceiptUpdated`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onmessagereceiptupdated)
+        - [`onMessageError`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onmessageerror)
+        - [`ChatMessage`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/struct#chatmessage)
+        - [`ChatMessageType`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/enum#chatmessagetype)
+        - [`ImageMessage`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/struct#imagemessage)
+        - [`MessageReceipt`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/struct#messagereceipt)
+        - [`MessageError`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/struct#messageerror)
+
+#### Web
+
+- [`chat`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/conversationalaiapi#chat)
+        - [`TMessageReceipt`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/struct#tmessagereceipt)
+        - [`EChatMessagePriority`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/enum#echatmessagepriority)
+        - [`EChatMessageType`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/enum#echatmessagetype)
+        - [`IChatMessageBase`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/struct#ichatmessagebase)
+        - [`IChatMessageImage`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/struct#ichatmessageimage)
+        - [`EConversationalAIAPIEvents`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/enum#econversationalaiapievents) 新增 `MESSAGE_RECEIPT_UPDATED` 和 `MESSAGE_ERROR` 事件
+        - [`EModuleType`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/enum#emoduletype) 新增 `CONTEXT` 枚举值
+        - [`EAgentState`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/enum#eagentstate) 新增 `SILENT` 枚举值
+
+## v1.6
+
+该版本于 2025 年 7 月 1 日发布。
+
+### 升级必看
+
+#### 支持 ASR 供应商开放可选
+
+为了提高对话式智能体配置的灵活性，自该版本起，语音识别 (ASR) 供应商开放自定义选择。[POST 创建对话式智能体](../operations/start-agent.md)接口新增 `asr.vendor` 字段和 `asr.params` 字段，分别用于设置 ASR 供应商和配置参数。当前支持配置：
+- （默认）凤鸣 ASR
+- 腾讯云 ASR
+- 微软 ASR
+
+同时，**旧版对话式 AI 引擎服务费用**拆分出**凤鸣 ASR 处理费用**，当 ASR 服务采用默认的凤鸣 ASR 时，总价维持之前的版本不变，即**旧版对话式 AI 引擎服务费用** = **新版对话式 AI 引擎服务费用** + **凤鸣 ASR 处理费用**，当 ASR 服务采用其他供应商时，仅收取**新版对话式 AI 引擎服务费用**，详见[计费说明](./billing.md)。
+
+### 新增特性
+
+#### 客户端组件
+
+为了提高对话式智能体的开发效率，声网提供了一套灵活可扩展、标准化的对话式 AI 引擎客户端组件。该组件支持 iOS、Android、Web 平台，封装了多个场景化 API，你只需要调用这些 API 即可结合声网[实时互动 (RTC) SDK](https://doc.shengwang.cn/doc/rtc/homepage) 和[实时消息 (RTM) SDK](https://doc.shengwang.cn/doc/rtm2/homepage) 的能力实现以下功能：
+- [实时字幕](../user-guides/realtime-sub.md)：将用户与智能体的对话内容实时以文本输出并显示到终端界面上。该版本全面升级了字幕组件，提供更完善的功能支持、更强的可扩展性、更好的错误处理、更完善的会话管理和更强大的通信机制。
+- [打断智能体](../user-guides/interrupt-agent.md)：打断智能体说话和思考流程，让智能体“闭嘴”。
+- [监听智能体相关事件](../user-guides/listen-agent-events.md)：监听智能体对话状态变更、性能指标和错误事件。
+- [设置最佳音频参数](../best-practice/audio-settings.md)：快速设置音频参数最佳实践，提升对话式智能体的对话体验。
+
+### API 变更
+
+#### 新增
+
+- [POST 创建对话式智能体](../operations/start-agent.md)新增
+    - `asr.vendor`
+    - `asr.params`
+    - `parameters.enable_metrics`
+    - `parameters.data_channel`
+    - `parameters.enable_error_message`
+- 客户端组件 API：
+    - [Android](https://doc.shengwang.cn/api-ref/convoai/android/android-component/overview)
+    - [iOS](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/overview)
+    - [Web](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/overview)
+
+## v1.5
+
+该版本于 2025 年 6 月 6 日发布。
+
+### 新增特性
+
+#### TTS 过滤
+
+[POST 创建对话式智能体](../operations/start-agent.md)接口新增 `tts.skip_patterns` 字段，用于控制 TTS 模块朗读 LLM 返回文本时，是否跳过指定括号内的内容，避免智能体播报不必要的结构性提示信息如语气、动作描述、系统提示等，提升听感自然度与沉浸感。
+
+### API 变更
+
+#### 新增
+
+[POST 创建对话式智能体](../operations/start-agent.md)接口新增 `tts.skip_patterns` 字段。
+
+## v1.4
+
+该版本于 2025 年 5 月 26 日发布。
+
+### 升级必看
+
+v1.4 版本对 [POST 创建对话式智能体](../operations/start-agent.md)接口进行了以下变更，请在升级到该版本后更新相关代码。
+
+#### RTM 认证管理
+
+该版本废弃了 `agent_rtm_uid` 字段。开启 RTM 服务后，智能体加入 RTM 频道使用的 Token 和用户 ID 不再需要单独配置，而是会复用 `token` 和 `agent_rtc_uid` 字段配置的 Token 和用户 ID。你可以参考 [FAQ](https://doc.shengwang.cn/faq/integration-issues/generate-token) 了解如何生成同时具备 RTC 和 RTM 权限的 Token。
+
+#### 静默配置
+
+该版本废弃了 [POST 创建对话式智能体](../operations/start-agent.md)接口的 `silence_timeout` 和 `llm.silence_message` 字段，改用新增的 `parameters.silence_config` 字段配置智能体最大静默超时时长、静默提示方式和静默提示词。
+
+### 新增特性
+
+#### 支持微软 TTS
+
+自该版本起，对话式 AI 引擎支持微软 TTS，你可以在调用 [POST 创建对话式智能体](../operations/start-agent.md)接口时，将 `tts.vendor` 设置为 `microsoft` 来接入微软 TTS。
+
+#### 人声打断模式
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `turn_detection.interrupt_mode` 字段，用于设置人声打断智能体行为的模式。当前支持以下三种模式：
+- `"interrupt"`：（默认）打断模式，人声立即打断智能体交互。智能体会终止当前交互，直接处理人声输入。
+- `"append"`: 追加模式，人声不打断智能体。智能体会在当前交互结束后处理刚才收到的人声请求。
+- `"ignore"`: 忽略模式，智能体忽略人声请求。如果智能体正在说话或思考中途收到人声，智能体会直接忽略并丢弃人声请求，不存入上下文。
+
+#### 传递短期记忆
+
+该版本为 [POST 创建对话式智能体](../operations/start-agent.md)接口新增 `llm.vendor` 字段，设置为 `"custom"` 后，智能体会在调用大模型时携带对话轮次 (`turn_id`) 和请求时间戳 (`timestamp`) 等信息。详见[传递记忆内容给大模型](../user-guides/short-term-memory.md#传递记忆内容给大模型)。
+
+### 改进
+
+该版本进行了以下改进：
+
+- 接入 Minimax TTS 时，新增支持透传 `emotion`、`latex_read`、`pronunciation_dict` 等字段，详见[示例代码](../operations/start-agent.md)。
+- 和智能体对话期间，智能体的实时状态支持通过数据流回调至 RTC SDK。
+- [POST 更新智能体配置](../operations/agent-update.md)接口新增 `llm.system_messages` 和 `llm.params` 字段，用于更新智能体调用大模型时携带的系统提示词和配置参数。
+
+### API 变更
+
+#### 新增
+
+- [POST 创建对话式智能体](../operations/start-agent.md)新增：
+    - `llm.vendor`
+    - `turn_detection.interrupt_mode`
+    - `parameters.silence_config`
+- [POST 更新智能体配置](../operations/agent-update.md)新增：
+    - `llm.system_messages`
+    - `llm.params`
+
+#### 废弃
+
+[POST 创建对话式智能体](../operations/start-agent.md)废弃：
+- `agent_rtm_uid`
+- `silence_timeout`
+- `llm.silence_message`
+
+## v1.3
+
+该版本于 2025 年 4 月 16 日发布。
+
+### 集成必看
+
+#### 加油包
+
+自该版本起，你可以在控制台购买加油包，用于抵扣对话式 AI 引擎服务的实际用量，同时享受一定折扣，详见[计费说明](./billing.md#付费方式)。
+
+### 新增特性
+
+#### 获取智能体短期记忆
+
+用户和智能体之间的对话消息、智能体创建和停止的时间戳等会被存储在智能体的短期记忆中。该版本新增了以下两种方式获取智能体的短期记忆：
+
+- 调用 [GET 获取智能体短期记忆](../operations/get-history.md)接口获取指定运行中智能体的短期记忆。
+- 通过[声网消息通知服务](../webhook/enable-ncs.md)订阅[智能体短期记忆事件](../webhook/ncs-events.md#103-agent-history)，当智能体停止时，声网将通过 Webhook 回调的方式自动发送智能体的短期记忆到你的业务服务器。
+
+#### 支持智谱 AI 大模型
+
+自该版本起，对话式 AI 引擎支持智谱 AI 大模型，你可以在调用 [POST 创建对话式智能体](../operations/start-agent.md)接口时，将 `llm.url` 设置为智谱 AI 大模型的 API 地址来接入智谱 AI 大模型。
+
+### 改进
+
+#### 自定义播报信息优先级
+
+该版本升级了 [POST 播报自定义信息](../operations/agent-speak.md)接口，新增了两种与播报行为打断逻辑相关的配置：
+- `priority`：配置播报行为的优先级。支持配置打断并播报（高）、追加播报（中）和空闲时播报（低）三种优先级。
+- `interruptable`：配置是否允许人声打断智能体播报。
+
+#### 发送静默提示消息
+
+[POST 创建对话式智能体](../operations/start-agent.md)新增 `silence_timeout` 和 `llm.silence_message` 参数，用于设置智能体最大静默时间和静默提示消息。智能体创建成功，且用户加入频道后，智能体不处于倾听、思考或说话状态的持续时间称为智能体静默时间，静默时间达到设定值后，智能体将播报中填写的静默提示消息。
+
+### API 变更
+
+#### 新增
+
+- [GET 获取智能体短期记忆](../operations/get-history.md)
+- [POST 创建对话式智能体](../operations/start-agent.md)新增 `silence_timeout` 和 `llm.silence_message` 参数
+- [POST 播报自定义信息](../operations/agent-speak.md)新增 `priority` 和 `interruptable` 参数
+
+## v1.2
+
+该版本于 2025 年 3 月 27 日发布。
+
+### 新增特性
+
+#### 播报自定义信息
+
+该版本新增 [POST 播报自定义信息](../operations/agent-speak.md)接口，用于让指定智能体播报自定义消息。与智能体对话期间，调用该接口可以打断智能体说话和思考，并使用 TTS 模块立刻播报自定义消息。
+
+#### 打断智能体
+
+该版本新增 [POST 打断智能体](../operations/agent-interrupt.md)接口，用于打断指定智能体的说话和思考流程，让智能体“闭嘴”。
+
+### API 变更
+
+#### 新增
+
+- [POST 播报自定义信息](../operations/agent-speak.md)
+- [POST 打断智能体](../operations/agent-interrupt.md)
+
+## v1.1
+
+该版本于 2025 年 3 月 19 日发布。
+
+### 新增特性
+
+#### 传递自定义信息
+
+[POST 创建对话式智能体](../operations/start-agent.md)新增 `enable_rtm` 和 `agent_rtm_uid` 字段，用于为对话式智能体开启 RTM 功能。开启后，智能体可以结合 RTM SDK 提供的能力，获取用户的说话状态、选中的文字、个性签名、得分等自定义上下文信息，并将这些信息传递给智能体，引导智能体输出更符合用户需求的内容。详见[传递自定义信息](../user-guides/custom-data.md)。
+
+### 改进
+
+为了帮助你快速接入自定义大模型，该版本上线了[自定义大模型](../user-guides/custom-llm.md)文档，你可以参考文档中的示例代码将自定义大模型接入到对话式 AI 引擎中，实现检索增强生成（RAG）、多模态、工具调用等进阶能力。
+
+### API 变更
+
+#### 新增
+
+[POST 创建对话式智能体](../operations/start-agent.md)新增 `enable_rtm` 和 `agent_rtm_uid` 字段
+
+## v1.0 GA
+
+该版本于 2025 年 3 月 5 日发布。
+
+### 集成必看
+
+#### 计费说明
+
+声网对话式 AI 引擎于 2025 年 3 月 5 日正式 GA 发布，并公布了产品定价：声网对话式 AI 引擎的计费规则，详见[计费说明](./billing.md)。
+
+#### SDK 版本要求
+
+为了取得最好的对话体验效果，新版本声网对话式 AI 引擎建议与以下声网 SDK 搭配使用：
+    - 声网 RTC Native SDK，v4.5.1 及以上版本
+    - 声网 RTC Web SDK，4.23.2 及以上版本
+    - 声网 RTSA C SDK，1.9.x 及以上版本
+
+### 新增特性
+
+#### 实时字幕
+
+自该版本起，声网提供开源的字幕处理模块，你只需要将模块集成到项目中，并调用模块的 API 即可快速实现实时字幕功能，将用户与智能体的对话内容实时以文本输出并显示到终端界面上，详见[实时字幕](../user-guides/realtime-sub.md)。
+
+#### 消息通知服务
+
+该版本新增对话式 AI 引擎消息通知服务，你可以在声网控制台设置消息通知服务地址，订阅智能体创建、停止或出错事件。当订阅的事件发生时，声网会调用你设置的回调地址，将事件详情发送至你的业务服务器。详见[消息通知服务](../webhook/enable-ncs.md)。
+
+#### 热词 Beta
+
+该版本新增热词功能，添加热词可以显著提升对话式 AI 引擎在专有词汇上的识别准确率。目前该功能处于 Beta 发布阶段，请[联系技术支持](https://ticket.shengwang.cn)开通。
+
+## v1.0 Public Beta
+
+该版本于 2025 年 2 月 18 日发布。本次发版聚焦于提供自然流畅、低延迟、高可靠的实时语音对话能力，助力开发者快速构建智能化、沉浸式的交互体验。
+
+### 集成必看
+
+1. 为了取得最好的对话体验效果，已[联系声网技术支持](https://ticket.shengwang.cn/)获取指定版本的实时互动 SDK。
+
+2. 目前仅支持使用中文和英文与 AI 互动，其他语种需求[联系技术支持](https://ticket.shengwang.cn)反馈。
+3. 目前单一 App ID 的并发用户数 (Peak Concurrent Users) 限制为 20， 如需提升配额，请[联系技术支持](https://ticket.shengwang.cn)申请。
+
+### 核心功能
+
+#### 实时语音对话
+
+支持与 AI 进行自然流畅的实时语音对话，如同与真人交流，提供低延迟、极速响应的交互体验。
+
+#### 端上降噪
+
+SDK 会智能识别和消除背景噪音，即使在嘈杂的公共场所，都能够确保声音传输的清晰度，为用户提供高质量的对话体验。
+
+#### 背景人声抑制
+
+智能抑制背景人声，精准保留对话人清晰语音，确保在多人声环境中仍能实现清晰、专注的交互体验。
+
+#### 优雅打断
+
+支持用户随时打断 AI 并快速响应，实现自然过渡和流畅对话，避免机械式交互。
+
+#### 智能传输
+
+针对与 AI 智能体对话场景优化的传输算法，支持在弱网环境（如 80% 丢包率）下仍能稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络环境。
+
+#### 灵活编排
+
+支持全球主流的 LLM（大语言模型）、TTS（语音合成） 适配，快速实现灵活编排，满足不同场景和业务需求，提供高度定制化的 AI 智能体对话解决方案。
+
+#### 实时字幕
+
+支持用户与 AI 智能体的对话内容实时以文本输出并显示到终端界面上。
+
+#### 多平台支持
+
+支持 iOS、Android、Web、 小程序、以及各类嵌入式硬件等客户端，提供跨平台的一致性和无缝集成体验，满足不同场景的应用需求。

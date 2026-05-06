@@ -5,7 +5,7 @@ export const Route = createFileRoute('/llms-full.txt')({
     handlers: {
       GET: async () => {
         const { getLLMText, source } = await import('@/lib/source');
-        const scan = source.getPages().map(getLLMText);
+        const scan = source.getPages('en').map(getLLMText);
         const scanned = await Promise.all(scan);
         return new Response(scanned.join('\n\n'));
       },

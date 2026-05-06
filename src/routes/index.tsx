@@ -1,10 +1,14 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { HomePage } from '@/components/home/HomePage';
+import { createFileRoute, redirect } from '@tanstack/react-router';
+import { DEFAULT_LOCALE } from '@/lib/shared';
 
 export const Route = createFileRoute('/')({
-  component: Home,
+  loader: () => {
+    throw redirect({
+      to: '/$lang',
+      params: {
+        lang: DEFAULT_LOCALE,
+      },
+    });
+  },
+  component: () => null,
 });
-
-function Home() {
-  return <HomePage />;
-}

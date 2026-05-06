@@ -1,6 +1,6 @@
 'use client';
-import { create } from '@orama/orama';
 import { useDocsSearch } from 'fumadocs-core/search/client';
+import { flexsearchStaticClient } from 'fumadocs-core/search/client/flexsearch-static';
 import {
   SearchDialog,
   SearchDialogClose,
@@ -13,21 +13,27 @@ import {
   type SharedProps,
 } from 'fumadocs-ui/components/dialog/search';
 import { useI18n } from 'fumadocs-ui/contexts/i18n';
-
-function initOrama() {
-  return create({
-    schema: { _: 'string' },
-    // https://docs.orama.com/docs/orama-js/supported-languages
-    language: 'english',
-  });
-}
+import { useMemo } from 'react';
+import { toLocalizedPath } from '@/lib/locale-routes';
 
 export default function DefaultSearchDialog(props: SharedProps) {
   const { locale } = useI18n(); // (optional) for i18n
+  const client = useMemo(() => {
+    if (typeof window === 'undefined') {
+      return {
+        search: async () => [],
+        deps: [locale, 'ssr'],
+      };
+    }
+
+    return flexsearchStaticClient({
+      from: toLocalizedPath(locale as 'en' | 'zh-CN', '/api/search'),
+      locale,
+    });
+  }, [locale]);
+
   const { search, setSearch, query } = useDocsSearch({
-    type: 'static',
-    initOrama,
-    locale,
+    client,
   });
 
   return (

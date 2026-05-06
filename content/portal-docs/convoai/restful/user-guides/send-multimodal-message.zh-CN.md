@@ -1,0 +1,516 @@
+---
+title: 发送图片消息
+description: 与智能体互动期间，你可能需要在端侧上传图片或发送图片消息来辅助智能体理解用户意图。本文介绍如何使用对话式 AI 引擎客户端组件的能力在 App 中发送图片消息给大模型，并在后续与智能体对话时自动引用图片内容，让大模型根据图片内容生成更...
+---
+
+# 发送图片消息
+
+与智能体互动期间，你可能需要在端侧上传图片或发送图片消息来辅助智能体理解用户意图。本文介绍如何使用对话式 AI 引擎客户端组件的能力在 App 中发送图片消息给大模型，并在后续与智能体对话时自动引用图片内容，让大模型根据图片内容生成更符合用户需求的回复。
+
+## 技术原理
+
+声网提供一套灵活可扩展、标准化的对话式 AI 引擎客户端组件（以下简称组件）。该组件支持 iOS、Android、Web 平台，封装了多个场景化 API，你只需要调用这些 API 即可结合声网[实时互动 (RTC) SDK](https://doc.shengwang.cn/doc/rtc/homepage) 和[实时消息 (RTM) SDK](https://doc.shengwang.cn/doc/rtm2/homepage) 的能力实现以下功能：
+- [打断智能体](./interrupt-agent.md)
+- [实时字幕](./realtime-sub.md)
+- [监听智能体相关事件](./listen-agent-events.md)
+- [设置最佳音频参数](../best-practice/audio-settings.md) （仅支持 Android 和 iOS）
+- [发送图片消息](./send-multimodal-message.md)
+
+调用组件的 `chat` 接口发送图片消息，并监听 `onMessageReceiptUpdated` 回调接收图片消息回执信息。
+
+## 前提条件
+
+开始前，请确保完成以下准备工作：
+
+- 已集成 RTC v4.5.1 及以上版本 SDK，且在 App 中实现了基本的实时音视频功能、获取了相关设备的使用权限。请参考[实现音视频互动](https://doc.shengwang.cn/doc/rtc/android/get-started/quick-start)。
+- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现了基本的实时消息功能。请参考[实现收发消息](https://doc.shengwang.cn/doc/rtm2/javascript/get-started/quick-start)。
+- 已参考[实现对话式智能体](../get-started/quick-start.md)实现与智能体对话的基本逻辑。
+- 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
+
+> 注意
+> - 发送图片消息功能目前处于 Beta 阶段，限时免费。
+> - 图片处理能力依赖于 LLM 供应商提供的能力，你需要确保你接入对话式 AI 引擎的 LLM 供应商支持图片处理。
+
+## 实现方法
+
+### 集成组件
+
+#### Android
+
+将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
+
+- [convoaiApi](https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi)
+
+#### iOS
+
+将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
+
+- [ConversationalAIAPI](https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI)
+
+#### Web
+
+将 `conversational-ai-api` 文件拷贝到你自己的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
+
+- [conversational-ai-api](https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api)
+
+### 初始化组件
+
+为 RTC 和 RTM 实例创建配置对象，之后创建组件实例：
+
+#### Android
+
+```java
+// 为 RTC 和 RTM 实例创建配置对象
+val config = ConversationalAIAPIConfig(
+    rtcEngine = rtcEngineInstance,
+    rtmClient = rtmClientInstance,
+    enableLog = true
+)
+// 创建组件实例
+val api = ConversationalAIAPIImpl(config)
+```
+
+#### iOS
+
+```swift
+// 为 RTC 和 RTM 实例创建配置对象
+let config = ConversationalAIAPIConfig(
+    rtcEngine: rtcEngine,
+    rtmEngine: rtmEngine,
+    enableLog: true
+)
+/// 创建组件实例
+convoAIAPI = ConversationalAIAPIImpl(config: config)
+```
+
+#### Web
+
+```typescript
+// 为 RTC 和 RTM 实例创建配置对象
+ConversationalAIAPI.init({
+    rtcEngine,
+    rtmEngine,
+    })
+
+// 获取 API 实例（单例）
+const conversationalAIAPI = ConversationalAIAPI.getInstance()
+```
+
+### 注册回调
+
+#### Android
+
+调用 `addHandler` 方法注册回调：
+
+```kotlin
+api.addHandler(covEventHandler)
+```
+
+#### iOS
+
+调用 `addHandler` 方法注册回调：
+
+```swift
+convoAIAPI.addHandler(handler: self)
+```
+
+#### Web
+
+```typescript
+// 监听消息回执更新
+conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_RECEIPT_UPDATED, handleMessageReceiptUpdated)
+// 监听智能体错误事件
+conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_ERROR, onMessageError)
+```
+
+### 订阅频道消息
+
+智能体的相关事件通过 RTM 频道消息传递，你需要在开始智能体会话前调用 `subscribeMessage` 订阅频道消息，以接收智能体相关事件。
+
+#### Android
+
+```kotlin
+api.subscribeMessage("channelName") { error ->
+    if (error != null) {
+        // 处理错误
+    }
+}
+```
+
+#### iOS
+
+```swift
+convoAIAPI.subscribeMessage(channelName: channelName) { error in
+    if let error = error {
+        print("订阅失败: \(error.message)")
+    } else {
+        print("订阅成功")
+    }
+}
+```
+
+#### Web
+
+```typescript
+conversationalAIAPI.subscribeMessage(channel_name)
+```
+
+### 智能体加入频道
+
+调用 [POST 创建对话式智能体](../operations/start-agent.md)接口，并完成以下参数设置：
+- `advanced_features.enable_rtm: true` —— （必选）启动 RTM 服务
+- `parameters.data_channel: "rtm"` —— （必选）开启 RTM 数据传输通道
+- `parameters.enable_metrics: true` —— （按需开启）接收智能体性能数据
+- `parameters.enable_error_message: true` —— （按需开启）接收智能体错误事件
+
+调用成功后，智能体会加入指定 RTC 频道，用户可以开始与智能体互动。
+
+### 发送图片消息
+
+调用 `chat` 方法，发送图片消息。以下为发送 URL 图片的示例：
+
+> 注意
+> `chat` 接口的 `completion` 回调仅表示发送请求是否成功，不代表消息实际处理状态。
+
+#### Android
+
+```kotlin
+val uuid = "unique-image-id-123" // 生成唯一的图片标识符
+val imageUrl = "https://example.com/image.jpg" // 图片的 HTTP/HTTPS URL
+
+api.chat("agentUserId", ImageMessage(uuid = uuid, imageUrl = imageUrl)) { error ->
+    if (error != null) {
+        Log.e("Chat", "Failed to send image: ${error.errorMessage}")
+    } else {
+        Log.d("Chat", "Image send request successful")
+    }
+}
+```
+
+#### iOS
+
+```swift
+let uuid = UUID().uuidString
+let imageUrl = "https://example.com/image.jpg"
+let message = ImageMessage(uuid: uuid, url: imageUrl)
+self.convoAIAPI.chat(agentUserId: "\(agentUid)", message: message) { [weak self] error in
+    if let error = error {
+        print("send image failed, error: \(error.message)")
+    } else {
+        print("send image success")
+    }
+}
+```
+
+#### Web
+
+```typescript
+import { EChatMessageType } from '@/conversational-ai-api/type'
+
+// 发送图片消息
+await conversationalAIAPI.chat(`${agent_rtc_uid}`, {
+          messageType: EChatMessageType.IMAGE,
+          url: "https://example.com/image.jpg",
+          uuid: genUUID()
+        })
+```
+
+### 处理图片发送状态
+
+图片消息发送的成功和失败分别通过图片消息回执 `onMessageReceiptUpdated` 和图片消息出错回调 `onMessageError` 确认，你需要根据图片的 `uuid` 来区分不同的图片消息。
+
+#### 图片发送成功
+
+当收到 `onMessageReceiptUpdated` 回调时，需要解析回调中的 JSON 消息，获取图片的 `uuid` 以确认图片发送成功：
+
+#### Android
+
+```kotlin
+override fun onMessageReceiptUpdated(agentUserId: String, receipt: MessageReceipt) {
+    if (receipt.chatMessageType == ChatMessageType.Image) {
+        try {
+            val json = JSONObject(receipt.message)
+            // 检查是否包含 uuid 字段
+            if (json.has("uuid")) {
+                val receivedUuid = json.getString("uuid")
+
+                // 如果 uuid 匹配，说明此图片发送成功
+                if (receivedUuid == "your-sent-uuid") {
+                    Log.d("ImageSend", "Image sent successfully: $receivedUuid")
+                    // 更新 UI 显示发送成功状态
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("ImageSend", "Failed to parse message receipt: ${e.message}")
+        }
+    }
+}
+```
+
+#### iOS
+
+```swift
+struct PictureInfo: Codable {
+    let uuid: String
+}
+
+public func onMessageReceiptUpdated(agentUserId: String, messageReceipt: MessageReceipt) {
+      // 第一步：检查消息类型是否为 Context
+      if messageReceipt.type == .context {
+          guard let messageData = messageReceipt.message.data(using: .utf8) else {
+              return
+          }
+          // 第二步：解析 receipt.message 为 JSON 对象
+          do {
+              let imageInfo = try JSONDecoder().decode(PictureInfo.self, from: messageData)
+              // 第三步：检查是否包含 uuid 字段
+              let uuid = imageInfo.uuid
+              // 更新 UI 显示发送成功状态
+              self.messageView.viewModel.updateImageMessage(uuid: uuid, state: .success)
+          } catch {
+              print("Failed to decode PictureInfo: \(error)")
+          }
+
+        print("Failed to parse message string from image info message")
+        return
+    }
+
+  }
+```
+
+#### Web
+
+```typescript
+import { TMessageReceipt, EModuleType, EConversationalAIAPIEvents } from '@/conversational-ai-api/type'
+
+// 处理图片消息的发送状态
+conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_RECEIPT_UPDATED, (agentUserId: string,  messageReceipt: TMessageReceipt) => {
+    // 第一步：检查消息类型是否为 Context
+    if (messageReceipt.moduleType !== EModuleType.CONTEXT) {
+        return
+    }
+    // 第二步：解析 receipt.message 为 JSON 对象
+    try {
+        const receiptMessage = JSON.parse(messageReceipt.message)
+        // 第三步：检查是否包含 uuid 字段
+        const uuid = receiptMessage.uuid
+        if (!uuid) {
+            return
+        }
+        // 第四步：播报发送成功状态
+        console.log(`消息发送成功，UUID: ${uuid}`) // 这里可以替换为实际的播报逻辑
+    } catch (error) {
+        console.error('解析消息失败:', error)
+    }
+})
+```
+
+#### 图片发送失败
+
+当收到 `onMessageError` 回调时，需要解析回调中的 JSON 消息，获取图片的 `uuid` 以确认图片发送失败：
+
+#### Android
+
+```kotlin
+override fun onMessageError(agentUserId: String, error: MessageError) {
+    if (error.chatMessageType == ChatMessageType.Image) {
+        try {
+            val json = JSONObject(error.message)
+            // 检查是否包含 uuid 字段
+            if (json.has("uuid")) {
+                val failedUuid = json.getString("uuid")
+
+                // 如果 uuid 匹配，说明此图片发送失败
+                if (failedUuid == "your-sent-uuid") {
+                    Log.e("ImageSend", "Image send failed: $failedUuid")
+                    // 更新 UI 显示发送失败状态
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("ImageSend", "Failed to parse error message: ${e.message}")
+        }
+    }
+}
+```
+
+#### iOS
+
+```swift
+struct ImageUploadError: Codable {
+    let code: Int
+    let message: String
+}
+
+struct ImageUploadErrorResponse: Codable {
+    let uuid: String
+    let success: Bool
+    let error: ImageUploadError?
+}
+
+public func onMessageError(agentUserId: String, error: MessageError) {
+    if let messageData = error.message.data(using: .utf8) {
+        do {
+            let errorResponse = try JSONDecoder().decode(ImageUploadErrorResponse.self, from: messageData)
+            if !errorResponse.success {
+                let errorMessage = errorResponse.error?.message ?? "Unknown error"
+                let errorCode = errorResponse.error?.code ?? 0
+
+                addLog("<<< [ImageUploadError] Image upload failed: \(errorMessage) (code: \(errorCode))")
+
+                // 更新 UI 显示发送失败状态
+                DispatchQueue.main.async { [weak self] in
+                    self?.messageView.viewModel.updateImageMessage(uuid: errorResponse.uuid, state: .failed)
+                }
+            }
+        } catch {
+            addLog("<<< [onMessageError] Failed to parse error message JSON: \(error)")
+        }
+    }
+}
+```
+
+#### Web
+
+```typescript
+import { EConversationalAIAPIEvents, EChatMessageType } from '@/conversational-ai-api/type';
+
+conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_ERROR, (agentUserId, error) => {
+  console.error(`Message error for agent ${agentUserId}:`, error);
+  if (error.type === EChatMessageType.IMAGE) {
+    try {
+        const errorData = JSON.parse(error.message);
+        if (errorData?.uuid) {
+            console.warn(`Image error for agent ${agentUserId} with UUID: ${errorData.uuid}`);
+        }
+    } catch (e) {
+        console.error(`Failed to handle image error for agent ${agentUserId}:`, e);
+    }
+  }
+ })
+```
+
+### 取消订阅频道消息
+
+每次智能体会话结束后，你需要取消订阅频道消息，以释放回调事件相关资源。
+
+#### Android
+
+```kotlin
+api.unsubscribeMessage("channelName") { error ->
+    if (error != null) {
+        // 处理错误
+    }
+}
+```
+
+#### iOS
+
+```swift
+/// 取消订阅频道消息
+convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
+    if let error = error {
+        print("取消订阅失败: \(error.message)")
+    } else {
+        print("取消订阅成功")
+    }
+}
+```
+
+#### Web
+
+```typescript
+conversationalAIAPI.unsubscribeMessage(channel_name)
+```
+
+### 销毁组件实例
+
+结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
+
+#### Android
+
+```kotlin
+api.destroy()
+```
+
+#### iOS
+
+```swift
+convoAIAPI.destroy()
+```
+
+#### Web
+
+```typescript
+conversationalAIAPI.destroy()
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+- [Conversational-AI-Demo](https://github.com/Shengwang-Community/Conversational-AI-Demo/)
+
+### 组件结构
+
+客户端组件文件夹的结构和各文件作用如下：
+
+> 信息
+> 以下文件和文件夹即为集成客户端组件所需全部内容，无需拷贝其他文件。
+
+#### Android
+
+- `IConversationalAIAPI.kt` — API 接口及相关数据结构和枚举
+    - `ConversationalAIAPIImpl.kt` — ConversationalAI API 主要实现逻辑
+    - `ConversationalAIUtils.kt` — 工具函数与事件回调管理
+    - `subRender/`
+        - `v3/` — 字幕部分模块
+            - `TranscriptionController.kt` — 字幕控制器
+            - `MessageParser.kt` — 消息解析器
+
+#### iOS
+
+- `ConversationalAIAPI.swift` — API 接口及相关数据结构和枚举
+    - `ConversationalAIAPIImpl.swift` — ConversationalAI API 主要实现逻辑
+    - `Transcription/`
+        - `TranscriptionController.swift` — 字幕控制器
+
+#### Web
+
+- `index.ts` — API 类
+    - `type.ts` — API 接口及相关数据结构和枚举
+    - `utils/index.ts` — API 工具函数
+    - `utils/events.ts` — 事件管理类，可以拓展该类以轻松实现事件监听和播报
+    - `utils/sub-render.ts` — 字幕部分模块
+
+### API 参考
+
+#### Android
+
+- [`addHandler`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapi#addhandler)
+    - [`subscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapi#subscribemessage)
+    - [`unsubscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapi#unsubscribemessage)
+    - [`destroy`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapi#destroy)
+    - [`onMessageReceiptUpdated`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onmessagereceiptupdated)
+    - [`onMessageError`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onmessageerror)
+    - [`chat`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapi#chat)
+
+#### iOS
+
+- [`addHandler`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapi#addhandler)
+    - [`subscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapi#subscribemessage)
+    - [`unsubscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapi#unsubscribemessage)
+    - [`destroy`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapi#destroy)
+    - [`onMessageReceiptUpdated`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onmessagereceiptupdated)
+    - [`onMessageError`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onmessageerror)
+    - [`chat`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapi#chat)
+
+#### Web
+
+- [`IConversationalAIAPIEventHandler`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/struct#iconversationalaiapieventhandlers)
+    - [`EConversationalAIAPIEvents`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/enum#econversationalaiapievents)
+    - [`subscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/conversationalaiapi#subscribemessage)
+    - [`unsubscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/conversationalaiapi#unsubscribemessage)
+    - [`destroy`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/conversationalaiapi#destroy)
+    - [`chat`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/conversationalaiapi#chat)

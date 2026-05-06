@@ -17,15 +17,10 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/cn';
+import { toLocalizedPath } from '@/lib/locale-routes';
 import { useLocale } from '@/lib/i18n/use-locale';
 
 const cardKeys = ['docs', 'api', 'tools'] as const;
-const hrefByKey = {
-  docs: '/docs',
-  api: '/api-ref',
-  tools: '/docs/convoai/restful/mcp-integrate',
-} as const;
-
 const iconByKey = {
   docs: BookOpenText,
   api: Braces,
@@ -58,22 +53,27 @@ export function HomePage() {
   const { t } = useTranslation('common');
   const { locale } = useLocale();
   const isZh = locale === 'zh-CN';
+  const hrefByKey = {
+    docs: toLocalizedPath(locale, '/docs'),
+    api: toLocalizedPath(locale, '/api-ref'),
+    tools: toLocalizedPath(locale, '/docs/convoai/restful/mcp-integrate'),
+  } as const;
   const navDocs = locale === 'zh-CN' ? '文档' : 'Docs';
   const navApi = locale === 'zh-CN' ? 'API 参考' : 'API Reference';
   const navAi = locale === 'zh-CN' ? 'AI 工作流' : 'AI Workflows';
   const guideLinks = [
     {
-      href: '/docs',
+      href: hrefByKey.docs,
       description: t('home.guide.links.docs.description'),
       label: t('home.guide.links.docs.label'),
     },
     {
-      href: '/api-ref',
+      href: hrefByKey.api,
       description: t('home.guide.links.api.description'),
       label: t('home.guide.links.api.label'),
     },
     {
-      href: '/docs/convoai/restful/mcp-integrate',
+      href: hrefByKey.tools,
       description: t('home.guide.links.tools.description'),
       label: t('home.guide.links.tools.label'),
     },
@@ -101,22 +101,25 @@ export function HomePage() {
       />
       <div className="relative mx-auto flex min-h-screen w-full max-w-[88rem] flex-col px-4 sm:px-6 lg:px-8">
         <header className="flex items-center justify-between gap-6 border-b border-border/70 py-5">
-          <a className="min-w-0" href="/">
+          <a className="min-w-0" href={toLocalizedPath(locale, '/')}>
             <Brand />
           </a>
           <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
-            <a className="transition-colors hover:text-foreground" href="/docs">
+            <a
+              className="transition-colors hover:text-foreground"
+              href={hrefByKey.docs}
+            >
               {navDocs}
             </a>
             <a
               className="transition-colors hover:text-foreground"
-              href="/api-ref"
+              href={hrefByKey.api}
             >
               {navApi}
             </a>
             <a
               className="transition-colors hover:text-foreground"
-              href="/docs/convoai/restful/mcp-integrate"
+              href={hrefByKey.tools}
             >
               {navAi}
             </a>
@@ -158,7 +161,7 @@ export function HomePage() {
                     className: 'pl-4 pr-3',
                     size: 'lg',
                   })}
-                  href="/docs"
+                  href={hrefByKey.docs}
                 >
                   {t('home.primaryCta')}
                   <ArrowRight />
@@ -169,7 +172,7 @@ export function HomePage() {
                     size: 'lg',
                     variant: 'outline',
                   })}
-                  href="/api-ref"
+                  href={hrefByKey.api}
                 >
                   {t('home.secondaryCta')}
                   <ArrowRight />

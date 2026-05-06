@@ -41,7 +41,10 @@ export default defineConfig({
 
             pages: [
               {
-                path: '/api/search',
+                path: '/en/api/search',
+              },
+              {
+                path: '/zh-CN/api/search',
               },
               {
                 path: 'llms-full.txt',

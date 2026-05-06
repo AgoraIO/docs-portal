@@ -1,0 +1,2482 @@
+﻿openapi: 3.1.0
+info:
+  version: ''
+  title: Conversational AI Agent API Overview
+  description: |-
+    This document introduces the basic information for the Agora Conversational AI Agent RESTful API.
+
+    ## Data Format
+
+    All HTTP requests must use the `application/json` `Content-Type` request header. All request and response bodies use JSON.
+servers:
+  - url: 'https://api.agora.io/cn/api/conversational-ai-agent'
+    description: ''
+paths:
+  '/v2/projects/{appid}/join':
+    post:
+      # tags:
+      #   - Agent Management
+      summary: Create Conversational AI Agent
+      description: Create a Conversational AI agent instance and have it join an RTC channel.
+      operationId: start-agent
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/appid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - properties
+              properties:
+                name:
+                  type: string
+                  description: Unique agent identifier. The same identifier cannot be used to create multiple agents.
+                properties:
+                  type: object
+                  description: Detailed agent configuration.
+                  required:
+                    - channel
+                    - agent_rtc_uid
+                    - remote_rtc_uids
+                    - tts
+                    - llm
+                  properties:
+                    channel:
+                      type: string
+                      description: RTC channel name that the agent joins.
+                    token:
+                      type: string
+                      description: "Token used to join the RTC channel, that is, the dynamic credential used for authentication. If your project has enabled an App Certificate, you must pass your project's dynamic token in this field. For details, see [Use a Token for Authentication](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication)."
+                    agent_rtc_uid:
+                      type: string
+                      description: User ID of the agent in the RTC channel.
+                    remote_rtc_uids:
+                      type: array
+                      description: "List of user IDs that the agent subscribes to in the RTC channel. Only subscribed users can interact with the agent. Currently, only one user ID is supported."
+                      items:
+                        type: string
+                    # agent_rtm_uid:
+                    #   type: string
+                    #   description: |-
+                    #     > This field is deprecated. See the [FAQ](https://doc.shengwang.cn/faq/integration-issues/generate-token) to generate a token with both RTC and RTM permissions, and use the `agent_rtc_uid` field instead.
+
+                    #     User ID of the agent in the RTM channel. This field takes effect only when `advanced_features.enable_rtm` is `true`.
+                    enable_string_uid:
+                      type: boolean
+                      default: false
+                      description: |
+                        Whether to enable String UID:
+                        - `true`: Both the agent ID and subscribed user IDs use String UID.
+                        - `false`: (default) Both the agent ID and subscribed user IDs use Int UID.
+                        > Int and String user IDs cannot be mixed in the same channel. For more information, see [How to Use String User IDs](https://doc.shengwang.cn/faq/integration-issues/string-uid).
+                    idle_timeout:
+                      type: integer
+                      description: Maximum RTC channel idle time in seconds. The channel is considered idle after all users specified in `remote_rtc_uids` leave the channel. When the idle time exceeds this value, the agent in the channel automatically stops and leaves the channel. If set to `0`, the agent keeps running until it is manually stopped.
+                      default: 30
+                    # silence_timeout:
+                    #   type: integer
+                    #   default: 0
+                    #   description: |-
+                    #     > This field is deprecated. Use `parameters.silence_config` instead.
+
+                    #     Maximum agent silence time in seconds, in the range [0,60]. After the agent is created and a user joins the channel, the period during which the agent is neither listening, thinking, nor speaking is considered agent silence time. When the silence time reaches the configured value, the agent broadcasts the silence prompt configured in `llm.silence_message`, and then the silence timer starts over.
+                    #     - Set to `0` (default): This feature is disabled.
+                    #     - Set to (0,60]: You must also set `llm.silence_message`; otherwise the silence prompt cannot be broadcast and the setting does not take effect.
+                    advanced_features:
+                      type: object
+                      description: Advanced feature configuration.
+                      properties:
+                        # enable_aivad:
+                        #   type: boolean
+                        #   default: false
+                        #   description: |-
+                        #     > This field is deprecated. Use `turn_detection.config.end_of_speech.mode = "semantic"` instead.
+                        enable_rtm:
+                          type: boolean
+                          description: |-
+                            Whether to enable the RTM real-time messaging service. When enabled, the agent automatically logs in to RTM and subscribes to the channel specified in `channel`. You can combine this with RTM capabilities to implement advanced features, such as [passing custom data](https://doc.shengwang.cn/doc/convoai/restful/user-guides/custom-data).
+
+                            > Before enabling RTM, make sure the token has both RTC and RTM permissions. The agent reuses the token configured in the `token` field when joining the RTM channel. See the [FAQ](https://doc.shengwang.cn/faq/integration-issues/generate-token) to learn how to generate a token with both RTC and RTM permissions.
+                          default: false
+                        enable_sal:
+                          type: boolean
+                          description: |-
+                            Whether to enable Selective Attention Locking (SAL). When enabled, configure the related options in the `sal` field so the agent can identify the user's voiceprint, distinguish between speakers, and suppress 95% of surrounding speech and noise.
+                            > This feature is currently in beta.
+                          default: false
+                        enable_tools:
+                          type: boolean
+                          description: |-
+                            Whether to enable tool calls. When enabled, the agent can call tools provided by MCP servers to implement more complex business logic.
+                          default: false
+                    asr:
+                      type: object
+                      description: Automatic speech recognition (ASR) configuration.
+                      properties:
+                        language:
+                          type: string
+                          description: "Language used when the user interacts with the agent:\r\n- `zh-CN`: Chinese (supports mixed Chinese and English)\r\n- `en-US`: English"
+                          default: zh-CN
+                        vendor:
+                          type: string
+                          description: |-
+                            ASR provider. Supported values:
+                            - `fengming`: (default) Agora Fengming ASR.
+                            - `tencent`: Tencent ASR.
+                            - `microsoft`: Microsoft ASR.
+                            - `xfyun`: iFlytek real-time speech transcription service.
+                            - `xfyun_bigmodel`: iFlytek large-model speech recognition service.
+                            - `xfyun_dialect`: iFlytek dialect free-speech recognition service.
+                        params:
+                          $ref: '#/components/schemas/asr_params'
+                          description: |
+                            Configuration parameters for the selected ASR provider.
+                            > See the request examples for parameter samples for different ASR providers.
+                    tts:
+                      type: object
+                      description: Text-to-speech (TTS) module configuration.
+                      required:
+                        - vendor
+                        - params
+                      properties:
+                        vendor:
+                          type: string
+                          description: |
+                            TTS provider. Supported values:
+                            - `minimax`：Minimax TTS
+                            - `tencent`: Tencent TTS
+                            - `bytedance`: Volcengine TTS
+                            - `microsoft`: Microsoft Azure TTS
+                            - `cosyvoice`: Alibaba Cloud CosyVoice TTS
+                            - `bytedance_duplex`: Volcengine bidirectional streaming TTS
+                            - `stepfun`: StepFun TTS
+                        skip_patterns:
+                          type: array
+                          description: |
+                            Filtering patterns that control whether content inside brackets in LLM output is skipped, so the agent does not read unnecessary structural hints such as tone or action descriptions aloud. The default value is `[]`, which means nothing is filtered. Supported values are as follows. Pass a value to enable that filter:
+                            
+                            - `1`: Skip content inside Chinese round brackets （ ）.
+                            - `2`: Skip content inside Chinese square brackets.
+                            - `3`: Skip content inside English round brackets ( ).
+                            - `4`: Skip content inside English square brackets [ ].
+                            - `5`: Skip content inside English curly braces \{ }.
+
+                            > - If the input text contains nested brackets and multiple bracket types are configured to be skipped, the agent processes only the outermost bracket pair. The system matches from the beginning of the text, and once it finds the first outermost bracket pair that meets a skip rule, that pair and all of its contents, including any nested brackets of other types, are skipped as a whole.
+                            > - Whether or not [real-time subtitles](https://doc.shengwang.cn/doc/convoai/restful/user-guides/realtime-sub) are enabled, the agent's short-term memory still contains the filtered content, that is, the complete text generated by the LLM.
+                            > - When [real-time subtitles](https://doc.shengwang.cn/doc/convoai/restful/user-guides/realtime-sub) are enabled, the filtered content is omitted while TTS is speaking the sentence, and then added back to the subtitles after that sentence finishes playing.
+                            > - Volcengine bidirectional streaming TTS does not currently support this feature.
+                          items:
+                            type: integer
+                          default: []
+                        params:
+                          $ref: '#/components/schemas/tts_params'
+                          description: |
+                            Configuration parameters for the selected TTS provider.
+                            > See the request examples for parameter samples for different TTS providers.
+                    llm:
+                      type: object
+                      description: Large language model (LLM) configuration.
+                      required:
+                        - url
+                      properties:
+                        url:
+                          type: string
+                          description: LLM callback URL. It must be compatible with the OpenAI protocol.
+                        api_key:
+                          type: string
+                          description: API key used to authenticate with the LLM. Empty by default. In production, enable API key authentication.
+                        system_messages:
+                          type: array
+                          description: A set of predefined messages prepended to every LLM call to control the LLM output. These can include role definitions, prompts, and example responses. It must be compatible with the OpenAI protocol.
+                          items:
+                            type: object
+                            additionalProperties: {}
+                        max_history:
+                          $ref: '#/components/schemas/max_history'
+                        input_modalities:
+                          type: array
+                          
+                          description: "Input modalities for the LLM. Supported values:\r\n- `[\"text\"]`: (default) Text only.\r\n- `[\"text\", \"image\"]`: Text plus images. The selected LLM must support vision input."
+                          items:
+                            type: string
+                            default: text
+                        output_modalities:
+                          type: array
+                          
+                          description: "Output modalities for the LLM. Supported values:\r\n- `[\"text\"]`: (default) Text only. The text output is converted to speech by the TTS module and published to the RTC channel.\r\n- `[\"audio\"]`: Audio only. The audio is published directly to the RTC channel.\r\n- `[\"text\", \"audio\"]`: Text plus audio. You can implement your own logic to handle the LLM output as needed."
+                          items:
+                            type: string
+                        greeting_message:
+                          type: string
+                          description: Agent greeting. If configured, when none of the users in the subscribed user list (`remote_rtc_uids`) are currently in the channel, the agent automatically sends the greeting to the first subscribed user who joins.
+                          
+                        greeting_configs:
+                          type: object
+                          description: |
+                            Agent greeting playback configuration.
+                          properties:
+                            mode:
+                              type: string
+                              description: |
+                                Agent greeting playback mode. Supported options:
+                                - `"single_every"`: (default) The agent plays the greeting every time a user joins an empty channel.
+                                - `"single_first"`: The agent plays the greeting only when the first user joins an empty channel.
+                            delay_ms:
+                              type: integer
+                              description: Delay before the greeting is played, in milliseconds. The value range is [0, 5000]. When configured, the agent waits for the specified duration after the user joins before playing the greeting.
+                        # greeting_interruptable:
+                        #   type: boolean
+                        #   description: |
+                        #     Whether the agent greeting can be interrupted:
+                        #     - `true`: (default) Interruptible. Follows the global interruption configuration (`turn_detection.start_of_speech`).
+                        #     - `false`: Not interruptible. The greeting is played in full. User speech during playback is either ignored or appended to the LLM session, depending on the global interruption configuration.
+                        template_variables:
+                          type: object
+                          description: |-
+                            Dynamic parameter configuration used to insert variables into the agent's `system_messages`, `greeting_message`, `failure_message`, and `parameters.silence_config.content` text. The format is key-value pairs, where the key is the variable name and the value is the variable value.
+                            
+                            **Usage**: In prompt text, reference variables with the `{{variable_name}}` format. The system automatically replaces them with the corresponding values defined in `template_variables`.
+                            > Note: Variable names and values cannot reference other variables. For example, in the custom variable `"farewell": "Looking forward to seeing you again, {{name}}"`, `{{name}}` is not resolved.
+                          additionalProperties:
+                            type: string
+                        failure_message:
+                          type: string
+                          description: Agent failure prompt. If configured, it is returned through the TTS module when the LLM call fails.
+                        # silence_message:
+                        #   type: string
+                          
+                        #   description: |-
+                        #     > This field is deprecated. Use `parameters.silence_config` instead.
+
+                        #     Silence prompt message. The default value is an empty string. After the agent is created successfully and the user joins the channel, the time during which the agent is neither listening, thinking, nor speaking is considered silence time. When the silence time reaches the value set in `silence_timeout`, the agent plays the silence prompt. This parameter does not take effect when `silence_timeout` is set to `0`.
+                        # style:
+                        #   type: string
+                        #   description: "LLM protocol. Supported values:\r\n- `\"openai\"` (default)\r\n- `\"dify\"`\r\n- `\"gemini\"`\r\n- `\"anthropic\"`"
+                        vendor:
+                          type: string
+                          
+                          description: |-
+                            LLM provider. Two types of settings are supported:
+                            - Commercial LLM providers, with the following supported values:
+                              - `aliyun`: Alibaba Cloud
+                              - `bytedance`: ByteDance
+                              - `deepseek`: DeepSeek
+                              - `tencent`: Tencent
+
+                              Setting this improves compatibility and reduces request failures caused by carrying information unsupported by the LLM.
+                            - A custom LLM, set to `"custom"`. When configured, the agent sends the following additional information when calling the custom LLM, in addition to `role` and `content`:
+                              - `turn_id`: Unique conversation turn identifier. `turn_id` starts at 0 and increments by one. One turn between the user and the agent corresponds to one `turn_id`.
+                              - `timestamp`: Request timestamp in milliseconds.
+                        mcp_servers:
+                          type: array
+                          description: List of MCP (Model Context Protocol) server configurations. By configuring MCP servers, the agent can call tools provided by external services to implement more complex business logic.
+                          items:
+                            type: object
+                            required:
+                              - name
+                              - endpoint
+                            properties:
+                              name:
+                                type: string
+                                description: |
+                                  Unique identifier of the MCP server. Maximum length is 48 characters. The following characters are supported:
+                                  - Lowercase letters: a to z
+                                  - Uppercase letters: A to Z
+                                  - Digits: 0 to 9
+                                  - "." and "-"
+                              endpoint:
+                                type: string
+                                description: Endpoint URL of the MCP server. The agent communicates with the MCP server through this address.
+                              transport:
+                                type: string
+                                description: |
+                                  Transport protocol. Supported values:
+                                  - `"streamable_http"`: Streamable HTTP protocol
+                              headers:
+                                type: object
+                                description: HTTP headers included when requesting the MCP server, such as authentication information.
+                                additionalProperties:
+                                  type: string
+                              allowed_tools:
+                                type: array
+                                description: |
+                                  List of tools the agent is allowed to call. Only tools in this list can be used by the agent.
+                                  > `allowed_tools` behavior:
+                                  > - If `allowed_tools` is omitted: all tools are enabled
+                                  > - If `allowed_tools` is provided:
+                                  >    - `[]`: no tools are enabled
+                                  >    - `["*"]`: all tools are enabled
+                                  >    - `["aa", "bb", "cc"]`: `aa`, `bb`, and `cc` are enabled
+                                  >    - `["aa", "bb", "*"]`: all tools are enabled
+                                items:
+                                  type: string
+                              timeout_ms:
+                                type: integer
+                                description: Timeout for MCP server requests, in milliseconds. After a timeout, the agent does not wait for the MCP server response and instead continues with subsequent logic.
+                                default: 10000
+                        headers:
+                          type: object
+                          description: |
+                            Custom request headers attached when calling the LLM. You can use this field to pass through business-specific fields, tenant identifiers, and similar information.
+                            > - Headers passed in this parameter are merged with the default headers generated by the Conversational AI Engine. If keys conflict, the headers generated by the Conversational AI Engine take precedence, for example authentication-related headers.
+                            > - Header keys are merged using exact string matching and are case-sensitive. Agora recommends using standard canonical casing to avoid ambiguity caused by different letter case in the same header name.
+                          additionalProperties: {}
+                        params:
+                          type: object
+                          
+                          description: Additional LLM information transmitted in the request body, such as the model used and the maximum token limit. Supported configurations vary by LLM provider. See the corresponding provider documentation and fill in the fields as needed.
+                          additionalProperties: {}
+                    avatar:
+                      type: object
+                      description: Avatar configuration.
+                      properties:
+                        enable:
+                          type: boolean
+                          description: |
+                            Whether to enable the avatar feature for the agent:
+                            - `true`: Enabled. When enabled, you must configure the `vendor` and `params` fields.
+                            - `false`: (default) Disabled.
+
+                            > Enabling the avatar feature incurs RTC video call charges. For details, see [RTC Billing](https://doc.shengwang.cn/doc/rtc/android/billing/billing-strategy).
+                        vendor:
+                          type: string
+                          description: |
+                            Avatar provider. Supported values:
+                            - `sensetime`: SenseTime avatar
+                        params:
+                          $ref: '#/components/schemas/avatar_params'
+                          description: |
+                            Configuration parameters for the selected avatar provider.
+                            > See the request examples for parameter samples for different avatar providers.
+                    turn_detection:
+                      type: object
+                      description: |-
+                        Conversation turn detection settings used to control voice activity detection and conversation turn determination logic.
+
+                        > Since v2.6, `turn_detection` only handles Start of Speech (SoS) and End of Speech (EoS) detection. Keyword interruption and the handling strategy after interruption is disabled have been moved to the top-level `interruption` field.
+                      properties:
+                        mode:
+                          type: string
+                          
+                          description: |-
+                            Conversation turn detection mode. Currently supported values:
+                            - `"default"`: (default) Default mode, which uses the standard conversation turn detection configuration.
+                          enum:
+                            - default
+                          default: default
+                        config:
+                          type: object
+                          
+                          description: Detailed configuration for conversation turn detection.
+                          properties:
+                            speech_threshold:
+                              type: number
+                              description: Speech detection sensitivity, with a value range of (0.0, 1.0). It determines what level of sound in the audio signal is treated as voice activity. Lower values make the agent more likely to detect speech, while higher values may ignore faint sounds.
+                              format: float
+                              default: 0.5
+                            start_of_speech:
+                              type: object
+                              description: Start of Speech (SoS) detection configuration, used to determine when the user starts speaking.
+                              properties:
+                                mode:
+                                  type: string
+                                  description: |-
+                                    Start-of-speech detection mode. Supported values:
+                                    - `"vad"`: (default) Triggered based on VAD (voice activity detection), using audio-signal detection.
+                                    - `"keywords"`: Deprecated. Use `properties.interruption.mode = "keywords"` to configure keyword interruption.
+                                    - `"disabled"`: Deprecated. Use `properties.interruption.enable = false` together with `properties.interruption.disabled_config.strategy` to configure the handling strategy after interruption is disabled.                                    
+
+                                '{mode}_config':
+                                  $ref: '#/components/schemas/start_of_speech_config'
+                                  description: |
+                                    Start-of-speech configuration parameters. Pass the corresponding configuration field according to `mode`.
+                            end_of_speech:
+                              type: object
+                              description: End of Speech (EoS) detection configuration, used to determine when the user finishes speaking.
+                              properties:
+                                mode:
+                                  type: string
+                                  description: |-
+                                    End-of-speech detection mode. Supported values:
+                                    - `"vad"`: (default) Triggered based on VAD (voice activity detection), using silence duration detection.
+                                    - `"semantic"`: Triggered semantically, using a semantic understanding module to determine whether the conversation turn has ended. This mode currently supports only Chinese and English text.
+                                '{mode}_config':
+                                  $ref: '#/components/schemas/end_of_speech_config'
+                                  description: |
+                                    End-of-speech configuration parameters. Pass the corresponding configuration field according to `mode`.
+                    interruption:
+                      type: object
+                      description: |-
+                        Intelligent interruption control configuration used to centrally manage how the agent behaves when interrupted by the user.
+                      properties:
+                        enable:
+                          type: boolean
+                          default: true
+                          description: |-
+                            Whether to enable agent interruption:
+                            - `true`: (default) Enabled.
+                            - `false`: Disabled. When disabled, the agent cannot be interrupted in the middle of an interaction.
+                        mode:
+                          type: string
+                          default: start_of_speech
+                          description: |-
+                            Interruption trigger method. Supported values:
+                            - `"start_of_speech"`: (default) Trigger interruption when the user starts speaking.
+                            - `"keywords"`: Trigger interruption when the user speaks specified keywords. Configure the keywords in the `keywords_config` field.
+                        keywords_config:
+                          type: object
+                          description: |-
+                            Configuration for keyword-triggered interruption. Takes effect only when `mode = "keywords"`.
+                          properties:
+                            trigger_keywords:
+                              type: array
+                              description: List of keywords that trigger interruption. Up to 128 keywords are supported.
+                              items:
+                                type: string
+                        disabled_config:
+                          type: object
+                          description: |-
+                            Handling strategy after interruption is disabled. Takes effect only when `interruption.enable` is `false`.
+                          properties:
+                            strategy:
+                              type: string
+                              description: |
+                                Handling strategy after interruption is disabled. Supported values:
+                                - `"append"`: Append mode. User speech does not interrupt the agent. The agent processes the received speech request after the current interaction ends.
+                                - `"ignore"`: Ignore mode. The agent ignores user speech requests. If user speech is received while the agent is speaking or thinking, the request is ignored, discarded, and not stored in context.
+                    sal:
+                      type: object
+                      description: |-
+                        Selective Attention Locking (SAL) configuration.
+                        > This feature is currently in beta.
+                      properties:
+                        sal_mode: 
+                          type: string
+                          description: |-
+                            Selective Attention Locking mode. Supported options:
+                            - `"locking"`: (default) Primary speaker locking mode. The agent locks onto the primary speaker and suppresses 95% of surrounding speech and noise. This mode can be enabled in two ways:
+                              - Passive identification: The user speaks loudly and clearly at the beginning of the conversation, and the agent automatically identifies the user as the primary speaker.
+                              - Pre-registration: When creating the agent, pre-register a primary speaker voiceprint URL through the `sample_urls` field. The agent then locks onto the primary speaker based on the pre-registered voiceprint URL.
+                            - `"recognition"`: Voiceprint recognition mode. You can pre-register voiceprint URLs through the `sample_urls` field. Currently, only a single voiceprint can be registered. The agent identifies different speakers and suppresses other background speech and environmental noise. Identified speaker identities are labeled in the `vpids` field under `metadata` and sent to the LLM. You need to set `llm.vendor` to `"custom"` and refer to [Custom LLM](/doc/convoai/restful/user-guides/custom-llm) to learn how to let the LLM process speaker information.
+                          default: "locking"
+                        sample_urls:
+                          type: object
+                          description: |-
+                            Registered voiceprint URLs in key-value format. The key is the registered voiceprint name, and the value is the download URL of the corresponding speaker's voiceprint.
+                            > - The voiceprint name cannot be set to `"unknown"`. This is a reserved keyword used to identify unknown speakers.
+                            > - Registered voiceprints must meet the following requirements:
+                            >   - Quantity: Currently, only one registered voiceprint URL is supported per task request.
+                            >   - Size: Each voiceprint file must not exceed 2 MB.
+                            >   - Duration: 10 to 15 seconds, with at least 8 seconds of effective audio and not too much silence.
+                            >   - Format: PCM audio file with a 16 kHz sample rate, 16-bit depth, and mono channel. The file name suffix must be `.pcm`.
+                    labels:
+                      type: object
+                      description: |-
+                        Custom labels in key-value format, where the key is the label name and the value is the label value. These are used to let the agent carry custom business information.
+                        
+                        This custom information is bound to the agent and returned in the `payload` field of all message notification callbacks from the Conversational AI Engine. It can be used to implement custom business logic, such as marking campaign IDs, customer groups, and business scenarios.
+                      additionalProperties:
+                        type: string
+                    rtc:
+                      type: object
+                      description: RTC media content encryption configuration.
+                      properties:
+                        encryption_key:
+                          type: string
+                          description: |-
+                            Encryption key as a string. The length is not limited. Agora recommends using a 32-byte key.
+                            > If the encryption key is not set or is set to an empty value, built-in encryption cannot be used.
+                        encryption_salt:
+                          type: string
+                          description: |-
+                            Salt used for encryption, as a Base64-encoded string whose decoded length is 32 bytes.
+                            > This parameter takes effect only when `encryption_mode` is set to `7` (AES_128_GCM2) or `8` (AES_256_GCM2). In this case, make sure this parameter is not empty.
+                        encryption_mode:
+                          type: integer
+                          description: |-
+                            Built-in encryption mode. Supported values:
+                            - `1`: AES_128_XTS - 128-bit AES encryption, XTS mode.
+                            - `2`: AES_128_ECB - 128-bit AES encryption, ECB mode.
+                            - `3`: AES_256_XTS - 256-bit AES encryption, XTS mode.
+                            - `4`: SM4_128_ECB - 128-bit SM4 encryption, ECB mode.
+                            - `5`: AES_128_GCM - 128-bit AES encryption, GCM mode.
+                            - `6`: AES_256_GCM - 256-bit AES encryption, GCM mode.
+                            - `7`: AES_128_GCM2 - 128-bit AES encryption, GCM mode. This mode requires `salt` (`encryption_salt`).
+                            - `8`: AES_256_GCM2 - 256-bit AES encryption, GCM mode. This mode requires `salt` (`encryption_salt`).
+                            
+                            > Agora recommends using mode `7` (AES_128_GCM2) or `8` (AES_256_GCM2), because both modes support encryption salt for improved security.
+                    filler_words:
+                      type: object
+                      description: |-
+                        Filler words feature (Beta) configuration, used to play filler phrases while waiting for the LLM response, reducing user anxiety during waiting and improving conversational fluency.
+                        
+                        Filler-word playback follows these rules:
+                        - **Playback order**: When multiple filler phrases or waiting LLM responses need to be played, they are played in the order in which the text arrives.
+                        - **Interruption control**: Inherits the interruption mode configured globally in `turn_detection.config`.
+                      properties:
+                        enable:
+                          type: boolean
+                          description: |-
+                            Whether to enable the filler words feature:
+                            - `true`: Enabled.
+                            - `false`: (default) Disabled.
+                          default: false
+                        trigger:
+                          type: object
+                          description: Filler-word trigger configuration, which defines when filler-word playback is triggered.
+                          properties:
+                            mode:
+                              type: string
+                              description: |-
+                                Filler-word trigger mode. Supported values:
+                                - `"fixed_time"`: Fixed-time trigger. Filler-word playback is triggered when the LLM response waiting time exceeds the configured threshold.
+                            '{mode}_config':
+                              $ref: '#/components/schemas/filler_words_trigger_config'
+                              description: |
+                                Filler-word trigger configuration parameters. Select the corresponding configuration according to `mode`.
+                        content:
+                          type: object
+                          description: Filler-word content configuration, which defines the source and selection rule for filler phrases.
+                          properties:
+                            mode:
+                              type: string
+                              description: |-
+                                Filler-word content mode. Supported values:
+                                - `"static"`: Static filler words. Uses a predefined filler phrase list.
+                            '{mode}_config':
+                              $ref: '#/components/schemas/filler_words_content_config'
+                              description: |
+                                Filler-word content configuration parameters. Select the corresponding configuration according to `mode`.
+                    parameters:
+                      type: object
+                      description: Agent parameter configuration.
+                      properties:
+                        silence_config:
+                          type: object
+                          
+                          description: Agent silence settings.
+                          properties:
+                            timeout_ms:
+                              type: integer
+                              description: "Maximum agent silence duration in milliseconds. The value range is [0,60000]. After the agent is created successfully and the user joins the channel, the time during which the agent is neither listening, thinking, nor speaking is considered agent silence time. When the silence time reaches the configured value, the agent plays the silence prompt. This feature can be used to let the agent remind inactive users.\r\n- Set to `0` (default): This feature is disabled.\r\n- Set to `(0,60000]`: You must also set `content`, otherwise the silence prompt cannot be played and the setting does not take effect."
+                            action:
+                              type: string
+                              description: "Action taken by the agent when the silence time reaches the configured value. Supported values:\r\n- `\"speak\"`: (default) Use the TTS module to play the silence prompt content (`content`).\r\n- `\"think\"`: Append the silence prompt content (`content`) to the end of the context and pass it to the LLM."
+                            content:
+                              type: string
+                              description: Content of the silence prompt. The configured content is used differently depending on the `action` setting.
+                        farewell_config:
+                          type: object
+                          description: Agent graceful leave settings.
+                          properties:
+                            graceful_enabled:
+                              type: boolean
+                              description: |-
+                                Whether to enable the Graceful Leave feature:
+                                - `true`: Enabled. When enabled, calling the [POST Stop Conversational AI Agent](/doc/convoai/restful/convoai/operations/stop-agent) API to let the agent leave the channel ensures that the agent leaves only after it enters the idle state (`IDLE`).
+                                - `false`: (default) Disabled.
+                              default: false
+                            graceful_timeout_seconds:
+                              type: integer
+                              description: Graceful leave timeout in seconds. This is the maximum time to wait for the agent to enter the idle state (`IDLE`) before leaving the channel. After this time is exceeded, the agent leaves immediately even if it is not idle. This field takes effect only when `graceful_enabled` is `true`. The value range is [0,120].
+                              default: 30
+                        data_channel:
+                          type: string
+                          
+                          description: "Agent data transport channel. Supported values:\r\n- `rtm`: Use RTM for transport. This setting takes effect only when `advanced_features.enable_rtm` is `true`.\r\n- `datastream`: (default) Use RTC [`DataStream`](https://doc.shengwang.cn/api-ref/rtc/android/API/toc_datastream#callback_irtcengineeventhandler_onstreammessage) for transport."
+                        enable_metrics:
+                          type: boolean
+                          
+                          default: false
+                          description: |-
+                            Whether to receive agent metrics data:
+                            - `true`: Receive.
+                            - `false`: (default) Do not receive.
+                            
+                            This setting takes effect only when `advanced_features.enable_rtm` is `true`. You can refer to [Listen to Agent Events](/doc/convoai/restful/user-guides/listen-agent-events) to learn how to receive agent metrics data by using client-side components, or [Receive Webhook Events](/doc/convoai/restful/webhook/enable-ncs) to learn how to receive agent metrics data through webhooks.
+                        enable_error_message:
+                          type: boolean
+                          default: false
+                          description: |-
+                            Whether to receive agent error events:
+                            - `true`: Receive.
+                            - `false`: (default) Do not receive.
+                            
+                            This setting takes effect only when `advanced_features.enable_rtm` is `true`. You can refer to [Listen to Agent Events](/doc/convoai/restful/user-guides/listen-agent-events) to learn how to receive agent error events by using client-side components.
+                        # ifttt:
+                        #   type: object
+                        #   description: |-
+                        #     IFTTT (If This Then That) automation trigger configuration, used to automatically perform specific actions based on the agent's state.
+                            
+                        #     By configuring trigger conditions, such as the agent remaining in a specific state for a certain period, the system can automatically call tools provided by MCP servers to implement automated workflows such as automatic hang-up, automatic message handling, and state transitions.
+                        #   properties:
+                        #     jobs:
+                        #       type: array
+                        #       description: List of automation tasks. Each task defines a trigger condition and the corresponding action to execute.
+                        #       items:
+                        #         type: object
+                        #         properties:
+                        #           state:
+                        #             type: string
+                        #             description: |-
+                        #               State matching rule for the trigger condition. Supported formats:
+                        #               - `"state_name"`: Trigger when the agent is in the specified state.
+                        #               - `"!state_name"`: Trigger when the agent is not in the specified state, where `!` indicates negation.
+                                      
+                        #               Common states include `listening`, `thinking`, `speaking`, `idle`, and so on.
+                        #           duration_ms:
+                        #             type: integer
+                        #             description: State duration threshold in milliseconds. The action is triggered when the agent remains in the specified state for at least this duration.
+                        #           tool:
+                        #             type: string
+                        #             description: Name of the tool to call. This tool must be included in the `allowed_tools` list configured under `mcp_servers`.
+                        #           from:
+                        #             type: string
+                        #             description: Reference to the MCP server that owns the tool, in the format `"mcp_servers/{server_name}"`, where `{server_name}` is the server name defined in `mcp_servers`.
+                        #           args:
+                        #             type: object
+                        #             description: Parameters passed when invoking the tool. The exact parameter structure depends on the tool definition.
+                        #             additionalProperties: true
+            examples:
+              Defalut:
+                value:
+                  name: unique_name
+                  properties:
+                    channel: channel_name
+                    token: token
+                    agent_rtc_uid: '123'
+                    remote_rtc_uids:
+                      - '321'
+                    enable_string_uid: false
+                    idle_timeout: 120
+                    llm:
+                      url: 'https://api.minimax.chat/v2/text/chatcompletion_v2'
+                      api_key: xxx
+                      system_messages:
+                        - role: system
+                          content: You are a helpful chatbot.
+                      greeting_message: Hello, how can I help you?
+                      failure_message: Sorry, I can't answer that question.
+                      max_history: 32
+                      params:
+                        model: abab6.5s-chat
+                        max_token: 1024
+                        userName: Tomas
+                    asr:
+                      language: zh-CN
+                      vendor: fengming
+                    tts:
+                      vendor: minimax
+                      skip_patterns: [1]
+                      params:
+                        group_id: xxxx
+                        key: xxxx
+                        model: speech-01-turbo
+                        voice_setting:
+                          voice_id: female-shaonv
+                          speed: 1
+                          vol: 1
+                          pitch: 0
+                          emotion: happy
+                        audio_setting:
+                          sample_rate: 16000
+              Use String UID:
+                value:
+                  name: unique_name
+                  properties:
+                    channel: channel_name
+                    token: token
+                    agent_rtc_uid: friday
+                    remote_rtc_uids:
+                      - '*'
+                    enable_string_uid: true
+                    idle_timeout: 120
+                    llm:
+                      url: 'https://api.minimax.chat/v1/text/chatcompletion_v2'
+                      api_key: xxx
+                      system_messages:
+                        - role: system
+                          content: You are a helpful chatbot.
+                      greeting_message: Hello, how can I help you?
+                      failure_message: Sorry, I can't answer that question.
+                      max_history: 32
+                      params:
+                        model: abab6.5s-chat
+                        max_tokens: 1024
+                        userName: Tomas
+                    asr:
+                      language: zh-CN
+                      vendor: fengming
+                    tts:
+                      vendor: tencent
+                      skip_patterns: [1, 3]
+                      params:
+                        group_id: xxx
+                        key: xxx
+                        model: speech-01-turbo
+                        voice_setting:
+                          voice_id: female-shaonv
+                          speed: 1
+                          vol: 1
+                          pitch: 0
+                          emotion: happy
+                        audio_setting:
+                          sample_rate: 16000
+              Full Configuration Example:
+                value:
+                  name: full_config_agent
+                  properties:
+                    channel: full_channel_name
+                    token: full_token_value
+                    agent_rtc_uid: '12345'
+                    remote_rtc_uids:
+                      - '67890'
+                    enable_string_uid: false
+                    idle_timeout: 180
+                    advanced_features:
+                      enable_rtm: true
+                      enable_sal: true
+                      enable_tools: true
+                    asr:
+                      language: zh-CN
+                      vendor: microsoft
+                      params:
+                        key: your_microsoft_key
+                        region: chinaeast2
+                        language: zh-CN
+                        phrase_list:
+                          - agora
+                          - fengming
+                    tts:
+                      vendor: microsoft
+                      skip_patterns: [1, 2]
+                      params:
+                        key: your_microsoft_key
+                        region: chinaeast2
+                        voice_name: zh-CN-YunxiNeural
+                        speed: 1.0
+                        volume: 70
+                        sample_rate: 24000
+                    llm:
+                      url: 'https://api.openai.com/v1/chat/completions'
+                      api_key: your_openai_api_key
+                      system_messages:
+                        - role: system
+                          content: 'You are a professional AI assistant. User name is {{user_name}}.'
+                      greeting_message: 'Hello {{user_name}}, I am the AI assistant for {{company_name}}. How can I help you?'
+                      greeting_configs:
+                        mode: single_every
+                        delay_ms: 500
+                      failure_message: Sorry, the system encountered an issue. Please try again later.
+                      max_history: 64
+                      input_modalities:
+                        - text
+                        - image
+                      output_modalities:
+                        - text
+                      vendor: custom
+                      headers:
+                        X-Tenant-ID: tenant-123
+                        X-Custom-Metadata: production
+                      mcp_servers:
+                        - name: weather-server
+                          endpoint: 'https://mcp.example.com/weather'
+                          transport: streamable_http
+                          headers:
+                            Authorization: 'Bearer your_mcp_token'
+                          allowed_tools:
+                            - get_current_weather
+                            - get_weather_forecast
+                          timeout_ms: 15000
+                      params:
+                        model: gpt-4o
+                        temperature: 0.8
+                        max_tokens: 2048
+                        stream: true
+                      template_variables:
+                        user_name: John Doe
+                        company_name: Agora
+                    avatar:
+                      enable: true
+                      vendor: sensetime
+                      params:
+                        agora_token: avatar_token
+                        agora_uid: '99999'
+                        appId: sensetime_app_id
+                        app_key: sensetime_app_key
+                        sceneList:
+                          - digital_role:
+                              face_feature_id: face_feature_id_001
+                              position:
+                                x: 0
+                                y: 0
+                              url: 'https://example.com/avatar_model.zip'
+                    turn_detection:
+                      mode: default
+                      config:
+                        speech_threshold: 0.5
+                        start_of_speech:
+                          mode: vad
+                          vad_config:
+                            interrupt_duration_ms: 160
+                            speaking_interrupt_duration_ms: 320
+                            prefix_padding_ms: 800
+                        end_of_speech:
+                          mode: semantic
+                          semantic_config:
+                            silence_duration_ms: 320
+                            max_wait_ms: 3000
+                            pause_state_enabled: true
+                    interruption:
+                      enable: true
+                      mode: keywords
+                      keywords_config:
+                        trigger_keywords:
+                          - hello
+                          - are you there
+                          - hello
+                    sal:
+                      sal_mode: locking
+                      sample_urls:
+                        speaker1: 'https://example.com/voiceprint1.pcm'
+                    labels:
+                      campaign_id: spring_2025
+                      customer_group: vip
+                      region: east_china
+                    rtc:
+                      encryption_key: your_32_byte_encryption_key_here
+                      encryption_salt: TsP4fLLyxxxxxxxxxroLA9oE=
+                      encryption_mode: 8
+                    filler_words:
+                      enable: true
+                      trigger:
+                        mode: fixed_time
+                        fixed_time_config:
+                          response_wait_ms: 1500
+                      content:
+                        mode: static
+                        static_config:
+                          phrases:
+                            - Please hold on.
+                            - Okay.
+                            - Mm-hmm.
+                          selection_rule: shuffle
+                    parameters:
+                      silence_config:
+                        timeout_ms: 15000
+                        action: think
+                        content: The user has been inactive for a long time. Please proactively ask whether they need further assistance.
+                      farewell_config:
+                        graceful_enabled: true
+                        graceful_timeout_seconds: 60
+                      data_channel: rtm
+                      enable_metrics: true
+                      enable_error_message: true
+              MCP Integration:
+                value:
+                  name: unique_name
+                  properties:
+                    channel: channel_name
+                    token: token
+                    agent_rtc_uid: '123'
+                    remote_rtc_uids:
+                      - '321'
+                    idle_timeout: 120
+                    llm:
+                      url: 'https://api.minimax.chat/v2/text/chatcompletion_v2'
+                      api_key: xxx
+                      system_messages:
+                        - role: system
+                          content: 'You are a helpful assistant. User name is {{user_name}}, and their account ID is {{account_id}}.'
+                      greeting_message: 'Hello {{user_name}}, how can I help you?'
+                      failure_message: 'Sorry {{user_name}}, I can''t answer that question. Please try again later.'
+                      max_history: 32
+                      params:
+                        model: abab6.5s-chat
+                        max_token: 1024
+                      template_variables:
+                        user_name: 'John Doe'
+                        account_id: 'ACC123456'
+                        silent_prompt: 'The user has been inactive for a long time. Please ask whether they want to continue.'
+                      mcp_servers:
+                        - name: mcpserver
+                          endpoint: 'https://registry.run.mcp.com.ai/mcp'
+                          transport: streamable_http
+                          headers:
+                            Authentication: 'Basic xxxx'
+                          allowed_tools:
+                            - getV01Servers
+                    asr:
+                      language: zh-CN
+                      vendor: fengming
+                    tts:
+                      vendor: minimax
+                      skip_patterns: [1]
+                      params:
+                        group_id: xxxx
+                        key: xxxx
+                        model: speech-01-turbo
+                        voice_setting:
+                          voice_id: female-shaonv
+                          speed: 1
+                          vol: 1
+                          pitch: 0
+                          emotion: happy
+                        audio_setting:
+                          sample_rate: 16000
+                    parameters:
+                      silence_config:
+                        timeout_ms: 10000
+                        action: think
+                        content: '{{silent_prompt}}'
+                      # ifttt:
+                      #   jobs:
+                      #     - state: '!listening'
+                      #       duration_ms: 60000
+                      #       tool: sip-hangup
+                      #       from: mcp_servers/sip_manager
+                      #       args:
+                      #         reason: silence
+      responses:
+        '200':
+          $ref: '#/components/responses/200'
+      servers:
+        - url: 'https://api.agora.io/cn/api/conversational-ai-agent'
+          description: ''
+  '/v2/projects/{appid}/agents/{agentId}/leave':
+    post:
+      # tags:
+      #   - Agent Management
+      summary: Stop Conversational AI Agent
+      description: Stop the specified Conversational AI agent instance and have it leave the RTC channel.
+      operationId: stop-agent
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/appid'
+        - $ref: '#/components/parameters/agentId'
+      responses:
+        '200':
+          description: "- If the returned status code is `200`, the request is successful and the response body is empty.\r\n- If the returned status code is not `200`, the request has failed. The response body contains the error type and description. For possible reasons, see [Response Status Codes](https://doc.shengwang.cn/doc/convoai/restful/api/response-code)."
+      servers:
+        - url: 'https://api.agora.io/cn/api/conversational-ai-agent'
+          description: ''
+  '/v2/projects/{appid}/agents/{agentId}/update':
+    post:
+      # tags:
+      #   - Agent Management
+      summary: Update Agent Configuration
+      description: Update part of the configuration parameters of the specified running agent.
+      operationId: agent-update
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/appid'
+        - $ref: '#/components/parameters/agentId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  token: 007eJxTYxxxQ4vkFB
+              properties:
+                properties:
+                  type: object
+                  properties:
+                    token:
+                      type: string
+                      description: 'Dynamic token used for authentication. If your project has enabled an App Certificate, you must pass your project''s dynamic token in this field. For details, see [Use a Token for Authentication](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication).'
+                    llm:
+                      type: object
+                      description: Large language model (LLM) settings.
+                      properties:
+                        system_messages:
+                          type: array
+                          
+                          description: A set of predefined messages prepended to every LLM call to control the LLM output. These can include role definitions, prompts, and example responses. It must be compatible with the OpenAI protocol.
+                          items:
+                            type: object
+                            additionalProperties: {}
+                        params:
+                          type: object
+                          
+                          description: "Additional LLM information transmitted in the request body, such as the model used and the maximum token limit. Supported configurations vary by LLM provider. See the corresponding provider documentation and fill in the fields as needed.\r\n> Updating this field overwrites the configuration used when the agent was created. When updating, make sure to pass the complete `params` field."
+                          additionalProperties: {}
+            examples:
+              Example 1:
+                value:
+                  properties:
+                    token: 007eJxTYxxxxxxxxxxIaHMLAAAA0ex66
+                    llm:
+                      system_messages:
+                        - role: system
+                          content: You are a helpful assistant. xxx
+                        - role: system
+                          content: 'Previously, user has talked about their favorite hobbies with some key topics: xxx'
+                      params:
+                        model: abab6.5s-chat
+                        max_token: 1024
+        description: ''
+      responses:
+        '200':
+          description: "- If the returned status code is `200`, the request is successful. The response body contains the result of this request.\r\n- If the returned status code is not `200`, the request has failed. The response body contains the error type and description. For possible reasons, see [Response Status Codes](https://doc.shengwang.cn/doc/convoai/restful/api/response-code)."
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    agent id: 1NT29XOXFT4Jxxxx410TXRCFG10HI00
+                    create ts: 173836896
+                    state: RUNNING
+                properties:
+                  agent_id:
+                    type: string
+                    description: Unique agent identifier.
+                  create_ts:
+                    type: integer
+                    description: Agent creation timestamp.
+                  state:
+                    type: string
+                    description: "Agent running status:\r\n- `IDLE` (0): Idle agent.\r\n- `STARTING` (1): Agent is starting.\r\n- `RUNNING` (2): Agent is running.\r\n- `STOPPING` (3): Agent is stopping.\r\n- `STOPPED` (4): Agent has finished leaving.\r\n- `RECOVERING` (5): Agent is recovering.\r\n- `FAILED` (6): Agent execution failed."
+              examples:
+                Example 1:
+                  value:
+                    agent_id: 1NT29XOXFT4Jxxxx410TXRCFG10HI00
+                    create_ts: 173836896
+                    state: RUNNING
+      servers:
+        - url: 'https://api.agora.io/cn/api/conversational-ai-agent'
+          description: ''
+  '/v2/projects/{appid}/agents/{agentId}':
+    get:
+      # tags:
+      #   - Agent Management
+      summary: Query Agent Status
+      description: Query the current running status of the specified agent instance.
+      operationId: query-agent-status
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/appid'
+        - $ref: '#/components/parameters/agentId'
+      responses:
+        '200':
+          description: "- If the returned status code is `200`, the request is successful and the response body contains the result of this request.\r\n- If the returned status code is not `200`, the request has failed. The response body contains the error type and description. For possible reasons, see [Response Status Codes](https://doc.shengwang.cn/doc/convoai/restful/api/response-code)."
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    message: 'agent exits with reason: xxxx'
+                    start_ts: 1735035893
+                    stop_ts: 1735035900
+                    status: FAILED
+                    name: support_agent_001
+                    agent_id: 1NT29X1xxxxZNU80BEIN56XF
+                properties:
+                  message:
+                    type: string
+                    description: Request message.
+                  start_ts:
+                    type: integer
+                    description: Agent creation timestamp.
+                  stop_ts:
+                    type: integer
+                    description: Agent stop timestamp.
+                  status:
+                    type: string
+                    description: "Agent running status:\r\n- `IDLE` (0): Idle agent.\r\n- `STARTING` (1): Agent is starting.\r\n- `RUNNING` (2): Agent is running.\r\n- `STOPPING` (3): Agent is stopping.\r\n- `STOPPED` (4): Agent has fully exited.\r\n- `RECOVERING` (5): Agent is recovering.\r\n- `FAILED` (6): Agent execution failed."
+                  name:
+                    type: string
+                    description: Agent name, that is, the `name` passed when calling the create API. It must be unique within the same channel.
+                  agent_id:
+                    type: string
+                    description: Unique agent identifier.
+              examples:
+                Example 1:
+                  value:
+                    message: 'agent exits with reason: xxxx'
+                    start_ts: 1735035893
+                    stop_ts: 1735035900
+                    status: FAILED
+                    name: support_agent_001
+                    agent_id: 1NT29X11GQSxxxxxNU80BEIN56XF
+      servers:
+        - url: 'https://api.agora.io/cn/api/conversational-ai-agent'
+          description: ''
+  '/v2/projects/{appid}/agents':
+    get:
+      # tags:
+      #   - Agent Management
+      summary: Get Agent List
+      operationId: get-agent-list
+      description: |
+        Retrieve the list of agents that match the specified criteria.
+        > This API supports querying only agents created within the last 7 days.
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/appid'
+        - name: channel
+          in: query
+          description: Query the list of agents under the specified channel name.
+          schema:
+            type: string
+            examples:
+              - TEST
+        - name: from_time
+          in: query
+          description: Start timestamp (s) for the list query. Defaults to one day ago.
+          schema:
+            type: integer
+            examples:
+              - 1733013296
+        - name: to_time
+          in: query
+          description: End timestamp (s) for the list query. Defaults to the current time.
+          schema:
+            type: integer
+            examples:
+              - 1734016896
+        - name: state
+          in: query
+          description: Specify the agent status to query. A single query does not support multiple statuses:<li>`IDLE` (0): Idle agent.</li><li>`STARTING` (1): Agent is starting.</li><li>`RUNNING` (2): Agent is running.</li><li>`STOPPING` (3): Agent is stopping.</li><li>`STOPPED` (4): Agent has fully exited.</li><li>`RECOVERING` (5): Agent is recovering.</li><li>`FAILED` (6): Agent execution failed.</li>
+          schema:
+            type: string
+            default: '2'
+            examples:
+              - '1'
+        - name: limit
+          in: query
+          description: Maximum number of items returned in a single paginated query.
+          schema:
+            type: integer
+            default: 20
+            examples:
+              - 20
+        - name: cursor
+          in: query
+          description: Pagination cursor, that is, the `agent_id` of the starting position for pagination.
+          schema:
+            type: string
+            examples:
+              - agent_id
+      responses:
+        '200':
+          description: "- If the returned status code is `200`, the request is successful and the response body contains the result of this request.\r\n- If the returned status code is not `200`, the request has failed. The response body contains the error type and description. For possible reasons, see [Response Status Codes](https://doc.shengwang.cn/doc/convoai/restful/api/response-code)."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        description: Number of agents returned in this response.
+                      list:
+                        type: array
+                        description: List of agents that meet the query conditions.
+                        items:
+                          type: object
+                          properties:
+                            start_ts:
+                              type: integer
+                              description: Agent creation timestamp.
+                            status:
+                              type: string
+                              description: "Agent running status:\r\n- `IDLE` (0): Idle agent.\r\n- `STARTING` (1): Agent is starting.\r\n- `RUNNING` (2): Agent is running.\r\n- `STOPPING` (3): Agent is stopping.\r\n- `STOPPED` (4): Agent has fully exited.\r\n- `RECOVERING` (5): Agent is recovering.\r\n- `FAILED` (6): Agent execution failed."
+                            agent_id:
+                              type: string
+                              description: Unique agent identifier.
+                  meta:
+                    type: object
+                    description: Metadata of the returned list.
+                    properties:
+                      cursor:
+                        type: string
+                        description: Pagination cursor.
+                      total:
+                        type: integer
+                        description: Total number of agents that match the current query conditions.
+                  status:
+                    type: string
+                    description: Request status.
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      count: 1
+                      list:
+                        - start_ts: 1735035893
+                          status: RUNNING
+                          agent_id: 1NT29X11GQSxxxxx80BEIN56XF
+                    meta:
+                      cursor: ''
+                      total: 1
+                    status: ok
+      servers:
+        - url: 'https://api.agora.io/cn/api/conversational-ai-agent'
+          description: ''
+  '/v2/projects/{appid}/agents/{agentId}/speak':
+    parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/agentId'
+    post:
+      summary: Speak a Custom Message
+      # tags:
+      #   - Agent Management
+      responses:
+        '200':
+          description: "- If the returned status code is `200`, the request is successful. The response body contains agent information and the agent starts speaking the specified content.\r\n- If the returned status code is not `200`, the request has failed. The response body contains the error type and description. For possible reasons, see [Response Status Codes](https://doc.shengwang.cn/doc/convoai/restful/api/response-code)."
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    agent_id: 1NT29X10YHxxxxxWJOXLYHNYB
+                    channel: test_channel
+                    start_ts: '178444582'
+                properties:
+                  agent_id:
+                    $ref: '#/components/schemas/agent_id'
+                  channel:
+                    $ref: '#/components/schemas/channel'
+                  start_ts:
+                    $ref: '#/components/schemas/start_ts'
+              examples:
+                Example 1:
+                  value:
+                    agent_id: 1NT29XxxxxxxxxELWEHC8OS
+                    channel: test_channel
+                    start_ts: 1744877089
+      operationId: agent-speak
+      description: "Make the specified agent speak a custom message.\r\n\r\nDuring interaction with the agent, calling this API makes the agent immediately speak the custom message through the TTS module. After receiving the request, the speaking behavior interrupts the current speaking and thinking flow."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - text
+              properties:
+                text:
+                  type: string
+                  description: Text content to be spoken. The maximum length is 512 bytes.
+                priority:
+                  type: string
+                  description: |-
+                    Priority of the speaking behavior. Supported values:
+                    - `"INTERRUPT"`: (default) High priority. Interrupt and speak immediately. The agent terminates the current interaction and directly speaks the message.
+                    - `"APPEND"`: Medium priority. Append for later playback. The agent speaks the message after the current interaction ends.
+                    - `"IGNORE"`: Low priority. Speak only when idle. If the agent is currently in an interaction, it directly ignores and discards the message. The message is spoken only when the agent is not interacting.
+                interruptable:
+                  type: boolean
+                  description: "Whether to allow user speech to interrupt agent playback:\r\n- `true`: (default) Allowed.\r\n- `false`: Not allowed."
+                  default: true
+            examples:
+              Example 1:
+                value:
+                  text: Sorry, the conversation content does not comply with policy.
+                  priority: INTERRUPT
+                  interruptable: false
+  '/v2/projects/{appid}/agents/{agentId}/interrupt':
+    parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/agentId'
+    post:
+      summary: Interrupt an Agent
+      # tags:
+      #   - Agent Management
+      responses:
+        default:
+          description: "- If the returned status code is `200`, the request is successful and the response body contains agent information.\r\n- If the returned status code is not `200`, the request has failed. The response body contains the error type and description. For possible reasons, see [Response Status Codes](https://doc.shengwang.cn/doc/convoai/restful/api/response-code)."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agent_id:
+                    $ref: '#/components/schemas/agent_id'
+                  channel:
+                    $ref: '#/components/schemas/channel'
+                  start_ts:
+                    $ref: '#/components/schemas/start_ts'
+              examples:
+                Example 1:
+                  value:
+                    agent_id: 1NT29XxxxxxxxxELWEHC8OS
+                    channel: test_channel
+                    start_ts: 1744877089
+      operationId: agent-interrupt
+      description: Interrupt the specified agent while it is speaking or thinking.
+      requestBody:
+        description: The request body is empty.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+            examples:
+              Example 1:
+                value: {}
+  '/v2/projects/{appid}/agents/{agentId}/think':
+    parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/agentId'
+    post:
+      summary: Send a Custom Instruction
+      # tags:
+      #   - Agent Management
+      operationId: agent-think
+      description: |
+        Send a custom text instruction to the specified agent.
+
+        This API injects the input text into the current conversation flow as user input, and the Conversational AI Engine continues reasoning and responding by using the standard user-input processing logic. You can use this API for scenarios such as implicit instruction injection, client event triggering, and voice-text coordination.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - text
+              properties:
+                text:
+                  type: string
+                  description: Custom instruction text. The system injects it into the current conversation flow as user input.
+                on_listening_action:
+                  type: string
+                  description: |
+                    Action to take when the agent is in the listening state. Supported values:
+                    - `"inject"`: (default) Inject the custom text instruction into the current turn without interrupting it.
+                    - `"ignore"`: Ignore this request.
+                on_thinking_action:
+                  type: string
+                  description: |
+                    Action to take when the agent is in the thinking state. Supported values:
+                    - `"interrupt"`: (default) Interrupt the current state and start a new conversation turn.
+                    - `"ignore"`: Ignore this request.
+                on_speaking_action:
+                  type: string
+                  description: |
+                    Action to take when the agent is in the speaking state. Supported values:
+                    - `"interrupt"`: Interrupt the current state and start a new conversation turn.
+                    - `"ignore"`: (default) Ignore this request.
+                interruptable:
+                  type: boolean
+                  description: |
+                    Whether to allow user speech to interrupt the custom instruction:
+                    - `true`: (default) Allowed.
+                    - `false`: Not allowed.
+                  default: true
+                metadata:
+                  type: object
+                  description: Custom metadata. You can use this field to pass additional information such as business identifiers.
+                  additionalProperties: {}
+            examples:
+              Example 1:
+                value:
+                  text: The user just clicked the purchase button.
+                  on_listening_action: inject
+                  on_thinking_action: interrupt
+                  on_speaking_action: ignore
+                  interruptable: true
+                  metadata:
+                    publisher: user123
+                    model: deepseek-r1
+      responses:
+        '200':
+          description: "- If the returned status code is `200`, the request is successful and the response body contains agent information.\r\n- If the returned status code is not `200`, the request has failed. The response body contains the error type and description. For possible reasons, see [Response Status Codes](https://doc.shengwang.cn/doc/convoai/restful/api/response-code)."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agent_id:
+                    $ref: '#/components/schemas/agent_id'
+                  channel:
+                    $ref: '#/components/schemas/channel'
+                  start_ts:
+                    $ref: '#/components/schemas/start_ts'
+              examples:
+                Example 1:
+                  value:
+                    agent_id: 1NT29XxxxxxxxxELWEHC8OS
+                    channel: test_channel
+                    start_ts: 1744877089
+  '/v2/projects/{appid}/agents/{agentId}/history':
+    parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/agentId'
+    get:
+      # tags:
+      #   - Agent Management
+      summary: Get Agent Short-Term Memory
+      operationId: get-history
+      description: "Get the short-term memory of the conversation between the user and the agent.\r\nYou can call this API while the agent is running (`RUNNING`) to retrieve the short-term memory stored from agent creation to the present, including:\r\n- Agent creation and stop timestamps\r\n- Conversation messages between the user and the agent"
+      responses:
+        default:
+          description: "- If the returned status code is `200`, the request is successful and the response body contains the result of this request.\r\n- If the returned status code is not `200`, the request has failed. The response body contains the error type and description. For possible reasons, see [Response Status Codes](https://doc.shengwang.cn/doc/convoai/restful/api/response-code)."
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    agent_id: xxxx
+                    start_ts: 123
+                    end_ts: 144
+                    status: STOPPED
+                    contents:
+                      - role: user
+                        content: hello.
+                      - role: assistant
+                        content: 'hi, how can I help you?'
+                    # tool_calls:
+                    #   - index: 0
+                    #     type: function
+                    #     id: call_u9oldpnqdxxxxxxaqdkaqjzq
+                    #     function:
+                    #       name: _publish_message
+                    #       arguments: '{"content": "hello"}'
+                    # - role: tool
+                    #   content: '{"result": "ok"}'
+                    # tool_call_id: call_u9oldpnqdxxxxxxaqdkaqjzq
+                properties:
+                  agent_id:
+                    type: string
+                    description: Unique agent identifier.
+                  start_ts:
+                    type: integer
+                    description: Agent creation timestamp.
+                  status:
+                    type: string
+                    description: Agent running status. Only querying agents whose status is `RUNNING` (2) is supported.
+                  contents:
+                    type: array
+                    description: Agent short-term memory.
+                    items:
+                      type: object
+                      properties:
+                        role:
+                          type: string
+                          description: "Message sender. Possible values:\r\n- `user`: User.\r\n- `assistant`: Agent."
+                        content:
+                          type: string
+                          description: Message content.
+              #           tool_calls:
+              #             type: array
+              #             description: Tool call information. Returned only when `role` is `assistant` and this message triggered a tool call. Contains the following fields:
+              #             items:
+              #               type: object
+              #               properties:
+              #                 index:
+              #                   type: integer
+              #                   description: Tool call index.
+              #                 type:
+              #                   type: string
+              #                   description: Tool call type. Currently only `function`, that is, function invocation, is supported.
+              #                 id:
+              #                   type: string
+              #                   description: Tool call ID. A unique ID is generated for each tool invocation request.
+              #                 function:
+              #                   type: object
+              #                   description: Function call information.
+              #                   properties:
+              #                     name:
+              #                       type: string
+              #                       description: "Function name. Currently supported:\r\n- `_publish_message`: Publish a message to the client side."
+              #                     arguments:
+              #                       type: string
+              #                       description: Function arguments.
+              #           tool_call_id:
+              #             type: string
+              #             description: Tool call ID. Returned only when `role` is `tool`, corresponding to the tool call result reflected in `content`.
+              examples:
+                Example 1:
+                  value:
+                    agent_id: xxxx
+                    start_ts: 123
+                    status: RUNNING
+                    contents:
+                      - role: user
+                        content: hello.
+                      - role: assistant
+                        content: 'hi, how can I help you?'
+                    #           tool_calls:
+                    #             - index: 0
+                    #               type: function
+                    #               id: call_u9oldpnqdxxxxxxaqdkaqjzq
+                    #               function:
+                    #                 name: _publish_message
+                    #                 arguments: '{"content": "hello"}'
+                    #         - role: tool
+                    #           content: '{"result": "ok"}'
+                    #           tool_call_id: call_u9oldpnqdxxxxxxaqdkaqjzq
+  '/v2/projects/{appid}/agents/{agentId}/turns':
+    get:
+      summary: Query Conversation Turn Information
+      description: |
+        After a session with an agent ends, call this API to query the conversation turn information for that session, including the start information, end information, and performance metrics for each turn.
+        > Only sessions from the last 7 days are supported.
+      operationId: get-turns
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/appid'
+        - $ref: '#/components/parameters/agentId'
+      responses:
+        '200':
+          description: "- If the returned status code is `200`, the request is successful and the response body contains the result of this request.\r\n- If the returned status code is not `200`, the request has failed. The response body contains the error type and description. For possible reasons, see [Response Status Codes](https://doc.shengwang.cn/doc/convoai/restful/api/response-code)."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  turns:
+                    type: array
+                    description: Conversation turn list.
+                    items:
+                      type: object
+                      properties:
+                        agent_id:
+                          type: string
+                          description: Unique agent identifier.
+                        channel:
+                          type: string
+                          description: Conversation channel name.
+                        turn_id:
+                          type: integer
+                          description: Conversation turn ID, incrementing from 1.
+                        start:
+                          type: object
+                          description: Turn start information.
+                          properties:
+                            start_at:
+                              type: integer
+                              description: Start timestamp in millisecond-level UTC time.
+                            type:
+                              type: string
+                              description: |
+                                Start type:
+                                - `voice_input`: Started due to user voice input.
+                                - `greeting`: Started because the agent played a greeting.
+                                - `silence_timeout`: Started because the agent reached a silence timeout.
+                                - `api_speak`: Started because information was spoken by calling the [Speak a Custom Message](/doc/convoai/restful/convoai/operations/agent-speak) API.
+                            metadata:
+                              $ref: '#/components/schemas/sos_metadata'
+                              description: Start metadata. Contains different fields depending on the value of `type`.
+                        end:
+                          type: object
+                          description: Turn end information.
+                          properties:
+                            end_at:
+                              type: integer
+                              description: End timestamp in millisecond-level UTC time.
+                            type:
+                              type: string
+                              description: |
+                                Turn end type:
+                                - `ok`: Ended normally.
+                                - `interrupted`: Interrupted.
+                                - `ignored`: Ignored.
+                                - `error`: Execution error.
+                            metadata:
+                              $ref: '#/components/schemas/eos_metadata'
+                              description: End metadata. Contains different fields depending on the value of `type`.
+                        metrics:
+                          type: object
+                          description: Detailed performance metrics for the conversation turn.
+                          properties:
+                            e2e_latency_ms:
+                              type: integer
+                              description: End-to-end total latency (ms).
+                            segmented_latency_ms:
+                              type: array
+                              description: Detailed list of segmented latency metrics.
+                              items:
+                                type: object
+                                properties:
+                                  name:
+                                    $ref: '#/components/schemas/metrics_modality'
+                                    description: Name of the latency module. Different latency modules are returned depending on the LLM input modality configured when [creating the conversational AI agent](/doc/convoai/restful/convoai/operations/start-agent).
+                                  latency:
+                                    type: integer
+                                    description: Latency (ms).
+              examples:
+                Example 1:
+                  value:
+                    turns:
+                      - agent_id: A42Axxxxxxxxx37MT56J
+                        channel: test_channel
+                        turn_id: 1
+                        start:
+                          start_at: 1774579820147
+                          type: greeting
+                          metadata:
+                            greeting_nth: 1
+                        end:
+                          end_at: 1774579822412
+                          type: interrupted
+                          metadata:
+                            caused_by: api_interrupt
+                            transport: rtm
+                        metrics:
+                          e2e_latency_ms: 337
+                          segmented_latency_ms:
+                            - name: tts_ttfb
+                              latency: 337
+      servers:
+        - url: 'https://api.agora.io/cn/api/conversational-ai-agent'
+          description: ''
+components:
+  parameters:
+    Authorization:
+      name: Authorization
+      in: header
+      description: 'When sending an HTTP request, choose one of the following authentication methods:<ol><li>**(Recommended) Use an RTC Token**: Put the RTC Token used by your Agora Conversational AI Engine project in the `Authorization` field. You can get a token in the following ways:<ul><li>In a test environment, you can generate a temporary token for your project from the [Agora Console](https://console.shengwang.cn/). It is valid for 24 hours.</li><li>In a production environment, you can deploy a token server by referring to [Use Token Authentication](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication) to generate tokens.</li></ul>Example parameter: `Authorization: agora token="007abcxxxxxxx123"`</li><li>**Use Basic Auth**: Generate a Base64-encoded `Authorization` field by following [Implement HTTP Authentication](https://doc.shengwang.cn/doc/convoai/restful/user-guides/http-basic-auth).<br/>Example parameter: `Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=`</li></ol>'
+      required: true
+      schema:
+        type: string
+        example: agora token=007abcxxxxxxxxxxxxxx123
+    appid:
+      name: appid
+      in: path
+      description: 'The [App ID](http://doc.shengwang.cn/doc/convoai/restful/get-started/enable-service#%E8%8E%B7%E5%8F%96-app-id) used by your project.'
+      required: true
+      schema:
+        type: string
+    agentId:
+      name: agentId
+      in: path
+      description: 'Agent instance ID, that is, the unique identifier of the agent. It is returned in the response body after [POST Create a Conversational AI Agent](https://doc.shengwang.cn/doc/convoai/restful/convoai/operations/start-agent) succeeds.'
+      required: true
+      schema:
+        type: string
+    phone_number:
+      name: phone_number
+      in: path
+      description: Phone number in E.164 format, for example `+11234567890`, used as a unique identifier.
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: |-
+        - If the returned status code is `200`, the request is successful and the response body contains the result of this request.
+        - If the returned status code is not `200`, the request has failed. The response body contains the error type and description. For possible reasons, see [Response Status Codes](https://doc.shengwang.cn/doc/convoai/restful/api/response-code).
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                agent_id: 1NT29X10YHxxxxxWJOXLYHNYB
+                create_ts: 1737111452
+                state: RUNNING
+            properties:
+              agent_id:
+                $ref: '#/components/schemas/agent_id'
+                description: Unique agent identifier.
+              create_ts:
+                $ref: '#/components/schemas/start_ts'
+                description: Agent creation timestamp.
+              status:
+                type: string
+                description: "Agent running status:\r\n- `IDLE` (0): Idle agent.\r\n- `STARTING` (1): Agent is starting.\r\n- `RUNNING` (2): Agent is running.\r\n- `STOPPING` (3): Agent is stopping.\r\n- `STOPPED` (4): Agent has fully exited.\r\n- `RECOVERING` (5): Agent is recovering.\r\n- `FAILED` (6): Agent execution failed."
+          examples:
+            Example 1:
+              value:
+                agent_id: 1NT29X10YHxxxxxWJOXLYHNYB
+                create_ts: 1737111452
+                status: RUNNING
+    phone_number_error:
+      description: |
+        If the returned HTTP status code is not a success status code, the request has failed. The response body contains a JSON object with the error type and description.
+        
+        **Possible status codes and reasons:**
+        
+        - 401 `unauthorized`: Authentication failed. Check your credentials.
+        - 404 `not_found`: The specified phone number was not found.
+        - 409 `phone_number_exists`: The phone number already exists and cannot be imported again.
+        - 409 `conflict`: Concurrent modification conflict or resource lock.
+        - 422 `unprocessable_content`: Invalid request format or parameter validation failed.
+        - 500 `internal_server_error`: Internal server error.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error_type:
+                type: string
+                description: Error type.
+              description:
+                type: string
+                description: Error description.
+          examples:
+            Example 1:
+              value:
+                error_type: "unauthorized"
+                description: "Authentication failed. Check your credentials."
+    outbound_call_error:
+      description: |
+        If the returned HTTP status code is not 200, the request has failed. The response body contains a JSON object with the error type and description.
+        
+        **Possible status codes and reasons:**
+        
+        - 400 `invalid_phone_format`: Invalid phone number format, not in E.164 format.
+        - 401 `unauthorized`: Authentication failed. Check your credentials.
+        - 500 `internal_server_error`: Internal server error.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error_type:
+                type: string
+                description: Error type.
+              description:
+                type: string
+                description: Error description.
+          examples:
+            Example 1:
+              value:
+                error_type: "invalid_phone_format"
+                description: "Invalid phone number format, not in E.164 format."
+  schemas:
+    voice_id:
+      type: string
+      title: voice_id
+      description: 'Agent voice ID. For supported voice IDs, see the [Voice ID Table](https://doc.shengwang.cn/doc/convoai/doc/convoai/restful/api/voice-ids).'
+    max_history:
+      type: integer
+      description: Number of short-term memory entries cached in the LLM. The value range is `[1,1024]`. Short-term memory includes conversation messages between the user and the agent, tool call information, and timestamps. Agent and user entries are recorded separately.
+      default: 32
+    tts_params:
+      title: params
+      description: |-
+        TTS configuration parameters. The structure of this parameter differs by TTS provider.
+        > Agora Conversational AI Engine does not guarantee full support for parameters that are not mentioned in the sample code for each provider.
+      oneOf:
+        - $ref: '#/components/schemas/tts_minimax'
+        - $ref: '#/components/schemas/tts_tencent'
+        - $ref: '#/components/schemas/tts_bytedance'
+        - $ref: '#/components/schemas/tts_microsoft'
+        - $ref: '#/components/schemas/tts_cosyvoice'
+        - $ref: '#/components/schemas/tts_duplex'
+        - $ref: '#/components/schemas/tts_stepfun'
+    tts_minimax:
+      title: Minimax
+      type: object
+      additionalProperties: {}
+      description: |-
+        Minimax TTS. For the detailed protocol, see the [official Minimax documentation](https://platform.minimaxi.com/docs/api-reference/speech-t2a-http). Example:
+        ```json
+        "params": {
+            "key": "xxxx",
+            "model": "speech-01-turbo",
+            "voice_setting": {
+                "voice_id": "female-shaonv",
+                "speed": 1,
+                "vol": 1,
+                "pitch": 0,
+                "emotion": "happy",
+                "latex_read": True,
+                "english_normalization": True,
+            },
+            "audio_setting": {
+                "sample_rate": 16000
+            },
+            "pronunciation_dict": {
+                "tone": ["hello/(he1)(llo1)", "message/(me1)(ssa1)(ge1)"]
+            },
+            # Either voice_id or timber_weights is required
+            # "timber_weights": [{
+            #     "voice_id": "male-qn-qingse",
+            #     "weight": 1
+            # },
+            # {
+            #     "voice_id": "female-shaonv",
+            #     "weight": 5
+            # }],
+            "language_boost": "auto"
+        }
+        ```
+    tts_tencent:
+      title: Tencent
+      type: object
+      additionalProperties: {}
+      description: |-
+        Tencent Cloud TTS. For the detailed protocol, see the [official Tencent Cloud documentation](https://cloud.tencent.com/document/product/1073/94308). Example:
+        ```json
+        "params": {
+            "app_id": "xxxx",
+            "secret_id": "xxxx",
+            "secret_key": "xxxx",
+            "voice_type": 601005,
+            "volume": 0,
+            "speed": 0,
+            "emotion_category": "happy",
+            "emotion_intensity": 100
+        }
+        ```
+    tts_bytedance:
+      title: Bytedance
+      type: object
+      description: |-
+        Volcengine TTS. For the detailed protocol, see the [official Volcengine documentation](https://www.volcengine.com/docs/6561/79823). Example:
+        ```json
+        "params": {
+            "token": "xxxxx",
+            "app_id": "xxxx",
+            "cluster": "volcano_tts",
+            "voice_type": "BV700_streaming",
+            "speed_ratio": 1.0,
+            "volume_ratio": 1.0,
+            "pitch_ratio": 1.0,
+            "emotion": "happy"
+        }
+        ```
+      additionalProperties: {}
+    tts_cosyvoice:
+      title: CosyVoice
+      type: object
+      additionalProperties: {}
+      description: |-
+        Alibaba Cloud CosyVoice TTS. For the detailed protocol, see the [official Alibaba Cloud documentation](https://help.aliyun.com/zh/model-studio/cosyvoice-large-model-for-speech-synthesis/). Example:
+        ```json
+        "params": {
+          "api_key": "your_cosyvoice_api_key",
+          "model": "cosyvoice-v1",
+          "sample_rate": 16000,
+          "voice": "longxiaochun"
+        }
+        ```
+    tts_duplex:
+      title: Bytedance Duplex
+      type: object
+      additionalProperties: {}
+      description: |-
+       Volcengine bidirectional streaming TTS. For the detailed protocol, see the [official Volcengine documentation](https://www.volcengine.com/docs/6561/1329505). Example:
+        ```json
+        "params": {
+          "app_id": "your_bytedance_tts_app_id",
+          "token": "your_bytedance_tts_token",
+          "speaker": "zh_female_shuangkuaisisi_moon_bigtts"
+        }
+        ```
+    tts_stepfun:
+      title: StepFun
+      type: object
+      additionalProperties: {}
+      description: |-
+       StepFun TTS. For the detailed protocol, see the [official StepFun documentation](https://platform.stepfun.com/docs/api-reference/audio/ws_audio). Example:
+        ```json
+        "params": {
+          "api_key": "your_stepfun_tts_key",
+          "model": "step-tts-mini",
+          "voice_id": "cixingnansheng"
+        }
+        ```
+
+    agent_id:
+      title: agent_id
+      type: string
+      description: Conversational AI agent ID, that is, the unique identifier of the agent.
+    channel:
+      title: channel
+      type: string
+      description: RTC channel name where the agent is located.
+    start_ts:
+      title: start_ts
+      type: integer
+      description: Agent creation timestamp.
+    tts_microsoft:
+      title: Microsoft
+      type: object
+      additionalProperties: {}
+      description: |-
+        Microsoft Azure TTS. The following example and parameter descriptions apply:
+        ```json
+        "params": {
+            "key": "<your_microsoft_key>",
+            "region": "chinaeast2",
+            "voice_name": "zh-CN-YunxiNeural",
+            "speed": 1.0,
+            "volume": 70
+        }
+        ```
+        - `key`: (required) String. API key for Microsoft Azure.
+        - `region`: (required) String. Region of the Microsoft TTS service.
+        - `voice_name`: (required) String. Voice.
+        - `speed`: (optional) Number. Speech rate. The value range is [0.5, 2.0], and the default is 1.0. It indicates the speaking speed of the text and can be applied at the word or sentence level.
+        - `volume`: (optional) Number. Volume. The value range is [0.0, 100.0], and the default is 100. For example, a value of 75 means the volume is set to 75% of the maximum.
+        - `sample_rate`: (optional) Integer. Audio sample rate (Hz). Supported values are [16000, 24000, 48000], and the default is 24000.
+
+        > For more information, see the [official Microsoft documentation](https://docs.azure.cn/zh-cn/ai-services/speech-service/).
+    metrics_modality:
+      title: modality
+      type: string
+      description: Name of the latency module. Different latency modules are returned depending on the LLM input modality configured when [creating the conversational AI agent](/doc/convoai/restful/convoai/operations/start-agent).
+      oneOf:
+        - $ref: '#/components/schemas/metrics_modality_text'
+        - $ref: '#/components/schemas/metrics_modality_audio'
+    metrics_modality_text:
+      title: text
+      type: string
+      description: |
+        When the LLM input modality is `text`, the following latency modules are returned:
+          - `algorithm_processing`: Algorithm processing latency.
+          - `asr_ttlw`: TTLW (Time To Last Word) metric of the ASR module, indicating the latency from detection of the end of user speech to ASR output of the last word.
+          - `llm_ttft`: TTFT (Time To First Token) metric of the LLM module, indicating the latency from the end of user speech to the first token output by the LLM.
+          - `llm_ftfs`: FTFS (First token To First Sentence) metric of the LLM module, indicating the latency from the first token output by the LLM to the first complete sentence.
+          - `tts_ttfb`: TTFB (Time To First Byte) metric of the TTS module, indicating the latency from when the TTS module receives the text request to when it outputs the first audio byte.
+          - `transport`: Network transport latency (ms). Currently, this field is not returned when the user uses the RTC Web SDK.
+    metrics_modality_audio:
+      title: audio
+      type: string
+      description: |
+        When the LLM input modality is `audio`, the following latency modules are returned:
+          - `algorithm_processing`: Algorithm processing latency.
+          - `asr_ttlw`: TTLW (Time To Last Word) metric of the ASR module, indicating the latency from detection of the end of user speech to ASR output of the last word.
+          - `llm_ttfa`: TTFA (Time To First Audio to First Byte) metric of the LLM module, indicating the latency from the end of user speech to the first audio byte output by the LLM and received by the TTS module.
+          - `transport`: Network transport latency (ms). Currently, this field is not returned when the user uses the RTC Web SDK.
+    eos_metadata:
+      title: metadata
+      description: |-
+        End metadata. Contains different fields depending on the value of `type`.
+      oneOf:
+        - $ref: '#/components/schemas/eos_metadata_ok'
+        - $ref: '#/components/schemas/eos_metadata_interrupted'
+        - $ref: '#/components/schemas/eos_metadata_ignored'
+        - $ref: '#/components/schemas/eos_metadata_error'
+    eos_metadata_ok:
+      title: ok
+      type: object
+      description: Metadata for a normal end.
+      properties:
+        playback_duration_ms:
+          type: integer
+          description: Voice playback duration (ms).
+    eos_metadata_interrupted:
+      title: interrupted
+      type: object
+      description: Metadata for interruption.
+      properties:
+        caused_by:
+          type: string
+          description: |
+            Reason why the turn was interrupted:
+            - `start_of_speech`: A new voice request started.
+            - `api_speak`: Interrupted because information was spoken by calling the [Speak a Custom Message](/doc/convoai/restful/convoai/operations/agent-speak) API.
+            - `api_interrupt`: Interrupted because the [Interrupt an Agent](/doc/convoai/restful/convoai/operations/agent-interrupt) API was called.
+            - `api_leave`: Interrupted because the [Stop a Conversational AI Agent](/doc/convoai/restful/convoai/operations/leave-channel) API was called to leave the channel.
+        transport:
+          type: string
+          description: |
+            Transport protocol, returned when `caused_by` is `api_speak` or `api_interrupt`:
+            - `http`: HTTP protocol.
+            - `rtm`: Transmitted through the RTM Presence channel.
+    eos_metadata_ignored:
+      title: ignored
+      type: object
+      description: Metadata for an ignored turn.
+      properties:
+        caused_by:
+          type: string
+          description: |
+            Reason why the turn was ignored:
+            - `semantic`: Ignored because graceful interruption was enabled when [creating the conversational AI agent](/doc/convoai/restful/convoai/operations/start-agent) (`turn_detection.config.end_of_speech.mode` was `semantic`) and semantic rules determined that no response was needed.
+            - `keywords`: Ignored because keyword-based turn start detection was enabled when [creating the conversational AI agent](/doc/convoai/restful/convoai/operations/start-agent) (`turn_detection.config.start_of_speech.mode` was `keywords`) and no start keyword was matched.
+            - `disable`: Ignored because turn detection was configured as non-interruptible.
+    eos_metadata_error:
+      title: error
+      type: object
+      description: Metadata for an error.
+      properties:
+        reason:
+          type: string
+          description: |
+            Error type. Possible values include:
+            - `LLM_REQUEST_ERR`: LLM request error.
+            - `INTERNAL_ERR`: Internal error.
+        details:
+          type: string
+          description: Error details.
+    sos_metadata:
+      title: metadata
+      description: |-
+        Start metadata. Contains different fields depending on the value of `type`.
+      oneOf:
+        - $ref: '#/components/schemas/sos_metadata_voice_input'
+        - $ref: '#/components/schemas/sos_metadata_greeting'
+        - $ref: '#/components/schemas/sos_metadata_silence_timeout'
+        - $ref: '#/components/schemas/sos_metadata_api_speak'
+    sos_metadata_voice_input:
+      title: voice_input
+      type: object
+      description: Metadata for voice input.
+      properties:
+        speech_duration_ms:
+          type: integer
+          description: Speech duration (ms).
+        interrupt_duration_ms:
+          type: integer
+          description: Human-speech duration threshold (ms) when the agent is idle or listening.
+    sos_metadata_greeting:
+      title: greeting
+      type: object
+      description: Metadata for a greeting.
+      properties:
+        greeting_nth:
+          type: integer
+          description: Greeting playback count.
+    sos_metadata_silence_timeout:
+      title: silence_timeout
+      type: object
+      description: Metadata for silence timeout.
+      properties:
+        action:
+          type: string
+          description: |
+            - `speak`: Speak the silence prompt content.
+            - `think`: Append the silence prompt content to the end of the context and pass it to the LLM.
+    sos_metadata_api_speak:
+      title: api_speak
+      type: object
+      description: Metadata for speaking custom information.
+      properties:
+        transport:
+          type: string
+          description: |
+            Transport protocol:
+            - `http`: HTTP protocol.
+            - `rtm`: Transmitted through the RTM Presence channel.
+    asr_params:
+      title: params
+      description: |-
+        ASR configuration parameters. The structure of this parameter differs by ASR provider.
+        > Agora Conversational AI Engine does not guarantee full support for parameters that are not mentioned in the sample code for each provider.
+      oneOf:
+        - $ref: '#/components/schemas/asr_tencent'
+        - $ref: '#/components/schemas/asr_microsoft'
+        - $ref: '#/components/schemas/asr_xfyun'
+        - $ref: '#/components/schemas/asr_xfyun_bigmodel'
+        - $ref: '#/components/schemas/asr_xfyun_dialect'
+    asr_tencent:
+      title: Tencent
+      type: object
+      additionalProperties: {}
+      description: |-
+        Tencent Cloud ASR. For the detailed protocol, see the [official Tencent Cloud documentation](https://cloud.tencent.com/document/product/1093/48982). Example:
+        ```json
+        "params": {
+            "key": secret_key,
+            "app_id": app_id,
+            "secret": secret,
+            "engine_model_type": "16k_zh",
+            "voice_id": "TBgVFCsxdn3i2DGt",
+        }
+        ```
+    asr_xfyun:
+      title: xfyun
+      type: object
+      additionalProperties: {}
+      description: |-
+        iFlytek traditional speech transcription and recognition service. For the detailed protocol, see the [official iFlytek documentation](https://www.xfyun.cn/doc/spark/asr_llm/rtasr_llm.html). Example:
+        ```json
+        "params": {
+            "api_key": "XFYUN_ASR_API_KEY",
+            "app_id": "XFYUN_ASR_APP_ID",
+            "api_secret": "XFYUN_ASR_API_SECRET",
+            "language": "zh_cn"
+        }
+        ```
+    asr_xfyun_bigmodel:
+      title: xfyun_bigmodel
+      type: object
+      additionalProperties: {}
+      description: |-
+        iFlytek large-model speech recognition service. For the detailed protocol, see the [official iFlytek documentation](https://www.xfyun.cn/doc/spark/asr_llm/rtasr_llm.html). Example:
+        ```json
+        "params": {
+            "api_key": "XFYUN_ASR_BIGMODEL_API_KEY",
+            "app_id": "XFYUN_ASR_BIGMODEL_APP_ID",
+            "api_secret": "XFYUN_ASR_BIGMODEL_API_SECRET",
+            "language_name": "cn",
+            "language":"mix"
+        }
+        ```
+    asr_xfyun_dialect:
+      title: xfyun_dialect
+      type: object
+      additionalProperties: {}
+      description: |-
+        iFlytek dialect free-speech recognition service. For the detailed protocol, see the [official iFlytek documentation](https://www.xfyun.cn/doc/spark/asr_llm/rtasr_llm.html). Example:
+        ```json
+        "params": {
+            "app_id": "XFYUN_ASR_DIALOG_APP_ID",
+            "access_key_id": "XFYUN_ASR_DIALOG_ACCESS_KEY_ID",
+            "access_key_secret":"XFYUN_ASR_DIALOG_ACCESS_KEY_SECRET",
+            "language": "zh-CN"
+        }
+        ```
+    asr_microsoft:
+      title: Microsoft
+      type: object
+      additionalProperties: {}
+      description: |-
+        Microsoft ASR. Example:
+        ```json
+        "params": {
+            "key": "<your_microsoft_key>",
+            "region": "chinaeast2",
+            "language": "zh-CN",
+            "phrase_list": ["agora", "fengming"],
+        }
+        ```
+        - `key`: (required) String. API key for the Microsoft ASR service.
+        - `region`: (required) String. Region of the Microsoft ASR service. See [supported regions](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt).
+        - `language`: (required) String. Language. See [supported languages](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt).
+        - `phrase_list`: (optional) Array[String]. Hotword list.
+    avatar_params:
+      title: params
+      description: |-
+        Digital human configuration parameters. The structure of this parameter differs by digital human provider.
+        > Agora Conversational AI Engine does not guarantee full support for parameters that are not mentioned in the sample code for each provider.
+      oneOf:
+        - $ref: '#/components/schemas/avatar_sensetime'
+    avatar_sensetime:
+      title: Sensetime
+      type: object
+      additionalProperties: {}
+      description: |-
+        Sensetime digital human configuration parameters. For the detailed protocol, see the [official Sensetime documentation](https://aigc.softsugar.com/html/help/5-%E7%9B%B4%E6%92%AD.html#%E7%9B%B4%E6%92%AD%E8%84%9A%E6%9C%ACjson%E5%AE%9A%E4%B9%89%E8%AF%B4%E6%98%8E). Example:
+        ```json
+        "params": {
+            "agora_token": "agora_token",
+            "agora_uid": "agora_uid",
+            "appId": "sensetime_app_id",
+            "app_key": "sensetime_app_key",
+            "sceneList": [
+                {
+                    "digital_role": {
+                        "face_feature_id": "face_feature_id",
+                        "position": {"x": 0, "y": 0},
+                        "url": "https://example-digital-human-models/avatar_id.zip"
+                    }
+                }
+            ]
+        }
+        ```
+        > - The following Sensetime digital human configuration fields are currently not supported for passthrough in `params`: `tts_config`, `tts_query`, `audios`, `quick_response`, `quick_response_preload_list`, `opening_words`.
+        > - `agora_uid` must be a numeric string no longer than 32 bits (`0` to `2^32-1`), for example `"1234"`.
+    filler_words_trigger_config:
+      title: config
+      description: |-
+        Filler-word trigger configuration parameters. The parameter name and structure differ by trigger mode.
+        > - The configuration type you pass must match `mode`. For example, when `mode` is `"fixed_time"`, pass the configuration for `fixed_time_config`.
+        > - Do not pass multiple mode configurations at the same time.
+      oneOf:
+        - $ref: '#/components/schemas/filler_words_trigger_fixed_time_config'
+        # - $ref: '#/components/schemas/filler_words_trigger_semantic_config'
+    filler_words_trigger_fixed_time_config:
+      title: fixed_time_config
+      type: object
+      description: |-
+        Fixed-time trigger configuration. Example:
+        ```json
+        "config": {
+            "response_wait_ms": 1500
+        }
+        ```
+      properties:
+        response_wait_ms:
+          type: integer
+          description: LLM response wait threshold (ms), with a value range of [100, 10000]. When the LLM remains in a waiting state, for example while waiting for RAG retrieval results or tool-call results, for at least this threshold and has not yet generated response content, filler-word playback is triggered.
+          default: 1500
+    # filler_words_trigger_semantic_config:
+    #   title: semantic_config
+    #   type: object
+    #   description: |-
+    #     Semantic trigger configuration (future support). Example:
+    #     ```json
+    #     "config": {
+    #     }
+    #     ```
+    #   properties: {}
+    filler_words_content_config:
+      title: config
+      description: |-
+        Filler-word content configuration parameters. The parameter name and structure differ by content mode.
+        > - The configuration type you pass must match `mode`. For example, when `mode` is `"static"`, pass the configuration for `static_config`.
+        > - Do not pass multiple mode configurations at the same time.
+      oneOf:
+        - $ref: '#/components/schemas/filler_words_content_static_config'
+        # - $ref: '#/components/schemas/filler_words_content_generated_config'
+    filler_words_content_static_config:
+      title: static_config
+      type: object
+      description: |-
+        Static filler-word configuration. Example:
+        ```json
+        "static_config": {
+            "phrases": [
+                "Please hold on.",
+                "Okay.",
+                "Mm-hmm."
+            ],
+            "selection_rule": "shuffle"
+        }
+        ```
+      properties:
+        phrases:
+          type: array
+          description: |-
+            List of filler phrases.
+            > - Up to 100 filler phrases are supported.
+            > - Each filler phrase must not exceed 50 Chinese characters or 50 English words.
+          items:
+            type: string
+          maxItems: 100
+        selection_rule:
+          type: string
+          description: |-
+            Filler-word selection rule. Supported values:
+            - `"shuffle"`: Random shuffle. Previously used filler phrases are not repeated until all phrases have been used once. After all phrases have been played, the list is shuffled again and a new round begins.
+            - `"round_robin"`: Round-robin. Filler phrases are selected and played in order from the list. After all phrases have been played once, a new cycle begins.
+          enum:
+            - shuffle
+            - round_robin
+          default: shuffle
+    # filler_words_content_generated_config:
+    #   title: generated_config
+    #   type: object
+    #   description: |-
+    #     Dynamic filler-word generation configuration (future support). Example:
+    #     ```json
+    #     "config": {
+    #         "llm_provider": "tongyi_qianwen",
+    #         "prompt": "Generate a brief reply within 5 words to indicate that processing is in progress",
+    #         "fallback_strategy": "none",
+    #         "generation_timeout_ms": 2000
+    #     }
+    #     ```
+    #   properties:
+    #     llm_provider:
+    #       type: string
+    #       description: |-
+    #         LLM provider used to generate filler words. Supported values:
+    #         - `"tongyi_qianwen"`: Tongyi Qianwen.
+    #         - `"openai"`: OpenAI.
+    #     prompt:
+    #       type: string
+    #       description: Prompt instruction used to generate filler words. For example: "Generate a brief reply within 5 words to indicate that processing is in progress".
+    #     fallback_strategy:
+    #       type: string
+    #       description: |-
+    #         Fallback strategy when generation fails. Supported values:
+    #         - `"none"`: No fallback. Do not play filler words.
+    #       enum:
+    #         - none
+    #     generation_timeout_ms:
+    #       type: integer
+    #       description: Generation timeout (ms), with a value range of [100, 5000]. After a timeout, the system handles it according to `fallback_strategy`.
+    #       default: 2000
+    #       minimum: 100
+    #       maximum: 5000
+    start_of_speech_config:
+      title: '{mode}_config'
+      description: |-
+        Configuration parameters for start-of-speech detection. The structure and supported fields differ by detection mode.
+        Pass the corresponding configuration field according to `mode`. For example, when `mode` is `"vad"`, pass `vad_config`. Do not pass multiple mode configurations at the same time.
+      oneOf:
+        - $ref: '#/components/schemas/start_of_speech_vad_config'
+        - $ref: '#/components/schemas/start_of_speech_keywords_config'
+        - $ref: '#/components/schemas/start_of_speech_disabled_config'
+    start_of_speech_vad_config:
+      title: vad_config
+      type: object
+      description: |-
+        VAD-based start-of-speech detection configuration. Example:
+        ```json
+        "vad_config": {
+            "interrupt_duration_ms": 160,
+            "speaking_interrupt_duration_ms": 160,
+            "prefix_padding_ms": 800,
+        }
+        ```
+      properties:
+        interrupt_duration_ms:
+          type: integer
+          description: Human-speech duration threshold (ms) when the agent is idle or listening, with a value range of [120, 1200]. This is the minimum duration for which human speech must be continuously detected to avoid false interruption.
+          default: 160
+        speaking_interrupt_duration_ms:
+          type: integer
+          description: Human-speech duration threshold (ms) when the agent is speaking, with a value range of [120, 1200]. This is the minimum duration for which human speech must be continuously detected to avoid false interruption. It is usually set higher than `interrupt_duration_ms` to avoid falsely interrupting the agent due to brief human speech while the agent is speaking.
+          default: 160
+        prefix_padding_ms:
+          type: integer
+          description: Prefix padding threshold (ms), with a value range of [0, 5000]. This is the minimum speech duration required to start a new speech segment and helps prevent very short sounds from triggering speech activity detection.
+          default: 800
+        # ignored_words:
+        #   type: array
+        #   description: |-
+        #     Ignore-word list. The semantic module recognizes these words and does not trigger conversation start when they are detected, for example "uh-huh" or "okay".
+        #     > - Recognition quality for ignore words depends on the ASR provider you selected.
+        #     > - Up to 128 ignore words can be configured.
+        #   items:
+        #     type: string
+        #   maxItems: 128
+    start_of_speech_keywords_config:
+      title: keywords_config
+      type: object
+      deprecated: true
+      description: Deprecated. Use top-level `interruption.mode = "keywords"` together with `interruption.keywords_config.trigger_keywords` to implement keyword-based interruption.
+      properties: {}
+    start_of_speech_semantic_config:
+      title: semantic_config
+      type: object
+      description: |-
+        Semantic-based start-of-speech detection configuration. Example:
+        ```json
+        "semantic_config": {
+            "interrupt_duration_ms": 160,
+            "prefix_padding_ms": 800,
+        }
+        ```
+      properties:
+        interrupt_duration_ms:
+          type: integer
+          description: Human-speech duration threshold (ms), with a value range of [120, 1200]. This is the minimum duration for which human speech must be continuously detected to avoid false interruption.
+          default: 160
+        prefix_padding_ms:
+          type: integer
+          description: Prefix padding threshold (ms), with a value range of [0, 5000]. This is the minimum speech duration required to start a new speech segment and helps prevent very short sounds from triggering speech activity detection.
+          default: 800
+        # ignored_words:
+        #   type: array
+        #   description: |-
+        #     Ignore-word list. The semantic module recognizes these words and does not trigger conversation start when they are detected.
+        #     > - This field is optional. If it is not set, any semantic trigger starts the conversation.
+        #     > - If this field is set, conversation starts only when no ignore word is matched and the semantic trigger fires.
+        #     > - Recognition quality for ignore words depends on the ASR provider you selected.
+        #     > - Up to 128 ignore words can be configured.
+        #   items:
+        #     type: string
+        #   maxItems: 128
+    start_of_speech_disabled_config:
+      title: disabled_config
+      type: object
+      deprecated: true
+      description: Deprecated. Use `interruption.enable = false` together with `interruption.disabled_config.strategy` to configure the post-disable interruption strategy.
+      properties: {}
+    end_of_speech_config:
+      title: '{mode}_config'
+      description: |-
+        Configuration parameters for end-of-speech detection. The structure and supported fields differ by detection mode.
+        Pass the corresponding configuration field according to `mode`. For example, when `mode` is `"vad"`, pass `vad_config`. Do not pass multiple mode configurations at the same time.
+      oneOf:
+        - $ref: '#/components/schemas/end_of_speech_vad_config'
+        - $ref: '#/components/schemas/end_of_speech_semantic_config'
+    end_of_speech_vad_config:
+      title: vad_config
+      type: object
+      description: |-
+        VAD-based end-of-speech detection configuration. Example:
+        ```json
+        "vad_config": {
+            "silence_duration_ms": 480
+        }
+        ```
+      properties:
+        silence_duration_ms:
+          type: integer
+          description: Silence duration threshold (ms), with a value range of [120, 2000]. This is the minimum duration of silence at the end of speech to ensure that brief pauses do not end the speech segment too early.
+          default: 480
+    end_of_speech_semantic_config:
+      title: semantic_config
+      type: object
+      description: |-
+        Semantic-based end-of-speech detection configuration. Example:
+        ```json
+        "semantic_config": {
+            "silence_duration_ms": 240,
+            "max_wait_ms": 3000,
+            "pause_state_enabled": true
+        }
+        ```
+      properties:
+        silence_duration_ms:
+          type: integer
+          description: Silence duration threshold (ms), with a value range of [120, 2000]. This is the minimum duration of silence at the end of speech to ensure that brief pauses do not end the speech segment too early.
+          default: 240
+        max_wait_ms:
+          type: integer
+          description: Maximum wait time (ms), with a value range of [500, 10000]. Pass `-1` to wait indefinitely. This is the maximum time to wait for semantic judgment. After timeout, the system determines whether the conversation has ended based on the current state.
+          default: 3000
+        pause_state_enabled:
+          type: boolean
+          default: true
+          description: |
+            Whether to determine that the user intends to pause the conversation:
+            - `true`: (default) The agent determines semantically whether the user wants to pause the conversation. For example, when the user's input ends with phrases such as "wait a moment" or "hold on", the agent can determine that the user intends to pause and wait for follow-up input instead of immediately sending the input to the LLM.
+            - `false`: The agent does not determine whether the user wants to pause the conversation.
+    phone_number_object:
+      title: phone_number_object
+      type: object
+      description: Phone number object that contains detailed information about the phone number.
+      properties:
+        provider:
+          type: string
+          description: |
+            Number provider. Supported values:
+            - `"byo"`: BYO (Bring Your Own).
+            - `"aliyun"`: Alibaba Cloud.
+        phone_number:
+          type: string
+          description: Phone number in E.164 format, used as the unique identifier.
+        label:
+          type: string
+          description: Label used to identify the phone number.
+        inbound:
+          type: boolean
+          description: Whether the phone number supports inbound calls.
+        outbound:
+          type: boolean
+          description: Whether the phone number supports outbound calls.
+        associated_pipeline:
+          type: object
+          nullable: true
+          description: Associated pipeline information, or `null`.
+          properties:
+            pipeline_id:
+              type: string
+              description: Pipeline ID.
+            pipeline_name:
+              type: string
+              description: Pipeline name.
+        inbound_config:
+          type: object
+          nullable: true
+          description: Details of SIP inbound call configuration, or `null`.
+        outbound_config:
+          type: object
+          nullable: true
+          description: Details of SIP outbound call configuration, or `null`.
+  securitySchemes:
+    Basic Auth:
+      type: http
+      scheme: basic
+      description: 'When sending an HTTP request, use Basic HTTP Authentication and put the generated credential into the `Authorization` header of the HTTP request. For details on how to generate the `Authorization` field, see [Implement HTTP Authentication](https://doc.shengwang.cn/doc/convoai/restful/user-guides/http-basic-auth).'
+security:
+  - {}
+  - Basic Auth: []

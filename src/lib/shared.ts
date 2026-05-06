@@ -1,6 +1,7 @@
 export const appName = 'Agora Docs';
 export const appDescription =
   'Agora Docs is a protocol-inspired developer documentation surface for product docs, API reference, and AI-readable content.';
+export const DEFAULT_LOCALE = 'en';
 export const docsRoute = '/docs';
 export const docsImageRoute = '/og/docs';
 export const docsContentRoute = '/llms.mdx/docs';

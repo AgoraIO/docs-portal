@@ -8,7 +8,7 @@ export const Route = createFileRoute('/llms.mdx/docs/$')({
         const slugs = (params._splat ?? '').split('/');
         // remove the appended "content.md"
         slugs.pop();
-        const page = source.getPage(slugs);
+        const page = source.getPage(slugs, 'en');
         if (!page) throw notFound();
 
         return new Response(await getLLMText(page), {

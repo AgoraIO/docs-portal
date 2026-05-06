@@ -1,5 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { useTranslation } from 'react-i18next';
+import { toLocalizedPath } from '@/lib/locale-routes';
 import { useLocale } from '@/lib/i18n/use-locale';
 import { docsRoute } from './shared';
 
@@ -38,18 +39,18 @@ export function useBaseLayoutOptions({
     links: [
       {
         text: locale === 'zh-CN' ? '文档' : 'Docs',
-        url: docsRoute,
+        url: toLocalizedPath(locale, docsRoute),
         active: 'nested-url',
       },
       {
         text: locale === 'zh-CN' ? 'API' : 'API',
-        url: '/api-ref',
+        url: toLocalizedPath(locale, '/api-ref'),
         active: 'nested-url',
       },
     ],
     nav: {
       title: <SiteTitle />,
-      url: '/',
+      url: toLocalizedPath(locale, '/'),
       transparentMode: variant === 'home' ? 'top' : 'none',
     },
     i18n: true,

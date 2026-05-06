@@ -6,7 +6,7 @@ export const Route = createFileRoute('/llms.txt')({
     handlers: {
       async GET() {
         const { source } = await import('@/lib/source');
-        return new Response(llms(source).index());
+        return new Response(llms(source).index('en'));
       },
     },
   },

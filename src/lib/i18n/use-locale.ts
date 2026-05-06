@@ -1,5 +1,7 @@
 import { useEffect, useMemo } from 'react';
+import { useParams, useRouterState } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
+import { stripLocalePrefix, toLocalizedPath } from '@/lib/locale-routes';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
@@ -29,20 +31,26 @@ export function getInitialLocale() {
 
 export function useLocale() {
   const { i18n } = useTranslation('common');
+  const params = useParams({ strict: false });
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+  const routeLocale = normalizeLocale(
+    typeof params.lang === 'string' ? params.lang : null,
+  );
 
   const locale = useMemo(
-    () =>
-      normalizeLocale(i18n.resolvedLanguage ?? i18n.language) ?? DEFAULT_LOCALE,
-    [i18n.language, i18n.resolvedLanguage],
+    () => routeLocale ?? normalizeLocale(i18n.resolvedLanguage ?? i18n.language) ?? DEFAULT_LOCALE,
+    [i18n.language, i18n.resolvedLanguage, routeLocale],
   );
 
   useEffect(() => {
-    const initialLocale = getInitialLocale();
+    const initialLocale = routeLocale ?? getInitialLocale();
 
     if (initialLocale !== i18n.language) {
       void i18n.changeLanguage(initialLocale);
     }
-  }, [i18n]);
+  }, [i18n, routeLocale]);
 
   return {
     locale,
@@ -52,6 +60,14 @@ export function useLocale() {
       }
 
       await i18n.changeLanguage(nextLocale);
+
+       if (typeof window !== 'undefined') {
+        const nextPath = toLocalizedPath(nextLocale, stripLocalePrefix(pathname));
+        if (nextPath !== pathname) {
+          window.history.replaceState(window.history.state, '', nextPath);
+          window.dispatchEvent(new PopStateEvent('popstate'));
+        }
+      }
     },
   };
 }
