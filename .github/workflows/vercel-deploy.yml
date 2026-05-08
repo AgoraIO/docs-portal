@@ -1,0 +1,243 @@
+name: Vercel Deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: Deployment target
+        required: true
+        default: preview
+        type: choice
+        options:
+          - preview
+          - production
+      pr_number:
+        description: Optional PR number to comment on for preview deploys
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: vercel-deploy-${{ github.event.pull_request.number || github.ref_name }}-${{ github.event_name == 'push' && 'production' || inputs.deploy_target || 'preview' }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    name: Deploy Preview to Vercel
+    if: |
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'preview')
+    runs-on: ubuntu-latest
+    env:
+      NITRO_PRESET: vercel
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Skip forked pull requests
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "Fork PR detected; skipping preview deploy to avoid exposing Vercel credentials."
+          exit 0
+
+      - name: Checkout
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install Vercel CLI
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        run: npm install --global vercel@latest
+
+      - name: Install dependencies
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        run: bun install --frozen-lockfile
+
+      - name: Pull Vercel preview environment
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        run: vercel pull --yes --environment=preview --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Build with Vercel
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        run: vercel build --yes --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Verify Vercel output
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          test -f .vercel/output/config.json
+          test -f .vercel/output/nitro.json
+
+      - name: Deploy prebuilt output
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        id: vercel-deploy
+        run: |
+          url="$(vercel deploy --prebuilt --yes --token="${{ secrets.VERCEL_TOKEN }}")"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Write workflow summary
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+        run: |
+          {
+            echo "## Vercel Preview"
+            echo
+            echo "Preview URL: ${DEPLOY_URL}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Resolve PR number
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        id: resolve-pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            if (context.payload.pull_request?.number) {
+              core.setOutput('pr_number', String(context.payload.pull_request.number));
+              return;
+            }
+
+            const manualInput = `${{ toJson(inputs.pr_number) }}`;
+            if (manualInput && manualInput !== 'null' && manualInput !== '') {
+              core.setOutput('pr_number', manualInput);
+              return;
+            }
+
+            const branch = context.ref.replace('refs/heads/', '');
+            const { owner, repo } = context.repo;
+            const response = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: 'open',
+              head: `${owner}:${branch}`,
+              per_page: 1,
+            });
+
+            if (response.data.length > 0) {
+              core.setOutput('pr_number', String(response.data[0].number));
+            }
+
+      - name: Comment preview URL
+        if: (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && steps.resolve-pr.outputs.pr_number != ''
+        uses: actions/github-script@v7
+        env:
+          DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+        with:
+          script: |
+            const body = [
+              '## Vercel Preview',
+              '',
+              `Preview URL: ${process.env.DEPLOY_URL}`,
+            ].join('\n');
+
+            const { owner, repo } = context.repo;
+            const issue_number = Number('${{ steps.resolve-pr.outputs.pr_number }}');
+            const marker = '## Vercel Preview';
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+
+            const existing = comments.find((comment) =>
+              comment.user?.type === 'Bot' && comment.body?.includes(marker),
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body,
+              });
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number,
+              body,
+            });
+
+  deploy-production:
+    name: Deploy Production to Vercel
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'production')
+    runs-on: ubuntu-latest
+    env:
+      NITRO_PRESET: vercel
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Pull Vercel production environment
+        run: vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Build with Vercel
+        run: vercel build --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Verify Vercel output
+        run: |
+          test -f .vercel/output/config.json
+          test -f .vercel/output/nitro.json
+
+      - name: Deploy prebuilt output
+        id: vercel-deploy
+        run: |
+          url="$(vercel deploy --prebuilt --prod --yes --token="${{ secrets.VERCEL_TOKEN }}")"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Write workflow summary
+        env:
+          DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+        run: |
+          {
+            echo "## Vercel Production"
+            echo
+            echo "Production URL: ${DEPLOY_URL}"
+          } >> "$GITHUB_STEP_SUMMARY"
