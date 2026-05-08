@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/card';
 import { SiteFooter } from '@/components/home/SiteFooter';
 import { cn } from '@/lib/cn';
-import type { HomeMarkdownPages, MarkdownPage } from '@/lib/home-markdown.server';
+import { loadHomeMarkdownPages, type MarkdownPage } from '@/lib/home-markdown';
 import { useLocale } from '@/lib/i18n/use-locale';
 
 type DomainKey =
@@ -149,11 +149,9 @@ function Brand() {
 
 export function HomePage({
   domain = 'overview',
-  markdownPages,
   page,
 }: {
   domain?: DomainKey;
-  markdownPages?: HomeMarkdownPages;
   page?: string;
 }) {
   const { t } = useTranslation('common');
@@ -167,13 +165,20 @@ export function HomePage({
       ? (page as DomainPageKey)
       : currentDomain.defaultPage;
   const localeKey = locale === 'zh-CN' ? 'zh-CN' : 'en';
+  const markdownPages = loadHomeMarkdownPages();
   const markdownOverride =
     currentPage === 'overview-home' || currentPage === 'ai-home'
       ? markdownPages?.[localeKey]?.[currentPage]
       : null;
-  const currentContent = markdownOverride
+  const normalizedMarkdownContent = markdownOverride
     ? normalizeMarkdownPage(markdownOverride)
-    : currentDomain.pages[currentPage];
+    : null;
+  const currentContent =
+    normalizedMarkdownContent &&
+    normalizedMarkdownContent.title &&
+    normalizedMarkdownContent.title !== 'Untitled'
+      ? normalizedMarkdownContent
+      : currentDomain.pages[currentPage];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
