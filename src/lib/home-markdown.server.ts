@@ -1,7 +1,8 @@
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { load as parseYaml } from 'js-yaml';
+import aiHomeEnImport from '../../content/home/en/ai-home.md?raw';
+import overviewHomeEnImport from '../../content/home/en/overview-home.md?raw';
+import aiHomeZhImport from '../../content/home/zh-CN/ai-home.md?raw';
+import overviewHomeZhImport from '../../content/home/zh-CN/overview-home.md?raw';
 
 export type MarkdownCard = {
   body: string;
@@ -37,28 +38,35 @@ type RawPage = Omit<MarkdownPage, 'sections'> & {
   sections: MarkdownSection[];
 };
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const contentRoot = path.resolve(__dirname, '../../content/home');
+const pagesByLocale: HomeMarkdownPages = {
+  en: {
+    'ai-home': parseMarkdownPage(normalizeRaw(aiHomeEnImport)),
+    'overview-home': parseMarkdownPage(normalizeRaw(overviewHomeEnImport)),
+  },
+  'zh-CN': {
+    'ai-home': parseMarkdownPage(normalizeRaw(aiHomeZhImport)),
+    'overview-home': parseMarkdownPage(normalizeRaw(overviewHomeZhImport)),
+  },
+};
 
 export function loadHomeMarkdownPages(): HomeMarkdownPages {
-  return {
-    en: {
-      'ai-home': parseMarkdownFile(path.join(contentRoot, 'en/ai-home.md')),
-      'overview-home': parseMarkdownFile(
-        path.join(contentRoot, 'en/overview-home.md'),
-      ),
-    },
-    'zh-CN': {
-      'ai-home': parseMarkdownFile(path.join(contentRoot, 'zh-CN/ai-home.md')),
-      'overview-home': parseMarkdownFile(
-        path.join(contentRoot, 'zh-CN/overview-home.md'),
-      ),
-    },
-  };
+  return pagesByLocale;
 }
 
-function parseMarkdownFile(filePath: string): MarkdownPage {
-  const raw = readFileSync(filePath, 'utf8');
+function normalizeRaw(raw: unknown): string {
+  if (typeof raw === 'string') {
+    return raw;
+  }
+
+  if (raw && typeof raw === 'object' && 'default' in raw) {
+    const value = (raw as { default?: unknown }).default;
+    return typeof value === 'string' ? value : '';
+  }
+
+  return '';
+}
+
+function parseMarkdownPage(raw: string): MarkdownPage {
   const { body, frontmatter } = splitFrontmatter(raw);
   const data = (parseYaml(frontmatter) ?? {}) as Partial<RawPage>;
 
