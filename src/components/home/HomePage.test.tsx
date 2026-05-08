@@ -11,70 +11,52 @@ describe('HomePage', () => {
     window.localStorage.removeItem(LOCALE_STORAGE_KEY);
   });
 
-  it('renders a protocol-inspired english docs landing page', () => {
+  it('renders the overview page in english', () => {
     render(
       <I18nextProvider i18n={i18n}>
-        <HomePage />
+        <HomePage domain="overview" page="overview-home" />
       </I18nextProvider>,
     );
 
-    const heading = screen.getByRole('heading', {
-      name: 'Documentation that behaves like a product surface.',
-    });
-
-    expect(heading).toBeInTheDocument();
     expect(
-      screen.getAllByRole('link', { name: 'Open docs' })[0],
-    ).toHaveAttribute('href', '/docs');
+      screen.getByRole('heading', { name: 'Agora Docs' }),
+    ).toBeInTheDocument();
     expect(
-      screen.getAllByRole('link', { name: 'API reference' })[0],
-    ).toHaveAttribute('href', '/api-ref');
-    expect(
-      screen.getByRole('heading', { name: 'Start with quickstart' }),
+      screen.getByRole('heading', { name: 'Get started' }),
     ).toBeVisible();
     expect(
-      screen.getByRole('heading', { name: 'Inspect the API surface' }),
+      screen.getByRole('heading', { name: 'Conversational AI quickstart' }),
     ).toBeVisible();
     expect(
-      screen.getByRole('heading', { name: 'Use the markdown directly' }),
-    ).toBeVisible();
-    expect(screen.getByText('Current system')).toBeVisible();
-    expect(screen.getByText('Fumadocs + TanStack + shadcn')).toBeVisible();
-    expect(screen.queryByText('Shipping surface')).not.toBeInTheDocument();
+      screen.getByRole('link', { name: 'AI Agent' }),
+    ).toHaveAttribute('href', '/?domain=ai&page=ai-home');
+    expect(screen.getByText('Glossary')).toBeVisible();
+    expect(screen.getByText('Security & compliance')).toBeVisible();
+    expect(screen.getByText('隐私政策')).toBeVisible();
   });
 
-  it('renders a protocol-inspired chinese docs landing page', async () => {
+  it('renders the AI domain homepage in chinese', async () => {
     window.localStorage.setItem(LOCALE_STORAGE_KEY, 'zh-CN');
     await i18n.changeLanguage('zh-CN');
 
     render(
       <I18nextProvider i18n={i18n}>
-        <HomePage />
+        <HomePage domain="ai" page="ai-home" />
       </I18nextProvider>,
     );
 
-    const heading = await screen.findByRole('heading', {
-      name: '声网开发文档',
-    });
-
-    expect(heading).toBeInTheDocument();
     expect(
-      screen.getAllByRole('link', { name: '进入文档' })[0],
-    ).toHaveAttribute('href', '/docs');
-    expect(
-      screen.getAllByRole('link', { name: 'API 参考' })[0],
-    ).toHaveAttribute('href', '/api-ref');
-    expect(
-      screen.getByRole('heading', { name: '从快速开始进入' }),
+      await screen.findByRole('heading', { name: '对话式 AI' }),
     ).toBeVisible();
+    expect(screen.getByRole('heading', { name: '主要产品' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: '推荐内容结构' })).toBeVisible();
     expect(
-      screen.getByRole('heading', { name: '查看 API 参考' }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole('heading', { name: '给 AI 使用 Markdown' }),
-    ).toBeVisible();
-    expect(screen.getByText('当前系统')).toBeVisible();
-    expect(screen.getByText('Fumadocs + TanStack + shadcn')).toBeVisible();
-    expect(screen.queryByText('交付界面')).not.toBeInTheDocument();
+      screen.getByRole('link', { name: '对话式 AI 快速开始' }),
+    ).toHaveAttribute('href', '/?domain=ai&page=ai-quickstart');
+    expect(screen.getByRole('link', { name: 'AI agent' })).toHaveAttribute(
+      'href',
+      '/?domain=ai&page=ai-agent',
+    );
+    expect(screen.getByText('隐私政策')).toBeVisible();
   });
 });
