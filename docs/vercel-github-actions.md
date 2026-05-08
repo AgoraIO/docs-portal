@@ -11,15 +11,18 @@ The workflow file is [`.github/workflows/vercel-deploy.yml`](/Users/czhen/Docume
 
 - `pull_request`
   - target branch: `main`
-  - events: `opened`, `synchronize`, `reopened`, `ready_for_review`
+  - events: `opened`, `reopened`, `ready_for_review`
   - scope: only pull requests opened from branches in this repository
 - `push`
-  - branch: `main`
+  - all branches
+  - pushes to non-`main` branches deploy a preview only when that branch already has an open pull request
+  - pushes to `main` deploy production
 - `workflow_dispatch`
   - supports manual `preview` or `production` deploys
   - optional `pr_number` input for preview comment backfill
 
 Forked pull requests are skipped so Vercel credentials are not exposed to untrusted code.
+Preview updates after new commits are handled by the branch `push` trigger instead of `pull_request.synchronize`, which avoids missed reruns on already-open pull requests.
 
 ## Required GitHub Actions Secrets
 
