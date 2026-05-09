@@ -39,6 +39,13 @@ const enCommon = {
       solutions: 'Solutions',
       reference: 'Reference',
     },
+    portalTabs: {
+      overview: 'Docs Overview',
+      quickstart: 'Quickstart',
+      mcp: 'MCP Integrations',
+      skills: 'Skills Integrations',
+      resources: 'Resources',
+    },
     sidebar: {
       getStarted: {
         title: 'Get started',
