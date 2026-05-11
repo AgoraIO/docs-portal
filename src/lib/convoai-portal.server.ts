@@ -1,4 +1,5 @@
-import convoaiMeta from '../../external/docs-cortex/raw/docs/convoai/restful/meta.json';
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
 import { getPageMarkdownUrl, source } from './source';
 
 export type PortalDoc = {
@@ -14,6 +15,10 @@ export type PortalTab = {
   docs: PortalDoc[];
   key: string;
   label: string;
+};
+
+type ConvoaiMeta = {
+  pages: string[];
 };
 
 const topTabLabelMap: Record<string, string> = {
@@ -65,7 +70,7 @@ export async function loadConvoaiPortalData(): Promise<PortalTab[]> {
   const itemsByTab = new Map<string, PortalDoc[]>(
     [...tabOrder].map((key) => [key, []]),
   );
-  const pages = convoaiMeta.pages as string[];
+  const pages = await loadConvoaiMetaPages();
 
   for (const pageKey of pages) {
     const slugs = ['convoai', 'restful', ...pageKey.split('/')];
@@ -112,4 +117,14 @@ function humanizePageTitle(page: string) {
     .split('-')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
+}
+
+async function loadConvoaiMetaPages() {
+  const metaUrl = new URL(
+    '../../external/docs-cortex/raw/docs/convoai/restful/meta.json',
+    import.meta.url,
+  );
+  const metaRaw = await readFile(fileURLToPath(metaUrl), 'utf-8');
+  const meta = JSON.parse(metaRaw) as ConvoaiMeta;
+  return meta.pages;
 }

@@ -11,3 +11,4 @@
 - Moved the Overview sidebar disclosure arrow to the right side of expandable items such as `开始开发 / Start development`.
 - Replaced the Overview `平台入口 / Platform entry points` card grid with a new `更多资源 / More resources` list-style section and added a dedicated `resource-list` rendering path in `PlatformHomePage.tsx`.
 - Resolved a temporary runtime regression during the section-type migration by making the section renderer tolerant to non-card section variants before Vite HMR settled.
+- Fixed the `UNRESOLVED_IMPORT` on `src/lib/convoai-portal.server.ts` by replacing the static `meta.json` import with a server-side `fs` read via `import.meta.url`, which avoids bundler resolution issues for the external docs submodule JSON.
