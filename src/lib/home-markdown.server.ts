@@ -1,8 +1,20 @@
 import { load as parseYaml } from 'js-yaml';
 import aiHomeEnImport from '../../content/home/en/ai-home.md?raw';
+import overviewBrowseByCapabilityEnImport from '../../content/home/en/overview-browse-by-capability.md?raw';
+import overviewChooseYourPathEnImport from '../../content/home/en/overview-choose-your-path.md?raw';
 import overviewHomeEnImport from '../../content/home/en/overview-home.md?raw';
+import overviewPricingAccessEnImport from '../../content/home/en/overview-pricing-access.md?raw';
+import overviewProductMatrixEnImport from '../../content/home/en/overview-product-matrix.md?raw';
+import overviewReleaseNotesEnImport from '../../content/home/en/overview-release-notes.md?raw';
+import overviewSecurityComplianceEnImport from '../../content/home/en/overview-security-compliance.md?raw';
 import aiHomeZhImport from '../../content/home/zh-CN/ai-home.md?raw';
+import overviewBrowseByCapabilityZhImport from '../../content/home/zh-CN/overview-browse-by-capability.md?raw';
+import overviewChooseYourPathZhImport from '../../content/home/zh-CN/overview-choose-your-path.md?raw';
 import overviewHomeZhImport from '../../content/home/zh-CN/overview-home.md?raw';
+import overviewPricingAccessZhImport from '../../content/home/zh-CN/overview-pricing-access.md?raw';
+import overviewProductMatrixZhImport from '../../content/home/zh-CN/overview-product-matrix.md?raw';
+import overviewReleaseNotesZhImport from '../../content/home/zh-CN/overview-release-notes.md?raw';
+import overviewSecurityComplianceZhImport from '../../content/home/zh-CN/overview-security-compliance.md?raw';
 
 export type MarkdownCard = {
   body: string;
@@ -41,11 +53,47 @@ type RawPage = Omit<MarkdownPage, 'sections'> & {
 const pagesByLocale: HomeMarkdownPages = {
   en: {
     'ai-home': parseMarkdownPage(normalizeRaw(aiHomeEnImport)),
+    'overview-browse-by-capability': parseMarkdownPage(
+      normalizeRaw(overviewBrowseByCapabilityEnImport),
+    ),
+    'overview-choose-your-path': parseMarkdownPage(
+      normalizeRaw(overviewChooseYourPathEnImport),
+    ),
     'overview-home': parseMarkdownPage(normalizeRaw(overviewHomeEnImport)),
+    'overview-pricing-access': parseMarkdownPage(
+      normalizeRaw(overviewPricingAccessEnImport),
+    ),
+    'overview-product-matrix': parseMarkdownPage(
+      normalizeRaw(overviewProductMatrixEnImport),
+    ),
+    'overview-release-notes': parseMarkdownPage(
+      normalizeRaw(overviewReleaseNotesEnImport),
+    ),
+    'overview-security-compliance': parseMarkdownPage(
+      normalizeRaw(overviewSecurityComplianceEnImport),
+    ),
   },
   'zh-CN': {
     'ai-home': parseMarkdownPage(normalizeRaw(aiHomeZhImport)),
+    'overview-browse-by-capability': parseMarkdownPage(
+      normalizeRaw(overviewBrowseByCapabilityZhImport),
+    ),
+    'overview-choose-your-path': parseMarkdownPage(
+      normalizeRaw(overviewChooseYourPathZhImport),
+    ),
     'overview-home': parseMarkdownPage(normalizeRaw(overviewHomeZhImport)),
+    'overview-pricing-access': parseMarkdownPage(
+      normalizeRaw(overviewPricingAccessZhImport),
+    ),
+    'overview-product-matrix': parseMarkdownPage(
+      normalizeRaw(overviewProductMatrixZhImport),
+    ),
+    'overview-release-notes': parseMarkdownPage(
+      normalizeRaw(overviewReleaseNotesZhImport),
+    ),
+    'overview-security-compliance': parseMarkdownPage(
+      normalizeRaw(overviewSecurityComplianceZhImport),
+    ),
   },
 };
 

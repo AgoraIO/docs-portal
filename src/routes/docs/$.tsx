@@ -26,6 +26,9 @@ const legacyRootSections = new Set([
 ]);
 
 export const Route = createFileRoute('/docs/$')({
+  validateSearch: (search: Record<string, unknown>) => ({
+    embed: search.embed === '1' ? '1' : undefined,
+  }),
   component: Page,
   loader: async ({ params }) => {
     const slugs = params._splat?.split('/') ?? [];
@@ -105,18 +108,33 @@ function Page() {
     Route.useLoaderData(),
   );
   const options = useBaseLayoutOptions();
+  const { embed } = Route.useSearch();
+  const isEmbed = embed === '1';
+
+  const content = (
+    <Suspense>
+      {clientLoader.useContent(path, {
+        description,
+        markdownUrl,
+        path,
+        title,
+      })}
+    </Suspense>
+  );
+
+  if (isEmbed) {
+    return (
+      <main className="min-h-screen bg-background px-5 py-8 sm:px-7 lg:px-10">
+        <Link to={markdownUrl} hidden />
+        {content}
+      </main>
+    );
+  }
 
   return (
     <DocsLayout {...options} tabs={false} tree={pageTree}>
       <Link to={markdownUrl} hidden />
-      <Suspense>
-        {clientLoader.useContent(path, {
-          description,
-          markdownUrl,
-          path,
-          title,
-        })}
-      </Suspense>
+      {content}
     </DocsLayout>
   );
 }

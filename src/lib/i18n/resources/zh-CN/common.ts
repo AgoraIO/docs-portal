@@ -39,6 +39,13 @@ const zhCnCommon = {
       solutions: '解决方案',
       reference: '参考',
     },
+    portalTabs: {
+      overview: '文档总览',
+      quickstart: '快速开始',
+      mcp: 'MCP 集成',
+      skills: 'Skills 集成',
+      resources: '资源与参考',
+    },
     sidebar: {
       getStarted: {
         title: '快速开始',
