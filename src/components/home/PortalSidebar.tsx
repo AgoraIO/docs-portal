@@ -235,12 +235,14 @@ const sidebarBlueprints: Record<string, SidebarSectionBlueprint[]> = {
 export function PortalSidebar({
   activeDoc,
   activeTab,
+  homeTab,
 }: {
   activeDoc: PortalDoc;
   activeTab: PortalTab;
+  homeTab?: string;
 }) {
   const { locale } = useLocale();
-  const sections = buildSidebarSections(activeTab);
+  const sections = buildSidebarSections(activeTab, homeTab);
 
   return (
     <aside className="hidden border-r border-border/75 px-6 py-8 lg:block xl:px-8 xl:py-10">
@@ -406,14 +408,16 @@ function SidebarTreeItem({
   );
 }
 
-function buildSidebarSections(activeTab: PortalTab) {
+function buildSidebarSections(activeTab: PortalTab, homeTab?: string) {
   const docsByPageKey = new Map(activeTab.docs.map((doc) => [doc.pageKey, doc]));
   const blueprint = sidebarBlueprints[activeTab.key] ?? sidebarBlueprints.docs;
 
   return blueprint
     .map((section) => ({
       items: section.items
-        .map((item) => resolveSidebarItem(item, activeTab.key, docsByPageKey))
+        .map((item) =>
+          resolveSidebarItem(item, activeTab.key, docsByPageKey, homeTab),
+        )
         .filter((item): item is SidebarItem => item !== null),
       title: section.title,
     }))
@@ -424,11 +428,14 @@ function resolveSidebarItem(
   item: SidebarItemBlueprint,
   tabKey: string,
   docsByPageKey: Map<string, PortalDoc>,
+  homeTab?: string,
 ): null | SidebarItem {
   const doc = item.pageKey ? docsByPageKey.get(item.pageKey) : undefined;
   const children =
     item.children
-      ?.map((child) => resolveSidebarItem(child, tabKey, docsByPageKey))
+      ?.map((child) =>
+        resolveSidebarItem(child, tabKey, docsByPageKey, homeTab),
+      )
       .filter((child): child is SidebarItem => child !== null) ?? [];
 
   if (!doc && !item.label && children.length === 0) {
@@ -437,7 +444,9 @@ function resolveSidebarItem(
 
   return {
     children,
-    href: doc ? `/?domain=${tabKey}&page=${doc.pageKey}` : undefined,
+    href: doc
+      ? `/?domain=${tabKey}&page=${doc.pageKey}${homeTab ? `&tab=${homeTab}` : ''}`
+      : undefined,
     icon: item.icon,
     pageKey: doc?.pageKey,
     title: item.label ?? doc?.title ?? '',
