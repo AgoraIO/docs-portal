@@ -15,6 +15,7 @@ import {
   MapPinned,
   MessageSquareText,
   MicVocal,
+  Rocket,
   RadioTower,
   Search,
   ShieldCheck,
@@ -29,7 +30,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PortalDocContent } from '@/components/home/PortalDocContent';
 import { PortalSidebar } from '@/components/home/PortalSidebar';
-import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import { localizePortalData } from '@/lib/convoai-portal-localization';
 import { loadHomeMarkdownPages } from '@/lib/home-markdown';
@@ -81,6 +81,17 @@ type ResourceItem = {
   title: string;
 };
 
+type ResourceGroupItem = {
+  href: string;
+  icon: LucideIcon;
+  label: string;
+};
+
+type ResourceGroup = {
+  items: ResourceGroupItem[];
+  title: string;
+};
+
 type Section =
   | {
       id: string;
@@ -100,6 +111,14 @@ type Section =
       resources: ResourceItem[];
       title: string;
       type: 'resource-list';
+    }
+  | {
+      actionHref: string;
+      actionLabel: string;
+      groups: ResourceGroup[];
+      id: string;
+      title: string;
+      type: 'resource-groups';
     };
 
 type SidebarItem = {
@@ -135,24 +154,6 @@ type TabConfig = {
   sections: Section[];
   sidebar: SidebarGroup[];
 };
-
-const SIGNAL_BARS = [
-  4, 5, 6, 8, 10, 14, 22, 36, 58, 84, 56, 28, 16, 11, 8, 6, 9, 13, 24, 40, 28,
-  18, 12, 10, 16, 28, 44, 78, 56, 34, 20, 13, 18, 24, 16, 10, 18, 32, 56, 42,
-  24, 14, 12, 20, 34, 48, 30, 16, 10, 7, 5,
-];
-
-const SIGNAL_COLORS = [
-  'rgba(244,140,46,0.94)',
-  'rgba(244,140,46,0.94)',
-  'rgba(244,140,46,0.94)',
-  'rgba(46,181,192,0.9)',
-  'rgba(46,181,192,0.9)',
-  'rgba(46,181,192,0.9)',
-  'rgba(95,118,255,0.88)',
-  'rgba(95,118,255,0.88)',
-  'rgba(151,109,242,0.86)',
-];
 
 export function PlatformHomePage({
   domain,
@@ -212,6 +213,8 @@ export function PlatformHomePage({
     key,
     label: getTabConfig(locale, key, page).label,
   }));
+  const showOverviewGetStarted =
+    isOverviewTab && (page ?? 'platform-overview') === 'platform-overview';
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -331,120 +334,19 @@ export function PlatformHomePage({
               <>
                 <div className="px-5 py-10 sm:px-7 lg:px-10 lg:py-14 xl:px-12">
                   <article className="w-full max-w-[980px] space-y-9">
-                    <section
-                      className="overflow-hidden rounded-[1.85rem] border border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(244,250,248,0.94))] shadow-[0_24px_60px_-46px_rgba(15,23,42,0.24)]"
-                      id="hero"
-                    >
-                      <div className="grid gap-6 px-7 py-6 lg:grid-cols-[minmax(0,0.98fr)_minmax(12rem,0.72fr)] lg:px-8 lg:py-6">
-                        <div className="space-y-4.5">
-                          <p className="inline-flex items-center gap-2 text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-primary">
-                            <LayoutGrid className="size-4" />
-                            {display.heroEyebrow}
-                          </p>
-                          <h1 className="max-w-[12ch] text-[2rem] font-semibold leading-[1.04] tracking-[-0.04em] text-foreground sm:text-[2.4rem]">
-                            {display.heroTitle}
-                          </h1>
-                          <p className="max-w-[44ch] text-[0.96rem] leading-7 text-muted-foreground">
-                            {display.description}
-                          </p>
-                          <div className="flex flex-wrap gap-3 pt-2">
-                            {display.heroActions.map((action) => (
-                              <a
-                                className={buttonVariants({
-                                  className:
-                                    action.variant === 'default'
-                                      ? 'h-11 rounded-2xl px-5 text-sm'
-                                      : 'h-11 rounded-2xl px-5 text-sm bg-background/84',
-                                  variant: action.variant,
-                                })}
-                                href={action.href}
-                                key={action.label}
-                              >
-                                {action.label}
-                                <ArrowRight className="size-4" />
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-
-                        {markdownPage ? null : <HeroSignal />}
+                    <section id="hero">
+                      <div className="space-y-4.5">
+                        <h1 className="max-w-[12ch] text-[2rem] font-semibold leading-[1.04] tracking-[-0.04em] text-foreground sm:text-[2.4rem]">
+                          {display.heroTitle}
+                        </h1>
+                        <p className="max-w-[44ch] text-[0.96rem] leading-7 text-muted-foreground">
+                          {display.description}
+                        </p>
                       </div>
                     </section>
 
-                    {isOverviewTab &&
-                    ((page ?? 'platform-overview') === 'platform-overview') ? (
-                      <section id="start-building">
-                        <div className="mb-4 flex items-center gap-2">
-                          <LayoutGrid className="size-4.5 text-primary" />
-                          <h2 className="text-[1.18rem] font-semibold text-foreground">
-                            {isZh ? '开始构建' : 'Start building'}
-                          </h2>
-                        </div>
-                        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                          {(
-                            isZh
-                              ? [
-                                  {
-                                    body: '先注册并登录控制台，创建项目，拿到 App ID 和基础凭证。',
-                                    step: '01',
-                                    title: '创建账号',
-                                  },
-                                  {
-                                    body: '根据你的目标选择 AI、实时音视频、场景方案或 API 参考能力路径。',
-                                    step: '02',
-                                    title: '选择能力',
-                                  },
-                                  {
-                                    body: '从快速开始跑通最小链路，验证接口、事件和体验是否符合预期。',
-                                    step: '03',
-                                    title: '快速开始',
-                                  },
-                                  {
-                                    body: '继续进入产品概览、能力指南和 API 文档，完成集成与上线准备。',
-                                    step: '04',
-                                    title: '查看文档',
-                                  },
-                                ]
-                              : [
-                                  {
-                                    body: 'Create a Console account, set up a project, and collect your App ID plus base credentials.',
-                                    step: '01',
-                                    title: 'Create account',
-                                  },
-                                  {
-                                    body: 'Choose the path that matches your goal: AI, realtime media, solutions, or API reference.',
-                                    step: '02',
-                                    title: 'Pick capability',
-                                  },
-                                  {
-                                    body: 'Use the quickstart to prove the minimum working flow and validate events, APIs, and UX.',
-                                    step: '03',
-                                    title: 'Quick start',
-                                  },
-                                  {
-                                    body: 'Continue into product overviews, capability guides, and API docs to finish integration.',
-                                    step: '04',
-                                    title: 'Read the docs',
-                                  },
-                                ]
-                          ).map((item) => (
-                            <div
-                              className="rounded-[1.4rem] border border-border/70 bg-card/72 p-5"
-                              key={item.step}
-                            >
-                              <p className="mb-3 text-[0.76rem] font-semibold uppercase tracking-[0.12em] text-primary">
-                                {item.step}
-                              </p>
-                              <h3 className="text-[1rem] font-semibold text-foreground">
-                                {item.title}
-                              </h3>
-                              <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                                {item.body}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </section>
+                    {showOverviewGetStarted ? (
+                      <OverviewGetStartedShowcase isZh={isZh} />
                     ) : null}
 
                     {markdownPage ? (
@@ -479,6 +381,8 @@ export function PlatformHomePage({
                               ))}
                             </div>
                           </section>
+                        ) : section.type === 'resource-groups' ? (
+                          <ResourceGroupsSection key={section.id} section={section} />
                         ) : section.type === 'resource-list' ? (
                           <ResourceListSection key={section.id} section={section} />
                         ) : Array.isArray(section.cards) ? (
@@ -835,22 +739,162 @@ function ResourceListSection({
   );
 }
 
+function ResourceGroupsSection({
+  section,
+}: {
+  section: Extract<Section, { type: 'resource-groups' }>;
+}) {
+  return (
+    <section id={section.id}>
+      <div className="mb-4 flex flex-col gap-3 border-b border-border/70 pb-4 md:flex-row md:items-center md:justify-between">
+        <h2 className="text-[1.18rem] font-semibold text-foreground">
+          {section.title}
+        </h2>
+        <a
+          className="inline-flex items-center rounded-xl border border-border/70 bg-background px-3.5 py-2 text-[0.88rem] font-medium text-foreground transition-colors hover:bg-accent/30"
+          href={section.actionHref}
+        >
+          {section.actionLabel}
+        </a>
+      </div>
+
+      <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+        {section.groups.map((group) => (
+          <div key={group.title}>
+            <h3 className="mb-4 text-[0.76rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+              {group.title}
+            </h3>
+            <div className="space-y-4">
+              {group.items.map((item) => {
+                const ItemIcon = item.icon;
+
+                return (
+                  <a
+                    className="group flex items-center gap-3 rounded-xl transition-colors hover:text-foreground"
+                    href={item.href}
+                    key={item.label}
+                  >
+                    <div className="flex size-12 items-center justify-center rounded-2xl border border-border/70 bg-background text-foreground/80 transition-colors group-hover:border-primary/20 group-hover:text-primary">
+                      <ItemIcon className="size-5" />
+                    </div>
+                    <span className="text-[0.96rem] leading-7 text-foreground/92 group-hover:text-foreground">
+                      {item.label}
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function OverviewGetStartedShowcase({ isZh }: { isZh: boolean }) {
+  const cards: CardItem[] = isZh
+    ? [
+        {
+          body: '在浏览器里快速搭起第一个智能体原型，先验证语音、提示词和基础链路。',
+          href: '/?tab=ai',
+          icon: Bot,
+          linkLabel: '打开 AI 入口',
+          previewChips: ['Builder', 'Voice', 'Preset'],
+          previewText: 'Create your first agent right in the browser.',
+          title: '智能体搭建器',
+          variant: 'quickstart',
+        },
+        {
+          body: '用代码按步骤跑通语音 AI 快速开始，建立第一条实时对话链路。',
+          href: '/docs/convoai/restful/get-started/quick-start',
+          icon: MicVocal,
+          linkLabel: '查看快速开始',
+          previewText:
+            'session = AgentSession(...)\nstt = "realtime-stt"\nllm = "gpt-5"\ntts = "voice"',
+          title: '语音 AI 快速开始',
+          variant: 'quickstart',
+        },
+        {
+          body: '让你常用的 coding agent 搜索 Agora 文档、生成代码并辅助排查集成问题。',
+          href: '/?tab=overview&page=overview-community-resources',
+          icon: Braces,
+          linkLabel: '查看资源',
+          previewText:
+            '> create a voice AI app\n• searched Agora docs\n• read quickstart\n• wrote integration code',
+          title: 'Coding Agent 支持',
+          variant: 'quickstart',
+        },
+      ]
+    : [
+        {
+          body: 'Prototype your first agent in the browser before you expand into full integration work.',
+          href: '/?tab=ai',
+          icon: Bot,
+          linkLabel: 'Open AI entry',
+          previewChips: ['Builder', 'Voice', 'Preset'],
+          previewText: 'Create your first agent right in the browser.',
+          title: 'Agent Builder',
+          variant: 'quickstart',
+        },
+        {
+          body: 'Follow the step-by-step voice AI quickstart and ship the first realtime conversation loop in code.',
+          href: '/docs/convoai/restful/get-started/quick-start',
+          icon: MicVocal,
+          linkLabel: 'Read quickstart',
+          previewText:
+            'session = AgentSession(...)\nstt = "realtime-stt"\nllm = "gpt-5"\ntts = "voice"',
+          title: 'Voice AI quickstart',
+          variant: 'quickstart',
+        },
+        {
+          body: 'Use your favorite coding agent to search Agora docs, generate code, and debug integrations faster.',
+          href: '/?tab=overview&page=overview-community-resources',
+          icon: Braces,
+          linkLabel: 'Open resources',
+          previewText:
+            '> create a voice AI app\n• searched Agora docs\n• read quickstart\n• wrote integration code',
+          title: 'Coding agent support',
+          variant: 'quickstart',
+        },
+      ];
+
+  return (
+    <section id="get-started-showcase">
+      <div className="mb-6">
+        <h2 className="text-[2rem] font-semibold tracking-[-0.03em] text-foreground">
+          {isZh ? '快速开始' : 'Get started'}
+        </h2>
+        <p className="mt-2 text-[1rem] leading-7 text-muted-foreground">
+          {isZh
+            ? '从这三个入口开始，先把第一条语音 AI 接入链路跑通。'
+            : 'Start building with these first three entry points.'}
+        </p>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {cards.map((card) => (
+          <QuickstartCard card={card} key={card.title} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function QuickstartCard({ card }: { card: CardItem }) {
   const CardIcon = card.icon;
   const label = card.linkLabel ?? 'Read next';
 
   return (
     <a
-      className="group flex h-full flex-col rounded-[1.5rem] border border-border/70 bg-card/88 p-5 shadow-[0_18px_36px_-30px_rgba(15,23,42,0.12)] transition-transform hover:-translate-y-0.5 hover:border-primary/20"
+      className="group flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-border/70 bg-card/94 shadow-[0_18px_36px_-30px_rgba(15,23,42,0.12)] transition-transform hover:-translate-y-0.5 hover:border-primary/20"
       href={card.href}
     >
-      <div className="rounded-[1.2rem] border border-border/60 bg-[linear-gradient(180deg,rgba(121,153,255,0.08),rgba(255,255,255,0.94)_24%,rgba(249,251,251,0.98))] p-4">
+      <div className="flex h-[17.5rem] flex-col border-b border-border/55 bg-[linear-gradient(180deg,rgba(121,153,255,0.1),rgba(255,255,255,0.96)_26%,rgba(249,251,251,0.98))] p-5">
         <div className="mb-3 flex gap-2">
           <span className="size-2.5 rounded-full bg-border/65" />
           <span className="size-2.5 rounded-full bg-border/65" />
           <span className="size-2.5 rounded-full bg-border/65" />
         </div>
-        <div className="relative min-h-[9.5rem] rounded-[1rem] border border-border/55 bg-background/90 p-4">
+        <div className="relative h-[12rem] overflow-hidden rounded-[1rem] border border-border/55 bg-background/92 p-5">
           {card.previewChips && card.previewChips.length > 0 ? (
             <div className="mb-3 flex flex-wrap gap-2">
               {card.previewChips.map((chip) => (
@@ -864,7 +908,7 @@ function QuickstartCard({ card }: { card: CardItem }) {
             </div>
           ) : null}
           {card.previewText ? (
-            <p className="max-w-[14rem] pr-14 text-[0.9rem] leading-7 text-muted-foreground">
+            <p className="max-w-[15rem] pr-16 text-[0.9rem] leading-8 text-muted-foreground whitespace-pre-line">
               {card.previewText}
             </p>
           ) : null}
@@ -874,45 +918,19 @@ function QuickstartCard({ card }: { card: CardItem }) {
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col space-y-3 pt-5">
-        <h3 className="min-h-[3.2rem] text-[1.22rem] font-semibold tracking-[-0.03em] text-foreground">
+      <div className="flex flex-1 flex-col px-5 py-5">
+        <h3 className="min-h-[2rem] truncate text-[1.12rem] font-semibold leading-8 tracking-[-0.03em] text-foreground">
           {card.title}
         </h3>
-        <p className="min-h-[5.4rem] text-[0.95rem] leading-7 text-muted-foreground">
+        <p className="mt-3 min-h-[6.5rem] text-[0.95rem] leading-8 text-muted-foreground">
           {card.body}
         </p>
-        <span className="mt-auto inline-flex items-center gap-2 pt-1 text-[0.98rem] font-medium text-primary">
+        <span className="mt-auto inline-flex items-center gap-2 pt-4 text-[0.98rem] font-medium text-primary">
           {label}
           <ArrowRight className="size-4.5 transition-transform group-hover:translate-x-0.5" />
         </span>
       </div>
     </a>
-  );
-}
-
-function HeroSignal() {
-  return (
-    <div className="relative hidden min-h-[12.5rem] overflow-hidden rounded-[1.55rem] border border-border/55 bg-[radial-gradient(circle_at_20%_18%,rgba(32,170,150,0.15),transparent_26%),radial-gradient(circle_at_80%_22%,rgba(54,191,205,0.14),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.8),rgba(240,248,246,0.72))] lg:block">
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(14,18,20,0.03)_20%,transparent_40%,rgba(14,18,20,0.03)_60%,transparent)]" />
-      <div className="absolute inset-x-7 top-1/2 -translate-y-1/2">
-        <div className="flex items-center justify-end gap-[4px]">
-          {SIGNAL_BARS.map((height, index) => (
-            <span
-              className="rounded-full"
-              key={`${height}-${index}`}
-              style={{
-                background: SIGNAL_COLORS[Math.min(8, Math.floor(index / 6))],
-                boxShadow: `0 0 16px ${SIGNAL_COLORS[Math.min(8, Math.floor(index / 6))]}`,
-                height,
-                opacity: 0.95,
-                width: 3,
-              }}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="absolute inset-x-10 bottom-8 h-px bg-[linear-gradient(90deg,transparent,rgba(22,127,109,0.22),transparent)]" />
-    </div>
   );
 }
 
@@ -926,8 +944,8 @@ function buildToc(tab: TabConfig) {
 
   if (tab.heroTitle === 'Agora Docs') {
     items.push({
-      href: '#start-building',
-      label: 'Start building',
+      href: '#get-started-showcase',
+      label: tab.heroEyebrow === '概览' ? '快速开始' : 'Get started',
     });
   }
 
@@ -1227,7 +1245,7 @@ function getTabConfig(
         best: '最佳实践',
         exploreMore: '探索更多',
         getStarted: '快速开始',
-        overview: '概览',
+        overview: '介绍',
         platformInfo: '平台信息',
         realtime: '实时与媒体',
         solutions: '场景方案',
@@ -1238,7 +1256,7 @@ function getTabConfig(
         best: 'Best Practices',
         exploreMore: 'Explore More',
         getStarted: 'Get Started',
-        overview: 'Overview',
+        overview: 'Introduction',
         platformInfo: 'Platform Info',
         realtime: 'Realtime & Media',
         solutions: 'Solutions',
@@ -1274,70 +1292,186 @@ function getTabConfig(
       ];
 
   const overviewMoreResourcesSection = {
-    id: 'more-resources',
-    resources: isZh
+    actionHref: '/docs/convoai/restful/resources',
+    actionLabel: isZh ? '查看全部入口' : 'See all resources',
+    groups: isZh
       ? [
           {
-            body: '先理解实时对话引擎的边界、场景和工作方式。',
-            ctaLabel: '查看文档',
-            href: '/docs/convoai/restful/overview/product-overview',
-            icon: Library,
-            title: '产品概览',
+            items: [
+              {
+                href: '/docs/convoai/restful/get-started/quick-start',
+                icon: Sparkles,
+                label: '对话式 AI 快速开始',
+              },
+              {
+                href: '/docs/convoai/restful/get-started/quick-start-go',
+                icon: Cable,
+                label: 'Go 服务端快速开始',
+              },
+              {
+                href: '/docs/convoai/restful/get-started/quick-start-java',
+                icon: Wrench,
+                label: 'Java 服务端快速开始',
+              },
+            ],
+            title: '快速开始',
           },
           {
-            body: '梳理智能体、语音交互、上下文和媒体链路这些核心概念。',
-            ctaLabel: '查看文档',
-            href: '/docs/convoai/restful/overview/concepts',
-            icon: LayoutGrid,
-            title: '关键概念',
+            items: [
+              {
+                href: '/docs/convoai/restful/overview/product-overview',
+                icon: Library,
+                label: '产品概览',
+              },
+              {
+                href: '/docs/convoai/restful/overview/concepts',
+                icon: LayoutGrid,
+                label: '关键概念',
+              },
+              {
+                href: '/docs/convoai/restful/overview/release-notes',
+                icon: History,
+                label: '发版说明',
+              },
+              {
+                href: '/docs/convoai/restful/overview/billing',
+                icon: History,
+                label: '计费说明',
+              },
+            ],
+            title: '产品与平台',
           },
           {
-            body: '需要直接落地接口时，从操作类 API、错误码和限制入口进入。',
-            ctaLabel: '打开入口',
-            href: '/?tab=api-reference',
-            icon: Braces,
-            title: 'API 参考',
+            items: [
+              {
+                href: '/docs/convoai/restful/operations/start-agent',
+                icon: Rocket,
+                label: '创建智能体',
+              },
+              {
+                href: '/?tab=api-reference',
+                icon: Braces,
+                label: 'API 参考',
+              },
+              {
+                href: '/docs/convoai/restful/user-guides/http-basic-auth',
+                icon: ShieldCheck,
+                label: 'HTTP 基础认证',
+              },
+            ],
+            title: '服务端接口',
           },
           {
-            body: '把计费、区域限制、音频设置与发版节奏当作平台使用前置条件。',
-            ctaLabel: '继续了解',
-            href: '/?tab=best-practices',
-            icon: History,
-            title: '平台信息',
+            items: [
+              {
+                href: '/docs/convoai/restful/skills-integrate',
+                icon: WandSparkles,
+                label: 'Skills 集成',
+              },
+              {
+                href: '/docs/convoai/restful/mcp-integrate',
+                icon: Webhook,
+                label: 'MCP 集成',
+              },
+              {
+                href: '/docs/convoai/restful/resources',
+                icon: Gauge,
+                label: '资源与参考',
+              },
+            ],
+            title: '工具与扩展',
           },
         ]
       : [
           {
-            body: 'Start by understanding the boundaries, scenarios, and operating model of the realtime agent engine.',
-            ctaLabel: 'Read docs',
-            href: '/docs/convoai/restful/overview/product-overview',
-            icon: Library,
-            title: 'Product overview',
+            items: [
+              {
+                href: '/docs/convoai/restful/get-started/quick-start',
+                icon: Sparkles,
+                label: 'Voice AI quickstart',
+              },
+              {
+                href: '/docs/convoai/restful/get-started/quick-start-go',
+                icon: Cable,
+                label: 'Go server quickstart',
+              },
+              {
+                href: '/docs/convoai/restful/get-started/quick-start-java',
+                icon: Wrench,
+                label: 'Java server quickstart',
+              },
+            ],
+            title: 'Quickstarts',
           },
           {
-            body: 'Map the key concepts behind agents, voice interaction, context, and the media path.',
-            ctaLabel: 'Read docs',
-            href: '/docs/convoai/restful/overview/concepts',
-            icon: LayoutGrid,
-            title: 'Core concepts',
+            items: [
+              {
+                href: '/docs/convoai/restful/overview/product-overview',
+                icon: Library,
+                label: 'Product overview',
+              },
+              {
+                href: '/docs/convoai/restful/overview/concepts',
+                icon: LayoutGrid,
+                label: 'Core concepts',
+              },
+              {
+                href: '/docs/convoai/restful/overview/release-notes',
+                icon: History,
+                label: 'Release notes',
+              },
+              {
+                href: '/docs/convoai/restful/overview/billing',
+                icon: History,
+                label: 'Billing',
+              },
+            ],
+            title: 'Product & platform',
           },
           {
-            body: 'When you need implementation details, jump straight into operations, response codes, and limits.',
-            ctaLabel: 'Open entry',
-            href: '/?tab=api-reference',
-            icon: Braces,
-            title: 'API reference',
+            items: [
+              {
+                href: '/docs/convoai/restful/operations/start-agent',
+                icon: Rocket,
+                label: 'Create agent',
+              },
+              {
+                href: '/?tab=api-reference',
+                icon: Braces,
+                label: 'API reference',
+              },
+              {
+                href: '/docs/convoai/restful/user-guides/http-basic-auth',
+                icon: ShieldCheck,
+                label: 'HTTP basic auth',
+              },
+            ],
+            title: 'Server APIs',
           },
           {
-            body: 'Treat billing, geofencing, audio tuning, and release cadence as part of the platform entry path.',
-            ctaLabel: 'Learn more',
-            href: '/?tab=best-practices',
-            icon: History,
-            title: 'Platform info',
+            items: [
+              {
+                href: '/docs/convoai/restful/skills-integrate',
+                icon: WandSparkles,
+                label: 'Skills integration',
+              },
+              {
+                href: '/docs/convoai/restful/mcp-integrate',
+                icon: Webhook,
+                label: 'MCP integration',
+              },
+              {
+                href: '/docs/convoai/restful/resources',
+                icon: Gauge,
+                label: 'Resources',
+              },
+            ],
+            title: 'Tools & extensions',
           },
         ],
+    id: 'more-resources',
     title: isZh ? '更多资源' : 'More resources',
-    type: 'resource-list' as const,
+    type: 'resource-groups' as const,
   };
 
   const configs: Record<HomeTabKey, TabConfig> = {
@@ -2155,59 +2289,61 @@ function getTabConfig(
               href: '/?tab=overview&page=platform-overview',
               label: isZh ? '概览' : 'Overview',
             },
+            {
+              active: page === 'overview-about-agora',
+              href: '/?tab=overview&page=overview-about-agora',
+              label: isZh ? '了解 Agora' : 'About Agora',
+            },
+            {
+              active: page === 'overview-start-with-ai',
+              href: '/?tab=overview&page=overview-start-with-ai',
+              label: isZh ? '从 AI 开始' : 'Start with AI',
+            },
+            {
+              active: page === 'overview-community-resources',
+              href: '/?tab=overview&page=overview-community-resources',
+              label: isZh ? '社区资源' : 'Community resources',
+            },
           ],
-          title: isZh ? '快速入门' : 'Quick Start',
+          title: isZh ? '快速开始' : 'Get Started',
         },
         {
           items: [
             {
-              href: `/?tab=overview&page=${buildOverviewEmbeddedDocPage('docs', 'get-started/enable-service')}`,
-              label: isZh ? '创建账号' : 'Create account',
-              section: true,
+              active: page === 'overview-browse-by-capability',
+              href: '/?tab=overview&page=overview-browse-by-capability',
+              label: isZh ? 'AI 智能体' : 'AI Agents',
             },
             {
               active:
-                page === buildOverviewEmbeddedDocPage('docs', 'get-started/enable-service') ||
-                page === buildOverviewEmbeddedDocPage('api', 'operations/start-agent') ||
-                page === buildOverviewEmbeddedDocPage('docs', 'user-guides/custom-data') ||
-                page === buildOverviewEmbeddedDocPage('docs', 'overview/product-overview'),
+                page === 'overview-product-matrix' ||
+                page === buildOverviewEmbeddedDocPage('docs', 'user-guides/audio-modality'),
               children: [
                 {
-                  active:
-                    page === buildOverviewEmbeddedDocPage('docs', 'get-started/enable-service'),
-                  href: `/?tab=overview&page=${buildOverviewEmbeddedDocPage('docs', 'get-started/enable-service')}`,
-                  label: isZh ? '设置开发环境' : 'Set up your environment',
+                  active: page === 'overview-product-matrix',
+                  href: '/?tab=overview&page=overview-product-matrix',
+                  label: isZh ? '实时音视频' : 'Realtime Audio & Video',
                   muted: true,
                 },
                 {
-                  active:
-                    page === buildOverviewEmbeddedDocPage('api', 'operations/start-agent'),
-                  href: `/?tab=overview&page=${buildOverviewEmbeddedDocPage('api', 'operations/start-agent')}`,
-                  label: isZh ? '发送第一个 API 请求' : 'Send your first API request',
-                  muted: true,
-                },
-                {
-                  active:
-                    page === buildOverviewEmbeddedDocPage('docs', 'user-guides/custom-data'),
-                  href: `/?tab=overview&page=${buildOverviewEmbeddedDocPage('docs', 'user-guides/custom-data')}`,
-                  label: isZh ? '构建并测试新功能' : 'Build and test new features',
-                  muted: true,
-                },
-                {
-                  active:
-                    page === buildOverviewEmbeddedDocPage('docs', 'overview/product-overview'),
-                  href: `/?tab=overview&page=${buildOverviewEmbeddedDocPage('docs', 'overview/product-overview')}`,
-                  label: isZh ? '上线前检查表' : 'Pre-launch checklist',
+                  active: page === buildOverviewEmbeddedDocPage('docs', 'user-guides/audio-modality'),
+                  href: `/?tab=overview&page=${buildOverviewEmbeddedDocPage('docs', 'user-guides/audio-modality')}`,
+                  label: isZh ? '媒体服务' : 'Media Services',
                   muted: true,
                 },
               ],
               expanded: true,
-              href: `/?tab=overview&page=${buildOverviewEmbeddedDocPage('docs', 'get-started/enable-service')}`,
-              label: isZh ? '开始开发' : 'Start development',
+              href: '/?tab=overview&page=overview-product-matrix',
+              label: isZh ? '能力入口' : 'Capabilities',
               section: true,
             },
+            {
+              active: page === buildOverviewEmbeddedDocPage('docs', 'user-guides/custom-data'),
+              href: `/?tab=overview&page=${buildOverviewEmbeddedDocPage('docs', 'user-guides/custom-data')}`,
+              label: isZh ? '消息' : 'Messaging',
+            },
           ],
-          title: isZh ? '开始构建' : 'Start building',
+          title: isZh ? '能力' : 'Capabilities',
         },
         {
           items: [
@@ -2215,6 +2351,26 @@ function getTabConfig(
               active: page === 'overview-general-account',
               href: '/?tab=overview&page=overview-general-account',
               label: isZh ? '账户' : 'Account',
+            },
+            {
+              active: page === 'overview-general-projects',
+              href: '/?tab=overview&page=overview-general-projects',
+              label: isZh ? '项目' : 'Projects',
+            },
+            {
+              active: page === 'overview-general-members-roles',
+              href: '/?tab=overview&page=overview-general-members-roles',
+              label: isZh ? '成员与角色' : 'Members and roles',
+            },
+            {
+              active: page === 'overview-pricing-access',
+              href: '/?tab=overview&page=overview-pricing-access',
+              label: isZh ? '计费' : 'Billing',
+            },
+            {
+              active: page === 'overview-general-usage-analytics',
+              href: '/?tab=overview&page=overview-general-usage-analytics',
+              label: isZh ? '用量分析' : 'Usage analytics',
             },
             {
               active: page === 'overview-general-security-privacy',
@@ -2227,7 +2383,7 @@ function getTabConfig(
               label: isZh ? '客户支持' : 'Support',
             },
           ],
-          title: isZh ? '通用' : 'General',
+          title: isZh ? '管理' : 'Administration',
         },
       ],
     },
