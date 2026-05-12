@@ -49,6 +49,10 @@ export const HOME_TABS = [
 export type HomeTabKey = (typeof HOME_TABS)[number];
 
 const OVERVIEW_EMBEDDED_DOC_PREFIX = 'overview-doc:';
+type HomeMarkdownPageMap = ReturnType<typeof loadHomeMarkdownPages>[keyof ReturnType<
+  typeof loadHomeMarkdownPages
+>];
+type HomeMarkdownPage = HomeMarkdownPageMap[string];
 
 type Action = {
   href: string;
@@ -181,19 +185,19 @@ export function PlatformHomePage({
       ? resolveOverviewEmbeddedDoc(localizedPortalData, page)
       : null;
   const homeMarkdownPages = loadHomeMarkdownPages();
+  const overviewMarkdownPageKey = isOverviewTab
+    ? resolveOverviewMarkdownPageKey(page, homeMarkdownPages[locale])
+    : null;
   const activeTab = getTabConfig(locale, tab, page);
   const activePage =
     activeTab.pages?.[
       page ?? (isOverviewTab ? 'platform-overview' : '')
     ] ?? null;
-  const markdownPageKey =
-    isOverviewTab && page && page !== 'platform-overview'
-      ? `overview-${page}`
-      : null;
   const markdownPage =
-    markdownPageKey && homeMarkdownPages[locale]?.[markdownPageKey]
-      ? homeMarkdownPages[locale][markdownPageKey]
+    overviewMarkdownPageKey && homeMarkdownPages[locale]?.[overviewMarkdownPageKey]
+      ? homeMarkdownPages[locale][overviewMarkdownPageKey]
       : null;
+  const markdownToc = markdownPage ? buildMarkdownToc(markdownPage) : [];
   const display = activePage
     ? {
         description: activePage.description ?? activeTab.description,
@@ -330,6 +334,40 @@ export function PlatformHomePage({
                   />
                 </div>
               </div>
+            ) : markdownPage ? (
+              <>
+                <div className="px-5 py-10 sm:px-7 lg:px-10 lg:py-14 xl:px-12">
+                  <div className="w-full max-w-[980px]">
+                    <MarkdownDocView page={markdownPage} />
+                  </div>
+                </div>
+
+                <aside className="hidden xl:block">
+                  <div className="sticky top-[8.8rem] max-h-[calc(100vh-10rem)] overflow-y-auto border-l border-border/70 pl-5 text-muted-foreground">
+                    <h3 className="mb-3 text-[0.72rem] font-medium uppercase tracking-[0.12em]">
+                      {isZh ? '本页目录' : 'On this page'}
+                    </h3>
+                    {markdownToc.length > 0 ? (
+                      <ul className="space-y-1">
+                        {markdownToc.map((item) => (
+                          <li key={item.href}>
+                            <a
+                              className="block rounded-lg px-3 py-1.5 text-[0.84rem] transition-colors hover:bg-accent/42 hover:text-foreground"
+                              href={item.href}
+                            >
+                              {item.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-sm">
+                        {isZh ? '当前页面没有可用目录。' : 'No headings are available on this page.'}
+                      </p>
+                    )}
+                  </div>
+                </aside>
+              </>
             ) : (
               <>
                 <div className="px-5 py-10 sm:px-7 lg:px-10 lg:py-14 xl:px-12">
@@ -349,67 +387,63 @@ export function PlatformHomePage({
                       <OverviewGetStartedShowcase isZh={isZh} />
                     ) : null}
 
-                    {markdownPage ? (
-                      <MarkdownDocView page={markdownPage} />
-                    ) : (
-                      display.sections.map((section) =>
-                        section.type === 'triptych' ? (
-                          <section
-                            className="rounded-[1.65rem] border border-border/70 bg-card/72 p-6"
-                            id={section.id}
-                            key={section.id}
+                    {display.sections.map((section) =>
+                      section.type === 'triptych' ? (
+                        <section
+                          className="rounded-[1.65rem] border border-border/70 bg-card/72 p-6"
+                          id={section.id}
+                          key={section.id}
+                        >
+                          <div className="mb-5 flex items-center gap-2">
+                            <LayoutGrid className="size-4.5 text-primary" />
+                            <h2 className="text-[1.18rem] font-semibold text-foreground">
+                              {section.title}
+                            </h2>
+                          </div>
+                          <div className="grid gap-4 lg:grid-cols-3">
+                            {section.items.map((item) => (
+                              <div
+                                className="rounded-[1.3rem] border border-border/65 bg-background/76 p-5"
+                                key={item.title}
+                              >
+                                <h3 className="text-[1rem] font-semibold text-foreground">
+                                  {item.title}
+                                </h3>
+                                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                                  {item.body}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </section>
+                      ) : section.type === 'resource-groups' ? (
+                        <ResourceGroupsSection key={section.id} section={section} />
+                      ) : section.type === 'resource-list' ? (
+                        <ResourceListSection key={section.id} section={section} />
+                      ) : Array.isArray(section.cards) ? (
+                        <section id={section.id} key={section.id}>
+                          <div className="mb-4 flex items-center gap-2">
+                            <LayoutGrid className="size-4.5 text-primary" />
+                            <h2 className="text-[1.18rem] font-semibold text-foreground">
+                              {section.title}
+                            </h2>
+                          </div>
+                          <div
+                            className={cn(
+                              'grid gap-4',
+                              section.columns === 2 && 'md:grid-cols-2',
+                              section.columns === 3 &&
+                                'md:grid-cols-2 xl:grid-cols-3',
+                              section.columns === 4 &&
+                                'md:grid-cols-2 xl:grid-cols-4',
+                            )}
                           >
-                            <div className="mb-5 flex items-center gap-2">
-                              <LayoutGrid className="size-4.5 text-primary" />
-                              <h2 className="text-[1.18rem] font-semibold text-foreground">
-                                {section.title}
-                              </h2>
-                            </div>
-                            <div className="grid gap-4 lg:grid-cols-3">
-                              {section.items.map((item) => (
-                                <div
-                                  className="rounded-[1.3rem] border border-border/65 bg-background/76 p-5"
-                                  key={item.title}
-                                >
-                                  <h3 className="text-[1rem] font-semibold text-foreground">
-                                    {item.title}
-                                  </h3>
-                                  <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                                    {item.body}
-                                  </p>
-                                </div>
-                              ))}
-                            </div>
-                          </section>
-                        ) : section.type === 'resource-groups' ? (
-                          <ResourceGroupsSection key={section.id} section={section} />
-                        ) : section.type === 'resource-list' ? (
-                          <ResourceListSection key={section.id} section={section} />
-                        ) : Array.isArray(section.cards) ? (
-                          <section id={section.id} key={section.id}>
-                            <div className="mb-4 flex items-center gap-2">
-                              <LayoutGrid className="size-4.5 text-primary" />
-                              <h2 className="text-[1.18rem] font-semibold text-foreground">
-                                {section.title}
-                              </h2>
-                            </div>
-                            <div
-                              className={cn(
-                                'grid gap-4',
-                                section.columns === 2 && 'md:grid-cols-2',
-                                section.columns === 3 &&
-                                  'md:grid-cols-2 xl:grid-cols-3',
-                                section.columns === 4 &&
-                                  'md:grid-cols-2 xl:grid-cols-4',
-                              )}
-                            >
-                              {section.cards.map((card) => (
-                                <ContentCard card={card} key={card.title} />
-                              ))}
-                            </div>
-                          </section>
-                        ) : null,
-                      )
+                            {section.cards.map((card) => (
+                              <ContentCard card={card} key={card.title} />
+                            ))}
+                          </div>
+                        </section>
+                      ) : null,
                     )}
                   </article>
                 </div>
@@ -420,31 +454,14 @@ export function PlatformHomePage({
                       {isZh ? '本页目录' : 'On this page'}
                     </h3>
                     <ul className="space-y-1">
-                      {buildToc(
-                        markdownPage
-                          ? {
-                              ...activeTab,
-                              description: display.description,
-                              heroActions: display.heroActions,
-                              heroEyebrow: display.heroEyebrow,
-                              heroTitle: display.heroTitle,
-                              sections:
-                                markdownPage.sections?.map((section) => ({
-                                  cards: [],
-                                  id: slugify(section.title),
-                                  title: section.title,
-                                  type: 'cards' as const,
-                                })) ?? [],
-                            }
-                          : {
-                              ...activeTab,
-                              description: display.description,
-                              heroActions: display.heroActions,
-                              heroEyebrow: display.heroEyebrow,
-                              heroTitle: display.heroTitle,
-                              sections: display.sections,
-                            },
-                      ).map((item) => (
+                      {buildToc({
+                        ...activeTab,
+                        description: display.description,
+                        heroActions: display.heroActions,
+                        heroEyebrow: display.heroEyebrow,
+                        heroTitle: display.heroTitle,
+                        sections: display.sections,
+                      }).map((item) => (
                         <li key={item.href}>
                           <a
                             className="block rounded-lg px-3 py-1.5 text-[0.84rem] transition-colors hover:bg-accent/42 hover:text-foreground"
@@ -610,13 +627,24 @@ function OverviewSidebarItem({ item }: { item: SidebarItem }) {
 function MarkdownDocView({
   page,
 }: {
-  page: ReturnType<typeof loadHomeMarkdownPages>[keyof ReturnType<typeof loadHomeMarkdownPages>][string];
+  page: HomeMarkdownPage;
 }) {
   const blocks = parseMarkdownBlocks(page.rawBody);
 
   return (
     <article className="rounded-[1.55rem] border border-border/70 bg-card/72 px-7 py-8 sm:px-8">
       <div className="space-y-8">
+        <header className="space-y-4 border-b border-border/70 pb-8">
+          <h1 className="text-[2rem] font-semibold leading-[1.08] tracking-[-0.04em] text-foreground sm:text-[2.35rem]">
+            {page.title}
+          </h1>
+          {page.description ? (
+            <p className="max-w-[44rem] text-[1rem] leading-8 text-muted-foreground">
+              {page.description}
+            </p>
+          ) : null}
+        </header>
+
         {blocks.map((block) => {
           if (block.type === 'paragraph') {
             return (
@@ -958,6 +986,17 @@ function buildToc(tab: TabConfig) {
   ];
 }
 
+function buildMarkdownToc(page: HomeMarkdownPage) {
+  return (
+    page.sections
+      ?.filter((section) => section.title.trim().length > 0)
+      .map((section) => ({
+        href: `#${slugify(section.title)}`,
+        label: section.title,
+      })) ?? []
+  );
+}
+
 function slugify(value: string) {
   return value
     .toLowerCase()
@@ -1145,6 +1184,33 @@ function resolveOverviewEmbeddedDoc(
   }
 
   return tab.docs.find((doc) => doc.pageKey === decoded.pageKey) ?? null;
+}
+
+function resolveOverviewMarkdownPageKey(
+  page: string | undefined,
+  pages: HomeMarkdownPageMap | undefined,
+) {
+  if (
+    !page ||
+    !pages ||
+    page === 'platform-overview' ||
+    page.startsWith(OVERVIEW_EMBEDDED_DOC_PREFIX)
+  ) {
+    return null;
+  }
+
+  if (page in pages) {
+    return page;
+  }
+
+  if (!page.startsWith('overview-')) {
+    const legacyKey = `overview-${page}`;
+    if (legacyKey in pages) {
+      return legacyKey;
+    }
+  }
+
+  return null;
 }
 
 function decodeOverviewEmbeddedDocPage(page?: string) {

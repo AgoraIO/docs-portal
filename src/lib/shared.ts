@@ -4,6 +4,7 @@ export const appDescription =
 export const docsRoute = '/docs';
 export const docsImageRoute = '/og/docs';
 export const docsContentRoute = '/llms.mdx/docs';
+export const homeContentRoute = '/llms.mdx/home';
 
 export const contentGitConfig = {
   user: 'Shengwang-Community',

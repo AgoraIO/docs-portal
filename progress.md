@@ -24,3 +24,4 @@
 - Tightened card alignment in the `Get started` showcase so the three preview panes share the same top height and the three titles begin on the same horizontal line.
 - Locked the `Get started` preview area to a fixed height with overflow clipping so the third card (`Coding Agent 支持`) can no longer push its title/content block lower than the first two cards.
 - Rebuilt the Overview `更多资源 / More resources` section into a grouped SDKs-and-tools style layout, replacing the old four-item resource list with grouped document entry points derived from current Shengwang docs: quickstarts, product/platform, server APIs, and tools/extensions.
+- Fully rewrote the `了解 Agora / About Agora` overview markdown page in both Chinese and English using the new five-part narrative structure: `What is → Why → What can I build → How it works → How to learn more`, replacing the previous content entirely.
