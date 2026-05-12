@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { HomeDocContent } from '@/components/home/HomeDocContent';
 import { PortalDocContent } from '@/components/home/PortalDocContent';
 import { PortalSidebar } from '@/components/home/PortalSidebar';
 import { cn } from '@/lib/cn';
@@ -49,6 +50,14 @@ export const HOME_TABS = [
 export type HomeTabKey = (typeof HOME_TABS)[number];
 
 const OVERVIEW_EMBEDDED_DOC_PREFIX = 'overview-doc:';
+const OVERVIEW_MARKDOWN_PAGE_ALIASES: Record<string, string> = {
+  'overview-doc:docs:user-guides/audio-modality': 'overview-media-services',
+  'overview-doc:docs:user-guides/custom-data': 'overview-messaging',
+};
+const AI_EMBEDDED_DOC_PREFIX = 'ai-doc:';
+const AI_MARKDOWN_PAGE_ALIASES: Record<string, string> = {
+  'landing-page': 'ai-overview',
+};
 type HomeMarkdownPageMap = ReturnType<typeof loadHomeMarkdownPages>[keyof ReturnType<
   typeof loadHomeMarkdownPages
 >];
@@ -184,9 +193,21 @@ export function PlatformHomePage({
     isOverviewTab && localizedPortalData
       ? resolveOverviewEmbeddedDoc(localizedPortalData, page)
       : null;
+  const aiEmbeddedDoc =
+    tab === 'ai' && localizedPortalData
+      ? resolveAiEmbeddedDoc(localizedPortalData, page)
+      : null;
+  const activeEmbeddedDoc = overviewEmbeddedDoc ?? aiEmbeddedDoc;
   const homeMarkdownPages = loadHomeMarkdownPages();
+  const markdownPageKey =
+    tab === 'overview'
+      ? resolveOverviewMarkdownPageKey(page, homeMarkdownPages[locale])
+      : tab === 'ai'
+        ? resolveAiMarkdownPageKey(page, homeMarkdownPages[locale])
+        : null;
+  const isMarkdownHomeTab = tab === 'overview' || tab === 'ai';
   const overviewMarkdownPageKey = isOverviewTab
-    ? resolveOverviewMarkdownPageKey(page, homeMarkdownPages[locale])
+    ? markdownPageKey
     : null;
   const activeTab = getTabConfig(locale, tab, page);
   const activePage =
@@ -194,10 +215,20 @@ export function PlatformHomePage({
       page ?? (isOverviewTab ? 'platform-overview' : '')
     ] ?? null;
   const markdownPage =
-    overviewMarkdownPageKey && homeMarkdownPages[locale]?.[overviewMarkdownPageKey]
-      ? homeMarkdownPages[locale][overviewMarkdownPageKey]
+    markdownPageKey && homeMarkdownPages[locale]?.[markdownPageKey]
+      ? homeMarkdownPages[locale][markdownPageKey]
       : null;
-  const markdownToc = markdownPage ? buildMarkdownToc(markdownPage) : [];
+  const markdownTitle =
+    markdownPage && isMarkdownHomeTab
+      ? resolveSidebarLabel(
+          activeTab.sidebar,
+          markdownPageKey ?? page,
+        ) ?? markdownPage.title
+      : markdownPage?.title;
+  const embeddedDocTitle =
+    activeEmbeddedDoc && isMarkdownHomeTab
+      ? resolveSidebarLabel(activeTab.sidebar, page) ?? activeEmbeddedDoc.title
+      : activeEmbeddedDoc?.title;
   const display = activePage
     ? {
         description: activePage.description ?? activeTab.description,
@@ -282,7 +313,7 @@ export function PlatformHomePage({
       <main
         className={cn(
           'mx-auto grid w-full max-w-[126rem] grid-cols-1',
-          portalState || overviewEmbeddedDoc
+          portalState || activeEmbeddedDoc
             ? 'lg:grid-cols-[16rem_minmax(0,1fr)]'
             : 'lg:grid-cols-[16rem_minmax(0,1fr)] xl:grid-cols-[16rem_minmax(0,1fr)_15rem]',
         )}
@@ -323,51 +354,28 @@ export function PlatformHomePage({
               </div>
             </aside>
 
-            {overviewEmbeddedDoc ? (
+            {activeEmbeddedDoc ? (
               <div className="px-5 py-10 sm:px-7 lg:px-10 lg:py-14 xl:px-12">
                 <div className="w-full max-w-none">
                   <PortalDocContent
-                    description={overviewEmbeddedDoc.description}
-                    markdownUrl={overviewEmbeddedDoc.markdownUrl}
-                    path={overviewEmbeddedDoc.path}
-                    title={overviewEmbeddedDoc.title}
+                    description={activeEmbeddedDoc.description}
+                    markdownUrl={activeEmbeddedDoc.markdownUrl}
+                    path={activeEmbeddedDoc.path}
+                    title={embeddedDocTitle ?? activeEmbeddedDoc.title}
                   />
                 </div>
               </div>
             ) : markdownPage ? (
-              <>
-                <div className="px-5 py-10 sm:px-7 lg:px-10 lg:py-14 xl:px-12">
-                  <div className="w-full max-w-[980px]">
-                    <MarkdownDocView page={markdownPage} />
-                  </div>
+              <div className="px-5 py-10 sm:px-7 lg:px-10 lg:py-14 xl:px-12">
+                <div className="w-full max-w-none">
+                  <HomeDocContent
+                    description={markdownPage.description}
+                    locale={locale}
+                    pageKey={markdownPageKey ?? page ?? ''}
+                    title={markdownTitle ?? markdownPage.title}
+                  />
                 </div>
-
-                <aside className="hidden xl:block">
-                  <div className="sticky top-[8.8rem] max-h-[calc(100vh-10rem)] overflow-y-auto border-l border-border/70 pl-5 text-muted-foreground">
-                    <h3 className="mb-3 text-[0.72rem] font-medium uppercase tracking-[0.12em]">
-                      {isZh ? '本页目录' : 'On this page'}
-                    </h3>
-                    {markdownToc.length > 0 ? (
-                      <ul className="space-y-1">
-                        {markdownToc.map((item) => (
-                          <li key={item.href}>
-                            <a
-                              className="block rounded-lg px-3 py-1.5 text-[0.84rem] transition-colors hover:bg-accent/42 hover:text-foreground"
-                              href={item.href}
-                            >
-                              {item.label}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="text-sm">
-                        {isZh ? '当前页面没有可用目录。' : 'No headings are available on this page.'}
-                      </p>
-                    )}
-                  </div>
-                </aside>
-              </>
+              </div>
             ) : (
               <>
                 <div className="px-5 py-10 sm:px-7 lg:px-10 lg:py-14 xl:px-12">
@@ -498,8 +506,8 @@ export function PlatformHomePage({
 
 const tabHrefFallbacks = {
   ai: {
-    domain: 'docs',
-    page: 'landing-page',
+    domain: 'home',
+    page: 'ai-overview',
   },
   'api-reference': {
     domain: 'api',
@@ -630,13 +638,15 @@ function MarkdownDocView({
   page: HomeMarkdownPage;
 }) {
   const blocks = parseMarkdownBlocks(page.rawBody);
+  const resolvedTitle =
+    page.title === 'Untitled' ? inferMarkdownDocTitle(blocks) ?? page.title : page.title;
 
   return (
     <article className="rounded-[1.55rem] border border-border/70 bg-card/72 px-7 py-8 sm:px-8">
       <div className="space-y-8">
         <header className="space-y-4 border-b border-border/70 pb-8">
           <h1 className="text-[2rem] font-semibold leading-[1.08] tracking-[-0.04em] text-foreground sm:text-[2.35rem]">
-            {page.title}
+            {resolvedTitle}
           </h1>
           {page.description ? (
             <p className="max-w-[44rem] text-[1rem] leading-8 text-muted-foreground">
@@ -997,6 +1007,50 @@ function buildMarkdownToc(page: HomeMarkdownPage) {
   );
 }
 
+function resolveSidebarLabel(
+  groups: SidebarGroup[],
+  page: string | undefined,
+): string | null {
+  if (!page) {
+    return null;
+  }
+
+  for (const group of groups) {
+    const match = findSidebarItemLabel(group.items, page);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
+function findSidebarItemLabel(
+  items: SidebarItem[],
+  page: string,
+): string | null {
+  for (const item of items) {
+    const itemPage = getOverviewPageFromHref(item.href);
+    if (itemPage === page) {
+      return item.label;
+    }
+
+    if (item.children) {
+      const childMatch = findSidebarItemLabel(item.children, page);
+      if (childMatch) {
+        return childMatch;
+      }
+    }
+  }
+
+  return null;
+}
+
+function getOverviewPageFromHref(href: string) {
+  const match = href.match(/[?&]page=([^&]+)/);
+  return match?.[1] ?? null;
+}
+
 function slugify(value: string) {
   return value
     .toLowerCase()
@@ -1040,6 +1094,24 @@ type MarkdownDocBlock =
       title: string;
       type: 'section';
     };
+
+function inferMarkdownDocTitle(blocks: MarkdownDocBlock[]) {
+  const firstSection = blocks.find(
+    (block): block is Extract<MarkdownDocBlock, { type: 'section' }> =>
+      block.type === 'section' && block.title.trim().length > 0,
+  );
+
+  if (firstSection) {
+    return firstSection.title.trim();
+  }
+
+  const firstParagraph = blocks.find(
+    (block): block is Extract<MarkdownDocBlock, { type: 'paragraph' }> =>
+      block.type === 'paragraph' && block.text.trim().length > 0,
+  );
+
+  return firstParagraph?.text.trim() ?? null;
+}
 
 function parseMarkdownBlocks(markdown: string): MarkdownDocBlock[] {
   const lines = markdown.split('\n');
@@ -1173,12 +1245,45 @@ function resolveOverviewEmbeddedDoc(
   portalData: PortalTab[],
   page?: string,
 ) {
+  if (page && OVERVIEW_MARKDOWN_PAGE_ALIASES[page]) {
+    return null;
+  }
+
   const decoded = decodeOverviewEmbeddedDocPage(page);
   if (!decoded) {
     return null;
   }
 
-  const tab = portalData.find((item) => item.key === decoded.domain);
+  const normalizedDomain = normalizeLegacyDomain(
+    decoded.domain,
+    decoded.pageKey,
+  );
+  const tab =
+    portalData.find((item) => item.key === normalizedDomain) ??
+    portalData.find((item) => item.key === decoded.domain);
+  if (!tab) {
+    return null;
+  }
+
+  return tab.docs.find((doc) => doc.pageKey === decoded.pageKey) ?? null;
+}
+
+function resolveAiEmbeddedDoc(
+  portalData: PortalTab[],
+  page?: string,
+) {
+  const decoded = decodeAiEmbeddedDocPage(page);
+  if (!decoded) {
+    return null;
+  }
+
+  const normalizedDomain = normalizeLegacyDomain(
+    decoded.domain,
+    decoded.pageKey,
+  );
+  const tab =
+    portalData.find((item) => item.key === normalizedDomain) ??
+    portalData.find((item) => item.key === decoded.domain);
   if (!tab) {
     return null;
   }
@@ -1190,6 +1295,11 @@ function resolveOverviewMarkdownPageKey(
   page: string | undefined,
   pages: HomeMarkdownPageMap | undefined,
 ) {
+  const aliasedPage = page ? OVERVIEW_MARKDOWN_PAGE_ALIASES[page] : null;
+  if (aliasedPage && pages && aliasedPage in pages) {
+    return aliasedPage;
+  }
+
   if (
     !page ||
     !pages ||
@@ -1208,6 +1318,26 @@ function resolveOverviewMarkdownPageKey(
     if (legacyKey in pages) {
       return legacyKey;
     }
+  }
+
+  return null;
+}
+
+function resolveAiMarkdownPageKey(
+  page: string | undefined,
+  pages: HomeMarkdownPageMap | undefined,
+) {
+  const aliasedPage = page ? AI_MARKDOWN_PAGE_ALIASES[page] : 'ai-overview';
+  if (aliasedPage && pages && aliasedPage in pages) {
+    return aliasedPage;
+  }
+
+  if (!page || !pages) {
+    return null;
+  }
+
+  if (page in pages) {
+    return page;
   }
 
   return null;
@@ -1232,6 +1362,27 @@ function decodeOverviewEmbeddedDocPage(page?: string) {
 
 function buildOverviewEmbeddedDocPage(domain: string, pageKey: string) {
   return `${OVERVIEW_EMBEDDED_DOC_PREFIX}${domain}:${pageKey}`;
+}
+
+function decodeAiEmbeddedDocPage(page?: string) {
+  if (!page?.startsWith(AI_EMBEDDED_DOC_PREFIX)) {
+    return null;
+  }
+
+  const rest = page.slice(AI_EMBEDDED_DOC_PREFIX.length);
+  const separator = rest.indexOf(':');
+  if (separator === -1) {
+    return null;
+  }
+
+  return {
+    domain: rest.slice(0, separator),
+    pageKey: rest.slice(separator + 1),
+  };
+}
+
+function buildAiEmbeddedDocPage(domain: string, pageKey: string) {
+  return `${AI_EMBEDDED_DOC_PREFIX}${domain}:${pageKey}`;
 }
 
 function resolvePortalActiveTab(
@@ -2376,36 +2527,51 @@ function getTabConfig(
         {
           items: [
             {
-              active: page === 'overview-browse-by-capability',
-              href: '/?tab=overview&page=overview-browse-by-capability',
+              active: page === 'overview-ai-agents',
+              href: '/?tab=overview&page=overview-ai-agents',
               label: isZh ? 'AI 智能体' : 'AI Agents',
             },
             {
               active:
+                page === 'overview-browse-by-capability' ||
+                page === 'overview-realtime-audio-video' ||
                 page === 'overview-product-matrix' ||
+                page === 'overview-media-services' ||
                 page === buildOverviewEmbeddedDocPage('docs', 'user-guides/audio-modality'),
               children: [
                 {
-                  active: page === 'overview-product-matrix',
-                  href: '/?tab=overview&page=overview-product-matrix',
+                  active:
+                    page === 'overview-realtime-audio-video' ||
+                    page === 'overview-product-matrix',
+                  href: '/?tab=overview&page=overview-realtime-audio-video',
                   label: isZh ? '实时音视频' : 'Realtime Audio & Video',
                   muted: true,
                 },
                 {
-                  active: page === buildOverviewEmbeddedDocPage('docs', 'user-guides/audio-modality'),
-                  href: `/?tab=overview&page=${buildOverviewEmbeddedDocPage('docs', 'user-guides/audio-modality')}`,
+                  active:
+                    page === 'overview-media-services' ||
+                    page === buildOverviewEmbeddedDocPage(
+                      'docs',
+                      'user-guides/audio-modality',
+                    ),
+                  href: '/?tab=overview&page=overview-media-services',
                   label: isZh ? '媒体服务' : 'Media Services',
                   muted: true,
                 },
               ],
               expanded: true,
-              href: '/?tab=overview&page=overview-product-matrix',
+              href: '/?tab=overview&page=overview-browse-by-capability',
               label: isZh ? '能力入口' : 'Capabilities',
               section: true,
             },
             {
-              active: page === buildOverviewEmbeddedDocPage('docs', 'user-guides/custom-data'),
-              href: `/?tab=overview&page=${buildOverviewEmbeddedDocPage('docs', 'user-guides/custom-data')}`,
+              active:
+                page === 'overview-messaging' ||
+                page === buildOverviewEmbeddedDocPage(
+                  'docs',
+                  'user-guides/custom-data',
+                ),
+              href: '/?tab=overview&page=overview-messaging',
               label: isZh ? '消息' : 'Messaging',
             },
           ],
@@ -2783,24 +2949,95 @@ function getTabConfig(
       sidebar: [
         {
           items: [
-            { active: true, href: '#hero', label: isZh ? 'AI 总览' : 'AI Overview' },
-            { href: '#core-ai-capabilities', label: isZh ? '核心 AI 能力' : 'Core AI capabilities' },
-            { href: '#ai-design-principles', label: isZh ? '设计原则' : 'Design principles' },
-            { href: '#ai-entry-points', label: isZh ? '进入具体文档' : 'Entry points' },
+            {
+              active: (page ?? 'ai-overview') === 'ai-overview' || page === 'landing-page',
+              href: '/?tab=ai&page=ai-overview',
+              label: isZh ? '介绍' : 'Introduction',
+            },
+            {
+              active: page === 'ai-start-with-agent-studio',
+              href: '/?tab=ai&page=ai-start-with-agent-studio',
+              label: isZh ? '从 Agent Studio 开始' : 'Start with Agent Studio',
+            },
+            {
+              active: page === buildAiEmbeddedDocPage('docs', 'get-started/quick-start'),
+              href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'get-started/quick-start')}`,
+              label: isZh ? '语音 AI 快速开始' : 'Voice AI quickstart',
+            },
+            {
+              active: page === buildAiEmbeddedDocPage('docs', 'get-started/enable-service'),
+              href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'get-started/enable-service')}`,
+              label: isZh ? '准备项目和凭证' : 'Set up project and credentials',
+            },
+            {
+              active: page === 'ai-choose-your-integration-path',
+              href: '/?tab=ai&page=ai-choose-your-integration-path',
+              label: isZh ? '选择你的接入路径' : 'Choose your integration path',
+            },
           ],
-          title: labels.ai,
+          title: isZh ? '快速开始' : 'Get Started',
         },
         {
           items: [
-            { href: '/docs/convoai/restful/user-guides/custom-llm', label: isZh ? '模型与上下文' : 'Models & context' },
-            { href: '/docs/convoai/restful/user-guides/audio-modality', label: isZh ? '语音与交互' : 'Voice & interaction' },
-            { href: '/docs/convoai/restful/mcp-integrate', label: isZh ? 'Agent 接入' : 'Agent integrations' },
+            {
+              href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'overview/concepts')}`,
+              label: isZh ? '智能体如何工作' : 'How agents work',
+            },
+            { href: '/?tab=ai&page=ai-agents-and-realtime-channels', label: isZh ? '智能体与实时频道' : 'Agents and realtime channels' },
+            { href: '/?tab=ai&page=ai-agent-lifecycle', label: isZh ? '智能体生命周期' : 'Agent lifecycle' },
+            { href: '/?tab=ai&page=ai-models-voice-and-context', label: isZh ? '模型、语音与上下文' : 'Models, voice, and context' },
+            {
+              href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'webhook/ncs-events')}`,
+              label: isZh ? '事件与 Webhook' : 'Events and webhooks',
+            },
           ],
-          title: isZh ? '延伸能力' : 'Extended Paths',
+          title: isZh ? '核心概念' : 'Core Concepts',
         },
         {
-          items: exploreMore,
-          title: labels.exploreMore,
+          items: [
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'operations/start-agent')}`, label: isZh ? '创建并启动智能体' : 'Create and start an agent' },
+            { href: '/?tab=ai&page=ai-configure-presets', label: isZh ? '配置预设' : 'Configure presets' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'user-guides/custom-llm')}`, label: isZh ? '配置 LLM' : 'Configure LLM' },
+            { href: '/?tab=ai&page=ai-configure-asr-and-tts', label: isZh ? '配置 ASR 和 TTS' : 'Configure ASR and TTS' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'user-guides/interrupt-agent')}`, label: isZh ? '处理中断' : 'Handle interruption' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'user-guides/short-term-memory')}`, label: isZh ? '管理记忆与上下文' : 'Manage memory and context' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'operations/agent-speak')}`, label: isZh ? '发送自定义消息' : 'Send custom messages' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'operations/agent-think')}`, label: isZh ? '发送自定义指令' : 'Send custom commands' },
+          ],
+          title: isZh ? '构建' : 'Build',
+        },
+        {
+          items: [
+            { href: '/?tab=ai&page=ai-web-client', label: isZh ? 'Web 客户端' : 'Web client' },
+            { href: '/?tab=ai&page=ai-mobile-client', label: isZh ? '移动端客户端' : 'Mobile client' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'user-guides/audio-modality')}`, label: isZh ? '实时音频' : 'Realtime audio' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'user-guides/realtime-sub')}`, label: isZh ? '转写与字幕' : 'Transcripts and subtitles' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'user-guides/custom-data')}`, label: isZh ? '业务数据' : 'Business data' },
+            { href: '/?tab=ai&page=ai-device-ai', label: isZh ? '设备 AI' : 'Device AI' },
+          ],
+          title: isZh ? '接入' : 'Connect',
+        },
+        {
+          items: [
+            { href: '/?tab=ai&page=ai-test-an-agent', label: isZh ? '测试智能体' : 'Test an agent' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'operations/query-agent-status')}`, label: isZh ? '监控状态' : 'Monitor status' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'operations/get-turns')}`, label: isZh ? '对话轮次' : 'Conversation turns' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'api/response-code')}`, label: isZh ? '错误处理' : 'Error handling' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'user-guides/http-basic-auth')}`, label: isZh ? '鉴权与 Token' : 'Authentication and tokens' },
+            { href: '/?tab=ai&page=ai-production-checklist', label: isZh ? '生产检查清单' : 'Production checklist' },
+          ],
+          title: isZh ? '运维' : 'Operate',
+        },
+        {
+          items: [
+            { href: '/?tab=api-reference', label: isZh ? 'REST API' : 'REST API' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'get-started/quick-start-go')}`, label: isZh ? 'Go SDK' : 'Go SDK' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'get-started/quick-start-java')}`, label: isZh ? 'Java SDK' : 'Java SDK' },
+            { href: '/?tab=ai&page=ai-client-component-api', label: isZh ? '客户端组件 API' : 'Client component API' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'webhook/ncs-events')}`, label: isZh ? 'Webhook 事件' : 'Webhook events' },
+            { href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'api/response-code')}`, label: isZh ? '状态码' : 'Status codes' },
+          ],
+          title: isZh ? '参考' : 'Reference',
         },
       ],
     },

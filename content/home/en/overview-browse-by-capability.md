@@ -5,29 +5,29 @@ description: Organize the platform into stable capability domains so teams can u
 
 ## Capability domains
 
-### AI
+### AI Agents
 
-Use this domain for conversational AI, agent integration, model orchestration, realtime transcription, and multimodal interaction.
+Use this area for conversational AI, agent integration, model orchestration, context handling, and multimodal interaction.
 
-- [Open AI docs](/?tab=ai)
+- [Open AI Agents](/?tab=overview&page=overview-ai-agents)
 
-### Realtime & Media
+### Realtime Audio & Video
 
-Use this domain for voice interaction, media transport, event listening, recording-related flows, and latency-sensitive runtime behavior.
+Use this area for RTC sessions, channel access, device permissions, auth, and the low-latency audio-video foundation.
 
-- [Open Realtime & Media](/?tab=realtime-media)
+- [Open Realtime Audio & Video](/?tab=overview&page=overview-realtime-audio-video)
 
-### Solutions
+### Media Services
 
-Use this domain when your team starts from business outcomes such as support, tutoring, companionship, or smart-device interaction instead of infrastructure layers.
+Use this area for recording, publishing, ingest, transcoding, and delivery workflows.
 
-- [Open Solutions](/?tab=solutions)
+- [Open Media Services](/?tab=overview&page=overview-media-services)
 
-### Platform & Practices
+### Messaging
 
-Use this domain for auth, security, release notes, pricing, observability, and production rollout guidance.
+Use this area for RTM, state synchronization, messaging workflows, and event-driven coordination.
 
-- [Open Best Practices](/?tab=best-practices)
+- [Open Messaging](/?tab=overview&page=overview-messaging)
 
 ## Reading strategy
 

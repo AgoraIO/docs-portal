@@ -5,29 +5,29 @@ description: 把平台按稳定能力域组织，帮助团队先理解边界，�
 
 ## 能力域
 
-### AI
+### AI 智能体
 
-适合查看对话式 AI、Agent 集成、模型编排、实时转录和多模态交互相关内容。
+适合查看对话式 AI 引擎、Agent 集成、模型编排、上下文管理和多模态交互相关内容。
 
-- [打开 AI 文档](/?tab=ai)
+- [打开 AI 智能体](/?tab=overview&page=overview-ai-agents)
 
-### 实时与媒体
+### 实时音视频
 
-适合查看语音互动、媒体传输、事件监听、录制相关链路和低时延运行能力。
+适合查看 RTC 会话、频道接入、设备权限、鉴权和低时延音视频基础链路。
 
-- [打开实时与媒体](/?tab=realtime-media)
+- [打开实时音视频](/?tab=overview&page=overview-realtime-audio-video)
 
-### 场景方案
+### 媒体服务
 
-如果你的团队是从客服、陪伴、教育或智能设备这类业务目标出发，而不是先看底层能力，就从这里进入。
+适合查看录制、推流、拉流、转码和媒体交付链路。
 
-- [打开场景方案](/?tab=solutions)
+- [打开媒体服务](/?tab=overview&page=overview-media-services)
 
-### 平台与实践
+### 消息
 
-适合查看鉴权、安全、发版说明、计费、可观测性与生产接入建议。
+适合查看 RTM、状态同步、消息协作和事件驱动的业务流程。
 
-- [打开最佳实践](/?tab=best-practices)
+- [打开消息](/?tab=overview&page=overview-messaging)
 
 ## 阅读策略
 
