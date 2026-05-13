@@ -14,12 +14,6 @@ import { i18n } from '@/lib/i18n/i18n';
 import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
 import { AppProviders } from './AppProviders';
 
-vi.mock('fumadocs-ui/provider/tanstack', () => ({
-  RootProvider: () => {
-    throw new Error('legacy fumadocs root provider should not be required');
-  },
-}));
-
 function ProviderProbe() {
   const { i18n, t } = useTranslation('common');
   const theme = useTheme();

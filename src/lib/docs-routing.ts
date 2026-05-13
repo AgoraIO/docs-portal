@@ -23,7 +23,18 @@ export function getSourceSlugs(route: DocsRoute) {
 }
 
 export function getContentPathSegments(route: DocsRoute) {
-  return [...getSourceSlugs(route), 'content.md'];
+  const sourceSlugs = getSourceSlugs(route);
+  const leaf = sourceSlugs.at(-1);
+
+  if (route.slug && route.slug !== 'index') {
+    return [...sourceSlugs.slice(0, -1), `${leaf}.md`];
+  }
+
+  return [...sourceSlugs, 'index.md'];
+}
+
+export function getContentPath(route: DocsRoute) {
+  return getContentPathSegments(route).join('/');
 }
 
 export function parseSourceSlugs(slugs: string[]) {

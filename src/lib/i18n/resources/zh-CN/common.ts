@@ -17,6 +17,19 @@ const zhCnCommon = {
       chinese: '简体中文',
     },
   },
+  docs: {
+    search: '搜索文档',
+    searchDescription: '搜索当前文档门户中的 tabs 和页面。',
+    searchPlaceholder: '搜索页面...',
+    searchEmpty: '没有找到匹配页面。',
+    tabsLabel: 'Tabs',
+    pagesLabel: 'Pages',
+    toc: '本页目录',
+    tocEmpty: '当前页面没有标题。',
+    next: '下一页',
+    previous: '上一页',
+    openMenu: '打开导航',
+  },
   home: {
     eyebrow: 'Agora 开发者文档',
     title: 'Agora 文档',
@@ -297,17 +310,6 @@ const zhCnCommon = {
           body: '新站可逐步汇总项目鉴权、Token 生成、平台安全说明、SDK 合规与地区化合规要求。',
         },
       },
-    },
-  },
-  docs: {
-    actions: {
-      copyMarkdown: '复制 Markdown',
-      open: '打开',
-      openMarkdown: '打开 Markdown',
-      openGithub: '在 GitHub 打开',
-      openChatGPT: '用 ChatGPT 打开',
-      openClaude: '用 Claude 打开',
-      chatPrompt: '阅读 {{url}} 并帮我理解这篇文档。',
     },
   },
 } as const;

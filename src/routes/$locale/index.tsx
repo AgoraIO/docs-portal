@@ -1,11 +1,11 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/')({
-  loader: () => {
+export const Route = createFileRoute('/$locale/')({
+  loader: ({ params }) => {
     throw redirect({
       to: '/$locale/$tab',
       params: {
-        locale: 'en',
+        locale: params.locale,
         tab: 'introduction',
       },
     });

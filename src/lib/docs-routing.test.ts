@@ -22,10 +22,16 @@ describe('docs routing helpers', () => {
     ).toEqual(['zh-CN', 'ai', 'quick-start']);
   });
 
-  it('builds llms content path segments', () => {
+  it('builds content path segments for slug pages', () => {
     expect(
       getContentPathSegments({ locale: 'en', tab: 'ai', slug: 'overview' }),
-    ).toEqual(['en', 'ai', 'overview', 'content.md']);
+    ).toEqual(['en', 'ai', 'overview.md']);
+  });
+
+  it('builds content path segments for tab index pages', () => {
+    expect(getContentPathSegments({ locale: 'en', tab: 'introduction' })).toEqual(
+      ['en', 'introduction', 'index.md'],
+    );
   });
 
   it('parses source slugs back into route parts', () => {

@@ -17,6 +17,19 @@ const enCommon = {
       chinese: '简体中文',
     },
   },
+  docs: {
+    search: 'Search docs',
+    searchDescription: 'Search tabs and pages in the current docs portal.',
+    searchPlaceholder: 'Search pages...',
+    searchEmpty: 'No matching pages found.',
+    tabsLabel: 'Tabs',
+    pagesLabel: 'Pages',
+    toc: 'On this page',
+    tocEmpty: 'No headings on this page.',
+    next: 'Next',
+    previous: 'Previous',
+    openMenu: 'Open navigation',
+  },
   home: {
     eyebrow: 'Agora developer documentation',
     title: 'Agora Docs',
@@ -297,17 +310,6 @@ const enCommon = {
           body: 'The new docs can gradually consolidate token generation, platform security explanations, SDK compliance notes, and regional requirements here.',
         },
       },
-    },
-  },
-  docs: {
-    actions: {
-      copyMarkdown: 'Copy Markdown',
-      open: 'Open',
-      openMarkdown: 'Open Markdown',
-      openGithub: 'Open in GitHub',
-      openChatGPT: 'Open in ChatGPT',
-      openClaude: 'Open in Claude',
-      chatPrompt: 'Read {{url}} and help me understand this document.',
     },
   },
 } as const;
