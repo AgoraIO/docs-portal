@@ -7,21 +7,27 @@ import {
   RouterProvider,
 } from '@tanstack/react-router';
 import { render, screen } from '@testing-library/react';
-import { useI18n } from 'fumadocs-ui/contexts/i18n';
+import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
-import { afterEach } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { i18n } from '@/lib/i18n/i18n';
 import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
 import { AppProviders } from './AppProviders';
 
+vi.mock('fumadocs-ui/provider/tanstack', () => ({
+  RootProvider: () => {
+    throw new Error('legacy fumadocs root provider should not be required');
+  },
+}));
+
 function ProviderProbe() {
   const { i18n, t } = useTranslation('common');
-  const fumadocsI18n = useI18n();
+  const theme = useTheme();
 
   return (
     <div
-      data-fumadocs-language={fumadocsI18n.locale}
       data-language={i18n.language}
+      data-theme-count={theme.themes.length}
       data-testid="provider-probe"
     >
       {t('app.name')}
@@ -62,7 +68,7 @@ describe('AppProviders', () => {
     const probe = await screen.findByTestId('provider-probe');
 
     expect(probe).toHaveAttribute('data-language', 'en');
-    expect(probe).toHaveAttribute('data-fumadocs-language', 'en');
+    expect(probe).toHaveAttribute('data-theme-count', '3');
     expect(probe).toHaveTextContent('Agora Docs');
   });
 
