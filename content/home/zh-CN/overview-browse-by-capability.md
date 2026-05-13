@@ -29,6 +29,42 @@ description: 把平台按稳定能力域组织，帮助团队先理解边界，�
 
 - [打开消息](/?tab=overview&page=overview-messaging)
 
+### 实时消息 RTM
+
+适合查看频道消息、Presence、状态同步和协作信令能力。
+
+- [打开实时消息 RTM](/?tab=overview&page=overview-rtm)
+
+### 实时转录翻译
+
+适合查看语音转写、翻译、字幕和多语言实时理解能力。
+
+- [打开实时转录翻译](/?tab=overview&page=overview-speech-to-text)
+
+### 媒体流加速 RTSA
+
+适合查看智能硬件、终端设备和实时媒体流加速相关能力。
+
+- [打开媒体流加速 RTSA](/?tab=overview&page=overview-rtsa)
+
+### RTC 服务端 SDK
+
+适合查看服务端收发流、服务端控制面和后端媒体处理能力。
+
+- [打开 RTC 服务端 SDK](/?tab=overview&page=overview-rtc-server-sdk)
+
+### 融合 CDN 直播
+
+适合查看直播分发、播放质量调度和多 CDN 交付能力。
+
+- [打开融合 CDN 直播](/?tab=overview&page=overview-fusion-cdn)
+
+### 互动白板
+
+适合查看多人实时白板协作、在线教学和互动讲解能力。
+
+- [打开互动白板](/?tab=overview&page=overview-whiteboard)
+
 ## 阅读策略
 
 能力域不是替代产品文档，而是帮助新读者先找到正确入口，再进入更细的产品和接口层。

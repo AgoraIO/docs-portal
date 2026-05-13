@@ -26,7 +26,7 @@ import {
   Wrench,
   type LucideIcon,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { HomeDocContent } from '@/components/home/HomeDocContent';
 import { PortalDocContent } from '@/components/home/PortalDocContent';
@@ -57,6 +57,9 @@ const OVERVIEW_MARKDOWN_PAGE_ALIASES: Record<string, string> = {
 const AI_EMBEDDED_DOC_PREFIX = 'ai-doc:';
 const AI_MARKDOWN_PAGE_ALIASES: Record<string, string> = {
   'landing-page': 'ai-overview',
+};
+const REALTIME_MEDIA_MARKDOWN_PAGE_ALIASES: Record<string, string> = {
+  'user-guides/audio-modality': 'rm-overview',
 };
 type HomeMarkdownPageMap = ReturnType<typeof loadHomeMarkdownPages>[keyof ReturnType<
   typeof loadHomeMarkdownPages
@@ -182,6 +185,19 @@ export function PlatformHomePage({
   const { locale, setLocale } = useLocale();
   const { t } = useTranslation('common');
   const isZh = locale === 'zh-CN';
+  const [activeAnchor, setActiveAnchor] = useState('');
+
+  useEffect(() => {
+    const syncAnchor = () => {
+      setActiveAnchor(window.location.hash || '');
+    };
+
+    syncAnchor();
+    window.addEventListener('hashchange', syncAnchor);
+    return () => window.removeEventListener('hashchange', syncAnchor);
+  }, []);
+
+  const activeSidebarKey = `${page ?? ''}${activeAnchor}`;
   const localizedPortalData = portalData
     ? localizePortalData(portalData, locale)
     : undefined;
@@ -204,8 +220,11 @@ export function PlatformHomePage({
       ? resolveOverviewMarkdownPageKey(page, homeMarkdownPages[locale])
       : tab === 'ai'
         ? resolveAiMarkdownPageKey(page, homeMarkdownPages[locale])
+        : tab === 'realtime-media'
+          ? resolveRealtimeMediaMarkdownPageKey(page, homeMarkdownPages[locale])
         : null;
-  const isMarkdownHomeTab = tab === 'overview' || tab === 'ai';
+  const isMarkdownHomeTab =
+    tab === 'overview' || tab === 'ai' || tab === 'realtime-media';
   const overviewMarkdownPageKey = isOverviewTab
     ? markdownPageKey
     : null;
@@ -347,7 +366,10 @@ export function PlatformHomePage({
                       <p className="mb-2.5 text-[0.72rem] font-semibold tracking-[0.01em] text-foreground/88">
                         {group.title}
                       </p>
-                      <OverviewSidebarList items={group.items} />
+                      <OverviewSidebarList
+                        activeKey={activeSidebarKey}
+                        items={group.items}
+                      />
                     </section>
                   ))}
                 </nav>
@@ -522,8 +544,8 @@ const tabHrefFallbacks = {
     page: 'get-started/quick-start-go',
   },
   'realtime-media': {
-    domain: 'docs',
-    page: 'user-guides/audio-modality',
+    domain: 'home',
+    page: 'rm-overview',
   },
   solutions: {
     domain: 'docs',
@@ -573,20 +595,39 @@ function ContentCard({ card }: { card: CardItem }) {
   );
 }
 
-function OverviewSidebarList({ items }: { items: SidebarItem[] }) {
+function OverviewSidebarList({
+  activeKey,
+  items,
+}: {
+  activeKey: string;
+  items: SidebarItem[];
+}) {
   return (
     <ul className="space-y-1.5">
       {items.map((item) => (
-        <OverviewSidebarItem item={item} key={item.label} />
+        <OverviewSidebarItem activeKey={activeKey} item={item} key={item.label} />
       ))}
     </ul>
   );
 }
 
-function OverviewSidebarItem({ item }: { item: SidebarItem }) {
+function OverviewSidebarItem({
+  activeKey,
+  item,
+}: {
+  activeKey: string;
+  item: SidebarItem;
+}) {
   const hasChildren = (item.children?.length ?? 0) > 0;
-  const defaultExpanded = item.expanded ?? item.active ?? false;
+  const isItemActive = getSidebarItemKey(item.href) === activeKey;
+  const defaultExpanded = item.expanded ?? item.active ?? isItemActive ?? false;
   const [expanded, setExpanded] = useState(defaultExpanded);
+
+  useEffect(() => {
+    if (hasChildren) {
+      setExpanded(item.expanded ?? item.active ?? isItemActive ?? false);
+    }
+  }, [hasChildren, isItemActive, item.active, item.expanded]);
 
   return (
     <li>
@@ -613,7 +654,7 @@ function OverviewSidebarItem({ item }: { item: SidebarItem }) {
             'flex items-center rounded-2xl px-3 py-2 text-[0.88rem] text-muted-foreground transition-colors hover:bg-accent/55 hover:text-foreground',
             item.muted && 'pl-10 text-[0.9rem]',
             item.section && 'mt-1 text-foreground/86',
-            item.active &&
+            isItemActive &&
               !item.section &&
               'bg-primary/12 text-foreground shadow-[inset_0_0_0_1px_rgba(16,185,129,0.14)]',
           )}
@@ -625,11 +666,17 @@ function OverviewSidebarItem({ item }: { item: SidebarItem }) {
 
       {hasChildren && expanded ? (
         <div className="mt-1 pl-0">
-          <OverviewSidebarList items={item.children ?? []} />
+          <OverviewSidebarList activeKey={activeKey} items={item.children ?? []} />
         </div>
       ) : null}
     </li>
   );
+}
+
+function getSidebarItemKey(href: string) {
+  const pageMatch = href.match(/[?&]page=([^&#]+)/);
+  const hashMatch = href.match(/#(.+)$/);
+  return `${pageMatch?.[1] ?? ''}${hashMatch ? `#${hashMatch[1]}` : ''}`;
 }
 
 function MarkdownDocView({
@@ -1328,6 +1375,29 @@ function resolveAiMarkdownPageKey(
   pages: HomeMarkdownPageMap | undefined,
 ) {
   const aliasedPage = page ? AI_MARKDOWN_PAGE_ALIASES[page] : 'ai-overview';
+  if (aliasedPage && pages && aliasedPage in pages) {
+    return aliasedPage;
+  }
+
+  if (!page || !pages) {
+    return null;
+  }
+
+  if (page in pages) {
+    return page;
+  }
+
+  return null;
+}
+
+function resolveRealtimeMediaMarkdownPageKey(
+  page: string | undefined,
+  pages: HomeMarkdownPageMap | undefined,
+) {
+  const aliasedPage = page
+    ? REALTIME_MEDIA_MARKDOWN_PAGE_ALIASES[page]
+    : 'rm-overview';
+
   if (aliasedPage && pages && aliasedPage in pages) {
     return aliasedPage;
   }
@@ -2527,42 +2597,29 @@ function getTabConfig(
         {
           items: [
             {
-              active: page === 'overview-ai-agents',
+              active:
+                page === 'overview-ai-agents' ||
+                page === 'overview-browse-by-capability',
               href: '/?tab=overview&page=overview-ai-agents',
               label: isZh ? 'AI 智能体' : 'AI Agents',
             },
             {
               active:
-                page === 'overview-browse-by-capability' ||
                 page === 'overview-realtime-audio-video' ||
                 page === 'overview-product-matrix' ||
+                page === 'overview-media-services',
+              href: '/?tab=overview&page=overview-realtime-audio-video',
+              label: isZh ? '实时音视频' : 'Realtime Audio & Video',
+            },
+            {
+              active:
                 page === 'overview-media-services' ||
-                page === buildOverviewEmbeddedDocPage('docs', 'user-guides/audio-modality'),
-              children: [
-                {
-                  active:
-                    page === 'overview-realtime-audio-video' ||
-                    page === 'overview-product-matrix',
-                  href: '/?tab=overview&page=overview-realtime-audio-video',
-                  label: isZh ? '实时音视频' : 'Realtime Audio & Video',
-                  muted: true,
-                },
-                {
-                  active:
-                    page === 'overview-media-services' ||
-                    page === buildOverviewEmbeddedDocPage(
-                      'docs',
-                      'user-guides/audio-modality',
-                    ),
-                  href: '/?tab=overview&page=overview-media-services',
-                  label: isZh ? '媒体服务' : 'Media Services',
-                  muted: true,
-                },
-              ],
-              expanded: true,
-              href: '/?tab=overview&page=overview-browse-by-capability',
-              label: isZh ? '能力入口' : 'Capabilities',
-              section: true,
+                page === buildOverviewEmbeddedDocPage(
+                  'docs',
+                  'user-guides/audio-modality',
+                ),
+              href: '/?tab=overview&page=overview-media-services',
+              label: isZh ? '媒体服务' : 'Media Services',
             },
             {
               active:
@@ -2573,6 +2630,36 @@ function getTabConfig(
                 ),
               href: '/?tab=overview&page=overview-messaging',
               label: isZh ? '消息' : 'Messaging',
+            },
+            {
+              active: page === 'overview-rtm',
+              href: '/?tab=overview&page=overview-rtm',
+              label: isZh ? '实时消息 RTM' : 'Realtime Messaging RTM',
+            },
+            {
+              active: page === 'overview-speech-to-text',
+              href: '/?tab=overview&page=overview-speech-to-text',
+              label: isZh ? '实时转录翻译' : 'Realtime Transcription & Translation',
+            },
+            {
+              active: page === 'overview-rtsa',
+              href: '/?tab=overview&page=overview-rtsa',
+              label: isZh ? '媒体流加速 RTSA' : 'Realtime Streaming Acceleration RTSA',
+            },
+            {
+              active: page === 'overview-rtc-server-sdk',
+              href: '/?tab=overview&page=overview-rtc-server-sdk',
+              label: isZh ? 'RTC 服务端 SDK' : 'RTC Server SDK',
+            },
+            {
+              active: page === 'overview-fusion-cdn',
+              href: '/?tab=overview&page=overview-fusion-cdn',
+              label: isZh ? '融合 CDN 直播' : 'Fusion CDN Live Streaming',
+            },
+            {
+              active: page === 'overview-whiteboard',
+              href: '/?tab=overview&page=overview-whiteboard',
+              label: isZh ? '互动白板' : 'Interactive Whiteboard',
             },
           ],
           title: isZh ? '能力' : 'Capabilities',
@@ -2952,27 +3039,48 @@ function getTabConfig(
             {
               active: (page ?? 'ai-overview') === 'ai-overview' || page === 'landing-page',
               href: '/?tab=ai&page=ai-overview',
-              label: isZh ? '介绍' : 'Introduction',
+              label: isZh ? '概览' : 'Overview',
             },
             {
-              active: page === 'ai-start-with-agent-studio',
+              active:
+                page === 'ai-start-with-agent-studio' ||
+                page === buildAiEmbeddedDocPage('docs', 'get-started/quick-start') ||
+                page === buildAiEmbeddedDocPage('docs', 'get-started/enable-service') ||
+                page === 'ai-choose-your-integration-path',
+              children: [
+                {
+                  active: page === 'ai-start-with-agent-studio',
+                  href: '/?tab=ai&page=ai-start-with-agent-studio',
+                  label: isZh ? '从 Agent Studio 开始' : 'Start with Agent Studio',
+                  muted: true,
+                },
+                {
+                  active: page === buildAiEmbeddedDocPage('docs', 'get-started/quick-start'),
+                  href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'get-started/quick-start')}`,
+                  label: isZh ? '语音 AI 快速开始' : 'Voice AI quickstart',
+                  muted: true,
+                },
+                {
+                  active: page === buildAiEmbeddedDocPage('docs', 'get-started/enable-service'),
+                  href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'get-started/enable-service')}`,
+                  label: isZh ? '准备项目和凭证' : 'Set up project and credentials',
+                  muted: true,
+                },
+                {
+                  active: page === 'ai-choose-your-integration-path',
+                  href: '/?tab=ai&page=ai-choose-your-integration-path',
+                  label: isZh ? '选择你的接入路径' : 'Choose your integration path',
+                  muted: true,
+                },
+              ],
+              expanded:
+                page === 'ai-start-with-agent-studio' ||
+                page === buildAiEmbeddedDocPage('docs', 'get-started/quick-start') ||
+                page === buildAiEmbeddedDocPage('docs', 'get-started/enable-service') ||
+                page === 'ai-choose-your-integration-path',
               href: '/?tab=ai&page=ai-start-with-agent-studio',
-              label: isZh ? '从 Agent Studio 开始' : 'Start with Agent Studio',
-            },
-            {
-              active: page === buildAiEmbeddedDocPage('docs', 'get-started/quick-start'),
-              href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'get-started/quick-start')}`,
-              label: isZh ? '语音 AI 快速开始' : 'Voice AI quickstart',
-            },
-            {
-              active: page === buildAiEmbeddedDocPage('docs', 'get-started/enable-service'),
-              href: `/?tab=ai&page=${buildAiEmbeddedDocPage('docs', 'get-started/enable-service')}`,
-              label: isZh ? '准备项目和凭证' : 'Set up project and credentials',
-            },
-            {
-              active: page === 'ai-choose-your-integration-path',
-              href: '/?tab=ai&page=ai-choose-your-integration-path',
-              label: isZh ? '选择你的接入路径' : 'Choose your integration path',
+              label: isZh ? '快速开始' : 'Quick start',
+              section: true,
             },
           ],
           title: isZh ? '快速开始' : 'Get Started',
@@ -3162,23 +3270,163 @@ function getTabConfig(
       sidebar: [
         {
           items: [
-            { active: true, href: '#hero', label: isZh ? '实时与媒体总览' : 'Realtime Overview' },
-            { href: '#realtime-surfaces', label: isZh ? '实时能力面' : 'Realtime surfaces' },
-            { href: '#media-operations', label: isZh ? '媒体与运维' : 'Media & operations' },
+            {
+              active: (page ?? 'rm-overview') === 'rm-overview',
+              href: '/?tab=realtime-media&page=rm-overview',
+              label: isZh ? '概览' : 'Overview',
+            },
+            {
+              active:
+                page === 'rm-choose-your-product-path' ||
+                page === 'rm-setup-service-and-credentials',
+              children: [
+                {
+                  active: page === 'rm-choose-your-product-path',
+                  href: '/?tab=realtime-media&page=rm-choose-your-product-path',
+                  label: isZh ? '选择你的产品路径' : 'Choose your product path',
+                  muted: true,
+                },
+                {
+                  active: page === 'rm-setup-service-and-credentials',
+                  href: '/?tab=realtime-media&page=rm-setup-service-and-credentials',
+                  label: isZh ? '开通服务与准备凭证' : 'Set up service and credentials',
+                  muted: true,
+                },
+              ],
+              expanded:
+                page === 'rm-choose-your-product-path' ||
+                page === 'rm-setup-service-and-credentials',
+              href: '/?tab=realtime-media&page=rm-choose-your-product-path',
+              label: isZh ? '快速开始' : 'Quick start',
+              section: true,
+            },
           ],
-          title: labels.realtime,
+          title: isZh ? '快速开始' : 'Quick start',
         },
         {
           items: [
-            { href: '/docs/convoai/restful/user-guides/realtime-sub', label: isZh ? '字幕与文本反馈' : 'Subtitles & text feedback' },
-            { href: '/docs/convoai/restful/best-practice/audio-settings', label: isZh ? '音频设置' : 'Audio settings' },
-            { href: '/?tab=best-practices', label: isZh ? '进入最佳实践' : 'Move to best practices' },
+            {
+              active: page === 'rm-rtc',
+              href: '/?tab=realtime-media&page=rm-rtc',
+              label: isZh ? '实时互动 RTC' : 'RTC',
+            },
+            {
+              active: page === 'rm-rtm',
+              href: '/?tab=realtime-media&page=rm-rtm',
+              label: isZh ? '实时消息 RTM' : 'RTM',
+            },
+            {
+              active: page === 'rm-im',
+              href: '/?tab=realtime-media&page=rm-im',
+              label: isZh ? '即时通讯 IM' : 'Instant Messaging IM',
+            },
+            {
+              active: page === 'rm-speech-to-text',
+              href: '/?tab=realtime-media&page=rm-speech-to-text',
+              label: isZh ? '实时转录翻译' : 'Realtime Transcription',
+            },
+            {
+              active: page === 'rm-rtsa',
+              href: '/?tab=realtime-media&page=rm-rtsa',
+              label: isZh ? '媒体流加速 RTSA' : 'RTSA',
+            },
           ],
-          title: isZh ? '延伸阅读' : 'Read Next',
+          title: isZh ? '基础实时能力' : 'Foundational realtime capabilities',
         },
         {
-          items: exploreMore,
-          title: labels.exploreMore,
+          items: [
+            {
+              active: page === 'rm-whiteboard',
+              href: '/?tab=realtime-media&page=rm-whiteboard',
+              label: isZh ? '互动白板' : 'Interactive Whiteboard',
+            },
+            {
+              active: page === 'rm-meeting',
+              href: '/?tab=realtime-media&page=rm-meeting',
+              label: isZh ? '灵动会议' : 'Flexible Meeting',
+            },
+            {
+              active: page === 'rm-live-interaction',
+              href: '/?tab=realtime-media&page=rm-live-interaction',
+              label: isZh ? '直播互动' : 'Live interaction',
+            },
+            {
+              active: page === 'rm-voip-call',
+              href: '/?tab=realtime-media&page=rm-voip-call',
+              label: isZh ? '微呼叫' : 'Micro Calling',
+            },
+          ],
+          title: isZh ? '协作与互动' : 'Collaboration and interaction',
+        },
+        {
+          items: [
+            {
+              active: page === 'rm-rtc-server-sdk',
+              href: '/?tab=realtime-media&page=rm-rtc-server-sdk',
+              label: isZh ? 'RTC 服务端 SDK' : 'RTC Server SDK',
+            },
+            {
+              active: page === 'rm-sdk-extensions',
+              href: '/?tab=realtime-media&page=rm-sdk-extensions',
+              label: isZh ? 'SDK 拓展插件' : 'SDK extension plugins',
+            },
+            {
+              active: page === 'rm-marketplace',
+              href: '/?tab=realtime-media&page=rm-marketplace',
+              label: isZh ? '云市场' : 'Marketplace',
+            },
+          ],
+          title: isZh ? '服务端与扩展' : 'Server-side and extensions',
+        },
+        {
+          items: [
+            {
+              active: page === 'rm-console',
+              href: '/?tab=realtime-media&page=rm-console',
+              label: isZh ? '控制台' : 'Console',
+            },
+            {
+              active: page === 'rm-analytics',
+              href: '/?tab=realtime-media&page=rm-analytics',
+              label: isZh ? '水晶球' : 'Analytics',
+            },
+            {
+              active: page === 'rm-status-page',
+              href: '/?tab=realtime-media&page=rm-status-page',
+              label: isZh ? 'Status Page' : 'Status Page',
+            },
+            {
+              active: page === 'rm-billing',
+              href: '/?tab=realtime-media&page=rm-billing',
+              label: isZh ? '计费' : 'Billing',
+            },
+            {
+              active: page === 'rm-security',
+              href: '/?tab=realtime-media&page=rm-security',
+              label: isZh ? '安全' : 'Security',
+            },
+          ],
+          title: isZh ? '运维治理' : 'Governance and operations',
+        },
+        {
+          items: [
+            {
+              active: page === 'rm-smart-devices',
+              href: '/?tab=realtime-media&page=rm-smart-devices',
+              label: isZh ? '智能设备' : 'Smart devices',
+            },
+            {
+              active: page === 'rm-teleoperation',
+              href: '/?tab=realtime-media&page=rm-teleoperation',
+              label: isZh ? '远程操控' : 'Teleoperation',
+            },
+            {
+              active: page === 'rm-education-classrooms',
+              href: '/?tab=realtime-media&page=rm-education-classrooms',
+              label: isZh ? '教育课堂系列' : 'Education classroom family',
+            },
+          ],
+          title: isZh ? '设备与行业场景' : 'Device and industry scenarios',
         },
       ],
     },
