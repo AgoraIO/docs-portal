@@ -1,11 +1,15 @@
 import { createFileRoute, notFound } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { DocsShell } from '@/components/docs-shell/DocsShell';
-import { getContentPath } from '@/lib/docs-routing';
 import { getDocsPagePayload } from '@/lib/docs-page';
+import { getContentPath, isSupportedDocLocale } from '@/lib/docs-routing';
 
 export const Route = createFileRoute('/$locale/$tab/$slug')({
   loader: async ({ params }) => {
+    if (!isSupportedDocLocale(params.locale)) {
+      throw notFound();
+    }
+
     const payload = await getDocsPagePayload({
       data: {
         locale: params.locale,
@@ -43,8 +47,7 @@ function Page() {
     tabs,
     toc,
     title,
-  } =
-    Route.useLoaderData();
+  } = Route.useLoaderData();
 
   return (
     <DocsShell

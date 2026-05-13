@@ -9,7 +9,7 @@ import {
 import { render, screen } from '@testing-library/react';
 import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { i18n } from '@/lib/i18n/i18n';
 import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
 import { AppProviders } from './AppProviders';

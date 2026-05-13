@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
 import type { Item, Node, Root } from 'fumadocs-core/page-tree';
 import { findNeighbour } from 'fumadocs-core/page-tree';
+import type { ReactNode } from 'react';
 import { buildDocPath } from './docs-routing';
 
 export type TabSummary = {
@@ -48,7 +48,10 @@ export function getTabSummaries(root: Root): TabSummary[] {
   });
 }
 
-export function getSidebarEntries(root: Root, activeTab: string): SidebarEntry[] {
+export function getSidebarEntries(
+  root: Root,
+  activeTab: string,
+): SidebarEntry[] {
   const tabNode = findTabNode(root, activeTab);
 
   if (!tabNode) {
@@ -78,15 +81,13 @@ export function getPrevNextLinks(root: Root, currentUrl: string) {
 
   return {
     next: neighbours.next ? mapPageLink(neighbours.next) : undefined,
-    previous: neighbours.previous ? mapPageLink(neighbours.previous) : undefined,
+    previous: neighbours.previous
+      ? mapPageLink(neighbours.previous)
+      : undefined,
   };
 }
 
-export function buildPublicDocUrl(
-  locale: string,
-  tab: string,
-  slug?: string,
-) {
+export function buildPublicDocUrl(locale: string, tab: string, slug?: string) {
   return buildDocPath(locale, tab, slug);
 }
 

@@ -1,15 +1,24 @@
 'use client';
 
 import { Link, useNavigate } from '@tanstack/react-router';
-import { CheckIcon, LanguagesIcon, MenuIcon, MoonIcon, SunIcon } from 'lucide-react';
 import type { TOCItemType } from 'fumadocs-core/toc';
+import {
+  CheckIcon,
+  LanguagesIcon,
+  MenuIcon,
+  MoonIcon,
+  SunIcon,
+} from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import {
   Sheet,
   SheetContent,
@@ -18,13 +27,13 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { SidebarEntry, TabSummary } from '@/lib/docs-tree';
 import { cn } from '@/lib/cn';
+import { replaceDocLocale } from '@/lib/docs-routing';
+import type { SidebarEntry, TabSummary } from '@/lib/docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from '@/lib/i18n/i18n-config';
 import { useLocale } from '@/lib/i18n/use-locale';
-import { replaceDocLocale } from '@/lib/docs-routing';
-import { DocsSearchDialog, type SearchEntry } from './DocsSearchDialog';
 import { DocsTableOfContents } from './DocsContent';
+import { DocsSearchDialog, type SearchEntry } from './DocsSearchDialog';
 
 export function DocsShell({
   activePath,
@@ -141,14 +150,18 @@ export function DocsShell({
           </ScrollArea>
         </aside>
       </div>
-      {(previous || next) ? (
+      {previous || next ? (
         <footer className="mx-auto flex w-full max-w-[1440px] justify-between gap-3 border-t border-border px-4 py-6 sm:px-6 lg:px-10">
           {previous ? (
             <FooterLink direction={t('docs.previous')} link={previous} />
           ) : (
             <div />
           )}
-          {next ? <FooterLink direction={t('docs.next')} link={next} /> : <div />}
+          {next ? (
+            <FooterLink direction={t('docs.next')} link={next} />
+          ) : (
+            <div />
+          )}
         </footer>
       ) : null}
     </div>

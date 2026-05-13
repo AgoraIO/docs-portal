@@ -1,4 +1,8 @@
-import { DEFAULT_LOCALE, type AppLocale, normalizeLocale } from './i18n/i18n-config';
+import {
+  type AppLocale,
+  DEFAULT_LOCALE,
+  normalizeLocale,
+} from './i18n/i18n-config';
 
 export type DocsRoute = {
   locale: string;
@@ -12,6 +16,10 @@ export function buildDocPath(locale: string, tab: string, slug?: string) {
   }
 
   return `/${locale}/${tab}/${slug}`;
+}
+
+export function isSupportedDocLocale(locale: string) {
+  return normalizeLocale(locale) === locale;
 }
 
 export function getSourceSlugs(route: DocsRoute) {
@@ -49,7 +57,11 @@ export function replaceDocLocale(path: string, nextLocale: AppLocale) {
 
   segments[0] = nextLocale;
 
-  if (segments.length === 2 && segments[1] === 'introduction' && nextLocale === DEFAULT_LOCALE) {
+  if (
+    segments.length === 2 &&
+    segments[1] === 'introduction' &&
+    nextLocale === DEFAULT_LOCALE
+  ) {
     return `/${segments.join('/')}`;
   }
 

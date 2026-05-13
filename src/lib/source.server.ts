@@ -1,12 +1,12 @@
 import { docs } from 'collections/server';
 import { type InferPageType, loader } from 'fumadocs-core/source';
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
-import { docsContentRoute, docsRoute } from './shared';
 import {
   buildDocPath,
   getContentPathSegments,
   parseSourceSlugs,
 } from './docs-routing';
+import { docsContentRoute, docsRoute } from './shared';
 
 export const source = loader({
   source: docs.toFumadocsSource(),

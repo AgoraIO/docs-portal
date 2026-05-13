@@ -1,9 +1,9 @@
+import { getSourceSlugs } from './docs-routing';
 import {
   getPrevNextLinks,
   getSidebarEntries,
   getTabSummaries,
 } from './docs-tree';
-import { getSourceSlugs } from './docs-routing';
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
   const { source } = await import('./source.server');

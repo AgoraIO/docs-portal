@@ -2,8 +2,9 @@ import { describe, expect, it } from 'vitest';
 import {
   buildDocPath,
   getContentPathSegments,
-  getSourceSlugsFromContentPath,
   getSourceSlugs,
+  getSourceSlugsFromContentPath,
+  isSupportedDocLocale,
   parseSourceSlugs,
   replaceDocLocale,
 } from './docs-routing';
@@ -31,9 +32,9 @@ describe('docs routing helpers', () => {
   });
 
   it('builds content path segments for tab index pages', () => {
-    expect(getContentPathSegments({ locale: 'en', tab: 'introduction' })).toEqual(
-      ['en', 'introduction', 'index.md'],
-    );
+    expect(
+      getContentPathSegments({ locale: 'en', tab: 'introduction' }),
+    ).toEqual(['en', 'introduction', 'index.md']);
   });
 
   it('parses content paths back into source slugs', () => {
@@ -58,6 +59,13 @@ describe('docs routing helpers', () => {
     );
   });
 
+  it('accepts only supported locale prefixes for docs routes', () => {
+    expect(isSupportedDocLocale('en')).toBe(true);
+    expect(isSupportedDocLocale('zh-CN')).toBe(true);
+    expect(isSupportedDocLocale('docs')).toBe(false);
+    expect(isSupportedDocLocale('zh')).toBe(false);
+  });
+
   it('parses source slugs back into route parts', () => {
     expect(parseSourceSlugs(['en', 'introduction'])).toEqual({
       locale: 'en',
@@ -65,10 +73,12 @@ describe('docs routing helpers', () => {
       slug: 'index',
     });
 
-    expect(parseSourceSlugs(['zh-CN', 'api-reference', 'start-agent'])).toEqual({
-      locale: 'zh-CN',
-      tab: 'api-reference',
-      slug: 'start-agent',
-    });
+    expect(parseSourceSlugs(['zh-CN', 'api-reference', 'start-agent'])).toEqual(
+      {
+        locale: 'zh-CN',
+        tab: 'api-reference',
+        slug: 'start-agent',
+      },
+    );
   });
 });

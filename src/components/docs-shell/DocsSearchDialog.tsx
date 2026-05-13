@@ -1,5 +1,6 @@
 'use client';
 
+import { useNavigate } from '@tanstack/react-router';
 import { SearchIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +29,15 @@ export function DocsSearchDialog({
   tabs: TabSummary[];
 }) {
   const { t } = useTranslation('common');
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
+  async function handleSelect(url: string) {
+    setOpen(false);
+    await navigate({
+      to: url,
+    });
+  }
 
   return (
     <>
@@ -55,10 +64,7 @@ export function DocsSearchDialog({
             {tabs.map((tab) => (
               <CommandItem
                 key={tab.url}
-                onSelect={() => {
-                  window.location.href = tab.url;
-                  setOpen(false);
-                }}
+                onSelect={() => void handleSelect(tab.url)}
               >
                 <div className="flex flex-col gap-1">
                   <span>{tab.title}</span>
@@ -75,10 +81,7 @@ export function DocsSearchDialog({
             {pages.map((page) => (
               <CommandItem
                 key={page.url}
-                onSelect={() => {
-                  window.location.href = page.url;
-                  setOpen(false);
-                }}
+                onSelect={() => void handleSelect(page.url)}
               >
                 <div className="flex flex-col gap-1">
                   <span>{page.title}</span>

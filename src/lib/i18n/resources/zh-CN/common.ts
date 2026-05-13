@@ -33,8 +33,7 @@ const zhCnCommon = {
   home: {
     eyebrow: 'Agora 开发者文档',
     title: 'Agora 文档',
-    description:
-      '对话式 AI / 语音通话 / 视频通话 / 互动直播 / 实时消息',
+    description: '对话式 AI / 语音通话 / 视频通话 / 互动直播 / 实时消息',
     shellLabel: 'Overview',
     askAi: 'AI 入口',
     search: '搜索',

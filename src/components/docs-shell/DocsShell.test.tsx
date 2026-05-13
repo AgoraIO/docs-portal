@@ -10,8 +10,8 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import type { SidebarEntry, TabSummary } from '@/lib/docs-tree';
-import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
 import { i18n } from '@/lib/i18n/i18n';
+import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
 import { DocsShell } from './DocsShell';
 
 const tabs: TabSummary[] = [
@@ -98,10 +98,16 @@ describe('DocsShell', () => {
     render(<RouterProvider router={router} />);
 
     expect(await screen.findByText('Agora Docs')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Introduction' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Quick Start' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Introduction' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Quick Start' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('On this page')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Language' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Language' }),
+    ).toBeInTheDocument();
   });
 
   it('switches locale while preserving the current tab and slug path', async () => {
