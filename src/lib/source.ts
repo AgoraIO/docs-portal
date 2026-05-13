@@ -2,6 +2,7 @@ import { docs } from 'collections/server';
 import { type InferPageType, loader } from 'fumadocs-core/source';
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
 import { docsContentRoute, docsRoute } from './shared';
+import { getContentPathSegments } from './docs-routing';
 
 export const source = loader({
   source: docs.toFumadocsSource(),
@@ -10,7 +11,12 @@ export const source = loader({
 });
 
 export function getPageMarkdownUrl(page: InferPageType<typeof source>) {
-  const segments = [...page.slugs, 'content.md'];
+  const [locale, tab, slug] = page.slugs;
+  const segments = getContentPathSegments({
+    locale: locale ?? 'en',
+    tab: tab ?? 'introduction',
+    slug,
+  });
 
   return {
     segments,
