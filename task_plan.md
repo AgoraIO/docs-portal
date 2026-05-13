@@ -11,3 +11,6 @@ Run `docs-portal` locally, identify the source of the Overview left sidebar, the
 
 ## Risks
 - The worktree already contains user changes, including an untracked `src/components/home/PlatformHomePage.tsx`, so edits must preserve that in-progress work.
+
+## Follow-up
+- [completed] Update the portal Overview left sidebar to match the structure from the local preview file, while only changing the sidebar and the minimal page routing/content needed to support it.

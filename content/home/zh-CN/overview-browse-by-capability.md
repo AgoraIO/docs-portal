@@ -5,29 +5,65 @@ description: 把平台按稳定能力域组织，帮助团队先理解边界，�
 
 ## 能力域
 
-### AI
+### AI 智能体
 
-适合查看对话式 AI、Agent 集成、模型编排、实时转录和多模态交互相关内容。
+适合查看对话式 AI 引擎、Agent 集成、模型编排、上下文管理和多模态交互相关内容。
 
-- [打开 AI 文档](/?tab=ai)
+- [打开 AI 智能体](/?tab=overview&page=overview-ai-agents)
 
-### 实时与媒体
+### 实时音视频
 
-适合查看语音互动、媒体传输、事件监听、录制相关链路和低时延运行能力。
+适合查看 RTC 会话、频道接入、设备权限、鉴权和低时延音视频基础链路。
 
-- [打开实时与媒体](/?tab=realtime-media)
+- [打开实时音视频](/?tab=overview&page=overview-realtime-audio-video)
 
-### 场景方案
+### 媒体服务
 
-如果你的团队是从客服、陪伴、教育或智能设备这类业务目标出发，而不是先看底层能力，就从这里进入。
+适合查看录制、推流、拉流、转码和媒体交付链路。
 
-- [打开场景方案](/?tab=solutions)
+- [打开媒体服务](/?tab=overview&page=overview-media-services)
 
-### 平台与实践
+### 消息
 
-适合查看鉴权、安全、发版说明、计费、可观测性与生产接入建议。
+适合查看 RTM、状态同步、消息协作和事件驱动的业务流程。
 
-- [打开最佳实践](/?tab=best-practices)
+- [打开消息](/?tab=overview&page=overview-messaging)
+
+### 实时消息 RTM
+
+适合查看频道消息、Presence、状态同步和协作信令能力。
+
+- [打开实时消息 RTM](/?tab=overview&page=overview-rtm)
+
+### 实时转录翻译
+
+适合查看语音转写、翻译、字幕和多语言实时理解能力。
+
+- [打开实时转录翻译](/?tab=overview&page=overview-speech-to-text)
+
+### 媒体流加速 RTSA
+
+适合查看智能硬件、终端设备和实时媒体流加速相关能力。
+
+- [打开媒体流加速 RTSA](/?tab=overview&page=overview-rtsa)
+
+### RTC 服务端 SDK
+
+适合查看服务端收发流、服务端控制面和后端媒体处理能力。
+
+- [打开 RTC 服务端 SDK](/?tab=overview&page=overview-rtc-server-sdk)
+
+### 融合 CDN 直播
+
+适合查看直播分发、播放质量调度和多 CDN 交付能力。
+
+- [打开融合 CDN 直播](/?tab=overview&page=overview-fusion-cdn)
+
+### 互动白板
+
+适合查看多人实时白板协作、在线教学和互动讲解能力。
+
+- [打开互动白板](/?tab=overview&page=overview-whiteboard)
 
 ## 阅读策略
 

@@ -1,4 +1,4 @@
-import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
+import { defineCollections, defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import { z } from 'zod';
 
 const rawDocSchema = z.object({
@@ -18,6 +18,15 @@ export const docs = defineDocs({
     postprocess: {
       includeProcessedMarkdown: true,
     },
+  },
+});
+
+export const home = defineCollections({
+  type: 'doc',
+  dir: 'content/home',
+  schema: rawDocSchema,
+  postprocess: {
+    includeProcessedMarkdown: true,
   },
 });
 
