@@ -50,6 +50,7 @@ function Page() {
     <DocsShell
       activePath={activePath}
       activeTab={activeTab}
+      locale={Route.useParams().locale}
       next={navigation.next}
       pages={pages}
       previous={navigation.previous}

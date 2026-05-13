@@ -2,8 +2,10 @@ import { describe, expect, it } from 'vitest';
 import {
   buildDocPath,
   getContentPathSegments,
+  getSourceSlugsFromContentPath,
   getSourceSlugs,
   parseSourceSlugs,
+  replaceDocLocale,
 } from './docs-routing';
 
 describe('docs routing helpers', () => {
@@ -31,6 +33,28 @@ describe('docs routing helpers', () => {
   it('builds content path segments for tab index pages', () => {
     expect(getContentPathSegments({ locale: 'en', tab: 'introduction' })).toEqual(
       ['en', 'introduction', 'index.md'],
+    );
+  });
+
+  it('parses content paths back into source slugs', () => {
+    expect(getSourceSlugsFromContentPath('en/introduction/index.md')).toEqual([
+      'en',
+      'introduction',
+    ]);
+
+    expect(getSourceSlugsFromContentPath('en/ai/quick-start.md')).toEqual([
+      'en',
+      'ai',
+      'quick-start',
+    ]);
+  });
+
+  it('replaces the locale in canonical doc paths', () => {
+    expect(replaceDocLocale('/en/ai/quick-start', 'zh-CN')).toBe(
+      '/zh-CN/ai/quick-start',
+    );
+    expect(replaceDocLocale('/zh-CN/introduction', 'en')).toBe(
+      '/en/introduction',
     );
   });
 

@@ -1,12 +1,13 @@
 'use client';
 
-import { Link } from '@tanstack/react-router';
-import { MenuIcon, MoonIcon, SunIcon } from 'lucide-react';
+import { Link, useNavigate } from '@tanstack/react-router';
+import { CheckIcon, LanguagesIcon, MenuIcon, MoonIcon, SunIcon } from 'lucide-react';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -19,6 +20,9 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { SidebarEntry, TabSummary } from '@/lib/docs-tree';
 import { cn } from '@/lib/cn';
+import { type AppLocale, SUPPORTED_LOCALES } from '@/lib/i18n/i18n-config';
+import { useLocale } from '@/lib/i18n/use-locale';
+import { replaceDocLocale } from '@/lib/docs-routing';
 import { DocsSearchDialog, type SearchEntry } from './DocsSearchDialog';
 import { DocsTableOfContents } from './DocsContent';
 
@@ -26,6 +30,7 @@ export function DocsShell({
   activePath,
   activeTab,
   children,
+  locale,
   pages,
   previous,
   next,
@@ -36,6 +41,7 @@ export function DocsShell({
   activePath: string;
   activeTab: string;
   children: React.ReactNode;
+  locale: string;
   pages: SearchEntry[];
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
@@ -45,6 +51,8 @@ export function DocsShell({
 }) {
   const { t } = useTranslation('common');
   const { resolvedTheme, setTheme } = useTheme();
+  const navigate = useNavigate();
+  const { locale: activeLocale, setLocale } = useLocale();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -99,6 +107,16 @@ export function DocsShell({
             <div className="hidden w-64 md:block">
               <DocsSearchDialog pages={pages} tabs={tabs} />
             </div>
+            <LocaleSwitcher
+              currentLocale={locale as AppLocale}
+              onSelect={async (nextLocale) => {
+                await setLocale(nextLocale);
+                await navigate({
+                  to: replaceDocLocale(activePath, nextLocale),
+                });
+              }}
+              selectedLocale={activeLocale}
+            />
             <Button
               onClick={() =>
                 setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
@@ -134,6 +152,52 @@ export function DocsShell({
         </footer>
       ) : null}
     </div>
+  );
+}
+
+function LocaleSwitcher({
+  currentLocale,
+  onSelect,
+  selectedLocale,
+}: {
+  currentLocale: AppLocale;
+  onSelect: (locale: AppLocale) => Promise<void>;
+  selectedLocale: AppLocale;
+}) {
+  const { t } = useTranslation('common');
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button size="icon" variant="ghost">
+          <LanguagesIcon />
+          <span className="sr-only">{t('controls.language.label')}</span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-44 p-1">
+        <div className="flex flex-col gap-1">
+          {SUPPORTED_LOCALES.map((locale) => {
+            const isActive = selectedLocale === locale;
+            const label =
+              locale === 'zh-CN'
+                ? t('controls.language.chinese')
+                : t('controls.language.english');
+
+            return (
+              <Button
+                className="justify-between rounded-xl"
+                key={locale}
+                onClick={() => void onSelect(locale)}
+                variant={currentLocale === locale ? 'secondary' : 'ghost'}
+              >
+                <span>{label}</span>
+                {isActive ? <CheckIcon className="size-4" /> : null}
+              </Button>
+            );
+          })}
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
 
