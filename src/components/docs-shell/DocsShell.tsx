@@ -11,7 +11,6 @@ import {
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Popover,
@@ -26,8 +25,19 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import {
+  Sidebar as ShadcnSidebar,
+  SidebarContent as ShadcnSidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+} from '@/components/ui/sidebar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/cn';
 import { replaceDocLocale } from '@/lib/docs-routing';
 import type { SidebarEntry, TabSummary } from '@/lib/docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from '@/lib/i18n/i18n-config';
@@ -64,7 +74,7 @@ export function DocsShell({
   const { locale: activeLocale, setLocale } = useLocale();
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <SidebarProvider className="block min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
         <div className="mx-auto flex w-full max-w-[1440px] items-center gap-3 px-4 py-3 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
@@ -88,7 +98,6 @@ export function DocsShell({
               </SheetContent>
             </Sheet>
             <div className="flex min-w-0 items-center gap-3">
-              <Badge variant="secondary">{t('app.endorsement')}</Badge>
               <Link className="truncate text-sm font-semibold" to="/">
                 {t('app.name')}
               </Link>
@@ -145,12 +154,10 @@ export function DocsShell({
         </div>
       </header>
       <div className="mx-auto flex w-full max-w-[1440px]">
-        <aside className="hidden w-[280px] shrink-0 border-r border-border lg:block">
-          <Sidebar activePath={activePath} entries={sidebar} />
-        </aside>
-        <main className="min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-10">
-          {children}
-        </main>
+        <DocsSidebar activePath={activePath} entries={sidebar} />
+        <SidebarInset className="min-w-0 bg-background">
+          <div className="px-4 py-8 sm:px-6 lg:px-10">{children}</div>
+        </SidebarInset>
         <aside className="hidden w-[240px] shrink-0 border-l border-border xl:block">
           <ScrollArea className="h-[calc(100vh-121px)] px-6 py-8">
             <DocsTableOfContents toc={toc} />
@@ -171,7 +178,7 @@ export function DocsShell({
           )}
         </footer>
       ) : null}
-    </div>
+    </SidebarProvider>
   );
 }
 
@@ -221,7 +228,7 @@ function LocaleSwitcher({
   );
 }
 
-function Sidebar({
+function DocsSidebar({
   activePath,
   entries,
 }: {
@@ -229,33 +236,42 @@ function Sidebar({
   entries: SidebarEntry[];
 }) {
   return (
-    <ScrollArea className="h-[calc(100vh-121px)]">
-      <nav className="flex flex-col gap-1 px-4 py-6">
-        {entries.map((entry) =>
-          entry.type === 'separator' ? (
-            <div
-              className="px-3 py-3 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground"
-              key={entry.id}
-            >
-              {entry.title.replaceAll('-', ' ')}
-            </div>
-          ) : (
-            <Link
-              className={cn(
-                'rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
-                entry.url === activePath && 'bg-accent text-accent-foreground',
-              )}
-              key={entry.id}
-              params={{}}
-              search={{}}
-              to={entry.url}
-            >
-              {entry.title}
-            </Link>
-          ),
-        )}
-      </nav>
-    </ScrollArea>
+    <ShadcnSidebar
+      className="top-[121px] h-[calc(100svh-121px)] border-r border-border"
+      collapsible="none"
+      variant="inset"
+    >
+      <ShadcnSidebarContent>
+        <ScrollArea className="h-[calc(100svh-121px)]">
+          <div className="px-2 py-4">
+            <SidebarGroup>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {entries.map((entry) =>
+                    entry.type === 'separator' ? (
+                      <SidebarGroupLabel className="mt-3 px-2" key={entry.id}>
+                        {entry.title.replaceAll('-', ' ')}
+                      </SidebarGroupLabel>
+                    ) : (
+                      <SidebarMenuItem key={entry.id}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={entry.url === activePath}
+                        >
+                          <Link params={{}} search={{}} to={entry.url}>
+                            <span>{entry.title}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ),
+                  )}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </div>
+        </ScrollArea>
+      </ShadcnSidebarContent>
+    </ShadcnSidebar>
   );
 }
 
@@ -293,7 +309,7 @@ function MobileSidebar({
           </TabsList>
         </Tabs>
       </ScrollArea>
-      <Sidebar activePath={activePath} entries={sidebar} />
+      <DocsSidebar activePath={activePath} entries={sidebar} />
     </div>
   );
 }
