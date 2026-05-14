@@ -211,7 +211,7 @@ export function DocsShell({
           <div className="mx-auto flex w-full max-w-[1440px] justify-start px-4 sm:px-6">
             <Tabs className="w-auto max-w-full" value={activeTab}>
               <TabsList
-                className="h-10 max-w-full justify-start gap-0 overflow-x-auto px-0"
+                className="max-w-full justify-start gap-0 overflow-x-auto overflow-y-hidden px-0"
                 variant="line"
               >
                 {tabs.map((tab) => (
