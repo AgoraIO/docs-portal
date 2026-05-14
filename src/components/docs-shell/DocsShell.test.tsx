@@ -153,6 +153,20 @@ describe('DocsShell', () => {
       screen.getByRole('link', { name: 'Quick Start' }),
     ).toBeInTheDocument();
     expect(screen.getByText('On this page')).toBeInTheDocument();
+
+    const shellRoot = mainHeaderRow.closest('[data-slot="sidebar-wrapper"]');
+    const sidebarContent = document.querySelector('[data-slot="sidebar-content"]');
+    const sidebarInset = document.querySelector('[data-slot="sidebar-inset"]');
+
+    expect(shellRoot).toBeInTheDocument();
+    expect(shellRoot).toHaveClass('flex');
+    expect(shellRoot).toHaveClass('min-h-0');
+    expect(sidebarContent).toBeInTheDocument();
+    expect(sidebarContent).toHaveClass('min-h-0');
+    expect(sidebarContent).toHaveClass('overflow-x-hidden');
+    expect(sidebarContent).toHaveClass('overflow-y-auto');
+    expect(sidebarInset).toBeInTheDocument();
+    expect(sidebarInset).toHaveClass('min-h-0');
   });
 
   it('switches locale while preserving the current tab and slug path', async () => {
