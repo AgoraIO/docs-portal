@@ -6,6 +6,7 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
+import { useState, type ComponentProps, type ReactNode } from 'react';
 import {
   fireEvent,
   render,
@@ -53,6 +54,78 @@ const sidebar: SidebarEntry[] = [
   },
 ];
 
+type DocsShellProps = ComponentProps<typeof DocsShell>;
+
+function renderDocsShell(
+  overrides: Partial<DocsShellProps> = {},
+  initialEntry = '/en/introduction/about-agora',
+) {
+  const props: DocsShellProps = {
+    activePath: '/en/introduction',
+    activeTab: 'introduction',
+    children: <article>Body</article>,
+    locale: 'en',
+    next: undefined,
+    pages: [
+      {
+        title: 'Quick Start',
+        url: '/en/introduction/quick-start',
+      },
+    ],
+    previous: undefined,
+    sidebar,
+    tabs,
+    toc: [
+      {
+        depth: 2,
+        title: 'Overview',
+        url: '#overview',
+      },
+    ],
+    ...overrides,
+  };
+
+  const rootRoute = createRootRoute({
+    component: () => <Outlet />,
+  });
+  const docsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab/$slug',
+    component: () => (
+      <AppProviders>
+        <DocsShell {...props} />
+      </AppProviders>
+    ),
+  });
+  const router = createRouter({
+    routeTree: rootRoute.addChildren([docsRoute]),
+    history: createMemoryHistory({
+      initialEntries: [initialEntry],
+    }),
+  });
+
+  return render(<RouterProvider router={router} />);
+}
+
+function renderWithRouter(children: ReactNode, initialEntry = '/en/introduction/about-agora') {
+  const rootRoute = createRootRoute({
+    component: () => <Outlet />,
+  });
+  const docsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab/$slug',
+    component: () => <AppProviders>{children}</AppProviders>,
+  });
+  const router = createRouter({
+    routeTree: rootRoute.addChildren([docsRoute]),
+    history: createMemoryHistory({
+      initialEntries: [initialEntry],
+    }),
+  });
+
+  return render(<RouterProvider router={router} />);
+}
+
 describe('DocsShell', () => {
   afterEach(async () => {
     window.localStorage.removeItem(LOCALE_STORAGE_KEY);
@@ -61,47 +134,7 @@ describe('DocsShell', () => {
   });
 
   it('renders a separate desktop header row and docs tabs strip', async () => {
-    const rootRoute = createRootRoute({
-      component: () => <Outlet />,
-    });
-    const docsRoute = createRoute({
-      getParentRoute: () => rootRoute,
-      path: '/$locale/$tab/$slug',
-      component: () => (
-        <AppProviders>
-          <DocsShell
-            activePath="/en/introduction"
-            activeTab="introduction"
-            locale="en"
-            pages={[
-              {
-                title: 'Quick Start',
-                url: '/en/introduction/quick-start',
-              },
-            ]}
-            sidebar={sidebar}
-            tabs={tabs}
-            toc={[
-              {
-                depth: 2,
-                title: 'Overview',
-                url: '#overview',
-              },
-            ]}
-          >
-            <article>Body</article>
-          </DocsShell>
-        </AppProviders>
-      ),
-    });
-    const router = createRouter({
-      routeTree: rootRoute.addChildren([docsRoute]),
-      history: createMemoryHistory({
-        initialEntries: ['/en/introduction/about-agora'],
-      }),
-    });
-
-    render(<RouterProvider router={router} />);
+    renderDocsShell();
 
     expect(await screen.findByText('Agora Docs')).toBeInTheDocument();
 
@@ -153,6 +186,83 @@ describe('DocsShell', () => {
       screen.getByRole('link', { name: 'Quick Start' }),
     ).toBeInTheDocument();
     expect(screen.getByText('On this page')).toBeInTheDocument();
+  });
+
+  it('renders the desktop docs body shell regions and keeps pagination inside the main column', async () => {
+    renderDocsShell({
+      next: { title: 'Next Page', url: '/en/introduction/next-page' },
+      previous: { title: 'Previous Page', url: '/en/introduction/prev-page' },
+    });
+
+    expect(await screen.findByTestId('docs-body-shell')).toBeInTheDocument();
+    expect(screen.getByTestId('docs-sidebar')).toBeInTheDocument();
+    expect(screen.getByTestId('docs-main-column')).toBeInTheDocument();
+    expect(screen.getByTestId('docs-toc-rail')).toBeInTheDocument();
+    expect(screen.queryByTestId('docs-shell-footer')).not.toBeInTheDocument();
+
+    const mainColumn = screen.getByTestId('docs-main-column');
+    expect(
+      within(mainColumn).getByRole('link', { name: /Next Next Page/i }),
+    ).toBeInTheDocument();
+    expect(
+      within(mainColumn).getByRole('link', { name: /Previous Previous Page/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('resets desktop sidebar scroll position when the active tab changes', async () => {
+    function ShellWithTabSwitcher() {
+      const [activeTab, setActiveTab] = useState<'introduction' | 'ai'>(
+        'introduction',
+      );
+
+      return (
+        <>
+          <button onClick={() => setActiveTab('ai')} type="button">
+            Switch tab
+          </button>
+          <DocsShell
+            activePath="/en/introduction"
+            activeTab={activeTab}
+            locale="en"
+            pages={[
+              {
+                title: 'Quick Start',
+                url: '/en/introduction/quick-start',
+              },
+            ]}
+            sidebar={
+              activeTab === 'introduction'
+                ? sidebar
+                : [
+                    {
+                      id: 'ai-intro',
+                      title: 'AI Intro',
+                      type: 'page' as const,
+                      url: '/en/ai/quick-start',
+                    },
+                  ]
+            }
+            tabs={tabs}
+            toc={[]}
+          >
+            <article>Body</article>
+          </DocsShell>
+        </>
+      );
+    }
+
+    renderWithRouter(<ShellWithTabSwitcher />);
+
+    expect(await screen.findByText('Agora Docs')).toBeInTheDocument();
+
+    const sidebarScroll = screen.getByTestId('docs-sidebar-scroll');
+    sidebarScroll.scrollTop = 180;
+
+    fireEvent.click(screen.getByRole('button', { name: 'Switch tab' }));
+
+    await waitFor(() => {
+      expect(sidebarScroll.scrollTop).toBe(0);
+    });
   });
 
   it('switches locale while preserving the current tab and slug path', async () => {
@@ -303,5 +413,41 @@ describe('DocsShell', () => {
     await waitFor(() => {
       expect(screen.queryByRole('dialog')).toBeNull();
     });
+  });
+
+  it('renders the split docs body shell regions and keeps pagination in the main column', async () => {
+    renderDocsShell({
+      children: <article>Body copy</article>,
+      next: {
+        title: 'Advanced Setup',
+        url: '/en/introduction/advanced-setup',
+      },
+      previous: {
+        title: 'Overview',
+        url: '/en/introduction/overview',
+      },
+    });
+
+    expect(await screen.findByText('Agora Docs')).toBeInTheDocument();
+
+    const bodyShell = screen.getByTestId('docs-body-shell');
+    const sidebarRegion = screen.getByTestId('docs-sidebar');
+    const mainColumn = screen.getByTestId('docs-main-column');
+    const tocRail = screen.getByTestId('docs-toc-rail');
+
+    expect(bodyShell).toBeInTheDocument();
+    expect(sidebarRegion).toBeInTheDocument();
+    expect(sidebarRegion).toHaveClass('hidden', 'lg:block');
+    expect(mainColumn).toBeInTheDocument();
+    expect(within(mainColumn).getByText('Body copy')).toBeInTheDocument();
+    expect(
+      within(mainColumn).getByRole('link', { name: /Previous Overview/i }),
+    ).toBeInTheDocument();
+    expect(
+      within(mainColumn).getByRole('link', { name: /Next Advanced Setup/i }),
+    ).toBeInTheDocument();
+    expect(tocRail).toBeInTheDocument();
+    expect(tocRail).toHaveClass('hidden', 'xl:block');
+    expect(within(tocRail).getByText('On this page')).toBeInTheDocument();
   });
 });

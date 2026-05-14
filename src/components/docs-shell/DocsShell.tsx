@@ -27,15 +27,6 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import {
-  Sidebar as ShadcnSidebar,
-  SidebarContent as ShadcnSidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarProvider,
 } from '@/components/ui/sidebar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -43,8 +34,10 @@ import { replaceDocLocale } from '@/lib/docs-routing';
 import type { SidebarEntry, TabSummary } from '@/lib/docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from '@/lib/i18n/i18n-config';
 import { useLocale } from '@/lib/i18n/use-locale';
-import { DocsTableOfContents } from './DocsContent';
+import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog, type SearchEntry } from './DocsSearchDialog';
+import { DocsSidebar } from './DocsSidebar';
+import { DocsTocRail } from './DocsTocRail';
 
 export function DocsShell({
   activePath,
@@ -109,11 +102,6 @@ export function DocsShell({
   const shellOffsetStyle = {
     '--docs-shell-header-offset': `${headerOffset}px`,
   } as React.CSSProperties;
-  const desktopRailStyle = {
-    top: 'var(--docs-shell-header-offset)',
-    height: 'calc(100svh - var(--docs-shell-header-offset))',
-  } as React.CSSProperties;
-
   return (
     <SidebarProvider
       className="block min-h-screen bg-background text-foreground"
@@ -231,31 +219,24 @@ export function DocsShell({
           </div>
         </nav>
       </header>
-      <div className="mx-auto flex w-full max-w-[1440px]">
-        <DocsSidebar activePath={activePath} entries={sidebar} />
-        <SidebarInset className="min-w-0 bg-background">
-          <div className="px-4 py-8 sm:px-6 lg:px-10">{children}</div>
-        </SidebarInset>
-        <aside className="hidden w-[240px] shrink-0 border-l border-border xl:block">
-          <ScrollArea className="px-6 py-8" style={desktopRailStyle}>
-            <DocsTableOfContents toc={toc} />
-          </ScrollArea>
-        </aside>
+      <div
+        className="mx-auto flex w-full max-w-[1440px] min-w-0"
+        data-testid="docs-body-shell"
+        style={{
+          height: `calc(100svh - ${headerOffset}px)`,
+        }}
+      >
+        <DocsSidebar
+          activePath={activePath}
+          activeTab={activeTab}
+          entries={sidebar}
+          onSelectPath={() => setIsMobileSheetOpen(false)}
+        />
+        <DocsMainColumn next={next} previous={previous}>
+          {children}
+        </DocsMainColumn>
+        <DocsTocRail toc={toc} />
       </div>
-      {previous || next ? (
-        <footer className="mx-auto flex w-full max-w-[1440px] justify-between gap-3 border-t border-border px-4 py-6 sm:px-6 lg:px-10">
-          {previous ? (
-            <FooterLink direction={t('docs.previous')} link={previous} />
-          ) : (
-            <div />
-          )}
-          {next ? (
-            <FooterLink direction={t('docs.next')} link={next} />
-          ) : (
-            <div />
-          )}
-        </footer>
-      ) : null}
     </SidebarProvider>
   );
 }
@@ -356,61 +337,6 @@ function LocaleOptions({
         );
       })}
     </div>
-  );
-}
-
-function DocsSidebar({
-  activePath,
-  entries,
-}: {
-  activePath: string;
-  entries: SidebarEntry[];
-}) {
-  return (
-    <ShadcnSidebar
-      className="border-r border-border"
-      collapsible="none"
-      style={{
-        top: 'var(--docs-shell-header-offset)',
-        height: 'calc(100svh - var(--docs-shell-header-offset))',
-      }}
-      variant="inset"
-    >
-      <ShadcnSidebarContent>
-        <ScrollArea
-          style={{
-            height: 'calc(100svh - var(--docs-shell-header-offset))',
-          }}
-        >
-          <div className="px-2 py-4">
-            <SidebarGroup>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {entries.map((entry) =>
-                    entry.type === 'separator' ? (
-                      <SidebarGroupLabel className="mt-3 px-2" key={entry.id}>
-                        {entry.title.replaceAll('-', ' ')}
-                      </SidebarGroupLabel>
-                    ) : (
-                      <SidebarMenuItem key={entry.id}>
-                        <SidebarMenuButton
-                          asChild
-                          isActive={entry.url === activePath}
-                        >
-                          <Link params={{}} search={{}} to={entry.url}>
-                            <span>{entry.title}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ),
-                  )}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </div>
-        </ScrollArea>
-      </ShadcnSidebarContent>
-    </ShadcnSidebar>
   );
 }
 
@@ -522,29 +448,5 @@ function MobileSidebar({
         </div>
       </ScrollArea>
     </div>
-  );
-}
-
-function FooterLink({
-  direction,
-  link,
-}: {
-  direction: string;
-  link: { title: string; url: string };
-}) {
-  return (
-    <Link
-      className="flex min-w-0 max-w-sm flex-col gap-1 rounded-lg border border-border px-4 py-3 transition-colors hover:bg-accent"
-      params={{}}
-      search={{}}
-      to={link.url}
-    >
-      <span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
-        {direction}
-      </span>
-      <span className="truncate text-sm font-medium text-foreground">
-        {link.title}
-      </span>
-    </Link>
   );
 }
