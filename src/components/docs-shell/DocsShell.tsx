@@ -79,6 +79,7 @@ export function DocsShell({
   }`;
   const headerRef = useRef<HTMLElement | null>(null);
   const [headerOffset, setHeaderOffset] = useState(0);
+  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
 
   useLayoutEffect(() => {
     const node = headerRef.current;
@@ -127,7 +128,7 @@ export function DocsShell({
           data-testid="docs-main-header-row"
         >
           <div className="flex min-w-0 items-center gap-3">
-            <Sheet>
+            <Sheet open={isMobileSheetOpen} onOpenChange={setIsMobileSheetOpen}>
               <SheetTrigger asChild>
                 <Button className="lg:hidden" size="icon" variant="ghost">
                   <MenuIcon />
@@ -141,8 +142,23 @@ export function DocsShell({
                 <MobileSidebar
                   activePath={activePath}
                   activeTab={activeTab}
+                  currentLocale={locale as AppLocale}
+                  isDarkTheme={isDarkTheme}
+                  onSelectLocale={async (nextLocale) => {
+                    await setLocale(nextLocale);
+                    setIsMobileSheetOpen(false);
+                    await navigate({
+                      to: replaceDocLocale(activePath, nextLocale),
+                    });
+                  }}
+                  onSelectPath={() => setIsMobileSheetOpen(false)}
                   sidebar={sidebar}
+                  themeLabel={themeLabel}
                   tabs={tabs}
+                  toggleTheme={() => {
+                    setTheme(isDarkTheme ? 'light' : 'dark');
+                    setIsMobileSheetOpen(false);
+                  }}
                 />
               </SheetContent>
             </Sheet>
@@ -154,28 +170,38 @@ export function DocsShell({
           </div>
           <div className="flex-1" />
           <div className="flex items-center gap-2">
-            <div className="w-44 sm:w-56 md:w-72">
-              <DocsSearchDialog mode="desktop" pages={pages} tabs={tabs} />
+            <div className="lg:hidden" data-testid="docs-mobile-header-actions">
+              <DocsSearchDialog mode="mobile" pages={pages} tabs={tabs} />
             </div>
-            <LocaleSwitcher
-              currentLocale={locale as AppLocale}
-              onSelect={async (nextLocale) => {
-                await setLocale(nextLocale);
-                await navigate({
-                  to: replaceDocLocale(activePath, nextLocale),
-                });
-              }}
-            />
-            <Button
-              aria-label={themeLabel}
-              aria-pressed={isDarkTheme}
-              onClick={() => setTheme(isDarkTheme ? 'light' : 'dark')}
-              size="icon"
-              variant="ghost"
+            <div
+              className="hidden items-center gap-2 lg:flex"
+              data-testid="docs-desktop-header-actions"
             >
-              {isDarkTheme ? <SunIcon /> : <MoonIcon />}
-              <span className="sr-only">{themeLabel}</span>
-            </Button>
+              <div className="w-44 sm:w-56 md:w-72">
+                <DocsSearchDialog mode="desktop" pages={pages} tabs={tabs} />
+              </div>
+              <LocaleSwitcher
+                currentLocale={locale as AppLocale}
+                onSelect={async (nextLocale) => {
+                  await setLocale(nextLocale);
+                  await navigate({
+                    to: replaceDocLocale(activePath, nextLocale),
+                  });
+                }}
+                variant="desktop"
+              />
+              <Button
+                aria-label={themeLabel}
+                aria-pressed={isDarkTheme}
+                className="hidden lg:inline-flex"
+                onClick={() => setTheme(isDarkTheme ? 'light' : 'dark')}
+                size="icon"
+                variant="ghost"
+              >
+                {isDarkTheme ? <SunIcon /> : <MoonIcon />}
+                <span className="sr-only">{themeLabel}</span>
+              </Button>
+            </div>
           </div>
         </div>
         <nav
@@ -237,90 +263,99 @@ export function DocsShell({
 function LocaleSwitcher({
   currentLocale,
   onSelect,
+  variant = 'all',
 }: {
   currentLocale: AppLocale;
   onSelect: (locale: AppLocale) => Promise<void>;
+  variant?: 'all' | 'desktop' | 'mobile';
 }) {
   const { t } = useTranslation('common');
 
   return (
     <>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            aria-label={t('controls.language.label')}
-            className="hidden gap-2 rounded-full px-3 md:inline-flex"
-            size="sm"
-            variant="outline"
-          >
-            <LanguagesIcon data-icon="inline-start" />
-            <span>
-              {currentLocale === 'zh-CN'
-                ? t('controls.language.chinese')
-                : t('controls.language.english')}
-            </span>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-44 p-1">
-          <div className="flex flex-col gap-1">
-            {SUPPORTED_LOCALES.map((locale) => {
-              const isActive = currentLocale === locale;
-              const label =
-                locale === 'zh-CN'
+      {variant !== 'mobile' ? (
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              aria-label={t('controls.language.label')}
+              className="gap-2 rounded-full px-3"
+              size="sm"
+              variant="outline"
+            >
+              <LanguagesIcon data-icon="inline-start" />
+              <span>
+                {currentLocale === 'zh-CN'
                   ? t('controls.language.chinese')
-                  : t('controls.language.english');
-
-              return (
-                <Button
-                  className="justify-between rounded-xl"
-                  key={`desktop-${locale}`}
-                  onClick={() => void onSelect(locale)}
-                  variant={currentLocale === locale ? 'secondary' : 'ghost'}
-                >
-                  <span>{label}</span>
-                  {isActive ? <CheckIcon className="size-4" /> : null}
-                </Button>
-              );
-            })}
-          </div>
-        </PopoverContent>
-      </Popover>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            aria-label={t('controls.language.label')}
-            className="md:hidden"
-            size="icon"
-            variant="ghost"
-          >
-            <LanguagesIcon />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-44 p-1">
-          <div className="flex flex-col gap-1">
-            {SUPPORTED_LOCALES.map((locale) => {
-              const isActive = currentLocale === locale;
-              const label =
-                locale === 'zh-CN'
-                  ? t('controls.language.chinese')
-                  : t('controls.language.english');
-
-              return (
-                <Button
-                  className="justify-between rounded-xl"
-                  key={`mobile-${locale}`}
-                  onClick={() => void onSelect(locale)}
-                  variant={currentLocale === locale ? 'secondary' : 'ghost'}
-                >
-                  <span>{label}</span>
-                  {isActive ? <CheckIcon className="size-4" /> : null}
-                </Button>
-              );
-            })}
-          </div>
-        </PopoverContent>
-      </Popover>
+                  : t('controls.language.english')}
+              </span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-44 p-1">
+            <LocaleOptions
+              currentLocale={currentLocale}
+              onSelect={onSelect}
+              scopeKey="desktop"
+            />
+          </PopoverContent>
+        </Popover>
+      ) : null}
+      {variant !== 'desktop' ? (
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              aria-label={t('controls.language.label')}
+              size="icon"
+              variant="ghost"
+            >
+              <LanguagesIcon />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-44 p-1">
+            <LocaleOptions
+              currentLocale={currentLocale}
+              onSelect={onSelect}
+              scopeKey="mobile"
+            />
+          </PopoverContent>
+        </Popover>
+      ) : null}
     </>
+  );
+}
+
+function LocaleOptions({
+  currentLocale,
+  onSelect,
+  scopeKey,
+}: {
+  currentLocale: AppLocale;
+  onSelect: (locale: AppLocale) => Promise<void>;
+  scopeKey: string;
+}) {
+  const { t } = useTranslation('common');
+
+  return (
+    <div className="flex flex-col gap-1">
+      {SUPPORTED_LOCALES.map((locale) => {
+        const isActive = currentLocale === locale;
+        const label =
+          locale === 'zh-CN'
+            ? t('controls.language.chinese')
+            : t('controls.language.english');
+
+        return (
+          <Button
+            className="justify-between rounded-xl"
+            key={`${scopeKey}-${locale}`}
+            onClick={() => void onSelect(locale)}
+            variant={currentLocale === locale ? 'secondary' : 'ghost'}
+          >
+            <span>{label}</span>
+            {isActive ? <CheckIcon className="size-4" /> : null}
+          </Button>
+        );
+      })}
+    </div>
   );
 }
 
@@ -382,38 +417,110 @@ function DocsSidebar({
 function MobileSidebar({
   activePath,
   activeTab,
+  currentLocale,
+  isDarkTheme,
+  onSelectLocale,
+  onSelectPath,
   sidebar,
+  themeLabel,
   tabs,
+  toggleTheme,
 }: {
   activePath: string;
   activeTab: string;
+  currentLocale: AppLocale;
+  isDarkTheme: boolean;
+  onSelectLocale: (locale: AppLocale) => Promise<void>;
+  onSelectPath: () => void;
   sidebar: SidebarEntry[];
+  themeLabel: string;
   tabs: TabSummary[];
+  toggleTheme: () => void;
 }) {
+  const { t } = useTranslation('common');
+
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <ScrollArea className="border-b border-border px-4 py-4">
-        <Tabs className="w-full" value={activeTab}>
-          <TabsList
-            className="flex w-full flex-col items-stretch gap-1 bg-transparent p-0"
-            variant="line"
-          >
-            {tabs.map((tab) => (
-              <TabsTrigger asChild key={tab.id} value={tab.id}>
-                <Link
-                  className="justify-start rounded-md px-3 py-2"
-                  params={{}}
-                  search={{}}
-                  to={tab.url}
-                >
-                  {tab.title}
-                </Link>
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+      <ScrollArea className="min-h-0 flex-1 px-4 py-4">
+        <div className="flex flex-col gap-6 pb-6">
+          <div className="flex flex-col gap-2">
+            <p className="px-1 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+              {t('docs.tabsLabel')}
+            </p>
+            <Tabs className="w-full" value={activeTab}>
+              <TabsList
+                className="flex h-auto w-full flex-col items-stretch gap-1 bg-transparent p-0"
+                variant="line"
+              >
+                {tabs.map((tab) => (
+                  <TabsTrigger asChild key={tab.id} value={tab.id}>
+                    <Link
+                      className="h-auto justify-start rounded-md px-3 py-2 text-sm"
+                      onClick={onSelectPath}
+                      params={{}}
+                      search={{}}
+                      to={tab.url}
+                    >
+                      {tab.title}
+                    </Link>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="px-1 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+              {t('docs.pagesLabel')}
+            </p>
+            <div className="flex flex-col gap-1">
+              {sidebar.map((entry) =>
+                entry.type === 'separator' ? (
+                  <p
+                    className="mt-3 px-3 text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground"
+                    key={entry.id}
+                  >
+                    {entry.title.replaceAll('-', ' ')}
+                  </p>
+                ) : (
+                  <Link
+                    className={`rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent ${
+                      entry.url === activePath
+                        ? 'bg-accent text-foreground'
+                        : 'text-muted-foreground'
+                    }`}
+                    key={entry.id}
+                    onClick={onSelectPath}
+                    params={{}}
+                    search={{}}
+                    to={entry.url}
+                  >
+                    {entry.title}
+                  </Link>
+                ),
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 border-t border-border pt-4">
+            <div className="flex items-center gap-2">
+              <LocaleSwitcher
+                currentLocale={currentLocale}
+                onSelect={onSelectLocale}
+                variant="desktop"
+              />
+              <Button
+                aria-label={themeLabel}
+                aria-pressed={isDarkTheme}
+                onClick={toggleTheme}
+                size="icon"
+                variant="outline"
+              >
+                {isDarkTheme ? <SunIcon /> : <MoonIcon />}
+                <span className="sr-only">{themeLabel}</span>
+              </Button>
+            </div>
+          </div>
+        </div>
       </ScrollArea>
-      <DocsSidebar activePath={activePath} entries={sidebar} />
     </div>
   );
 }

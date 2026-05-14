@@ -210,4 +210,98 @@ describe('DocsShell', () => {
       expect(window.localStorage.getItem(LOCALE_STORAGE_KEY)).toBe('zh-CN');
     });
   });
+
+  it('keeps compact mobile header controls and exposes locale and theme in the sheet', async () => {
+    const rootRoute = createRootRoute({
+      component: () => <Outlet />,
+    });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsShell
+            activePath="/en/introduction"
+            activeTab="introduction"
+            locale="en"
+            pages={[
+              {
+                title: 'Quick Start',
+                url: '/en/introduction/quick-start',
+              },
+            ]}
+            sidebar={sidebar}
+            tabs={tabs}
+            toc={[]}
+          >
+            <article>Body</article>
+          </DocsShell>
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const mainHeaderRow = await screen.findByTestId('docs-main-header-row');
+    const mobileHeaderActions = within(mainHeaderRow).getByTestId(
+      'docs-mobile-header-actions',
+    );
+    const desktopHeaderActions = within(mainHeaderRow).getByTestId(
+      'docs-desktop-header-actions',
+    );
+    const menuButton = within(mainHeaderRow).getByRole('button', {
+      name: 'Open navigation',
+    });
+    const mobileSearchButton = within(mobileHeaderActions).getByRole('button', {
+      name: 'Search docs',
+    });
+    const desktopSearchButton = within(desktopHeaderActions).getByRole(
+      'button',
+      {
+        name: 'Search docs',
+      },
+    );
+
+    expect(menuButton).toBeInTheDocument();
+    expect(mobileSearchButton).toBeInTheDocument();
+    expect(mobileSearchButton).not.toHaveTextContent('Search docs');
+    expect(
+      within(mobileHeaderActions).queryByRole('button', { name: 'Language' }),
+    ).toBeNull();
+    expect(
+      within(mobileHeaderActions).queryByRole('button', { name: 'Theme: Light' }),
+    ).toBeNull();
+    expect(desktopSearchButton).toHaveTextContent('Search docs');
+
+    fireEvent.click(menuButton);
+
+    const mobileSheet = await screen.findByRole('dialog');
+
+    expect(
+      within(mobileSheet).getByRole('tab', { name: 'Introduction' }),
+    ).toBeInTheDocument();
+    expect(
+      within(mobileSheet).getByRole('link', { name: 'Quick Start' }),
+    ).toBeInTheDocument();
+    expect(
+      within(mobileSheet).getByRole('button', { name: 'Language' }),
+    ).toBeInTheDocument();
+    expect(
+      within(mobileSheet).getByRole('button', { name: 'Theme: Light' }),
+    ).toBeInTheDocument();
+
+    fireEvent.click(
+      within(mobileSheet).getByRole('tab', { name: 'Introduction' }),
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).toBeNull();
+    });
+  });
 });
