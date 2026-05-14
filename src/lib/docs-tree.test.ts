@@ -1,6 +1,10 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
-import { getSidebarEntries, getTabSummaries } from './docs-tree';
+import {
+  getSidebarEntries,
+  getTabSummaries,
+  mapSidebarEntriesToTree,
+} from './docs-tree';
 
 const nestedRootTree: Root = {
   children: [
@@ -84,6 +88,141 @@ describe('docs tree helpers', () => {
         title: 'About Agora',
         type: 'page',
         url: '/en/introduction/about-agora',
+      },
+    ]);
+  });
+
+  it('maps grouped sidebar entries into section nodes', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'get-started',
+          title: 'Get Started',
+          type: 'separator',
+        },
+        {
+          id: '/en/introduction/overview',
+          title: 'Overview',
+          type: 'page',
+          url: '/en/introduction/overview',
+        },
+        {
+          id: '/en/introduction/install',
+          title: 'Install',
+          type: 'page',
+          url: '/en/introduction/install',
+        },
+      ]),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/en/introduction/overview',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/introduction/overview',
+          },
+          {
+            id: '/en/introduction/install',
+            title: 'Install',
+            type: 'page',
+            url: '/en/introduction/install',
+          },
+        ],
+        id: 'get-started',
+        title: 'Get Started',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('preserves order for top-level pages and later sections', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: '/en/introduction',
+          title: 'Introduction',
+          type: 'page',
+          url: '/en/introduction',
+        },
+        {
+          id: 'guides',
+          title: 'Guides',
+          type: 'separator',
+        },
+        {
+          id: '/en/introduction/quick-start',
+          title: 'Quick Start',
+          type: 'page',
+          url: '/en/introduction/quick-start',
+        },
+        {
+          id: '/en/introduction/advanced',
+          title: 'Advanced',
+          type: 'page',
+          url: '/en/introduction/advanced',
+        },
+      ]),
+    ).toEqual([
+      {
+        id: '/en/introduction',
+        title: 'Introduction',
+        type: 'page',
+        url: '/en/introduction',
+      },
+      {
+        children: [
+          {
+            id: '/en/introduction/quick-start',
+            title: 'Quick Start',
+            type: 'page',
+            url: '/en/introduction/quick-start',
+          },
+          {
+            id: '/en/introduction/advanced',
+            title: 'Advanced',
+            type: 'page',
+            url: '/en/introduction/advanced',
+          },
+        ],
+        id: 'guides',
+        title: 'Guides',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('passes long labels through unchanged for UI-level truncation', () => {
+    const longTitle =
+      'This is a very long documentation title that should stay untouched for UI-level truncation';
+
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'reference',
+          title: 'Reference',
+          type: 'separator',
+        },
+        {
+          id: '/en/reference/really-long-page-title',
+          title: longTitle,
+          type: 'page',
+          url: '/en/reference/really-long-page-title',
+        },
+      ]),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/en/reference/really-long-page-title',
+            title: longTitle,
+            type: 'page',
+            url: '/en/reference/really-long-page-title',
+          },
+        ],
+        id: 'reference',
+        title: 'Reference',
+        type: 'section',
       },
     ]);
   });

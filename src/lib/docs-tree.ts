@@ -23,6 +23,24 @@ export type SidebarEntry =
       type: 'separator';
     };
 
+export type DocsSidebarPageNode = {
+  id: string;
+  title: string;
+  type: 'page';
+  url: string;
+};
+
+export type DocsSidebarSectionNode = {
+  children: DocsSidebarPageNode[];
+  id: string;
+  title: string;
+  type: 'section';
+};
+
+export type DocsSidebarGroupNode = DocsSidebarSectionNode;
+
+export type DocsSidebarNode = DocsSidebarPageNode | DocsSidebarSectionNode;
+
 export function getTabSummaries(root: Root): TabSummary[] {
   return getTabNodes(root).flatMap((node) => {
     const item = getTabIndex(node);
@@ -98,6 +116,42 @@ export function getSidebarEntries(
   }
 
   return entries;
+}
+
+export function mapSidebarEntriesToTree(
+  entries: SidebarEntry[],
+): DocsSidebarNode[] {
+  const nodes: DocsSidebarNode[] = [];
+  let currentSection: DocsSidebarSectionNode | null = null;
+
+  for (const entry of entries) {
+    if (entry.type === 'separator') {
+      currentSection = {
+        children: [],
+        id: entry.id,
+        title: entry.title,
+        type: 'section',
+      };
+      nodes.push(currentSection);
+      continue;
+    }
+
+    const pageNode: DocsSidebarPageNode = {
+      id: entry.id,
+      title: entry.title,
+      type: 'page',
+      url: entry.url,
+    };
+
+    if (currentSection) {
+      currentSection.children.push(pageNode);
+      continue;
+    }
+
+    nodes.push(pageNode);
+  }
+
+  return nodes;
 }
 
 export function getPrevNextLinks(root: Root, currentUrl: string) {
