@@ -6,7 +6,13 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import type { SidebarEntry, TabSummary } from '@/lib/docs-tree';
@@ -54,7 +60,7 @@ describe('DocsShell', () => {
     vi.restoreAllMocks();
   });
 
-  it('renders header tabs, sidebar, toc, and locale switcher', async () => {
+  it('renders a separate desktop header row and docs tabs strip', async () => {
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
@@ -98,16 +104,55 @@ describe('DocsShell', () => {
     render(<RouterProvider router={router} />);
 
     expect(await screen.findByText('Agora Docs')).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: 'Introduction' }),
-    ).toBeInTheDocument();
+
+    const mainHeaderRow = screen.getByTestId('docs-main-header-row');
+    const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
+    const desktopSearch = within(mainHeaderRow)
+      .getAllByRole('button', {
+        name: 'Search docs',
+      })
+      .find((button) => button.textContent?.includes('Search docs'));
+    const languageControl = within(mainHeaderRow)
+      .getAllByRole('button', {
+        name: 'Language',
+      })
+      .find((button) => button.textContent?.includes('English'));
+    const themeControl = within(mainHeaderRow).getByRole('button', {
+      name: 'Theme: Light',
+    });
+    const tabsIntroductionLink = within(docsTabsStrip).getByRole('tab', {
+      name: 'Introduction',
+    });
+    const tabsAiLink = within(docsTabsStrip).getByRole('tab', {
+      name: 'AI',
+    });
+
+    expect(desktopSearch).toBeDefined();
+    if (!desktopSearch) {
+      throw new Error('expected desktop search trigger in main header row');
+    }
+    expect(languageControl).toBeDefined();
+    if (!languageControl) {
+      throw new Error('expected desktop language trigger in main header row');
+    }
+    expect(mainHeaderRow).toContainElement(desktopSearch);
+    expect(mainHeaderRow).toContainElement(languageControl);
+    expect(mainHeaderRow).toContainElement(themeControl);
+    expect(mainHeaderRow).not.toContainElement(tabsIntroductionLink);
+    expect(docsTabsStrip).toContainElement(tabsIntroductionLink);
+    expect(docsTabsStrip).toContainElement(tabsAiLink);
+    expect(mainHeaderRow).not.toContainElement(docsTabsStrip);
+    expect(themeControl).toHaveAttribute('aria-label', 'Theme: Light');
+    expect(themeControl).toHaveAttribute('aria-pressed', 'false');
+    expect(themeControl.querySelector('span:not(.sr-only)')).toBeNull();
+    expect(languageControl).toHaveTextContent('English');
+    expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
+    expect(tabsAiLink).toHaveAttribute('href', '/en/ai');
+
     expect(
       screen.getByRole('link', { name: 'Quick Start' }),
     ).toBeInTheDocument();
     expect(screen.getByText('On this page')).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: 'Language' }),
-    ).toBeInTheDocument();
   });
 
   it('switches locale while preserving the current tab and slug path', async () => {
@@ -143,7 +188,15 @@ describe('DocsShell', () => {
 
     render(<RouterProvider router={router} />);
 
-    fireEvent.click(await screen.findByRole('button', { name: 'Language' }));
+    const languageButton = (await screen.findAllByRole('button', {
+      name: 'Language',
+    })).find((button) => button.textContent?.includes('English'));
+
+    if (!languageButton) {
+      throw new Error('expected desktop language button');
+    }
+
+    fireEvent.click(languageButton);
     fireEvent.click(await screen.findByRole('button', { name: '简体中文' }));
 
     await waitFor(() => {

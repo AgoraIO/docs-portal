@@ -10,6 +10,7 @@ import {
   SunIcon,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -71,12 +72,60 @@ export function DocsShell({
   const { t } = useTranslation('common');
   const { resolvedTheme, setTheme } = useTheme();
   const navigate = useNavigate();
-  const { locale: activeLocale, setLocale } = useLocale();
+  const { setLocale } = useLocale();
+  const isDarkTheme = resolvedTheme === 'dark';
+  const themeLabel = `${t('controls.theme.label')}: ${
+    isDarkTheme ? t('controls.theme.dark') : t('controls.theme.light')
+  }`;
+  const headerRef = useRef<HTMLElement | null>(null);
+  const [headerOffset, setHeaderOffset] = useState(0);
+
+  useLayoutEffect(() => {
+    const node = headerRef.current;
+    if (!node) {
+      return;
+    }
+
+    const updateHeaderOffset = () => {
+      setHeaderOffset(Math.ceil(node.getBoundingClientRect().height));
+    };
+
+    updateHeaderOffset();
+
+    const resizeObserver =
+      typeof ResizeObserver !== 'undefined'
+        ? new ResizeObserver(updateHeaderOffset)
+        : null;
+    resizeObserver?.observe(node);
+    window.addEventListener('resize', updateHeaderOffset);
+
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', updateHeaderOffset);
+    };
+  }, []);
+
+  const shellOffsetStyle = {
+    '--docs-shell-header-offset': `${headerOffset}px`,
+  } as React.CSSProperties;
+  const desktopRailStyle = {
+    top: 'var(--docs-shell-header-offset)',
+    height: 'calc(100svh - var(--docs-shell-header-offset))',
+  } as React.CSSProperties;
 
   return (
-    <SidebarProvider className="block min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-[1440px] items-center gap-3 px-4 py-3 sm:px-6">
+    <SidebarProvider
+      className="block min-h-screen bg-background text-foreground"
+      style={shellOffsetStyle}
+    >
+      <header
+        className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur"
+        ref={headerRef}
+      >
+        <div
+          className="mx-auto flex w-full max-w-[1440px] items-center gap-3 px-4 py-2.5 sm:px-6"
+          data-testid="docs-main-header-row"
+        >
           <div className="flex min-w-0 items-center gap-3">
             <Sheet>
               <SheetTrigger asChild>
@@ -103,9 +152,10 @@ export function DocsShell({
               </Link>
             </div>
           </div>
-          <div className="ml-auto flex items-center gap-2">
+          <div className="flex-1" />
+          <div className="flex items-center gap-2">
             <div className="w-44 sm:w-56 md:w-72">
-              <DocsSearchDialog pages={pages} tabs={tabs} />
+              <DocsSearchDialog mode="desktop" pages={pages} tabs={tabs} />
             </div>
             <LocaleSwitcher
               currentLocale={locale as AppLocale}
@@ -115,31 +165,33 @@ export function DocsShell({
                   to: replaceDocLocale(activePath, nextLocale),
                 });
               }}
-              selectedLocale={activeLocale}
             />
             <Button
-              onClick={() =>
-                setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
-              }
+              aria-label={themeLabel}
+              aria-pressed={isDarkTheme}
+              onClick={() => setTheme(isDarkTheme ? 'light' : 'dark')}
               size="icon"
               variant="ghost"
             >
-              {resolvedTheme === 'dark' ? <SunIcon /> : <MoonIcon />}
-              <span className="sr-only">{t('controls.theme.label')}</span>
+              {isDarkTheme ? <SunIcon /> : <MoonIcon />}
+              <span className="sr-only">{themeLabel}</span>
             </Button>
           </div>
         </div>
-        <div className="border-t border-border">
-          <div className="mx-auto hidden w-full max-w-[1440px] px-4 sm:px-6 lg:block">
+        <nav
+          className="hidden border-t border-border lg:block"
+          data-testid="docs-tabs-strip"
+        >
+          <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-6">
             <Tabs className="w-full" value={activeTab}>
               <TabsList
-                className="h-12 w-full justify-start gap-0 overflow-x-auto px-0"
+                className="h-10 w-full justify-start gap-0 overflow-x-auto px-0"
                 variant="line"
               >
                 {tabs.map((tab) => (
                   <TabsTrigger asChild key={tab.id} value={tab.id}>
                     <Link
-                      className="h-12 rounded-none px-4"
+                      className="h-10 rounded-none px-4"
                       params={{}}
                       search={{}}
                       to={tab.url}
@@ -151,7 +203,7 @@ export function DocsShell({
               </TabsList>
             </Tabs>
           </div>
-        </div>
+        </nav>
       </header>
       <div className="mx-auto flex w-full max-w-[1440px]">
         <DocsSidebar activePath={activePath} entries={sidebar} />
@@ -159,7 +211,7 @@ export function DocsShell({
           <div className="px-4 py-8 sm:px-6 lg:px-10">{children}</div>
         </SidebarInset>
         <aside className="hidden w-[240px] shrink-0 border-l border-border xl:block">
-          <ScrollArea className="h-[calc(100vh-121px)] px-6 py-8">
+          <ScrollArea className="px-6 py-8" style={desktopRailStyle}>
             <DocsTableOfContents toc={toc} />
           </ScrollArea>
         </aside>
@@ -185,46 +237,90 @@ export function DocsShell({
 function LocaleSwitcher({
   currentLocale,
   onSelect,
-  selectedLocale,
 }: {
   currentLocale: AppLocale;
   onSelect: (locale: AppLocale) => Promise<void>;
-  selectedLocale: AppLocale;
 }) {
   const { t } = useTranslation('common');
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button size="icon" variant="ghost">
-          <LanguagesIcon />
-          <span className="sr-only">{t('controls.language.label')}</span>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-44 p-1">
-        <div className="flex flex-col gap-1">
-          {SUPPORTED_LOCALES.map((locale) => {
-            const isActive = selectedLocale === locale;
-            const label =
-              locale === 'zh-CN'
+    <>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            aria-label={t('controls.language.label')}
+            className="hidden gap-2 rounded-full px-3 md:inline-flex"
+            size="sm"
+            variant="outline"
+          >
+            <LanguagesIcon data-icon="inline-start" />
+            <span>
+              {currentLocale === 'zh-CN'
                 ? t('controls.language.chinese')
-                : t('controls.language.english');
+                : t('controls.language.english')}
+            </span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-44 p-1">
+          <div className="flex flex-col gap-1">
+            {SUPPORTED_LOCALES.map((locale) => {
+              const isActive = currentLocale === locale;
+              const label =
+                locale === 'zh-CN'
+                  ? t('controls.language.chinese')
+                  : t('controls.language.english');
 
-            return (
-              <Button
-                className="justify-between rounded-xl"
-                key={locale}
-                onClick={() => void onSelect(locale)}
-                variant={currentLocale === locale ? 'secondary' : 'ghost'}
-              >
-                <span>{label}</span>
-                {isActive ? <CheckIcon className="size-4" /> : null}
-              </Button>
-            );
-          })}
-        </div>
-      </PopoverContent>
-    </Popover>
+              return (
+                <Button
+                  className="justify-between rounded-xl"
+                  key={`desktop-${locale}`}
+                  onClick={() => void onSelect(locale)}
+                  variant={currentLocale === locale ? 'secondary' : 'ghost'}
+                >
+                  <span>{label}</span>
+                  {isActive ? <CheckIcon className="size-4" /> : null}
+                </Button>
+              );
+            })}
+          </div>
+        </PopoverContent>
+      </Popover>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            aria-label={t('controls.language.label')}
+            className="md:hidden"
+            size="icon"
+            variant="ghost"
+          >
+            <LanguagesIcon />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-44 p-1">
+          <div className="flex flex-col gap-1">
+            {SUPPORTED_LOCALES.map((locale) => {
+              const isActive = currentLocale === locale;
+              const label =
+                locale === 'zh-CN'
+                  ? t('controls.language.chinese')
+                  : t('controls.language.english');
+
+              return (
+                <Button
+                  className="justify-between rounded-xl"
+                  key={`mobile-${locale}`}
+                  onClick={() => void onSelect(locale)}
+                  variant={currentLocale === locale ? 'secondary' : 'ghost'}
+                >
+                  <span>{label}</span>
+                  {isActive ? <CheckIcon className="size-4" /> : null}
+                </Button>
+              );
+            })}
+          </div>
+        </PopoverContent>
+      </Popover>
+    </>
   );
 }
 
@@ -237,12 +333,20 @@ function DocsSidebar({
 }) {
   return (
     <ShadcnSidebar
-      className="top-[121px] h-[calc(100svh-121px)] border-r border-border"
+      className="border-r border-border"
       collapsible="none"
+      style={{
+        top: 'var(--docs-shell-header-offset)',
+        height: 'calc(100svh - var(--docs-shell-header-offset))',
+      }}
       variant="inset"
     >
       <ShadcnSidebarContent>
-        <ScrollArea className="h-[calc(100svh-121px)]">
+        <ScrollArea
+          style={{
+            height: 'calc(100svh - var(--docs-shell-header-offset))',
+          }}
+        >
           <div className="px-2 py-4">
             <SidebarGroup>
               <SidebarGroupContent>
