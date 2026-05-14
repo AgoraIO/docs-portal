@@ -1,7 +1,68 @@
-import { describe, expect, it } from 'vitest';
+import type { Root } from 'fumadocs-core/page-tree';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { source } from './source.server';
 import { loadDocsTabIndex } from './docs-page.server';
 
+vi.mock('./source.server', () => ({
+  source: {
+    getPageTree: vi.fn(),
+  },
+}));
+
+const mockedGetPageTree = vi.mocked(source.getPageTree);
+
+const pageTree: Root = {
+  children: [
+    {
+      $id: 'en-root',
+      children: [
+        {
+          $id: 'introduction-folder',
+          children: [
+            {
+              $id: 'introduction-about-agora',
+              name: 'About Agora',
+              type: 'page',
+              url: '/en/introduction/about-agora',
+            },
+          ],
+          name: 'Introduction',
+          root: true,
+          type: 'folder',
+        },
+        {
+          $id: 'ai-folder',
+          children: [
+            {
+              $id: 'ai-quick-start',
+              name: 'Quick Start',
+              type: 'page',
+              url: '/en/ai/quick-start',
+            },
+          ],
+          index: {
+            $id: 'ai-index',
+            name: 'AI',
+            type: 'page',
+            url: '/en/ai',
+          },
+          name: 'AI',
+          root: true,
+          type: 'folder',
+        },
+      ],
+      name: 'English',
+      type: 'folder',
+    },
+  ],
+  name: 'Docs',
+};
+
 describe('loadDocsTabIndex', () => {
+  beforeEach(() => {
+    mockedGetPageTree.mockReturnValue(pageTree);
+  });
+
   it(
     'uses the real tab index page when the tab has index content',
     async () => {
@@ -11,7 +72,6 @@ describe('loadDocsTabIndex', () => {
         url: '/en/ai',
       });
     },
-    20_000,
   );
 
   it(
@@ -25,6 +85,5 @@ describe('loadDocsTabIndex', () => {
         url: '/en/introduction/about-agora',
       });
     },
-    20_000,
   );
 });
