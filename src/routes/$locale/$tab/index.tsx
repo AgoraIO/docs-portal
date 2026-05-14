@@ -20,12 +20,7 @@ export const Route = createFileRoute('/$locale/$tab/')({
     }
 
     throw redirect({
-      to: '/$locale/$tab/$slug',
-      params: {
-        locale: params.locale,
-        tab: params.tab,
-        slug: 'index',
-      },
+      href: page.url,
     });
   },
   component: () => null,

@@ -8,11 +8,7 @@ export const Route = createFileRoute('/$locale/')({
     }
 
     throw redirect({
-      to: '/$locale/$tab',
-      params: {
-        locale: params.locale,
-        tab: 'introduction',
-      },
+      href: `/${params.locale}/introduction/about-agora`,
     });
   },
   component: () => null,
