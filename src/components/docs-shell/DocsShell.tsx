@@ -94,26 +94,8 @@ export function DocsShell({
               </Link>
             </div>
           </div>
-          <div className="hidden min-w-0 flex-1 lg:flex">
-            <Tabs className="w-full" value={activeTab}>
-              <TabsList className="w-full justify-start overflow-x-auto rounded-none bg-transparent p-0">
-                {tabs.map((tab) => (
-                  <TabsTrigger asChild key={tab.id} value={tab.id}>
-                    <Link
-                      className="h-10 rounded-none border-b-2 border-transparent px-4 data-[state=active]:border-foreground"
-                      params={{}}
-                      search={{}}
-                      to={tab.url}
-                    >
-                      {tab.title}
-                    </Link>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-          </div>
           <div className="ml-auto flex items-center gap-2">
-            <div className="hidden w-64 md:block">
+            <div className="w-44 sm:w-56 md:w-72">
               <DocsSearchDialog pages={pages} tabs={tabs} />
             </div>
             <LocaleSwitcher
@@ -138,14 +120,39 @@ export function DocsShell({
             </Button>
           </div>
         </div>
+        <div className="border-t border-border">
+          <div className="mx-auto hidden w-full max-w-[1440px] px-4 sm:px-6 lg:block">
+            <Tabs className="w-full" value={activeTab}>
+              <TabsList
+                className="h-12 w-full justify-start gap-0 overflow-x-auto px-0"
+                variant="line"
+              >
+                {tabs.map((tab) => (
+                  <TabsTrigger asChild key={tab.id} value={tab.id}>
+                    <Link
+                      className="h-12 rounded-none px-4"
+                      params={{}}
+                      search={{}}
+                      to={tab.url}
+                    >
+                      {tab.title}
+                    </Link>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
+        </div>
       </header>
-      <div className="mx-auto grid w-full max-w-[1440px] gap-0 lg:grid-cols-[280px_minmax(0,1fr)_240px]">
-        <aside className="hidden border-r border-border lg:block">
+      <div className="mx-auto flex w-full max-w-[1440px]">
+        <aside className="hidden w-[280px] shrink-0 border-r border-border lg:block">
           <Sidebar activePath={activePath} entries={sidebar} />
         </aside>
-        <main className="min-w-0 px-4 py-8 sm:px-6 lg:px-10">{children}</main>
-        <aside className="hidden border-l border-border xl:block">
-          <ScrollArea className="h-[calc(100vh-73px)] px-6 py-8">
+        <main className="min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-10">
+          {children}
+        </main>
+        <aside className="hidden w-[240px] shrink-0 border-l border-border xl:block">
+          <ScrollArea className="h-[calc(100vh-121px)] px-6 py-8">
             <DocsTableOfContents toc={toc} />
           </ScrollArea>
         </aside>
@@ -222,8 +229,8 @@ function Sidebar({
   entries: SidebarEntry[];
 }) {
   return (
-    <ScrollArea className="h-[calc(100vh-73px)]">
-      <nav className="flex flex-col gap-1 p-4">
+    <ScrollArea className="h-[calc(100vh-121px)]">
+      <nav className="flex flex-col gap-1 px-4 py-6">
         {entries.map((entry) =>
           entry.type === 'separator' ? (
             <div
@@ -235,7 +242,7 @@ function Sidebar({
           ) : (
             <Link
               className={cn(
-                'rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
+                'rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
                 entry.url === activePath && 'bg-accent text-accent-foreground',
               )}
               key={entry.id}
@@ -267,7 +274,10 @@ function MobileSidebar({
     <div className="flex min-h-0 flex-1 flex-col">
       <ScrollArea className="border-b border-border px-4 py-4">
         <Tabs className="w-full" value={activeTab}>
-          <TabsList className="flex w-full flex-col items-stretch gap-1 bg-transparent p-0">
+          <TabsList
+            className="flex w-full flex-col items-stretch gap-1 bg-transparent p-0"
+            variant="line"
+          >
             {tabs.map((tab) => (
               <TabsTrigger asChild key={tab.id} value={tab.id}>
                 <Link
