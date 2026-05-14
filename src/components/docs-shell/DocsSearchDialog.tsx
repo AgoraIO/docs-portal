@@ -22,9 +22,11 @@ export type SearchEntry = {
 };
 
 export function DocsSearchDialog({
+  mode = 'desktop',
   pages,
   tabs,
 }: {
+  mode?: 'desktop' | 'mobile';
   pages: SearchEntry[];
   tabs: TabSummary[];
 }) {
@@ -41,15 +43,26 @@ export function DocsSearchDialog({
 
   return (
     <>
-      <Button
-        className="w-full justify-start rounded-md"
-        onClick={() => setOpen(true)}
-        size="sm"
-        variant="outline"
-      >
-        <SearchIcon data-icon="inline-start" />
-        {t('docs.search')}
-      </Button>
+      {mode === 'mobile' ? (
+        <Button
+          aria-label={t('docs.search')}
+          onClick={() => setOpen(true)}
+          size="icon"
+          variant="ghost"
+        >
+          <SearchIcon />
+        </Button>
+      ) : (
+        <Button
+          className="w-full justify-start rounded-md"
+          onClick={() => setOpen(true)}
+          size="sm"
+          variant="outline"
+        >
+          <SearchIcon data-icon="inline-start" />
+          {t('docs.search')}
+        </Button>
+      )}
       <CommandDialog
         className="max-w-2xl overflow-hidden border-border p-0"
         description={t('docs.searchDescription')}
