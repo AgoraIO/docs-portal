@@ -78,4 +78,5 @@ describe('docs route locale guards', () => {
 
     throw new Error('expected loader to reject with redirect');
   });
+
 });

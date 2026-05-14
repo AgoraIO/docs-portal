@@ -9,6 +9,17 @@ import {
 export async function loadDocsTabIndex(locale: string, tab: string) {
   const { source } = await import('./source.server');
   const pageTree = source.getPageTree(locale);
+  const tabSummaries = getTabSummaries(pageTree);
+  const tabSummary = tabSummaries.find((item) => item.id === tab);
+
+  if (tabSummary?.url === `/${locale}/${tab}`) {
+    return {
+      locale,
+      url: tabSummary.url,
+      tab,
+    };
+  }
+
   const firstPageUrl = getFirstTabPageUrl(pageTree, tab);
 
   if (!firstPageUrl) {

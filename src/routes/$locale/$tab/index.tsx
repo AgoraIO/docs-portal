@@ -1,6 +1,8 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
-import { getDocsTabIndex } from '@/lib/docs-page';
-import { isSupportedDocLocale } from '@/lib/docs-routing';
+import { DocsContent } from '@/components/docs-shell/DocsContent';
+import { DocsShell } from '@/components/docs-shell/DocsShell';
+import { getDocsPagePayload, getDocsTabIndex } from '@/lib/docs-page';
+import { getContentPath, isSupportedDocLocale } from '@/lib/docs-routing';
 
 export const Route = createFileRoute('/$locale/$tab/')({
   loader: async ({ params }) => {
@@ -19,9 +21,69 @@ export const Route = createFileRoute('/$locale/$tab/')({
       throw notFound();
     }
 
+    if (page.url === `/${params.locale}/${params.tab}`) {
+      const payload = await getDocsPagePayload({
+        data: {
+          locale: params.locale,
+          slug: 'index',
+          tab: params.tab,
+        },
+      });
+
+      if (!payload) {
+        throw notFound();
+      }
+
+      return {
+        contentPath: getContentPath({
+          locale: params.locale,
+          tab: params.tab,
+        }),
+        ...payload,
+      };
+    }
+
     throw redirect({
       href: page.url,
     });
   },
-  component: () => null,
+  component: Page,
 });
+
+function Page() {
+  const {
+    activePath,
+    activeTab,
+    contentPath,
+    description,
+    navigation,
+    pages,
+    sidebar,
+    slug,
+    tabs,
+    toc,
+    title,
+  } = Route.useLoaderData();
+
+  return (
+    <DocsShell
+      activePath={activePath}
+      activeTab={activeTab}
+      locale={Route.useParams().locale}
+      next={navigation.next}
+      pages={pages}
+      previous={navigation.previous}
+      sidebar={sidebar}
+      tabs={tabs}
+      toc={toc}
+    >
+      <DocsContent
+        contentPath={contentPath}
+        description={description}
+        slug={slug}
+        title={title}
+        toc={toc}
+      />
+    </DocsShell>
+  );
+}
