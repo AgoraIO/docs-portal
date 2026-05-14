@@ -1,29 +1,46 @@
 # docs-portal
 
-This is a Tanstack Start application generated with
-[Create Fumadocs](https://github.com/fuma-nama/fumadocs).
+`docs-portal` is a TanStack Start documentation portal built with `fumadocs-core`, `fumadocs-mdx`, and local `shadcn/ui` components.
 
-## Content Source
+## Architecture
 
-Documentation content is currently sourced from the `docs-cortex` git submodule at:
+- Content source of truth: `content/docs`
+- Content pipeline: `fumadocs-mdx`
+- Page tree, TOC, search data, and `llms.txt`: `fumadocs-core`
+- App shell, navigation, search dialog, and theme handling: local app code with `shadcn/ui`
 
-```bash
-external/docs-cortex/raw/docs
+## Content Layout
+
+The portal groups content by locale and top-level tab:
+
+```text
+content/docs/
+  en/
+    introduction/
+    ai/
+    realtime-media/
+    api-reference/
+  zh-CN/
+    introduction/
+    ai/
+    realtime-media/
+    api-reference/
 ```
 
-Clone with submodules, or initialize them after cloning:
+Each top-level folder maps directly to a header tab. Navigation inside a tab is driven by `meta.json`.
+
+## Development
+
+Start the local dev server:
 
 ```bash
-git clone --recurse-submodules <repo-url>
-git submodule update --init --recursive
+bun run dev
 ```
 
-Run development server:
+Run verification:
 
 ```bash
-npm run dev
-# or
-pnpm dev
-# or
-yarn dev
+bun run test
+bun run types:check
+bun run build
 ```

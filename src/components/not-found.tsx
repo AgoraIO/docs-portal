@@ -18,7 +18,12 @@ export function NotFound() {
           page is not available.
         </p>
         <div className="flex justify-center">
-          <Link className={buttonVariants({ className: 'pl-4 pr-3' })} to="/">
+          <Link
+            className={buttonVariants({ className: 'pl-4 pr-3' })}
+            params={{}}
+            search={{}}
+            to="/"
+          >
             <ArrowLeft />
             Back to home
           </Link>

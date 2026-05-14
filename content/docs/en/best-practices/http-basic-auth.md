@@ -1,0 +1,258 @@
+---
+title: 实现 HTTP 安全认证
+description: 本文介绍在对话式 AI 引擎中进行 HTTP 安全认证的方法，包括使用 RTC Token 认证和 HTTP 基本认证。
+---
+
+# 实现 HTTP 安全认证
+
+本文介绍在对话式 AI 引擎中进行 HTTP 安全认证的方法，包括使用 RTC Token 认证和 HTTP 基本认证。
+
+## 前提条件
+
+已参考[开通服务](../get-started/enable-service.md)开通对话式 AI 引擎服务。
+
+## 使用 RTC Token 认证 (推荐)
+
+进行 HTTP 安全认证时，你可以将用于声网对话式 AI 引擎项目的 RTC Token 填入 HTTP 请求头部的 `Authorization` 字段中。本节介绍如何获取和填入 RTC Token，你可以根据需求选择以下任一方式获取 RTC Token。
+
+### 使用临时 Token
+
+测试环境下，你可以参考[开通服务](../get-started/enable-service.md#获取临时-token)从声网控制台为你的项目生成临时 Token，有效期为 24 小时。
+
+### 部署 Token 服务器生成
+
+生产环境下，你可以参考[使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication)部署 Token 服务器以生成 Token 并下发给客户端。
+
+#### 请求示例
+
+```bash
+curl --request POST \
+  --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/join \
+  --header 'Authorization: agora token="007abcxxxxxxx123"' \
+  --data '
+{
+  "name": "unique_name",
+  "properties": {
+    "channel": "channel_name",
+    "token": "token",
+    "agent_rtc_uid": "0",
+    "remote_rtc_uids": [
+      "123"
+    ],
+    "enable_string_uid": false,
+    "idle_timeout": 120,
+    "advanced_features": {
+      "enable_aivad": true
+    },
+    "llm": {
+      "url": "https://api.minimax.chat/v2/text/chatcompletion_v2",
+      "api_key": "xxx",
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "You are a helpful chatbot."
+        }
+      ],
+      "greeting_message": "您好，有什么可以帮您？",
+      "failure_message": "抱歉，我无法回答这个问题。",
+      "max_history": 32,
+      "params": {
+        "model": "abab6.5s-chat",
+        "max_token": 1024,
+        "userName": "Tomas"
+      }
+    },
+    "asr": {
+      "language": "zh-CN",
+      "vendor": "fengming"
+    },
+    "tts": {
+      "vendor": "minimax",
+      "skip_patterns": [
+        1
+      ],
+      "params": {
+        "group_id": "xxxx",
+        "key": "xxxx",
+        "model": "speech-01-turbo",
+        "voice_setting": {
+          "voice_id": "female-shaonv",
+          "speed": 1,
+          "vol": 1,
+          "pitch": 0,
+          "emotion": "happy"
+        },
+        "audio_setting": {
+          "sample_rate": 16000
+        }
+      }
+    }
+  }
+}
+'
+```
+
+## 使用 HTTP 基本认证
+
+进行 HTTP 基本认证时，你可以使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求头部的 `Authorization` 字段中。本节介绍如何获取用于 HTTP 基本认证的 `Authorization` 字段。
+
+### 使用三方工具生成
+
+你可以使用[第三方在线工具](https://www.debugbear.com/basic-auth-header-generator)快速得到 Authorization 值。将客户 ID 和客户密钥分别填入 Username 和 Password 框，得到形如 `Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=` 的结果。冒号后的内容即是 `Authorization` 值。
+
+### 使用示例代码生成
+
+复制如下代码，填入你的客户 ID 和客户密钥，即可生成对应的 `Authorization` 字段：
+
+#### Java
+
+```java
+import java.io.IOException;
+import java.net.URI;
+import java.util.Base64;
+
+public class Base64Encoding {
+
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+        // 客户 ID
+        // 需要设置环境变量 AGORA_CUSTOMER_KEY
+        final String customerKey = System.getenv("AGORA_CUSTOMER_KEY");
+        // 客户密钥
+        // 需要设置环境变量 AGORA_CUSTOMER_SECRET
+        final String customerSecret = System.getenv("AGORA_CUSTOMER_SECRET");
+
+        // 拼接客户 ID 和客户密钥并使用 base64 编码
+        String plainCredentials = customerKey + ":" + customerSecret;
+        String base64Credentials = new String(Base64.getEncoder().encode(plainCredentials.getBytes()));
+        // 创建 authorization header
+        String authorizationHeader = "Basic " + base64Credentials;
+    }
+}
+```
+
+#### Golang
+
+```go
+package main
+
+import (
+    "fmt"
+    "strings"
+    "net/http"
+    "io/ioutil"
+    "encoding/base64"
+)
+
+func main() {
+    // 客户 ID
+    // 需要设置环境变量 AGORA_CUSTOMER_KEY
+    customerKey := os.Getenv("AGORA_CUSTOMER_KEY")
+    // 客户密钥
+    // 需要设置环境变量 AGORA_CUSTOMER_SECRET
+    customerSecret := os.Getenv("AGORA_CUSTOMER_SECRET")
+
+    // 拼接客户 ID 和客户密钥并使用 base64 进行编码
+    plainCredentials := customerKey + ":" + customerSecret
+    base64Credentials := base64.StdEncoding.EncodeToString([]byte(plainCredentials))
+    // 创建 Authorization header
+    authHeader := "Basic " + base64Credentials
+    // 打印生成的认证头部
+    fmt.Println(authHeader)
+}
+```
+
+#### PHP
+
+```php
+<?php
+// 客户 ID
+// 需要设置环境变量 AGORA_CUSTOMER_KEY
+$customerKey = getenv("AGORA_CUSTOMER_KEY");
+// 客户密钥
+// 需要设置环境变量 AGORA_CUSTOMER_SECRET
+$customerSecret = getenv("AGORA_CUSTOMER_SECRET");
+// 拼接客户 ID 和客户密钥
+$credentials = $customerKey . ":" . $customerSecret;
+
+// 使用 base64 进行编码
+$base64Credentials = base64_encode($credentials);
+// 创建 authorization header
+$arr_header = "Authorization: Basic " . $base64Credentials;
+```
+
+#### C#
+
+```cs
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
+
+namespace Examples.System.Net
+{
+    public class WebRequestPostExample
+    {
+        public static void Main()
+        {
+            // 客户 ID
+            // 需要设置环境变量 AGORA_CUSTOMER_KEY
+            string customerKey = Environment.GetEnvironmentVariable("AGORA_CUSTOMER_KEY");
+            // 客户密钥
+            // 需要设置环境变量 AGORA_CUSTOMER_SECRET
+            string customerSecret = Environment.GetEnvironmentVariable("AGORA_CUSTOMER_SECRET");
+            // 拼接客户 ID 和客户密钥
+            string plainCredential = customerKey + ":" + customerSecret;
+
+            // 使用 base64 进行编码
+            var plainTextBytes = Encoding.UTF8.GetBytes(plainCredential);
+            string encodedCredential = Convert.ToBase64String(plainTextBytes);
+            // 创建 authorization header
+            string authorizationHeader = "Authorization: Basic " + encodedCredential;
+        }
+    }
+}
+```
+
+#### Node.js
+
+```javascript
+// 基于 Node.js 实现的 HTTP 基本认证示例
+const https = require('https')
+// 客户 ID
+// 需要设置环境变量 AGORA_CUSTOMER_KEY
+const customerKey = process.env.AGORA_CUSTOMER_KEY;
+// 客户密钥
+// 需要设置环境变量 AGORA_CUSTOMER_SECRET
+const customerSecret = process.env.AGORA_CUSTOMER_SECRET;
+// 拼接客户 ID 和客户密钥
+const plainCredential = customerKey + ":" + customerSecret
+// 使用 base64 进行编码
+encodedCredential = Buffer.from(plainCredential).toString('base64')
+// 创建 authorization header
+authorizationField = "Basic " + encodedCredential
+```
+
+#### Python
+
+```python
+# -- coding utf-8 --
+# Python 3
+import base64
+import http.client
+
+# 客户 ID
+# 需要设置环境变量 AGORA_CUSTOMER_KEY
+customer_key = os.environ.get("AGORA_CUSTOMER_KEY")
+# 客户密钥
+# 需要设置环境变量 AGORA_CUSTOMER_SECRET
+customer_secret = os.environ.get("AGORA_CUSTOMER_SECRET")
+
+# 拼接客户 ID 和客户密钥
+credentials = customer_key + ":" + customer_secret
+# 使用 base64 进行编码
+base64_credentials = base64.b64encode(credentials.encode("utf8"))
+credential = base64_credentials.decode("utf8")
+# 创建 authorization header
+basic_auth_header = 'basic ' + credential
+```
