@@ -1,5 +1,6 @@
 import { getSourceSlugs } from './docs-routing';
 import {
+  getFirstTabPageUrl,
   getPrevNextLinks,
   getSidebarEntries,
   getTabSummaries,
@@ -7,19 +8,16 @@ import {
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
   const { source } = await import('./source.server');
-  const page = source.getPage(
-    getSourceSlugs({
-      locale,
-      tab,
-    }),
-  );
+  const pageTree = source.getPageTree(locale);
+  const firstPageUrl = getFirstTabPageUrl(pageTree, tab);
 
-  if (!page) {
+  if (!firstPageUrl) {
     return null;
   }
 
   return {
     locale,
+    url: firstPageUrl,
     tab,
   };
 }

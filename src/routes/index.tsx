@@ -3,11 +3,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router';
 export const Route = createFileRoute('/')({
   loader: () => {
     throw redirect({
-      to: '/$locale/$tab',
-      params: {
-        locale: 'en',
-        tab: 'introduction',
-      },
+      href: '/en/introduction/about-agora',
     });
   },
   component: () => null,

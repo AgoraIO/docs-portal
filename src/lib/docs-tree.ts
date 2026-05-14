@@ -115,6 +115,17 @@ export function buildPublicDocUrl(locale: string, tab: string, slug?: string) {
   return buildDocPath(locale, tab, slug);
 }
 
+export function getFirstTabPageUrl(root: Root, activeTab: string) {
+  const tabNode = findTabNode(root, activeTab);
+
+  if (!tabNode) {
+    return null;
+  }
+
+  const item = getTabIndex(tabNode);
+  return item?.url ?? null;
+}
+
 function getTabIndex(node: Node): Item | undefined {
   if (node.type === 'page') {
     return node;

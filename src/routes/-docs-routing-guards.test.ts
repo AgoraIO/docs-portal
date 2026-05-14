@@ -68,12 +68,8 @@ describe('docs route locale guards', () => {
       expect(isRedirect(error)).toBe(true);
       expect(error).toMatchObject({
         options: {
-          params: {
-            locale: 'en',
-            tab: 'introduction',
-          },
+          href: '/en/introduction/about-agora',
           statusCode: 307,
-          to: '/$locale/$tab',
         },
         status: 307,
       });

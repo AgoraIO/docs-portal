@@ -44,7 +44,7 @@ describe('DocsSearchDialog', () => {
     const router = createRouter({
       routeTree: rootRoute.addChildren([docsRoute]),
       history: createMemoryHistory({
-        initialEntries: ['/en/introduction/index'],
+        initialEntries: ['/en/introduction/about-agora'],
       }),
     });
     const navigateSpy = vi.spyOn(router, 'navigate');
