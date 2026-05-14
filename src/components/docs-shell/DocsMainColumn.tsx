@@ -14,7 +14,26 @@ export function DocsMainColumn({
 }) {
   return (
     <main className="min-w-0 flex-1 bg-background" data-testid="docs-main-column">
-      <ScrollArea className="h-full min-h-0">
+      <div
+        className="px-4 py-8 sm:px-6 lg:hidden lg:px-10"
+        data-testid="docs-main-mobile-flow"
+      >
+        <div className="min-w-0">{children}</div>
+        {previous || next ? (
+          <footer className="mt-8 flex justify-between gap-3 border-t border-border pt-6">
+            {previous ? (
+              <FooterLink direction="Previous" link={previous} />
+            ) : (
+              <div />
+            )}
+            {next ? <FooterLink direction="Next" link={next} /> : <div />}
+          </footer>
+        ) : null}
+      </div>
+      <ScrollArea
+        className="hidden h-full min-h-0 lg:block"
+        data-testid="docs-main-desktop-scroll"
+      >
         <div className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10">
           <div className="min-w-0 flex-1">{children}</div>
           {previous || next ? (

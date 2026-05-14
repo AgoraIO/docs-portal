@@ -101,141 +101,141 @@ export function DocsShell({
 
   const shellOffsetStyle = {
     '--docs-shell-header-offset': `${headerOffset}px`,
+    '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
   return (
     <SidebarProvider
       className="block min-h-screen bg-background text-foreground"
       style={shellOffsetStyle}
     >
-      <header
-        className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur"
-        ref={headerRef}
-      >
-        <div
-          className="mx-auto flex w-full max-w-[1440px] items-center gap-3 px-4 py-2.5 sm:px-6"
-          data-testid="docs-main-header-row"
+      <div className="flex min-h-screen min-w-0 flex-1 flex-col">
+        <header
+          className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur"
+          ref={headerRef}
         >
-          <div className="flex min-w-0 items-center gap-3">
-            <Sheet open={isMobileSheetOpen} onOpenChange={setIsMobileSheetOpen}>
-              <SheetTrigger asChild>
-                <Button className="lg:hidden" size="icon" variant="ghost">
-                  <MenuIcon />
-                  <span className="sr-only">{t('docs.openMenu')}</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="w-[88vw] max-w-sm gap-0 p-0" side="left">
-                <SheetHeader className="border-b">
-                  <SheetTitle>{t('app.name')}</SheetTitle>
-                </SheetHeader>
-                <MobileSidebar
-                  activePath={activePath}
-                  activeTab={activeTab}
+          <div
+            className="mx-auto flex w-full max-w-[1440px] items-center gap-3 px-4 py-2.5 sm:px-6"
+            data-testid="docs-main-header-row"
+          >
+            <div className="flex min-w-0 items-center gap-3">
+              <Sheet open={isMobileSheetOpen} onOpenChange={setIsMobileSheetOpen}>
+                <SheetTrigger asChild>
+                  <Button className="lg:hidden" size="icon" variant="ghost">
+                    <MenuIcon />
+                    <span className="sr-only">{t('docs.openMenu')}</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="w-[88vw] max-w-sm gap-0 p-0" side="left">
+                  <SheetHeader className="border-b">
+                    <SheetTitle>{t('app.name')}</SheetTitle>
+                  </SheetHeader>
+                  <MobileSidebar
+                    activePath={activePath}
+                    activeTab={activeTab}
+                    currentLocale={locale as AppLocale}
+                    isDarkTheme={isDarkTheme}
+                    onSelectLocale={async (nextLocale) => {
+                      await setLocale(nextLocale);
+                      setIsMobileSheetOpen(false);
+                      await navigate({
+                        to: replaceDocLocale(activePath, nextLocale),
+                      });
+                    }}
+                    onSelectPath={() => setIsMobileSheetOpen(false)}
+                    sidebar={sidebar}
+                    themeLabel={themeLabel}
+                    tabs={tabs}
+                    toggleTheme={() => {
+                      setTheme(isDarkTheme ? 'light' : 'dark');
+                      setIsMobileSheetOpen(false);
+                    }}
+                  />
+                </SheetContent>
+              </Sheet>
+              <div className="flex min-w-0 items-center gap-3">
+                <Link className="truncate text-sm font-semibold" to="/">
+                  {t('app.name')}
+                </Link>
+              </div>
+            </div>
+            <div className="flex-1" />
+            <div className="flex items-center gap-2">
+              <div className="lg:hidden" data-testid="docs-mobile-header-actions">
+                <DocsSearchDialog mode="mobile" pages={pages} tabs={tabs} />
+              </div>
+              <div
+                className="hidden items-center gap-2 lg:flex"
+                data-testid="docs-desktop-header-actions"
+              >
+                <div className="w-44 sm:w-56 md:w-72">
+                  <DocsSearchDialog mode="desktop" pages={pages} tabs={tabs} />
+                </div>
+                <LocaleSwitcher
                   currentLocale={locale as AppLocale}
-                  isDarkTheme={isDarkTheme}
-                  onSelectLocale={async (nextLocale) => {
+                  onSelect={async (nextLocale) => {
                     await setLocale(nextLocale);
-                    setIsMobileSheetOpen(false);
                     await navigate({
                       to: replaceDocLocale(activePath, nextLocale),
                     });
                   }}
-                  onSelectPath={() => setIsMobileSheetOpen(false)}
-                  sidebar={sidebar}
-                  themeLabel={themeLabel}
-                  tabs={tabs}
-                  toggleTheme={() => {
-                    setTheme(isDarkTheme ? 'light' : 'dark');
-                    setIsMobileSheetOpen(false);
-                  }}
+                  variant="desktop"
                 />
-              </SheetContent>
-            </Sheet>
-            <div className="flex min-w-0 items-center gap-3">
-              <Link className="truncate text-sm font-semibold" to="/">
-                {t('app.name')}
-              </Link>
-            </div>
-          </div>
-          <div className="flex-1" />
-          <div className="flex items-center gap-2">
-            <div className="lg:hidden" data-testid="docs-mobile-header-actions">
-              <DocsSearchDialog mode="mobile" pages={pages} tabs={tabs} />
-            </div>
-            <div
-              className="hidden items-center gap-2 lg:flex"
-              data-testid="docs-desktop-header-actions"
-            >
-              <div className="w-44 sm:w-56 md:w-72">
-                <DocsSearchDialog mode="desktop" pages={pages} tabs={tabs} />
+                <Button
+                  aria-label={themeLabel}
+                  aria-pressed={isDarkTheme}
+                  className="hidden lg:inline-flex"
+                  onClick={() => setTheme(isDarkTheme ? 'light' : 'dark')}
+                  size="icon"
+                  variant="ghost"
+                >
+                  {isDarkTheme ? <SunIcon /> : <MoonIcon />}
+                  <span className="sr-only">{themeLabel}</span>
+                </Button>
               </div>
-              <LocaleSwitcher
-                currentLocale={locale as AppLocale}
-                onSelect={async (nextLocale) => {
-                  await setLocale(nextLocale);
-                  await navigate({
-                    to: replaceDocLocale(activePath, nextLocale),
-                  });
-                }}
-                variant="desktop"
-              />
-              <Button
-                aria-label={themeLabel}
-                aria-pressed={isDarkTheme}
-                className="hidden lg:inline-flex"
-                onClick={() => setTheme(isDarkTheme ? 'light' : 'dark')}
-                size="icon"
-                variant="ghost"
-              >
-                {isDarkTheme ? <SunIcon /> : <MoonIcon />}
-                <span className="sr-only">{themeLabel}</span>
-              </Button>
             </div>
           </div>
-        </div>
-        <nav
-          className="hidden border-t border-border lg:block"
-          data-testid="docs-tabs-strip"
+          <nav
+            className="hidden border-t border-border lg:block"
+            data-testid="docs-tabs-strip"
+          >
+            <div className="mx-auto flex w-full max-w-[1440px] justify-start px-4 sm:px-6">
+              <Tabs className="w-auto max-w-full" value={activeTab}>
+                <TabsList
+                  className="max-w-full justify-start gap-0 overflow-x-auto overflow-y-hidden px-0"
+                  variant="line"
+                >
+                  {tabs.map((tab) => (
+                    <TabsTrigger asChild key={tab.id} value={tab.id}>
+                      <Link
+                        className="h-10 rounded-none px-3"
+                        params={{}}
+                        search={{}}
+                        to={tab.url}
+                      >
+                        {tab.title}
+                      </Link>
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
+            </div>
+          </nav>
+        </header>
+        <div
+          className="mx-auto block w-full max-w-[1440px] min-w-0 lg:flex lg:h-[var(--docs-shell-body-height)] lg:overflow-hidden"
+          data-testid="docs-body-shell"
         >
-          <div className="mx-auto flex w-full max-w-[1440px] justify-start px-4 sm:px-6">
-            <Tabs className="w-auto max-w-full" value={activeTab}>
-              <TabsList
-                className="max-w-full justify-start gap-0 overflow-x-auto overflow-y-hidden px-0"
-                variant="line"
-              >
-                {tabs.map((tab) => (
-                  <TabsTrigger asChild key={tab.id} value={tab.id}>
-                    <Link
-                      className="h-10 rounded-none px-3"
-                      params={{}}
-                      search={{}}
-                      to={tab.url}
-                    >
-                      {tab.title}
-                    </Link>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-          </div>
-        </nav>
-      </header>
-      <div
-        className="mx-auto flex w-full max-w-[1440px] min-w-0"
-        data-testid="docs-body-shell"
-        style={{
-          height: `calc(100svh - ${headerOffset}px)`,
-        }}
-      >
-        <DocsSidebar
-          activePath={activePath}
-          activeTab={activeTab}
-          entries={sidebar}
-          onSelectPath={() => setIsMobileSheetOpen(false)}
-        />
-        <DocsMainColumn next={next} previous={previous}>
-          {children}
-        </DocsMainColumn>
-        <DocsTocRail toc={toc} />
+          <DocsSidebar
+            activePath={activePath}
+            activeTab={activeTab}
+            entries={sidebar}
+            onSelectPath={() => setIsMobileSheetOpen(false)}
+          />
+          <DocsMainColumn next={next} previous={previous}>
+            {children}
+          </DocsMainColumn>
+          <DocsTocRail toc={toc} />
+        </div>
       </div>
     </SidebarProvider>
   );

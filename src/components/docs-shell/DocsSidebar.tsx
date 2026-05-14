@@ -26,24 +26,21 @@ export function DocsSidebar({
 
   return (
     <ShadcnSidebar
-      className="hidden border-r border-border lg:block"
+      className="hidden border-r border-border lg:flex"
       collapsible="none"
       data-testid="docs-sidebar"
       variant="inset"
     >
-      <SidebarContent>
-        <div
-          className="min-h-0 flex-1 overflow-y-auto"
-          data-testid="docs-sidebar-scroll"
-          ref={scrollContainerRef}
-        >
-          <div className="px-2 py-4">
-            <DocsSidebarTree
-              activePath={activePath}
-              nodes={mapSidebarEntriesToTree(entries)}
-              onSelectPath={onSelectPath}
-            />
-          </div>
+      <SidebarContent
+        data-testid="docs-sidebar-scroll"
+        ref={scrollContainerRef}
+      >
+        <div className="px-2 py-4">
+          <DocsSidebarTree
+            activePath={activePath}
+            nodes={mapSidebarEntriesToTree(entries)}
+            onSelectPath={onSelectPath}
+          />
         </div>
       </SidebarContent>
     </ShadcnSidebar>

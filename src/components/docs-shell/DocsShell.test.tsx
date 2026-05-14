@@ -200,7 +200,7 @@ describe('DocsShell', () => {
     expect(screen.getByTestId('docs-toc-rail')).toBeInTheDocument();
     expect(screen.queryByTestId('docs-shell-footer')).not.toBeInTheDocument();
 
-    const mainColumn = screen.getByTestId('docs-main-column');
+    const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
     expect(
       within(mainColumn).getByRole('link', { name: /Next Next Page/i }),
     ).toBeInTheDocument();
@@ -415,6 +415,20 @@ describe('DocsShell', () => {
     });
   });
 
+  it('keeps mobile docs content in normal page flow instead of a nested scroll viewport', async () => {
+    renderDocsShell();
+
+    expect(await screen.findByText('Agora Docs')).toBeInTheDocument();
+
+    const mobileFlow = screen.getByTestId('docs-main-mobile-flow');
+    const mobileScrollViewport = mobileFlow.querySelector(
+      '[data-slot="scroll-area-viewport"]',
+    );
+
+    expect(mobileScrollViewport).toBeNull();
+    expect(within(mobileFlow).getByText('Body')).toBeInTheDocument();
+  });
+
   it('renders the split docs body shell regions and keeps pagination in the main column', async () => {
     renderDocsShell({
       children: <article>Body copy</article>,
@@ -432,12 +446,12 @@ describe('DocsShell', () => {
 
     const bodyShell = screen.getByTestId('docs-body-shell');
     const sidebarRegion = screen.getByTestId('docs-sidebar');
-    const mainColumn = screen.getByTestId('docs-main-column');
+    const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
     const tocRail = screen.getByTestId('docs-toc-rail');
 
     expect(bodyShell).toBeInTheDocument();
     expect(sidebarRegion).toBeInTheDocument();
-    expect(sidebarRegion).toHaveClass('hidden', 'lg:block');
+    expect(sidebarRegion).toHaveClass('hidden', 'lg:flex');
     expect(mainColumn).toBeInTheDocument();
     expect(within(mainColumn).getByText('Body copy')).toBeInTheDocument();
     expect(
