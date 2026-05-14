@@ -59,6 +59,61 @@ const nestedRootTree: Root = {
   name: 'Docs',
 };
 
+const groupedSidebarTree: Root = {
+  children: [
+    {
+      $id: 'en-root',
+      children: [
+        {
+          $id: 'guides-folder',
+          children: [
+            {
+              $id: 'guides-index',
+              name: 'Guides',
+              type: 'page',
+              url: '/en/guides',
+            },
+            {
+              $id: 'guides-separator-get-started',
+              name: 'Get Started',
+              type: 'separator',
+            },
+            {
+              $id: 'guides-overview',
+              name: 'Overview',
+              type: 'page',
+              url: '/en/guides/overview',
+            },
+            {
+              $id: 'guides-install',
+              name: 'Install',
+              type: 'page',
+              url: '/en/guides/install',
+            },
+            {
+              $id: 'guides-separator-reference',
+              name: 'Reference',
+              type: 'separator',
+            },
+            {
+              $id: 'guides-api',
+              name: 'API',
+              type: 'page',
+              url: '/en/guides/api',
+            },
+          ],
+          name: 'Guides',
+          root: true,
+          type: 'folder',
+        },
+      ],
+      name: 'English',
+      type: 'folder',
+    },
+  ],
+  name: 'Docs',
+};
+
 describe('docs tree helpers', () => {
   it('builds tab summaries from nested root folders', () => {
     expect(getTabSummaries(nestedRootTree)).toEqual([
@@ -218,6 +273,93 @@ describe('docs tree helpers', () => {
             title: longTitle,
             type: 'page',
             url: '/en/reference/really-long-page-title',
+          },
+        ],
+        id: 'reference',
+        title: 'Reference',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('maps getSidebarEntries output into a tree while preserving producer order', () => {
+    expect(
+      mapSidebarEntriesToTree(getSidebarEntries(groupedSidebarTree, 'guides')),
+    ).toEqual([
+      {
+        id: '/en/guides',
+        title: 'Guides',
+        type: 'page',
+        url: '/en/guides',
+      },
+      {
+        children: [
+          {
+            id: '/en/guides/overview',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/guides/overview',
+          },
+          {
+            id: '/en/guides/install',
+            title: 'Install',
+            type: 'page',
+            url: '/en/guides/install',
+          },
+        ],
+        id: 'separator-Get Started',
+        title: 'Get Started',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            id: '/en/guides/api',
+            title: 'API',
+            type: 'page',
+            url: '/en/guides/api',
+          },
+        ],
+        id: 'separator-Reference',
+        title: 'Reference',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('does not emit empty sections for consecutive or trailing separators', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'getting-started',
+          title: 'Getting Started',
+          type: 'separator',
+        },
+        {
+          id: 'reference',
+          title: 'Reference',
+          type: 'separator',
+        },
+        {
+          id: '/en/reference/api',
+          title: 'API',
+          type: 'page',
+          url: '/en/reference/api',
+        },
+        {
+          id: 'trailing',
+          title: 'Trailing',
+          type: 'separator',
+        },
+      ]),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/en/reference/api',
+            title: 'API',
+            type: 'page',
+            url: '/en/reference/api',
           },
         ],
         id: 'reference',

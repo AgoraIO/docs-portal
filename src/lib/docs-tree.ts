@@ -37,8 +37,6 @@ export type DocsSidebarSectionNode = {
   type: 'section';
 };
 
-export type DocsSidebarGroupNode = DocsSidebarSectionNode;
-
 export type DocsSidebarNode = DocsSidebarPageNode | DocsSidebarSectionNode;
 
 export function getTabSummaries(root: Root): TabSummary[] {
@@ -123,16 +121,13 @@ export function mapSidebarEntriesToTree(
 ): DocsSidebarNode[] {
   const nodes: DocsSidebarNode[] = [];
   let currentSection: DocsSidebarSectionNode | null = null;
+  let pendingSectionEntry: Extract<SidebarEntry, { type: 'separator' }> | null =
+    null;
 
   for (const entry of entries) {
     if (entry.type === 'separator') {
-      currentSection = {
-        children: [],
-        id: entry.id,
-        title: entry.title,
-        type: 'section',
-      };
-      nodes.push(currentSection);
+      currentSection = null;
+      pendingSectionEntry = entry;
       continue;
     }
 
@@ -143,12 +138,22 @@ export function mapSidebarEntriesToTree(
       url: entry.url,
     };
 
-    if (currentSection) {
-      currentSection.children.push(pageNode);
-      continue;
+    if (pendingSectionEntry) {
+      currentSection = {
+        children: [],
+        id: pendingSectionEntry.id,
+        title: pendingSectionEntry.title,
+        type: 'section',
+      };
+      nodes.push(currentSection);
+      pendingSectionEntry = null;
     }
 
-    nodes.push(pageNode);
+    if (currentSection) {
+      currentSection.children.push(pageNode);
+    } else {
+      nodes.push(pageNode);
+    }
   }
 
   return nodes;
