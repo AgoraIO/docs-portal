@@ -1,5 +1,5 @@
-import type { Item, Node, Root } from 'fumadocs-core/page-tree';
-import { findNeighbour } from 'fumadocs-core/page-tree';
+import type { Folder, Item, Node, Root } from 'fumadocs-core/page-tree';
+import { findNeighbour, getPageTreeRoots } from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
 import { buildDocPath } from './docs-routing';
 
@@ -24,7 +24,7 @@ export type SidebarEntry =
     };
 
 export function getTabSummaries(root: Root): TabSummary[] {
-  return root.children.flatMap((node) => {
+  return getTabNodes(root).flatMap((node) => {
     const item = getTabIndex(node);
 
     if (!item) {
@@ -41,7 +41,10 @@ export function getTabSummaries(root: Root): TabSummary[] {
         description:
           typeof item.description === 'string' ? item.description : undefined,
         id,
-        title: normalizeLabel(item.name, id),
+        title:
+          node.type === 'folder'
+            ? normalizeLabel(node.name, id)
+            : normalizeLabel(item.name, id),
         url: item.url,
       },
     ];
@@ -73,7 +76,28 @@ export function getSidebarEntries(
     return [];
   }
 
-  return tabNode.children.flatMap((node) => flattenSidebarNode(node));
+  const entries: SidebarEntry[] = [];
+  const indexItem = getTabIndex(tabNode);
+  const indexUrl = indexItem?.url;
+
+  if (indexItem) {
+    entries.push({
+      id: indexItem.url,
+      title: normalizeLabel(indexItem.name, activeTab),
+      type: 'page',
+      url: indexItem.url,
+    });
+  }
+
+  for (const node of tabNode.children) {
+    entries.push(
+      ...flattenSidebarNode(node).filter(
+        (entry) => entry.type !== 'page' || entry.url !== indexUrl,
+      ),
+    );
+  }
+
+  return entries;
 }
 
 export function getPrevNextLinks(root: Root, currentUrl: string) {
@@ -97,14 +121,18 @@ function getTabIndex(node: Node): Item | undefined {
   }
 
   if (node.type === 'folder') {
-    return node.index;
+    if (node.index) {
+      return node.index;
+    }
+
+    return node.children.find((child): child is Item => child.type === 'page');
   }
 
   return undefined;
 }
 
 function findTabNode(root: Root, activeTab: string): Node | undefined {
-  return root.children.find((node) => {
+  return getTabNodes(root).find((node) => {
     const item = getTabIndex(node);
     if (!item) {
       return false;
@@ -168,6 +196,33 @@ function mapPageLink(item: Item) {
 function getTabIdFromUrl(url: string) {
   const segments = url.split('/').filter(Boolean);
   return segments[1];
+}
+
+function getTabNodes(root: Root): Node[] {
+  const localeFolder = root.children.find(
+    (node): node is Folder =>
+      node.type === 'folder' && node.children.some(isTabRootFolder),
+  );
+
+  if (localeFolder) {
+    return localeFolder.children.filter(
+      (node): node is Folder => node.type === 'folder' && node.root === true,
+    );
+  }
+
+  const nestedRoots = getPageTreeRoots(root).filter(
+    (node): node is Folder => node.type === 'folder' && node.root === true,
+  );
+
+  if (nestedRoots.length > 0) {
+    return nestedRoots;
+  }
+
+  return root.children;
+}
+
+function isTabRootFolder(node: Node): node is Folder {
+  return node.type === 'folder' && node.root === true;
 }
 
 function normalizeLabel(value: ReactNode, fallback: string) {
