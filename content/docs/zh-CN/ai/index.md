@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: 介绍
 description: 构建能加入 Agora 实时频道、与用户自然对话、并把事件回传给应用与后端的语音 AI 智能体。
 ---
 
@@ -42,14 +42,14 @@ Agora AI 智能体是实时会话中的参与者。它们可以加入频道、�
 
 ## 当前仓库里建议先看的页面
 
-- [Voice AI quickstart](/zh-CN/ai/quick-start)
-- [Start with Agent Studio](/zh-CN/ai/start-with-agent-studio)
-- [Set up project and credentials](/zh-CN/ai/enable-service)
-- [How agents work](/zh-CN/ai/concepts)
-- [Events and webhooks](/zh-CN/api-reference/ncs-events)
+- [语音 AI 快速开始](/zh-CN/ai/quick-start)
+- [从 Agent Studio 开始](/zh-CN/ai/start-with-agent-studio)
+- [开通服务并准备凭证](/zh-CN/ai/enable-service)
+- [智能体如何工作](/zh-CN/ai/concepts)
+- [事件与 Webhook](/zh-CN/api-reference/ncs-events)
 
 ## 下一步推荐
 
-如果你希望最快验证一条实时语音链路，先去看 Quickstart。
+如果你希望最快验证一条实时语音链路，先去看快速开始。
 
 如果你希望先在浏览器里快速体验智能体形态，再决定如何集成，先去看 Agent Studio。

@@ -1,5 +1,5 @@
 ---
-title: Configure ASR and TTS
+title: 配置 ASR 与 TTS
 description: 说明语音识别与语音合成在智能体链路中的角色，以及应该从哪些现有文档继续深入。
 ---
 
@@ -9,9 +9,9 @@ ASR 决定用户语音如何变成文本输入，TTS 决定智能体如何把生
 
 ## 当前仓库里的相关页面
 
-- [Realtime audio](/zh-CN/realtime-media/audio-modality)
-- [Configure LLM](/zh-CN/ai/custom-llm)
-- [Handle interruption](/zh-CN/ai/interrupt-agent)
+- [实时音频能力](/zh-CN/realtime-media/audio-modality)
+- [配置大模型](/zh-CN/ai/custom-llm)
+- [处理打断](/zh-CN/ai/interrupt-agent)
 
 ## 配置时要先确认
 

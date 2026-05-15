@@ -1,5 +1,5 @@
 ---
-title: Agents and realtime channels
+title: 智能体与实时频道
 description: 理解智能体如何作为实时参与者加入 Agora 频道，并与用户、客户端和后端共享同一会话上下文。
 ---
 
@@ -30,6 +30,6 @@ AI 智能体不是一个只在服务端运行的孤立机器人，而是实时�
 
 ## 推荐继续阅读
 
-- [How agents work](/zh-CN/ai/concepts)
-- [Realtime audio](/zh-CN/realtime-media/audio-modality)
-- [Business data](/zh-CN/ai/custom-data)
+- [智能体如何工作](/zh-CN/ai/concepts)
+- [实时音频能力](/zh-CN/realtime-media/audio-modality)
+- [业务数据](/zh-CN/ai/custom-data)

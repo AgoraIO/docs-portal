@@ -1,5 +1,5 @@
 ---
-title: Production checklist
+title: 上线检查清单
 description: 从鉴权、状态观测、错误处理到支持路径，整理 AI 智能体上线前应该逐项确认的内容。
 ---
 
@@ -13,7 +13,7 @@ description: 从鉴权、状态观测、错误处理到支持路径，整理 AI 
 
 ## 推荐页面
 
-- [Authentication and tokens](/zh-CN/best-practices/http-basic-auth)
-- [Monitor status](/zh-CN/api-reference/query-agent-status)
-- [Webhook events](/zh-CN/api-reference/ncs-events)
-- [Status codes](/zh-CN/api-reference/response-code)
+- [鉴权与 Token](/zh-CN/best-practices/http-basic-auth)
+- [查看当前状态](/zh-CN/api-reference/query-agent-status)
+- [Webhook 事件](/zh-CN/api-reference/ncs-events)
+- [状态码](/zh-CN/api-reference/response-code)
