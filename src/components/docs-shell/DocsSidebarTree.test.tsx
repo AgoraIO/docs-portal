@@ -165,7 +165,7 @@ describe('DocsSidebarTree', () => {
       },
     ];
 
-    renderSidebarTree(tree, '/zh-CN/ai/product-overview');
+    renderSidebarTree(tree, '/zh-CN/ai/domain-overview');
 
     expect(await screen.findByRole('link', { name: '开通服务' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /SDK 快速开始/i })).toBeInTheDocument();

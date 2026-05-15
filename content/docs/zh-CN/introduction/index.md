@@ -20,12 +20,9 @@ description: 从这里进入 Introduction 的首页，先建立 Agora 文档的�
 - 核心能力域：
   - [AI Agent](/zh-CN/introduction/ai-agents)
   - [实时音视频互动](/zh-CN/introduction/realtime-audio-video)
-  - [实时消息与状态同步](/zh-CN/introduction/messaging)
+  - [实时消息](/zh-CN/introduction/messaging)
   - [实时转录与翻译](/zh-CN/introduction/speech-to-text)
-  - [设备侧实时媒体传输](/zh-CN/introduction/rtsa)
-  - [服务端实时媒体处理](/zh-CN/introduction/rtc-server-sdk)
-  - [云端媒体处理](/zh-CN/introduction/media-services)
-  - [直播分发](/zh-CN/introduction/fusion-cdn)
+  - 媒体基础设施：[设备侧实时媒体传输](/zh-CN/introduction/rtsa) / [服务端实时媒体处理](/zh-CN/introduction/rtc-server-sdk) / [直播分发](/zh-CN/introduction/fusion-cdn)
   - [实时协作白板](/zh-CN/introduction/whiteboard)
 
 ## 为什么要有这页

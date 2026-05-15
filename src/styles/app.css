@@ -510,6 +510,8 @@
     padding: 0.85rem 1rem;
     text-align: left;
     vertical-align: top;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
 
   .prose :where(th):not(:where(.not-prose, .not-prose *)) {
@@ -517,12 +519,20 @@
     font-size: 0.92rem;
     font-weight: 600;
     line-height: 1.45;
+    white-space: nowrap;
   }
 
   .prose :where(td):not(:where(.not-prose, .not-prose *)) {
     color: var(--docs-text-secondary);
     font-size: 0.95rem;
     line-height: 1.7;
+  }
+
+  .prose
+    :where(th:first-child, td:first-child):not(:where(.not-prose, .not-prose *)) {
+    width: 1%;
+    min-width: 5.5rem;
+    white-space: nowrap;
   }
 
   .prose :where(tbody tr:last-child td):not(:where(.not-prose, .not-prose *)) {

@@ -1,5 +1,5 @@
 ---
-title: Realtime Audio & Video Interaction
+title: Realtime Audio & Video
 description: Use this page to find the primary entry points for realtime audio-video interaction and understand how they relate to the ConvoAI docs in this repo.
 ---
 

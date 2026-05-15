@@ -9,7 +9,7 @@ description: 围绕对话式 AI 引擎、模型编排、上下文与事件协作
 
 ## 当前仓库里可以直接看的文档
 
-- [查看对话式 AI 引擎产品概览](/zh-CN/ai/product-overview)
+- [查看对话式 AI 引擎介绍](/zh-CN/ai)
 - [查看快速开始](/zh-CN/ai/quick-start)
 - [查看自定义大模型](/zh-CN/ai/custom-llm)
 - [查看短期记忆](/zh-CN/ai/short-term-memory)

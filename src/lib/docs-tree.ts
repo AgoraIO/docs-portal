@@ -139,7 +139,7 @@ export function mapSidebarEntriesToTree(
       url: entry.url,
     };
 
-    if (pendingSectionEntry) {
+    if (pendingSectionEntry && pendingSectionEntry.title.length > 0) {
       currentSection = {
         children: [],
         collapsible: isCollapsibleSectionTitle(pendingSectionEntry.title),
@@ -148,8 +148,8 @@ export function mapSidebarEntriesToTree(
         type: 'section',
       };
       nodes.push(currentSection);
-      pendingSectionEntry = null;
     }
+    pendingSectionEntry = null;
 
     if (currentSection) {
       currentSection.children.push(pageNode);
@@ -306,5 +306,10 @@ function normalizeLabel(value: ReactNode, fallback: string) {
 }
 
 function isCollapsibleSectionTitle(title: string) {
-  return title === 'SDK Quickstarts' || title === 'SDK 快速开始';
+  return (
+    title === 'SDK Quickstarts' ||
+    title === 'SDK 快速开始' ||
+    title === 'Media Infrastructure' ||
+    title === '媒体基础设施'
+  );
 }

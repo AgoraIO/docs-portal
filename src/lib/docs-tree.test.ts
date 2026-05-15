@@ -192,6 +192,39 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('marks the media infrastructure section as collapsible', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'media-infra',
+          title: '媒体基础设施',
+          type: 'separator',
+        },
+        {
+          id: '/zh-CN/introduction/rtsa',
+          title: '设备侧实时媒体传输',
+          type: 'page',
+          url: '/zh-CN/introduction/rtsa',
+        },
+      ]),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/zh-CN/introduction/rtsa',
+            title: '设备侧实时媒体传输',
+            type: 'page',
+            url: '/zh-CN/introduction/rtsa',
+          },
+        ],
+        collapsible: true,
+        id: 'media-infra',
+        title: '媒体基础设施',
+        type: 'section',
+      },
+    ]);
+  });
+
   it('preserves order for top-level pages and later sections', () => {
     expect(
       mapSidebarEntriesToTree([
@@ -371,6 +404,36 @@ describe('docs tree helpers', () => {
         id: 'reference',
         title: 'Reference',
         type: 'section',
+      },
+    ]);
+  });
+
+  it('treats an unnamed separator as a section boundary without creating an empty section', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'media',
+          title: '媒体基础设施',
+          type: 'separator',
+        },
+        {
+          id: 'end-media',
+          title: '',
+          type: 'separator',
+        },
+        {
+          id: '/zh-CN/introduction/whiteboard',
+          title: '实时协作白板',
+          type: 'page',
+          url: '/zh-CN/introduction/whiteboard',
+        },
+      ]),
+    ).toEqual([
+      {
+        id: '/zh-CN/introduction/whiteboard',
+        title: '实时协作白板',
+        type: 'page',
+        url: '/zh-CN/introduction/whiteboard',
       },
     ]);
   });
