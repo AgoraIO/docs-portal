@@ -1,5 +1,5 @@
 ---
-title: Fusion CDN Live Streaming
+title: Live Streaming Distribution
 description: Standard-protocol live distribution and playback optimization across multiple CDN providers.
 ---
 

@@ -1,6 +1,6 @@
 ---
-title: Media Services
-description: Start from recording, streaming, transcoding, and delivery workflows to find the right Agora media service documentation.
+title: Cloud Media Processing
+description: Start from recording, streaming, transcoding, and delivery workflows to find the right Agora cloud media processing documentation.
 ---
 
 ## What this category includes

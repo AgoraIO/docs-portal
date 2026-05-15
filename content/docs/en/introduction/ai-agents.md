@@ -1,6 +1,6 @@
 ---
-title: AI Agents
-description: Find the core docs for building AI agents across conversational runtime, model orchestration, context handling, and event-driven workflows.
+title: AI Agent
+description: Find the core docs for building conversational AI interaction across agent runtime, model orchestration, context handling, and event-driven workflows.
 ---
 
 ## Who this page is for

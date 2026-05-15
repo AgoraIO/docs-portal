@@ -17,6 +17,6 @@ describe('canonical docs route model', () => {
         tab: 'api-reference',
         slug: 'start-agent',
       }),
-    ).toEqual(['zh-CN', 'api-reference', 'start-agent']);
+    ).toEqual(['api-reference', 'start-agent']);
   });
 });

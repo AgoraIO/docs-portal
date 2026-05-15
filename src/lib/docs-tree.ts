@@ -32,6 +32,7 @@ export type DocsSidebarPageNode = {
 
 export type DocsSidebarSectionNode = {
   children: DocsSidebarPageNode[];
+  collapsible?: boolean;
   id: string;
   title: string;
   type: 'section';
@@ -141,6 +142,7 @@ export function mapSidebarEntriesToTree(
     if (pendingSectionEntry) {
       currentSection = {
         children: [],
+        collapsible: isCollapsibleSectionTitle(pendingSectionEntry.title),
         id: pendingSectionEntry.id,
         title: pendingSectionEntry.title,
         type: 'section',
@@ -301,4 +303,8 @@ function normalizeLabel(value: ReactNode, fallback: string) {
   }
 
   return fallback;
+}
+
+function isCollapsibleSectionTitle(title: string) {
+  return title === 'SDK Quickstarts' || title === 'SDK 快速开始';
 }

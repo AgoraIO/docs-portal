@@ -1,6 +1,6 @@
 ---
-title: 实时音视频
-description: 帮你快速定位实时互动 RTC 的接入入口，以及它与当前 ConvoAI 文档的衔接关系。
+title: 实时音视频互动
+description: 帮你快速定位实时音视频互动的接入入口，以及它与当前 ConvoAI 文档的衔接关系。
 ---
 
 ## 这类能力解决什么问题

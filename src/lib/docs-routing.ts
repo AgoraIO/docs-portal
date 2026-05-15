@@ -23,7 +23,7 @@ export function isSupportedDocLocale(locale: string) {
 }
 
 export function getSourceSlugs(route: DocsRoute) {
-  const slugs = [route.locale, route.tab];
+  const slugs = [route.tab];
 
   if (route.slug && route.slug !== 'index') {
     slugs.push(route.slug);
@@ -37,10 +37,10 @@ export function getContentPathSegments(route: DocsRoute) {
   const leaf = sourceSlugs.at(-1);
 
   if (route.slug && route.slug !== 'index') {
-    return [...sourceSlugs.slice(0, -1), `${leaf}.md`];
+    return [route.locale, ...sourceSlugs.slice(0, -1), `${leaf}.md`];
   }
 
-  return [...sourceSlugs, 'index.md'];
+  return [route.locale, ...sourceSlugs, 'index.md'];
 }
 
 export function getContentPath(route: DocsRoute) {
@@ -77,20 +77,20 @@ export function getSourceSlugsFromContentPath(path: string) {
   }
 
   if (fileName === 'index.md') {
-    return [locale, tab];
+    return [tab];
   }
 
   if (fileName.endsWith('.md')) {
-    return [locale, tab, fileName.slice(0, -3)];
+    return [tab, fileName.slice(0, -3)];
   }
 
   return [];
 }
 
 export function parseSourceSlugs(slugs: string[]) {
-  const [locale, tab, ...rest] = slugs;
+  const [tab, ...rest] = slugs;
   return {
-    locale,
+    locale: '',
     tab,
     slug: rest.at(-1) ?? 'index',
   };

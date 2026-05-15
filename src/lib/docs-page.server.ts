@@ -1,3 +1,5 @@
+import { getTableOfContents } from 'fumadocs-core/content/toc';
+import type { TOCItemType } from 'fumadocs-core/toc';
 import { getSourceSlugs } from './docs-routing';
 import {
   getFirstTabPageUrl,
@@ -5,6 +7,7 @@ import {
   getSidebarEntries,
   getTabSummaries,
 } from './docs-tree';
+import type { PageWithSource } from './source.server';
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
   const { source } = await import('./source.server');
@@ -45,6 +48,7 @@ export async function loadDocsPagePayload(
       slug,
       tab,
     }),
+    locale,
   );
 
   if (!page) {
@@ -52,6 +56,7 @@ export async function loadDocsPagePayload(
   }
 
   const pageTree = source.getPageTree(locale);
+  const toc = await resolvePageToc(page);
 
   return {
     activePath: page.url,
@@ -67,10 +72,42 @@ export async function loadDocsPagePayload(
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
     title: page.data.title,
-    toc: (page.data.toc ?? []).map((item) => ({
-      depth: item.depth,
-      title: typeof item.title === 'string' ? item.title : '',
-      url: item.url,
-    })),
+    toc,
   };
+}
+
+async function resolvePageToc(page: PageWithSource) {
+  const directToc = normalizeToc(page.data.toc);
+
+  if (directToc.length > 0) {
+    return directToc;
+  }
+
+  try {
+    const processedMarkdown = await page.data.getText('processed');
+    return normalizeToc(await getTableOfContents(processedMarkdown));
+  } catch {
+    return [];
+  }
+}
+
+function normalizeToc(toc: TOCItemType[] | undefined) {
+  return (toc ?? []).flatMap((item) => {
+    if (
+      typeof item.title !== 'string' ||
+      item.title.trim().length === 0 ||
+      typeof item.url !== 'string' ||
+      item.url.length === 0
+    ) {
+      return [];
+    }
+
+    return [
+      {
+        depth: item.depth,
+        title: item.title,
+        url: item.url,
+      },
+    ];
+  });
 }

@@ -29,6 +29,11 @@ export function DocsSidebar({
       className="hidden border-r border-border lg:flex"
       collapsible="none"
       data-testid="docs-sidebar"
+      style={
+        {
+          '--sidebar-width': '18.5rem',
+        } as React.CSSProperties
+      }
       variant="inset"
     >
       <SidebarContent

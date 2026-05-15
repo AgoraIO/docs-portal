@@ -17,12 +17,11 @@ describe('docs routing helpers', () => {
 
   it('builds source slugs without index suffixes', () => {
     expect(getSourceSlugs({ locale: 'en', tab: 'introduction' })).toEqual([
-      'en',
       'introduction',
     ]);
     expect(
       getSourceSlugs({ locale: 'zh-CN', tab: 'ai', slug: 'quick-start' }),
-    ).toEqual(['zh-CN', 'ai', 'quick-start']);
+    ).toEqual(['ai', 'quick-start']);
   });
 
   it('builds content path segments for slug pages', () => {
@@ -39,12 +38,10 @@ describe('docs routing helpers', () => {
 
   it('parses content paths back into source slugs', () => {
     expect(getSourceSlugsFromContentPath('en/introduction/index.md')).toEqual([
-      'en',
       'introduction',
     ]);
 
     expect(getSourceSlugsFromContentPath('en/ai/quick-start.md')).toEqual([
-      'en',
       'ai',
       'quick-start',
     ]);
@@ -67,15 +64,15 @@ describe('docs routing helpers', () => {
   });
 
   it('parses source slugs back into route parts', () => {
-    expect(parseSourceSlugs(['en', 'introduction'])).toEqual({
-      locale: 'en',
+    expect(parseSourceSlugs(['introduction'])).toEqual({
+      locale: '',
       tab: 'introduction',
       slug: 'index',
     });
 
-    expect(parseSourceSlugs(['zh-CN', 'api-reference', 'start-agent'])).toEqual(
+    expect(parseSourceSlugs(['api-reference', 'start-agent'])).toEqual(
       {
-        locale: 'zh-CN',
+        locale: '',
         tab: 'api-reference',
         slug: 'start-agent',
       },

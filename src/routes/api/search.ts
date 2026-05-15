@@ -9,6 +9,10 @@ export const Route = createFileRoute('/api/search')({
         const server = createFromSource(source, {
           // https://docs.orama.com/docs/orama-js/supported-languages
           language: 'english',
+          localeMap: {
+            en: 'english',
+            'zh-CN': 'english',
+          },
         });
 
         return server.staticGET();

@@ -1,6 +1,6 @@
 ---
-title: Realtime Audio & Video
-description: Use this page to find the primary RTC entry points and understand how they relate to the ConvoAI docs in this repo.
+title: Realtime Audio & Video Interaction
+description: Use this page to find the primary entry points for realtime audio-video interaction and understand how they relate to the ConvoAI docs in this repo.
 ---
 
 ## What this capability covers

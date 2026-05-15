@@ -6,14 +6,21 @@ import {
   getContentPathSegments,
   parseSourceSlugs,
 } from './docs-routing';
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { docsContentRoute, docsRoute } from './shared';
 
 export const source = loader({
   source: docs.toFumadocsSource(),
   baseUrl: docsRoute,
-  url: (slugs) => {
+  i18n: {
+    defaultLanguage: DEFAULT_LOCALE,
+    hideLocale: 'never',
+    languages: [...SUPPORTED_LOCALES],
+    parser: 'dir',
+  },
+  url: (slugs, locale) => {
     const route = parseSourceSlugs(slugs);
-    return buildDocPath(route.locale, route.tab, route.slug);
+    return buildDocPath(locale ?? DEFAULT_LOCALE, route.tab, route.slug);
   },
   plugins: [lucideIconsPlugin()],
 });
@@ -21,9 +28,10 @@ export const source = loader({
 export type PageWithSource = InferPageType<typeof source>;
 
 export function getPageMarkdownUrl(page: InferPageType<typeof source>) {
-  const [locale, tab, slug] = page.slugs;
+  const locale = page.locale ?? 'en';
+  const [tab, slug] = page.slugs;
   const segments = getContentPathSegments({
-    locale: locale ?? 'en',
+    locale,
     tab: tab ?? 'introduction',
     slug,
   });
