@@ -1,5 +1,5 @@
 ---
-title: Device-side Realtime Media Transport
+title: Device Media Transport
 description: Realtime media streaming and signaling for smart devices and terminal-like products.
 ---
 

@@ -12,6 +12,6 @@ description: Prioritize permissions, audio routing, state presentation, and inte
 
 ## Recommended next pages
 
-- [Realtime audio](/en/realtime-media/audio-modality)
+- [Realtime audio](/en/realtime-media/speech-to-text/audio-modality)
 - [Handle interruption](/en/ai/interrupt-agent)
 - [Transcripts and subtitles](/en/ai/realtime-sub)

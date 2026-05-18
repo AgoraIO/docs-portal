@@ -11,6 +11,6 @@ description: 面向智能硬件或终端形态时，如何把语音链路、服�
 
 ## 推荐页面
 
-- [Realtime audio](/zh-CN/realtime-media/audio-modality)
+- [Realtime audio](/zh-CN/realtime-media/speech-to-text/audio-modality)
 - [Business data](/zh-CN/ai/custom-data)
 - [Events and webhooks](/zh-CN/api-reference/ncs-events)

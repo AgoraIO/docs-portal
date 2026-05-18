@@ -4,7 +4,7 @@ import { getSourceSlugs } from './docs-routing';
 import {
   getFirstTabPageUrl,
   getPrevNextLinks,
-  getSidebarEntries,
+  getSidebarNodes,
   getTabSummaries,
 } from './docs-tree';
 import type { PageWithSource } from './source.server';
@@ -39,13 +39,15 @@ export async function loadDocsTabIndex(locale: string, tab: string) {
 export async function loadDocsPagePayload(
   locale: string,
   tab: string,
-  slug: string,
+  slugSegments: string[],
 ) {
   const { source } = await import('./source.server');
+  const slug = slugSegments.at(-1) ?? 'index';
   const page = source.getPage(
     getSourceSlugs({
       locale,
       slug,
+      slugSegments,
       tab,
     }),
     locale,
@@ -61,6 +63,7 @@ export async function loadDocsPagePayload(
   return {
     activePath: page.url,
     activeTab: tab,
+    contentPath: page.path,
     description: page.data.description,
     navigation: getPrevNextLinks(pageTree, page.url),
     pages: source.getPages(locale).map((item) => ({
@@ -68,7 +71,7 @@ export async function loadDocsPagePayload(
       title: item.data.title ?? item.slugs.at(-1) ?? item.url,
       url: item.url,
     })),
-    sidebar: getSidebarEntries(pageTree, tab),
+    sidebar: getSidebarNodes(pageTree, tab),
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
     title: page.data.title,

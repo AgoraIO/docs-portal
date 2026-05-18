@@ -12,6 +12,6 @@ description: 在移动端承接 AI 智能体体验时，优先考虑权限、音
 
 ## 推荐继续阅读
 
-- [Realtime audio](/zh-CN/realtime-media/audio-modality)
+- [Realtime audio](/zh-CN/realtime-media/speech-to-text/audio-modality)
 - [Handle interruption](/zh-CN/ai/interrupt-agent)
 - [Transcripts and subtitles](/zh-CN/ai/realtime-sub)

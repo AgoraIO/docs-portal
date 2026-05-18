@@ -1,5 +1,5 @@
 ---
-title: Realtime Transcription & Translation
+title: Transcription & Translation
 description: Ultra-low-latency speech transcription and translation for subtitles, multilingual communication, and voice understanding.
 ---
 

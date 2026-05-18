@@ -9,7 +9,7 @@ ASR turns user speech into text input. TTS turns the agent response back into au
 
 ## Related pages already in this repo
 
-- [Realtime audio](/en/realtime-media/audio-modality)
+- [Realtime audio](/en/realtime-media/speech-to-text/audio-modality)
 - [Configure LLM](/en/ai/custom-llm)
 - [Handle interruption](/en/ai/interrupt-agent)
 

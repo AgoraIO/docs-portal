@@ -13,6 +13,9 @@ describe('docs routing helpers', () => {
   it('builds canonical locale-tab paths', () => {
     expect(buildDocPath('en', 'introduction')).toBe('/en/introduction');
     expect(buildDocPath('en', 'ai', 'quick-start')).toBe('/en/ai/quick-start');
+    expect(buildDocPath('en', 'realtime-media', ['rtc', 'quick-start'])).toBe(
+      '/en/realtime-media/rtc/quick-start',
+    );
   });
 
   it('builds source slugs without index suffixes', () => {
@@ -22,12 +25,26 @@ describe('docs routing helpers', () => {
     expect(
       getSourceSlugs({ locale: 'zh-CN', tab: 'ai', slug: 'quick-start' }),
     ).toEqual(['ai', 'quick-start']);
+    expect(
+      getSourceSlugs({
+        locale: 'en',
+        tab: 'realtime-media',
+        slugSegments: ['rtc', 'quick-start'],
+      }),
+    ).toEqual(['realtime-media', 'rtc', 'quick-start']);
   });
 
   it('builds content path segments for slug pages', () => {
     expect(
       getContentPathSegments({ locale: 'en', tab: 'ai', slug: 'overview' }),
     ).toEqual(['en', 'ai', 'overview.md']);
+    expect(
+      getContentPathSegments({
+        locale: 'en',
+        tab: 'realtime-media',
+        slugSegments: ['rtc', 'quick-start'],
+      }),
+    ).toEqual(['en', 'realtime-media', 'rtc', 'quick-start.md']);
   });
 
   it('builds content path segments for tab index pages', () => {
@@ -45,6 +62,16 @@ describe('docs routing helpers', () => {
       'ai',
       'quick-start',
     ]);
+
+    expect(
+      getSourceSlugsFromContentPath(
+        'en/realtime-media/rtc/quick-start.md',
+      ),
+    ).toEqual(['realtime-media', 'rtc', 'quick-start']);
+
+    expect(
+      getSourceSlugsFromContentPath('en/realtime-media/rtc/index.md'),
+    ).toEqual(['realtime-media', 'rtc']);
   });
 
   it('replaces the locale in canonical doc paths', () => {
@@ -68,6 +95,7 @@ describe('docs routing helpers', () => {
       locale: '',
       tab: 'introduction',
       slug: 'index',
+      slugSegments: [],
     });
 
     expect(parseSourceSlugs(['api-reference', 'start-agent'])).toEqual(
@@ -75,6 +103,18 @@ describe('docs routing helpers', () => {
         locale: '',
         tab: 'api-reference',
         slug: 'start-agent',
+        slugSegments: ['start-agent'],
+      },
+    );
+
+    expect(
+      parseSourceSlugs(['realtime-media', 'rtc', 'quick-start']),
+    ).toEqual(
+      {
+        locale: '',
+        tab: 'realtime-media',
+        slug: 'quick-start',
+        slugSegments: ['rtc', 'quick-start'],
       },
     );
   });

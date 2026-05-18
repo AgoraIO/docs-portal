@@ -1,5 +1,5 @@
 ---
-title: Realtime Audio & Video
+title: Audio & Video
 description: Use this page to find the primary entry points for realtime audio-video interaction and understand how they relate to the ConvoAI docs in this repo.
 ---
 
@@ -19,7 +19,7 @@ Realtime audio and video provide the low-latency session layer behind calling, l
 This repo is currently centered on ConvoAI RESTful docs, so many AI-focused pages assume that the underlying RTC session, device permissions, and channel access are already working.
 
 - [Open the Conversational AI quickstart](/en/ai/quick-start)
-- [Open audio modality guidance](/en/realtime-media/audio-modality)
+- [Open audio modality guidance](/en/realtime-media/speech-to-text/audio-modality)
 
 ## Typical integration sequence
 

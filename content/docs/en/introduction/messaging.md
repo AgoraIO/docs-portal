@@ -1,5 +1,5 @@
 ---
-title: Realtime Messaging
+title: Messaging
 description: Use realtime messaging, state sync, and event coordination as the primary lens to understand what is already documented here and what lives in the broader Shengwang product docs.
 ---
 

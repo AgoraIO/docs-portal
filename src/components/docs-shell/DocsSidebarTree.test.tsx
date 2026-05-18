@@ -19,7 +19,7 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
   });
   const docsRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/$locale/$tab/$slug',
+    path: '/$locale/$tab/$',
     component: () => (
       <AppProviders>
         <SidebarProvider>
@@ -116,6 +116,36 @@ describe('DocsSidebarTree', () => {
     expect(await screen.findByRole('link', { name: 'Use RESTful API' })).toBeInTheDocument();
   });
 
+  it('opens the realtime section by default on the introduction index page', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/zh-CN/introduction/realtime-audio-video',
+            title: '音视频',
+            type: 'page',
+            url: '/zh-CN/introduction/realtime-audio-video',
+          },
+          {
+            id: '/zh-CN/introduction/messaging',
+            title: '消息',
+            type: 'page',
+            url: '/zh-CN/introduction/messaging',
+          },
+        ],
+        collapsible: true,
+        id: 'realtime',
+        title: '实时互动',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/zh-CN/introduction/index');
+
+    expect(await screen.findByRole('link', { name: '音视频' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: '消息' })).toBeInTheDocument();
+  });
+
   it('renders sdk quickstarts inside the getting started section', async () => {
     const tree: DocsSidebarNode[] = [
       {
@@ -176,5 +206,51 @@ describe('DocsSidebarTree', () => {
     });
 
     expect(restfulLink).not.toBeInTheDocument();
+  });
+
+  it('renders nested product sections with a second level of children', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [
+              {
+                id: '/zh-CN/realtime-media/online-ktv',
+                title: '总览',
+                type: 'page',
+                url: '/zh-CN/realtime-media/online-ktv',
+              },
+              {
+                children: [
+                  {
+                    id: '/zh-CN/realtime-media/online-ktv/scenario-api',
+                    title: '场景化 API',
+                    type: 'page',
+                    url: '/zh-CN/realtime-media/online-ktv/scenario-api',
+                  },
+                ],
+                collapsible: true,
+                id: 'nested-paths',
+                title: '产品路径',
+                type: 'section',
+              },
+            ],
+            collapsible: true,
+            id: 'online-ktv',
+            title: '在线 KTV',
+            type: 'section',
+          },
+        ],
+        collapsible: true,
+        id: 'products',
+        title: 'Products',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/zh-CN/realtime-media/online-ktv/scenario-api');
+
+    expect(await screen.findByRole('link', { name: '总览' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: '场景化 API' })).toBeInTheDocument();
   });
 });

@@ -18,12 +18,11 @@ This overview is the front door to the Introduction section. It helps readers bu
 - Platform orientation: [About Agora](/en/introduction/about-agora)
 - AI-first entry: [Start with AI](/en/introduction/start-with-ai)
 - Core capability domains:
-  - [AI Agent](/en/introduction/ai-agents)
-  - [Realtime Audio & Video](/en/introduction/realtime-audio-video)
-  - [Realtime Messaging](/en/introduction/messaging)
-  - [Realtime Transcription & Translation](/en/introduction/speech-to-text)
-  - Media Infrastructure: [Device-side Realtime Media Transport](/en/introduction/rtsa) / [Server-side Realtime Media Processing](/en/introduction/rtc-server-sdk) / [Live Streaming Distribution](/en/introduction/fusion-cdn)
-  - [Realtime Collaborative Whiteboard](/en/introduction/whiteboard)
+  - [Conversational AI](/en/introduction/ai-agents)
+  - Realtime: [Audio & Video](/en/introduction/realtime-audio-video) / [Messaging](/en/introduction/messaging)
+  - [Transcription & Translation](/en/introduction/speech-to-text)
+  - Media Infrastructure: [Device Media Transport](/en/introduction/rtsa) / [Server Media Processing](/en/introduction/rtc-server-sdk) / [Live Streaming Distribution](/en/introduction/fusion-cdn)
+  - [Collaborative Whiteboard](/en/introduction/whiteboard)
 
 ## Why this page exists
 

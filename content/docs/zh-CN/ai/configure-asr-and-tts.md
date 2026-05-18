@@ -9,7 +9,7 @@ ASR 决定用户语音如何变成文本输入，TTS 决定智能体如何把生
 
 ## 当前仓库里的相关页面
 
-- [实时音频能力](/zh-CN/realtime-media/audio-modality)
+- [实时音频能力](/zh-CN/realtime-media/speech-to-text/audio-modality)
 - [配置大模型](/zh-CN/ai/custom-llm)
 - [处理打断](/zh-CN/ai/interrupt-agent)
 

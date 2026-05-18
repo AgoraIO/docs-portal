@@ -31,5 +31,5 @@ AI 智能体不是一个只在服务端运行的孤立机器人，而是实时�
 ## 推荐继续阅读
 
 - [智能体如何工作](/zh-CN/ai/concepts)
-- [实时音频能力](/zh-CN/realtime-media/audio-modality)
+- [实时音频能力](/zh-CN/realtime-media/speech-to-text/audio-modality)
 - [业务数据](/zh-CN/ai/custom-data)

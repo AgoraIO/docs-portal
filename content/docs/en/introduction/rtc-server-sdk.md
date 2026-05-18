@@ -1,5 +1,5 @@
 ---
-title: Server-side Realtime Media Processing
+title: Server Media Processing
 description: A capability entry point for backend media flow handling and server-side RTC control.
 ---
 

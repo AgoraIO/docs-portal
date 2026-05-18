@@ -1,5 +1,5 @@
 ---
-title: Realtime Collaborative Whiteboard
+title: Collaborative Whiteboard
 description: Realtime whiteboard collaboration for teaching, annotation, and shared visual interaction.
 ---
 

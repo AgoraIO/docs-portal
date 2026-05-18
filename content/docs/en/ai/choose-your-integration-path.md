@@ -25,7 +25,7 @@ Start from REST APIs or server SDKs:
 
 Add client-facing guides for audio, subtitles, and business state:
 
-- [Realtime audio](/en/realtime-media/audio-modality)
+- [Realtime audio](/en/realtime-media/speech-to-text/audio-modality)
 - [Transcripts and subtitles](/en/ai/realtime-sub)
 - [Business data](/en/ai/custom-data)
 

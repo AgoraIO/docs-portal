@@ -8,8 +8,10 @@ export const getDocsTabIndex = createServerFn({ method: 'GET' })
   });
 
 export const getDocsPagePayload = createServerFn({ method: 'GET' })
-  .inputValidator((data: { locale: string; slug: string; tab: string }) => data)
+  .inputValidator(
+    (data: { locale: string; slugSegments: string[]; tab: string }) => data,
+  )
   .handler(async ({ data }) => {
     const { loadDocsPagePayload } = await import('./docs-page.server');
-    return loadDocsPagePayload(data.locale, data.tab, data.slug);
+    return loadDocsPagePayload(data.locale, data.tab, data.slugSegments);
   });

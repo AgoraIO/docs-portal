@@ -7,15 +7,43 @@ import {
 export type DocsRoute = {
   locale: string;
   slug?: string;
+  slugSegments?: string[];
   tab: string;
 };
 
-export function buildDocPath(locale: string, tab: string, slug?: string) {
-  if (!slug || slug === 'index') {
+function normalizeSlugSegments(route: Pick<DocsRoute, 'slug' | 'slugSegments'>) {
+  if (Array.isArray(route.slugSegments) && route.slugSegments.length > 0) {
+    const segments = route.slugSegments.filter(Boolean);
+    if (segments.length === 1 && segments[0] === 'index') {
+      return [];
+    }
+
+    return segments;
+  }
+
+  if (!route.slug || route.slug === 'index') {
+    return [];
+  }
+
+  return [route.slug];
+}
+
+export function buildDocPath(
+  locale: string,
+  tab: string,
+  slug?: string | string[],
+) {
+  const slugSegments = Array.isArray(slug)
+    ? slug.filter(Boolean)
+    : !slug || slug === 'index'
+      ? []
+      : [slug];
+
+  if (slugSegments.length === 0) {
     return `/${locale}/${tab}`;
   }
 
-  return `/${locale}/${tab}/${slug}`;
+  return `/${locale}/${tab}/${slugSegments.join('/')}`;
 }
 
 export function isSupportedDocLocale(locale: string) {
@@ -24,9 +52,10 @@ export function isSupportedDocLocale(locale: string) {
 
 export function getSourceSlugs(route: DocsRoute) {
   const slugs = [route.tab];
+  const slugSegments = normalizeSlugSegments(route);
 
-  if (route.slug && route.slug !== 'index') {
-    slugs.push(route.slug);
+  if (slugSegments.length > 0) {
+    slugs.push(...slugSegments);
   }
 
   return slugs;
@@ -35,8 +64,9 @@ export function getSourceSlugs(route: DocsRoute) {
 export function getContentPathSegments(route: DocsRoute) {
   const sourceSlugs = getSourceSlugs(route);
   const leaf = sourceSlugs.at(-1);
+  const slugSegments = normalizeSlugSegments(route);
 
-  if (route.slug && route.slug !== 'index') {
+  if (slugSegments.length > 0) {
     return [route.locale, ...sourceSlugs.slice(0, -1), `${leaf}.md`];
   }
 
@@ -70,18 +100,19 @@ export function replaceDocLocale(path: string, nextLocale: AppLocale) {
 
 export function getSourceSlugsFromContentPath(path: string) {
   const segments = path.split('/').filter(Boolean);
-  const [locale, tab, fileName] = segments;
+  const [locale, tab, ...rest] = segments;
+  const fileName = rest.at(-1);
 
   if (!locale || !tab || !fileName) {
     return [];
   }
 
   if (fileName === 'index.md') {
-    return [tab];
+    return [tab, ...rest.slice(0, -1)];
   }
 
   if (fileName.endsWith('.md')) {
-    return [tab, fileName.slice(0, -3)];
+    return [tab, ...rest.slice(0, -1), fileName.slice(0, -3)];
   }
 
   return [];
@@ -93,5 +124,6 @@ export function parseSourceSlugs(slugs: string[]) {
     locale: '',
     tab,
     slug: rest.at(-1) ?? 'index',
+    slugSegments: rest,
   };
 }

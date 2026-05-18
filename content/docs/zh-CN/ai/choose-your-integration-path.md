@@ -25,7 +25,7 @@ description: 在 Agent Studio、REST API、服务端 SDK、客户端接入和 De
 
 优先补客户端接入、实时音频、字幕与业务状态同步能力：
 
-- [实时音频能力](/zh-CN/realtime-media/audio-modality)
+- [实时音频能力](/zh-CN/realtime-media/speech-to-text/audio-modality)
 - [字幕与转写](/zh-CN/ai/realtime-sub)
 - [业务数据](/zh-CN/ai/custom-data)
 

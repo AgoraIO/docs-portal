@@ -135,10 +135,11 @@ describe('loadDocsPagePayload', () => {
 
   it('falls back to generating TOC from processed markdown', async () => {
     await expect(
-      loadDocsPagePayload('en', 'introduction', 'about-agora'),
+      loadDocsPagePayload('en', 'introduction', ['about-agora']),
     ).resolves.toMatchObject({
       activePath: '/en/introduction/about-agora',
       activeTab: 'introduction',
+      contentPath: 'en/introduction/about-agora.md',
       slug: 'about-agora',
       title: 'About Agora',
       toc: [
@@ -153,6 +154,37 @@ describe('loadDocsPagePayload', () => {
           url: '#why',
         },
       ],
+    });
+  });
+
+  it('loads nested product pages from multi-segment slugs', async () => {
+    const basePage = createPage();
+    const nestedPage = {
+      ...basePage,
+      data: {
+        ...basePage.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/realtime-media/rtc/quick-start.md',
+          path: 'en/realtime-media/rtc/quick-start.md',
+        },
+        title: 'RTC Quick Start',
+      },
+      path: 'en/realtime-media/rtc/quick-start.md',
+      slugs: ['en', 'realtime-media', 'rtc', 'quick-start'],
+      url: '/en/realtime-media/rtc/quick-start',
+    };
+
+    mockedGetPage.mockReturnValue(nestedPage as ReturnType<typeof createPage>);
+    mockedGetPages.mockReturnValue([nestedPage as ReturnType<typeof createPage>]);
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', ['rtc', 'quick-start']),
+    ).resolves.toMatchObject({
+      activePath: '/en/realtime-media/rtc/quick-start',
+      activeTab: 'realtime-media',
+      contentPath: 'en/realtime-media/rtc/quick-start.md',
+      slug: 'quick-start',
+      title: 'RTC Quick Start',
     });
   });
 });
