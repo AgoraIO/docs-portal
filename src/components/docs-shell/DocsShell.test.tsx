@@ -16,7 +16,7 @@ import {
 } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
-import type { SidebarEntry, TabSummary } from '@/lib/docs-tree';
+import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import { i18n } from '@/lib/i18n/i18n';
 import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
 import { DocsShell } from './DocsShell';
@@ -34,7 +34,7 @@ const tabs: TabSummary[] = [
   },
 ];
 
-const sidebar: SidebarEntry[] = [
+const sidebar: DocsSidebarNode[] = [
   {
     id: 'intro',
     title: 'Introduction',
@@ -42,15 +42,18 @@ const sidebar: SidebarEntry[] = [
     url: '/en/introduction',
   },
   {
-    id: 'sep-guides',
+    children: [
+      {
+        id: 'quick-start',
+        title: 'Quick Start',
+        type: 'page',
+        url: '/en/introduction/quick-start',
+      },
+    ],
+    collapsible: false,
     title: 'Guides',
-    type: 'separator',
-  },
-  {
-    id: 'quick-start',
-    title: 'Quick Start',
-    type: 'page',
-    url: '/en/introduction/quick-start',
+    type: 'section',
+    id: 'guides-section',
   },
 ];
 

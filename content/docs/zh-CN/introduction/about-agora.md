@@ -58,10 +58,9 @@ Agora 是一套面向实时互动的开发平台，用来构建对话式 AI、�
 
 如果你已经建立了基本认知，下一步建议按下面顺序继续阅读：
 
-1. 先看 [产品概览](/zh-CN/ai/product-overview)，理解当前对话式 AI 引擎到底覆盖什么。
-2. 再看 [按能力浏览](/zh-CN/introduction/browse-by-capability)，判断你当前问题更接近哪个能力域。
-3. 如果你准备直接开始接入，进入 [快速开始](/zh-CN/ai/quick-start)。
-4. 如果你已经进入服务端集成阶段，继续看 [API 参考](/zh-CN/api-reference) 和 [创建智能体](/zh-CN/api-reference/start-agent)。
-5. 如果你关注上线与生产治理，再进入 [计费说明](/zh-CN/ai/billing)、[HTTP 基础认证](/zh-CN/best-practices/http-basic-auth) 和 [发版说明](/zh-CN/best-practices/release-notes)。
+1. 先看 [AI 介绍](/zh-CN/ai)，理解当前对话式 AI 引擎到底覆盖什么。
+2. 如果你准备直接开始接入，进入 [快速开始](/zh-CN/ai/quick-start)。
+3. 如果你已经进入服务端集成阶段，继续看 [API 参考](/zh-CN/api-reference) 和 [创建智能体](/zh-CN/api-reference/start-agent)。
+4. 如果你关注上线与生产治理，再进入 [计费说明](/zh-CN/ai/billing)、[HTTP 基础认证](/zh-CN/best-practices/http-basic-auth) 和 [发版说明](/zh-CN/best-practices/release-notes)。
 
 这篇页面的目标不是替代产品文档，而是帮你先建立整体地图。真正开始动手时，再进入更细的能力页、操作页和运维页会更高效。

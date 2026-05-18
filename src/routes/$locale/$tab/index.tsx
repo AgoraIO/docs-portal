@@ -2,7 +2,7 @@ import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { DocsShell } from '@/components/docs-shell/DocsShell';
 import { getDocsPagePayload, getDocsTabIndex } from '@/lib/docs-page';
-import { getContentPath, isSupportedDocLocale } from '@/lib/docs-routing';
+import { isSupportedDocLocale } from '@/lib/docs-routing';
 
 export const Route = createFileRoute('/$locale/$tab/')({
   loader: async ({ params }) => {
@@ -25,7 +25,7 @@ export const Route = createFileRoute('/$locale/$tab/')({
       const payload = await getDocsPagePayload({
         data: {
           locale: params.locale,
-          slug: 'index',
+          slugSegments: [],
           tab: params.tab,
         },
       });
@@ -35,10 +35,6 @@ export const Route = createFileRoute('/$locale/$tab/')({
       }
 
       return {
-        contentPath: getContentPath({
-          locale: params.locale,
-          tab: params.tab,
-        }),
         ...payload,
       };
     }

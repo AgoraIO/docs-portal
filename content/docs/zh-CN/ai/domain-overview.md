@@ -7,7 +7,7 @@ description: 围绕 ConvoAI、Toybox 和 Agent 集成组织文档，帮助开发
 
 当前 AI 相关内容主要来自 ConvoAI 和 Toybox。ConvoAI 负责对话式 AI 引擎，Toybox 更偏硬件与套件化接入路径。
 
-- [查看 ConvoAI 产品概览](/zh-CN/ai/product-overview)
+- [查看 ConvoAI 介绍](/zh-CN/ai)
 - [查看 Toybox 概览](/zh-CN/solutions/device-ai)
 
 ## 推荐内容结构

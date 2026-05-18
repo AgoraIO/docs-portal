@@ -1,5 +1,5 @@
 ---
-title: Client component API
+title: 客户端组件 API
 description: 当前仓库里的客户端组件能力主要散落在功能指南中，这页帮助你先找到最相关的入口。
 ---
 
@@ -9,10 +9,10 @@ description: 当前仓库里的客户端组件能力主要散落在功能指南�
 
 ## 当前仓库里最相关的页面
 
-- [Transcripts and subtitles](/zh-CN/ai/realtime-sub)
-- [Send custom messages](/zh-CN/ai/send-multimodal-message)
-- [Handle interruption](/zh-CN/ai/interrupt-agent)
-- [Events and webhooks](/zh-CN/ai/listen-agent-events)
+- [实时字幕](/zh-CN/ai/realtime-sub)
+- [发送自定义消息](/zh-CN/ai/send-multimodal-message)
+- [处理打断](/zh-CN/ai/interrupt-agent)
+- [事件与 Webhook](/zh-CN/ai/listen-agent-events)
 
 ## 继续阅读
 

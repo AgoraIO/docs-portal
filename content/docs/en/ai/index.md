@@ -1,55 +1,43 @@
 ---
 title: Introduction
-description: Build voice AI agents that join Agora realtime channels, talk naturally with users, and send events back to your app and backend.
+description: The Agora Conversational AI Engine redefines human-computer interaction with lifelike, natural realtime voice conversations that move beyond traditional text-based interfaces.
 ---
 
-## What AI agents are
+The Agora Conversational AI Engine redefines human-computer interaction with lifelike, natural realtime voice conversations that move beyond traditional text-based interfaces. It supports personalized voices, emotional expression, and deep multi-turn understanding, giving AI agents stronger expressiveness and a more engaging interactive presence. It fits scenarios such as smart assistants, emotional companions, spoken-language coaching, intelligent customer service, smart hardware, and immersive NPC experiences.
 
-Agora AI agents are realtime participants inside your session. They can join a channel, listen to user audio, run ASR, call an LLM, speak through TTS, and send status, transcript, error, and lifecycle events back to your product.
+![Conversational AI Engine architecture](https://doc.shengwang.cn/img/convoai/tech-arch.png)
 
-Unlike a detached chatbot, the agent lives inside the same realtime context as the user, the client app, and your backend.
+## Product advantages
 
-## Why start here
+The Agora Conversational AI Engine offers the following advantages:
 
-This Introduction page is not meant to replace every detailed guide. Its job is to establish the core map:
+- **Ultra-low latency**: Deep end-to-end optimization reduces response latency to as low as 650 ms for smooth, natural conversations.
+- **Selective attention lock**: Filters out 95% of surrounding voices and noise to focus precisely on the intended speaker.
+- **Graceful interruption**: 340 ms interruption response closely matches real human conversation timing.
+- **Packet-loss resilience**: Maintains stable, fluid conversations even with 80% packet loss, and can continue responding after 3-5 seconds of network disruption.
+- **Flexible extensibility**: Works with leading global LLM and TTS providers to support different product and business needs.
+- **Fast integration**: Build a conversational AI agent quickly with minimal code and setup time.
 
-- how an agent joins an Agora channel
-- how your backend starts, updates, stops, and queries it
-- where models, voice, context, and events fit
-- whether your next page should be Agent Studio, the quickstart, the REST API, or client integration
+## Supported capabilities
 
-## How AI agents connect to Agora
+With AI and large-model support, the Conversational AI Engine can provide the following capabilities:
 
-### 1. Your app creates or joins a channel
+| Capability | Description |
+| --- | --- |
+| AI realtime voice conversation | Users can speak with an AI agent naturally, as if talking to a real person. |
+| Voice interruption | Users can interrupt the AI agent at any time, and the system responds quickly to keep conversations efficient and fluid. |
+| AI noise reduction | Intelligently filters environmental noise to improve interaction accuracy. |
+| Background voice suppression | Separates the target speaker from background voices to keep conversations clear and distraction-free. |
+| Realtime subtitles | Converts speech to text in realtime and supports synchronized subtitles. |
 
-Users connect through the same Agora realtime channel from web, mobile, or device surfaces.
+## Use cases
 
-### 2. Your backend starts an agent session
+The Agora Conversational AI Engine fits a wide range of scenarios and empowers AI agent experiences across industries:
 
-The backend owns credentials, lifecycle control, model configuration, and business rules, using REST APIs or server SDKs to start the agent.
-
-### 3. The agent joins as a participant
-
-Because the agent is in the same channel, it can receive audio, speak back, and synchronize state like a real participant.
-
-### 4. Audio flows through ASR, LLM, and TTS
-
-User speech becomes text, the model decides the next action, and the response is spoken back into the channel.
-
-### 5. Events return to your app
-
-Transcripts, status changes, interruptions, errors, turn data, and webhook callbacks keep your product state in sync.
-
-## Recommended pages already available in this repo
-
-- [Voice AI quickstart](/en/ai/quick-start)
-- [Start with Agent Studio](/en/ai/start-with-agent-studio)
-- [Set up project and credentials](/en/ai/enable-service)
-- [How agents work](/en/ai/concepts)
-- [Events and webhooks](/en/api-reference/ncs-events)
-
-## Recommended next step
-
-If you want the fastest path to a live conversation, open the quickstart first.
-
-If you want to prototype the agent experience in the browser before deeper integration, start with Agent Studio.
+| Use case | Description |
+| --- | --- |
+| Smart assistant | Uses natural language interaction to help users manage schedules, retrieve information, and complete tasks, improving convenience and efficiency. |
+| Emotional companion | Delivers emotionally expressive conversations and interaction to reduce loneliness and support companionship needs. |
+| Spoken-language coaching | Simulates real conversation scenarios and provides realtime feedback and correction to help users improve spoken language skills. |
+| Intelligent customer service | Replaces human agents for automated inquiry and complaint handling, delivering 24/7 immediate response while reducing operating cost and improving customer satisfaction. |
+| Smart hardware | Embeds conversational AI into devices for voice control, intelligent monitoring, companionship, and personalized services, upgrading devices into smart hardware experiences. |

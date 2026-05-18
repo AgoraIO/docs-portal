@@ -1,6 +1,7 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import {
+  getSidebarNodes,
   getSidebarEntries,
   getTabSummaries,
   mapSidebarEntriesToTree,
@@ -147,6 +148,125 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('builds recursive sidebar nodes from nested product folders', () => {
+    const productTree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'realtime-folder',
+              children: [
+                {
+                  $id: 'online-ktv-folder',
+                  children: [
+                    {
+                      $id: 'uikit-folder',
+                      children: [
+                        {
+                          $id: 'uikit-overview-folder',
+                          children: [
+                            {
+                              $id: 'uikit-overview-introduction',
+                              name: 'Introduction',
+                              type: 'page',
+                              url: '/en/realtime-media/online-ktv/uikit/overview/introduction',
+                            },
+                          ],
+                          name: 'Overview',
+                          type: 'folder',
+                        },
+                      ],
+                      index: {
+                        $id: 'uikit-index',
+                        name: 'UIKit Open Source',
+                        type: 'page',
+                        url: '/en/realtime-media/online-ktv/uikit',
+                      },
+                      name: 'UIKit Open Source',
+                      type: 'folder',
+                    },
+                  ],
+                  index: {
+                    $id: 'online-ktv-index',
+                    name: 'Online KTV',
+                    type: 'page',
+                    url: '/en/realtime-media/online-ktv',
+                  },
+                  name: 'Online KTV',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'realtime-index',
+                name: 'Realtime & Media',
+                type: 'page',
+                url: '/en/realtime-media',
+              },
+              name: 'Realtime & Media',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(getSidebarNodes(productTree, 'realtime-media')).toEqual([
+      {
+        id: '/en/realtime-media',
+        title: 'Realtime & Media',
+        type: 'page',
+        url: '/en/realtime-media',
+      },
+      {
+        children: [
+          {
+            id: '/en/realtime-media/online-ktv',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/realtime-media/online-ktv',
+          },
+          {
+            children: [
+              {
+                id: '/en/realtime-media/online-ktv/uikit',
+                title: 'Overview',
+                type: 'page',
+                url: '/en/realtime-media/online-ktv/uikit',
+              },
+              {
+                children: [
+                  {
+                    id: '/en/realtime-media/online-ktv/uikit/overview/introduction',
+                    title: 'Introduction',
+                    type: 'page',
+                    url: '/en/realtime-media/online-ktv/uikit/overview/introduction',
+                  },
+                ],
+                collapsible: true,
+                id: 'folder-uikit-overview-folder',
+                title: 'Overview',
+                type: 'section',
+              },
+            ],
+            collapsible: true,
+            id: 'folder-uikit-folder',
+            title: 'UIKit Open Source',
+            type: 'section',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-online-ktv-folder',
+        title: 'Online KTV',
+        type: 'section',
+      },
+    ]);
+  });
+
   it('maps grouped sidebar entries into section nodes', () => {
     expect(
       mapSidebarEntriesToTree([
@@ -184,8 +304,289 @@ describe('docs tree helpers', () => {
             url: '/en/introduction/install',
           },
         ],
+        collapsible: false,
         id: 'get-started',
         title: 'Get Started',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('preserves folder structure as a collapsible product directory', () => {
+    const productTree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'realtime-folder',
+              children: [
+                {
+                  $id: 'rtc-folder',
+                  children: [
+                    {
+                      $id: 'rtc-quick-start',
+                      name: 'Quick Start',
+                      type: 'page',
+                      url: '/en/realtime-media/rtc/quick-start',
+                    },
+                  ],
+                  index: {
+                    $id: 'rtc-index',
+                    name: 'Realtime RTC',
+                    type: 'page',
+                    url: '/en/realtime-media/rtc',
+                  },
+                  name: 'Realtime RTC',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'realtime-index',
+                name: 'Realtime & Media',
+                type: 'page',
+                url: '/en/realtime-media',
+              },
+              name: 'Realtime & Media',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(
+      mapSidebarEntriesToTree(getSidebarEntries(productTree, 'realtime-media')),
+    ).toEqual([
+      {
+        id: '/en/realtime-media',
+        title: 'Realtime & Media',
+        type: 'page',
+        url: '/en/realtime-media',
+      },
+      {
+        children: [
+          {
+            id: '/en/realtime-media/rtc',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/realtime-media/rtc',
+          },
+          {
+            id: '/en/realtime-media/rtc/quick-start',
+            title: 'Quick Start',
+            type: 'page',
+            url: '/en/realtime-media/rtc/quick-start',
+          },
+        ],
+        collapsible: true,
+        id: 'separator-rtc-folder',
+        title: 'Realtime RTC',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('keeps a product folder visible even when it only has an index page', () => {
+    const productTree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'realtime-folder',
+              children: [
+                {
+                  $id: 'rtm-folder',
+                  children: [],
+                  index: {
+                    $id: 'rtm-index',
+                    name: 'Realtime Messaging RTM',
+                    type: 'page',
+                    url: '/en/realtime-media/rtm',
+                  },
+                  name: 'Realtime Messaging RTM',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'realtime-index',
+                name: 'Realtime & Media',
+                type: 'page',
+                url: '/en/realtime-media',
+              },
+              name: 'Realtime & Media',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(
+      mapSidebarEntriesToTree(getSidebarEntries(productTree, 'realtime-media')),
+    ).toEqual([
+      {
+        id: '/en/realtime-media',
+        title: 'Realtime & Media',
+        type: 'page',
+        url: '/en/realtime-media',
+      },
+      {
+        children: [
+          {
+            id: '/en/realtime-media/rtm',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/realtime-media/rtm',
+          },
+        ],
+        collapsible: true,
+        id: 'separator-rtm-folder',
+        title: 'Realtime Messaging RTM',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('marks the media infrastructure section as collapsible', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'media-infra',
+          title: '媒体基础设施',
+          type: 'separator',
+        },
+        {
+          id: '/zh-CN/introduction/rtsa',
+          title: '设备侧实时媒体传输',
+          type: 'page',
+          url: '/zh-CN/introduction/rtsa',
+        },
+      ]),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/zh-CN/introduction/rtsa',
+            title: '设备侧实时媒体传输',
+            type: 'page',
+            url: '/zh-CN/introduction/rtsa',
+          },
+        ],
+        collapsible: true,
+        id: 'media-infra',
+        title: '媒体基础设施',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('marks the realtime section as collapsible', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'realtime',
+          title: 'Realtime',
+          type: 'separator',
+        },
+        {
+          id: '/en/introduction/realtime-audio-video',
+          title: 'Audio & Video',
+          type: 'page',
+          url: '/en/introduction/realtime-audio-video',
+        },
+        {
+          id: '/en/introduction/messaging',
+          title: 'Messaging',
+          type: 'page',
+          url: '/en/introduction/messaging',
+        },
+      ]),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/en/introduction/realtime-audio-video',
+            title: 'Audio & Video',
+            type: 'page',
+            url: '/en/introduction/realtime-audio-video',
+          },
+          {
+            id: '/en/introduction/messaging',
+            title: 'Messaging',
+            type: 'page',
+            url: '/en/introduction/messaging',
+          },
+        ],
+        collapsible: true,
+        id: 'realtime',
+        title: 'Realtime',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('marks the extensions section as collapsible', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'extensions',
+          title: '扩展能力',
+          type: 'separator',
+        },
+        {
+          id: '/zh-CN/introduction/whiteboard',
+          title: '实时协作白板',
+          type: 'page',
+          url: '/zh-CN/introduction/whiteboard',
+        },
+        {
+          id: '/zh-CN/introduction/recording',
+          title: '云端/本地录制',
+          type: 'page',
+          url: '/zh-CN/introduction/recording',
+        },
+        {
+          id: '/zh-CN/introduction/ppt-transcoding',
+          title: 'PPT 转码',
+          type: 'page',
+          url: '/zh-CN/introduction/ppt-transcoding',
+        },
+      ]),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/zh-CN/introduction/whiteboard',
+            title: '实时协作白板',
+            type: 'page',
+            url: '/zh-CN/introduction/whiteboard',
+          },
+          {
+            id: '/zh-CN/introduction/recording',
+            title: '云端/本地录制',
+            type: 'page',
+            url: '/zh-CN/introduction/recording',
+          },
+          {
+            id: '/zh-CN/introduction/ppt-transcoding',
+            title: 'PPT 转码',
+            type: 'page',
+            url: '/zh-CN/introduction/ppt-transcoding',
+          },
+        ],
+        collapsible: true,
+        id: 'extensions',
+        title: '扩展能力',
         type: 'section',
       },
     ]);
@@ -240,6 +641,7 @@ describe('docs tree helpers', () => {
             url: '/en/introduction/advanced',
           },
         ],
+        collapsible: false,
         id: 'guides',
         title: 'Guides',
         type: 'section',
@@ -275,6 +677,7 @@ describe('docs tree helpers', () => {
             url: '/en/reference/really-long-page-title',
           },
         ],
+        collapsible: false,
         id: 'reference',
         title: 'Reference',
         type: 'section',
@@ -307,6 +710,7 @@ describe('docs tree helpers', () => {
             url: '/en/guides/install',
           },
         ],
+        collapsible: false,
         id: 'separator-Get Started',
         title: 'Get Started',
         type: 'section',
@@ -320,6 +724,7 @@ describe('docs tree helpers', () => {
             url: '/en/guides/api',
           },
         ],
+        collapsible: false,
         id: 'separator-Reference',
         title: 'Reference',
         type: 'section',
@@ -362,9 +767,40 @@ describe('docs tree helpers', () => {
             url: '/en/reference/api',
           },
         ],
+        collapsible: false,
         id: 'reference',
         title: 'Reference',
         type: 'section',
+      },
+    ]);
+  });
+
+  it('treats an unnamed separator as a section boundary without creating an empty section', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'media',
+          title: '媒体基础设施',
+          type: 'separator',
+        },
+        {
+          id: 'end-media',
+          title: '',
+          type: 'separator',
+        },
+        {
+          id: '/zh-CN/introduction/whiteboard',
+          title: '实时协作白板',
+          type: 'page',
+          url: '/zh-CN/introduction/whiteboard',
+        },
+      ]),
+    ).toEqual([
+      {
+        id: '/zh-CN/introduction/whiteboard',
+        title: '实时协作白板',
+        type: 'page',
+        url: '/zh-CN/introduction/whiteboard',
       },
     ]);
   });

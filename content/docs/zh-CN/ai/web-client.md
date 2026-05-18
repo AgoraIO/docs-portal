@@ -1,5 +1,5 @@
 ---
-title: Web client
+title: Web 客户端
 description: 把 AI 智能体接到 Web 端时，建议优先确认的接入层、事件层和展示层要点。
 ---
 
@@ -12,9 +12,9 @@ description: 把 AI 智能体接到 Web 端时，建议优先确认的接入层�
 
 ## 建议先看的页面
 
-- [Realtime audio](/zh-CN/realtime-media/audio-modality)
-- [Transcripts and subtitles](/zh-CN/ai/realtime-sub)
-- [Events and webhooks](/zh-CN/api-reference/ncs-events)
+- [实时音频能力](/zh-CN/realtime-media/speech-to-text/audio-modality)
+- [字幕与转写](/zh-CN/ai/realtime-sub)
+- [事件与 Webhook](/zh-CN/api-reference/ncs-events)
 
 ## 设计建议
 

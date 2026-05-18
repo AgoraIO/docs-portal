@@ -7,7 +7,7 @@ description: Organize AI docs around ConvoAI, Toybox, and agent workflows so tea
 
 Today the AI surface is centered on ConvoAI and Toybox. ConvoAI covers the realtime engine, while Toybox supports hardware-oriented and kit-based integrations.
 
-- [View ConvoAI overview](/en/ai/product-overview)
+- [View the ConvoAI introduction](/en/ai)
 - [View Toybox overview](/en/solutions/device-ai)
 
 ## Suggested structure

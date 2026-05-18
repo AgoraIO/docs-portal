@@ -31,7 +31,7 @@ import {
 } from '@/components/ui/sidebar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { replaceDocLocale } from '@/lib/docs-routing';
-import type { SidebarEntry, TabSummary } from '@/lib/docs-tree';
+import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from '@/lib/i18n/i18n-config';
 import { useLocale } from '@/lib/i18n/use-locale';
 import { DocsMainColumn } from './DocsMainColumn';
@@ -58,7 +58,7 @@ export function DocsShell({
   pages: SearchEntry[];
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
-  sidebar: SidebarEntry[];
+  sidebar: DocsSidebarNode[];
   tabs: TabSummary[];
   toc: TOCItemType[];
 }) {
@@ -228,7 +228,7 @@ export function DocsShell({
           <DocsSidebar
             activePath={activePath}
             activeTab={activeTab}
-            entries={sidebar}
+            nodes={sidebar}
             onSelectPath={() => setIsMobileSheetOpen(false)}
           />
           <DocsMainColumn next={next} previous={previous}>
@@ -358,7 +358,7 @@ function MobileSidebar({
   isDarkTheme: boolean;
   onSelectLocale: (locale: AppLocale) => Promise<void>;
   onSelectPath: () => void;
-  sidebar: SidebarEntry[];
+  sidebar: DocsSidebarNode[];
   themeLabel: string;
   tabs: TabSummary[];
   toggleTheme: () => void;
@@ -399,31 +399,14 @@ function MobileSidebar({
               {t('docs.pagesLabel')}
             </p>
             <div className="flex flex-col gap-1">
-              {sidebar.map((entry) =>
-                entry.type === 'separator' ? (
-                  <p
-                    className="mt-3 px-3 text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground"
-                    key={entry.id}
-                  >
-                    {entry.title.replaceAll('-', ' ')}
-                  </p>
-                ) : (
-                  <Link
-                    className={`rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent ${
-                      entry.url === activePath
-                        ? 'bg-accent text-foreground'
-                        : 'text-muted-foreground'
-                    }`}
-                    key={entry.id}
-                    onClick={onSelectPath}
-                    params={{}}
-                    search={{}}
-                    to={entry.url}
-                  >
-                    {entry.title}
-                  </Link>
-                ),
-              )}
+              {sidebar.map((node) => (
+                <MobileSidebarNode
+                  activePath={activePath}
+                  key={node.id}
+                  node={node}
+                  onSelectPath={onSelectPath}
+                />
+              ))}
             </div>
           </div>
           <div className="flex flex-col gap-2 border-t border-border pt-4">
@@ -447,6 +430,52 @@ function MobileSidebar({
           </div>
         </div>
       </ScrollArea>
+    </div>
+  );
+}
+
+function MobileSidebarNode({
+  activePath,
+  node,
+  onSelectPath,
+}: {
+  activePath: string;
+  node: DocsSidebarNode;
+  onSelectPath: () => void;
+}) {
+  if (node.type === 'page') {
+    return (
+      <Link
+        className={`rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent ${
+          node.url === activePath
+            ? 'bg-accent text-foreground'
+            : 'text-muted-foreground'
+        }`}
+        onClick={onSelectPath}
+        params={{}}
+        search={{}}
+        to={node.url}
+      >
+        {node.title}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-1">
+      <p className="mt-3 px-3 text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
+        {node.title.replaceAll('-', ' ')}
+      </p>
+      <div className="flex flex-col gap-1 pl-2">
+        {node.children.map((child) => (
+          <MobileSidebarNode
+            activePath={activePath}
+            key={child.id}
+            node={child}
+            onSelectPath={onSelectPath}
+          />
+        ))}
+      </div>
     </div>
   );
 }

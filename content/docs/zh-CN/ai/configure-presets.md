@@ -1,5 +1,5 @@
 ---
-title: Configure presets
+title: 配置预设
 description: 用预设配置把常见场景的语音、模型和会话参数整理成更容易复用的接入方式。
 ---
 
@@ -16,9 +16,9 @@ description: 用预设配置把常见场景的语音、模型和会话参数整�
 
 ## 推荐先看的页面
 
-- [Configure LLM](/zh-CN/ai/custom-llm)
-- [Configure ASR and TTS](/zh-CN/ai/configure-asr-and-tts)
-- [Manage memory and context](/zh-CN/ai/short-term-memory)
+- [配置大模型](/zh-CN/ai/custom-llm)
+- [配置 ASR 与 TTS](/zh-CN/ai/configure-asr-and-tts)
+- [管理记忆与上下文](/zh-CN/ai/short-term-memory)
 
 ## 实践建议
 

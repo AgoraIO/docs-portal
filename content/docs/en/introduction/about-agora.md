@@ -58,10 +58,9 @@ You do not need to master every layer on day one, but you should know how the la
 
 Once the overall picture is clear, the best next reading path is:
 
-1. Start with the [product overview](/en/ai/product-overview) to understand the current Conversational AI Engine surface.
-2. Move to [browse by capability](/en/introduction/browse-by-capability) to decide which domain best matches your current task.
-3. If you are ready to build, continue into the [quickstart](/en/ai/quick-start).
-4. If you are moving into backend integration, go deeper into [API reference](/en/api-reference) and [create agent](/en/api-reference/start-agent).
-5. If you are preparing for production, continue into [billing](/en/ai/billing), [HTTP basic auth](/en/best-practices/http-basic-auth), and [release notes](/en/best-practices/release-notes).
+1. Start with the [AI introduction](/en/ai) to understand the current Conversational AI Engine surface.
+2. If you are ready to build, continue into the [quickstart](/en/ai/quick-start).
+3. If you are moving into backend integration, go deeper into [API reference](/en/api-reference) and [create agent](/en/api-reference/start-agent).
+4. If you are preparing for production, continue into [billing](/en/ai/billing), [HTTP basic auth](/en/best-practices/http-basic-auth), and [release notes](/en/best-practices/release-notes).
 
 This page is not meant to replace the product docs. Its job is to give you the map first, so the deeper guides make more sense when you enter them.

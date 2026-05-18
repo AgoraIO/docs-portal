@@ -12,7 +12,7 @@ description: Focus on the transport, event, and UI layers that matter most when 
 
 ## Recommended pages first
 
-- [Realtime audio](/en/realtime-media/audio-modality)
+- [Realtime audio](/en/realtime-media/speech-to-text/audio-modality)
 - [Transcripts and subtitles](/en/ai/realtime-sub)
 - [Events and webhooks](/en/api-reference/ncs-events)
 

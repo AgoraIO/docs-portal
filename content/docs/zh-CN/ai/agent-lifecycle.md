@@ -1,5 +1,5 @@
 ---
-title: Agent lifecycle
+title: 智能体生命周期
 description: 从创建、启动、更新、打断、查询到停止，梳理智能体会话生命周期中最重要的控制动作。
 ---
 
@@ -17,11 +17,11 @@ description: 从创建、启动、更新、打断、查询到停止，梳理智�
 
 ## 当前仓库里的对应文档
 
-- [Create and start an agent](/zh-CN/api-reference/start-agent)
-- [Monitor status](/zh-CN/api-reference/query-agent-status)
-- [Handle interruption](/zh-CN/ai/interrupt-agent)
-- [Stop an agent](/zh-CN/api-reference/stop-agent)
-- [Get agent list](/zh-CN/api-reference/get-agent-list)
+- [创建并启动智能体](/zh-CN/api-reference/start-agent)
+- [查看当前状态](/zh-CN/api-reference/query-agent-status)
+- [处理打断](/zh-CN/ai/interrupt-agent)
+- [停止智能体](/zh-CN/api-reference/stop-agent)
+- [查看智能体列表](/zh-CN/api-reference/get-agent-list)
 
 ## 推荐设计原则
 

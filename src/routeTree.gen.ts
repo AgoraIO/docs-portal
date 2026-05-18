@@ -17,7 +17,7 @@ import { Route as ApiSearchRouteImport } from './routes/api/search'
 import { Route as ApiRefSplatRouteImport } from './routes/api-ref/$'
 import { Route as LocaleTabIndexRouteImport } from './routes/$locale/$tab/index'
 import { Route as LlmsDotmdxDocsSplatRouteImport } from './routes/llms[.]mdx.docs.$'
-import { Route as LocaleTabSlugRouteImport } from './routes/$locale/$tab/$slug'
+import { Route as LocaleTabSplatRouteImport } from './routes/$locale/$tab/$'
 
 const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   id: '/llms.txt',
@@ -59,9 +59,9 @@ const LlmsDotmdxDocsSplatRoute = LlmsDotmdxDocsSplatRouteImport.update({
   path: '/llms.mdx/docs/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LocaleTabSlugRoute = LocaleTabSlugRouteImport.update({
-  id: '/$locale/$tab/$slug',
-  path: '/$locale/$tab/$slug',
+const LocaleTabSplatRoute = LocaleTabSplatRouteImport.update({
+  id: '/$locale/$tab/$',
+  path: '/$locale/$tab/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -72,7 +72,7 @@ export interface FileRoutesByFullPath {
   '/api-ref/$': typeof ApiRefSplatRoute
   '/api/search': typeof ApiSearchRoute
   '/$locale/': typeof LocaleIndexRoute
-  '/$locale/$tab/$slug': typeof LocaleTabSlugRoute
+  '/$locale/$tab/$': typeof LocaleTabSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
   '/$locale/$tab/': typeof LocaleTabIndexRoute
 }
@@ -83,7 +83,7 @@ export interface FileRoutesByTo {
   '/api-ref/$': typeof ApiRefSplatRoute
   '/api/search': typeof ApiSearchRoute
   '/$locale': typeof LocaleIndexRoute
-  '/$locale/$tab/$slug': typeof LocaleTabSlugRoute
+  '/$locale/$tab/$': typeof LocaleTabSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
   '/$locale/$tab': typeof LocaleTabIndexRoute
 }
@@ -95,7 +95,7 @@ export interface FileRoutesById {
   '/api-ref/$': typeof ApiRefSplatRoute
   '/api/search': typeof ApiSearchRoute
   '/$locale/': typeof LocaleIndexRoute
-  '/$locale/$tab/$slug': typeof LocaleTabSlugRoute
+  '/$locale/$tab/$': typeof LocaleTabSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
   '/$locale/$tab/': typeof LocaleTabIndexRoute
 }
@@ -108,7 +108,7 @@ export interface FileRouteTypes {
     | '/api-ref/$'
     | '/api/search'
     | '/$locale/'
-    | '/$locale/$tab/$slug'
+    | '/$locale/$tab/$'
     | '/llms.mdx/docs/$'
     | '/$locale/$tab/'
   fileRoutesByTo: FileRoutesByTo
@@ -119,7 +119,7 @@ export interface FileRouteTypes {
     | '/api-ref/$'
     | '/api/search'
     | '/$locale'
-    | '/$locale/$tab/$slug'
+    | '/$locale/$tab/$'
     | '/llms.mdx/docs/$'
     | '/$locale/$tab'
   id:
@@ -130,7 +130,7 @@ export interface FileRouteTypes {
     | '/api-ref/$'
     | '/api/search'
     | '/$locale/'
-    | '/$locale/$tab/$slug'
+    | '/$locale/$tab/$'
     | '/llms.mdx/docs/$'
     | '/$locale/$tab/'
   fileRoutesById: FileRoutesById
@@ -142,7 +142,7 @@ export interface RootRouteChildren {
   ApiRefSplatRoute: typeof ApiRefSplatRoute
   ApiSearchRoute: typeof ApiSearchRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
-  LocaleTabSlugRoute: typeof LocaleTabSlugRoute
+  LocaleTabSplatRoute: typeof LocaleTabSplatRoute
   LlmsDotmdxDocsSplatRoute: typeof LlmsDotmdxDocsSplatRoute
   LocaleTabIndexRoute: typeof LocaleTabIndexRoute
 }
@@ -205,11 +205,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsDotmdxDocsSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/$locale/$tab/$slug': {
-      id: '/$locale/$tab/$slug'
-      path: '/$locale/$tab/$slug'
-      fullPath: '/$locale/$tab/$slug'
-      preLoaderRoute: typeof LocaleTabSlugRouteImport
+    '/$locale/$tab/$': {
+      id: '/$locale/$tab/$'
+      path: '/$locale/$tab/$'
+      fullPath: '/$locale/$tab/$'
+      preLoaderRoute: typeof LocaleTabSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -222,7 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiRefSplatRoute: ApiRefSplatRoute,
   ApiSearchRoute: ApiSearchRoute,
   LocaleIndexRoute: LocaleIndexRoute,
-  LocaleTabSlugRoute: LocaleTabSlugRoute,
+  LocaleTabSplatRoute: LocaleTabSplatRoute,
   LlmsDotmdxDocsSplatRoute: LlmsDotmdxDocsSplatRoute,
   LocaleTabIndexRoute: LocaleTabIndexRoute,
 }

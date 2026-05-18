@@ -1,5 +1,5 @@
 ---
-title: 融合 CDN 直播
+title: 直播分发
 description: 面向直播分发、播放质量调度和端到端体验优化的标准协议 CDN 能力。
 ---
 

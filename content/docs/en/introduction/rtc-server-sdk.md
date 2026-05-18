@@ -1,5 +1,5 @@
 ---
-title: RTC Server SDK
+title: Server Media Processing
 description: A capability entry point for backend media flow handling and server-side RTC control.
 ---
 

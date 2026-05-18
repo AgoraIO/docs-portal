@@ -8,6 +8,9 @@ describe('canonical docs route model', () => {
 
   it('builds explicit page routes', () => {
     expect(buildDocPath('en', 'ai', 'quick-start')).toBe('/en/ai/quick-start');
+    expect(buildDocPath('en', 'realtime-media', ['rtc', 'quick-start'])).toBe(
+      '/en/realtime-media/rtc/quick-start',
+    );
   });
 
   it('maps route parts to source slugs', () => {
@@ -17,6 +20,14 @@ describe('canonical docs route model', () => {
         tab: 'api-reference',
         slug: 'start-agent',
       }),
-    ).toEqual(['zh-CN', 'api-reference', 'start-agent']);
+    ).toEqual(['api-reference', 'start-agent']);
+
+    expect(
+      getSourceSlugs({
+        locale: 'en',
+        tab: 'realtime-media',
+        slugSegments: ['rtc', 'quick-start'],
+      }),
+    ).toEqual(['realtime-media', 'rtc', 'quick-start']);
   });
 });

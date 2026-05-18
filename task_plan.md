@@ -1,16 +1,19 @@
 # Task Plan
 
 ## Goal
-Run `docs-portal` locally, identify the source of the Overview left sidebar, then update that sidebar safely without overwriting the user's existing work.
+Refactor the `realtime-media` tab into a product-directory model where each product owns its own folder and up to two navigation levels, so document engineers can add or remove product docs by editing content structure instead of code-side separator lists.
 
 ## Phases
-- [completed] Inspect current workspace state and locate the Overview sidebar source
-- [completed] Start the local dev server and verify the app is reachable
-- [completed] Update the Overview left sidebar based on the requested structure
-- [completed] Verify the change as far as local code checks allow and summarize the exact edit points
+- [in_progress] Audit current `realtime-media` routing, sidebar generation, and content tree constraints
+- [pending] Upgrade docs routing and content path resolution to support nested product paths for `realtime-media`
+- [pending] Upgrade sidebar tree generation so folder structure is preserved instead of flattened
+- [pending] Restructure `content/docs/{en,zh-CN}/realtime-media` into per-product folders with product-local indexes
+- [pending] Update tests and verify local runtime behavior for nested product docs
 
 ## Risks
-- The worktree already contains user changes, including an untracked `src/components/home/PlatformHomePage.tsx`, so edits must preserve that in-progress work.
+- The current docs router only supports one slug segment (`/$locale/$tab/$slug`), so nested paths will require coordinated route, loader, and path utility changes.
+- The current sidebar builder flattens folder nodes, so preserving a two-level product tree requires logic changes that may affect other tabs if not scoped carefully.
+- Existing links across the repo may point to old flat `realtime-media` URLs and need redirect or content updates.
 
 ## Follow-up
-- [completed] Update the portal Overview left sidebar to match the structure from the local preview file, while only changing the sidebar and the minimal page routing/content needed to support it.
+- Keep the change scoped to `realtime-media` for now; other tabs can remain on the current flat model until this pattern is proven.

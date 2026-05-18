@@ -31,5 +31,5 @@ If your UI needs transcripts, turn data, interruption state, or business status,
 ## Recommended next pages
 
 - [How agents work](/en/ai/concepts)
-- [Realtime audio](/en/realtime-media/audio-modality)
+- [Realtime audio](/en/realtime-media/speech-to-text/audio-modality)
 - [Business data](/en/ai/custom-data)

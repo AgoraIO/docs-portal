@@ -1,6 +1,6 @@
 ---
 title: Messaging
-description: Use messaging, state sync, and event coordination as the primary lens to understand what is already documented here and what lives in the broader Shengwang product docs.
+description: Use realtime messaging, state sync, and event coordination as the primary lens to understand what is already documented here and what lives in the broader Shengwang product docs.
 ---
 
 ## What this capability solves

@@ -1,6 +1,6 @@
 ---
-title: AI Agents
-description: Find the core docs for building AI agents across conversational runtime, model orchestration, context handling, and event-driven workflows.
+title: Conversational AI
+description: Find the core docs for building conversational AI interaction across agent runtime, model orchestration, context handling, and event-driven workflows.
 ---
 
 ## Who this page is for
@@ -9,7 +9,7 @@ Start here if you are building a voice assistant, support agent, companion exper
 
 ## Docs already available in this repo
 
-- [Open the Conversational AI Engine overview](/en/ai/product-overview)
+- [Open the Conversational AI Engine introduction](/en/ai)
 - [Open the quickstart](/en/ai/quick-start)
 - [Open custom LLM guidance](/en/ai/custom-llm)
 - [Open short-term memory guidance](/en/ai/short-term-memory)

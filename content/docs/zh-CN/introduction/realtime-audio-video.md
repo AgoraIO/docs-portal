@@ -1,6 +1,6 @@
 ---
-title: 实时音视频
-description: 帮你快速定位实时互动 RTC 的接入入口，以及它与当前 ConvoAI 文档的衔接关系。
+title: 音视频
+description: 帮你快速定位实时音视频互动的接入入口，以及它与当前 ConvoAI 文档的衔接关系。
 ---
 
 ## 这类能力解决什么问题
@@ -19,7 +19,7 @@ description: 帮你快速定位实时互动 RTC 的接入入口，以及它与�
 这个仓库目前重点收录的是 ConvoAI RESTful 文档，所以你在这里看到的很多 AI 能力页，默认都建立在 RTC 已经打通的前提之上。
 
 - [查看对话式 AI 快速开始](/zh-CN/ai/quick-start)
-- [查看音频模态文档](/zh-CN/realtime-media/audio-modality)
+- [查看音频模态文档](/zh-CN/realtime-media/speech-to-text/audio-modality)
 
 ## 常见接入顺序
 
