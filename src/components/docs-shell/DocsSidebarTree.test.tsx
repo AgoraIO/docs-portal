@@ -54,6 +54,7 @@ describe('DocsSidebarTree', () => {
             url: '/en/introduction/about-agora',
           },
         ],
+        icon: 'BookOpen',
         id: 'get-started',
         title: 'Get Started',
         type: 'section',
@@ -63,7 +64,33 @@ describe('DocsSidebarTree', () => {
     renderSidebarTree(tree, '/en/introduction/about-agora');
 
     expect(await screen.findByText('Get Started')).toBeInTheDocument();
+    expect(document.querySelector('.docs-side-icon svg')).toBeInTheDocument();
     expect(screen.getByTitle('About Agora')).toHaveClass('whitespace-normal');
+  });
+
+  it('only renders configured icons and does not infer page badges', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/ai/quick-start',
+            title: 'Quick Start',
+            type: 'page',
+            url: '/en/ai/quick-start',
+          },
+        ],
+        id: 'ai-section',
+        title: 'AI section without icon',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/ai/quick-start');
+
+    expect(await screen.findByText('AI section without icon')).toBeInTheDocument();
+    expect(document.querySelector('.docs-side-icon svg')).toBeNull();
+    expect(screen.queryByText('New')).toBeNull();
+    expect(screen.queryByText('Beta')).toBeNull();
   });
 
   it('allows long labels to wrap instead of truncating to one line', async () => {

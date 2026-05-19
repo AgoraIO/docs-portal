@@ -23,11 +23,13 @@ import { DocsShell } from './DocsShell';
 
 const tabs: TabSummary[] = [
   {
+    icon: 'BookOpen',
     id: 'introduction',
     title: 'Introduction',
     url: '/en/introduction',
   },
   {
+    icon: 'Zap',
     id: 'ai',
     title: 'AI',
     url: '/en/ai',
@@ -51,6 +53,7 @@ const sidebar: DocsSidebarNode[] = [
       },
     ],
     collapsible: false,
+    icon: 'BookOpen',
     title: 'Guides',
     type: 'section',
     id: 'guides-section',
@@ -198,7 +201,11 @@ describe('DocsShell', () => {
     expect(themeControl).toHaveAttribute('aria-pressed', 'false');
     expect(themeControl.querySelector('span:not(.sr-only)')).toBeNull();
     expect(themeControl.className).not.toContain('bg-card');
+    expect(themeControl.className).toContain('hover:bg-transparent');
+    expect(themeControl.className).toContain('dark:hover:bg-transparent');
     expect(githubControl.className).not.toContain('bg-card');
+    expect(githubControl.className).toContain('hover:bg-transparent');
+    expect(githubControl.className).toContain('dark:hover:bg-transparent');
     expect(languageControl).toHaveTextContent('English');
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
     expect(tabsAiLink).toHaveAttribute('href', '/en/ai');

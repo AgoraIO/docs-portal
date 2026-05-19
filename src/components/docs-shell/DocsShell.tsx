@@ -3,17 +3,11 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import {
-  BookOpenIcon,
   CheckIcon,
-  CpuIcon,
   LanguagesIcon,
-  LayersIcon,
   MenuIcon,
   MoonIcon,
   SunIcon,
-  UserIcon,
-  WrenchIcon,
-  ZapIcon,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useLayoutEffect, useRef, useState } from 'react';
@@ -39,6 +33,7 @@ import { replaceDocLocale } from '@/lib/docs-routing';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from '@/lib/i18n/i18n-config';
 import { useLocale } from '@/lib/i18n/use-locale';
+import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog, type SearchEntry } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
@@ -204,7 +199,7 @@ export function DocsShell({
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
-                  className="hidden text-[color:var(--ink-3)] hover:bg-[color:var(--surface-muted)] hover:text-[color:var(--ink-1)] lg:inline-flex lg:size-[34px] lg:rounded-lg"
+                  className="hidden text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)] dark:hover:bg-transparent lg:inline-flex lg:size-[34px] lg:rounded-lg"
                   onClick={() => setTheme(isDarkTheme ? 'light' : 'dark')}
                   size="icon"
                   variant="ghost"
@@ -215,7 +210,7 @@ export function DocsShell({
                 <Button
                   aria-label="GitHub"
                   asChild
-                  className="hidden text-[color:var(--ink-3)] hover:bg-[color:var(--surface-muted)] hover:text-[color:var(--ink-1)] lg:inline-flex lg:size-[34px] lg:rounded-lg"
+                  className="hidden text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)] dark:hover:bg-transparent lg:inline-flex lg:size-[34px] lg:rounded-lg"
                   size="icon"
                   variant="ghost"
                 >
@@ -248,7 +243,14 @@ export function DocsShell({
                         search={{}}
                         to={tab.url}
                       >
-                        <TabIcon id={tab.id} title={tab.title} />
+                        {tab.icon ? (
+                          <span className="docs-tab-icon">
+                            <DocsConfiguredIcon
+                              className="size-3.5"
+                              icon={tab.icon}
+                            />
+                          </span>
+                        ) : null}
                         {tab.title}
                       </Link>
                     </TabsTrigger>
@@ -288,57 +290,6 @@ function GithubMarkIcon() {
     >
       <path d="M12 2.25A9.75 9.75 0 0 0 8.92 21.26c.49.09.67-.21.67-.47v-1.68c-2.73.59-3.31-1.16-3.31-1.16-.45-1.14-1.09-1.44-1.09-1.44-.89-.61.07-.6.07-.6.98.07 1.5 1.01 1.5 1.01.88 1.49 2.3 1.06 2.86.81.09-.63.34-1.06.62-1.31-2.18-.25-4.48-1.09-4.48-4.85 0-1.07.38-1.95 1.01-2.64-.1-.25-.44-1.25.1-2.6 0 0 .83-.26 2.69 1.01A9.36 9.36 0 0 1 12 7.01c.83 0 1.65.11 2.43.33 1.86-1.27 2.68-1.01 2.68-1.01.54 1.35.2 2.35.1 2.6.63.69 1.01 1.57 1.01 2.64 0 3.77-2.3 4.6-4.49 4.84.35.3.67.91.67 1.83v2.55c0 .26.18.56.68.47A9.75 9.75 0 0 0 12 2.25Z" />
     </svg>
-  );
-}
-
-function TabIcon({ id, title }: { id: string; title: string }) {
-  const normalized = `${id} ${title}`.toLowerCase();
-  const className = 'size-3.5';
-
-  if (normalized.includes('ai')) {
-    return (
-      <span className="docs-tab-icon" data-tone="ai">
-        <ZapIcon className={className} />
-      </span>
-    );
-  }
-
-  if (normalized.includes('media') || normalized.includes('realtime')) {
-    return (
-      <span className="docs-tab-icon" data-tone="media">
-        <CpuIcon className={className} />
-      </span>
-    );
-  }
-
-  if (normalized.includes('solution')) {
-    return (
-      <span className="docs-tab-icon" data-tone="solutions">
-        <LayersIcon className={className} />
-      </span>
-    );
-  }
-
-  if (normalized.includes('api')) {
-    return (
-      <span className="docs-tab-icon" data-tone="api">
-        <WrenchIcon className={className} />
-      </span>
-    );
-  }
-
-  if (normalized.includes('best')) {
-    return (
-      <span className="docs-tab-icon" data-tone="best">
-        <UserIcon className={className} />
-      </span>
-    );
-  }
-
-  return (
-    <span className="docs-tab-icon" data-tone="intro">
-      <BookOpenIcon className={className} />
-    </span>
   );
 }
 

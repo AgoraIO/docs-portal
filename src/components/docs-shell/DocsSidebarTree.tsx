@@ -1,15 +1,7 @@
 'use client';
 
 import { Link } from '@tanstack/react-router';
-import {
-  BookOpenIcon,
-  ChevronDownIcon,
-  CpuIcon,
-  LayersIcon,
-  UserIcon,
-  WrenchIcon,
-  ZapIcon,
-} from 'lucide-react';
+import { ChevronDownIcon } from 'lucide-react';
 import { useState } from 'react';
 import {
   SidebarGroup,
@@ -24,6 +16,7 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 
 type SidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type SidebarSectionNode = Extract<DocsSidebarNode, { type: 'section' }>;
@@ -129,7 +122,7 @@ function SidebarSection({
     return (
       <div>
         <SidebarGroupLabel className="mt-4 mb-1 h-auto gap-2 px-2 text-[11px] font-semibold tracking-[0.06em] text-[color:var(--ink-4)] uppercase">
-          <SidebarDecorativeIcon title={node.title} />
+          <SidebarConfiguredIcon icon={node.icon} />
           <span
             className="block break-words leading-5 whitespace-normal"
             title={node.title}
@@ -152,6 +145,7 @@ function SidebarSection({
             pages={node.nestedQuickstartGroup.children.filter(
               (child): child is SidebarPageNode => child.type === 'page',
             )}
+            icon={node.nestedQuickstartGroup.icon}
             title={node.nestedQuickstartGroup.title}
           />
         ) : null}
@@ -176,7 +170,7 @@ function SidebarSection({
         type="button"
       >
         <span className="flex min-w-0 items-center gap-2">
-          <SidebarDecorativeIcon title={node.title} />
+          <SidebarConfiguredIcon icon={node.icon} />
           <span className="block whitespace-normal">{node.title}</span>
         </span>
         <ChevronDownIcon
@@ -220,7 +214,6 @@ function SidebarSection({
                     >
                       {child.title}
                     </span>
-                    <SidebarBadge title={child.title} url={child.url} />
                   </Link>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
@@ -241,11 +234,13 @@ function shouldDefaultOpenSection(title: string, activePath: string) {
 
 function SidebarQuickstartGroup({
   activePath,
+  icon,
   onSelectPath,
   pages,
   title,
 }: {
   activePath: string;
+  icon?: string;
   onSelectPath: () => void;
   pages: SidebarPageNode[];
   title: string;
@@ -262,7 +257,7 @@ function SidebarQuickstartGroup({
         type="button"
       >
         <span className="flex min-w-0 items-center gap-2">
-          <SidebarDecorativeIcon title={title} />
+          <SidebarConfiguredIcon icon={icon} />
           <span className="block whitespace-normal">{title}</span>
         </span>
         <ChevronDownIcon
@@ -297,7 +292,6 @@ function SidebarQuickstartGroup({
                   >
                     {child.title}
                   </span>
-                  <SidebarBadge title={child.title} url={child.url} />
                 </Link>
               </SidebarMenuSubButton>
             </SidebarMenuSubItem>
@@ -331,7 +325,7 @@ function SidebarNestedSection({
         type="button"
       >
         <span className="flex min-w-0 items-center gap-2">
-          <SidebarDecorativeIcon title={node.title} />
+          <SidebarConfiguredIcon icon={node.icon} />
           <span className="block whitespace-normal">{node.title}</span>
         </span>
         <ChevronDownIcon
@@ -374,7 +368,6 @@ function SidebarNestedSection({
                   >
                     {child.title}
                   </span>
-                  <SidebarBadge title={child.title} url={child.url} />
                 </Link>
               </SidebarMenuSubButton>
             ),
@@ -451,106 +444,16 @@ function SidebarPageLink({
           >
             {children}
           </span>
-          <SidebarBadge title={children} url={url} />
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
 }
 
-function SidebarDecorativeIcon({ title }: { title: string }) {
-  const normalized = title.toLowerCase();
-  const className = 'size-3.5';
-
-  if (normalized.includes('ai') || normalized.includes('agent')) {
-    return (
-      <span aria-hidden="true" className="docs-side-icon">
-        <ZapIcon className={className} />
-      </span>
-    );
-  }
-
-  if (
-    normalized.includes('realtime') ||
-    normalized.includes('media') ||
-    normalized.includes('audio') ||
-    normalized.includes('video') ||
-    normalized.includes('实时') ||
-    normalized.includes('音视频')
-  ) {
-    return (
-      <span aria-hidden="true" className="docs-side-icon">
-        <CpuIcon className={className} />
-      </span>
-    );
-  }
-
-  if (
-    normalized.includes('solution') ||
-    normalized.includes('service') ||
-    normalized.includes('产品') ||
-    normalized.includes('服务')
-  ) {
-    return (
-      <span aria-hidden="true" className="docs-side-icon">
-        <LayersIcon className={className} />
-      </span>
-    );
-  }
-
-  if (
-    normalized.includes('account') ||
-    normalized.includes('pricing') ||
-    normalized.includes('member') ||
-    normalized.includes('账号') ||
-    normalized.includes('成员') ||
-    normalized.includes('计费')
-  ) {
-    return (
-      <span aria-hidden="true" className="docs-side-icon">
-        <UserIcon className={className} />
-      </span>
-    );
-  }
-
-  if (normalized.includes('api') || normalized.includes('reference')) {
-    return (
-      <span aria-hidden="true" className="docs-side-icon">
-        <WrenchIcon className={className} />
-      </span>
-    );
-  }
-
+function SidebarConfiguredIcon({ icon }: { icon?: string }) {
   return (
     <span aria-hidden="true" className="docs-side-icon">
-      <BookOpenIcon className={className} />
+      <DocsConfiguredIcon className="size-3.5" icon={icon} />
     </span>
   );
-}
-
-function SidebarBadge({ title, url }: { title: string; url: string }) {
-  const normalized = `${title} ${url}`.toLowerCase();
-
-  if (normalized.includes('agent') || normalized.includes('beta')) {
-    return (
-      <span aria-hidden="true" className="docs-side-badge" data-kind="beta">
-        Beta
-      </span>
-    );
-  }
-
-  if (
-    normalized.includes('start-with') ||
-    normalized.includes('quick-start') ||
-    normalized.includes('quickstart') ||
-    normalized.includes('rtm2')
-  ) {
-    return (
-      <span aria-hidden="true" className="docs-side-badge" data-kind="new">
-        New
-      </span>
-    );
-  }
-
-  return null;
 }
