@@ -143,6 +143,8 @@ describe('DocsShell', () => {
 
     const mainHeaderRow = screen.getByTestId('docs-main-header-row');
     const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
+    const docsBodyShell = screen.getByTestId('docs-body-shell');
+    const docsSidebar = screen.getByTestId('docs-sidebar');
     const desktopSearch = within(mainHeaderRow)
       .getAllByRole('button', {
         name: 'Search docs',
@@ -178,6 +180,12 @@ describe('DocsShell', () => {
     expect(docsTabsStrip).toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsAiLink);
     expect(mainHeaderRow).not.toContainElement(docsTabsStrip);
+    expect(docsTabsStrip).not.toHaveClass('hidden');
+    expect(docsBodyShell).toHaveClass('grid');
+    expect(docsBodyShell).toHaveClass('lg:grid-cols-[256px_minmax(0,1fr)]');
+    expect(docsSidebar).toHaveStyle({
+      '--sidebar-width': '16rem',
+    });
     expect(themeControl).toHaveAttribute('aria-label', 'Theme: Light');
     expect(themeControl).toHaveAttribute('aria-pressed', 'false');
     expect(themeControl.querySelector('span:not(.sr-only)')).toBeNull();

@@ -26,9 +26,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import {
-  SidebarProvider,
-} from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { replaceDocLocale } from '@/lib/docs-routing';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
@@ -110,22 +108,28 @@ export function DocsShell({
     >
       <div className="flex min-h-screen min-w-0 flex-1 flex-col">
         <header
-          className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur"
+          className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-xl"
           ref={headerRef}
         >
           <div
-            className="mx-auto flex w-full max-w-[1440px] items-center gap-3 px-4 py-2.5 sm:px-6"
+            className="mx-auto flex h-[52px] w-full max-w-[1440px] items-center gap-3 px-4 sm:px-7"
             data-testid="docs-main-header-row"
           >
             <div className="flex min-w-0 items-center gap-3">
-              <Sheet open={isMobileSheetOpen} onOpenChange={setIsMobileSheetOpen}>
+              <Sheet
+                open={isMobileSheetOpen}
+                onOpenChange={setIsMobileSheetOpen}
+              >
                 <SheetTrigger asChild>
                   <Button className="lg:hidden" size="icon" variant="ghost">
                     <MenuIcon />
                     <span className="sr-only">{t('docs.openMenu')}</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent className="w-[88vw] max-w-sm gap-0 p-0" side="left">
+                <SheetContent
+                  className="w-[88vw] max-w-sm gap-0 p-0"
+                  side="left"
+                >
                   <SheetHeader className="border-b">
                     <SheetTitle>{t('app.name')}</SheetTitle>
                   </SheetHeader>
@@ -160,14 +164,17 @@ export function DocsShell({
             </div>
             <div className="flex-1" />
             <div className="flex items-center gap-2">
-              <div className="lg:hidden" data-testid="docs-mobile-header-actions">
+              <div
+                className="lg:hidden"
+                data-testid="docs-mobile-header-actions"
+              >
                 <DocsSearchDialog mode="mobile" pages={pages} tabs={tabs} />
               </div>
               <div
                 className="hidden items-center gap-2 lg:flex"
                 data-testid="docs-desktop-header-actions"
               >
-                <div className="w-44 sm:w-56 md:w-72">
+                <div className="w-80">
                   <DocsSearchDialog mode="desktop" pages={pages} tabs={tabs} />
                 </div>
                 <LocaleSwitcher
@@ -183,7 +190,7 @@ export function DocsShell({
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
-                  className="hidden lg:inline-flex"
+                  className="hidden lg:inline-flex lg:size-[34px] lg:rounded-lg"
                   onClick={() => setTheme(isDarkTheme ? 'light' : 'dark')}
                   size="icon"
                   variant="ghost"
@@ -198,16 +205,16 @@ export function DocsShell({
             className="hidden border-t border-border md:block"
             data-testid="docs-tabs-strip"
           >
-            <div className="mx-auto flex w-full max-w-[1440px] justify-start px-4 sm:px-6">
+            <div className="mx-auto flex h-10 w-full max-w-[1440px] justify-start px-4 sm:px-6">
               <Tabs className="w-auto max-w-full" value={activeTab}>
                 <TabsList
-                  className="max-w-full justify-start gap-0 overflow-x-auto overflow-y-hidden px-0"
+                  className="max-w-full justify-start gap-0 overflow-visible px-0"
                   variant="line"
                 >
                   {tabs.map((tab) => (
                     <TabsTrigger asChild key={tab.id} value={tab.id}>
                       <Link
-                        className="h-10 rounded-none px-3"
+                        className="h-10 rounded-none px-3.5 text-[13.5px] font-medium data-[state=active]:font-semibold"
                         params={{}}
                         search={{}}
                         to={tab.url}
@@ -222,7 +229,7 @@ export function DocsShell({
           </nav>
         </header>
         <div
-          className="mx-auto block w-full max-w-[1440px] min-w-0 lg:flex lg:h-[var(--docs-shell-body-height)] lg:overflow-hidden"
+          className="mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden xl:grid-cols-[256px_minmax(0,1fr)_220px]"
           data-testid="docs-body-shell"
         >
           <DocsSidebar
@@ -259,7 +266,7 @@ function LocaleSwitcher({
           <PopoverTrigger asChild>
             <Button
               aria-label={t('controls.language.label')}
-              className="gap-2 rounded-full px-3"
+              className="h-8 gap-2 rounded-lg border-[color:var(--line-strong)] bg-card px-2.5 text-[13px] text-[color:var(--ink-2)]"
               size="sm"
               variant="outline"
             >

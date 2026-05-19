@@ -57,13 +57,15 @@ export function DocsTableOfContents({
 
   return (
     <aside className={cn('flex flex-col gap-4', className)}>
-      <div className="text-sm font-medium text-foreground">{t('docs.toc')}</div>
+      <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
+        {t('docs.toc')}
+      </div>
       {items.length > 0 ? (
-        <nav className="flex flex-col gap-1.5">
+        <nav className="flex flex-col border-l border-border">
           {items.map((item) => (
             <a
               className={cn(
-                'rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
+                '-ml-px border-l-2 border-transparent px-3 py-1.5 text-sm leading-5 text-[color:var(--ink-3)] transition-colors hover:border-[color:var(--accent-brand)] hover:text-[color:var(--ink-1)]',
                 item.depth > 2 && 'pl-6',
                 item.depth > 3 && 'pl-8',
               )}

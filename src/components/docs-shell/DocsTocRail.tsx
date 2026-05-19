@@ -7,11 +7,11 @@ import { DocsTableOfContents } from './DocsContent';
 export function DocsTocRail({ toc }: { toc: TOCItemType[] }) {
   return (
     <aside
-      className="hidden w-[240px] shrink-0 border-l border-border xl:block"
+      className="hidden w-[220px] shrink-0 bg-transparent xl:block"
       data-testid="docs-toc-rail"
     >
       <ScrollArea className="h-full min-h-0">
-        <div className="px-6 py-8">
+        <div className="px-2 py-9 pl-6">
           <DocsTableOfContents toc={toc} />
         </div>
       </ScrollArea>

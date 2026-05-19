@@ -23,6 +23,15 @@ type RenderableSidebarSectionNode = SidebarSectionNode & {
   nestedQuickstartGroup?: SidebarSectionNode;
 };
 
+const sidebarToggleClassName =
+  'h-[30px] items-center justify-between rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] hover:bg-card hover:text-[color:var(--ink-1)]';
+
+const sidebarSubButtonClassName =
+  'h-[30px] rounded-[7px] px-3 text-[13px] text-[color:var(--ink-3)] hover:bg-card hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)]';
+
+const sidebarPageButtonClassName =
+  'relative h-[30px] items-center rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-card hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)]';
+
 export function DocsSidebarTree({
   activePath,
   nodes,
@@ -111,7 +120,7 @@ function SidebarSection({
   if (!node.collapsible) {
     return (
       <div>
-        <SidebarGroupLabel className="mt-3 px-2">
+        <SidebarGroupLabel className="mt-4 mb-1 h-auto px-2 text-[11px] font-semibold tracking-[0.06em] text-[color:var(--ink-4)] uppercase">
           <span
             className="block break-words leading-5 whitespace-normal"
             title={node.title}
@@ -153,7 +162,7 @@ function SidebarSection({
     <SidebarMenuItem>
       <SidebarMenuButton
         aria-expanded={isOpen}
-        className="justify-between"
+        className={sidebarToggleClassName}
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
@@ -180,6 +189,7 @@ function SidebarSection({
               <SidebarMenuSubItem key={child.id}>
                 <SidebarMenuSubButton
                   asChild
+                  className={sidebarSubButtonClassName}
                   isActive={child.url === activePath}
                   size="md"
                 >
@@ -229,7 +239,7 @@ function SidebarQuickstartGroup({
     <SidebarMenuItem>
       <SidebarMenuButton
         aria-expanded={isOpen}
-        className="justify-between"
+        className={sidebarToggleClassName}
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
@@ -247,6 +257,7 @@ function SidebarQuickstartGroup({
             <SidebarMenuSubItem key={child.id}>
               <SidebarMenuSubButton
                 asChild
+                className={sidebarSubButtonClassName}
                 isActive={child.url === activePath}
                 size="md"
               >
@@ -287,7 +298,7 @@ function SidebarNestedSection({
     <div className="w-full">
       <button
         aria-expanded={isOpen}
-        className="flex w-full items-start justify-between gap-2 rounded-md px-2 py-1.5 text-left text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+        className={cn('flex w-full text-left', sidebarToggleClassName)}
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
@@ -312,6 +323,7 @@ function SidebarNestedSection({
             ) : (
               <SidebarMenuSubButton
                 asChild
+                className={sidebarSubButtonClassName}
                 isActive={child.url === activePath}
                 key={child.id}
                 size="md"
@@ -386,7 +398,11 @@ function SidebarPageLink({
 }) {
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={url === activePath}>
+      <SidebarMenuButton
+        asChild
+        className={sidebarPageButtonClassName}
+        isActive={url === activePath}
+      >
         <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
           <span
             className={cn(

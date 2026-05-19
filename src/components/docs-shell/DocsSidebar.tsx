@@ -26,12 +26,12 @@ export function DocsSidebar({
 
   return (
     <ShadcnSidebar
-      className="hidden border-r border-border lg:flex"
+      className="hidden bg-transparent text-[color:var(--ink-3)] lg:flex"
       collapsible="none"
       data-testid="docs-sidebar"
       style={
         {
-          '--sidebar-width': '18.5rem',
+          '--sidebar-width': '16rem',
         } as React.CSSProperties
       }
       variant="inset"
@@ -40,7 +40,7 @@ export function DocsSidebar({
         data-testid="docs-sidebar-scroll"
         ref={scrollContainerRef}
       >
-        <div className="px-2 py-4">
+        <div className="py-6 pr-3">
           <DocsSidebarTree
             activePath={activePath}
             nodes={nodes}
