@@ -1,0 +1,81 @@
+---
+title: 计费策略
+description: 计费策略，用于说明 RTM 在该平台上的产品概览、版本变化或接入边界。
+---
+
+本文将向你介绍 RTM 的计费策略，包括套餐计划、套餐配额、超额价格、套餐服务支持等信息。
+
+## 套餐计划
+
+RTM 为不同业务阶段的用户提供了 **体验版**、**自助版**、**企业版** 三种套餐服务，用户可以根据自己业务用量情况进行合理选择，优化成本支出。
+
+你可以在声网控制台随时查阅用量情况并导出数据，也可以升级或降级套餐计划；升级套餐立即生效，降级套餐次月生效。
+
+### 企业套餐服务特权
+
+如果你需要突破一些使用限制或具有定制化服务需求，企业套餐可满足以下需求：
+
+<a name="package"></a>
+
+## 套餐配额
+
+| 配额/套餐类型        | 体验套餐          |  Startup 套餐         |  Business 套餐           | Ultra 套餐 | 企业套餐    |
+| ------------- | ---- | ------- | --------- | ----- | ---- |
+| 峰值 PCU      | 20               | 500                  | 2500        | 10,000 |         | 无限制 |
+| 每月消息数 | 1,000,000 | 30,000,000 | 150,000,000 | 500,000,000 | 无限制 |
+| 存储容量 | 1 GB | 2 GB | 10 GB | 20 GB | 无限制 |
+| 套餐价格（/月） | 0 | 399 RMB  | 1499 RMB | 3899 RMB | 按照实际用量计费 |
+
+## 超额价格
+
+对于超出套餐额度的用量，声网按照本节介绍的计费策略收费。
+
+#### 体验套餐
+
+体验套餐的目的在于让开发者体验 RTM 的产品特性及业务测试。在超出套餐配额后继续使用，会面临 RTM 服务关停的风险，直到你升级套餐才可继续使用。我们会在你即将超额时发送提示消息。
+
+#### 自助套餐
+
+自助套餐分为 **Startup**、**Business** 和 **Ultra** 三种套餐类型。当你订购自助套餐后，超出套餐配额不会关停 RTM 服务。你仍可以使用 RTM 功能，超额部分会按照超额用量收费，费用计算公式为：**费用 = 峰值 PCU 费用 + 消息数费用 + 存储占有**。各项费用单价如下：
+
+| 计费项 | 单价 |
+| --- | --- |
+| 峰值 PCU | ￥0.2 元/PCU |
+| 消息数 | ￥20 元/百万条消息 |
+| 存储容量 | ￥100 元/1 GB |
+
+> **信息 - 计量规则**
+> 峰值 PCU、消息数、存储容量等计量规则参考<a href=>计量规则</a >。
+
+#### 企业套餐
+
+企业套餐无配额限制，按照实际用量计费，且订购企业套餐需要保底消费 1500 人民币/月。
+
+## 套餐服务对比
+
+| 特性/套餐 | 体验套餐 | 自助套餐 | 企业套餐 |
+| ---------------- | ---------------- | ---------------- |---------------- |
+| 发布/订阅消息    | <font color="green">✔</font>   | <font color="green">✔</font>       |<font color="green">✔</font>       |
+| Stream Channel   | <font color="red">✘</font>       | <font color="green">✔</font>       |<font color="green">✔</font>       |
+| Presence   | <font color="green">✔</font>       | <font color="green">✔</font>      |<font color="green">✔</font>      |
+| 存储   | <font color="green">✔</font>      | <font color="green">✔</font>      |<font color="green">✔</font>       |
+| 历史消息   | <font color="green">✔</font>       | <font color="green">✔</font>     |<font color="green">✔</font>      |
+| Lock  | <font color="green">✔</font>      | <font color="green">✔</font>     |<font color="green">✔</font>      |
+| 鉴权  | <font color="green">✔</font>      | <font color="green">✔</font>     |<font color="green">✔</font>     |
+| 控制台  | <font color="green">✔</font>       | <font color="green">✔</font>       |<font color="green">✔</font>    |
+| Webhook | <font color="red">✘</font>      | <font color="green">✔</font>     |<font color="green">✔</font>     |
+| 水晶球监控  | <font color="green">✔</font>      | <font color="green">✔</font>      |<font color="green">✔</font>      |
+| Uptime SLA  | <font color="red">✘</font>      | <font color="green">✔</font>      | <font color="green">✔</font>     |
+| Geo-fencing  | <font color="red">✘</font>      | <font color="red">✘</font>      |<font color="green">✔</font>     |
+| GDPR & HIPAA 合规保证   | <font color="red">✘</font>      | <font color="red">✘</font>      |<font color="green">✔</font>    |
+| 定制化需求  | <font color="red">✘</font>      | <font color="red">✘</font>      |<font color="green">✔</font>      |
+| 私有化部署  | <font color="red">✘</font>      | <font color="red">✘</font>      |<font color="green">✔</font>     |
+| 服务时间    | 12 × 7     | 12 × 7    |24 × 7     |
+| 响应速度  | 最大努力   | 24 小时   | 1 小时   |
+| 邮件支持  | <font color="green">✔</font>    | <font color="green">✔</font>     | <font color="green">✔</font>      |
+| 企业微信支持  | <font color="green">✔</font>     | <font color="green">✔</font>      | <font color="green">✔</font>     |
+| 电话支持 | <font color="green">✔</font>      | <font color="green">✔</font>      | <font color="green">✔</font>      |
+| Slack 支持  | <font color="red">✘</font>    | <font color="green">✔</font>      | <font color="green">✔</font>     |
+| 技术专家支持  | <font color="red">✘</font>      | <font color="red">✘</font>      |<font color="green">✔</font>      |
+| 专属 SA 支持  | <font color="red">✘</font>      | <font color="red">✘</font>      |<font color="green">✔</font>      |
+| 用量折扣 | <font color="red">✘</font>      | <font color="red">✘</font>      |<font color="green">✔</font>      |

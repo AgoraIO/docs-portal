@@ -1,0 +1,564 @@
+---
+title: 实现收发消息
+description: 实现收发消息，用于帮助开发者在对应平台上快速完成 RTM 接入与基础验证。
+---
+
+本文将指导你如何利用 RTM Objective-C SDK 构建简单的应用程序，内容涵盖了集成和开发的基础知识：开通声网账号、获取 SDK、发送消息、接收消息等。
+
+## 准备工作
+
+开始构建项目前，你需要完成[开通服务](./enable-service.md)，并检查你的开发环境是否满足[平台支持](../overview/platform-support)中的最低版本要求。
+
+## 构建项目
+
+### 1. 项目配置
+
+根据以下步骤配置你的项目：
+
+1. 在 Xcode 中创建一个 iOS 平台下的 **Single View App**，项目设置如下：
+   - **Product Name** 设为 `RtmQuickstart`。
+   - **Organization Identifier** 设为 `agora`。
+   - **User Interface** 选择 **Storyboard**。
+   - **Language** 选择 **Objective-C**。
+2. 通过以下任意一种方式获取最新的 RTM Objective-C SDK 并导入你的项目。
+
+   
+
+   > **信息**
+> 如果你同时集成了 2.2.0 及以上版本的 RTM SDK 和 4.3.0 及以上版本的 RTC SDK，请参考 [FAQ](/faq/integration-issues/rtm2-rtc-integration-issue) 处理集成问题。
+
+### 2. 初始化 RTM
+
+调用 RTM SDK 的任何 API 之前，需要先初始化一个 `AgoraRtmClientKit` 对象实例。参考如下步骤创建用户界面、初始化一个 `AgoraRtmClientKit` 对象实例。
+
+1. 创建用户界面。实时消息 App 一般会有如下输入框和按钮：
+   - 用户名、频道名、消息输入框
+   - 登录、登出按钮
+   - 订阅、取消订阅频道按钮
+   - 发送消息按钮
+
+   本节提供简易的 UI 界面设计以便于验证功能特性，你可以根据实际项目需求进行修改。
+   1. 使用 **Code View** 打开 `Main.storyboard` 并将文件内容替换为以下代码：
+
+      ```xml
+      <?xml version="1.0" encoding="UTF-8"?>
+      <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+          <device id="retina6_1" orientation="portrait" appearance="light"/>
+          <dependencies>
+              <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+              <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+              <capability name="System colors in document resources" minToolsVersion="11.0"/>
+              <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+          </dependencies>
+          <scenes>
+              <!--View Controller-->
+              <scene sceneID="tne-QT-ifu">
+                  <objects>
+                      <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                          <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                              <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                              <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                              <subviews>
+                                  <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M2K-rz-dlO">
+                                      <rect key="frame" x="254" y="103" width="38" height="30"/>
+                                      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                      <state key="normal" title="Login"/>
+                                      <connections>
+                                          <action selector="Login:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UEU-up-ksL"/>
+                                      </connections>
+                                  </button>
+                                  <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CZ1-G5-AkG">
+                                      <rect key="frame" x="326" y="103" width="48" height="30"/>
+                                      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                      <state key="normal" title="Logout"/>
+                                      <connections>
+                                          <action selector="Logout:" destination="BYZ-38-t0r" eventType="touchUpInside" id="a0d-8h-eyX"/>
+                                      </connections>
+                                  </button>
+                                  <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0px-1e-aMC">
+                                      <rect key="frame" x="242" y="172" width="62" height="30"/>
+                                      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                      <state key="normal" title="Subscribe"/>
+                                      <connections>
+                                          <action selector="SubscribeChannel:" destination="BYZ-38-t0r" eventType="touchUpInside" id="12c-US-VQk"/>
+                                      </connections>
+                                  </button>
+                                  <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SDQ-Zt-rBD">
+                                      <rect key="frame" x="307" y="172" width="87" height="30"/>
+                                      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                      <state key="normal" title="Unsubscribe"/>
+                                      <connections>
+                                          <action selector="UnsubscribeChannel:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u4T-ze-wtj"/>
+                                      </connections>
+                                  </button>
+                                  <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="User ID" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="69v-UU-ObH">
+                                      <rect key="frame" x="40" y="99" width="187" height="34"/>
+                                      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                      <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                      <textInputTraits key="textInputTraits"/>
+                                  </textField>
+                                  <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Channel name" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dGk-g2-qHK">
+                                      <rect key="frame" x="40" y="168" width="187" height="34"/>
+                                      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                      <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                      <textInputTraits key="textInputTraits"/>
+                                  </textField>
+                                  <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qqk-6X-Tcb">
+                                      <rect key="frame" x="304" y="247" width="88" height="30"/>
+                                      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                      <state key="normal" title="Publish MSG"/>
+                                      <connections>
+                                          <action selector="SendMessageToMessageChannel:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XcX-nz-fPl"/>
+                                      </connections>
+                                  </button>
+                                  <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Message content" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lKg-ap-M6p">
+                                      <rect key="frame" x="40" y="245" width="252" height="34"/>
+                                      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                      <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                      <textInputTraits key="textInputTraits"/>
+                                  </textField>
+                                  <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="e1v-i8-spC">
+                                      <rect key="frame" x="40" y="416" width="330" height="428"/>
+                                      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                      <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                      <color key="textColor" systemColor="labelColor"/>
+                                      <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                      <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                  </textView>
+                              </subviews>
+                              <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                              <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                          </view>
+                          <connections>
+                              <outlet property="ChannelIDTextField" destination="dGk-g2-qHK" id="Iuh-ow-1MH"/>
+                              <outlet property="GroupMsgButton" destination="Qqk-6X-Tcb" id="TV4-sg-bY7"/>
+                              <outlet property="GroupMsgTextField" destination="lKg-ap-M6p" id="2Me-Z0-QIH"/>
+                              <outlet property="LoginButton" destination="M2K-rz-dlO" id="ZxJ-oV-UKy"/>
+                              <outlet property="LogoutButton" destination="CZ1-G5-AkG" id="ZQE-B7-yya"/>
+                              <outlet property="MsgTextView" destination="e1v-i8-spC" id="76J-8Q-kKp"/>
+                              <outlet property="SubsctibeButton" destination="0px-1e-aMC" id="9TL-8M-l6w"/>
+                              <outlet property="UnSubscribeButton" destination="SDQ-Zt-rBD" id="tgd-fK-EfO"/>
+                              <outlet property="UserIDTextField" destination="69v-UU-ObH" id="3BH-ci-t7A"/>
+                          </connections>
+                      </viewController>
+                      <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                  </objects>
+                  <point key="canvasLocation" x="131.8840579710145" y="97.767857142857139"/>
+              </scene>
+          </scenes>
+          <resources>
+              <systemColor name="labelColor">
+                  <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+              </systemColor>
+              <systemColor name="systemBackgroundColor">
+                  <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+              </systemColor>
+          </resources>
+      </document>
+      ```
+   2. 打开 `ViewController.h` 文件，将文件内容替换为如下代码：
+      ```objc
+      #import 
+
+      #import 
+
+      @interface ViewController : UIViewController
+
+      // Buttons
+      @property (weak, nonatomic) IBOutlet UIButton *LoginButton;
+      @property (weak, nonatomic) IBOutlet UIButton *LogoutButton;
+      @property (weak, nonatomic) IBOutlet UIButton *SubsctibeButton;
+      @property (weak, nonatomic) IBOutlet UIButton *UnSubscribeButton;
+      @property (weak, nonatomic) IBOutlet UIButton *GroupMsgButton;
+
+      // Textfields
+      @property (weak, nonatomic) IBOutlet UITextField *UserIDTextField;
+      @property (weak, nonatomic) IBOutlet UITextField *ChannelIDTextField;
+      @property (weak, nonatomic) IBOutlet UITextField *GroupMsgTextField;
+
+      @property (weak, nonatomic) IBOutlet UITextView *MsgTextView;
+
+      @end
+      ```
+
+2. 打开 `ViewController.m` 文件，将文件内容替换为如下代码。你会发现此程序并不完整，不用紧张，我们在后续步骤中将一步步指导你补充完善代码。
+
+   > **信息**
+> 你需要将示例中的 `your_appid` 和 `your_token` 字段替换成你项目的 App ID 和 Token。在测试阶段，为快速验证功能，我们建议你在创建声网项目时将鉴权模式设置为调试模式，然后将示例中的 `your_appid` 和 `your_token` 字段都替换成你项目的 App ID。
+
+   ```objc
+   #import "ViewController.h"
+
+   @interface ViewController ()
+
+   @property(nonatomic, strong)AgoraRtmClientKit* kit;
+
+   @property NSString* appID;
+   @property NSString* token;
+
+   @property NSString* uid;
+   @property NSString* peerID;
+   @property NSString* channelID;
+   @property NSString* peerMsg;
+   @property NSString* channelMsg;
+
+   @property NSString* text;
+   @property NSMutableArray* textArray;
+
+   - (void)AddMsgToRecord:(NSString*)text;
+
+   @end
+
+   @implementation ViewController
+
+   - (void)viewDidLoad {
+   [super viewDidLoad];
+   // Enter your App ID
+   self.appID = @"your_appid";
+   self.MsgTextView.textColor = UIColor.blueColor;
+   self.textArray = [[NSMutableArray alloc]init];
+   }
+
+   // Add the event listener
+
+   // Add message to the UI TextView
+   - (void)AddMsgToRecord:(NSString*)text {
+
+   [self.textArray addObject:(self.text)];
+   self.MsgTextView.text = [self.textArray componentsJoinedByString:(@"\n")];
+
+   }
+
+   - (IBAction)Login:(id)sender {
+       self.uid = self.UserIDTextField.text;
+       // Enter your token
+       self.token = @"your_token";
+
+       AgoraRtmClientConfig*  rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:_appID userId:_uid];
+
+       NSError* initError = nil;
+       _kit = [[AgoraRtmClientKit alloc] initWithConfig:rtm_config delegate:self error:&initError];
+       if (initError != nil) {
+           self.text = [NSString stringWithFormat:@"init error %@",initError];
+           NSLog(@"%@", self.text);
+           [self AddMsgToRecord:(self.text)];
+       }
+       // Log in the RTM server
+   }
+
+   - (IBAction)Logout:(id)sender {
+   if (_kit != nil) {
+       // Log out from the RTM server
+       }
+   }
+
+   - (IBAction)SubscribeChannel:(id)sender {
+   self.channelID = self.ChannelIDTextField.text;
+   if (_kit != nil) {
+       // Subscribe to a channel
+       }
+   }
+
+   - (IBAction)UnsubscribeChannel:(id)sender {
+       if (_kit == nil)
+           return;
+       // Unsubscribe from a channel
+   }
+
+   - (IBAction)SendMessageToMessageChannel:(id)sender {
+   self.channelID = self.ChannelIDTextField.text;
+   self.channelMsg = self.GroupMsgTextField.text;
+       // Publish a message
+   }
+   @end
+   ```
+
+如需了解更多初始化的信息，查看<a href=>初始配置</a>。
+
+### 3. 添加事件监听
+
+事件监听程序帮助你实现频道中消息、事件到达后的处理逻辑，添加以下代码到你的程序中以显示收到的消息或事件通知：
+
+```objc showLineNumbers
+// Paste the following code snippet below "Add the event listener" comment
+- (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+    NSLog(@"%@", self.text);
+    self.text = [NSString stringWithFormat:@"receive message\nFrom channel: %@\npublisher:%@\nmessage:%@\n",event.channelName,event.publisher, event.message.stringData];
+    [self AddMsgToRecord:(self.text)];
+}
+```
+
+### 4. 登录服务
+
+你需要执行登录操作才能建立与 RTM 服务器的连接，然后才能调用 SDK 的其他 API。将以下代码添加到程序中：
+
+```objc showLineNumbers
+// Paste the following code snippet below "Log in the RTM server" comment
+[_kit loginByToken:self.token completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo.errorCode != AgoraRtmErrorOk){
+        self.text = [NSString stringWithFormat:@"Login failed for user %@. Code: %ld",self.uid, (long)errorInfo.errorCode];
+        NSLog(@"%@", self.text);
+    } else {
+        NSLog(@"%@", self.text);
+        self.text = [NSString stringWithFormat:@"Login successful for user %@. Code: %ld",self.uid, (long)errorInfo.errorCode];
+    }
+    [self AddMsgToRecord:(self.text)];
+}];
+```
+
+### 5. 收发消息
+
+调用 `publish` 方法向 Message Channel 发送消息后，RTM 会把该消息分发给该频道的所有订阅者，以下代码演示如何发送字符串类型的消息，将此代码片段添加到程序中：
+
+> **信息**
+> 你需要先对消息负载进行字符串序列化，才能调用 `publish` 方法发送消息。
+
+```objc showLineNumbers
+// Paste the following code snippet below "Publish a message" comment
+[_kit publish:self.channelID message:self.channelMsg option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        self.text = [NSString stringWithFormat:@"Message sent to channel %@ : %@", self.channelID, self.channelMsg];
+    } else {
+        self.text = [NSString stringWithFormat:@"Message failed to send to channel %@ : %@ ErrorCode: %ld", self.channelID, self.channelMsg, (long)errorInfo.errorCode];
+    }
+
+    [self AddMsgToRecord:(self.text)];
+}];
+```
+
+调用 `subscribeWithChannel` 方法订阅此频道以接收此频道中的消息。将以下代码添加到程序中：
+
+```objc showLineNumbers
+// Paste the following code snippet below "Subscribe to a channel" comment
+[_kit subscribeWithChannel:self.channelID option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if(errorInfo == nil) {
+        self.text = [NSString stringWithFormat:@"Successfully subscribe channel %@",self.channelID];
+        NSLog(@"%@", self.text);
+    } else {
+        self.text = [NSString stringWithFormat:@"Failed to subscribe channel %@ Code: %ld",self.channelID, (long)errorInfo.errorCode];
+        NSLog(@"%@", self.text);
+    }
+
+    [self AddMsgToRecord:(self.text)];
+}];
+```
+
+如果你不再需要在此频道收发消息，你可以调用 `unsubscribeWithChannel` 方法取消订阅此频道。将以下代码添加到程序中：
+
+``` objc showLineNumbers
+// Paste the following code snippet below "Unsubscribe from a channel" comment
+[_kit unsubscribeWithChannel:self.channelID completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil){
+        self.text = [NSString stringWithFormat:@"Leave channel successful"];
+    } else {
+        self.text = [NSString stringWithFormat:@"Failed to leave channel Code: %ld", (long)errorInfo.errorCode];
+    }
+
+    [self AddMsgToRecord:(self.text)];
+}];
+```
+
+如需了解更多收发消息的信息，查看<a href=>消息</a>。
+
+### 6. 登出服务
+
+当不再需要使用 RTM 服务时，你可以调用 `logout` 方法登出 RTM 系统。将以下代码添加到程序中：
+
+```objc showLineNumbers
+// Paste the following code snippet below "Log out from the RTM server" comment
+[_kit logout:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil){
+        self.text = [NSString stringWithFormat:@"Logout successful"];
+        NSLog(@"%@", self.text);
+        [_kit destroy];
+        _kit = nil;
+    } else {
+        self.text = [NSString stringWithFormat:@"Logout failed. Code: %ld",(long)errorInfo.errorCode];
+        NSLog(@"%@", self.text);
+    }
+
+    [self AddMsgToRecord:(self.text)];
+}];
+```
+
+> **信息**
+> 本操作会影响你账单中的 PCU 计费项。
+
+### 7. 组合到一起
+
+经过上述步骤，你程序中的代码应该如下所示：
+
+```objc
+#import "ViewController.h"
+
+@interface ViewController ()
+
+@property(nonatomic, strong)AgoraRtmClientKit* kit;
+
+@property NSString* appID;
+@property NSString* token;
+
+@property NSString* uid;
+@property NSString* peerID;
+@property NSString* channelID;
+@property NSString* peerMsg;
+@property NSString* channelMsg;
+
+@property NSString* text;
+@property NSMutableArray* textArray;
+
+- (void)AddMsgToRecord:(NSString*)text;
+
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+[super viewDidLoad];
+// Enter your App ID
+self.appID = @"your_appid";
+self.MsgTextView.textColor = UIColor.blueColor;
+self.textArray = [[NSMutableArray alloc]init];
+}
+
+- (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+    NSLog(@"%@", self.text);
+    self.text = [NSString stringWithFormat:@"receive message\nFrom channel: %@\npublisher:%@\nmessage:%@\n",event.channelName,event.publisher, event.message.stringData];
+    [self AddMsgToRecord:(self.text)];
+}
+
+// Add message to the UI TextView
+- (void)AddMsgToRecord:(NSString*)text {
+
+[self.textArray addObject:(self.text)];
+self.MsgTextView.text = [self.textArray componentsJoinedByString:(@"\n")];
+
+}
+
+- (IBAction)Login:(id)sender {
+    self.uid = self.UserIDTextField.text;
+    // Enter your token
+    self.token = @"your_token";
+
+    AgoraRtmClientConfig*  rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:_appID userId:_uid];
+
+    NSError* initError = nil;
+    _kit = [[AgoraRtmClientKit alloc] initWithConfig:rtm_config delegate:self error:&initError];
+    if (initError != nil) {
+        self.text = [NSString stringWithFormat:@"init error %@",initError];
+        NSLog(@"%@", self.text);
+        [self AddMsgToRecord:(self.text)];
+    }
+    // Log in the RTM server
+    [_kit loginByToken:self.token completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo.errorCode != AgoraRtmErrorOk){
+            self.text = [NSString stringWithFormat:@"Login failed for user %@. Code: %ld",self.uid, (long)errorInfo.errorCode];
+            NSLog(@"%@", self.text);
+        } else {
+            NSLog(@"%@", self.text);
+            self.text = [NSString stringWithFormat:@"Login successful for user %@. Code: %ld",self.uid, (long)errorInfo.errorCode];
+        }
+        [self AddMsgToRecord:(self.text)];
+    }];
+
+}
+
+- (IBAction)Logout:(id)sender {
+if (_kit != nil) {
+    // Log out from the RTM server
+    [_kit logout:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil){
+            self.text = [NSString stringWithFormat:@"Logout successful"];
+            NSLog(@"%@", self.text);
+            [_kit destroy];
+            _kit = nil;
+        } else {
+            self.text = [NSString stringWithFormat:@"Logout failed. Code: %ld",(long)errorInfo.errorCode];
+            NSLog(@"%@", self.text);
+        }
+
+        [self AddMsgToRecord:(self.text)];
+    }];
+}
+
+- (IBAction)SubscribeChannel:(id)sender {
+self.channelID = self.ChannelIDTextField.text;
+if (_kit != nil) {
+    // Subscribe to a channel
+    [_kit subscribeWithChannel:self.channelID option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if(errorInfo == nil) {
+            self.text = [NSString stringWithFormat:@"Successfully subscribe channel %@",self.channelID];
+            NSLog(@"%@", self.text);
+        } else {
+            self.text = [NSString stringWithFormat:@"Failed to subscribe channel %@ Code: %ld",self.channelID, (long)errorInfo.errorCode];
+            NSLog(@"%@", self.text);
+        }
+
+        [self AddMsgToRecord:(self.text)];
+    }];
+    }
+}
+
+- (IBAction)UnsubscribeChannel:(id)sender {
+    if (_kit == nil)
+        return;
+    // Unsubscribe from a channel
+    [_kit unsubscribeWithChannel:self.channelID completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil){
+            self.text = [NSString stringWithFormat:@"Leave channel successful"];
+        } else {
+            self.text = [NSString stringWithFormat:@"Failed to leave channel Code: %ld", (long)errorInfo.errorCode]; }
+
+        [self AddMsgToRecord:(self.text)];
+    }];
+}
+
+- (IBAction)SendMessageToMessageChannel:(id)sender {
+self.channelID = self.ChannelIDTextField.text;
+self.channelMsg = self.GroupMsgTextField.text;
+    // Publish a message
+    [_kit publish:self.channelID message:self.channelMsg option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil)
+        {
+            self.text = [NSString stringWithFormat:@"Message sent to channel %@ : %@", self.channelID, self.channelMsg];        }
+        else
+        {
+            self.text = [NSString stringWithFormat:@"Message failed to send to channel %@ : %@ ErrorCode: %ld", self.channelID, self.channelMsg, (long)errorInfo.errorCode];        }
+
+        [self AddMsgToRecord:(self.text)];
+    }];
+}
+@end
+```
+
+现在，你可以开始运行你的程序：
+
+1. 保存项目。
+2. 复制当前项目，使用相同的 `appId` 和不同的 `userId`。
+3. 运行上面的两个项目。成功运行后，你可以在两个设备中看到 App 界面。
+4. 将一个设备作为接收端，进行如下操作：
+   1. 输入用户名，点击 **Login**。
+   2. 输入频道名，点击 **Subscribe**。
+5. 将另一个设备作为发送端，进行如下操作：
+   1. 输入不同的用户名，点击 **Subscribe**。
+   2. 输入相同的频道名。
+   3. 输入消息，点击 **Publish MSG**。
+6. 将上面的发送端和设备端互换，重复步骤 4 和 5。
+
+如果两个设备均可收发消息，那么你已经成功集成并正确使用了 RTM 服务。
+
+## 贯穿始终
+
+相比于介绍如何写出代码，声网更愿意帮助你掌握上述程序编写的过程和逻辑。上述程序依次完成了以下操作，让你可以正确地收发消息：
+
+1. 设置并初始化 RTM 对象。
+2. 添加 `didReceiveMessageEvent` 事件监听函数。
+3. 调用 `loginByToken` 登录了 RTM 服务。
+4. 调用 `subscribeWithChannel` 订阅了一个 Message Channel。
+5. 调用 `publish` 发送消息。
+6. 调用 `unsubscribeWithChannel` 取消订阅一个 Message Channel。
+7. 调用 `logout` 登出 RTM 系统。
+
+## 下一步
+
+现在，你已经学会了如何使用 RTM Objective-C SDK 来实现 Message Channel 的收发消息功能。下一步，你可以通过 SDK 的 <a href=>API 参考</a >了解更多功能的使用方法。
