@@ -17,8 +17,6 @@ export function DocsMainColumn({
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
 }) {
-  const footer = <DocsPageFooter next={next} previous={previous} />;
-
   return (
     <main
       className="min-w-0 flex-1 bg-background"
@@ -29,7 +27,7 @@ export function DocsMainColumn({
         data-testid="docs-main-mobile-flow"
       >
         <div className="min-w-0">{children}</div>
-        {footer}
+        <DocsPageFooter next={next} previous={previous} />
       </div>
       <ScrollArea
         className="hidden h-full min-h-0 lg:block"
@@ -37,7 +35,7 @@ export function DocsMainColumn({
       >
         <div className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10">
           <div className="min-w-0 flex-1">{children}</div>
-          {footer}
+          <DocsPageFooter next={next} previous={previous} />
         </div>
       </ScrollArea>
     </main>
@@ -59,7 +57,10 @@ function DocsPageFooter({
       className="mt-10 flex flex-col gap-5 border-t border-[color:var(--line-soft)] pt-6"
       data-testid="docs-page-footer"
     >
-      <div className="flex flex-col gap-3 rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--surface-muted)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <div
+        className="flex flex-col gap-3 rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--surface-muted)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+        data-testid="docs-feedback"
+      >
         <p className="text-sm font-medium text-[color:var(--ink-2)]">
           {t('docs.feedback')}
         </p>
@@ -87,7 +88,10 @@ function DocsPageFooter({
         </div>
       </div>
       {previous || next ? (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+          data-testid="docs-pager"
+        >
           {previous ? (
             <FooterLink direction={t('docs.previous')} link={previous} />
           ) : (

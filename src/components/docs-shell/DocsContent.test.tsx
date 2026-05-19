@@ -113,4 +113,26 @@ describe('DocsMainColumn', () => {
       within(footer).getByRole('link', { name: /Next Next Page/i }),
     ).toHaveAttribute('href', '/en/introduction/next-page');
   });
+
+  it('keeps footer controls stacked and non-overlapping in the mobile flow', async () => {
+    renderWithRouter(
+      <DocsMainColumn
+        next={{ title: 'Next Page', url: '/en/introduction/next-page' }}
+        previous={{
+          title: 'Previous Page',
+          url: '/en/introduction/previous-page',
+        }}
+      >
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const footer = within(mobileFlow).getByTestId('docs-page-footer');
+    const pager = within(footer).getByTestId('docs-pager');
+    const feedback = within(footer).getByTestId('docs-feedback');
+
+    expect(feedback).toHaveClass('flex-col', 'sm:flex-row');
+    expect(pager).toHaveClass('grid-cols-1', 'sm:grid-cols-2');
+  });
 });

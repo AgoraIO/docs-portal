@@ -110,7 +110,10 @@ function renderDocsShell(
   return render(<RouterProvider router={router} />);
 }
 
-function renderWithRouter(children: ReactNode, initialEntry = '/en/introduction/about-agora') {
+function renderWithRouter(
+  children: ReactNode,
+  initialEntry = '/en/introduction/about-agora',
+) {
   const rootRoute = createRootRoute({
     component: () => <Outlet />,
   });
@@ -181,6 +184,7 @@ describe('DocsShell', () => {
     expect(docsTabsStrip).toContainElement(tabsAiLink);
     expect(mainHeaderRow).not.toContainElement(docsTabsStrip);
     expect(docsTabsStrip).not.toHaveClass('hidden');
+    expect(docsTabsStrip.firstElementChild).toHaveClass('overflow-x-auto');
     expect(docsBodyShell).toHaveClass('grid');
     expect(docsBodyShell).toHaveClass('lg:grid-cols-[256px_minmax(0,1fr)]');
     expect(docsSidebar).toHaveStyle({
@@ -318,9 +322,11 @@ describe('DocsShell', () => {
 
     render(<RouterProvider router={router} />);
 
-    const languageButton = (await screen.findAllByRole('button', {
-      name: 'Language',
-    })).find((button) => button.textContent?.includes('English'));
+    const languageButton = (
+      await screen.findAllByRole('button', {
+        name: 'Language',
+      })
+    ).find((button) => button.textContent?.includes('English'));
 
     if (!languageButton) {
       throw new Error('expected desktop language button');
@@ -401,11 +407,14 @@ describe('DocsShell', () => {
     expect(menuButton).toBeInTheDocument();
     expect(mobileSearchButton).toBeInTheDocument();
     expect(mobileSearchButton).not.toHaveTextContent('Search docs');
+    expect(screen.getByTestId('docs-tabs-strip')).not.toHaveClass('hidden');
     expect(
       within(mobileHeaderActions).queryByRole('button', { name: 'Language' }),
     ).toBeNull();
     expect(
-      within(mobileHeaderActions).queryByRole('button', { name: 'Theme: Light' }),
+      within(mobileHeaderActions).queryByRole('button', {
+        name: 'Theme: Light',
+      }),
     ).toBeNull();
     expect(desktopSearchButton).toHaveTextContent('Search docs');
 
