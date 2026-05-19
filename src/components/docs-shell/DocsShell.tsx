@@ -22,6 +22,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -132,6 +133,9 @@ export function DocsShell({
                 >
                   <SheetHeader className="border-b">
                     <SheetTitle>{t('app.name')}</SheetTitle>
+                    <SheetDescription className="sr-only">
+                      {t('docs.openMenu')}
+                    </SheetDescription>
                   </SheetHeader>
                   <MobileSidebar
                     activePath={activePath}
