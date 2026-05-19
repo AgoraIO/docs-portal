@@ -20,8 +20,7 @@ description: 应用配置，用于介绍 RTM 在对应平台上的具体能力�
 
 此外，用户 ID 也会影响计费和在线状态通知等功能的使用，所以声网建议你为用户和设备分配全局唯一的用户 ID 并在整个生命周期内保持不变。
 
-## <a name="servicetype"></a>服务类型
-
+## 服务类型 [#servicetype]
 基于不同的传输连接，RTM SDK 提供的功能可以被划分为两种服务类型： `MESSAGE` 服务和 `STREAM` 服务。
 
 - `MESSAGE` 服务涵盖了 `Message Channel`、`User Channel`、`Presence`、`Storage`、`Lock`、`Token` 鉴权等功能特性，通过 `RtmClient` 实例调用 API。
@@ -33,14 +32,12 @@ description: 应用配置，用于介绍 RTM 在对应平台上的具体能力�
 
 此外，服务类型还涉及私有化配置的选择。用户可以选择私有化一个服务，或者同时私有化两种服务，具体取决于应用场景和预算。详见[私有化配置](./private-setup.md)。
 
-## <a name="protocol"></a>连接协议配置
-
+## 连接协议配置 [#protocol]
 为保证连接的稳定性和服务的持续可用性，RTM 客户端与边缘服务器建立连接时会为每种服务（`MESSAGE` 服务和 `STREAM` 服务）分别建立两条传输链路。默认情况下，这两条链路分别基于 TCP 协议和 UDP 协议，这种设计使得任何一条链路出现网络问题都不会影响传输效果。相较于其他基于 WebSocket 的消息传输方案，RTM 的冗余链路设计能够最大程度地提升传输稳定性和消息到达率。
 
 在某些情况下，用户可能会发现他们的网络不支持 UDP 端口的传输，这可能是暂时的，也可能是永久性的。在这种情况下，为了确保双链路设计能够最大程度地发挥作用，SDK 允许用户将两条链路都配置成 TCP 协议，只需在 `RtmConfig` 中设置 `protocolType` 字段即可。以下是一个将双链路都配置为 TCP 协议的代码示例：
 
-## <a name="install"></a>安装 SDK
-
+## 安装 SDK [#install]
 你可以通过以下方式获取最新的 RTM Java SDK。
 
 详细流程参考[快速开始](../../get-started/quick-start)。

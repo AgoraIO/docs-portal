@@ -20,8 +20,7 @@ description: 应用配置，用于介绍 RTM 在对应平台上的具体能力�
 
 此外，用户 ID 也会影响计费和在线状态通知等功能的使用，所以声网建议你为用户和设备分配全局唯一的用户 ID 并在整个生命周期内保持不变。
 
-## <a name="servicetype"></a>服务类型
-
+## 服务类型 [#servicetype]
 基于不同的传输连接，RTM SDK 提供的功能可以被划分为两种服务类型： `MESSAGE` 服务和 `STREAM` 服务。
 
 - `MESSAGE` 服务涵盖了 `Message Channel`、`User Channel`、`Presence`、`Storage`、`Lock`、`Token` 鉴权等功能特性，通过 `rtm` 实例调用 API。
@@ -36,8 +35,7 @@ description: 应用配置，用于介绍 RTM 在对应平台上的具体能力�
 > **信息**
 > SDK 不支持将两条链路同时配置为 UDP 协议。
 
-## <a name="install"></a>安装 SDK
-
+## 安装 SDK [#install]
 你可以通过以下方式获取最新的 RTM JavaScript SDK。
 
 详细流程参考[快速开始](../../get-started/quick-start)。

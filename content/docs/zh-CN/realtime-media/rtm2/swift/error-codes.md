@@ -20,8 +20,7 @@ config.logConfig?.level = .error
 > **信息**
 > 当你的应用上线时，请将日志信息等级设置为 `info`。
 
-## <a name="errorcode"></a>错误码对照表
-
+## 错误码对照表 [#errorcode]
 在调用 RTM iOS/Swift API 时，如果发生错误，SDK 会执行 `completion` 回调并且返回一个 `AgoraRtmErrorInfo` 类型的 `errorInfo` 返回值：
 
 |  属性  |  类型  | 描述                            |

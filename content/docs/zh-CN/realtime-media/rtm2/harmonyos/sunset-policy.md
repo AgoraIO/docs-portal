@@ -15,12 +15,10 @@ description: 退休政策，用于补充 RTM 的排障、生命周期或合规�
 
 ## 版本发布规则
 
-### <a name="majorrelease"></a>主要版本 (Major Release)
-
+### 主要版本 (Major Release) [#majorrelease]
 主要版本包含新产品、重大架构变更、重大用户界面更改、重要的新功能或实质性创新。
 
-### <a name="minorrelease"></a>次要版本 (Minor Release)
-
+### 次要版本 (Minor Release) [#minorrelease]
 次要版本包含现有产品的更新、功能或性能的增强、用户界面的适当更改以及问题修复。
 
 ### 更新版本 (Patch Release)

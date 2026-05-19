@@ -63,10 +63,7 @@ rtmClient->login("your token", requestId);
 
 生成 RTM Token 需要先在控制台启用对应项目的 App 证书。项目一旦开启了 App 证书，就必须使用 RTM Token 鉴权。
 
-### RTM Token 过期<a name="expiration"></a>
-
-你可以根据业务需求指定 RTM Token 的有效期 (最长为 24 小时)。当 RTM Token 将在 30 秒后过期时，会触发 `onTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
-
+### RTM Token 过期 [#expiration]
 如果 Token 已过期，则 SDK 会触发 `onLinkStateEvent` 回调，报告如下内容：
 
 - 当前状态（`currentState`）：`RTM_LINK_STATE_FAILED`

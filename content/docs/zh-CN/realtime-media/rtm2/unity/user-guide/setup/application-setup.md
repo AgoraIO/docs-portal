@@ -23,8 +23,7 @@ description: 应用配置，用于介绍 RTM 在对应平台上的具体能力�
 > **信息**
 > SDK 不支持将两条链路同时配置为 UDP 协议。
 
-## <a name="install"></a>安装 SDK
-
+## 安装 SDK [#install]
 详细流程参考[快速开始](../../get-started/quick-start)。
 
 ## 初始化 RTM 实例

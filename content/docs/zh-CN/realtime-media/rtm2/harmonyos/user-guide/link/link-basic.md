@@ -165,8 +165,7 @@ try {
 
 当你创建一个 Stream Channel 实例并调用 `join` 方法成功加入频道时，客户端会按 0.5 秒的间隔向服务器发送心跳包以保持活跃状态。`STREAM` 连接的心跳时间间隔不可更改，对于需要增加电池续航的应用场景，不建议使用 `STREAM` 服务。
 
-## <a name="heartbeatinterval-and-presencetimeout"></a>Heartbeat Interval 与 Presence Timeout
-
+## Heartbeat Interval 与 Presence Timeout [#heartbeatinterval-and-presencetimeout]
 `RtmConfig` 中包含两个与时间间隔相关的参数，分别为 `heartbeatInterval` 和 `presenceTimeout`。这两个参数常常会让人感到困惑，本节主要介绍它们的含义，以便你更有效地配置 App。
 
 - `heartbeatInterval`：客户端会定期向服务器发送证明自身处于活跃状态的 Ping-Pong 数据包，以确保服务器能够及时清除超时计数并维持连接状态。该设置会影响 PCU 计数，是 SDK 全局连接管理功能中的一个重要特性。

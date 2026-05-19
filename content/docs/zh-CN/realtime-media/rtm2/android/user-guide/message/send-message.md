@@ -56,8 +56,7 @@ mRtmClient.publish(channelName, message, options, new ResultCallback() {
 
 方法调用成功后，RTM 会在 100 毫秒内将你的消息发送给订阅该频道的所有在线用户。
 
-## <a name="userchannel"></a>User Channel 中发送消息
-
+## User Channel 中发送消息 [#userchannel]
 在 User Channel 中，你只需调用 `publish` 方法，将 `channelType` 参数设为 `USER`，并将 `channelName` 参数设为指定用户的 `userId`，即可向指定用户发送点对点消息。该方法一次只能向一位用户发送消息，如需向多位用户发送消息，你需要多次调用该方法。RTM 并不限制你向多少用户发送消息，也不限制有多少用户向你发送消息，但是对你向用户发送消息的频率有一定的限制。
 
 > **信息**

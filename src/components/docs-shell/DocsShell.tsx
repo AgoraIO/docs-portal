@@ -195,7 +195,7 @@ export function DocsShell({
             </div>
           </div>
           <nav
-            className="hidden border-t border-border lg:block"
+            className="hidden border-t border-border md:block"
             data-testid="docs-tabs-strip"
           >
             <div className="mx-auto flex w-full max-w-[1440px] justify-start px-4 sm:px-6">

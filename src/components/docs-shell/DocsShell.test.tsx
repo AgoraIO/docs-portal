@@ -191,6 +191,15 @@ describe('DocsShell', () => {
     expect(screen.getByText('On this page')).toBeInTheDocument();
   });
 
+  it('keeps the top docs tabs available from the medium breakpoint upward', async () => {
+    renderDocsShell();
+
+    const docsTabsStrip = await screen.findByTestId('docs-tabs-strip');
+
+    expect(docsTabsStrip).toHaveClass('hidden', 'md:block');
+    expect(docsTabsStrip).not.toHaveClass('lg:block');
+  });
+
   it('renders the desktop docs body shell regions and keeps pagination inside the main column', async () => {
     renderDocsShell({
       next: { title: 'Next Page', url: '/en/introduction/next-page' },

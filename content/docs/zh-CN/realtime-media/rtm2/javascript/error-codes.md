@@ -34,8 +34,7 @@ const rtm = new RTM("yourAppId", "Tony", rtmConfig);
 > **信息**
 > 为避免产生不必要的存储计费，你需要在故障解决后及时关闭日志上传功能。
 
-## <a name="errorcode"></a>错误码对照表
-
+## 错误码对照表 [#errorcode]
 RTM JavaScript SDK 支持并推荐你使用 Async/Await 编程模式，以便在业务中处理 JavaScript 异步操作。在调用 RTM JavaScript API 时，如果发生错误，SDK 会抛出一个 `ErrorInfo` 类型的错误对象，你需要使用 `try...catch` 捕获该对象。`ErrorInfo` 包含以下属性：
 
 ```javascript showLineNumbers
