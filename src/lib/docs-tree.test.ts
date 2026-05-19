@@ -2,8 +2,8 @@ import type { Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import {
   getSidebarBreadcrumb,
-  getSidebarNodes,
   getSidebarEntries,
+  getSidebarNodes,
   getTabSummaries,
   mapSidebarEntriesToTree,
 } from './docs-tree';

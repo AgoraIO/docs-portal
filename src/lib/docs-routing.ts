@@ -11,7 +11,9 @@ export type DocsRoute = {
   tab: string;
 };
 
-function normalizeSlugSegments(route: Pick<DocsRoute, 'slug' | 'slugSegments'>) {
+function normalizeSlugSegments(
+  route: Pick<DocsRoute, 'slug' | 'slugSegments'>,
+) {
   if (Array.isArray(route.slugSegments) && route.slugSegments.length > 0) {
     const segments = route.slugSegments.filter(Boolean);
     if (segments.length === 1 && segments[0] === 'index') {

@@ -41,7 +41,7 @@ export function DocsContent({
                 return (
                   <li
                     className="flex min-w-0 items-center gap-2"
-                    key={`${item.title}-${index}`}
+                    key={item.url ?? item.title}
                   >
                     {index > 0 ? (
                       <span

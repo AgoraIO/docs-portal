@@ -81,7 +81,9 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/en/introduction/other');
 
-    expect(await screen.findByTitle(longTitle)).toHaveClass('whitespace-normal');
+    expect(await screen.findByTitle(longTitle)).toHaveClass(
+      'whitespace-normal',
+    );
     expect(screen.getByTitle(longTitle)).toHaveClass('[display:-webkit-box]');
   });
 
@@ -109,11 +111,15 @@ describe('DocsSidebarTree', () => {
       name: /SDK Quickstarts/i,
     });
 
-    expect(screen.queryByRole('link', { name: 'Use RESTful API' })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Use RESTful API' }),
+    ).not.toBeInTheDocument();
 
     fireEvent.click(toggle);
 
-    expect(await screen.findByRole('link', { name: 'Use RESTful API' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('link', { name: 'Use RESTful API' }),
+    ).toBeInTheDocument();
   });
 
   it('opens the realtime section by default on the introduction index page', async () => {
@@ -142,7 +148,9 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/zh-CN/introduction/index');
 
-    expect(await screen.findByRole('link', { name: '音视频' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('link', { name: '音视频' }),
+    ).toBeInTheDocument();
     expect(screen.getByRole('link', { name: '消息' })).toBeInTheDocument();
   });
 
@@ -197,9 +205,15 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/zh-CN/ai/domain-overview');
 
-    expect(await screen.findByRole('link', { name: '开通服务' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /SDK 快速开始/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Start with Agent Studio' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('link', { name: '开通服务' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /SDK 快速开始/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Start with Agent Studio' }),
+    ).toBeInTheDocument();
 
     const restfulLink = screen.queryByRole('link', {
       name: '使用 RESTful API 实现对话式 AI 引擎',
@@ -250,7 +264,11 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/zh-CN/realtime-media/online-ktv/scenario-api');
 
-    expect(await screen.findByRole('link', { name: '总览' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: '场景化 API' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('link', { name: '总览' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: '场景化 API' }),
+    ).toBeInTheDocument();
   });
 });

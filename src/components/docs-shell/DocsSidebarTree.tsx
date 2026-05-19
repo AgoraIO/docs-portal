@@ -109,9 +109,9 @@ function SidebarSection({
     ? Math.max(
         0,
         node.children.findIndex(
-          (child) => child.type === 'page' && child.url.endsWith('/enable-service'),
-        ) +
-          1,
+          (child) =>
+            child.type === 'page' && child.url.endsWith('/enable-service'),
+        ) + 1,
       )
     : node.children.length;
   const leadingChildren = node.children.slice(0, splitIndex);
@@ -139,10 +139,10 @@ function SidebarSection({
         {node.nestedQuickstartGroup ? (
           <SidebarQuickstartGroup
             activePath={activePath}
-            children={node.nestedQuickstartGroup.children.filter(
+            onSelectPath={onSelectPath}
+            pages={node.nestedQuickstartGroup.children.filter(
               (child): child is SidebarPageNode => child.type === 'page',
             )}
-            onSelectPath={onSelectPath}
             title={node.nestedQuickstartGroup.title}
           />
         ) : null}
@@ -193,7 +193,12 @@ function SidebarSection({
                   isActive={child.url === activePath}
                   size="md"
                 >
-                  <Link onClick={onSelectPath} params={{}} search={{}} to={child.url}>
+                  <Link
+                    onClick={onSelectPath}
+                    params={{}}
+                    search={{}}
+                    to={child.url}
+                  >
                     <span
                       className={cn(
                         'block overflow-hidden text-pretty leading-5 whitespace-normal',
@@ -223,16 +228,16 @@ function shouldDefaultOpenSection(title: string, activePath: string) {
 
 function SidebarQuickstartGroup({
   activePath,
-  children,
   onSelectPath,
+  pages,
   title,
 }: {
   activePath: string;
-  children: SidebarPageNode[];
   onSelectPath: () => void;
+  pages: SidebarPageNode[];
   title: string;
 }) {
-  const defaultOpen = children.some((child) => child.url === activePath);
+  const defaultOpen = pages.some((child) => child.url === activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
@@ -253,7 +258,7 @@ function SidebarQuickstartGroup({
       </SidebarMenuButton>
       {isOpen ? (
         <SidebarMenuSub>
-          {children.map((child) => (
+          {pages.map((child) => (
             <SidebarMenuSubItem key={child.id}>
               <SidebarMenuSubButton
                 asChild
@@ -261,7 +266,12 @@ function SidebarQuickstartGroup({
                 isActive={child.url === activePath}
                 size="md"
               >
-                <Link onClick={onSelectPath} params={{}} search={{}} to={child.url}>
+                <Link
+                  onClick={onSelectPath}
+                  params={{}}
+                  search={{}}
+                  to={child.url}
+                >
                   <span
                     className={cn(
                       'block overflow-hidden text-pretty leading-5 whitespace-normal',
@@ -291,7 +301,8 @@ function SidebarNestedSection({
   onSelectPath: () => void;
 }) {
   const defaultOpen =
-    !node.collapsible || node.children.some((child) => isNodeActive(child, activePath));
+    !node.collapsible ||
+    node.children.some((child) => isNodeActive(child, activePath));
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
@@ -328,7 +339,12 @@ function SidebarNestedSection({
                 key={child.id}
                 size="md"
               >
-                <Link onClick={onSelectPath} params={{}} search={{}} to={child.url}>
+                <Link
+                  onClick={onSelectPath}
+                  params={{}}
+                  search={{}}
+                  to={child.url}
+                >
                   <span
                     className={cn(
                       'block overflow-hidden text-pretty leading-5 whitespace-normal',
@@ -369,7 +385,8 @@ function mergeSdkQuickstartSection(nodes: DocsSidebarNode[]) {
       (node.title === 'Getting Started' || node.title === '开始使用') &&
       nextNode?.type === 'section' &&
       nextNode.children.every((child) => child.type === 'page') &&
-      (nextNode.title === 'SDK Quickstarts' || nextNode.title === 'SDK 快速开始')
+      (nextNode.title === 'SDK Quickstarts' ||
+        nextNode.title === 'SDK 快速开始')
     ) {
       merged.push({
         ...node,

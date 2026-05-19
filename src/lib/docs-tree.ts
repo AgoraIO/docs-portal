@@ -123,7 +123,10 @@ export function getSidebarEntries(
   return entries;
 }
 
-export function getSidebarNodes(root: Root, activeTab: string): DocsSidebarNode[] {
+export function getSidebarNodes(
+  root: Root,
+  activeTab: string,
+): DocsSidebarNode[] {
   const tabNode = findTabNode(root, activeTab);
 
   if (!tabNode) {
@@ -237,7 +240,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     return [];
   }
 
-  const children = node.children.flatMap((child) => pageTreeNodeToSidebarNodes(child));
+  const children = node.children.flatMap((child) =>
+    pageTreeNodeToSidebarNodes(child),
+  );
 
   if (node.index) {
     children.unshift({
@@ -356,7 +361,9 @@ function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
   const childEntries: SidebarEntry[] = [];
 
   for (const child of node.children) {
-    childEntries.push(...flattenSidebarNode(child, `${node.$id ?? node.name}-`));
+    childEntries.push(
+      ...flattenSidebarNode(child, `${node.$id ?? node.name}-`),
+    );
   }
 
   if (childEntries.length === 0 && !node.index) {

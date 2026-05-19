@@ -64,9 +64,7 @@ describe('docs routing helpers', () => {
     ]);
 
     expect(
-      getSourceSlugsFromContentPath(
-        'en/realtime-media/rtc/quick-start.md',
-      ),
+      getSourceSlugsFromContentPath('en/realtime-media/rtc/quick-start.md'),
     ).toEqual(['realtime-media', 'rtc', 'quick-start']);
 
     expect(
@@ -98,24 +96,18 @@ describe('docs routing helpers', () => {
       slugSegments: [],
     });
 
-    expect(parseSourceSlugs(['api-reference', 'start-agent'])).toEqual(
-      {
-        locale: '',
-        tab: 'api-reference',
-        slug: 'start-agent',
-        slugSegments: ['start-agent'],
-      },
-    );
+    expect(parseSourceSlugs(['api-reference', 'start-agent'])).toEqual({
+      locale: '',
+      tab: 'api-reference',
+      slug: 'start-agent',
+      slugSegments: ['start-agent'],
+    });
 
-    expect(
-      parseSourceSlugs(['realtime-media', 'rtc', 'quick-start']),
-    ).toEqual(
-      {
-        locale: '',
-        tab: 'realtime-media',
-        slug: 'quick-start',
-        slugSegments: ['rtc', 'quick-start'],
-      },
-    );
+    expect(parseSourceSlugs(['realtime-media', 'rtc', 'quick-start'])).toEqual({
+      locale: '',
+      tab: 'realtime-media',
+      slug: 'quick-start',
+      slugSegments: ['rtc', 'quick-start'],
+    });
   });
 });

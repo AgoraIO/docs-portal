@@ -8,7 +8,9 @@ export const Route = createFileRoute('/llms.mdx/docs/$')({
       GET: async ({ params }) => {
         const { getLLMText, source } = await import('@/lib/source');
         const slugs = getSourceSlugsFromContentPath(params._splat ?? '');
-        const locale = normalizeLocale(params._splat?.split('/').filter(Boolean)[0]);
+        const locale = normalizeLocale(
+          params._splat?.split('/').filter(Boolean)[0],
+        );
         const page = source.getPage(slugs, locale ?? undefined);
         if (!page) throw notFound();
 

@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Sidebar as ShadcnSidebar, SidebarContent } from '@/components/ui/sidebar';
+import {
+  Sidebar as ShadcnSidebar,
+  SidebarContent,
+} from '@/components/ui/sidebar';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
 import { DocsSidebarTree } from './DocsSidebarTree';
 
@@ -19,6 +22,8 @@ export function DocsSidebar({
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    void activeTab;
+
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = 0;
     }

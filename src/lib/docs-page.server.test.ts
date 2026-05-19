@@ -73,13 +73,15 @@ function createPage() {
         children: [],
         type: 'root' as const,
       })),
-      getText: vi.fn(async () => `## What is
+      getText: vi.fn(
+        async () => `## What is
 
 Agora overview.
 
 ## Why
 
-Why teams use it.`),
+Why teams use it.`,
+      ),
       info: {
         fullPath: '/virtual/content/docs/en/introduction/about-agora.md',
         path: 'en/introduction/about-agora.md',
@@ -110,18 +112,15 @@ describe('loadDocsTabIndex', () => {
     });
   });
 
-  it(
-    'falls back to the first real page when the tab has no index content',
-    async () => {
-      await expect(
-        loadDocsTabIndex('en', 'introduction'),
-      ).resolves.toMatchObject({
+  it('falls back to the first real page when the tab has no index content', async () => {
+    await expect(loadDocsTabIndex('en', 'introduction')).resolves.toMatchObject(
+      {
         locale: 'en',
         tab: 'introduction',
         url: '/en/introduction/about-agora',
-      });
-    },
-  );
+      },
+    );
+  });
 });
 
 describe('loadDocsPagePayload', () => {
@@ -174,7 +173,8 @@ describe('loadDocsPagePayload', () => {
       data: {
         ...basePage.data,
         info: {
-          fullPath: '/virtual/content/docs/en/realtime-media/rtc/quick-start.md',
+          fullPath:
+            '/virtual/content/docs/en/realtime-media/rtc/quick-start.md',
           path: 'en/realtime-media/rtc/quick-start.md',
         },
         title: 'RTC Quick Start',
@@ -185,7 +185,9 @@ describe('loadDocsPagePayload', () => {
     };
 
     mockedGetPage.mockReturnValue(nestedPage as ReturnType<typeof createPage>);
-    mockedGetPages.mockReturnValue([nestedPage as ReturnType<typeof createPage>]);
+    mockedGetPages.mockReturnValue([
+      nestedPage as ReturnType<typeof createPage>,
+    ]);
 
     await expect(
       loadDocsPagePayload('en', 'realtime-media', ['rtc', 'quick-start']),

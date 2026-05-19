@@ -6,7 +6,6 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { useState, type ComponentProps, type ReactNode } from 'react';
 import {
   fireEvent,
   render,
@@ -14,6 +13,7 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
+import { type ComponentProps, type ReactNode, useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';

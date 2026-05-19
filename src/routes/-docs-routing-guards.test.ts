@@ -1,6 +1,6 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
 import { describe, expect, it } from 'vitest';
-import { Route as DocPageRoute } from './$locale/$tab/$slug';
+import { Route as DocPageRoute } from './$locale/$tab/$';
 import { Route as TabIndexRoute } from './$locale/$tab/index';
 import { Route as LocaleIndexRoute } from './$locale/index';
 
@@ -44,8 +44,8 @@ describe('docs route locale guards', () => {
     try {
       await getLoader(DocPageRoute)({
         params: {
+          _splat: 'index',
           locale: 'docs',
-          slug: 'index',
           tab: 'introduction',
         },
       } as never);
@@ -78,5 +78,4 @@ describe('docs route locale guards', () => {
 
     throw new Error('expected loader to reject with redirect');
   });
-
 });
