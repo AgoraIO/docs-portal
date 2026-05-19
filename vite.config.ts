@@ -4,8 +4,17 @@ import react from '@vitejs/plugin-react';
 import mdx from 'fumadocs-mdx/vite';
 import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vitest/config';
+import { getStaticDocsPaths } from './src/lib/docs-static-paths';
 
 const isTest = process.env.VITEST === 'true';
+const staticDocsPages = isTest
+  ? []
+  : getStaticDocsPaths().map((path) => ({
+      path,
+      prerender: {
+        enabled: true,
+      },
+    }));
 
 export default defineConfig({
   server: {
@@ -40,14 +49,24 @@ export default defineConfig({
             },
 
             pages: [
+              ...staticDocsPages,
               {
                 path: '/api/search',
+                prerender: {
+                  enabled: false,
+                },
               },
               {
                 path: 'llms-full.txt',
+                prerender: {
+                  enabled: true,
+                },
               },
               {
                 path: 'llms.txt',
+                prerender: {
+                  enabled: true,
+                },
               },
             ],
           }),
