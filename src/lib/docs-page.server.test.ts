@@ -139,8 +139,18 @@ describe('loadDocsPagePayload', () => {
     ).resolves.toMatchObject({
       activePath: '/en/introduction/about-agora',
       activeTab: 'introduction',
+      breadcrumb: [
+        {
+          title: 'About Agora',
+          url: '/en/introduction/about-agora',
+        },
+      ],
       contentPath: 'en/introduction/about-agora.md',
       slug: 'about-agora',
+      readingTime: {
+        minutes: 1,
+        words: 9,
+      },
       title: 'About Agora',
       toc: [
         {

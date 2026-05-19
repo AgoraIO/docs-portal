@@ -4,6 +4,7 @@ import { getSourceSlugs } from './docs-routing';
 import {
   getFirstTabPageUrl,
   getPrevNextLinks,
+  getSidebarBreadcrumb,
   getSidebarNodes,
   getTabSummaries,
 } from './docs-tree';
@@ -58,11 +59,24 @@ export async function loadDocsPagePayload(
   }
 
   const pageTree = source.getPageTree(locale);
-  const toc = await resolvePageToc(page);
+  const processedText = await readProcessedText(page);
+  const toc = await resolvePageToc(page, processedText);
+  const sidebar = getSidebarNodes(pageTree, tab);
+  const title = page.data.title ?? page.slugs.at(-1) ?? page.url;
+  const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
 
   return {
     activePath: page.url,
     activeTab: tab,
+    breadcrumb:
+      breadcrumb.length > 0
+        ? breadcrumb
+        : [
+            {
+              title,
+              url: page.url,
+            },
+          ],
     contentPath: page.path,
     description: page.data.description,
     navigation: getPrevNextLinks(pageTree, page.url),
@@ -71,7 +85,8 @@ export async function loadDocsPagePayload(
       title: item.data.title ?? item.slugs.at(-1) ?? item.url,
       url: item.url,
     })),
-    sidebar: getSidebarNodes(pageTree, tab),
+    readingTime: getReadingTime(processedText),
+    sidebar,
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
     title: page.data.title,
@@ -79,7 +94,15 @@ export async function loadDocsPagePayload(
   };
 }
 
-async function resolvePageToc(page: PageWithSource) {
+async function readProcessedText(page: PageWithSource) {
+  try {
+    return await page.data.getText('processed');
+  } catch {
+    return '';
+  }
+}
+
+async function resolvePageToc(page: PageWithSource, processedText: string) {
   const directToc = normalizeToc(page.data.toc);
 
   if (directToc.length > 0) {
@@ -87,11 +110,24 @@ async function resolvePageToc(page: PageWithSource) {
   }
 
   try {
-    const processedMarkdown = await page.data.getText('processed');
-    return normalizeToc(await getTableOfContents(processedMarkdown));
+    return normalizeToc(await getTableOfContents(processedText));
   } catch {
     return [];
   }
+}
+
+function getReadingTime(text: string) {
+  const words = text
+    .replace(/[#*_`~>\-[\]()]/g, ' ')
+    .replace(/[\u4e00-\u9fff]/g, ' $& ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+
+  return {
+    minutes: Math.max(1, Math.ceil(words / 220)),
+    words,
+  };
 }
 
 function normalizeToc(toc: TOCItemType[] | undefined) {

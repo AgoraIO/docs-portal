@@ -41,6 +41,11 @@ export type DocsSidebarSectionNode = {
 
 export type DocsSidebarNode = DocsSidebarPageNode | DocsSidebarSectionNode;
 
+export type DocsBreadcrumbItem = {
+  title: string;
+  url?: string;
+};
+
 export function getTabSummaries(root: Root): TabSummary[] {
   return getTabNodes(root).flatMap((node) => {
     const item = getTabIndex(node);
@@ -265,6 +270,21 @@ export function getPrevNextLinks(root: Root, currentUrl: string) {
   };
 }
 
+export function getSidebarBreadcrumb(
+  nodes: DocsSidebarNode[],
+  activePath: string,
+): DocsBreadcrumbItem[] {
+  for (const node of nodes) {
+    const result = findSidebarBreadcrumb(node, activePath);
+
+    if (result) {
+      return result;
+    }
+  }
+
+  return [];
+}
+
 export function buildPublicDocUrl(locale: string, tab: string, slug?: string) {
   return buildDocPath(locale, tab, slug);
 }
@@ -371,6 +391,39 @@ function mapPageLink(item: Item) {
     title: normalizeLabel(item.name, item.url),
     url: item.url,
   };
+}
+
+function findSidebarBreadcrumb(
+  node: DocsSidebarNode,
+  activePath: string,
+): DocsBreadcrumbItem[] | null {
+  if (node.type === 'page') {
+    if (node.url !== activePath) {
+      return null;
+    }
+
+    return [
+      {
+        title: node.title,
+        url: node.url,
+      },
+    ];
+  }
+
+  for (const child of node.children) {
+    const childBreadcrumb = findSidebarBreadcrumb(child, activePath);
+
+    if (childBreadcrumb) {
+      return [
+        {
+          title: node.title,
+        },
+        ...childBreadcrumb,
+      ];
+    }
+  }
+
+  return null;
 }
 
 function getTabIdFromUrl(url: string) {

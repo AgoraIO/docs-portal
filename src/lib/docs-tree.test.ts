@@ -1,6 +1,7 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import {
+  getSidebarBreadcrumb,
   getSidebarNodes,
   getSidebarEntries,
   getTabSummaries,
@@ -766,6 +767,49 @@ describe('docs tree helpers', () => {
         id: 'reference',
         title: 'Reference',
         type: 'section',
+      },
+    ]);
+  });
+
+  it('builds a breadcrumb from nested sidebar sections', () => {
+    expect(
+      getSidebarBreadcrumb(
+        [
+          {
+            children: [
+              {
+                children: [
+                  {
+                    id: '/en/realtime-media/online-ktv/scenario-api',
+                    title: 'Scenario API',
+                    type: 'page',
+                    url: '/en/realtime-media/online-ktv/scenario-api',
+                  },
+                ],
+                collapsible: true,
+                id: 'paths',
+                title: 'Product paths',
+                type: 'section',
+              },
+            ],
+            collapsible: true,
+            id: 'online-ktv',
+            title: 'Online KTV',
+            type: 'section',
+          },
+        ],
+        '/en/realtime-media/online-ktv/scenario-api',
+      ),
+    ).toEqual([
+      {
+        title: 'Online KTV',
+      },
+      {
+        title: 'Product paths',
+      },
+      {
+        title: 'Scenario API',
+        url: '/en/realtime-media/online-ktv/scenario-api',
       },
     ]);
   });
