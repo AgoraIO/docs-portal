@@ -28,6 +28,12 @@ const pageTree: Root = {
           $id: 'introduction-folder',
           children: [
             {
+              $id: 'introduction-get-started',
+              icon: 'BookOpen',
+              name: 'Get started',
+              type: 'separator',
+            },
+            {
               $id: 'introduction-about-agora',
               name: 'About Agora',
               type: 'page',

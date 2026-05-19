@@ -5,6 +5,7 @@ import { buildDocPath } from './docs-routing';
 
 export type TabSummary = {
   description?: string;
+  icon?: string;
   id: string;
   title: string;
   url: string;
@@ -19,6 +20,7 @@ export type SidebarEntry =
     }
   | {
       collapsible?: boolean;
+      icon?: string;
       id: string;
       title: string;
       type: 'separator';
@@ -34,6 +36,7 @@ export type DocsSidebarPageNode = {
 export type DocsSidebarSectionNode = {
   children: DocsSidebarNode[];
   collapsible?: boolean;
+  icon?: string;
   id: string;
   title: string;
   type: 'section';
@@ -59,18 +62,25 @@ export function getTabSummaries(root: Root): TabSummary[] {
       return [];
     }
 
-    return [
-      {
-        description:
-          typeof item.description === 'string' ? item.description : undefined,
-        id,
-        title:
-          node.type === 'folder'
-            ? normalizeLabel(node.name, id)
-            : normalizeLabel(item.name, id),
-        url: item.url,
-      },
-    ];
+    const summary: TabSummary = {
+      id,
+      title:
+        node.type === 'folder'
+          ? normalizeLabel(node.name, id)
+          : normalizeLabel(item.name, id),
+      url: item.url,
+    };
+
+    if (typeof item.description === 'string') {
+      summary.description = item.description;
+    }
+
+    const icon = getConfiguredIconName(node, item);
+    if (icon) {
+      summary.icon = icon;
+    }
+
+    return [summary];
   });
 }
 
@@ -151,44 +161,39 @@ export function getSidebarNodes(
   const nodes: DocsSidebarNode[] = [];
   const indexItem = getTabIndex(tabNode);
   const indexUrl = indexItem?.url;
-  let leadingSection = getLeadingSidebarSection(activeTab, indexUrl);
-
-  if (indexItem) {
-    const indexNode: DocsSidebarPageNode = {
-      id: indexItem.url,
-      title: normalizeLabel(indexItem.name, activeTab),
-      type: 'page',
-      url: indexItem.url,
-    };
-
-    if (leadingSection) {
-      leadingSection.children.push(indexNode);
-    } else {
-      nodes.push(indexNode);
-    }
-  }
+  let pendingIndexNode: DocsSidebarPageNode | null = indexItem
+    ? {
+        id: indexItem.url,
+        title: normalizeLabel(indexItem.name, activeTab),
+        type: 'page',
+        url: indexItem.url,
+      }
+    : null;
+  let hasEmittedContent = false;
 
   let currentSection: DocsSidebarSectionNode | null = null;
 
   for (const child of tabNode.children) {
     if (child.type === 'separator') {
-      if (leadingSection) {
-        nodes.push(leadingSection);
-        leadingSection = null;
-      }
-
       const title = typeof child.name === 'string' ? child.name : '';
       currentSection = null;
 
       if (title.length > 0) {
+        const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
           collapsible: isCollapsibleSectionTitle(title),
+          ...(icon ? { icon } : {}),
           id: `separator-${title}`,
           title,
           type: 'section',
         };
+        if (pendingIndexNode && !hasEmittedContent) {
+          currentSection.children.push(pendingIndexNode);
+          pendingIndexNode = null;
+        }
         nodes.push(currentSection);
+        hasEmittedContent = true;
       }
 
       continue;
@@ -199,18 +204,31 @@ export function getSidebarNodes(
         continue;
       }
 
-      if (leadingSection) {
-        leadingSection.children.push(node);
-      } else if (currentSection) {
+      if (pendingIndexNode) {
+        if (currentSection) {
+          currentSection.children.push(pendingIndexNode);
+        } else {
+          nodes.push(pendingIndexNode);
+        }
+        pendingIndexNode = null;
+        hasEmittedContent = true;
+      }
+
+      if (currentSection) {
         currentSection.children.push(node);
       } else {
         nodes.push(node);
       }
+      hasEmittedContent = true;
     }
   }
 
-  if (leadingSection) {
-    nodes.push(leadingSection);
+  if (pendingIndexNode) {
+    if (currentSection) {
+      currentSection.children.push(pendingIndexNode);
+    } else {
+      nodes.push(pendingIndexNode);
+    }
   }
 
   return nodes;
@@ -244,6 +262,9 @@ export function mapSidebarEntriesToTree(
         collapsible:
           pendingSectionEntry.collapsible ??
           isCollapsibleSectionTitle(pendingSectionEntry.title),
+        ...(pendingSectionEntry.icon
+          ? { icon: pendingSectionEntry.icon }
+          : {}),
         id: pendingSectionEntry.id,
         title: pendingSectionEntry.title,
         type: 'section',
@@ -295,10 +316,13 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     });
   }
 
+  const icon = getConfiguredIconName(node, node.index);
+
   return [
     {
       children,
       collapsible: true,
+      ...(icon ? { icon } : {}),
       id: `folder-${String(node.$id ?? node.name ?? 'folder')}`,
       title: normalizeLabel(node.name, node.index?.url ?? 'Folder'),
       type: 'section',
@@ -376,8 +400,11 @@ function findTabNode(root: Root, activeTab: string): Node | undefined {
 
 function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
   if (node.type === 'separator') {
+    const icon = getConfiguredIconName(node);
+
     return [
       {
+        ...(icon ? { icon } : {}),
         id: `${prefix}separator-${String(node.name ?? 'unnamed')}`,
         title: typeof node.name === 'string' ? node.name : '',
         type: 'separator',
@@ -412,9 +439,11 @@ function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
     return [];
   }
 
+  const icon = getConfiguredIconName(node, node.index);
   const entries: SidebarEntry[] = [
     {
       collapsible: true,
+      ...(icon ? { icon } : {}),
       id: `${prefix}separator-${String(node.$id ?? node.name ?? 'folder')}`,
       title: normalizeLabel(node.name, node.index?.url ?? 'Folder'),
       type: 'separator',
@@ -515,6 +544,16 @@ function normalizeLabel(value: ReactNode, fallback: string) {
   return fallback;
 }
 
+function getConfiguredIconName(node: Node, fallback?: Item) {
+  if ('icon' in node && typeof node.icon === 'string' && node.icon.length > 0) {
+    return node.icon;
+  }
+
+  return typeof fallback?.icon === 'string' && fallback.icon.length > 0
+    ? fallback.icon
+    : undefined;
+}
+
 function isCollapsibleSectionTitle(title: string) {
   return (
     title === 'SDK Quickstarts' ||
@@ -526,24 +565,6 @@ function isCollapsibleSectionTitle(title: string) {
     title === 'Media Infrastructure' ||
     title === '媒体基础设施'
   );
-}
-
-function getLeadingSidebarSection(activeTab: string, indexUrl?: string) {
-  if (activeTab !== 'introduction') {
-    return null;
-  }
-
-  const isChinese = indexUrl?.includes('/zh-CN/') ?? false;
-
-  const section: DocsSidebarSectionNode = {
-    children: [],
-    collapsible: false,
-    id: `separator-${isChinese ? '开始使用' : 'Get started'}`,
-    title: isChinese ? '开始使用' : 'Get started',
-    type: 'section',
-  };
-
-  return section;
 }
 
 function getFolderIndexTitle(index: Item, folderName: ReactNode) {

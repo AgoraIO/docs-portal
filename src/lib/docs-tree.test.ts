@@ -132,6 +132,80 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('preserves configured tab and section icons from the page tree', () => {
+    const tree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'intro-folder',
+              children: [
+                {
+                  $id: 'intro-separator-get-started',
+                  icon: 'BookOpen',
+                  name: 'Get started',
+                  type: 'separator',
+                },
+                {
+                  $id: 'intro-about',
+                  name: 'About Agora',
+                  type: 'page',
+                  url: '/en/introduction/about-agora',
+                },
+              ],
+              icon: 'BookOpen',
+              index: {
+                $id: 'intro-index',
+                name: 'Overview',
+                type: 'page',
+                url: '/en/introduction',
+              },
+              name: 'Introduction',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(getTabSummaries(tree)).toEqual([
+      {
+        icon: 'BookOpen',
+        id: 'introduction',
+        title: 'Introduction',
+        url: '/en/introduction',
+      },
+    ]);
+    expect(getSidebarNodes(tree, 'introduction')).toEqual([
+      {
+        children: [
+          {
+            id: '/en/introduction',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/introduction',
+          },
+          {
+            id: '/en/introduction/about-agora',
+            title: 'About Agora',
+            type: 'page',
+            url: '/en/introduction/about-agora',
+          },
+        ],
+        collapsible: false,
+        icon: 'BookOpen',
+        id: 'separator-Get started',
+        title: 'Get started',
+        type: 'section',
+      },
+    ]);
+  });
+
   it('builds sidebar entries from the active nested root folder', () => {
     expect(getSidebarEntries(nestedRootTree, 'introduction')).toEqual([
       {
