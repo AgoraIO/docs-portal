@@ -28,6 +28,10 @@ const enCommon = {
     tocEmpty: 'No headings on this page.',
     next: 'Next',
     previous: 'Previous',
+    readingTime: 'Reading time · {{count}} min',
+    feedback: 'Was this page helpful?',
+    feedbackYes: 'Yes',
+    feedbackNo: 'No',
     openMenu: 'Open navigation',
   },
   home: {

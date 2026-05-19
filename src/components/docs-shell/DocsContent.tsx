@@ -2,36 +2,97 @@ import { ClientOnly } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/cn';
+import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import { DocsContentBodyClient } from './DocsContentBody.client';
 
 export function DocsContent({
+  breadcrumb = [],
   contentPath,
   description,
+  readingTime,
   slug,
   title,
   toc,
 }: {
+  breadcrumb?: DocsBreadcrumbItem[];
   contentPath: string;
   description?: string;
+  readingTime?: {
+    minutes: number;
+    words: number;
+  };
   slug?: string;
   title?: string;
   toc: TOCItemType[];
 }) {
+  const { t } = useTranslation('common');
+  const displayTitle = title ?? slug;
+
   return (
-    <article className="flex min-w-0 flex-col gap-8">
-      <div className="flex flex-col gap-3">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          {title ?? slug}
-        </h1>
-        {description ? (
-          <p className="max-w-3xl text-base leading-7 text-muted-foreground">
-            {description}
-          </p>
+    <article className="flex min-w-0 flex-col gap-9">
+      <header className="flex flex-col gap-4 border-b border-[color:var(--line-soft)] pb-7">
+        {breadcrumb.length > 0 ? (
+          <nav aria-label="Breadcrumb" className="min-w-0">
+            <ol className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[13px] leading-5 text-[color:var(--ink-4)]">
+              {breadcrumb.map((item, index) => {
+                const isLast = index === breadcrumb.length - 1;
+
+                return (
+                  <li
+                    className="flex min-w-0 items-center gap-2"
+                    key={`${item.title}-${index}`}
+                  >
+                    {index > 0 ? (
+                      <span
+                        aria-hidden="true"
+                        className="text-[color:var(--line-strong)]"
+                      >
+                        /
+                      </span>
+                    ) : null}
+                    {item.url && !isLast ? (
+                      <a
+                        className="truncate transition-colors hover:text-[color:var(--ink-1)]"
+                        href={item.url}
+                      >
+                        {item.title}
+                      </a>
+                    ) : (
+                      <span
+                        aria-current={isLast ? 'page' : undefined}
+                        className={cn(
+                          'truncate',
+                          isLast && 'text-[color:var(--ink-2)]',
+                        )}
+                      >
+                        {item.title}
+                      </span>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          </nav>
         ) : null}
-      </div>
-      <Separator />
+        <div className="flex flex-col gap-3">
+          <h1 className="max-w-4xl text-[2rem] leading-[1.12] font-semibold text-[color:var(--ink-1)] sm:text-[2.5rem]">
+            {displayTitle}
+          </h1>
+          {description ? (
+            <p className="max-w-3xl text-[15px] leading-7 text-[color:var(--ink-3)]">
+              {description}
+            </p>
+          ) : null}
+        </div>
+        {readingTime ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full border border-[color:var(--line-soft)] bg-[color:var(--surface-muted)] px-2.5 py-1 text-xs font-medium text-[color:var(--ink-3)]">
+              {t('docs.readingTime', { count: readingTime.minutes })}
+            </span>
+          </div>
+        ) : null}
+      </header>
       <div className="prose prose-neutral dark:prose-invert max-w-none">
         <ClientOnly fallback={null}>
           <DocsContentBodyClient contentPath={contentPath} />

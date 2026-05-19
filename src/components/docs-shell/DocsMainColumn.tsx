@@ -1,7 +1,12 @@
 'use client';
 
 import { Link } from '@tanstack/react-router';
+import { CheckIcon, XIcon } from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/cn';
 
 export function DocsMainColumn({
   children,
@@ -12,23 +17,19 @@ export function DocsMainColumn({
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
 }) {
+  const footer = <DocsPageFooter next={next} previous={previous} />;
+
   return (
-    <main className="min-w-0 flex-1 bg-background" data-testid="docs-main-column">
+    <main
+      className="min-w-0 flex-1 bg-background"
+      data-testid="docs-main-column"
+    >
       <div
         className="px-4 py-8 sm:px-6 lg:hidden lg:px-10"
         data-testid="docs-main-mobile-flow"
       >
         <div className="min-w-0">{children}</div>
-        {previous || next ? (
-          <footer className="mt-8 flex justify-between gap-3 border-t border-border pt-6">
-            {previous ? (
-              <FooterLink direction="Previous" link={previous} />
-            ) : (
-              <div />
-            )}
-            {next ? <FooterLink direction="Next" link={next} /> : <div />}
-          </footer>
-        ) : null}
+        {footer}
       </div>
       <ScrollArea
         className="hidden h-full min-h-0 lg:block"
@@ -36,40 +37,98 @@ export function DocsMainColumn({
       >
         <div className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10">
           <div className="min-w-0 flex-1">{children}</div>
-          {previous || next ? (
-            <footer className="mt-8 flex justify-between gap-3 border-t border-border pt-6">
-              {previous ? (
-                <FooterLink direction="Previous" link={previous} />
-              ) : (
-                <div />
-              )}
-              {next ? <FooterLink direction="Next" link={next} /> : <div />}
-            </footer>
-          ) : null}
+          {footer}
         </div>
       </ScrollArea>
     </main>
   );
 }
 
+function DocsPageFooter({
+  next,
+  previous,
+}: {
+  next?: { title: string; url: string };
+  previous?: { title: string; url: string };
+}) {
+  const { t } = useTranslation('common');
+  const [feedback, setFeedback] = useState<'yes' | 'no' | null>(null);
+
+  return (
+    <footer
+      className="mt-10 flex flex-col gap-5 border-t border-[color:var(--line-soft)] pt-6"
+      data-testid="docs-page-footer"
+    >
+      <div className="flex flex-col gap-3 rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--surface-muted)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm font-medium text-[color:var(--ink-2)]">
+          {t('docs.feedback')}
+        </p>
+        <div className="flex items-center gap-2">
+          <Button
+            aria-pressed={feedback === 'yes'}
+            className="h-8 rounded-md px-3 text-xs"
+            onClick={() => setFeedback('yes')}
+            size="sm"
+            variant={feedback === 'yes' ? 'secondary' : 'outline'}
+          >
+            <CheckIcon data-icon="inline-start" />
+            {t('docs.feedbackYes')}
+          </Button>
+          <Button
+            aria-pressed={feedback === 'no'}
+            className="h-8 rounded-md px-3 text-xs"
+            onClick={() => setFeedback('no')}
+            size="sm"
+            variant={feedback === 'no' ? 'secondary' : 'outline'}
+          >
+            <XIcon data-icon="inline-start" />
+            {t('docs.feedbackNo')}
+          </Button>
+        </div>
+      </div>
+      {previous || next ? (
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {previous ? (
+            <FooterLink direction={t('docs.previous')} link={previous} />
+          ) : (
+            <div />
+          )}
+          {next ? (
+            <FooterLink align="end" direction={t('docs.next')} link={next} />
+          ) : (
+            <div />
+          )}
+        </div>
+      ) : null}
+    </footer>
+  );
+}
+
 function FooterLink({
+  align = 'start',
   direction,
   link,
 }: {
+  align?: 'start' | 'end';
   direction: string;
   link: { title: string; url: string };
 }) {
   return (
     <Link
-      className="flex min-w-0 flex-1 flex-col rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:bg-accent"
+      className={cn(
+        'flex min-w-0 flex-1 flex-col rounded-lg border border-[color:var(--line-soft)] bg-card px-4 py-3 text-sm transition-colors hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface-muted)]',
+        align === 'end' && 'items-end text-right',
+      )}
       params={{}}
       search={{}}
       to={link.url}
     >
-      <span className="text-xs uppercase tracking-[0.12em] text-muted-foreground">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[color:var(--ink-4)]">
         {direction}
       </span>
-      <span className="truncate font-medium text-foreground">{link.title}</span>
+      <span className="max-w-full truncate font-medium text-[color:var(--ink-1)]">
+        {link.title}
+      </span>
     </Link>
   );
 }

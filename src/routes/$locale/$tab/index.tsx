@@ -50,10 +50,12 @@ function Page() {
   const {
     activePath,
     activeTab,
+    breadcrumb,
     contentPath,
     description,
     navigation,
     pages,
+    readingTime,
     sidebar,
     slug,
     tabs,
@@ -74,8 +76,10 @@ function Page() {
       toc={toc}
     >
       <DocsContent
+        breadcrumb={breadcrumb}
         contentPath={contentPath}
         description={description}
+        readingTime={readingTime}
         slug={slug}
         title={title}
         toc={toc}

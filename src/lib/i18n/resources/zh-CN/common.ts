@@ -28,6 +28,10 @@ const zhCnCommon = {
     tocEmpty: '当前页面没有标题。',
     next: '下一页',
     previous: '上一页',
+    readingTime: '阅读时间 · {{count}} 分钟',
+    feedback: '这个页面有帮助吗？',
+    feedbackYes: '有',
+    feedbackNo: '没有',
     openMenu: '打开导航',
   },
   home: {
