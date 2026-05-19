@@ -31,7 +31,7 @@ export function DocsSidebar({
 
   return (
     <ShadcnSidebar
-      className="hidden bg-transparent text-[color:var(--ink-3)] lg:flex"
+      className="hidden h-full min-h-0 overflow-hidden bg-transparent text-[color:var(--ink-3)] lg:flex"
       collapsible="none"
       data-testid="docs-sidebar"
       style={
@@ -42,10 +42,11 @@ export function DocsSidebar({
       variant="inset"
     >
       <SidebarContent
+        className="h-full min-h-0 overflow-y-auto"
         data-testid="docs-sidebar-scroll"
         ref={scrollContainerRef}
       >
-        <div className="py-6 pr-3">
+        <div className="py-6 pr-3 pb-12">
           <DocsSidebarTree
             activePath={activePath}
             nodes={nodes}

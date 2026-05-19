@@ -151,24 +151,66 @@ export function getSidebarNodes(
   const nodes: DocsSidebarNode[] = [];
   const indexItem = getTabIndex(tabNode);
   const indexUrl = indexItem?.url;
+  let leadingSection = getLeadingSidebarSection(activeTab, indexUrl);
 
   if (indexItem) {
-    nodes.push({
+    const indexNode: DocsSidebarPageNode = {
       id: indexItem.url,
       title: normalizeLabel(indexItem.name, activeTab),
       type: 'page',
       url: indexItem.url,
-    });
+    };
+
+    if (leadingSection) {
+      leadingSection.children.push(indexNode);
+    } else {
+      nodes.push(indexNode);
+    }
   }
 
+  let currentSection: DocsSidebarSectionNode | null = null;
+
   for (const child of tabNode.children) {
+    if (child.type === 'separator') {
+      if (leadingSection) {
+        nodes.push(leadingSection);
+        leadingSection = null;
+      }
+
+      const title = typeof child.name === 'string' ? child.name : '';
+      currentSection = null;
+
+      if (title.length > 0) {
+        currentSection = {
+          children: [],
+          collapsible: isCollapsibleSectionTitle(title),
+          id: `separator-${title}`,
+          title,
+          type: 'section',
+        };
+        nodes.push(currentSection);
+      }
+
+      continue;
+    }
+
     for (const node of pageTreeNodeToSidebarNodes(child)) {
       if (node.type === 'page' && node.url === indexUrl) {
         continue;
       }
 
-      nodes.push(node);
+      if (leadingSection) {
+        leadingSection.children.push(node);
+      } else if (currentSection) {
+        currentSection.children.push(node);
+      } else {
+        nodes.push(node);
+      }
     }
+  }
+
+  if (leadingSection) {
+    nodes.push(leadingSection);
   }
 
   return nodes;
@@ -484,6 +526,24 @@ function isCollapsibleSectionTitle(title: string) {
     title === 'Media Infrastructure' ||
     title === '媒体基础设施'
   );
+}
+
+function getLeadingSidebarSection(activeTab: string, indexUrl?: string) {
+  if (activeTab !== 'introduction') {
+    return null;
+  }
+
+  const isChinese = indexUrl?.includes('/zh-CN/') ?? false;
+
+  const section: DocsSidebarSectionNode = {
+    children: [],
+    collapsible: false,
+    id: `separator-${isChinese ? '开始使用' : 'Get started'}`,
+    title: isChinese ? '开始使用' : 'Get started',
+    type: 'section',
+  };
+
+  return section;
 }
 
 function getFolderIndexTitle(index: Item, folderName: ReactNode) {

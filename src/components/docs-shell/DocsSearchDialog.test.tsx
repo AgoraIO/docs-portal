@@ -74,7 +74,7 @@ describe('DocsSearchDialog', () => {
       name: 'Search docs',
     });
     const desktopButton = triggerButtons.find((button) =>
-      button.textContent?.includes('Search docs'),
+      button.textContent?.includes('Search docs, APIs, guides...'),
     );
     const mobileButton = triggerButtons.find(
       (button) => button !== desktopButton,
@@ -85,13 +85,13 @@ describe('DocsSearchDialog', () => {
     if (!desktopButton || !mobileButton) {
       throw new Error('expected both desktop and mobile search triggers');
     }
-    expect(desktopButton).toHaveTextContent('Search docs');
+    expect(desktopButton).toHaveTextContent('Search docs, APIs, guides...');
     expect(mobileButton).not.toHaveTextContent('Search docs');
 
     fireEvent.click(mobileButton);
 
     expect(
-      await screen.findByPlaceholderText('Search pages...'),
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
     ).toBeInTheDocument();
     fireEvent.click(screen.getByText('Quick Start'));
 
@@ -147,7 +147,7 @@ describe('DocsSearchDialog', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
 
     expect(
-      await screen.findByPlaceholderText('Search pages...'),
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
     ).toBeInTheDocument();
     expect(screen.getByText('AI')).toBeInTheDocument();
     expect(screen.getByText('Quick Start')).toBeInTheDocument();

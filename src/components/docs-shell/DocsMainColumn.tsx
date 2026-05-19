@@ -1,11 +1,15 @@
 'use client';
 
 import { Link } from '@tanstack/react-router';
-import { CheckIcon, XIcon } from 'lucide-react';
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+} from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/cn';
 
 export function DocsMainColumn({
@@ -19,7 +23,7 @@ export function DocsMainColumn({
 }) {
   return (
     <main
-      className="min-w-0 flex-1 bg-background"
+      className="h-full min-h-0 min-w-0 flex-1 overflow-hidden bg-background"
       data-testid="docs-main-column"
     >
       <div
@@ -29,15 +33,15 @@ export function DocsMainColumn({
         <div className="min-w-0">{children}</div>
         <DocsPageFooter next={next} previous={previous} />
       </div>
-      <ScrollArea
-        className="hidden h-full min-h-0 lg:block"
+      <div
+        className="hidden h-full min-h-0 overflow-y-auto lg:block"
         data-testid="docs-main-desktop-scroll"
       >
         <div className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10">
           <div className="min-w-0 flex-1">{children}</div>
           <DocsPageFooter next={next} previous={previous} />
         </div>
-      </ScrollArea>
+      </div>
     </main>
   );
 }
@@ -54,11 +58,11 @@ function DocsPageFooter({
 
   return (
     <footer
-      className="mt-10 flex flex-col gap-5 border-t border-[color:var(--line-soft)] pt-6"
+      className="mt-10 flex max-w-[var(--content-max)] flex-col gap-5 border-t border-[color:var(--line-soft)] pt-6"
       data-testid="docs-page-footer"
     >
       <div
-        className="flex flex-col gap-3 rounded-lg border border-[color:var(--line-soft)] bg-[color:var(--surface-muted)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+        className="flex flex-col gap-3 rounded-lg border border-[color:var(--line-soft)] bg-card px-4 py-3 shadow-[var(--docs-shadow-sm)] sm:flex-row sm:items-center sm:justify-between"
         data-testid="docs-feedback"
       >
         <p className="text-sm font-medium text-[color:var(--ink-2)]">
@@ -72,7 +76,7 @@ function DocsPageFooter({
             size="sm"
             variant={feedback === 'yes' ? 'secondary' : 'outline'}
           >
-            <CheckIcon data-icon="inline-start" />
+            <ThumbsUpIcon data-icon="inline-start" />
             {t('docs.feedbackYes')}
           </Button>
           <Button
@@ -82,7 +86,7 @@ function DocsPageFooter({
             size="sm"
             variant={feedback === 'no' ? 'secondary' : 'outline'}
           >
-            <XIcon data-icon="inline-start" />
+            <ThumbsDownIcon data-icon="inline-start" />
             {t('docs.feedbackNo')}
           </Button>
         </div>
@@ -131,7 +135,13 @@ function FooterLink({
         {direction}
       </span>
       <span className="max-w-full truncate font-medium text-[color:var(--ink-1)]">
+        {align === 'start' ? (
+          <ArrowLeftIcon className="mr-1.5 inline size-3.5" />
+        ) : null}
         {link.title}
+        {align === 'end' ? (
+          <ArrowRightIcon className="ml-1.5 inline size-3.5" />
+        ) : null}
       </span>
     </Link>
   );

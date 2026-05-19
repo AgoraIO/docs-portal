@@ -54,13 +54,15 @@ export function DocsSearchDialog({
         </Button>
       ) : (
         <Button
-          className="w-full justify-start rounded-md"
+          aria-label={t('docs.search')}
+          className="docs-shell-search-trigger"
           onClick={() => setOpen(true)}
           size="sm"
           variant="outline"
         >
           <SearchIcon data-icon="inline-start" />
-          {t('docs.search')}
+          <span>{t('docs.searchPlaceholder')}</span>
+          <kbd>⌘K</kbd>
         </Button>
       )}
       <CommandDialog

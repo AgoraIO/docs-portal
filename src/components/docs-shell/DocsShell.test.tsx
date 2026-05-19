@@ -152,7 +152,9 @@ describe('DocsShell', () => {
       .getAllByRole('button', {
         name: 'Search docs',
       })
-      .find((button) => button.textContent?.includes('Search docs'));
+      .find((button) =>
+        button.textContent?.includes('Search docs, APIs, guides...'),
+      );
     const languageControl = within(mainHeaderRow)
       .getAllByRole('button', {
         name: 'Language',
@@ -183,8 +185,7 @@ describe('DocsShell', () => {
     expect(docsTabsStrip).toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsAiLink);
     expect(mainHeaderRow).not.toContainElement(docsTabsStrip);
-    expect(docsTabsStrip).not.toHaveClass('hidden');
-    expect(docsTabsStrip.firstElementChild).toHaveClass('overflow-x-auto');
+    expect(docsTabsStrip).toHaveClass('hidden', 'md:block');
     expect(docsBodyShell).toHaveClass('grid');
     expect(docsBodyShell).toHaveClass('lg:grid-cols-[256px_minmax(0,1fr)]');
     expect(docsSidebar).toHaveStyle({
@@ -231,6 +232,43 @@ describe('DocsShell', () => {
     expect(
       within(mainColumn).getByRole('link', { name: /Previous Previous Page/i }),
     ).toBeInTheDocument();
+  });
+
+  it('keeps desktop sidebar, content, and toc as independent scroll regions', async () => {
+    renderDocsShell({
+      next: { title: 'Next Page', url: '/en/introduction/next-page' },
+      previous: { title: 'Previous Page', url: '/en/introduction/prev-page' },
+    });
+
+    expect(await screen.findByTestId('docs-body-shell')).toHaveClass(
+      'lg:min-h-0',
+      'lg:overflow-hidden',
+    );
+    expect(screen.getByTestId('docs-sidebar')).toHaveClass(
+      'h-full',
+      'min-h-0',
+      'overflow-hidden',
+    );
+    expect(screen.getByTestId('docs-sidebar-scroll')).toHaveClass(
+      'h-full',
+      'min-h-0',
+      'overflow-y-auto',
+    );
+    expect(screen.getByTestId('docs-main-column')).toHaveClass(
+      'h-full',
+      'min-h-0',
+      'overflow-hidden',
+    );
+    expect(screen.getByTestId('docs-main-desktop-scroll')).toHaveClass(
+      'h-full',
+      'min-h-0',
+      'overflow-y-auto',
+    );
+    expect(screen.getByTestId('docs-toc-rail')).toHaveClass(
+      'h-full',
+      'min-h-0',
+      'overflow-y-auto',
+    );
   });
 
   it('resets desktop sidebar scroll position when the active tab changes', async () => {
@@ -407,7 +445,10 @@ describe('DocsShell', () => {
     expect(menuButton).toBeInTheDocument();
     expect(mobileSearchButton).toBeInTheDocument();
     expect(mobileSearchButton).not.toHaveTextContent('Search docs');
-    expect(screen.getByTestId('docs-tabs-strip')).not.toHaveClass('hidden');
+    expect(screen.getByTestId('docs-tabs-strip')).toHaveClass(
+      'hidden',
+      'md:block',
+    );
     expect(
       within(mobileHeaderActions).queryByRole('button', { name: 'Language' }),
     ).toBeNull();
@@ -416,7 +457,9 @@ describe('DocsShell', () => {
         name: 'Theme: Light',
       }),
     ).toBeNull();
-    expect(desktopSearchButton).toHaveTextContent('Search docs');
+    expect(desktopSearchButton).toHaveTextContent(
+      'Search docs, APIs, guides...',
+    );
 
     fireEvent.click(menuButton);
 

@@ -140,6 +140,9 @@ describe('loadDocsPagePayload', () => {
       activeTab: 'introduction',
       breadcrumb: [
         {
+          title: 'Get started',
+        },
+        {
           title: 'About Agora',
           url: '/en/introduction/about-agora',
         },

@@ -11,6 +11,10 @@ If a traditional web app is mostly request-response, Agora is built for a differ
 
 In this model, projects, channels, users, agents, messages, events, and media services are not separate product islands. They are parts of one broader realtime system.
 
+:::info[One mental model]
+Think of Agora as the realtime layer that keeps people, devices, media, messages, and AI services inside the same live context.
+:::
+
 ## Why
 
 Teams usually adopt Agora not because they need one isolated SDK, but because they need to assemble a complete realtime experience faster.
@@ -27,10 +31,20 @@ So the value of Agora is not just that it can place a call or send a message. Th
 
 From that foundation, teams usually end up building a few broad categories of products:
 
-- Conversational AI products such as voice assistants, companions, tutors, support agents, and AI-powered service flows.
-- Realtime audio and video products such as calls, voice rooms, meetings, classrooms, and live interactive experiences.
-- Messaging and coordination layers such as room chat, shared state, event-driven interaction, and workflow synchronization.
-- Media services such as recording, transcription, processing, delivery, and production-grade media pipelines.
+<CardGrid>
+  <FeatureCard title="Conversational AI">
+    Voice assistants, companions, tutors, support agents, and AI-powered service flows.
+  </FeatureCard>
+  <FeatureCard title="Realtime audio and video">
+    Calls, voice rooms, meetings, classrooms, and live interactive experiences.
+  </FeatureCard>
+  <FeatureCard title="Messaging and coordination">
+    Room chat, shared state, event-driven interaction, and workflow synchronization.
+  </FeatureCard>
+  <FeatureCard title="Media services">
+    Recording, transcription, processing, delivery, and production-grade media pipelines.
+  </FeatureCard>
+</CardGrid>
 
 If you start from a business outcome, ask what kind of product you want to ship. If you start from a technical problem, ask which capability you need first. Both paths eventually lead back to the same Agora realtime model.
 
@@ -52,6 +66,20 @@ A common workflow looks like this:
 4. Add backend control, callbacks, and security.
 5. Add billing, analytics, release discipline, and support paths before scale.
 
+```ts
+const workflow = [
+  'Create a project',
+  'Choose an entry capability',
+  'Connect users, clients, or agents',
+  'Add backend control and callbacks',
+  'Prepare production operations',
+];
+```
+
+:::warning[Avoid product-island thinking]
+You do not need to master every layer on day one, but you should know how the layers stack so later expansion does not feel like a jump into unrelated documentation.
+:::
+
 You do not need to master every layer on day one, but you should know how the layers stack so later expansion does not feel like a jump into unrelated documentation.
 
 ## How to learn more
@@ -64,3 +92,7 @@ Once the overall picture is clear, the best next reading path is:
 4. If you are preparing for production, continue into [billing](/en/ai/billing), [HTTP basic auth](/en/best-practices/http-basic-auth), and [release notes](/en/best-practices/release-notes).
 
 This page is not meant to replace the product docs. Its job is to give you the map first, so the deeper guides make more sense when you enter them.
+
+:::tip[Good next step]
+If you are still choosing an entry path, start with Conversational AI when the product needs an agent, or Realtime & Media when the product starts from a live audio, video, or messaging session.
+:::
