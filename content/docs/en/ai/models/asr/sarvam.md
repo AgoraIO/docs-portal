@@ -1,0 +1,29 @@
+---
+title: Sarvam (Beta)
+---
+Sarvam ASR provides real-time speech-to-text with low latency and reliable performance for Indian languages.
+
+### Sample configuration
+
+The following is a sample `asr` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"asr": {
+  "vendor": "sarvam",
+  "params": {
+    "api_key": "SARVAM_KEY",
+    "language": "hi-IN"
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Sarvam documentation](https://docs.sarvam.ai/api-reference-docs/speech-to-text/transcribe).
+
+### Key parameters
+
+    
+  Your Sarvam API key. Get your API key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
+  
+    
+  The language code for transcription. Set to `unknown` for automatic language detection.

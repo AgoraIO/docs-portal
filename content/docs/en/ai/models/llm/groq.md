@@ -1,0 +1,44 @@
+---
+title: Groq
+description: Integrate Groq LLM into Conversational AI Engine.
+---
+Groq provides state-of-the-art language models optimized for different use cases.
+
+### Sample configuration
+
+The following example shows a starting `llm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md). 
+
+```json
+"llm": {
+    "url": "https://api.groq.com/openai/v1/chat/completions",
+    "api_key": "<your_llm_key>",
+    "system_messages": [
+      {
+        "role": "system",
+        "content": "You are a helpful chatbot."
+      }
+    ],
+    "max_history": 32,
+    "greeting_message": "Hello, how can I assist you?",
+    "failure_message": "Please hold on a second.",
+    "params": {
+      "model": "llama-3.3-70b-versatile"
+    },
+  }
+```
+
+### Key parameters
+
+    
+  Create and manage your API key from [Groq console](https://console.groq.com/keys).
+  
+    
+  Use the completions endpoint.
+  
+    
+      
+    Refer to [Groq models](https://console.groq.com/docs/models) for available models.
+    
+  
+
+For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Groq API Documentation](https://console.groq.com/docs/api-reference).

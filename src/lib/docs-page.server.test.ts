@@ -38,10 +38,10 @@ const pageTree: Root = {
           $id: 'ai-folder',
           children: [
             {
-              $id: 'ai-quick-start',
-              name: 'Quick Start',
+              $id: 'ai-quickstart',
+              name: 'Quickstart',
               type: 'page',
-              url: '/en/ai/quick-start',
+              url: '/en/ai/get-started/quickstart',
             },
           ],
           index: {

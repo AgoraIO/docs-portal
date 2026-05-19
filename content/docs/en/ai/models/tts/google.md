@@ -1,0 +1,44 @@
+---
+title: Google (Beta)
+---
+Google provides fast, reliable text-to-speech (TTS) with customizable voices.
+
+### Sample configuration
+
+The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"tts": {
+    "vendor": "google",
+    "params": {
+        "credentials": "",
+        "VoiceSelectionParams": {
+            "name": "en-US-Chirp3-HD-Charon"
+        },
+        "AudioConfig": {
+            "speaking_rate": 1.0, 
+            "sample_rate_hertz": 24000
+        }
+    }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Google documentation](https://cloud.google.com/text-to-speech/docs/create-audio-text-streaming).
+
+### Key parameters
+
+    
+  The Google Cloud service account credentials JSON string used for authentication. Get your credentials from the [Google Cloud Console](https://console.cloud.google.com/).
+  
+    
+      
+    The name of the voice to use, for example, `en-US-Chirp3-HD-Charon` or `en-US-Neural2-A`. See [supported voices](https://cloud.google.com/text-to-speech/docs/voices) for available voice names.
+    
+  
+    
+      
+    The speed of speech. Valid range is `0.25` to `2.0`, where `1.0` is the normal speed. Values less than `1.0` slow down the speech, while values greater than `1.0` speed it up.
+    
+      
+    The sample rate in Hertz for the audio output, for example, `24000` or `16000`. The default value depends on the selected voice.

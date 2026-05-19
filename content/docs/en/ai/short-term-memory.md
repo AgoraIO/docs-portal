@@ -130,7 +130,7 @@ description: 短期记忆（Short-term Memory）是智能体在当前会话中�
 - 当 `llm.vendor` 为 非`"custom"` 时，为保证兼容性，声网对话式 AI 引擎仅从短期记忆中传输 OpenAI 标准字段，即 `role` 和 `content`。
 - 当 `llm.vendor` 为 `"custom"` 时，声网对话式 AI 引擎会传输短期记忆中的所有字段。你可以参考[自定义大模型](./custom-llm.md)中的示例代码实现一个包装器 (wrapper) 以过滤或合并短期记忆中的某些拓展字段，按需选择、处理并传递这些信息给大模型。
 
-![image](https://doc.shengwang.cn/img/convoai/use-memory.svg)
+![image](/images/conversational-ai/convo-ai-notifications.svg)
 
 #### 非 custom 场景
 

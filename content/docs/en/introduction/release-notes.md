@@ -19,4 +19,4 @@ Keep product, API, and operational updates aligned so teams do not read conflict
 
 ## Current release surface
 
-- [Open ConvoAI release notes](/en/best-practices/release-notes)
+- [Open ConvoAI release notes](../best-practices/release-notes.md)

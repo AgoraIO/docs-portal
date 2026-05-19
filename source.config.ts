@@ -17,6 +17,10 @@ export const docs = defineDocs({
       remarkImageOptions: {
         useImport: false,
       },
+      remarkCodeTabOptions: {
+        Tabs: 'Tabs',
+        parseMdx: true,
+      },
     },
     postprocess: {
       includeProcessedMarkdown: true,

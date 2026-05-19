@@ -1,0 +1,34 @@
+---
+title: Speechmatics
+---
+Speechmatics provides real-time automatic speech recognition (ASR) with flexible language support and reliable performance for conversational AI applications.
+
+### Sample configuration
+
+The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"asr": {
+  "vendor": "speechmatics",
+  "params": {
+    "api_key": "<speechmatics_key>",
+    "language": "en",
+    "uri": "wss://eu2.rt.speechmatics.com/v2"
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Speechmatics documentation](https://docs.speechmatics.com/api-ref/realtime-transcription-websocket).
+
+### Key parameters
+
+ 
+   
+    The Speechmatics API key used to authenticate requests. You must provide a valid key for the service to function. 
+   
+   
+    The language code to use for transcription. For example, use `en` for English. 
+   
+    
+    The WebSocket URL for the Speechmatics streaming API. Specify this to target a particular region. For example, `wss://eu2.rt.speechmatics.com/v2`.

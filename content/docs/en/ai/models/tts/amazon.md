@@ -1,0 +1,41 @@
+---
+title: Amazon Polly (Beta)
+---
+Amazon provides natural-sounding text-to-speech with customizable voice instructions and multiple voice options.
+
+### Sample configuration
+
+The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"tts": {
+  "vendor": "amazon",
+  "params": {
+    "aws_access_key_id": "",
+    "aws_secret_access_key": "",
+    "region_name": "",
+    "voice": "Joanna",
+    "engine": "neural" 
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Amazon Polly documentation](https://docs.aws.amazon.com/polly/latest/dg/what-is.html).
+
+### Key parameters
+
+    
+  The AWS access key ID used for authentication. Get your access key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+  
+    
+  The AWS secret access key used for authentication. Get your secret key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+  
+    
+  The AWS region where the Polly service is hosted, for example, `us-east-1`, `us-west-2`, or `eu-west-1`. See [AWS regions](https://docs.aws.amazon.com/general/latest/gr/pol.html) for available regions.
+  
+    
+  The voice ID to use for speech synthesis, for example, `Joanna`, `Matthew`, or `Ivy`. See [available voices](https://docs.aws.amazon.com/polly/latest/dg/voicelist.html) for supported voice IDs.
+  
+    
+  The engine type to use for speech synthesis. Supported values: `standard`, `neural`, `long-form`, `generative`. See [engine documentation](https://docs.aws.amazon.com/polly/latest/dg/voicelist.html) for details on each engine type.

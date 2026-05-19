@@ -1,0 +1,47 @@
+---
+title: Anam (Beta)
+description: Integrate Anam AI avatars into Conversational AI Engine.
+---
+Anam provides AI-powered avatars with real-time video rendering, enabling natural video conversations with your AI agents.
+
+### Sample configuration
+
+The following example shows a starting `avatar` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+```json
+"avatar": {
+  "vendor": "anam",
+  "enable": true,
+  "params": {
+    "api_key": "<anam_key>",
+    "avatar_id": "960f614f-ea88-47c3-9883-f02094f70874",
+    "agora_uid": "<avatar_rtc_uid>",
+    "agora_token": "<avatar_rtc_token>",
+    "sample_rate": 24000,
+    "quality": "high",
+    "video_encoding": "H264"
+  }
+}
+```
+
+### Key parameters
+
+  
+  The API key used for authentication with Anam's services. Get your API key from the Anam console.
+  
+  
+  The unique identifier for the Anam avatar you want to use.
+  
+  
+  The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+  
+  
+  The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+  
+  
+    The audio sample rate in Hz.
+  
+  
+    The video quality level.
+  
+  
+    The video encoding format.

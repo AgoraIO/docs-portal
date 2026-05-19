@@ -1,0 +1,33 @@
+---
+title: Fish Audio (Beta)
+---
+Fish Audio provides text-to-speech (TTS) with flexible models and high-quality synthetic voices.
+
+### Sample configuration
+
+The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"tts": {
+  "vendor": "fishaudio",
+  "params": {
+    "api_key": "<fishaudio_key>",
+    "reference_id": "<voice_model_id>",
+    "backend": "speech-1.5"
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Fish Audio documentation](https://docs.fish.audio/sdk-reference/python/api-reference).
+
+### Key parameters
+
+  
+    The Fish Audio API key used to authenticate requests. You must provide a valid key for the service to function.
+  
+  
+    The identifier of the voice model to use for speech synthesis.
+  
+  
+    The backend model version to use. For example, `speech-1.5`.

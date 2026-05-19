@@ -1,43 +1,37 @@
 ---
-title: Introduction
-description: The Agora Conversational AI Engine redefines human-computer interaction with lifelike, natural realtime voice conversations that move beyond traditional text-based interfaces.
+title: Conversational AI
+description: Build low-latency voice AI experiences with the LLM of your choice.
 ---
+<!-- Source page used a ProductOverview MDX component with hero layout, CTA buttons, and feature cards. This Markdown version restores the underlying content but not the original component shell. -->
 
-The Agora Conversational AI Engine redefines human-computer interaction with lifelike, natural realtime voice conversations that move beyond traditional text-based interfaces. It supports personalized voices, emotional expression, and deep multi-turn understanding, giving AI agents stronger expressiveness and a more engaging interactive presence. It fits scenarios such as smart assistants, emotional companions, spoken-language coaching, intelligent customer service, smart hardware, and immersive NPC experiences.
+Agora's Conversational AI Engine empowers you to build cutting-edge, voice-enabled applications by merging Agora's robust real-time audio streaming with the conversational intelligence of leading LLMs. Effortlessly create engaging experiences, such as AI-driven smart assistants, intelligent customer service agents, smart hardware, interactive dialogue systems, or collaborative voice-driven tools. This seamless integration ensures dynamic, responsive interactions, boosting user engagement across diverse use cases spanning customer support, education, entertainment, and more.
 
-![Conversational AI Engine architecture](https://doc.shengwang.cn/img/convoai/tech-arch.png)
+Conversational AI is the main product in the AI section. It combines Agora's realtime audio transport with LLM-based voice interaction so you can ship voice assistants, support agents, tutors, companions, and device experiences.
 
-## Product advantages
+## Start here
 
-The Agora Conversational AI Engine offers the following advantages:
+- [Voice AI quickstart](get-started/quickstart.md)
+- [Build a backend and client from scratch](build/build-server-client.md)
+- [Agent Studio](studio/index.md)
+- [REST API reference](../api-reference/conversational-ai/rest-api/index.md)
 
-- **Ultra-low latency**: Deep end-to-end optimization reduces response latency to as low as 650 ms for smooth, natural conversations.
-- **Selective attention lock**: Filters out 95% of surrounding voices and noise to focus precisely on the intended speaker.
-- **Graceful interruption**: 340 ms interruption response closely matches real human conversation timing.
-- **Packet-loss resilience**: Maintains stable, fluid conversations even with 80% packet loss, and can continue responding after 3-5 seconds of network disruption.
-- **Flexible extensibility**: Works with leading global LLM and TTS providers to support different product and business needs.
-- **Fast integration**: Build a conversational AI agent quickly with minimal code and setup time.
+## Primary entry
 
-## Supported capabilities
+- **Voice AI quickstart**: build a working voice agent in under five minutes without writing any server code.
 
-With AI and large-model support, the Conversational AI Engine can provide the following capabilities:
+## Key product strengths
 
-| Capability | Description |
-| --- | --- |
-| AI realtime voice conversation | Users can speak with an AI agent naturally, as if talking to a real person. |
-| Voice interruption | Users can interrupt the AI agent at any time, and the system responds quickly to keep conversations efficient and fluid. |
-| AI noise reduction | Intelligently filters environmental noise to improve interaction accuracy. |
-| Background voice suppression | Separates the target speaker from background voices to keep conversations clear and distraction-free. |
-| Realtime subtitles | Converts speech to text in realtime and supports synchronized subtitles. |
+- **Ultra-low latency**: The entire pipeline is deeply optimized, reducing AI response latency to as low as 650 ms and keeping conversations smooth and natural.
+- **Customizable agent properties**: Configure idle timeout, input and output modalities, audio scenarios, and related session behavior to fit your product.
+- **Use custom LLMs**: Plug in custom language models with personalized prompts, adaptive responses, and memory capabilities.
+- **Integrate advanced audio features**: Improve user experience with VAD, background noise reduction, and interruption handling that feels more conversational.
+- **Resilient to weak networks**: Maintain stable voice interaction even with up to 80% packet loss, including brief network interruptions.
+- **Multi-platform support**: Deliver the same product capability across iOS, Android, Web, and embedded hardware paths.
 
-## Use cases
+## Typical use cases
 
-The Agora Conversational AI Engine fits a wide range of scenarios and empowers AI agent experiences across industries:
-
-| Use case | Description |
-| --- | --- |
-| Smart assistant | Uses natural language interaction to help users manage schedules, retrieve information, and complete tasks, improving convenience and efficiency. |
-| Emotional companion | Delivers emotionally expressive conversations and interaction to reduce loneliness and support companionship needs. |
-| Spoken-language coaching | Simulates real conversation scenarios and provides realtime feedback and correction to help users improve spoken language skills. |
-| Intelligent customer service | Replaces human agents for automated inquiry and complaint handling, delivering 24/7 immediate response while reducing operating cost and improving customer satisfaction. |
-| Smart hardware | Embeds conversational AI into devices for voice control, intelligent monitoring, companionship, and personalized services, upgrading devices into smart hardware experiences. |
+- **Voice assistants and copilots**: Give users a natural spoken interface for task execution, search, and coordination.
+- **Customer support and service agents**: Handle inbound or outbound service flows with real-time voice interaction.
+- **Education and speaking practice**: Build tutoring, coaching, and role-play systems with turn-by-turn spoken feedback.
+- **Smart devices and companion hardware**: Add spoken AI interaction to devices, robots, or ambient assistants.
+- **Interactive entertainment and NPC experiences**: Support more dynamic character interaction in games and live experiences.

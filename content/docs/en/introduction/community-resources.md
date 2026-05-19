@@ -9,6 +9,6 @@ Community-style resources help teams move across docs, release updates, and supp
 
 ## Useful entry points
 
-- [Open release notes](/en/best-practices/release-notes)
-- [Open resources](/en/ai/resources)
-- [Open support](/en/introduction/support)
+- [Open release notes](../best-practices/release-notes.md)
+- [Open AI product map](../ai/domain-overview.md)
+- [Open support](support.md)

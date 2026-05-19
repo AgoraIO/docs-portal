@@ -2,6 +2,7 @@ import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import { getSourceSlugs } from './docs-routing';
 import {
+  getFirstChildPageUrl,
   getFirstTabPageUrl,
   getPrevNextLinks,
   getSidebarNodes,
@@ -54,6 +55,15 @@ export async function loadDocsPagePayload(
   );
 
   if (!page) {
+    const pageTree = source.getPageTree(locale);
+    const fallbackUrl = getFirstChildPageUrl(pageTree, tab, slugSegments);
+
+    if (fallbackUrl) {
+      return {
+        redirectUrl: fallbackUrl,
+      };
+    }
+
     return null;
   }
 

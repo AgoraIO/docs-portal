@@ -1,0 +1,189 @@
+---
+title: OpenAI Realtime API
+---
+OpenAI Realtime provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components.
+
+> **Info**
+> Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
+
+### Sample configuration
+
+The following example shows a starting `mllm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"mllm": {
+  "enable": true,
+  "url": "wss://api.openai.com/v1/realtime",
+  "api_key": "<openai_api_key>",
+  "params": {
+    "model": "gpt-realtime",
+    "voice": "coral",
+    "instructions": "You are a Conversational AI Agent, developed by Agora.",
+    "input_audio_transcription": {
+      "language": "<language>",
+      "model": "gpt-4o-mini-transcribe",
+      "prompt": "expect words related to real-time engagement"
+    }
+  },
+  "turn_detection": {
+    // see details below
+  },
+  "greeting_message": "<greetings>",
+  "output_modalities": ["text", "audio"],
+  "vendor": "openai"
+}
+```
+
+### Turn detection
+
+For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../../../api-reference/conversational-ai/rest-api/agent/join.md#properties-mllm-turn-detection).
+The following examples show the supported `turn_detection` configurations for OpenAI Realtime API. To set up turn detection, add a `turn_detection` block inside the `mllm` object when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+* **Server VAD**
+
+  ```json
+  "turn_detection": {
+    "mode": "server_vad",
+    "server_vad_config": {
+      "prefix_padding_ms": 800,
+      "silence_duration_ms": 640,
+      "threshold": 0.5
+    }
+  }
+  ```
+
+* **Semantic VAD**
+
+  ```json
+  "turn_detection": {
+    "mode": "semantic_vad",
+    "semantic_vad_config": {
+      "eagerness": "auto"
+    }
+  }
+  ```
+
+* **Agora VAD**
+
+  ```json
+  "turn_detection": {
+    "mode": "agora_vad",
+    "agora_vad_config": {
+      "interrupt_duration_ms": 160,
+      "prefix_padding_ms": 800,
+      "silence_duration_ms": 640,
+      "threshold": 0.5
+    }
+  }
+  ```
+
+### Key parameters
+
+  
+    Enables the MLLM module. Replaces the deprecated `advanced_features.enable_mllm`.
+  
+    
+  The WebSocket URL for OpenAI Realtime API. 
+  
+  
+  The API key used for authentication. Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
+  
+  
+  Array of conversation items used for short-term memory management. Uses the same structure as `item.content` from the [OpenAI Realtime API](https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item/create).
+  
+  
+    Additional MLLM configuration parameters. See [MLLM Overview](index.md) for details.
+    - **Modalities override**: The `modalities` setting in params is overridden by `input_modalities` and `output_modalities`.
+    - **Turn detection override**: The `turn_detection` setting in `params` is overridden by [`mllm.turn_detection`](../../../api-reference/conversational-ai/rest-api/agent/join.md#properties-mllm-turn-detection). 
+    
+    The model identifier. 
+      
+    
+    The voice identifier for audio output. 
+    
+    
+    System instructions that define the assistant's behavior and personality.
+    
+    
+    Configuration for audio input transcription.
+      
+      The language of the input audio. Supplying the input language in ISO-639-1 format (For example `en`) improves accuracy and latency.
+      
+      
+      The model to use for transcription. Current options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1`.
+      
+      
+      An optional text to guide the model's style or continue a previous audio segment. For `whisper-1`, the prompt is a list of keywords. For `gpt-4o-transcribe` models, the prompt is a free text string, for example "expect words related to technology".
+      
+    
+  
+  
+    Turn detection configuration for the MLLM module.
+
+    > **Info**
+> When `mllm.turn_detection` is defined, the top-level `turn_detection` object has no effect.
+
+    
+      - `agora_vad`: Agora VAD-based detection. 
+      - `server_vad`: Vendor-side VAD-based detection. 
+      - `semantic_vad`: Semantic-based detection. 
+    
+
+    
+      Configuration for Agora VAD-based turn detection. Applicable when `mode` is `agora_vad`.
+
+      
+        Minimum duration of speech in milliseconds required to trigger an interruption.
+      
+      
+        Duration of audio in milliseconds to include before the detected speech start.
+      
+      
+        Duration of silence in milliseconds required to determine end of speech.
+      
+      
+        VAD sensitivity threshold. A higher value reduces false positives.
+      
+    
+
+    
+      Configuration for vendor-side VAD-based turn detection. Applicable when `mode` is `server_vad`. Parameters are passed through to the vendor.
+
+      
+        Duration of audio in milliseconds to include before the detected speech start.
+      
+      
+        Duration of silence in milliseconds required to determine end of speech.
+      
+      
+        VAD sensitivity threshold. 
+      
+      
+        Idle timeout in milliseconds. 
+      
+    
+
+    
+      Configuration for semantic-based turn detection. Applicable when `mode` is `semantic_vad`. 
+
+      
+        Controls how eagerly the model ends its turn.
+      
+    
+    
+  
+    MLLM input modalities:
+    - `["audio"]`: Audio only
+    - `["audio", "text"]`: Audio plus text
+    
+  
+  Output format options: `["text", "audio"]` for both text and voice responses.
+  
+  
+  Initial message the agent speaks when a user joins the channel.
+    
+  
+  MLLM provider identifier. Set to `openai` for OpenAI Realtime API.
+  
+
+For comprehensive API reference, real-time capabilities, and detailed parameter descriptions, see the [OpenAI Realtime API documentation](https://platform.openai.com/docs/guides/realtime).

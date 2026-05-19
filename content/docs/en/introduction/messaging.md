@@ -9,10 +9,10 @@ Messaging handles channel communication, temporary state synchronization, event 
 
 ## Docs already available in this repo
 
-- [Open custom data guidance](/en/ai/custom-data)
-- [Open agent event guidance](/en/ai/listen-agent-events)
-- [Open multimodal messaging guidance](/en/ai/send-multimodal-message)
-- [Open webhook events](/en/api-reference/ncs-events)
+- [Open custom data guidance](../ai/custom-data.md)
+- [Open agent event guidance](../ai/listen-agent-events.md)
+- [Open multimodal messaging guidance](../ai/send-multimodal-message.md)
+- [Open webhook events](../api-reference/ncs-events.md)
 
 ## Matching official product docs
 

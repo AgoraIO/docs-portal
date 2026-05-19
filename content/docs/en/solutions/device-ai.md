@@ -11,6 +11,6 @@ description: Connect audio transport, backend control, and device-side experienc
 
 ## Recommended pages
 
-- [Realtime audio](/en/realtime-media/speech-to-text/audio-modality)
-- [Business data](/en/ai/custom-data)
-- [Events and webhooks](/en/api-reference/ncs-events)
+- [Realtime audio](../realtime-media/speech-to-text/audio-modality.md)
+- [Business data](../ai/custom-data.md)
+- [Events and webhooks](../api-reference/ncs-events.md)

@@ -32,7 +32,9 @@ export function DocsSidebarTree({
   nodes: DocsSidebarNode[];
   onSelectPath: () => void;
 }) {
-  const renderableNodes = mergeSdkQuickstartSection(nodes);
+  const renderableNodes = normalizeRootSections(
+    mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
+  );
 
   return (
     <SidebarGroup>
@@ -138,12 +140,21 @@ function SidebarSection({
           />
         ) : null}
         {trailingChildren.map((child) => (
-          <SidebarNodeRenderer
-            activePath={activePath}
-            key={child.id}
-            node={child}
-            onSelectPath={onSelectPath}
-          />
+          child.type === 'section' ? (
+            <SidebarNestedSection
+              activePath={activePath}
+              key={child.id}
+              node={child}
+              onSelectPath={onSelectPath}
+            />
+          ) : (
+            <SidebarNodeRenderer
+              activePath={activePath}
+              key={child.id}
+              node={child}
+              onSelectPath={onSelectPath}
+            />
+          )
         ))}
       </div>
     );
@@ -280,7 +291,9 @@ function SidebarNestedSection({
   onSelectPath: () => void;
 }) {
   const defaultOpen =
-    !node.collapsible || node.children.some((child) => isNodeActive(child, activePath));
+    !node.collapsible ||
+    node.children.some((child) => isNodeActive(child, activePath)) ||
+    node.title === 'Build';
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
@@ -371,6 +384,56 @@ function mergeSdkQuickstartSection(nodes: DocsSidebarNode[]) {
   }
 
   return merged;
+}
+
+function mergeBuildIntoGettingStarted(
+  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
+) {
+  const merged: Array<DocsSidebarNode | RenderableSidebarSectionNode> = [];
+
+  for (let index = 0; index < nodes.length; index += 1) {
+    const node = nodes[index];
+    const nextNode = nodes[index + 1];
+
+    if (
+      node?.type === 'section' &&
+      node.children.every((child) => child.type === 'page') &&
+      (node.title === 'Get started' || node.title === '开始使用') &&
+      nextNode?.type === 'section' &&
+      nextNode.children.every((child) => child.type === 'page') &&
+      nextNode.title === 'Build'
+    ) {
+      merged.push({
+        ...node,
+        children: [
+          ...node.children,
+          {
+            ...nextNode,
+            collapsible: true,
+          },
+        ],
+      });
+      index += 1;
+      continue;
+    }
+
+    merged.push(node);
+  }
+
+  return merged;
+}
+
+function normalizeRootSections(
+  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
+) {
+  return nodes.map((node) =>
+    node.type === 'section'
+      ? {
+          ...node,
+          collapsible: false,
+        }
+      : node,
+  );
 }
 
 function SidebarPageLink({

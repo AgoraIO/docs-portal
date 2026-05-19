@@ -36,10 +36,10 @@ const nestedRootTree: Root = {
           $id: 'ai-folder',
           children: [
             {
-              $id: 'ai-page-quick-start',
-              name: 'Quick Start',
+              $id: 'ai-page-quickstart',
+              name: 'Quickstart',
               type: 'page',
-              url: '/en/ai/quick-start',
+              url: '/en/ai/get-started/quickstart',
             },
           ],
           index: {
@@ -225,19 +225,7 @@ describe('docs tree helpers', () => {
       {
         children: [
           {
-            id: '/en/realtime-media/online-ktv',
-            title: 'Overview',
-            type: 'page',
-            url: '/en/realtime-media/online-ktv',
-          },
-          {
             children: [
-              {
-                id: '/en/realtime-media/online-ktv/uikit',
-                title: 'Overview',
-                type: 'page',
-                url: '/en/realtime-media/online-ktv/uikit',
-              },
               {
                 children: [
                   {

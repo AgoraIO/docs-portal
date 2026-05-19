@@ -90,10 +90,10 @@ describe('DocsSidebarTree', () => {
       {
         children: [
           {
-            id: '/en/ai/quick-start',
+            id: '/en/ai/get-started/quickstart',
             title: 'Use RESTful API',
             type: 'page',
-            url: '/en/ai/quick-start',
+            url: '/en/ai/get-started/quickstart',
           },
         ],
         collapsible: true,
@@ -103,7 +103,7 @@ describe('DocsSidebarTree', () => {
       },
     ];
 
-    renderSidebarTree(tree, '/en/ai/billing');
+    renderSidebarTree(tree, '/en/ai/overview/pricing');
 
     const toggle = await screen.findByRole('button', {
       name: /SDK Quickstarts/i,
@@ -215,12 +215,6 @@ describe('DocsSidebarTree', () => {
           {
             children: [
               {
-                id: '/zh-CN/realtime-media/online-ktv',
-                title: '总览',
-                type: 'page',
-                url: '/zh-CN/realtime-media/online-ktv',
-              },
-              {
                 children: [
                   {
                     id: '/zh-CN/realtime-media/online-ktv/scenario-api',
@@ -250,7 +244,7 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/zh-CN/realtime-media/online-ktv/scenario-api');
 
-    expect(await screen.findByRole('link', { name: '总览' })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: '在线 KTV' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: '场景化 API' })).toBeInTheDocument();
   });
 });

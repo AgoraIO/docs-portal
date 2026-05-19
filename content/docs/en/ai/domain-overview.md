@@ -1,18 +1,20 @@
 ---
-title: Conversational AI
-description: Organize AI docs around ConvoAI, Toybox, and agent workflows so teams can move from realtime voice interaction to production AI experiences.
+title: AI product map
+description: Understand how Conversational AI, device kit, and related integrations fit together.
 ---
+The AI section is currently centered on **Conversational AI**. It is the primary product tree and the main path for developers building voice agents.
 
-## Primary products
+## Primary product
 
-Today the AI surface is centered on ConvoAI and Toybox. ConvoAI covers the realtime engine, while Toybox supports hardware-oriented and kit-based integrations.
+- [Conversational AI](index.md)
 
-- [View the ConvoAI introduction](/en/ai)
-- [View Toybox overview](/en/solutions/device-ai)
+## Related products and paths
 
-## Suggested structure
+- [Convo AI Device Kit](device-kit/index.md): smart-hardware oriented product built on Conversational AI and Agora IoT capabilities.
+- [OpenAI Realtime integration](integrations/openai-realtime/index.md): integration recipe for combining Agora realtime audio with OpenAI-based flows.
 
-Over time this domain should contain quickstarts, model and voice guidance, tool calling, client integration, agent integration, and references.
+## Interface surfaces
 
-- [Open the AI quickstart page](/en/ai/quick-start)
-- [Open the AI agent integration page](/en/ai/agent-lifecycle)
+- [Conversational AI REST API](../api-reference/conversational-ai/rest-api/index.md)
+- [Conversational AI Server SDK](../api-reference/conversational-ai/server-sdk/index.md)
+- [Conversational AI Client toolkit](../api-reference/conversational-ai/client-toolkit/index.md)

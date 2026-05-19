@@ -38,7 +38,13 @@ description: 在 AI 对话互动场景下，你可能需要使用自定义的大
 
 下面的示例代码展示了如何实现一个符合 OpenAI API 协议的接口：
 
-#### Python
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="go">Go</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
 
 ```python
 class TextContent(BaseModel):
@@ -148,7 +154,9 @@ async def create_chat_completion(request: ChatCompletionRequest):
         raise HTTPException(status_code=500, detail=error_message)
 ```
 
-#### Go
+</TabsContent>
+
+<TabsContent value="go">
 
 ```go
 type (
@@ -361,6 +369,8 @@ func main() {
 }
 ```
 
+</TabsContent>
+</Tabs>
 ### 配置声网对话式 AI 引擎
 
 在调用 [POST 创建对话式智能体](../operations/start-agent.md)时，将 LLM 配置指向你的自定义服务：
@@ -393,7 +403,13 @@ func main() {
 
 以下示例代码模拟了从知识库中检索并返回内容的流程，并创建了 `/rag/chat/completions` 接口用于使用 RAG 检索结果调用 LLM 生成回答：
 
-#### Python
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="go">Go</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
 
 ```python
 async def perform_rag_retrieval(messages: Optional[Dict]) -> str:
@@ -508,7 +524,9 @@ async def create_rag_chat_completion(request: ChatCompletionRequest):
         raise HTTPException(status_code=500, detail=error_message)
 ```
 
-#### Go
+</TabsContent>
+
+<TabsContent value="go">
 
 ```go
 // 处理 RAG  Chat Completion 端点
@@ -645,6 +663,8 @@ func (s *Server) refactMessages(context string, messages []Message) []Message {
 }
 ```
 
+</TabsContent>
+</Tabs>
 ### 实现多模态能力
 
 声网对话式 AI 引擎支持大模型以多模态形式（文本和音频）输出，你可以创建专用的多模态接口以实现更多个性化需求。
@@ -654,7 +674,13 @@ func (s *Server) refactMessages(context string, messages []Message) []Message {
 
 以下示例代码展示了通过读取文本和音频文件，并发送给大模型生成音频回复的流程：
 
-#### Python
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="go">Go</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
 
 ```python
 async def read_text_file(file_path: str) -> str:
@@ -774,7 +800,9 @@ async def create_audio_chat_completion(request: ChatCompletionRequest):
         raise HTTPException(status_code=500, detail=error_message)
 ```
 
-#### Go
+</TabsContent>
+
+<TabsContent value="go">
 
 ```go
 // 处理音频 Chat Completion 端点
@@ -935,8 +963,10 @@ func (s *Server) readTextFile(filePath string) (string, error) {
 
 以下时序图展示了用户、对话式 AI 引擎、自定义大模型之间的数据流转流程：
 
-![自定义大模型元数据配置流程](https://doc.shengwang.cn/img/convoai/custom-llm-metadata-flow.svg)
+![自定义大模型元数据配置流程](/images/conversational-ai/custom-llm-metadata-flow.svg)
 
+</TabsContent>
+</Tabs>
 ### 配置 LLM 响应是否可打断
 
 对话式 AI 引擎支持让自定义大模型判断本次回复是否可被用户指令打断，从而确保智能体在播报法规、政策、产品定价等重要信息时，不被用户发言打断。

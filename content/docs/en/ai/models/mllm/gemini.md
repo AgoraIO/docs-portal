@@ -1,0 +1,198 @@
+---
+title: Google Gemini Live
+---
+Google Gemini Live provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components. This page covers integration using the Gemini Developer API, authenticated with a Gemini API key obtained from Google AI Studio.
+
+> **Info**
+> Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
+
+### Sample configuration
+
+The following example shows a starting `mllm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"mllm": {
+  "enable": true,
+  "api_key": "",
+  "messages": [
+    {
+      "role": "user",
+      "content": ""
+    }
+  ],
+  "params": {
+    "model": "gemini-3.1-flash-live-preview",
+    "instructions": "You are a friendly assistant.",
+    "voice": "Charon",
+    "affective_dialog": false,
+    "proactive_audio": false,
+    "transcribe_agent": true,
+    "transcribe_user": true,
+    "http_options": {
+      "api_version": "v1beta"
+    }
+  },
+  "turn_detection": {
+    // see details below
+  },  
+  "input_modalities": [
+    "audio"
+  ],
+  "output_modalities": [
+    "audio"
+  ],
+  "greeting_message": "Hi, how can I assist you today?",
+  "failure_message": "Sorry, I encountered an issue. Please try again.",
+  "vendor": "gemini"
+}
+```
+
+### Turn detection
+
+For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../../../api-reference/conversational-ai/rest-api/agent/join.md#properties-mllm-turn-detection). The following examples show the supported configurations for Google Gemini Live. To set up turn detection, add a `turn_detection` block inside the `mllm` object when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+* **Server VAD**
+
+  ```json
+  "turn_detection": {
+    "mode": "server_vad",
+    "server_vad_config": {
+      "prefix_padding_ms": 800,
+      "silence_duration_ms": 640,
+      "start_of_speech_sensitivity": "START_SENSITIVITY_HIGH",
+      "end_of_speech_sensitivity": "END_SENSITIVITY_HIGH"
+    }
+  }
+  ```
+
+* **Agora VAD**
+
+  ```json
+  "turn_detection": {
+    "mode": "agora_vad",
+    "agora_vad_config": {
+      "interrupt_duration_ms": 160,
+      "prefix_padding_ms": 800,
+      "silence_duration_ms": 640,
+      "threshold": 0.5
+    }
+  }
+  ```
+
+### Key parameters
+
+  
+    Enables the MLLM module. Replaces the deprecated `advanced_features.enable_mllm`.
+  
+  
+    The Google Gemini API key used to authenticate requests. You can generate an API key in [Google AI Studio](https://aistudio.google.com/apikey).
+  
+  
+    An array of conversation history items passed to the model as context. Each item represents a single message in the conversation history.
+
+    
+      The role of the message author. For example, `user`.
+    
+    
+      The content of the message.
+    
+  
+  
+     Configuration object for the Gemini Live model. 
+    
+      The Gemini Live model identifier. 
+    
+    
+      System instructions that define the agent's behavior or tone.
+    
+    
+      The voice identifier for audio output. For example, `Aoede`, `Puck`, `Charon`, `Kore`, `Fenrir`, `Leda`, `Orus`, or `Zephyr`.
+    
+    
+      Whether to enable affective dialog, which allows the model to adapt its tone based on the user's emotional cues.
+    
+    
+      When enabled, the model may choose not to respond if the user's input does not require a reply, such as background speech or incomplete requests.
+    
+    
+      Whether to transcribe the agent's speech in real time.
+    
+    
+      Whether to transcribe the user's speech in real time.
+    
+    
+      HTTP request options for the Gemini Live API.
+
+      
+        The API version to use. For example, `v1beta`.
+      
+    
+  
+  
+    Turn detection configuration for the MLLM module.
+
+    > **Info**
+> When `mllm.turn_detection` is defined, the top-level `turn_detection` object has no effect.
+
+    
+      - `agora_vad`: Agora VAD-based detection. 
+      - `server_vad`: Vendor-side VAD-based detection. 
+    
+
+    
+      Configuration for Agora VAD-based turn detection. Applicable when `mode` is `agora_vad`.
+
+      
+        Minimum duration of speech in milliseconds required to trigger an interruption.
+      
+      
+        Duration of audio in milliseconds to include before the detected speech start.
+      
+      
+        Duration of silence in milliseconds required to determine end of speech.
+      
+      
+        VAD sensitivity threshold. A higher value reduces false positives.
+      
+    
+
+    
+      Configuration for vendor-side VAD-based turn detection. Applicable when `mode` is `server_vad`. Parameters are passed through to the vendor.
+
+      
+        Duration of audio in milliseconds to include before the detected speech start.
+      
+      
+        Duration of silence in milliseconds required to determine end of speech.
+      
+      
+        Sensitivity for start of speech detection. 
+      
+      
+        Sensitivity for end of speech detection. 
+      
+    
+  
+  
+    Input modalities for the MLLM.
+
+    - `["audio"]`: Audio-only input
+    - `["audio", "text"]`: Accept both audio and text input
+  
+  
+    Output modalities for the MLLM.
+
+    - `["audio"]`: Audio-only output
+    - `["text", "audio"]`: Combined text and audio output
+  
+  
+    The message the agent speaks when a user joins the channel. 
+  
+  
+    The message the agent speaks when an error occurs.
+  
+  
+    The MLLM provider identifier. Set to `"gemini"` to use Google Gemini Live with the Gemini Developer API. 
+  
+
+For comprehensive API reference, real-time capabilities, and detailed parameter descriptions, see the [Google Gemini Live API](https://ai.google.dev/api/live).

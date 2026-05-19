@@ -19,5 +19,5 @@ Separate server secrets, client identity, and temporary credentials before expos
 
 ## Related docs
 
-- [Open ConvoAI billing](/en/ai/billing)
-- [Open enable-service guide](/en/ai/enable-service)
+- [Open ConvoAI pricing](../ai/overview/pricing.md)
+- [Open enable-service guide](../ai/reference/enable-conversational-ai.md)

@@ -15,5 +15,5 @@ Projects are the main container for App ID, service enablement, and environment-
 
 ## Related docs
 
-- [Open account](/en/introduction/account)
-- [Open enable service](/en/ai/enable-service)
+- [Open account](account.md)
+- [Open enable service](../ai/reference/enable-conversational-ai.md)

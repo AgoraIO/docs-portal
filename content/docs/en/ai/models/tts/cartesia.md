@@ -1,0 +1,68 @@
+---
+title: Cartesia (Beta)
+description: Integrate Cartesia TTS into Conversational AI Engine.
+---
+Cartesia provides ultra-fast, low-latency text-to-speech with real-time streaming capabilities, optimized for interactive conversational AI applications.
+
+### Sample configuration
+
+The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"tts": {
+  "vendor": "cartesia",
+  "params": {
+    "api_key": "<your_cartesia_key>",
+    "model_id": "sonic-2",
+    "base_url": "wss://api.cartesia.ai",
+    "voice": {
+        "mode": "id",
+        "id": "<voice_id>"
+    },
+    "output_format": {
+        "container": "raw",
+        "sample_rate": 16000
+    },
+    "language": "en"
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Cartesia TTS documentation](https://docs.cartesia.ai/).
+
+### Key parameters
+
+    
+    The Cartesia API key used to authenticate requests. Get your API key from the [Cartesia Console](https://play.cartesia.ai/sign-up).
+  
+  
+    The identifier of the TTS model to use. For example, `sonic-2`.
+  
+    
+    The WebSocket URL for the Cartesia streaming API. For example, `wss://api.cartesia.ai`.
+  
+    
+    Voice configuration object.
+ 
+    
+      Voice selection mode. Use `id` to select by voice identifier.
+    
+   
+    
+      The identifier of the selected voice for speech synthesis. 
+    
+ 
+   
+  Audio output format configuration
+ 
+   
+   Audio container format for the output stream.
+   
+   
+   
+   Audio sampling rate in Hz
+    
+ 
+ 
+  Target language for speech synthesis.

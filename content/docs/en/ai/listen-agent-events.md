@@ -36,29 +36,49 @@ description: 与对话式智能体进行实时互动时，你可能需要监听�
 
 ### 集成组件
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
 
 - [convoaiApi](https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi)
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
 
 - [ConversationalAIAPI](https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI)
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 将 `conversational-ai-api` 文件拷贝到你自己的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
 
 - [conversational-ai-api](https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api)
 
+</TabsContent>
+</Tabs>
 ### 初始化组件
 
 为 RTC 和 RTM 实例创建配置对象，之后创建组件实例：
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 ```java
 // 为 RTC 和 RTM 实例创建配置对象
@@ -71,7 +91,9 @@ val config = ConversationalAIAPIConfig(
 val api = ConversationalAIAPIImpl(config)
 ```
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 ```swift
 // 为 RTC 和 RTM 实例创建配置对象
@@ -84,7 +106,9 @@ let config = ConversationalAIAPIConfig(
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 ```
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 ```typescript
 // 为 RTC 和 RTM 实例创建配置对象
@@ -97,9 +121,18 @@ ConversationalAIAPI.init({
 const conversationalAIAPI = ConversationalAIAPI.getInstance()
 ```
 
+</TabsContent>
+</Tabs>
 ### 注册回调
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 调用 `addHandler` 方法，注册并实现智能体相关事件回调：
 
@@ -180,7 +213,9 @@ api.addHandler(object : IConversationalAIAPIEventHandler {
 })
 ```
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 调用 `addHandler` 方法，注册并实现智能体相关事件回调：
 
@@ -279,7 +314,9 @@ class ConversationViewController: UIViewController, ConversationalAIAPIEventHand
 convoAIAPI.addHandler(handler: self)
 ```
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 ```typescript
 // 监听智能体状态变化
@@ -290,11 +327,20 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.AGENT_METRICS, onAgentMetricsC
 conversationalAIAPI.on(EConversationalAIAPIEvents.AGENT_ERROR, onAgentError)
 ```
 
+</TabsContent>
+</Tabs>
 ### 订阅频道消息
 
 智能体的相关事件通过 RTM 频道消息传递，你需要在开始智能体会话前调用 `subscribeMessage` 订阅频道消息，以接收智能体相关事件。
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 ```kotlin
 api.subscribeMessage("channelName") { error ->
@@ -304,7 +350,9 @@ api.subscribeMessage("channelName") { error ->
 }
 ```
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 ```swift
 convoAIAPI.subscribeMessage(channelName: channelName) { error in
@@ -316,12 +364,16 @@ convoAIAPI.subscribeMessage(channelName: channelName) { error in
 }
 ```
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 ```typescript
 conversationalAIAPI.subscribeMessage(channel_name)
 ```
 
+</TabsContent>
+</Tabs>
 ### 智能体加入频道
 
 调用 [POST 创建对话式智能体](../operations/start-agent.md)接口，并完成以下参数设置：
@@ -336,7 +388,14 @@ conversationalAIAPI.subscribeMessage(channel_name)
 
 每次智能体会话结束后，你需要取消订阅频道消息，以释放回调事件相关资源。
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 ```kotlin
 api.unsubscribeMessage("channelName") { error ->
@@ -346,7 +405,9 @@ api.unsubscribeMessage("channelName") { error ->
 }
 ```
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 ```swift
 /// 取消订阅频道消息
@@ -359,29 +420,44 @@ convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
 }
 ```
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 ```typescript
 conversationalAIAPI.unsubscribeMessage(channel_name)
 ```
 
+</TabsContent>
+</Tabs>
 ### 销毁组件实例
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 ```kotlin
 api.destroy()
 ```
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 ```swift
 convoAIAPI.destroy()
 ```
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 ```typescript
 conversationalAIAPI.destroy()
@@ -389,6 +465,8 @@ conversationalAIAPI.destroy()
 
 ## 参考信息
 
+</TabsContent>
+</Tabs>
 ### 示例项目
 
 声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
@@ -402,7 +480,14 @@ conversationalAIAPI.destroy()
 > 信息
 > 以下文件和文件夹即为集成客户端组件所需全部内容，无需拷贝其他文件。
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 - `IConversationalAIAPI.kt` — API 接口及相关数据结构和枚举
     - `ConversationalAIAPIImpl.kt` — ConversationalAI API 主要实现逻辑
@@ -412,14 +497,18 @@ conversationalAIAPI.destroy()
             - `TranscriptionController.kt` — 字幕控制器
             - `MessageParser.kt` — 消息解析器
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 - `ConversationalAIAPI.swift` — API 接口及相关数据结构和枚举
     - `ConversationalAIAPIImpl.swift` — ConversationalAI API 主要实现逻辑
     - `Transcription/`
         - `TranscriptionController.swift` — 字幕控制器
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 - `index.ts` — API 类
     - `type.ts` — API 接口及相关数据结构和枚举
@@ -427,9 +516,18 @@ conversationalAIAPI.destroy()
     - `utils/events.ts` — 事件管理类，可以拓展该类以轻松实现事件监听和播报
     - `utils/sub-render.ts` — 字幕部分模块
 
+</TabsContent>
+</Tabs>
 ### API 参考
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 - [`addHandler`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapi#addhandler)
     - [`subscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapi#subscribemessage)
@@ -440,7 +538,9 @@ conversationalAIAPI.destroy()
     - [`onAgentMetrics`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onagentmetrics)
     - [`onAgentError`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#onagenterror)
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 - [`addHandler`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapi#addhandler)
     - [`subscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapi#subscribemessage)
@@ -451,10 +551,15 @@ conversationalAIAPI.destroy()
     - [`onAgentMetrics`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onagentmetrics)
     - [`onAgentError`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#onagenterror)
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 - [`IConversationalAIAPIEventHandler`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/struct#iconversationalaiapieventhandlers)
     - [`EConversationalAIAPIEvents`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/enum#econversationalaiapievents)
     - [`subscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/conversationalaiapi#subscribemessage)
     - [`unsubscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/conversationalaiapi#unsubscribemessage)
     - [`destroy`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/conversationalaiapi#destroy)
+
+</TabsContent>
+</Tabs>

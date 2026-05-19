@@ -7,7 +7,9 @@ describe('canonical docs route model', () => {
   });
 
   it('builds explicit page routes', () => {
-    expect(buildDocPath('en', 'ai', 'quick-start')).toBe('/en/ai/quick-start');
+    expect(buildDocPath('en', 'ai', ['get-started', 'quickstart'])).toBe(
+      '/en/ai/get-started/quickstart',
+    );
     expect(buildDocPath('en', 'realtime-media', ['rtc', 'quick-start'])).toBe(
       '/en/realtime-media/rtc/quick-start',
     );

@@ -1,0 +1,61 @@
+---
+title: ElevenLabs
+---
+ElevenLabs provides highly realistic AI voices with advanced prosody and natural speech patterns, delivering lifelike audio synthesis with emotional nuance and conversational flow.
+
+> **Paid plan required**
+> You need a **paid ElevenLabs plan** for reliable TTS integration. 
+>
+> ElevenLabs may restrict or disable free-tier accounts due to abuse-detection mechanisms, even if free credits are available. To avoid missing audio responses during testing and production, ensure you use a paid plan.
+
+### Sample configuration
+
+The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"tts": {
+  "vendor": "elevenlabs",
+  "params": {
+    "base_url": "wss://api.elevenlabs.io/v1",
+    "key": "<your_elevenlabs_key>",
+    "model_id": "eleven_flash_v2_5",
+    "voice_id": "pNInz6obpgDQGcFmaJgB",
+    "sample_rate": 24000
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For advanced configuration options, voice cloning, and detailed parameter descriptions, see the [ElevenLabs TTS documentation](https://elevenlabs.io/docs/capabilities/text-to-speech).
+
+### Key parameters
+
+    
+  The endpoint URL for the OpenAI TTS service. See [Data residency](https://elevenlabs.io/docs/product-guides/administration/data-residency).
+  
+    
+  The API key used for authentication. Get your API key from the [ElevenLabs Console](https://elevenlabs.io/).
+  
+  
+  Identifier of the model to be used. Popular options include `eleven_flash_v2_5` for speed or `eleven_multilingual_v2` for quality.
+  
+    
+  The identifier for the selected voice for speech synthesis. Browse available voices in the [Voice Library](https://elevenlabs.io/voice-library).
+  
+  
+  Audio sampling rate in Hz. Common values: `16000`, `22050`, `24000`, `44100`.
+    
+  
+  Speed up or slow down the speed of the generated speech. Range `0.7` to `1.2` inclusive. 
+    
+  
+  Controls voice stability. Higher values `(0.8-1.0)` produce more consistent speech, lower values `(0.0-0.5)` add more variation.
+  
+  
+  Enhances similarity to the original voice. Range: `0.0-1.0`. Higher values stick closer to the training voice.
+  
+  
+  Controls speaking style and expressiveness. Higher values increase emotional range and variation.
+  
+  
+  Improves voice quality and similarity when enabled. Recommended for most use cases.

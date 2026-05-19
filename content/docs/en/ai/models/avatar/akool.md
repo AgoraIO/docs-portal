@@ -1,0 +1,41 @@
+---
+title: Akool (Beta)
+---
+Akool provides AI-powered avatars with realistic facial expressions and lip-sync capabilities, enabling natural video conversations with your AI agents. Their platform offers a variety of pre-built avatars and supports custom avatar creation.
+
+> **Info**
+> Akool avatars only support audio with a sample rate of 16,000 Hz. Using a TTS model configured with a different sample rate will result in an error. Ensure your TTS configuration matches this requirement.
+
+### Sample configuration
+
+The following example shows a starting `avatar` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"avatar": {
+    "vendor": "akool",
+    "enable": true,
+    "params": {
+          "api_key": "<akool_key>",
+          "agora_uid": "<avatar_rtc_uid>",
+          "agora_token": "<avatar_rtc_token>",
+          "avatar_id": "<akool_avatar_id>"
+    }
+}
+```
+
+### Key parameters
+
+   
+ The API key used for authentication with Akool's services. 
+ 
+ > **Info**
+> To purchase an Akool API key, contact [Agora sales](mailto:sales@agora.io).
+ 
+ 
+ The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+ 
+   
+ The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+ 
+ 
+ The unique identifier for the specific Akool avatar you want to use. Find available avatar IDs in your Akool dashboard.
