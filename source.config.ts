@@ -13,6 +13,11 @@ export const docs = defineDocs({
   dir: 'content/docs',
   docs: {
     schema: rawDocSchema,
+    mdxOptions: {
+      remarkImageOptions: {
+        useImport: false,
+      },
+    },
     postprocess: {
       includeProcessedMarkdown: true,
     },

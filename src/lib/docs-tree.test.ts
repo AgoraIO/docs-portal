@@ -267,6 +267,91 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('keeps nested product folders under their parent top-level tab', () => {
+    const nestedProductTree: Root = {
+      children: [
+        {
+          $id: 'zh-root',
+          children: [
+            {
+              $id: 'realtime-folder',
+              children: [
+                {
+                  $id: 'rtm2-folder',
+                  children: [
+                    {
+                      $id: 'rtm2-android',
+                      name: 'Android',
+                      type: 'page',
+                      url: '/zh-CN/realtime-media/rtm2/android',
+                    },
+                  ],
+                  index: {
+                    $id: 'rtm2-index',
+                    name: '实时消息 RTM',
+                    type: 'page',
+                    url: '/zh-CN/realtime-media/rtm2',
+                  },
+                  name: '实时消息 RTM',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'realtime-index',
+                name: '实时与媒体',
+                type: 'page',
+                url: '/zh-CN/realtime-media',
+              },
+              name: '实时与媒体',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '简体中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(getTabSummaries(nestedProductTree)).toEqual([
+      {
+        id: 'realtime-media',
+        title: '实时与媒体',
+        url: '/zh-CN/realtime-media',
+      },
+    ]);
+
+    expect(getSidebarNodes(nestedProductTree, 'realtime-media')).toEqual([
+      {
+        id: '/zh-CN/realtime-media',
+        title: '实时与媒体',
+        type: 'page',
+        url: '/zh-CN/realtime-media',
+      },
+      {
+        children: [
+          {
+            id: '/zh-CN/realtime-media/rtm2',
+            title: '总览',
+            type: 'page',
+            url: '/zh-CN/realtime-media/rtm2',
+          },
+          {
+            id: '/zh-CN/realtime-media/rtm2/android',
+            title: 'Android',
+            type: 'page',
+            url: '/zh-CN/realtime-media/rtm2/android',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-rtm2-folder',
+        title: '实时消息 RTM',
+        type: 'section',
+      },
+    ]);
+  });
+
   it('maps grouped sidebar entries into section nodes', () => {
     expect(
       mapSidebarEntriesToTree([

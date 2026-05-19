@@ -1,0 +1,207 @@
+---
+title: 连接状态迁移与恢复
+description: 连接状态迁移与恢复，用于介绍 RTM 在对应平台上的具体能力配置、使用方法和行为约束。
+---
+
+在整个生命周期内，SDK 与 RTM 服务器之间的连接会经历多个状态。你可以通过 `onLinkStateEvent` 事件通知来观察这些状态的迁移。
+
+> **信息**
+> 本文仅适用于 2.2.0 及之后版本。
+
+在实际场景中，用户的网络状态经常发生变化，而 SDK 的连接状态也随之变化，为避免这些变化影响用户体验，SDK 会为用户保障频道订阅关系和临时状态的连续性。当用户从连接断开状态恢复为已连接时，SDK 会自动恢复用户之前订阅的频道和临时状态，用户无需进行额外的操作。然而，这种保障不适用于你主动断开连接的情况。如果你主动调用 `logout` 方法登出服务器，这种连续性就会被破坏，频道订阅关系和临时状态会被立即清除，连接状态也会被重置到 `RTM_LINK_STATE_IDLE` 状态。该情况下，你需要重新登录服务器、重新建立频道订阅关系、重新设置临时状态，才能恢复到之前的使用状态。
+
+RTM SDK 负责管理连接，包括以下方面：
+
+- 智能选择最近的边缘服务器用于接入，以应对当前边缘服务器的访问故障，系统能够自动快速切换至其他可用边缘服务器。
+- 根据用户配置选择适当的连接协议，并与服务器建立连接。为确保服务的高可用性，RTM 默认采用双协议链路机制，即同时建立并维护一条 TCP 连接和一条 UDP 连接。
+- 管理和维护频道订阅关系以及临时状态的连续性。当用户从临时的连接断开状态中恢复时，系统能够自动还原之前的频道订阅关系和临时状态。
+- 及时向用户发出连接状态变化的事件通知，使用户能够及时观察和捕捉到具体状态，从而在业务层面提供增强用户体验的逻辑。
+
+在 `RTM_SERVICE_TYPE_MESSAGE` 服务中，SDK 初始化后，你即可调用 `login` 方法开始尝试与服务器建立连接。如果连接在任何时刻意外中断，SDK 将会自动以递增的时间间隔（2、4、8、16…… 秒）尝试恢复与服务器的连接，该过程将持续 2 分钟。如果在 2 分钟内未能成功恢复连接，SDK 将切换至长时间的挂起状态，并以 30 秒的固定时间间隔重新尝试连接。
+
+而在 `RTM_SERVICE_TYPE_STREAM` 服务中，你需要调用 `join` 方法开始尝试与服务器建立连接。如果连接在任何时刻意外中断，SDK 会自动尝试重新连接服务器，该过程将持续 20 分钟。如果在 20 分钟内未能成功恢复连接，相应的 Stream Channel 连接状态会变为 `RTM_LINK_STATE_FAILED`，SDK 会停止尝试重连该频道。
+
+## 连接状态迁移
+
+### MESSAGE 类型
+
+`RTM_SERVICE_TYPE_MESSAGE` 类型连接状态的迁移图如下：
+
+![Message 类型连接状态图](/img/rtm2/message-link-type.png)
+
+各状态的含义如下：
+
+| 状态 | 含义 |
+| --- | --- |
+| `RTM_LINK_STATE_IDLE` | 空闲状态。客户端创建实例后，或者在任何状态下显式调用 `logout` 方法登出后会进入此状态。在此状态下，SDK 会清除会话缓存，并且不会与服务器保持任何连接，也不会尝试与服务器建立连接。 |
+| `RTM_LINK_STATE_CONNECTING` | 正在连接状态。当用户调用 `login` 方法后，SDK 会立即进入此状态，每次连接意外断开后的重连尝试也将进入此状态。 |
+| `RTM_LINK_STATE_CONNECTED` | 已连接状态。此状态下 SDK 与服务器连接正常，用户可以没有障碍地使用 RTM 的所有能力。 |
+| `RTM_LINK_STATE_DISCONNECTED` | 连接临时断开状态。连接因临时故障而断开，或者尝试重连不成功后，将进入该状态。在该状态下，SDK 将每隔 2、4、8…… 秒尝试恢复与服务器的连接，预计连接将很快恢复。一旦连接恢复，之前的频道订阅关系和临时状态也会被恢复。在此状态下，用户无法发送或接收消息。此状态将持续 2 分钟，如果在 2 分钟之内无法恢复连接，此状态将转变为 `RTM_LINK_STATE_SUSPENDED` 状态。 |
+| `RTM_LINK_STATE_SUSPENDED` | 连接挂起状态。由于没有网络连接或服务器不可用导致的长期断连状态。如果在 2 分钟之内不能恢复连接，则在试图恢复连接后进入挂起状态。在此状态下，SDK 会每隔 30 秒定期尝试恢复连接，或者你可以主动调用 `login` 方法尝试重新连接。在此状态下，用户无法发送或接收消息。如果在此状态下自动重连成功，SDK 将自动恢复频道订阅关系和临时状态。你可以主动调用 `logout` 方法返回到空闲状态，但需要注意的是，这样做会清除会话缓存，SDK 也不再保障频道订阅关系和临时状态的连续性。 |
+| `RTM_LINK_STATE_FAILED` | 如果 SDK 遇到无法恢复的故障情况，例如 RTM 客户端或服务器收到 App ID 错误、Token 过期等致命错误，SDK 将进入此状态。在此状态下，SDK 不会主动尝试重连，客户端也无法收发消息。你可以主动调用 `login` 方法尝试重新登录。 |
+
+#### 状态迁移时序举例
+
+SDK 与 RTM 服务器之间的连接状态在其生命周期内有很多迁移时序，本节展示一些常见的迁移时序。
+
+- SDK 初始化后执行 `login` 操作，并成功与服务器建立连接：
+
+    ```
+    idle -(login)-> connecting --> connected
+    ```
+
+- 连接已经建立，中间意外断连，然后经过首次尝试后恢复了连接：
+
+    ```
+    connected -(dropped)-> disconnected -(auto-reconnecting)-> connecting --> connected
+    ```
+
+- 连接已经建立，中间意外断开，在 2 分钟之内尝试多次重连后恢复了连接：
+
+    ```
+    connected -(dropped)-> disconnected -(auto-reconnecting)-> connecting --> disconnected --> ... -(auto-reconnecting)-> connecting --> connected
+    ```
+
+- SDK 初始化后执行 `login` 操作，尝试与服务器建立连接超过 2 分钟未成功：
+
+    ```
+    idle -(login)-> connecting --> disconnected -(auto-reconnecting)-> connecting --> ... --> suspended
+    ```
+
+- SDK 处于挂起状态一段时间后，尝试重连成功，恢复连接：
+
+    ```
+    suspended -(auto-reconnecting)-> connecting --> suspended --> ... -(auto-reconnecting)-> connecting --> connected
+    ```
+
+- SDK 初始化后执行 `login` 操作，由于致命错误登录失败，排除错误后重新执行 `login` 操作并成功登录系统：
+
+    ```
+    idle -(login)-> connecting --> failed -(login)-> connecting --> connected
+    ```
+
+- 已连接状态下执行 `logout` 操作并成功登出系统，此时频道订阅关系和临时状态会被清除：
+
+    ```
+    connected -(logout)-> idle
+    ```
+
+### STREAM 类型
+
+由于 `RTM_SERVICE_TYPE_STREAM` 连接只有四种状态，因此状态转换变得相对简单。具体的迁移图如下：
+
+![Stream 类型连接状态图](/img/rtm2/stream-link-type.png)
+
+各状态的含义如下：
+
+| 状态 | 含义 |
+| --- | --- |
+| `RTM_LINK_STATE_IDLE` | 空闲状态。创建 Stream Channel 实例后，或者在任何状态下显式调用 `leave` 方法离开频道后会进入此状态。在此状态下，SDK 会清除会话缓存中关于此频道的数据，并且关闭此连接，也不会尝试与服务器建立连接。 |
+| `RTM_LINK_STATE_CONNECTING` | 正在连接状态。当用户调用 `join` 方法后，Stream Channel 会立即进入此状态。每次连接意外断开后，进行重连尝试时也会进入此状态。 |
+| `RTM_LINK_STATE_CONNECTED` | 已连接状态。此状态下 Stream Channel 与服务器连接正常，用户可以没有障碍地使用 Stream Channel 的所有能力。 |
+| `RTM_LINK_STATE_FAILED` | 如果 Stream Channel 遇到无法恢复的故障情况，将进入此状态，这可能是由于 RTM 客户端或服务器收到致命的错误（例如 App ID 错误、Token 过期等）导致。在此状态下，Stream Channel 不会主动尝试重连，客户端也无法收发消息。你可以主动调用 `join` 方法尝试重新建立连接。 |
+
+#### 状态迁移时序举例
+
+Stream Channel 与 RTM 服务器之间的连接状态在其生命周期内有很多迁移时序，本节展示一些常见的迁移时序。
+
+- Stream Channel 初始化后执行 `join` 操作，并成功与服务器建立连接：
+
+    ```
+    idle -(join)-> connecting --> connected
+    ```
+
+- 连接已经建立，中间意外断开，然后经过首次尝试后恢复了连接：
+
+    ```
+    connected -(dropped)-> connecting --> connected
+    ```
+
+- 连接已经建立，中间意外断开，尝试多次重连后恢复了连接：
+
+    ```
+    connected -(dropped)-> connecting --> ... -(auto-reconnecting)-> connecting --> connected
+    ```
+
+- Stream Channel 初始化后执行 `join` 操作，尝试与服务器建立连接超过 20 分钟未成功：
+
+    ```
+    idle -(join)-> connecting -(auto-reconnecting)-> connecting --> ... --> failed
+    ```
+
+- Stream Channel 初始化后执行 `join` 操作，由于致命错误加入频道失败，排除错误后重新执行 `join` 操作并成功加入频道：
+
+    ```
+    idle -(join)-> connecting --> failed -(join)-> connecting --> connected
+    ```
+
+- 已连接状态下执行 `leave` 操作，离开 Stream Channel，此频道订阅关系和临时状态会被清除：
+
+    ```
+    connected -(leave)-> idle
+    ```
+
+## 监听连接状态事件
+
+你可以通过监听 `onLinkStateEvent` 事件来观察连接状态的迁移：
+
+```cpp
+class RtmEventHandler : public IRtmEventHandler {
+    void onLinkStateEvent(const LinkStateEvent& event) override {}
+    // ...
+};
+
+RtmConfig config;
+config.appId = "appid";
+config.userId = "userId";
+config.eventHandler = new RtmEventHandler();
+```
+
+`onLinkStateEvent` 事件通知提供了足够多的信息让你了解当前网络连接状态的迁移，你可以通过这些信息完善业务处理逻辑。
+
+- 由什么状态迁移（`previousState`）到当前状态（`currentState`）
+- 什么服务类型的连接状态发生了迁移（`serviceType`）
+- 导致这次迁移的操作（`operation`）及原因（`reason`）
+
+## 连接状态恢复
+
+在每次执行 `login` 操作后，客户端不仅会尝试与服务器建立连接，还会在本地生成一份会话缓存。这份缓存将记录和保存用户订阅或加入的频道信息以及在这些频道中设置的临时用户状态数据（`states`），这包括 `RTM_SERVICE_TYPE_MESSAGE` 类型服务和 `RTM_SERVICE_TYPE_STREAM` 类型服务。
+
+当客户端由于网络故障而导致连接临时断开时，SDK 会自动尝试重新连接。一旦连接恢复，SDK 将利用会话缓存帮助用户恢复断开前的频道订阅关系和临时用户状态数据，从而保证用户会话的连续性。无论客户端是从 `RTM_LINK_STATE_DISCONNECTED` 状态还是从 `RTM_LINK_STATE_SUSPENDED` 状态恢复，只要用户没有主动调用 `logout` 方法退出登录，这种连续性都将自动恢复。但如果用户主动退出登录，会话缓存将会被清除，连接状态也将回到 `RTM_LINK_STATE_IDLE` 状态。用户再次登录后，需要重新订阅频道并重新设置临时用户状态。
+
+当网络连接突然断开时，你可以通过 `onLinkStateEvent` 事件的 `affectedChannels` 字段查看受到影响的频道名称。以下是 `affectedChannels` 字段的示例信息：
+
+```cpp
+"affectedChannels" : [
+    "ChatRoom",
+    "VirtualSpace"
+]
+```
+
+网络连接恢复后，你可以通过 `onLinkStateEvent` 事件的 `unrestoredChannels` 字段查看未恢复连接的频道名、频道类型以及该频道中的临时用户状态数据。当然，在大多数情况下，这个字段是空的。
+
+## 处理连接错误
+
+RTM SDK 客户端会自动从非致命错误状态中恢复，同时，它也会通过 `onLinkStateEvent` 事件通知你它所经历的情况。你可以根据业务需求自行处理，以优化用户体验。
+
+### 致命错误
+
+某些错误是致命的，会导致 SDK 进入 `RTM_LINK_STATE_FAILED` 状态。在这种状态下，SDK 不会尝试自动重连。你需要自行排查可能的错误，并通过显式调用 `login` 或 `join` 方法来主动触发重连。
+
+这些致命错误主要包括以下情况：
+
+- Token 错误或者已过期。
+- 当前用户（`userId`）被封禁。
+- 当前项目的 App ID 未开启 RTM 服务，或者 App ID 无效。
+- 当前无边缘服务器资源。
+- 当前环境未部署 `RTM_SERVICE_TYPE_MESSAGE` 服务（有私有部署情况）。
+- 使用超限。
+- Stream Channel 实例未创建。
+- Stream Channel 频道名非法。
+
+### 非致命错误
+
+部分错误可被视作非致命，例如，当客户端经过地下停车场或隧道时，可能会导致网络短暂中断。在这种情况下，SDK 将尝试自动重新建立连接。如果重新连接成功，客户端之前订阅的频道以及频道中设置的临时用户状态也将被自动恢复。然而，如果在此过程中用户主动调用 `logout` 方法退出登录，客户端缓存将被清除，这将导致频道订阅关系和临时用户状态的清除。用户必须重新登录系统、重新订阅频道、重新设置临时用户状态，才能恢复到之前的使用状态。
+
+> **信息**
+> 任何情况下，你都可以通过 `login` 方法建立 MESSAGE 连接，通过 `join` 方法建立 STREAM 连接。
