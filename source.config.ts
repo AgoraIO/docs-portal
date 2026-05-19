@@ -55,6 +55,7 @@ export const docs = defineDocs({
         lazy: false,
       },
       remarkImageOptions: {
+        external: false,
         useImport: false,
       },
       remarkPlugins: (plugins) => [

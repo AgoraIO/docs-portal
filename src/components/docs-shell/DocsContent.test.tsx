@@ -6,11 +6,18 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import type { ReactNode } from 'react';
+import { renderToString } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
-import { DocsContent } from './DocsContent';
+import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
 
 vi.mock('./DocsContentBody.client', () => ({
@@ -39,7 +46,7 @@ function renderWithRouter(children: ReactNode) {
 }
 
 describe('DocsContent', () => {
-  it('renders page breadcrumb, reading time, title, and description', async () => {
+  it('renders page breadcrumb, LLM markdown link, title, and description', async () => {
     renderWithRouter(
       <DocsContent
         breadcrumb={[
@@ -54,10 +61,7 @@ describe('DocsContent', () => {
         ]}
         contentPath="en/introduction/about-agora.md"
         description="Learn the platform basics."
-        readingTime={{
-          minutes: 2,
-          words: 360,
-        }}
+        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
         slug="about-agora"
         title="About Agora"
         toc={[]}
@@ -68,13 +72,168 @@ describe('DocsContent', () => {
       await screen.findByRole('heading', { name: 'About Agora' }),
     ).toBeInTheDocument();
     expect(screen.getByText('Learn the platform basics.')).toBeInTheDocument();
-    expect(screen.getByText('Reading time · 2 min')).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'View as Markdown' }),
+    ).toHaveAttribute('href', '/llms.mdx/docs/en/introduction/about-agora.md');
+    expect(screen.queryByText(/Reading time/)).not.toBeInTheDocument();
 
     const breadcrumb = screen.getByLabelText('Breadcrumb');
     expect(
       within(breadcrumb).getByRole('link', { name: 'Introduction' }),
     ).toHaveAttribute('href', '/en/introduction');
     expect(within(breadcrumb).getByText('About Agora')).toBeInTheDocument();
+  });
+
+  it('renders a content skeleton before client-only MDX content hydrates', () => {
+    const html = renderToString(
+      <AppProviders>
+        <DocsContent
+          contentPath="en/introduction/about-agora.md"
+          slug="about-agora"
+          title="About Agora"
+          toc={[]}
+        />
+      </AppProviders>,
+    );
+
+    expect(html).toContain('data-testid="docs-content-skeleton"');
+    expect(html).toContain('data-skeleton-line="hero"');
+  });
+});
+
+describe('DocsTableOfContents', () => {
+  it('scrolls the desktop content container and marks the clicked item active', async () => {
+    render(
+      <AppProviders>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 200, overflow: 'auto' }}
+        >
+          <h2 id="target-heading">Target heading</h2>
+        </div>
+        <DocsTableOfContents
+          toc={[{ depth: 2, title: 'Target heading', url: '#target-heading' }]}
+        />
+      </AppProviders>,
+    );
+
+    const scrollContainer = screen.getByTestId('docs-main-desktop-scroll');
+    const heading = document.getElementById('target-heading');
+    const scrollTo = vi.fn();
+
+    expect(heading).toBeInstanceOf(HTMLElement);
+    Object.defineProperty(scrollContainer, 'scrollTop', {
+      configurable: true,
+      value: 10,
+      writable: true,
+    });
+    Object.defineProperty(scrollContainer, 'scrollTo', {
+      configurable: true,
+      value: scrollTo,
+    });
+    vi.spyOn(scrollContainer, 'getBoundingClientRect').mockReturnValue({
+      bottom: 300,
+      height: 200,
+      left: 0,
+      right: 800,
+      top: 100,
+      width: 800,
+      x: 0,
+      y: 100,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(heading as HTMLElement, 'getBoundingClientRect').mockReturnValue({
+      bottom: 260,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 240,
+      width: 800,
+      x: 0,
+      y: 240,
+      toJSON: () => ({}),
+    });
+
+    const link = screen.getByRole('link', { name: 'Target heading' });
+
+    fireEvent.click(link);
+
+    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'smooth', top: 126 });
+    expect(link).toHaveAttribute('aria-current', 'location');
+  });
+
+  it('updates the active item from the desktop container scroll position', async () => {
+    render(
+      <AppProviders>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 400, overflow: 'auto' }}
+        >
+          <h2 id="first-heading">First heading</h2>
+          <h2 id="second-heading">Second heading</h2>
+        </div>
+        <DocsTableOfContents
+          toc={[
+            { depth: 2, title: 'First heading', url: '#first-heading' },
+            { depth: 2, title: 'Second heading', url: '#second-heading' },
+          ]}
+        />
+      </AppProviders>,
+    );
+
+    const scrollContainer = screen.getByTestId('docs-main-desktop-scroll');
+    const firstHeading = document.getElementById('first-heading');
+    const secondHeading = document.getElementById('second-heading');
+
+    expect(firstHeading).toBeInstanceOf(HTMLElement);
+    expect(secondHeading).toBeInstanceOf(HTMLElement);
+    vi.spyOn(scrollContainer, 'getBoundingClientRect').mockReturnValue({
+      bottom: 500,
+      height: 400,
+      left: 0,
+      right: 800,
+      top: 100,
+      width: 800,
+      x: 0,
+      y: 100,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(
+      firstHeading as HTMLElement,
+      'getBoundingClientRect',
+    ).mockReturnValue({
+      bottom: 80,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 50,
+      width: 800,
+      x: 0,
+      y: 50,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(
+      secondHeading as HTMLElement,
+      'getBoundingClientRect',
+    ).mockReturnValue({
+      bottom: 180,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 150,
+      width: 800,
+      x: 0,
+      y: 150,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.scroll(scrollContainer);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('link', { name: 'Second heading' }),
+      ).toHaveAttribute('aria-current', 'location');
+    });
   });
 });
 

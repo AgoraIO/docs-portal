@@ -4,6 +4,10 @@ import { loadDocsPagePayload, loadDocsTabIndex } from './docs-page.server';
 import { source } from './source.server';
 
 vi.mock('./source.server', () => ({
+  getPageMarkdownUrl: (page: { path: string }) => ({
+    segments: page.path.split('/').filter(Boolean),
+    url: `/llms.mdx/docs/${page.path}`,
+  }),
   source: {
     getPage: vi.fn(),
     getPages: vi.fn(),
@@ -148,11 +152,8 @@ describe('loadDocsPagePayload', () => {
         },
       ],
       contentPath: 'en/introduction/about-agora.md',
+      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora.md',
       slug: 'about-agora',
-      readingTime: {
-        minutes: 1,
-        words: 9,
-      },
       title: 'About Agora',
       toc: [
         {

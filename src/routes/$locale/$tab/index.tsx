@@ -53,9 +53,9 @@ function Page() {
     breadcrumb,
     contentPath,
     description,
+    markdownUrl,
     navigation,
     pages,
-    readingTime,
     sidebar,
     slug,
     tabs,
@@ -79,7 +79,7 @@ function Page() {
         breadcrumb={breadcrumb}
         contentPath={contentPath}
         description={description}
-        readingTime={readingTime}
+        markdownUrl={markdownUrl}
         slug={slug}
         title={title}
         toc={toc}

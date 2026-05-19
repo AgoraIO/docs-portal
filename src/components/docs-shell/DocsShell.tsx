@@ -204,7 +204,7 @@ export function DocsShell({
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
-                  className="hidden border-[color:var(--line-strong)] bg-card text-[color:var(--ink-3)] lg:inline-flex lg:size-[34px] lg:rounded-lg"
+                  className="hidden text-[color:var(--ink-3)] hover:bg-[color:var(--surface-muted)] hover:text-[color:var(--ink-1)] lg:inline-flex lg:size-[34px] lg:rounded-lg"
                   onClick={() => setTheme(isDarkTheme ? 'light' : 'dark')}
                   size="icon"
                   variant="ghost"
@@ -215,7 +215,7 @@ export function DocsShell({
                 <Button
                   aria-label="GitHub"
                   asChild
-                  className="hidden border-[color:var(--line-strong)] bg-card text-[color:var(--ink-3)] lg:inline-flex lg:size-[34px] lg:rounded-lg"
+                  className="hidden text-[color:var(--ink-3)] hover:bg-[color:var(--surface-muted)] hover:text-[color:var(--ink-1)] lg:inline-flex lg:size-[34px] lg:rounded-lg"
                   size="icon"
                   variant="ghost"
                 >

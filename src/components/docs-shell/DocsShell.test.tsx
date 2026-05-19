@@ -163,6 +163,9 @@ describe('DocsShell', () => {
     const themeControl = within(mainHeaderRow).getByRole('button', {
       name: 'Theme: Light',
     });
+    const githubControl = within(mainHeaderRow).getByRole('link', {
+      name: 'GitHub',
+    });
     const tabsIntroductionLink = within(docsTabsStrip).getByRole('tab', {
       name: 'Introduction',
     });
@@ -194,6 +197,8 @@ describe('DocsShell', () => {
     expect(themeControl).toHaveAttribute('aria-label', 'Theme: Light');
     expect(themeControl).toHaveAttribute('aria-pressed', 'false');
     expect(themeControl.querySelector('span:not(.sr-only)')).toBeNull();
+    expect(themeControl.className).not.toContain('bg-card');
+    expect(githubControl.className).not.toContain('bg-card');
     expect(languageControl).toHaveTextContent('English');
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
     expect(tabsAiLink).toHaveAttribute('href', '/en/ai');

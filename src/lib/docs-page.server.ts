@@ -8,7 +8,7 @@ import {
   getSidebarNodes,
   getTabSummaries,
 } from './docs-tree';
-import type { PageWithSource } from './source.server';
+import { getPageMarkdownUrl, type PageWithSource } from './source.server';
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
   const { source } = await import('./source.server');
@@ -79,13 +79,13 @@ export async function loadDocsPagePayload(
           ],
     contentPath: page.path,
     description: page.data.description,
+    markdownUrl: getPageMarkdownUrl(page).url,
     navigation: getPrevNextLinks(pageTree, page.url),
     pages: source.getPages(locale).map((item) => ({
       description: item.data.description,
       title: item.data.title ?? item.slugs.at(-1) ?? item.url,
       url: item.url,
     })),
-    readingTime: getReadingTime(processedText),
     sidebar,
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
@@ -114,20 +114,6 @@ async function resolvePageToc(page: PageWithSource, processedText: string) {
   } catch {
     return [];
   }
-}
-
-function getReadingTime(text: string) {
-  const words = text
-    .replace(/[#*_`~>\-[\]()]/g, ' ')
-    .replace(/[\u4e00-\u9fff]/g, ' $& ')
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean).length;
-
-  return {
-    minutes: Math.max(1, Math.ceil(words / 220)),
-    words,
-  };
 }
 
 function normalizeToc(toc: TOCItemType[] | undefined) {

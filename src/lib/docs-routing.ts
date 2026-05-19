@@ -109,12 +109,12 @@ export function getSourceSlugsFromContentPath(path: string) {
     return [];
   }
 
-  if (fileName === 'index.md') {
+  if (fileName === 'index.md' || fileName === 'index.mdx') {
     return [tab, ...rest.slice(0, -1)];
   }
 
-  if (fileName.endsWith('.md')) {
-    return [tab, ...rest.slice(0, -1), fileName.slice(0, -3)];
+  if (fileName.endsWith('.md') || fileName.endsWith('.mdx')) {
+    return [tab, ...rest.slice(0, -1), fileName.replace(/\.mdx?$/, '')];
   }
 
   return [];

@@ -1,17 +1,21 @@
 import { ClientOnly } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import { Edit3Icon, ExternalLinkIcon } from 'lucide-react';
-import { useMemo } from 'react';
+import { BotIcon, Edit3Icon, ExternalLinkIcon } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import { DocsContentBodyClient } from './DocsContentBody.client';
 
+const DESKTOP_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
+const TOC_SCROLL_OFFSET = 24;
+const TOC_ACTIVE_OFFSET = 96;
+
 export function DocsContent({
   breadcrumb = [],
   contentPath,
   description,
-  readingTime,
+  markdownUrl,
   slug,
   title,
   toc,
@@ -19,10 +23,7 @@ export function DocsContent({
   breadcrumb?: DocsBreadcrumbItem[];
   contentPath: string;
   description?: string;
-  readingTime?: {
-    minutes: number;
-    words: number;
-  };
+  markdownUrl?: string;
   slug?: string;
   title?: string;
   toc: TOCItemType[];
@@ -86,28 +87,57 @@ export function DocsContent({
             </p>
           ) : null}
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex h-6 items-center gap-1.5 rounded-full border border-[color:var(--line-soft)] bg-card px-2.5 text-xs font-medium text-[color:var(--ink-3)]">
-            <span className="size-1.5 rounded-full bg-[color:var(--accent-brand)]" />
-            {t('docs.updatedRecently')}
-          </span>
-          {readingTime ? (
-            <span className="inline-flex h-6 items-center rounded-full border border-[color:var(--line-soft)] bg-card px-2.5 text-xs font-medium text-[color:var(--ink-3)]">
-              {t('docs.readingTime', { count: readingTime.minutes })}
-            </span>
-          ) : null}
-          <span className="inline-flex h-6 items-center rounded-full border border-[color:var(--line-soft)] bg-card px-2.5 text-xs font-medium text-[color:var(--ink-3)]">
-            {t('docs.concepts')}
-          </span>
-        </div>
+        {markdownUrl ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <a
+              className="inline-flex h-7 items-center gap-1.5 rounded-md border border-[color:var(--line-soft)] bg-card px-2.5 text-xs font-medium text-[color:var(--ink-3)] transition-colors hover:border-[color:var(--line-strong)] hover:text-[color:var(--ink-1)]"
+              href={markdownUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <BotIcon className="size-3.5" />
+              {t('docs.viewAsMarkdown')}
+            </a>
+          </div>
+        ) : null}
       </header>
       <div className="prose prose-neutral dark:prose-invert max-w-none">
-        <ClientOnly fallback={null}>
+        <ClientOnly fallback={<DocsContentSkeleton />}>
           <DocsContentBodyClient contentPath={contentPath} />
         </ClientOnly>
       </div>
       <DocsTableOfContents className="xl:hidden" toc={toc} />
     </article>
+  );
+}
+
+function DocsContentSkeleton() {
+  return (
+    <div
+      aria-hidden="true"
+      className="not-prose flex flex-col gap-5 py-1"
+      data-testid="docs-content-skeleton"
+    >
+      <div className="flex flex-col gap-2">
+        <span
+          className="h-4 w-24 rounded bg-[color:var(--surface-muted)]"
+          data-skeleton-line="eyebrow"
+        />
+        <span
+          className="h-7 w-full max-w-xl rounded bg-[color:var(--surface-muted)]"
+          data-skeleton-line="hero"
+        />
+      </div>
+      <div className="flex flex-col gap-3">
+        <span className="h-4 w-full rounded bg-[color:var(--surface-muted)]" />
+        <span className="h-4 w-[92%] rounded bg-[color:var(--surface-muted)]" />
+        <span className="h-4 w-[76%] rounded bg-[color:var(--surface-muted)]" />
+      </div>
+      <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <span className="h-24 rounded-lg border border-[color:var(--line-soft)] bg-card" />
+        <span className="h-24 rounded-lg border border-[color:var(--line-soft)] bg-card" />
+      </div>
+    </div>
   );
 }
 
@@ -123,6 +153,97 @@ export function DocsTableOfContents({
     () => toc.filter((item) => typeof item.title === 'string'),
     [toc],
   );
+  const [activeUrl, setActiveUrl] = useState(() => items[0]?.url ?? '');
+
+  const scrollToHeading = useCallback((url: string) => {
+    const scrollContainer = getActiveDocsScrollContainer();
+    const heading = getHeadingForUrl(url, scrollContainer);
+
+    if (!heading) {
+      return;
+    }
+
+    setActiveUrl(url);
+    updateHash(url);
+
+    const headingRect = heading.getBoundingClientRect();
+
+    if (scrollContainer) {
+      const containerRect = scrollContainer.getBoundingClientRect();
+
+      scrollContainer.scrollTo({
+        behavior: 'smooth',
+        top:
+          scrollContainer.scrollTop +
+          headingRect.top -
+          containerRect.top -
+          TOC_SCROLL_OFFSET,
+      });
+      return;
+    }
+
+    window.scrollTo({
+      behavior: 'smooth',
+      top: window.scrollY + headingRect.top - TOC_ACTIVE_OFFSET,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (items.length === 0) {
+      return;
+    }
+
+    let frame = 0;
+    const updateActiveUrl = () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+
+      frame = requestAnimationFrame(() => {
+        const scrollContainer = getActiveDocsScrollContainer();
+        const boundary =
+          (scrollContainer?.getBoundingClientRect().top ?? 0) +
+          TOC_ACTIVE_OFFSET;
+        let nextActiveUrl = items[0]?.url ?? '';
+
+        for (const item of items) {
+          const heading = getHeadingForUrl(item.url, scrollContainer);
+
+          if (!heading) {
+            continue;
+          }
+
+          if (heading.getBoundingClientRect().top <= boundary) {
+            nextActiveUrl = item.url;
+          }
+        }
+
+        setActiveUrl(nextActiveUrl);
+      });
+    };
+
+    const scrollContainer = getDesktopDocsScrollContainer();
+    const observer = new MutationObserver(updateActiveUrl);
+
+    scrollContainer?.addEventListener('scroll', updateActiveUrl, {
+      passive: true,
+    });
+    window.addEventListener('scroll', updateActiveUrl, { passive: true });
+    window.addEventListener('resize', updateActiveUrl);
+    observer.observe(document.body, { childList: true, subtree: true });
+    updateActiveUrl();
+
+    return () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+
+      scrollContainer?.removeEventListener('scroll', updateActiveUrl);
+      window.removeEventListener('scroll', updateActiveUrl);
+      window.removeEventListener('resize', updateActiveUrl);
+      observer.disconnect();
+    };
+  }, [items]);
 
   return (
     <aside className={cn('flex flex-col gap-4', className)}>
@@ -131,19 +252,34 @@ export function DocsTableOfContents({
       </div>
       {items.length > 0 ? (
         <nav className="flex flex-col border-l border-border">
-          {items.map((item) => (
-            <a
-              className={cn(
-                '-ml-px border-l-2 border-transparent px-3 py-1.5 text-sm leading-5 text-[color:var(--ink-3)] transition-colors hover:border-[color:var(--accent-brand)] hover:text-[color:var(--ink-1)]',
-                item.depth > 2 && 'pl-6',
-                item.depth > 3 && 'pl-8',
-              )}
-              href={item.url}
-              key={item.url}
-            >
-              {item.title}
-            </a>
-          ))}
+          {items.map((item) => {
+            const isActive = item.url === activeUrl;
+
+            return (
+              <a
+                aria-current={isActive ? 'location' : undefined}
+                className={cn(
+                  '-ml-px border-l-2 border-transparent px-3 py-1.5 text-sm leading-5 text-[color:var(--ink-3)] transition-colors hover:border-[color:var(--accent-brand)] hover:text-[color:var(--ink-1)]',
+                  isActive &&
+                    'border-[color:var(--accent-brand)] font-semibold text-[color:var(--ink-1)]',
+                  item.depth > 2 && 'pl-6',
+                  item.depth > 3 && 'pl-8',
+                )}
+                href={item.url}
+                key={item.url}
+                onClick={(event) => {
+                  if (!item.url.startsWith('#')) {
+                    return;
+                  }
+
+                  event.preventDefault();
+                  scrollToHeading(item.url);
+                }}
+              >
+                {item.title}
+              </a>
+            );
+          })}
         </nav>
       ) : (
         <p className="text-sm text-muted-foreground">{t('docs.tocEmpty')}</p>
@@ -169,5 +305,72 @@ export function DocsTableOfContents({
         </a>
       </div>
     </aside>
+  );
+}
+
+function getActiveDocsScrollContainer() {
+  const scrollContainer = getDesktopDocsScrollContainer();
+
+  if (!scrollContainer) {
+    return null;
+  }
+
+  const styles = window.getComputedStyle(scrollContainer);
+
+  if (styles.display === 'none' || styles.visibility === 'hidden') {
+    return null;
+  }
+
+  return scrollContainer;
+}
+
+function getDesktopDocsScrollContainer() {
+  return document.querySelector<HTMLElement>(DESKTOP_SCROLL_SELECTOR);
+}
+
+function getHeadingForUrl(url: string, scrollContainer: HTMLElement | null) {
+  if (!url.startsWith('#')) {
+    return null;
+  }
+
+  const id = decodeURIComponent(url.slice(1));
+
+  if (!id) {
+    return null;
+  }
+
+  const selector = `#${escapeCssIdentifier(id)}`;
+
+  return (
+    scrollContainer?.querySelector<HTMLElement>(selector) ??
+    document.querySelector<HTMLElement>(selector)
+  );
+}
+
+function escapeCssIdentifier(value: string) {
+  if (typeof CSS !== 'undefined' && CSS.escape) {
+    return CSS.escape(value);
+  }
+
+  return value.replace(/["\\#.:,[\]=>+~*^$|()\s]/g, '\\$&');
+}
+
+function requestAnimationFrame(callback: FrameRequestCallback) {
+  if (typeof window.requestAnimationFrame === 'function') {
+    return window.requestAnimationFrame(callback);
+  }
+
+  return window.setTimeout(() => callback(window.performance.now()), 0);
+}
+
+function updateHash(url: string) {
+  if (!url.startsWith('#')) {
+    return;
+  }
+
+  window.history.replaceState(
+    null,
+    '',
+    `${window.location.pathname}${window.location.search}${url}`,
   );
 }
