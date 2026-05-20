@@ -1,0 +1,45 @@
+---
+title: Microsoft Azure
+---
+Microsoft Azure offers neural voices in multiple languages with options for different speaking styles and emotions, providing enterprise-grade text-to-speech capabilities with high-quality audio output.
+
+### Sample configuration
+
+The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"tts": {
+  "vendor": "microsoft",
+  "params": {
+    "key": "<your_microsoft_key>",
+    "region": "eastus",
+    "voice_name": "en-US-AndrewMultilingualNeural",
+    "speed": 1.0,
+    "volume": 70,
+    "sample_rate": 24000
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For advanced configuration options, voice galleries, and detailed parameter descriptions, see the [Microsoft Azure TTS documentation](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech).
+
+### Key parameters
+
+   
+ The API key used for authentication. Get your API key from the [Azure Portal](https://portal.azure.com/).
+ 
+ 
+ The Azure region where the speech service is hosted (For example, `eastus`, `westus2`).
+ 
+   
+ The identifier for the selected voice for speech synthesis. See [available voices](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=tts) for options.
+ 
+ 
+ Speaking rate of the text. Values between `0.5` and `2.0` times the original audio speed.
+ 
+   
+ Audio volume as a number between `0.0` and `100.0`, where `0.0` is quietest and `100.0` is loudest.
+ 
+ 
+ Audio sampling rate in Hz. Common values: `16000`, `24000`, `48000`.

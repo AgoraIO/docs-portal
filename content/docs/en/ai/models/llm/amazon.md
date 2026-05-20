@@ -1,0 +1,50 @@
+---
+title: Amazon Bedrock
+description: Integrate Amazon Bedrock LLMs with the Conversational AI Engine.
+---
+Amazon Bedrock provides access to a variety of foundation models (FMs) from leading AI providers through a fully managed AWS service. 
+
+### Sample configuration
+
+The following example shows a starting `llm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md). 
+
+```json
+"llm": {
+    "url": "https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-sonnet-4-20250514-v1:0/converse-stream",
+    "api_key": "<your_bedrock_api_key>",
+    "access_key": "<your_aws_access_key_id>",
+    "secret_key": "<your_aws_secret_access_key>",
+    "region": "us-east-1",
+    "model": "us.anthropic.claude-sonnet-4-20250514-v1:0",
+    "system_messages": [
+        {
+            "role": "system",
+            "content": "You are a helpful chatbot."
+        }
+    ],
+    "style": "bedrock"
+}
+```
+
+### Key parameters
+
+    
+  The Amazon Bedrock runtime endpoint for the target region and model. See [Amazon Bedrock endpoints and quotas](https://docs.aws.amazon.com/general/latest/gr/bedrock.html#bedrock_region) for the correct endpoint format.
+  
+    
+  Your Bedrock API key for authentication. Use either `api_key` alone, or both `access_key` and `secret_key` together for authentication.
+  
+    
+  Your AWS Access Key ID for authenticating Bedrock API calls. Required if not using `api_key`. Must be used together with `secret_key`. Get your access key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+  
+    
+  Your AWS Secret Access Key for authenticating Bedrock API calls. Required if not using `api_key`. Must be used together with `access_key`. Get your secret key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+  
+    
+  The AWS region hosting the Bedrock model, for example, `us-east-1` or `us-west-2`. See [Supported Regions and models](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html) for available regions.
+  
+    
+  The API style to use. Set to `bedrock` for Amazon Bedrock models.
+  
+
+For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Amazon Bedrock documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html).

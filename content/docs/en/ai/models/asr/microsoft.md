@@ -1,0 +1,37 @@
+---
+title: Microsoft Azure
+---
+Microsoft Azure provides enterprise-grade automatic speech recognition with support for multiple languages and robust noise handling capabilities, optimized for real-time conversational applications.
+
+### Sample configuration
+
+The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"asr": {
+  "vendor": "microsoft",
+  "params": {
+    "key": "<microsoft_key>",
+    "region": "eastus",
+    "language": "en-US",
+    "phrase_list": ["agora", "conversational", "ai", "engine"]
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Microsoft Azure Speech-to-Text documentation](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text).
+
+### Key parameters
+
+   
+ The API key used for authentication. Get your API key from the [Azure Portal](https://portal.azure.com/).
+ 
+ 
+ The Azure region where the speech service is hosted (For example, `eastus`, `westus2`).
+ 
+   
+ The language code for speech recognition (For example, `en-US`, `es-ES`, `fr-FR`). See [supported languages](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt) for language codes.
+ 
+ 
+ A list of words or phrases provided in advance to improve recognition accuracy.

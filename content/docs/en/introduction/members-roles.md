@@ -15,5 +15,5 @@ As more teammates join the integration, you need clear ownership for project set
 
 ## Related docs
 
-- [Open account](/en/introduction/account)
-- [Open security and privacy](/en/introduction/security-privacy)
+- [Open account](account.md)
+- [Open security and privacy](security-privacy.md)

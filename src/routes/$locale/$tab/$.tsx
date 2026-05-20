@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from '@tanstack/react-router';
+import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { DocsShell } from '@/components/docs-shell/DocsShell';
 import { getDocsPagePayload } from '@/lib/docs-page';
@@ -22,6 +22,12 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
     if (!payload) {
       throw notFound();
+    }
+
+    if ('redirectUrl' in payload) {
+      throw redirect({
+        href: payload.redirectUrl,
+      });
     }
 
     return {

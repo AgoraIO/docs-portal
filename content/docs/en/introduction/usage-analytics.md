@@ -15,5 +15,5 @@ Usage and analytics help teams understand whether adoption, quality, and operati
 
 ## Related docs
 
-- [Open release notes](/en/best-practices/release-notes)
-- [Open best practices](/en/best-practices)
+- [Open release notes](../best-practices/release-notes.md)
+- [Open best practices](../best-practices/index.md)

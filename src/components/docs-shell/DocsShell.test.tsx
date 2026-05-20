@@ -312,7 +312,7 @@ describe('DocsShell', () => {
                       id: 'ai-intro',
                       title: 'AI Intro',
                       type: 'page' as const,
-                      url: '/en/ai/quick-start',
+                      url: '/en/ai/get-started/quickstart',
                     },
                   ]
             }
@@ -349,7 +349,7 @@ describe('DocsShell', () => {
       component: () => (
         <AppProviders>
           <DocsShell
-            activePath="/en/ai/quick-start"
+            activePath="/en/ai/get-started/quickstart"
             activeTab="ai"
             locale="en"
             pages={[]}
@@ -365,7 +365,7 @@ describe('DocsShell', () => {
     const router = createRouter({
       routeTree: rootRoute.addChildren([docsRoute]),
       history: createMemoryHistory({
-        initialEntries: ['/en/ai/quick-start'],
+        initialEntries: ['/en/ai/get-started/quickstart'],
       }),
     });
     const navigateSpy = vi.spyOn(router, 'navigate');
@@ -388,7 +388,7 @@ describe('DocsShell', () => {
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          to: '/zh-CN/ai/quick-start',
+          to: '/zh-CN/ai/get-started/quickstart',
         }),
       );
     });

@@ -1,0 +1,33 @@
+---
+title: AssemblyAI (Beta)
+---
+AssemblyAI provides advanced automatic speech recognition with high accuracy and support for multiple languages, designed for real-time conversational AI applications.
+
+### Sample configuration
+
+The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"asr": {
+  "vendor": "assemblyai",
+  "params": {
+    "api_key": "<assemblyai_api_key>",
+    "language": "en-US",
+    "uri": "wss://streaming.assemblyai.com/v3/ws"
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [AssemblyAI official documentation](https://www.assemblyai.com/docs/universal-streaming).
+
+### Key parameters
+
+   
+ The API key used for authentication. Get your API key from the [AssemblyAI Dashboard](https://www.assemblyai.com/dashboard/signup).
+ 
+   
+ The language code for speech recognition.
+ 
+   
+    The WebSocket URL for the AssemblyAI's streaming API. Specify this to target a particular region. For example, `wss://streaming.assemblyai.com/v3/ws`.

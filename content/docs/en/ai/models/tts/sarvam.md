@@ -1,0 +1,58 @@
+---
+title: Sarvam (Beta)
+---
+Sarvam provides fast, reliable text-to-speech (TTS) with support for Indian languages and customizable voices.
+
+### Sample configuration
+
+The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"tts": {
+  "vendor": "sarvam",
+  "params": {
+    "api_subscription_key": "",
+    "speaker": "anushka",
+    "target_language_code": "en-IN"
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Sarvam documentation](https://docs.sarvam.ai/api-reference-docs/text-to-speech/convert).
+
+### Key parameters
+
+    
+  The API key used for authentication. Get your API key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
+  
+    
+  The voice ID to use for speech generation. 
+  - Female voices: `anushka`, `manisha`, `vidya`, `arya`. 
+  - Male voices: `abhilash`, `karun`, `hitesh`.
+  
+    
+  The language code for speech synthesis. Supported values: 
+  - `en-IN` English (India)
+  - `hi-IN`: Hindi
+  - `bn-IN`: Bengali
+  - `ta-IN`: Tamil
+  - `te-IN`: Telugu
+  - `kn-IN`: Kannada
+  - `ml-IN`: Malayalam
+  - `mr-IN`: Marathi
+  - `gu-IN`: Gujarati
+  - `pa-IN`: Punjabi
+  - `or-IN`: Odia
+  
+    
+  The pitch adjustment for the voice. Positive values make the voice sharper; negative values make it deeper.
+  
+    
+  The speed of speech. `1.0` is the normal speed. Values less than `1.0` slow down the speech; values greater than `1.0` speed it up.
+  
+    
+  The volume level of the speech. Higher values increase the loudness.
+  
+    
+  The audio sample rate in Hz.

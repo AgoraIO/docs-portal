@@ -37,10 +37,10 @@ const nestedRootTree: Root = {
           $id: 'ai-folder',
           children: [
             {
-              $id: 'ai-page-quick-start',
-              name: 'Quick Start',
+              $id: 'ai-page-quickstart',
+              name: 'Quickstart',
               type: 'page',
-              url: '/en/ai/quick-start',
+              url: '/en/ai/get-started/quickstart',
             },
           ],
           index: {

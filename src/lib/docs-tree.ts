@@ -307,7 +307,10 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     pageTreeNodeToSidebarNodes(child),
   );
 
-  if (node.index) {
+  if (
+    node.index &&
+    !shouldHideFolderIndexInSidebar(node.index, node.name, node.children)
+  ) {
     children.unshift({
       id: node.index.url,
       title: getFolderIndexTitle(node.index, node.name),
@@ -371,6 +374,26 @@ export function getFirstTabPageUrl(root: Root, activeTab: string) {
   return item?.url ?? null;
 }
 
+export function getFirstChildPageUrl(
+  root: Root,
+  activeTab: string,
+  slugSegments: string[],
+) {
+  const tabNode = findTabNode(root, activeTab);
+
+  if (!tabNode || tabNode.type !== 'folder') {
+    return null;
+  }
+
+  const targetNode = findNodeBySlugSegments(tabNode, slugSegments);
+
+  if (!targetNode || targetNode.type !== 'folder') {
+    return null;
+  }
+
+  return getFirstDescendantPageUrl(targetNode);
+}
+
 function getTabIndex(node: Node): Item | undefined {
   if (node.type === 'page') {
     return node;
@@ -396,6 +419,54 @@ function findTabNode(root: Root, activeTab: string): Node | undefined {
 
     return getTabIdFromUrl(item.url) === activeTab;
   });
+}
+
+function findNodeBySlugSegments(node: Node, slugSegments: string[]): Node | undefined {
+  if (slugSegments.length === 0) {
+    return node;
+  }
+
+  if (node.type !== 'folder') {
+    return undefined;
+  }
+
+  const [segment, ...rest] = slugSegments;
+  const child = node.children.find((candidate) => {
+    if (candidate.type !== 'folder') {
+      return false;
+    }
+
+    const slug = candidate.index?.url.split('/').filter(Boolean).at(-1);
+    return slug === segment;
+  });
+
+  if (!child) {
+    return undefined;
+  }
+
+  return findNodeBySlugSegments(child, rest);
+}
+
+function getFirstDescendantPageUrl(node: Folder): string | null {
+  for (const child of node.children) {
+    if (child.type === 'page') {
+      return child.url;
+    }
+
+    if (child.type === 'folder') {
+      const directIndex = child.index?.url;
+      if (directIndex) {
+        return directIndex;
+      }
+
+      const nested = getFirstDescendantPageUrl(child);
+      if (nested) {
+        return nested;
+      }
+    }
+  }
+
+  return null;
 }
 
 function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
@@ -576,4 +647,23 @@ function getFolderIndexTitle(index: Item, folderName: ReactNode) {
   }
 
   return index.url.includes('/zh-CN/') ? '总览' : 'Overview';
+}
+
+function shouldHideFolderIndexInSidebar(
+  index: Item,
+  folderName: ReactNode,
+  children: Node[],
+) {
+  const title = normalizeLabel(index.name, index.url);
+  const normalizedFolderName = normalizeLabel(folderName, title);
+  const normalizedIndexTitle =
+    title === normalizedFolderName
+      ? index.url.includes('/zh-CN/')
+        ? '总览'
+        : 'Overview'
+      : title;
+
+  const hasRealChildPages = children.some((child) => child.type !== 'separator');
+
+  return hasRealChildPages && normalizedIndexTitle === normalizedFolderName;
 }

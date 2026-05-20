@@ -9,9 +9,9 @@ Online KTV combines realtime audio interaction, room coordination, music-content
 
 ## Product paths
 
-- [Scenario API](/en/realtime-media/online-ktv/scenario-api)
-- [PaaS SDK](/en/realtime-media/online-ktv/paas-sdk)
-- [UIKit Open Source](/en/realtime-media/online-ktv/uikit)
+- [Scenario API](scenario-api.md)
+- [PaaS SDK](paas-sdk.md)
+- [UIKit Open Source](uikit.md)
 
 ## Recommended reading path
 

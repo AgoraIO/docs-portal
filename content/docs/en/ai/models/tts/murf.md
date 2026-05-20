@@ -1,0 +1,50 @@
+---
+title: Murf (Beta)
+---
+Murf provides enterprise-grade AI voice generation with text-to-speech (TTS) models.
+
+### Sample configuration
+
+The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+```json
+"tts": {
+  "vendor": "murf",
+  "params": {
+    "api_key": "<murf_api_key>",
+    "base_url": "wss://global.api.murf.ai/v1/speech/stream-input",
+    "voiceId": "Matthew",
+    "locale": "en-US",
+    "rate": 0,
+    "pitch": 0,
+    "model": "FALCON",
+    "sample_rate": 24000
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Murf documentation](https://murf.ai/api/docs/api-reference/text-to-speech/stream-input).
+
+  
+    The Murf API key used to authenticate requests. You must provide a valid key for the service to function.
+  
+  
+    The WebSocket endpoint for streaming TTS output. For example, `wss://global.api.murf.ai/v1/speech/stream-input`.
+  
+  
+    The voice identifier to use. For example, `Matthew`.
+  
+  
+    The locale for the selected voice. For example, `en-US`.
+  
+  
+    The speech rate adjustment. A value of `0` applies the default rate.
+  
+  
+    The pitch adjustment. A value of `0` applies the default pitch.
+  
+  
+    The TTS model to use. For example, `FALCON`.
+  
+  
+    The audio sample rate in Hz. For example, `24000`.

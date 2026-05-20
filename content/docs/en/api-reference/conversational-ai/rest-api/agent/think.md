@@ -1,0 +1,155 @@
+---
+title: Send a custom instruction
+description: Send a custom text instruction to the specified conversational AI agent.
+---
+Use this endpoint to send a custom text instruction to the specified conversational AI agent instance. The instruction is injected into the current conversation pipeline as user input, and the agent processes and responds to it following the standard user input logic.
+
+Use this endpoint for the following scenarios:
+
+- **Implicit instruction injection**: Inject hidden context or directives into the conversation.
+- **Client-side event triggering**: Notify the agent of client-side events, such as a user clicking a button.
+- **Voice and text collaboration**: Combine text instructions with voice input for richer interaction.
+
+## Request
+
+### Path parameters
+
+  The App ID of the project.
+
+  The agent instance ID you obtained after successfully calling `join` to [Start a conversational AI agent](join.md).
+
+### Request body
+
+<div className="api-mime-type">APPLICATION/JSON</div>
+
+  
+    The custom instruction text to inject into the current conversation pipeline. The system processes this as user input.
+  
+
+    The action to take when the agent is in a listening state:
+    - `inject`: Inject the custom text instruction into the current turn without interrupting it.
+    - `ignore`: Ignore the request.
+  
+
+  
+    The action to take when the agent is in a thinking state:
+    - `interrupt`: Interrupt the current state and start a new conversation turn.
+    - `ignore`: Ignore the request.
+  
+
+  
+    The action to take when the agent is in a speaking state:
+    - `interrupt`: Interrupt the current state and start a new conversation turn.
+    - `ignore`: Ignore the request.
+  
+
+  
+    Whether user speech can interrupt the injected instruction:
+    - `true`: User speech can interrupt the instruction.
+    - `false`: User speech cannot interrupt the instruction.
+  
+
+  
+    Custom metadata in key-value pair format. Use this field to pass additional business information such as identifiers or model references.
+  
+
+## Response
+
+- If the returned status code is `200`, the request was successful. The response body contains the result of the request.
+
+  
+    
+      Unique identifier of the agent instance.
+    
+    
+      The name of the RTC channel where the agent is located.
+    
+    
+      Timestamp indicating when the agent was created.
+    
+  
+
+- If the returned status code is not `200`, the request failed. The response body includes the `detail` and `reason` for failure. Refer to [status codes](../status-codes.md#response-status-codes) to understand the possible reasons for failure.
+
+This endpoint requires [authentication](../authentication.md).
+
+### curl
+
+```bash
+  curl --request POST \
+    --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/think \
+    --header 'Authorization: Basic <credentials>' \
+    --header 'Content-Type: application/json' \
+    --data '{
+      "text": "The user just clicked the purchase button.",
+      "on_listening_action": "inject",
+      "on_thinking_action": "interrupt",
+      "on_speaking_action": "ignore",
+      "interruptable": true,
+      "metadata": {
+        "publisher": "user123",
+        "model": "deepseek-r1"
+      }
+    }'
+```
+
+### Python
+
+```python
+  import requests
+
+  url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/think"
+  headers = {
+      "Authorization": "Basic <credentials>",
+      "Content-Type": "application/json"
+  }
+  payload = {
+      "text": "The user just clicked the purchase button.",
+      "on_listening_action": "inject",
+      "on_thinking_action": "interrupt",
+      "on_speaking_action": "ignore",
+      "interruptable": True,
+      "metadata": {
+          "publisher": "user123",
+          "model": "deepseek-r1"
+      }
+  }
+
+  response = requests.post(url, json=payload, headers=headers)
+  print(response.text)
+```
+
+### Node.js
+
+```js
+const axios = require("axios");
+
+const url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/think";
+const headers = {
+    Authorization: "Basic <credentials>",
+    "Content-Type": "application/json"
+};
+const payload = {
+    text: "The user just clicked the purchase button.",
+    on_listening_action: "inject",
+    on_thinking_action: "interrupt",
+    on_speaking_action: "ignore",
+    interruptable: true,
+    metadata: {
+        publisher: "user123",
+        model: "deepseek-r1"
+    }
+};
+
+axios.post(url, payload, { headers })
+  .then(response => console.log(response.data))
+  .catch(error => console.error(error.response ? error.response.data : error.message));
+```
+
+```json
+{
+  "agent_id": "1NT29XxxxxxxxxELWEHC8OS",
+  "channel": "test_channel",
+  "start_ts": 1744877089
+}
+```

@@ -7,10 +7,10 @@ description: Operational guidance, governance, reliability, and production-readi
 
 Use this tab for guidance that improves production quality rather than introducing a product for the first time.
 
-- [Security compliance](/en/introduction/security-compliance)
-- [Realtime & Media governance](/en/best-practices/governance)
-- [Audio settings](/en/best-practices/audio-settings)
-- [Latency optimization](/en/best-practices/opt-latency)
-- [Geofencing](/en/best-practices/geofencing)
-- [HTTP basic auth](/en/best-practices/http-basic-auth)
-- [Release notes](/en/best-practices/release-notes)
+- [Security compliance](../introduction/security-compliance.md)
+- [Realtime & Media governance](governance.md)
+- [Audio settings](audio-settings.md)
+- [Latency optimization](opt-latency.md)
+- [Geofencing](geofencing.md)
+- [HTTP basic auth](http-basic-auth.md)
+- [Release notes](release-notes.md)

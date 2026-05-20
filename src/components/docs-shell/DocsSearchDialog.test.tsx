@@ -27,7 +27,7 @@ describe('DocsSearchDialog', () => {
               {
                 description: 'Start here',
                 title: 'Quick Start',
-                url: '/en/ai/quick-start',
+                url: '/en/ai/get-started/quickstart',
               },
             ]}
             tabs={[
@@ -45,7 +45,7 @@ describe('DocsSearchDialog', () => {
               {
                 description: 'Start here',
                 title: 'Quick Start',
-                url: '/en/ai/quick-start',
+                url: '/en/ai/get-started/quickstart',
               },
             ]}
             tabs={[
@@ -98,7 +98,7 @@ describe('DocsSearchDialog', () => {
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          to: '/en/ai/quick-start',
+          to: '/en/ai/get-started/quickstart',
         }),
       );
     });
@@ -119,7 +119,7 @@ describe('DocsSearchDialog', () => {
               {
                 description: 'Start here',
                 title: 'Quick Start',
-                url: '/en/ai/quick-start',
+                url: '/en/ai/get-started/quickstart',
               },
             ]}
             tabs={[
@@ -157,7 +157,7 @@ describe('DocsSearchDialog', () => {
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          to: '/en/ai/quick-start',
+          to: '/en/ai/get-started/quickstart',
         }),
       );
     });

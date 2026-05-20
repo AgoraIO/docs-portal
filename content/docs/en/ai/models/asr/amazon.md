@@ -1,0 +1,45 @@
+---
+title: Amazon Transcribe (Beta)
+---
+Amazon provides advanced automatic speech recognition with high accuracy and support for multiple languages, designed for real-time conversational AI applications.
+
+### Sample configuration
+
+The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"asr": {
+    "vendor": "amazon",
+    "params": {
+        "region": "",
+        "access_key_id": "",
+        "secret_access_key": "",
+        "language_code": "en-US",
+        "media_sample_rate_hz": 16000,
+        "media_encoding": "pcm"
+    }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Amazon official documentation](https://docs.aws.amazon.com/transcribe/latest/dg/streaming.html).
+
+### Key parameters
+
+    
+  The AWS region where the Transcribe service is hosted, for example, `us-east-1`, `us-west-2`, or `eu-west-1`. See [AWS regions](https://docs.aws.amazon.com/general/latest/gr/transcribe.html) for available regions.
+  
+    
+  The AWS access key ID used for authentication. Get your access key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+  
+    
+  The AWS secret access key used for authentication. Get your secret key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+  
+    
+  The language code for speech recognition, for example, `en-US`, `es-US`, or `fr-FR`. See [supported languages](https://docs.aws.amazon.com/transcribe/latest/dg/supported-languages.html) for available language codes.
+  
+    
+  The sample rate in Hertz for the audio input, for example, `16000` or `8000`. 
+  
+    
+  The encoding format of the audio input, for example, `pcm`, `opus`, or `flac`.

@@ -1,0 +1,474 @@
+---
+title: Optimize audio
+description: Configure audio settings for a better AI-human conversation experience.
+---
+In real-time audio interactions, the rhythm, continuity, and intonation of conversations between humans and AI often differ from those between humans. To improve the AI–human conversation experience, it's important to optimize audio settings.
+
+When using the Android, iOS, or Web RTC SDK with the Conversational AI Engine, follow the best practices in this guide to improve conversation fluency and reliability, especially in complex network environments.
+
+## Server configuration
+
+When calling the server API to create a conversational AI agent, use the default values for audio-related parameters to ensure the best audio experience.
+
+## Client configuration
+
+To configure the client app, implement the following:
+
+### Integrate the required dynamic libraries
+
+For the best Conversational AI Engine audio experience, integrate and load the following dynamic libraries in your project:
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- AI noise suppression plugin: `libagora_ai_noise_suppression_extension.so`
+- AI echo cancellation plug-in: `libagora_ai_echo_cancellation_extension.so`
+
+For integration details, refer to [App size optimization](https://doc.shengwang.cn/voice-calling/best-practices/app-size-optimization?platform=android).
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- AI noise suppression plugin: `AgoraAiNoiseSuppressionExtension.xcframework`
+- AI echo cancellation plug-in: `AgoraAiEchoCancellationExtension.xcframework`
+
+For integration details, refer to [App size optimization](https://doc.shengwang.cn/voice-calling/best-practices/app-size-optimization?platform=ios).
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- Integrate the `agora-extension-ai-denoiser` extension. Refer to [AI Noise Suppression](https://doc.shengwang.cn/extensions-marketplace/develop/integrate/ains?platform=web).
+
+> **Info**
+> Optimizing audio uses AI Noise Suppression, which is a paid feature.
+
+## Optimize audio for optimal performance
+
+You can optimize audio settings in the following ways:
+
+* **(Recommended) Use the Toolkit APIs**
+
+    Supported in Video/Voice SDK version 4.5.1 and above.
+
+* **Use the Video/Voice SDK APIs directly**
+
+    Supported in SDK version 4.3.1 and above.
+
+</TabsContent>
+</Tabs>
+### Use the toolkit APIs
+
+In this solution, you use the toolkit APIs to optimize audio settings.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+1. **Integrate the toolkit**
+
+   Copy the [`convoaiApi`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi) folder to your project and import the toolkit before calling the toolkit API.
+
+2. **Create a toolkit instance**
+
+   ```kotlin
+   val config = ConversationalAIAPIConfig(
+       rtcEngine = rtcEngineInstance,
+       rtmClient = rtmClientInstance,
+       enableLog = true
+   )
+
+   val api = ConversationalAIAPIImpl(config)
+   ```
+
+3. **Set optimal audio settings**
+
+   Before joining the RTC channel, call `loadAudioSettings()` to apply the optimal audio parameters.
+
+   ```kotlin
+   api.loadAudioSettings()
+   rtcEngine.joinChannel(token, channelName, null, userId)
+   ```
+
+4. **Release resources**
+
+   ```kotlin
+   api.destroy()
+   ```
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+1. **Integrate the toolkit**
+
+   Copy the [`ConversationalAIAPI`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI) folder to your project and import the toolkit before calling the toolkit APIs.
+
+2. **Create a toolkit instance**
+
+   ```swift
+   let config = ConversationalAIAPIConfig(
+       rtcEngine: rtcEngine,
+       rtmEngine: rtmEngine,
+       enableLog: true
+   )
+
+   convoAIAPI = ConversationalAIAPIImpl(config: config)
+   ```
+
+3. **Set optimal audio settings**
+
+   Before joining the RTC channel, call `loadAudioSettings()` to apply the optimal audio parameters.
+
+   ```swift
+   convoAIAPI.loadAudioSettings()
+   rtcEngine.joinChannel(rtcToken: token, channelName: channelName, uid: uid, isIndependent: independent)
+   ```
+
+4. **Release resources**
+
+   ```swift
+   convoAIAPI.destroy()
+   ```
+
+</TabsContent>
+
+<TabsContent value="web">
+
+For Web, the source shared content does not provide a complete toolkit-based optimization workflow equivalent to Android and iOS. Use the Web guidance in the SDK-based section below and combine it with the required AI denoiser extension setup.
+
+</TabsContent>
+</Tabs>
+### Use the SDK APIs
+
+In this solution, you use the Voice/Video SDK to optimize audio settings.
+
+#### Set audio parameters
+
+The settings in this section apply to Video/Voice SDK versions 4.3.1 and above. If you are using an earlier version, upgrade to version 4.5.1 or above or [Contact Technical Support](mailto:support@agora.io).
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+For the best conversational AI audio experience, apply the following settings:
+
+1. **Set the audio scenario**: When initializing the engine, set the audio scenario to the AI client scenario. You can also set the scenario before joining a channel by calling the `setAudioScenario` method.
+
+2. **Configure audio parameters**: Call `setParameters` before joining a channel and whenever the `onAudioRouteChanged` callback is triggered. This configuration sets audio 3A plug-ins (acoustic echo cancellation, noise suppression, and automatic gain control), the audio sampling rate, the audio processing mode, and other settings. For recommended parameter values, refer to the sample code.
+
+> **Info**
+> Since Video/Voice SDK versions 4.3.1 to 4.5.0 do not support the AI client audio scenario, set the scenario to `AUDIO_SCENARIO_CHORUS` to improve the audio experience. However, the audio experience cannot be aligned with versions 4.5.1 and above. To get the best audio experience, upgrade the SDK to version 4.5.1 or higher.
+
+The following sample code defines a `setAudioConfigParameters` function to configure audio parameters. Call this function before joining a channel and whenever the audio route changes.
+
+```kotlin
+private var rtcEngine: RtcEngineEx? = null
+private var mAudioRouting = Constants.AUDIO_ROUTE_DEFAULT
+
+// highlight-start
+// Set audio configuration parameters
+private fun setAudioConfigParameters(routing: Int) {
+    mAudioRouting = routing
+    rtcEngine?.apply {
+        setParameters("{\"che.audio.aec.split_srate_for_48k\":16000}")
+        setParameters("{\"che.audio.sf.enabled\":true}")
+        setParameters("{\"che.audio.sf.stftType\":6}")
+        setParameters("{\"che.audio.sf.ainlpLowLatencyFlag\":1}")
+        setParameters("{\"che.audio.sf.ainsLowLatencyFlag\":1}")
+        setParameters("{\"che.audio.sf.procChainMode\":1}")
+        setParameters("{\"che.audio.sf.nlpDynamicMode\":1}")
+
+        if (routing == Constants.AUDIO_ROUTE_HEADSET // 0
+            || routing == Constants.AUDIO_ROUTE_EARPIECE // 1
+            || routing == Constants.AUDIO_ROUTE_HEADSETNOMIC // 2
+            || routing == Constants.AUDIO_ROUTE_BLUETOOTH_DEVICE_HFP // 5
+            || routing == Constants.AUDIO_ROUTE_BLUETOOTH_DEVICE_A2DP) { // 10
+            setParameters("{\"che.audio.sf.nlpAlgRoute\":0}")
+        } else {
+            setParameters("{\"che.audio.sf.nlpAlgRoute\":1}")
+        }
+        
+        setParameters("{\"che.audio.sf.ainlpModelPref\":10}")
+        setParameters("{\"che.audio.sf.nsngAlgRoute\":12}")
+        setParameters("{\"che.audio.sf.ainsModelPref\":10}")
+        setParameters("{\"che.audio.sf.nsngPredefAgg\":11}")
+        setParameters("{\"che.audio.agc.enable\":false}")
+    }
+}
+// highlight-end
+
+// Create and initialize the RTC engine
+fun createRtcEngine(rtcCallback: IRtcEngineEventHandler): RtcEngineEx {
+    val config = RtcEngineConfig()
+    config.mContext = AgentApp.instance()
+    config.mAppId = ServerConfig.rtcAppId
+    config.mChannelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
+    // highlight-start
+    // Set the audio scene to AI dialogue scene (supported by 4.5.1 and above)
+    // Version 4.3.1 ~ 4.5.0 is set to chorus scene AUDIO_SCENARIO_CHORUS
+    config.mAudioScenario = Constants.AUDIO_SCENARIO_AI_CLIENT
+    // Register audio route change callback
+    config.mEventHandler = object : IRtcEngineEventHandler() {
+        override fun onAudioRouteChanged(routing: Int) {
+            super.onAudioRouteChanged(routing)
+            // Set audio related parameters
+            setAudioConfigParameters(routing)
+        }
+    }
+    // highlight-end
+    try {
+        rtcEngine = (RtcEngine.create(config) as RtcEngineEx).apply {
+            // highlight-start
+            // Load the audio plugin
+            loadExtensionProvider("ai_echo_cancellation_extension")
+            loadExtensionProvider("ai_noise_suppression_extension")
+            // highlight-end
+        }
+    } catch (e: Exception) {
+        Log.e("CovAgoraManager", "createRtcEngine error: $e")
+    }
+    return rtcEngine!!
+}
+
+// Join the channel
+fun joinChannel(rtcToken: String, channelName: String, uid: Int, isIndependent: Boolean = false) {
+
+    // highlight-start
+    // Initialize audio configuration parameters
+    setAudioConfigParameters(mAudioRouting)
+    // highlight-end
+
+    // Configure channel options and join the channel
+    val options = ChannelMediaOptions()
+    options.clientRoleType = CLIENT_ROLE_BROADCASTER
+    options.publishMicrophoneTrack = true
+    options.publishCameraTrack = false
+    options.autoSubscribeAudio = true
+    options.autoSubscribeVideo = false       
+    val ret = rtcEngine?.joinChannel(rtcToken, channelName, uid, options)
+}
+```
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+For the best conversational AI audio experience, apply the following settings:
+
+1. **Set the audio scenario**: When initializing the engine, set the audio scenario to the AI client scenario. You can also set the scenario before joining a channel by calling the `setAudioScenario` method.
+
+2. **Configure audio parameters**: Call `setParameters` before joining a channel and whenever the `rtcEngine:didAudioRouteChanged:` callback is triggered. This configuration sets audio 3A plug-ins (acoustic echo cancellation, noise suppression, and automatic gain control), the audio sampling rate, the audio processing mode, and other settings. For recommended parameter values, refer to the sample code.
+
+> **Info**
+> Since Video/Voice SDK versions 4.3.1 to 4.5.0 do not support the AI client audio scenario, set the scenario to `AgoraAudioScenarioChorus` to improve the audio experience. However, the audio experience cannot be aligned with versions 4.5.1 and above. To get the best audio experience, upgrade the SDK to version 4.5.1 or higher.
+
+The following sample code defines a `setAudioConfigParameters` function to configure audio parameters. Call this function before joining a channel and whenever the audio route changes.
+
+```swift
+class RTCManager: NSObject {
+    private var rtcEngine: AgoraRtcEngineKit!
+    private var audioDumpEnabled: Bool = false
+    private var audioRouting = AgoraAudioOutputRouting.default
+    
+    // highlight-start
+    // Set audio related parameters
+    private func setAudioConfigParameters(routing: AgoraAudioOutputRouting) {
+        audioRouting = routing
+        rtcEngine.setParameters("{\"che.audio.aec.split_srate_for_48k\":16000}")
+        rtcEngine.setParameters("{\"che.audio.sf.enabled\":true}")
+        rtcEngine.setParameters("{\"che.audio.sf.stftType\":6}")
+        rtcEngine.setParameters("{\"che.audio.sf.ainlpLowLatencyFlag\":1}")
+        rtcEngine.setParameters("{\"che.audio.sf.ainsLowLatencyFlag\":1}")
+        rtcEngine.setParameters("{\"che.audio.sf.procChainMode\":1}")
+        rtcEngine.setParameters("{\"che.audio.sf.nlpDynamicMode\":1}")
+        if routing == .headset ||
+            routing == .earpiece ||
+            routing == .headsetNoMic ||
+            routing == .bluetoothDeviceHfp ||
+            routing == .bluetoothDeviceA2dp {
+            rtcEngine.setParameters("{\"che.audio.sf.nlpAlgRoute\":0}")
+        } else {
+            rtcEngine.setParameters("{\"che.audio.sf.nlpAlgRoute\":1}")
+        }
+        rtcEngine.setParameters("{\"che.audio.sf.ainlpModelPref\":10}")
+        rtcEngine.setParameters("{\"che.audio.sf.nsngAlgRoute\":12}")
+        rtcEngine.setParameters("{\"che.audio.sf.ainsModelPref\":10}")
+        rtcEngine.setParameters("{\"che.audio.sf.nsngPredefAgg\":11}")
+        rtcEngine.setParameters("{\"che.audio.agc.enable\":false}")
+    }
+    // highlight-end
+}
+
+extension RTCManager: RTCManagerProtocol {
+    
+    func createRtcEngine(delegate: AgoraRtcEngineDelegate) -> AgoraRtcEngineKit {
+        let config = AgoraRtcEngineConfig()
+        config.appId = AppContext.shared.appId
+        config.channelProfile = .liveBroadcasting
+        // highlight-start
+        // Set the audio scene to AI dialogue scene (supported by 4.5.1 and above)
+        // Versions 4.3.1 ~ 4.5.0 support chorus scenes .chorus
+        config.audioScenario = .aiClient
+        rtcEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: delegate)
+        // Register audio route change callback
+        rtcEngine.addDelegate(self)
+        // highlight-end
+        return rtcEngine
+    }
+    
+    func joinChannel(rtcToken: String, channelName: String, uid: String) {
+        
+        // highlight-start
+        // Initialize audio configuration parameters
+        setAudioConfigParameters(routing: audioRouting)
+        // highlight-end
+
+        // Configure channel options and join the channel
+        let options = AgoraRtcChannelMediaOptions()
+        options.clientRoleType = .broadcaster
+        options.publishMicrophoneTrack = true
+        options.publishCameraTrack = false
+        options.autoSubscribeAudio = true
+        options.autoSubscribeVideo = false
+        let ret = rtcEngine.joinChannel(byToken: rtcToken, channelId: channelName, uid: UInt(uid) ?? 0, mediaOptions: options)           
+    }
+}
+
+// highlight-start
+// Implement the AgoraRtcEngineDelegate interface to handle audio route change callbacks
+extension RTCManager: AgoraRtcEngineDelegate {
+    public func rtcEngine(_ engine: AgoraRtcEngineKit, didAudioRouteChanged routing: AgoraAudioOutputRouting) {
+        setAudioConfigParameters(routing: routing)
+    }
+}
+// highlight-end
+```
+
+</TabsContent>
+
+<TabsContent value="web">
+
+Integrate the `agora-extension-ai-denoiser` extension. Refer to [AI Noise Suppression](https://doc.shengwang.cn/extensions-marketplace/develop/integrate/ains?platform=web).
+
+> **Info**
+> Use Web SDK version 4.15.0 or later.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+</TabsContent>
+</Tabs>
+### Sample project
+
+Refer to the following open-source sample code to set audio-related parameters.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- [`CovRtcManager.kt`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/blob/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/rtc/CovRtcManager.kt)
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- [`RTCManager.swift`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/blob/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/Manager/RTCManager.swift)
+
+</TabsContent>
+</Tabs>
+### Folder structure
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- `IConversationalAIAPI.kt`: API interface and related data structures and enumerations
+- `ConversationalAIAPIImpl.kt`: ConversationalAI API main implementation logic
+- `ConversationalAIUtils.kt`: Tool functions and event callback management
+- `subRender/`
+    - `v3/`: Transcript module
+        - `TranscriptionController.kt`: Transcript Controller
+        - `MessageParser.kt`: Message Parser
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- `ConversationalAIAPI.swift`: API interface and related data structures and enumerations
+- `ConversationalAIAPIImpl.swift`: ConversationalAI API main implementation logic
+- `Transcription/`
+    - `TranscriptionController.swift`: Transcript Controller
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- `index.ts`: API Class
+- `type.ts`: API interface and related data structures and enumerations
+- `utils/`
+    - `index.ts`: API utility functions
+    - `events.ts`: Event management class, which can be extended to easily implement event monitoring and broadcasting
+    - `sub-render.ts`: Transcript module
+
+</TabsContent>
+</Tabs>
+### API reference
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- SDK
+    - `setAudioScenario`
+    - `setParameters`
+    - `onAudioRouteChanged`
+- Toolkit
+    - [`loadAudioSettings`](../../api-reference/conversational-ai/client-toolkit/android.md#loadaudiosettings)
+    - [`destroy`](../../api-reference/conversational-ai/client-toolkit/android.md#destroy)
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- SDK
+    - `setAudioScenario`
+    - `setParameters`
+    - `rtcEngine:didAudioRouteChanged:`
+- Toolkit
+    - [`loadAudioSettings`](../../api-reference/conversational-ai/client-toolkit/ios.md#loadaudiosettings12)
+    - [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios.md#destroy)
+
+</TabsContent>
+</Tabs>

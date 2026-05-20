@@ -58,6 +58,10 @@ export const docs = defineDocs({
         external: false,
         useImport: false,
       },
+      remarkCodeTabOptions: {
+        Tabs: 'Tabs',
+        parseMdx: true,
+      },
       remarkPlugins: (plugins) => [
         remarkDirective,
         [

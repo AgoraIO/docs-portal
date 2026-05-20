@@ -18,8 +18,8 @@ Realtime audio and video provide the low-latency session layer behind calling, l
 
 This repo is currently centered on ConvoAI RESTful docs, so many AI-focused pages assume that the underlying RTC session, device permissions, and channel access are already working.
 
-- [Open the Conversational AI quickstart](/en/ai/quick-start)
-- [Open audio modality guidance](/en/realtime-media/speech-to-text/audio-modality)
+- [Open the Conversational AI quickstart](../ai/get-started/quickstart.md)
+- [Open audio modality guidance](../realtime-media/speech-to-text/audio-modality.md)
 
 ## Typical integration sequence
 

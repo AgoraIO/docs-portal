@@ -9,12 +9,12 @@ Start here if you are building a voice assistant, support agent, companion exper
 
 ## Docs already available in this repo
 
-- [Open the Conversational AI Engine introduction](/en/ai)
-- [Open the quickstart](/en/ai/quick-start)
-- [Open custom LLM guidance](/en/ai/custom-llm)
-- [Open short-term memory guidance](/en/ai/short-term-memory)
-- [Open multimodal messaging guidance](/en/ai/send-multimodal-message)
-- [Open agent event guidance](/en/ai/listen-agent-events)
+- [Open the Conversational AI Engine introduction](../ai/index.md)
+- [Open the quickstart](../ai/get-started/quickstart.md)
+- [Open custom LLM guidance](../ai/build/custom-llm.md)
+- [Open short-term memory guidance](../ai/build/short-term-memory.md)
+- [Open multimodal messaging guidance](../ai/build/send-multimodal-messages.md)
+- [Open agent event guidance](../ai/build/event-notifications.md)
 
 ## Core capability areas
 
@@ -26,13 +26,13 @@ First define the realtime session model, LLM integration shape, TTS strategy, an
 
 If the agent needs room state, temporary user attributes, or business metadata, plan RTM, webhooks, and custom data as part of the same design.
 
-- [Open custom data guidance](/en/ai/custom-data)
-- [Open webhook events](/en/api-reference/ncs-events)
+- [Open custom data guidance](../ai/build/custom-information.md)
+- [Open webhook events](../ai/build/event-types.md)
 
 ### What to add before production
 
 After the first conversation loop works, most teams still need to complete auth, billing, release planning, and troubleshooting paths.
 
-- [Open service enablement](/en/ai/enable-service)
-- [Open billing](/en/ai/billing)
-- [Open release notes](/en/best-practices/release-notes)
+- [Open service enablement](../ai/reference/enable-conversational-ai.md)
+- [Open pricing](../ai/overview/pricing.md)
+- [Open release notes](../best-practices/release-notes.md)

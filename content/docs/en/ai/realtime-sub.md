@@ -24,27 +24,38 @@ description: 与对话式智能体进行实时互动时，你可能需要实时�
 
 以下为使用组件实现实时字幕功能的工作流程图：
 
-![image](https://doc.shengwang.cn/img/convoai/realtime-sub.svg)
+![image](/images/conversational-ai/convo-ai-notifications.svg)
 
 ## 前提条件
 
 开始前，请确保完成以下准备工作：
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 - 已集成 RTC v4.5.1 及以上版本 SDK，且在 App 中实现了基本的实时音视频功能、获取了相关设备的使用权限。请参考[实现音视频互动](https://doc.shengwang.cn/doc/rtc/android/get-started/quick-start)。
     - 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现了基本的实时消息功能。请参考[实现收发消息](https://doc.shengwang.cn/doc/rtm2/javascript/get-started/quick-start)。
     - 已参考[实现对话式智能体](../get-started/quick-start.md)实现与智能体对话的基本逻辑。
     - 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 - 已集成 RTC v4.5.1 及以上版本 SDK，且在 App 中实现了基本的实时音视频功能、获取了相关设备的使用权限。请参考[实现音视频互动](https://doc.shengwang.cn/doc/rtc/ios/get-started/quick-start)。
     - 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现了基本的实时消息功能。请参考[实现收发消息](https://doc.shengwang.cn/doc/rtm2/javascript/get-started/quick-start)。
     - 已参考[实现对话式智能体](../get-started/quick-start.md)实现与智能体对话的基本逻辑。
     - 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 - 已集成 v4.24.0 及以上版本的 RTC Web SDK，并参考[实现音视频互动](https://doc.shengwang.cn/doc/rtc/javascript/get-started/quick-start)在 App 中实现了基本的实时音视频功能、获取了相关设备的使用权限。
     - 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现了基本的实时消息功能。请参考[实现收发消息](https://doc.shengwang.cn/doc/rtm2/javascript/get-started/quick-start)。
@@ -53,31 +64,53 @@ description: 与对话式智能体进行实时互动时，你可能需要实时�
 
 ## 实现方法
 
+</TabsContent>
+</Tabs>
 ### 集成组件
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
 
 - [convoaiApi](https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi)
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
 
 - [ConversationalAIAPI](https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI)
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 将 `conversational-ai-api` 文件拷贝到你自己的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
 
 - [conversational-ai-api](https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api)
 
+</TabsContent>
+</Tabs>
 ### 初始化组件
 
 为 RTC 和 RTM 实例创建配置对象，并设置转录字幕渲染模式，之后创建组件实例：
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 ```kotlin
 // 为 RTC 和 RTM 实例创建配置对象
@@ -96,7 +129,9 @@ val config = ConversationalAIAPIConfig(
 val api = ConversationalAIAPIImpl(config)
 ```
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 ```swift
 /// 为 RTC 和 RTM 实例创建配置对象
@@ -115,7 +150,9 @@ let config = ConversationalAIAPIConfig(
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 ```
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 ```typescript
 // 初始化组件
@@ -145,34 +182,56 @@ AgoraRTC.setParameter("ENABLE_AUDIO_PTS_METADATA", true);
 const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 ```
 
+</TabsContent>
+</Tabs>
 ### 注册字幕回调
 
 调用 `addHandler` 方法，注册并实现字幕转录回调：
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 ```kotlin
 api.addHandler(covEventHandler)
 ```
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 ```swift
 convoAIAPI.addHandler(handler: self)
 ```
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 ```typescript
 // 监听转录内容更新，用于实时显示字幕转录内容
 conversationalAIAPI.on(EConversationalAIAPIEvents.TRANSCRIPT_UPDATED, onTextChanged)
 ```
 
+</TabsContent>
+</Tabs>
 ### 实现字幕数据回调接口
 
 你需要自行实现字幕处理逻辑，根据转录内容更新 UI 显示。
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 将你实现的字幕 UI 模块继承自 `IConversationalAIAPIEventHandler` 接口, 并实现 `onTranscriptUpdated` 方法, 在该方法内处理字幕渲染至 UI 的逻辑。
 
@@ -184,7 +243,9 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.TRANSCRIPT_UPDATED, onTextChan
 }
 ```
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 将你实现的字幕 UI 模块实现 `ConversationalAIAPIEventHandler` 协议, 并实现 `onTranscriptUpdated` 方法, 在该方法内处理字幕渲染至 UI 的逻辑：
 
@@ -196,7 +257,9 @@ extension ChatViewController: ConversationalAIAPIEventHandler {
 }
 ```
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 将你实现的字幕 UI 模块接收客户端组件的字幕数据回调，并实现一个简单的 React JS 组件来展示这些消息:
 
@@ -238,11 +301,20 @@ export const ChatHistory = () => {
 }
 ```
 
+</TabsContent>
+</Tabs>
 ### 订阅频道消息
 
 字幕转录内容通过 RTM 频道消息传递，你需要在开始智能体会话前订阅频道消息，以接收字幕数据。
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 在开始智能体会话前调用 `subscribeMessage` 订阅频道消息：
 
@@ -254,7 +326,9 @@ api.subscribeMessage("channelName") { error ->
 }
 ```
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 在开始智能体会话前调用 `subscribeMessage` 订阅频道消息：
 
@@ -268,12 +342,16 @@ convoAIAPI.subscribeMessage(channelName: channelName) { error in
 }
 ```
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 ```typescript
 conversationalAIAPI.subscribeMessage(channel_name)
 ```
 
+</TabsContent>
+</Tabs>
 ### 智能体加入频道
 
 调用 [POST 创建对话式智能体](../operations/start-agent.md)接口，并完成以下参数设置：
@@ -288,7 +366,14 @@ conversationalAIAPI.subscribeMessage(channel_name)
 
 每次智能体会话结束后，你需要取消订阅频道消息，以释放字幕相关资源。
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 ```kotlin
 api.unsubscribeMessage("channelName") { error ->
@@ -298,7 +383,9 @@ api.unsubscribeMessage("channelName") { error ->
 }
 ```
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 ```swift
 /// 取消订阅频道消息
@@ -311,29 +398,44 @@ convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
 }
 ```
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 ```typescript
 conversationalAIAPI.unsubscribeMessage(channel_name)
 ```
 
+</TabsContent>
+</Tabs>
 ### 销毁组件实例
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 ```kotlin
 api.destroy()
 ```
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 ```swift
 convoAIAPI.destroy()
 ```
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 ```typescript
 conversationalAIAPI.destroy()
@@ -341,6 +443,8 @@ conversationalAIAPI.destroy()
 
 ## 参考信息
 
+</TabsContent>
+</Tabs>
 ### 示例项目
 
 声网提供了开源的实时字幕示例项目供你参考，你可以前往下载或查看其中的源代码。
@@ -354,7 +458,14 @@ conversationalAIAPI.destroy()
 > 信息
 > 以下文件和文件夹即为集成客户端组件所需全部内容，无需拷贝其他文件。
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 - `IConversationalAIAPI.kt` — API 接口及相关数据结构和枚举
     - `ConversationalAIAPIImpl.kt` — ConversationalAI API 主要实现逻辑
@@ -364,14 +475,18 @@ conversationalAIAPI.destroy()
             - `TranscriptionController.kt` — 字幕控制器
             - `MessageParser.kt` — 消息解析器
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 - `ConversationalAIAPI.swift` — API 接口及相关数据结构和枚举
     - `ConversationalAIAPIImpl.swift` — ConversationalAI API 主要实现逻辑
     - `Transcription/`
         - `TranscriptionController.swift` — 字幕控制器
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 - `index.ts` — API 类
     - `type.ts` — API 接口及相关数据结构和枚举
@@ -379,9 +494,18 @@ conversationalAIAPI.destroy()
     - `utils/events.ts` — 事件管理类，可以拓展该类以轻松实现事件监听和播报
     - `utils/sub-render.ts` — 字幕部分模块
 
+</TabsContent>
+</Tabs>
 ### API 参考
 
-#### Android
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 - [`addHandler`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapi#addhandler)
     - [`subscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapi#subscribemessage)
@@ -389,7 +513,9 @@ conversationalAIAPI.destroy()
     - [`destroy`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapi#destroy)
     - [`onTranscriptUpdated`](https://doc.shengwang.cn/api-ref/convoai/android/android-component/iconversationalaiapieventhandler#ontranscriptupdated)
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 - [`addHandler`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapi#addhandler)
     - [`subscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapi#subscribemessage)
@@ -397,10 +523,16 @@ conversationalAIAPI.destroy()
     - [`destroy`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapi#destroy)
     - [`onTranscriptUpdated`](https://doc.shengwang.cn/api-ref/convoai/ios/ios-component/conversationalaiapieventhandler#ontranscriptupdated)
 
-#### Web
+</TabsContent>
+
+<TabsContent value="web">
 
 - [`IConversationalAIAPIEventHandler`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/struct#iconversationalaiapieventhandlers)
     - [`EConversationalAIAPIEvents`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/enum#econversationalaiapievents)
     - [`subscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/conversationalaiapi#subscribemessage)
     - [`unsubscribeMessage`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/conversationalaiapi#unsubscribemessage)
     - [`destroy`](https://doc.shengwang.cn/api-ref/convoai/typescript/web-component/conversationalaiapi#destroy)
+```
+
+</TabsContent>
+</Tabs>

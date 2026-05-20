@@ -15,5 +15,5 @@ If you are starting from voice agents or conversational experiences, begin with 
 
 ## Next links
 
-- [Open AI entry](/en/ai)
-- [Open quickstart](/en/ai/quick-start)
+- [Open AI entry](../ai/index.md)
+- [Open quickstart](../ai/get-started/quickstart.md)

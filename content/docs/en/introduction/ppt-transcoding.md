@@ -13,8 +13,8 @@ In the current Shengwang capability system, PPT Conversion is better treated as 
 
 ## The closest docs already in this repo
 
-- [Open the media processing and distribution overview](/en/realtime-media/media-processing-and-distribution)
-- [Open the transcoding docs](/en/realtime-media/transcoding)
+- [Open the media processing and distribution overview](../realtime-media/media-processing-and-distribution.md)
+- [Open the transcoding docs](../realtime-media/transcoding/index.md)
 
 ## Recommended reading path
 

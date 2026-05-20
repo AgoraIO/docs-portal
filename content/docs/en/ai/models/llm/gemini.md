@@ -1,0 +1,54 @@
+---
+title: Google Gemini
+description: Integrate a Google Gemini LLM into Conversational AI Engine.
+---
+Google Gemini provides advanced multimodal AI capabilities with fast performance and efficient processing for conversational AI applications.
+
+### Sample configuration
+
+The following example shows a starting `llm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"llm": {
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=<api_key>",
+   "system_messages": [
+       {
+           "parts": [
+               {
+                   "text": "You are a helpful chatbot"
+               }
+           ],
+           "role": "user"
+       }
+   ],
+   "max_history": 32,
+   "greeting_message": "Good to see you!",
+   "failure_message": "Hold on a second.",
+   "params": {
+       "model": "gemini-2.0-flash" 
+   },
+   "style": "gemini"
+}
+```
+
+### Key parameters
+
+    
+  Note that the API key is passed in the URL query parameter. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+  
+    
+  Use `parts` array with `text` objects instead of simple `content` string.
+  
+    
+  Set to `gemini` to use Gemini's message format.
+  
+    
+  Set to `true` to handle empty responses appropriately.
+  
+    
+      
+    Refer to [Gemini models](https://ai.google.dev/gemini-api/docs/models/gemini) for available models.
+    
+  
+
+For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Google Gemini API documentation](https://ai.google.dev/api/generate-content#method:-models.streamgeneratecontent).

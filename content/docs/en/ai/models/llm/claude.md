@@ -1,0 +1,56 @@
+---
+title: Claude Anthropic
+description: Integrate Anthropic Claude LLM into Conversational AI Engine.
+---
+Claude from Anthropic provides helpful, harmless, and honest AI assistance with strong reasoning capabilities and natural conversational abilities.
+
+### Sample configuration
+
+The following example shows a starting `llm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"llm": {
+   "url": "https://api.anthropic.com/v1/messages",
+   "api_key": "<api_key>",
+   "headers": "{\"anthropic-version\":\"2023-06-01\"}",
+   "system_messages": [
+       {
+           "role": "user",
+           "content": "You are a Conversational AI Agent, developed by Agora."
+       }
+   ],
+   "max_history": 32,
+   "greeting_message": "Good to see you!",
+   "failure_message": "Hold on a second.",
+   "params": {
+       "model": "claude-3-5-haiku-latest",
+       "max_tokens": 1024
+   },
+   "style": "anthropic"
+}
+```
+
+### Key parameters
+
+    
+  Get your API key from [Anthropic Console](https://console.anthropic.com/).
+  
+    
+  Use Anthropic's messages endpoint.
+  
+    
+  Must include `anthropic-version` header for API compatibility.
+  
+    
+  Set to `anthropic` to use Claude's message format.
+  
+    
+      
+    Refer to [Claude models](https://docs.anthropic.com/en/docs/about-claude/models) for available models.
+    
+      
+    Must specify maximum tokens in the response.
+    
+  
+
+For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Claude API documentation](https://docs.anthropic.com/en/api/messages).

@@ -1,0 +1,41 @@
+---
+title: Google (Beta)
+---
+Google provides advanced automatic speech recognition with high accuracy and support for multiple languages, designed for real-time conversational AI applications.
+
+### Sample configuration
+
+The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"asr": {
+    "vendor": "google",
+    "params": {
+        "project_id": "",
+        "location": "global",
+        "adc_credentials_string": "",
+        "language": "en-US",
+        "model": "long"
+    }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Google official documentation](https://docs.cloud.google.com/speech-to-text/v2/docs).
+
+### Key parameters
+
+    
+  The Google Cloud project ID where the Speech-to-Text API is enabled. Get your project ID from the [Google Cloud Console](https://console.cloud.google.com/).
+  
+    
+  The Google Cloud region where the speech service is hosted, for example, `global`, `us-central1`, or `europe-west1`.
+  
+    
+  The Google Cloud service account credentials JSON string used for authentication. Get your credentials from the [Google Cloud Console](https://console.cloud.google.com/).
+  
+    
+  The language code for speech recognition, for example, `en-US`, `es-ES`, or `fr-FR`. See [supported languages](https://cloud.google.com/speech-to-text/docs/speech-to-text-supported-languages) for available language codes.
+  
+    
+  The recognition model to use.

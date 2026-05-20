@@ -1,0 +1,36 @@
+---
+title: Rime (Beta)
+---
+Rime provides high-quality text-to-speech (TTS) with low latency, supporting multiple speakers and models.
+
+### Sample configuration
+
+The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"tts": {
+  "vendor": "rime",
+  "params": {
+    "api_key": "<rime_key>",
+    "speaker": "cove",
+    "modelId": "mistv2",
+    "base_url": "wss://users.rime.ai/ws2",
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the Rime documentation for [Arcana](https://docs.rime.ai/api-reference/arcana/streaming-pcm) and [Mist v2](https://docs.rime.ai/api-reference/endpoint/streaming-pcm).
+
+ 
+   
+    The Rime API key used to authenticate requests. You must provide a valid key for the service to function. 
+   
+   
+    The speaker voice to use for TTS output. For example, `cove`. 
+   
+   
+    The Rime TTS model to use. For example, `mistv2`. Different models provide different voice qualities and capabilities. 
+   
+    
+    The WebSocket URL for the Rime streaming API. For example, `wss://users.rime.ai/ws2`.

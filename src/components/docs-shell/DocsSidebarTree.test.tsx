@@ -119,20 +119,27 @@ describe('DocsSidebarTree', () => {
       {
         children: [
           {
-            id: '/en/ai/quick-start',
-            title: 'Use RESTful API',
-            type: 'page',
-            url: '/en/ai/quick-start',
+            children: [
+              {
+                id: '/en/ai/get-started/quickstart',
+                title: 'Use RESTful API',
+                type: 'page',
+                url: '/en/ai/get-started/quickstart',
+              },
+            ],
+            collapsible: true,
+            id: 'separator-sdk-quickstarts',
+            title: 'SDK Quickstarts',
+            type: 'section',
           },
         ],
-        collapsible: true,
-        id: 'separator-sdk-quickstarts',
-        title: 'SDK Quickstarts',
+        id: 'ai-section',
+        title: 'AI',
         type: 'section',
       },
     ];
 
-    renderSidebarTree(tree, '/en/ai/billing');
+    renderSidebarTree(tree, '/en/ai/overview/pricing');
 
     const toggle = await screen.findByRole('button', {
       name: /SDK Quickstarts/i,
@@ -296,6 +303,47 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: '场景化 API' }),
+    ).toBeInTheDocument();
+  });
+
+  it('opens the Build subsection by default inside Get started', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/ai/get-started/quickstart',
+            title: 'Quickstart',
+            type: 'page',
+            url: '/en/ai/get-started/quickstart',
+          },
+        ],
+        id: 'get-started',
+        title: 'Get started',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            id: '/en/ai/build/start-stop-agent',
+            title: 'Start and stop an agent',
+            type: 'page',
+            url: '/en/ai/build/start-stop-agent',
+          },
+        ],
+        collapsible: true,
+        id: 'build',
+        title: 'Build',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/ai/get-started/quickstart');
+
+    expect(
+      await screen.findByRole('link', { name: 'Quickstart' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Start and stop an agent' }),
     ).toBeInTheDocument();
   });
 });

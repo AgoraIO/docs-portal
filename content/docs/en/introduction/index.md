@@ -9,20 +9,20 @@ This overview is the front door to the Introduction section. It helps readers bu
 
 ## Suggested reading order
 
-1. Read [About Agora](/en/introduction/about-agora) to understand the platform model, what teams build with it, and how the core layers connect.
-2. Continue to [Start with AI](/en/introduction/start-with-ai) if your first milestone is a conversational AI workflow.
+1. Read [About Agora](about-agora.md) to understand the platform model, what teams build with it, and how the core layers connect.
+2. Continue to [Start with AI](start-with-ai.md) if your first milestone is a conversational AI workflow.
 3. Move into the capability pages below when you already know which problem area you need to solve.
 
 ## What comes next
 
-- Platform orientation: [About Agora](/en/introduction/about-agora)
-- AI-first entry: [Start with AI](/en/introduction/start-with-ai)
+- Platform orientation: [About Agora](about-agora.md)
+- AI-first entry: [Start with AI](start-with-ai.md)
 - Core capability domains:
-  - [Conversational AI](/en/introduction/ai-agents)
-  - Realtime: [Audio & Video](/en/introduction/realtime-audio-video) / [Messaging](/en/introduction/messaging)
-  - [Transcription & Translation](/en/introduction/speech-to-text)
-  - Media Infrastructure: [Device Media Transport](/en/introduction/rtsa) / [Server Media Processing](/en/introduction/rtc-server-sdk) / [Live Streaming Distribution](/en/introduction/fusion-cdn)
-  - [Collaborative Whiteboard](/en/introduction/whiteboard)
+  - [Conversational AI](ai-agents.md)
+  - Realtime: [Audio & Video](realtime-audio-video.md) / [Messaging](messaging.md)
+  - [Transcription & Translation](speech-to-text.md)
+  - Media Infrastructure: [Device Media Transport](rtsa.md) / [Server Media Processing](rtc-server-sdk.md) / [Live Streaming Distribution](fusion-cdn.md)
+  - [Collaborative Whiteboard](whiteboard.md)
 
 ## Why this page exists
 

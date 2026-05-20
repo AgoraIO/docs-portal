@@ -1,0 +1,75 @@
+---
+title: OpenAI (Beta)
+---
+OpenAI provides natural-sounding text-to-speech with customizable voice instructions and multiple voice options.
+
+### Use a preset
+
+To use OpenAI TTS with an Agora managed key, specify the following preset in the [`preset`](../../../api-reference/conversational-ai/rest-api/agent/join.md#preset) field when starting an agent:
+
+- `openai_tts_1`
+
+When using a preset, you do not need to provide the API key, base URL, or model. You can still use the `tts` field to configure additional settings such as `voice` and `instructions`. To provide your own API key, see [Sample configuration](#sample-configuration).
+
+### Sample configuration
+
+The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+### Use a preset model
+
+```json
+"preset": "openai_tts_1",
+"properties": {
+  // ...
+  "tts": {
+    "params": {
+      "voice": "coral",
+      "instructions": "Please use standard American English, natural tone, moderate pace, and steady intonation",
+      "speed": 1
+    }
+  }
+}
+```
+
+### Use your own API key (BYOK)
+
+```json
+"tts": {
+  "vendor": "openai",
+  "params": {
+    "base_url": "https://api.openai.com/v1",
+    "api_key": "<your_openai_key>",
+    "model": "gpt-4o-mini-tts",
+    "voice": "coral",
+    "instructions": "Please use standard American English, natural tone, moderate pace, and steady intonation",
+    "speed": 1
+  }
+}
+```
+
+> **Caution**
+> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For advanced configuration options, available voices, and detailed parameter descriptions, see the [OpenAI TTS documentation](https://platform.openai.com/docs/guides/text-to-speech).
+
+### Key parameters
+
+    
+  The endpoint URL for the OpenAI TTS service. See [How to use data residency](https://platform.openai.com/docs/guides/your-data#how-to-use-data-residency).
+  
+    
+  The API key used for authentication. Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
+  
+  
+  Identifier of the model to be used. 
+  
+    
+  The voice identifier for speech synthesis. 
+  
+  
+  Custom instructions for voice style, accent, pace, and tone. Helps fine-tune the speech characteristics.
+  
+  
+  Speaking rate multiplier. Values between `0.25` and `4.0`, where `1.0` is normal speed.
+  
+
+> **Info**
+> OpenAI TTS models do not support changing the sample rate. The audio output is fixed at 24,000 Hz.

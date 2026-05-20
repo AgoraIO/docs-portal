@@ -1,0 +1,130 @@
+---
+title: Voice AI quickStart
+description: Build a working voice agent in under five minutes without writing any server code by cloning an officially maintained starter project.
+---
+Set up a working voice agent in under five minutes. This page walks you through installing the Agora skills to give your AI coding assistant the official quickstarts and Agora CLI workflows. You then use the CLI to log in, clone the official starter, and run it locally. You can follow the CLI steps yourself or paste the sample prompt and let your assistant handle setup for you.
+
+### Install Agora skills
+
+Agora skills teaches your AI coding assistant how to work with Conversational AI projects using official starter repos and the Agora CLI, including signing in, project binding, generating environment files, and running diagnostics. Install the CLI in the next section, or ask your assistant to run the installer for you.
+
+```bash
+npx skills add https://github.com/agoraio/skills --skill agora
+```
+
+Paste the following prompt into your assistant's chat. You can replace Python with Typescript or Go depending on your language preference:
+
+```
+Set up and run the Agora Conversational AI Python starter project locally.
+```
+
+Your assistant installs the CLI, signs you in, scaffolds the official starter, and guides you through the remaining steps. Follow the manual CLI steps below if you prefer to run each command yourself.
+
+### Install the Agora CLI
+
+The Agora CLI is a native Go binary available at [AgoraIO-Community/cli](https://github.com/AgoraIO-Community/cli).
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="mac-linux">macOS and Linux</TabsTrigger>
+  <TabsTrigger value="windows-powershell">Windows (PowerShell)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="mac-linux">
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/AgoraIO/cli/main/install.sh | sh -s -- --add-to-path
+agora --help
+```
+
+If the `agora` command is not found after installation, re-run with `--add-to-path` or
+manually add the install directory to your shell profile.
+
+</TabsContent>
+
+<TabsContent value="windows-powershell">
+
+```powershell
+irm https://raw.githubusercontent.com/AgoraIO/cli/main/install.ps1 | iex
+agora --help
+```
+
+If your execution policy blocks inline scripts, download `install.ps1` and run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+## Sign in, scaffold, and run
+
+Sign in with the Agora CLI, clone the starter project, and configure it for your chosen language.
+
+1. Sign in to Agora Console.
+
+    ```bash
+    agora login
+    ```
+
+1. Use `agora init` to clone the official starter for your chosen template, bind it to your
+Agora project, and write the runtime-specific environment file.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="go">Go</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```bash
+agora init my-python-demo --template python
+cd my-python-demo
+bun install
+bun run dev
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```bash
+agora init my-nextjs-demo --template nextjs
+cd my-nextjs-demo
+pnpm install
+pnpm dev
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```bash
+agora init my-go-demo --template go
+cd my-go-demo
+make setup
+make dev
+```
+
+</TabsContent>
+</Tabs>
+
+
+1. Open `http://localhost:3000` and click **Start conversation**.
+
+If the agent does not join or transcripts do not appear, run `agora project doctor` to
+check credential validity, feature enablement, and network reachability.
+
+## Next steps
+
+Explore the following topics:
+
+- Explore the SDK API references for [Typescript](../../api-reference/conversational-ai/server-sdk/typescript.md), [Python](../../api-reference/conversational-ai/server-sdk/python.md), and [Go](../../api-reference/conversational-ai/server-sdk/go.md).
+- [Build a backend and client from scratch](../build/build-server-client.md): Write every layer of the backend and frontend yourself.
+- [Integrate an MLLM](../models/mllm/index.md): Replace the cascading STT → LLM → TTS pipeline with a single realtime model.
+- [Transmit custom information](../build/custom-information.md): Guide the agent with user-specific context to personalize responses.
+- [Integrate short-term memory](../build/short-term-memory.md): Help the agent maintain context across a conversation.
+- [Use filler words](../best-practices/filler-words.md): Reduce perceived latency by filling silence during LLM processing.
+
+</TabsContent>
+</Tabs>

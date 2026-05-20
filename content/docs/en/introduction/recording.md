@@ -14,8 +14,8 @@ Recording preserves live interaction content as replayable, archivable, and revi
 
 ## The closest docs already in this repo
 
-- [Open the media processing and distribution overview](/en/realtime-media/media-processing-and-distribution)
-- [Open the recording docs](/en/realtime-media/recording)
+- [Open the media processing and distribution overview](../realtime-media/media-processing-and-distribution.md)
+- [Open the recording docs](../realtime-media/recording/index.md)
 
 ## Recommended reading path
 
