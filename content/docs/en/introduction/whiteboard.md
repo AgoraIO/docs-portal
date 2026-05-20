@@ -1,34 +1,29 @@
 ---
 title: Collaborative Whiteboard
-description: Realtime whiteboard collaboration for teaching, annotation, and shared visual interaction.
+description: Use Interactive Whiteboard for shared drawing, annotation, file conversion, and collaborative room features.
 ---
 
-## What this capability solves
+![Interactive Whiteboard overview](/images/interactive-whiteboard/interactive-whiteboard-overview.png)
 
-Interactive Whiteboard helps teams build multi-user realtime whiteboard experiences for teaching, annotation, explanation, and collaborative workflows.
+Interactive Whiteboard adds a shared visual workspace to realtime products. It is a collaboration capability for teaching, annotation, explanation, and document presentation.
 
 ## Common scenarios
 
-- online classes
+- online education
 - collaborative explanation
-- live annotation
-- multi-user whiteboard collaboration
+- shared annotation
+- realtime creation
 
-## What existing Shengwang docs already cover
+## Start here
 
-The current whiteboard docs already include:
+- [Interactive Whiteboard](/en/realtime-media/whiteboard)
+- [Media processing and distribution](/en/realtime-media/media-processing-and-distribution)
 
-- landing page
-- SDK entry points
-- Fastboard SDK
-- platform-oriented integration guidance
+## Key capabilities
 
-## Recommended reading order
-
-1. Start from the landing page and decide whether your team needs the Whiteboard SDK or Fastboard SDK.
-2. Then enter the platform-specific integration path.
-3. If the scenario is education or collaboration-heavy, design the whiteboard together with RTC and RTM instead of in isolation.
-
-## Why it belongs in the capability area
-
-Interactive Whiteboard is not an isolated product silo. It is a collaboration capability and belongs beside RTC, messaging, and AI in the new docs entry model.
+- **Editing and room tools**
+- **File conversion** for PPT, PPTX, Word, PDF, and PPTX-to-webpage workflows
+- **Extensions** for richer whiteboard functionality
+- **SDK options**: Interactive Whiteboard SDK and Fastboard SDK
+- **RESTful APIs** for token generation, room management, screenshot management, scene management, and file conversion
+- **Stability and reliability**

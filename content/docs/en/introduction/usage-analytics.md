@@ -1,19 +1,30 @@
 ---
 title: Usage Analytics
-description: Track usage, operational signals, and launch readiness as the integration moves beyond the first demo.
+description: Track usage, quality, performance, alerts, and embedded analytics across Agora products.
 ---
 
-## What to monitor
+![Analytics overview](/images/analytics/analytics-overview.png)
 
-Usage and analytics help teams understand whether adoption, quality, and operational behavior match expectations.
+Agora Analytics tracks and analyzes the usage, quality, and performance of real-time voice, video, live streaming, chat, and other Agora products.
 
-## Common questions
+## Features
 
-- Which capabilities are used the most?
-- Where are errors or interruptions happening?
-- What should be reviewed before production scale-up?
+- **Call Inspector**: identify, analyze, and respond to performance quality issues with detailed call and user metrics.
+- **Data Insights**: periodic call usage and quality statistics.
+- **Real Time Monitoring**: visualized data for multiple call metrics in real time.
+- **Alert notifications**: alerts when abnormal metrics or events are detected.
+- **RESTful APIs**: retrieve call statistics and quality metrics for your own application or DataOps workflow.
+- **Embedding**: embed Analytics pages in internal web portals using a low-code approach.
 
-## Related docs
+## Console usage page
 
-- [Open release notes](../best-practices/release-notes.md)
-- [Open best practices](../best-practices/index.md)
+The Console **Usage** page lets you check usage for the past 12 months.
+
+You can:
+
+- Select a time frame and data granularity.
+- Filter by all projects or a specific project.
+- Select a product.
+- Turn on **View Breakdown**.
+
+Only **Admin**, **Product/Operation**, and authorized custom teams can access the **Usage** page.

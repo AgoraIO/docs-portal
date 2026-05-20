@@ -1,96 +1,35 @@
 ---
 title: About Agora
-description: Build a working mental model of Agora by understanding what it is, why teams use it, what they can build, how it works, and where to go next.
+description: Understand Agora across realtime sessions, conversational AI, messaging, media services, and operational tooling.
 ---
 
-## What is
+Agora is a realtime engagement platform built on low-latency session infrastructure, messaging and state synchronization, conversational AI orchestration, and media services that help you capture, transform, and analyze live communication.
 
-Agora is a developer platform for realtime interaction across conversational AI, voice calling, video calling, live engagement, realtime messaging, and media services.
+## The platform in four layers
 
-If a traditional web app is mostly request-response, Agora is built for a different kind of problem: users, devices, services, and agents need to stay connected, exchange media and state continuously, and operate inside the same live session context.
+- **Realtime sessions:** Voice Calling, Video Calling, Broadcast Streaming, and IoT SDK all describe the same underlying need: keep people, devices, or audiences connected with low latency and stable media delivery.
+- **Messaging and state:** Signaling adds realtime metadata synchronization, message channels, topics, presence, storage, and locking so apps can coordinate users and workflows beyond raw media.
+- **Conversational intelligence:** Conversational AI Engine layers ASR, LLM, TTS, interruption handling, memory, and agent control on top of the realtime session model.
+- **Media services and operations:** Cloud Recording, On-Premise Recording, Cloud Transcoding, Interactive Whiteboard, and Analytics extend the live path with capture, layout processing, collaboration, monitoring, and governance.
 
-In this model, projects, channels, users, agents, messages, events, and media services are not separate product islands. They are parts of one broader realtime system.
+## What teams usually build
 
-:::info[One mental model]
-Think of Agora as the realtime layer that keeps people, devices, media, messages, and AI services inside the same live context.
-:::
+- Voice, video, and live-broadcast apps built on low-latency sessions.
+- AI assistants, copilots, tutors, support agents, and other voice-driven conversational products.
+- Messaging, presence, and event-driven coordination flows that complement live media.
+- Recording, transcoding, captioning, whiteboard, and analytics workflows that turn a live session into a production-ready system.
 
-## Why
+## How to read this introduction section
 
-Teams usually adopt Agora not because they need one isolated SDK, but because they need to assemble a complete realtime experience faster.
+1. Start with [Start with AI](/en/introduction/start-with-ai) if your first milestone is a working voice agent.
+2. Go to [Audio & Video](/en/introduction/realtime-audio-video), [Messaging](/en/introduction/messaging), or [Transcription & Translation](/en/introduction/speech-to-text) if you already know the capability you need.
+3. Move to [Account](/en/introduction/account), [Projects](/en/introduction/projects), and [Pricing & Access](/en/introduction/pricing-access) when you prepare credentials, entitlements, and launch boundaries.
+4. Finish with [Security & Compliance](/en/introduction/security-compliance), [Support](/en/introduction/support), and [Release Notes](/en/introduction/release-notes) before production rollout.
 
-That usually means:
+## Suggested next pages
 
-- Bringing voice, video, messaging, and AI agents into the same live session context.
-- Using one relatively consistent model across frontend interaction, backend control, callbacks, and production operations.
-- Expanding later into recording, transcription, analytics, auth, security, and operational governance without rebuilding the architecture from scratch.
-
-So the value of Agora is not just that it can place a call or send a message. The real value is that it gives teams a composable foundation for realtime products that can grow in complexity over time.
-
-## What can I build
-
-From that foundation, teams usually end up building a few broad categories of products:
-
-<CardGrid>
-  <FeatureCard title="Conversational AI">
-    Voice assistants, companions, tutors, support agents, and AI-powered service flows.
-  </FeatureCard>
-  <FeatureCard title="Realtime audio and video">
-    Calls, voice rooms, meetings, classrooms, and live interactive experiences.
-  </FeatureCard>
-  <FeatureCard title="Messaging and coordination">
-    Room chat, shared state, event-driven interaction, and workflow synchronization.
-  </FeatureCard>
-  <FeatureCard title="Media services">
-    Recording, transcription, processing, delivery, and production-grade media pipelines.
-  </FeatureCard>
-</CardGrid>
-
-If you start from a business outcome, ask what kind of product you want to ship. If you start from a technical problem, ask which capability you need first. Both paths eventually lead back to the same Agora realtime model.
-
-## How it works
-
-The easiest way to understand Agora is not to memorize product names first, but to understand how a few core objects connect:
-
-- Projects and credentials define the integration boundary, App ID, keys, and service activation state.
-- Channels and sessions define the live context shared by users, devices, and agents.
-- Media and messaging handle audio, video, text, state sync, and event delivery.
-- Agents and backend operations handle creation, updates, interruption, stopping, callbacks, and workflow orchestration.
-- Production services extend the system with auth, security, billing, recording, transcription, analytics, and operational control.
-
-A common workflow looks like this:
-
-1. Create a project and prepare credentials.
-2. Choose an entry capability such as conversational AI or realtime media.
-3. Connect users, clients, or agents into the same live session.
-4. Add backend control, callbacks, and security.
-5. Add billing, analytics, release discipline, and support paths before scale.
-
-```ts
-const workflow = [
-  'Create a project',
-  'Choose an entry capability',
-  'Connect users, clients, or agents',
-  'Add backend control and callbacks',
-  'Prepare production operations',
-];
-```
-
-:::warning[Avoid product-island thinking]
-You do not need to master every layer on day one, but you should know how the layers stack so later expansion does not feel like a jump into unrelated documentation.
-:::
-
-## How to learn more
-
-Once the overall picture is clear, the best next reading path is:
-
-1. Start with the [AI introduction](/en/ai) to understand the current Conversational AI Engine surface.
-2. If you are ready to build, continue into the [quickstart](/en/ai/get-started/quickstart).
-3. If you are moving into backend integration, go deeper into [API reference](/en/api-reference) and [start an agent](/en/api-reference/conversational-ai/rest-api/agent/join).
-4. If you are preparing for production, continue into [pricing](/en/ai/overview/pricing), [HTTP basic auth](/en/best-practices/http-basic-auth), and [release notes](/en/best-practices/release-notes).
-
-This page is not meant to replace the product docs. Its job is to give you the map first, so the deeper guides make more sense when you enter them.
-
-:::tip[Good next step]
-If you are still choosing an entry path, start with Conversational AI when the product needs an agent, or Realtime & Media when the product starts from a live audio, video, or messaging session.
-:::
+- [Conversational AI](/en/introduction/ai-agents)
+- [Audio & Video](/en/introduction/realtime-audio-video)
+- [Messaging](/en/introduction/messaging)
+- [Server Media Processing](/en/introduction/rtc-server-sdk)
+- [Usage Analytics](/en/introduction/usage-analytics)

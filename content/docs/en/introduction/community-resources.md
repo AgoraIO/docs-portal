@@ -1,14 +1,32 @@
 ---
 title: Community Resources
-description: Keep the supporting entry points for docs navigation, release updates, and shared reference material in one place.
+description: Use Console, Status Page, Analytics, documentation, and Marketplace resources from one entry page.
 ---
 
-## Shared resources
+Agora Console is the unified portal for configuring, purchasing, and managing Agora products and services.
 
-Community-style resources help teams move across docs, release updates, and supporting references without losing context.
+## Dashboard overview
 
-## Useful entry points
+After logging in to Console, the overview dashboard provides quick access to:
 
-- [Open release notes](../best-practices/release-notes.md)
-- [Open AI product map](../ai/domain-overview.md)
-- [Open support](support.md)
+- projects
+- billing
+- usage
+- members and roles
+- documentation
+- code samples
+- support
+- Agora Analytics
+- Extensions Marketplace
+
+## Additional resources
+
+- [Support](/en/introduction/support)
+- [Release Notes](/en/introduction/release-notes)
+- [Usage Analytics](/en/introduction/usage-analytics)
+- [Best practices](/en/best-practices)
+- [AI product map](/en/ai/domain-overview)
+
+## Status and operations
+
+Use the Agora Status Page and the Support Center to monitor service health, track incidents, and follow maintenance events.

@@ -1,33 +1,30 @@
 ---
 title: Device Media Transport
-description: Realtime media streaming and signaling for smart devices and terminal-like products.
+description: Use IoT SDK for realtime audio, video, and signaling on smart devices and low-resource embedded systems.
 ---
 
-## What this capability solves
+![IoT SDK overview](/images/iot/iot-overview.png)
 
-RTSA delivers high-quality realtime media streaming and signaling so developers can connect people, devices, and machine endpoints in one live interaction loop.
+RTSA fits device-side workloads where the product starts from a camera, intercom, wearable, smart display, or another constrained endpoint. It combines realtime media and signaling for embedded-device scenarios.
 
 ## Common scenarios
 
-- smart cameras and terminal interop
-- doorbells, watches, monitoring devices, and assistants
-- realtime media and signaling on edge or hardware surfaces
+- smart cameras
+- doorbells and wearables
+- device-to-device media interop
+- IoT realtime products
 
-## What existing Shengwang docs already cover
+## Start here
 
-The current RTSA docs already provide:
+- [Realtime Streaming Acceleration RTSA](/en/realtime-media/rtsa)
+- [Foundational realtime capabilities](/en/realtime-media/foundation-realtime)
+- [Set up service and credentials](/en/realtime-media/setup-service-and-credentials)
 
-- landing page
-- quickstart
-- hot articles
-- basic features and best practices
+## Key capabilities
 
-## Recommended reading order
-
-1. Start from the landing page to confirm whether your device scenario fits RTSA.
-2. Then run the example or the shortest working transmission path.
-3. After that, continue into license, RTC interop, bitrate control, and messaging-channel capabilities.
-
-## Why it belongs in the capability area
-
-RTSA represents a distinct “device realtime connectivity” capability. It is not the same thing as traditional in-app RTC and deserves its own top-level capability slot in the new docs surface.
+- **Highly integrated**: combine realtime communication and signaling in the same SDK.
+- **Lightweight design**: package size can be as low as `400 kB`.
+- **Low power consumption**: suitable for battery-powered devices such as video doorbells.
+- **Cross-platform**: compatible with WebRTC and multiple chipsets and operating systems.
+- **Resistance to poor networks**: provide smooth live streaming in weak network environments.
+- **Interoperable with the full Agora platform**: build companion apps on iOS, Android, web, and other platforms.

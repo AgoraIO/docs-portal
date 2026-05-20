@@ -1,22 +1,39 @@
 ---
 title: Release Notes
-description: Release notes help teams understand platform changes, interface updates, and migration cadence, and should not hide behind product intros.
+description: Review product-specific release notes for Signaling, Conversational AI Engine, Analytics, and other Agora products.
 ---
 
-## How to read release notes
+Agora maintains release notes at the product level. Review the release notes for the products you use before upgrading SDKs, changing providers, or rolling out new integrations.
 
-### Start with high-impact updates
+## Signaling
 
-Prioritize changes that affect interface behavior, callback structure, integration flows, or rollout assumptions.
+The Signaling release notes track changes in each Signaling release.
 
-### Pair changes with migration guidance
+Use them to check:
 
-Release updates are most useful when read together with best-practice updates and rollout notes.
+- changes to Signaling features and behavior
+- migration notes
+- release timing for new functionality
 
-### Align updates across layers
+## Conversational AI Engine
 
-Keep product, API, and operational updates aligned so teams do not read conflicting versions of the platform.
+Recent release notes include changes such as:
 
-## Current release surface
+- new TTS providers
+- new API endpoints
+- interruption control
+- MLLM turn-detection changes
+- new callbacks
+- deprecated and removed fields in agent start parameters
 
-- [Open ConvoAI release notes](../best-practices/release-notes.md)
+## Analytics
+
+Analytics also maintains its own product release notes for changes in reports, monitoring, and related product capabilities.
+
+## What to check before rollout
+
+- API changes
+- deprecated fields
+- migration guides
+- pricing or provider updates
+- new callbacks, events, or feature flags

@@ -1,15 +1,22 @@
 # Findings
 
-## 2026-05-18
-- `realtime-media` currently stores all product pages as flat files directly under `content/docs/{locale}/realtime-media/`.
-- The left sidebar is ordered by `content/docs/{locale}/realtime-media/meta.json`, which currently uses separator strings and page slugs rather than true product-folder structure.
-- The docs router currently supports only one page slug segment beyond the tab. `buildDocPath`, `getSourceSlugs`, `getContentPathSegments`, and `parseSourceSlugs` all assume `tab + optional single slug`.
-- The page route only matches `/$locale/$tab/$slug`, which is insufficient for nested product docs like `/en/realtime-media/rtc/get-started`.
-- Sidebar generation currently flattens folder nodes in `flattenSidebarNode`, so even if content folders are introduced, they will not render as product directories without code changes.
-- Collapsible sidebar behavior is currently driven by hard-coded section titles in `isCollapsibleSectionTitle`, not by content metadata.
-- The request is to move `realtime-media` to a doc-engineer-owned product directory model with at most two levels per product; this implies preserving folder nodes in the sidebar rather than continuing to encode structure through separator strings.
-- The legacy `online-ktv` content is recoverable, but not by direct inclusion. It relies on old portal-only imports (`@doc-shared/*`, `@theme/Tabs`, `ProductOverview`, `PlatformFilter`, `QuickStartCard`, `HotArticleCard`, `Row`, `Col`) that do not exist in the new portal.
-- A practical migration strategy for `online-ktv` is:
-  1. preserve the old sidebar semantics by translating `._sidebar_.meta.js` files into new `meta.json` files,
-  2. migrate “plain” or low-dependency pages first by converting `.mdx` to `.md`,
-  3. leave heavier landing pages and shared-partial pages for a later compatibility pass.
+## 2026-05-20
+- The English `introduction` tab lives at `content/docs/en/introduction` and is still organized as a flat Fumadocs section with separator strings in `meta.json`.
+- The target directory currently contains one migrated `.mdx` page, `content/docs/en/introduction/about-agora.mdx`, while the rest of the pages are `.md`.
+- `Doc-Source-Private` does not provide a standalone `introduction` content tree. Each introduction page must be sourced from one or more product overview, pricing, release note, security, or shared-account pages.
+- The strongest source mappings are:
+  - `about-agora`, `start-with-ai`, `ai-agents`: `conversational-ai/*`
+  - `realtime-audio-video`: `video-calling/overview/product-overview.mdx`
+  - `messaging`: `signaling/overview/product-overview.mdx` plus shared signaling docs
+  - `speech-to-text`: `real-time-stt/overview/product-overview.mdx`
+  - `rtsa`: `iot/overview/product-overview.mdx`
+  - `rtc-server-sdk`: `server-gateway/overview/product-overview.mdx`
+  - `fusion-cdn`: `broadcast-streaming/overview/product-overview.mdx`
+  - `whiteboard`: `interactive-whiteboard/overview/product-overview.mdx`
+  - `recording`: `cloud-recording/overview/product-overview.mdx` and `on-premise-recording/overview/product-overview.mdx`
+  - `ppt-transcoding`: `cloud-transcoding/overview/product-overview.mdx`
+  - `account`, `projects`, `members-roles`, `usage-analytics`, `support`: `shared/common/manage-agora-account/*` and `agora-analytics/*`
+  - `security-compliance`, `security-privacy`: `shared/common/security/*` plus product `reference/security.mdx`
+  - `pricing-access`, `release-notes`, `community-resources`: product `overview/pricing.mdx`, `overview/release-notes.mdx`, and related support pages
+- Many source pages are MDX-first and depend on components such as `ProductOverview`, `Tabs`, `TabItem`, `Admonition`, `Link`, and token macros like `<Vg />`. For the migration target these must be flattened into plain Markdown, while the original MDX fragments can be preserved inside HTML comments.
+- Existing image coverage in `docs-portal/public/images` already includes `conversational-ai`, `open-ai-integration`, and `convo-ai-device-kit`, but does not yet include `signaling`, `interactive-whiteboard`, `cloud-recording`, `on-premise-recording`, `cloud-transcoding`, `analytics`, `iot`, or `broadcast-streaming`.

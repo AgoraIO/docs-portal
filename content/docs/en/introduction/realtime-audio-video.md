@@ -1,32 +1,30 @@
 ---
 title: Audio & Video
-description: Use this page to find the primary entry points for realtime audio-video interaction and understand how they relate to the ConvoAI docs in this repo.
+description: Build one-to-one and group video experiences with low-latency transport, cross-platform delivery, and production-grade media features.
 ---
 
-## What this capability covers
+![Video Calling overview](/images/video-calling/video-calling-overview.png)
 
-Realtime audio and video provide the low-latency session layer behind calling, live interaction, classrooms, voice rooms, and AI conversation experiences.
+RTC is the foundation for voice and video calling, interactive live streaming, meetings, and classrooms. It owns the core channel, audio, video, device, and session-control path.
 
-## Matching official product docs
+## Common scenarios
 
-- [Open the RTC documentation homepage](https://doc.shengwang.cn/doc/rtc/homepage)
-- [Open the Android quickstart](https://doc.shengwang.cn/doc/rtc/android/get-started/quick-start)
-- [Open the Web quickstart](https://doc.shengwang.cn/doc/rtc/javascript/get-started/quick-start)
-- [Open token authentication guidance](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication)
+- voice and video calling
+- interactive live streaming
+- online meetings
+- interactive classrooms
 
-## How this relates to the current repo
+## Start here
 
-This repo is currently centered on ConvoAI RESTful docs, so many AI-focused pages assume that the underlying RTC session, device permissions, and channel access are already working.
+- [Realtime RTC](/en/realtime-media/rtc)
+- [Foundational realtime capabilities](/en/realtime-media/foundation-realtime)
+- [Set up service and credentials](/en/realtime-media/setup-service-and-credentials)
 
-- [Open the Conversational AI quickstart](../ai/get-started/quickstart.md)
-- [Open audio modality guidance](../realtime-media/speech-to-text/audio-modality.md)
+## Key capabilities
 
-## Typical integration sequence
-
-### Start from the RTC base path
-
-Get channel join, device permissions, audio capture, and auth working first. That gives AI or media features a stable transport layer.
-
-### Add scenario-specific features next
-
-Once the RTC path is stable, continue into AI, recording, transcription, or messaging based on the product outcome you are building.
+- **Global coverage**: supports video users in more than 200 countries and regions.
+- **High-quality video at scale**: consistent quality from one-to-one calls to large concurrent sessions.
+- **Multiple audio and video tracks**: publish multiple tracks to one or more channels from a single instance.
+- **Screen sharing and collaboration**: support screen sharing and interactive whiteboards.
+- **AI-powered audio enhancement**: support 3D spatial audio, AI noise suppression, and gain control.
+- **Call recording**: record calls in the cloud or on premises with control over format, storage path, and quality.

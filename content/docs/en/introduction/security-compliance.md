@@ -1,28 +1,19 @@
 ---
 title: Security & Compliance
-description: Organize identity, callback security, regional policy, and production boundaries into one security and compliance surface.
+description: Review Agora's security model, encryption layers, geofencing controls, compliance posture, and operational safeguards before production launch.
 ---
+Agora uses a layered security model: Agora protects the platform and transport path, while customers still control identity, key management, application logic, and data exposure decisions.
 
-## Key controls
+## Core controls called out in the source
 
-### HTTP basic auth
+- Token-based authentication for production apps.
+- Media encryption and transport security.
+- Network geofencing for regional restrictions.
+- Controlled access to production systems and customer data.
+- Operational resilience against attacks such as DDoS.
 
-Add baseline authentication to server integrations before you scale access to production systems.
+## Compliance and assurance signals
 
-- [Open HTTP basic auth guide](../best-practices/http-basic-auth.md)
-
-### Regional controls
-
-Use regional controls to narrow access range and reduce compliance risk in specific geographies.
-
-- [Open geofencing guidance](../best-practices/geofencing.md)
-
-### Webhook security
-
-Validate webhook subscriptions, source trust, and downstream data handling before enabling callbacks.
-
-- [Open webhook setup guide](../api-reference/enable-ncs.md)
-
-## Platform intent
-
-Security guidance should be visible at the platform layer so readers do not discover it only after they have already integrated the main business flow.
+- The shared security pages reference ISO/IEC 27001, 27017, 27018, and 27701 certifications.
+- A bug bounty program and a vulnerability reporting path are available.
+- Security responsibilities are split between Agora's platform controls and customer-owned application controls.

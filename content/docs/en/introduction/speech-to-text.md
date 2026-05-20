@@ -1,35 +1,30 @@
 ---
 title: Transcription & Translation
-description: Ultra-low-latency speech transcription and translation for subtitles, multilingual communication, and voice understanding.
+description: Use Real-Time Speech to Text for captions, live transcription, translation, speaker labeling, and caption recording.
 ---
 
-## What this capability solves
+![Real-Time Speech to Text overview](/images/real-time-stt/real-time-stt.png)
 
-Realtime transcription and translation turn live speech into readable, analyzable, and translatable text streams. It is a strong fit for subtitles, multilingual collaboration, and AI-ready voice understanding workflows.
+Realtime Speech-to-Text turns live audio into readable text and translated text. It is suitable for captions, multilingual communication, voice understanding, and downstream AI workflows.
 
 ## Common scenarios
 
-- meeting captions and live transcription
-- multilingual conversations and live translation
-- AI preprocessing and text understanding
-- education, support, and multilingual live scenarios
+- meeting captions
+- multilingual live streaming
+- voice understanding
+- AI preprocessing
 
-## What existing Shengwang docs already cover
+## Start here
 
-The current speech-to-text docs already include:
+- [Realtime Transcription and Translation](/en/realtime-media/speech-to-text)
+- [Audio modality](/en/realtime-media/speech-to-text/audio-modality)
+- [Foundational realtime capabilities](/en/realtime-media/foundation-realtime)
 
-- landing page
-- live demo
-- quickstart
-- recommended reading
-- API and webhook surfaces
+## Key capabilities
 
-## Recommended reading order
-
-1. Start from the landing page and live demo to validate latency and accuracy expectations.
-2. Then use the quickstart to establish a first working transcription flow.
-3. If the flow is moving toward production, continue into quality optimization, caption rendering, and callback handling.
-
-## Why it belongs in the capability area
-
-Realtime transcription and translation should stand as an independent capability, not only as a sub-feature of AI, because it directly supports meetings, live streaming, education, and multilingual collaboration.
+- **Live transcription for RTC**: integrated with voice and video services for captions in meetings, live streaming, lectures, interviews, and similar scenarios.
+- **Real-time translation**: translate speech to multiple target languages in realtime.
+- **Cloud-based STT**: process speech in the cloud without depending on client device performance.
+- **Speaker labeling**: label each transcription with the speaker UID.
+- **Caption recording**: upload transcriptions as `.vtt` files to cloud storage for synchronized playback.
+- **Multi-language support**: support major languages and dialects, plus 40+ translation target languages.

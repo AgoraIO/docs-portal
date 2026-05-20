@@ -1,18 +1,14 @@
 ---
 title: Security and privacy
-description: Understand the basic security expectations around identity, data, and runtime calls before production.
+description: Understand credential handling, data exposure, encryption boundaries, and customer-owned responsibilities before live traffic starts.
 ---
 
-## Security boundaries
+Privacy and security do not stop at encryption; they also include which identifiers, messages, media, and user attributes your own system stores or exposes.
 
-In realtime engagement and AI integration flows, teams should be explicit about credential handling, data scope, and service boundaries.
+## Questions to answer early
 
-## Focus areas
-
-- How credentials are stored and used
-- Separation between server and client permissions
-- Minimizing exposure of user data and message content
-
-## Recommendation
-
-Before moving toward production, confirm that your access model and data flow align with your team's security requirements.
+- Where are App IDs, App Certificates, and generated tokens stored?
+- Which services are allowed to mint or forward credentials?
+- What user data, call content, or metadata is stored by your own system?
+- Do end users need explicit consent or clearer prompts before data capture?
+- Which regional or contractual controls apply to the rollout?
