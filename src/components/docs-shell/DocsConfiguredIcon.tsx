@@ -1,5 +1,9 @@
 import { icons } from 'lucide-react';
 
+export function hasConfiguredIcon(icon?: string) {
+  return Boolean(icon && icon in icons);
+}
+
 export function DocsConfiguredIcon({
   className,
   icon,
@@ -7,7 +11,7 @@ export function DocsConfiguredIcon({
   className?: string;
   icon?: string;
 }) {
-  if (!icon || !(icon in icons)) {
+  if (!hasConfiguredIcon(icon)) {
     return null;
   }
 

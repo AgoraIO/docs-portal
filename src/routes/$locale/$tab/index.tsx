@@ -1,6 +1,5 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
-import { DocsShell } from '@/components/docs-shell/DocsShell';
 import { getDocsPagePayload, getDocsTabIndex } from '@/lib/docs-page';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
 
@@ -21,77 +20,57 @@ export const Route = createFileRoute('/$locale/$tab/')({
       throw notFound();
     }
 
-    if (page.url === `/${params.locale}/${params.tab}`) {
-      const payload = await getDocsPagePayload({
-        data: {
-          locale: params.locale,
-          slugSegments: [],
-          tab: params.tab,
-        },
+    if (page.url !== `/${params.locale}/${params.tab}`) {
+      throw redirect({
+        href: page.url,
       });
-
-      if (!payload) {
-        throw notFound();
-      }
-
-      if ('redirectUrl' in payload) {
-        throw redirect({
-          href: payload.redirectUrl,
-        });
-      }
-
-      return {
-        ...payload,
-      };
     }
 
-    throw redirect({
-      href: page.url,
+    const payload = await getDocsPagePayload({
+      data: {
+        locale: params.locale,
+        slugSegments: [],
+        tab: params.tab,
+      },
     });
+
+    if (!payload) {
+      throw notFound();
+    }
+
+    if ('redirectUrl' in payload) {
+      throw redirect({
+        href: payload.redirectUrl,
+      });
+    }
+
+    return {
+      ...payload,
+    };
   },
-  component: Page,
+  component: TabIndexPage,
 });
 
-function Page() {
+function TabIndexPage() {
   const {
-    activePath,
-    activeTab,
     breadcrumb,
     contentPath,
     description,
-    localeLinks,
     markdownUrl,
-    navigation,
-    pages,
-    sidebar,
     slug,
-    tabs,
     toc,
     title,
   } = Route.useLoaderData();
 
   return (
-    <DocsShell
-      activePath={activePath}
-      activeTab={activeTab}
-      localeLinks={localeLinks}
-      locale={Route.useParams().locale}
-      next={navigation.next}
-      pages={pages}
-      previous={navigation.previous}
-      sidebar={sidebar}
-      tabs={tabs}
+    <DocsContent
+      breadcrumb={breadcrumb}
+      contentPath={contentPath}
+      description={description}
+      markdownUrl={markdownUrl}
+      slug={slug}
+      title={title}
       toc={toc}
-    >
-      <DocsContent
-        breadcrumb={breadcrumb}
-        contentPath={contentPath}
-        description={description}
-        markdownUrl={markdownUrl}
-        slug={slug}
-        title={title}
-        toc={toc}
-      />
-    </DocsShell>
+    />
   );
 }

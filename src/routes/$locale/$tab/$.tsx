@@ -1,6 +1,5 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
-import { DocsShell } from '@/components/docs-shell/DocsShell';
 import { getDocsPagePayload } from '@/lib/docs-page';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
 
@@ -39,44 +38,24 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
 function Page() {
   const {
-    activePath,
-    activeTab,
     breadcrumb,
     contentPath,
     description,
-    localeLinks,
     markdownUrl,
-    navigation,
-    pages,
-    sidebar,
     slug,
-    tabs,
     toc,
     title,
   } = Route.useLoaderData();
 
   return (
-    <DocsShell
-      activePath={activePath}
-      activeTab={activeTab}
-      localeLinks={localeLinks}
-      locale={Route.useParams().locale}
-      next={navigation.next}
-      pages={pages}
-      previous={navigation.previous}
-      sidebar={sidebar}
-      tabs={tabs}
+    <DocsContent
+      breadcrumb={breadcrumb}
+      contentPath={contentPath}
+      description={description}
+      markdownUrl={markdownUrl}
+      slug={slug}
+      title={title}
       toc={toc}
-    >
-      <DocsContent
-        breadcrumb={breadcrumb}
-        contentPath={contentPath}
-        description={description}
-        markdownUrl={markdownUrl}
-        slug={slug}
-        title={title}
-        toc={toc}
-      />
-    </DocsShell>
+    />
   );
 }

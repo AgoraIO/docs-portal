@@ -124,6 +124,11 @@ export async function loadDocsPagePayload(
   };
 }
 
+export type DocsPagePayload = Exclude<
+  Awaited<ReturnType<typeof loadDocsPagePayload>>,
+  null | { redirectUrl: string }
+>;
+
 async function readProcessedText(page: PageWithSource) {
   try {
     return await page.data.getText('processed');
