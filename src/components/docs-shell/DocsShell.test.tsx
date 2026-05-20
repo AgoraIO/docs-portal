@@ -6,7 +6,6 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { useState, type ComponentProps, type ReactNode } from 'react';
 import {
   fireEvent,
   render,
@@ -14,6 +13,7 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
+import { type ComponentProps, type ReactNode, useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
@@ -23,11 +23,13 @@ import { DocsShell } from './DocsShell';
 
 const tabs: TabSummary[] = [
   {
+    icon: 'BookOpen',
     id: 'introduction',
     title: 'Introduction',
     url: '/en/introduction',
   },
   {
+    icon: 'Zap',
     id: 'ai',
     title: 'AI',
     url: '/en/ai',
@@ -51,6 +53,7 @@ const sidebar: DocsSidebarNode[] = [
       },
     ],
     collapsible: false,
+    icon: 'BookOpen',
     title: 'Guides',
     type: 'section',
     id: 'guides-section',
@@ -67,6 +70,18 @@ function renderDocsShell(
     activePath: '/en/introduction',
     activeTab: 'introduction',
     children: <article>Body</article>,
+    localeLinks: [
+      {
+        href: '/en/introduction',
+        isActive: true,
+        locale: 'en',
+      },
+      {
+        href: '/zh-CN/introduction',
+        isActive: false,
+        locale: 'zh-CN',
+      },
+    ],
     locale: 'en',
     next: undefined,
     pages: [
@@ -110,7 +125,10 @@ function renderDocsShell(
   return render(<RouterProvider router={router} />);
 }
 
-function renderWithRouter(children: ReactNode, initialEntry = '/en/introduction/about-agora') {
+function renderWithRouter(
+  children: ReactNode,
+  initialEntry = '/en/introduction/about-agora',
+) {
   const rootRoute = createRootRoute({
     component: () => <Outlet />,
   });
@@ -143,11 +161,15 @@ describe('DocsShell', () => {
 
     const mainHeaderRow = screen.getByTestId('docs-main-header-row');
     const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
+    const docsBodyShell = screen.getByTestId('docs-body-shell');
+    const docsSidebar = screen.getByTestId('docs-sidebar');
     const desktopSearch = within(mainHeaderRow)
       .getAllByRole('button', {
         name: 'Search docs',
       })
-      .find((button) => button.textContent?.includes('Search docs'));
+      .find((button) =>
+        button.textContent?.includes('Search docs, APIs, guides...'),
+      );
     const languageControl = within(mainHeaderRow)
       .getAllByRole('button', {
         name: 'Language',
@@ -155,6 +177,9 @@ describe('DocsShell', () => {
       .find((button) => button.textContent?.includes('English'));
     const themeControl = within(mainHeaderRow).getByRole('button', {
       name: 'Theme: Light',
+    });
+    const githubControl = within(mainHeaderRow).getByRole('link', {
+      name: 'GitHub',
     });
     const tabsIntroductionLink = within(docsTabsStrip).getByRole('tab', {
       name: 'Introduction',
@@ -178,9 +203,21 @@ describe('DocsShell', () => {
     expect(docsTabsStrip).toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsAiLink);
     expect(mainHeaderRow).not.toContainElement(docsTabsStrip);
+    expect(docsTabsStrip).toHaveClass('hidden', 'md:block');
+    expect(docsBodyShell).toHaveClass('grid');
+    expect(docsBodyShell).toHaveClass('lg:grid-cols-[256px_minmax(0,1fr)]');
+    expect(docsSidebar).toHaveStyle({
+      '--sidebar-width': '16rem',
+    });
     expect(themeControl).toHaveAttribute('aria-label', 'Theme: Light');
     expect(themeControl).toHaveAttribute('aria-pressed', 'false');
     expect(themeControl.querySelector('span:not(.sr-only)')).toBeNull();
+    expect(themeControl.className).not.toContain('bg-card');
+    expect(themeControl.className).toContain('hover:bg-transparent');
+    expect(themeControl.className).toContain('dark:hover:bg-transparent');
+    expect(githubControl.className).not.toContain('bg-card');
+    expect(githubControl.className).toContain('hover:bg-transparent');
+    expect(githubControl.className).toContain('dark:hover:bg-transparent');
     expect(languageControl).toHaveTextContent('English');
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
     expect(tabsAiLink).toHaveAttribute('href', '/en/ai');
@@ -221,6 +258,43 @@ describe('DocsShell', () => {
     ).toBeInTheDocument();
   });
 
+  it('keeps desktop sidebar, content, and toc as independent scroll regions', async () => {
+    renderDocsShell({
+      next: { title: 'Next Page', url: '/en/introduction/next-page' },
+      previous: { title: 'Previous Page', url: '/en/introduction/prev-page' },
+    });
+
+    expect(await screen.findByTestId('docs-body-shell')).toHaveClass(
+      'lg:min-h-0',
+      'lg:overflow-hidden',
+    );
+    expect(screen.getByTestId('docs-sidebar')).toHaveClass(
+      'h-full',
+      'min-h-0',
+      'overflow-hidden',
+    );
+    expect(screen.getByTestId('docs-sidebar-scroll')).toHaveClass(
+      'h-full',
+      'min-h-0',
+      'overflow-y-auto',
+    );
+    expect(screen.getByTestId('docs-main-column')).toHaveClass(
+      'h-full',
+      'min-h-0',
+      'overflow-hidden',
+    );
+    expect(screen.getByTestId('docs-main-desktop-scroll')).toHaveClass(
+      'h-full',
+      'min-h-0',
+      'overflow-y-auto',
+    );
+    expect(screen.getByTestId('docs-toc-rail')).toHaveClass(
+      'h-full',
+      'min-h-0',
+      'overflow-y-auto',
+    );
+  });
+
   it('resets desktop sidebar scroll position when the active tab changes', async () => {
     function ShellWithTabSwitcher() {
       const [activeTab, setActiveTab] = useState<'introduction' | 'ai'>(
@@ -235,6 +309,18 @@ describe('DocsShell', () => {
           <DocsShell
             activePath="/en/introduction"
             activeTab={activeTab}
+            localeLinks={[
+              {
+                href: '/en/introduction',
+                isActive: true,
+                locale: 'en',
+              },
+              {
+                href: '/zh-CN/introduction',
+                isActive: false,
+                locale: 'zh-CN',
+              },
+            ]}
             locale="en"
             pages={[
               {
@@ -283,12 +369,24 @@ describe('DocsShell', () => {
     });
     const docsRoute = createRoute({
       getParentRoute: () => rootRoute,
-      path: '/$locale/$tab/$slug',
+      path: '/$locale/$tab/$',
       component: () => (
         <AppProviders>
           <DocsShell
             activePath="/en/ai/get-started/quickstart"
             activeTab="ai"
+            localeLinks={[
+              {
+                href: '/en/ai/get-started/quickstart',
+                isActive: true,
+                locale: 'en',
+              },
+              {
+                href: '/zh-CN/ai/get-started/quickstart',
+                isActive: false,
+                locale: 'zh-CN',
+              },
+            ]}
             locale="en"
             pages={[]}
             sidebar={[]}
@@ -310,16 +408,18 @@ describe('DocsShell', () => {
 
     render(<RouterProvider router={router} />);
 
-    const languageButton = (await screen.findAllByRole('button', {
-      name: 'Language',
-    })).find((button) => button.textContent?.includes('English'));
+    const languageButton = (
+      await screen.findAllByRole('button', {
+        name: 'Language',
+      })
+    ).find((button) => button.textContent?.includes('English'));
 
     if (!languageButton) {
       throw new Error('expected desktop language button');
     }
 
     fireEvent.click(languageButton);
-    fireEvent.click(await screen.findByRole('button', { name: '简体中文' }));
+    fireEvent.click(await screen.findByRole('link', { name: '简体中文' }));
 
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(
@@ -333,18 +433,64 @@ describe('DocsShell', () => {
     });
   });
 
+  it('renders locale options as crawlable links for static discovery', async () => {
+    renderDocsShell({
+      activePath: '/en/ai/get-started/quickstart',
+      activeTab: 'ai',
+      localeLinks: [
+        {
+          href: '/en/ai/get-started/quickstart',
+          isActive: true,
+          locale: 'en',
+        },
+        {
+          href: '/zh-CN/ai/get-started/quickstart',
+          isActive: false,
+          locale: 'zh-CN',
+        },
+      ],
+    });
+
+    fireEvent.click(
+      (
+        await screen.findAllByRole('button', {
+          name: 'Language',
+        })
+      ).find((button) => button.textContent?.includes('English')) ??
+        (() => {
+          throw new Error('expected desktop language button');
+        })(),
+    );
+
+    expect(
+      await screen.findByRole('link', { name: '简体中文' }),
+    ).toHaveAttribute('href', '/zh-CN/ai/get-started/quickstart');
+  });
+
   it('keeps compact mobile header controls and exposes locale and theme in the sheet', async () => {
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
     const docsRoute = createRoute({
       getParentRoute: () => rootRoute,
-      path: '/$locale/$tab/$slug',
+      path: '/$locale/$tab/$',
       component: () => (
         <AppProviders>
           <DocsShell
             activePath="/en/introduction"
             activeTab="introduction"
+            localeLinks={[
+              {
+                href: '/en/introduction',
+                isActive: true,
+                locale: 'en',
+              },
+              {
+                href: '/zh-CN/introduction',
+                isActive: false,
+                locale: 'zh-CN',
+              },
+            ]}
             locale="en"
             pages={[
               {
@@ -393,13 +539,21 @@ describe('DocsShell', () => {
     expect(menuButton).toBeInTheDocument();
     expect(mobileSearchButton).toBeInTheDocument();
     expect(mobileSearchButton).not.toHaveTextContent('Search docs');
+    expect(screen.getByTestId('docs-tabs-strip')).toHaveClass(
+      'hidden',
+      'md:block',
+    );
     expect(
       within(mobileHeaderActions).queryByRole('button', { name: 'Language' }),
     ).toBeNull();
     expect(
-      within(mobileHeaderActions).queryByRole('button', { name: 'Theme: Light' }),
+      within(mobileHeaderActions).queryByRole('button', {
+        name: 'Theme: Light',
+      }),
     ).toBeNull();
-    expect(desktopSearchButton).toHaveTextContent('Search docs');
+    expect(desktopSearchButton).toHaveTextContent(
+      'Search docs, APIs, guides...',
+    );
 
     fireEvent.click(menuButton);
 

@@ -18,14 +18,16 @@ describe('sidebar primitive', () => {
       </SidebarProvider>,
     );
 
-    const wrapper = screen.getByText('Navigation').closest(
-      '[data-slot="sidebar-wrapper"]',
-    );
+    const wrapper = screen
+      .getByText('Navigation')
+      .closest('[data-slot="sidebar-wrapper"]');
     const outerWrapper = wrapper?.parentElement;
-    const content = screen.getByText('Navigation').closest(
-      '[data-slot="sidebar-content"]',
-    );
-    const inset = screen.getByText('Main').closest('[data-slot="sidebar-inset"]');
+    const content = screen
+      .getByText('Navigation')
+      .closest('[data-slot="sidebar-content"]');
+    const inset = screen
+      .getByText('Main')
+      .closest('[data-slot="sidebar-inset"]');
 
     expect(wrapper).toBeInTheDocument();
     expect(wrapper).toHaveClass('flex');

@@ -10,9 +10,7 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       throw notFound();
     }
 
-    const slugSegments = (params._splat ?? '')
-      .split('/')
-      .filter(Boolean);
+    const slugSegments = (params._splat ?? '').split('/').filter(Boolean);
 
     const payload = await getDocsPagePayload({
       data: {
@@ -43,8 +41,11 @@ function Page() {
   const {
     activePath,
     activeTab,
+    breadcrumb,
     contentPath,
     description,
+    localeLinks,
+    markdownUrl,
     navigation,
     pages,
     sidebar,
@@ -58,6 +59,7 @@ function Page() {
     <DocsShell
       activePath={activePath}
       activeTab={activeTab}
+      localeLinks={localeLinks}
       locale={Route.useParams().locale}
       next={navigation.next}
       pages={pages}
@@ -67,8 +69,10 @@ function Page() {
       toc={toc}
     >
       <DocsContent
+        breadcrumb={breadcrumb}
         contentPath={contentPath}
         description={description}
+        markdownUrl={markdownUrl}
         slug={slug}
         title={title}
         toc={toc}

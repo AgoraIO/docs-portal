@@ -1,6 +1,5 @@
 import { docs } from 'collections/server';
 import { type InferPageType, loader } from 'fumadocs-core/source';
-import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
 import { buildDocPath, parseSourceSlugs } from './docs-routing';
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { docsContentRoute, docsRoute } from './shared';
@@ -22,7 +21,6 @@ export const source = loader({
       route.slugSegments,
     );
   },
-  plugins: [lucideIconsPlugin()],
 });
 
 export type PageWithSource = InferPageType<typeof source>;

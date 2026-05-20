@@ -4,6 +4,10 @@ import { loadDocsPagePayload, loadDocsTabIndex } from './docs-page.server';
 import { source } from './source.server';
 
 vi.mock('./source.server', () => ({
+  getPageMarkdownUrl: (page: { path: string }) => ({
+    segments: page.path.split('/').filter(Boolean),
+    url: `/llms.mdx/docs/${page.path}`,
+  }),
   source: {
     getPage: vi.fn(),
     getPages: vi.fn(),
@@ -23,6 +27,12 @@ const pageTree: Root = {
         {
           $id: 'introduction-folder',
           children: [
+            {
+              $id: 'introduction-get-started',
+              icon: 'BookOpen',
+              name: 'Get started',
+              type: 'separator',
+            },
             {
               $id: 'introduction-about-agora',
               name: 'About Agora',
@@ -73,13 +83,15 @@ function createPage() {
         children: [],
         type: 'root' as const,
       })),
-      getText: vi.fn(async () => `## What is
+      getText: vi.fn(
+        async () => `## What is
 
 Agora overview.
 
 ## Why
 
-Why teams use it.`),
+Why teams use it.`,
+      ),
       info: {
         fullPath: '/virtual/content/docs/en/introduction/about-agora.md',
         path: 'en/introduction/about-agora.md',
@@ -110,25 +122,24 @@ describe('loadDocsTabIndex', () => {
     });
   });
 
-  it(
-    'falls back to the first real page when the tab has no index content',
-    async () => {
-      await expect(
-        loadDocsTabIndex('en', 'introduction'),
-      ).resolves.toMatchObject({
+  it('falls back to the first real page when the tab has no index content', async () => {
+    await expect(loadDocsTabIndex('en', 'introduction')).resolves.toMatchObject(
+      {
         locale: 'en',
         tab: 'introduction',
         url: '/en/introduction/about-agora',
-      });
-    },
-  );
+      },
+    );
+  });
 });
 
 describe('loadDocsPagePayload', () => {
   beforeEach(() => {
     const page = createPage();
 
-    mockedGetPage.mockReturnValue(page);
+    mockedGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? undefined : page,
+    );
     mockedGetPages.mockReturnValue([page]);
     mockedGetPageTree.mockReturnValue(pageTree);
   });
@@ -139,7 +150,29 @@ describe('loadDocsPagePayload', () => {
     ).resolves.toMatchObject({
       activePath: '/en/introduction/about-agora',
       activeTab: 'introduction',
+      breadcrumb: [
+        {
+          title: 'Get started',
+        },
+        {
+          title: 'About Agora',
+          url: '/en/introduction/about-agora',
+        },
+      ],
       contentPath: 'en/introduction/about-agora.md',
+      localeLinks: [
+        {
+          href: '/en/introduction/about-agora',
+          isActive: true,
+          locale: 'en',
+        },
+        {
+          href: '/zh-CN/introduction/about-agora',
+          isActive: false,
+          locale: 'zh-CN',
+        },
+      ],
+      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora.md',
       slug: 'about-agora',
       title: 'About Agora',
       toc: [
@@ -164,7 +197,8 @@ describe('loadDocsPagePayload', () => {
       data: {
         ...basePage.data,
         info: {
-          fullPath: '/virtual/content/docs/en/realtime-media/rtc/quick-start.md',
+          fullPath:
+            '/virtual/content/docs/en/realtime-media/rtc/quick-start.md',
           path: 'en/realtime-media/rtc/quick-start.md',
         },
         title: 'RTC Quick Start',
@@ -175,7 +209,9 @@ describe('loadDocsPagePayload', () => {
     };
 
     mockedGetPage.mockReturnValue(nestedPage as ReturnType<typeof createPage>);
-    mockedGetPages.mockReturnValue([nestedPage as ReturnType<typeof createPage>]);
+    mockedGetPages.mockReturnValue([
+      nestedPage as ReturnType<typeof createPage>,
+    ]);
 
     await expect(
       loadDocsPagePayload('en', 'realtime-media', ['rtc', 'quick-start']),
@@ -185,6 +221,69 @@ describe('loadDocsPagePayload', () => {
       contentPath: 'en/realtime-media/rtc/quick-start.md',
       slug: 'quick-start',
       title: 'RTC Quick Start',
+    });
+  });
+
+  it('falls back locale links to the target tab entry when the same slug is missing', async () => {
+    const page = createPage();
+    const zhPageTree: Root = {
+      children: [
+        {
+          $id: 'zh-root',
+          children: [
+            {
+              $id: 'zh-ai-folder',
+              children: [
+                {
+                  $id: 'zh-ai-quickstart',
+                  name: '快速开始',
+                  type: 'page',
+                  url: '/zh-CN/ai/quick-start',
+                },
+              ],
+              name: 'AI',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'Chinese',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    mockedGetPage.mockImplementation((_slugs, locale) => {
+      if (locale === 'zh-CN') {
+        return undefined;
+      }
+
+      return {
+        ...page,
+        path: 'en/ai/get-started/quickstart.md',
+        slugs: ['en', 'ai', 'get-started', 'quickstart'],
+        url: '/en/ai/get-started/quickstart',
+      };
+    });
+    mockedGetPageTree.mockImplementation((locale) =>
+      locale === 'zh-CN' ? zhPageTree : pageTree,
+    );
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['get-started', 'quickstart']),
+    ).resolves.toMatchObject({
+      localeLinks: [
+        {
+          href: '/en/ai/get-started/quickstart',
+          isActive: true,
+          locale: 'en',
+        },
+        {
+          href: '/zh-CN/ai/quick-start',
+          isActive: false,
+          locale: 'zh-CN',
+        },
+      ],
     });
   });
 });

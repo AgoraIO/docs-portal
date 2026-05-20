@@ -5,6 +5,7 @@ import { buildDocPath } from './docs-routing';
 
 export type TabSummary = {
   description?: string;
+  icon?: string;
   id: string;
   title: string;
   url: string;
@@ -19,6 +20,7 @@ export type SidebarEntry =
     }
   | {
       collapsible?: boolean;
+      icon?: string;
       id: string;
       title: string;
       type: 'separator';
@@ -34,12 +36,18 @@ export type DocsSidebarPageNode = {
 export type DocsSidebarSectionNode = {
   children: DocsSidebarNode[];
   collapsible?: boolean;
+  icon?: string;
   id: string;
   title: string;
   type: 'section';
 };
 
 export type DocsSidebarNode = DocsSidebarPageNode | DocsSidebarSectionNode;
+
+export type DocsBreadcrumbItem = {
+  title: string;
+  url?: string;
+};
 
 export function getTabSummaries(root: Root): TabSummary[] {
   return getTabNodes(root).flatMap((node) => {
@@ -54,18 +62,25 @@ export function getTabSummaries(root: Root): TabSummary[] {
       return [];
     }
 
-    return [
-      {
-        description:
-          typeof item.description === 'string' ? item.description : undefined,
-        id,
-        title:
-          node.type === 'folder'
-            ? normalizeLabel(node.name, id)
-            : normalizeLabel(item.name, id),
-        url: item.url,
-      },
-    ];
+    const summary: TabSummary = {
+      id,
+      title:
+        node.type === 'folder'
+          ? normalizeLabel(node.name, id)
+          : normalizeLabel(item.name, id),
+      url: item.url,
+    };
+
+    if (typeof item.description === 'string') {
+      summary.description = item.description;
+    }
+
+    const icon = getConfiguredIconName(node, item);
+    if (icon) {
+      summary.icon = icon;
+    }
+
+    return [summary];
   });
 }
 
@@ -118,7 +133,10 @@ export function getSidebarEntries(
   return entries;
 }
 
-export function getSidebarNodes(root: Root, activeTab: string): DocsSidebarNode[] {
+export function getSidebarNodes(
+  root: Root,
+  activeTab: string,
+): DocsSidebarNode[] {
   const tabNode = findTabNode(root, activeTab);
 
   if (!tabNode) {
@@ -143,23 +161,73 @@ export function getSidebarNodes(root: Root, activeTab: string): DocsSidebarNode[
   const nodes: DocsSidebarNode[] = [];
   const indexItem = getTabIndex(tabNode);
   const indexUrl = indexItem?.url;
+  let pendingIndexNode: DocsSidebarPageNode | null = indexItem
+    ? {
+        id: indexItem.url,
+        title: normalizeLabel(indexItem.name, activeTab),
+        type: 'page',
+        url: indexItem.url,
+      }
+    : null;
+  let hasEmittedContent = false;
 
-  if (indexItem) {
-    nodes.push({
-      id: indexItem.url,
-      title: normalizeLabel(indexItem.name, activeTab),
-      type: 'page',
-      url: indexItem.url,
-    });
-  }
+  let currentSection: DocsSidebarSectionNode | null = null;
 
   for (const child of tabNode.children) {
+    if (child.type === 'separator') {
+      const title = typeof child.name === 'string' ? child.name : '';
+      currentSection = null;
+
+      if (title.length > 0) {
+        const icon = getConfiguredIconName(child);
+        currentSection = {
+          children: [],
+          collapsible: isCollapsibleSectionTitle(title),
+          ...(icon ? { icon } : {}),
+          id: `separator-${title}`,
+          title,
+          type: 'section',
+        };
+        if (pendingIndexNode && !hasEmittedContent) {
+          currentSection.children.push(pendingIndexNode);
+          pendingIndexNode = null;
+        }
+        nodes.push(currentSection);
+        hasEmittedContent = true;
+      }
+
+      continue;
+    }
+
     for (const node of pageTreeNodeToSidebarNodes(child)) {
       if (node.type === 'page' && node.url === indexUrl) {
         continue;
       }
 
-      nodes.push(node);
+      if (pendingIndexNode) {
+        if (currentSection) {
+          currentSection.children.push(pendingIndexNode);
+        } else {
+          nodes.push(pendingIndexNode);
+        }
+        pendingIndexNode = null;
+        hasEmittedContent = true;
+      }
+
+      if (currentSection) {
+        currentSection.children.push(node);
+      } else {
+        nodes.push(node);
+      }
+      hasEmittedContent = true;
+    }
+  }
+
+  if (pendingIndexNode) {
+    if (currentSection) {
+      currentSection.children.push(pendingIndexNode);
+    } else {
+      nodes.push(pendingIndexNode);
     }
   }
 
@@ -194,6 +262,7 @@ export function mapSidebarEntriesToTree(
         collapsible:
           pendingSectionEntry.collapsible ??
           isCollapsibleSectionTitle(pendingSectionEntry.title),
+        ...(pendingSectionEntry.icon ? { icon: pendingSectionEntry.icon } : {}),
         id: pendingSectionEntry.id,
         title: pendingSectionEntry.title,
         type: 'section',
@@ -232,7 +301,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     return [];
   }
 
-  const children = node.children.flatMap((child) => pageTreeNodeToSidebarNodes(child));
+  const children = node.children.flatMap((child) =>
+    pageTreeNodeToSidebarNodes(child),
+  );
 
   if (
     node.index &&
@@ -246,10 +317,13 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     });
   }
 
+  const icon = getConfiguredIconName(node, node.index);
+
   return [
     {
       children,
       collapsible: true,
+      ...(icon ? { icon } : {}),
       id: `folder-${String(node.$id ?? node.name ?? 'folder')}`,
       title: normalizeLabel(node.name, node.index?.url ?? 'Folder'),
       type: 'section',
@@ -266,6 +340,21 @@ export function getPrevNextLinks(root: Root, currentUrl: string) {
       ? mapPageLink(neighbours.previous)
       : undefined,
   };
+}
+
+export function getSidebarBreadcrumb(
+  nodes: DocsSidebarNode[],
+  activePath: string,
+): DocsBreadcrumbItem[] {
+  for (const node of nodes) {
+    const result = findSidebarBreadcrumb(node, activePath);
+
+    if (result) {
+      return result;
+    }
+  }
+
+  return [];
 }
 
 export function buildPublicDocUrl(locale: string, tab: string, slug?: string) {
@@ -330,7 +419,10 @@ function findTabNode(root: Root, activeTab: string): Node | undefined {
   });
 }
 
-function findNodeBySlugSegments(node: Node, slugSegments: string[]): Node | undefined {
+function findNodeBySlugSegments(
+  node: Node,
+  slugSegments: string[],
+): Node | undefined {
   if (slugSegments.length === 0) {
     return node;
   }
@@ -380,8 +472,11 @@ function getFirstDescendantPageUrl(node: Folder): string | null {
 
 function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
   if (node.type === 'separator') {
+    const icon = getConfiguredIconName(node);
+
     return [
       {
+        ...(icon ? { icon } : {}),
         id: `${prefix}separator-${String(node.name ?? 'unnamed')}`,
         title: typeof node.name === 'string' ? node.name : '',
         type: 'separator',
@@ -407,16 +502,20 @@ function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
   const childEntries: SidebarEntry[] = [];
 
   for (const child of node.children) {
-    childEntries.push(...flattenSidebarNode(child, `${node.$id ?? node.name}-`));
+    childEntries.push(
+      ...flattenSidebarNode(child, `${node.$id ?? node.name}-`),
+    );
   }
 
   if (childEntries.length === 0 && !node.index) {
     return [];
   }
 
+  const icon = getConfiguredIconName(node, node.index);
   const entries: SidebarEntry[] = [
     {
       collapsible: true,
+      ...(icon ? { icon } : {}),
       id: `${prefix}separator-${String(node.$id ?? node.name ?? 'folder')}`,
       title: normalizeLabel(node.name, node.index?.url ?? 'Folder'),
       type: 'separator',
@@ -442,6 +541,39 @@ function mapPageLink(item: Item) {
     title: normalizeLabel(item.name, item.url),
     url: item.url,
   };
+}
+
+function findSidebarBreadcrumb(
+  node: DocsSidebarNode,
+  activePath: string,
+): DocsBreadcrumbItem[] | null {
+  if (node.type === 'page') {
+    if (node.url !== activePath) {
+      return null;
+    }
+
+    return [
+      {
+        title: node.title,
+        url: node.url,
+      },
+    ];
+  }
+
+  for (const child of node.children) {
+    const childBreadcrumb = findSidebarBreadcrumb(child, activePath);
+
+    if (childBreadcrumb) {
+      return [
+        {
+          title: node.title,
+        },
+        ...childBreadcrumb,
+      ];
+    }
+  }
+
+  return null;
 }
 
 function getTabIdFromUrl(url: string) {
@@ -484,6 +616,16 @@ function normalizeLabel(value: ReactNode, fallback: string) {
   return fallback;
 }
 
+function getConfiguredIconName(node: Node, fallback?: Item) {
+  if ('icon' in node && typeof node.icon === 'string' && node.icon.length > 0) {
+    return node.icon;
+  }
+
+  return typeof fallback?.icon === 'string' && fallback.icon.length > 0
+    ? fallback.icon
+    : undefined;
+}
+
 function isCollapsibleSectionTitle(title: string) {
   return (
     title === 'SDK Quickstarts' ||
@@ -522,7 +664,9 @@ function shouldHideFolderIndexInSidebar(
         : 'Overview'
       : title;
 
-  const hasRealChildPages = children.some((child) => child.type !== 'separator');
+  const hasRealChildPages = children.some(
+    (child) => child.type !== 'separator',
+  );
 
   return hasRealChildPages && normalizedIndexTitle === normalizedFolderName;
 }

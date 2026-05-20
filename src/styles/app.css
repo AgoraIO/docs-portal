@@ -135,24 +135,42 @@
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #171b1c;
-    --card: rgb(255 255 255 / 0.92);
-    --card-foreground: #171b1c;
-    --popover: rgb(255 255 255 / 0.98);
-    --popover-foreground: #171b1c;
-    --primary: #167f6d;
-    --primary-foreground: #f5fffb;
-    --secondary: #f7faf9;
-    --secondary-foreground: #171b1c;
-    --muted: #f8faf9;
-    --muted-foreground: #6f7774;
-    --accent: #eef6f2;
-    --accent-foreground: #171b1c;
-    --border: rgb(23 27 28 / 0.1);
-    --input: rgb(23 27 28 / 0.08);
-    --ring: rgb(22 127 109 / 0.24);
-    --radius: 0.75rem;
+    --bg: #fbfaf7;
+    --bg-card: #ffffff;
+    --bg-elev: #ffffff;
+    --bg-sunken: #f4f2ec;
+    --ink-1: #0e0f12;
+    --ink-2: #2a2c33;
+    --ink-3: #5b606b;
+    --ink-4: #8a8f9a;
+    --line: rgb(14 15 18 / 0.075);
+    --line-strong: rgb(14 15 18 / 0.12);
+    --accent-brand: oklch(0.32 0.02 270);
+    --accent-brand-soft: oklch(0.32 0.02 270 / 0.08);
+    --accent-brand-ring: oklch(0.32 0.02 270 / 0.22);
+    --docs-shadow-sm:
+      0 1px 0 rgb(14 15 18 / 0.04), 0 1px 2px rgb(14 15 18 / 0.04);
+    --docs-shadow-md:
+      0 1px 0 rgb(14 15 18 / 0.04), 0 8px 24px -10px rgb(14 15 18 / 0.1);
+
+    --background: var(--bg);
+    --foreground: var(--ink-1);
+    --card: var(--bg-card);
+    --card-foreground: var(--ink-1);
+    --popover: var(--bg-card);
+    --popover-foreground: var(--ink-1);
+    --primary: var(--accent-brand);
+    --primary-foreground: #ffffff;
+    --secondary: var(--bg-sunken);
+    --secondary-foreground: var(--ink-1);
+    --muted: var(--bg-sunken);
+    --muted-foreground: var(--ink-3);
+    --accent: var(--bg-sunken);
+    --accent-foreground: var(--ink-1);
+    --border: var(--line);
+    --input: var(--line-strong);
+    --ring: var(--accent-brand-ring);
+    --radius: 0.625rem;
 
     --color-fd-background: var(--background);
     --color-fd-foreground: var(--foreground);
@@ -171,35 +189,57 @@
     --default-mono-font-family: var(--font-mono);
 
     --protocol-home-width: 82rem;
-    --docs-text-primary: rgb(23 27 28 / 0.9);
-    --docs-text-secondary: rgb(23 27 28 / 0.64);
-    --docs-text-tertiary: rgb(23 27 28 / 0.46);
-    --docs-soft-fill: rgb(23 27 28 / 0.035);
+    --docs-text-primary: var(--ink-1);
+    --docs-text-secondary: var(--ink-2);
+    --docs-text-tertiary: var(--ink-3);
+    --docs-soft-fill: color-mix(in srgb, var(--ink-1) 3.5%, transparent);
+    --line-soft: var(--line);
+    --surface-muted: var(--bg-sunken);
+    --docs-header-h: 52px;
+    --docs-tabs-h: 40px;
+    --content-max: 720px;
   }
 
   .dark {
-    --background: #0a0d0d;
-    --foreground: #eef4f2;
-    --card: rgb(11 14 14 / 0.94);
-    --card-foreground: #eef4f2;
-    --popover: rgb(12 15 15 / 0.98);
-    --popover-foreground: #eef4f2;
-    --primary: #35b69e;
-    --primary-foreground: #04100d;
-    --secondary: #101413;
-    --secondary-foreground: #e1e6e3;
-    --muted: #0f1312;
-    --muted-foreground: #9ea3a1;
-    --accent: #141917;
-    --accent-foreground: #eef4f2;
-    --border: rgb(238 244 242 / 0.08);
-    --input: rgb(238 244 242 / 0.06);
-    --ring: rgb(54 180 159 / 0.26);
-    --radius: 0.75rem;
-    --docs-text-primary: rgb(238 244 242 / 0.9);
-    --docs-text-secondary: rgb(238 244 242 / 0.64);
-    --docs-text-tertiary: rgb(238 244 242 / 0.46);
-    --docs-soft-fill: rgb(238 244 242 / 0.045);
+    --bg: #0b0c0e;
+    --bg-card: #111316;
+    --bg-elev: #15171b;
+    --bg-sunken: #0a0b0d;
+    --ink-1: #f3f4f6;
+    --ink-2: #d8dae0;
+    --ink-3: #9aa0ab;
+    --ink-4: #6c7280;
+    --line: rgb(255 255 255 / 0.07);
+    --line-strong: rgb(255 255 255 / 0.12);
+    --accent-brand: oklch(0.88 0.02 270);
+    --accent-brand-soft: oklch(0.88 0.02 270 / 0.12);
+    --accent-brand-ring: oklch(0.88 0.02 270 / 0.24);
+    --docs-shadow-sm: 0 1px 0 rgb(0 0 0 / 0.25);
+    --docs-shadow-md: 0 8px 24px -10px rgb(0 0 0 / 0.5);
+
+    --background: var(--bg);
+    --foreground: var(--ink-1);
+    --card: var(--bg-card);
+    --card-foreground: var(--ink-1);
+    --popover: var(--bg-card);
+    --popover-foreground: var(--ink-1);
+    --primary: var(--accent-brand);
+    --primary-foreground: #0b0c0e;
+    --secondary: var(--bg-sunken);
+    --secondary-foreground: var(--ink-1);
+    --muted: var(--bg-sunken);
+    --muted-foreground: var(--ink-3);
+    --accent: var(--bg-sunken);
+    --accent-foreground: var(--ink-1);
+    --border: var(--line);
+    --input: var(--line-strong);
+    --ring: var(--accent-brand-ring);
+    --docs-text-primary: var(--ink-1);
+    --docs-text-secondary: var(--ink-2);
+    --docs-text-tertiary: var(--ink-3);
+    --docs-soft-fill: color-mix(in srgb, var(--ink-1) 4.5%, transparent);
+    --line-soft: var(--line);
+    --surface-muted: var(--bg-sunken);
 
     --color-fd-background: var(--background);
     --color-fd-foreground: var(--foreground);
@@ -226,17 +266,14 @@
 
   html {
     scrollbar-gutter: stable;
-    background: var(--background);
+    background: var(--bg);
     font-family: var(--font-sans);
   }
 
   body {
     min-height: 100vh;
-    background:
-      radial-gradient(circle at top, rgb(22 127 109 / 0.045), transparent 22%),
-      linear-gradient(180deg, rgb(255 255 255 / 0.16), transparent 12%),
-      var(--background);
-    color: var(--foreground);
+    background: var(--bg);
+    color: var(--ink-2);
     font-family: var(--font-sans);
     font-weight: 400;
     text-rendering: optimizeLegibility;
@@ -254,10 +291,7 @@
   }
 
   .dark body {
-    background:
-      radial-gradient(circle at top, rgb(54 180 159 / 0.075), transparent 24%),
-      linear-gradient(180deg, rgb(255 255 255 / 0.008), transparent 10%),
-      var(--background);
+    background: var(--bg);
   }
 
   code,
@@ -287,7 +321,7 @@
   }
 
   ::selection {
-    background: color-mix(in srgb, var(--primary) 20%, transparent);
+    background: color-mix(in srgb, var(--accent-brand) 22%, transparent);
   }
 
   html > body[data-scroll-locked] {
@@ -315,38 +349,48 @@
   }
 
   .prose {
-    max-width: 46rem;
+    max-width: var(--content-max);
   }
 
   .prose :where(h1):not(:where(.not-prose, .not-prose *)) {
-    font-size: clamp(1.85rem, 2vw, 2.18rem);
-    line-height: 1.22;
-    letter-spacing: -0.018em;
-    font-weight: 600;
-    color: var(--docs-text-primary);
+    font-size: 2.375rem;
+    line-height: 1.15;
+    letter-spacing: -0.022em;
+    font-weight: 700;
+    color: var(--ink-1);
   }
 
   .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
-    margin-top: 3rem;
-    margin-bottom: 1rem;
+    margin-top: 3.5rem;
+    margin-bottom: 0.875rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
     letter-spacing: -0.012em;
-    font-size: clamp(1.22rem, 1.35vw, 1.45rem);
+    font-size: 1.375rem;
     font-weight: 600;
-    color: var(--docs-text-primary);
+    color: var(--ink-1);
+    scroll-margin-top: 7rem;
+  }
+
+  .prose :where(h2):not(:where(.not-prose, .not-prose *)):first-child {
+    margin-top: 0.5rem;
+    padding-top: 0;
+    border-top: 0;
   }
 
   .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
-    letter-spacing: 0;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.005em;
     font-size: 1rem;
     font-weight: 600;
-    color: var(--docs-text-primary);
+    color: var(--ink-1);
+    scroll-margin-top: 7rem;
   }
 
   .prose :where(p, li):not(:where(.not-prose, .not-prose *)) {
-    color: var(--docs-text-secondary);
-    line-height: 1.84;
+    color: var(--ink-2);
+    line-height: 1.7;
     font-weight: 400;
   }
 
@@ -368,8 +412,9 @@
     margin-block: 0.42rem;
   }
 
-  .prose :where(ul > li, ol > li):not(:where(.not-prose, .not-prose *))::marker {
-    color: color-mix(in srgb, var(--foreground) 68%, var(--primary) 32%);
+  .prose
+    :where(ul > li, ol > li):not(:where(.not-prose, .not-prose *))::marker {
+    color: var(--ink-4);
     font-weight: 600;
   }
 
@@ -401,11 +446,15 @@
 
   .prose :where(a):not(:where(.not-prose, .not-prose *)) {
     border-radius: 0.2rem;
-    color: color-mix(in srgb, var(--foreground) 84%, var(--primary) 16%);
+    color: var(--accent-brand);
     font-weight: 500;
     text-decoration-line: underline;
     text-decoration-thickness: 0.08em;
-    text-decoration-color: color-mix(in srgb, var(--primary) 58%, transparent);
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--accent-brand) 38%,
+      transparent
+    );
     text-underline-offset: 0.2em;
     transition:
       color 160ms ease,
@@ -414,13 +463,13 @@
   }
 
   .prose :where(a):not(:where(.not-prose, .not-prose *)):hover {
-    background: color-mix(in srgb, var(--primary) 8%, transparent);
-    color: color-mix(in srgb, var(--foreground) 72%, var(--primary) 28%);
-    text-decoration-color: currentcolor;
+    background: var(--accent-brand-soft);
+    color: var(--accent-brand);
+    text-decoration-color: var(--accent-brand);
   }
 
   .prose :where(a):not(:where(.not-prose, .not-prose *)):focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--primary) 34%, transparent);
+    outline: 2px solid var(--accent-brand-ring);
     outline-offset: 2px;
   }
 
@@ -430,30 +479,32 @@
   }
 
   .prose :where(code):not(:where(.not-prose, .not-prose *)) {
-    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
-    border-radius: 0.45rem;
-    background: color-mix(in srgb, var(--secondary) 94%, transparent);
-    padding: 0.18rem 0.42rem;
-    color: color-mix(in srgb, var(--foreground) 88%, transparent);
+    border: 1px solid var(--line);
+    border-radius: 0.3125rem;
+    background: var(--bg-sunken);
+    padding: 0.0625rem 0.375rem;
+    color: var(--ink-1);
+    font-size: 0.88em;
+    font-weight: 500;
   }
 
   .prose :where(pre):not(:where(.not-prose, .not-prose *)) {
-    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
-    border-radius: 0.75rem;
-    background: color-mix(in srgb, var(--secondary) 82%, var(--background));
-    box-shadow: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: var(--docs-shadow-sm);
   }
 
   .code-block,
   [data-component-part="code-block-root"] {
-    border-color: color-mix(in srgb, var(--border) 82%, transparent);
-    background: color-mix(in srgb, var(--secondary) 82%, var(--background));
-    box-shadow: none;
+    border-color: var(--line);
+    background: var(--bg-card);
+    box-shadow: var(--docs-shadow-sm);
   }
 
   [data-component-part="code-block-header"] {
-    border-bottom: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
-    background: color-mix(in srgb, var(--background) 84%, var(--secondary));
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg-sunken) 70%, var(--bg-card));
   }
 
   [data-component-part="code-block-root"] {
@@ -483,10 +534,10 @@
   .prose :where(blockquote):not(:where(.not-prose, .not-prose *)) {
     border-inline-start-color: color-mix(
       in srgb,
-      var(--primary) 42%,
+      var(--accent-brand) 42%,
       transparent
     );
-    color: color-mix(in srgb, var(--foreground) 72%, transparent);
+    color: var(--ink-3);
   }
 
   .prose :where(table):not(:where(.not-prose, .not-prose *)) {
@@ -495,18 +546,18 @@
     border-collapse: separate;
     border-spacing: 0;
     overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
-    border-radius: 1rem;
-    background: color-mix(in srgb, var(--background) 92%, var(--secondary));
-    box-shadow: 0 18px 40px -34px rgb(15 23 42 / 0.28);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: var(--docs-shadow-sm);
   }
 
   .prose :where(thead):not(:where(.not-prose, .not-prose *)) {
-    background: color-mix(in srgb, var(--secondary) 82%, var(--background));
+    background: color-mix(in srgb, var(--bg-sunken) 70%, var(--bg-card));
   }
 
   .prose :where(th, td):not(:where(.not-prose, .not-prose *)) {
-    border-bottom: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+    border-bottom: 1px solid var(--line);
     padding: 0.85rem 1rem;
     text-align: left;
     vertical-align: top;
@@ -523,13 +574,15 @@
   }
 
   .prose :where(td):not(:where(.not-prose, .not-prose *)) {
-    color: var(--docs-text-secondary);
+    color: var(--ink-2);
     font-size: 0.95rem;
     line-height: 1.7;
   }
 
   .prose
-    :where(th:first-child, td:first-child):not(:where(.not-prose, .not-prose *)) {
+    :where(th:first-child, td:first-child):not(
+      :where(.not-prose, .not-prose *)
+    ) {
     width: 1%;
     min-width: 5.5rem;
     white-space: nowrap;
@@ -539,18 +592,240 @@
     border-bottom: 0;
   }
 
-  .prose :where(tbody tr:nth-child(even)):not(:where(.not-prose, .not-prose *)) {
-    background: color-mix(in srgb, var(--secondary) 52%, transparent);
+  .prose
+    :where(tbody tr:nth-child(even)):not(:where(.not-prose, .not-prose *)) {
+    background: color-mix(in srgb, var(--bg-sunken) 45%, transparent);
   }
 
   .prose :where(hr):not(:where(.not-prose, .not-prose *)) {
-    border-color: color-mix(in srgb, var(--border) 85%, transparent);
+    border-color: var(--line);
+  }
+
+  .docs-brand-mark {
+    position: relative;
+    height: 26px;
+    width: 26px;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: 7px;
+    background:
+      radial-gradient(
+        circle at 32% 32%,
+        rgb(255 255 255 / 0.58),
+        transparent 27%
+      ),
+      linear-gradient(
+        135deg,
+        var(--ink-1),
+        color-mix(in srgb, var(--ink-1) 68%, var(--bg-card))
+      );
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.2),
+      0 6px 16px -10px rgb(14 15 18 / 0.55);
+  }
+
+  .docs-brand-mark::before,
+  .docs-brand-mark::after {
+    position: absolute;
+    inset: 7px;
+    content: "";
+    border: 2px solid var(--bg-card);
+    border-radius: 999px;
+  }
+
+  .docs-brand-mark::after {
+    inset: 10px;
+    border-width: 1.5px;
+    opacity: 0.78;
+  }
+
+  .docs-shell-search-trigger {
+    height: 36px;
+    width: 320px;
+    justify-content: flex-start;
+    border-color: var(--line-strong);
+    border-radius: 9px;
+    background: var(--bg-card);
+    padding-inline: 0.75rem 0.625rem;
+    color: var(--ink-4);
+    font-size: 13.5px;
+    font-weight: 400;
+    box-shadow: var(--docs-shadow-sm);
+  }
+
+  .docs-shell-search-trigger kbd {
+    margin-left: auto;
+    display: inline-flex;
+    height: 22px;
+    min-width: 34px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--bg-sunken);
+    color: var(--ink-4);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .docs-tab-icon {
+    display: inline-flex;
+    height: 18px;
+    width: 18px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: var(--accent-brand-soft);
+    color: var(--accent-brand);
+  }
+
+  .docs-tab-icon[data-tone="ai"] {
+    background: rgb(67 145 98 / 0.12);
+    color: #287345;
+  }
+
+  .docs-tab-icon[data-tone="media"] {
+    background: rgb(37 99 235 / 0.1);
+    color: #2f62c9;
+  }
+
+  .docs-tab-icon[data-tone="solutions"] {
+    background: rgb(217 119 6 / 0.12);
+    color: #9a5b00;
+  }
+
+  .docs-tab-icon[data-tone="api"] {
+    background: rgb(100 116 139 / 0.14);
+    color: #475569;
+  }
+
+  .docs-tab-icon[data-tone="best"] {
+    background: rgb(168 85 247 / 0.11);
+    color: #7e4cc2;
+  }
+
+  .docs-side-icon {
+    display: inline-flex;
+    height: 18px;
+    width: 18px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: var(--accent-brand-soft);
+    color: var(--accent-brand);
+  }
+
+  .docs-side-badge {
+    margin-left: auto;
+    flex: 0 0 auto;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.125rem 0.375rem;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .docs-side-badge[data-kind="new"] {
+    border-color: rgb(34 197 94 / 0.16);
+    background: rgb(34 197 94 / 0.1);
+    color: #15803d;
+  }
+
+  .docs-side-badge[data-kind="beta"] {
+    border-color: rgb(245 158 11 / 0.18);
+    background: rgb(245 158 11 / 0.12);
+    color: #a16207;
+  }
+
+  .docs-callout {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    margin-block: 1.35rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg-card);
+    padding: 0.875rem 1rem;
+    box-shadow: var(--docs-shadow-sm);
+  }
+
+  .docs-callout-icon {
+    display: inline-flex;
+    height: 24px;
+    width: 24px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    background: var(--accent-brand-soft);
+    color: var(--accent-brand);
+  }
+
+  .docs-callout-title {
+    margin: 0 0 0.25rem;
+    color: var(--ink-1);
+    font-size: 0.9rem;
+    font-weight: 650;
+  }
+
+  .docs-callout-body {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: 0.925rem;
+    line-height: 1.65;
+  }
+
+  .docs-callout-body > :first-child {
+    margin-top: 0;
+  }
+
+  .docs-callout-body > :last-child {
+    margin-bottom: 0;
+  }
+
+  .docs-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-block: 1.25rem 1.5rem;
+  }
+
+  .docs-card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-card);
+    padding: 1rem;
+    box-shadow: var(--docs-shadow-sm);
+  }
+
+  .docs-card h3 {
+    margin: 0 0 0.4rem;
+    color: var(--ink-1);
+    font-size: 0.98rem;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  .docs-card-body,
+  .docs-card-body p {
+    margin: 0;
+    color: var(--ink-3);
+    font-size: 0.9rem;
+    line-height: 1.62;
+  }
+
+  @media (max-width: 640px) {
+    .docs-card-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   :where(input, textarea, select) {
     border-color: var(--input);
-    background: color-mix(in srgb, var(--secondary) 82%, transparent);
-    color: var(--foreground);
+    background: var(--bg-card);
+    color: var(--ink-1);
   }
 
   :where(input, textarea, select)::placeholder {
@@ -569,29 +844,29 @@
   .fd-scroll-container::-webkit-scrollbar-thumb {
     border: 2px solid transparent;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--foreground) 16%, transparent);
+    background: color-mix(in srgb, var(--ink-1) 16%, transparent);
     background-clip: padding-box;
   }
 }
 
 :root {
-  --sidebar: hsl(0 0% 98%);
-  --sidebar-foreground: hsl(240 5.3% 26.1%);
-  --sidebar-primary: hsl(240 5.9% 10%);
-  --sidebar-primary-foreground: hsl(0 0% 98%);
-  --sidebar-accent: hsl(240 4.8% 95.9%);
-  --sidebar-accent-foreground: hsl(240 5.9% 10%);
-  --sidebar-border: hsl(220 13% 91%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --sidebar: var(--bg);
+  --sidebar-foreground: var(--ink-3);
+  --sidebar-primary: var(--accent-brand);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent-brand-soft);
+  --sidebar-accent-foreground: var(--accent-brand);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--accent-brand-ring);
 }
 
 .dark {
-  --sidebar: hsl(240 5.9% 10%);
-  --sidebar-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-primary: hsl(224.3 76.3% 48%);
-  --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(240 3.7% 15.9%);
-  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-border: hsl(240 3.7% 15.9%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --sidebar: var(--bg);
+  --sidebar-foreground: var(--ink-3);
+  --sidebar-primary: var(--accent-brand);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent-brand-soft);
+  --sidebar-accent-foreground: var(--accent-brand);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--accent-brand-ring);
 }

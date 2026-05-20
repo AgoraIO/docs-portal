@@ -16,12 +16,22 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 
 type SidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type SidebarSectionNode = Extract<DocsSidebarNode, { type: 'section' }>;
 type RenderableSidebarSectionNode = SidebarSectionNode & {
   nestedQuickstartGroup?: SidebarSectionNode;
 };
+
+const sidebarToggleClassName =
+  'h-[30px] items-center justify-between rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] hover:bg-card hover:text-[color:var(--ink-1)]';
+
+const sidebarSubButtonClassName =
+  'h-[30px] rounded-[7px] px-3 text-[13px] text-[color:var(--ink-3)] hover:bg-card hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)]';
+
+const sidebarPageButtonClassName =
+  'relative h-[30px] items-center rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-card hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)]';
 
 export function DocsSidebarTree({
   activePath,
@@ -96,15 +106,16 @@ function SidebarSection({
   const defaultOpen =
     !node.collapsible ||
     node.children.some((child) => isNodeActive(child, activePath)) ||
-    shouldDefaultOpenSection(node.title, activePath);
+    shouldDefaultOpenSection(node.title, activePath) ||
+    node.title === 'Build';
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const splitIndex = node.nestedQuickstartGroup
     ? Math.max(
         0,
         node.children.findIndex(
-          (child) => child.type === 'page' && child.url.endsWith('/enable-service'),
-        ) +
-          1,
+          (child) =>
+            child.type === 'page' && child.url.endsWith('/enable-service'),
+        ) + 1,
       )
     : node.children.length;
   const leadingChildren = node.children.slice(0, splitIndex);
@@ -113,7 +124,8 @@ function SidebarSection({
   if (!node.collapsible) {
     return (
       <div>
-        <SidebarGroupLabel className="mt-3 px-2">
+        <SidebarGroupLabel className="mt-4 mb-1 h-auto gap-2 px-2 text-[11px] font-semibold tracking-[0.06em] text-[color:var(--ink-4)] uppercase">
+          <SidebarConfiguredIcon icon={node.icon} />
           <span
             className="block break-words leading-5 whitespace-normal"
             title={node.title}
@@ -132,14 +144,15 @@ function SidebarSection({
         {node.nestedQuickstartGroup ? (
           <SidebarQuickstartGroup
             activePath={activePath}
-            children={node.nestedQuickstartGroup.children.filter(
+            onSelectPath={onSelectPath}
+            pages={node.nestedQuickstartGroup.children.filter(
               (child): child is SidebarPageNode => child.type === 'page',
             )}
-            onSelectPath={onSelectPath}
+            icon={node.nestedQuickstartGroup.icon}
             title={node.nestedQuickstartGroup.title}
           />
         ) : null}
-        {trailingChildren.map((child) => (
+        {trailingChildren.map((child) =>
           child.type === 'section' ? (
             <SidebarNestedSection
               activePath={activePath}
@@ -154,8 +167,8 @@ function SidebarSection({
               node={child}
               onSelectPath={onSelectPath}
             />
-          )
-        ))}
+          ),
+        )}
       </div>
     );
   }
@@ -164,11 +177,14 @@ function SidebarSection({
     <SidebarMenuItem>
       <SidebarMenuButton
         aria-expanded={isOpen}
-        className="justify-between"
+        className={sidebarToggleClassName}
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
-        <span className="block whitespace-normal">{node.title}</span>
+        <span className="flex min-w-0 items-center gap-2">
+          <SidebarConfiguredIcon icon={node.icon} />
+          <span className="block whitespace-normal">{node.title}</span>
+        </span>
         <ChevronDownIcon
           className={cn(
             'size-4 shrink-0 transition-transform',
@@ -191,10 +207,16 @@ function SidebarSection({
               <SidebarMenuSubItem key={child.id}>
                 <SidebarMenuSubButton
                   asChild
+                  className={sidebarSubButtonClassName}
                   isActive={child.url === activePath}
                   size="md"
                 >
-                  <Link onClick={onSelectPath} params={{}} search={{}} to={child.url}>
+                  <Link
+                    onClick={onSelectPath}
+                    params={{}}
+                    search={{}}
+                    to={child.url}
+                  >
                     <span
                       className={cn(
                         'block overflow-hidden text-pretty leading-5 whitespace-normal',
@@ -224,27 +246,32 @@ function shouldDefaultOpenSection(title: string, activePath: string) {
 
 function SidebarQuickstartGroup({
   activePath,
-  children,
+  icon,
   onSelectPath,
+  pages,
   title,
 }: {
   activePath: string;
-  children: SidebarPageNode[];
+  icon?: string;
   onSelectPath: () => void;
+  pages: SidebarPageNode[];
   title: string;
 }) {
-  const defaultOpen = children.some((child) => child.url === activePath);
+  const defaultOpen = pages.some((child) => child.url === activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         aria-expanded={isOpen}
-        className="justify-between"
+        className={sidebarToggleClassName}
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
-        <span className="block whitespace-normal">{title}</span>
+        <span className="flex min-w-0 items-center gap-2">
+          <SidebarConfiguredIcon icon={icon} />
+          <span className="block whitespace-normal">{title}</span>
+        </span>
         <ChevronDownIcon
           className={cn(
             'size-4 shrink-0 transition-transform',
@@ -254,14 +281,20 @@ function SidebarQuickstartGroup({
       </SidebarMenuButton>
       {isOpen ? (
         <SidebarMenuSub>
-          {children.map((child) => (
+          {pages.map((child) => (
             <SidebarMenuSubItem key={child.id}>
               <SidebarMenuSubButton
                 asChild
+                className={sidebarSubButtonClassName}
                 isActive={child.url === activePath}
                 size="md"
               >
-                <Link onClick={onSelectPath} params={{}} search={{}} to={child.url}>
+                <Link
+                  onClick={onSelectPath}
+                  params={{}}
+                  search={{}}
+                  to={child.url}
+                >
                   <span
                     className={cn(
                       'block overflow-hidden text-pretty leading-5 whitespace-normal',
@@ -300,11 +333,14 @@ function SidebarNestedSection({
     <div className="w-full">
       <button
         aria-expanded={isOpen}
-        className="flex w-full items-start justify-between gap-2 rounded-md px-2 py-1.5 text-left text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+        className={cn('flex w-full text-left', sidebarToggleClassName)}
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
-        <span className="block whitespace-normal">{node.title}</span>
+        <span className="flex min-w-0 items-center gap-2">
+          <SidebarConfiguredIcon icon={node.icon} />
+          <span className="block whitespace-normal">{node.title}</span>
+        </span>
         <ChevronDownIcon
           className={cn(
             'mt-0.5 size-4 shrink-0 transition-transform',
@@ -325,11 +361,17 @@ function SidebarNestedSection({
             ) : (
               <SidebarMenuSubButton
                 asChild
+                className={sidebarSubButtonClassName}
                 isActive={child.url === activePath}
                 key={child.id}
                 size="md"
               >
-                <Link onClick={onSelectPath} params={{}} search={{}} to={child.url}>
+                <Link
+                  onClick={onSelectPath}
+                  params={{}}
+                  search={{}}
+                  to={child.url}
+                >
                   <span
                     className={cn(
                       'block overflow-hidden text-pretty leading-5 whitespace-normal',
@@ -370,7 +412,8 @@ function mergeSdkQuickstartSection(nodes: DocsSidebarNode[]) {
       (node.title === 'Getting Started' || node.title === '开始使用') &&
       nextNode?.type === 'section' &&
       nextNode.children.every((child) => child.type === 'page') &&
-      (nextNode.title === 'SDK Quickstarts' || nextNode.title === 'SDK 快速开始')
+      (nextNode.title === 'SDK Quickstarts' ||
+        nextNode.title === 'SDK 快速开始')
     ) {
       merged.push({
         ...node,
@@ -449,7 +492,11 @@ function SidebarPageLink({
 }) {
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={url === activePath}>
+      <SidebarMenuButton
+        asChild
+        className={sidebarPageButtonClassName}
+        isActive={url === activePath}
+      >
         <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
           <span
             className={cn(
@@ -463,5 +510,13 @@ function SidebarPageLink({
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
+  );
+}
+
+function SidebarConfiguredIcon({ icon }: { icon?: string }) {
+  return (
+    <span aria-hidden="true" className="docs-side-icon">
+      <DocsConfiguredIcon className="size-3.5" icon={icon} />
+    </span>
   );
 }

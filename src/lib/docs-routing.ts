@@ -11,7 +11,9 @@ export type DocsRoute = {
   tab: string;
 };
 
-function normalizeSlugSegments(route: Pick<DocsRoute, 'slug' | 'slugSegments'>) {
+function normalizeSlugSegments(
+  route: Pick<DocsRoute, 'slug' | 'slugSegments'>,
+) {
   if (Array.isArray(route.slugSegments) && route.slugSegments.length > 0) {
     const segments = route.slugSegments.filter(Boolean);
     if (segments.length === 1 && segments[0] === 'index') {
@@ -107,12 +109,12 @@ export function getSourceSlugsFromContentPath(path: string) {
     return [];
   }
 
-  if (fileName === 'index.md') {
+  if (fileName === 'index.md' || fileName === 'index.mdx') {
     return [tab, ...rest.slice(0, -1)];
   }
 
-  if (fileName.endsWith('.md')) {
-    return [tab, ...rest.slice(0, -1), fileName.slice(0, -3)];
+  if (fileName.endsWith('.md') || fileName.endsWith('.mdx')) {
+    return [tab, ...rest.slice(0, -1), fileName.replace(/\.mdx?$/, '')];
   }
 
   return [];

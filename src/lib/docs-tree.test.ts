@@ -1,8 +1,9 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import {
-  getSidebarNodes,
+  getSidebarBreadcrumb,
   getSidebarEntries,
+  getSidebarNodes,
   getTabSummaries,
   mapSidebarEntriesToTree,
 } from './docs-tree';
@@ -131,6 +132,80 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('preserves configured tab and section icons from the page tree', () => {
+    const tree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'intro-folder',
+              children: [
+                {
+                  $id: 'intro-separator-get-started',
+                  icon: 'BookOpen',
+                  name: 'Get started',
+                  type: 'separator',
+                },
+                {
+                  $id: 'intro-about',
+                  name: 'About Agora',
+                  type: 'page',
+                  url: '/en/introduction/about-agora',
+                },
+              ],
+              icon: 'BookOpen',
+              index: {
+                $id: 'intro-index',
+                name: 'Overview',
+                type: 'page',
+                url: '/en/introduction',
+              },
+              name: 'Introduction',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(getTabSummaries(tree)).toEqual([
+      {
+        icon: 'BookOpen',
+        id: 'introduction',
+        title: 'Introduction',
+        url: '/en/introduction',
+      },
+    ]);
+    expect(getSidebarNodes(tree, 'introduction')).toEqual([
+      {
+        children: [
+          {
+            id: '/en/introduction',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/introduction',
+          },
+          {
+            id: '/en/introduction/about-agora',
+            title: 'About Agora',
+            type: 'page',
+            url: '/en/introduction/about-agora',
+          },
+        ],
+        collapsible: false,
+        icon: 'BookOpen',
+        id: 'separator-Get started',
+        title: 'Get started',
+        type: 'section',
+      },
+    ]);
+  });
+
   it('builds sidebar entries from the active nested root folder', () => {
     expect(getSidebarEntries(nestedRootTree, 'introduction')).toEqual([
       {
@@ -225,7 +300,19 @@ describe('docs tree helpers', () => {
       {
         children: [
           {
+            id: '/en/realtime-media/online-ktv',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/realtime-media/online-ktv',
+          },
+          {
             children: [
+              {
+                id: '/en/realtime-media/online-ktv/uikit',
+                title: 'Overview',
+                type: 'page',
+                url: '/en/realtime-media/online-ktv/uikit',
+              },
               {
                 children: [
                   {
@@ -754,6 +841,49 @@ describe('docs tree helpers', () => {
         id: 'reference',
         title: 'Reference',
         type: 'section',
+      },
+    ]);
+  });
+
+  it('builds a breadcrumb from nested sidebar sections', () => {
+    expect(
+      getSidebarBreadcrumb(
+        [
+          {
+            children: [
+              {
+                children: [
+                  {
+                    id: '/en/realtime-media/online-ktv/scenario-api',
+                    title: 'Scenario API',
+                    type: 'page',
+                    url: '/en/realtime-media/online-ktv/scenario-api',
+                  },
+                ],
+                collapsible: true,
+                id: 'paths',
+                title: 'Product paths',
+                type: 'section',
+              },
+            ],
+            collapsible: true,
+            id: 'online-ktv',
+            title: 'Online KTV',
+            type: 'section',
+          },
+        ],
+        '/en/realtime-media/online-ktv/scenario-api',
+      ),
+    ).toEqual([
+      {
+        title: 'Online KTV',
+      },
+      {
+        title: 'Product paths',
+      },
+      {
+        title: 'Scenario API',
+        url: '/en/realtime-media/online-ktv/scenario-api',
       },
     ]);
   });

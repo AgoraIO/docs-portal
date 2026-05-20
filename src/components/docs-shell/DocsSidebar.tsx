@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Sidebar as ShadcnSidebar, SidebarContent } from '@/components/ui/sidebar';
+import {
+  Sidebar as ShadcnSidebar,
+  SidebarContent,
+} from '@/components/ui/sidebar';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
 import { DocsSidebarTree } from './DocsSidebarTree';
 
@@ -19,6 +22,8 @@ export function DocsSidebar({
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    void activeTab;
+
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = 0;
     }
@@ -26,21 +31,22 @@ export function DocsSidebar({
 
   return (
     <ShadcnSidebar
-      className="hidden border-r border-border lg:flex"
+      className="hidden h-full min-h-0 overflow-hidden bg-transparent text-[color:var(--ink-3)] lg:flex"
       collapsible="none"
       data-testid="docs-sidebar"
       style={
         {
-          '--sidebar-width': '18.5rem',
+          '--sidebar-width': '16rem',
         } as React.CSSProperties
       }
       variant="inset"
     >
       <SidebarContent
+        className="h-full min-h-0 overflow-y-auto"
         data-testid="docs-sidebar-scroll"
         ref={scrollContainerRef}
       >
-        <div className="px-2 py-4">
+        <div className="py-6 pr-3 pb-12">
           <DocsSidebarTree
             activePath={activePath}
             nodes={nodes}

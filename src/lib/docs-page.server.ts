@@ -5,10 +5,12 @@ import {
   getFirstChildPageUrl,
   getFirstTabPageUrl,
   getPrevNextLinks,
+  getSidebarBreadcrumb,
   getSidebarNodes,
   getTabSummaries,
 } from './docs-tree';
-import type { PageWithSource } from './source.server';
+import { SUPPORTED_LOCALES } from './i18n/i18n-config';
+import { getPageMarkdownUrl, type PageWithSource } from './source.server';
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
   const { source } = await import('./source.server');
@@ -68,20 +70,53 @@ export async function loadDocsPagePayload(
   }
 
   const pageTree = source.getPageTree(locale);
-  const toc = await resolvePageToc(page);
+  const processedText = await readProcessedText(page);
+  const toc = await resolvePageToc(page, processedText);
+  const sidebar = getSidebarNodes(pageTree, tab);
+  const title = page.data.title ?? page.slugs.at(-1) ?? page.url;
+  const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
 
   return {
     activePath: page.url,
     activeTab: tab,
+    breadcrumb:
+      breadcrumb.length > 0
+        ? breadcrumb
+        : [
+            {
+              title,
+              url: page.url,
+            },
+          ],
     contentPath: page.path,
     description: page.data.description,
+    markdownUrl: getPageMarkdownUrl(page).url,
+    localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
+      const targetPage = source.getPage(page.slugs.slice(1), targetLocale);
+      const targetTabEntry = getFirstTabPageUrl(
+        source.getPageTree(targetLocale),
+        tab,
+      );
+      const targetUrl =
+        targetPage?.url ??
+        (targetTabEntry?.startsWith(`/${targetLocale}/`)
+          ? targetTabEntry
+          : undefined) ??
+        `/${targetLocale}/introduction/about-agora`;
+
+      return {
+        href: targetUrl,
+        isActive: targetLocale === locale,
+        locale: targetLocale,
+      };
+    }),
     navigation: getPrevNextLinks(pageTree, page.url),
     pages: source.getPages(locale).map((item) => ({
       description: item.data.description,
       title: item.data.title ?? item.slugs.at(-1) ?? item.url,
       url: item.url,
     })),
-    sidebar: getSidebarNodes(pageTree, tab),
+    sidebar,
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
     title: page.data.title,
@@ -89,7 +124,15 @@ export async function loadDocsPagePayload(
   };
 }
 
-async function resolvePageToc(page: PageWithSource) {
+async function readProcessedText(page: PageWithSource) {
+  try {
+    return await page.data.getText('processed');
+  } catch {
+    return '';
+  }
+}
+
+async function resolvePageToc(page: PageWithSource, processedText: string) {
   const directToc = normalizeToc(page.data.toc);
 
   if (directToc.length > 0) {
@@ -97,8 +140,7 @@ async function resolvePageToc(page: PageWithSource) {
   }
 
   try {
-    const processedMarkdown = await page.data.getText('processed');
-    return normalizeToc(await getTableOfContents(processedMarkdown));
+    return normalizeToc(await getTableOfContents(processedText));
   } catch {
     return [];
   }
