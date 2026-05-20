@@ -34,6 +34,12 @@ export const Route = createFileRoute('/$locale/$tab/')({
         throw notFound();
       }
 
+      if ('redirectUrl' in payload) {
+        throw redirect({
+          href: payload.redirectUrl,
+        });
+      }
+
       return {
         ...payload,
       };

@@ -6,7 +6,12 @@ import {
   ZapIcon,
 } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
-import type { ReactNode } from 'react';
+import {
+  Children,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 import {
   Tabs as UiTabs,
   TabsContent as UiTabsContent,
@@ -16,7 +21,18 @@ import {
 import { cn } from '@/lib/cn';
 
 function Tabs(props: React.ComponentProps<typeof UiTabs>) {
-  return <UiTabs className={cn('my-6', props.className)} {...props} />;
+  const defaultValue =
+    props.defaultValue ??
+    props.value ??
+    getFirstTabsTriggerValue(props.children);
+
+  return (
+    <UiTabs
+      className={cn('my-6', props.className)}
+      {...props}
+      defaultValue={props.value ? props.defaultValue : defaultValue}
+    />
+  );
 }
 
 function TabsList(props: React.ComponentProps<typeof UiTabsList>) {
@@ -40,6 +56,31 @@ function TabsTrigger(props: React.ComponentProps<typeof UiTabsTrigger>) {
 
 function TabsContent(props: React.ComponentProps<typeof UiTabsContent>) {
   return <UiTabsContent className={cn('mt-1', props.className)} {...props} />;
+}
+
+function getFirstTabsTriggerValue(children: ReactNode): string | undefined {
+  for (const child of Children.toArray(children)) {
+    if (!isValidElement(child)) {
+      continue;
+    }
+
+    const childProps = (
+      child as ReactElement<{
+        children?: ReactNode;
+        value?: unknown;
+      }>
+    ).props;
+
+    if (child.type === TabsTrigger && typeof childProps.value === 'string') {
+      return childProps.value;
+    }
+
+    const nestedValue = getFirstTabsTriggerValue(childProps.children);
+
+    if (nestedValue) {
+      return nestedValue;
+    }
+  }
 }
 
 export function getMDXComponents(components?: MDXComponents) {
