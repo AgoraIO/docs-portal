@@ -262,9 +262,7 @@ export function mapSidebarEntriesToTree(
         collapsible:
           pendingSectionEntry.collapsible ??
           isCollapsibleSectionTitle(pendingSectionEntry.title),
-        ...(pendingSectionEntry.icon
-          ? { icon: pendingSectionEntry.icon }
-          : {}),
+        ...(pendingSectionEntry.icon ? { icon: pendingSectionEntry.icon } : {}),
         id: pendingSectionEntry.id,
         title: pendingSectionEntry.title,
         type: 'section',
@@ -421,7 +419,10 @@ function findTabNode(root: Root, activeTab: string): Node | undefined {
   });
 }
 
-function findNodeBySlugSegments(node: Node, slugSegments: string[]): Node | undefined {
+function findNodeBySlugSegments(
+  node: Node,
+  slugSegments: string[],
+): Node | undefined {
   if (slugSegments.length === 0) {
     return node;
   }
@@ -663,7 +664,9 @@ function shouldHideFolderIndexInSidebar(
         : 'Overview'
       : title;
 
-  const hasRealChildPages = children.some((child) => child.type !== 'separator');
+  const hasRealChildPages = children.some(
+    (child) => child.type !== 'separator',
+  );
 
   return hasRealChildPages && normalizedIndexTitle === normalizedFolderName;
 }

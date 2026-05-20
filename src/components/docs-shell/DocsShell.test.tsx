@@ -70,6 +70,18 @@ function renderDocsShell(
     activePath: '/en/introduction',
     activeTab: 'introduction',
     children: <article>Body</article>,
+    localeLinks: [
+      {
+        href: '/en/introduction',
+        isActive: true,
+        locale: 'en',
+      },
+      {
+        href: '/zh-CN/introduction',
+        isActive: false,
+        locale: 'zh-CN',
+      },
+    ],
     locale: 'en',
     next: undefined,
     pages: [
@@ -297,6 +309,18 @@ describe('DocsShell', () => {
           <DocsShell
             activePath="/en/introduction"
             activeTab={activeTab}
+            localeLinks={[
+              {
+                href: '/en/introduction',
+                isActive: true,
+                locale: 'en',
+              },
+              {
+                href: '/zh-CN/introduction',
+                isActive: false,
+                locale: 'zh-CN',
+              },
+            ]}
             locale="en"
             pages={[
               {
@@ -345,12 +369,24 @@ describe('DocsShell', () => {
     });
     const docsRoute = createRoute({
       getParentRoute: () => rootRoute,
-      path: '/$locale/$tab/$slug',
+      path: '/$locale/$tab/$',
       component: () => (
         <AppProviders>
           <DocsShell
             activePath="/en/ai/get-started/quickstart"
             activeTab="ai"
+            localeLinks={[
+              {
+                href: '/en/ai/get-started/quickstart',
+                isActive: true,
+                locale: 'en',
+              },
+              {
+                href: '/zh-CN/ai/get-started/quickstart',
+                isActive: false,
+                locale: 'zh-CN',
+              },
+            ]}
             locale="en"
             pages={[]}
             sidebar={[]}
@@ -383,7 +419,7 @@ describe('DocsShell', () => {
     }
 
     fireEvent.click(languageButton);
-    fireEvent.click(await screen.findByRole('button', { name: '简体中文' }));
+    fireEvent.click(await screen.findByRole('link', { name: '简体中文' }));
 
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(
@@ -397,18 +433,64 @@ describe('DocsShell', () => {
     });
   });
 
+  it('renders locale options as crawlable links for static discovery', async () => {
+    renderDocsShell({
+      activePath: '/en/ai/get-started/quickstart',
+      activeTab: 'ai',
+      localeLinks: [
+        {
+          href: '/en/ai/get-started/quickstart',
+          isActive: true,
+          locale: 'en',
+        },
+        {
+          href: '/zh-CN/ai/get-started/quickstart',
+          isActive: false,
+          locale: 'zh-CN',
+        },
+      ],
+    });
+
+    fireEvent.click(
+      (
+        await screen.findAllByRole('button', {
+          name: 'Language',
+        })
+      ).find((button) => button.textContent?.includes('English')) ??
+        (() => {
+          throw new Error('expected desktop language button');
+        })(),
+    );
+
+    expect(
+      await screen.findByRole('link', { name: '简体中文' }),
+    ).toHaveAttribute('href', '/zh-CN/ai/get-started/quickstart');
+  });
+
   it('keeps compact mobile header controls and exposes locale and theme in the sheet', async () => {
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
     const docsRoute = createRoute({
       getParentRoute: () => rootRoute,
-      path: '/$locale/$tab/$slug',
+      path: '/$locale/$tab/$',
       component: () => (
         <AppProviders>
           <DocsShell
             activePath="/en/introduction"
             activeTab="introduction"
+            localeLinks={[
+              {
+                href: '/en/introduction',
+                isActive: true,
+                locale: 'en',
+              },
+              {
+                href: '/zh-CN/introduction',
+                isActive: false,
+                locale: 'zh-CN',
+              },
+            ]}
             locale="en"
             pages={[
               {

@@ -87,7 +87,9 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/en/ai/quick-start');
 
-    expect(await screen.findByText('AI section without icon')).toBeInTheDocument();
+    expect(
+      await screen.findByText('AI section without icon'),
+    ).toBeInTheDocument();
     expect(document.querySelector('.docs-side-icon svg')).toBeNull();
     expect(screen.queryByText('New')).toBeNull();
     expect(screen.queryByText('Beta')).toBeNull();

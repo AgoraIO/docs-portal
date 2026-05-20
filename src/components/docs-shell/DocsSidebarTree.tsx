@@ -152,7 +152,7 @@ function SidebarSection({
             title={node.nestedQuickstartGroup.title}
           />
         ) : null}
-        {trailingChildren.map((child) => (
+        {trailingChildren.map((child) =>
           child.type === 'section' ? (
             <SidebarNestedSection
               activePath={activePath}
@@ -167,8 +167,8 @@ function SidebarSection({
               node={child}
               onSelectPath={onSelectPath}
             />
-          )
-        ))}
+          ),
+        )}
       </div>
     );
   }

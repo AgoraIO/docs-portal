@@ -39,10 +39,17 @@ import { DocsSearchDialog, type SearchEntry } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
 import { DocsTocRail } from './DocsTocRail';
 
+type LocaleLink = {
+  href: string;
+  isActive: boolean;
+  locale: AppLocale;
+};
+
 export function DocsShell({
   activePath,
   activeTab,
   children,
+  localeLinks,
   locale,
   pages,
   previous,
@@ -54,6 +61,7 @@ export function DocsShell({
   activePath: string;
   activeTab: string;
   children: React.ReactNode;
+  localeLinks: LocaleLink[];
   locale: string;
   pages: SearchEntry[];
   next?: { title: string; url: string };
@@ -113,6 +121,18 @@ export function DocsShell({
           className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-xl"
           ref={headerRef}
         >
+          <nav aria-label="Alternate languages" className="sr-only">
+            {localeLinks.map((item) => (
+              <a
+                aria-current={item.isActive ? 'page' : undefined}
+                href={item.href}
+                hrefLang={item.locale}
+                key={item.locale}
+              >
+                {item.locale}
+              </a>
+            ))}
+          </nav>
           <div
             className="mx-auto flex h-[52px] w-full max-w-[1440px] items-center gap-3 px-4 sm:px-7"
             data-testid="docs-main-header-row"
@@ -143,11 +163,14 @@ export function DocsShell({
                     activeTab={activeTab}
                     currentLocale={locale as AppLocale}
                     isDarkTheme={isDarkTheme}
+                    localeLinks={localeLinks}
                     onSelectLocale={async (nextLocale) => {
                       await setLocale(nextLocale);
                       setIsMobileSheetOpen(false);
                       await navigate({
-                        to: replaceDocLocale(activePath, nextLocale),
+                        to:
+                          localeLinks.find((item) => item.locale === nextLocale)
+                            ?.href ?? replaceDocLocale(activePath, nextLocale),
                       });
                     }}
                     onSelectPath={() => setIsMobileSheetOpen(false)}
@@ -188,10 +211,13 @@ export function DocsShell({
                 </div>
                 <LocaleSwitcher
                   currentLocale={locale as AppLocale}
+                  localeLinks={localeLinks}
                   onSelect={async (nextLocale) => {
                     await setLocale(nextLocale);
                     await navigate({
-                      to: replaceDocLocale(activePath, nextLocale),
+                      to:
+                        localeLinks.find((item) => item.locale === nextLocale)
+                          ?.href ?? replaceDocLocale(activePath, nextLocale),
                     });
                   }}
                   variant="desktop"
@@ -295,10 +321,12 @@ function GithubMarkIcon() {
 
 function LocaleSwitcher({
   currentLocale,
+  localeLinks,
   onSelect,
   variant = 'all',
 }: {
   currentLocale: AppLocale;
+  localeLinks: LocaleLink[];
   onSelect: (locale: AppLocale) => Promise<void>;
   variant?: 'all' | 'desktop' | 'mobile';
 }) {
@@ -326,6 +354,7 @@ function LocaleSwitcher({
           <PopoverContent className="w-44 p-1">
             <LocaleOptions
               currentLocale={currentLocale}
+              localeLinks={localeLinks}
               onSelect={onSelect}
               scopeKey="desktop"
             />
@@ -346,6 +375,7 @@ function LocaleSwitcher({
           <PopoverContent className="w-44 p-1">
             <LocaleOptions
               currentLocale={currentLocale}
+              localeLinks={localeLinks}
               onSelect={onSelect}
               scopeKey="mobile"
             />
@@ -358,10 +388,12 @@ function LocaleSwitcher({
 
 function LocaleOptions({
   currentLocale,
+  localeLinks,
   onSelect,
   scopeKey,
 }: {
   currentLocale: AppLocale;
+  localeLinks: LocaleLink[];
   onSelect: (locale: AppLocale) => Promise<void>;
   scopeKey: string;
 }) {
@@ -371,6 +403,9 @@ function LocaleOptions({
     <div className="flex flex-col gap-1">
       {SUPPORTED_LOCALES.map((locale) => {
         const isActive = currentLocale === locale;
+        const href =
+          localeLinks.find((item) => item.locale === locale)?.href ??
+          replaceDocLocale('/', locale);
         const label =
           locale === 'zh-CN'
             ? t('controls.language.chinese')
@@ -378,13 +413,23 @@ function LocaleOptions({
 
         return (
           <Button
+            asChild
             className="justify-between rounded-xl"
             key={`${scopeKey}-${locale}`}
-            onClick={() => void onSelect(locale)}
             variant={currentLocale === locale ? 'secondary' : 'ghost'}
           >
-            <span>{label}</span>
-            {isActive ? <CheckIcon className="size-4" /> : null}
+            <a
+              aria-current={isActive ? 'page' : undefined}
+              href={href}
+              hrefLang={locale}
+              onClick={(event) => {
+                event.preventDefault();
+                void onSelect(locale);
+              }}
+            >
+              <span>{label}</span>
+              {isActive ? <CheckIcon className="size-4" /> : null}
+            </a>
           </Button>
         );
       })}
@@ -397,6 +442,7 @@ function MobileSidebar({
   activeTab,
   currentLocale,
   isDarkTheme,
+  localeLinks,
   onSelectLocale,
   onSelectPath,
   sidebar,
@@ -408,6 +454,7 @@ function MobileSidebar({
   activeTab: string;
   currentLocale: AppLocale;
   isDarkTheme: boolean;
+  localeLinks: LocaleLink[];
   onSelectLocale: (locale: AppLocale) => Promise<void>;
   onSelectPath: () => void;
   sidebar: DocsSidebarNode[];
@@ -465,6 +512,7 @@ function MobileSidebar({
             <div className="flex items-center gap-2">
               <LocaleSwitcher
                 currentLocale={currentLocale}
+                localeLinks={localeLinks}
                 onSelect={onSelectLocale}
                 variant="desktop"
               />

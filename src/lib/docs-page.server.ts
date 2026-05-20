@@ -9,6 +9,7 @@ import {
   getSidebarNodes,
   getTabSummaries,
 } from './docs-tree';
+import { SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { getPageMarkdownUrl, type PageWithSource } from './source.server';
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
@@ -90,6 +91,25 @@ export async function loadDocsPagePayload(
     contentPath: page.path,
     description: page.data.description,
     markdownUrl: getPageMarkdownUrl(page).url,
+    localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
+      const targetPage = source.getPage(page.slugs.slice(1), targetLocale);
+      const targetTabEntry = getFirstTabPageUrl(
+        source.getPageTree(targetLocale),
+        tab,
+      );
+      const targetUrl =
+        targetPage?.url ??
+        (targetTabEntry?.startsWith(`/${targetLocale}/`)
+          ? targetTabEntry
+          : undefined) ??
+        `/${targetLocale}/introduction/about-agora`;
+
+      return {
+        href: targetUrl,
+        isActive: targetLocale === locale,
+        locale: targetLocale,
+      };
+    }),
     navigation: getPrevNextLinks(pageTree, page.url),
     pages: source.getPages(locale).map((item) => ({
       description: item.data.description,

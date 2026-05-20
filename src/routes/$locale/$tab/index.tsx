@@ -59,6 +59,7 @@ function Page() {
     breadcrumb,
     contentPath,
     description,
+    localeLinks,
     markdownUrl,
     navigation,
     pages,
@@ -73,6 +74,7 @@ function Page() {
     <DocsShell
       activePath={activePath}
       activeTab={activeTab}
+      localeLinks={localeLinks}
       locale={Route.useParams().locale}
       next={navigation.next}
       pages={pages}

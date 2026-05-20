@@ -137,7 +137,9 @@ describe('loadDocsPagePayload', () => {
   beforeEach(() => {
     const page = createPage();
 
-    mockedGetPage.mockReturnValue(page);
+    mockedGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? undefined : page,
+    );
     mockedGetPages.mockReturnValue([page]);
     mockedGetPageTree.mockReturnValue(pageTree);
   });
@@ -158,6 +160,18 @@ describe('loadDocsPagePayload', () => {
         },
       ],
       contentPath: 'en/introduction/about-agora.md',
+      localeLinks: [
+        {
+          href: '/en/introduction/about-agora',
+          isActive: true,
+          locale: 'en',
+        },
+        {
+          href: '/zh-CN/introduction/about-agora',
+          isActive: false,
+          locale: 'zh-CN',
+        },
+      ],
       markdownUrl: '/llms.mdx/docs/en/introduction/about-agora.md',
       slug: 'about-agora',
       title: 'About Agora',
@@ -207,6 +221,69 @@ describe('loadDocsPagePayload', () => {
       contentPath: 'en/realtime-media/rtc/quick-start.md',
       slug: 'quick-start',
       title: 'RTC Quick Start',
+    });
+  });
+
+  it('falls back locale links to the target tab entry when the same slug is missing', async () => {
+    const page = createPage();
+    const zhPageTree: Root = {
+      children: [
+        {
+          $id: 'zh-root',
+          children: [
+            {
+              $id: 'zh-ai-folder',
+              children: [
+                {
+                  $id: 'zh-ai-quickstart',
+                  name: '快速开始',
+                  type: 'page',
+                  url: '/zh-CN/ai/quick-start',
+                },
+              ],
+              name: 'AI',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'Chinese',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    mockedGetPage.mockImplementation((_slugs, locale) => {
+      if (locale === 'zh-CN') {
+        return undefined;
+      }
+
+      return {
+        ...page,
+        path: 'en/ai/get-started/quickstart.md',
+        slugs: ['en', 'ai', 'get-started', 'quickstart'],
+        url: '/en/ai/get-started/quickstart',
+      };
+    });
+    mockedGetPageTree.mockImplementation((locale) =>
+      locale === 'zh-CN' ? zhPageTree : pageTree,
+    );
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['get-started', 'quickstart']),
+    ).resolves.toMatchObject({
+      localeLinks: [
+        {
+          href: '/en/ai/get-started/quickstart',
+          isActive: true,
+          locale: 'en',
+        },
+        {
+          href: '/zh-CN/ai/quick-start',
+          isActive: false,
+          locale: 'zh-CN',
+        },
+      ],
     });
   });
 });
