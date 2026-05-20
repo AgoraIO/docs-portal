@@ -1,35 +1,29 @@
 ---
 title: Server Media Processing
-description: A capability entry point for backend media flow handling and server-side RTC control.
+description: Use Server Gateway when backend applications need to send, receive, or control media streams directly.
 ---
 
-## What this capability solves
+![Server Gateway overview](/images/server-gateway/server-gateway-overview.png)
 
-RTC Server SDKs run on the backend and communicate with client-side RTC apps over SD-RTN, enabling server-side send/receive media flows and control surfaces.
+RTC Server SDK fits backend systems that need to participate directly in RTC media and session control instead of acting only as a business API layer.
 
 ## Common scenarios
 
-- backend media send/receive
-- server-side mixing or compositing
-- cloud proxy, permissions, and network controls
-- architectures where the backend participates directly in RTC media handling
+- backend send and receive media flows
+- server-side media control
+- server-side mixing and processing
 
-## What existing Shengwang docs already cover
+## Start here
 
-The current RTC Server SDK docs already include:
+- [RTC Server SDK](/en/realtime-media/rtc-server-sdk)
+- [Server-side and extensions](/en/realtime-media/server-and-extensions)
+- [Set up service and credentials](/en/realtime-media/setup-service-and-credentials)
 
-- landing page
-- runnable examples
-- quickstart
-- release notes
-- hot capability articles
+## Key capabilities
 
-## Recommended reading order
-
-1. Start from the landing page to confirm that the backend really needs direct media participation.
-2. Then run the smallest send/receive media example.
-3. After that, expand into compositing, proxy, String UID, and release notes.
-
-## Why it belongs in the capability area
-
-Many teams start from the backend control plane and media path instead of the client. RTC Server SDK should therefore exist as its own capability entry in the new docs site.
+- **Support for call centers, education, and testing**
+- **Multi-format sending and receiving**: YUV, PCM, encoded audio, and encoded video formats
+- **Configurable sending and receiving processes**: send-only, receive-only, or simultaneous send/receive
+- **Multi-channel sending and receiving**
+- **Audio mixing and media encryption**
+- **Restrict media zones**

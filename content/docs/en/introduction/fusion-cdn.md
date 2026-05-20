@@ -1,36 +1,29 @@
 ---
 title: Live Streaming Distribution
-description: Standard-protocol live distribution and playback optimization across multiple CDN providers.
+description: Use Broadcast Streaming for host-audience scenarios, live distribution, and large-scale playback.
 ---
 
-## What this capability solves
+![Broadcast Streaming overview](/images/broadcast-streaming/broadcast-streaming-overview.png)
 
-Fusion CDN Live Streaming integrates with multiple CDN providers to offer an end-to-end playback-quality-oriented live distribution solution.
+Broadcast Streaming is the live-distribution path for host-audience products. It fits teams building large-scale live playback and live interaction rather than one-to-one or small-group calling.
 
 ## Common scenarios
 
 - social live streaming
-- e-commerce live streaming
-- sports broadcasting
-- education live delivery
+- entertainment and showrooms
+- broadcast-style delivery with large audiences
 
-## What existing Shengwang docs already cover
+## Start here
 
-The current Fusion CDN docs already include:
+- [Fusion CDN](/en/realtime-media/fusion-cdn)
+- [Media processing and distribution](/en/realtime-media/media-processing-and-distribution)
+- [Set up service and credentials](/en/realtime-media/setup-service-and-credentials)
 
-- landing page
-- quickstart
-- URL composition
-- encoder/software setup
-- webhook events
-- availability best practices
+## Key capabilities
 
-## Recommended reading order
-
-1. Start from the landing page to validate whether you need multi-CDN orchestration and playback optimization.
-2. Then run the quickstart to complete a first live stream.
-3. If you are moving toward production, continue into URL design, recording, analytics, callbacks, and availability strategy.
-
-## Why it belongs in the capability area
-
-Fusion CDN Live Streaming is not just an extra product page. It is a distinct distribution and playback-experience capability, especially for live products.
+- **Global coverage**
+- **High-quality video at scale**
+- **Multiple audio and video tracks**
+- **Screen sharing and collaboration**
+- **AI-powered audio enhancement**
+- **Call recording**

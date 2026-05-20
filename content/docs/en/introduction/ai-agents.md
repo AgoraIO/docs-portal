@@ -1,38 +1,32 @@
 ---
 title: Conversational AI
-description: Find the core docs for building conversational AI interaction across agent runtime, model orchestration, context handling, and event-driven workflows.
+description: Build voice-enabled AI applications with realtime audio streaming and the LLM of your choice.
 ---
 
-## Who this page is for
+![Conversational AI Engine overview](/images/conversational-ai/conversational-ai.png)
 
-Start here if you are building a voice assistant, support agent, companion experience, outbound voice workflow, or any product that combines LLMs, TTS, ASR, and realtime session control.
+Conversational AI Engine combines Agora's realtime audio transport with LLM-based voice interaction. It is the main product in the AI section and is suited to voice assistants, support agents, tutors, companions, and device experiences.
 
-## Docs already available in this repo
+## Start here
 
-- [Open the Conversational AI Engine introduction](../ai/index.md)
-- [Open the quickstart](../ai/get-started/quickstart.md)
-- [Open custom LLM guidance](../ai/build/custom-llm.md)
-- [Open short-term memory guidance](../ai/build/short-term-memory.md)
-- [Open multimodal messaging guidance](../ai/build/send-multimodal-messages.md)
-- [Open agent event guidance](../ai/build/event-notifications.md)
+- [Voice AI quickstart](/en/ai/get-started/quickstart)
+- [Build a backend and client from scratch](/en/ai/build/build-server-client)
+- [Agent Studio](/en/ai/studio)
+- [Enable Conversational AI](/en/ai/reference/enable-conversational-ai)
 
-## Core capability areas
+## Key product strengths
 
-### Runtime and model orchestration
+- **Ultra-low latency**: optimized voice pipeline for natural back-and-forth interaction.
+- **Customizable agent properties**: configure session behavior, modalities, and audio settings.
+- **Use custom LLMs**: plug in custom language models and tailor prompts and memory behavior.
+- **Integrate advanced audio features**: combine VAD, interruption handling, and noise reduction.
+- **Resilient to weak networks**: maintain stable voice interaction under poor network conditions.
+- **Multi-platform support**: support iOS, Android, Web, and embedded-device delivery paths.
 
-First define the realtime session model, LLM integration shape, TTS strategy, and interruption behavior. That gives the rest of the architecture a stable base.
+## Typical use cases
 
-### Context and workflow coordination
-
-If the agent needs room state, temporary user attributes, or business metadata, plan RTM, webhooks, and custom data as part of the same design.
-
-- [Open custom data guidance](../ai/build/custom-information.md)
-- [Open webhook events](../ai/build/event-types.md)
-
-### What to add before production
-
-After the first conversation loop works, most teams still need to complete auth, billing, release planning, and troubleshooting paths.
-
-- [Open service enablement](../ai/reference/enable-conversational-ai.md)
-- [Open pricing](../ai/overview/pricing.md)
-- [Open release notes](../best-practices/release-notes.md)
+- Voice assistants and copilots
+- Customer support and service agents
+- Education and speaking practice
+- Smart-device and companion hardware flows
+- Interactive entertainment and NPC-style experiences

@@ -1,22 +1,21 @@
 ---
 title: PPT Conversion
-description: Entry point for document-material processing and slide conversion scenarios, positioned as an extension of the broader transcoding capability.
+description: Use Cloud Transcoding for stream processing, audio mixing, video compositing, and audience-oriented output.
 ---
 
-## What this capability solves
+![Cloud Transcoding overview](/images/cloud-transcoding/cloud-transcoding.png)
 
-PPT Conversion fits scenarios where slide decks, lesson content, or presentation assets need to be transformed into forms better suited for online delivery and realtime interaction workflows.
+Cloud Transcoding obtains audio and video source streams from RTC channels on the server side, processes them through transcoding, audio mixing, and video compositing, and then republishes the processed streams for audience subscription.
 
-## Current position
+## Start here
 
-In the current Shengwang capability system, PPT Conversion is better treated as an extension of transcoding rather than as a completely separate first-class media workflow entry.
+- [Transcoding](/en/realtime-media/transcoding)
+- [Media processing and distribution](/en/realtime-media/media-processing-and-distribution)
 
-## The closest docs already in this repo
+## Key capabilities
 
-- [Open the media processing and distribution overview](../realtime-media/media-processing-and-distribution.md)
-- [Open the transcoding docs](../realtime-media/transcoding/index.md)
-
-## Recommended reading path
-
-1. Start with transcoding to understand layout composition, format transformation, and output shaping.
-2. If your scenario is centered on slides, teaching materials, or presentation assets, continue treating PPT Conversion as an extension of the broader transcoding path.
+- **Low energy consumption for client devices**
+- **Low bitrate streaming for poor network conditions**
+- **Cross-platform compatibility**
+- **Automated stream processing workflow**
+- **Reduced bandwidth and simplified integration**

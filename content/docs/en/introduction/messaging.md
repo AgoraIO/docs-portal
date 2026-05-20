@@ -1,31 +1,30 @@
 ---
 title: Messaging
-description: Use realtime messaging, state sync, and event coordination as the primary lens to understand what is already documented here and what lives in the broader Shengwang product docs.
+description: Use Signaling for realtime metadata synchronization, event notifications, channels, topics, presence, storage, and locks.
 ---
 
-## What this capability solves
+![Signaling overview](/images/signaling/signaling-overview.png)
 
-Messaging handles channel communication, temporary state synchronization, event delivery, and workflow coordination. It is the layer that connects realtime sessions, AI agents, and business logic.
+Signaling is the messaging and state layer for realtime systems. It complements RTC and AI flows with channel messages, presence, metadata, and workflow coordination.
 
-## Docs already available in this repo
+## Common scenarios
 
-- [Open custom data guidance](../ai/custom-data.md)
-- [Open agent event guidance](../ai/listen-agent-events.md)
-- [Open multimodal messaging guidance](../ai/send-multimodal-message.md)
-- [Open webhook events](../api-reference/ncs-events.md)
+- channel messaging
+- presence and user state
+- room collaboration
+- business event synchronization
 
-## Matching official product docs
+## Start here
 
-- [Open the RTM documentation homepage](https://doc.shengwang.cn/doc/rtm2/homepage)
-- [Open the JavaScript quickstart](https://doc.shengwang.cn/doc/rtm2/javascript/get-started/quick-start)
-- [Open temporary user state guidance](https://doc.shengwang.cn/doc/rtm2/android/user-guide/presence/temporary-user-state)
+- [Realtime Messaging RTM](/en/realtime-media/rtm)
+- [Foundational realtime capabilities](/en/realtime-media/foundation-realtime)
+- [Set up service and credentials](/en/realtime-media/setup-service-and-credentials)
 
-## Recommended reading order
+## Key capabilities
 
-### Start from the AI collaboration pages in this repo
-
-If your immediate goal is conversational AI, begin with custom data, message exchange, and event subscription so you can understand the role RTM plays inside the agent workflow.
-
-### Move to the full messaging product docs next
-
-If you need channel messaging, presence, topic workflows, or a broader realtime messaging surface, continue into the RTM product documentation afterward.
+- **Message channels**: asynchronous publish/subscribe messaging with string or binary payloads.
+- **Stream channels**: uninterrupted realtime data flow from one point to another.
+- **Topics**: subscription, distribution, and notification inside stream channels.
+- **Presence**: user availability and status for collaboration use cases.
+- **Storage**: persistent realtime data exchange across clients and devices.
+- **Locks**: ordered message processing and controlled access to shared data.

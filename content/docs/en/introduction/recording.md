@@ -1,24 +1,37 @@
 ---
 title: Cloud/Local Recording
-description: Entry point for Cloud Recording and Local Server Recording across archive, replay, review, and compliance workflows.
+description: Compare Cloud Recording and On-Premise Recording for recording realtime voice, video, and interactive streaming sessions.
 ---
 
-## What this capability solves
+![Cloud Recording overview](/images/cloud-recording/cloud-recording-overview.png)
 
-Recording preserves live interaction content as replayable, archivable, and reviewable media assets for playback, compliance, quality review, and post-session analysis.
+Recording captures live interaction content for archive, replay, review, compliance, and post-session analysis.
 
-## Main forms
+## Start here
 
-- Cloud Recording
-- Local Server Recording
+- [Recording](/en/realtime-media/recording)
+- [Media processing and distribution](/en/realtime-media/media-processing-and-distribution)
 
-## The closest docs already in this repo
+## Cloud Recording
 
-- [Open the media processing and distribution overview](../realtime-media/media-processing-and-distribution.md)
-- [Open the recording docs](../realtime-media/recording/index.md)
+Cloud Recording is a RESTful API-based solution for recording realtime voice, video, and interactive streaming sessions directly to your cloud storage.
 
-## Recommended reading path
+### Cloud Recording features
 
-1. Start with Cloud Recording if you want a managed path.
-2. Move to Local Server Recording when you need deeper operational control.
-3. If recording is only one step in a larger workflow, continue into media processing and distribution docs next.
+- **High reliability**
+- **Advanced security**
+- **Broad compatibility** with major cloud storage providers
+- **Ease of use** through RESTful API calls to start, stop, and query recording
+
+## On-Premise Recording
+
+On-Premise Recording is a Linux-deployed recording component for recording audio and video calls or live broadcasts into MP4 files.
+
+### On-Premise Recording features
+
+- **Flexible recording modes**
+- **Comprehensive media support**
+- **Advanced layout control**
+- **Selective recording**
+- **Enterprise-grade infrastructure**
+- **Local screenshot capture**
