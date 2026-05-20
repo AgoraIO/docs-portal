@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 import {
+  type AnchorHTMLAttributes,
   Children,
   isValidElement,
   type ReactElement,
@@ -19,6 +20,7 @@ import {
   TabsTrigger as UiTabsTrigger,
 } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
+import { normalizeDocsHref } from '@/lib/docs-link-normalize';
 
 function Tabs(props: React.ComponentProps<typeof UiTabs>) {
   const defaultValue =
@@ -83,8 +85,16 @@ function getFirstTabsTriggerValue(children: ReactNode): string | undefined {
   }
 }
 
-export function getMDXComponents(components?: MDXComponents) {
+type MDXContext = {
+  contentPath?: string;
+};
+
+export function getMDXComponents(
+  components?: MDXComponents,
+  context?: MDXContext,
+) {
   return {
+    a: createDocsAnchor(context?.contentPath),
     Tabs,
     TabsContent,
     TabsList,
@@ -113,6 +123,22 @@ type CalloutType =
   | 'warn'
   | 'warning'
   | 'zap';
+
+function createDocsAnchor(contentPath?: string) {
+  function DocsAnchor({
+    href,
+    ...props
+  }: AnchorHTMLAttributes<HTMLAnchorElement>) {
+    const normalizedHref =
+      typeof href === 'string'
+        ? normalizeDocsHref(href, { contentPath }).href
+        : href;
+
+    return <a href={normalizedHref} {...props} />;
+  }
+
+  return DocsAnchor;
+}
 
 function Callout({
   children,

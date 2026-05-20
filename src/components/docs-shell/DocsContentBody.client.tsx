@@ -9,6 +9,6 @@ export function DocsContentBodyClient({
   contentPath: string;
 }) {
   return useDocsContent(contentPath, {
-    components: getMDXComponents(),
+    components: getMDXComponents(undefined, { contentPath }),
   });
 }

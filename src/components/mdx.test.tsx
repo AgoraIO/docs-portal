@@ -35,3 +35,39 @@ describe('MDX tabs', () => {
     expect(screen.getByText('Node instructions')).toBeVisible();
   });
 });
+
+describe('MDX links', () => {
+  it('renders relative markdown links as clean docs hrefs', () => {
+    const components = getMDXComponents(undefined, {
+      contentPath: 'en/ai/index.md',
+    });
+    const Anchor = components.a as ComponentType<{
+      children: ReactNode;
+      href: string;
+    }>;
+
+    render(<Anchor href="get-started/quickstart.md">Quickstart</Anchor>);
+
+    expect(screen.getByRole('link', { name: 'Quickstart' })).toHaveAttribute(
+      'href',
+      '/en/ai/get-started/quickstart',
+    );
+  });
+
+  it('keeps external markdown links compatible with standard anchors', () => {
+    const components = getMDXComponents(undefined, {
+      contentPath: 'en/ai/index.md',
+    });
+    const Anchor = components.a as ComponentType<{
+      children: ReactNode;
+      href: string;
+    }>;
+
+    render(<Anchor href="https://example.com/page.md">External</Anchor>);
+
+    expect(screen.getByRole('link', { name: 'External' })).toHaveAttribute(
+      'href',
+      'https://example.com/page.md',
+    );
+  });
+});

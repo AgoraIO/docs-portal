@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { Route as DocPageRoute } from './$locale/$tab/$';
 import { Route as TabIndexRoute } from './$locale/$tab/index';
 import { Route as LocaleIndexRoute } from './$locale/index';
+import { Route as LegacyDocRoute } from './doc/$';
 
 function getLoader(route: { options: { loader?: unknown } }) {
   return route.options.loader as (context: never) => Promise<unknown> | unknown;
@@ -72,6 +73,28 @@ describe('docs route locale guards', () => {
           statusCode: 307,
         },
         status: 307,
+      });
+      return;
+    }
+
+    throw new Error('expected loader to reject with redirect');
+  });
+
+  it('redirects legacy root docs links to the public docs host', async () => {
+    try {
+      await getLoader(LegacyDocRoute)({
+        params: {
+          _splat: 'console/general/quickstart',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: 'https://doc.shengwang.cn/doc/console/general/quickstart',
+          statusCode: 308,
+        },
+        status: 308,
       });
       return;
     }
