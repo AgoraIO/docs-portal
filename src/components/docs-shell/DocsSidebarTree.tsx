@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
-import { DocsConfiguredIcon } from './DocsConfiguredIcon';
+import { DocsConfiguredIcon, hasConfiguredIcon } from './DocsConfiguredIcon';
 
 type SidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type SidebarSectionNode = Extract<DocsSidebarNode, { type: 'section' }>;
@@ -514,6 +514,10 @@ function SidebarPageLink({
 }
 
 function SidebarConfiguredIcon({ icon }: { icon?: string }) {
+  if (!hasConfiguredIcon(icon)) {
+    return null;
+  }
+
   return (
     <span aria-hidden="true" className="docs-side-icon">
       <DocsConfiguredIcon className="size-3.5" icon={icon} />

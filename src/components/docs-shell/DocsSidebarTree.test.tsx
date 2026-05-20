@@ -95,6 +95,32 @@ describe('DocsSidebarTree', () => {
     expect(screen.queryByText('Beta')).toBeNull();
   });
 
+  it('does not render the sidebar icon wrapper for invalid configured icons', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/ai/quick-start',
+            title: 'Quick Start',
+            type: 'page',
+            url: '/en/ai/quick-start',
+          },
+        ],
+        icon: 'NotARealLucideIcon',
+        id: 'ai-section',
+        title: 'AI section with invalid icon',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/ai/quick-start');
+
+    expect(
+      await screen.findByText('AI section with invalid icon'),
+    ).toBeInTheDocument();
+    expect(document.querySelector('.docs-side-icon')).toBeNull();
+  });
+
   it('allows long labels to wrap instead of truncating to one line', async () => {
     const longTitle =
       'This is a very long documentation title that should wrap across multiple lines';
