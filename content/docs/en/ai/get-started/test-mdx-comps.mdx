@@ -1,0 +1,177 @@
+---
+title: MDX component fixture
+description: Temporary fixture for validating MDX tabs and code blocks.
+---
+
+## Plain code
+
+```bash
+agora login
+agora project list
+```
+
+## Titled code
+
+```ts title="agent.ts"
+const session = new AgentSession({
+  rtc: "voice",
+  llm: "gpt-5.3-chat",
+});
+```
+
+## Line numbers
+
+```json lineNumbers=3 title="app.json"
+{
+  "appId": "your-app-id",
+  "channel": "demo"
+}
+```
+
+## Code tabs
+
+```bash tab="npm"
+npm install @agora/voice-agent
+```
+
+```bash tab="pnpm"
+pnpm add @agora/voice-agent
+```
+
+```bash tab="bun"
+bun add @agora/voice-agent
+```
+
+## Callout directives
+
+:::info[Info callout]
+Use directive syntax for standard informational notes.
+:::
+
+:::warning[Warning callout]
+Use warning for migration notes that can affect production behavior.
+:::
+
+:::tip[Tip callout]
+Use tip for short recommendations.
+:::
+
+:::danger[Error callout]
+Legacy `danger` maps to the error callout style.
+:::
+
+<a id="native-links-headings" />
+
+## Native links and headings
+
+This section uses a standalone anchor for stable fragment links and a [relative docs link](quickstart.md).
+
+## GFM table
+
+| Legacy source | Target content |
+| --- | --- |
+| React table components | GFM table |
+| Runtime platform filters | Static pages or code tabs |
+| Docusaurus admonitions | Directive callouts |
+
+## Native image
+
+![Conversational AI architecture](/images/conversational-ai/conversational-ai.svg)
+
+## Include
+
+<include>./_shared-mdx-fixture.mdx</include>
+
+## Language aliases and fallback
+
+```js title="alias.js"
+console.log("js maps to javascript");
+```
+
+```curl title="curl-alias.sh"
+curl -X POST https://api.example.com/v1/agents
+```
+
+```unknown-language title="fallback.txt"
+This block should still render through the plaintext fallback.
+```
+
+## Long command wrapping
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/AgoraIO/cli/main/install.sh | sh -s -- --add-to-path --project demo --channel voice-agent-demo
+```
+
+## Lists and inline code
+
+1. Install the `agora` CLI.
+2. Run `agora login`.
+3. Confirm the active project before copying credentials.
+
+- Native lists replace simple legacy layout components.
+- Inline `code` should stay compact inside prose.
+- Links, lists, and code should not require custom JSX.
+
+## Static platform variant pattern
+
+Platform-specific content should live in static routes instead of runtime filters.
+
+| Platform | Static route pattern |
+| --- | --- |
+| Android | `content/docs/en/realtime-media/android/...` |
+| iOS | `content/docs/en/realtime-media/ios/...` |
+| Web | `content/docs/en/realtime-media/web/...` |
+
+Code-language tabs are only for one conceptual page with language-specific commands or examples.
+
+<a id="api-reference-fallback" />
+
+## API reference fallback
+
+<a id="post-project-agent" />
+
+### POST `/v1/projects/{projectId}/agents`
+
+Use headings, tables, code fences, and directive callouts when no structured API source is available.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `projectId` | string | Yes | Agora project ID. |
+| `name` | string | Yes | Agent display name. |
+| `rtc` | string | No | Realtime media mode. |
+
+:::warning[Prefer structured sources]
+OpenAPI YAML or JSON should remain source data for the OpenAPI lane instead of being flattened into hand-written Markdown.
+:::
+
+```json title="request.json"
+{
+  "name": "demo-agent",
+  "rtc": "voice"
+}
+```
+
+## Frontmatter schema
+
+```yaml title="frontmatter.yaml"
+---
+title: Optional title
+description: Optional description
+icon: optional-icon
+full: false
+_openapi: {}
+---
+```
+
+## OpenAPI source preservation
+
+```yaml title="openapi.yaml"
+openapi: 3.1.0
+info:
+  title: Agora API
+  version: 1.0.0
+paths:
+  /v1/projects/{projectId}/agents:
+    post:
+      summary: Create an agent
+```

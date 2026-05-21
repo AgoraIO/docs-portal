@@ -1,18 +1,18 @@
 import {
   AppWindowIcon,
   AudioLinesIcon,
-  BotIcon,
   BlocksIcon,
-  CheckIcon,
+  BotIcon,
   CheckCircleIcon,
+  CheckIcon,
   Code2Icon,
   CopyIcon,
   CuboidIcon,
   InfoIcon,
   type LucideIcon,
   MonitorSmartphoneIcon,
-  SmartphoneChargingIcon,
   ServerCogIcon,
+  SmartphoneChargingIcon,
   TerminalSquareIcon,
   TriangleAlertIcon,
   ZapIcon,
@@ -56,7 +56,7 @@ function TabsList(props: React.ComponentProps<typeof UiTabsList>) {
   return (
     <UiTabsList
       className={cn(
-        'mb-3 flex-wrap rounded-t-xl border border-b-0 border-[color:var(--line-soft)] bg-[color:var(--bg)] px-2.5 pt-1.5 shadow-[0_6px_18px_rgba(15,23,42,0.04)]',
+        'mb-4 flex-wrap rounded-t-2xl border border-b-0 border-[color:var(--line)] bg-[color:var(--bg-elev)] px-3 pt-2 shadow-[0_10px_28px_rgba(15,23,42,0.05)]',
         props.className,
       )}
       variant="line"
@@ -69,7 +69,7 @@ function TabsTrigger(props: React.ComponentProps<typeof UiTabsTrigger>) {
   return (
     <UiTabsTrigger
       className={cn(
-        'min-h-10 rounded-md px-3 pt-1.5 pb-1.5 text-[0.92rem] font-semibold text-[color:var(--ink-4)] md:px-3.5 group-data-[variant=line]/tabs-list:data-[state=active]:text-[color:var(--ink-1)]',
+        'min-h-12 rounded-none px-3 pt-2 pb-2 text-[0.98rem] font-semibold text-[color:var(--ink-3)] md:px-4 group-data-[variant=line]/tabs-list:data-[state=active]:text-[color:var(--ink-1)]',
         props.className,
       )}
       {...props}
@@ -80,6 +80,51 @@ function TabsTrigger(props: React.ComponentProps<typeof UiTabsTrigger>) {
 function TabsContent(props: React.ComponentProps<typeof UiTabsContent>) {
   return (
     <UiTabsContent className={cn('mt-0 min-w-0', props.className)} {...props} />
+  );
+}
+
+function CodeBlockTabs(props: React.ComponentProps<typeof UiTabs>) {
+  const defaultValue =
+    props.defaultValue ??
+    props.value ??
+    getFirstTabsTriggerValue(props.children);
+
+  return (
+    <UiTabs
+      className={cn('docs-code-tabs my-6', props.className)}
+      {...props}
+      defaultValue={props.value ? props.defaultValue : defaultValue}
+    />
+  );
+}
+
+function CodeBlockTabsList(props: React.ComponentProps<typeof UiTabsList>) {
+  return (
+    <UiTabsList
+      className={cn('docs-code-tabs-list', props.className)}
+      variant="line"
+      {...props}
+    />
+  );
+}
+
+function CodeBlockTabsTrigger(
+  props: React.ComponentProps<typeof UiTabsTrigger>,
+) {
+  return (
+    <UiTabsTrigger
+      className={cn('docs-code-tabs-trigger', props.className)}
+      {...props}
+    />
+  );
+}
+
+function CodeBlockTab(props: React.ComponentProps<typeof UiTabsContent>) {
+  return (
+    <UiTabsContent
+      className={cn('docs-code-tabs-content', props.className)}
+      {...props}
+    />
   );
 }
 
@@ -96,7 +141,10 @@ function getFirstTabsTriggerValue(children: ReactNode): string | undefined {
       }>
     ).props;
 
-    if (child.type === TabsTrigger && typeof childProps.value === 'string') {
+    if (
+      (child.type === TabsTrigger || child.type === CodeBlockTabsTrigger) &&
+      typeof childProps.value === 'string'
+    ) {
       return childProps.value;
     }
 
@@ -112,20 +160,41 @@ type MDXContext = {
   contentPath?: string;
 };
 
+type CodeBlockPreProps = React.ComponentProps<'pre'> & {
+  icon?: string;
+  title?: string;
+  'data-line-numbers'?: boolean | string;
+  'data-line-numbers-start'?: number | string;
+};
+
 function Pre({
   children,
   className,
+  icon,
+  title,
+  'data-line-numbers': lineNumbers,
+  'data-line-numbers-start': lineNumbersStart,
   ...props
-}: React.ComponentProps<'pre'>) {
+}: CodeBlockPreProps) {
   const preRef = useRef<HTMLPreElement>(null);
   const [copied, setCopied] = useState(false);
 
   const childArray = Children.toArray(children);
-  const codeChild = childArray.find((child) =>
-    isValidElement(child),
-  ) as ReactElement<React.ComponentProps<'code'>> | undefined;
+  const codeChild = childArray.find((child) => isValidElement(child)) as
+    | ReactElement<React.ComponentProps<'code'>>
+    | undefined;
+  const codeText = getTextContent(codeChild?.props.children ?? children);
+  const lineCount = countCodeLines(codeChild?.props.children ?? children);
+  const isLongSingleLineCode = codeText.length > 72 && lineCount === 1;
 
-  const shouldShowLineNumbers = true;
+  const shouldShowLineNumbers =
+    lineNumbers !== undefined &&
+    lineNumbers !== false &&
+    lineNumbers !== 'false';
+  const lineNumberStart =
+    typeof lineNumbersStart === 'number'
+      ? lineNumbersStart
+      : Number.parseInt(String(lineNumbersStart ?? 1), 10) || 1;
 
   const enhancedChildren =
     codeChild && shouldShowLineNumbers
@@ -144,6 +213,9 @@ function Pre({
     try {
       await navigator.clipboard.writeText(text);
     } catch {
+      if (!preRef.current) {
+        return;
+      }
       const selection = window.getSelection();
       const range = document.createRange();
       range.selectNodeContents(preRef.current);
@@ -159,21 +231,84 @@ function Pre({
   return (
     <div
       className="not-prose docs-code-block-root"
+      data-testid="mdx-code-block"
       data-line-numbers={shouldShowLineNumbers ? 'true' : undefined}
+      data-line-numbers-start={
+        shouldShowLineNumbers ? String(lineNumberStart) : undefined
+      }
+      data-long-code={isLongSingleLineCode ? 'true' : undefined}
+      style={{
+        counterReset: shouldShowLineNumbers
+          ? `docs-line ${lineNumberStart - 1}`
+          : undefined,
+      }}
     >
+      {title && (
+        <div className="docs-code-block-header">
+          {icon && (
+            <CodeBlockIconMarkup className="docs-code-block-icon" icon={icon} />
+          )}
+          <figcaption className="docs-code-block-title">{title}</figcaption>
+        </div>
+      )}
       <button
         aria-label={copied ? 'Code copied' : 'Copy code'}
         className="docs-code-copy-button"
         onClick={() => void handleCopy()}
         type="button"
       >
-        {copied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
+        {copied ? (
+          <CheckIcon className="size-4" />
+        ) : (
+          <CopyIcon className="size-4" />
+        )}
       </button>
       <pre className={cn(className)} ref={preRef} {...props}>
         {enhancedChildren}
       </pre>
     </div>
   );
+}
+
+function getTextContent(node: ReactNode): string {
+  if (typeof node === 'string' || typeof node === 'number') {
+    return String(node);
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(getTextContent).join('');
+  }
+
+  if (isValidElement<{ children?: ReactNode }>(node)) {
+    return getTextContent(node.props.children);
+  }
+
+  return '';
+}
+
+function countCodeLines(node: ReactNode): number {
+  if (Array.isArray(node)) {
+    const lineElements = node.filter(
+      (child) =>
+        isValidElement<{ className?: string }>(child) &&
+        child.props.className?.split(/\s+/).includes('line'),
+    );
+
+    if (lineElements.length > 0) {
+      return lineElements.length;
+    }
+
+    return getTextContent(node).trim().split(/\r?\n/).length;
+  }
+
+  if (
+    isValidElement<{ children?: ReactNode; className?: string }>(node) &&
+    node.props.className?.split(/\s+/).includes('line')
+  ) {
+    return 1;
+  }
+
+  return getTextContent(node).trim().split(/\r?\n/).length;
 }
 
 function CommandBlock({
@@ -183,17 +318,64 @@ function CommandBlock({
   code: string;
   language?: string;
 }) {
+  const lines = code
+    .replace(/\n$/, '')
+    .split('\n')
+    .map((line, index) => ({
+      id: `${index + 1}`,
+      line,
+    }));
+
   return (
     <Pre className={cn('shiki', `language-${language}`)}>
       <code className={cn('language-code', `language-${language}`)}>
-        {code.replace(/\n$/, '').split('\n').map((line, index) => (
-          <span className="line" key={`${index + 1}-${line}`}>
+        {lines.map(({ id, line }) => (
+          <span className="line" key={id}>
             {line}
           </span>
         ))}
       </code>
     </Pre>
   );
+}
+
+function CodeBlockIconMarkup({
+  className,
+  icon,
+}: {
+  className?: string;
+  icon: string;
+}) {
+  const svg = parseCodeBlockIcon(icon);
+
+  if (!svg) {
+    return null;
+  }
+
+  return (
+    <span aria-hidden="true" className={className} role="img">
+      <svg aria-hidden="true" viewBox={svg.viewBox}>
+        <path d={svg.pathD} fill={svg.fill} />
+      </svg>
+    </span>
+  );
+}
+
+function parseCodeBlockIcon(icon: string) {
+  const viewBox = icon.match(/\bviewBox=(["'])(?<value>[^"']+)\1/)?.groups
+    ?.value;
+  const pathD = icon.match(/\bd=(["'])(?<value>[^"']+)\1/)?.groups?.value;
+  const fill = icon.match(/\bfill=(["'])(?<value>[^"']+)\1/)?.groups?.value;
+
+  if (!viewBox || !pathD) {
+    return undefined;
+  }
+
+  return {
+    fill: fill ?? 'currentColor',
+    pathD,
+    viewBox,
+  };
 }
 
 export function getMDXComponents(
@@ -208,6 +390,10 @@ export function getMDXComponents(
     TabsContent,
     TabsList,
     TabsTrigger,
+    CodeBlockTab,
+    CodeBlockTabs,
+    CodeBlockTabsList,
+    CodeBlockTabsTrigger,
     Callout,
     CalloutContainer,
     CalloutDescription,
@@ -337,28 +523,30 @@ function ToolkitGroup({
   );
 }
 
+type ToolkitIconKind =
+  | 'android'
+  | 'cli'
+  | 'go'
+  | 'ios'
+  | 'mcp'
+  | 'messaging'
+  | 'python'
+  | 'rest'
+  | 'rtc'
+  | 'server'
+  | 'skills'
+  | 'stt'
+  | 'studio'
+  | 'typescript'
+  | 'web';
+
 function ToolkitItem({
   href,
   icon,
   label,
 }: {
   href: string;
-  icon:
-    | 'python'
-    | 'typescript'
-    | 'cli'
-    | 'studio'
-    | 'mcp'
-    | 'skills'
-    | 'web'
-    | 'android'
-    | 'ios'
-    | 'rtc'
-    | 'messaging'
-    | 'stt'
-    | 'rest'
-    | 'go'
-    | 'server';
+  icon: ToolkitIconKind;
   label: string;
 }) {
   return (
@@ -371,31 +559,12 @@ function ToolkitItem({
   );
 }
 
-function ToolkitIcon({
-  kind,
-}: {
-  kind:
-    | 'python'
-    | 'typescript'
-    | 'cli'
-    | 'studio'
-    | 'mcp'
-    | 'skills'
-    | 'web'
-    | 'android'
-    | 'ios'
-    | 'rtc'
-    | 'messaging'
-    | 'stt'
-    | 'rest'
-    | 'go'
-    | 'server';
-}) {
+function ToolkitIcon({ kind }: { kind: ToolkitIconKind }) {
   if (kind === 'python') {
     return <BotIcon className="size-4" />;
   }
 
-  if (kind === 'typescript') {
+  if (kind === 'typescript' || kind === 'rest' || kind === 'go') {
     return <Code2Icon className="size-4" />;
   }
 
@@ -403,7 +572,7 @@ function ToolkitIcon({
     return <TerminalSquareIcon className="size-4" />;
   }
 
-  if (kind === 'studio') {
+  if (kind === 'studio' || kind === 'web') {
     return <AppWindowIcon className="size-4" />;
   }
 
@@ -411,12 +580,8 @@ function ToolkitIcon({
     return <CuboidIcon className="size-4" />;
   }
 
-  if (kind === 'skills') {
+  if (kind === 'skills' || kind === 'messaging') {
     return <BlocksIcon className="size-4" />;
-  }
-
-  if (kind === 'web') {
-    return <AppWindowIcon className="size-4" />;
   }
 
   if (kind === 'android') {
@@ -431,20 +596,8 @@ function ToolkitIcon({
     return <AudioLinesIcon className="size-4" />;
   }
 
-  if (kind === 'messaging') {
-    return <BlocksIcon className="size-4" />;
-  }
-
   if (kind === 'stt') {
     return <ZapIcon className="size-4" />;
-  }
-
-  if (kind === 'rest') {
-    return <Code2Icon className="size-4" />;
-  }
-
-  if (kind === 'go') {
-    return <Code2Icon className="size-4" />;
   }
 
   if (kind === 'server') {
@@ -455,7 +608,9 @@ function ToolkitIcon({
 }
 
 function OverviewSpotlightGrid({ children }: { children: ReactNode }) {
-  return <section className="not-prose overview-spotlight-grid">{children}</section>;
+  return (
+    <section className="not-prose overview-spotlight-grid">{children}</section>
+  );
 }
 
 type OverviewSpotlightVariant = 'platform' | 'code' | 'checklist';
@@ -480,7 +635,9 @@ function OverviewSpotlightCard({
         <div className="overview-spotlight-scene">
           {variant === 'platform' ? <OverviewSpotlightPlatformVisual /> : null}
           {variant === 'code' ? <OverviewSpotlightCodeVisual /> : null}
-          {variant === 'checklist' ? <OverviewSpotlightChecklistVisual /> : null}
+          {variant === 'checklist' ? (
+            <OverviewSpotlightChecklistVisual />
+          ) : null}
         </div>
       </div>
       <div className="overview-spotlight-body">
@@ -516,9 +673,9 @@ function OverviewSpotlightCodeVisual() {
       <div className="overview-spotlight-code-bar" />
       <div className="overview-spotlight-code-body">
         <span>session = AgentSession(</span>
-        <span>  rtc="voice",</span>
-        <span>  llm="gpt-5.3-chat",</span>
-        <span>  tts="cartesia/sonic-3"</span>
+        <span> rtc="voice",</span>
+        <span> llm="gpt-5.3-chat",</span>
+        <span> tts="cartesia/sonic-3"</span>
         <span>)</span>
       </div>
       <div className="overview-spotlight-code-waveform" />
@@ -532,12 +689,8 @@ function OverviewSpotlightChecklistVisual() {
       <span className="overview-spotlight-checklist-command">
         &gt; create project
       </span>
-      <span className="overview-spotlight-checklist-item">
-        Project name
-      </span>
-      <span className="overview-spotlight-checklist-item">
-        App ID
-      </span>
+      <span className="overview-spotlight-checklist-item">Project name</span>
+      <span className="overview-spotlight-checklist-item">App ID</span>
       <span className="overview-spotlight-checklist-item">
         Primary certificate
       </span>

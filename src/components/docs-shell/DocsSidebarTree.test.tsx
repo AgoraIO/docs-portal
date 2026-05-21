@@ -66,6 +66,18 @@ describe('DocsSidebarTree', () => {
     expect(await screen.findByText('Get Started')).toBeInTheDocument();
     expect(document.querySelector('.docs-side-icon svg')).toBeInTheDocument();
     expect(screen.getByTitle('About Agora')).toHaveClass('whitespace-normal');
+
+    const activeLink = screen.getByRole('link', { name: 'About Agora' });
+    const activeButton = activeLink.closest('[data-sidebar="menu-button"]');
+
+    expect(activeButton).toBeInstanceOf(HTMLElement);
+    expect(activeButton?.className).not.toContain('font-semibold');
+    expect(activeButton?.className).toContain(
+      'data-[active=true]:before:bg-[color:var(--accent-brand)]',
+    );
+    expect(activeButton?.className).toContain(
+      'data-[active=true]:bg-[color:var(--accent-brand-soft)]',
+    );
   });
 
   it('only renders configured icons and does not infer page badges', async () => {

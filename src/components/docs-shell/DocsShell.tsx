@@ -225,7 +225,7 @@ export function DocsShell({
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
-                  className="hidden text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)] dark:hover:bg-transparent lg:inline-flex lg:size-[34px] lg:rounded-lg"
+                  className="hidden text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] dark:hover:bg-[color:var(--docs-soft-fill)] lg:inline-flex lg:size-[34px] lg:rounded-lg"
                   onClick={() => setTheme(isDarkTheme ? 'light' : 'dark')}
                   size="icon"
                   variant="ghost"
@@ -236,7 +236,7 @@ export function DocsShell({
                 <Button
                   aria-label="GitHub"
                   asChild
-                  className="hidden text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)] dark:hover:bg-transparent lg:inline-flex lg:size-[34px] lg:rounded-lg"
+                  className="hidden text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] dark:hover:bg-[color:var(--docs-soft-fill)] lg:inline-flex lg:size-[34px] lg:rounded-lg"
                   size="icon"
                   variant="ghost"
                 >
@@ -264,7 +264,7 @@ export function DocsShell({
                   {tabs.map((tab) => (
                     <TabsTrigger asChild key={tab.id} value={tab.id}>
                       <Link
-                        className="h-10 rounded-none px-3.5 text-[13.5px] font-medium data-[state=active]:font-semibold"
+                        className="h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px] data-[state=active]:font-semibold"
                         params={{}}
                         search={{}}
                         to={tab.url}
@@ -339,9 +339,9 @@ function LocaleSwitcher({
           <PopoverTrigger asChild>
             <Button
               aria-label={t('controls.language.label')}
-              className="h-8 gap-2 rounded-lg border-[color:var(--line-strong)] bg-card px-2.5 text-[13px] text-[color:var(--ink-2)]"
+              className="h-8 gap-2 rounded-lg px-2.5 text-[13px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] dark:hover:bg-[color:var(--docs-soft-fill)]"
               size="sm"
-              variant="outline"
+              variant="ghost"
             >
               <LanguagesIcon data-icon="inline-start" />
               <span>
@@ -521,7 +521,7 @@ function MobileSidebar({
                 aria-pressed={isDarkTheme}
                 onClick={toggleTheme}
                 size="icon"
-                variant="outline"
+                variant="ghost"
               >
                 {isDarkTheme ? <SunIcon /> : <MoonIcon />}
                 <span className="sr-only">{themeLabel}</span>

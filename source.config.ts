@@ -35,7 +35,6 @@ export const docs = defineDocs({
           'kotlin',
           'markdown',
           'objc',
-          'plaintext',
           'php',
           'python',
           'ruby',
@@ -53,10 +52,10 @@ export const docs = defineDocs({
           js: 'javascript',
           md: 'markdown',
           objectivec: 'objc',
-          text: 'plaintext',
-          txt: 'plaintext',
+          text: 'bash',
+          txt: 'bash',
         },
-        fallbackLanguage: 'plaintext',
+        fallbackLanguage: 'bash',
         lazy: false,
       },
       remarkImageOptions: {
@@ -64,7 +63,7 @@ export const docs = defineDocs({
         useImport: false,
       },
       remarkCodeTabOptions: {
-        Tabs: 'Tabs',
+        Tabs: 'CodeBlockTabs',
         parseMdx: true,
       },
       remarkPlugins: (plugins) => [

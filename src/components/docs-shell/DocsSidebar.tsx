@@ -42,7 +42,7 @@ export function DocsSidebar({
       variant="inset"
     >
       <SidebarContent
-        className="h-full min-h-0 overflow-y-auto"
+        className="docs-scrollbar h-full min-h-0 overflow-y-auto"
         data-testid="docs-sidebar-scroll"
         ref={scrollContainerRef}
       >

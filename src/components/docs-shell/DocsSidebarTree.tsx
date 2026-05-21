@@ -25,13 +25,13 @@ type RenderableSidebarSectionNode = SidebarSectionNode & {
 };
 
 const sidebarToggleClassName =
-  'h-[30px] items-center justify-between rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] hover:bg-card hover:text-[color:var(--ink-1)]';
+  'h-[30px] items-center justify-between rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
 
 const sidebarSubButtonClassName =
-  'h-[30px] rounded-[7px] px-3 text-[13px] text-[color:var(--ink-3)] hover:bg-card hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)]';
+  'h-[30px] rounded-[7px] px-3 text-[13px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)]';
 
 const sidebarPageButtonClassName =
-  'relative h-[30px] items-center rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-card hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)]';
+  'relative h-[30px] items-center rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)]';
 
 export function DocsSidebarTree({
   activePath,

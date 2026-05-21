@@ -20,8 +20,7 @@ export function NotFound() {
         <div className="flex justify-center">
           <Link
             className={buttonVariants({ className: 'pl-4 pr-3' })}
-            search={{}}
-            to="/$locale/$tab/"
+            to="/$locale/$tab"
             params={{ locale: 'en', tab: 'introduction' }}
           >
             <ArrowLeft />

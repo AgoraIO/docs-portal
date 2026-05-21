@@ -234,6 +234,258 @@ describe('DocsTableOfContents', () => {
         screen.getByRole('link', { name: 'Second heading' }),
       ).toHaveAttribute('aria-current', 'location');
     });
+    expect(
+      screen.getByRole('link', { name: 'Second heading' }),
+    ).toHaveAttribute('data-primary', 'true');
+  });
+
+  it('marks every visible content section while keeping one primary aria-current item', async () => {
+    render(
+      <AppProviders>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 400, overflow: 'auto' }}
+        >
+          <div className="prose" data-testid="article-body">
+            <h2 id="first-heading">First heading</h2>
+            <p>First content</p>
+            <h2 id="second-heading">Second heading</h2>
+            <p>Second content</p>
+            <h2 id="third-heading">Third heading</h2>
+          </div>
+        </div>
+        <DocsTableOfContents
+          toc={[
+            { depth: 2, title: 'First heading', url: '#first-heading' },
+            { depth: 2, title: 'Second heading', url: '#second-heading' },
+            { depth: 2, title: 'Third heading', url: '#third-heading' },
+          ]}
+        />
+      </AppProviders>,
+    );
+
+    const scrollContainer = screen.getByTestId('docs-main-desktop-scroll');
+    const article = screen.getByTestId('article-body');
+    const firstHeading = document.getElementById('first-heading');
+    const secondHeading = document.getElementById('second-heading');
+    const thirdHeading = document.getElementById('third-heading');
+
+    expect(firstHeading).toBeInstanceOf(HTMLElement);
+    expect(secondHeading).toBeInstanceOf(HTMLElement);
+    expect(thirdHeading).toBeInstanceOf(HTMLElement);
+
+    vi.spyOn(scrollContainer, 'getBoundingClientRect').mockReturnValue({
+      bottom: 500,
+      height: 400,
+      left: 0,
+      right: 800,
+      top: 100,
+      width: 800,
+      x: 0,
+      y: 100,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(article, 'getBoundingClientRect').mockReturnValue({
+      bottom: 900,
+      height: 800,
+      left: 0,
+      right: 800,
+      top: 100,
+      width: 800,
+      x: 0,
+      y: 100,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(
+      firstHeading as HTMLElement,
+      'getBoundingClientRect',
+    ).mockReturnValue({
+      bottom: 80,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 50,
+      width: 800,
+      x: 0,
+      y: 50,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(
+      secondHeading as HTMLElement,
+      'getBoundingClientRect',
+    ).mockReturnValue({
+      bottom: 180,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 150,
+      width: 800,
+      x: 0,
+      y: 150,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(
+      thirdHeading as HTMLElement,
+      'getBoundingClientRect',
+    ).mockReturnValue({
+      bottom: 620,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 590,
+      width: 800,
+      x: 0,
+      y: 590,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.scroll(scrollContainer);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('link', { name: 'First heading' }),
+      ).toHaveAttribute('data-visible', 'true');
+      expect(
+        screen.getByRole('link', { name: 'Second heading' }),
+      ).toHaveAttribute('data-visible', 'true');
+    });
+    expect(
+      screen.getByRole('link', { name: 'Second heading' }),
+    ).toHaveAttribute('aria-current', 'location');
+    expect(
+      screen.getByRole('link', { name: 'First heading' }),
+    ).not.toHaveAttribute('aria-current');
+    expect(
+      screen.getByRole('link', { name: 'First heading' }),
+    ).not.toHaveAttribute('data-primary', 'true');
+    expect(
+      screen.getByRole('link', { name: 'Third heading' }),
+    ).not.toHaveAttribute('data-visible', 'true');
+  });
+
+  it('ignores hidden duplicate headings when tracking visible sections', async () => {
+    render(
+      <AppProviders>
+        <div aria-hidden="true">
+          <h2 id="first-heading">First heading</h2>
+          <h2 id="second-heading">Second heading</h2>
+        </div>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 400, overflow: 'auto' }}
+        >
+          <div className="prose" data-testid="article-body">
+            <h2 id="first-heading">First heading</h2>
+            <h2 id="second-heading">Second heading</h2>
+          </div>
+        </div>
+        <DocsTableOfContents
+          toc={[
+            { depth: 2, title: 'First heading', url: '#first-heading' },
+            { depth: 2, title: 'Second heading', url: '#second-heading' },
+          ]}
+        />
+      </AppProviders>,
+    );
+
+    const scrollContainer = screen.getByTestId('docs-main-desktop-scroll');
+    const article = screen.getByTestId('article-body');
+    const firstHeadingCandidates =
+      document.querySelectorAll<HTMLElement>('#first-heading');
+    const secondHeadingCandidates =
+      document.querySelectorAll<HTMLElement>('#second-heading');
+    const [hiddenFirstHeading, visibleFirstHeading] = firstHeadingCandidates;
+    const [hiddenSecondHeading, visibleSecondHeading] = secondHeadingCandidates;
+
+    vi.spyOn(hiddenFirstHeading, 'getClientRects').mockReturnValue({
+      length: 0,
+    } as DOMRectList);
+    vi.spyOn(hiddenSecondHeading, 'getClientRects').mockReturnValue({
+      length: 0,
+    } as DOMRectList);
+    vi.spyOn(visibleFirstHeading, 'getClientRects').mockReturnValue({
+      length: 1,
+    } as DOMRectList);
+    vi.spyOn(visibleSecondHeading, 'getClientRects').mockReturnValue({
+      length: 1,
+    } as DOMRectList);
+    vi.spyOn(scrollContainer, 'getBoundingClientRect').mockReturnValue({
+      bottom: 500,
+      height: 400,
+      left: 0,
+      right: 800,
+      top: 100,
+      width: 800,
+      x: 0,
+      y: 100,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(article, 'getBoundingClientRect').mockReturnValue({
+      bottom: 600,
+      height: 500,
+      left: 0,
+      right: 800,
+      top: 100,
+      width: 800,
+      x: 0,
+      y: 100,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(hiddenFirstHeading, 'getBoundingClientRect').mockReturnValue({
+      bottom: 0,
+      height: 0,
+      left: 0,
+      right: 0,
+      top: 0,
+      width: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(hiddenSecondHeading, 'getBoundingClientRect').mockReturnValue({
+      bottom: 0,
+      height: 0,
+      left: 0,
+      right: 0,
+      top: 0,
+      width: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(visibleFirstHeading, 'getBoundingClientRect').mockReturnValue({
+      bottom: 140,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 112,
+      width: 800,
+      x: 0,
+      y: 112,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(visibleSecondHeading, 'getBoundingClientRect').mockReturnValue({
+      bottom: 320,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 292,
+      width: 800,
+      x: 0,
+      y: 292,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.scroll(scrollContainer);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('link', { name: 'First heading' }),
+      ).toHaveAttribute('data-visible', 'true');
+      expect(
+        screen.getByRole('link', { name: 'Second heading' }),
+      ).toHaveAttribute('data-visible', 'true');
+    });
   });
 });
 
