@@ -1,0 +1,44 @@
+---
+title: Messaging
+description: Understand the features and functionality supplied by Signaling.
+---
+
+![Signaling overview](/images/signaling/signaling-overview.png)
+
+Signaling is the messaging and state layer for realtime systems. It enables low-latency metadata synchronization and realtime event notifications, and complements RTC and AI flows with channel management, presence updates, attribute synchronization, and workflow coordination.
+
+## Common scenarios
+
+- channel messaging and pub/sub delivery
+- presence and contact availability
+- metadata and attribute synchronization
+- business event coordination and realtime workflows
+
+## Start here
+
+- [Realtime Messaging RTM](/en/realtime-media/rtm)
+- [Foundational realtime capabilities](/en/realtime-media/foundation-realtime)
+- [Set up service and credentials](/en/realtime-media/setup-service-and-credentials)
+
+## Key capabilities
+
+<CardGrid>
+  <FeatureCard title="Message channels">
+    Realtime messaging for asynchronous pub/sub transmission without requiring an immediate response. Publishers send messages to channels, and subscribers receive messages from the channels they join, using either string or binary payloads.
+  </FeatureCard>
+  <FeatureCard title="Stream channels">
+    A realtime data pipeline that enables uninterrupted data flow from one point to another with minimal delay, supporting string or binary payloads based on your business needs.
+  </FeatureCard>
+  <FeatureCard title="Topics">
+    Manage communication inside stream channels by letting users subscribe to, distribute, and notify others through topics. Publishers send messages to a topic, and subscribers receive messages from the topics they join.
+  </FeatureCard>
+  <FeatureCard title="Presence">
+    Help users see the availability of their contacts in collaboration scenarios through presence status and user state, making communication and coordination easier.
+  </FeatureCard>
+  <FeatureCard title="Storage">
+    Persist and manage data exchanged between clients or devices in realtime, helping ensure messages are not lost in transit and can be delivered reliably at scale.
+  </FeatureCard>
+  <FeatureCard title="Locks">
+    Control access to shared resources, preserve processing order, and prevent concurrent interference when multiple clients interact with the same data.
+  </FeatureCard>
+</CardGrid>
