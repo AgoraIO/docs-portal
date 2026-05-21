@@ -11,6 +11,10 @@ type TabsChildComponent = ComponentType<{
 type PreComponent = ComponentType<{
   children: ReactNode;
   className?: string;
+  icon?: string;
+  title?: string;
+  'data-line-numbers'?: boolean | string;
+  'data-line-numbers-start'?: number;
 }>;
 type CommandBlockComponent = ComponentType<{
   code: string;
@@ -41,6 +45,15 @@ describe('MDX tabs', () => {
       'active',
     );
     expect(screen.getByText('Node instructions')).toBeVisible();
+  });
+
+  it('exposes Fumadocs generated code tab components', () => {
+    const components = getMDXComponents();
+
+    expect(components.CodeBlockTabs).toBeDefined();
+    expect(components.CodeBlockTabsList).toBeDefined();
+    expect(components.CodeBlockTabsTrigger).toBeDefined();
+    expect(components.CodeBlockTab).toBeDefined();
   });
 });
 
@@ -91,18 +104,93 @@ describe('MDX code blocks', () => {
       </Pre>,
     );
 
-    expect(screen.getByRole('button', { name: 'Copy code' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Copy code' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('agora login')).toBeInTheDocument();
   });
 
-  it('renders command blocks with line numbers', () => {
+  it('renders code block titles and icons from rehype-code props', () => {
+    const components = getMDXComponents();
+    const Pre = components.pre as PreComponent;
+
+    render(
+      <Pre
+        icon="<svg viewBox='0 0 10 10'><path d='M0 0h10v10H0z' /></svg>"
+        title="install.sh"
+      >
+        <code>agora login</code>
+      </Pre>,
+    );
+
+    expect(screen.getByText('install.sh')).toBeInTheDocument();
+    expect(screen.getByRole('img', { hidden: true })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Copy code' }),
+    ).toBeInTheDocument();
+  });
+
+  it('does not render an icon-only header for plain code blocks', () => {
+    const components = getMDXComponents();
+    const Pre = components.pre as PreComponent;
+    const { container } = render(
+      <Pre icon="<svg viewBox='0 0 10 10'><path d='M0 0h10v10H0z' /></svg>">
+        <code>agora login</code>
+      </Pre>,
+    );
+
+    expect(container.querySelector('.docs-code-block-header')).toBeNull();
+    expect(
+      screen.getByRole('button', { name: 'Copy code' }),
+    ).toBeInTheDocument();
+  });
+
+  it('only renders line numbers when explicitly requested', () => {
+    const components = getMDXComponents();
+    const Pre = components.pre as PreComponent;
+    const { rerender } = render(
+      <Pre>
+        <code>
+          <span className="line">agora login</span>
+        </code>
+      </Pre>,
+    );
+
+    expect(screen.getByTestId('mdx-code-block')).not.toHaveAttribute(
+      'data-line-numbers',
+    );
+
+    rerender(
+      <Pre data-line-numbers data-line-numbers-start={7}>
+        <code>
+          <span className="line">agora login</span>
+        </code>
+      </Pre>,
+    );
+
+    expect(screen.getByTestId('mdx-code-block')).toHaveAttribute(
+      'data-line-numbers',
+      'true',
+    );
+    expect(screen.getByTestId('mdx-code-block')).toHaveAttribute(
+      'data-line-numbers-start',
+      '7',
+    );
+  });
+
+  it('renders command blocks without implicit line numbers', () => {
     const components = getMDXComponents();
     const CommandBlock = components.CommandBlock as CommandBlockComponent;
 
     render(<CommandBlock code={`agora login\nbun run dev`} />);
 
-    expect(screen.getByRole('button', { name: 'Copy code' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Copy code' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('agora login')).toBeInTheDocument();
     expect(screen.getByText('bun run dev')).toBeInTheDocument();
+    expect(screen.getByTestId('mdx-code-block')).not.toHaveAttribute(
+      'data-line-numbers',
+    );
   });
 });

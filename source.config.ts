@@ -59,7 +59,7 @@ export const docs = defineDocs({
         useImport: false,
       },
       remarkCodeTabOptions: {
-        Tabs: 'Tabs',
+        Tabs: 'CodeBlockTabs',
         parseMdx: true,
       },
       remarkPlugins: (plugins) => [

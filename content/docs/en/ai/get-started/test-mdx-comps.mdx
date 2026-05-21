@@ -1,0 +1,43 @@
+---
+title: MDX component fixture
+description: Temporary fixture for validating MDX tabs and code blocks.
+---
+
+## Plain code
+
+```bash
+agora login
+agora project list
+```
+
+## Titled code
+
+```ts title="agent.ts"
+const session = new AgentSession({
+  rtc: "voice",
+  llm: "gpt-5.3-chat",
+});
+```
+
+## Line numbers
+
+```json lineNumbers=3 title="app.json"
+{
+  "appId": "your-app-id",
+  "channel": "demo"
+}
+```
+
+## Code tabs
+
+```bash tab="npm"
+npm install @agora/voice-agent
+```
+
+```bash tab="pnpm"
+pnpm add @agora/voice-agent
+```
+
+```bash tab="bun"
+bun add @agora/voice-agent
+```

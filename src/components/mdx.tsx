@@ -1,6 +1,6 @@
 import {
-  CheckIcon,
   CheckCircleIcon,
+  CheckIcon,
   CopyIcon,
   InfoIcon,
   type LucideIcon,
@@ -73,6 +73,51 @@ function TabsContent(props: React.ComponentProps<typeof UiTabsContent>) {
   );
 }
 
+function CodeBlockTabs(props: React.ComponentProps<typeof UiTabs>) {
+  const defaultValue =
+    props.defaultValue ??
+    props.value ??
+    getFirstTabsTriggerValue(props.children);
+
+  return (
+    <UiTabs
+      className={cn('docs-code-tabs my-6', props.className)}
+      {...props}
+      defaultValue={props.value ? props.defaultValue : defaultValue}
+    />
+  );
+}
+
+function CodeBlockTabsList(props: React.ComponentProps<typeof UiTabsList>) {
+  return (
+    <UiTabsList
+      className={cn('docs-code-tabs-list', props.className)}
+      variant="line"
+      {...props}
+    />
+  );
+}
+
+function CodeBlockTabsTrigger(
+  props: React.ComponentProps<typeof UiTabsTrigger>,
+) {
+  return (
+    <UiTabsTrigger
+      className={cn('docs-code-tabs-trigger', props.className)}
+      {...props}
+    />
+  );
+}
+
+function CodeBlockTab(props: React.ComponentProps<typeof UiTabsContent>) {
+  return (
+    <UiTabsContent
+      className={cn('docs-code-tabs-content', props.className)}
+      {...props}
+    />
+  );
+}
+
 function getFirstTabsTriggerValue(children: ReactNode): string | undefined {
   for (const child of Children.toArray(children)) {
     if (!isValidElement(child)) {
@@ -86,7 +131,10 @@ function getFirstTabsTriggerValue(children: ReactNode): string | undefined {
       }>
     ).props;
 
-    if (child.type === TabsTrigger && typeof childProps.value === 'string') {
+    if (
+      (child.type === TabsTrigger || child.type === CodeBlockTabsTrigger) &&
+      typeof childProps.value === 'string'
+    ) {
       return childProps.value;
     }
 
@@ -102,20 +150,38 @@ type MDXContext = {
   contentPath?: string;
 };
 
+type CodeBlockPreProps = React.ComponentProps<'pre'> & {
+  icon?: string;
+  title?: string;
+  'data-line-numbers'?: boolean | string;
+  'data-line-numbers-start'?: number | string;
+};
+
 function Pre({
   children,
   className,
+  icon,
+  title,
+  'data-line-numbers': lineNumbers,
+  'data-line-numbers-start': lineNumbersStart,
   ...props
-}: React.ComponentProps<'pre'>) {
+}: CodeBlockPreProps) {
   const preRef = useRef<HTMLPreElement>(null);
   const [copied, setCopied] = useState(false);
 
   const childArray = Children.toArray(children);
-  const codeChild = childArray.find((child) =>
-    isValidElement(child),
-  ) as ReactElement<React.ComponentProps<'code'>> | undefined;
+  const codeChild = childArray.find((child) => isValidElement(child)) as
+    | ReactElement<React.ComponentProps<'code'>>
+    | undefined;
 
-  const shouldShowLineNumbers = true;
+  const shouldShowLineNumbers =
+    lineNumbers !== undefined &&
+    lineNumbers !== false &&
+    lineNumbers !== 'false';
+  const lineNumberStart =
+    typeof lineNumbersStart === 'number'
+      ? lineNumbersStart
+      : Number.parseInt(String(lineNumbersStart ?? 1), 10) || 1;
 
   const enhancedChildren =
     codeChild && shouldShowLineNumbers
@@ -134,6 +200,9 @@ function Pre({
     try {
       await navigator.clipboard.writeText(text);
     } catch {
+      if (!preRef.current) {
+        return;
+      }
       const selection = window.getSelection();
       const range = document.createRange();
       range.selectNodeContents(preRef.current);
@@ -149,15 +218,36 @@ function Pre({
   return (
     <div
       className="not-prose docs-code-block-root"
+      data-testid="mdx-code-block"
       data-line-numbers={shouldShowLineNumbers ? 'true' : undefined}
+      data-line-numbers-start={
+        shouldShowLineNumbers ? String(lineNumberStart) : undefined
+      }
+      style={{
+        counterReset: shouldShowLineNumbers
+          ? `docs-line ${lineNumberStart - 1}`
+          : undefined,
+      }}
     >
+      {title && (
+        <div className="docs-code-block-header">
+          {icon && (
+            <CodeBlockIconMarkup className="docs-code-block-icon" icon={icon} />
+          )}
+          <figcaption className="docs-code-block-title">{title}</figcaption>
+        </div>
+      )}
       <button
         aria-label={copied ? 'Code copied' : 'Copy code'}
         className="docs-code-copy-button"
         onClick={() => void handleCopy()}
         type="button"
       >
-        {copied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
+        {copied ? (
+          <CheckIcon className="size-4" />
+        ) : (
+          <CopyIcon className="size-4" />
+        )}
       </button>
       <pre className={cn(className)} ref={preRef} {...props}>
         {enhancedChildren}
@@ -173,17 +263,64 @@ function CommandBlock({
   code: string;
   language?: string;
 }) {
+  const lines = code
+    .replace(/\n$/, '')
+    .split('\n')
+    .map((line, index) => ({
+      id: `${index + 1}`,
+      line,
+    }));
+
   return (
     <Pre className={cn('shiki', `language-${language}`)}>
       <code className={cn('language-code', `language-${language}`)}>
-        {code.replace(/\n$/, '').split('\n').map((line, index) => (
-          <span className="line" key={`${index + 1}-${line}`}>
+        {lines.map(({ id, line }) => (
+          <span className="line" key={id}>
             {line}
           </span>
         ))}
       </code>
     </Pre>
   );
+}
+
+function CodeBlockIconMarkup({
+  className,
+  icon,
+}: {
+  className?: string;
+  icon: string;
+}) {
+  const svg = parseCodeBlockIcon(icon);
+
+  if (!svg) {
+    return null;
+  }
+
+  return (
+    <span aria-hidden="true" className={className} role="img">
+      <svg aria-hidden="true" viewBox={svg.viewBox}>
+        <path d={svg.pathD} fill={svg.fill} />
+      </svg>
+    </span>
+  );
+}
+
+function parseCodeBlockIcon(icon: string) {
+  const viewBox = icon.match(/\bviewBox=(["'])(?<value>[^"']+)\1/)?.groups
+    ?.value;
+  const pathD = icon.match(/\bd=(["'])(?<value>[^"']+)\1/)?.groups?.value;
+  const fill = icon.match(/\bfill=(["'])(?<value>[^"']+)\1/)?.groups?.value;
+
+  if (!viewBox || !pathD) {
+    return undefined;
+  }
+
+  return {
+    fill: fill ?? 'currentColor',
+    pathD,
+    viewBox,
+  };
 }
 
 export function getMDXComponents(
@@ -198,6 +335,10 @@ export function getMDXComponents(
     TabsContent,
     TabsList,
     TabsTrigger,
+    CodeBlockTab,
+    CodeBlockTabs,
+    CodeBlockTabsList,
+    CodeBlockTabsTrigger,
     Callout,
     CalloutContainer,
     CalloutDescription,
@@ -306,7 +447,9 @@ function FeatureCard({
 }
 
 function OverviewSpotlightGrid({ children }: { children: ReactNode }) {
-  return <section className="not-prose overview-spotlight-grid">{children}</section>;
+  return (
+    <section className="not-prose overview-spotlight-grid">{children}</section>
+  );
 }
 
 type OverviewSpotlightVariant = 'platform' | 'code' | 'checklist';
@@ -331,7 +474,9 @@ function OverviewSpotlightCard({
         <div className="overview-spotlight-scene">
           {variant === 'platform' ? <OverviewSpotlightPlatformVisual /> : null}
           {variant === 'code' ? <OverviewSpotlightCodeVisual /> : null}
-          {variant === 'checklist' ? <OverviewSpotlightChecklistVisual /> : null}
+          {variant === 'checklist' ? (
+            <OverviewSpotlightChecklistVisual />
+          ) : null}
         </div>
       </div>
       <div className="overview-spotlight-body">
@@ -367,9 +512,9 @@ function OverviewSpotlightCodeVisual() {
       <div className="overview-spotlight-code-bar" />
       <div className="overview-spotlight-code-body">
         <span>session = AgentSession(</span>
-        <span>  rtc="voice",</span>
-        <span>  llm="gpt-5.3-chat",</span>
-        <span>  tts="cartesia/sonic-3"</span>
+        <span> rtc="voice",</span>
+        <span> llm="gpt-5.3-chat",</span>
+        <span> tts="cartesia/sonic-3"</span>
         <span>)</span>
       </div>
       <div className="overview-spotlight-code-waveform" />
@@ -383,12 +528,8 @@ function OverviewSpotlightChecklistVisual() {
       <span className="overview-spotlight-checklist-command">
         &gt; create project
       </span>
-      <span className="overview-spotlight-checklist-item">
-        Project name
-      </span>
-      <span className="overview-spotlight-checklist-item">
-        App ID
-      </span>
+      <span className="overview-spotlight-checklist-item">Project name</span>
+      <span className="overview-spotlight-checklist-item">App ID</span>
       <span className="overview-spotlight-checklist-item">
         Primary certificate
       </span>
