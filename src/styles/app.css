@@ -519,6 +519,7 @@
     overflow: hidden;
     background: transparent;
     padding: 0;
+    white-space: normal;
   }
 
   .docs-code-copy-button {
@@ -569,6 +570,8 @@
 
   .docs-code-block-root > pre code {
     counter-reset: docs-line;
+    display: block;
+    white-space: normal;
   }
 
   .docs-code-block-root > pre .line {
@@ -691,14 +694,17 @@
 
   [data-component-part="code-block-root"] pre {
     background: transparent;
+    white-space: normal;
   }
 
   [data-component-part="code-block-root"] pre > code {
+    display: block;
     padding:
       var(--docs-code-pad-top)
       var(--docs-code-pad-right)
       var(--docs-code-pad-bottom)
       var(--docs-code-pad-left);
+    white-space: normal;
   }
 
   [data-component-part="code-block-header"] [data-testid="copy-code-button"],
