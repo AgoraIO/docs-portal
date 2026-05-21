@@ -264,7 +264,7 @@ export function DocsShell({
                   {tabs.map((tab) => (
                     <TabsTrigger asChild key={tab.id} value={tab.id}>
                       <Link
-                        className="h-10 rounded-none px-3.5 text-[13.5px] font-medium after:bottom-[-3px] data-[state=active]:font-semibold"
+                        className="h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px] data-[state=active]:font-semibold"
                         params={{}}
                         search={{}}
                         to={tab.url}

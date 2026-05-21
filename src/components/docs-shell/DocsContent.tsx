@@ -230,16 +230,13 @@ export function DocsTableOfContents({
           }
 
           const sectionTop = heading.getBoundingClientRect().top;
-          const sectionBottom = getSectionBottomForItem(
-            index,
-            headings,
-            items,
-          );
+          const sectionBottom = getSectionBottomForItem(index, headings, items);
 
           if (
             sectionBottom - viewportRect.top >
               TOC_VISIBLE_INTERSECTION_THRESHOLD &&
-            viewportRect.bottom - sectionTop > TOC_VISIBLE_INTERSECTION_THRESHOLD
+            viewportRect.bottom - sectionTop >
+              TOC_VISIBLE_INTERSECTION_THRESHOLD
           ) {
             nextVisibleUrls.add(item.url);
           }
@@ -398,10 +395,8 @@ function getSectionBottomForItem(
   }
 
   return (
-    headings[itemIndex]
-      ?.closest('.prose, article')
-      ?.getBoundingClientRect().bottom ??
-    document.body.getBoundingClientRect().bottom
+    headings[itemIndex]?.closest('.prose, article')?.getBoundingClientRect()
+      .bottom ?? document.body.getBoundingClientRect().bottom
   );
 }
 
@@ -418,10 +413,15 @@ function getHeadingForUrl(url: string, scrollContainer: HTMLElement | null) {
 
   const selector = `#${escapeCssIdentifier(id)}`;
 
-  return (
-    scrollContainer?.querySelector<HTMLElement>(selector) ??
-    document.querySelector<HTMLElement>(selector)
+  const headings = [
+    ...(scrollContainer?.querySelectorAll<HTMLElement>(selector) ?? []),
+    ...document.querySelectorAll<HTMLElement>(selector),
+  ];
+  const visibleHeading = headings.find(
+    (heading) => heading.getClientRects().length > 0,
   );
+
+  return visibleHeading ?? headings[0] ?? null;
 }
 
 function escapeCssIdentifier(value: string) {
