@@ -104,9 +104,7 @@ curl --request POST \
 
 复制如下代码，填入你的客户 ID 和客户密钥，即可生成对应的 `Authorization` 字段：
 
-#### Java
-
-```java
+```java tab="Java"
 import java.io.IOException;
 import java.net.URI;
 import java.util.Base64;
@@ -131,9 +129,7 @@ public class Base64Encoding {
 }
 ```
 
-#### Golang
-
-```go
+```go tab="Golang"
 package main
 
 import (
@@ -162,9 +158,7 @@ func main() {
 }
 ```
 
-#### PHP
-
-```php
+```php tab="PHP"
 <?php
 // 客户 ID
 // 需要设置环境变量 AGORA_CUSTOMER_KEY
@@ -181,9 +175,7 @@ $base64Credentials = base64_encode($credentials);
 $arr_header = "Authorization: Basic " . $base64Credentials;
 ```
 
-#### C#
-
-```cs
+```cs tab="C#"
 using System;
 using System.IO;
 using System.Net;
@@ -214,9 +206,7 @@ namespace Examples.System.Net
 }
 ```
 
-#### Node.js
-
-```javascript
+```js tab="Node.js"
 // 基于 Node.js 实现的 HTTP 基本认证示例
 const https = require('https')
 // 客户 ID
@@ -233,9 +223,7 @@ encodedCredential = Buffer.from(plainCredential).toString('base64')
 authorizationField = "Basic " + encodedCredential
 ```
 
-#### Python
-
-```python
+```python tab="Python"
 # -- coding utf-8 --
 # Python 3
 import base64

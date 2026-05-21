@@ -86,9 +86,7 @@ description: 在实时互动场景中，人与 AI 的对话在对话节奏、发
 
 为 RTC 和 RTM 实例创建配置对象，之后创建组件实例：
 
-#### Android
-
-```kotlin
+```kotlin tab="Android"
 // 为 RTC 和 RTM 实例创建配置对象
 val config = ConversationalAIAPIConfig(
     rtcEngine = rtcEngineInstance,
@@ -99,9 +97,7 @@ val config = ConversationalAIAPIConfig(
 val api = ConversationalAIAPIImpl(config)
 ```
 
-#### iOS
-
-```swift
+```swift tab="iOS"
 /// 为 RTC 和 RTM 实例创建配置对象
 let config = ConversationalAIAPIConfig(
     rtcEngine: rtcEngine,
@@ -111,7 +107,6 @@ let config = ConversationalAIAPIConfig(
 /// 创建组件实例
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 ```
-
 ##### 设置最佳音频参数
 
 #### Android
@@ -146,18 +141,13 @@ rtcEngine.joinChannel(rtcToken: token, channelName: channelName, uid: uid, isInd
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
-#### Android
-
-```kotlin
+```kotlin tab="Android"
 api.destroy()
 ```
 
-#### iOS
-
-```swift
+```swift tab="iOS"
 convoAIAPI.destroy()
 ```
-
 #### 方案二：调用实时互动 SDK API
 
 ##### 设置音频相关参数

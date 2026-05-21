@@ -1495,12 +1495,70 @@
     background: rgb(113 133 170 / 0.34);
   }
 
+  .overview-toolkits {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem 2.2rem;
+    margin-top: 2.75rem;
+    padding-top: 0.25rem;
+  }
+
+  .overview-toolkits-group {
+    margin-bottom: 0;
+  }
+
+  .overview-toolkits-group h3 {
+    margin: 0 0 1rem;
+    color: var(--ink-3);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .overview-toolkits-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .overview-toolkits-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--ink-2);
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+
+  .overview-toolkits-item:hover {
+    color: var(--ink-1);
+  }
+
+  .overview-toolkits-icon {
+    display: inline-flex;
+    height: 2.6rem;
+    width: 2.6rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.9rem;
+    background: rgb(255 255 255 / 0.65);
+    box-shadow: 0 6px 18px rgb(15 23 42 / 0.05);
+    color: var(--ink-2);
+  }
+
   @media (max-width: 640px) {
     .docs-card-grid {
       grid-template-columns: 1fr;
     }
 
     .overview-spotlight-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .overview-toolkits {
       grid-template-columns: 1fr;
     }
   }

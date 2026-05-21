@@ -1,9 +1,19 @@
 import {
+  AppWindowIcon,
+  AudioLinesIcon,
+  BlocksIcon,
+  BotIcon,
   CheckCircleIcon,
   CheckIcon,
+  Code2Icon,
   CopyIcon,
+  CuboidIcon,
   InfoIcon,
   type LucideIcon,
+  MonitorSmartphoneIcon,
+  ServerCogIcon,
+  SmartphoneChargingIcon,
+  TerminalSquareIcon,
   TriangleAlertIcon,
   ZapIcon,
 } from 'lucide-react';
@@ -390,6 +400,9 @@ export function getMDXComponents(
     CalloutTitle,
     CardGrid,
     FeatureCard,
+    OverviewToolkits,
+    ToolkitGroup,
+    ToolkitItem,
     OverviewSpotlightGrid,
     OverviewSpotlightCard,
     ...components,
@@ -489,6 +502,109 @@ function FeatureCard({
       <div className="docs-card-body">{children}</div>
     </section>
   );
+}
+
+function OverviewToolkits({ children }: { children: ReactNode }) {
+  return <section className="not-prose overview-toolkits">{children}</section>;
+}
+
+function ToolkitGroup({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="overview-toolkits-group">
+      <h3>{title}</h3>
+      <div className="overview-toolkits-items">{children}</div>
+    </section>
+  );
+}
+
+type ToolkitIconKind =
+  | 'android'
+  | 'cli'
+  | 'go'
+  | 'ios'
+  | 'mcp'
+  | 'messaging'
+  | 'python'
+  | 'rest'
+  | 'rtc'
+  | 'server'
+  | 'skills'
+  | 'stt'
+  | 'studio'
+  | 'typescript'
+  | 'web';
+
+function ToolkitItem({
+  href,
+  icon,
+  label,
+}: {
+  href: string;
+  icon: ToolkitIconKind;
+  label: string;
+}) {
+  return (
+    <a className="overview-toolkits-item" href={href}>
+      <span className="overview-toolkits-icon">
+        <ToolkitIcon kind={icon} />
+      </span>
+      <span>{label}</span>
+    </a>
+  );
+}
+
+function ToolkitIcon({ kind }: { kind: ToolkitIconKind }) {
+  if (kind === 'python') {
+    return <BotIcon className="size-4" />;
+  }
+
+  if (kind === 'typescript' || kind === 'rest' || kind === 'go') {
+    return <Code2Icon className="size-4" />;
+  }
+
+  if (kind === 'cli') {
+    return <TerminalSquareIcon className="size-4" />;
+  }
+
+  if (kind === 'studio' || kind === 'web') {
+    return <AppWindowIcon className="size-4" />;
+  }
+
+  if (kind === 'mcp') {
+    return <CuboidIcon className="size-4" />;
+  }
+
+  if (kind === 'skills' || kind === 'messaging') {
+    return <BlocksIcon className="size-4" />;
+  }
+
+  if (kind === 'android') {
+    return <SmartphoneChargingIcon className="size-4" />;
+  }
+
+  if (kind === 'ios') {
+    return <MonitorSmartphoneIcon className="size-4" />;
+  }
+
+  if (kind === 'rtc') {
+    return <AudioLinesIcon className="size-4" />;
+  }
+
+  if (kind === 'stt') {
+    return <ZapIcon className="size-4" />;
+  }
+
+  if (kind === 'server') {
+    return <ServerCogIcon className="size-4" />;
+  }
+
+  return <Code2Icon className="size-4" />;
 }
 
 function OverviewSpotlightGrid({ children }: { children: ReactNode }) {

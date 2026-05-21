@@ -49,18 +49,13 @@ This endpoint requires [authentication](../authentication.md).
 
   
     
-### curl
-
-      ```bash
+```bash tab="Curl"
       curl --request get \
         --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/history \
         --header 'Authorization: Basic <credentials>'
-      ```
-    
-    
-### Python
+```
 
-    ```python
+```python tab="Python"
     import requests
 
     url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/history"
@@ -70,13 +65,9 @@ This endpoint requires [authentication](../authentication.md).
     response = requests.request("get", url, headers=headers)
 
     print(response.text)
-    ```
-    
+```
 
-    
-### Node.js
-
-    ```js
+```js tab="Node.js"
     const url = 'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/history';
     const options = {method: 'get', headers: {Authorization: 'Basic <credentials>'}};
 
@@ -84,10 +75,7 @@ This endpoint requires [authentication](../authentication.md).
       .then(res => res.json())
       .then(json => console.log(json))
       .catch(err => console.error(err));
-    ```
-    
-  
-
+```
   ```json
   {
     "agent_id": "xxxx",
