@@ -1,0 +1,71 @@
+---
+title: Integrate with Skills
+description: Use an AI coding agent to integrate Shengwang products more efficiently. By configuring Shengwang skills, your coding agent can follow product-specific task routing, integration workflows, and code generation rules, while also using the latest official documentation to provide more accurate support during requirements analysis, product integration, code generation, and troubleshooting.
+---
+
+## Install Shengwang skills
+
+Choose one of the following ways to install the skills:
+
+#### Skills CLI
+
+Install with the `CLI`:
+
+```bash
+npx skills add Shengwang-Community/skills
+```
+
+This is the most direct installation method. After the installation finishes, restart the session or refresh the skills list according to the instructions for your coding agent.
+
+#### Claude Code Plugin Marketplace
+
+Run the following command in `Claude Code`:
+
+```bash
+plugin marketplace add Shengwang-Community/skills
+```
+
+#### OpenClaw
+
+Install through `ClawHub`:
+
+```bash
+clawhub install voice-ai-integration
+clawhub update voice-ai-integration
+```
+
+Use `install` the first time and `update` for later upgrades.
+
+## Repository
+
+- [Shengwang skills](https://github.com/Shengwang-Community/skills)
+
+## Best practices
+
+After configuring the skills, you can directly describe tasks such as integration, code generation, or troubleshooting in your coding agent. The skills help the agent choose the right integration workflow and generation rules, and supplement responses with the latest Shengwang documentation, making generated code, configuration guidance, and issue diagnosis more accurate.
+
+- Clearly specify the Shengwang product, target platform, development language, and desired feature in your prompt.
+- Provide as much context as possible, such as your current tech stack, existing code, expected interaction flow, whether you need a token, and whether you need server-side examples. This helps the AI produce solutions that are easier to use directly.
+- When troubleshooting, include the observed issue, reproduction steps, logs, error codes, screenshots, or call stack details whenever possible so the coding agent can narrow down the cause faster.
+- For complex tasks, prefer an AI IDE with stronger model support and more complete tooling for more stable code generation and problem analysis.
+
+## Prompt example
+
+After configuring the skills, you can send a prompt like the following to your coding agent to generate an AI voice conversation demo with real-time captions:
+
+```text
+Build me an AI voice conversation demo. After the user opens the web page and clicks "Start conversation", they should be able to talk with the AI by voice, and the page should display real-time captions.
+
+## Tech stack
+
+- Frontend: Next.js + React + TypeScript + Tailwind CSS
+- Backend: FastAPI (Python)
+
+## Requirements
+
+1. Start and end the voice conversation with one click
+2. Show real-time captions for both the user and the AI
+3. Mute and unmute the microphone
+4. Display the AI status (listening, thinking, speaking)
+5. Include a system log panel
+```
