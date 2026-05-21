@@ -1,0 +1,129 @@
+---
+title: 添加事件监听
+description: 添加事件监听，用于介绍 RTM 在对应平台上的具体能力配置、使用方法和行为约束。
+---
+
+如需收到消息和事件通知，你需要先实现事件监听程序，然后订阅或者加入你想要接收消息或事件通知的频道。
+
+## 添加事件监听
+
+RTM 采用统一入口的方式处理消息和事件通知，每一种消息和事件通知都有对应的事件处理程序入口，你可以在其中实现自己的业务处理逻辑：
+
+```objc
+// define RTM Event Listener
+@interface RtmListener : NSObject 
+
+@end
+
+@implementation RtmListener
+
+// triggered when received message from remote
+- (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+    NSString* channel = event.channelName;
+    AgoraRtmChannelType channel_type = event.channelType;
+    if (channel_type == AgoraRtmChannelTypeStream) {
+        NSString* topic = event.channelTopic; // if message from stream channel, user can get topic name
+    }
+
+    if (event.message.rawData != nil) {
+        NSData* message =event.message.rawData; // get binary message
+    } else {
+        NSString* message = event.message.stringData; // get string message
+    }
+    NSString* publisher = event.publisher;
+
+}
+
+// triggered when channel lock info changed
+- (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveLockEvent:(AgoraRtmLockEvent *)event {
+    NSString* channel = event.channelName;
+    AgoraRtmChannelType channel_type = event.channelType;
+    AgoraRtmLockEventType event_type = event.eventType;
+    if (event.lockDetailList != nil) {
+        NSArray *lock_details = event.lockDetailList; //get detail lock info
+
+    }
+}
+
+// triggered when prensence info changed
+- (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceivePresenceEvent:(AgoraRtmPresenceEvent *)event {
+    NSString* channel = event.channelName;
+    AgoraRtmChannelType channel_type = event.channelType;
+    AgoraRtmPresenceEventType event_type = event.type;
+    NSString* publisher = event.publisher;
+    if (event_type  == AgoraRtmPresenceEventTypeInterval) {
+        AgoraRtmPresenceIntervalInfo* interval = event.interval;
+    }else if (event_type == AgoraRtmPresenceEventTypeSnapshot) {
+        NSArray * snapshot = event.snapshot;
+    } else {
+        NSArray *states = event.states;
+    }
+}
+
+// triggered when subscribed strorage changed
+-(void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveStorageEvent:(AgoraRtmStorageEvent *)event {
+    AgoraRtmStorageType storage_type = event.storageType;
+    if (storage_type == AgoraRtmStorageTypeChannel) {
+        NSString* channel = event.target;
+        AgoraRtmChannelType channel_type = event.channelType;
+    } else {
+        NSString* user = event.target;
+    }
+    AgoraRtmMetadata* data = event.data;
+}
+
+// triggered when token will expire
+- (void)rtmKit:(AgoraRtmClientKit *)rtmKit tokenPrivilegeWillExpire:(NSString *)channel {
+    if (channel != nil) {
+        //renew specific stream channel's token
+    } else {
+        // renew rtm client's token
+    }
+}
+
+// triggered when connection state changed
+- (void)rtmKit:(AgoraRtmClientKit *)kit channel:(NSString *)channelName connectionChangedToState:(AgoraRtmClientConnectionState)state reason:(AgoraRtmClientConnectionChangeReason)reason {
+    if (channelName != nil) {
+        NSLog(@"stream channel connection changed now state is %d change reason is %d",state, reason);
+    } else {
+        NSLog(@"rtm client connection changed now state is %d change reason is %d",state, reason);
+    }
+}
+
+// triggered when link state changed
+- (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveLinkStateEvent:(AgoraRtmLinkStateEvent *)event {
+    if (event.serviceType == AgoraRtmServiceTypeStream) {
+        // receive stream channel link event
+    } else {
+        // receive message link event
+    }
+}
+@end
+
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+// add event listener
+RtmListener* handler =  [[RtmListener alloc] init];
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+```
+
+## 删除事件监听
+
+为避免内存泄漏、错误和异常（即空指针异常）引起的性能下降，声网建议你在不需要使用某个事件处理程序时对其进行注销。例如，如果不想关注 Lock 事件通知，删除对 `didReceiveLockEvent` 函数的定义即可。
+
+## 事件通知类型
+
+RTM 一共有 7 种类型事件，对应的有 7 种事件监听程序。你可以查看 API 参考的<a href="#">事件监听</a>章节，了解每个事件监听程序传入参数的详细信息。
+
+| 事件监听程序                                                     | 描述                                                                                                                                                                                                             |
+| ------- | ----------------- |
+| `didReceiveMessageEvent`    | 接收所有订阅的 Message Channel 中的消息通知或你加入的所有 Stream Channel 中订阅的 Topic 消息通知。事件负载数据中包含频道名称、频道类型、Topic 名称、事件发送者、消息负载数据类型等信息。                         |
+| `didReceivePresenceEvent`   | 接收所有订阅的 Message Channel 或者你加入的所有 Stream Channel 中远端用户的在线状态事件通知。事件负载数据中包含频道名称、频道类型、事件类型、事件发送者、用户临时状态数据等信息。                                |
+| `didReceiveTopicEvent`      | 接收加入的所有 Stream Channel 中 Topic 变更事件通知。事件负载数据中包含频道名称、事件类型、Topic 名称、事件发送者（即 Topic 详情）等信息。                                                                       |
+| `didReceiveStorageEvent`    | 接收订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，以及所有订阅用户的 User Metadata 事件通知。事件负载数据中包含频道名称、频道类型、事件类型（即具体 Metadata 数据）等信息。 |
+| `didReceiveLockEvent`       | 接收订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。事件负载数据中包含有频道名称、频道类型、事件类型、锁详情等信息。                                                                      |
+| `didReceiveLinkStateEvent`  | 接收客户端网络连接状态变更的事件通知，包含变更前后的连接状态、服务类型、导致变更的操作类型、变更原因、频道列表等信息。                                                                                           |
+| `tokenPrivilegeWillExpire` | 接收客户端 Token 将要过期的事件通知。                                                                                                                                                                            |
+
+完成事件监听处理程序后，你可以通过订阅频道或 Topic 来接收指定的 Message Channel 或 Stream Channel 中的消息和事件通知了。详见[订阅 Message Channel](../channel/message-channel#订阅频道) 和[订阅 Topic](../topic/usage#订阅-topic)。

@@ -8,6 +8,14 @@ type TabsChildComponent = ComponentType<{
   children: ReactNode;
   value: string;
 }>;
+type PreComponent = ComponentType<{
+  children: ReactNode;
+  className?: string;
+}>;
+type CommandBlockComponent = ComponentType<{
+  code: string;
+  language?: string;
+}>;
 
 describe('MDX tabs', () => {
   it('selects the first tab by default for bare generated Tabs blocks', () => {
@@ -69,5 +77,32 @@ describe('MDX links', () => {
       'href',
       'https://example.com/page.md',
     );
+  });
+});
+
+describe('MDX code blocks', () => {
+  it('wraps pre blocks with a copy button', () => {
+    const components = getMDXComponents();
+    const Pre = components.pre as PreComponent;
+
+    render(
+      <Pre>
+        <code>agora login</code>
+      </Pre>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Copy code' })).toBeInTheDocument();
+    expect(screen.getByText('agora login')).toBeInTheDocument();
+  });
+
+  it('renders command blocks with line numbers', () => {
+    const components = getMDXComponents();
+    const CommandBlock = components.CommandBlock as CommandBlockComponent;
+
+    render(<CommandBlock code={`agora login\nbun run dev`} />);
+
+    expect(screen.getByRole('button', { name: 'Copy code' })).toBeInTheDocument();
+    expect(screen.getByText('agora login')).toBeInTheDocument();
+    expect(screen.getByText('bun run dev')).toBeInTheDocument();
   });
 });

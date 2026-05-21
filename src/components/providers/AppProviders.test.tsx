@@ -95,4 +95,35 @@ describe('AppProviders', () => {
 
     expect(document.documentElement).toHaveAttribute('lang', 'zh-CN');
   });
+
+  it('prioritizes the route locale over stored locale', async () => {
+    window.localStorage.setItem(LOCALE_STORAGE_KEY, 'zh-CN');
+
+    const rootRoute = createRootRoute({
+      component: () => <Outlet />,
+    });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <ProviderProbe />
+        </AppProviders>
+      ),
+    });
+    const routeTree = rootRoute.addChildren([docsRoute]);
+    const router = createRouter({
+      routeTree,
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/start-with-ai'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const probe = await screen.findByTestId('provider-probe');
+
+    expect(probe).toHaveAttribute('data-language', 'en');
+    expect(document.documentElement).toHaveAttribute('lang', 'en');
+  });
 });

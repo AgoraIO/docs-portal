@@ -1,0 +1,33 @@
+---
+title: Start with AI
+description: Build a working voice agent in under five minutes by installing the Agora CLI and running an official starter project.
+---
+
+If you want a working agent as quickly as possible, this is the shortest path. The quickstart uses the Agora CLI to sign in, scaffold an official starter project, and run it locally.
+
+## Install the Agora CLI
+
+<CommandBlock
+  code={`curl -fsSL https://raw.githubusercontent.com/AgoraIO/cli/main/install.sh | sh -s -- --add-to-path
+agora --help`}
+/>
+
+## Sign in, scaffold, and run
+
+<CommandBlock
+  code={`agora login
+agora init my-python-demo --template python
+cd my-python-demo
+bun install
+bun run dev`}
+/>
+
+Open `http://localhost:3000` and click **Start conversation**.
+
+## Next steps
+
+- [Build a backend and client from scratch](/en/ai/build/build-server-client)
+- [Agent Studio](/en/ai/studio)
+- [Integrate short-term memory](/en/ai/build/short-term-memory)
+- [Transmit custom information](/en/ai/build/custom-information)
+- [Use filler words](/en/ai/best-practices/filler-words)
