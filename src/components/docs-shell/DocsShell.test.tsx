@@ -241,6 +241,10 @@ describe('DocsShell', () => {
     expect(languageControl).toHaveTextContent('English');
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
     expect(tabsAiLink).toHaveAttribute('href', '/en/ai');
+    expect(tabsIntroductionLink.className).toContain(
+      'after:bottom-[-3px]',
+    );
+    expect(tabsIntroductionLink.className).toContain('after:h-0.5');
 
     expect(
       screen.getByRole('link', { name: 'Quick Start' }),
