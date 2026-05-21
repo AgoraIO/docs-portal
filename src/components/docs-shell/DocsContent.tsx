@@ -10,6 +10,7 @@ import { DocsContentBodyClient } from './DocsContentBody.client';
 const DESKTOP_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
 const TOC_SCROLL_OFFSET = 24;
 const TOC_ACTIVE_OFFSET = 96;
+const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
 
 export function DocsContent({
   breadcrumb = [],
@@ -153,7 +154,12 @@ export function DocsTableOfContents({
     () => toc.filter((item) => typeof item.title === 'string'),
     [toc],
   );
-  const [activeUrl, setActiveUrl] = useState(() => items[0]?.url ?? '');
+  const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
+    () => items[0]?.url ?? '',
+  );
+  const [visibleUrls, setVisibleUrls] = useState<Set<string>>(
+    () => new Set(items[0]?.url ? [items[0].url] : []),
+  );
 
   const scrollToHeading = useCallback((url: string) => {
     const scrollContainer = getActiveDocsScrollContainer();
@@ -163,7 +169,12 @@ export function DocsTableOfContents({
       return;
     }
 
-    setActiveUrl(url);
+    setPrimaryActiveUrl(url);
+    setVisibleUrls((current) => {
+      const next = new Set(current);
+      next.add(url);
+      return next;
+    });
     updateHash(url);
 
     const headingRect = heading.getBoundingClientRect();
@@ -204,21 +215,42 @@ export function DocsTableOfContents({
         const boundary =
           (scrollContainer?.getBoundingClientRect().top ?? 0) +
           TOC_ACTIVE_OFFSET;
+        const viewportRect = getScrollViewportRect(scrollContainer);
+        const headings = items.map((item) =>
+          getHeadingForUrl(item.url, scrollContainer),
+        );
         let nextActiveUrl = items[0]?.url ?? '';
+        const nextVisibleUrls = new Set<string>();
 
-        for (const item of items) {
-          const heading = getHeadingForUrl(item.url, scrollContainer);
+        for (const [index, item] of items.entries()) {
+          const heading = headings[index];
 
           if (!heading) {
             continue;
           }
 
-          if (heading.getBoundingClientRect().top <= boundary) {
+          const sectionTop = heading.getBoundingClientRect().top;
+          const sectionBottom = getSectionBottomForItem(
+            index,
+            headings,
+            items,
+          );
+
+          if (
+            sectionBottom - viewportRect.top >
+              TOC_VISIBLE_INTERSECTION_THRESHOLD &&
+            viewportRect.bottom - sectionTop > TOC_VISIBLE_INTERSECTION_THRESHOLD
+          ) {
+            nextVisibleUrls.add(item.url);
+          }
+
+          if (sectionTop <= boundary) {
             nextActiveUrl = item.url;
           }
         }
 
-        setActiveUrl(nextActiveUrl);
+        setPrimaryActiveUrl(nextActiveUrl);
+        setVisibleUrls(nextVisibleUrls);
       });
     };
 
@@ -253,18 +285,23 @@ export function DocsTableOfContents({
       {items.length > 0 ? (
         <nav className="flex flex-col border-l border-border">
           {items.map((item) => {
-            const isActive = item.url === activeUrl;
+            const isPrimary = item.url === primaryActiveUrl;
+            const isVisible = visibleUrls.has(item.url);
 
             return (
               <a
-                aria-current={isActive ? 'location' : undefined}
+                aria-current={isPrimary ? 'location' : undefined}
                 className={cn(
-                  '-ml-px border-l-2 border-transparent px-3 py-1.5 text-sm leading-5 text-[color:var(--ink-3)] transition-colors hover:border-[color:var(--accent-brand)] hover:text-[color:var(--ink-1)]',
-                  isActive &&
-                    'border-[color:var(--accent-brand)] font-semibold text-[color:var(--ink-1)]',
+                  '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-sm leading-5 text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]',
+                  isVisible &&
+                    'border-[color:var(--line-strong)] text-[color:var(--ink-2)]',
+                  isPrimary &&
+                    'border-[color:var(--accent-brand)] text-[color:var(--ink-1)]',
                   item.depth > 2 && 'pl-6',
                   item.depth > 3 && 'pl-8',
                 )}
+                data-primary={isPrimary ? 'true' : undefined}
+                data-visible={isVisible ? 'true' : undefined}
                 href={item.url}
                 key={item.url}
                 onClick={(event) => {
@@ -286,7 +323,7 @@ export function DocsTableOfContents({
       )}
       <div className="mt-2 flex flex-col gap-1 border-t border-[color:var(--line)] pt-3">
         <a
-          className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-card hover:text-[color:var(--ink-1)]"
+          className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
           href="https://github.com/Shengwang-Community/docs-portal/tree/main/content/docs"
           rel="noreferrer"
           target="_blank"
@@ -295,7 +332,7 @@ export function DocsTableOfContents({
           {t('docs.editPage')}
         </a>
         <a
-          className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-card hover:text-[color:var(--ink-1)]"
+          className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
           href="https://github.com/Shengwang-Community/docs-portal"
           rel="noreferrer"
           target="_blank"
@@ -326,6 +363,46 @@ function getActiveDocsScrollContainer() {
 
 function getDesktopDocsScrollContainer() {
   return document.querySelector<HTMLElement>(DESKTOP_SCROLL_SELECTOR);
+}
+
+function getScrollViewportRect(scrollContainer: HTMLElement | null) {
+  if (scrollContainer) {
+    const rect = scrollContainer.getBoundingClientRect();
+
+    return {
+      bottom: rect.bottom,
+      top: rect.top,
+    };
+  }
+
+  return {
+    bottom: window.innerHeight,
+    top: 0,
+  };
+}
+
+function getSectionBottomForItem(
+  itemIndex: number,
+  headings: Array<HTMLElement | null>,
+  items: TOCItemType[],
+) {
+  const currentItem = items[itemIndex];
+
+  for (let index = itemIndex + 1; index < items.length; index += 1) {
+    const nextHeading = headings[index];
+    const nextItem = items[index];
+
+    if (nextHeading && nextItem.depth <= currentItem.depth) {
+      return nextHeading.getBoundingClientRect().top;
+    }
+  }
+
+  return (
+    headings[itemIndex]
+      ?.closest('.prose, article')
+      ?.getBoundingClientRect().bottom ??
+    document.body.getBoundingClientRect().bottom
+  );
 }
 
 function getHeadingForUrl(url: string, scrollContainer: HTMLElement | null) {
