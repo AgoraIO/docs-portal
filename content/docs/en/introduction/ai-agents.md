@@ -3,10 +3,6 @@ title: Conversational AI
 description: Build voice-enabled AI applications with realtime audio streaming and the LLM of your choice.
 ---
 
-![Conversational AI Engine overview](/images/conversational-ai/conversational-ai.png)
-
-Conversational AI Engine combines Agora's realtime audio transport with LLM-based voice interaction. It is the main product in the AI section and is suited to voice assistants, support agents, tutors, companions, and device experiences.
-
 ## Start here
 
 - [Voice AI quickstart](/en/ai/get-started/quickstart)
