@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   type AppLocale,
@@ -35,14 +35,6 @@ export function useLocale() {
       normalizeLocale(i18n.resolvedLanguage ?? i18n.language) ?? DEFAULT_LOCALE,
     [i18n.language, i18n.resolvedLanguage],
   );
-
-  useEffect(() => {
-    const initialLocale = getInitialLocale();
-
-    if (initialLocale !== i18n.language) {
-      void i18n.changeLanguage(initialLocale);
-    }
-  }, [i18n]);
 
   return {
     locale,

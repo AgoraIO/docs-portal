@@ -1,5 +1,7 @@
 import {
+  CheckIcon,
   CheckCircleIcon,
+  CopyIcon,
   InfoIcon,
   type LucideIcon,
   TriangleAlertIcon,
@@ -9,9 +11,12 @@ import type { MDXComponents } from 'mdx/types';
 import {
   type AnchorHTMLAttributes,
   Children,
+  cloneElement,
   isValidElement,
   type ReactElement,
   type ReactNode,
+  useRef,
+  useState,
 } from 'react';
 import {
   Tabs as UiTabs,
@@ -30,7 +35,7 @@ function Tabs(props: React.ComponentProps<typeof UiTabs>) {
 
   return (
     <UiTabs
-      className={cn('my-6', props.className)}
+      className={cn('docs-mdx-tabs my-6', props.className)}
       {...props}
       defaultValue={props.value ? props.defaultValue : defaultValue}
     />
@@ -40,7 +45,10 @@ function Tabs(props: React.ComponentProps<typeof UiTabs>) {
 function TabsList(props: React.ComponentProps<typeof UiTabsList>) {
   return (
     <UiTabsList
-      className={cn('mb-4 flex-wrap', props.className)}
+      className={cn(
+        'mb-4 flex-wrap rounded-t-2xl border border-b-0 border-[color:var(--line)] bg-[color:var(--bg-elev)] px-3 pt-2 shadow-[0_10px_28px_rgba(15,23,42,0.05)]',
+        props.className,
+      )}
       variant="line"
       {...props}
     />
@@ -50,14 +58,19 @@ function TabsList(props: React.ComponentProps<typeof UiTabsList>) {
 function TabsTrigger(props: React.ComponentProps<typeof UiTabsTrigger>) {
   return (
     <UiTabsTrigger
-      className={cn('text-base md:text-lg', props.className)}
+      className={cn(
+        'min-h-12 rounded-none px-3 pt-2 pb-2 text-[0.98rem] font-semibold text-[color:var(--ink-3)] md:px-4 group-data-[variant=line]/tabs-list:data-[state=active]:text-[color:var(--ink-1)]',
+        props.className,
+      )}
       {...props}
     />
   );
 }
 
 function TabsContent(props: React.ComponentProps<typeof UiTabsContent>) {
-  return <UiTabsContent className={cn('mt-1', props.className)} {...props} />;
+  return (
+    <UiTabsContent className={cn('mt-0 min-w-0', props.className)} {...props} />
+  );
 }
 
 function getFirstTabsTriggerValue(children: ReactNode): string | undefined {
@@ -89,12 +102,98 @@ type MDXContext = {
   contentPath?: string;
 };
 
+function Pre({
+  children,
+  className,
+  ...props
+}: React.ComponentProps<'pre'>) {
+  const preRef = useRef<HTMLPreElement>(null);
+  const [copied, setCopied] = useState(false);
+
+  const childArray = Children.toArray(children);
+  const codeChild = childArray.find((child) =>
+    isValidElement(child),
+  ) as ReactElement<React.ComponentProps<'code'>> | undefined;
+
+  const shouldShowLineNumbers = true;
+
+  const enhancedChildren =
+    codeChild && shouldShowLineNumbers
+      ? cloneElement(codeChild, {
+          className: cn('docs-code-with-lines', codeChild.props.className),
+        })
+      : children;
+
+  async function handleCopy() {
+    const text = preRef.current?.textContent?.trimEnd();
+
+    if (!text) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(preRef.current);
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+      document.execCommand('copy');
+      selection?.removeAllRanges();
+    }
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1500);
+  }
+
+  return (
+    <div
+      className="not-prose docs-code-block-root"
+      data-line-numbers={shouldShowLineNumbers ? 'true' : undefined}
+    >
+      <button
+        aria-label={copied ? 'Code copied' : 'Copy code'}
+        className="docs-code-copy-button"
+        onClick={() => void handleCopy()}
+        type="button"
+      >
+        {copied ? <CheckIcon className="size-4" /> : <CopyIcon className="size-4" />}
+      </button>
+      <pre className={cn(className)} ref={preRef} {...props}>
+        {enhancedChildren}
+      </pre>
+    </div>
+  );
+}
+
+function CommandBlock({
+  code,
+  language = 'bash',
+}: {
+  code: string;
+  language?: string;
+}) {
+  return (
+    <Pre className={cn('shiki', `language-${language}`)}>
+      <code className={cn('language-code', `language-${language}`)}>
+        {code.replace(/\n$/, '').split('\n').map((line, index) => (
+          <span className="line" key={`${index + 1}-${line}`}>
+            {line}
+          </span>
+        ))}
+      </code>
+    </Pre>
+  );
+}
+
 export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
   return {
     a: createDocsAnchor(context?.contentPath),
+    CommandBlock,
+    pre: Pre,
     Tabs,
     TabsContent,
     TabsList,
@@ -105,6 +204,8 @@ export function getMDXComponents(
     CalloutTitle,
     CardGrid,
     FeatureCard,
+    OverviewSpotlightGrid,
+    OverviewSpotlightCard,
     ...components,
   } satisfies MDXComponents;
 }
@@ -201,6 +302,97 @@ function FeatureCard({
       <h3>{title}</h3>
       <div className="docs-card-body">{children}</div>
     </section>
+  );
+}
+
+function OverviewSpotlightGrid({ children }: { children: ReactNode }) {
+  return <section className="not-prose overview-spotlight-grid">{children}</section>;
+}
+
+type OverviewSpotlightVariant = 'platform' | 'code' | 'checklist';
+
+function OverviewSpotlightCard({
+  href,
+  title,
+  variant = 'platform',
+}: {
+  href: string;
+  title: string;
+  variant?: OverviewSpotlightVariant;
+}) {
+  return (
+    <a className="overview-spotlight-card" data-variant={variant} href={href}>
+      <div aria-hidden="true" className="overview-spotlight-media">
+        <div className="overview-spotlight-window">
+          <span className="overview-spotlight-window-dot" />
+          <span className="overview-spotlight-window-dot" />
+          <span className="overview-spotlight-window-dot" />
+        </div>
+        <div className="overview-spotlight-scene">
+          {variant === 'platform' ? <OverviewSpotlightPlatformVisual /> : null}
+          {variant === 'code' ? <OverviewSpotlightCodeVisual /> : null}
+          {variant === 'checklist' ? <OverviewSpotlightChecklistVisual /> : null}
+        </div>
+      </div>
+      <div className="overview-spotlight-body">
+        <h3>{title}</h3>
+      </div>
+    </a>
+  );
+}
+
+function OverviewSpotlightPlatformVisual() {
+  return (
+    <div className="overview-spotlight-platform">
+      <div className="overview-spotlight-platform-hero">
+        <span className="overview-spotlight-platform-prompt" />
+      </div>
+      <div className="overview-spotlight-platform-panel overview-spotlight-platform-panel--primary">
+        <span className="overview-spotlight-platform-line overview-spotlight-platform-line--short" />
+      </div>
+      <div className="overview-spotlight-platform-panel overview-spotlight-platform-panel--secondary">
+        <span className="overview-spotlight-platform-chip" />
+        <span className="overview-spotlight-platform-chip overview-spotlight-platform-chip--wide" />
+      </div>
+      <div className="overview-spotlight-platform-pill" />
+      <div className="overview-spotlight-platform-pill overview-spotlight-platform-pill--secondary" />
+      <div className="overview-spotlight-platform-stack" />
+    </div>
+  );
+}
+
+function OverviewSpotlightCodeVisual() {
+  return (
+    <div className="overview-spotlight-code">
+      <div className="overview-spotlight-code-bar" />
+      <div className="overview-spotlight-code-body">
+        <span>session = AgentSession(</span>
+        <span>  rtc="voice",</span>
+        <span>  llm="gpt-5.3-chat",</span>
+        <span>  tts="cartesia/sonic-3"</span>
+        <span>)</span>
+      </div>
+      <div className="overview-spotlight-code-waveform" />
+    </div>
+  );
+}
+
+function OverviewSpotlightChecklistVisual() {
+  return (
+    <div className="overview-spotlight-checklist">
+      <span className="overview-spotlight-checklist-command">
+        &gt; create project
+      </span>
+      <span className="overview-spotlight-checklist-item">
+        Project name
+      </span>
+      <span className="overview-spotlight-checklist-item">
+        App ID
+      </span>
+      <span className="overview-spotlight-checklist-item">
+        Primary certificate
+      </span>
+    </div>
   );
 }
 

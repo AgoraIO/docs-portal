@@ -1,35 +1,118 @@
 ---
 title: About Agora
-description: Understand Agora across realtime sessions, conversational AI, messaging, media services, and operational tooling.
+description: Understand Agora as a developer platform for realtime engagement, conversational AI, messaging, and media operations.
 ---
 
-Agora is a realtime engagement platform built on low-latency session infrastructure, messaging and state synchronization, conversational AI orchestration, and media services that help you capture, transform, and analyze live communication.
+## Why Agora
 
-## The platform in four layers
+Teams usually adopt Agora when they need to solve more than one problem at the same time:
 
-- **Realtime sessions:** Voice Calling, Video Calling, Broadcast Streaming, and IoT SDK all describe the same underlying need: keep people, devices, or audiences connected with low latency and stable media delivery.
-- **Messaging and state:** Signaling adds realtime metadata synchronization, message channels, topics, presence, storage, and locking so apps can coordinate users and workflows beyond raw media.
-- **Conversational intelligence:** Conversational AI Engine layers ASR, LLM, TTS, interruption handling, memory, and agent control on top of the realtime session model.
-- **Media services and operations:** Cloud Recording, On-Premise Recording, Cloud Transcoding, Interactive Whiteboard, and Analytics extend the live path with capture, layout processing, collaboration, monitoring, and governance.
+- Keep voice and video interactions stable under real-world network conditions.
+- Synchronize user state, events, and messaging alongside live media.
+- Add conversational AI to a live session instead of treating AI as a disconnected backend feature.
+- Extend a live product with recording, analytics, whiteboard collaboration, transcription, and operational tooling.
 
-## What teams usually build
+In practice, this means you can start with one entry point, such as voice calling or an AI voice agent, and then expand into adjacent capabilities without rebuilding the underlying session architecture.
 
-- Voice, video, and live-broadcast apps built on low-latency sessions.
-- AI assistants, copilots, tutors, support agents, and other voice-driven conversational products.
-- Messaging, presence, and event-driven coordination flows that complement live media.
-- Recording, transcoding, captioning, whiteboard, and analytics workflows that turn a live session into a production-ready system.
+## Core product areas
 
-## How to read this introduction section
+You can understand Agora more clearly by grouping its products into four capability layers instead of reading them as isolated SKUs.
 
-1. Start with [Start with AI](/en/introduction/start-with-ai) if your first milestone is a working voice agent.
-2. Go to [Audio & Video](/en/introduction/realtime-audio-video), [Messaging](/en/introduction/messaging), or [Transcription & Translation](/en/introduction/speech-to-text) if you already know the capability you need.
-3. Move to [Account](/en/introduction/account), [Projects](/en/introduction/projects), and [Pricing & Access](/en/introduction/pricing-access) when you prepare credentials, entitlements, and launch boundaries.
-4. Finish with [Security & Compliance](/en/introduction/security-compliance), [Support](/en/introduction/support), and [Release Notes](/en/introduction/release-notes) before production rollout.
+### Realtime interaction
 
-## Suggested next pages
+This layer is responsible for the live session itself: who joins, what media flows through the session, and how quickly participants can interact.
 
-- [Conversational AI](/en/introduction/ai-agents)
-- [Audio & Video](/en/introduction/realtime-audio-video)
-- [Messaging](/en/introduction/messaging)
-- [Server Media Processing](/en/introduction/rtc-server-sdk)
-- [Usage Analytics](/en/introduction/usage-analytics)
+- Voice Calling
+- Video Calling
+- Broadcast Streaming
+- Real-Time Engagement for large-scale interactive scenarios
+- Device-side realtime connectivity for IoT and embedded hardware
+
+Typical use cases include one-to-one calls, group meetings, live classrooms, social audio rooms, interactive shows, connected devices, and hybrid human-device experiences.
+
+### Realtime coordination
+
+Live products also need metadata and application state to move in real time. Agora covers that layer with messaging and signaling capabilities such as:
+
+- user presence
+- channel and topic messaging
+- metadata synchronization
+- storage and history
+- locks and coordination primitives
+- event-driven room state updates
+
+This is the layer that keeps your product logic aligned with your media logic.
+
+### Conversational AI
+
+Agora also provides an AI-oriented layer for voice-driven and multimodal experiences. Instead of treating speech input, LLM reasoning, and speech output as separate systems, you can orchestrate them inside the realtime session.
+
+This layer typically includes:
+
+- realtime audio streaming between users and agents
+- speech recognition and speech synthesis integration
+- LLM orchestration
+- interruption handling and turn management
+- agent state and lifecycle control
+- server-side integration points for business logic
+
+This is the foundation for AI assistants, tutors, copilots, customer service agents, and other voice-first AI products.
+
+### Media services and operations
+
+Once a live experience works, production teams usually need more than the session itself. Agora extends the live path with service and governance capabilities such as:
+
+- cloud and on-premise recording
+- media processing and transcoding
+- realtime transcription and translation
+- whiteboard collaboration
+- usage analytics and monitoring
+- security controls and production operations
+
+These services help turn a working demo into a production-ready system.
+
+## What you can build
+
+Most teams arrive at Agora from one of these product directions:
+
+<CardGrid>
+  <FeatureCard title="Conversational AI products">
+    Build voice agents, AI assistants, AI tutors, AI companions, support agents, and other realtime human-to-AI experiences.
+  </FeatureCard>
+  <FeatureCard title="Realtime audio and video apps">
+    Build calling, meetings, classrooms, telehealth, livestream interaction, social engagement, and collaboration products.
+  </FeatureCard>
+  <FeatureCard title="Realtime coordination workflows">
+    Build in-room messaging, presence, state sync, event coordination, and operational workflows that complement live media.
+  </FeatureCard>
+  <FeatureCard title="Media and production systems">
+    Build recording, transcription, analytics, content processing, moderation, and post-session workflows on top of live sessions.
+  </FeatureCard>
+</CardGrid>
+
+The platform is flexible enough that different teams can start from different entry points, but the system becomes easier to reason about once you see these products as parts of the same realtime stack.
+
+## How the platform fits together
+
+The most useful mental model is to think in layers of responsibility:
+
+1. **Account and project setup** define your access boundary, credentials, billing, and enabled services.
+2. **Sessions and channels** define the live context where users, devices, and agents interact.
+3. **Media and messaging** carry voice, video, text, metadata, and events through that context.
+4. **Server-side control** manages authentication, callbacks, orchestration, business rules, and integrations.
+5. **Production services** add analytics, recording, monitoring, compliance, and operational governance.
+
+If you keep this model in mind, the rest of the documentation becomes much easier to navigate. Product pages may focus on different capabilities, but they all connect back to the same live session architecture.
+
+
+## How to use this introduction section
+
+Choose the next page based on your first implementation milestone:
+
+1. Start with [Start with AI](/en/introduction/start-with-ai) if you want to launch a working voice agent or AI-first experience.
+2. Go to [Audio & Video](/en/introduction/realtime-audio-video) if your first goal is a calling, meeting, classroom, or livestream product.
+3. Go to [Messaging](/en/introduction/messaging) if you need realtime coordination, room state, and event synchronization.
+4. Go to [Transcription & Translation](/en/introduction/speech-to-text) if your product depends on captions, speech understanding, or live translation.
+5. Continue with [Projects](/en/introduction/projects), [Pricing & Access](/en/introduction/pricing-access), [Security & Compliance](/en/introduction/security-compliance), and [Usage Analytics](/en/introduction/usage-analytics) when you move from prototype to production.
+
+This page is meant to give you the map. The next pages tell you where to start building.
