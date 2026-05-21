@@ -213,11 +213,31 @@ describe('DocsShell', () => {
     expect(themeControl).toHaveAttribute('aria-pressed', 'false');
     expect(themeControl.querySelector('span:not(.sr-only)')).toBeNull();
     expect(themeControl.className).not.toContain('bg-card');
-    expect(themeControl.className).toContain('hover:bg-transparent');
-    expect(themeControl.className).toContain('dark:hover:bg-transparent');
+    expect(themeControl.className).not.toContain('hover:bg-transparent');
+    expect(themeControl.className).toContain(
+      'hover:bg-[color:var(--docs-soft-fill)]',
+    );
+    expect(themeControl.className).not.toContain('dark:hover:bg-transparent');
+    expect(themeControl.className).toContain(
+      'dark:hover:bg-[color:var(--docs-soft-fill)]',
+    );
     expect(githubControl.className).not.toContain('bg-card');
-    expect(githubControl.className).toContain('hover:bg-transparent');
-    expect(githubControl.className).toContain('dark:hover:bg-transparent');
+    expect(githubControl.className).not.toContain('hover:bg-transparent');
+    expect(githubControl.className).toContain(
+      'hover:bg-[color:var(--docs-soft-fill)]',
+    );
+    expect(githubControl.className).not.toContain('dark:hover:bg-transparent');
+    expect(githubControl.className).toContain(
+      'dark:hover:bg-[color:var(--docs-soft-fill)]',
+    );
+    expect(languageControl).toHaveAttribute('data-variant', 'ghost');
+    expect(languageControl.className).not.toContain(
+      'border-[color:var(--line-strong)]',
+    );
+    expect(languageControl.className).not.toContain('bg-card');
+    expect(languageControl.className).toContain(
+      'hover:bg-[color:var(--docs-soft-fill)]',
+    );
     expect(languageControl).toHaveTextContent('English');
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
     expect(tabsAiLink).toHaveAttribute('href', '/en/ai');
@@ -571,6 +591,9 @@ describe('DocsShell', () => {
     expect(
       within(mobileSheet).getByRole('button', { name: 'Theme: Light' }),
     ).toBeInTheDocument();
+    expect(
+      within(mobileSheet).getByRole('button', { name: 'Theme: Light' }),
+    ).toHaveAttribute('data-variant', 'ghost');
 
     fireEvent.click(
       within(mobileSheet).getByRole('tab', { name: 'Introduction' }),
