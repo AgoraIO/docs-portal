@@ -270,6 +270,37 @@
     font-family: var(--font-sans);
   }
 
+  .docs-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--ink-4) 38%, transparent)
+      transparent;
+  }
+
+  .docs-scrollbar::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .docs-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .docs-scrollbar::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background-color: color-mix(in srgb, var(--ink-4) 30%, transparent);
+    background-clip: content-box;
+  }
+
+  .docs-scrollbar:hover::-webkit-scrollbar-thumb,
+  .docs-scrollbar:focus-within::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--ink-4) 48%, transparent);
+  }
+
+  .docs-scrollbar::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
   body {
     min-height: 100vh;
     background: var(--bg);
@@ -568,19 +599,32 @@
     border: 0;
     border-radius: 0.45rem;
     background: transparent;
+    box-shadow: none;
     color: var(--ink-4);
-    opacity: 0.78;
+    opacity: 0.82;
     transition:
       background-color 160ms ease,
-      border-color 160ms ease,
+      box-shadow 160ms ease,
       color 160ms ease,
       opacity 160ms ease;
   }
 
   .docs-code-copy-button:hover {
     background: color-mix(in srgb, var(--ink-1) 5%, transparent);
+    box-shadow: none;
     color: var(--ink-2);
     opacity: 1;
+  }
+
+  .docs-code-block-root[data-long-code="true"] .docs-code-copy-button {
+    background: color-mix(in srgb, var(--bg-elev) 94%, white 6%);
+    box-shadow: 0 4px 10px rgb(15 23 42 / 0.08);
+    opacity: 0.94;
+  }
+
+  .docs-code-block-root[data-long-code="true"] .docs-code-copy-button:hover {
+    background: var(--bg-elev);
+    box-shadow: 0 6px 14px rgb(15 23 42 / 0.1);
   }
 
   .docs-code-copy-button:focus-visible {
@@ -596,8 +640,30 @@
 
   .docs-code-block-root > pre.shiki {
     overflow-x: auto;
-    padding: var(--docs-code-pad-y) 2.65rem var(--docs-code-pad-y)
+    padding: var(--docs-code-pad-y) 3.25rem var(--docs-code-pad-y)
       var(--docs-code-pad-x);
+  }
+
+  .docs-code-block-root > pre {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--ink-4) 38%, transparent)
+      transparent;
+  }
+
+  .docs-code-block-root > pre::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .docs-code-block-root > pre::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .docs-code-block-root > pre::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background-color: color-mix(in srgb, var(--ink-4) 34%, transparent);
+    background-clip: content-box;
   }
 
   .docs-code-block-root > pre code {
@@ -1047,15 +1113,55 @@
   }
 
   .docs-callout {
+    --docs-callout-accent: var(--accent-brand);
+    --docs-callout-bg: color-mix(
+      in srgb,
+      var(--accent-brand) 6%,
+      var(--bg-card)
+    );
+    --docs-callout-border: color-mix(
+      in srgb,
+      var(--accent-brand) 20%,
+      var(--line)
+    );
+
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 0.75rem;
-    margin-block: 1.35rem;
-    border: 1px solid var(--line);
+    margin-block: 1.25rem;
+    border: 1px solid var(--docs-callout-border);
     border-radius: 10px;
-    background: var(--bg-card);
+    background: var(--docs-callout-bg);
     padding: 0.875rem 1rem;
-    box-shadow: var(--docs-shadow-sm);
+    box-shadow: none;
+  }
+
+  .docs-callout[data-type="info"] {
+    --docs-callout-accent: #2563eb;
+    --docs-callout-bg: color-mix(in srgb, #2563eb 5%, var(--bg-card));
+    --docs-callout-border: color-mix(in srgb, #2563eb 18%, var(--line));
+  }
+
+  .docs-callout[data-type="warn"] {
+    --docs-callout-accent: #b45309;
+    --docs-callout-bg: color-mix(in srgb, #f59e0b 7%, var(--bg-card));
+    --docs-callout-border: color-mix(in srgb, #d97706 22%, var(--line));
+  }
+
+  .docs-callout[data-type="ok"] {
+    --docs-callout-accent: #15803d;
+    --docs-callout-bg: color-mix(in srgb, #22c55e 6%, var(--bg-card));
+    --docs-callout-border: color-mix(in srgb, #16a34a 20%, var(--line));
+  }
+
+  .docs-callout[data-type="error"] {
+    --docs-callout-accent: #dc2626;
+    --docs-callout-bg: color-mix(in srgb, #ef4444 6%, var(--bg-card));
+    --docs-callout-border: color-mix(in srgb, #dc2626 22%, var(--line));
+  }
+
+  .docs-callout[data-type="zap"] {
+    --docs-callout-accent: var(--accent-brand);
   }
 
   .docs-callout-icon {
@@ -1065,8 +1171,12 @@
     align-items: center;
     justify-content: center;
     border-radius: 7px;
-    background: var(--accent-brand-soft);
-    color: var(--accent-brand);
+    background: color-mix(
+      in srgb,
+      var(--docs-callout-accent) 12%,
+      transparent
+    );
+    color: var(--docs-callout-accent);
   }
 
   .docs-callout-title {

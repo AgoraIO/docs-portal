@@ -34,7 +34,7 @@ export function DocsMainColumn({
         <DocsPageFooter next={next} previous={previous} />
       </div>
       <div
-        className="hidden h-full min-h-0 overflow-y-auto lg:block"
+        className="docs-scrollbar hidden h-full min-h-0 overflow-y-auto lg:block"
         data-testid="docs-main-desktop-scroll"
       >
         <div className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10">

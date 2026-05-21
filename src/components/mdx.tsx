@@ -173,6 +173,9 @@ function Pre({
   const codeChild = childArray.find((child) => isValidElement(child)) as
     | ReactElement<React.ComponentProps<'code'>>
     | undefined;
+  const codeText = getTextContent(codeChild?.props.children ?? children);
+  const lineCount = countCodeLines(codeChild?.props.children ?? children);
+  const isLongSingleLineCode = codeText.length > 72 && lineCount === 1;
 
   const shouldShowLineNumbers =
     lineNumbers !== undefined &&
@@ -223,6 +226,7 @@ function Pre({
       data-line-numbers-start={
         shouldShowLineNumbers ? String(lineNumberStart) : undefined
       }
+      data-long-code={isLongSingleLineCode ? 'true' : undefined}
       style={{
         counterReset: shouldShowLineNumbers
           ? `docs-line ${lineNumberStart - 1}`
@@ -254,6 +258,47 @@ function Pre({
       </pre>
     </div>
   );
+}
+
+function getTextContent(node: ReactNode): string {
+  if (typeof node === 'string' || typeof node === 'number') {
+    return String(node);
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(getTextContent).join('');
+  }
+
+  if (isValidElement<{ children?: ReactNode }>(node)) {
+    return getTextContent(node.props.children);
+  }
+
+  return '';
+}
+
+function countCodeLines(node: ReactNode): number {
+  if (Array.isArray(node)) {
+    const lineElements = node.filter(
+      (child) =>
+        isValidElement<{ className?: string }>(child) &&
+        child.props.className?.split(/\s+/).includes('line'),
+    );
+
+    if (lineElements.length > 0) {
+      return lineElements.length;
+    }
+
+    return getTextContent(node).trim().split(/\r?\n/).length;
+  }
+
+  if (
+    isValidElement<{ children?: ReactNode; className?: string }>(node) &&
+    node.props.className?.split(/\s+/).includes('line')
+  ) {
+    return 1;
+  }
+
+  return getTextContent(node).trim().split(/\r?\n/).length;
 }
 
 function CommandBlock({

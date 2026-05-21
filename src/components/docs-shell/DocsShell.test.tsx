@@ -296,6 +296,7 @@ describe('DocsShell', () => {
       'overflow-hidden',
     );
     expect(screen.getByTestId('docs-sidebar-scroll')).toHaveClass(
+      'docs-scrollbar',
       'h-full',
       'min-h-0',
       'overflow-y-auto',
@@ -306,11 +307,13 @@ describe('DocsShell', () => {
       'overflow-hidden',
     );
     expect(screen.getByTestId('docs-main-desktop-scroll')).toHaveClass(
+      'docs-scrollbar',
       'h-full',
       'min-h-0',
       'overflow-y-auto',
     );
     expect(screen.getByTestId('docs-toc-rail')).toHaveClass(
+      'docs-scrollbar',
       'h-full',
       'min-h-0',
       'overflow-y-auto',

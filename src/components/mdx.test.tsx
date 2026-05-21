@@ -20,6 +20,11 @@ type CommandBlockComponent = ComponentType<{
   code: string;
   language?: string;
 }>;
+type CalloutComponent = ComponentType<{
+  children: ReactNode;
+  title: string;
+  type?: 'error' | 'info' | 'ok' | 'success' | 'warn' | 'warning' | 'zap';
+}>;
 
 describe('MDX tabs', () => {
   it('selects the first tab by default for bare generated Tabs blocks', () => {
@@ -97,8 +102,7 @@ describe('MDX code blocks', () => {
   it('wraps pre blocks with a copy button', () => {
     const components = getMDXComponents();
     const Pre = components.pre as PreComponent;
-
-    render(
+    const { container } = render(
       <Pre>
         <code>agora login</code>
       </Pre>,
@@ -108,6 +112,50 @@ describe('MDX code blocks', () => {
       screen.getByRole('button', { name: 'Copy code' }),
     ).toBeInTheDocument();
     expect(screen.getByText('agora login')).toBeInTheDocument();
+    expect(container.querySelector('.docs-code-block-root')).not.toHaveAttribute(
+      'data-long-code',
+    );
+  });
+
+  it('marks long single-line code blocks for elevated copy controls', () => {
+    const components = getMDXComponents();
+    const Pre = components.pre as PreComponent;
+    const { container } = render(
+      <Pre>
+        <code>
+          <span className="line">
+            curl -fsSL https://raw.githubusercontent.com/AgoraIO/cli/main/install.sh
+            | sh -s -- --add-to-path --project demo --channel voice-agent-demo
+          </span>
+        </code>
+      </Pre>,
+    );
+
+    expect(container.querySelector('.docs-code-block-root')).toHaveAttribute(
+      'data-long-code',
+      'true',
+    );
+  });
+
+  it('does not mark multiline code blocks as long command blocks', () => {
+    const components = getMDXComponents();
+    const Pre = components.pre as PreComponent;
+    const { container } = render(
+      <Pre>
+        <code>
+          <span className="line">
+            const session = new AgentSession(&#123;
+          </span>
+          <span className="line">rtc: "voice",</span>
+          <span className="line">llm: "gpt-5.3-chat",</span>
+          <span className="line">&#125;);</span>
+        </code>
+      </Pre>,
+    );
+
+    expect(container.querySelector('.docs-code-block-root')).not.toHaveAttribute(
+      'data-long-code',
+    );
   });
 
   it('renders code block titles and icons from rehype-code props', () => {
@@ -191,6 +239,34 @@ describe('MDX code blocks', () => {
     expect(screen.getByText('bun run dev')).toBeInTheDocument();
     expect(screen.getByTestId('mdx-code-block')).not.toHaveAttribute(
       'data-line-numbers',
+    );
+  });
+});
+
+describe('MDX callouts', () => {
+  it('normalizes callout types for semantic styling', () => {
+    const components = getMDXComponents();
+    const Callout = components.Callout as CalloutComponent;
+    const { container, rerender } = render(
+      <Callout title="Heads up" type="warning">
+        Watch this.
+      </Callout>,
+    );
+
+    expect(container.querySelector('.docs-callout')).toHaveAttribute(
+      'data-type',
+      'warn',
+    );
+
+    rerender(
+      <Callout title="Done" type="success">
+        It worked.
+      </Callout>,
+    );
+
+    expect(container.querySelector('.docs-callout')).toHaveAttribute(
+      'data-type',
+      'ok',
     );
   });
 });
