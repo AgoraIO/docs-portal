@@ -73,7 +73,14 @@ Use this endpoint for the following scenarios:
 
 This endpoint requires [authentication](../authentication.md).
 
-### curl
+<Tabs>
+<TabsList>
+  <TabsTrigger value="curl">Curl</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="nodejs">Node.js</TabsTrigger>
+</TabsList>
+
+<TabsContent value="curl">
 
 ```bash
   curl --request POST \
@@ -93,7 +100,9 @@ This endpoint requires [authentication](../authentication.md).
     }'
 ```
 
-### Python
+</TabsContent>
+
+<TabsContent value="python">
 
 ```python
   import requests
@@ -119,7 +128,9 @@ This endpoint requires [authentication](../authentication.md).
   print(response.text)
 ```
 
-### Node.js
+</TabsContent>
+
+<TabsContent value="nodejs">
 
 ```js
 const axios = require("axios");
@@ -145,6 +156,9 @@ axios.post(url, payload, { headers })
   .then(response => console.log(response.data))
   .catch(error => console.error(error.response ? error.response.data : error.message));
 ```
+
+</TabsContent>
+</Tabs>
 
 ```json
 {

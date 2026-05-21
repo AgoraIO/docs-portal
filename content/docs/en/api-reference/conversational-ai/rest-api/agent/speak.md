@@ -62,9 +62,7 @@ This endpoint requires [authentication](../authentication.md).
 
   
     
-### curl
-
-      ```bash
+```bash tab="Curl"
       curl --request post \
         --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/speak \
         --header 'Authorization: Basic <credentials>' \
@@ -74,12 +72,9 @@ This endpoint requires [authentication](../authentication.md).
         "priority": "INTERRUPT",
         "interruptable": false
       }'
-      ```
-    
-    
-### Python
+```
 
-    ```python
+```python tab="Python"
     import requests
 
     url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/speak"
@@ -94,13 +89,9 @@ This endpoint requires [authentication](../authentication.md).
     response = requests.request("post", url, json=payload, headers=headers)
 
     print(response.text)
-    ```
-    
+```
 
-    
-### Node.js
-
-    ```js
+```js tab="Node.js"
     const url = 'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/speak';
     const options = {
       method: 'post',
@@ -116,10 +107,7 @@ This endpoint requires [authentication](../authentication.md).
       .then(res => res.json())
       .then(json => console.log(json))
       .catch(err => console.error(err));
-    ```
-    
-  
-
+```
   ```json
   {
     "agent_id": "1NT29XxxxxxxxxELWEHC8OS",

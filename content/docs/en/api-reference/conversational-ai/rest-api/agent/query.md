@@ -56,18 +56,13 @@ This endpoint requires [authentication](../authentication.md).
 
   
     
-### curl
-
-      ```bash
+```bash tab="Curl"
       curl --request get \
       --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId \
       --header 'Authorization: Basic <credentials>'
-      ```
-    
-    
-### Python
+```
 
-    ```python
+```python tab="Python"
     import requests
 
     url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId"
@@ -75,13 +70,9 @@ This endpoint requires [authentication](../authentication.md).
 
     response = requests.get(url, headers=headers)
     print(response.text)
-    ```
-    
+```
 
-    
-### Node.js
-
-    ```js
+```js tab="Node.js"
     const axios = require("axios");
 
     const url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId";
@@ -90,10 +81,7 @@ This endpoint requires [authentication](../authentication.md).
     axios.get(url, { headers })
       .then(response => console.log(response.data))
       .catch(error => console.error(error.response ? error.response.data : error.message));
-    ```
-    
-  
-
+```
   ```json
   {
     "message": "agent exits with reason: xxxx",
