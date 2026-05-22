@@ -12,12 +12,12 @@ describe('openapi docs page payload', () => {
 
     expect(page).toMatchObject({
       activePath: '/en/api-reference/conversational-ai/rest-api/agent/join',
-      activeTab: 'api-reference',
       body: {
         kind: 'openapi',
       },
       markdownUrl:
         '/llms.mdx/docs/en/api-reference/conversational-ai/rest-api/agent/join.md',
+      operationId: 'start-agent',
       title: 'Start a conversational AI agent',
     });
   });

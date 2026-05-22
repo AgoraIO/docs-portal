@@ -78,6 +78,89 @@ const pageTree: Root = {
   name: 'Docs',
 };
 
+const apiReferencePageTree: Root = {
+  children: [
+    {
+      $id: 'en-root',
+      children: [
+        {
+          $id: 'api-reference-folder',
+          children: [
+            {
+              $id: 'api-reference-conversational-ai-folder',
+              children: [
+                {
+                  $id: 'api-reference-conversational-ai-rest-api-folder',
+                  children: [
+                    {
+                      $id: 'api-reference-conversational-ai-rest-api-authentication',
+                      name: 'Authentication',
+                      type: 'page',
+                      url: '/en/api-reference/conversational-ai/rest-api/authentication',
+                    },
+                    {
+                      $id: 'api-reference-conversational-ai-rest-api-agent-folder',
+                      children: [],
+                      index: {
+                        $id: 'api-reference-conversational-ai-rest-api-agent-index',
+                        name: 'Agent management',
+                        type: 'page',
+                        url: '/en/api-reference/conversational-ai/rest-api/agent',
+                      },
+                      name: 'Agent management',
+                      type: 'folder',
+                    },
+                  ],
+                  index: {
+                    $id: 'api-reference-conversational-ai-rest-api-index',
+                    name: 'REST API',
+                    type: 'page',
+                    url: '/en/api-reference/conversational-ai/rest-api',
+                  },
+                  name: 'REST API',
+                  type: 'folder',
+                },
+                {
+                  $id: 'api-reference-conversational-ai-server-sdk-folder',
+                  children: [],
+                  index: {
+                    $id: 'api-reference-conversational-ai-server-sdk-index',
+                    name: 'Server SDK',
+                    type: 'page',
+                    url: '/en/api-reference/conversational-ai/server-sdk',
+                  },
+                  name: 'Server SDK',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'api-reference-conversational-ai-index',
+                name: 'Conversational AI',
+                type: 'page',
+                url: '/en/api-reference/conversational-ai',
+              },
+              name: 'Conversational AI',
+              type: 'folder',
+            },
+          ],
+          index: {
+            $id: 'api-reference-index',
+            name: 'API Reference',
+            type: 'page',
+            url: '/en/api-reference',
+          },
+          name: 'API Reference',
+          root: true,
+          type: 'folder',
+        },
+      ],
+      name: 'English',
+      type: 'folder',
+    },
+  ],
+  name: 'Docs',
+};
+
 function createPage() {
   return {
     data: {
@@ -202,11 +285,11 @@ describe('loadDocsPagePayload', () => {
     });
   });
 
-  it('returns OpenAPI overlay payloads when no MDX page exists', async () => {
+  it('returns OpenAPI content inside the existing docs shell payload when no MDX page exists', async () => {
     mockedGetPage.mockReturnValue(undefined);
+    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
     mockedLoadOpenApiEndpointPage.mockResolvedValue({
       activePath: '/en/api-reference/conversational-ai/rest-api/agent/join',
-      activeTab: 'api-reference',
       body: {
         kind: 'openapi',
         operationPayload: {
@@ -223,38 +306,74 @@ describe('loadDocsPagePayload', () => {
           responseSchemaTrees: {},
         },
       },
-      breadcrumb: [],
       contentPath: 'en/api-reference/conversational-ai/rest-api/agent/join.md',
       description: undefined,
-      localeLinks: [],
       markdownUrl:
         '/llms.mdx/docs/en/api-reference/conversational-ai/rest-api/agent/join.md',
-      navigation: {
-        next: undefined,
-        previous: undefined,
-      },
-      pages: [],
-      sidebar: [],
+      operationId: 'start-agent',
       slug: 'join',
-      tabs: [],
       title: 'Start a conversational AI agent',
       toc: [],
     });
 
-    await expect(
-      loadDocsPagePayload('en', 'api-reference', [
-        'conversational-ai',
-        'rest-api',
-        'agent',
-        'join',
-      ]),
-    ).resolves.toMatchObject({
+    const payload = await loadDocsPagePayload('en', 'api-reference', [
+      'conversational-ai',
+      'rest-api',
+      'agent',
+      'join',
+    ]);
+
+    expect(payload).toMatchObject({
       activePath: '/en/api-reference/conversational-ai/rest-api/agent/join',
+      activeTab: 'api-reference',
       body: {
         kind: 'openapi',
       },
+      localeLinks: [
+        {
+          href: '/en/api-reference/conversational-ai/rest-api/agent/join',
+          isActive: true,
+          locale: 'en',
+        },
+        {
+          href: '/zh-CN/api-reference/conversational-ai/rest-api/agent/join',
+          isActive: false,
+          locale: 'zh-CN',
+        },
+      ],
+      pages: expect.arrayContaining([
+        expect.objectContaining({
+          title: 'About Agora',
+          url: '/en/introduction/about-agora',
+        }),
+        expect.objectContaining({
+          title: 'Start a conversational AI agent',
+          url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+        }),
+      ]),
+      tabs: [
+        {
+          id: 'api-reference',
+          title: 'API Reference',
+          url: '/en/api-reference',
+        },
+      ],
       title: 'Start a conversational AI agent',
     });
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected an OpenAPI docs page payload');
+    }
+
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+      expect.arrayContaining([
+        '/en/api-reference',
+        '/en/api-reference/conversational-ai/rest-api/authentication',
+        '/en/api-reference/conversational-ai/server-sdk',
+        '/en/api-reference/conversational-ai/rest-api/agent',
+        '/en/api-reference/conversational-ai/rest-api/agent/join',
+      ]),
+    );
   });
 
   it('loads nested product pages from multi-segment slugs', async () => {
@@ -354,3 +473,16 @@ describe('loadDocsPagePayload', () => {
     });
   });
 });
+
+function flattenSidebarPageUrls(
+  nodes: Exclude<
+    Awaited<ReturnType<typeof loadDocsPagePayload>>,
+    null | { redirectUrl: string }
+  >['sidebar'],
+): string[] {
+  return nodes.flatMap((node) =>
+    node.type === 'page'
+      ? [node.url]
+      : flattenSidebarPageUrls(node.children),
+  );
+}

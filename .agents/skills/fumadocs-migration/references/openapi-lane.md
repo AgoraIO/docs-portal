@@ -91,6 +91,15 @@ source for a page; only if that misses should it resolve an OpenAPI endpoint
 from the registry. This allows `content/docs/**/meta.json` to list virtual
 endpoint leaves without requiring physical `.md`/`.mdx` shadow files.
 
+OpenAPI endpoint loaders must not construct a standalone docs-shell payload.
+They should return endpoint content and metadata only. The normal docs page
+loader owns shell integration: reuse the Fumadocs source-derived `sidebar`,
+`tabs`, and `pages`, then overlay virtual endpoint leaves under the existing IA
+parent. Identify that parent from stable IA paths or child page URLs, not from
+fragile generated section IDs alone. Derive breadcrumb, locale links, previous
+and next links, search documents, llms exports, and prerender paths from the
+same registry plus the source-derived shell data.
+
 ## Rendering
 
 Legacy `RestfulRender` and `OpenapiRender` are not migrated.

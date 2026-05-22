@@ -2,6 +2,7 @@ import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import { getSourceSlugs } from './docs-routing';
 import {
+  type DocsSidebarNode,
   getFirstChildPageUrl,
   getFirstTabPageUrl,
   getPrevNextLinks,
@@ -9,9 +10,22 @@ import {
   getSidebarNodes,
   getTabSummaries,
 } from './docs-tree';
-import { SUPPORTED_LOCALES } from './i18n/i18n-config';
-import { loadOpenApiEndpointPage } from './openapi/docs-page.server';
-import { getPageMarkdownUrl, type PageWithSource } from './source.server';
+import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import {
+  CONVERSATIONAL_AI_OPERATION_TITLES,
+  getConversationalAiEndpointUrl,
+  getConversationalAiOperationIds,
+  type ConversationalAiOperationId,
+} from './openapi/conversational-ai';
+import {
+  loadOpenApiEndpointPage,
+  type OpenApiEndpointPagePayload,
+} from './openapi/docs-page.server';
+import {
+  getPageMarkdownUrl,
+  source as docsSource,
+  type PageWithSource,
+} from './source.server';
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
   const { source } = await import('./source.server');
@@ -65,7 +79,25 @@ export async function loadDocsPagePayload(
     );
 
     if (openApiPage) {
-      return openApiPage;
+      const openApiLocale = toSupportedLocale(locale);
+      if (!openApiLocale) {
+        return null;
+      }
+
+      const pageTree = source.getPageTree(locale);
+      const pages = source.getPages(locale).map((item) => ({
+        description: item.data.description,
+        title: item.data.title ?? item.slugs.at(-1) ?? item.url,
+        url: item.url,
+      }));
+
+      return buildOpenApiDocsPagePayload({
+        locale: openApiLocale,
+        openApiPage,
+        pageTree,
+        pages,
+        tab,
+      });
     }
 
     const pageTree = source.getPageTree(locale);
@@ -185,4 +217,151 @@ function normalizeToc(toc: TOCItemType[] | undefined) {
       },
     ];
   });
+}
+
+function toSupportedLocale(locale: string): AppLocale | null {
+  return SUPPORTED_LOCALES.includes(locale as AppLocale)
+    ? (locale as AppLocale)
+    : null;
+}
+
+function buildOpenApiDocsPagePayload({
+  locale,
+  openApiPage,
+  pageTree,
+  pages,
+  tab,
+}: {
+  locale: AppLocale;
+  openApiPage: OpenApiEndpointPagePayload;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  pages: {
+    description?: string;
+    title: string;
+    url: string;
+  }[];
+  tab: string;
+}) {
+  const sidebar = addConversationalAiEndpointSidebarItems(
+    getSidebarNodes(pageTree, tab),
+    locale,
+  );
+  const breadcrumb = getSidebarBreadcrumb(sidebar, openApiPage.activePath);
+
+  return {
+    ...openApiPage,
+    activeTab: tab,
+    breadcrumb:
+      breadcrumb.length > 0
+        ? breadcrumb
+        : [
+            {
+              title: openApiPage.title,
+              url: openApiPage.activePath,
+            },
+          ],
+    localeLinks: SUPPORTED_LOCALES.map((targetLocale) => ({
+      href: getConversationalAiEndpointUrl(
+        targetLocale,
+        openApiPage.operationId,
+      ),
+      isActive: targetLocale === locale,
+      locale: targetLocale,
+    })),
+    navigation: getOpenApiPrevNextLinks(locale, openApiPage.operationId),
+    pages: [
+      ...pages,
+      ...getConversationalAiOperationIds().map((operationId) => ({
+        title: CONVERSATIONAL_AI_OPERATION_TITLES[locale][operationId],
+        url: getConversationalAiEndpointUrl(locale, operationId),
+      })),
+    ],
+    sidebar,
+    tabs: getTabSummaries(pageTree),
+  };
+}
+
+function addConversationalAiEndpointSidebarItems(
+  sidebar: DocsSidebarNode[],
+  locale: AppLocale,
+): DocsSidebarNode[] {
+  return sidebar.map((node) =>
+    appendEndpointPagesToAgentSection(node, locale),
+  );
+}
+
+function appendEndpointPagesToAgentSection(
+  node: DocsSidebarNode,
+  locale: AppLocale,
+): DocsSidebarNode {
+  if (node.type !== 'section') {
+    return node;
+  }
+
+  if (isConversationalAiAgentSection(node, locale)) {
+    const existingUrls = new Set(
+      node.children.flatMap((child) => (child.type === 'page' ? [child.url] : [])),
+    );
+    const endpointPages: DocsSidebarNode[] = getConversationalAiOperationIds()
+      .map((operationId) => ({
+        id: getConversationalAiEndpointUrl(locale, operationId),
+        title: CONVERSATIONAL_AI_OPERATION_TITLES[locale][operationId],
+        type: 'page' as const,
+        url: getConversationalAiEndpointUrl(locale, operationId),
+      }))
+      .filter((item) => !existingUrls.has(item.url));
+
+    return {
+      ...node,
+      children: [...node.children, ...endpointPages],
+    };
+  }
+
+  return {
+    ...node,
+    children: node.children.map((child) =>
+      appendEndpointPagesToAgentSection(child, locale),
+    ),
+  };
+}
+
+function isConversationalAiAgentSection(
+  node: Extract<DocsSidebarNode, { type: 'section' }>,
+  locale: AppLocale,
+) {
+  const agentIndexUrl = `/${locale}/api-reference/conversational-ai/rest-api/agent`;
+
+  return (
+    node.id ===
+      'folder-api-reference-conversational-ai-rest-api-agent-folder' ||
+    node.id === agentIndexUrl ||
+    node.children.some(
+      (child) => child.type === 'page' && child.url === agentIndexUrl,
+    )
+  );
+}
+
+function getOpenApiPrevNextLinks(
+  locale: AppLocale,
+  operationId: ConversationalAiOperationId,
+) {
+  const operationIds = getConversationalAiOperationIds();
+  const index = operationIds.indexOf(operationId);
+  const previous = operationIds[index - 1];
+  const next = operationIds[index + 1];
+
+  return {
+    next: next
+      ? {
+          title: CONVERSATIONAL_AI_OPERATION_TITLES[locale][next],
+          url: getConversationalAiEndpointUrl(locale, next),
+        }
+      : undefined,
+    previous: previous
+      ? {
+          title: CONVERSATIONAL_AI_OPERATION_TITLES[locale][previous],
+          url: getConversationalAiEndpointUrl(locale, previous),
+        }
+      : undefined,
+  };
 }
