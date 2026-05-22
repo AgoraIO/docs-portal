@@ -5,7 +5,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
+import type { OpenApiOperationPayload } from '../openapi/OpenApiOperationContent';
 import { DocsContentBodyClient } from './DocsContentBody.client';
+import { OpenApiOperationContent } from '../openapi/OpenApiOperationContent';
 
 const DESKTOP_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
 const TOC_SCROLL_OFFSET = 24;
@@ -13,6 +15,7 @@ const TOC_ACTIVE_OFFSET = 96;
 const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
 
 export function DocsContent({
+  body,
   breadcrumb = [],
   contentPath,
   description,
@@ -21,8 +24,9 @@ export function DocsContent({
   title,
   toc,
 }: {
+  body?: DocsContentBody;
   breadcrumb?: DocsBreadcrumbItem[];
-  contentPath: string;
+  contentPath?: string;
   description?: string;
   markdownUrl?: string;
   slug?: string;
@@ -31,6 +35,14 @@ export function DocsContent({
 }) {
   const { t } = useTranslation('common');
   const displayTitle = title ?? slug;
+  const resolvedBody =
+    body ??
+    (contentPath
+      ? ({
+          contentPath,
+          kind: 'mdx',
+        } satisfies DocsContentBody)
+      : undefined);
 
   return (
     <article className="flex min-w-0 max-w-[var(--content-max)] flex-col gap-9">
@@ -103,14 +115,22 @@ export function DocsContent({
         ) : null}
       </header>
       <div className="prose prose-neutral dark:prose-invert max-w-none">
-        <ClientOnly fallback={<DocsContentSkeleton />}>
-          <DocsContentBodyClient contentPath={contentPath} />
-        </ClientOnly>
+        {resolvedBody?.kind === 'openapi' ? (
+          <OpenApiOperationContent {...resolvedBody.operationPayload} />
+        ) : resolvedBody?.kind === 'mdx' ? (
+          <ClientOnly fallback={<DocsContentSkeleton />}>
+            <DocsContentBodyClient contentPath={resolvedBody.contentPath} />
+          </ClientOnly>
+        ) : null}
       </div>
       <DocsTableOfContents className="xl:hidden" toc={toc} />
     </article>
   );
 }
+
+export type DocsContentBody =
+  | { contentPath: string; kind: 'mdx' }
+  | { kind: 'openapi'; operationPayload: OpenApiOperationPayload };
 
 function DocsContentSkeleton() {
   return (

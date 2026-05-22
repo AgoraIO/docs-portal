@@ -63,7 +63,24 @@ Do not keep `<PlatformFilter>` or equivalent runtime filtering. Code-language ex
 
 ## OpenAPI
 
-OpenAPI YAML/JSON is source data. Preserve it for the Fumadocs OpenAPI lane instead of flattening it into ad hoc Markdown. If the current repo has not wired `fumadocs-openapi`, mark the item as deferred instead of creating a custom React renderer.
+OpenAPI YAML/JSON is source data. Preserve it for the OpenAPI lane instead of flattening it into ad hoc Markdown.
+
+Use this staging split:
+
+```text
+content/docs/**     Fumadocs MDX/page-tree content and meta files.
+content/openapi/**  OpenAPI YAML/JSON source data.
+```
+
+Do not put OpenAPI YAML under `content/docs/**`; Fumadocs MDX scans `.yaml` files in that tree as metadata.
+
+Endpoint pages are generated from OpenAPI by `operationId`. Do not generate full MDX shadow files for each endpoint. The first Conversational AI renderer uses only `convoai.yaml`; override MDX is a deferred contract, not a first-version feature.
+
+Publish public `/openapi/**` assets from `content/openapi/**` with an automated build copy. Do not hand-maintain or commit `public/openapi/**` as source.
+
+Use an OpenAPI endpoint registry overlay instead of merging generated endpoints into the Fumadocs `source` object. Route leaves are mapped from `operationId` once, and route, sidebar, locale links, search, llms, and prerender paths are derived from that registry.
+
+Do not use `fumadocs-ui` as this portal's OpenAPI page renderer. Rendering must use local docs-shell components and produce static API references with recursive schema trees. See `references/openapi-lane.md` for the full contract.
 
 ## Plugins
 

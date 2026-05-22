@@ -2,6 +2,7 @@ import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import { getSourceSlugs } from './docs-routing';
 import {
+  type DocsSidebarNode,
   getFirstChildPageUrl,
   getFirstTabPageUrl,
   getPrevNextLinks,
@@ -9,8 +10,24 @@ import {
   getSidebarNodes,
   getTabSummaries,
 } from './docs-tree';
-import { SUPPORTED_LOCALES } from './i18n/i18n-config';
-import { getPageMarkdownUrl, type PageWithSource } from './source.server';
+import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import {
+  loadOpenApiEndpointPage,
+  type OpenApiEndpointPagePayload,
+} from './openapi/docs-page.server';
+import {
+  getOpenApiEndpointUrl,
+  getOpenApiLanes,
+  getOpenApiOperationIds,
+  type OpenApiLane,
+} from './openapi/lanes';
+import {
+  type source as docsSource,
+  getPageMarkdownUrl,
+  type PageWithSource,
+} from './source.server';
+
+const OPENAPI_TAB = 'api-reference';
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
   const { source } = await import('./source.server');
@@ -57,6 +74,34 @@ export async function loadDocsPagePayload(
   );
 
   if (!page) {
+    const openApiPage = await loadOpenApiEndpointPage(
+      locale,
+      tab,
+      slugSegments,
+    );
+
+    if (openApiPage) {
+      const openApiLocale = toSupportedLocale(locale);
+      if (!openApiLocale) {
+        return null;
+      }
+
+      const pageTree = source.getPageTree(locale);
+      const pages = source.getPages(locale).map((item) => ({
+        description: item.data.description,
+        title: item.data.title ?? item.slugs.at(-1) ?? item.url,
+        url: item.url,
+      }));
+
+      return buildOpenApiDocsPagePayload({
+        locale: openApiLocale,
+        openApiPage,
+        pageTree,
+        pages,
+        tab,
+      });
+    }
+
     const pageTree = source.getPageTree(locale);
     const fallbackUrl = getFirstChildPageUrl(pageTree, tab, slugSegments);
 
@@ -72,13 +117,31 @@ export async function loadDocsPagePayload(
   const pageTree = source.getPageTree(locale);
   const processedText = await readProcessedText(page);
   const toc = await resolvePageToc(page, processedText);
-  const sidebar = getSidebarNodes(pageTree, tab);
+  const supportedLocale = toSupportedLocale(locale);
+  const sidebar = getDocsSidebarNodes({
+    locale: supportedLocale,
+    pageTree,
+    tab,
+  });
   const title = page.data.title ?? page.slugs.at(-1) ?? page.url;
   const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
+  const pages = getDocsPages({
+    locale: supportedLocale,
+    pages: source.getPages(locale).map((item) => ({
+      description: item.data.description,
+      title: item.data.title ?? item.slugs.at(-1) ?? item.url,
+      url: item.url,
+    })),
+    tab,
+  });
 
   return {
     activePath: page.url,
     activeTab: tab,
+    body: {
+      contentPath: page.path,
+      kind: 'mdx' as const,
+    },
     breadcrumb:
       breadcrumb.length > 0
         ? breadcrumb
@@ -111,11 +174,7 @@ export async function loadDocsPagePayload(
       };
     }),
     navigation: getPrevNextLinks(pageTree, page.url),
-    pages: source.getPages(locale).map((item) => ({
-      description: item.data.description,
-      title: item.data.title ?? item.slugs.at(-1) ?? item.url,
-      url: item.url,
-    })),
+    pages,
     sidebar,
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
@@ -170,4 +229,194 @@ function normalizeToc(toc: TOCItemType[] | undefined) {
       },
     ];
   });
+}
+
+function toSupportedLocale(locale: string): AppLocale | null {
+  return SUPPORTED_LOCALES.includes(locale as AppLocale)
+    ? (locale as AppLocale)
+    : null;
+}
+
+function buildOpenApiDocsPagePayload({
+  locale,
+  openApiPage,
+  pageTree,
+  pages,
+  tab,
+}: {
+  locale: AppLocale;
+  openApiPage: OpenApiEndpointPagePayload;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  pages: {
+    description?: string;
+    title: string;
+    url: string;
+  }[];
+  tab: string;
+}) {
+  const sidebar = getDocsSidebarNodes({ locale, pageTree, tab });
+  const breadcrumb = getSidebarBreadcrumb(sidebar, openApiPage.activePath);
+
+  return {
+    ...openApiPage,
+    activeTab: tab,
+    breadcrumb:
+      breadcrumb.length > 0
+        ? breadcrumb
+        : [
+            {
+              title: openApiPage.title,
+              url: openApiPage.activePath,
+            },
+          ],
+    localeLinks: SUPPORTED_LOCALES.map((targetLocale) => ({
+      href: getOpenApiEndpointUrl(
+        openApiPage.lane,
+        targetLocale,
+        openApiPage.operationId,
+      ),
+      isActive: targetLocale === locale,
+      locale: targetLocale,
+    })),
+    navigation: getOpenApiPrevNextLinks(
+      openApiPage.lane,
+      locale,
+      openApiPage.operationId,
+    ),
+    pages: getDocsPages({ locale, pages, tab }),
+    sidebar,
+    tabs: getTabSummaries(pageTree),
+  };
+}
+
+function getDocsSidebarNodes({
+  locale,
+  pageTree,
+  tab,
+}: {
+  locale: AppLocale | null;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  tab: string;
+}) {
+  const sidebar = getSidebarNodes(pageTree, tab);
+
+  if (tab !== OPENAPI_TAB || !locale) {
+    return sidebar;
+  }
+
+  return addOpenApiEndpointSidebarItems(sidebar, locale, tab);
+}
+
+function getDocsPages({
+  locale,
+  pages,
+  tab,
+}: {
+  locale: AppLocale | null;
+  pages: {
+    description?: string;
+    title: string;
+    url: string;
+  }[];
+  tab: string;
+}) {
+  if (tab !== OPENAPI_TAB || !locale) {
+    return pages;
+  }
+
+  const existingUrls = new Set(pages.map((page) => page.url));
+  const endpointPages = getOpenApiLanes()
+    .filter((lane) => lane.tab === tab)
+    .flatMap((lane) =>
+      getOpenApiOperationIds(lane).map((operationId) => ({
+        title: lane.operations[operationId].title[locale],
+        url: getOpenApiEndpointUrl(lane, locale, operationId),
+      })),
+    )
+    .filter((page) => !existingUrls.has(page.url));
+
+  return [...pages, ...endpointPages];
+}
+
+function addOpenApiEndpointSidebarItems(
+  sidebar: DocsSidebarNode[],
+  locale: AppLocale,
+  tab: string,
+): DocsSidebarNode[] {
+  return sidebar.map((node) =>
+    appendEndpointPagesToOpenApiParent(node, locale, tab),
+  );
+}
+
+function appendEndpointPagesToOpenApiParent(
+  node: DocsSidebarNode,
+  locale: AppLocale,
+  tab: string,
+): DocsSidebarNode {
+  if (node.type !== 'section') {
+    return node;
+  }
+
+  const lane = getOpenApiLanes().find(
+    (item) =>
+      item.tab === tab &&
+      node.children.some(
+        (child) =>
+          child.type === 'page' && child.url === item.parentUrl[locale],
+      ),
+  );
+
+  if (lane) {
+    const existingUrls = new Set(
+      node.children.flatMap((child) =>
+        child.type === 'page' ? [child.url] : [],
+      ),
+    );
+    const endpointPages: DocsSidebarNode[] = getOpenApiOperationIds(lane)
+      .map((operationId) => ({
+        id: getOpenApiEndpointUrl(lane, locale, operationId),
+        title: lane.operations[operationId].title[locale],
+        type: 'page' as const,
+        url: getOpenApiEndpointUrl(lane, locale, operationId),
+      }))
+      .filter((item) => !existingUrls.has(item.url));
+
+    return {
+      ...node,
+      children: [...node.children, ...endpointPages],
+    };
+  }
+
+  return {
+    ...node,
+    children: node.children.map((child) =>
+      appendEndpointPagesToOpenApiParent(child, locale, tab),
+    ),
+  };
+}
+
+function getOpenApiPrevNextLinks(
+  lane: OpenApiLane,
+  locale: AppLocale,
+  operationId: string,
+) {
+  const operationIds = getOpenApiOperationIds(lane);
+  const index = operationIds.indexOf(operationId);
+  const previous = operationIds[index - 1];
+  const next = operationIds[index + 1];
+
+  return {
+    next: next
+      ? {
+          title: lane.operations[next].title[locale],
+          url: getOpenApiEndpointUrl(lane, locale, next),
+        }
+      : undefined,
+    previous: previous
+      ? {
+          title: lane.operations[previous].title[locale],
+          url: getOpenApiEndpointUrl(lane, locale, previous),
+        }
+      : undefined,
+  };
 }

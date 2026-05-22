@@ -99,7 +99,11 @@ Prefer upstream structured API sources. If no source exists, convert conservativ
 
 Legacy custom renderers such as `RestfulRender` and `OpenapiRender` are not migrated.
 
-Keep OpenAPI YAML/JSON as source and route it to the Fumadocs OpenAPI lane. Ordinary REST guides that are prose can be migrated as Markdown/directive content.
+Keep OpenAPI YAML/JSON as source under `content/openapi/**` and route it to the OpenAPI lane. Ordinary REST guides that are prose can be migrated as Markdown/directive content under `content/docs/**`.
+
+Endpoint reference pages are generated from OpenAPI by `operationId`. Do not generate full MDX shadow files for each endpoint. For the first Conversational AI renderer, do not migrate old endpoint Markdown into overrides; endpoint content comes only from `convoai.yaml`.
+
+Legacy RESTful/OpenAPI JSX is an input signal only. Do not carry over `RestfulRender`, `OpenapiRender`, Stoplight UI, or `fumadocs-ui` rendering dependencies into the portal's OpenAPI page renderer. Do not preserve current new-portal placeholder endpoint routes as compatibility routes when rebuilding the target IA.
 
 ## Generated HTML API Docs
 

@@ -7,6 +7,7 @@ import {
   RouterProvider,
 } from '@tanstack/react-router';
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -149,6 +150,7 @@ function renderWithRouter(
 
 describe('DocsShell', () => {
   afterEach(async () => {
+    vi.useRealTimers();
     window.localStorage.removeItem(LOCALE_STORAGE_KEY);
     await i18n.changeLanguage('en');
     vi.restoreAllMocks();
@@ -199,6 +201,7 @@ describe('DocsShell', () => {
     expect(mainHeaderRow).toContainElement(desktopSearch);
     expect(mainHeaderRow).toContainElement(languageControl);
     expect(mainHeaderRow).toContainElement(themeControl);
+    expect(mainHeaderRow.querySelector('.docs-brand-mark')).toBeNull();
     expect(mainHeaderRow).not.toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsAiLink);
@@ -318,6 +321,27 @@ describe('DocsShell', () => {
       'min-h-0',
       'overflow-y-auto',
     );
+  });
+
+  it('shows docs scrollbars transiently while a region is scrolling', async () => {
+    renderDocsShell();
+
+    const mainScrollRegion = await screen.findByTestId(
+      'docs-main-desktop-scroll',
+    );
+    vi.useFakeTimers();
+
+    expect(mainScrollRegion).not.toHaveClass('docs-scrollbar-visible');
+
+    fireEvent.scroll(mainScrollRegion);
+
+    expect(mainScrollRegion).toHaveClass('docs-scrollbar-visible');
+
+    await act(async () => {
+      vi.advanceTimersByTime(900);
+    });
+
+    expect(mainScrollRegion).not.toHaveClass('docs-scrollbar-visible');
   });
 
   it('resets desktop sidebar scroll position when the active tab changes', async () => {

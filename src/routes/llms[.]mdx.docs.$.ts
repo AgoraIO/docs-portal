@@ -12,7 +12,24 @@ export const Route = createFileRoute('/llms.mdx/docs/$')({
           params._splat?.split('/').filter(Boolean)[0],
         );
         const page = source.getPage(slugs, locale ?? undefined);
-        if (!page) throw notFound();
+        if (!page) {
+          const { getOpenApiMarkdownByContentPath } = await import(
+            '@/lib/openapi/markdown'
+          );
+          const openApiMarkdown = await getOpenApiMarkdownByContentPath(
+            params._splat ?? '',
+          );
+
+          if (!openApiMarkdown) {
+            throw notFound();
+          }
+
+          return new Response(openApiMarkdown, {
+            headers: {
+              'Content-Type': 'text/markdown',
+            },
+          });
+        }
 
         return new Response(await getLLMText(page), {
           headers: {

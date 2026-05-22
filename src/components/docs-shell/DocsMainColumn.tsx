@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
+import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsMainColumn({
   children,
@@ -21,6 +22,9 @@ export function DocsMainColumn({
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
 }) {
+  const { isScrollbarVisible, scrollContainerRef } =
+    useTransientScrollbar<HTMLDivElement>();
+
   return (
     <main
       className="h-full min-h-0 min-w-0 flex-1 overflow-hidden bg-background"
@@ -34,8 +38,12 @@ export function DocsMainColumn({
         <DocsPageFooter next={next} previous={previous} />
       </div>
       <div
-        className="docs-scrollbar hidden h-full min-h-0 overflow-y-auto lg:block"
+        className={cn(
+          'docs-scrollbar hidden h-full min-h-0 overflow-y-auto lg:block',
+          isScrollbarVisible && 'docs-scrollbar-visible',
+        )}
         data-testid="docs-main-desktop-scroll"
+        ref={scrollContainerRef}
       >
         <div className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10">
           <div className="min-w-0 flex-1">{children}</div>

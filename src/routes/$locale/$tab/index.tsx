@@ -53,6 +53,7 @@ export const Route = createFileRoute('/$locale/$tab/')({
 
 function TabIndexPage() {
   const {
+    body,
     breadcrumb,
     contentPath,
     description,
@@ -64,6 +65,7 @@ function TabIndexPage() {
 
   return (
     <DocsContent
+      body={body}
       breadcrumb={breadcrumb}
       contentPath={contentPath}
       description={description}

@@ -272,8 +272,7 @@
 
   .docs-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--ink-4) 38%, transparent)
-      transparent;
+    scrollbar-color: transparent transparent;
   }
 
   .docs-scrollbar::-webkit-scrollbar {
@@ -288,13 +287,21 @@
   .docs-scrollbar::-webkit-scrollbar-thumb {
     border: 2px solid transparent;
     border-radius: 999px;
-    background-color: color-mix(in srgb, var(--ink-4) 30%, transparent);
+    background-color: transparent;
     background-clip: content-box;
   }
 
-  .docs-scrollbar:hover::-webkit-scrollbar-thumb,
-  .docs-scrollbar:focus-within::-webkit-scrollbar-thumb {
+  .docs-scrollbar:focus-within::-webkit-scrollbar-thumb,
+  .docs-scrollbar:active::-webkit-scrollbar-thumb,
+  .docs-scrollbar.docs-scrollbar-visible::-webkit-scrollbar-thumb {
     background-color: color-mix(in srgb, var(--ink-4) 48%, transparent);
+  }
+
+  .docs-scrollbar:focus-within,
+  .docs-scrollbar:active,
+  .docs-scrollbar.docs-scrollbar-visible {
+    scrollbar-color: color-mix(in srgb, var(--ink-4) 48%, transparent)
+      transparent;
   }
 
   .docs-scrollbar::-webkit-scrollbar-corner {

@@ -5,9 +5,15 @@ export const Route = createFileRoute('/llms-full.txt')({
     handlers: {
       GET: async () => {
         const { getLLMText, source } = await import('@/lib/source');
+        const { getOpenApiMarkdownPages } = await import('@/lib/openapi/markdown');
         const scan = source.getPages().map(getLLMText);
         const scanned = await Promise.all(scan);
-        return new Response(scanned.join('\n\n'));
+        const openApiPages = await getOpenApiMarkdownPages();
+        return new Response(
+          [...scanned, ...openApiPages.map((page) => page.markdown)].join(
+            '\n\n',
+          ),
+        );
       },
     },
   },
