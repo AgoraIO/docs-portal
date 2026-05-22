@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { getConversationalAiPrerenderPaths } from './openapi/conversational-ai';
 import { shouldPrerenderRoute } from './prerender-filter';
 
 describe('shouldPrerenderRoute', () => {
@@ -11,5 +12,14 @@ describe('shouldPrerenderRoute', () => {
     expect(
       shouldPrerenderRoute('/llms.mdx/docs/en/introduction/about-agora.mdx'),
     ).toBe(false);
+  });
+
+  it('includes openapi endpoint canonical routes for static generation', () => {
+    expect(getConversationalAiPrerenderPaths()).toContain(
+      '/en/api-reference/conversational-ai/rest-api/agent/join',
+    );
+    expect(getConversationalAiPrerenderPaths()).toContain(
+      '/zh-CN/api-reference/conversational-ai/rest-api/agent/join',
+    );
   });
 });

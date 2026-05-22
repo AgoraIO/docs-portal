@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import mdx from 'fumadocs-mdx/vite';
 import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vitest/config';
+import { getConversationalAiPrerenderPaths } from './src/lib/openapi/conversational-ai';
 import { shouldPrerenderPage } from './src/lib/prerender-filter';
 
 const isTest = process.env.VITEST === 'true';
@@ -28,6 +29,9 @@ export default defineConfig({
       ? [react()]
       : [
           tanstackStart({
+            pages: getConversationalAiPrerenderPaths().map((path) => ({
+              path,
+            })),
             prerender: {
               enabled: true,
               filter: shouldPrerenderPage,
