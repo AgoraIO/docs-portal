@@ -186,10 +186,9 @@ export function DocsShell({
               </Sheet>
               <div className="flex min-w-0 items-center gap-2.5">
                 <Link
-                  className="flex min-w-0 items-center gap-2.5 text-[15px] font-semibold text-[color:var(--ink-1)]"
+                  className="flex min-w-0 items-center text-[15px] font-semibold text-[color:var(--ink-1)]"
                   to="/"
                 >
-                  <span aria-hidden="true" className="docs-brand-mark" />
                   <span className="truncate">{t('app.name')}</span>
                 </Link>
               </div>

@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
 } from '@/components/ui/sidebar';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
 import { DocsSidebarTree } from './DocsSidebarTree';
+import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsSidebar({
   activePath,
@@ -19,15 +20,14 @@ export function DocsSidebar({
   nodes: DocsSidebarNode[];
   onSelectPath: () => void;
 }) {
-  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const { isScrollbarVisible, scrollContainerRef, scrollToTop } =
+    useTransientScrollbar<HTMLDivElement>();
 
   useEffect(() => {
     void activeTab;
 
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
-  }, [activeTab]);
+    scrollToTop();
+  }, [activeTab, scrollToTop]);
 
   return (
     <ShadcnSidebar
@@ -42,7 +42,9 @@ export function DocsSidebar({
       variant="inset"
     >
       <SidebarContent
-        className="docs-scrollbar h-full min-h-0 overflow-y-auto"
+        className={`docs-scrollbar h-full min-h-0 overflow-y-auto ${
+          isScrollbarVisible ? 'docs-scrollbar-visible' : ''
+        }`}
         data-testid="docs-sidebar-scroll"
         ref={scrollContainerRef}
       >
