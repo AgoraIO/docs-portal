@@ -3,14 +3,11 @@ import path from 'node:path';
 import type { Document } from 'fumadocs-openapi';
 import yaml from 'js-yaml';
 import {
-  CONVERSATIONAL_AI_OPENAPI_SOURCE_PATH,
-  type ConversationalAiOperationId,
-} from './conversational-ai';
-import {
   type OpenApiJsonObject,
   type OpenApiJsonValue,
   toOpenApiJsonValue,
 } from './json';
+import type { OpenApiLane } from './lanes';
 
 const HTTP_METHODS = new Set([
   'get',
@@ -54,35 +51,46 @@ type OpenApiDocument = {
   servers?: { description?: string; url: string }[];
 };
 
-let cachedOperations: Promise<NormalizedOpenApiOperation[]> | undefined;
+const operationCache = new Map<string, Promise<NormalizedOpenApiOperation[]>>();
 
-export async function getConversationalAiOperations(): Promise<
-  NormalizedOpenApiOperation[]
-> {
-  cachedOperations ??= loadConversationalAiOperations();
+export async function getOpenApiOperations(
+  lane: OpenApiLane,
+): Promise<NormalizedOpenApiOperation[]> {
+  let cachedOperations = operationCache.get(lane.id);
+
+  if (!cachedOperations) {
+    cachedOperations = loadOpenApiOperations(lane);
+    operationCache.set(lane.id, cachedOperations);
+  }
+
   return cachedOperations;
 }
 
-export async function getConversationalAiOperation(
+export async function getOpenApiOperation(
+  lane: OpenApiLane,
   operationId: string,
 ): Promise<NormalizedOpenApiOperation> {
-  const operation = (await getConversationalAiOperations()).find(
+  const operation = (await getOpenApiOperations(lane)).find(
     (item) => item.operationId === operationId,
   );
 
   if (!operation) {
-    throw new Error(`Unknown Conversational AI OpenAPI operation: ${operationId}`);
+    throw new Error(
+      `Unknown OpenAPI operation "${operationId}" for lane "${lane.id}"`,
+    );
   }
 
   return operation;
 }
 
-async function loadConversationalAiOperations() {
-  const sourcePath = path.join(process.cwd(), CONVERSATIONAL_AI_OPENAPI_SOURCE_PATH);
+async function loadOpenApiOperations(lane: OpenApiLane) {
+  const sourcePath = path.join(process.cwd(), lane.sourcePath);
   const document = await loadOpenApiDocument(sourcePath);
   const operations: NormalizedOpenApiOperation[] = [];
 
-  for (const [operationPath, pathItem] of Object.entries(document.paths ?? {})) {
+  for (const [operationPath, pathItem] of Object.entries(
+    document.paths ?? {},
+  )) {
     for (const [method, rawOperation] of Object.entries(pathItem)) {
       if (!HTTP_METHODS.has(method) || !isRecord(rawOperation)) {
         continue;
@@ -102,10 +110,11 @@ async function loadConversationalAiOperations() {
         description: stringValue(operation.description),
         method: method.toUpperCase(),
         operationId,
-        parameters: arrayValue(operation.parameters).map((parameter) =>
-          toOpenApiJsonValue(
-            resolveReference(parameter, document),
-          ) as OpenApiJsonObject,
+        parameters: arrayValue(operation.parameters).map(
+          (parameter) =>
+            toOpenApiJsonValue(
+              resolveReference(parameter, document),
+            ) as OpenApiJsonObject,
         ),
         path: operationPath,
         requestBody: normalizeRequestBody(
@@ -132,7 +141,9 @@ async function loadConversationalAiOperations() {
   );
 }
 
-async function loadOpenApiDocument(sourcePath: string): Promise<OpenApiDocument> {
+async function loadOpenApiDocument(
+  sourcePath: string,
+): Promise<OpenApiDocument> {
   const source = await fs.readFile(sourcePath, 'utf8');
   const parsed = yaml.load(source) as Document;
 
@@ -320,12 +331,4 @@ function resolveJsonPointer(document: OpenApiDocument, ref: string) {
           : undefined,
       document,
     );
-}
-
-export function assertConversationalAiOperationId(
-  operationId: string,
-): asserts operationId is ConversationalAiOperationId {
-  if (!operationId) {
-    throw new Error('Expected a Conversational AI operation ID');
-  }
 }

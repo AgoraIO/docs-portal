@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getConversationalAiPrerenderPaths } from './openapi/conversational-ai';
+import { getOpenApiPrerenderPaths } from './openapi/lanes';
 import { shouldPrerenderRoute } from './prerender-filter';
 
 describe('shouldPrerenderRoute', () => {
@@ -15,10 +15,10 @@ describe('shouldPrerenderRoute', () => {
   });
 
   it('includes openapi endpoint canonical routes for static generation', () => {
-    expect(getConversationalAiPrerenderPaths()).toContain(
+    expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/conversational-ai/rest-api/agent/join',
     );
-    expect(getConversationalAiPrerenderPaths()).toContain(
+    expect(getOpenApiPrerenderPaths()).toContain(
       '/zh-CN/api-reference/conversational-ai/rest-api/agent/join',
     );
   });

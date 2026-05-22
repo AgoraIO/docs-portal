@@ -12,18 +12,18 @@ import {
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import {
-  CONVERSATIONAL_AI_OPERATION_TITLES,
-  getConversationalAiEndpointUrl,
-  getConversationalAiOperationIds,
-  type ConversationalAiOperationId,
-} from './openapi/conversational-ai';
-import {
   loadOpenApiEndpointPage,
   type OpenApiEndpointPagePayload,
 } from './openapi/docs-page.server';
 import {
+  getOpenApiEndpointUrl,
+  getOpenApiLanes,
+  getOpenApiOperationIds,
+  type OpenApiLane,
+} from './openapi/lanes';
+import {
+  type source as docsSource,
   getPageMarkdownUrl,
-  source as docsSource,
   type PageWithSource,
 } from './source.server';
 
@@ -270,14 +270,19 @@ function buildOpenApiDocsPagePayload({
             },
           ],
     localeLinks: SUPPORTED_LOCALES.map((targetLocale) => ({
-      href: getConversationalAiEndpointUrl(
+      href: getOpenApiEndpointUrl(
+        openApiPage.lane,
         targetLocale,
         openApiPage.operationId,
       ),
       isActive: targetLocale === locale,
       locale: targetLocale,
     })),
-    navigation: getOpenApiPrevNextLinks(locale, openApiPage.operationId),
+    navigation: getOpenApiPrevNextLinks(
+      openApiPage.lane,
+      locale,
+      openApiPage.operationId,
+    ),
     pages: getDocsPages({ locale, pages, tab }),
     sidebar,
     tabs: getTabSummaries(pageTree),
@@ -299,7 +304,7 @@ function getDocsSidebarNodes({
     return sidebar;
   }
 
-  return addConversationalAiEndpointSidebarItems(sidebar, locale);
+  return addOpenApiEndpointSidebarItems(sidebar, locale, tab);
 }
 
 function getDocsPages({
@@ -320,43 +325,59 @@ function getDocsPages({
   }
 
   const existingUrls = new Set(pages.map((page) => page.url));
-  const endpointPages = getConversationalAiOperationIds()
-    .map((operationId) => ({
-      title: CONVERSATIONAL_AI_OPERATION_TITLES[locale][operationId],
-      url: getConversationalAiEndpointUrl(locale, operationId),
-    }))
+  const endpointPages = getOpenApiLanes()
+    .filter((lane) => lane.tab === tab)
+    .flatMap((lane) =>
+      getOpenApiOperationIds(lane).map((operationId) => ({
+        title: lane.operations[operationId].title[locale],
+        url: getOpenApiEndpointUrl(lane, locale, operationId),
+      })),
+    )
     .filter((page) => !existingUrls.has(page.url));
 
   return [...pages, ...endpointPages];
 }
 
-function addConversationalAiEndpointSidebarItems(
+function addOpenApiEndpointSidebarItems(
   sidebar: DocsSidebarNode[],
   locale: AppLocale,
+  tab: string,
 ): DocsSidebarNode[] {
   return sidebar.map((node) =>
-    appendEndpointPagesToAgentSection(node, locale),
+    appendEndpointPagesToOpenApiParent(node, locale, tab),
   );
 }
 
-function appendEndpointPagesToAgentSection(
+function appendEndpointPagesToOpenApiParent(
   node: DocsSidebarNode,
   locale: AppLocale,
+  tab: string,
 ): DocsSidebarNode {
   if (node.type !== 'section') {
     return node;
   }
 
-  if (isConversationalAiAgentSection(node, locale)) {
+  const lane = getOpenApiLanes().find(
+    (item) =>
+      item.tab === tab &&
+      node.children.some(
+        (child) =>
+          child.type === 'page' && child.url === item.parentUrl[locale],
+      ),
+  );
+
+  if (lane) {
     const existingUrls = new Set(
-      node.children.flatMap((child) => (child.type === 'page' ? [child.url] : [])),
+      node.children.flatMap((child) =>
+        child.type === 'page' ? [child.url] : [],
+      ),
     );
-    const endpointPages: DocsSidebarNode[] = getConversationalAiOperationIds()
+    const endpointPages: DocsSidebarNode[] = getOpenApiOperationIds(lane)
       .map((operationId) => ({
-        id: getConversationalAiEndpointUrl(locale, operationId),
-        title: CONVERSATIONAL_AI_OPERATION_TITLES[locale][operationId],
+        id: getOpenApiEndpointUrl(lane, locale, operationId),
+        title: lane.operations[operationId].title[locale],
         type: 'page' as const,
-        url: getConversationalAiEndpointUrl(locale, operationId),
+        url: getOpenApiEndpointUrl(lane, locale, operationId),
       }))
       .filter((item) => !existingUrls.has(item.url));
 
@@ -369,32 +390,17 @@ function appendEndpointPagesToAgentSection(
   return {
     ...node,
     children: node.children.map((child) =>
-      appendEndpointPagesToAgentSection(child, locale),
+      appendEndpointPagesToOpenApiParent(child, locale, tab),
     ),
   };
 }
 
-function isConversationalAiAgentSection(
-  node: Extract<DocsSidebarNode, { type: 'section' }>,
-  locale: AppLocale,
-) {
-  const agentIndexUrl = `/${locale}/api-reference/conversational-ai/rest-api/agent`;
-
-  return (
-    node.id ===
-      'folder-api-reference-conversational-ai-rest-api-agent-folder' ||
-    node.id === agentIndexUrl ||
-    node.children.some(
-      (child) => child.type === 'page' && child.url === agentIndexUrl,
-    )
-  );
-}
-
 function getOpenApiPrevNextLinks(
+  lane: OpenApiLane,
   locale: AppLocale,
-  operationId: ConversationalAiOperationId,
+  operationId: string,
 ) {
-  const operationIds = getConversationalAiOperationIds();
+  const operationIds = getOpenApiOperationIds(lane);
   const index = operationIds.indexOf(operationId);
   const previous = operationIds[index - 1];
   const next = operationIds[index + 1];
@@ -402,14 +408,14 @@ function getOpenApiPrevNextLinks(
   return {
     next: next
       ? {
-          title: CONVERSATIONAL_AI_OPERATION_TITLES[locale][next],
-          url: getConversationalAiEndpointUrl(locale, next),
+          title: lane.operations[next].title[locale],
+          url: getOpenApiEndpointUrl(lane, locale, next),
         }
       : undefined,
     previous: previous
       ? {
-          title: CONVERSATIONAL_AI_OPERATION_TITLES[locale][previous],
-          url: getConversationalAiEndpointUrl(locale, previous),
+          title: lane.operations[previous].title[locale],
+          url: getOpenApiEndpointUrl(lane, locale, previous),
         }
       : undefined,
   };

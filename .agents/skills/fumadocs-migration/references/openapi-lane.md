@@ -84,12 +84,28 @@ Do not preserve current new-portal placeholder endpoint routes as compatibility 
 
 English and Chinese should share the same IA skeleton. With a single locale-neutral `convoai.yaml`, both locale routes may render YAML text as-is. Do not backfill English schema prose from old endpoint Markdown. Locale-specific YAML or explicit overrides can be designed later.
 
-For Conversational AI REST in docs-portal, the registry lives in
-`src/lib/openapi/conversational-ai.ts`. Keep this file as the only
-operation-to-route mapping source. The route loader first asks the Fumadocs MDX
-source for a page; only if that misses should it resolve an OpenAPI endpoint
-from the registry. This allows `content/docs/**/meta.json` to list virtual
-endpoint leaves without requiring physical `.md`/`.mdx` shadow files.
+For OpenAPI REST docs in docs-portal, the lane mapping lives in
+`src/lib/openapi/lanes.ts`. Treat this file as a small YAML-to-docs-IA mapping
+table, not as a large framework. One YAML source gets one lane record with:
+
+- `id`: stable lane ID, for example `convoai` or `rtm2`.
+- `sourcePath`: source YAML under `content/openapi/**`.
+- `publicSourceUrl`: published YAML URL under `/openapi/**`.
+- `tab`: docs tab where generated endpoint pages live.
+- `parentUrl`: locale-specific authored MDX page where endpoint children appear
+  in the left navigation.
+- `routePrefix`: locale-neutral endpoint page prefix, excluding `/{locale}`.
+- `operations`: explicit `operationId -> routeLeaf + title` mapping.
+
+When adding another YAML such as `rtm2.yaml`, add another lane record. Do not
+add product-specific helpers such as `getRtm2EndpointUrl()`, and do not patch
+`docs-page.server.ts`, search, markdown, llms, or prerender logic for each
+product. These consumers must iterate the lane table.
+
+The route loader first asks the Fumadocs MDX source for a page; only if that
+misses should it resolve an OpenAPI endpoint from the lane table. This allows
+`content/docs/**/meta.json` to list virtual endpoint leaves without requiring
+physical `.md`/`.mdx` shadow files.
 
 OpenAPI endpoint loaders must not construct a standalone docs-shell payload.
 They should return endpoint content and metadata only. The normal docs page

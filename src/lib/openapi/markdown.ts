@@ -1,24 +1,29 @@
 import type { AppLocale } from '@/lib/i18n/i18n-config';
 import {
-  CONVERSATIONAL_AI_OPERATION_TITLES,
-  CONVERSATIONAL_AI_PUBLIC_OPENAPI_URL,
-  getConversationalAiEndpointUrl,
-  getConversationalAiOperationIds,
-} from './conversational-ai';
-import { buildOpenApiSchemaTree, type OpenApiSchemaTreeNode } from './schema-tree';
+  getOpenApiEndpointUrl,
+  getOpenApiLanes,
+  getOpenApiOperationIds,
+  resolveOpenApiEndpointRoute,
+} from './lanes';
 import {
-  getConversationalAiOperation,
-  getConversationalAiOperations,
+  buildOpenApiSchemaTree,
+  type OpenApiSchemaTreeNode,
+} from './schema-tree';
+import {
+  getOpenApiOperation,
+  getOpenApiOperations,
   type NormalizedOpenApiOperation,
 } from './source.server';
 
 export function serializeOpenApiOperationMarkdown({
   operation,
+  publicSourceUrl,
   title,
   url,
 }: {
   locale: AppLocale;
   operation: NormalizedOpenApiOperation;
+  publicSourceUrl: string;
   title: string;
   url: string;
 }) {
@@ -27,7 +32,7 @@ export function serializeOpenApiOperationMarkdown({
     '',
     operation.description ?? operation.summary ?? '',
     '',
-    `- OpenAPI: ${CONVERSATIONAL_AI_PUBLIC_OPENAPI_URL}`,
+    `- OpenAPI: ${publicSourceUrl}`,
     `- Operation ID: ${operation.operationId}`,
     `- Method: ${operation.method}`,
     `- Path: ${operation.path}`,
@@ -75,34 +80,42 @@ export function serializeOpenApiOperationMarkdown({
 }
 
 export async function getOpenApiMarkdownPages() {
-  const operations = await getConversationalAiOperations();
+  const laneOperations = await Promise.all(
+    getOpenApiLanes().map(async (lane) => ({
+      lane,
+      operations: await getOpenApiOperations(lane),
+    })),
+  );
 
-  return (['en', 'zh-CN'] as const).flatMap((locale) =>
-    getConversationalAiOperationIds().flatMap((operationId) => {
-      const operation = operations.find(
-        (item) => item.operationId === operationId,
-      );
+  return laneOperations.flatMap(({ lane, operations }) =>
+    (['en', 'zh-CN'] as const).flatMap((locale) =>
+      getOpenApiOperationIds(lane).flatMap((operationId) => {
+        const operation = operations.find(
+          (item) => item.operationId === operationId,
+        );
 
-      if (!operation) {
-        return [];
-      }
+        if (!operation) {
+          return [];
+        }
 
-      const url = getConversationalAiEndpointUrl(locale, operationId);
-      const title = CONVERSATIONAL_AI_OPERATION_TITLES[locale][operationId];
+        const url = getOpenApiEndpointUrl(lane, locale, operationId);
+        const title = lane.operations[operationId].title[locale];
 
-      return [
-        {
-          markdown: serializeOpenApiOperationMarkdown({
-            locale,
-            operation,
+        return [
+          {
+            markdown: serializeOpenApiOperationMarkdown({
+              locale,
+              operation,
+              publicSourceUrl: lane.publicSourceUrl,
+              title,
+              url,
+            }),
             title,
             url,
-          }),
-          title,
-          url,
-        },
-      ];
-    }),
+          },
+        ];
+      }),
+    ),
   );
 }
 
@@ -119,43 +132,42 @@ export async function getOpenApiMarkdownByContentPath(path: string) {
     return null;
   }
 
-  const slugSegments = rest
-    .slice(0, -1)
-    .concat(fileName.replace(/\.md$/, ''));
-  const routeLeaf = slugSegments.at(-1);
-  const operationId = getConversationalAiOperationIds().find(
-    (id) =>
-      routeLeaf &&
-      getConversationalAiEndpointUrl(locale, id).endsWith(`/${routeLeaf}`),
-  );
+  const slugSegments = rest.slice(0, -1).concat(fileName.replace(/\.md$/, ''));
+  const route = resolveOpenApiEndpointRoute(locale, tab, slugSegments);
 
-  if (!operationId) {
+  if (!route) {
     return null;
   }
 
-  const operation = await getConversationalAiOperation(operationId);
-  const url = getConversationalAiEndpointUrl(locale, operationId);
-  const title = CONVERSATIONAL_AI_OPERATION_TITLES[locale][operationId];
+  const operation = await getOpenApiOperation(route.lane, route.operationId);
+  const title = route.lane.operations[route.operationId].title[locale];
 
   return serializeOpenApiOperationMarkdown({
     locale,
     operation,
+    publicSourceUrl: route.lane.publicSourceUrl,
     title,
-    url,
+    url: route.url,
   });
 }
 
 function parameterToMarkdown(parameter: Record<string, unknown>) {
-  const name = typeof parameter.name === 'string' ? parameter.name : 'parameter';
+  const name =
+    typeof parameter.name === 'string' ? parameter.name : 'parameter';
   const location = typeof parameter.in === 'string' ? parameter.in : 'unknown';
   const required = parameter.required === true ? 'required' : 'optional';
   const description =
-    typeof parameter.description === 'string' ? ` - ${parameter.description}` : '';
+    typeof parameter.description === 'string'
+      ? ` - ${parameter.description}`
+      : '';
 
   return `- \`${name}\` (${location}, ${required})${description}`;
 }
 
-function schemaTreeToMarkdown(nodes: OpenApiSchemaTreeNode[], depth = 0): string[] {
+function schemaTreeToMarkdown(
+  nodes: OpenApiSchemaTreeNode[],
+  depth = 0,
+): string[] {
   if (nodes.length === 0) {
     return ['No schema.'];
   }

@@ -2,6 +2,7 @@ import type { Root } from 'fumadocs-core/page-tree';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { loadDocsPagePayload, loadDocsTabIndex } from './docs-page.server';
 import { loadOpenApiEndpointPage } from './openapi/docs-page.server';
+import { OPENAPI_LANES } from './openapi/lanes';
 import { source } from './source.server';
 
 vi.mock('./source.server', () => ({
@@ -308,6 +309,7 @@ describe('loadDocsPagePayload', () => {
       },
       contentPath: 'en/api-reference/conversational-ai/rest-api/agent/join.md',
       description: undefined,
+      lane: OPENAPI_LANES[0],
       markdownUrl:
         '/llms.mdx/docs/en/api-reference/conversational-ai/rest-api/agent/join.md',
       operationId: 'start-agent',
@@ -527,8 +529,6 @@ function flattenSidebarPageUrls(
   >['sidebar'],
 ): string[] {
   return nodes.flatMap((node) =>
-    node.type === 'page'
-      ? [node.url]
-      : flattenSidebarPageUrls(node.children),
+    node.type === 'page' ? [node.url] : flattenSidebarPageUrls(node.children),
   );
 }

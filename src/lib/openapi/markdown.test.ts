@@ -1,13 +1,18 @@
 import { describe, expect, it } from 'vitest';
-import { getConversationalAiOperation } from './source.server';
+import { OPENAPI_LANES } from './lanes';
 import { serializeOpenApiOperationMarkdown } from './markdown';
+import { getOpenApiOperation } from './source.server';
 
 describe('openapi markdown serializer', () => {
   it('includes source traceability and operation basics', async () => {
-    const operation = await getConversationalAiOperation('start-agent');
+    const operation = await getOpenApiOperation(
+      OPENAPI_LANES[0],
+      'start-agent',
+    );
     const markdown = serializeOpenApiOperationMarkdown({
       locale: 'en',
       operation,
+      publicSourceUrl: OPENAPI_LANES[0].publicSourceUrl,
       title: 'Start a conversational AI agent',
       url: '/en/api-reference/conversational-ai/rest-api/agent/join',
     });

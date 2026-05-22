@@ -1,12 +1,15 @@
 import { describe, expect, it } from 'vitest';
+import { OPENAPI_LANES } from './lanes';
 import { buildOpenApiSchemaTree } from './schema-tree';
-import { getConversationalAiOperation } from './source.server';
+import { getOpenApiOperation } from './source.server';
 
 describe('openapi schema tree', () => {
   it('renders nested object and array fields', async () => {
-    const operation = await getConversationalAiOperation('start-agent');
-    const schema =
-      operation.requestBody?.content['application/json']?.schema;
+    const operation = await getOpenApiOperation(
+      OPENAPI_LANES[0],
+      'start-agent',
+    );
+    const schema = operation.requestBody?.content['application/json']?.schema;
 
     const tree = buildOpenApiSchemaTree(schema);
     const paths = flattenPaths(tree);
