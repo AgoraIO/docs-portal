@@ -44,4 +44,5 @@ Load only the reference needed for the current case:
 
 - `references/standards.md`: target Fumadocs content-layer standards and verification gates.
 - `references/legacy-casebook.md`: legacy syntax and component rewrite rules.
+- `references/openapi-lane.md`: OpenAPI staging, endpoint generation, override, publication, and llms rules.
 - `references/report-schema.md`: audit report JSON/Markdown schema and status taxonomy.

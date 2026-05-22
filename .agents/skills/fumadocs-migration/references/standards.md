@@ -63,7 +63,22 @@ Do not keep `<PlatformFilter>` or equivalent runtime filtering. Code-language ex
 
 ## OpenAPI
 
-OpenAPI YAML/JSON is source data. Preserve it for the Fumadocs OpenAPI lane instead of flattening it into ad hoc Markdown. If the current repo has not wired `fumadocs-openapi`, mark the item as deferred instead of creating a custom React renderer.
+OpenAPI YAML/JSON is source data. Preserve it for the OpenAPI lane instead of flattening it into ad hoc Markdown.
+
+Use this staging split:
+
+```text
+content/docs/**     Fumadocs MDX/page-tree content and meta files.
+content/openapi/**  OpenAPI YAML/JSON source data.
+```
+
+Do not put OpenAPI YAML under `content/docs/**`; Fumadocs MDX scans `.yaml` files in that tree as metadata.
+
+Endpoint pages are generated from OpenAPI by `operationId`. Do not generate full MDX shadow files for each endpoint. Optional human overrides live beside the OpenAPI source and are keyed by `operationId`.
+
+Publish public `/openapi/**` assets from `content/openapi/**` with an automated build copy. Do not hand-maintain `public/openapi/**` as source.
+
+Do not use `fumadocs-ui` as this portal's OpenAPI page renderer. Rendering must use local docs-shell components. See `references/openapi-lane.md` for the full contract.
 
 ## Plugins
 
