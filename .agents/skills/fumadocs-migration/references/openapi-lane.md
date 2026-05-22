@@ -100,6 +100,13 @@ fragile generated section IDs alone. Derive breadcrumb, locale links, previous
 and next links, search documents, llms exports, and prerender paths from the
 same registry plus the source-derived shell data.
 
+Apply the same virtual endpoint overlay to both generated endpoint pages and
+real MDX parent/index pages in the same API Reference tree. Users must see the
+YAML-derived endpoint children when they enter from an authored page such as
+`/en/api-reference/conversational-ai/rest-api/agent`, not only after they click
+into `/agent/{endpoint}`. A split navigation model is migration debt and should
+be caught with loader tests for both page kinds.
+
 ## Rendering
 
 Legacy `RestfulRender` and `OpenapiRender` are not migrated.

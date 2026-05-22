@@ -376,6 +376,52 @@ describe('loadDocsPagePayload', () => {
     );
   });
 
+  it('includes OpenAPI endpoint sidebar items on the real MDX parent page', async () => {
+    const agentPage = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/api-reference/conversational-ai/rest-api/agent/index.md',
+          path: 'en/api-reference/conversational-ai/rest-api/agent/index.md',
+        },
+        title: 'Agent management',
+      },
+      path: 'en/api-reference/conversational-ai/rest-api/agent/index.md',
+      slugs: ['en', 'api-reference', 'conversational-ai', 'rest-api', 'agent'],
+      url: '/en/api-reference/conversational-ai/rest-api/agent',
+    };
+
+    mockedGetPage.mockReturnValue(agentPage);
+    mockedGetPages.mockReturnValue([agentPage]);
+    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+
+    const payload = await loadDocsPagePayload('en', 'api-reference', [
+      'conversational-ai',
+      'rest-api',
+      'agent',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(payload).toMatchObject({
+      activePath: '/en/api-reference/conversational-ai/rest-api/agent',
+      body: {
+        kind: 'mdx',
+      },
+      title: 'Agent management',
+    });
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+      expect.arrayContaining([
+        '/en/api-reference/conversational-ai/rest-api/agent',
+        '/en/api-reference/conversational-ai/rest-api/agent/join',
+      ]),
+    );
+  });
+
   it('loads nested product pages from multi-segment slugs', async () => {
     const basePage = createPage();
     const nestedPage = {

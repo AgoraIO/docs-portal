@@ -27,6 +27,8 @@ import {
   type PageWithSource,
 } from './source.server';
 
+const OPENAPI_TAB = 'api-reference';
+
 export async function loadDocsTabIndex(locale: string, tab: string) {
   const { source } = await import('./source.server');
   const pageTree = source.getPageTree(locale);
@@ -115,9 +117,23 @@ export async function loadDocsPagePayload(
   const pageTree = source.getPageTree(locale);
   const processedText = await readProcessedText(page);
   const toc = await resolvePageToc(page, processedText);
-  const sidebar = getSidebarNodes(pageTree, tab);
+  const supportedLocale = toSupportedLocale(locale);
+  const sidebar = getDocsSidebarNodes({
+    locale: supportedLocale,
+    pageTree,
+    tab,
+  });
   const title = page.data.title ?? page.slugs.at(-1) ?? page.url;
   const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
+  const pages = getDocsPages({
+    locale: supportedLocale,
+    pages: source.getPages(locale).map((item) => ({
+      description: item.data.description,
+      title: item.data.title ?? item.slugs.at(-1) ?? item.url,
+      url: item.url,
+    })),
+    tab,
+  });
 
   return {
     activePath: page.url,
@@ -158,11 +174,7 @@ export async function loadDocsPagePayload(
       };
     }),
     navigation: getPrevNextLinks(pageTree, page.url),
-    pages: source.getPages(locale).map((item) => ({
-      description: item.data.description,
-      title: item.data.title ?? item.slugs.at(-1) ?? item.url,
-      url: item.url,
-    })),
+    pages,
     sidebar,
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
@@ -242,10 +254,7 @@ function buildOpenApiDocsPagePayload({
   }[];
   tab: string;
 }) {
-  const sidebar = addConversationalAiEndpointSidebarItems(
-    getSidebarNodes(pageTree, tab),
-    locale,
-  );
+  const sidebar = getDocsSidebarNodes({ locale, pageTree, tab });
   const breadcrumb = getSidebarBreadcrumb(sidebar, openApiPage.activePath);
 
   return {
@@ -269,16 +278,56 @@ function buildOpenApiDocsPagePayload({
       locale: targetLocale,
     })),
     navigation: getOpenApiPrevNextLinks(locale, openApiPage.operationId),
-    pages: [
-      ...pages,
-      ...getConversationalAiOperationIds().map((operationId) => ({
-        title: CONVERSATIONAL_AI_OPERATION_TITLES[locale][operationId],
-        url: getConversationalAiEndpointUrl(locale, operationId),
-      })),
-    ],
+    pages: getDocsPages({ locale, pages, tab }),
     sidebar,
     tabs: getTabSummaries(pageTree),
   };
+}
+
+function getDocsSidebarNodes({
+  locale,
+  pageTree,
+  tab,
+}: {
+  locale: AppLocale | null;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  tab: string;
+}) {
+  const sidebar = getSidebarNodes(pageTree, tab);
+
+  if (tab !== OPENAPI_TAB || !locale) {
+    return sidebar;
+  }
+
+  return addConversationalAiEndpointSidebarItems(sidebar, locale);
+}
+
+function getDocsPages({
+  locale,
+  pages,
+  tab,
+}: {
+  locale: AppLocale | null;
+  pages: {
+    description?: string;
+    title: string;
+    url: string;
+  }[];
+  tab: string;
+}) {
+  if (tab !== OPENAPI_TAB || !locale) {
+    return pages;
+  }
+
+  const existingUrls = new Set(pages.map((page) => page.url));
+  const endpointPages = getConversationalAiOperationIds()
+    .map((operationId) => ({
+      title: CONVERSATIONAL_AI_OPERATION_TITLES[locale][operationId],
+      url: getConversationalAiEndpointUrl(locale, operationId),
+    }))
+    .filter((page) => !existingUrls.has(page.url));
+
+  return [...pages, ...endpointPages];
 }
 
 function addConversationalAiEndpointSidebarItems(
