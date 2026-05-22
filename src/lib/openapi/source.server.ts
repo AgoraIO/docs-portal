@@ -6,6 +6,11 @@ import {
   CONVERSATIONAL_AI_OPENAPI_SOURCE_PATH,
   type ConversationalAiOperationId,
 } from './conversational-ai';
+import {
+  type OpenApiJsonObject,
+  type OpenApiJsonValue,
+  toOpenApiJsonValue,
+} from './json';
 
 const HTTP_METHODS = new Set([
   'get',
@@ -22,21 +27,21 @@ export type NormalizedOpenApiOperation = {
   description?: string;
   method: string;
   operationId: string;
-  parameters: unknown[];
+  parameters: OpenApiJsonObject[];
   path: string;
   requestBody?: {
     contentTypes: string[];
     content: Record<string, OpenApiMediaContent>;
   };
   responses: Record<string, OpenApiResponse>;
-  security?: unknown;
+  security?: OpenApiJsonValue;
   servers: { description?: string; url: string }[];
   summary?: string;
 };
 
 export type OpenApiMediaContent = {
-  examples?: Record<string, unknown>;
-  schema?: unknown;
+  examples?: OpenApiJsonObject;
+  schema?: OpenApiJsonValue;
 };
 
 export type OpenApiResponse = {
@@ -98,7 +103,9 @@ async function loadConversationalAiOperations() {
         method: method.toUpperCase(),
         operationId,
         parameters: arrayValue(operation.parameters).map((parameter) =>
-          resolveReference(parameter, document),
+          toOpenApiJsonValue(
+            resolveReference(parameter, document),
+          ) as OpenApiJsonObject,
         ),
         path: operationPath,
         requestBody: normalizeRequestBody(
@@ -106,7 +113,10 @@ async function loadConversationalAiOperations() {
           document,
         ),
         responses: normalizeResponses(operation.responses, document),
-        security: operation.security,
+        security:
+          operation.security === undefined
+            ? undefined
+            : toOpenApiJsonValue(operation.security),
         servers:
           normalizeServers(operation.servers) ??
           normalizeServers(pathItem.servers) ??
@@ -192,8 +202,13 @@ function normalizeContent(
       return [
         contentType,
         {
-          examples: isRecord(media.examples) ? media.examples : undefined,
-          schema: resolveSchema(media.schema, document),
+          examples: isRecord(media.examples)
+            ? (toOpenApiJsonValue(media.examples) as OpenApiJsonObject)
+            : undefined,
+          schema:
+            media.schema === undefined
+              ? undefined
+              : toOpenApiJsonValue(resolveSchema(media.schema, document)),
         },
       ];
     }),

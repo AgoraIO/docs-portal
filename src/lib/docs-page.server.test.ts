@@ -1,6 +1,7 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { loadDocsPagePayload, loadDocsTabIndex } from './docs-page.server';
+import { loadOpenApiEndpointPage } from './openapi/docs-page.server';
 import { source } from './source.server';
 
 vi.mock('./source.server', () => ({
@@ -15,9 +16,14 @@ vi.mock('./source.server', () => ({
   },
 }));
 
+vi.mock('./openapi/docs-page.server', () => ({
+  loadOpenApiEndpointPage: vi.fn(),
+}));
+
 const mockedGetPage = vi.mocked(source.getPage);
 const mockedGetPages = vi.mocked(source.getPages);
 const mockedGetPageTree = vi.mocked(source.getPageTree);
+const mockedLoadOpenApiEndpointPage = vi.mocked(loadOpenApiEndpointPage);
 
 const pageTree: Root = {
   children: [
@@ -138,6 +144,7 @@ describe('loadDocsPagePayload', () => {
   beforeEach(() => {
     const page = createPage();
 
+    mockedLoadOpenApiEndpointPage.mockResolvedValue(null);
     mockedGetPage.mockImplementation((_slugs, locale) =>
       locale === 'zh-CN' ? undefined : page,
     );
@@ -151,6 +158,10 @@ describe('loadDocsPagePayload', () => {
     ).resolves.toMatchObject({
       activePath: '/en/introduction/about-agora',
       activeTab: 'introduction',
+      body: {
+        contentPath: 'en/introduction/about-agora.md',
+        kind: 'mdx',
+      },
       breadcrumb: [
         {
           title: 'Get started',
@@ -188,6 +199,61 @@ describe('loadDocsPagePayload', () => {
           url: '#why',
         },
       ],
+    });
+  });
+
+  it('returns OpenAPI overlay payloads when no MDX page exists', async () => {
+    mockedGetPage.mockReturnValue(undefined);
+    mockedLoadOpenApiEndpointPage.mockResolvedValue({
+      activePath: '/en/api-reference/conversational-ai/rest-api/agent/join',
+      activeTab: 'api-reference',
+      body: {
+        kind: 'openapi',
+        operationPayload: {
+          operation: {
+            method: 'POST',
+            operationId: 'start-agent',
+            parameters: [],
+            path: '/v2/projects/{appid}/join',
+            responses: {},
+            servers: [],
+          },
+          publicSourceUrl: '/openapi/conversational-ai/convoai.yaml',
+          requestSchemaTree: [],
+          responseSchemaTrees: {},
+        },
+      },
+      breadcrumb: [],
+      contentPath: 'en/api-reference/conversational-ai/rest-api/agent/join.md',
+      description: undefined,
+      localeLinks: [],
+      markdownUrl:
+        '/llms.mdx/docs/en/api-reference/conversational-ai/rest-api/agent/join.md',
+      navigation: {
+        next: undefined,
+        previous: undefined,
+      },
+      pages: [],
+      sidebar: [],
+      slug: 'join',
+      tabs: [],
+      title: 'Start a conversational AI agent',
+      toc: [],
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', [
+        'conversational-ai',
+        'rest-api',
+        'agent',
+        'join',
+      ]),
+    ).resolves.toMatchObject({
+      activePath: '/en/api-reference/conversational-ai/rest-api/agent/join',
+      body: {
+        kind: 'openapi',
+      },
+      title: 'Start a conversational AI agent',
     });
   });
 

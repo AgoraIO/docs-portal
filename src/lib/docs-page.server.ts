@@ -10,6 +10,7 @@ import {
   getTabSummaries,
 } from './docs-tree';
 import { SUPPORTED_LOCALES } from './i18n/i18n-config';
+import { loadOpenApiEndpointPage } from './openapi/docs-page.server';
 import { getPageMarkdownUrl, type PageWithSource } from './source.server';
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
@@ -57,6 +58,16 @@ export async function loadDocsPagePayload(
   );
 
   if (!page) {
+    const openApiPage = await loadOpenApiEndpointPage(
+      locale,
+      tab,
+      slugSegments,
+    );
+
+    if (openApiPage) {
+      return openApiPage;
+    }
+
     const pageTree = source.getPageTree(locale);
     const fallbackUrl = getFirstChildPageUrl(pageTree, tab, slugSegments);
 
@@ -79,6 +90,10 @@ export async function loadDocsPagePayload(
   return {
     activePath: page.url,
     activeTab: tab,
+    body: {
+      contentPath: page.path,
+      kind: 'mdx' as const,
+    },
     breadcrumb:
       breadcrumb.length > 0
         ? breadcrumb

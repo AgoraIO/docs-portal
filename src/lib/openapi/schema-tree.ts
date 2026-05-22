@@ -1,11 +1,13 @@
+import { type OpenApiJsonValue, toOpenApiJsonValue } from './json';
+
 const MAX_SCHEMA_DEPTH = 12;
 
 export type OpenApiSchemaTreeNode = {
   children: OpenApiSchemaTreeNode[];
-  defaultValue?: unknown;
+  defaultValue?: OpenApiJsonValue;
   deprecated?: boolean;
   description?: string;
-  enumValues?: unknown[];
+  enumValues?: OpenApiJsonValue[];
   name: string;
   path: string;
   required: boolean;
@@ -89,14 +91,18 @@ function buildSchemaNode(
       requiredNames: new Set(arrayOfStrings(value.required)),
       seen: context.seen,
     }),
-    ...(value.default !== undefined ? { defaultValue: value.default } : {}),
+    ...(value.default !== undefined
+      ? { defaultValue: toOpenApiJsonValue(value.default) }
+      : {}),
     ...(typeof value.deprecated === 'boolean'
       ? { deprecated: value.deprecated }
       : {}),
     ...(typeof value.description === 'string'
       ? { description: value.description }
       : {}),
-    ...(Array.isArray(value.enum) ? { enumValues: value.enum } : {}),
+    ...(Array.isArray(value.enum)
+      ? { enumValues: value.enum.map(toOpenApiJsonValue) }
+      : {}),
     name,
     path,
     required,
