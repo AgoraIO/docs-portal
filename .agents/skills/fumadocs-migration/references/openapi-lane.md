@@ -28,6 +28,10 @@ The public source URL is:
 /openapi/conversational-ai/convoai.yaml
 ```
 
+In docs-portal, `scripts/sync-openapi-assets.mjs` owns the build copy from
+`content/openapi/**` to `public/openapi/**`, and `bun run build` must run that
+copy before Vite/Nitro builds. `public/openapi/**` stays gitignored.
+
 ## Endpoint Pages
 
 Endpoint docs are generated from OpenAPI by `operationId`.
@@ -80,6 +84,13 @@ Do not preserve current new-portal placeholder endpoint routes as compatibility 
 
 English and Chinese should share the same IA skeleton. With a single locale-neutral `convoai.yaml`, both locale routes may render YAML text as-is. Do not backfill English schema prose from old endpoint Markdown. Locale-specific YAML or explicit overrides can be designed later.
 
+For Conversational AI REST in docs-portal, the registry lives in
+`src/lib/openapi/conversational-ai.ts`. Keep this file as the only
+operation-to-route mapping source. The route loader first asks the Fumadocs MDX
+source for a page; only if that misses should it resolve an OpenAPI endpoint
+from the registry. This allows `content/docs/**/meta.json` to list virtual
+endpoint leaves without requiring physical `.md`/`.mdx` shadow files.
+
 ## Rendering
 
 Legacy `RestfulRender` and `OpenapiRender` are not migrated.
@@ -87,6 +98,12 @@ Legacy `RestfulRender` and `OpenapiRender` are not migrated.
 Use a separate Fumadocs version gate before renderer work when adopting the latest compatible Fumadocs packages. Keep that dependency upgrade isolated from OpenAPI rendering changes.
 
 Do not use `fumadocs-ui` as the OpenAPI page renderer in this portal. `fumadocs-openapi` may be used for schema processing, page data, and source utilities, but endpoint rendering belongs to local docs-shell components.
+
+Do not import `fumadocs-openapi/ui` in docs-portal. The current implementation
+uses local docs-shell rendering components and a server-side YAML loader
+(`src/lib/openapi/source.server.ts`) that normalizes local `$ref` values into
+JSON-serializable operation data. Keep the page payload serializable across
+TanStack Start server/client boundaries.
 
 The first renderer is a static API reference, not a Try It console or API explorer. It should render method, path, server/source link, auth hints, parameters, request body, responses, schemas, and examples without executing requests.
 
@@ -109,6 +126,14 @@ Render nested request and response contracts as a guarded recursive schema tree.
 
 OpenAPI endpoint pages must also produce search-index documents derived from YAML and the endpoint registry. Do not create MDX shadow files just to make search work.
 
+In docs-portal, keep these surfaces derived from the registry and YAML:
+
+- `/llms.txt`
+- `/llms-full.txt`
+- `/llms.mdx/docs/{path}.md`
+- `/api/search`
+- TanStack Start prerender page entries
+
 ## Verification
 
 OpenAPI lane changes require the full OpenAPI lane acceptance gate, not only `bun run types:check`.
@@ -125,3 +150,6 @@ Verify:
 - `/llms-full.txt` or per-page raw markdown includes operation source traceability.
 - `/api/search` can find generated endpoint pages.
 - Browser verification shows the endpoint page renders without obvious layout overflow.
+- `rg "fumadocs-ui|fumadocs-openapi/ui" src package.json` returns no matches.
+- `git status --short public/openapi` is empty, while ignored status shows the generated copy is ignored.
+- `content/openapi/**/overrides` contains no endpoint override files unless a later ADR explicitly enables overrides.
