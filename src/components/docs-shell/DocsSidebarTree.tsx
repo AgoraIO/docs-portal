@@ -86,11 +86,11 @@ function SidebarNodeRenderer({
   return (
     <SidebarPageLink
       activePath={activePath}
+      method={node.method}
       onSelectPath={onSelectPath}
+      title={node.title}
       url={node.url}
-    >
-      {node.title}
-    </SidebarPageLink>
+    />
   );
 }
 
@@ -217,15 +217,10 @@ function SidebarSection({
                     search={{}}
                     to={child.url}
                   >
-                    <span
-                      className={cn(
-                        'block overflow-hidden text-pretty leading-5 whitespace-normal',
-                        '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
-                      )}
+                    <SidebarPageLabel
+                      method={child.method}
                       title={child.title}
-                    >
-                      {child.title}
-                    </span>
+                    />
                   </Link>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
@@ -295,15 +290,7 @@ function SidebarQuickstartGroup({
                   search={{}}
                   to={child.url}
                 >
-                  <span
-                    className={cn(
-                      'block overflow-hidden text-pretty leading-5 whitespace-normal',
-                      '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
-                    )}
-                    title={child.title}
-                  >
-                    {child.title}
-                  </span>
+                  <SidebarPageLabel method={child.method} title={child.title} />
                 </Link>
               </SidebarMenuSubButton>
             </SidebarMenuSubItem>
@@ -372,15 +359,7 @@ function SidebarNestedSection({
                   search={{}}
                   to={child.url}
                 >
-                  <span
-                    className={cn(
-                      'block overflow-hidden text-pretty leading-5 whitespace-normal',
-                      '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
-                    )}
-                    title={child.title}
-                  >
-                    {child.title}
-                  </span>
+                  <SidebarPageLabel method={child.method} title={child.title} />
                 </Link>
               </SidebarMenuSubButton>
             ),
@@ -481,13 +460,15 @@ function normalizeRootSections(
 
 function SidebarPageLink({
   activePath,
-  children,
+  method,
   onSelectPath,
+  title,
   url,
 }: {
   activePath: string;
-  children: string;
+  method?: string;
   onSelectPath: () => void;
+  title: string;
   url: string;
 }) {
   return (
@@ -498,18 +479,37 @@ function SidebarPageLink({
         isActive={url === activePath}
       >
         <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
-          <span
-            className={cn(
-              'block overflow-hidden text-pretty leading-5 whitespace-normal',
-              '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
-            )}
-            title={children}
-          >
-            {children}
-          </span>
+          <SidebarPageLabel method={method} title={title} />
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
+  );
+}
+
+function SidebarPageLabel({
+  method,
+  title,
+}: {
+  method?: string;
+  title: string;
+}) {
+  return (
+    <>
+      <span
+        className={cn(
+          'block min-w-0 flex-1 overflow-hidden text-pretty leading-5 whitespace-normal',
+          '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
+        )}
+        title={title}
+      >
+        {title}
+      </span>
+      {method ? (
+        <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
+          {method}
+        </span>
+      ) : null}
+    </>
   );
 }
 

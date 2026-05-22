@@ -154,6 +154,30 @@ describe('DocsSidebarTree', () => {
     expect(screen.getByTitle(longTitle)).toHaveClass('[display:-webkit-box]');
   });
 
+  it('renders HTTP method badges for OpenAPI endpoint pages', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        id: '/en/api-reference/conversational-ai/rest-api/agent/join',
+        method: 'POST',
+        title: 'Start a conversational AI agent',
+        type: 'page',
+        url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+      },
+    ];
+
+    renderSidebarTree(
+      tree,
+      '/en/api-reference/conversational-ai/rest-api/agent/join',
+    );
+
+    const link = await screen.findByRole('link', {
+      name: /Start a conversational AI agent POST/i,
+    });
+
+    expect(link).toBeInTheDocument();
+    expect(screen.getByText('POST')).toHaveClass('font-mono');
+  });
+
   it('supports collapsible sections', async () => {
     const tree: DocsSidebarNode[] = [
       {

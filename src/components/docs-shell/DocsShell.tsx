@@ -29,6 +29,7 @@ import {
 } from '@/components/ui/sheet';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/cn';
 import { replaceDocLocale } from '@/lib/docs-routing';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from '@/lib/i18n/i18n-config';
@@ -57,10 +58,12 @@ export function DocsShell({
   sidebar,
   tabs,
   toc,
+  layoutMode = 'docs',
 }: {
   activePath: string;
   activeTab: string;
   children: React.ReactNode;
+  layoutMode?: 'docs' | 'openapi';
   localeLinks: LocaleLink[];
   locale: string;
   pages: SearchEntry[];
@@ -111,6 +114,8 @@ export function DocsShell({
     '--docs-shell-header-offset': `${headerOffset}px`,
     '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
+  const isOpenApiLayout = layoutMode === 'openapi';
+
   return (
     <SidebarProvider
       className="block min-h-screen bg-background text-foreground"
@@ -286,7 +291,12 @@ export function DocsShell({
           </nav>
         </header>
         <div
-          className="mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden xl:grid-cols-[256px_minmax(0,1fr)_220px]"
+          className={cn(
+            'mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden',
+            isOpenApiLayout
+              ? 'xl:grid-cols-[256px_minmax(0,1fr)]'
+              : 'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
+          )}
           data-testid="docs-body-shell"
         >
           <DocsSidebar
@@ -298,7 +308,7 @@ export function DocsShell({
           <DocsMainColumn next={next} previous={previous}>
             {children}
           </DocsMainColumn>
-          <DocsTocRail toc={toc} />
+          {isOpenApiLayout ? null : <DocsTocRail toc={toc} />}
         </div>
       </div>
     </SidebarProvider>

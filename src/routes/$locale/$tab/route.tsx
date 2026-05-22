@@ -28,6 +28,7 @@ function DocsTabLayout() {
     activePath,
     activeTab,
     localeLinks,
+    layoutMode,
     navigation,
     pages,
     sidebar,
@@ -40,6 +41,7 @@ function DocsTabLayout() {
       activePath={activePath}
       activeTab={activeTab}
       localeLinks={localeLinks}
+      layoutMode={layoutMode}
       locale={params.locale}
       next={navigation.next}
       pages={pages}
