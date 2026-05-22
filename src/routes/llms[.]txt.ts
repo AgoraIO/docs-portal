@@ -6,7 +6,13 @@ export const Route = createFileRoute('/llms.txt')({
     handlers: {
       async GET() {
         const { source } = await import('@/lib/source');
-        return new Response(llms(source).index());
+        const { getOpenApiMarkdownPages } = await import('@/lib/openapi/markdown');
+        const openApiPages = await getOpenApiMarkdownPages();
+        const openApiIndex = openApiPages
+          .map((page) => `- [${page.title}](${page.url})`)
+          .join('\n');
+
+        return new Response(`${llms(source).index()}\n\n${openApiIndex}\n`);
       },
     },
   },
