@@ -14,7 +14,7 @@ export function useTransientScrollbar<T extends HTMLElement>() {
       return;
     }
 
-    let timeoutId: ReturnType<typeof window.setTimeout> | undefined;
+    let timeoutId: number | undefined;
 
     const handleScroll = () => {
       setIsScrollbarVisible(true);
