@@ -127,19 +127,65 @@ be caught with loader tests for both page kinds.
 
 Legacy `RestfulRender` and `OpenapiRender` are not migrated.
 
-Use a separate Fumadocs version gate before renderer work when adopting the latest compatible Fumadocs packages. Keep that dependency upgrade isolated from OpenAPI rendering changes.
+Use a separate Fumadocs version gate before renderer work when adopting the
+latest compatible Fumadocs packages. Keep that dependency upgrade isolated from
+OpenAPI rendering changes.
 
-Do not use `fumadocs-ui` as the OpenAPI page renderer in this portal. `fumadocs-openapi` may be used for schema processing, page data, and source utilities, but endpoint rendering belongs to local docs-shell components.
+OpenAPI lane owns IA, publication, search, llms, prerender paths, and endpoint
+route resolution. Rendering is local renderer v2: a docs-portal React component
+inside `DocsShell` that consumes a parser-free, serializable operation payload.
+Do not use an external OpenAPI renderer as the docs tree source of truth.
 
-Do not import `fumadocs-openapi/ui` in docs-portal. The current implementation
-uses local docs-shell rendering components and a server-side YAML loader
-(`src/lib/openapi/source.server.ts`) that normalizes local `$ref` values into
-JSON-serializable operation data. Keep the page payload serializable across
-TanStack Start server/client boundaries.
+`@apidevtools/swagger-parser` or an equivalent OpenAPI parser may be used only
+in server/data code to validate, dereference, and normalize YAML/JSON. Client
+components and shared browser modules must consume local payload types and must
+not import parser packages or OpenAPI `.server` modules.
 
-The first renderer is a static API reference, not a Try It console or API explorer. It should render method, path, server/source link, auth hints, parameters, request body, responses, schemas, and examples without executing requests.
+Do not use `fumadocs-openapi/ui`, `fumadocs-openapi/staticSource`,
+`fumadocs-openapi/dynamicSource`, `openapiSource`, `loaderPlugin`, Redoc,
+Scalar, Swagger UI, Stoplight Elements, or RapiDoc for first-party endpoint
+pages unless a later ADR replaces renderer v2. Fumadocs OpenAPI pages may be
+used as visual references only.
 
-Render nested request and response contracts as a guarded recursive schema tree. Do not stop at first-level fields, and do not force deeply nested contracts into a wide flat table.
+Do not use `fumadocs-ui` docs layout, root provider, sidebar, navbar, or page
+tree as the portal shell. The portal shell remains `DocsShell`, and the
+route/sidebar/search/llms contract remains derived from
+`src/lib/openapi/lanes.ts`.
+
+The first renderer is a static API reference, not a Try It console or API
+explorer. It should render method, path, server/source link, auth hints,
+parameters, request body, responses, schemas, and examples without executing
+requests.
+
+Disable interactive API playground for the first renderer. Do not add proxy
+routes, auth/token input UI, or request execution buttons. Static code samples
+and examples are allowed; start with cURL and JavaScript/fetch.
+
+OpenAPI endpoint pages should keep the portal docs header and avoid duplicate
+renderer titles/descriptions. The outer docs page renders breadcrumb, H1,
+description, language links, and raw markdown links; the endpoint renderer owns
+only the operation body.
+
+OpenAPI endpoint pages should use an OpenAPI layout mode instead of the normal
+docs TOC rail. The right-side space belongs to code/examples or renderer
+supporting content, not to the generic table of contents. The generated
+endpoint nav should show HTTP method badges in the left sidebar when method
+metadata is available.
+
+Renderer v2 should follow the visual structure proven by rich OpenAPI reference
+pages without importing their UI packages:
+
+- Compact method/path operation bar.
+- Desktop two-column body: main reference content on the left and sticky
+  `Code & Examples` on the right.
+- Authorization, parameters, request body, responses, schema rows, and examples
+  as dense sections rather than raw YAML dumps.
+- Fully expanded schema path rows by default, for example
+  `properties.llm.url`, including required markers, type, enum/default/example,
+  format/range metadata, and description.
+- Static cURL and JavaScript/fetch examples plus response examples. Do not add
+  token inputs, proxy routes, Execute, Send request, Try It, or request
+  execution controls in the first renderer.
 
 ## AI-Readable Exports
 
@@ -172,16 +218,28 @@ OpenAPI lane changes require the full OpenAPI lane acceptance gate, not only `bu
 
 Verify:
 
-- Fumadocs version gate passes before renderer work: `bun run types:check`, focused tests, and `bun run build`.
+- Fumadocs version gate passes before renderer work: `bun run types:check`,
+  focused tests, and `bun run build`.
 - Registry tests prove all YAML `operationId` values are mapped once.
-- Renderer tests cover nested schema tree output for deep fields.
+- Renderer tests prove OpenAPI endpoint pages use local renderer v2 inside the
+  docs shell, without the generic docs TOC rail.
 - `bun run build` succeeds.
 - `.vercel/output/static/openapi/...` contains the published YAML.
 - Ordinary endpoint docs pages are prerendered for English and Chinese canonical routes.
 - `/llms.txt` links endpoint pages.
 - `/llms-full.txt` or per-page raw markdown includes operation source traceability.
 - `/api/search` can find generated endpoint pages.
-- Browser verification shows the endpoint page renders without obvious layout overflow.
-- `rg "fumadocs-ui|fumadocs-openapi/ui" src package.json` returns no matches.
+- Browser verification shows the endpoint page renders rich request/response
+  content, static code/examples, a sticky right-side examples column,
+  left-nav method badges, and no obvious layout overflow.
+- `rg "fumadocs-openapi|@scalar/api-reference|redoc|swagger-ui|@stoplight/elements|rapidoc" src package.json bun.lock package-lock.json`
+  returns no dependency or import matches.
+- `rg "@apidevtools/swagger-parser" src/components src/routes` returns no
+  matches.
+- `rg "@/lib/openapi/.*\\.server|openapi/.*\\.server" src/components src/routes`
+  returns no OpenAPI parser/server imports from client components or route
+  modules.
+- `rg "fumadocs-ui/(layout|components/layout|contexts/layout)|openapiSource|staticSource|dynamicSource|loaderPlugin" src package.json`
+  returns no matches for portal shell or IA ownership.
 - `git status --short public/openapi` is empty, while ignored status shows the generated copy is ignored.
 - `content/openapi/**/overrides` contains no endpoint override files unless a later ADR explicitly enables overrides.

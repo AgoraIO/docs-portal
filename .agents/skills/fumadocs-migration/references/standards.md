@@ -80,7 +80,7 @@ Publish public `/openapi/**` assets from `content/openapi/**` with an automated 
 
 Use an OpenAPI endpoint registry overlay instead of merging generated endpoints into the Fumadocs `source` object. Route leaves are mapped from `operationId` once, and route, sidebar, locale links, search, llms, and prerender paths are derived from that registry.
 
-Do not use `fumadocs-ui` as this portal's OpenAPI page renderer. Rendering must use local docs-shell components and produce static API references with recursive schema trees. See `references/openapi-lane.md` for the full contract.
+Do not use `fumadocs-ui` or external OpenAPI UI packages as this portal's OpenAPI page renderer. Rendering must use local docs-shell components and produce static API references with fully expanded schema path rows. See `references/openapi-lane.md` for the full contract.
 
 ## Plugins
 
