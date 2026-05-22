@@ -88,7 +88,7 @@ For OpenAPI REST docs in docs-portal, the lane mapping lives in
 `src/lib/openapi/lanes.ts`. Treat this file as a small YAML-to-docs-IA mapping
 table, not as a large framework. One YAML source gets one lane record with:
 
-- `id`: stable lane ID, for example `convoai` or `rtm2`.
+- `id`: stable lane ID, for example `convoai` or `example`.
 - `sourcePath`: source YAML under `content/openapi/**`.
 - `publicSourceUrl`: published YAML URL under `/openapi/**`.
 - `tab`: docs tab where generated endpoint pages live.
@@ -97,8 +97,8 @@ table, not as a large framework. One YAML source gets one lane record with:
 - `routePrefix`: locale-neutral endpoint page prefix, excluding `/{locale}`.
 - `operations`: explicit `operationId -> routeLeaf + title` mapping.
 
-When adding another YAML such as `rtm2.yaml`, add another lane record. Do not
-add product-specific helpers such as `getRtm2EndpointUrl()`, and do not patch
+When adding another YAML such as `example.yaml`, add another lane record. Do not
+add product-specific helpers such as `getExampleEndpointUrl()`, and do not patch
 `docs-page.server.ts`, search, markdown, llms, or prerender logic for each
 product. These consumers must iterate the lane table.
 
