@@ -4,12 +4,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "bun run openapi:sync && vite build",
     "start": "vite preview",
     "preview": "vite preview",
     "test": "vitest run",
     "types:check": "fumadocs-mdx && tsc --noEmit",
     "postinstall": "fumadocs-mdx",
+    "openapi:sync": "node scripts/sync-openapi-assets.mjs",
     "docs:links": "node scripts/audit-doc-links.mjs",
     "lint": "biome check biome.json package.json source.config.ts tsconfig.json vite.config.ts src",
     "format": "biome format --write"
