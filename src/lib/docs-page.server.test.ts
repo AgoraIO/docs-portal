@@ -294,6 +294,10 @@ describe('loadDocsPagePayload', () => {
       body: {
         kind: 'openapi',
         operationPayload: {
+          examples: {
+            curl: 'curl -X POST "https://api.example.com/v2/projects/{appid}/join"',
+            javascript: "await fetch('https://api.example.com/v2/projects/{appid}/join')",
+          },
           operation: {
             method: 'POST',
             operationId: 'start-agent',
@@ -303,13 +307,14 @@ describe('loadDocsPagePayload', () => {
             servers: [],
           },
           publicSourceUrl: '/openapi/conversational-ai/convoai.yaml',
-          requestSchemaTree: [],
-          responseSchemaTrees: {},
+          requestSchemaRows: [],
+          responseSchemaRows: {},
         },
       },
       contentPath: 'en/api-reference/conversational-ai/rest-api/agent/join.md',
       description: undefined,
       lane: OPENAPI_LANES[0],
+      layoutMode: 'openapi',
       markdownUrl:
         '/llms.mdx/docs/en/api-reference/conversational-ai/rest-api/agent/join.md',
       operationId: 'start-agent',
@@ -331,6 +336,7 @@ describe('loadDocsPagePayload', () => {
       body: {
         kind: 'openapi',
       },
+      layoutMode: 'openapi',
       localeLinks: [
         {
           href: '/en/api-reference/conversational-ai/rest-api/agent/join',
@@ -376,6 +382,15 @@ describe('loadDocsPagePayload', () => {
         '/en/api-reference/conversational-ai/rest-api/agent/join',
       ]),
     );
+    expect(
+      findSidebarPage(
+        payload.sidebar,
+        '/en/api-reference/conversational-ai/rest-api/agent/join',
+      ),
+    ).toMatchObject({
+      method: 'POST',
+      title: 'Start a conversational AI agent',
+    });
   });
 
   it('includes OpenAPI endpoint sidebar items on the real MDX parent page', async () => {
@@ -422,6 +437,14 @@ describe('loadDocsPagePayload', () => {
         '/en/api-reference/conversational-ai/rest-api/agent/join',
       ]),
     );
+    expect(
+      findSidebarPage(
+        payload.sidebar,
+        '/en/api-reference/conversational-ai/rest-api/agent/join',
+      ),
+    ).toMatchObject({
+      method: 'POST',
+    });
   });
 
   it('loads nested product pages from multi-segment slugs', async () => {
@@ -531,4 +554,32 @@ function flattenSidebarPageUrls(
   return nodes.flatMap((node) =>
     node.type === 'page' ? [node.url] : flattenSidebarPageUrls(node.children),
   );
+}
+
+function findSidebarPage(
+  nodes: Exclude<
+    Awaited<ReturnType<typeof loadDocsPagePayload>>,
+    null | { redirectUrl: string }
+  >['sidebar'],
+  url: string,
+):
+  | Exclude<
+      Awaited<ReturnType<typeof loadDocsPagePayload>>,
+      null | { redirectUrl: string }
+    >['sidebar'][number]
+  | undefined {
+  for (const node of nodes) {
+    if (node.type === 'page' && node.url === url) {
+      return node;
+    }
+
+    if (node.type === 'section') {
+      const nested = findSidebarPage(node.children, url);
+      if (nested) {
+        return nested;
+      }
+    }
+  }
+
+  return undefined;
 }

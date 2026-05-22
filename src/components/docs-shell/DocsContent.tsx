@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
-import type { OpenApiOperationPayload } from '../openapi/OpenApiOperationContent';
+import type { OpenApiOperationPayload } from '@/lib/openapi/payload';
 import { DocsContentBodyClient } from './DocsContentBody.client';
 import { OpenApiOperationContent } from '../openapi/OpenApiOperationContent';
 
@@ -123,7 +123,9 @@ export function DocsContent({
           </ClientOnly>
         ) : null}
       </div>
-      <DocsTableOfContents className="xl:hidden" toc={toc} />
+      {resolvedBody?.kind === 'openapi' ? null : (
+        <DocsTableOfContents className="xl:hidden" toc={toc} />
+      )}
     </article>
   );
 }

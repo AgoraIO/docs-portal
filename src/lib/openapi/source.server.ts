@@ -1,13 +1,17 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import type { Document } from 'fumadocs-openapi';
+import SwaggerParser from '@apidevtools/swagger-parser';
+import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import yaml from 'js-yaml';
-import {
-  type OpenApiJsonObject,
-  type OpenApiJsonValue,
-  toOpenApiJsonValue,
-} from './json';
+import { type OpenApiJsonValue, toOpenApiJsonValue } from './json';
 import type { OpenApiLane } from './lanes';
+import type {
+  NormalizedOpenApiMedia,
+  NormalizedOpenApiOperation,
+  OpenApiParameter,
+  OpenApiParameterLocation,
+  OpenApiResponse,
+} from './payload';
 
 const HTTP_METHODS = new Set([
   'get',
@@ -18,33 +22,7 @@ const HTTP_METHODS = new Set([
   'head',
   'patch',
   'trace',
-]);
-
-export type NormalizedOpenApiOperation = {
-  description?: string;
-  method: string;
-  operationId: string;
-  parameters: OpenApiJsonObject[];
-  path: string;
-  requestBody?: {
-    contentTypes: string[];
-    content: Record<string, OpenApiMediaContent>;
-  };
-  responses: Record<string, OpenApiResponse>;
-  security?: OpenApiJsonValue;
-  servers: { description?: string; url: string }[];
-  summary?: string;
-};
-
-export type OpenApiMediaContent = {
-  examples?: OpenApiJsonObject;
-  schema?: OpenApiJsonValue;
-};
-
-export type OpenApiResponse = {
-  content?: Record<string, OpenApiMediaContent>;
-  description?: string;
-};
+]) as Set<string>;
 
 type OpenApiDocument = {
   paths?: Record<string, Record<string, unknown>>;
@@ -52,6 +30,7 @@ type OpenApiDocument = {
 };
 
 const operationCache = new Map<string, Promise<NormalizedOpenApiOperation[]>>();
+const documentCache = new Map<string, Promise<OpenApiDocument>>();
 
 export async function getOpenApiOperations(
   lane: OpenApiLane,
@@ -84,8 +63,7 @@ export async function getOpenApiOperation(
 }
 
 async function loadOpenApiOperations(lane: OpenApiLane) {
-  const sourcePath = path.join(process.cwd(), lane.sourcePath);
-  const document = await loadOpenApiDocument(sourcePath);
+  const document = await getOpenApiDocument(lane);
   const operations: NormalizedOpenApiOperation[] = [];
 
   for (const [operationPath, pathItem] of Object.entries(
@@ -108,13 +86,10 @@ async function loadOpenApiOperations(lane: OpenApiLane) {
 
       operations.push({
         description: stringValue(operation.description),
-        method: method.toUpperCase(),
+        method: method.toUpperCase() as NormalizedOpenApiOperation['method'],
         operationId,
-        parameters: arrayValue(operation.parameters).map(
-          (parameter) =>
-            toOpenApiJsonValue(
-              resolveReference(parameter, document),
-            ) as OpenApiJsonObject,
+        parameters: arrayValue(operation.parameters).flatMap((parameter) =>
+          normalizeParameter(resolveReference(parameter, document), document),
         ),
         path: operationPath,
         requestBody: normalizeRequestBody(
@@ -141,13 +116,36 @@ async function loadOpenApiOperations(lane: OpenApiLane) {
   );
 }
 
-async function loadOpenApiDocument(
-  sourcePath: string,
-): Promise<OpenApiDocument> {
-  const source = await fs.readFile(sourcePath, 'utf8');
-  const parsed = yaml.load(source) as Document;
+function getOpenApiDocumentPath(lane: OpenApiLane) {
+  return path.join(process.cwd(), lane.sourcePath);
+}
 
-  return parsed as OpenApiDocument;
+async function getOpenApiDocument(lane: OpenApiLane): Promise<OpenApiDocument> {
+  const cached = documentCache.get(lane.id);
+
+  if (cached) {
+    return cached;
+  }
+
+  const next = loadDereferencedOpenApiDocument(lane);
+  documentCache.set(lane.id, next);
+  return next;
+}
+
+async function loadDereferencedOpenApiDocument(
+  lane: OpenApiLane,
+): Promise<OpenApiDocument> {
+  const source = await fs.readFile(getOpenApiDocumentPath(lane), 'utf8');
+  const document = yaml.load(source);
+
+  return (await SwaggerParser.dereference(
+    document as OpenAPIV3.Document | OpenAPIV3_1.Document,
+    {
+      dereference: {
+        circular: 'ignore',
+      },
+    },
+  )) as OpenApiDocument;
 }
 
 function normalizeRequestBody(value: unknown, document: OpenApiDocument) {
@@ -160,6 +158,10 @@ function normalizeRequestBody(value: unknown, document: OpenApiDocument) {
   return {
     content,
     contentTypes: Object.keys(content),
+    ...(typeof value.description === 'string'
+      ? { description: value.description }
+      : {}),
+    required: value.required === true,
   };
 }
 
@@ -203,7 +205,7 @@ function normalizeResponse(
 function normalizeContent(
   value: Record<string, unknown>,
   document: OpenApiDocument,
-): Record<string, OpenApiMediaContent> {
+): Record<string, NormalizedOpenApiMedia> {
   return Object.fromEntries(
     Object.entries(value).map(([contentType, media]) => {
       if (!isRecord(media)) {
@@ -213,8 +215,12 @@ function normalizeContent(
       return [
         contentType,
         {
+          example:
+            media.example === undefined
+              ? undefined
+              : toOpenApiJsonValue(media.example),
           examples: isRecord(media.examples)
-            ? (toOpenApiJsonValue(media.examples) as OpenApiJsonObject)
+            ? normalizeExamples(media.examples)
             : undefined,
           schema:
             media.schema === undefined
@@ -262,6 +268,71 @@ function stringValue(value: unknown) {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function normalizeParameter(
+  value: unknown,
+  document: OpenApiDocument,
+): OpenApiParameter[] {
+  if (!isRecord(value)) {
+    return [];
+  }
+
+  const name = stringValue(value.name);
+  const location = normalizeParameterLocation(value.in);
+
+  if (!name || !location) {
+    return [];
+  }
+
+  return [
+    {
+      ...(typeof value.description === 'string'
+        ? { description: value.description }
+        : {}),
+      ...(value.example !== undefined
+        ? { example: toOpenApiJsonValue(value.example) }
+        : {}),
+      ...(isRecord(value.examples)
+        ? { examples: normalizeExamples(value.examples) }
+        : {}),
+      in: location,
+      name,
+      required: value.required === true,
+      ...(value.schema === undefined
+        ? {}
+        : { schema: toOpenApiJsonValue(resolveSchema(value.schema, document)) }),
+    },
+  ];
+}
+
+function normalizeExamples(
+  examples: Record<string, unknown>,
+): Record<string, { value?: OpenApiJsonValue }> {
+  return Object.fromEntries(
+    Object.entries(examples).map(([name, value]) => {
+      if (isRecord(value) && value.value !== undefined) {
+        return [name, { value: toOpenApiJsonValue(value.value) }];
+      }
+
+      return [name, {}];
+    }),
+  );
+}
+
+function normalizeParameterLocation(
+  value: unknown,
+): OpenApiParameterLocation | undefined {
+  if (
+    value === 'cookie' ||
+    value === 'header' ||
+    value === 'path' ||
+    value === 'query'
+  ) {
+    return value;
+  }
+
+  return undefined;
 }
 
 function resolveSchema(value: unknown, document: OpenApiDocument): unknown {

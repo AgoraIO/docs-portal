@@ -22,6 +22,33 @@ describe('openapi source loader', () => {
     expect(operation.requestBody?.contentTypes).toContain('application/json');
   });
 
+  it('dereferences local parameter refs before normalization', async () => {
+    const operation = await getOpenApiOperation(lane, 'start-agent');
+
+    expect(operation.parameters).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          in: 'header',
+          name: 'Authorization',
+        }),
+        expect.objectContaining({
+          in: 'path',
+          name: 'appid',
+        }),
+      ]),
+    );
+  });
+
+  it('serializes normalized operations without parser objects', async () => {
+    const operation = await getOpenApiOperation(lane, 'start-agent');
+
+    expect(JSON.parse(JSON.stringify(operation))).toMatchObject({
+      method: 'POST',
+      operationId: 'start-agent',
+      path: '/v2/projects/{appid}/join',
+    });
+  });
+
   it('keeps registry operation IDs in sync with YAML', async () => {
     const operations = await getOpenApiOperations(lane);
     const fromYaml = operations

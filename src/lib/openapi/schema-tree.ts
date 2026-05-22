@@ -1,4 +1,5 @@
 import { type OpenApiJsonValue, toOpenApiJsonValue } from './json';
+import type { OpenApiSchemaRow } from './payload';
 
 const MAX_SCHEMA_DEPTH = 12;
 
@@ -8,10 +9,17 @@ export type OpenApiSchemaTreeNode = {
   deprecated?: boolean;
   description?: string;
   enumValues?: OpenApiJsonValue[];
+  example?: OpenApiJsonValue;
+  format?: string;
+  maximum?: number;
+  minimum?: number;
   name: string;
+  nullable?: boolean;
   path: string;
+  readOnly?: boolean;
   required: boolean;
   type: string;
+  writeOnly?: boolean;
 };
 
 export function buildOpenApiSchemaTree(
@@ -23,6 +31,25 @@ export function buildOpenApiSchemaTree(
     requiredNames: new Set(),
     seen: new WeakSet(),
   });
+}
+
+export function buildOpenApiSchemaRows(
+  schema: unknown,
+  options: { usage?: 'request' | 'response' } = {},
+): OpenApiSchemaRow[] {
+  return buildOpenApiSchemaTree(schema)
+    .flatMap((node) => flattenSchemaTreeNode(node, 0))
+    .filter((row) => {
+      if (options.usage === 'request') {
+        return row.readOnly !== true;
+      }
+
+      if (options.usage === 'response') {
+        return row.writeOnly !== true;
+      }
+
+      return true;
+    });
 }
 
 type BuildContext = {
@@ -48,10 +75,7 @@ function buildSchemaChildren(
 
   const merged = mergeComposedSchemas(schema);
   const properties = isRecord(merged.properties) ? merged.properties : {};
-  const requiredNames = new Set([
-    ...context.requiredNames,
-    ...arrayOfStrings(merged.required),
-  ]);
+  const requiredNames = new Set(arrayOfStrings(merged.required));
   const nodes = Object.entries(properties).map(([name, childSchema]) =>
     buildSchemaNode(name, childSchema, {
       depth: context.depth + 1,
@@ -103,11 +127,35 @@ function buildSchemaNode(
     ...(Array.isArray(value.enum)
       ? { enumValues: value.enum.map(toOpenApiJsonValue) }
       : {}),
+    ...(value.example !== undefined
+      ? { example: toOpenApiJsonValue(value.example) }
+      : {}),
+    ...(typeof value.format === 'string' ? { format: value.format } : {}),
+    ...(typeof value.maximum === 'number' ? { maximum: value.maximum } : {}),
+    ...(typeof value.minimum === 'number' ? { minimum: value.minimum } : {}),
     name,
+    ...(isNullable(value) ? { nullable: true } : {}),
     path,
+    ...(value.readOnly === true ? { readOnly: true } : {}),
     required,
     type: getSchemaType(value),
+    ...(value.writeOnly === true ? { writeOnly: true } : {}),
   };
+}
+
+function flattenSchemaTreeNode(
+  node: OpenApiSchemaTreeNode,
+  depth: number,
+): OpenApiSchemaRow[] {
+  const { children, ...row } = node;
+
+  return [
+    {
+      ...row,
+      depth,
+    },
+    ...children.flatMap((child) => flattenSchemaTreeNode(child, depth + 1)),
+  ];
 }
 
 function mergeComposedSchemas(schema: Record<string, unknown>) {
@@ -175,6 +223,13 @@ function getSchemaType(schema: Record<string, unknown>) {
   }
 
   return 'unknown';
+}
+
+function isNullable(schema: Record<string, unknown>) {
+  return (
+    schema.nullable === true ||
+    (Array.isArray(schema.type) && schema.type.includes('null'))
+  );
 }
 
 function arrayOfStrings(value: unknown) {

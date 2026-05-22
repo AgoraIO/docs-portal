@@ -4,12 +4,16 @@ import { AppProviders } from '@/components/providers/AppProviders';
 import { OpenApiOperationContent } from './OpenApiOperationContent';
 
 describe('OpenApiOperationContent', () => {
-  it('renders method, path, source link, and schema tree fields', () => {
+  it('renders method, path, source link, and expanded schema rows', () => {
     render(
       <AppProviders>
         <OpenApiOperationContent
+          examples={{
+            curl: 'curl -X POST "https://api.example.com/v1/items"',
+            javascript: "await fetch('https://api.example.com/v1/items')",
+          }}
           operation={{
-            description: '创建一个对话式智能体实例。',
+            description: 'Create an agent.',
             method: 'POST',
             operationId: 'start-agent',
             parameters: [],
@@ -17,6 +21,7 @@ describe('OpenApiOperationContent', () => {
             requestBody: {
               content: {},
               contentTypes: ['application/json'],
+              required: true,
             },
             responses: {},
             servers: [
@@ -24,19 +29,19 @@ describe('OpenApiOperationContent', () => {
                 url: 'https://api.agora.io/cn/api/conversational-ai-agent',
               },
             ],
-            summary: '创建对话式智能体',
+            summary: 'Start a conversational AI agent',
           }}
           publicSourceUrl="/openapi/conversational-ai/convoai.yaml"
-          requestSchemaTree={[
+          requestSchemaRows={[
             {
-              children: [],
-              name: 'name',
-              path: 'name',
-              required: true,
+              depth: 2,
+              name: 'url',
+              path: 'properties.llm.url',
+              required: false,
               type: 'string',
             },
           ]}
-          responseSchemaTrees={{}}
+          responseSchemaRows={{}}
         />
       </AppProviders>,
     );
@@ -46,6 +51,6 @@ describe('OpenApiOperationContent', () => {
     expect(
       screen.getByRole('link', { name: /OpenAPI source/i }),
     ).toHaveAttribute('href', '/openapi/conversational-ai/convoai.yaml');
-    expect(screen.getByText('name')).toBeInTheDocument();
+    expect(screen.getByText('properties.llm.url')).toBeInTheDocument();
   });
 });
