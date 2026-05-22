@@ -105,6 +105,7 @@ Why teams use it.`,
     },
     path: 'en/introduction/about-agora.md',
     slugs: ['en', 'introduction', 'about-agora'],
+    type: undefined,
     url: '/en/introduction/about-agora',
   };
 }
