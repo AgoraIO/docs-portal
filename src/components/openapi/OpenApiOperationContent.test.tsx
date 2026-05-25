@@ -1,7 +1,10 @@
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
-import { OpenApiOperationContent } from './OpenApiOperationContent';
+import {
+  OpenApiExamplesRail,
+  OpenApiOperationContent,
+} from './OpenApiOperationContent';
 
 describe('OpenApiOperationContent', () => {
   it('renders method, path, source link, and expanded schema rows', () => {
@@ -80,13 +83,35 @@ describe('OpenApiOperationContent', () => {
     expect(screen.getByText('Path parameters')).toBeInTheDocument();
     expect(screen.getByText('Format uri')).toBeInTheDocument();
     expect(screen.getByText('Enum https://example.com')).toBeInTheDocument();
-    expect(screen.getByText('Code & Examples')).toBeInTheDocument();
-    expect(screen.getByText(/curl -X POST/)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Copy cURL example/i })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /execute|send|try/i })).toBeNull();
   });
 
-  it('renders response examples from the examples tab set', () => {
+  it('renders examples in a separate rail', () => {
+    render(
+      <AppProviders>
+        <OpenApiExamplesRail
+          examples={{
+            curl: 'curl -X POST "https://api.example.com/v1/items"',
+            javascript:
+              "const response = await fetch('https://api.example.com/v1/items')",
+            responseBodyJson: {
+              agent_id: 'agent-id',
+            },
+            responseStatus: '200',
+          }}
+        />
+      </AppProviders>,
+    );
+
+    expect(screen.getByText('Code & Examples')).toBeInTheDocument();
+    expect(screen.getByText(/curl -X POST/)).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Copy cURL example/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Response 200' })).toBeInTheDocument();
+  });
+
+  it('renders response schemas in operation content', () => {
     render(
       <AppProviders>
         <OpenApiOperationContent
@@ -129,9 +154,6 @@ describe('OpenApiOperationContent', () => {
       </AppProviders>,
     );
 
-    const panel = screen.getByText('Code & Examples').closest('div');
-    expect(panel).not.toBeNull();
-    expect(screen.getByRole('button', { name: 'Response 200' })).toBeInTheDocument();
     expect(screen.getByText('ok')).toBeInTheDocument();
     expect(within(screen.getByText('Responses').closest('section')!).getByText('200')).toBeInTheDocument();
   });

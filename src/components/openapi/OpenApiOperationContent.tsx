@@ -17,7 +17,6 @@ import type {
 type CodeTab = 'curl' | 'javascript' | 'response';
 
 export function OpenApiOperationContent({
-  examples,
   operation,
   publicSourceUrl,
   requestSchemaRows,
@@ -29,27 +28,32 @@ export function OpenApiOperationContent({
         operation={operation}
         publicSourceUrl={publicSourceUrl}
       />
-      <div className="grid min-w-0 gap-8 xl:grid-cols-[minmax(0,1fr)_400px] xl:items-start">
-        <div className="min-w-0 space-y-9">
-          <AuthorizationSection operation={operation} />
-          <ParametersSection operation={operation} />
-          <SchemaSection
-            contentTypes={operation.requestBody?.contentTypes}
-            description={operation.requestBody?.description}
-            emptyLabel="No request body."
-            required={operation.requestBody?.required}
-            rows={requestSchemaRows}
-            title="Request body"
-          />
-          <ResponsesSection
-            operation={operation}
-            responseSchemaRows={responseSchemaRows}
-          />
-        </div>
-        <ExamplesPanel examples={examples} />
+      <div className="min-w-0 space-y-9">
+        <AuthorizationSection operation={operation} />
+        <ParametersSection operation={operation} />
+        <SchemaSection
+          contentTypes={operation.requestBody?.contentTypes}
+          description={operation.requestBody?.description}
+          emptyLabel="No request body."
+          required={operation.requestBody?.required}
+          rows={requestSchemaRows}
+          title="Request body"
+        />
+        <ResponsesSection
+          operation={operation}
+          responseSchemaRows={responseSchemaRows}
+        />
       </div>
     </div>
   );
+}
+
+export function OpenApiExamplesRail({
+  examples,
+}: {
+  examples: OpenApiExamples;
+}) {
+  return <ExamplesPanel examples={examples} />;
 }
 
 function OperationHeader({

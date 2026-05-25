@@ -178,6 +178,39 @@ describe('DocsSidebarTree', () => {
     expect(screen.getByText('POST')).toHaveClass('font-mono');
   });
 
+  it('does not clamp long OpenAPI endpoint labels', async () => {
+    const longTitle =
+      'Start a conversational AI agent with a very long visible endpoint label';
+    const tree: DocsSidebarNode[] = [
+      {
+        id: '/en/api-reference/conversational-ai/rest-api/agent/join',
+        method: 'POST',
+        title: longTitle,
+        type: 'page',
+        url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+      },
+    ];
+
+    renderSidebarTree(
+      tree,
+      '/en/api-reference/conversational-ai/rest-api/agent/join',
+    );
+
+    const label = await screen.findByTitle(longTitle);
+    const link = screen.getByRole('link', {
+      name: /Start a conversational AI agent with a very long visible endpoint label POST/i,
+    });
+
+    expect(label).toHaveClass('whitespace-normal');
+    expect(label).not.toHaveClass('[display:-webkit-box]');
+    expect(label).not.toHaveClass('[-webkit-line-clamp:2]');
+    const linkClasses = link.className.split(/\s+/);
+    expect(link.className).toContain('overflow-visible');
+    expect(link.className).toContain('min-h-[30px]');
+    expect(linkClasses).not.toContain('overflow-hidden');
+    expect(linkClasses).not.toContain('h-[30px]');
+  });
+
   it('supports collapsible sections', async () => {
     const tree: DocsSidebarNode[] = [
       {

@@ -33,6 +33,9 @@ const sidebarSubButtonClassName =
 const sidebarPageButtonClassName =
   'relative h-[30px] items-center rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)]';
 
+const openApiSidebarButtonClassName =
+  'h-auto min-h-[30px] items-start overflow-visible py-1.5';
+
 export function DocsSidebarTree({
   activePath,
   nodes,
@@ -207,7 +210,7 @@ function SidebarSection({
               <SidebarMenuSubItem key={child.id}>
                 <SidebarMenuSubButton
                   asChild
-                  className={sidebarSubButtonClassName}
+                  className={sidebarEndpointButtonClassName(child.method)}
                   isActive={child.url === activePath}
                   size="md"
                 >
@@ -280,7 +283,7 @@ function SidebarQuickstartGroup({
             <SidebarMenuSubItem key={child.id}>
               <SidebarMenuSubButton
                 asChild
-                className={sidebarSubButtonClassName}
+                className={sidebarEndpointButtonClassName(child.method)}
                 isActive={child.url === activePath}
                 size="md"
               >
@@ -348,7 +351,7 @@ function SidebarNestedSection({
             ) : (
               <SidebarMenuSubButton
                 asChild
-                className={sidebarSubButtonClassName}
+                className={sidebarEndpointButtonClassName(child.method)}
                 isActive={child.url === activePath}
                 key={child.id}
                 size="md"
@@ -475,7 +478,10 @@ function SidebarPageLink({
     <SidebarMenuItem>
       <SidebarMenuButton
         asChild
-        className={sidebarPageButtonClassName}
+        className={cn(
+          sidebarPageButtonClassName,
+          method && openApiSidebarButtonClassName,
+        )}
         isActive={url === activePath}
       >
         <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
@@ -483,6 +489,13 @@ function SidebarPageLink({
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
+  );
+}
+
+function sidebarEndpointButtonClassName(method?: string) {
+  return cn(
+    sidebarSubButtonClassName,
+    method && openApiSidebarButtonClassName,
   );
 }
 
@@ -497,8 +510,10 @@ function SidebarPageLabel({
     <>
       <span
         className={cn(
-          'block min-w-0 flex-1 overflow-hidden text-pretty leading-5 whitespace-normal',
-          '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
+          'block min-w-0 flex-1 text-pretty leading-5 whitespace-normal',
+          method ? 'break-words' : 'overflow-hidden',
+          !method &&
+            '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
         )}
         title={title}
       >

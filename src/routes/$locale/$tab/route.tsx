@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, useMatch } from '@tanstack/react-router';
+import { DocsContentSideRail } from '@/components/docs-shell/DocsContent';
 import { DocsShell } from '@/components/docs-shell/DocsShell';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
 
@@ -27,6 +28,7 @@ function DocsTabLayout() {
   const {
     activePath,
     activeTab,
+    body,
     localeLinks,
     layoutMode,
     navigation,
@@ -47,6 +49,7 @@ function DocsTabLayout() {
       pages={pages}
       previous={navigation.previous}
       sidebar={sidebar}
+      sideRail={<DocsContentSideRail body={body} />}
       tabs={tabs}
       toc={toc}
     >
