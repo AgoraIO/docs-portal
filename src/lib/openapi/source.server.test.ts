@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { getOpenApiOperationIds, OPENAPI_LANES } from './lanes';
@@ -61,10 +62,26 @@ describe('openapi source loader', () => {
     expect(fromRegistry).toEqual(fromYaml);
   });
 
-  it('loads from the published runtime asset path used by server functions', async () => {
-    const runtimePath = path.join(process.cwd(), lane.runtimeSourcePath);
+  it('loads OpenAPI data when runtime cwd has no content or public folders', async () => {
+    const originalCwd = process.cwd();
+    const runtimeCwd = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'docs-openapi-runtime-'),
+    );
+    const uncachedLane = {
+      ...lane,
+      id: `${lane.id}-runtime-cwd`,
+    };
 
-    await expect(fs.access(runtimePath)).resolves.toBeUndefined();
-    expect(runtimePath).toContain('/public/openapi/');
+    try {
+      process.chdir(runtimeCwd);
+
+      const operation = await getOpenApiOperation(uncachedLane, 'start-agent');
+
+      expect(operation.method).toBe('POST');
+      expect(operation.path).toBe('/v2/projects/{appid}/join');
+    } finally {
+      process.chdir(originalCwd);
+      await fs.rm(runtimeCwd, { force: true, recursive: true });
+    }
   });
 });

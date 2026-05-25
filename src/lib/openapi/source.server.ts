@@ -1,5 +1,3 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import yaml from 'js-yaml';
@@ -12,6 +10,7 @@ import type {
   OpenApiParameterLocation,
   OpenApiResponse,
 } from './payload';
+import { getOpenApiSourceText } from './source-text.server';
 
 const HTTP_METHODS = new Set([
   'get',
@@ -116,14 +115,6 @@ async function loadOpenApiOperations(lane: OpenApiLane) {
   );
 }
 
-function getOpenApiDocumentPath(lane: OpenApiLane) {
-  return path.join(process.cwd(), lane.runtimeSourcePath);
-}
-
-function getOpenApiFallbackDocumentPath(lane: OpenApiLane) {
-  return path.join(process.cwd(), lane.sourcePath);
-}
-
 async function getOpenApiDocument(lane: OpenApiLane): Promise<OpenApiDocument> {
   const cached = documentCache.get(lane.id);
 
@@ -139,8 +130,7 @@ async function getOpenApiDocument(lane: OpenApiLane): Promise<OpenApiDocument> {
 async function loadDereferencedOpenApiDocument(
   lane: OpenApiLane,
 ): Promise<OpenApiDocument> {
-  const source = await readOpenApiDocumentSource(lane);
-  const document = yaml.load(source);
+  const document = yaml.load(getOpenApiSourceText(lane));
 
   return (await SwaggerParser.dereference(
     document as OpenAPIV3.Document | OpenAPIV3_1.Document,
@@ -150,18 +140,6 @@ async function loadDereferencedOpenApiDocument(
       },
     },
   )) as OpenApiDocument;
-}
-
-async function readOpenApiDocumentSource(lane: OpenApiLane) {
-  try {
-    return await fs.readFile(getOpenApiDocumentPath(lane), 'utf8');
-  } catch (error) {
-    if (!isNodeError(error) || error.code !== 'ENOENT') {
-      throw error;
-    }
-
-    return fs.readFile(getOpenApiFallbackDocumentPath(lane), 'utf8');
-  }
 }
 
 function normalizeRequestBody(value: unknown, document: OpenApiDocument) {
@@ -284,10 +262,6 @@ function stringValue(value: unknown) {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function isNodeError(value: unknown): value is NodeJS.ErrnoException {
-  return value instanceof Error && 'code' in value;
 }
 
 function normalizeParameter(
