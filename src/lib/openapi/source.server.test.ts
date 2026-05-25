@@ -1,3 +1,5 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { getOpenApiOperationIds, OPENAPI_LANES } from './lanes';
 import { getOpenApiOperation, getOpenApiOperations } from './source.server';
@@ -57,5 +59,12 @@ describe('openapi source loader', () => {
     const fromRegistry = getOpenApiOperationIds(lane).sort();
 
     expect(fromRegistry).toEqual(fromYaml);
+  });
+
+  it('loads from the published runtime asset path used by server functions', async () => {
+    const runtimePath = path.join(process.cwd(), lane.runtimeSourcePath);
+
+    await expect(fs.access(runtimePath)).resolves.toBeUndefined();
+    expect(runtimePath).toContain('/public/openapi/');
   });
 });

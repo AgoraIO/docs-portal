@@ -11,6 +11,7 @@ export type OpenApiLane = {
   parentUrl: Record<AppLocale, string>;
   publicSourceUrl: string;
   routePrefix: string;
+  runtimeSourcePath: string;
   sourcePath: string;
   tab: string;
   operations: Record<string, OpenApiLaneOperation>;
@@ -25,6 +26,7 @@ export const OPENAPI_LANES = [
     },
     publicSourceUrl: '/openapi/conversational-ai/convoai.yaml',
     routePrefix: 'api-reference/conversational-ai/rest-api/agent',
+    runtimeSourcePath: 'public/openapi/conversational-ai/convoai.yaml',
     sourcePath: 'content/openapi/conversational-ai/convoai.yaml',
     tab: 'api-reference',
     operations: {
