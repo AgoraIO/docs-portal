@@ -29,6 +29,7 @@ import {
 } from '@/components/ui/sheet';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/cn';
 import { replaceDocLocale } from '@/lib/docs-routing';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from '@/lib/i18n/i18n-config';
@@ -55,18 +56,22 @@ export function DocsShell({
   previous,
   next,
   sidebar,
+  sideRail,
   tabs,
   toc,
+  layoutMode = 'docs',
 }: {
   activePath: string;
   activeTab: string;
   children: React.ReactNode;
+  layoutMode?: 'docs' | 'openapi';
   localeLinks: LocaleLink[];
   locale: string;
   pages: SearchEntry[];
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
   sidebar: DocsSidebarNode[];
+  sideRail?: React.ReactNode;
   tabs: TabSummary[];
   toc: TOCItemType[];
 }) {
@@ -111,6 +116,8 @@ export function DocsShell({
     '--docs-shell-header-offset': `${headerOffset}px`,
     '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
+  const isOpenApiLayout = layoutMode === 'openapi';
+
   return (
     <SidebarProvider
       className="block min-h-screen bg-background text-foreground"
@@ -286,7 +293,12 @@ export function DocsShell({
           </nav>
         </header>
         <div
-          className="mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden xl:grid-cols-[256px_minmax(0,1fr)_220px]"
+          className={cn(
+            'mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden',
+            isOpenApiLayout
+              ? 'xl:grid-cols-[256px_minmax(0,1fr)_400px]'
+              : 'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
+          )}
           data-testid="docs-body-shell"
         >
           <DocsSidebar
@@ -298,10 +310,32 @@ export function DocsShell({
           <DocsMainColumn next={next} previous={previous}>
             {children}
           </DocsMainColumn>
-          <DocsTocRail toc={toc} />
+          {isOpenApiLayout ? (
+            sideRail ? (
+              <DocsSideRail>{sideRail}</DocsSideRail>
+            ) : null
+          ) : (
+            <DocsTocRail toc={toc} />
+          )}
         </div>
       </div>
     </SidebarProvider>
+  );
+}
+
+function DocsSideRail({ children }: { children: React.ReactNode }) {
+  return (
+    <aside
+      className="docs-scrollbar hidden h-full min-h-0 w-[400px] shrink-0 overflow-y-auto bg-transparent xl:block"
+      data-testid="docs-side-rail"
+    >
+      <div
+        className="py-9 pr-4 pl-6"
+        style={{ '--openapi-sticky-top': '2.25rem' } as React.CSSProperties}
+      >
+        {children}
+      </div>
+    </aside>
   );
 }
 

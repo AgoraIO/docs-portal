@@ -28,6 +28,7 @@ export type SidebarEntry =
 
 export type DocsSidebarPageNode = {
   id: string;
+  method?: string;
   title: string;
   type: 'page';
   url: string;

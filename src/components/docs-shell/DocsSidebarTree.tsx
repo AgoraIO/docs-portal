@@ -33,6 +33,9 @@ const sidebarSubButtonClassName =
 const sidebarPageButtonClassName =
   'relative h-[30px] items-center rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)]';
 
+const openApiSidebarButtonClassName =
+  'h-auto min-h-[30px] items-start overflow-visible py-1.5';
+
 export function DocsSidebarTree({
   activePath,
   nodes,
@@ -86,11 +89,11 @@ function SidebarNodeRenderer({
   return (
     <SidebarPageLink
       activePath={activePath}
+      method={node.method}
       onSelectPath={onSelectPath}
+      title={node.title}
       url={node.url}
-    >
-      {node.title}
-    </SidebarPageLink>
+    />
   );
 }
 
@@ -207,7 +210,7 @@ function SidebarSection({
               <SidebarMenuSubItem key={child.id}>
                 <SidebarMenuSubButton
                   asChild
-                  className={sidebarSubButtonClassName}
+                  className={sidebarEndpointButtonClassName(child.method)}
                   isActive={child.url === activePath}
                   size="md"
                 >
@@ -217,15 +220,10 @@ function SidebarSection({
                     search={{}}
                     to={child.url}
                   >
-                    <span
-                      className={cn(
-                        'block overflow-hidden text-pretty leading-5 whitespace-normal',
-                        '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
-                      )}
+                    <SidebarPageLabel
+                      method={child.method}
                       title={child.title}
-                    >
-                      {child.title}
-                    </span>
+                    />
                   </Link>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
@@ -285,7 +283,7 @@ function SidebarQuickstartGroup({
             <SidebarMenuSubItem key={child.id}>
               <SidebarMenuSubButton
                 asChild
-                className={sidebarSubButtonClassName}
+                className={sidebarEndpointButtonClassName(child.method)}
                 isActive={child.url === activePath}
                 size="md"
               >
@@ -295,15 +293,7 @@ function SidebarQuickstartGroup({
                   search={{}}
                   to={child.url}
                 >
-                  <span
-                    className={cn(
-                      'block overflow-hidden text-pretty leading-5 whitespace-normal',
-                      '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
-                    )}
-                    title={child.title}
-                  >
-                    {child.title}
-                  </span>
+                  <SidebarPageLabel method={child.method} title={child.title} />
                 </Link>
               </SidebarMenuSubButton>
             </SidebarMenuSubItem>
@@ -361,7 +351,7 @@ function SidebarNestedSection({
             ) : (
               <SidebarMenuSubButton
                 asChild
-                className={sidebarSubButtonClassName}
+                className={sidebarEndpointButtonClassName(child.method)}
                 isActive={child.url === activePath}
                 key={child.id}
                 size="md"
@@ -372,15 +362,7 @@ function SidebarNestedSection({
                   search={{}}
                   to={child.url}
                 >
-                  <span
-                    className={cn(
-                      'block overflow-hidden text-pretty leading-5 whitespace-normal',
-                      '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
-                    )}
-                    title={child.title}
-                  >
-                    {child.title}
-                  </span>
+                  <SidebarPageLabel method={child.method} title={child.title} />
                 </Link>
               </SidebarMenuSubButton>
             ),
@@ -481,35 +463,68 @@ function normalizeRootSections(
 
 function SidebarPageLink({
   activePath,
-  children,
+  method,
   onSelectPath,
+  title,
   url,
 }: {
   activePath: string;
-  children: string;
+  method?: string;
   onSelectPath: () => void;
+  title: string;
   url: string;
 }) {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         asChild
-        className={sidebarPageButtonClassName}
+        className={cn(
+          sidebarPageButtonClassName,
+          method && openApiSidebarButtonClassName,
+        )}
         isActive={url === activePath}
       >
         <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
-          <span
-            className={cn(
-              'block overflow-hidden text-pretty leading-5 whitespace-normal',
-              '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
-            )}
-            title={children}
-          >
-            {children}
-          </span>
+          <SidebarPageLabel method={method} title={title} />
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
+  );
+}
+
+function sidebarEndpointButtonClassName(method?: string) {
+  return cn(
+    sidebarSubButtonClassName,
+    method && openApiSidebarButtonClassName,
+  );
+}
+
+function SidebarPageLabel({
+  method,
+  title,
+}: {
+  method?: string;
+  title: string;
+}) {
+  return (
+    <>
+      <span
+        className={cn(
+          'block min-w-0 flex-1 text-pretty leading-5 whitespace-normal',
+          method ? 'break-words' : 'overflow-hidden',
+          !method &&
+            '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
+        )}
+        title={title}
+      >
+        {title}
+      </span>
+      {method ? (
+        <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
+          {method}
+        </span>
+      ) : null}
+    </>
   );
 }
 

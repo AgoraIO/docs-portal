@@ -283,6 +283,24 @@ describe('DocsShell', () => {
     ).toBeInTheDocument();
   });
 
+  it('uses the openapi layout with a dedicated side rail instead of the generic toc rail', async () => {
+    renderDocsShell({
+      layoutMode: 'openapi',
+      sideRail: <div>Code &amp; Examples</div>,
+    });
+
+    const docsBodyShell = await screen.findByTestId('docs-body-shell');
+
+    expect(docsBodyShell).toHaveClass(
+      'xl:grid-cols-[256px_minmax(0,1fr)_400px]',
+    );
+    expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
+    expect(screen.getByTestId('docs-side-rail')).toHaveTextContent(
+      'Code & Examples',
+    );
+    expect(screen.queryByText('On this page')).not.toBeInTheDocument();
+  });
+
   it('keeps desktop sidebar, content, and toc as independent scroll regions', async () => {
     renderDocsShell({
       next: { title: 'Next Page', url: '/en/introduction/next-page' },

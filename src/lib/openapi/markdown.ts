@@ -12,8 +12,8 @@ import {
 import {
   getOpenApiOperation,
   getOpenApiOperations,
-  type NormalizedOpenApiOperation,
 } from './source.server';
+import type { NormalizedOpenApiOperation } from './payload';
 
 export function serializeOpenApiOperationMarkdown({
   operation,

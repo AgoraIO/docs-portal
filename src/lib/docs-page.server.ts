@@ -21,6 +21,7 @@ import {
   getOpenApiOperationIds,
   type OpenApiLane,
 } from './openapi/lanes';
+import { getOpenApiOperation } from './openapi/source.server';
 import {
   type source as docsSource,
   getPageMarkdownUrl,
@@ -93,7 +94,7 @@ export async function loadDocsPagePayload(
         url: item.url,
       }));
 
-      return buildOpenApiDocsPagePayload({
+      return await buildOpenApiDocsPagePayload({
         locale: openApiLocale,
         openApiPage,
         pageTree,
@@ -118,7 +119,7 @@ export async function loadDocsPagePayload(
   const processedText = await readProcessedText(page);
   const toc = await resolvePageToc(page, processedText);
   const supportedLocale = toSupportedLocale(locale);
-  const sidebar = getDocsSidebarNodes({
+  const sidebar = await getDocsSidebarNodes({
     locale: supportedLocale,
     pageTree,
     tab,
@@ -154,6 +155,7 @@ export async function loadDocsPagePayload(
     contentPath: page.path,
     description: page.data.description,
     markdownUrl: getPageMarkdownUrl(page).url,
+    layoutMode: 'docs' as const,
     localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
       const targetPage = source.getPage(page.slugs.slice(1), targetLocale);
       const targetTabEntry = getFirstTabPageUrl(
@@ -237,7 +239,7 @@ function toSupportedLocale(locale: string): AppLocale | null {
     : null;
 }
 
-function buildOpenApiDocsPagePayload({
+async function buildOpenApiDocsPagePayload({
   locale,
   openApiPage,
   pageTree,
@@ -254,7 +256,7 @@ function buildOpenApiDocsPagePayload({
   }[];
   tab: string;
 }) {
-  const sidebar = getDocsSidebarNodes({ locale, pageTree, tab });
+  const sidebar = await getDocsSidebarNodes({ locale, pageTree, tab });
   const breadcrumb = getSidebarBreadcrumb(sidebar, openApiPage.activePath);
 
   return {
@@ -289,7 +291,7 @@ function buildOpenApiDocsPagePayload({
   };
 }
 
-function getDocsSidebarNodes({
+async function getDocsSidebarNodes({
   locale,
   pageTree,
   tab,
@@ -338,21 +340,23 @@ function getDocsPages({
   return [...pages, ...endpointPages];
 }
 
-function addOpenApiEndpointSidebarItems(
+async function addOpenApiEndpointSidebarItems(
   sidebar: DocsSidebarNode[],
   locale: AppLocale,
   tab: string,
-): DocsSidebarNode[] {
-  return sidebar.map((node) =>
-    appendEndpointPagesToOpenApiParent(node, locale, tab),
+): Promise<DocsSidebarNode[]> {
+  return Promise.all(
+    sidebar.map((node) =>
+      appendEndpointPagesToOpenApiParent(node, locale, tab),
+    ),
   );
 }
 
-function appendEndpointPagesToOpenApiParent(
+async function appendEndpointPagesToOpenApiParent(
   node: DocsSidebarNode,
   locale: AppLocale,
   tab: string,
-): DocsSidebarNode {
+): Promise<DocsSidebarNode> {
   if (node.type !== 'section') {
     return node;
   }
@@ -372,14 +376,17 @@ function appendEndpointPagesToOpenApiParent(
         child.type === 'page' ? [child.url] : [],
       ),
     );
-    const endpointPages: DocsSidebarNode[] = getOpenApiOperationIds(lane)
-      .map((operationId) => ({
-        id: getOpenApiEndpointUrl(lane, locale, operationId),
-        title: lane.operations[operationId].title[locale],
-        type: 'page' as const,
-        url: getOpenApiEndpointUrl(lane, locale, operationId),
-      }))
-      .filter((item) => !existingUrls.has(item.url));
+    const endpointPages: DocsSidebarNode[] = (
+      await Promise.all(
+        getOpenApiOperationIds(lane).map(async (operationId) => ({
+          id: getOpenApiEndpointUrl(lane, locale, operationId),
+          method: (await getOpenApiOperation(lane, operationId)).method,
+          title: lane.operations[operationId].title[locale],
+          type: 'page' as const,
+          url: getOpenApiEndpointUrl(lane, locale, operationId),
+        })),
+      )
+    ).filter((item) => !existingUrls.has(item.url));
 
     return {
       ...node,
@@ -389,8 +396,10 @@ function appendEndpointPagesToOpenApiParent(
 
   return {
     ...node,
-    children: node.children.map((child) =>
-      appendEndpointPagesToOpenApiParent(child, locale, tab),
+    children: await Promise.all(
+      node.children.map((child) =>
+        appendEndpointPagesToOpenApiParent(child, locale, tab),
+      ),
     ),
   };
 }

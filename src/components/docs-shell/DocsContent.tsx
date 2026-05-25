@@ -5,9 +5,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
-import type { OpenApiOperationPayload } from '../openapi/OpenApiOperationContent';
+import type { OpenApiOperationPayload } from '@/lib/openapi/payload';
 import { DocsContentBodyClient } from './DocsContentBody.client';
-import { OpenApiOperationContent } from '../openapi/OpenApiOperationContent';
+import {
+  OpenApiExamplesRail,
+  OpenApiOperationContent,
+} from '../openapi/OpenApiOperationContent';
 
 const DESKTOP_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
 const TOC_SCROLL_OFFSET = 24;
@@ -123,9 +126,19 @@ export function DocsContent({
           </ClientOnly>
         ) : null}
       </div>
-      <DocsTableOfContents className="xl:hidden" toc={toc} />
+      {resolvedBody?.kind === 'openapi' ? null : (
+        <DocsTableOfContents className="xl:hidden" toc={toc} />
+      )}
     </article>
   );
+}
+
+export function DocsContentSideRail({ body }: { body?: DocsContentBody }) {
+  if (body?.kind !== 'openapi') {
+    return null;
+  }
+
+  return <OpenApiExamplesRail examples={body.operationPayload.examples} />;
 }
 
 export type DocsContentBody =

@@ -1178,11 +1178,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 7px;
-    background: color-mix(
-      in srgb,
-      var(--docs-callout-accent) 12%,
-      transparent
-    );
+    background: color-mix(in srgb, var(--docs-callout-accent) 12%, transparent);
     color: var(--docs-callout-accent);
   }
 
@@ -1274,7 +1270,11 @@
     min-height: 11.5rem;
     border-bottom: 1px solid color-mix(in srgb, var(--ink-1) 8%, transparent);
     background:
-      radial-gradient(circle at top left, rgb(255 255 255 / 0.82), transparent 42%),
+      radial-gradient(
+        circle at top left,
+        rgb(255 255 255 / 0.82),
+        transparent 42%
+      ),
       linear-gradient(180deg, #f3f6f8 0%, #eaeef2 100%);
   }
 
@@ -1318,7 +1318,11 @@
     position: relative;
     height: 100%;
     background:
-      radial-gradient(circle at 82% 16%, rgb(103 122 179 / 0.1), transparent 28%),
+      radial-gradient(
+        circle at 82% 16%,
+        rgb(103 122 179 / 0.1),
+        transparent 28%
+      ),
       linear-gradient(180deg, rgb(248 249 250 / 0.95), rgb(236 241 245 / 0.9));
   }
 
@@ -1374,7 +1378,11 @@
     height: 0.6rem;
     width: 4.4rem;
     border-radius: 999px;
-    background: linear-gradient(90deg, rgb(114 132 170 / 0.34), rgb(114 132 170 / 0.08));
+    background: linear-gradient(
+      90deg,
+      rgb(114 132 170 / 0.34),
+      rgb(114 132 170 / 0.08)
+    );
   }
 
   .overview-spotlight-platform-line--short {
@@ -1391,7 +1399,11 @@
   .overview-spotlight-platform-chip--wide {
     width: 4.9rem;
     border-radius: 999px;
-    background: linear-gradient(90deg, rgb(114 132 170 / 0.18), rgb(114 132 170 / 0.06));
+    background: linear-gradient(
+      90deg,
+      rgb(114 132 170 / 0.18),
+      rgb(114 132 170 / 0.06)
+    );
   }
 
   .overview-spotlight-platform-stack {
@@ -1427,13 +1439,21 @@
   .overview-spotlight-code {
     height: 100%;
     background:
-      linear-gradient(180deg, rgb(112 130 168 / 0.16), rgb(112 130 168 / 0.04) 28%),
+      linear-gradient(
+        180deg,
+        rgb(112 130 168 / 0.16),
+        rgb(112 130 168 / 0.04) 28%
+      ),
       rgb(248 249 250 / 0.95);
   }
 
   .overview-spotlight-code-bar {
     height: 1rem;
-    background: linear-gradient(90deg, rgb(138 154 185 / 0.92), rgb(103 121 160 / 0.98));
+    background: linear-gradient(
+      90deg,
+      rgb(138 154 185 / 0.92),
+      rgb(103 121 160 / 0.98)
+    );
   }
 
   .overview-spotlight-code-body {
@@ -1454,16 +1474,15 @@
     bottom: 0.9rem;
     height: 0.8rem;
     border-radius: 999px;
-    background:
-      linear-gradient(
-        90deg,
-        rgb(112 130 168 / 0.12) 0%,
-        rgb(112 130 168 / 0.3) 18%,
-        rgb(112 130 168 / 0.14) 36%,
-        rgb(112 130 168 / 0.34) 54%,
-        rgb(112 130 168 / 0.16) 72%,
-        rgb(112 130 168 / 0.24) 100%
-      );
+    background: linear-gradient(
+      90deg,
+      rgb(112 130 168 / 0.12) 0%,
+      rgb(112 130 168 / 0.3) 18%,
+      rgb(112 130 168 / 0.14) 36%,
+      rgb(112 130 168 / 0.34) 54%,
+      rgb(112 130 168 / 0.16) 72%,
+      rgb(112 130 168 / 0.24) 100%
+    );
   }
 
   .overview-spotlight-checklist {
@@ -1472,8 +1491,11 @@
     flex-direction: column;
     gap: 0.72rem;
     padding: 1.7rem 1.2rem 1rem;
-    background:
-      linear-gradient(180deg, rgb(248 249 250 / 0.96), rgb(236 241 245 / 0.92));
+    background: linear-gradient(
+      180deg,
+      rgb(248 249 250 / 0.96),
+      rgb(236 241 245 / 0.92)
+    );
     color: rgb(35 44 58);
     font-family: var(--font-mono);
     font-size: 0.8rem;
@@ -1492,7 +1514,7 @@
   }
 
   .overview-spotlight-checklist-item::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 0.42rem;
@@ -1594,6 +1616,19 @@
     border-radius: 999px;
     background: color-mix(in srgb, var(--ink-1) 16%, transparent);
     background-clip: padding-box;
+  }
+
+  .openapi-operation {
+    --fd-docs-row-1: calc(var(--docs-shell-header-offset, 0px) + 0.5rem);
+    width: min(100%, 1120px);
+  }
+
+  .openapi-operation :where(h2, h3, h4) {
+    letter-spacing: 0;
+  }
+
+  .openapi-operation :where(pre, code) {
+    font-family: var(--font-mono);
   }
 }
 
