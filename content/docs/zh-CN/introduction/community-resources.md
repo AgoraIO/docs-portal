@@ -9,6 +9,6 @@ description: 把文档导航、发版更新和共享参考入口聚合在一起�
 
 ## 常用入口
 
-- [打开发版说明](/zh-CN/best-practices/release-notes)
+- [打开发版说明](/zh-CN/ai/release-notes)
 - [打开资源页](/zh-CN/ai/resources)
 - [打开客户支持](/zh-CN/introduction/support)

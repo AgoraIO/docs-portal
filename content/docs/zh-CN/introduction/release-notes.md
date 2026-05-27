@@ -19,4 +19,4 @@ description: 发版说明帮助团队理解平台变化、接口更新和迁移�
 
 ## 当前更新入口
 
-- [打开 ConvoAI 发版说明](/zh-CN/best-practices/release-notes)
+- [打开 ConvoAI 发版说明](/zh-CN/ai/release-notes)

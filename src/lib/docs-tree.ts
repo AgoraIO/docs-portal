@@ -50,6 +50,8 @@ export type DocsBreadcrumbItem = {
   url?: string;
 };
 
+const HIDDEN_TAB_IDS = new Set(['best-practices']);
+
 export function getTabSummaries(root: Root): TabSummary[] {
   return getTabNodes(root).flatMap((node) => {
     const item = getTabIndex(node);
@@ -59,7 +61,7 @@ export function getTabSummaries(root: Root): TabSummary[] {
     }
 
     const id = getTabIdFromUrl(item.url);
-    if (!id) {
+    if (!id || HIDDEN_TAB_IDS.has(id)) {
       return [];
     }
 
