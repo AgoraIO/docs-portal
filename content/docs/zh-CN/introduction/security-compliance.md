@@ -9,13 +9,13 @@ description: 围绕身份认证、回调安全、地理策略和生产接入边�
 
 在把服务端链路扩展到生产系统前，先补齐基础认证能力。
 
-- [打开 HTTP 基础认证文档](/zh-CN/best-practices/http-basic-auth)
+- [打开 HTTP 基础认证文档](/zh-CN/api-reference/conversational-ai/rest-api/authentication)
 
 ### 区域访问控制
 
 通过区域访问控制收窄服务覆盖范围，降低特定地区的合规风险。
 
-- [打开地理围栏文档](/zh-CN/best-practices/geofencing)
+- [打开地理围栏文档](/zh-CN/ai/best-practices/regional-restrictions)
 
 ### 回调安全
 

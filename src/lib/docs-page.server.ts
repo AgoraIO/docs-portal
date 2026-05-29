@@ -30,6 +30,28 @@ import {
 
 const OPENAPI_TAB = 'api-reference';
 
+const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
+  string,
+  Partial<Record<AppLocale, string>>
+> = {
+  'audio-settings': {
+    'zh-CN': '/zh-CN/ai/best-practices/audio-settings',
+  },
+  'opt-latency': {
+    'zh-CN': '/zh-CN/ai/best-practices/optimize-latency',
+  },
+  geofencing: {
+    en: '/en/ai/best-practices/regional-restrictions',
+    'zh-CN': '/zh-CN/ai/best-practices/regional-restrictions',
+  },
+  'http-basic-auth': {
+    'zh-CN': '/zh-CN/api-reference/conversational-ai/rest-api/authentication',
+  },
+  'release-notes': {
+    'zh-CN': '/zh-CN/ai/release-notes',
+  },
+};
+
 export async function loadDocsTabIndex(locale: string, tab: string) {
   const { source } = await import('./source.server');
   const pageTree = source.getPageTree(locale);
@@ -62,6 +84,18 @@ export async function loadDocsPagePayload(
   tab: string,
   slugSegments: string[],
 ) {
+  const legacyRedirect = resolveLegacyBestPracticesRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+
+  if (legacyRedirect) {
+    return {
+      redirectUrl: legacyRedirect,
+    };
+  }
+
   const { source } = await import('./source.server');
   const slug = slugSegments.at(-1) ?? 'index';
   const page = source.getPage(
@@ -183,6 +217,28 @@ export async function loadDocsPagePayload(
     title: page.data.title,
     toc,
   };
+}
+
+function resolveLegacyBestPracticesRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (tab !== 'best-practices') {
+    return null;
+  }
+
+  const supportedLocale = toSupportedLocale(locale);
+  if (!supportedLocale) {
+    return null;
+  }
+
+  const slug =
+    slugSegments.length === 0 ? 'index' : (slugSegments.at(-1) ?? 'index');
+  const redirect =
+    LEGACY_BEST_PRACTICES_REDIRECTS[slug]?.[supportedLocale] ?? null;
+
+  return redirect;
 }
 
 export type DocsPagePayload = Exclude<

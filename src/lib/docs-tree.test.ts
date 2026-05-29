@@ -132,6 +132,55 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('hides legacy best-practices tabs from the top navigation', () => {
+    const tree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'intro-folder',
+              children: [],
+              index: {
+                $id: 'intro-index',
+                name: 'Introduction',
+                type: 'page',
+                url: '/en/introduction',
+              },
+              name: 'Introduction',
+              root: true,
+              type: 'folder',
+            },
+            {
+              $id: 'best-practices-folder',
+              children: [],
+              index: {
+                $id: 'best-practices-index',
+                name: 'Best Practices',
+                type: 'page',
+                url: '/en/best-practices',
+              },
+              name: 'Best Practices',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(getTabSummaries(tree)).toEqual([
+      {
+        id: 'introduction',
+        title: 'Introduction',
+        url: '/en/introduction',
+      },
+    ]);
+  });
+
   it('preserves configured tab and section icons from the page tree', () => {
     const tree: Root = {
       children: [

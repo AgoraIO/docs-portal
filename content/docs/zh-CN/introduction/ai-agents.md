@@ -35,4 +35,4 @@ description: 围绕对话式 AI 引擎、模型编排、上下文与事件协作
 
 - [查看开通服务](/zh-CN/ai/enable-service)
 - [查看计费说明](/zh-CN/ai/billing)
-- [查看发版说明](/zh-CN/best-practices/release-notes)
+- [查看发版说明](/zh-CN/ai/release-notes)

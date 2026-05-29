@@ -15,5 +15,5 @@ description: 当集成从第一个 demo 走向正式上线后，用量和分析�
 
 ## 相关入口
 
-- [打开发版说明](/zh-CN/best-practices/release-notes)
-- [打开最佳实践](/zh-CN/best-practices)
+- [打开发版说明](/zh-CN/ai/release-notes)
+- [打开最佳实践](/zh-CN/ai/best-practices)

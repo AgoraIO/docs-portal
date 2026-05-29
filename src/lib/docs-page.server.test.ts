@@ -543,6 +543,21 @@ describe('loadDocsPagePayload', () => {
       ],
     });
   });
+
+  it('redirects migrated legacy best-practices pages to their new product paths', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'best-practices', ['http-basic-auth']),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/zh-CN/api-reference/conversational-ai/rest-api/authentication',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'best-practices', ['release-notes']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/ai/release-notes',
+    });
+  });
 });
 
 function flattenSidebarPageUrls(
