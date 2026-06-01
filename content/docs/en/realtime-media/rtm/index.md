@@ -1,6 +1,6 @@
 ---
-title: Realtime Messaging RTM
-description: RTM provides low-latency, reliable messaging and state synchronization for presence, channel messages, and realtime collaboration.
+title: RTM
+description: RTM provides low-latency messaging, signaling, and state synchronization for presence, channel messages, and realtime collaboration.
 ---
 
 ## What this capability is

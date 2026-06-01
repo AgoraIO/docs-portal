@@ -1,6 +1,6 @@
 ---
-title: Realtime Streaming Acceleration RTSA
-description: RTSA is the realtime media-stream and signaling capability for smart devices, terminals, and device-oriented products.
+title: IoT & Edge
+description: RTSA is the realtime media-stream and signaling capability for smart devices, edge endpoints, and device-oriented products.
 ---
 
 ## What this capability is

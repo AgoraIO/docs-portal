@@ -1,11 +1,11 @@
 ---
-title: Interactive Whiteboard
-description: Interactive Whiteboard supports multi-user collaboration, teaching, and visual interaction inside realtime products.
+title: Whiteboard
+description: Whiteboard supports multi-user collaboration, teaching, and visual interaction inside realtime products.
 ---
 
 ## What this capability is
 
-Interactive Whiteboard adds a shared visual workspace to realtime products so teams and users can annotate, explain, and collaborate live.
+Whiteboard adds a shared visual workspace to realtime products so teams and users can annotate, explain, and collaborate live.
 
 ## Common scenarios
 

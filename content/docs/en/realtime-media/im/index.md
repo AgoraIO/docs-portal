@@ -1,6 +1,6 @@
 ---
-title: Instant Messaging IM
-description: Instant Messaging IM fits full chat workloads where a broader messaging cloud is needed beyond lightweight realtime signaling.
+title: IM
+description: IM fits full chat workloads where a broader messaging cloud is needed beyond lightweight realtime signaling.
 ---
 
 ## What this capability is

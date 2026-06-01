@@ -1,0 +1,93 @@
+---
+title: Core Concepts
+description: Learn the core objects and relationships that appear across Agora products and documentation.
+---
+
+Agora covers many product surfaces, but the platform becomes much easier to understand once you recognize the same core concepts repeating across them.
+
+This page introduces the shared concepts that matter before you go deeper into capability pages, SDK guides, or API references.
+
+## Account and project
+
+An **account** is your Console identity and management boundary. A **project** is the operational boundary that holds the credentials, service configuration, and billing context used by your application.
+
+In practice, most teams:
+
+- create separate projects for testing and production
+- use project-level credentials to control access
+- enable the services they need within the correct project boundary
+
+If these boundaries are unclear, integration problems often show up later as authentication, environment, or billing issues.
+
+## Identity and credentials
+
+Most Agora integrations involve some combination of:
+
+- **App ID** as the application identifier
+- **App Certificate** for server-side token generation
+- **Token** as the runtime access credential for clients, users, or participants
+
+The basic rule is simple: account credentials set up trust, and runtime credentials control who can join or act inside a live system.
+
+## Users, participants, and devices
+
+Agora systems are built around active participants in a live context. Depending on the product, that participant may be:
+
+- a human user
+- a host or audience member
+- a backend service
+- an AI agent
+- a connected device
+
+Different products describe these roles differently, but the underlying idea is the same: something joins a shared realtime context and exchanges media, messages, or events.
+
+## Channels and sessions
+
+A **channel** or **session** is the shared realtime context where participants meet.
+
+Inside that context, participants may:
+
+- publish or subscribe to audio and video
+- send or receive messages and events
+- synchronize metadata or state
+- trigger server-side workflows
+- interact with AI or downstream processing services
+
+If you understand the session boundary, it becomes much easier to reason about how RTC, messaging, AI, transcription, and media services fit together.
+
+## Media, messages, and events
+
+Most Agora products operate on one or more of these three layers:
+
+- **Media**: live audio and video streams
+- **Messages**: text, metadata, coordination payloads, and shared state
+- **Events**: lifecycle changes, callbacks, and workflow triggers
+
+Some products focus on one layer, but production systems usually combine several of them.
+
+## Client-side and server-side responsibilities
+
+Agora integrations usually split work across:
+
+- **clients**, which capture, render, and interact in real time
+- **servers**, which generate tokens, enforce business rules, react to callbacks, and coordinate backend workflows
+- **managed services**, which extend the live path with recording, transcription, translation, analytics, or distribution
+
+This split is important because many architecture decisions are really about where control should live.
+
+## Why these concepts matter
+
+If you keep these concepts straight, you can read the rest of the documentation more efficiently:
+
+- capability pages help you identify the right domain
+- product pages explain how a specific service solves that domain
+- API references define the exact integration details
+- production pages help you secure, operate, and scale the system
+
+## Where to go next
+
+After this page, continue with:
+
+- [Choose your starting point](/en/introduction/choose-your-starting-point)
+- [Account](/en/introduction/account)
+- [Projects](/en/introduction/projects)
