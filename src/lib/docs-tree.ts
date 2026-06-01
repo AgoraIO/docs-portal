@@ -237,6 +237,34 @@ export function getSidebarNodes(
   return nodes;
 }
 
+export function filterSidebarNodes(
+  nodes: DocsSidebarNode[],
+  predicate: (node: DocsSidebarNode) => boolean,
+): DocsSidebarNode[] {
+  const filtered: DocsSidebarNode[] = [];
+
+  for (const node of nodes) {
+    if (node.type === 'page') {
+      if (predicate(node)) {
+        filtered.push(node);
+      }
+      continue;
+    }
+
+    const children = filterSidebarNodes(node.children, predicate);
+    if (children.length === 0) {
+      continue;
+    }
+
+    filtered.push({
+      ...node,
+      children,
+    });
+  }
+
+  return filtered;
+}
+
 export function mapSidebarEntriesToTree(
   entries: SidebarEntry[],
 ): DocsSidebarNode[] {
@@ -304,20 +332,72 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     return [];
   }
 
-  const children = node.children.flatMap((child) =>
-    pageTreeNodeToSidebarNodes(child),
-  );
-
-  if (
+  const children: DocsSidebarNode[] = [];
+  let pendingIndexNode: DocsSidebarPageNode | null =
     node.index &&
     !shouldHideFolderIndexInSidebar(node.index, node.name, node.children)
-  ) {
-    children.unshift({
-      id: node.index.url,
-      title: getFolderIndexTitle(node.index, node.name),
-      type: 'page',
-      url: node.index.url,
-    });
+      ? {
+          id: node.index.url,
+          title: getFolderIndexTitle(node.index, node.name),
+          type: 'page',
+          url: node.index.url,
+        }
+      : null;
+  let hasEmittedContent = false;
+  let currentSection: DocsSidebarSectionNode | null = null;
+
+  for (const child of node.children) {
+    if (child.type === 'separator') {
+      const title = typeof child.name === 'string' ? child.name : '';
+      currentSection = null;
+
+      if (title.length > 0) {
+        const icon = getConfiguredIconName(child);
+        currentSection = {
+          children: [],
+          collapsible: isCollapsibleSectionTitle(title),
+          ...(icon ? { icon } : {}),
+          id: `separator-${title}`,
+          title,
+          type: 'section',
+        };
+        if (pendingIndexNode && !hasEmittedContent) {
+          currentSection.children.push(pendingIndexNode);
+          pendingIndexNode = null;
+        }
+        children.push(currentSection);
+        hasEmittedContent = true;
+      }
+
+      continue;
+    }
+
+    for (const sidebarNode of pageTreeNodeToSidebarNodes(child)) {
+      if (pendingIndexNode) {
+        if (currentSection) {
+          currentSection.children.push(pendingIndexNode);
+        } else {
+          children.push(pendingIndexNode);
+        }
+        pendingIndexNode = null;
+        hasEmittedContent = true;
+      }
+
+      if (currentSection) {
+        currentSection.children.push(sidebarNode);
+      } else {
+        children.push(sidebarNode);
+      }
+      hasEmittedContent = true;
+    }
+  }
+
+  if (pendingIndexNode) {
+    if (currentSection) {
+      currentSection.children.push(pendingIndexNode);
+    } else {
+      children.push(pendingIndexNode);
+    }
   }
 
   const icon = getConfiguredIconName(node, node.index);

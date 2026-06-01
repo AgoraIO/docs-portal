@@ -4,15 +4,23 @@ description: Micro Calling fits lightweight audio-video interop, especially betw
 ---
 
 ## What this capability is
+## What this solution is
 
-Micro Calling focuses on lightweight, fast, and device-oriented calling paths rather than heavier meeting or live-streaming stacks.
+Micro Calling is Agora's packaged calling path for lightweight device connectivity. It is designed for products where the user expectation is quick call reachability between a smart device and a lightweight client, especially mini-program style clients.
 
-## Common scenarios
+## Best fit
 
 - smart device interop
 - lightweight calling
 - mini-program to device connectivity
+- products that care about call reachability more than rich meeting features
 
-## What to read first
+## Built on
 
-If the workload is closer to lightweight calling than to meetings or live distribution, start from Micro Calling.
+- realtime audio and video
+- signaling and call-flow orchestration
+- device-side and client-side interop
+
+## Choose this when
+
+Choose Micro Calling when the product is fundamentally a simple call experience and the heavier meeting or live-interaction models would add the wrong mental model.

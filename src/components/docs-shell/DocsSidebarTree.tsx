@@ -25,16 +25,30 @@ type RenderableSidebarSectionNode = SidebarSectionNode & {
 };
 
 const sidebarToggleClassName =
-  'h-[30px] items-center justify-between rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
+  'min-h-[34px] h-auto items-start justify-between rounded-[7px] px-3 py-1.5 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
 
 const sidebarSubButtonClassName =
-  'h-[30px] rounded-[7px] px-3 text-[13px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)]';
+  'min-h-[32px] h-auto items-start rounded-[7px] px-3 py-1.5 text-[12.75px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)]';
 
 const sidebarPageButtonClassName =
-  'relative h-[30px] items-center rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)]';
+  'relative min-h-[34px] h-auto items-start rounded-[7px] px-3 py-1.5 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)]';
 
 const openApiSidebarButtonClassName =
   'h-auto min-h-[30px] items-start overflow-visible py-1.5';
+
+const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [
+  ['/build/build-server-client', 'Build backend and client'],
+  ['/build/short-term-memory', 'Short-term memory'],
+  ['/build/custom-information', 'Custom context'],
+  ['/build/event-types', 'Event types'],
+  ['/build/webhooks', 'Webhook notifications'],
+  ['/build/event-notifications', 'Toolkit events'],
+  ['/build/transcripts', 'Live transcripts'],
+  ['/build/send-multimodal-messages', 'Send Pictures'],
+  ['/best-practices/optimize-latency', ' Optimize latency'],
+  ['/best-practices/regional-restrictions', 'Restrict agent zones'],
+  ['/best-practices/cloud-recording', 'Record conversation'],
+];
 
 export function DocsSidebarTree({
   activePath,
@@ -46,7 +60,11 @@ export function DocsSidebarTree({
   onSelectPath: () => void;
 }) {
   const renderableNodes = normalizeRootSections(
-    mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
+    normalizeBuildNestedSections(
+      mergeBestPracticesIntoBuild(
+        mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
+      ),
+    ),
   );
 
   return (
@@ -127,7 +145,7 @@ function SidebarSection({
   if (!node.collapsible) {
     return (
       <div>
-        <SidebarGroupLabel className="mt-4 mb-1 h-auto gap-2 px-2 text-[11px] font-semibold tracking-[0.06em] text-[color:var(--ink-4)] uppercase">
+        <SidebarGroupLabel className="mt-5 mb-2.5 h-auto gap-2 px-2 py-1 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
           <SidebarConfiguredIcon icon={node.icon} />
           <span
             className="block break-words leading-5 whitespace-normal"
@@ -184,10 +202,12 @@ function SidebarSection({
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
-        <span className="flex min-w-0 items-center gap-2">
-          <SidebarConfiguredIcon icon={node.icon} />
-          <span className="block whitespace-normal">{node.title}</span>
-        </span>
+          <span className="flex min-w-0 items-start gap-2">
+            <SidebarConfiguredIcon icon={node.icon} />
+            <span className="block text-pretty leading-[1.35] whitespace-normal">
+              {node.title}
+            </span>
+          </span>
         <ChevronDownIcon
           className={cn(
             'size-4 shrink-0 transition-transform',
@@ -222,7 +242,7 @@ function SidebarSection({
                   >
                     <SidebarPageLabel
                       method={child.method}
-                      title={child.title}
+                      title={getSidebarDisplayTitle(child.title, child.url)}
                     />
                   </Link>
                 </SidebarMenuSubButton>
@@ -266,9 +286,11 @@ function SidebarQuickstartGroup({
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
-        <span className="flex min-w-0 items-center gap-2">
+        <span className="flex min-w-0 items-start gap-2">
           <SidebarConfiguredIcon icon={icon} />
-          <span className="block whitespace-normal">{title}</span>
+          <span className="block text-pretty leading-[1.35] whitespace-normal">
+            {title}
+          </span>
         </span>
         <ChevronDownIcon
           className={cn(
@@ -286,14 +308,17 @@ function SidebarQuickstartGroup({
                 className={sidebarEndpointButtonClassName(child.method)}
                 isActive={child.url === activePath}
                 size="md"
-              >
-                <Link
-                  onClick={onSelectPath}
-                  params={{}}
-                  search={{}}
-                  to={child.url}
                 >
-                  <SidebarPageLabel method={child.method} title={child.title} />
+                  <Link
+                    onClick={onSelectPath}
+                    params={{}}
+                    search={{}}
+                    to={child.url}
+                  >
+                  <SidebarPageLabel
+                    method={child.method}
+                    title={getSidebarDisplayTitle(child.title, child.url)}
+                  />
                 </Link>
               </SidebarMenuSubButton>
             </SidebarMenuSubItem>
@@ -327,9 +352,11 @@ function SidebarNestedSection({
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
-        <span className="flex min-w-0 items-center gap-2">
+        <span className="flex min-w-0 items-start gap-2">
           <SidebarConfiguredIcon icon={node.icon} />
-          <span className="block whitespace-normal">{node.title}</span>
+          <span className="block text-pretty leading-[1.35] whitespace-normal">
+            {node.title}
+          </span>
         </span>
         <ChevronDownIcon
           className={cn(
@@ -339,7 +366,7 @@ function SidebarNestedSection({
         />
       </button>
       {isOpen ? (
-        <div className="mt-1 flex flex-col gap-1 pl-3">
+        <div className="mt-1.5 flex flex-col gap-1.5 pl-3.5">
           {node.children.map((child) =>
             child.type === 'section' ? (
               <SidebarNestedSection
@@ -355,14 +382,17 @@ function SidebarNestedSection({
                 isActive={child.url === activePath}
                 key={child.id}
                 size="md"
-              >
-                <Link
-                  onClick={onSelectPath}
-                  params={{}}
-                  search={{}}
-                  to={child.url}
                 >
-                  <SidebarPageLabel method={child.method} title={child.title} />
+                  <Link
+                    onClick={onSelectPath}
+                    params={{}}
+                    search={{}}
+                    to={child.url}
+                  >
+                  <SidebarPageLabel
+                    method={child.method}
+                    title={getSidebarDisplayTitle(child.title, child.url)}
+                  />
                 </Link>
               </SidebarMenuSubButton>
             ),
@@ -448,6 +478,66 @@ function mergeBuildIntoGettingStarted(
   return merged;
 }
 
+function mergeBestPracticesIntoBuild(
+  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
+) {
+  const merged: Array<DocsSidebarNode | RenderableSidebarSectionNode> = [];
+
+  for (let index = 0; index < nodes.length; index += 1) {
+    const node = nodes[index];
+    const nextNode = nodes[index + 1];
+
+    if (
+      node?.type === 'section' &&
+      node.title === 'Build' &&
+      nextNode?.type === 'section' &&
+      nextNode.title === 'Best practices'
+    ) {
+      merged.push({
+        ...node,
+        children: [
+          ...node.children,
+          {
+            ...nextNode,
+            collapsible: true,
+            icon: 'ShieldCheck',
+            title: 'Harden and optimize',
+          },
+        ],
+      });
+      index += 1;
+      continue;
+    }
+
+    merged.push(node);
+  }
+
+  return merged;
+}
+
+function normalizeBuildNestedSections(
+  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
+) {
+  return nodes.map((node) => {
+    if (node.type !== 'section' || node.title !== 'Build') {
+      return node;
+    }
+
+    return {
+      ...node,
+      children: node.children.map((child) =>
+        child.type === 'section'
+          ? {
+              ...child,
+              collapsible: true,
+              icon: undefined,
+            }
+          : child,
+      ),
+    };
+  });
+}
+
 function normalizeRootSections(
   nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
 ) {
@@ -485,7 +575,10 @@ function SidebarPageLink({
         isActive={url === activePath}
       >
         <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
-          <SidebarPageLabel method={method} title={title} />
+          <SidebarPageLabel
+            method={method}
+            title={getSidebarDisplayTitle(title, url)}
+          />
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
@@ -511,6 +604,7 @@ function SidebarPageLabel({
       <span
         className={cn(
           'block min-w-0 flex-1 text-pretty leading-5 whitespace-normal',
+          'leading-[1.35]',
           method ? 'break-words' : 'overflow-hidden',
           !method &&
             '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
@@ -538,4 +632,14 @@ function SidebarConfiguredIcon({ icon }: { icon?: string }) {
       <DocsConfiguredIcon className="size-3.5" icon={icon} />
     </span>
   );
+}
+
+function getSidebarDisplayTitle(title: string, url: string) {
+  for (const [suffix, shortTitle] of sidebarTitleOverrides) {
+    if (url.endsWith(suffix)) {
+      return shortTitle;
+    }
+  }
+
+  return title;
 }

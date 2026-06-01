@@ -4,6 +4,7 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import {
   CheckIcon,
+  ChevronLeftIcon,
   LanguagesIcon,
   MenuIcon,
   MoonIcon,
@@ -56,6 +57,7 @@ export function DocsShell({
   previous,
   next,
   sidebar,
+  sidebarHeader,
   sideRail,
   tabs,
   toc,
@@ -71,6 +73,11 @@ export function DocsShell({
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
   sidebar: DocsSidebarNode[];
+  sidebarHeader?: {
+    backHref: string;
+    backLabel: string;
+    title: string;
+  };
   sideRail?: React.ReactNode;
   tabs: TabSummary[];
   toc: TOCItemType[];
@@ -182,6 +189,7 @@ export function DocsShell({
                     }}
                     onSelectPath={() => setIsMobileSheetOpen(false)}
                     sidebar={sidebar}
+                    sidebarHeader={sidebarHeader}
                     themeLabel={themeLabel}
                     tabs={tabs}
                     toggleTheme={() => {
@@ -304,6 +312,7 @@ export function DocsShell({
           <DocsSidebar
             activePath={activePath}
             activeTab={activeTab}
+            header={sidebarHeader}
             nodes={sidebar}
             onSelectPath={() => setIsMobileSheetOpen(false)}
           />
@@ -479,6 +488,7 @@ function MobileSidebar({
   onSelectLocale,
   onSelectPath,
   sidebar,
+  sidebarHeader,
   themeLabel,
   tabs,
   toggleTheme,
@@ -491,6 +501,11 @@ function MobileSidebar({
   onSelectLocale: (locale: AppLocale) => Promise<void>;
   onSelectPath: () => void;
   sidebar: DocsSidebarNode[];
+  sidebarHeader?: {
+    backHref: string;
+    backLabel: string;
+    title: string;
+  };
   themeLabel: string;
   tabs: TabSummary[];
   toggleTheme: () => void;
@@ -530,6 +545,23 @@ function MobileSidebar({
             <p className="px-1 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
               {t('docs.pagesLabel')}
             </p>
+            {sidebarHeader ? (
+              <div className="mb-2 rounded-xl border border-border px-3 py-2">
+                <Link
+                  className="mb-1 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+                  onClick={onSelectPath}
+                  params={{}}
+                  search={{}}
+                  to={sidebarHeader.backHref}
+                >
+                  <ChevronLeftIcon className="size-4" />
+                  <span>{sidebarHeader.backLabel}</span>
+                </Link>
+                <p className="text-sm font-semibold text-foreground">
+                  {sidebarHeader.title}
+                </p>
+              </div>
+            ) : null}
             <div className="flex flex-col gap-1">
               {sidebar.map((node) => (
                 <MobileSidebarNode

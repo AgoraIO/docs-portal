@@ -119,7 +119,7 @@ const enCommon = {
       items: {
         ai: {
           title: 'AI',
-          body: 'ConvoAI, Toybox, voice interaction, and agent integration.',
+          body: 'ConvoAI, Device Kit, voice interaction, and agent integration.',
         },
         rtc: {
           title: 'RTC',
@@ -214,12 +214,12 @@ const enCommon = {
       aiDomain: {
         title: 'Conversational AI',
         description:
-          'Organize AI docs around ConvoAI, Toybox, and agent workflows so teams can move from realtime voice interaction to production AI experiences.',
+          'Organize AI docs around ConvoAI, Device Kit, and agent workflows so teams can move from realtime voice interaction to production AI experiences.',
         section1: {
           title: 'Primary products',
-          body: 'Today the AI surface is centered on ConvoAI and Toybox. ConvoAI covers the realtime engine, while Toybox supports hardware-oriented and kit-based integrations.',
+          body: 'Today the AI surface is centered on ConvoAI and Device Kit. ConvoAI covers the realtime engine, while Device Kit supports hardware-oriented and kit-based integrations.',
           link1: 'View ConvoAI overview',
-          link2: 'View Toybox overview',
+          link2: 'View Device Kit overview',
         },
         section2: {
           title: 'Suggested structure',

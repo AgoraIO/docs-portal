@@ -55,6 +55,158 @@ const pageTree: Root = {
           $id: 'ai-folder',
           children: [
             {
+              $id: 'ai-choose-your-path-separator',
+              name: 'Get started',
+              type: 'separator',
+            },
+            {
+              $id: 'ai-device-kit-entry',
+              name: 'Deploy to IoT devices',
+              type: 'page',
+              url: '/en/ai/choose-your-path/quickstart-device-kit',
+            },
+            {
+              $id: 'ai-device-kit-folder',
+              children: [
+                {
+                  $id: 'device-kit-start-here-separator',
+                  name: 'Start here',
+                  type: 'separator',
+                },
+                {
+                  $id: 'device-kit-start-here-folder',
+                  children: [
+                    {
+                      $id: 'device-kit-quickstart',
+                      name: 'Quickstart',
+                      type: 'page',
+                      url: '/en/ai/device-kit/start-here/quickstart',
+                    },
+                    {
+                      $id: 'device-kit-enable-services',
+                      name: 'Enable services',
+                      type: 'page',
+                      url: '/en/ai/device-kit/start-here/enable-services',
+                    },
+                  ],
+                  name: 'Start here',
+                  type: 'folder',
+                },
+                {
+                  $id: 'device-kit-build-separator',
+                  name: 'Build',
+                  type: 'separator',
+                },
+                {
+                  $id: 'device-kit-build-folder',
+                  children: [
+                    {
+                      $id: 'device-kit-build-baseline-separator',
+                      name: 'Baseline bring-up',
+                      type: 'separator',
+                    },
+                    {
+                      $id: 'device-kit-run-r1-demo',
+                      name: 'Run the R1 demo',
+                      type: 'page',
+                      url: '/en/ai/device-kit/build/run-the-r1-demo',
+                    },
+                    {
+                      $id: 'device-kit-run-demo-server',
+                      name: 'Run the demo server',
+                      type: 'page',
+                      url: '/en/ai/device-kit/build/run-the-demo-server',
+                    },
+                    {
+                      $id: 'device-kit-demo-server-apis',
+                      name: 'Demo server APIs',
+                      type: 'page',
+                      url: '/en/ai/device-kit/build/demo-server-apis',
+                    },
+                    {
+                      $id: 'device-kit-build-device-setup-separator',
+                      name: 'Device setup',
+                      type: 'separator',
+                    },
+                    {
+                      $id: 'device-kit-configure-network',
+                      name: 'Configure device network',
+                      type: 'page',
+                      url: '/en/ai/device-kit/build/configure-device-network',
+                    },
+                    {
+                      $id: 'device-kit-device-controls',
+                      name: 'Device controls',
+                      type: 'page',
+                      url: '/en/ai/device-kit/build/device-controls',
+                    },
+                    {
+                      $id: 'device-kit-build-firmware-separator',
+                      name: 'Firmware integration',
+                      type: 'separator',
+                    },
+                    {
+                      $id: 'device-kit-build-flash',
+                      name: 'Build and flash firmware',
+                      type: 'page',
+                      url: '/en/ai/device-kit/build/build-and-flash-firmware',
+                    },
+                    {
+                      $id: 'device-kit-build-architecture-separator',
+                      name: 'System architecture',
+                      type: 'separator',
+                    },
+                    {
+                      $id: 'device-kit-architecture-overview',
+                      name: 'Architecture overview',
+                      type: 'page',
+                      url: '/en/ai/device-kit/build/architecture-overview',
+                    },
+                    {
+                      $id: 'device-kit-specs',
+                      name: 'Specifications and compatibility',
+                      type: 'page',
+                      url: '/en/ai/device-kit/build/specifications-and-compatibility',
+                    },
+                  ],
+                  name: 'Build',
+                  type: 'folder',
+                },
+                {
+                  $id: 'device-kit-plan-rollout-separator',
+                  name: 'Plan rollout',
+                  type: 'separator',
+                },
+                {
+                  $id: 'device-kit-plan-rollout-folder',
+                  children: [
+                    {
+                      $id: 'device-kit-pricing',
+                      name: 'Pricing',
+                      type: 'page',
+                      url: '/en/ai/device-kit/plan-rollout/pricing',
+                    },
+                    {
+                      $id: 'device-kit-release-notes',
+                      name: 'Release notes',
+                      type: 'page',
+                      url: '/en/ai/device-kit/plan-rollout/release-notes',
+                    },
+                  ],
+                  name: 'Plan rollout',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'device-kit-index',
+                name: 'Convo AI Device Kit',
+                type: 'page',
+                url: '/en/ai/device-kit',
+              },
+              name: 'Convo AI Device Kit',
+              type: 'folder',
+            },
+            {
               $id: 'ai-quickstart',
               name: 'Quickstart',
               type: 'page',
@@ -557,6 +709,61 @@ describe('loadDocsPagePayload', () => {
     ).resolves.toEqual({
       redirectUrl: '/zh-CN/ai/release-notes',
     });
+  });
+
+  it('redirects the Deploy to IoT devices path entry to the Device Kit product space', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['choose-your-path', 'quickstart-device-kit']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/device-kit',
+    });
+  });
+
+  it('returns a scoped Device Kit sidebar with a Back to AI header', async () => {
+    const page = createPage();
+    mockedGetPage.mockReturnValue({
+      ...page,
+      path: 'en/ai/device-kit/index.md',
+      slugs: ['en', 'ai', 'device-kit', 'index'],
+      url: '/en/ai/device-kit',
+      data: {
+        ...page.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/ai/device-kit/index.md',
+          path: 'en/ai/device-kit/index.md',
+        },
+        title: 'Convo AI Device Kit',
+      },
+    });
+
+    const payload = await loadDocsPagePayload('en', 'ai', ['device-kit']);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(payload.sidebarHeader).toEqual({
+      backHref: '/en/ai',
+      backLabel: 'Back to AI',
+      title: 'Convo AI Device Kit',
+    });
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+      expect.arrayContaining([
+        '/en/ai/device-kit',
+        '/en/ai/device-kit/start-here/quickstart',
+        '/en/ai/device-kit/build/run-the-r1-demo',
+        '/en/ai/device-kit/build/device-controls',
+        '/en/ai/device-kit/plan-rollout/release-notes',
+      ]),
+    );
+    expect(payload.sidebar).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: 'page',
+          url: '/en/ai/choose-your-path/quickstart-device-kit',
+        }),
+      ]),
+    );
   });
 });
 

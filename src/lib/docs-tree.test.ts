@@ -6,6 +6,7 @@ import {
   getSidebarNodes,
   getTabSummaries,
   mapSidebarEntriesToTree,
+  pageTreeNodeToSidebarNodes,
 } from './docs-tree';
 
 const nestedRootTree: Root = {
@@ -268,6 +269,89 @@ describe('docs tree helpers', () => {
         title: 'About Agora',
         type: 'page',
         url: '/en/introduction/about-agora',
+      },
+    ]);
+  });
+
+  it('preserves nested separator groups inside folder sidebar sections', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'build-folder',
+        children: [
+          {
+            $id: 'build-separator-create',
+            name: 'Create and connect an agent',
+            type: 'separator',
+          },
+          {
+            $id: 'build-start-stop',
+            name: 'Start and stop an agent',
+            type: 'page',
+            url: '/en/ai/build/start-stop-agent',
+          },
+          {
+            $id: 'build-build-server-client',
+            name: 'Build a backend and client from scratch',
+            type: 'page',
+            url: '/en/ai/build/build-server-client',
+          },
+          {
+            $id: 'build-separator-shape',
+            name: 'Shape the conversation',
+            type: 'separator',
+          },
+          {
+            $id: 'build-custom-llm',
+            name: 'Custom LLM',
+            type: 'page',
+            url: '/en/ai/build/custom-llm',
+          },
+        ],
+        name: 'Build',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        children: [
+          {
+            children: [
+              {
+                id: '/en/ai/build/start-stop-agent',
+                title: 'Start and stop an agent',
+                type: 'page',
+                url: '/en/ai/build/start-stop-agent',
+              },
+              {
+                id: '/en/ai/build/build-server-client',
+                title: 'Build a backend and client from scratch',
+                type: 'page',
+                url: '/en/ai/build/build-server-client',
+              },
+            ],
+            collapsible: false,
+            id: 'separator-Create and connect an agent',
+            title: 'Create and connect an agent',
+            type: 'section',
+          },
+          {
+            children: [
+              {
+                id: '/en/ai/build/custom-llm',
+                title: 'Custom LLM',
+                type: 'page',
+                url: '/en/ai/build/custom-llm',
+              },
+            ],
+            collapsible: false,
+            id: 'separator-Shape the conversation',
+            title: 'Shape the conversation',
+            type: 'section',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-build-folder',
+        title: 'Build',
+        type: 'section',
       },
     ]);
   });

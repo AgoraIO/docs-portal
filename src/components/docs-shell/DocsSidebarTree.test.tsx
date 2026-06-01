@@ -443,4 +443,123 @@ describe('DocsSidebarTree', () => {
       screen.getByRole('link', { name: 'Start and stop an agent' }),
     ).toBeInTheDocument();
   });
+
+  it('merges best practices into Build as a hardened and optimize group', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/ai/build/start-stop-agent',
+            title: 'Start and stop an agent',
+            type: 'page',
+            url: '/en/ai/build/start-stop-agent',
+          },
+        ],
+        id: 'build',
+        title: 'Build',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            id: '/en/ai/best-practices/audio-setup',
+            title: 'Set optimal audio parameters',
+            type: 'page',
+            url: '/en/ai/best-practices/audio-setup',
+          },
+        ],
+        id: 'best-practices',
+        title: 'Best practices',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/ai/best-practices/audio-setup');
+
+    expect(
+      await screen.findByRole('button', { name: /Harden and optimize/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Set optimal audio parameters' }),
+    ).toBeInTheDocument();
+  });
+
+  it('renders Build child groups as collapsible dropdowns', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [
+              {
+                id: '/en/ai/build/start-stop-agent',
+                title: 'Start and stop an agent',
+                type: 'page',
+                url: '/en/ai/build/start-stop-agent',
+              },
+            ],
+            collapsible: false,
+            id: 'separator-Create and connect an agent',
+            title: 'Create and connect an agent',
+            type: 'section',
+          },
+        ],
+        id: 'build',
+        title: 'Build',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/ai');
+
+    const toggle = await screen.findByRole('button', {
+      name: /Create and connect an agent/i,
+    });
+
+    expect(
+      screen.queryByRole('link', { name: 'Start and stop an agent' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(toggle);
+
+    expect(
+      await screen.findByRole('link', { name: 'Start and stop an agent' }),
+    ).toBeInTheDocument();
+  });
+
+  it('uses shorter sidebar labels for long Build document titles', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [
+              {
+                id: '/en/ai/build/build-server-client',
+                title: 'Build a backend and client from scratch',
+                type: 'page',
+                url: '/en/ai/build/build-server-client',
+              },
+            ],
+            collapsible: true,
+            id: 'separator-Create and connect an agent',
+            title: 'Create and connect an agent',
+            type: 'section',
+          },
+        ],
+        id: 'build',
+        title: 'Build',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/ai/build/build-server-client');
+
+    expect(
+      await screen.findByRole('link', { name: 'Build backend and client' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', {
+        name: 'Build a backend and client from scratch',
+      }),
+    ).not.toBeInTheDocument();
+  });
 });

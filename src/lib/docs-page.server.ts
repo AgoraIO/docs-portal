@@ -3,12 +3,14 @@ import type { TOCItemType } from 'fumadocs-core/toc';
 import { getSourceSlugs } from './docs-routing';
 import {
   type DocsSidebarNode,
+  filterSidebarNodes,
   getFirstChildPageUrl,
   getFirstTabPageUrl,
   getPrevNextLinks,
   getSidebarBreadcrumb,
   getSidebarNodes,
   getTabSummaries,
+  pageTreeNodeToSidebarNodes,
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import {
@@ -29,6 +31,13 @@ import {
 } from './source.server';
 
 const OPENAPI_TAB = 'api-reference';
+const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
+
+type DocsSidebarHeader = {
+  backHref: string;
+  backLabel: string;
+  title: string;
+};
 
 const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
   string,
@@ -84,6 +93,13 @@ export async function loadDocsPagePayload(
   tab: string,
   slugSegments: string[],
 ) {
+  const deviceKitRedirect = resolveDeviceKitRedirect(locale, tab, slugSegments);
+  if (deviceKitRedirect) {
+    return {
+      redirectUrl: deviceKitRedirect,
+    };
+  }
+
   const legacyRedirect = resolveLegacyBestPracticesRedirect(
     locale,
     tab,
@@ -154,6 +170,7 @@ export async function loadDocsPagePayload(
   const toc = await resolvePageToc(page, processedText);
   const supportedLocale = toSupportedLocale(locale);
   const sidebar = await getDocsSidebarNodes({
+    activePath: page.url,
     locale: supportedLocale,
     pageTree,
     tab,
@@ -169,6 +186,7 @@ export async function loadDocsPagePayload(
     })),
     tab,
   });
+  const sidebarHeader = getDocsSidebarHeader(page.url, tab);
 
   return {
     activePath: page.url,
@@ -212,6 +230,7 @@ export async function loadDocsPagePayload(
     navigation: getPrevNextLinks(pageTree, page.url),
     pages,
     sidebar,
+    sidebarHeader,
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
     title: page.data.title,
@@ -239,6 +258,37 @@ function resolveLegacyBestPracticesRedirect(
     LEGACY_BEST_PRACTICES_REDIRECTS[slug]?.[supportedLocale] ?? null;
 
   return redirect;
+}
+
+function resolveDeviceKitRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (tab !== 'ai') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+
+  if (normalizedPath === `choose-your-path/${DEVICE_KIT_PATH_ENTRY_SLUG}`) {
+    return `/${locale}/ai/device-kit`;
+  }
+
+  const redirects: Record<string, string> = {
+    'device-kit/get-started': `/${locale}/ai/device-kit/start-here/quickstart`,
+    'device-kit/get-started/quickstart': `/${locale}/ai/device-kit/start-here/quickstart`,
+    'device-kit/get-started/enable-services': `/${locale}/ai/device-kit/start-here/enable-services`,
+    'device-kit/get-started/run-the-demo': `/${locale}/ai/device-kit/build/run-the-r1-demo`,
+    'device-kit/overview': `/${locale}/ai/device-kit/build/architecture-overview`,
+    'device-kit/overview/architecture': `/${locale}/ai/device-kit/build/architecture-overview`,
+    'device-kit/reference': `/${locale}/ai/device-kit/build/device-controls`,
+    'device-kit/reference/device-controls': `/${locale}/ai/device-kit/build/device-controls`,
+    'device-kit/overview/pricing': `/${locale}/ai/device-kit/plan-rollout/pricing`,
+    'device-kit/overview/release-notes': `/${locale}/ai/device-kit/plan-rollout/release-notes`,
+  };
+
+  return redirects[normalizedPath] ?? null;
 }
 
 export type DocsPagePayload = Exclude<
@@ -312,7 +362,12 @@ async function buildOpenApiDocsPagePayload({
   }[];
   tab: string;
 }) {
-  const sidebar = await getDocsSidebarNodes({ locale, pageTree, tab });
+  const sidebar = await getDocsSidebarNodes({
+    activePath: openApiPage.activePath,
+    locale,
+    pageTree,
+    tab,
+  });
   const breadcrumb = getSidebarBreadcrumb(sidebar, openApiPage.activePath);
 
   return {
@@ -343,20 +398,23 @@ async function buildOpenApiDocsPagePayload({
     ),
     pages: getDocsPages({ locale, pages, tab }),
     sidebar,
+    sidebarHeader: undefined,
     tabs: getTabSummaries(pageTree),
   };
 }
 
 async function getDocsSidebarNodes({
+  activePath,
   locale,
   pageTree,
   tab,
 }: {
+  activePath?: string;
   locale: AppLocale | null;
   pageTree: ReturnType<typeof docsSource.getPageTree>;
   tab: string;
 }) {
-  const sidebar = getSidebarNodes(pageTree, tab);
+  const sidebar = resolveScopedSidebar(pageTree, tab, activePath);
 
   if (tab !== OPENAPI_TAB || !locale) {
     return sidebar;
@@ -394,6 +452,98 @@ function getDocsPages({
     .filter((page) => !existingUrls.has(page.url));
 
   return [...pages, ...endpointPages];
+}
+
+function resolveScopedSidebar(
+  pageTree: ReturnType<typeof docsSource.getPageTree>,
+  tab: string,
+  activePath?: string,
+) {
+  if (tab === 'ai' && activePath && isDeviceKitPathEntry(activePath)) {
+    const scopedSidebar = getDeviceKitScopedSidebar(pageTree, activePath);
+    if (scopedSidebar.length > 0) {
+      return scopedSidebar;
+    }
+  }
+
+  if (tab === 'ai') {
+    return filterAiSidebar(getSidebarNodes(pageTree, tab));
+  }
+
+  return getSidebarNodes(pageTree, tab);
+}
+
+function isDeviceKitPathEntry(activePath: string) {
+  const normalizedPath = activePath.endsWith('/')
+    ? activePath.slice(0, -1)
+    : activePath;
+
+  return (
+    normalizedPath.endsWith(`/choose-your-path/${DEVICE_KIT_PATH_ENTRY_SLUG}`) ||
+    normalizedPath.includes('/ai/device-kit')
+  );
+}
+
+function getDeviceKitScopedSidebar(
+  pageTree: ReturnType<typeof docsSource.getPageTree>,
+  activePath: string,
+) {
+  const localePrefix = activePath.startsWith('/zh-CN/')
+    ? '/zh-CN'
+    : '/en';
+  const deviceKitNodes = filterSidebarNodes(getSidebarNodes(pageTree, 'ai'), (node) =>
+    node.type === 'section'
+      ? true
+      : node.url === `${localePrefix}/ai/device-kit` ||
+        node.url.startsWith(`${localePrefix}/ai/device-kit/`),
+  );
+
+  return deviceKitNodes.flatMap((node) => {
+    if (node.type === 'page') {
+      return [];
+    }
+
+    if (
+      node.title === 'Convo AI Device Kit' &&
+      node.children.some(
+        (child) =>
+          child.type === 'page' && child.url === `${localePrefix}/ai/device-kit`,
+      )
+    ) {
+      return node.children.filter(
+        (child) =>
+          !(child.type === 'page' && child.url === `${localePrefix}/ai/device-kit`),
+      );
+    }
+
+    return [node];
+  });
+}
+
+function filterAiSidebar(nodes: DocsSidebarNode[]) {
+  return filterSidebarNodes(nodes, (node) => {
+    if (node.type !== 'page') {
+      return true;
+    }
+
+    return !node.url.startsWith('/en/ai/device-kit') &&
+      !node.url.startsWith('/zh-CN/ai/device-kit');
+  });
+}
+
+function getDocsSidebarHeader(
+  activePath: string,
+  tab: string,
+): DocsSidebarHeader | undefined {
+  if (tab !== 'ai' || !isDeviceKitPathEntry(activePath)) {
+    return undefined;
+  }
+
+  return {
+    backHref: activePath.includes('/zh-CN/') ? '/zh-CN/ai' : '/en/ai',
+    backLabel: 'Back to AI',
+    title: 'Convo AI Device Kit',
+  };
 }
 
 async function addOpenApiEndpointSidebarItems(

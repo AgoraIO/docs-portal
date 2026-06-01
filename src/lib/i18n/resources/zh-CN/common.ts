@@ -118,7 +118,7 @@ const zhCnCommon = {
       items: {
         ai: {
           title: 'AI',
-          body: 'ConvoAI、Toybox、语音交互、Agent 接入。',
+          body: 'ConvoAI、Device Kit、语音交互、Agent 接入。',
         },
         rtc: {
           title: 'RTC',
@@ -213,12 +213,12 @@ const zhCnCommon = {
       aiDomain: {
         title: '对话式 AI',
         description:
-          '围绕 ConvoAI、Toybox 和 Agent 集成组织文档，帮助开发者从实时语音对话走到完整的 AI 交互产品实现。',
+          '围绕 ConvoAI、Device Kit 和 Agent 集成组织文档，帮助开发者从实时语音对话走到完整的 AI 交互产品实现。',
         section1: {
           title: '主要产品',
-          body: '当前 AI 相关内容主要来自 ConvoAI 和 Toybox。ConvoAI 负责对话式 AI 引擎，Toybox 更偏硬件与套件化接入路径。',
+          body: '当前 AI 相关内容主要来自 ConvoAI 和 Device Kit。ConvoAI 负责对话式 AI 引擎，Device Kit 更偏智能硬件和套件化接入路径。',
           link1: '查看 ConvoAI 产品概览',
-          link2: '查看 Toybox 概览',
+          link2: '查看 Device Kit 概览',
         },
         section2: {
           title: '推荐内容结构',
