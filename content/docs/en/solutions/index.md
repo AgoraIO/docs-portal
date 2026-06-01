@@ -5,6 +5,11 @@ description: Start from the business product you want to launch, then drill into
 
 The `Solutions` tab is for packaged product paths. These pages are the right starting point when your team is evaluating a business solution such as meetings, classrooms, teleoperation, or smart devices.
 
+## Entertainment and social
+
+- [Showroom Live](showroom.md): host-audience live experiences, co-hosting, PK, and entertainment rooms.
+- [Game Voice](game-voice.md): built-in in-game voice for mobile, PC, and cross-platform game products.
+
 ## Collaboration
 
 - [Flexible Meeting](meeting.md): enterprise collaboration and meeting-style products.
@@ -16,6 +21,8 @@ The `Solutions` tab is for packaged product paths. These pages are the right sta
 - [One-to-one Classroom](one-to-one-classroom.md): customized one-teacher-one-student teaching products.
 - [Small Classroom](small-classroom.md): customized small-group teaching products.
 - [Breakout Classroom](breakout-classroom.md): large-class plus breakout-discussion teaching products.
+- [Art Class](art-class.md): drawing and visual-teaching products that care about color fidelity and camera correction.
+- [Online Music Class](online-music-class.md): music-teaching products that care about audio fidelity and instrument-friendly interaction.
 
 ## Devices and industry
 
