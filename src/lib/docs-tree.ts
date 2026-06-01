@@ -174,6 +174,12 @@ export function getSidebarNodes(
     : null;
   let hasEmittedContent = false;
 
+  if (pendingIndexNode) {
+    nodes.push(pendingIndexNode);
+    pendingIndexNode = null;
+    hasEmittedContent = true;
+  }
+
   let currentSection: DocsSidebarSectionNode | null = null;
 
   for (const child of tabNode.children) {
@@ -191,10 +197,6 @@ export function getSidebarNodes(
           title,
           type: 'section',
         };
-        if (pendingIndexNode && !hasEmittedContent) {
-          currentSection.children.push(pendingIndexNode);
-          pendingIndexNode = null;
-        }
         nodes.push(currentSection);
         hasEmittedContent = true;
       }
@@ -361,10 +363,6 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
           title,
           type: 'section',
         };
-        if (pendingIndexNode && !hasEmittedContent) {
-          currentSection.children.push(pendingIndexNode);
-          pendingIndexNode = null;
-        }
         children.push(currentSection);
         hasEmittedContent = true;
       }
