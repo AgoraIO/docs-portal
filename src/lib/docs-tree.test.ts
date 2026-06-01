@@ -233,13 +233,13 @@ describe('docs tree helpers', () => {
     ]);
     expect(getSidebarNodes(tree, 'introduction')).toEqual([
       {
+        id: '/en/introduction',
+        title: 'Overview',
+        type: 'page',
+        url: '/en/introduction',
+      },
+      {
         children: [
-          {
-            id: '/en/introduction',
-            title: 'Overview',
-            type: 'page',
-            url: '/en/introduction',
-          },
           {
             id: '/en/introduction/about-agora',
             title: 'About Agora',
@@ -1063,6 +1063,69 @@ describe('docs tree helpers', () => {
         collapsible: false,
         id: 'separator-Reference',
         title: 'Reference',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('keeps the tab overview above the first section when separators are present', () => {
+    const tree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'realtime-folder',
+              children: [
+                {
+                  $id: 'realtime-separator-live',
+                  name: 'Build Live Interaction',
+                  type: 'separator',
+                },
+                {
+                  $id: 'realtime-rtc',
+                  name: 'Voice & Video',
+                  type: 'page',
+                  url: '/en/realtime-media/rtc',
+                },
+              ],
+              index: {
+                $id: 'realtime-index',
+                name: 'Overview',
+                type: 'page',
+                url: '/en/realtime-media',
+              },
+              name: 'Realtime & Media',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(getSidebarNodes(tree, 'realtime-media')).toEqual([
+      {
+        id: '/en/realtime-media',
+        title: 'Overview',
+        type: 'page',
+        url: '/en/realtime-media',
+      },
+      {
+        children: [
+          {
+            id: '/en/realtime-media/rtc',
+            title: 'Voice & Video',
+            type: 'page',
+            url: '/en/realtime-media/rtc',
+          },
+        ],
+        collapsible: false,
+        id: 'separator-Build Live Interaction',
+        title: 'Build Live Interaction',
         type: 'section',
       },
     ]);

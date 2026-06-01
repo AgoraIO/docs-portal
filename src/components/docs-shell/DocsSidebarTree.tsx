@@ -257,8 +257,10 @@ function SidebarSection({
 
 function shouldDefaultOpenSection(title: string, activePath: string) {
   return (
-    (title === 'Realtime' || title === '实时互动') &&
-    /\/(en|zh-CN)\/introduction(?:\/index)?$/.test(activePath)
+    ((title === 'Realtime' || title === '实时互动') &&
+      /\/(en|zh-CN)\/introduction(?:\/index)?$/.test(activePath)) ||
+    (title === 'Get Started' &&
+      /\/en\/introduction(?:\/index)?$/.test(activePath))
   );
 }
 
