@@ -9,7 +9,6 @@ Use this product space when you need a hardware-first developer workflow instead
 ## Start here
 
 - [Quickstart](start-here/quickstart.md)
-- [Enable services](start-here/enable-services.md)
 
 ## Build
 
@@ -25,5 +24,6 @@ Use this product space when you need a hardware-first developer workflow instead
 
 ## Plan rollout
 
+- [Enable services](reference/enable-services.md)
 - [Pricing](plan-rollout/pricing.md)
 - [Release notes](plan-rollout/release-notes.md)

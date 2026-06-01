@@ -14,7 +14,7 @@ Common use cases for filler words include:
 
 Before you begin, make sure you have the following:
 
-- An Agora [account](../../api-reference/conversational-ai/rest-api/agent/join.md) and project with Conversational AI enabled. 
+- An Agora [account](../../api-reference/conversational-ai/rest-api/agent/join.md) and project with Conversational AI enabled.
 - A working Conversational AI Engine project. If you don't have one yet, follow the [quickstart](../get-started/quickstart.md) to set one up.
 
 ## Implementation
@@ -49,12 +49,12 @@ The `trigger` object defines when the agent plays filler words. Currently, the `
 | Parameter | Type | Range | Description |
 |-----------|------|-------|-------------|
 | `trigger.mode` | String | `fixed_time` | Trigger mode. Currently only `fixed_time` is supported. |
-| `trigger.fixed_time_config.response_wait_ms` | Integer | 100–10000 | LLM response wait threshold in milliseconds. The agent plays a filler phrase when the LLM takes longer than this duration to respond. |
+| `trigger.fixed_time_config.response_wait_ms` | Integer | 100-10000 | LLM response wait threshold in milliseconds. The agent plays a filler phrase when the LLM takes longer than this duration to respond. |
 
 Choose a `response_wait_ms` value based on your use case:
 
-- **Lower values** (500–1000 ms): Better for fast-paced interactions where silence is more noticeable.
-- **Higher values** (1500–3000 ms): Suitable for scenarios where users expect some processing time, such as complex queries or data lookups.
+- **Lower values** (500-1000 ms): Better for fast-paced interactions where silence is more noticeable.
+- **Higher values** (1500-3000 ms): Suitable for scenarios where users expect some processing time, such as complex queries or data lookups.
 
 #### Content
 
@@ -103,10 +103,10 @@ Add the following `filler_words` object to `properties` in your [Start a convers
 
 Keep the following tips in mind when configuring filler words:
 
-- **Keep phrases short and natural**: Use brief, conversational phrases that sound like something a person would say. 
+- **Keep phrases short and natural**: Use brief, conversational phrases that sound like something a person would say.
 - **Match phrasing to your use case**: For customer support agents, use reassuring phrases like "Let me look into that for you." For casual assistants, use informal phrases like "Hmm, one sec."
 - **Tune the trigger threshold**: Start with a `response_wait_ms` of 1500 ms and adjust based on your LLM's typical response time. If your agent frequently invokes tools, consider a lower threshold to cover longer processing times.
-- **Provide enough variety**: Include at least 4–6 phrases to avoid sounding repetitive. Use `shuffle` selection to maximize variety across conversation turns.
+- **Provide enough variety**: Include at least 4-6 phrases to avoid sounding repetitive. Use `shuffle` selection to maximize variety across conversation turns.
 
 ## References
 

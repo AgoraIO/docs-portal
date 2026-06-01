@@ -100,6 +100,13 @@ export async function loadDocsPagePayload(
     };
   }
 
+  const aiRedirect = resolveAiDocsRedirect(locale, tab, slugSegments);
+  if (aiRedirect) {
+    return {
+      redirectUrl: aiRedirect,
+    };
+  }
+
   const legacyRedirect = resolveLegacyBestPracticesRedirect(
     locale,
     tab,
@@ -278,7 +285,7 @@ function resolveDeviceKitRedirect(
   const redirects: Record<string, string> = {
     'device-kit/get-started': `/${locale}/ai/device-kit/start-here/quickstart`,
     'device-kit/get-started/quickstart': `/${locale}/ai/device-kit/start-here/quickstart`,
-    'device-kit/get-started/enable-services': `/${locale}/ai/device-kit/start-here/enable-services`,
+    'device-kit/get-started/enable-services': `/${locale}/ai/device-kit/reference/enable-services`,
     'device-kit/get-started/run-the-demo': `/${locale}/ai/device-kit/build/run-the-r1-demo`,
     'device-kit/overview': `/${locale}/ai/device-kit/build/architecture-overview`,
     'device-kit/overview/architecture': `/${locale}/ai/device-kit/build/architecture-overview`,
@@ -286,6 +293,26 @@ function resolveDeviceKitRedirect(
     'device-kit/reference/device-controls': `/${locale}/ai/device-kit/build/device-controls`,
     'device-kit/overview/pricing': `/${locale}/ai/device-kit/plan-rollout/pricing`,
     'device-kit/overview/release-notes': `/${locale}/ai/device-kit/plan-rollout/release-notes`,
+    'device-kit/start-here/enable-services': `/${locale}/ai/device-kit/reference/enable-services`,
+  };
+
+  return redirects[normalizedPath] ?? null;
+}
+
+function resolveAiDocsRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (tab !== 'ai') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+
+  const redirects: Record<string, string> = {
+    'build/code-first-architecture': `/${locale}/ai/reference/code-first-architecture`,
+    'best-practices/filler-words': `/${locale}/ai/build/filler-words`,
   };
 
   return redirects[normalizedPath] ?? null;

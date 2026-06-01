@@ -86,7 +86,7 @@ const pageTree: Root = {
                       $id: 'device-kit-enable-services',
                       name: 'Enable services',
                       type: 'page',
-                      url: '/en/ai/device-kit/start-here/enable-services',
+                      url: '/en/ai/device-kit/reference/enable-services',
                     },
                   ],
                   name: 'Start here',
@@ -716,6 +716,28 @@ describe('loadDocsPagePayload', () => {
       loadDocsPagePayload('en', 'ai', ['choose-your-path', 'quickstart-device-kit']),
     ).resolves.toEqual({
       redirectUrl: '/en/ai/device-kit',
+    });
+  });
+
+  it('redirects moved Device Kit docs pages to their new product paths', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['device-kit', 'start-here', 'enable-services']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/device-kit/reference/enable-services',
+    });
+  });
+
+  it('redirects moved AI docs pages to their new product paths', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['build', 'code-first-architecture']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/reference/code-first-architecture',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['best-practices', 'filler-words']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/build/filler-words',
     });
   });
 
