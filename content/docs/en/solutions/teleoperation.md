@@ -3,16 +3,23 @@ title: Teleoperation
 description: Teleoperation combines low-latency media, state synchronization, and device control into one controllable realtime workflow.
 ---
 
-## What this capability is
+## What this solution is
 
-Teleoperation requires people, devices, and control surfaces to work together on the same low-latency path. The problem is not only visibility but controllability.
+Teleoperation is a device-and-industry solution, not just a media feature set. It is the right entry when the product requires both realtime visibility and direct remote control over devices or terminals.
 
-## Common scenarios
+## Best fit
 
 - remote terminal control
 - device operations
 - systems that combine remote viewing with direct action
+- cross-city or cross-region low-latency control workflows
 
-## What to read first
+## Built on
 
-If the system needs both low-latency media and direct device control, start from teleoperation-style design before splitting into lower-level capabilities.
+- low-latency audio and video transport
+- synchronized control signaling
+- device-side and operator-side implementation paths
+
+## Choose this when
+
+Choose Teleoperation when the core user question is not "how do we stream media" but "how do we safely observe and operate a remote device in realtime".

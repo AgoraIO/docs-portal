@@ -1,5 +1,7 @@
 'use client';
 
+import { Link } from '@tanstack/react-router';
+import { ChevronLeftIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import {
   Sidebar as ShadcnSidebar,
@@ -12,11 +14,17 @@ import { useTransientScrollbar } from './useTransientScrollbar';
 export function DocsSidebar({
   activePath,
   activeTab,
+  header,
   nodes,
   onSelectPath,
 }: {
   activePath: string;
   activeTab: string;
+  header?: {
+    backHref: string;
+    backLabel: string;
+    title: string;
+  };
   nodes: DocsSidebarNode[];
   onSelectPath: () => void;
 }) {
@@ -25,9 +33,10 @@ export function DocsSidebar({
 
   useEffect(() => {
     void activeTab;
+    void activePath;
 
     scrollToTop();
-  }, [activeTab, scrollToTop]);
+  }, [activePath, activeTab, scrollToTop]);
 
   return (
     <ShadcnSidebar
@@ -49,6 +58,23 @@ export function DocsSidebar({
         ref={scrollContainerRef}
       >
         <div className="py-6 pr-3 pb-12">
+          {header ? (
+            <div className="mb-4 border-b border-border/70 pb-3">
+              <Link
+                className="mb-2 flex items-center gap-2 rounded-[7px] px-2 py-1.5 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
+                onClick={onSelectPath}
+                params={{}}
+                search={{}}
+                to={header.backHref}
+              >
+                <ChevronLeftIcon className="size-4" />
+                <span>{header.backLabel}</span>
+              </Link>
+              <div className="px-2 text-[15px] font-semibold text-[color:var(--ink-1)]">
+                {header.title}
+              </div>
+            </div>
+          ) : null}
           <DocsSidebarTree
             activePath={activePath}
             nodes={nodes}

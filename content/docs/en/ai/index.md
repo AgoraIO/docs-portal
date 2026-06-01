@@ -10,9 +10,9 @@ Conversational AI is the main product in the AI section. It combines Agora's rea
 
 ## Start here
 
-- [Voice AI quickstart](get-started/quickstart.md)
-- [Build a backend and client from scratch](build/build-server-client.md)
-- [Agent Studio](studio/index.md)
+- [Build a voice agent](choose-your-path/quickstart-coding.md)
+- [Agent Studio](choose-your-path/quickstart-agent-studio.md)
+- [Deploy to IoT devices](choose-your-path/quickstart-device-kit.md)
 - [REST API reference](../api-reference/conversational-ai/rest-api/index.md)
 
 ## Primary entry

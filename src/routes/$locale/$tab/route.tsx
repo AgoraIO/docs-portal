@@ -34,6 +34,7 @@ function DocsTabLayout() {
     navigation,
     pages,
     sidebar,
+    sidebarHeader,
     tabs,
     toc,
   } = payload;
@@ -49,6 +50,7 @@ function DocsTabLayout() {
       pages={pages}
       previous={navigation.previous}
       sidebar={sidebar}
+      sidebarHeader={sidebarHeader}
       sideRail={<DocsContentSideRail body={body} />}
       tabs={tabs}
       toc={toc}

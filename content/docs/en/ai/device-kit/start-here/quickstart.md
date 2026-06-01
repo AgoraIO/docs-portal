@@ -7,6 +7,7 @@ This guide walks you through the essential steps to get your Convo AI Device Kit
 ## Prerequisites
 
 Before you begin, ensure you have the following:
+
 - Agora Convo AI Device Kit
 - Smartphone with Bluetooth capability
 - Access to your Wi-Fi network and password
@@ -71,4 +72,7 @@ To manually disconnect:
 
 ## Next steps
 
-Now that your device is set up, [run the demo project](run-the-demo.md).
+Now that your device is set up:
+
+- [Enable the required services](enable-services.md)
+- [Run the R1 development baseline](../build/run-the-r1-demo.md)

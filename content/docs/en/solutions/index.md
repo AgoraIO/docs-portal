@@ -1,24 +1,31 @@
 ---
-title: Choose your product path
-description: Start from the workload you need to build, then choose the right Agora realtime and media capability path.
+title: Choose a solution
+description: Start from the business product you want to launch, then drill into the matching Agora solution docs.
 ---
 
-## If you are building conversational agents
+The `Solutions` tab is for packaged product paths. These pages are the right starting point when your team is evaluating a business solution such as meetings, classrooms, teleoperation, or smart devices.
 
-Start from `Conversational AI Engine`, then add `RTC`, `RTM`, `Realtime Transcription`, and `Media Services` as needed.
+## Collaboration
 
-## If you are building calling, live streaming, or meetings
+- [Flexible Meeting](meeting.md): enterprise collaboration and meeting-style products.
+- [Micro Calling](voip-call.md): lightweight device-to-client calling, especially for mini-program and smart-device interop.
 
-Start from `RTC`. If you later need recording, pushing, transcoding, or distribution, continue into `Media Processing & Distribution`.
+## Education
 
-## If you are building messaging and state sync
+- [Flexible Classroom](flexible-classroom.md): low-code classroom product for teams that want faster launch.
+- [One-to-one Classroom](one-to-one-classroom.md): customized one-teacher-one-student teaching products.
+- [Small Classroom](small-classroom.md): customized small-group teaching products.
+- [Breakout Classroom](breakout-classroom.md): large-class plus breakout-discussion teaching products.
 
-Start from `RTM`. If you need a broader IM-style stack, continue into `Instant Messaging IM`.
+## Devices and industry
 
-## If you are building media workflows
+- [Teleoperation](teleoperation.md): low-latency media plus control for remote operation.
+- [Smart Camera](smart-camera.md): device-to-app camera products with media and signaling.
+- [Smart Doorbell](smart-doorbell.md): doorbell, smart lock, and peephole-style products.
+- [Smart Watch](smart-watch.md): watch-oriented audio and video communication products.
 
-Go directly into `Media Processing & Distribution`, because recording, transcoding, and delivery are media workflow concerns rather than client RTC entry points.
+## How to read this tab
 
-## If you are building device or IoT scenarios
-
-Prioritize `RTSA` and `Device & Industry Scenarios`, because those workloads usually rely on both media-stream and signaling capabilities.
+- Use `AI` when you are choosing voice-agent, model, or agent-runtime paths such as Conversational AI, Agent Studio, or Device Kit.
+- Use `Realtime & Media` when you need foundational building blocks such as RTC, RTM, whiteboard, recording, or CDN.
+- Use `Solutions` when you want docs organized around a recognizable business product rather than around a single underlying capability.
