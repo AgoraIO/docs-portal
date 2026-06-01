@@ -201,7 +201,7 @@ export async function loadDocsPagePayload(
         (targetTabEntry?.startsWith(`/${targetLocale}/`)
           ? targetTabEntry
           : undefined) ??
-        `/${targetLocale}/introduction/about-agora`;
+        `/${targetLocale}/introduction`;
 
       return {
         href: targetUrl,

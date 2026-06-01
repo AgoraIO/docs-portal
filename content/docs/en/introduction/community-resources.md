@@ -22,7 +22,7 @@ After logging in to Console, the overview dashboard provides quick access to:
 ## Additional resources
 
 - [Support](/en/introduction/support)
-- [Release Notes](/en/introduction/release-notes)
+- [Release Notes](/en/best-practices/release-notes)
 - [Usage Analytics](/en/introduction/usage-analytics)
 - [AI best practices](/en/ai/best-practices)
 - [AI product map](/en/ai/domain-overview)

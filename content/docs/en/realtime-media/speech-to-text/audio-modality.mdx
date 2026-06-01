@@ -1,22 +1,22 @@
 ---
-title: 使用音频模态输出
-description: 声网对话式 AI 引擎以音频模态输出。你可以阅读本文了解如何配置智能体以音频模态输出，并做好接口改造，进而实现上下文管理、字幕对齐、智能体播报等功能。
+title: Audio Modality
+description: Configure audio output mode for Conversational AI and adapt your interfaces for context management, subtitle alignment, and agent playback.
 ---
 
-# 使用音频模态输出
+# Audio Modality
 
-声网对话式 AI 引擎以音频模态输出。你可以阅读本文了解如何配置智能体以音频模态输出，并做好接口改造，进而实现上下文管理、字幕对齐、智能体播报等功能。
+Conversational AI can output in audio modality. This page explains how to configure audio output and adapt your interfaces for context management, subtitle alignment, and agent playback.
 
-## 前提条件
+## Prerequisites
 
-开始前，请确保你已经：
+Before you begin, make sure you have:
 
-- 参考[实现对话式智能体](../get-started/quick-start.md)实现了与 AI 智能体对话互动的基本逻辑
-- 如果想实现输出音频的字幕功能，确保已阅读[实时字幕](../../ai/realtime-sub.md)文档完成配置
+- implemented the basic conversational agent flow described in [Voice AI quickStart](../../ai/get-started/quickstart.md)
+- reviewed [Realtime subtitles](../../ai/realtime-sub.md) if you also need subtitle rendering for audio output
 
-## 实现方式
+## Implementation
 
-### 选择输出模态
+### Choose the output modality
 
 要使用音频模态输出，你可以在调用 [POST 创建对话式智能体](../operations/start-agent.md)接口时将 `llm.output_modalities` 设置为以下值：
 

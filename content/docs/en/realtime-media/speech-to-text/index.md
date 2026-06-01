@@ -1,11 +1,11 @@
 ---
-title: Realtime Transcription and Translation
-description: Realtime transcription and translation provide ultra-low-latency text and subtitle capabilities for multilingual and voice-understanding workflows.
+title: Speech-to-Text
+description: Speech-to-Text provides ultra-low-latency transcription and subtitle capabilities for multilingual and voice-understanding workflows.
 ---
 
 ## What this capability is
 
-Realtime transcription and translation turn live speech into readable text, and optionally translated text, making them core capabilities for subtitles, understanding, and multilingual communication.
+Speech-to-Text turns live speech into readable text, and optionally translated text, making it a core capability for subtitles, understanding, and multilingual communication.
 
 ## Common scenarios
 

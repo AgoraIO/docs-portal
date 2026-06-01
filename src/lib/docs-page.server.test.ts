@@ -263,7 +263,7 @@ describe('loadDocsPagePayload', () => {
           locale: 'en',
         },
         {
-          href: '/zh-CN/introduction/about-agora',
+          href: '/zh-CN/introduction',
           isActive: false,
           locale: 'zh-CN',
         },

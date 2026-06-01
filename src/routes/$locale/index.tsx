@@ -8,7 +8,7 @@ export const Route = createFileRoute('/$locale/')({
     }
 
     throw redirect({
-      href: `/${params.locale}/introduction/about-agora`,
+      href: `/${params.locale}/introduction`,
     });
   },
   component: () => null,

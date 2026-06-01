@@ -1,5 +1,5 @@
 ---
-title: Members and Roles
+title: Members & Roles
 description: Add members, assign teams, and manage permissions in Agora Console.
 ---
 

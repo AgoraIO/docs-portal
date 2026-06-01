@@ -69,7 +69,7 @@ describe('docs route locale guards', () => {
       expect(isRedirect(error)).toBe(true);
       expect(error).toMatchObject({
         options: {
-          href: '/en/introduction/about-agora',
+          href: '/en/introduction',
           statusCode: 307,
         },
         status: 307,

@@ -1,6 +1,6 @@
 ---
-title: Realtime RTC
-description: Agora RTC is the foundational channel, audio, and video capability behind calling, live interaction, meetings, and classrooms.
+title: RTC
+description: Agora RTC is the foundational voice and video capability behind calling, live interaction, meetings, and classrooms.
 ---
 
 ## What this capability is
