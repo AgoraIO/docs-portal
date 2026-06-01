@@ -1,28 +1,46 @@
 ---
 title: Overview
-description: A unified entry point for Agora's realtime and media platform, covering foundational realtime capabilities, media processing and distribution, collaboration, server-side extensions, governance, and device scenarios.
+description: Choose the right starting point across Agora's realtime interaction, media processing, delivery, and device connectivity capabilities.
 ---
 
-## What Realtime & Media means in the new site
+## Start here
 
-`Realtime & Media` is no longer the entry to one product or one guide. It is the umbrella entry for Agora's realtime and media capability surface, connecting live interaction, messaging, transcription, media processing, collaboration, and server-side control into one map.
+- If you are still preparing access, projects, or authentication, start with [Set up service and credentials](/en/realtime-media/setup-service-and-credentials).
+- If you want a quick mental model of the core building blocks, open [Foundational realtime capabilities](/en/realtime-media/foundation-realtime).
 
-## Who this section is for
+## What are you building?
 
-- teams evaluating combinations of Agora realtime capabilities
-- developers who want to choose the right product path before opening detailed docs
-- architects who need the client, server, media, and governance views together
+### Build live interaction
 
-## What you will find here
+- [RTC](/en/realtime-media/rtc): voice calls, video calls, co-hosting, and interactive live streaming
+- [RTM](/en/realtime-media/rtm): channel messaging, presence, state sync, and realtime coordination
+- [IM](/en/realtime-media/im): full messaging systems beyond lightweight room coordination
+- [Whiteboard](/en/realtime-media/whiteboard): shared visual collaboration inside live sessions
 
-- foundational realtime capabilities: RTC, RTM, IM, realtime transcription, RTSA
-- media processing and distribution: recording, pushing, pulling, transcoding, RTMP Gateway, Fusion CDN
-- collaboration and interaction: whiteboard, meetings, live interaction, micro-calling
-- server-side and extension surfaces: RTC Server SDK, Marketplace, SDK extension plugins
-- governance and production: Console, Analytics, Status Page, billing, security
+### Process session content
 
-## Recommended reading order
+- [Transcription & Translation](/en/realtime-media/speech-to-text): captions, speech understanding, and live translation
+- [Recording](/en/realtime-media/recording): archive, replay, compliance, and review workflows
+- [Transcoding](/en/realtime-media/transcoding): composition, layout shaping, and output transformation
 
-1. If you are still choosing, start with "Choose your product path."
-2. If you already know the workload, enter through the matching capability group.
-3. If you are approaching launch, fill in the governance and production section next.
+### Connect external media
+
+- [Media Push](/en/realtime-media/media-push): send RTC channel media to CDN or downstream systems
+- [Media Pull](/en/realtime-media/media-pull): bring online media streams into a realtime session
+- [RTMP Gateway](/en/realtime-media/rtmp-gateway): bridge RTMP-based devices and systems into Agora
+
+### Deliver to large audiences
+
+- [Fusion CDN](/en/realtime-media/fusion-cdn): multi-CDN live distribution for larger viewer populations
+
+### Devices and backend
+
+- [RTSA](/en/realtime-media/rtsa): device and edge connectivity for cameras, terminals, and embedded endpoints
+- [RTC Server SDK](/en/realtime-media/rtc-server-sdk): backend participation in media send, receive, and control
+
+## Common reading paths
+
+- Interactive live streaming with large audience playback: [RTC](/en/realtime-media/rtc) -> [Media Push](/en/realtime-media/media-push) -> [Fusion CDN](/en/realtime-media/fusion-cdn)
+- Meeting archive and searchable records: [RTC](/en/realtime-media/rtc) -> [Recording](/en/realtime-media/recording) -> [Transcription & Translation](/en/realtime-media/speech-to-text)
+- External stream into an interactive session: [Media Pull](/en/realtime-media/media-pull) or [RTMP Gateway](/en/realtime-media/rtmp-gateway) -> [RTC](/en/realtime-media/rtc)
+- Smart device connectivity with backend media control: [RTSA](/en/realtime-media/rtsa) -> [RTC Server SDK](/en/realtime-media/rtc-server-sdk)

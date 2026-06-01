@@ -285,6 +285,40 @@ describe('DocsSidebarTree', () => {
     expect(screen.getByRole('link', { name: '消息' })).toBeInTheDocument();
   });
 
+  it('opens the get started section by default on the english introduction index page', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/introduction/start-with-ai',
+            title: 'Start with AI',
+            type: 'page',
+            url: '/en/introduction/start-with-ai',
+          },
+          {
+            id: '/en/introduction/build-it-yourself',
+            title: 'Build it yourself',
+            type: 'page',
+            url: '/en/introduction/build-it-yourself',
+          },
+        ],
+        collapsible: true,
+        id: 'get-started',
+        title: 'Get Started',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/introduction/index');
+
+    expect(
+      await screen.findByRole('link', { name: 'Start with AI' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Build it yourself' }),
+    ).toBeInTheDocument();
+  });
+
   it('renders sdk quickstarts inside the getting started section', async () => {
     const tree: DocsSidebarNode[] = [
       {

@@ -1,28 +1,46 @@
 ---
-title: 介绍
-description: 面向声网实时互动平台的统一入口，覆盖基础实时能力、媒体处理与分发、协作互动、服务端扩展，以及运维治理与设备场景。
+title: 概览
+description: 帮助你在声网实时互动与媒体能力中快速找到正确入口，包括实时互动、内容处理、外部媒体连接、大规模分发，以及设备接入。
 ---
 
-## Realtime & Media 在新站里代表什么
+## 从这里开始
 
-`Realtime & Media` 不再只是某一个产品或单篇文档的入口，而是声网所有实时与媒体类能力的总入口。它负责把实时互动、消息、转录、媒体处理、协作互动和服务端控制串成一张完整地图。
+- 如果你还在准备项目、开通服务或鉴权，先看 [开通服务与准备凭证](/zh-CN/realtime-media/setup-service-and-credentials)。
+- 如果你想先建立整体认识，先看 [基础实时能力](/zh-CN/realtime-media/foundation-realtime)。
 
-## 这部分适合谁
+## 你要做什么？
 
-- 正在评估声网实时能力组合的团队
-- 想先确定产品路径，再决定从哪个文档开始接入的开发者
-- 需要同时理解客户端、服务端、媒体处理与治理能力的架构设计者
+### 搭建实时互动
 
-## 你会在这里看到什么
+- [RTC](/zh-CN/realtime-media/rtc)：语音通话、视频通话、连麦互动和互动直播
+- [RTM](/zh-CN/realtime-media/rtm2)：频道消息、在线状态、状态同步和实时协作
+- [IM](/zh-CN/realtime-media/im)：面向更完整聊天系统的即时通讯能力
+- [白板](/zh-CN/realtime-media/whiteboard)：实时会话中的共享白板与协作
 
-- 基础实时能力：RTC、RTM、IM、实时转录翻译、RTSA
-- 媒体处理与分发：录制、推流、拉流、转码、RTMP 网关、Fusion CDN
-- 协作与互动：白板、会议、直播互动、微呼叫
-- 服务端与扩展：RTC 服务端 SDK、云市场、SDK 扩展插件
-- 治理与生产：控制台、水晶球、Status Page、计费、安全
+### 处理会话内容
 
-## 推荐阅读顺序
+- [实时转录翻译](/zh-CN/realtime-media/speech-to-text)：字幕、语音理解和实时翻译
+- [录制](/zh-CN/realtime-media/recording)：留档、回放、质检和合规
+- [转码](/zh-CN/realtime-media/transcoding)：混流、布局编排和输出转换
 
-1. 如果你还在选型，先看“选择你的产品路径”。
-2. 如果你已经知道要做什么，从对应能力组进入。
-3. 如果你快要上线，直接补齐“运维治理”这一组。
+### 连接外部媒体
+
+- [推流](/zh-CN/realtime-media/media-push)：把 RTC 频道内容送到 CDN 或下游媒体系统
+- [拉流](/zh-CN/realtime-media/media-pull)：把外部在线媒体内容接入实时会话
+- [RTMP 网关](/zh-CN/realtime-media/rtmp-gateway)：把 RTMP 设备或系统接入声网
+
+### 面向大规模观看分发
+
+- [Fusion CDN](/zh-CN/realtime-media/fusion-cdn)：面向大观众量直播观看的多 CDN 分发
+
+### 设备与服务端
+
+- [RTSA](/zh-CN/realtime-media/rtsa)：摄像头、终端和嵌入式设备的实时接入能力
+- [RTC 服务端 SDK](/zh-CN/realtime-media/rtc-server-sdk)：后端直接参与媒体流发送、接收和控制
+
+## 常见阅读路径
+
+- 互动直播加大规模观看分发：[RTC](/zh-CN/realtime-media/rtc) -> [推流](/zh-CN/realtime-media/media-push) -> [Fusion CDN](/zh-CN/realtime-media/fusion-cdn)
+- 会议录制与可检索内容：[RTC](/zh-CN/realtime-media/rtc) -> [录制](/zh-CN/realtime-media/recording) -> [实时转录翻译](/zh-CN/realtime-media/speech-to-text)
+- 把外部流接入互动房间：[拉流](/zh-CN/realtime-media/media-pull) 或 [RTMP 网关](/zh-CN/realtime-media/rtmp-gateway) -> [RTC](/zh-CN/realtime-media/rtc)
+- 智能设备接入与服务端媒体处理：[RTSA](/zh-CN/realtime-media/rtsa) -> [RTC 服务端 SDK](/zh-CN/realtime-media/rtc-server-sdk)
