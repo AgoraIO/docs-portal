@@ -1,28 +1,25 @@
 ---
-title: RTC
-description: Agora RTC is the foundational voice and video capability behind calling, live interaction, meetings, and classrooms.
+title: Overview
+description: Voice & Video is the core realtime interaction capability for calling, live engagement, meetings, classrooms, and media collaboration.
 ---
 
-## What this capability is
+Voice & Video is the entry point for live audio-video interaction on Agora. It covers client-side media capture, playback, channel control, quality tuning, security, and media workflows.
 
-RTC owns the core realtime interaction path, including channels, audio, video, device access, network behavior, and session control.
-
-## Common scenarios
+## Typical scenarios
 
 - voice and video calling
 - interactive live streaming
 - online meetings
 - interactive classrooms
 
-## What the existing Shengwang docs usually contain
+## Platform support
 
-- landing page and overview
-- quickstart
-- basic features
-- advanced capabilities
-- API reference
-- best practices
+Voice & Video supports common web, mobile, desktop, and embedded realtime application paths through Agora client SDKs and related tooling.
 
-## What to read first
+## Quick entry points
 
-If this is your first RTC integration, start from the overview and quickstart. If your workload is already clear, continue into the specific audio, video, screen share, or network path you need.
+- [Integrate with AI tools](quick-start/integrate-with-ai-tools.md)
+- [Build from scratch](quick-start/build-from-scratch.md)
+- [Audio](audio)
+- [Video](video)
+- [Reference](reference)
