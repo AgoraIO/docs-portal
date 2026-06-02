@@ -240,6 +240,64 @@ const apiReferencePageTree: Root = {
           $id: 'api-reference-folder',
           children: [
             {
+              $id: 'api-reference-recipes-entry',
+              name: 'Recipes',
+              type: 'page',
+              url: '/en/api-reference/voice-ai-recipes',
+            },
+            {
+              $id: 'api-reference-recipes-folder',
+              children: [
+                {
+                  $id: 'api-reference-recipes-quickstarts-separator',
+                  name: 'Voice AI quickstarts',
+                  type: 'separator',
+                },
+                {
+                  $id: 'api-reference-recipes-python-quickstart',
+                  name: 'Python Quickstart',
+                  type: 'page',
+                  url: '/en/api-reference/recipes/python-quickstart',
+                },
+                {
+                  $id: 'api-reference-recipes-go-quickstart',
+                  name: 'Golang Quickstart',
+                  type: 'page',
+                  url: '/en/api-reference/recipes/golang-quickstart',
+                },
+                {
+                  $id: 'api-reference-recipes-integration-separator',
+                  name: 'Voice AI integration patterns',
+                  type: 'separator',
+                },
+                {
+                  $id: 'api-reference-recipes-custom-llm',
+                  name: 'Custom LLM',
+                  type: 'page',
+                  url: '/en/api-reference/recipes/custom-llm',
+                },
+                {
+                  $id: 'api-reference-recipes-telephony-separator',
+                  name: 'Telephony recipes',
+                  type: 'separator',
+                },
+                {
+                  $id: 'api-reference-recipes-ivr-agent',
+                  name: 'IVR Agent',
+                  type: 'page',
+                  url: '/en/api-reference/recipes/ivr-agent',
+                },
+              ],
+              index: {
+                $id: 'api-reference-recipes-index',
+                name: 'Recipes',
+                type: 'page',
+                url: '/en/api-reference/recipes',
+              },
+              name: 'Recipes',
+              type: 'folder',
+            },
+            {
               $id: 'api-reference-conversational-ai-folder',
               children: [
                 {
@@ -399,9 +457,6 @@ describe('loadDocsPagePayload', () => {
         kind: 'mdx',
       },
       breadcrumb: [
-        {
-          title: 'Get started',
-        },
         {
           title: 'About Agora',
           url: '/en/introduction/about-agora',
@@ -719,6 +774,55 @@ describe('loadDocsPagePayload', () => {
     });
   });
 
+  it('redirects the Recipes path entry to the scoped recipes tree', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', ['voice-ai-recipes']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/recipes',
+    });
+  });
+
+  it('keeps Recipes visible in the API Reference root sidebar while hiding the legacy alias', async () => {
+    const page = createPage();
+    mockedGetPage.mockReturnValue({
+      ...page,
+      path: 'en/api-reference/index.md',
+      slugs: ['en', 'api-reference', 'index'],
+      url: '/en/api-reference',
+      data: {
+        ...page.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/api-reference/index.md',
+          path: 'en/api-reference/index.md',
+        },
+        title: 'API Reference',
+      },
+    });
+    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+
+    const payload = await loadDocsPagePayload('en', 'api-reference', []);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+      expect.arrayContaining([
+        '/en/api-reference',
+        '/en/api-reference/recipes',
+        '/en/api-reference/conversational-ai',
+      ]),
+    );
+    expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
+      expect.arrayContaining([
+        '/en/api-reference/voice-ai-recipes',
+        '/en/api-reference/recipes/python-quickstart',
+        '/en/api-reference/recipes/custom-llm',
+        '/en/api-reference/recipes/ivr-agent',
+      ]),
+    );
+  });
+
   it('redirects moved Device Kit docs pages to their new product paths', async () => {
     await expect(
       loadDocsPagePayload('en', 'ai', ['device-kit', 'start-here', 'enable-services']),
@@ -784,6 +888,52 @@ describe('loadDocsPagePayload', () => {
           type: 'page',
           url: '/en/ai/choose-your-path/quickstart-device-kit',
         }),
+      ]),
+    );
+  });
+
+  it('returns a scoped Recipes sidebar with a Back to Reference header', async () => {
+    const page = createPage();
+    mockedGetPage.mockReturnValue({
+      ...page,
+      path: 'en/api-reference/recipes/index.md',
+      slugs: ['en', 'api-reference', 'recipes', 'index'],
+      url: '/en/api-reference/recipes',
+      data: {
+        ...page.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/api-reference/recipes/index.md',
+          path: 'en/api-reference/recipes/index.md',
+        },
+        title: 'Recipes',
+      },
+    });
+    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+
+    const payload = await loadDocsPagePayload('en', 'api-reference', ['recipes']);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(payload.sidebarHeader).toEqual({
+      backHref: '/en/api-reference',
+      backLabel: 'Back to Reference',
+      title: 'Recipes',
+    });
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+      expect.arrayContaining([
+        '/en/api-reference/recipes',
+        '/en/api-reference/recipes/python-quickstart',
+        '/en/api-reference/recipes/golang-quickstart',
+        '/en/api-reference/recipes/custom-llm',
+        '/en/api-reference/recipes/ivr-agent',
+      ]),
+    );
+    expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
+      expect.arrayContaining([
+        '/en/api-reference/voice-ai-recipes',
+        '/en/api-reference/conversational-ai',
       ]),
     );
   });

@@ -1,0 +1,107 @@
+---
+title: Recipes
+description: Browse runnable examples and implementation patterns across Agora products.
+---
+
+Agora Recipes is a growing catalog of runnable examples, integration patterns, and end-to-end references across Agora products.
+
+Today the catalog starts with Voice AI. More product collections can live on this page alongside it, grouped by product first and by implementation task second.
+
+## Product collections
+
+<CardGrid>
+  <FeatureCard title="Voice AI">
+    The first collection focuses on conversational agents and voice workflows.
+    Right now this collection covers quickstarts, integration patterns, and fuller use cases. As new product families add recipes, they can appear alongside Voice AI in the same catalog.
+  </FeatureCard>
+</CardGrid>
+
+## Browse all recipes
+
+<RecipesCatalog
+  allCategoriesLabel="All recipe types"
+  allProductsLabel="All products"
+  allStacksLabel="All stacks"
+  categoryFilterLabel="Recipe type"
+  clearFiltersLabel="Clear filters"
+  emptyMessage="No recipes match the current filters."
+  items={[
+    {
+      category: "Quickstart",
+      description: "The default server-side starting point for a runnable Agora voice agent.",
+      href: "/en/api-reference/recipes/python-quickstart",
+      product: "Voice AI",
+      stack: "Python",
+      title: "Python Quickstart",
+      tone: "blue",
+    },
+    {
+      category: "Quickstart",
+      description: "A backend-first path when your team already builds services in Go.",
+      href: "/en/api-reference/recipes/golang-quickstart",
+      product: "Voice AI",
+      stack: "Go",
+      title: "Golang Quickstart",
+      tone: "green",
+    },
+    {
+      category: "Quickstart",
+      description: "A web-facing starter when you want to validate browser UX quickly.",
+      href: "/en/api-reference/recipes/nextjs-quickstart",
+      product: "Voice AI",
+      stack: "Next.js",
+      title: "Next.js Quickstart",
+      tone: "purple",
+    },
+    {
+      category: "Integration pattern",
+      description: "Replace the default model path with your own LLM integration.",
+      href: "/en/api-reference/recipes/custom-llm",
+      product: "Voice AI",
+      stack: "Python",
+      title: "Custom LLM",
+      tone: "sand",
+    },
+    {
+      category: "Integration pattern",
+      description: "Change how audio modalities move through the agent pipeline.",
+      href: "/en/api-reference/recipes/custom-modalities",
+      product: "Voice AI",
+      stack: "Audio",
+      title: "Custom Modalities",
+      tone: "blue",
+    },
+    {
+      category: "Use case",
+      description: "A wellness-oriented conversational experience with clearer product framing.",
+      href: "/en/api-reference/recipes/wellness-coach",
+      product: "Voice AI",
+      stack: "Python",
+      title: "Wellness Coach",
+      tone: "pink",
+    },
+    {
+      category: "Use case",
+      description: "A biomarker-focused workflow that layers domain logic onto voice interactions.",
+      href: "/en/api-reference/recipes/thymia-biomarkers",
+      product: "Voice AI",
+      stack: "Healthcare",
+      title: "Thymia Biomarkers",
+      tone: "green",
+    },
+  ]}
+  productFilterLabel="Product"
+  searchPlaceholder="Search recipes by name, stack, or use case"
+  stackFilterLabel="Stack"
+/>
+
+## Related resources
+
+<CardGrid>
+  <FeatureCard title="Voice AI Recipes repository">
+    [Browse the source repository](https://github.com/AgoraIO-Community/voice-ai-recipes) to inspect recipe metadata and upstream catalog structure.
+  </FeatureCard>
+  <FeatureCard title="Standalone catalog">
+    [Open the standalone recipes catalog](https://v0-voice-ai-recipes.vercel.app) to compare the current hub page with the dedicated catalog experience.
+  </FeatureCard>
+</CardGrid>

@@ -26,6 +26,8 @@ import {
   isValidElement,
   type ReactElement,
   type ReactNode,
+  useDeferredValue,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -36,6 +38,7 @@ import {
   TabsTrigger as UiTabsTrigger,
 } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
+import { scrollDocsHashTarget } from '@/lib/docs-hash';
 import { normalizeDocsHref } from '@/lib/docs-link-normalize';
 
 function Tabs(props: React.ComponentProps<typeof UiTabs>) {
@@ -401,6 +404,7 @@ export function getMDXComponents(
     CalloutTitle,
     CardGrid,
     FeatureCard,
+    RecipesCatalog,
     SolutionCard,
     SolutionCardGrid,
     OverviewToolkits,
@@ -437,7 +441,23 @@ function createDocsAnchor(contentPath?: string) {
         ? normalizeDocsHref(href, { contentPath }).href
         : href;
 
-    return <a href={normalizedHref} {...props} />;
+    return (
+      <a
+        href={normalizedHref}
+        onClick={(event) => {
+          if (
+            typeof normalizedHref === 'string' &&
+            normalizedHref.startsWith('#')
+          ) {
+            event.preventDefault();
+            scrollDocsHashTarget(normalizedHref);
+          }
+
+          props.onClick?.(event);
+        }}
+        {...props}
+      />
+    );
   }
 
   return DocsAnchor;
@@ -639,6 +659,17 @@ type SolutionCardTone =
   | 'purple'
   | 'sand';
 
+type RecipeCatalogItem = {
+  category: string;
+  description: string;
+  href: string;
+  product: string;
+  stack?: string;
+  tags?: string[];
+  title: string;
+  tone?: SolutionCardTone;
+};
+
 function SolutionCard({
   description,
   href,
@@ -686,6 +717,229 @@ function SolutionCard({
       ) : null}
     </a>
   );
+}
+
+function RecipesCatalog({
+  allCategoriesLabel,
+  allProductsLabel,
+  allStacksLabel,
+  categoryFilterLabel,
+  clearFiltersLabel,
+  emptyMessage,
+  items,
+  productFilterLabel,
+  searchPlaceholder,
+  stackFilterLabel,
+}: {
+  allCategoriesLabel: string;
+  allProductsLabel: string;
+  allStacksLabel: string;
+  categoryFilterLabel: string;
+  clearFiltersLabel: string;
+  emptyMessage: string;
+  items: RecipeCatalogItem[];
+  productFilterLabel: string;
+  searchPlaceholder: string;
+  stackFilterLabel: string;
+}) {
+  const [query, setQuery] = useState('');
+  const [activeProduct, setActiveProduct] = useState(allProductsLabel);
+  const [activeCategory, setActiveCategory] = useState(allCategoriesLabel);
+  const [activeStack, setActiveStack] = useState(allStacksLabel);
+  const deferredQuery = useDeferredValue(query);
+
+  const products = useMemo(
+    () => [allProductsLabel, ...getUniqueValues(items.map((item) => item.product))],
+    [allProductsLabel, items],
+  );
+  const categories = useMemo(
+    () => [
+      allCategoriesLabel,
+      ...getUniqueValues(items.map((item) => item.category)),
+    ],
+    [allCategoriesLabel, items],
+  );
+  const stacks = useMemo(
+    () => [
+      allStacksLabel,
+      ...getUniqueValues(items.map((item) => item.stack).filter(Boolean)),
+    ],
+    [allStacksLabel, items],
+  );
+
+  const filteredItems = useMemo(() => {
+    const normalizedQuery = normalizeRecipeFilterValue(deferredQuery);
+
+    return items.filter((item) => {
+      if (
+        activeProduct !== allProductsLabel &&
+        item.product !== activeProduct
+      ) {
+        return false;
+      }
+
+      if (
+        activeCategory !== allCategoriesLabel &&
+        item.category !== activeCategory
+      ) {
+        return false;
+      }
+
+      if (
+        activeStack !== allStacksLabel &&
+        (item.stack ?? '') !== activeStack
+      ) {
+        return false;
+      }
+
+      if (!normalizedQuery) {
+        return true;
+      }
+
+      const haystack = normalizeRecipeFilterValue(
+        [
+          item.title,
+          item.description,
+          item.product,
+          item.category,
+          item.stack,
+          ...(item.tags ?? []),
+        ]
+          .filter(Boolean)
+          .join(' '),
+      );
+
+      return haystack.includes(normalizedQuery);
+    });
+  }, [
+    activeCategory,
+    activeProduct,
+    activeStack,
+    allCategoriesLabel,
+    allProductsLabel,
+    allStacksLabel,
+    deferredQuery,
+    items,
+  ]);
+
+  const hasActiveFilters =
+    query.length > 0 ||
+    activeProduct !== allProductsLabel ||
+    activeCategory !== allCategoriesLabel ||
+    activeStack !== allStacksLabel;
+
+  return (
+    <section className="not-prose recipes-catalog">
+      <div className="recipes-catalog-toolbar">
+        <label className="recipes-catalog-search">
+          <span className="sr-only">{searchPlaceholder}</span>
+          <input
+            className="recipes-catalog-search-input"
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={searchPlaceholder}
+            type="search"
+            value={query}
+          />
+        </label>
+        {hasActiveFilters ? (
+          <button
+            className="recipes-catalog-clear"
+            onClick={() => {
+              setQuery('');
+              setActiveProduct(allProductsLabel);
+              setActiveCategory(allCategoriesLabel);
+              setActiveStack(allStacksLabel);
+            }}
+            type="button"
+          >
+            {clearFiltersLabel}
+          </button>
+        ) : null}
+      </div>
+      <RecipesCatalogFilterGroup
+        activeValue={activeProduct}
+        label={productFilterLabel}
+        onSelect={setActiveProduct}
+        values={products}
+      />
+      <RecipesCatalogFilterGroup
+        activeValue={activeCategory}
+        label={categoryFilterLabel}
+        onSelect={setActiveCategory}
+        values={categories}
+      />
+      <RecipesCatalogFilterGroup
+        activeValue={activeStack}
+        label={stackFilterLabel}
+        onSelect={setActiveStack}
+        values={stacks}
+      />
+      {filteredItems.length > 0 ? (
+        <section
+          className="solution-card-grid recipes-catalog-grid"
+          data-size="small"
+        >
+          {filteredItems.map((item) => (
+            <SolutionCard
+              description={item.description}
+              href={item.href}
+              key={item.href}
+              size="small"
+              tags={[
+                item.product,
+                item.category,
+                ...(item.stack ? [item.stack] : []),
+                ...(item.tags ?? []),
+              ]}
+              title={item.title}
+              tone={item.tone ?? 'blue'}
+            />
+          ))}
+        </section>
+      ) : (
+        <div className="recipes-catalog-empty">{emptyMessage}</div>
+      )}
+    </section>
+  );
+}
+
+function RecipesCatalogFilterGroup({
+  activeValue,
+  label,
+  onSelect,
+  values,
+}: {
+  activeValue: string;
+  label: string;
+  onSelect: (value: string) => void;
+  values: string[];
+}) {
+  return (
+    <div className="recipes-catalog-filter-group">
+      <p className="recipes-catalog-filter-label">{label}</p>
+      <div className="recipes-catalog-filter-values">
+        {values.map((value) => (
+          <button
+            className="recipes-catalog-filter-chip"
+            data-active={value === activeValue}
+            key={value}
+            onClick={() => onSelect(value)}
+            type="button"
+          >
+            {value}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function getUniqueValues(values: Array<string | undefined>) {
+  return [...new Set(values.filter((value): value is string => Boolean(value)))];
+}
+
+function normalizeRecipeFilterValue(value: string) {
+  return value.trim().toLowerCase();
 }
 
 function SolutionCardIcon({ kind }: { kind: SolutionCardIconKind }) {
@@ -750,6 +1004,12 @@ function OverviewSpotlightCard({
       data-size={size}
       data-variant={variant}
       href={href}
+      onClick={(event) => {
+        if (href.startsWith('#')) {
+          event.preventDefault();
+          scrollDocsHashTarget(href);
+        }
+      }}
     >
       <div aria-hidden="true" className="overview-spotlight-media">
         <div className="overview-spotlight-window">
