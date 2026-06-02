@@ -301,10 +301,10 @@ describe('docs tree helpers', () => {
             type: 'separator',
           },
           {
-            $id: 'build-custom-llm',
-            name: 'Custom LLM',
+            $id: 'build-filler-words',
+            name: 'Fill response silence',
             type: 'page',
-            url: '/en/ai/build/custom-llm',
+            url: '/en/ai/build/filler-words',
           },
         ],
         name: 'Build',
@@ -336,10 +336,10 @@ describe('docs tree helpers', () => {
           {
             children: [
               {
-                id: '/en/ai/build/custom-llm',
-                title: 'Custom LLM',
+                id: '/en/ai/build/filler-words',
+                title: 'Fill response silence',
                 type: 'page',
-                url: '/en/ai/build/custom-llm',
+                url: '/en/ai/build/filler-words',
               },
             ],
             collapsible: false,

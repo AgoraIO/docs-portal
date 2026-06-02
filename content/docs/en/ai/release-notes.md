@@ -47,7 +47,7 @@ This release includes the following enhancements:
 
     * `onAgentSpeakingChanged`: Listen for changes in the agent's speaking state to monitor when the agent starts or stops playing back speech.
 
-* **Added `name` field to all [NCS event](../build/event-types.md) payloads**
+* **Added `name` field to all [NCS event](reference/event-types.md) payloads**
 
     Returns the agent name provided when starting the agent.
 
@@ -88,11 +88,11 @@ This release introduces the following changes to the RESTful API.
         - `mllm.style` 
         - `mllm.create_response` and `mllm.interrupt_response` for OpenAI Realtime API.
 
-* Changes to [**Notification event types**](../build/event-types.md)
+* Changes to [**Notification event types**](reference/event-types.md)
 
     * **New fields**
 
-        - Added `name` to all [NCS event payloads](../build/event-types.md). Returns the agent name provided when starting the agent.
+        - Added `name` to all [NCS event payloads](reference/event-types.md). Returns the agent name provided when starting the agent.
 
 ### v2.5
 
@@ -419,15 +419,15 @@ Included in this release:
 
     This release adds three new webhook notification event types to support metrics reporting and call-state monitoring:
 
-        - `111`: [agent metrics](../build/event-types.md#111-agent-metrics)
+        - `111`: [agent metrics](reference/event-types.md#111-agent-metrics)
             
             Notifies real-time performance metrics for each dialogue turn, including ASR, LLM, and TTS latency measurements.
 
-        - `201`: [inbound call state](../build/event-types.md#201-inbound-call-state)
+        - `201`: [inbound call state](reference/event-types.md#201-inbound-call-state)
             
             Reports state changes for incoming calls, such as when a call starts, is answered, transferred, or hung up.
 
-        - `202`: [outbound call state](../build/event-types.md#202-outbound-call-state)
+        - `202`: [outbound call state](reference/event-types.md#202-outbound-call-state)
             
             Reports state changes for outbound calls initiated by the agent, including call start, dialing, ringing, answer, and hang-up events.
 
@@ -735,7 +735,7 @@ Released on April 16, 2025.
 
     - Call the RESTful API `history` endpoint to [Retrieve agent history](../../api-reference/conversational-ai/rest-api/agent/history.md).
 
-    - Subscribe to the [agent history event](../build/event-types.md#103-agent-history) through the [Agora message notification service](../build/event-notifications.md). When the agent stops, Agora automatically sends the agent's history to your business server through a Webhook callback.
+    - Subscribe to the [agent history event](reference/event-types.md#103-agent-history) through the [Agora message notification service](build/event-notifications.md). When the agent stops, Agora automatically sends the agent's history to your business server through a Webhook callback.
 
 #### Improvements
 

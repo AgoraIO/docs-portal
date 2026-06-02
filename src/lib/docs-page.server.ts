@@ -347,7 +347,10 @@ function resolveAiDocsRedirect(
   const normalizedPath = slugSegments.join('/');
 
   const redirects: Record<string, string> = {
-    'build/code-first-architecture': `/${locale}/ai/reference/code-first-architecture`,
+    'build/code-first-architecture': `/${locale}/ai/build/architecture`,
+    'build/event-types': `/${locale}/ai/reference/event-types`,
+    'reference/code-first-architecture': `/${locale}/ai/build/architecture`,
+    'reference/architecture': `/${locale}/ai/build/architecture`,
     'best-practices/filler-words': `/${locale}/ai/build/filler-words`,
   };
 

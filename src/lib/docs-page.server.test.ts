@@ -835,7 +835,25 @@ describe('loadDocsPagePayload', () => {
     await expect(
       loadDocsPagePayload('en', 'ai', ['build', 'code-first-architecture']),
     ).resolves.toEqual({
-      redirectUrl: '/en/ai/reference/code-first-architecture',
+      redirectUrl: '/en/ai/build/architecture',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['reference', 'code-first-architecture']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/build/architecture',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['reference', 'architecture']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/build/architecture',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['build', 'event-types']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/reference/event-types',
     });
 
     await expect(

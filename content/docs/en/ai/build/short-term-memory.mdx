@@ -1,5 +1,5 @@
 ---
-title: Integrate short-term memory
+title: Keep conversation context across turns
 description: Cache the context of the current conversation in short-term memory to ensure that the agent can coherently understand and respond to the user's continuous input.
 ---
 Short-term memory enables your conversational agent to maintain context and coherence by storing structured conversation data during a session. This includes not only message content and roles, but also turn tracking, interruption handling, timestamps, and source metadata.
@@ -123,7 +123,7 @@ Conversational AI Engine provides the following methods to access short-term mem
 
 * **During agent runtime**: Call the [Retrieve agent history](../../api-reference/conversational-ai/rest-api/agent/history.md) API to retrieve the agent's complete short-term memory in JSON format. This API returns all short-term memory stored during the agent's lifecycle.
 
-* **After agent stops**: Agora sends short-term memory to your business server through the message notification service. For details, see [Notification event types](event-types.md#103-agent-history).
+* **After agent stops**: Agora sends short-term memory to your business server through the message notification service. For details, see [Notification event types](../reference/event-types.md#103-agent-history).
 
 ## Pass memory content to the LLM
 

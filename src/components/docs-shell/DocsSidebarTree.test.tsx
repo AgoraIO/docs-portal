@@ -497,7 +497,7 @@ describe('DocsSidebarTree', () => {
         children: [
           {
             id: '/en/ai/best-practices/audio-setup',
-            title: 'Set optimal audio parameters',
+            title: 'Optimize audio quality',
             type: 'page',
             url: '/en/ai/best-practices/audio-setup',
           },
@@ -514,7 +514,7 @@ describe('DocsSidebarTree', () => {
       await screen.findByRole('button', { name: /Harden and optimize/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Set optimal audio parameters' }),
+      screen.getByRole('link', { name: 'Optimize audio quality' }),
     ).toBeInTheDocument();
   });
 
@@ -540,14 +540,14 @@ describe('DocsSidebarTree', () => {
             children: [
               {
                 id: '/en/ai/build/short-term-memory',
-                title: 'Short-term memory',
+                title: 'Keep conversation context across turns',
                 type: 'page',
                 url: '/en/ai/build/short-term-memory',
               },
             ],
             collapsible: false,
-            id: 'separator-Add context and memory',
-            title: 'Add context and memory',
+            id: 'separator-Shape the conversation',
+            title: 'Shape the conversation',
             type: 'section',
           },
         ],
@@ -563,14 +563,16 @@ describe('DocsSidebarTree', () => {
       name: /Create and connect an agent/i,
     });
     await screen.findByRole('button', {
-      name: /Add context and memory/i,
+      name: /Shape the conversation/i,
     });
 
     expect(
       await screen.findByRole('link', { name: 'Start and stop an agent' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Short-term memory' }),
+      screen.getByRole('link', {
+        name: 'Keep conversation context across turns',
+      }),
     ).toBeInTheDocument();
 
     fireEvent.click(toggle);
@@ -615,5 +617,84 @@ describe('DocsSidebarTree', () => {
         name: 'Build a backend and client from scratch',
       }),
     ).not.toBeInTheDocument();
+  });
+
+  it('renders updated task-oriented titles from docs metadata', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [
+              {
+                id: '/en/ai/build/architecture',
+                title: 'Voice agent app architecture',
+                type: 'page',
+                url: '/en/ai/build/architecture',
+              },
+              {
+                id: '/en/ai/build/filler-words',
+                title: 'Fill response silence',
+                type: 'page',
+                url: '/en/ai/build/filler-words',
+              },
+              {
+                id: '/en/ai/build/custom-llm',
+                title: 'Connect your own LLM service',
+                type: 'page',
+                url: '/en/ai/build/custom-llm',
+              },
+              {
+                id: '/en/ai/build/webhooks',
+                title: 'Receive webhook agent events',
+                type: 'page',
+                url: '/en/ai/build/webhooks',
+              },
+              {
+                id: '/en/ai/build/transcripts',
+                title: 'Display live transcripts',
+                type: 'page',
+                url: '/en/ai/build/transcripts',
+              },
+              {
+                id: '/en/ai/best-practices/audio-setup',
+                title: 'Optimize audio quality',
+                type: 'page',
+                url: '/en/ai/best-practices/audio-setup',
+              },
+            ],
+            collapsible: true,
+            id: 'separator-Create and connect an agent',
+            title: 'Create and connect an agent',
+            type: 'section',
+          },
+        ],
+        id: 'build',
+        title: 'Build',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/ai/build/architecture');
+
+    expect(
+      await screen.findByRole('link', {
+        name: 'Voice agent app architecture',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Fill response silence' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Connect your own LLM service' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Receive webhook agent events' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Display live transcripts' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Optimize audio quality' }),
+    ).toBeInTheDocument();
   });
 });
