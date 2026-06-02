@@ -61,6 +61,73 @@ content/docs/zh-CN/realtime-media/rtm2/javascript/...
 
 Do not keep `<PlatformFilter>` or equivalent runtime filtering. Code-language examples may use tabs/directives when they describe one conceptual page.
 
+Same-page guide variants should use the existing Fumadocs-compatible tabs:
+
+```mdx
+<Tabs defaultValue="android" groupId="platform" persist>
+  ...
+</Tabs>
+```
+
+Generated code tabs may use `tabGroup`, which maps to `CodeBlockTabs` with persistence:
+
+````mdx
+```kotlin tab="Android" tabGroup="platform"
+```
+````
+
+Do not introduce custom `PlatformTabs` components for migrations.
+
+## Navigation Scopes And Versions
+
+Use `navScope` in `meta.json` when a product or platform folder needs independent left navigation:
+
+```json
+{
+  "title": "RTC",
+  "navScope": {},
+  "pages": ["index", "android"]
+}
+```
+
+If the scope is versioned, declare versions on the scope folder and keep the real page order inside each version folder:
+
+```json
+{
+  "title": "Android API Reference",
+  "navScope": {
+    "defaultVersion": "current",
+    "versions": [
+      { "id": "current", "label": "v4.6.2", "path": "(current)" },
+      { "id": "4.6.0", "label": "v4.6.0", "path": "4.6.0" }
+    ]
+  },
+  "pages": ["(current)", "4.6.0"]
+}
+```
+
+For API references whose versions differ by platform, place versions under the platform:
+
+```text
+content/docs/en/api-reference/rtc/android/
+  meta.json
+  (current)/
+    meta.json
+    overview.mdx
+  4.6.0/
+    meta.json
+    overview.mdx
+```
+
+Routes:
+
+```text
+/en/api-reference/rtc/android/overview
+/en/api-reference/rtc/android/4.6.0/overview
+```
+
+Do not add relative `$schema` paths to JSON content files. Fumadocs validates `meta.json` through the repo-local schema configured in `source.config.ts`.
+
 ## OpenAPI
 
 OpenAPI YAML/JSON is source data. Preserve it for the OpenAPI lane instead of flattening it into ad hoc Markdown.

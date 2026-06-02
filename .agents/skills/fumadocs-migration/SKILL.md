@@ -14,7 +14,12 @@ Use this skill to migrate legacy docs from `/Users/czhen/Documents/GitHub/AgoraI
 - Rendering components are implementation details; content syntax must be standard Markdown, MDX native, or directive/include syntax.
 - Shared content is allowed, but use Fumadocs include or a project-approved directive, not legacy `@shared` imports.
 - Platform/product variants must be statically expanded into files, folders, or navigation. Do not keep runtime platform filters.
+- Independent product or platform navigation must be declared with `navScope` in `meta.json`; do not hard-code scoped sidebars in docs-shell code.
+- When API reference versions differ by platform, place version folders under the platform folder, not under the product root.
+- Use `(current)` for current-version clean URLs when a versioned scope should omit the version segment.
+- Same-page platform variants should use existing `Tabs` or generated `CodeBlockTabs` with `groupId` and `persist`; do not create custom platform tab components.
 - Do not add legacy compatibility plugins, old component maps, or Docusaurus runtime variable shims.
+- Do not add relative JSON `$schema` paths to migrated `meta.json` files.
 - `bun run types:check` is the minimum compile gate before claiming migrated content is complete.
 - For generated HTML API references, rebuild the legacy TOC as real folders plus `meta.json`; do not flatten a nested navigation tree unless the user explicitly asks for a flat sidebar.
 - For generated HTML API references, treat all non-code inline HTML as MDX-unsafe until proven otherwise. Escape literal `<`, `>`, `{`, and `}` outside code fences and preserve inline links/code spans during normalization.
@@ -39,10 +44,11 @@ Use this skill to migrate legacy docs from `/Users/czhen/Documents/GitHub/AgoraI
    - Newly approved runtime widgets only when static syntax cannot represent the content.
 5. For generated HTML API references, extract and freeze the legacy `nav.toc` tree before writing files. Use that tree to decide target folders, folder index pages, and every `meta.json`.
 6. Update or create `meta.json` from legacy sidebar order. Do not migrate executable JS metadata.
-7. Mark deferred generated API, unresolved OpenAPI lane work, and missing standards in the audit report.
-8. Verify with `bun run types:check`; add `bun run docs:links`, `bun run test`, or `bun run build` when the migration touches links, code, routing, shell behavior, or generated API publication.
-9. If the repo build expects OpenAPI assets under `public/openapi/**`, run the sync step before the final build so prerender can fetch `/openapi/**`.
-10. If the default shell runtime lacks the required Node/Bun version, use the approved workspace runtime and still complete the equivalent `fumadocs-mdx`, `tsc --noEmit`, asset sync, and build checks whenever possible.
+7. For independent or versioned navigation, update `meta.json` with `navScope` and keep version folder page order inside the version folder.
+8. Mark deferred generated API, unresolved OpenAPI lane work, and missing standards in the audit report.
+9. Verify with `bun run types:check`; add `bun run docs:links`, `bun run test`, or `bun run build` when the migration touches links, code, routing, shell behavior, or generated API publication.
+10. If the repo build expects OpenAPI assets under `public/openapi/**`, run the sync step before the final build so prerender can fetch `/openapi/**`.
+11. If the default shell runtime lacks the required Node/Bun version, use the approved workspace runtime and still complete the equivalent `fumadocs-mdx`, `tsc --noEmit`, asset sync, and build checks whenever possible.
 
 ## References
 
