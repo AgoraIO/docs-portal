@@ -105,3 +105,10 @@ bun run build
 ```
 
 when the migration touches links, routes, shared code, or build behavior.
+
+For generated API reference migrations, expand verification with:
+
+- Check that the rebuilt folder tree matches the legacy TOC hierarchy.
+- Spot-check notes, definition lists, and return-value sections for broken inline flow or flattened nested bullets.
+- Spot-check legacy `xref` links in notes and parameter descriptions to ensure they remain clickable.
+- If the repo publishes OpenAPI assets, sync `content/openapi/**` to `public/openapi/**` before the final build so prerender can fetch `/openapi/**`.

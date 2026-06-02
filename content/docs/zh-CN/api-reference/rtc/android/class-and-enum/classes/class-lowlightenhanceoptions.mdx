@@ -1,0 +1,56 @@
+---
+title: "LowLightEnhanceOptions"
+description: "用于配置弱光增强功能。"
+---
+<a id="class_lowlightenhanceoptions__prototype"></a>
+
+```java
+public class LowLightEnhanceOptions {
+  public static final int LOW_LIGHT_ENHANCE_AUTO = 0;
+  public static final int LOW_LIGHT_ENHANCE_MANUAL = 1;
+  public static final int LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY = 0;
+  public static final int LOW_LIGHT_ENHANCE_LEVEL_FAST = 1;
+  public int lowlightEnhanceMode;
+  public int lowlightEnhanceLevel;
+}
+```
+
+<a id="class_lowlightenhanceoptions__detailed_desc"></a>
+
+### `自从`
+
+自 v3.6.2 版本新增。
+
+<a id="class_lowlightenhanceoptions__parameters"></a>
+
+## 属性
+
+### `LOW_LIGHT_ENHANCE_AUTO`
+
+`0`：（默认）自动模式。SDK 会根据环境光线自动启用或关闭弱光增强功能，以补偿亮度或防止过曝。
+
+### `LOW_LIGHT_ENHANCE_MANUAL`
+
+`1`：手动模式。你需要手动启用或关闭弱光增强功能。
+
+### `LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY`
+
+`0`：（默认）优先保证弱光增强期间的视频质量。处理图像的亮度、细节和噪声，性能开销适中，处理速度适中，整体画质最佳。
+
+### `LOW_LIGHT_ENHANCE_LEVEL_FAST`
+
+`1`：优先保证弱光增强期间的性能。处理图像的亮度和细节，处理速度更快。
+
+### `lowlightEnhanceMode`
+
+弱光增强的工作模式。
+
+- LOW_LIGHT_ENHANCE_AUTO (0)：（默认）自动模式。SDK 会根据环境光线自动启用或关闭弱光增强功能，以补偿亮度或防止过曝。
+- LOW_LIGHT_ENHANCE_MANUAL (1)：手动模式。你需要手动启用或关闭弱光增强功能。
+
+### `lowlightEnhanceLevel`
+
+弱光增强的强度等级。
+
+- LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY (0)：（默认）优先保证弱光增强期间的视频质量。处理亮度、细节及噪声，性能开销适中，处理速度适中，整体画质最佳。
+- LOW_LIGHT_ENHANCE_LEVEL_FAST (1)：优先保证弱光增强期间的性能。处理亮度和细节，处理速度更快。

@@ -1,0 +1,885 @@
+---
+title: "API 概览"
+description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配的 API 组合，实现质量可靠的实时音视频通信。"
+---
+<a id="rtc_api_overview__toc_initialize"></a>
+
+## 初始化相关
+
+| API | 描述 |
+| --- | --- |
+| [create [1/2]](/en/api-reference/rtc/android/initialize#api_irtcengine_create) | 创建并初始化 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例。 |
+| [create [2/2]](/en/api-reference/rtc/android/initialize#api_irtcengine_initialize) | 创建并初始化 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例。 |
+| [addHandler](/en/api-reference/rtc/android/initialize#api_irtcengine_addhandler) | 添加事件处理器。 |
+| [destroy [2/2]](/en/api-reference/rtc/android/initialize#api_irtcengine_destroy1) | 销毁 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例并释放相关资源。 |
+| [destroy [1/2]](/en/api-reference/rtc/android/initialize#api_irtcengine_release) | 释放 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例。 |
+| [removeHandler](/en/api-reference/rtc/android/initialize#api_irtcengine_removehandler) | 移除指定的 [IRtcEngineEventHandler](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler) 实例。 |
+| [onEngineReleased](/en/api-reference/rtc/android/initialize#callback_irtcenginereleasecallback_onenginereleased) | [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 被释放时触发的回调。 |
+
+<a id="rtc_api_overview__toc_channel"></a>
+
+## 频道相关
+
+| API | 描述 |
+| --- | --- |
+| [setChannelProfile](/en/api-reference/rtc/android/channel#api_irtcengine_setchannelprofile) | 设置频道场景。 |
+| [joinChannel [1/2]](/en/api-reference/rtc/android/channel#api_irtcengine_joinchannel1) | 加入一个频道。 |
+| [joinChannel [2/2]](/en/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) | 加入频道并设置媒体选项。 |
+| [joinChannelEx](/en/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) | 加入一个频道。 |
+| [updateChannelMediaOptions](/en/api-reference/rtc/android/channel#api_irtcengine_updatechannelmediaoptions) | 在加入频道后更新频道媒体选项。 |
+| [updateChannelMediaOptionsEx](/en/api-reference/rtc/android/channel#api_irtcengineex_updatechannelmediaoptionsex) | 加入频道后更新频道媒体选项。 |
+| [leaveChannel [1/2]](/en/api-reference/rtc/android/channel#api_irtcengine_leavechannel) | 离开频道。 |
+| [leaveChannel [2/2]](/en/api-reference/rtc/android/channel#api_irtcengine_leavechannel2) | 设置频道选项并离开频道。 |
+| [leaveChannelEx [1/2]](/en/api-reference/rtc/android/channel#api_irtcengineex_leavechannelex) | 离开频道。 |
+| [leaveChannelEx [2/2]](/en/api-reference/rtc/android/channel#api_irtcengineex_leavechannelex2) | 设置频道参数并离开频道。 |
+| [preloadChannel](/en/api-reference/rtc/android/channel#api_irtcengine_preloadchannel) | 预加载指定频道以缩短观众加入频道的时间。 |
+| [updatePreloadChannelToken](/en/api-reference/rtc/android/channel#api_irtcengine_updatepreloadchanneltoken) | 更新用于预加载频道的通配 Token。 |
+| [renewToken](/en/api-reference/rtc/android/channel#api_irtcengine_renewtoken) | 更新 Token。 |
+| [setClientRole [1/2]](/en/api-reference/rtc/android/channel#api_irtcengine_setclientrole1) | 设置客户端实例的用户角色。 |
+| [setClientRole [2/2]](/en/api-reference/rtc/android/channel#api_irtcengine_setclientrole2) | 设置直播场景下的用户角色和观众延迟等级。 |
+| [getUserInfoByUidEx](/en/api-reference/rtc/android/channel#api_irtcengineex_getuserinfobyuidex) | 通过传入用户 ID 获取用户信息。 |
+| [onClientRoleChanged](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onclientrolechanged) | 用户角色或观众延迟级别发生变化回调。 |
+| [onClientRoleChangeFailed](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onclientrolechangefailed) | 切换用户角色失败时的回调。 |
+| [onError](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onerror) | SDK 运行期间发生错误时触发的回调。 |
+| [onJoinChannelSuccess](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) | 本地用户成功加入频道回调。 |
+| [onLeaveChannel](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onleavechannel) | 用户离开频道回调。 |
+| [onRejoinChannelSuccess](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) | 用户重新加入频道回调。 |
+| [onRenewTokenResult](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onrenewtokenresult) | [renewToken](/en/api-reference/rtc/android/channel#api_irtcengine_renewtoken) 调用结果回调。 |
+| [onRequestToken](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onrequesttoken) | Token 过期回调。 |
+| [onRtcStats](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onrtcstats) | 报告当前通话统计信息的回调。 |
+| [onTokenPrivilegeWillExpire](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) | Token 即将在 30 秒后过期时触发的回调。 |
+| [onUserJoined](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuserjoined) | 远端用户或主播加入频道回调。 |
+| [onUserOffline](/en/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuseroffline) | 远端用户或主播离开频道时触发的回调。 |
+
+<a id="rtc_api_overview__toc_publishnsubscribe"></a>
+
+## 发布和订阅
+
+| API | 描述 |
+| --- | --- |
+| [muteAllRemoteAudioStreams](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_muteallremoteaudiostreams) | 停止或恢复订阅所有远端用户的音频流。 |
+| [muteAllRemoteAudioStreamsEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_muteallremoteaudiostreamsex) | 停止或恢复订阅所有远端用户的音频流。 |
+| [muteAllRemoteVideoStreams](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_muteallremotevideostreams) | 停止或恢复订阅所有远端用户的视频流。 |
+| [muteAllRemoteVideoStreamsEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_muteallremotevideostreamsex) | 停止或恢复订阅所有远端用户的视频流。 |
+| [muteLocalAudioStream](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_mutelocalaudiostream) | 停止或恢复发布本地采集音频流。 |
+| [muteLocalAudioStreamEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_mutelocalaudiostreamex) | 停止或恢复发布本地音频流。 |
+| [muteLocalVideoStream](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_mutelocalvideostream) | 停止或恢复发布本地视频流。 |
+| [muteLocalVideoStreamEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_mutelocalvideostreamex) | 停止或恢复发布本地视频流。 |
+| [muteRemoteAudioStream](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_muteremoteaudiostream) | 停止或恢复订阅指定远端用户的音频流。 |
+| [muteRemoteAudioStreamEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_muteremoteaudiostreamex) | 停止或恢复接收指定用户的音频流。 |
+| [muteRemoteVideoStream](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_muteremotevideostream) | 停止或恢复订阅指定远端用户的视频流。 |
+| [muteRemoteVideoStreamEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_muteremotevideostreamex) | 停止或恢复接收指定用户的视频流。 |
+| [setDualStreamMode [1/2]](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_setdualstreammode) | 设置发送端的视频流模式，用于控制是否发送视频小流。 |
+| [setDualStreamMode [2/2]](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_setdualstreammode2) | 设置发送端的不同质量层级的视频流模式配置。 |
+| [setDualStreamModeEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_setdualstreammodeex) | 设置发送端的视频流模式，用于控制是否发送视频小流。 |
+| [setRemoteDefaultVideoStreamType [1/2]](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_setremotedefaultvideostreamtype) | 设置默认订阅的视频流类型。 |
+| [setRemoteVideoStreamType [1/2]](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_setremotevideostreamtype) | 设置要订阅的视频流类型。 |
+| [setRemoteVideoStreamTypeEx [1/2]](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_setremotevideostreamtypeex) | 设置要订阅的视频流类型。 |
+| [setRemoteVideoSubscriptionOptions](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_setremotevideosubscriptionoptions) | 设置订阅远端视频流的选项。 |
+| [setRemoteVideoSubscriptionOptionsEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_setremotevideosubscriptionoptionsex) | 设置订阅远端视频流的选项。 |
+| [setSubscribeAudioAllowlist](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_setsubscribeaudioallowlist) | 设置音频流订阅的白名单。 |
+| [setSubscribeAudioAllowlistEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_setsubscribeaudioallowlistex) | 设置音频流订阅的白名单。 |
+| [setSubscribeAudioBlocklist](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_setsubscribeaudioblocklist) | 设置音频流订阅的黑名单。 |
+| [setSubscribeAudioBlocklistEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_setsubscribeaudioblocklistex) | 设置音频流订阅的黑名单。 |
+| [setSubscribeVideoAllowlist](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_setsubscribevideoallowlist) | 设置视频流订阅的白名单。 |
+| [setSubscribeVideoAllowlistEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_setsubscribevideoallowlistex) | 设置视频流订阅的白名单。 |
+| [setSubscribeVideoBlocklist](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_setsubscribevideoblocklist) | 设置视频流订阅的阻止名单。 |
+| [setSubscribeVideoBlocklistEx](/en/api-reference/rtc/android/publish-and-subscribe#api_irtcengineex_setsubscribevideoblocklistex) | 设置视频流订阅的黑名单。 |
+| [onAudioPublishStateChanged](/en/api-reference/rtc/android/publish-and-subscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged) | 音频发布状态发生变化回调。 |
+| [onAudioSubscribeStateChanged](/en/api-reference/rtc/android/publish-and-subscribe#callback_irtcengineeventhandler_onaudiosubscribestatechanged) | 音频订阅状态发生变化回调。 |
+| [onVideoSubscribeStateChanged](/en/api-reference/rtc/android/publish-and-subscribe#callback_irtcengineeventhandler_onvideosubscribestatechanged) | 视频订阅状态发生变化回调。 |
+
+<a id="rtc_api_overview__toc_audio_basic"></a>
+
+## 音频基础功能
+
+| API | 描述 |
+| --- | --- |
+| [adjustPlaybackSignalVolume](/en/api-reference/rtc/android/audio/audio-basic#api_irtcengine_adjustplaybacksignalvolume) | 调节所有远端用户的本地播放音量。 |
+| [adjustUserPlaybackSignalVolume](/en/api-reference/rtc/android/audio/audio-basic#api_irtcengine_adjustuserplaybacksignalvolume) | 调节指定远端用户的播放音量。 |
+| [adjustUserPlaybackSignalVolumeEx](/en/api-reference/rtc/android/audio/audio-basic#api_irtcengineex_adjustuserplaybacksignalvolumeex) | 调整指定远端用户的播放音量。 |
+| [disableAudio](/en/api-reference/rtc/android/audio/audio-basic#api_irtcengine_disableaudio) | 禁用音频模块。 |
+| [enableAudio](/en/api-reference/rtc/android/audio/audio-basic#api_irtcengine_enableaudio) | 启用音频模块。 |
+| [enableAudioVolumeIndication](/en/api-reference/rtc/android/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) | 启用用户音量提示上报功能。 |
+| [enableAudioVolumeIndicationEx](/en/api-reference/rtc/android/audio/audio-basic#api_irtcengineex_enableaudiovolumeindicationex) | 启用用户音量提示的上报功能。 |
+| [setAudioProfile [2/2]](/en/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioprofile2) | 设置音频配置文件。 |
+| [setAudioScenario](/en/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario) | 设置音频场景。 |
+| [onActiveSpeaker](/en/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onactivespeaker) | 最活跃远端说话人回调。 |
+| [onAudioVolumeIndication](/en/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) | 报告用户音量信息的回调。 |
+| [onFirstLocalAudioFramePublished](/en/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onfirstlocalaudioframepublished) | 本地音频首帧发布回调。 |
+| [onLocalAudioStateChanged](/en/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | 本地音频流状态发生变化回调。 |
+| [onLocalAudioStats](/en/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostats) | 本地音频流统计信息回调。 |
+| [onRemoteAudioStateChanged](/en/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) | 远端音频状态发生变化回调。 |
+| [onRemoteAudioStats](/en/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats) | 报告每个远端音频流的传输层统计信息回调。 |
+| [onUserMuteAudio](/en/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) | 远端用户或主播停止或恢复发送音频流的回调。 |
+
+<a id="rtc_api_overview__toc_audio_capture"></a>
+
+## 音频采集
+
+| API | 描述 |
+| --- | --- |
+| [adjustRecordingSignalVolume](/en/api-reference/rtc/android/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume) | 调节采集音频信号的音量。 |
+| [enableInEarMonitoring [1/2]](/en/api-reference/rtc/android/audio/audio-capture#api_irtcengine_enableinearmonitoring) | 启用或关闭耳返监听。 |
+| [enableInEarMonitoring [2/2]](/en/api-reference/rtc/android/audio/audio-capture#api_irtcengine_enableinearmonitoring2) | 启用或关闭耳返监听功能。 |
+| [enableLocalAudio](/en/api-reference/rtc/android/audio/audio-capture#api_irtcengine_enablelocalaudio) | 启用或关闭本地音频采集功能。 |
+| [muteRecordingSignal](/en/api-reference/rtc/android/audio/audio-capture#api_irtcengine_muterecordingsignal) | 设置是否静音录制信号。 |
+| [setInEarMonitoringVolume](/en/api-reference/rtc/android/audio/audio-capture#api_irtcengine_setinearmonitoringvolume) | 设置耳返音量。 |
+
+<a id="rtc_api_overview__toc_audio_effect"></a>
+
+## 人声音效
+
+| API | 描述 |
+| --- | --- |
+| [enableVoiceAITuner](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_enablevoiceaituner) | 启用或关闭语音 AI 调音器。 |
+| [getAudioEffectManager](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_getaudioeffectmanager) | 获取用于管理音效文件的 `IAudioEffectManager` 实例。 |
+| [setAdvancedAudioOptions](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_setadvancedaudiooptions) | 设置高级音频选项。 |
+| [setAINSMode](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_setainsmode) | 设置是否启用 AI 降噪功能并设置降噪模式。 |
+| [setAudioEffectParameters](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_setaudioeffectparameters) | 设置 SDK 预设音效的参数。 |
+| [setAudioEffectPreset](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_setaudioeffectpreset) | 设置 SDK 预设的音效效果。 |
+| [setLocalVoiceEqualization](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_setlocalvoiceequalization) | 设置本地语音的均衡效果。 |
+| [setLocalVoiceFormant](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_setlocalvoiceformant) | 设置共振峰比例以改变人声音色。 |
+| [setLocalVoicePitch](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_setlocalvoicepitch) | 设置本地语音的音调。 |
+| [setLocalVoiceReverb](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_setlocalvoicereverb) | 设置本地语音的混响效果。 |
+| [setVoiceBeautifierParameters](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_setvoicebeautifierparameters) | 设置预设美声特效的参数。 |
+| [setVoiceBeautifierPreset](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_setvoicebeautifierpreset) | 设置预设的美声效果。 |
+| [setVoiceConversionPreset](/en/api-reference/rtc/android/audio/pre-and-post-processing/audio-effect#api_irtcengine_setvoiceconversionpreset) | 设置 SDK 预设的变声效果。 |
+
+<a id="rtc_api_overview__toc_sound_position"></a>
+
+## 听声辨位
+
+| API | 描述 |
+| --- | --- |
+| [enableSoundPositionIndication](/en/api-reference/rtc/android/audio/pre-and-post-processing/sound-position#api_irtcengine_enablesoundpositionindication) | 启用或关闭远端用户的立体声声像功能。 |
+| [setRemoteVoicePosition](/en/api-reference/rtc/android/audio/pre-and-post-processing/sound-position#api_irtcengine_setremotevoiceposition) | 设置远端用户语音的二维位置和音量。 |
+| [setRemoteVoicePositionEx](/en/api-reference/rtc/android/audio/pre-and-post-processing/sound-position#api_irtcengineex_setremotevoicepositionex) | 设置远端用户语音的二维位置和音量。 |
+
+<a id="rtc_api_overview__toc_spatial_audio"></a>
+
+## 空间音频
+
+| API | 描述 |
+| --- | --- |
+| [initialize](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine) | 初始化 [ILocalSpatialAudioEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_ilocalspatialaudioengine)。 |
+| [clearRemotePositions](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ibasespatialaudioengine_clearremotepositions) | 移除所有远端用户的空间位置。 |
+| [create](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ilocalspatialaudioengine_create_ilocalspatialaudioengine) | 创建一个 [ILocalSpatialAudioEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_ilocalspatialaudioengine) 实例。 |
+| [enableSpatialAudio](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_irtcengine_enablespatialaudio) | 启用或关闭空间音效。 |
+| [muteAllRemoteAudioStreams](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine) | 停止或恢复订阅所有远端用户的音频流。 |
+| [muteLocalAudioStream](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine) | 停止或恢复发布本地音频流。 |
+| [muteRemoteAudioStream](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine) | 停止或恢复订阅指定远端用户的音频流。 |
+| [destroy](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine) | 销毁 [ILocalSpatialAudioEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_ilocalspatialaudioengine) 实例。 |
+| [removeRemotePosition](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ilocalspatialaudioengine_removeremoteposition) | 移除指定远端用户的空间位置信息。 |
+| [setAudioRecvRange](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ibasespatialaudioengine_setaudiorecvrange) | 设置本地用户的音频接收范围。 |
+| [setDistanceUnit](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ibasespatialaudioengine_setdistanceunit) | 设置游戏引擎中每个单位距离对应的米数。 |
+| [setHeadphoneEQParameters](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_irtcengine_setheadphoneeqparameters) | 设置耳机均衡器的低频和高频参数。 |
+| [setHeadphoneEQPreset](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_irtcengine_setheadphoneeqpreset) | 设置预设的耳机均衡器效果。 |
+| [setMaxAudioRecvCount](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount) | 设置你在指定音频接收范围内可接收的最大音频流数量。 |
+| [setPlayerAttenuation](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) | 设置媒体播放器的声音衰减属性。 |
+| [setRemoteAudioAttenuation](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) | 设置指定用户的声音衰减效果。 |
+| [setRemoteUserSpatialAudioParams](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) | 设置远端用户的空间音效参数。 |
+| [setSpatialAudioParams](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_imediaplayer_setspatialaudioparams) | 启用或关闭媒体播放器的空间音效。 |
+| [setZones](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ibasespatialaudioengine_setzones) | 设置隔音区域。 |
+| [updatePlayerPositionInfo](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ibasespatialaudioengine_updateplayerpositioninfo) | 更新媒体播放器的空间位置。 |
+| [updateRemotePosition](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) | 更新指定远端用户的空间位置。 |
+| [updateSelfPosition](/en/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ibasespatialaudioengine_updateselfposition) | 更新本地用户的空间位置。 |
+
+<a id="rtc_api_overview__toc_audiomixer"></a>
+
+## 本地音频合流
+
+| API | 描述 |
+| --- | --- |
+| [startLocalAudioMixer](/en/api-reference/rtc/android/audio/pre-and-post-processing/audiomixer#api_irtcengine_startlocalaudiomixer) | 开始本地音频合流。 |
+| [stopLocalAudioMixer](/en/api-reference/rtc/android/audio/pre-and-post-processing/audiomixer#api_irtcengine_stoplocalaudiomixer) | 停止本地音频合流。 |
+| [updateLocalAudioMixerConfiguration](/en/api-reference/rtc/android/audio/pre-and-post-processing/audiomixer#api_irtcengine_updatelocalaudiomixerconfiguration) | 更新本地音频合流配置。 |
+
+<a id="rtc_api_overview__toc_audio_raw"></a>
+
+## 原始音频数据
+
+| API | 描述 |
+| --- | --- |
+| [getEarMonitoringAudioParams](/en/api-reference/rtc/android/audio/audio-raw#api_iaudioframeobserver_getearmonitoringaudioparams) | [onEarMonitoringAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调的音频格式设置方法。 |
+| [getMixedAudioParams](/en/api-reference/rtc/android/audio/audio-raw#api_iaudioframeobserver_getmixedaudioparams) | 设置 [onMixedAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调的音频格式。 |
+| [getObservedAudioFramePosition](/en/api-reference/rtc/android/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) | 设置音频数据观察位置。 |
+| [getPlaybackAudioParams](/en/api-reference/rtc/android/audio/audio-raw#api_iaudioframeobserver_getplaybackaudioparams) | [onPlaybackAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调的音频格式设置方法。 |
+| [getRecordAudioParams](/en/api-reference/rtc/android/audio/audio-raw#api_iaudioframeobserver_getrecordaudioparams) | 设置 [onRecordAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调的音频格式。 |
+| [registerAudioFrameObserver](/en/api-reference/rtc/android/audio/audio-raw#api_irtcengine_registeraudioframeobserver) | 注册音频帧观测器对象。 |
+| [setEarMonitoringAudioFrameParameters](/en/api-reference/rtc/android/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) | 设置耳返音频数据格式。 |
+| [setMixedAudioFrameParameters](/en/api-reference/rtc/android/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) | 设置混音后用于采集和播放的原始音频数据格式。 |
+| [setPlaybackAudioFrameBeforeMixingParameters [1/2]](/en/api-reference/rtc/android/audio/audio-raw#api_irtcengine_setplaybackaudioframebeforemixingparameters) | 设置混音前原始音频播放数据的格式。 |
+| [setPlaybackAudioFrameBeforeMixingParameters [2/2]](/en/api-reference/rtc/android/audio/audio-raw#api_irtcengine_setplaybackaudioframebeforemixingparameters1) | 设置 [onPlaybackAudioFrameBeforeMixing](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回音频数据的格式。 |
+| [setPlaybackAudioFrameParameters](/en/api-reference/rtc/android/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) | 设置原始音频播放数据的格式。 |
+| [setRecordingAudioFrameParameters](/en/api-reference/rtc/android/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) | 设置采集的原始音频数据格式。 |
+| [onEarMonitoringAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) | 耳返音频帧回调。 |
+| [onMixedAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) | 获取混合采集和播放的音频帧回调。 |
+| [onPlaybackAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) | 获取用于播放的原始音频帧回调。 |
+| [onPlaybackAudioFrameBeforeMixing](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) | 获取已订阅远端用户混音前的音频帧回调。 |
+| [onRecordAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) | 获取采集到的音频帧回调。 |
+
+<a id="rtc_api_overview__toc_audio_encoded"></a>
+
+## 已编码音频数据
+
+| API | 描述 |
+| --- | --- |
+| [registerAudioEncodedFrameObserver](/en/api-reference/rtc/android/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) | 注册编码音频数据的观察器。 |
+| [onMixedAudioEncodedFrame](/en/api-reference/rtc/android/audio/audio-encoded#callback_iaudioencodedframeobserver_onmixedaudioencodedframe) | 本地及所有远端用户的混音编码音频数据回调。 |
+| [onPlaybackAudioEncodedFrame](/en/api-reference/rtc/android/audio/audio-encoded#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe) | 获取所有远端用户编码音频数据的回调。 |
+| [onRecordAudioEncodedFrame](/en/api-reference/rtc/android/audio/audio-encoded#callback_iaudioencodedframeobserver_onrecordaudioencodedframe) | 本地用户编码音频数据回调。 |
+
+<a id="rtc_api_overview__toc_audio_custom_capturenrendering"></a>
+
+## 自定义音频采集和渲染
+
+| API | 描述 |
+| --- | --- |
+| [adjustCustomAudioPlayoutVolume](/en/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) | 调节本地播放的自定义音频轨道的音量。 |
+| [adjustCustomAudioPublishVolume](/en/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudiopublishvolume) | 调节远端播放的自定义音频轨道的音量。 |
+| [createCustomAudioTrack](/en/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) | 创建一个自定义音频轨道。 |
+| [destroyCustomAudioTrack](/en/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_destroycustomaudiotrack) | 销毁指定的音频轨道。 |
+| [enableCustomAudioLocalPlayback](/en/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_enablecustomaudiolocalplayback) | 设置是否启用外部音频源的本地播放。 |
+| [pullPlaybackAudioFrame [1/2]](/en/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_pullaudioframe) | 拉取远端混音后的音频数据用于播放。 |
+| [pullPlaybackAudioFrame [2/2]](/en/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_pullaudioframe2) | 拉取远端音频数据。 |
+| [pushExternalAudioFrame](/en/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_pushaudioframe2) | 将外部音频帧推送到 SDK。 |
+| [setExternalAudioSink](/en/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) | 设置外部音频渲染器。 |
+
+<a id="rtc_api_overview__toc_audio_spectrum"></a>
+
+## 音频频谱
+
+| API | 描述 |
+| --- | --- |
+| [disableAudioSpectrumMonitor](/en/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_disableaudiospectrummonitor) | 禁用音频频谱监测。 |
+| [enableAudioSpectrumMonitor](/en/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) | 开启音频频谱监测功能。 |
+| [registerAudioSpectrumObserver](/en/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) | 注册音频频谱观察器。 |
+| [unRegisterAudioSpectrumObserver](/en/api-reference/rtc/android/audio/audio-spectrum#api_irtcengine_unregisteraudiospectrumobserver) | 取消注册音频频谱观察器。 |
+| [onLocalAudioSpectrum](/en/api-reference/rtc/android/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) | 本地音频频谱数据回调。 |
+| [onRemoteAudioSpectrum](/en/api-reference/rtc/android/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) | 远端音频频谱数据回调。 |
+
+<a id="rtc_api_overview__toc_video_basic"></a>
+
+## 视频基础功能
+
+| API | 描述 |
+| --- | --- |
+| [disableVideo](/en/api-reference/rtc/android/video/video-basic#api_irtcengine_disablevideo) | 关闭视频模块。 |
+| [enableLocalVideo](/en/api-reference/rtc/android/video/video-basic#api_irtcengine_enablelocalvideo) | 启用或禁用本地视频采集。 |
+| [enableVideo](/en/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo) | 启用视频模块。 |
+| [setVideoEncoderConfiguration](/en/api-reference/rtc/android/video/video-basic#api_irtcengine_setvideoencoderconfiguration) | 设置本地视频的编码器配置。 |
+| [setVideoEncoderConfigurationEx](/en/api-reference/rtc/android/video/video-basic#api_irtcengineex_setvideoencoderconfigurationex) | 设置本地视频的编码器配置。 |
+| [setVideoScenario](/en/api-reference/rtc/android/video/video-basic#api_irtcengine_setvideoscenario) | 设置视频应用场景。 |
+| [startPreview [1/2]](/en/api-reference/rtc/android/video/video-basic#api_irtcengine_startpreview) | 启用本地视频预览。 |
+| [startPreview [2/2]](/en/api-reference/rtc/android/video/video-basic#api_irtcengine_startpreview2) | 启用本地视频预览，并指定用于预览的视频源。 |
+| [stopPreview [1/2]](/en/api-reference/rtc/android/video/video-basic#api_irtcengine_stoppreview) | 停止本地视频预览。 |
+| [stopPreview [2/2]](/en/api-reference/rtc/android/video/video-basic#api_irtcengine_stoppreview2) | 停止本地视频预览。 |
+| [onFirstLocalVideoFrame](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframe) | 本地视频首帧在本地视图中显示时触发的回调。 |
+| [onFirstLocalVideoFramePublished](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframepublished) | 本地视频首帧发布回调。 |
+| [onFirstRemoteVideoFrame](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideoframe) | 远端视频首帧显示回调。 |
+| [onLocalVideoEvent](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideoevent) | 本地视频事件发生时触发的回调。 |
+| [onLocalVideoStateChanged](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) | 本地视频流状态发生变化回调。 |
+| [onLocalVideoStats](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) | 本地视频流统计信息回调。 |
+| [onRemoteVideoStateChanged](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) | 远端视频状态发生改变回调。 |
+| [onRemoteVideoStats](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) | 报告每个远端用户发送的视频流的统计信息回调。 |
+| [onUserEnableVideo](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onuserenablevideo) | 远端用户启用或关闭视频模块的回调。 |
+| [onUserMuteVideo](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) | 远端视频状态发生改变回调。 |
+| [onVideoPublishStateChanged](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) | 视频发布状态发生变化回调。 |
+| [onVideoSizeChanged](/en/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged) | 指定用户的视频尺寸或旋转信息发生变化回调。 |
+
+<a id="rtc_api_overview__toc_camera_capture"></a>
+
+## 摄像头采集
+
+| API | 描述 |
+| --- | --- |
+| [startCameraCapture](/en/api-reference/rtc/android/video/camera-capture#api_irtcengine_startcameracapture) | 开始视频采集。 |
+| [stopCameraCapture](/en/api-reference/rtc/android/video/camera-capture#api_irtcengine_stopcameracapture) | 停止摄像头采集。 |
+
+<a id="rtc_api_overview__toc_screencapture"></a>
+
+## 屏幕采集
+
+| API | 描述 |
+| --- | --- |
+| [queryScreenCaptureCapability](/en/api-reference/rtc/android/video/screencapture#api_irtcengine_queryscreencapturecapability) | 查询设备在屏幕共享时支持的最高帧率。 |
+| [setExternalMediaProjection](/en/api-reference/rtc/android/video/screencapture#api_irtcengine_setexternalmediaprojection) | 配置 SDK 外部的 `MediaProjection` 以采集屏幕视频流。 |
+| [setScreenCaptureScenario](/en/api-reference/rtc/android/video/screencapture#api_irtcengine_setscreencapturescenario) | 设置屏幕共享场景。 |
+| [startScreenCapture](/en/api-reference/rtc/android/video/screencapture#api_irtcengine_startscreencapture) | 开始屏幕采集。 |
+| [stopScreenCapture](/en/api-reference/rtc/android/video/screencapture#api_irtcengine_stopscreencapture) | 停止屏幕采集。 |
+| [updateScreenCaptureParameters](/en/api-reference/rtc/android/video/screencapture#api_irtcengine_updatescreencaptureparameters) | 更新屏幕采集参数。 |
+
+<a id="rtc_api_overview__toc_snapshot"></a>
+
+## 本地截图上传
+
+| API | 描述 |
+| --- | --- |
+| [enableContentInspect](/en/api-reference/rtc/android/video/pre-and-post-processing/snapshot#api_irtcengine_enablecontentinspect) | 启用或关闭本地截图上传功能。 |
+| [enableContentInspectEx](/en/api-reference/rtc/android/video/pre-and-post-processing/snapshot#api_irtcengineex_enablecontentinspectex) | 启用或关闭本地截图上传功能。 |
+| [takeSnapshot [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/snapshot#api_irtcengine_takesnapshot) | 截取指定用户的视频流快照并保存为 JPG 图像。 |
+| [takeSnapshot [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/snapshot#api_irtcengine_takesnapshot2) | 在指定的观察点截取视频截图。 |
+| [takeSnapshotEx [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/snapshot#api_irtcengineex_takesnapshotex) | 使用连接 ID 对视频流进行截图。 |
+| [takeSnapshotEx [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/snapshot#api_irtcengineex_takesnapshotex2) | 通过连接 ID 获取指定用户的视频截图。 |
+| [onSnapshotTaken](/en/api-reference/rtc/android/video/pre-and-post-processing/snapshot#callback_irtcengineeventhandler_onsnapshottaken) | 视频截图结果回调。 |
+
+<a id="rtc_api_overview__toc_virtualbackground"></a>
+
+## 虚拟背景
+
+| API | 描述 |
+| --- | --- |
+| [enableVirtualBackground [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/virtualbackground#api_irtcengine_enablevirtualbackground) | 启用或关闭虚拟背景功能。 |
+| [enableVirtualBackground [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/virtualbackground#api_irtcengine_enablevirtualbackground2) | 启用虚拟背景并指定媒体源，或关闭虚拟背景。 |
+
+<a id="rtc_api_overview__toc_local_transcoder"></a>
+
+## 本地合图
+
+| API | 描述 |
+| --- | --- |
+| [startLocalVideoTranscoder](/en/api-reference/rtc/android/video/pre-and-post-processing/local-transcoder#api_irtcengine_startlocalvideotranscoder) | 开始本地视频合图。 |
+| [stopLocalVideoTranscoder](/en/api-reference/rtc/android/video/pre-and-post-processing/local-transcoder#api_irtcengine_stoplocalvideotranscoder) | 停止本地合图。 |
+| [updateLocalTranscoderConfiguration](/en/api-reference/rtc/android/video/pre-and-post-processing/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) | 更新本地合图配置。 |
+| [onLocalVideoTranscoderError](/en/api-reference/rtc/android/video/pre-and-post-processing/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) | 本地视频合图过程中发生错误回调。 |
+
+<a id="rtc_api_overview__toc_video_enhance_option"></a>
+
+## 视频增强
+
+| API | 描述 |
+| --- | --- |
+| [addOrUpdateVideoEffect](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect) | 为指定的视频特效节点 ID 和模板添加或更新视频特效。 |
+| [createVideoEffectObject](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_createvideoeffectobject) | 创建一个 [IVideoEffectObject](/en/api-reference/rtc/android/full-sdk-api-list#class_ivideoeffectobject) 视频特效对象。 |
+| [destroyVideoEffectObject](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_destroyvideoeffectobject) | 销毁一个视频特效对象。 |
+| [getFaceShapeAreaOptions [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_getfaceshapeareaoptions) | 获取美颜区域的当前设置。 |
+| [getFaceShapeAreaOptions [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_getfaceshapeareaoptions2) | 获取当前美颜效果区域的设置选项。 |
+| [getFaceShapeBeautyOptions [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_getfaceshapebeautyoptions) | 获取当前的美颜特效设置。 |
+| [getFaceShapeBeautyOptions [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_getfaceshapebeautyoptions2) | 获取当前的美颜特效设置。 |
+| [getOptions](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_watermarkconfig_getoptions) | 获取当前配置的水印显示选项。 |
+| [getVideoEffectBoolParam](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_ivideoeffectobject_getvideoeffectboolparam) | 获取视频特效中的布尔类型参数。 |
+| [getVideoEffectFloatParam](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_ivideoeffectobject_getvideoeffectfloatparam) | 获取视频特效中指定参数的 `float` 类型值。 |
+| [getVideoEffectIntParam](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_ivideoeffectobject_getvideoeffectintparam) | 获取视频特效中的整数类型参数。 |
+| [performVideoEffectAction](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction) | 对指定的视频特效节点执行操作。 |
+| [removeVideoEffect](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_ivideoeffectobject_removevideoeffect) | 移除指定节点 ID 的视频特效节点。 |
+| [setBeautyEffectOptions [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setbeautyeffectoptions) | 设置美颜特效功能及其参数。 |
+| [setBeautyEffectOptions [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setbeautyeffectoptions2) | 设置美颜特效选项并指定媒体源。 |
+| [setColorEnhanceOptions [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setcolorenhanceoptions) | 设置色彩增强功能。 |
+| [setColorEnhanceOptions [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setcolorenhanceoptions2) | 设置色彩增强选项并指定媒体源。 |
+| [setFaceShapeAreaOptions [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setfaceshapeareaoptions) | 设置面部区域的美颜特效选项并指定媒体源。 |
+| [setFaceShapeAreaOptions [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setfaceshapeareaoptions2) | 设置美颜增强的面部区域选项。 |
+| [setFaceShapeBeautyOptions [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) | 设置美型效果并指定应用的媒体源。 |
+| [setFaceShapeBeautyOptions [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions2) | 设置美型选项。 |
+| [setFilterEffectOptions [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setfiltereffectoptions) | 设置滤镜特效参数并指定媒体源。 |
+| [setFilterEffectOptions [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setfiltereffectoptions2) | 设置滤镜特效选项。 |
+| [setLowlightEnhanceOptions [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setlowlightenhanceoptions) | 设置暗光增强功能。 |
+| [setLowlightEnhanceOptions [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setlowlightenhanceoptions2) | 设置低光增强选项并指定媒体源。 |
+| [setVideoDenoiserOptions [1/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setvideodenoiseroptions) | 设置视频降噪功能及其选项。 |
+| [setVideoDenoiserOptions [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_irtcengine_setvideodenoiseroptions2) | 设置视频降噪并指定媒体源。 |
+| [setVideoEffectBoolParam](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_ivideoeffectobject_setvideoeffectboolparam) | 设置视频特效的布尔参数。 |
+| [setVideoEffectFloatParam](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_ivideoeffectobject_setvideoeffectfloatparam) | 设置视频特效的浮点参数。 |
+| [setVideoEffectIntParam](/en/api-reference/rtc/android/video/pre-and-post-processing/video-enhance-option#api_ivideoeffectobject_setvideoeffectintparam) | 设置视频特效的整数参数。 |
+
+<a id="rtc_api_overview__toc_face_detection"></a>
+
+## 人脸检测
+
+| API | 描述 |
+| --- | --- |
+| [enableFaceDetection](/en/api-reference/rtc/android/video/pre-and-post-processing/face-detection#api_irtcengine_enablefacedetection) | 启用或关闭本地用户的人脸检测功能。 |
+| [onFacePositionChanged](/en/api-reference/rtc/android/video/pre-and-post-processing/face-detection#callback_irtcengineeventhandler_onfacepositionchanged) | 上报本地用户的人脸检测结果。 |
+
+<a id="rtc_api_overview__toc_watermark"></a>
+
+## 直播水印
+
+| API | 描述 |
+| --- | --- |
+| [addVideoWatermark [3/3]](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_irtcengine_addvideowatermark3) | 向本地视频流添加水印图像。 |
+| [addVideoWatermarkEx [2/2]](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_irtcengineex_addvideowatermarkex1) | 向本地视频添加水印图像。 |
+| [clearVideoWatermarkEx](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_irtcengineex_clearvideowatermarkex) | 从视频流中移除水印图像。 |
+| [clearVideoWatermarks](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_irtcengine_clearvideowatermarks) | 从视频流中移除水印图像。 |
+| [getBuffer](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_watermarkbuffer_getbuffer) | 获取水印图像的数据缓冲区。 |
+| [getFormat](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_watermarkbuffer_getformat) | 获取水印图像的格式。 |
+| [getHeight](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_watermarkbuffer_getheight) | 获取水印图像的高度。 |
+| [getId](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_watermarkbuffer_getid) | 获取水印的唯一标识符。 |
+| [getImageUrl](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_watermarkconfig_getimageurl) | 获取水印图像的 URL。 |
+| [getPositionInLandscapeMode](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_watermarkoptions_getpositioninlandscapemode) | 获取横屏模式下水印的位置。 |
+| [getPositionInPortraitMode](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_watermarkoptions_getpositioninportraitmode) | 获取竖屏模式下水印的位置。 |
+| [getType](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_watermarkconfig_gettype) | 获取当前水印配置中的水印类型信息。 |
+| [getWidth](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_watermarkbuffer_getwidth) | 获取水印图像的宽度。 |
+| [getzOrder](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_watermarkoptions_getzorder) | 获取水印图像的 Z-order 索引。 |
+| [isVisibleInPreview](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_watermarkoptions_isvisibleinpreview) | 检查水印在本地视频预览中是否可见。 |
+| [removeVideoWatermark](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_irtcengine_removevideowatermark) | 从本地视频中移除水印图像。 |
+| [removeVideoWatermarkEx](/en/api-reference/rtc/android/video/pre-and-post-processing/watermark#api_irtcengineex_removevideowatermarkex) | 从本地或远端视频流中移除指定的水印图像。 |
+
+<a id="rtc_api_overview__toc_image_source"></a>
+
+## 垫片推流
+
+| API | 描述 |
+| --- | --- |
+| [enableVideoImageSource](/en/api-reference/rtc/android/video/pre-and-post-processing/image-source#api_irtcengine_enablevideoimagesource) | 设置在发布视频流时是否使用图片替代当前视频画面。 |
+
+<a id="rtc_api_overview__toc_video_rendering"></a>
+
+## 视频渲染
+
+| API | 描述 |
+| --- | --- |
+| [enableInstantMediaRendering](/en/api-reference/rtc/android/video/video-rendering#api_irtcengine_enableinstantmediarendering) | 启用音视频帧的即时渲染。 |
+| [setLocalRenderMode [2/2]](/en/api-reference/rtc/android/video/video-rendering#api_irtcengine_setlocalrendermode2) | 更新本地视频画面的显示模式。 |
+| [setLocalRenderTargetFps](/en/api-reference/rtc/android/video/video-rendering#api_irtcengine_setlocalrendertargetfps) | 设置本地视频渲染的最大帧率。 |
+| [setRemoteRenderModeEx](/en/api-reference/rtc/android/video/video-rendering#api_irtcengineex_setremoterendermodeex) | 设置指定远端用户的视频显示模式。 |
+| [setRemoteRenderTargetFps](/en/api-reference/rtc/android/video/video-rendering#api_irtcengine_setremoterendertargetfps) | 设置远端视频渲染的最大帧率。 |
+| [setVideoRenderMode](/en/api-reference/rtc/android/video/video-rendering#api_imediaplayer_setrendermode) | 设置媒体播放器的渲染模式。 |
+| [setupLocalVideo](/en/api-reference/rtc/android/video/video-rendering#api_irtcengine_setuplocalvideo) | 初始化本地视频画面。 |
+| [setupRemoteVideo](/en/api-reference/rtc/android/video/video-rendering#api_irtcengine_setupremotevideo) | 初始化远端视频视图。 |
+| [setupRemoteVideoEx](/en/api-reference/rtc/android/video/video-rendering#api_irtcengineex_setupremotevideoex) | 初始化远端用户的视频视图。 |
+| [startMediaRenderingTracing](/en/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing) | 启用视频帧渲染过程的追踪。 |
+| [startMediaRenderingTracingEx](/en/api-reference/rtc/android/video/video-rendering#api_irtcengineex_startmediarenderingtracingex) | 启用视频帧渲染过程的追踪。 |
+| [onTranscodedStreamLayoutInfo](/en/api-reference/rtc/android/video/video-rendering#callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo) | 接收到携带布局信息的合图视频流回调。 |
+| [onVideoRenderingTracingResult](/en/api-reference/rtc/android/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) | 视频帧渲染事件回调。 |
+
+<a id="rtc_api_overview__toc_video_raw"></a>
+
+## 原始视频数据
+
+| API | 描述 |
+| --- | --- |
+| [getMirrorApplied](/en/api-reference/rtc/android/video/video-raw#api_ivideoframeobserver_getmirrorapplied) | 每次 SDK 接收到视频帧时触发的回调，用于设置是否对采集的视频进行镜像。 |
+| [getObservedFramePosition](/en/api-reference/rtc/android/video/video-raw#api_ivideoframeobserver_getobservedframeposition) | 设置视频观察器的帧位置。 |
+| [getRotationApplied](/en/api-reference/rtc/android/video/video-raw#api_ivideoframeobserver_getrotationapplied) | [getRotationApplied](/en/api-reference/rtc/android/video/video-raw#api_ivideoframeobserver_getrotationapplied) 回调在每次 SDK 接收到视频帧时触发，用于设置是否旋转采集的视频。 |
+| [getVideoFormatPreference](/en/api-reference/rtc/android/video/video-raw#api_ivideoframeobserver_getvideoformatpreference) | 设置 SDK 输出的原始视频数据格式。 |
+| [getVideoFrameProcessMode](/en/api-reference/rtc/android/video/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) | [getVideoFrameProcessMode](/en/api-reference/rtc/android/video/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 回调。每次 SDK 接收到视频帧时触发，并提示你设置视频帧的处理模式。 |
+| [registerVideoFrameObserver](/en/api-reference/rtc/android/video/video-raw#api_irtcengine_registervideoframeobserver) | 注册原始视频帧观察器对象。 |
+| [onCaptureVideoFrame](/en/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) | 本地设备采集到视频帧时触发的回调。 |
+| [onPreEncodeVideoFrame](/en/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) | 每次 SDK 接收到编码前视频帧时触发该回调。 |
+| [onRenderVideoFrame](/en/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) | 远端用户发送视频帧时触发的回调。 |
+
+<a id="rtc_api_overview__toc_video_encoded"></a>
+
+## 已编码视频数据
+
+| API | 描述 |
+| --- | --- |
+| [registerVideoEncodedFrameObserver](/en/api-reference/rtc/android/video/video-encoded#api_irtcengine_registervideoencodedframeobserver) | 注册用于接收编码后视频帧的观察器对象。 |
+| [onEncodedVideoFrameReceived](/en/api-reference/rtc/android/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) | 接收端收到远端编码视频帧回调。 |
+
+<a id="rtc_api_overview__toc_video_custom_capturenrendering"></a>
+
+## 自定义视频采集和渲染
+
+| API | 描述 |
+| --- | --- |
+| [createCustomVideoTrack](/en/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) | 创建一个自定义视频轨道。 |
+| [destroyCustomVideoTrack](/en/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) | 销毁指定的视频轨道。 |
+| [isTextureEncodeSupported](/en/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_istextureencodesupported) | 检查视频是否支持 `Texture` 编码。 |
+| [pushExternalVideoFrameById [1/2]](/en/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe) | 通过视频轨道向 SDK 推送外部原始视频帧。 |
+| [pushExternalVideoFrameById [2/2]](/en/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe3) | 通过视频轨道向 SDK 推送外部原始视频帧。 |
+| [setExternalRemoteEglContext](/en/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_setexternalremoteeglcontext) | 设置用于渲染远端视频流的 EGL 上下文。 |
+| [setExternalVideoSource](/en/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) | 配置外部视频源。 |
+
+<a id="rtc_api_overview__toc_audio_mixing"></a>
+
+## 音乐文件播放
+
+| API | 描述 |
+| --- | --- |
+| [adjustAudioMixingPlayoutVolume](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_adjustaudiomixingplayoutvolume) | 调节本地播放的混音音量。 |
+| [adjustAudioMixingPublishVolume](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_adjustaudiomixingpublishvolume) | 调节用于发布的混音音量。 |
+| [adjustAudioMixingVolume](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_adjustaudiomixingvolume) | 调节混音时的音量。 |
+| [getAudioMixingCurrentPosition](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_getaudiomixingcurrentposition) | 获取当前混音的播放位置（毫秒）。 |
+| [getAudioMixingDuration](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_getaudiomixingduration) | 获取音频文件的混音时长（毫秒）。 |
+| [getAudioMixingPlayoutVolume](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_getaudiomixingplayoutvolume) | 获取本地播放的混音音量。 |
+| [getAudioMixingPublishVolume](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_getaudiomixingpublishvolume) | 获取用于发布的混音音量。 |
+| [getAudioTrackCount](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_getaudiotrackcount) | 获取当前音乐文件的音轨索引。 |
+| [pauseAudioMixing](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_pauseaudiomixing) | 暂停播放和混音的音乐文件。 |
+| [resumeAudioMixing](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_resumeaudiomixing) | 恢复播放和混音的音乐文件。 |
+| [selectAudioTrack](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_selectaudiotrack) | 选择播放过程中使用的音轨。 |
+| [selectMultiAudioTrack](/en/api-reference/rtc/android/playback/audio-mixing#api_imediaplayer_selectmultiaudiotrack) | 选择要在本地设备播放和发布到频道的音轨。 |
+| [setAudioMixingDualMonoMode](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_setaudiomixingdualmonomode) | 设置当前音频文件的声道模式。 |
+| [setAudioMixingPitch](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_setaudiomixingpitch) | 设置本地音乐文件的音调。 |
+| [setAudioMixingPlaybackSpeed](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_setaudiomixingplaybackspeed) | 设置当前音频文件的播放速度。 |
+| [setAudioMixingPosition](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_setaudiomixingposition) | 设置混音的播放位置。 |
+| [startAudioMixing [2/2]](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_startaudiomixing2) | 开始播放音乐文件。 |
+| [stopAudioMixing](/en/api-reference/rtc/android/playback/audio-mixing#api_irtcengine_stopaudiomixing) | 停止播放音乐文件。 |
+| [onAudioMixingPositionChanged](/en/api-reference/rtc/android/playback/audio-mixing#callback_irtcengineeventhandler_onaudiomixingpositionchanged) | 音乐文件播放进度回调。 |
+| [onAudioMixingStateChanged](/en/api-reference/rtc/android/playback/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) | 音乐文件播放状态变化回调。 |
+
+<a id="rtc_api_overview__toc_audio_effect_file"></a>
+
+## 音效文件播放
+
+| API | 描述 |
+| --- | --- |
+| [getEffectCurrentPosition](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_geteffectcurrentposition) | 获取指定音效文件的播放位置。 |
+| [getEffectDuration](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_geteffectduration) | 获取音效文件的时长。 |
+| [getEffectsVolume](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_geteffectsvolume) | 获取音效的音量。 |
+| [getVolumeOfEffect](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_getvolumeofeffect) | 获取指定音效文件的音量。 |
+| [pauseAllEffects](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_pausealleffects) | 暂停所有音效。 |
+| [pauseEffect](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_pauseeffect) | 暂停指定音效文件的播放。 |
+| [playAllEffects](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_playalleffects) | 播放所有音效。 |
+| [playEffect [1/2]](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_playeffect2) | 播放指定的本地或在线音效文件。 |
+| [playEffect [2/2]](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_playeffect3) | 播放指定的本地或在线音效文件。 |
+| [playEffectEx [1/2]](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengineex_playeffectex) | 在频道中播放指定的音效。 |
+| [playEffectEx [2/2]](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengineex_playeffectex2) | 在频道中播放指定音效。 |
+| [preloadEffect [1/2]](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_preloadeffect) | 预加载指定的音效文件。 |
+| [preloadEffect [2/2]](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_preloadeffect2) | 将指定的音效文件预加载到内存中。 |
+| [preloadEffectEx [1/2]](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengineex_preloadeffectex) | 将指定音效预加载到频道中。 |
+| [preloadEffectEx [2/2]](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengineex_preloadeffectex2) | 将指定音效预加载到频道中。 |
+| [resumeAllEffects](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_resumealleffects) | 恢复播放所有音效文件。 |
+| [resumeEffect](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_resumeeffect) | 恢复播放指定音效。 |
+| [setEffectPosition](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_seteffectposition) | 设置音效文件的播放位置。 |
+| [setEffectsVolume](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_seteffectsvolume) | 设置音效的播放音量。 |
+| [setVolumeOfEffect](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_setvolumeofeffect) | 设置指定音效文件的播放音量。 |
+| [stopAllEffects](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_stopalleffects) | 停止播放所有音效。 |
+| [stopEffect](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_stopeffect) | 停止播放指定音效。 |
+| [unloadEffect](/en/api-reference/rtc/android/playback/audio-effect-file#api_irtcengine_unloadeffect) | 释放指定的预加载音效文件。 |
+| [onAudioEffectFinished](/en/api-reference/rtc/android/playback/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) | 本地音效文件播放完成时的回调。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_initialize"></a>
+
+## 初始化
+
+| API | 描述 |
+| --- | --- |
+| [createMediaPlayer](/en/api-reference/rtc/android/playback/media-player/mediaplayer-initialize#api_irtcengine_createmediaplayer) | 创建一个 [IMediaPlayer](/en/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer) 对象。 |
+| [destroy](/en/api-reference/rtc/android/playback/media-player/mediaplayer-initialize#api_imediaplayer_destroy_imediaplayer) | 销毁媒体播放器实例。 |
+| [getMediaPlayerCacheManager](/en/api-reference/rtc/android/playback/media-player/mediaplayer-initialize#api_imediaplayercachemanager_getmediaplayercachemanager) | 获取一个 [IMediaPlayerCacheManager](/en/api-reference/rtc/android/full-sdk-api-list#class_imediaplayercachemanager) 实例。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_open"></a>
+
+## 媒体资源打开
+
+| API | 描述 |
+| --- | --- |
+| [open [1/2]](/en/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_open) | 打开媒体资源。 |
+| [open [2/2]](/en/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_open2) | 通过 URI 地址打开媒体文件。 |
+| [openWithMediaSource](/en/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_openwithmediasource) | 打开媒体文件并配置播放场景。 |
+| [preloadSrc](/en/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_preloadsrc) | 预加载媒体资源。 |
+| [switchSrc](/en/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_switchsrc) | 切换正在播放的媒体资源。 |
+| [unloadSrc](/en/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_unloadsrc) | 卸载预加载的媒体资源。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_playnrender"></a>
+
+## 媒体资源播放和渲染
+
+| API | 描述 |
+| --- | --- |
+| [selectAudioTrack](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_selectaudiotrack_imediaplayer) | 在播放过程中选择音频轨道。 |
+| [setAudioDualMonoMode](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setaudiodualmonomode) | 设置当前音频文件的声道模式。 |
+| [setAudioPitch](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setaudiopitch) | 设置当前媒体资源的音调。 |
+| [setLoopCount](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setloopcount) | 设置音效的循环播放次数。 |
+| [setPlaybackSpeed](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplaybackspeed) | 设置当前音频文件的播放速度。 |
+| [setPlayerOption](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption) | 设置媒体播放器选项。 |
+| [setPlayerOptionString](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) | 设置媒体播放器的参数选项。 |
+| [setView](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setview) | 设置渲染视图。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_control"></a>
+
+## 播放器控制
+
+| API | 描述 |
+| --- | --- |
+| [adjustPlayoutVolume](/en/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_adjustplayoutvolume) | 调节本地播放音量。 |
+| [adjustPublishSignalVolume](/en/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_adjustpublishsignalvolume) | 调节用于发布的媒体文件音量。 |
+| [mute](/en/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_mute) | 设置是否静音媒体文件。 |
+| [pause](/en/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_pause) | 暂停播放。 |
+| [play](/en/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_play) | 播放媒体文件。 |
+| [playPreloadedSrc](/en/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_playpreloadedsrc) | 播放预加载的媒体资源。 |
+| [resume](/en/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_resume) | 恢复播放媒体文件。 |
+| [seek](/en/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_seek) | 跳转到新的播放位置。 |
+| [stop [1/2]](/en/api-reference/rtc/android/playback/media-player/mediaplayer-control#api_imediaplayer_stop) | 停止播放媒体轨道。 |
+| [onSeek](/en/api-reference/rtc/android/playback/media-player/mediaplayer-control#callback_imediaplayercustomdataprovider_onseek) | 当 SDK 定位媒体资源数据时触发的回调。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_info"></a>
+
+## 播放信息获取
+
+| API | 描述 |
+| --- | --- |
+| [getAudioBufferDelay](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getaudiobufferdelay) | 获取播放媒体文件时的音频缓冲延迟。 |
+| [getDuration](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getduration) | 获取媒体资源的时长。 |
+| [getMediaPlayerId](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getmediaplayerid) | 获取媒体播放器的 ID。 |
+| [getMute](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getmute) | 报告媒体资源是否被静音。 |
+| [getPlayoutVolume](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getplayoutvolume) | 获取本地播放音量。 |
+| [getPlayPosition](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getplayposition) | 获取当前本地播放进度。 |
+| [getPlaySrc [1/2]](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getplaysrc_imediaplayer) | 获取当前正在播放的媒体资源路径。 |
+| [getPublishSignalVolume](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getpublishsignalvolume) | 获取用于发布的媒体文件音量。 |
+| [getState](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getstate) | 获取当前播放状态。 |
+| [getStreamCount](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getstreamcount) | 获取媒体资源中媒体流的数量。 |
+| [getStreamInfo](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getstreaminfo) | 获取媒体流的详细信息。 |
+| [onPlayerPlaybackStats](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#callback_imediaplayersourceobserver_onplayerplaybackstats) | 报告正在播放的媒体文件的统计信息回调。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_observer"></a>
+
+## 音视频观测器
+
+| API | 描述 |
+| --- | --- |
+| [registerAudioFrameObserver](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#api_imediaplayer_registeraudioframeobserver2_imediaplayer) | 注册音频帧观测器对象。 |
+| [registerPlayerObserver](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#api_imediaplayer_registerplayersourceobserver) | 注册媒体播放器观察器。 |
+| [registerVideoFrameObserver](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#api_imediaplayer_registervideoframeobserver_imediaplayer) | 注册视频帧观察者对象。 |
+| [unRegisterPlayerObserver](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#api_imediaplayer_unregisterplayersourceobserver) | 释放媒体播放器观察者。 |
+| [onAudioVolumeIndication](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver) | 报告媒体播放器音量的回调。 |
+| [onFrame](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayeraudioframeobserver_onframe_imediaplayeraudioframeobserver) | 播放器接收到音频帧时触发的回调。 |
+| [onFrame](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver) | 播放器接收到视频帧时触发的回调。 |
+| [onMetaData](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onmetadata) | 接收到媒体元数据时触发的回调。 |
+| [onPlayBufferUpdated](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplaybufferupdated) | [onPlayBufferUpdated](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplaybufferupdated) 回调：报告缓冲数据可支持的播放时长。 |
+| [onPlayerEvent](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) | 播放器事件回调。 |
+| [onPlayerInfoUpdated](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerinfoupdated) | 媒体播放器相关信息发生变化时的回调。 |
+| [onPlayerStateChanged](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) | 播放状态发生改变回调。 |
+| [onPlayerSrcInfoChanged](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersrcinfochanged) | 媒体资源视频码率发生变化回调。 |
+| [onPositionChanged](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onpositionchanged) | 播放进度回调。 |
+| [onPreloadEvent](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent) | 预加载媒体资源事件回调。 |
+| [onReadData](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayercustomdataprovider_onreaddata) | SDK 读取媒体资源数据时触发的回调。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_cache"></a>
+
+## 媒体播放器缓存
+
+| API | 描述 |
+| --- | --- |
+| [enableAutoRemoveCache](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#api_imediaplayercachemanager_enableautoremovecache) | 设置是否自动删除缓存的媒体文件。 |
+| [getCacheDir](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#api_imediaplayercachemanager_getcachedir) | 获取缓存媒体文件的存储路径。 |
+| [getCacheFileCount](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#api_imediaplayercachemanager_getcachefilecount) | 获取已缓存的媒体文件数量。 |
+| [getMaxCacheFileCount](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilecount) | 获取可缓存的媒体文件的最大数量。 |
+| [getMaxCacheFileSize](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilesize) | 获取缓存媒体文件聚合存储空间的最大大小。 |
+| [removeAllCaches](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#api_imediaplayercachemanager_removeallcaches) | 删除媒体播放器中所有缓存的媒体文件。 |
+| [removeCacheByUri](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#api_imediaplayercachemanager_removecachebyuri) | 删除缓存的媒体文件。 |
+| [removeOldCache](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#api_imediaplayercachemanager_removeoldcache) | 删除最少使用的缓存媒体文件。 |
+| [setCacheDir](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#api_imediaplayercachemanager_setcachedir) | 设置要缓存的媒体文件的存储路径。 |
+| [setMaxCacheFileCount](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilecount) | 设置可缓存的媒体文件数量上限。 |
+| [setMaxCacheFileSize](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilesize) | 设置缓存媒体文件的聚合存储空间的最大大小。 |
+| [onPlayerCacheStats](/en/api-reference/rtc/android/playback/media-player/mediaplayer-cache#callback_imediaplayersourceobserver_onplayercachestats) | 报告正在缓存的媒体文件的统计信息回调。 |
+
+<a id="rtc_api_overview__toc_drm"></a>
+
+## 版权音乐
+
+| API | 描述 |
+| --- | --- |
+| [createMusicPlayer](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_createmusicplayer) | 创建一个音乐播放器。 |
+| [destroy](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) | 销毁 [IAgoraMusicContentCenter](/en/api-reference/rtc/android/full-sdk-api-list#class_imusiccontentcenter) 实例。 |
+| [destroyMusicPlayer](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_destroymusicplayer) | 销毁音乐播放器对象。 |
+| [getCaches](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_getcaches) | 获取已缓存的音乐资源信息。 |
+| [getInternalSongCode](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_getinternalsongcode) | 创建音乐资源副歌片段的内部标识符。 |
+| [getLyric](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_getlyric) | 获取音乐资源歌词的下载链接。 |
+| [getMusicCharts](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_getmusiccharts) | 获取所有音乐排行榜。 |
+| [getMusicCollectionByMusicChartId [1/2]](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) | 根据音乐榜单 ID 获取音乐资源列表。 |
+| [getMusicCollectionByMusicChartId [2/2]](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid2) | 根据音乐榜单 ID 获取音乐资源列表。 |
+| [getPlaySrc [2/2]](/en/api-reference/rtc/android/playback/drm#api_imusicplayer_getplaysrc) | 获取当前播放的音乐资源的标识符或 URL。 |
+| [getSongSimpleInfo](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_getsongsimpleinfo) | 检索特定音乐资源的详细信息。 |
+| [initialize](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_initialize_imusiccontentcenter) | 初始化 [IAgoraMusicContentCenter](/en/api-reference/rtc/android/full-sdk-api-list#class_imusiccontentcenter)。 |
+| [isPreloaded](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_ispreloaded) | 检查指定音乐资源是否已预加载。 |
+| [open [2/2]](/en/api-reference/rtc/android/playback/drm#api_imusicplayer_open2_imusicplayer) | 通过 URL 打开音乐资源。 |
+| [open [1/2]](/en/api-reference/rtc/android/playback/drm#api_imusicplayer_open_imusicplayer) | 通过资源 ID 打开音乐资源。 |
+| [preload [2/2]](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_preload2) | 预加载版权音乐资源。 |
+| [registerEventHandler](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_registereventhandler_imusiccontentcenter) | 注册版权音乐内容中心的回调事件。 |
+| [removeCache](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_removecache) | 删除已缓存的音乐资源。 |
+| [renewToken](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_renewtoken_imusiccontentcenter) | 更新 Token。 |
+| [searchMusic [1/2]](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_searchmusic) | 搜索音乐资源。 |
+| [searchMusic [2/2]](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_searchmusic2) | 搜索音乐资源。 |
+| [setPlayMode](/en/api-reference/rtc/android/playback/drm#api_imusicplayer_setplaymode) | 设置音乐曲目的播放模式。 |
+| [stop [2/2]](/en/api-reference/rtc/android/playback/drm#api_imusicplayer_stop_imusicplayer) | 停止播放音乐资源。 |
+| [unregisterEventHandler](/en/api-reference/rtc/android/playback/drm#api_imusiccontentcenter_unregistereventhandler_imusiccontentcenter) | 取消注册版权音乐内容中心的事件回调。 |
+| [onLyricResult](/en/api-reference/rtc/android/playback/drm#callback_imusiccontentcentereventhandler_onlyricresult) | 歌词下载链接回调。 |
+| [onMusicChartsResult](/en/api-reference/rtc/android/playback/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) | 获取音乐排行榜后的回调。 |
+| [onMusicCollectionResult](/en/api-reference/rtc/android/playback/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) | 获取音乐资源列表的回调。 |
+| [onPreLoadEvent](/en/api-reference/rtc/android/playback/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) | 预加载音乐资源事件的回调。 |
+| [onSongSimpleInfoResult](/en/api-reference/rtc/android/playback/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) | 获取音乐资源详细信息的回调。 |
+
+<a id="rtc_api_overview__toc_recording"></a>
+
+## 音视频录制
+
+| API | 描述 |
+| --- | --- |
+| [createMediaRecorder](/en/api-reference/rtc/android/recording#api_irtcengine_createmediarecorder) | 创建用于音视频录制的录制器实例。 |
+| [destroyMediaRecorder](/en/api-reference/rtc/android/recording#api_irtcengine_destroymediarecorder) | 销毁音视频录制器实例。 |
+| [setMediaRecorderObserver](/en/api-reference/rtc/android/recording#api_imediarecorder_setmediarecorderobserver) | 注册一个用于音视频录制的回调观察者。 |
+| [startAudioRecording [1/2]](/en/api-reference/rtc/android/recording#api_irtcengine_startaudiorecording1) | 开始客户端录音。 |
+| [startAudioRecording [2/2]](/en/api-reference/rtc/android/recording#api_irtcengine_startaudiorecording3) | 开始客户端录制并应用录制配置。 |
+| [startRecording](/en/api-reference/rtc/android/recording#api_imediarecorder_startrecording) | 开始录制音频和视频流。 |
+| [stopAudioRecording](/en/api-reference/rtc/android/recording#api_irtcengine_stopaudiorecording) | 停止客户端录制音频。 |
+| [stopRecording](/en/api-reference/rtc/android/recording#api_imediarecorder_stoprecording) | 停止录制音视频流。 |
+| [onRecorderInfoUpdated](/en/api-reference/rtc/android/recording#callback_imediarecorderobserver_onrecorderinfoupdated) | 录制信息更新回调。 |
+| [onRecorderStateChanged](/en/api-reference/rtc/android/recording#callback_imediarecorderobserver_onrecorderstatechanged) | 录制状态发生变化时的回调。 |
+
+<a id="rtc_api_overview__toc_channel_media_relay"></a>
+
+## 跨频道媒体流转发
+
+| API | 描述 |
+| --- | --- |
+| [pauseAllChannelMediaRelay](/en/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) | 暂停向所有目标频道的跨频道媒体流转发。 |
+| [resumeAllChannelMediaRelay](/en/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) | 恢复向所有目标频道的跨频道媒体流转发。 |
+| [resumeAllChannelMediaRelayEx](/en/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengineex_resumeallchannelmediarelayex) | 恢复向所有目标频道的跨频道媒体流转发。 |
+| [startOrUpdateChannelMediaRelay](/en/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) | 开始或更新跨频道媒体流转发。 |
+| [startOrUpdateChannelMediaRelayEx](/en/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex) | 开始或更新跨频道媒体流转发。 |
+| [stopChannelMediaRelay](/en/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay) | 停止跨频道媒体流转发。 |
+| [stopChannelMediaRelayEx](/en/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengineex_stopchannelmediarelayex) | 停止跨频道媒体流转发。 |
+| [onChannelMediaRelayStateChanged](/en/api-reference/rtc/android/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) | 跨频道媒体流转发状态发生变化回调。 |
+
+<a id="rtc_api_overview__toc_media_push"></a>
+
+## 旁路推流
+
+| API | 描述 |
+| --- | --- |
+| [startRtmpStreamWithoutTranscoding](/en/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithouttranscoding) | 开始向 CDN 推送音视频流（不进行转码）。 |
+| [startRtmpStreamWithoutTranscodingEx](/en/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengineex_startrtmpstreamwithouttranscodingex) | 开始向 CDN 推送未经转码的媒体流。 |
+| [startRtmpStreamWithTranscoding](/en/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) | 开始旁路推流并设置转码配置。 |
+| [startRtmpStreamWithTranscodingEx](/en/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengineex_startrtmpstreamwithtranscodingex) | 开始旁路推流并设置转码配置。 |
+| [stopRtmpStream](/en/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) | 停止向指定 CDN 地址推送媒体流。 |
+| [stopRtmpStreamEx](/en/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengineex_stoprtmpstreamex) | 停止向指定 CDN 地址推送媒体流。 |
+| [updateRtmpTranscoding](/en/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengine_updatertmptranscoding) | 更新旁路推流的转码配置。 |
+| [updateRtmpTranscodingEx](/en/api-reference/rtc/android/cloud-media-relay/media-push#api_irtcengineex_updatertmptranscodingex) | 更新旁路推流的转码配置。 |
+| [onRtmpStreamingEvent](/en/api-reference/rtc/android/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingevent) | 旁路推流事件回调。 |
+| [onRtmpStreamingStateChanged](/en/api-reference/rtc/android/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) | 旁路推流状态发生变化回调。 |
+| [onTranscodingUpdated](/en/api-reference/rtc/android/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) | 发布端云端转码配置更新回调。 |
+
+<a id="rtc_api_overview__toc_datastream"></a>
+
+## 数据流 Datastream
+
+| API | 描述 |
+| --- | --- |
+| [createDataStream [1/2]](/en/api-reference/rtc/android/metadata/datastream#api_irtcengine_createdatastream1) | 创建一个数据流，用于提升数据传输的可靠性和顺序性。 |
+| [createDataStream [2/2]](/en/api-reference/rtc/android/metadata/datastream#api_irtcengine_createdatastream2) | 创建一个数据流。 |
+| [createDataStreamEx [2/2]](/en/api-reference/rtc/android/metadata/datastream#api_irtcengineex_createdatastreamex2) | 创建一个数据流。 |
+| [sendStreamMessage](/en/api-reference/rtc/android/metadata/datastream#api_irtcengine_sendstreammessage) | 发送数据流消息。 |
+| [sendStreamMessageEx](/en/api-reference/rtc/android/metadata/datastream#api_irtcengineex_sendstreammessageex) | 发送数据流消息。 |
+| [onStreamMessage](/en/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) | 远端用户发送数据流时的回调。 |
+| [onStreamMessageError](/en/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) | [onStreamMessageError](/en/api-reference/rtc/android/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调：本地用户未收到远端用户发送的数据流时触发。 |
+
+<a id="rtc_api_overview__toc_metadata_observer"></a>
+
+## 媒体流附属信息分发
+
+| API | 描述 |
+| --- | --- |
+| [getMaxMetadataSize](/en/api-reference/rtc/android/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) | 当 SDK 请求元数据最大大小时触发的回调。 |
+| [registerMediaMetadataObserver](/en/api-reference/rtc/android/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) | 注册元数据观察器。 |
+| [unregisterMediaMetadataObserver](/en/api-reference/rtc/android/metadata/metadata-observer#api_irtcengine_unregistermediametadataobserver) | 取消注册指定的元数据观察者。 |
+| [onMetadataReceived](/en/api-reference/rtc/android/metadata/metadata-observer#callback_imetadataobserver_onmetadatareceived) | 本地用户接收到元数据时触发的回调。 |
+| [onReadyToSendMetadata](/en/api-reference/rtc/android/metadata/metadata-observer#callback_imetadataobserver_onreadytosendmetadata) | SDK 准备好发送元数据时触发的回调。 |
+
+<a id="rtc_api_overview__toc_audio_route"></a>
+
+## 音频路由
+
+| API | 描述 |
+| --- | --- |
+| [isSpeakerphoneEnabled](/en/api-reference/rtc/android/device-management/audio-route#api_irtcengine_isspeakerphoneenabled) | 检查是否启用扬声器播放音频。 |
+| [setDefaultAudioRoutetoSpeakerphone](/en/api-reference/rtc/android/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) | 设置默认音频播放路由。 |
+| [setEnableSpeakerphone](/en/api-reference/rtc/android/device-management/audio-route#api_irtcengine_setenablespeakerphone) | 设置是否将音频路由切换到扬声器。 |
+| [setRouteInCommunicationMode](/en/api-reference/rtc/android/device-management/audio-route#api_irtcengine_setrouteincommunicationmode) | 在通信音频模式下设置音频播放路由。 |
+| [onAudioRouteChanged](/en/api-reference/rtc/android/device-management/audio-route#callback_irtcengineeventhandler_onaudioroutingchanged) | 本地音频路由发生变化时的回调。 |
+
+<a id="rtc_api_overview__toc_video_device"></a>
+
+## 视频设备管理
+
+| API | 描述 |
+| --- | --- |
+| [getCameraMaxZoomFactor](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) | 获取摄像头支持的最大变焦倍数。 |
+| [isCameraAutoFocusFaceModeSupported](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_iscameraautofocusfacemodesupported) | 检查设备是否支持人脸自动对焦功能。 |
+| [isCameraExposurePositionSupported](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_iscameraexposurepositionsupported) | 检查设备是否支持手动曝光。 |
+| [isCameraExposureSupported](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_iscameraexposuresupported) | 查询当前摄像头是否支持调节曝光值。 |
+| [isCameraFaceDetectSupported](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_iscamerafacedetectsupported) | 检查设备摄像头是否支持人脸检测。 |
+| [isCameraFocusSupported](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_iscamerafocussupported) | 检查设备是否支持手动对焦功能。 |
+| [isCameraTorchSupported](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_iscameratorchsupported) | 检查设备是否支持相机闪光灯功能。 |
+| [isCameraZoomSupported](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_iscamerazoomsupported) | 检查设备是否支持摄像头变焦。 |
+| [queryCameraFocalLengthCapability](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) | 查询摄像头支持的焦距能力。 |
+| [queryCodecCapability](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_querycodeccapability) | 查询 SDK 的视频编解码能力。 |
+| [setCameraAutoFocusFaceModeEnabled](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameraautofocusfacemodeenabled) | 启用或关闭摄像头人脸自动对焦功能。 |
+| [setCameraCapturerConfiguration](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) | 设置摄像头采集配置。 |
+| [setCameraExposureFactor](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameraexposurefactor) | 设置摄像头曝光值。 |
+| [setCameraExposurePosition](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameraexposureposition) | 设置摄像头曝光位置。 |
+| [setCameraFocusPositionInPreview](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcamerafocuspositioninpreview) | 设置摄像头的手动对焦位置。 |
+| [setCameraTorchOn](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcameratorchon) | 打开或关闭摄像头闪光灯。 |
+| [setCameraZoomFactor](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_setcamerazoomfactor) | 设置摄像头的缩放因子。 |
+| [switchCamera [1/2]](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_switchcamera) | 切换前置和后置摄像头。 |
+| [switchCamera [2/2]](/en/api-reference/rtc/android/device-management/video-device#api_irtcengine_switchcamera2) | 通过摄像头 ID 切换摄像头。 |
+| [onCameraExposureAreaChanged](/en/api-reference/rtc/android/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) | 摄像头曝光区域发生变化回调。 |
+| [onCameraFocusAreaChanged](/en/api-reference/rtc/android/device-management/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) | 摄像头对焦区域发生变化的回调。 |
+
+<a id="rtc_api_overview__toc_audio_device"></a>
+
+## 音频设备管理
+
+| API | 描述 |
+| --- | --- |
+| [getAudioDeviceInfo](/en/api-reference/rtc/android/device-management/audio-device#api_irtcengine_getaudiodeviceinfo) | 获取音频设备信息。 |
+| [startPlaybackDeviceTest](/en/api-reference/rtc/android/device-management/audio-device#api_irtcengine_startplaybackdevicetest) | 启动本地音频播放设备测试。 |
+| [startRecordingDeviceTest](/en/api-reference/rtc/android/device-management/audio-device#api_irtcengine_startrecordingdevicetest) | 启动音频采集设备测试。 |
+| [stopPlaybackDeviceTest](/en/api-reference/rtc/android/device-management/audio-device#api_irtcengine_stopplaybackdevicetest) | 停止音频播放设备测试。 |
+| [stopRecordingDeviceTest](/en/api-reference/rtc/android/device-management/audio-device#api_irtcengine_stoprecordingdevicetest) | 停止音频采集设备测试。 |
+
+<a id="rtc_api_overview__toc_extension"></a>
+
+## 插件
+
+| API | 描述 |
+| --- | --- |
+| [addExtension](/en/api-reference/rtc/android/extensions#api_irtcengine_addextension) | 添加扩展。 |
+| [enableExtension](/en/api-reference/rtc/android/extensions#api_irtcengine_enableextension) | 启用或禁用扩展功能。 |
+| [getExtensionProperty [1/2]](/en/api-reference/rtc/android/extensions#api_irtcengine_getextensionproperty) | 获取扩展组件的详细信息。 |
+| [getExtensionProperty [2/2]](/en/api-reference/rtc/android/extensions#api_irtcengine_getextensionproperty2) | 获取扩展组件的详细信息。 |
+| [registerExtension](/en/api-reference/rtc/android/extensions#api_irtcengine_registerextension) | 注册一个扩展。 |
+| [setExtensionProperty](/en/api-reference/rtc/android/extensions#api_irtcengine_setextensionproperty) | 设置扩展组件的属性。 |
+| [setExtensionProviderProperty](/en/api-reference/rtc/android/extensions#api_irtcengine_setextensionproviderproperty) | 设置扩展提供方的属性。 |
+| [onErrorWithContext](/en/api-reference/rtc/android/extensions#callback_irtcengineeventhandler_onextensionerrorwithcontext) | 扩展运行异常时触发的回调。 |
+| [onEventWithContext](/en/api-reference/rtc/android/extensions#callback_irtcengineeventhandler_onextensioneventwithcontext) | 扩展事件回调。 |
+| [onStartedWithContext](/en/api-reference/rtc/android/extensions#callback_irtcengineeventhandler_onextensionstartedwithcontext) | 扩展启用成功回调。 |
+| [onStoppedWithContext](/en/api-reference/rtc/android/extensions#callback_irtcengineeventhandler_onextensionstoppedwithcontext) | 扩展被禁用时触发的回调。 |
+
+<a id="rtc_api_overview__toc_network"></a>
+
+## 网络及其他
+
+| API | 描述 |
+| --- | --- |
+| [complain](/en/api-reference/rtc/android/network-and-other#api_irtcengine_complain) | 允许你在通话结束后投诉通话质量。 |
+| [enableEncryption](/en/api-reference/rtc/android/network-and-other#api_irtcengine_enableencryption) | 启用或关闭内置加密功能。 |
+| [enableEncryptionEx](/en/api-reference/rtc/android/network-and-other#api_irtcengineex_enableencryptionex) | 启用或关闭内置加密功能。 |
+| [getCallId](/en/api-reference/rtc/android/network-and-other#api_irtcengine_getcallid) | 获取当前通话 ID。 |
+| [getCallIdEx](/en/api-reference/rtc/android/network-and-other#api_irtcengineex_getcallidex) | 获取与连接 ID 对应的通话 ID。 |
+| [getConnectionState](/en/api-reference/rtc/android/network-and-other#api_irtcengine_getconnectionstate) | 获取 SDK 当前的连接状态。 |
+| [getConnectionStateEx](/en/api-reference/rtc/android/network-and-other#api_irtcengineex_getconnectionstateex) | 获取 SDK 当前的连接状态。 |
+| [getCurrentMonotonicTimeInMs](/en/api-reference/rtc/android/network-and-other#api_irtcengine_getcurrentmonotonictimeinms) | 获取 SDK 当前的单调时间。 |
+| [getErrorDescription](/en/api-reference/rtc/android/network-and-other#api_irtcengine_geterrordescription) | 获取警告或错误码对应的描述信息。 |
+| [getNativeHandle](/en/api-reference/rtc/android/network-and-other#api_irtcengine_getnativehandle) | 获取原生 SDK 的 C++ 句柄。 |
+| [getNetworkType](/en/api-reference/rtc/android/network-and-other#api_irtcengine_getnetworktype) | 获取本地网络连接类型。 |
+| [getNtpWallTimeInMs](/en/api-reference/rtc/android/network-and-other#api_irtcengine_getntpwalltimeinms) | 获取当前 NTP（网络时间协议）时间。 |
+| [getSdkVersion](/en/api-reference/rtc/android/network-and-other#api_irtcengine_getversion) | 获取 SDK 的版本号。 |
+| [isFeatureAvailableOnDevice](/en/api-reference/rtc/android/network-and-other#api_irtcengine_isfeatureavailableondevice) | 检查当前设备是否支持指定的高级功能。 |
+| [queryDeviceScore](/en/api-reference/rtc/android/network-and-other#api_irtcengine_querydevicescore) | 查询设备评分。 |
+| [rate](/en/api-reference/rtc/android/network-and-other#api_irtcengine_rate) | 允许用户在通话结束后对通话进行评分。 |
+| [sendCustomReportMessage](/en/api-reference/rtc/android/network-and-other#api_irtcengine_sendcustomreportmessage) | 上报自定义消息。 |
+| [sendCustomReportMessageEx](/en/api-reference/rtc/android/network-and-other#api_irtcengineex_sendcustomreportmessageex) | 支持上报和分析自定义消息。 |
+| [setAVSyncSource](/en/api-reference/rtc/android/network-and-other#api_irtcengine_setavsyncsource) | 设置发布端的音视频同步源。 |
+| [setCloudProxy](/en/api-reference/rtc/android/network-and-other#api_irtcengine_setcloudproxy) | 设置云代理服务。 |
+| [setLocalAccessPoint](/en/api-reference/rtc/android/network-and-other#api_irtcengine_setlocalaccesspoint) | 配置连接到声网私有媒体服务器接入模块。 |
+| [setParameters](/en/api-reference/rtc/android/network-and-other#api_irtcengine_setparameters) | 通过配置 JSON 选项，为 SDK 提供技术预览功能或特殊定制。 |
+| [setRemoteSubscribeFallbackOption [1/2]](/en/api-reference/rtc/android/network-and-other#api_irtcengine_setremotesubscribefallbackoption) | 根据网络状况设置订阅端的视频流回退选项。 |
+| [startEchoTest](/en/api-reference/rtc/android/network-and-other#api_irtcengine_startechotest3) | 开始音视频设备回路测试。 |
+| [startLastmileProbeTest](/en/api-reference/rtc/android/network-and-other#api_irtcengine_startlastmileprobetest) | 开始 Last-mile 网络探测测试。 |
+| [stopEchoTest](/en/api-reference/rtc/android/network-and-other#api_irtcengine_stopechotest) | 停止音频通话测试。 |
+| [stopLastmileProbeTest](/en/api-reference/rtc/android/network-and-other#api_irtcengine_stoplastmileprobetest) | 停止 Last-mile 网络探测测试。 |
+| [onConnectionLost](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onconnectionlost) | [onConnectionLost](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onconnectionlost) 回调：当 SDK 在连接中断后 10 秒内无法重新连接到声网边缘服务器时触发。 |
+| [onConnectionStateChanged](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onconnectionstatechanged) | 网络连接状态发生变化回调。 |
+| [onEncryptionError](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onencryptionerror) | 内置加密错误回调。 |
+| [onLastmileProbeResult](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onlastmileproberesult) | 上行和下行 Last-mile 网络探测测试结果的回调。 |
+| [onLastmileQuality](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onlastmilequality) | 本地用户的 Last-mile 网络质量回调。 |
+| [onMultipathStats](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onmultipathstats) | 多路径传输统计信息回调。 |
+| [onNetworkQuality](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onnetworkquality) | [onNetworkQuality](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onnetworkquality) 回调。报告频道中每个用户的 Last-mile 网络质量。 |
+| [onNetworkTypeChanged](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onnetworktypechanged) | 本地网络类型发生变化时的回调。 |
+| [onPermissionError](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onpermissionerror) | 设备权限获取失败时触发的回调。 |
+| [onPermissionGranted](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onpermissiongranted) | [onPermissionGranted](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onpermissiongranted) 回调。用于上报已授予的权限。 |
+| [onProxyConnected](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onproxyconnected) | 代理连接状态回调。 |
+| [onRemoteSubscribeFallbackToAudioOnly](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) | [onRemoteSubscribeFallbackToAudioOnly](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) 回调。当远端媒体流因网络变化在音频流与视频流之间切换时触发。 |
+| [onUplinkNetworkInfoUpdated](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onuplinknetworkinfoupdated) | 上行网络信息发生变化回调。 |

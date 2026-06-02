@@ -1,0 +1,231 @@
+---
+title: "初始化相关"
+description: RTC Android API 参考迁移页。
+---
+<a id="toc_initialize"></a>
+
+<a id="api_irtcengine_addhandler"></a>
+
+## addHandler
+
+添加事件处理器。
+
+<a id="api_irtcengine_addhandler__prototype"></a>
+
+```java
+public void addHandler(IRtcEngineEventHandler handler)
+```
+
+<a id="api_irtcengine_addhandler__detailed_desc"></a>
+
+SDK 使用 [IRtcEngineEventHandler](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler) 将回调发送到 App。你可以继承该类中的方法以接收回调。该类中的所有方法都有默认（空）实现，因此你只需根据实际场景继承所需的回调方法。 在回调中应避免执行耗时操作或调用可能阻塞线程的 API，例如 [sendStreamMessage](/en/api-reference/rtc/android/metadata/datastream#api_irtcengine_sendstreammessage)，否则可能导致 SDK 无法正常工作。
+
+<a id="api_irtcengine_addhandler__parameters"></a>
+
+### 参数
+
+#### `handler`
+
+要添加的回调事件处理器，详见 [IRtcEngineEventHandler](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_create"></a>
+
+## create [1/2]
+
+创建并初始化 RtcEngine 实例。
+
+<a id="api_irtcengine_create__prototype"></a>
+
+```java
+public static synchronized RtcEngine create(Context context, String appId, IRtcEngineEventHandler handler) throws Exception
+```
+
+<a id="api_irtcengine_create__detailed_desc"></a>
+
+[RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 类中的所有方法均为异步执行，声网建议在同一线程中调用这些方法。
+
+注：
+
+- 在调用其他 API 之前，必须先调用此方法以创建 RtcEngine 实例。
+- 你可以通过调用此方法或调用 create [2/2] 来创建 RtcEngine 实例。与此方法相比， create [2/2] 支持更多配置，例如指定连接区域和设置日志文件。
+- 每个 App 仅支持创建一个 RtcEngine 实例。
+
+<a id="api_irtcengine_create__parameters"></a>
+
+### 参数
+
+#### `context`
+
+Android Activity 的上下文。
+
+#### `appId`
+
+声网为你的项目签发的 App ID。只有使用相同 App ID 的用户才能加入同一个频道并进行通信。一个 App ID 只能用于创建一个 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例。若需更换 App ID，请调用 [destroy [2/2]](/en/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 销毁当前 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例，然后再创建新的实例。
+
+#### `handler`
+
+[RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 的事件处理器。详见 [IRtcEngineEventHandler](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)。
+
+<a id="api_irtcengine_create__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回已初始化的 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例。 方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_destroy1"></a>
+
+## destroy [2/2]
+
+销毁 RtcEngine 实例并释放相关资源。
+
+<a id="api_irtcengine_destroy1__prototype"></a>
+
+```java
+public static synchronized void destroy(@Nullable IRtcEngineReleaseCallback callback)
+```
+
+<a id="api_irtcengine_destroy1__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+当你不再需要实时通信时，调用该方法以释放 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例，使相关资源可用于其他操作。推荐在语音通话或视频通话等场景中使用。
+
+<a id="api_irtcengine_destroy1__parameters"></a>
+
+### 参数
+
+#### `callback`
+
+用于配置引擎的同步或异步销毁方式：
+
+- 非 null：异步销毁。方法会立即返回，但引擎资源可能尚未完全释放。引擎销毁后会触发 onEngineReleased 回调。
+- null：同步销毁。方法仅在引擎资源完全释放后才返回。详见 IRtcEngineReleaseCallback。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_initialize"></a>
+
+## create [2/2]
+
+创建并初始化 RtcEngine 实例。
+
+<a id="api_irtcengine_initialize__prototype"></a>
+
+```java
+public static synchronized RtcEngine create(RtcEngineConfig config) throws Exception
+```
+
+<a id="api_irtcengine_initialize__detailed_desc"></a>
+
+你可以通过调用此方法或 [create [1/2]](/en/api-reference/rtc/android/initialize#api_irtcengine_create) 方法来创建 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例。与后者相比，此方法支持更多配置选项，例如指定连接区域和设置日志文件。
+
+:::info[注]
+每个 App 仅支持创建一个 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例。 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 类中的所有方法均为异步执行，声网建议在同一线程中调用这些方法。
+:::
+
+<a id="api_irtcengine_initialize__timing"></a>
+
+### 调用时机
+
+在调用其他 API 之前，必须先调用此方法创建 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 对象。
+
+<a id="api_irtcengine_initialize__parameters"></a>
+
+### 参数
+
+#### `config`
+
+用于配置 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例的参数。详见 [RtcEngineConfig](/en/api-reference/rtc/android/class-and-enum/classes/class-rtcengineconfig)。
+
+<a id="api_irtcengine_initialize__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回初始化后的 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 对象。 方法调用失败，SDK 会抛出异常，并返回相应的错误信息。你需要捕获异常并进行处理。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_release"></a>
+
+## destroy [1/2]
+
+释放 RtcEngine 实例。
+
+<a id="api_irtcengine_release__prototype"></a>
+
+```java
+public static synchronized void destroy()
+```
+
+<a id="api_irtcengine_release__detailed_desc"></a>
+
+该方法释放所有由声网 SDK 占用的资源。成功调用该方法后，将无法再使用 SDK 中的任何方法或回调。如需再次使用实时通信功能，必须调用 [create [2/2]](/en/api-reference/rtc/android/initialize#api_irtcengine_initialize) 创建新的 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例。
+
+:::info[注]
+不建议在 SDK 的任何回调中调用该方法。否则，SDK 需等待回调返回结果后才能释放资源，可能导致死锁。
+:::
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_removehandler"></a>
+
+## removeHandler
+
+移除指定的 IRtcEngineEventHandler 实例。
+
+<a id="api_irtcengine_removehandler__prototype"></a>
+
+```java
+public void removeHandler(IRtcEngineEventHandler handler)
+```
+
+<a id="api_irtcengine_removehandler__detailed_desc"></a>
+
+该方法用于移除指定的回调处理器。对于只需监听一次的回调事件，在接收到事件后，可以调用该方法移除对应的回调处理器。
+
+<a id="api_irtcengine_removehandler__parameters"></a>
+
+### 参数
+
+#### `handler`
+
+要移除的回调处理器。详见 [IRtcEngineEventHandler](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="callback_irtcenginereleasecallback_onenginereleased"></a>
+
+## onEngineReleased
+
+RtcEngine 被释放时触发的回调。
+
+<a id="callback_irtcenginereleasecallback_onenginereleased__prototype"></a>
+
+```java
+@CalledByNative void onEngineReleased();
+```
+
+<a id="callback_irtcenginereleasecallback_onenginereleased__detailed_desc"></a>
+
+该回调在调用 [destroy [2/2]](/en/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 方法以异步方式释放 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 对象时被触发。
+
+<a id="callback_irtcenginereleasecallback_onenginereleased__timing"></a>
+
+### 触发时机
+
+该回调在调用 [destroy [2/2]](/en/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 方法以异步方式释放 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 对象时被触发。
+
+### 所属接口类
+- [IRtcEngineReleaseCallback](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcenginereleasecallback)

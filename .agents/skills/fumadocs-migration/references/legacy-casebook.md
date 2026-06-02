@@ -95,6 +95,19 @@ Legacy API UI components such as `ApiSectionCard`, `OverloadMethodCollapse`, `Ov
 
 Prefer upstream structured API sources. If no source exists, convert conservatively to headings, tables, definition lists, code fences, and directives. Drop search/TOC-only classes and keep stable IDs.
 
+For generated HTML API references:
+
+- Parse the legacy `nav.toc` tree first and rebuild it as real folders plus `meta.json`.
+- Keep category pages such as `toc_audio`, `toc_video`, `toc_play`, `toc_metadata`, and `toc_device_management` as folder index pages when they own descendants in the old TOC.
+- Do not collapse nested topic trees into a single flat sidebar unless the user explicitly requests that IA.
+- Treat `div.note`, `div.p > ul`, `dl/dt/dd`, and nested `article` blocks as structural content, not plain inline text.
+- Preserve inline `xref` links inside notes, parameter descriptions, return values, and related references.
+- Preserve code-styled identifiers when the legacy source used `<code>` instead of a link. Do not auto-link every API-looking token unless a migration lane explicitly requires smart autolinking.
+- Escape MDX-sensitive inline text from generated HTML: examples include `<packagename>`, `<package name>`, `ArrayList<Foo>`, JSON snippets like `{"sceneType":1}`, and literal braces in allowed-character lists.
+- Merge inline flow before writing Markdown paragraphs. Otherwise, generated API refs tend to split links, code spans, or punctuation onto separate lines.
+- Preserve nested error-code and note lists as nested Markdown bullets rather than flattening them into one sentence.
+- When a legacy sentence contains adjacent links with no separating whitespace, ensure the generated Markdown keeps both links clickable.
+
 ## RESTful And OpenAPI
 
 Legacy custom renderers such as `RestfulRender` and `OpenapiRender` are not migrated.
