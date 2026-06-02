@@ -37,6 +37,7 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 });
 
 function Page() {
+  const params = Route.useParams();
   const {
     body,
     breadcrumb,
@@ -54,6 +55,7 @@ function Page() {
       breadcrumb={breadcrumb}
       contentPath={contentPath}
       description={description}
+      locale={params.locale}
       markdownUrl={markdownUrl}
       slug={slug}
       title={title}

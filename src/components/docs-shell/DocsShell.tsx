@@ -33,7 +33,12 @@ import { cn } from '@/lib/cn';
 import { replaceDocLocale } from '@/lib/docs-routing';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
-import { type AppLocale, SUPPORTED_LOCALES } from '@/lib/i18n/i18n-config';
+import {
+  type AppLocale,
+  DEFAULT_LOCALE,
+  normalizeLocale,
+  SUPPORTED_LOCALES,
+} from '@/lib/i18n/i18n-config';
 import { useLocale } from '@/lib/i18n/use-locale';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
@@ -79,7 +84,9 @@ export function DocsShell({
   tabs: TabSummary[];
   toc: TOCItemType[];
 }) {
-  const { t } = useTranslation('common');
+  const { i18n } = useTranslation('common');
+  const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const t = i18n.getFixedT(currentLocale, 'common');
   const { resolvedTheme, setTheme } = useTheme();
   const navigate = useNavigate();
   const { setLocale } = useLocale();
@@ -172,7 +179,7 @@ export function DocsShell({
                   <MobileSidebar
                     activePath={activePath}
                     activeTab={activeTab}
-                    currentLocale={locale as AppLocale}
+                    currentLocale={currentLocale}
                     isDarkTheme={isDarkTheme}
                     localeLinks={localeLinks}
                     onSelectLocale={async (nextLocale) => {
@@ -211,17 +218,27 @@ export function DocsShell({
                 className="lg:hidden"
                 data-testid="docs-mobile-header-actions"
               >
-                <DocsSearchDialog mode="mobile" pages={pages} tabs={tabs} />
+                <DocsSearchDialog
+                  locale={currentLocale}
+                  mode="mobile"
+                  pages={pages}
+                  tabs={tabs}
+                />
               </div>
               <div
                 className="hidden items-center gap-2 lg:flex"
                 data-testid="docs-desktop-header-actions"
               >
                 <div className="w-80">
-                  <DocsSearchDialog mode="desktop" pages={pages} tabs={tabs} />
+                  <DocsSearchDialog
+                    locale={currentLocale}
+                    mode="desktop"
+                    pages={pages}
+                    tabs={tabs}
+                  />
                 </div>
                 <LocaleSwitcher
-                  currentLocale={locale as AppLocale}
+                  currentLocale={currentLocale}
                   localeLinks={localeLinks}
                   onSelect={async (nextLocale) => {
                     await setLocale(nextLocale);
@@ -313,7 +330,11 @@ export function DocsShell({
             nodes={sidebar}
             onSelectPath={() => setIsMobileSheetOpen(false)}
           />
-          <DocsMainColumn next={next} previous={previous}>
+          <DocsMainColumn
+            locale={currentLocale}
+            next={next}
+            previous={previous}
+          >
             {children}
           </DocsMainColumn>
           {isOpenApiLayout ? (
@@ -321,7 +342,7 @@ export function DocsShell({
               <DocsSideRail>{sideRail}</DocsSideRail>
             ) : null
           ) : (
-            <DocsTocRail toc={toc} />
+            <DocsTocRail locale={currentLocale} toc={toc} />
           )}
         </div>
       </div>
@@ -369,7 +390,8 @@ function LocaleSwitcher({
   onSelect: (locale: AppLocale) => Promise<void>;
   variant?: 'all' | 'desktop' | 'mobile';
 }) {
-  const { t } = useTranslation('common');
+  const { i18n } = useTranslation('common');
+  const t = i18n.getFixedT(currentLocale, 'common');
 
   return (
     <>
@@ -436,7 +458,8 @@ function LocaleOptions({
   onSelect: (locale: AppLocale) => Promise<void>;
   scopeKey: string;
 }) {
-  const { t } = useTranslation('common');
+  const { i18n } = useTranslation('common');
+  const t = i18n.getFixedT(currentLocale, 'common');
 
   return (
     <div className="flex flex-col gap-1">
@@ -503,7 +526,8 @@ function MobileSidebar({
   tabs: TabSummary[];
   toggleTheme: () => void;
 }) {
-  const { t } = useTranslation('common');
+  const { i18n } = useTranslation('common');
+  const t = i18n.getFixedT(currentLocale, 'common');
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">

@@ -14,6 +14,11 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import type { TabSummary } from '@/lib/docs-tree';
+import {
+  type AppLocale,
+  DEFAULT_LOCALE,
+  normalizeLocale,
+} from '@/lib/i18n/i18n-config';
 
 export type SearchEntry = {
   description?: string;
@@ -22,15 +27,18 @@ export type SearchEntry = {
 };
 
 export function DocsSearchDialog({
+  locale = DEFAULT_LOCALE,
   mode = 'desktop',
   pages,
   tabs,
 }: {
+  locale?: AppLocale | string;
   mode?: 'desktop' | 'mobile';
   pages: SearchEntry[];
   tabs: TabSummary[];
 }) {
-  const { t } = useTranslation('common');
+  const { i18n } = useTranslation('common');
+  const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 

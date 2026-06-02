@@ -8,6 +8,7 @@ import {
 } from '@tanstack/react-router';
 import {
   act,
+  cleanup,
   fireEvent,
   render,
   screen,
@@ -309,6 +310,43 @@ describe('DocsShell', () => {
         name: 'Select documentation version',
       }),
     ).toHaveTextContent('v4.6.2');
+  });
+
+  it('uses the route locale for shell chrome before i18n bootstrap changes global language', async () => {
+    await i18n.changeLanguage('en');
+
+    renderDocsShell(
+      {
+      activePath: '/zh-CN/api-reference/rtc/android/overview',
+      activeTab: 'api-reference',
+      children: <article>正文</article>,
+      locale: 'zh-CN',
+      localeLinks: [
+        {
+          href: '/en/api-reference/rtc/android/overview',
+          isActive: false,
+          locale: 'en',
+        },
+        {
+          href: '/zh-CN/api-reference/rtc/android/overview',
+          isActive: true,
+          locale: 'zh-CN',
+        },
+      ],
+      pages: [],
+      sidebar,
+      tabs,
+      toc: [],
+      },
+      '/zh-CN/api-reference/overview',
+    );
+
+    expect(
+      await screen.findByRole('button', { name: '打开导航' }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: '搜索文档' })).toHaveLength(2);
+    expect(screen.getByRole('button', { name: '主题: 浅色' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Open navigation' })).toBeNull();
   });
 
   it('keeps the top docs tabs available from the medium breakpoint upward', async () => {
