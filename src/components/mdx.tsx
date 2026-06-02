@@ -41,17 +41,31 @@ import { cn } from '@/lib/cn';
 import { scrollDocsHashTarget } from '@/lib/docs-hash';
 import { normalizeDocsHref } from '@/lib/docs-link-normalize';
 
-function Tabs(props: React.ComponentProps<typeof UiTabs>) {
+type PersistableTabsProps = React.ComponentProps<typeof UiTabs> & {
+  groupId?: string;
+  persist?: boolean;
+};
+
+function Tabs(props: PersistableTabsProps) {
+  const { className, groupId, persist, ...tabsProps } = props;
   const defaultValue =
     props.defaultValue ??
     props.value ??
     getFirstTabsTriggerValue(props.children);
+  const tabState = usePersistentTabsValue({
+    ...props,
+    defaultValue,
+    groupId,
+    persist,
+  });
 
   return (
     <UiTabs
-      className={cn('docs-mdx-tabs my-6', props.className)}
-      {...props}
-      defaultValue={props.value ? props.defaultValue : defaultValue}
+      className={cn('docs-mdx-tabs my-6', className)}
+      {...tabsProps}
+      {...tabState}
+      data-tabs-group-id={groupId}
+      data-tabs-persist={persist ? 'true' : undefined}
     />
   );
 }
@@ -70,13 +84,18 @@ function TabsList(props: React.ComponentProps<typeof UiTabsList>) {
 }
 
 function TabsTrigger(props: React.ComponentProps<typeof UiTabsTrigger>) {
+  const { onClick, ...triggerProps } = props;
   return (
     <UiTabsTrigger
       className={cn(
         'min-h-12 rounded-none px-3 pt-2 pb-2 text-[0.98rem] font-semibold text-[color:var(--ink-3)] md:px-4 group-data-[variant=line]/tabs-list:data-[state=active]:text-[color:var(--ink-1)]',
         props.className,
       )}
-      {...props}
+      onClick={(event) => {
+        persistTabsTriggerValue(event, props.value);
+        onClick?.(event);
+      }}
+      {...triggerProps}
     />
   );
 }
@@ -87,17 +106,26 @@ function TabsContent(props: React.ComponentProps<typeof UiTabsContent>) {
   );
 }
 
-function CodeBlockTabs(props: React.ComponentProps<typeof UiTabs>) {
+function CodeBlockTabs(props: PersistableTabsProps) {
+  const { className, groupId, persist, ...tabsProps } = props;
   const defaultValue =
     props.defaultValue ??
     props.value ??
     getFirstTabsTriggerValue(props.children);
+  const tabState = usePersistentTabsValue({
+    ...props,
+    defaultValue,
+    groupId,
+    persist,
+  });
 
   return (
     <UiTabs
-      className={cn('docs-code-tabs my-6', props.className)}
-      {...props}
-      defaultValue={props.value ? props.defaultValue : defaultValue}
+      className={cn('docs-code-tabs my-6', className)}
+      {...tabsProps}
+      {...tabState}
+      data-tabs-group-id={groupId}
+      data-tabs-persist={persist ? 'true' : undefined}
     />
   );
 }
@@ -115,10 +143,15 @@ function CodeBlockTabsList(props: React.ComponentProps<typeof UiTabsList>) {
 function CodeBlockTabsTrigger(
   props: React.ComponentProps<typeof UiTabsTrigger>,
 ) {
+  const { onClick, ...triggerProps } = props;
   return (
     <UiTabsTrigger
       className={cn('docs-code-tabs-trigger', props.className)}
-      {...props}
+      onClick={(event) => {
+        persistTabsTriggerValue(event, props.value);
+        onClick?.(event);
+      }}
+      {...triggerProps}
     />
   );
 }
@@ -133,6 +166,12 @@ function CodeBlockTab(props: React.ComponentProps<typeof UiTabsContent>) {
 }
 
 function getFirstTabsTriggerValue(children: ReactNode): string | undefined {
+  return getTabsTriggerValues(children).at(0);
+}
+
+function getTabsTriggerValues(children: ReactNode): string[] {
+  const values: string[] = [];
+
   for (const child of Children.toArray(children)) {
     if (!isValidElement(child)) {
       continue;
@@ -145,19 +184,74 @@ function getFirstTabsTriggerValue(children: ReactNode): string | undefined {
       }>
     ).props;
 
-    if (
-      (child.type === TabsTrigger || child.type === CodeBlockTabsTrigger) &&
-      typeof childProps.value === 'string'
-    ) {
-      return childProps.value;
+    if (typeof childProps.value === 'string') {
+      values.push(childProps.value);
     }
 
-    const nestedValue = getFirstTabsTriggerValue(childProps.children);
-
-    if (nestedValue) {
-      return nestedValue;
-    }
+    values.push(...getTabsTriggerValues(childProps.children));
   }
+
+  return values;
+}
+
+function usePersistentTabsValue({
+  children,
+  defaultValue,
+  groupId,
+  onValueChange,
+  persist,
+  value,
+}: PersistableTabsProps) {
+  const validValues = getTabsTriggerValues(children);
+  const fallbackValue = defaultValue ?? value ?? validValues.at(0);
+  const storageKey = persist && groupId ? `docs-tabs:${groupId}` : null;
+  const isControlled = value !== undefined;
+  const [storedValue, setStoredValue] = useState(() => {
+    if (!storageKey || isControlled || typeof window === 'undefined') {
+      return fallbackValue;
+    }
+
+    const saved = window.localStorage.getItem(storageKey);
+    return saved && (validValues.length === 0 || validValues.includes(saved))
+      ? saved
+      : fallbackValue;
+  });
+
+  return {
+    defaultValue: isControlled ? defaultValue : undefined,
+    onValueChange: (nextValue: string) => {
+      if (
+        storageKey &&
+        (validValues.length === 0 || validValues.includes(nextValue))
+      ) {
+        window.localStorage.setItem(storageKey, nextValue);
+      }
+
+      if (!isControlled) {
+        setStoredValue(nextValue);
+      }
+
+      onValueChange?.(nextValue);
+    },
+    value: isControlled ? value : storedValue,
+  };
+}
+
+function persistTabsTriggerValue(
+  event: React.MouseEvent<HTMLElement>,
+  value: unknown,
+) {
+  if (typeof value !== 'string' || typeof window === 'undefined') {
+    return;
+  }
+
+  const root = event.currentTarget.closest('[data-tabs-persist="true"]');
+  const groupId = root?.getAttribute('data-tabs-group-id');
+  if (!groupId) {
+    return;
+  }
+
+  window.localStorage.setItem(`docs-tabs:${groupId}`, value);
 }
 
 type MDXContext = {

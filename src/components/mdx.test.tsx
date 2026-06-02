@@ -3,7 +3,13 @@ import type { ComponentType, ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { getMDXComponents } from './mdx';
 
-type TabsComponent = ComponentType<{ children: ReactNode }>;
+type TabsComponent = ComponentType<{
+  children: ReactNode;
+  defaultValue?: string;
+  groupId?: string;
+  persist?: boolean;
+  value?: string;
+}>;
 type TabsChildComponent = ComponentType<{
   children: ReactNode;
   value: string;
@@ -79,6 +85,115 @@ describe('MDX tabs', () => {
     expect(components.CodeBlockTabsList).toBeDefined();
     expect(components.CodeBlockTabsTrigger).toBeDefined();
     expect(components.CodeBlockTab).toBeDefined();
+  });
+
+  it('persists grouped tabs across renders', () => {
+    const components = getMDXComponents();
+    const Tabs = components.Tabs as TabsComponent;
+    const TabsList = components.TabsList as TabsComponent;
+    const TabsTrigger = components.TabsTrigger as TabsChildComponent;
+    const TabsContent = components.TabsContent as TabsChildComponent;
+
+    const { unmount } = render(
+      <Tabs defaultValue="android" groupId="platform" persist>
+        <TabsList>
+          <TabsTrigger value="android">Android</TabsTrigger>
+          <TabsTrigger value="ios">iOS</TabsTrigger>
+        </TabsList>
+        <TabsContent value="android">Android instructions</TabsContent>
+        <TabsContent value="ios">iOS instructions</TabsContent>
+      </Tabs>,
+    );
+
+    fireEvent.click(screen.getByRole('tab', { name: 'iOS' }));
+
+    expect(window.localStorage.getItem('docs-tabs:platform')).toBe('ios');
+
+    unmount();
+
+    render(
+      <Tabs defaultValue="android" groupId="platform" persist>
+        <TabsList>
+          <TabsTrigger value="android">Android</TabsTrigger>
+          <TabsTrigger value="ios">iOS</TabsTrigger>
+        </TabsList>
+        <TabsContent value="android">Android instructions</TabsContent>
+        <TabsContent value="ios">iOS instructions</TabsContent>
+      </Tabs>,
+    );
+
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'data-state',
+      'active',
+    );
+  });
+
+  it('persists generated code tabs by group', () => {
+    const components = getMDXComponents();
+    const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
+    const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
+    const CodeBlockTabsTrigger =
+      components.CodeBlockTabsTrigger as TabsChildComponent;
+    const CodeBlockTab = components.CodeBlockTab as TabsChildComponent;
+
+    const { unmount } = render(
+      <CodeBlockTabs defaultValue="kotlin" groupId="platform" persist>
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+        <CodeBlockTab value="kotlin">Kotlin code</CodeBlockTab>
+        <CodeBlockTab value="java">Java code</CodeBlockTab>
+      </CodeBlockTabs>,
+    );
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Java' }));
+
+    expect(window.localStorage.getItem('docs-tabs:platform')).toBe('java');
+    unmount();
+
+    render(
+      <CodeBlockTabs defaultValue="kotlin" groupId="platform" persist>
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+        <CodeBlockTab value="kotlin">Kotlin code</CodeBlockTab>
+        <CodeBlockTab value="java">Java code</CodeBlockTab>
+      </CodeBlockTabs>,
+    );
+
+    expect(screen.getByRole('tab', { name: 'Java' })).toHaveAttribute(
+      'data-state',
+      'active',
+    );
+    expect(screen.getByText('Java code')).toBeVisible();
+  });
+
+  it('ignores persisted tab values that are not present', () => {
+    window.localStorage.setItem('docs-tabs:platform', 'ios');
+
+    const components = getMDXComponents();
+    const Tabs = components.Tabs as TabsComponent;
+    const TabsList = components.TabsList as TabsComponent;
+    const TabsTrigger = components.TabsTrigger as TabsChildComponent;
+    const TabsContent = components.TabsContent as TabsChildComponent;
+
+    render(
+      <Tabs defaultValue="android" groupId="platform" persist>
+        <TabsList>
+          <TabsTrigger value="android">Android</TabsTrigger>
+          <TabsTrigger value="web">Web</TabsTrigger>
+        </TabsList>
+        <TabsContent value="android">Android instructions</TabsContent>
+        <TabsContent value="web">Web instructions</TabsContent>
+      </Tabs>,
+    );
+
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'data-state',
+      'active',
+    );
   });
 });
 

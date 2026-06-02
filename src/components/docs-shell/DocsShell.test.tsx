@@ -253,6 +253,64 @@ describe('DocsShell', () => {
     expect(screen.getByText('On this page')).toBeInTheDocument();
   });
 
+  it('renders scoped version selectors in desktop and mobile sidebars', async () => {
+    renderDocsShell({
+      activePath: '/en/api-reference/rtc/android/overview',
+      activeTab: 'api-reference',
+      sidebarHeader: {
+        backHref: '/en/api-reference/rtc',
+        backLabel: 'RTC',
+        title: 'Android API Reference',
+        versionSwitcher: {
+          currentId: 'current',
+          versions: [
+            {
+              href: '/en/api-reference/rtc/android/overview',
+              id: 'current',
+              label: 'v4.6.2',
+            },
+            {
+              href: '/en/api-reference/rtc/android/4.6.0/overview',
+              id: '4.6.0',
+              label: 'v4.6.0',
+            },
+          ],
+        },
+      },
+    });
+
+    const desktopSidebar = await screen.findByTestId('docs-sidebar');
+
+    expect(desktopSidebar).toHaveTextContent('Android API Reference');
+    fireEvent.click(
+      within(desktopSidebar).getByRole('button', {
+        name: 'Select documentation version',
+      }),
+    );
+
+    const versionOptions = await screen.findByRole('menu', {
+      name: 'Documentation versions',
+    });
+
+    expect(
+      within(versionOptions).getByRole('menuitem', { name: /v4.6.0/i }),
+    ).toHaveAttribute(
+      'href',
+      '/en/api-reference/rtc/android/4.6.0/overview',
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }));
+
+    const mobileDialog = await screen.findByRole('dialog');
+
+    expect(mobileDialog).toHaveTextContent('Android API Reference');
+    expect(
+      within(mobileDialog).getByRole('button', {
+        name: 'Select documentation version',
+      }),
+    ).toHaveTextContent('v4.6.2');
+  });
+
   it('keeps the top docs tabs available from the medium breakpoint upward', async () => {
     renderDocsShell();
 

@@ -4,7 +4,6 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import {
   CheckIcon,
-  ChevronLeftIcon,
   LanguagesIcon,
   MenuIcon,
   MoonIcon,
@@ -33,12 +32,14 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
 import { replaceDocLocale } from '@/lib/docs-routing';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
+import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import { type AppLocale, SUPPORTED_LOCALES } from '@/lib/i18n/i18n-config';
 import { useLocale } from '@/lib/i18n/use-locale';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog, type SearchEntry } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
+import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsTocRail } from './DocsTocRail';
 
 type LocaleLink = {
@@ -73,11 +74,7 @@ export function DocsShell({
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
   sidebar: DocsSidebarNode[];
-  sidebarHeader?: {
-    backHref: string;
-    backLabel: string;
-    title: string;
-  };
+  sidebarHeader?: DocsSidebarHeader;
   sideRail?: React.ReactNode;
   tabs: TabSummary[];
   toc: TOCItemType[];
@@ -501,11 +498,7 @@ function MobileSidebar({
   onSelectLocale: (locale: AppLocale) => Promise<void>;
   onSelectPath: () => void;
   sidebar: DocsSidebarNode[];
-  sidebarHeader?: {
-    backHref: string;
-    backLabel: string;
-    title: string;
-  };
+  sidebarHeader?: DocsSidebarHeader;
   themeLabel: string;
   tabs: TabSummary[];
   toggleTheme: () => void;
@@ -546,21 +539,11 @@ function MobileSidebar({
               {t('docs.pagesLabel')}
             </p>
             {sidebarHeader ? (
-              <div className="mb-2 rounded-xl border border-border px-3 py-2">
-                <Link
-                  className="mb-1 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
-                  onClick={onSelectPath}
-                  params={{}}
-                  search={{}}
-                  to={sidebarHeader.backHref}
-                >
-                  <ChevronLeftIcon className="size-4" />
-                  <span>{sidebarHeader.backLabel}</span>
-                </Link>
-                <p className="text-sm font-semibold text-foreground">
-                  {sidebarHeader.title}
-                </p>
-              </div>
+              <DocsSidebarHeaderBlock
+                header={sidebarHeader}
+                mode="mobile"
+                onSelectPath={onSelectPath}
+              />
             ) : null}
             <div className="flex flex-col gap-1">
               {sidebar.map((node) => (
