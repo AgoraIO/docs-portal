@@ -4,6 +4,11 @@ import { BotIcon, Edit3Icon, ExternalLinkIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
+import {
+  findDocsHeadingForHash,
+  scrollDocsHashTarget,
+  syncDocsHashTargetFromLocation,
+} from '@/lib/docs-hash';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import type { OpenApiOperationPayload } from '@/lib/openapi/payload';
 import { DocsContentBodyClient } from './DocsContentBody.client';
@@ -12,8 +17,6 @@ import {
   OpenApiOperationContent,
 } from '../openapi/OpenApiOperationContent';
 
-const DESKTOP_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
-const TOC_SCROLL_OFFSET = 24;
 const TOC_ACTIVE_OFFSET = 96;
 const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
 
@@ -46,6 +49,26 @@ export function DocsContent({
           kind: 'mdx',
         } satisfies DocsContentBody)
       : undefined);
+  const resolvedMdxContentPath =
+    resolvedBody?.kind === 'mdx' ? resolvedBody.contentPath : undefined;
+
+  useEffect(() => {
+    if (resolvedBody?.kind !== 'mdx') {
+      return;
+    }
+
+    const handleHashChange = () => {
+      syncDocsHashTargetFromLocation('auto');
+    };
+
+    const frame = window.requestAnimationFrame(handleHashChange);
+    window.addEventListener('hashchange', handleHashChange);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, [resolvedBody?.kind, resolvedMdxContentPath]);
 
   return (
     <article className="flex min-w-0 max-w-[var(--content-max)] flex-col gap-9">
@@ -195,41 +218,13 @@ export function DocsTableOfContents({
   );
 
   const scrollToHeading = useCallback((url: string) => {
-    const scrollContainer = getActiveDocsScrollContainer();
-    const heading = getHeadingForUrl(url, scrollContainer);
-
-    if (!heading) {
-      return;
-    }
-
     setPrimaryActiveUrl(url);
     setVisibleUrls((current) => {
       const next = new Set(current);
       next.add(url);
       return next;
     });
-    updateHash(url);
-
-    const headingRect = heading.getBoundingClientRect();
-
-    if (scrollContainer) {
-      const containerRect = scrollContainer.getBoundingClientRect();
-
-      scrollContainer.scrollTo({
-        behavior: 'smooth',
-        top:
-          scrollContainer.scrollTop +
-          headingRect.top -
-          containerRect.top -
-          TOC_SCROLL_OFFSET,
-      });
-      return;
-    }
-
-    window.scrollTo({
-      behavior: 'smooth',
-      top: window.scrollY + headingRect.top - TOC_ACTIVE_OFFSET,
-    });
+    scrollDocsHashTarget(url);
   }, []);
 
   useEffect(() => {
@@ -250,7 +245,7 @@ export function DocsTableOfContents({
           TOC_ACTIVE_OFFSET;
         const viewportRect = getScrollViewportRect(scrollContainer);
         const headings = items.map((item) =>
-          getHeadingForUrl(item.url, scrollContainer),
+          findDocsHeadingForHash(item.url),
         );
         let nextActiveUrl = items[0]?.url ?? '';
         const nextVisibleUrls = new Set<string>();
@@ -376,23 +371,13 @@ export function DocsTableOfContents({
 }
 
 function getActiveDocsScrollContainer() {
-  const scrollContainer = getDesktopDocsScrollContainer();
-
-  if (!scrollContainer) {
-    return null;
-  }
-
-  const styles = window.getComputedStyle(scrollContainer);
-
-  if (styles.display === 'none' || styles.visibility === 'hidden') {
-    return null;
-  }
-
-  return scrollContainer;
+  return getDesktopDocsScrollContainer();
 }
 
 function getDesktopDocsScrollContainer() {
-  return document.querySelector<HTMLElement>(DESKTOP_SCROLL_SELECTOR);
+  return document.querySelector<HTMLElement>(
+    '[data-testid="docs-main-desktop-scroll"]',
+  );
 }
 
 function getScrollViewportRect(scrollContainer: HTMLElement | null) {
@@ -433,54 +418,10 @@ function getSectionBottomForItem(
   );
 }
 
-function getHeadingForUrl(url: string, scrollContainer: HTMLElement | null) {
-  if (!url.startsWith('#')) {
-    return null;
-  }
-
-  const id = decodeURIComponent(url.slice(1));
-
-  if (!id) {
-    return null;
-  }
-
-  const selector = `#${escapeCssIdentifier(id)}`;
-
-  const headings = [
-    ...(scrollContainer?.querySelectorAll<HTMLElement>(selector) ?? []),
-    ...document.querySelectorAll<HTMLElement>(selector),
-  ];
-  const visibleHeading = headings.find(
-    (heading) => heading.getClientRects().length > 0,
-  );
-
-  return visibleHeading ?? headings[0] ?? null;
-}
-
-function escapeCssIdentifier(value: string) {
-  if (typeof CSS !== 'undefined' && CSS.escape) {
-    return CSS.escape(value);
-  }
-
-  return value.replace(/["\\#.:,[\]=>+~*^$|()\s]/g, '\\$&');
-}
-
 function requestAnimationFrame(callback: FrameRequestCallback) {
   if (typeof window.requestAnimationFrame === 'function') {
     return window.requestAnimationFrame(callback);
   }
 
   return window.setTimeout(() => callback(window.performance.now()), 0);
-}
-
-function updateHash(url: string) {
-  if (!url.startsWith('#')) {
-    return;
-  }
-
-  window.history.replaceState(
-    null,
-    '',
-    `${window.location.pathname}${window.location.search}${url}`,
-  );
 }

@@ -1,5 +1,5 @@
 ---
-title: Send picture messages
+title: Send images to the agent
 description: Send picture messages from the client side to help the agent understand the user's intention.
 ---
 When interacting with an agent, you may need to upload images or send image messages from the client to help the agent better understand the user's intent. This page describes how to use the Conversational AI Engine toolkit to send image messages to the large language model from your app. The LLM can then automatically reference the image content in subsequent conversations and generate more relevant responses.

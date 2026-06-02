@@ -38,15 +38,8 @@ const openApiSidebarButtonClassName =
 
 const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [
   ['/build/build-server-client', 'Build backend and client'],
-  ['/build/short-term-memory', 'Short-term memory'],
-  ['/build/custom-information', 'Custom context'],
-  ['/build/event-types', 'Event types'],
-  ['/build/webhooks', 'Webhook notifications'],
-  ['/build/event-notifications', 'Toolkit events'],
-  ['/build/transcripts', 'Live transcripts'],
-  ['/build/send-multimodal-messages', 'Send Pictures'],
+  ['/reference/event-types', 'Event types'],
   ['/best-practices/optimize-latency', ' Optimize latency'],
-  ['/best-practices/regional-restrictions', 'Restrict agent zones'],
   ['/best-practices/cloud-recording', 'Record conversation'],
 ];
 
@@ -262,7 +255,7 @@ function shouldDefaultOpenSection(title: string, activePath: string) {
     (title === 'Get Started' &&
       /\/en\/introduction(?:\/index)?$/.test(activePath)) ||
     ((title === 'Create and connect an agent' ||
-      title === 'Add context and memory') &&
+      title === 'Shape the conversation') &&
       /\/en\/ai(?:\/index)?$/.test(activePath))
   );
 }

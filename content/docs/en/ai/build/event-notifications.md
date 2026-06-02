@@ -1,5 +1,5 @@
 ---
-title: Toolkit event notifications
+title: Receive toolkit agent event
 description: Receive notification of Conversational AI Engine events using the toolkit.
 ---
 Real-time Conversational AI applications require responsive user interfaces that react to agent events. This page explains how to implement agent event handling with the Conversational AI Engine toolkit.

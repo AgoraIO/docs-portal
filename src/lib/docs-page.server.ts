@@ -1,8 +1,12 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
+import type { Folder, Node, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
+import { existsSync, readFileSync } from 'node:fs';
+import path from 'node:path';
 import { getSourceSlugs } from './docs-routing';
 import {
   type DocsSidebarNode,
+  type DocsSidebarSectionNode,
   filterSidebarNodes,
   getFirstChildPageUrl,
   getFirstTabPageUrl,
@@ -32,6 +36,9 @@ import {
 
 const OPENAPI_TAB = 'api-reference';
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
+const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
+const RECIPES_ROOT_SLUG = 'recipes';
+const DOCS_CONTENT_ROOT = path.resolve(process.cwd(), 'content/docs');
 
 type DocsSidebarHeader = {
   backHref: string;
@@ -93,6 +100,17 @@ export async function loadDocsPagePayload(
   tab: string,
   slugSegments: string[],
 ) {
+  const apiReferenceRedirect = resolveApiReferenceRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (apiReferenceRedirect) {
+    return {
+      redirectUrl: apiReferenceRedirect,
+    };
+  }
+
   const deviceKitRedirect = resolveDeviceKitRedirect(locale, tab, slugSegments);
   if (deviceKitRedirect) {
     return {
@@ -299,6 +317,24 @@ function resolveDeviceKitRedirect(
   return redirects[normalizedPath] ?? null;
 }
 
+function resolveApiReferenceRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (tab !== OPENAPI_TAB) {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+
+  if (normalizedPath === RECIPES_PATH_ENTRY_SLUG) {
+    return `/${locale}/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`;
+  }
+
+  return null;
+}
+
 function resolveAiDocsRedirect(
   locale: string,
   tab: string,
@@ -311,7 +347,10 @@ function resolveAiDocsRedirect(
   const normalizedPath = slugSegments.join('/');
 
   const redirects: Record<string, string> = {
-    'build/code-first-architecture': `/${locale}/ai/reference/code-first-architecture`,
+    'build/code-first-architecture': `/${locale}/ai/build/architecture`,
+    'build/event-types': `/${locale}/ai/reference/event-types`,
+    'reference/code-first-architecture': `/${locale}/ai/build/architecture`,
+    'reference/architecture': `/${locale}/ai/build/architecture`,
     'best-practices/filler-words': `/${locale}/ai/build/filler-words`,
   };
 
@@ -486,6 +525,13 @@ function resolveScopedSidebar(
   tab: string,
   activePath?: string,
 ) {
+  if (tab === OPENAPI_TAB && activePath && isRecipesPathEntry(activePath)) {
+    const scopedSidebar = getRecipesScopedSidebar(pageTree, activePath);
+    if (scopedSidebar.length > 0) {
+      return scopedSidebar;
+    }
+  }
+
   if (tab === 'ai' && activePath && isDeviceKitPathEntry(activePath)) {
     const scopedSidebar = getDeviceKitScopedSidebar(pageTree, activePath);
     if (scopedSidebar.length > 0) {
@@ -495,6 +541,10 @@ function resolveScopedSidebar(
 
   if (tab === 'ai') {
     return filterAiSidebar(getSidebarNodes(pageTree, tab));
+  }
+
+  if (tab === OPENAPI_TAB) {
+    return filterApiReferenceSidebar(getSidebarNodes(pageTree, tab));
   }
 
   return getSidebarNodes(pageTree, tab);
@@ -547,6 +597,162 @@ function getDeviceKitScopedSidebar(
   });
 }
 
+function isRecipesPathEntry(activePath: string) {
+  const normalizedPath = activePath.endsWith('/')
+    ? activePath.slice(0, -1)
+    : activePath;
+
+  return (
+    normalizedPath.endsWith(`/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`) ||
+    normalizedPath.includes(`/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}/`)
+  );
+}
+
+function getRecipesScopedSidebar(
+  pageTree: ReturnType<typeof docsSource.getPageTree>,
+  activePath: string,
+): DocsSidebarNode[] {
+  const locale = activePath.startsWith('/zh-CN/') ? 'zh-CN' : 'en';
+  const localePrefix = `/${locale}`;
+  const recipesRoot = `${localePrefix}/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`;
+  const recipesFolder = findFolderByIndexUrl(pageTree, recipesRoot);
+
+  if (!recipesFolder) {
+    return buildRecipesScopedSidebarFromMeta(locale, recipesRoot);
+  }
+
+  const nodes = pageTreeNodeToSidebarNodes(recipesFolder);
+
+  if (nodes.length === 1 && nodes[0]?.type === 'section') {
+    return nodes[0].children;
+  }
+
+  return nodes;
+}
+
+function buildRecipesScopedSidebarFromMeta(
+  locale: AppLocale,
+  recipesRoot: string,
+): DocsSidebarNode[] {
+  const metaPath = path.join(
+    DOCS_CONTENT_ROOT,
+    locale,
+    OPENAPI_TAB,
+    RECIPES_ROOT_SLUG,
+    'meta.json',
+  );
+
+  if (!existsSync(metaPath)) {
+    return [];
+  }
+
+  const meta = JSON.parse(readFileSync(metaPath, 'utf8')) as {
+    pages?: string[];
+  };
+
+  const nodes: DocsSidebarNode[] = [];
+  let currentSection: DocsSidebarSectionNode | null = null;
+
+  for (const entry of meta.pages ?? []) {
+    if (isRecipesMetaSeparator(entry)) {
+      currentSection = {
+        children: [],
+        collapsible: false,
+        id: `separator-${entry}`,
+        title: entry.slice(3, -3),
+        type: 'section',
+      };
+      nodes.push(currentSection);
+      continue;
+    }
+
+    const pageNode: DocsSidebarNode = {
+      id: entry === 'index' ? recipesRoot : `${recipesRoot}/${entry}`,
+      title:
+        getRecipesPageTitle(locale, entry) ??
+        (entry === 'index'
+          ? locale === 'zh-CN'
+            ? '示例配方'
+            : 'Recipes'
+          : entry),
+      type: 'page',
+      url: entry === 'index' ? recipesRoot : `${recipesRoot}/${entry}`,
+    };
+
+    if (currentSection) {
+      currentSection.children.push(pageNode);
+    } else {
+      nodes.push(pageNode);
+    }
+  }
+
+  return nodes;
+}
+
+function isRecipesMetaSeparator(entry: string) {
+  return entry.startsWith('---') && entry.endsWith('---');
+}
+
+function getRecipesPageTitle(locale: AppLocale, slug: string): string | null {
+  const basePath = path.join(
+    DOCS_CONTENT_ROOT,
+    locale,
+    OPENAPI_TAB,
+    RECIPES_ROOT_SLUG,
+    slug,
+  );
+  const candidatePaths =
+    slug === 'index'
+      ? [`${basePath}.mdx`, `${basePath}.md`]
+      : [`${basePath}.mdx`, `${basePath}.md`];
+
+  for (const candidatePath of candidatePaths) {
+    if (!existsSync(candidatePath)) {
+      continue;
+    }
+
+    const title = extractFrontmatterTitle(readFileSync(candidatePath, 'utf8'));
+    if (title) {
+      return title;
+    }
+  }
+
+  return null;
+}
+
+function extractFrontmatterTitle(source: string): string | null {
+  const match = source.match(/^---\n([\s\S]*?)\n---/);
+  if (!match) {
+    return null;
+  }
+
+  const titleMatch = match[1]?.match(/^title:\s*(.+)$/m);
+  if (!titleMatch) {
+    return null;
+  }
+
+  return titleMatch[1].trim().replace(/^['"]|['"]$/g, '');
+}
+
+function findFolderByIndexUrl(node: Root | Folder, indexUrl: string): Folder | null {
+  for (const child of node.children) {
+    if (child.type !== 'folder') {
+      continue;
+    }
+
+    if (child.index?.url === indexUrl) {
+      return child;
+    }
+
+    const nestedMatch = findFolderByIndexUrl(child, indexUrl);
+    if (nestedMatch) {
+      return nestedMatch;
+    }
+  }
+
+  return null;
+}
+
 function filterAiSidebar(nodes: DocsSidebarNode[]) {
   return filterSidebarNodes(nodes, (node) => {
     if (node.type !== 'page') {
@@ -558,10 +764,64 @@ function filterAiSidebar(nodes: DocsSidebarNode[]) {
   });
 }
 
+function filterApiReferenceSidebar(nodes: DocsSidebarNode[]) {
+  const filteredNodes = filterSidebarNodes(nodes, (node) => {
+    if (node.type !== 'page') {
+      return true;
+    }
+
+    return !node.url.startsWith('/en/api-reference/voice-ai-recipes') &&
+      !node.url.startsWith('/zh-CN/api-reference/voice-ai-recipes');
+  });
+
+  return filteredNodes.flatMap((node) => {
+    if (node.type !== 'section') {
+      return [node];
+    }
+
+    const recipesIndexPage = findSidebarPageByExactUrl(node, '/en/api-reference/recipes')
+      ?? findSidebarPageByExactUrl(node, '/zh-CN/api-reference/recipes');
+
+    if (!recipesIndexPage) {
+      return [node];
+    }
+
+    return [recipesIndexPage];
+  });
+}
+
+function findSidebarPageByExactUrl(
+  node: DocsSidebarNode,
+  url: string,
+): DocsSidebarNode | null {
+  if (node.type === 'page') {
+    return node.url === url ? node : null;
+  }
+
+  for (const child of node.children) {
+    const match = findSidebarPageByExactUrl(child, url);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
 function getDocsSidebarHeader(
   activePath: string,
   tab: string,
 ): DocsSidebarHeader | undefined {
+  if (tab === OPENAPI_TAB && isRecipesPathEntry(activePath)) {
+    const isChinese = activePath.includes('/zh-CN/');
+
+    return {
+      backHref: isChinese ? '/zh-CN/api-reference' : '/en/api-reference',
+      backLabel: isChinese ? '返回 API 参考' : 'Back to Reference',
+      title: isChinese ? '示例配方' : 'Recipes',
+    };
+  }
+
   if (tab !== 'ai' || !isDeviceKitPathEntry(activePath)) {
     return undefined;
   }
