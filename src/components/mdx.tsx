@@ -1,4 +1,5 @@
 import {
+  ArrowRightIcon,
   AppWindowIcon,
   AudioLinesIcon,
   BlocksIcon,
@@ -400,6 +401,8 @@ export function getMDXComponents(
     CalloutTitle,
     CardGrid,
     FeatureCard,
+    SolutionCard,
+    SolutionCardGrid,
     OverviewToolkits,
     ToolkitGroup,
     ToolkitItem,
@@ -607,9 +610,124 @@ function ToolkitIcon({ kind }: { kind: ToolkitIconKind }) {
   return <Code2Icon className="size-4" />;
 }
 
-function OverviewSpotlightGrid({ children }: { children: ReactNode }) {
+function SolutionCardGrid({
+  children,
+  size = 'large',
+}: {
+  children: ReactNode;
+  size?: 'large' | 'small';
+}) {
   return (
-    <section className="not-prose overview-spotlight-grid">{children}</section>
+    <section className="not-prose solution-card-grid" data-size={size}>
+      {children}
+    </section>
+  );
+}
+
+type SolutionCardIconKind =
+  | 'ai'
+  | 'classroom'
+  | 'device'
+  | 'meeting'
+  | 'messaging'
+  | 'rtc';
+
+type SolutionCardTone =
+  | 'blue'
+  | 'green'
+  | 'pink'
+  | 'purple'
+  | 'sand';
+
+function SolutionCard({
+  description,
+  href,
+  icon,
+  size = 'large',
+  tags = [],
+  title,
+  tone = 'blue',
+}: {
+  description: string;
+  href: string;
+  icon?: SolutionCardIconKind;
+  size?: 'large' | 'small';
+  tags?: string[];
+  title: string;
+  tone?: SolutionCardTone;
+}) {
+  return (
+    <a
+      className="solution-card"
+      data-size={size}
+      data-tone={tone}
+      href={href}
+    >
+      <div className="solution-card-top">
+        {icon ? (
+          <span className="solution-card-icon">
+            <SolutionCardIcon kind={icon} />
+          </span>
+        ) : null}
+        <ArrowRightIcon className="solution-card-arrow" />
+      </div>
+      <div className="solution-card-body">
+        <h3>{title}</h3>
+        <p>{description}</p>
+      </div>
+      {tags.length > 0 ? (
+        <div className="solution-card-tags">
+          {tags.map((tag) => (
+            <span className="solution-card-tag" key={tag}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      ) : null}
+    </a>
+  );
+}
+
+function SolutionCardIcon({ kind }: { kind: SolutionCardIconKind }) {
+  if (kind === 'ai') {
+    return <BotIcon className="size-5" />;
+  }
+
+  if (kind === 'messaging') {
+    return <BlocksIcon className="size-5" />;
+  }
+
+  if (kind === 'meeting') {
+    return <AppWindowIcon className="size-5" />;
+  }
+
+  if (kind === 'classroom') {
+    return <MonitorSmartphoneIcon className="size-5" />;
+  }
+
+  if (kind === 'device') {
+    return <CuboidIcon className="size-5" />;
+  }
+
+  return <AudioLinesIcon className="size-5" />;
+}
+
+type OverviewSpotlightSize = 'large' | 'small';
+
+function OverviewSpotlightGrid({
+  children,
+  size = 'large',
+}: {
+  children: ReactNode;
+  size?: OverviewSpotlightSize;
+}) {
+  return (
+    <section
+      className="not-prose overview-spotlight-grid"
+      data-size={size}
+    >
+      {children}
+    </section>
   );
 }
 
@@ -617,15 +735,22 @@ type OverviewSpotlightVariant = 'platform' | 'code' | 'checklist';
 
 function OverviewSpotlightCard({
   href,
+  size = 'large',
   title,
   variant = 'platform',
 }: {
   href: string;
+  size?: OverviewSpotlightSize;
   title: string;
   variant?: OverviewSpotlightVariant;
 }) {
   return (
-    <a className="overview-spotlight-card" data-variant={variant} href={href}>
+    <a
+      className="overview-spotlight-card"
+      data-size={size}
+      data-variant={variant}
+      href={href}
+    >
       <div aria-hidden="true" className="overview-spotlight-media">
         <div className="overview-spotlight-window">
           <span className="overview-spotlight-window-dot" />
