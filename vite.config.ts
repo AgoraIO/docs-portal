@@ -11,7 +11,11 @@ const isTest = process.env.VITEST === 'true';
 
 export default defineConfig({
   server: {
+    host: '127.0.0.1',
     port: 3000,
+  },
+  preview: {
+    host: '127.0.0.1',
   },
   optimizeDeps: {
     include: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime'],

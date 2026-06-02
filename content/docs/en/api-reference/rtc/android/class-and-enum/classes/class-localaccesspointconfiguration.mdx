@@ -1,0 +1,50 @@
+---
+title: "LocalAccessPointConfiguration"
+description: "用于配置本地接入点。"
+---
+<a id="class_localaccesspointconfiguration__prototype"></a>
+
+```java
+public class LocalAccessPointConfiguration {
+  public ArrayList<String> ipList = null;
+  public ArrayList<String> domainList = null;
+  public String verifyDomainName = null;
+  public int mode = Constants.LOCAL_RPOXY_CONNECTIVITY_FIRST;
+  public boolean disableAut = true;
+  public AdvancedConfigInfo advancedConfig = null;
+}
+```
+
+<a id="class_localaccesspointconfiguration__parameters"></a>
+
+## 属性
+
+### `ipList`
+
+本地接入点的内网 IP 地址列表。 `ipList` 或 `domainList` 至少需提供一个。
+
+### `domainList`
+
+本地接入点的域名列表。SDK 会根据你提供的域名解析本地接入点的 IP 地址，解析超时时间为 10 秒。 `ipList` 或 `domainList` 至少需提供一个。如果同时指定了 IP 地址和域名，SDK 会合并并去重解析得到的 IP 地址和指定的 IP 地址，然后随机连接一个 IP 地址以实现负载均衡。
+
+### `verifyDomainName`
+
+内网证书校验域名。如果该值为 `null`，SDK 默认使用 `secure-edge.local` 作为证书校验域名。
+
+### `mode`
+
+连接模式：
+
+- LOCAL_RPOXY_CONNECTIVITY_FIRST （0）：SDK 优先尝试连接指定的声网私有媒体服务器；如果连接失败，则连接声网 SD-RTN™。
+- LOCAL_RPOXY_LOCAL_ONLY （1）：SDK 只连接指定的声网私有媒体服务器。
+
+### `disableAut`
+
+是否禁用 vos-aut：
+
+- true：（默认）禁用 vos-aut。
+- false：不禁用 vos-aut。
+
+### `advancedConfig`
+
+本地接入点的高级配置项。详见 [AdvancedConfigInfo](/en/api-reference/rtc/android/class-and-enum/classes/class-advancedconfiginfo)。

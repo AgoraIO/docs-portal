@@ -1,0 +1,93 @@
+---
+title: "已编码视频数据"
+description: RTC Android API 参考迁移页。
+---
+<a id="toc_video_encoded"></a>
+
+<a id="api_irtcengine_registervideoencodedframeobserver"></a>
+
+## registerVideoEncodedFrameObserver
+
+注册用于接收编码后视频帧的观察器对象。
+
+<a id="api_irtcengine_registervideoencodedframeobserver__prototype"></a>
+
+```java
+public abstract int registerVideoEncodedFrameObserver(IVideoEncodedFrameObserver receiver);
+```
+
+<a id="api_irtcengine_registervideoencodedframeobserver__detailed_desc"></a>
+
+建议通过此方法注册一个 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoencodedframeobserver) 实例，用于观察编码后的视频帧（例如 H.264 格式），而不进行解码和渲染。
+
+:::info[注]
+请在加入频道前调用此方法。
+:::
+
+<a id="api_irtcengine_registervideoencodedframeobserver__parameters"></a>
+
+### 参数
+
+#### `receiver`
+
+编码后视频帧的观察器对象，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoencodedframeobserver)。
+
+<a id="api_irtcengine_registervideoencodedframeobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived"></a>
+
+## onEncodedVideoFrameReceived
+
+接收端收到远端编码视频帧回调。
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__prototype"></a>
+
+```java
+boolean onEncodedVideoFrameReceived(String channelId, int remoteUid, ByteBuffer buffer, EncodedVideoFrameInfo info)
+```
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.6.0 版本新增。
+
+如果你调用了 [setRemoteVideoSubscriptionOptions](/zh-CN/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_setremotevideosubscriptionoptions) 方法并将 `encodedFrameOnly` 设置为 true，SDK 会在本地触发该回调，报告接收到的编码视频帧信息。
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__parameters"></a>
+
+### 参数
+
+#### `channelId`
+
+频道名。
+
+#### `remoteUid`
+
+远端用户 ID。
+
+#### `buffer`
+
+编码后的视频图像缓冲区。
+
+#### `info`
+
+编码视频帧的信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-encodedvideoframeinfo)。
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__return_values"></a>
+
+### 返回值
+
+- true：回调处理成功。
+- false：回调处理失败。
+
+### 所属接口类
+- [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_ivideoencodedframeobserver)

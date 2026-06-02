@@ -1,0 +1,298 @@
+---
+title: "屏幕采集"
+description: RTC Android API 参考迁移页。
+---
+<a id="toc_screencapture"></a>
+
+<a id="api_irtcengine_queryscreencapturecapability"></a>
+
+## queryScreenCaptureCapability
+
+查询设备在屏幕共享时支持的最高帧率。
+
+<a id="api_irtcengine_queryscreencapturecapability__prototype"></a>
+
+```java
+public abstract int queryScreenCaptureCapability();
+```
+
+<a id="api_irtcengine_queryscreencapturecapability__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.2.0 版本新增。
+
+为了确保屏幕共享的最佳性能，特别是在启用如 60 fps 的高帧率时，声网建议你在共享前使用该方法查询设备支持的最大帧率。如果设备无法支持如此高的帧率，你可以相应地调整屏幕共享流的帧率，以避免影响共享质量。
+
+<a id="api_irtcengine_queryscreencapturecapability__scenario"></a>
+
+### 适用场景
+
+为确保屏幕共享的最佳性能，特别是在启用如 60 fps 的高帧率时，建议你在共享前使用该方法查询设备支持的最高帧率。
+
+<a id="api_irtcengine_queryscreencapturecapability__return_values"></a>
+
+### 返回值
+
+- 0：设备最多支持 15 fps 的帧率。
+- 1：设备最多支持 30 fps 的帧率。
+- 2：设备最多支持 60 fps 的帧率。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_setexternalmediaprojection"></a>
+
+## setExternalMediaProjection
+
+配置 SDK 外部的 MediaProjection 以采集屏幕视频流。
+
+<a id="api_irtcengine_setexternalmediaprojection__prototype"></a>
+
+```java
+public abstract int setExternalMediaProjection(MediaProjection mediaProjection);
+```
+
+<a id="api_irtcengine_setexternalmediaprojection__detailed_desc"></a>
+
+调用该方法成功后，设置的外部 `MediaProjection` 将替代 SDK 申请的 `MediaProjection` 用于采集屏幕视频流。当屏幕共享停止或 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 被销毁时，SDK 会自动释放该 `MediaProjection`。
+
+:::info[注]
+在调用该方法前，必须先申请 [`MediaProjection`](https://developer.android.com/reference/android/media/projection/MediaProjection) 权限。
+:::
+
+<a id="api_irtcengine_setexternalmediaprojection__scenario"></a>
+
+### 适用场景
+
+如果你已申请到 `MediaProjection`，可以直接使用你自己的 `MediaProjection`，而无需使用 SDK 申请的对象。适用场景包括：
+
+- 在定制系统设备上，避免系统弹窗（如用户授权采集屏幕）并直接开始采集屏幕视频流。
+- 在涉及一个或多个子进程的屏幕共享流程中，避免在子进程中创建对象时可能出现的错误，从而防止屏幕采集失败。
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengine_setexternalmediaprojection__timing"></a>
+
+### 调用时机
+
+在调用 [startScreenCapture](/en/api-reference/rtc/android/video/screencapture#api_irtcengine_startscreencapture) 之后调用该方法。
+
+<a id="api_irtcengine_setexternalmediaprojection__parameters"></a>
+
+### 参数
+
+#### `mediaProjection`
+
+用于采集屏幕视频流的对象。
+
+<a id="api_irtcengine_setexternalmediaprojection__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_setscreencapturescenario"></a>
+
+## setScreenCaptureScenario
+
+设置屏幕共享场景。
+
+<a id="api_irtcengine_setscreencapturescenario__prototype"></a>
+
+```java
+public abstract int setScreenCaptureScenario(Constants.ScreenScenarioType screenScenario);
+```
+
+<a id="api_irtcengine_setscreencapturescenario__detailed_desc"></a>
+
+#### `自从`
+
+自 v4.2.0 版本新增。
+
+SDK 会根据设置的场景自动调整共享的视频质量和用户体验。
+
+:::info[注]
+声网建议你在加入频道前调用此方法。
+:::
+
+<a id="api_irtcengine_setscreencapturescenario__parameters"></a>
+
+### 参数
+
+#### `screenScenario`
+
+屏幕共享场景。详见 [ScreenScenarioType](/en/api-reference/rtc/android/class-and-enum/enums/enum-screenscenariotype)。
+
+<a id="api_irtcengine_setscreencapturescenario__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_startscreencapture"></a>
+
+## startScreenCapture
+
+开始屏幕采集。
+
+<a id="api_irtcengine_startscreencapture__prototype"></a>
+
+```java
+public abstract int startScreenCapture(ScreenCaptureParameters screenCaptureParameters);
+```
+
+<a id="api_irtcengine_startscreencapture__detailed_desc"></a>
+
+#### `自从`
+
+自 v3.7.0 版本新增。
+
+你可以在加入频道前或加入频道后调用该方法开始采集屏幕视频流，具体如下：
+
+- 先调用该方法，再调用 joinChannel 加入频道，并将 publishScreenCaptureVideo 设置为 true，以开始屏幕共享。
+- 加入频道后调用该方法，再调用 updateChannelMediaOptions 并将 publishScreenCaptureVideo 设置为 true，以开始屏幕共享。
+
+注：
+
+- 在 Android 平台，如果用户未授予应用屏幕采集权限，SDK 会触发 onPermissionError （错误码 2）回调。
+- 在 Android 9 及以上版本，为避免应用进入后台后被系统杀死，声网建议你在 /app/Manifests/AndroidManifest.xml 文件中添加前台服务权限 android.permission.FOREGROUND_SERVICE。
+- 由于性能限制，Android TV 不支持屏幕共享。
+- 由于系统限制，使用华为手机时，请勿在屏幕共享过程中调整屏幕共享流的视频编码分辨率，否则可能会导致崩溃。
+- 由于系统限制，部分小米设备在屏幕共享时不支持采集系统音频。
+- 为避免屏幕共享时系统音频采集失败，声网建议你在加入频道前通过 setAudioScenario 方法将音频应用场景设置为 AUDIO_SCENARIO_GAME_STREAMING。
+- 屏幕共享流的计费基于 VideoCaptureParameters 中的 dimensions：
+  - 如果未传入该值，声网按 1280 × 720 计费。
+  - 如果传入该值，声网按传入的值计费。
+
+<a id="api_irtcengine_startscreencapture__scenario"></a>
+
+### 适用场景
+
+在屏幕共享场景中。
+
+<a id="api_irtcengine_startscreencapture__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或加入频道后调用此方法。
+
+<a id="api_irtcengine_startscreencapture__parameters"></a>
+
+### 参数
+
+#### `screenCaptureParameters`
+
+屏幕共享的编码参数，详见 [ScreenCaptureParameters](/en/api-reference/rtc/android/class-and-enum/classes/class-screencaptureparameters2)。
+
+<a id="api_irtcengine_startscreencapture__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+  - -2：系统版本过低。请确保 Android API 级别不低于 21。
+  - -3：无法采集系统音频。请确保 Android API 级别不低于 29。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_stopscreencapture"></a>
+
+## stopScreenCapture
+
+停止屏幕采集。
+
+<a id="api_irtcengine_stopscreencapture__prototype"></a>
+
+```java
+public abstract int stopScreenCapture();
+```
+
+<a id="api_irtcengine_stopscreencapture__detailed_desc"></a>
+
+#### `自从`
+
+自 v3.7.0 版本新增。
+
+如果你通过调用 [startScreenCapture](/en/api-reference/rtc/android/video/screencapture#api_irtcengine_startscreencapture) 开始了屏幕采集，则需要调用 [stopScreenCapture](/en/api-reference/rtc/android/video/screencapture#api_irtcengine_stopscreencapture) 停止屏幕采集。
+
+<a id="api_irtcengine_stopscreencapture__scenario"></a>
+
+### 适用场景
+
+适用于以下场景：
+
+- iOS：如果你通过调用 startScreenCapture: 开始屏幕采集，则需要调用此方法停止屏幕采集。
+- macOS：如果你通过调用 startScreenCaptureByWindowId:regionRect:captureParams: 或 startScreenCaptureByDisplayId:regionRect:captureParams: 开始屏幕采集，则需要调用此方法停止屏幕采集。
+
+<a id="api_irtcengine_stopscreencapture__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或后调用此方法。
+
+<a id="api_irtcengine_stopscreencapture__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_updatescreencaptureparameters"></a>
+
+## updateScreenCaptureParameters
+
+更新屏幕采集参数。
+
+<a id="api_irtcengine_updatescreencaptureparameters__prototype"></a>
+
+```java
+public abstract int updateScreenCaptureParameters(ScreenCaptureParameters screenCaptureParameters);
+```
+
+<a id="api_irtcengine_updatescreencaptureparameters__detailed_desc"></a>
+
+#### `自从`
+
+自 v3.7.0 版本新增。
+
+:::info[注]
+请在开始屏幕共享或窗口共享后调用此方法。
+:::
+
+<a id="api_irtcengine_updatescreencaptureparameters__parameters"></a>
+
+### 参数
+
+#### `screenCaptureParameters`
+
+屏幕共享的编码参数，详见 [ScreenCaptureParameters](/en/api-reference/rtc/android/class-and-enum/classes/class-screencaptureparameters2)。
+
+:::info[注]
+屏幕共享视频流的视频属性仅需通过此参数设置，与 [setVideoEncoderConfiguration](/en/api-reference/rtc/android/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 无关。
+:::
+
+<a id="api_irtcengine_updatescreencaptureparameters__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+  - -2：参数无效。
+  - -8：屏幕共享状态无效。可能是因为你已共享了其他屏幕或窗口。请尝试调用 stopScreenCapture 停止当前共享，然后重新开始共享屏幕。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)

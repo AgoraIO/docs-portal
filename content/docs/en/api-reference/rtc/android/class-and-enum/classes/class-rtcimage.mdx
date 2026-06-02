@@ -1,0 +1,60 @@
+---
+title: "AgoraImage"
+description: "用于设置图像的属性。"
+---
+<a id="class_rtcimage__prototype"></a>
+
+```java
+public class AgoraImage {
+  public String url;
+  public int x;
+  public int y;
+  public int width;
+  public int height;
+  public int zOrder;
+  public double alpha;
+}
+```
+
+<a id="class_rtcimage__detailed_desc"></a>
+
+用于设置实时视频中水印图像和背景图像的属性。
+
+<a id="class_rtcimage__parameters"></a>
+
+## 属性
+
+### `url`
+
+实时视频中图像的 HTTP 或 HTTPS 地址。该参数的最大长度为 1024 字节。
+
+### `x`
+
+图像在视频画面中的 x 坐标（以视频画面左上角为原点，单位为像素 px）。
+
+### `y`
+
+图像在视频画面中的 y 坐标（以视频画面左上角为原点，单位为像素 px）。
+
+### `width`
+
+图像在视频画面中的宽度（单位为像素 px）。
+
+### `height`
+
+图像在视频画面中的高度（单位为像素 px）。
+
+### `zOrder`
+
+图像的图层索引。
+
+- 当使用水印数组添加一个或多个水印时，必须传入 [1, 255] 范围内的值，否则 SDK 会报错。
+- 在其他情况下，可选传入 [0, 255] 范围内的值，默认值为 0。
+- 0 表示最底层，255 表示最顶层。
+
+### `alpha`
+
+图像的透明度，取值范围为 [0.0, 1.0]：
+
+- 0.0：完全透明。
+- 1.0：（默认）不透明。
