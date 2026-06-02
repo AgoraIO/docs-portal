@@ -260,7 +260,10 @@ function shouldDefaultOpenSection(title: string, activePath: string) {
     ((title === 'Realtime' || title === '实时互动') &&
       /\/(en|zh-CN)\/introduction(?:\/index)?$/.test(activePath)) ||
     (title === 'Get Started' &&
-      /\/en\/introduction(?:\/index)?$/.test(activePath))
+      /\/en\/introduction(?:\/index)?$/.test(activePath)) ||
+    ((title === 'Create and connect an agent' ||
+      title === 'Add context and memory') &&
+      /\/en\/ai(?:\/index)?$/.test(activePath))
   );
 }
 
@@ -343,6 +346,7 @@ function SidebarNestedSection({
   const defaultOpen =
     !node.collapsible ||
     node.children.some((child) => isNodeActive(child, activePath)) ||
+    shouldDefaultOpenSection(node.title, activePath) ||
     node.title === 'Build';
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
@@ -637,6 +641,10 @@ function SidebarConfiguredIcon({ icon }: { icon?: string }) {
 }
 
 function getSidebarDisplayTitle(title: string, url: string) {
+  if (/\/solutions(?:\/index)?$/.test(url)) {
+    return url.includes('/zh-CN/') ? '总览' : 'Overview';
+  }
+
   for (const [suffix, shortTitle] of sidebarTitleOverrides) {
     if (url.endsWith(suffix)) {
       return shortTitle;

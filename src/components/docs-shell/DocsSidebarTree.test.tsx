@@ -518,7 +518,7 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders Build child groups as collapsible dropdowns', async () => {
+  it('opens selected Build child groups by default on the AI overview page', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -536,6 +536,20 @@ describe('DocsSidebarTree', () => {
             title: 'Create and connect an agent',
             type: 'section',
           },
+          {
+            children: [
+              {
+                id: '/en/ai/build/short-term-memory',
+                title: 'Short-term memory',
+                type: 'page',
+                url: '/en/ai/build/short-term-memory',
+              },
+            ],
+            collapsible: false,
+            id: 'separator-Add context and memory',
+            title: 'Add context and memory',
+            type: 'section',
+          },
         ],
         id: 'build',
         title: 'Build',
@@ -548,16 +562,22 @@ describe('DocsSidebarTree', () => {
     const toggle = await screen.findByRole('button', {
       name: /Create and connect an agent/i,
     });
-
-    expect(
-      screen.queryByRole('link', { name: 'Start and stop an agent' }),
-    ).not.toBeInTheDocument();
-
-    fireEvent.click(toggle);
+    await screen.findByRole('button', {
+      name: /Add context and memory/i,
+    });
 
     expect(
       await screen.findByRole('link', { name: 'Start and stop an agent' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Short-term memory' }),
+    ).toBeInTheDocument();
+
+    fireEvent.click(toggle);
+
+    expect(
+      screen.queryByRole('link', { name: 'Start and stop an agent' }),
+    ).not.toBeInTheDocument();
   });
 
   it('uses shorter sidebar labels for long Build document titles', async () => {
