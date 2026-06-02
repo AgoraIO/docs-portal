@@ -1,0 +1,27 @@
+---
+title: "LocalAudioMixerConfiguration"
+description: "用于配置本地音频混音。"
+---
+<a id="class_localaudiomixerconfiguration__prototype"></a>
+
+```java
+public class LocalAudioMixerConfiguration {
+  public ArrayList<MixedAudioStream> audioInputStreams;
+  public boolean syncWithLocalMic;
+}
+```
+
+<a id="class_localaudiomixerconfiguration__parameters"></a>
+
+## 属性
+
+### `audioInputStreams`
+
+本地混音的音频流来源，详见 [MixedAudioStream](/en/api-reference/rtc/android/class-and-enum/classes/class-mixedaudiostream)。
+
+### `syncWithLocalMic`
+
+混音后音频流是否使用本地麦克风采集音频帧的时间戳。
+
+- true：（默认）是。若希望所有本地采集的音频流同步处理，建议设置为该值。
+- false：否。SDK 使用混音时生成的音频帧时间戳。

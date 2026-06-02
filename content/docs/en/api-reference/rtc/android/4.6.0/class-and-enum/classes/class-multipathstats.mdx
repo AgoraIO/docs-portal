@@ -1,0 +1,60 @@
+---
+title: "MultipathStats"
+description: "用于汇总多路径传输中各网络路径的统计信息。"
+---
+<a id="class_multipathstats__prototype"></a>
+
+```java
+public static class MultipathStats {
+  public int lanTxBytes;
+  public int lanRxBytes;
+  public int wifiTxBytes;
+  public int wifiRxBytes;
+  public int mobileTxBytes;
+  public int mobileRxBytes;
+  public int activePathNum;
+  public PathStats[] pathStats;
+}
+```
+
+<a id="class_multipathstats__detailed_desc"></a>
+
+### `自从`
+
+自 v4.6.0 版本新增。
+
+<a id="class_multipathstats__parameters"></a>
+
+## 属性
+
+### `lanTxBytes`
+
+通过局域网发送的字节总数。
+
+### `lanRxBytes`
+
+通过局域网接收的字节总数。
+
+### `wifiTxBytes`
+
+通过 Wi-Fi 发送的字节总数。
+
+### `wifiRxBytes`
+
+通过 Wi-Fi 接收的字节总数。
+
+### `mobileTxBytes`
+
+通过移动网络发送的字节总数。
+
+### `mobileRxBytes`
+
+通过移动网络接收的字节总数。
+
+### `activePathNum`
+
+当前活跃的传输路径数量。
+
+### `pathStats`
+
+每条活跃传输路径的统计信息数组。详见 [PathStats](/en/api-reference/rtc/android/class-and-enum/classes/class-pathstats)。

@@ -1,0 +1,59 @@
+---
+title: "AudioParams"
+description: "用于设置音频数据格式。"
+---
+<a id="class_audioparams__prototype"></a>
+
+```java
+public class AudioParams {
+  public int sampleRate = 0;
+  public int channel = 0;
+  public int mode = Constants.RAW_AUDIO_FRAME_OP_MODE_READ_ONLY;
+  public int samplesPerCall = 0;
+}
+```
+
+<a id="class_audioparams__detailed_desc"></a>
+
+你可以在以下接口中传入 [AudioParams](/en/api-reference/rtc/android/class-and-enum/classes/class-audioparams) 对象，以设置对应回调的数据格式：
+
+- getRecordAudioParams：设置 onRecordAudioFrame 回调的数据格式。
+- getPlaybackAudioParams：设置 onPlaybackAudioFrame 回调的数据格式。
+- getMixedAudioParams：设置 onMixedAudioFrame 回调的数据格式。
+- getEarMonitoringAudioParams：设置 onEarMonitoringAudioFrame 回调的数据格式。
+
+:::info[注]
+SDK 会通过 [AudioParams](/en/api-reference/rtc/android/class-and-enum/classes/class-audioparams) 中的 `samplesPerCall`、 `sampleRate` 和 `channel` 参数计算采样间隔，并按该间隔触发 [onRecordAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe)、 [onPlaybackAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe)、 [onMixedAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 和 [onEarMonitoringAudioFrame](/en/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调。 采样间隔（秒） = `samplesPerCall` /（`sampleRate` × `channel` ）。 确保采样间隔 ≥ 0.01 秒。
+:::
+
+<a id="class_audioparams__parameters"></a>
+
+## 属性
+
+### `sampleRate`
+
+音频采样率（Hz），可设置为以下值：
+
+- 8000。
+- （默认）16000。
+- 32000。
+- 44100。
+- 48000。
+
+### `channel`
+
+音频声道数，可设置为以下值：
+
+- 1：（默认）单声道。
+- 2：立体声。
+
+### `mode`
+
+音频数据的使用模式，可设置为以下值：
+
+- RAW_AUDIO_FRAME_OP_MODE_READ_ONLY （0）：只读模式，例如用户通过声网 SDK 获取数据后进行媒体流推送。
+- RAW_AUDIO_FRAME_OP_MODE_READ_WRITE （2）：读写模式，例如用户拥有自定义音频特效处理模块并进行音频预处理，如变声。
+
+### `samplesPerCall`
+
+每个回调中包含的采样数，例如用于媒体推送时设置为 1024。

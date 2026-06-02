@@ -1,0 +1,477 @@
+---
+title: "插件"
+description: RTC Android API 参考迁移页。
+---
+<a id="toc_extension"></a>
+
+<a id="api_irtcengine_addextension"></a>
+
+## addExtension
+
+添加扩展。
+
+<a id="api_irtcengine_addextension__prototype"></a>
+
+```java
+public void addExtension(String providerName)
+```
+
+<a id="api_irtcengine_addextension__detailed_desc"></a>
+
+<a id="api_irtcengine_addextension__parameters"></a>
+
+### 参数
+
+#### `providerName`
+
+要添加的扩展名称。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_enableextension"></a>
+
+## enableExtension
+
+启用或禁用扩展功能。
+
+<a id="api_irtcengine_enableextension__prototype"></a>
+
+```java
+public abstract int enableExtension(String provider, String extension, boolean enable);
+```
+
+<a id="api_irtcengine_enableextension__detailed_desc"></a>
+
+通过调用该方法，你可以动态启用或禁用扩展功能，而无需更改处理流程。
+
+:::info[注]
+[enableExtension](/en/api-reference/rtc/android/extensions#api_irtcengine_enableextension) 会在未调用 [registerExtension](/en/api-reference/rtc/android/extensions#api_irtcengine_registerextension) 的情况下自动注册指定扩展，以保证兼容性。建议你显式调用 [registerExtension](/en/api-reference/rtc/android/extensions#api_irtcengine_registerextension)。
+:::
+
+<a id="api_irtcengine_enableextension__parameters"></a>
+
+### 参数
+
+#### `provider`
+
+扩展功能提供方的名称，例如 `agora.io`。
+
+#### `extension`
+
+扩展功能的名称，例如 `agora.beauty`。
+
+#### `enable`
+
+是否启用该扩展功能：
+
+- true：（默认）启用扩展功能。
+- false：禁用扩展功能。
+
+<a id="api_irtcengine_enableextension__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_getextensionproperty"></a>
+
+## getExtensionProperty [1/2]
+
+获取扩展组件的详细信息。
+
+<a id="api_irtcengine_getextensionproperty__prototype"></a>
+
+```java
+public abstract String getExtensionProperty(String provider, String extension, String key);
+```
+
+<a id="api_irtcengine_getextensionproperty__detailed_desc"></a>
+
+<a id="api_irtcengine_getextensionproperty__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_getextensionproperty__parameters"></a>
+
+### 参数
+
+#### `provider`
+
+扩展组件提供方的名称。
+
+#### `extension`
+
+扩展组件的名称。
+
+#### `key`
+
+扩展组件的键值。
+
+<a id="api_irtcengine_getextensionproperty__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回扩展组件的信息。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_getextensionproperty2"></a>
+
+## getExtensionProperty [2/2]
+
+获取扩展组件的详细信息。
+
+<a id="api_irtcengine_getextensionproperty2__prototype"></a>
+
+```java
+public abstract String getExtensionProperty(String provider, String extension, String key, Constants.MediaSourceType sourceType);
+```
+
+<a id="api_irtcengine_getextensionproperty2__detailed_desc"></a>
+
+<a id="api_irtcengine_getextensionproperty2__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_getextensionproperty2__parameters"></a>
+
+### 参数
+
+#### `provider`
+
+扩展组件提供方的名称。
+
+#### `extension`
+
+扩展组件的名称。
+
+#### `key`
+
+扩展组件的键值。
+
+#### `sourceType`
+
+扩展组件的来源类型，详见 [MediaSourceType](/en/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+
+<a id="api_irtcengine_getextensionproperty2__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回扩展组件的信息。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_registerextension"></a>
+
+## registerExtension
+
+注册一个扩展。
+
+<a id="api_irtcengine_registerextension__prototype"></a>
+
+```java
+public abstract int registerExtension(String provider, String extension, Constants.MediaSourceType sourceType);
+```
+
+<a id="api_irtcengine_registerextension__detailed_desc"></a>
+
+- 对于 SDK 外部的扩展（例如来自云市场和 SDK 扩展），你需要在调用 registerExtension 之前先通过 addExtension 加载它们。
+- 对于 SDK 内部的扩展（即包含在完整 SDK 包中的扩展），在初始化 RtcEngine 后会自动加载并注册。
+
+注：
+
+- 如果你想注册多个扩展，需要多次调用此方法。
+- SDK 中不同扩展的数据处理顺序由注册顺序决定。即先注册的扩展会先处理数据。
+
+<a id="api_irtcengine_registerextension__timing"></a>
+
+### 调用时机
+
+声网建议你在初始化 [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 后、加入频道前调用此方法。
+
+- 对于视频扩展（如美颜特效扩展），你需要在调用 enableVideo 或 enableLocalVideo 启用视频模块后再调用此方法。
+- 在调用此方法之前，你需要先调用 addExtension 加载扩展。
+
+<a id="api_irtcengine_registerextension__parameters"></a>
+
+### 参数
+
+#### `provider`
+
+扩展提供方的名称。
+
+#### `extension`
+
+扩展的名称。
+
+#### `sourceType`
+
+扩展的数据源类型，详见 [MediaSourceType](/en/api-reference/rtc/android/class-and-enum/enums/enum-mediasourcetype)。
+
+<a id="api_irtcengine_registerextension__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+  - -3：扩展库未加载。建议你检查动态库的存储位置或名称。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_setextensionproperty"></a>
+
+## setExtensionProperty
+
+设置扩展组件的属性。
+
+<a id="api_irtcengine_setextensionproperty__prototype"></a>
+
+```java
+public abstract int setExtensionProperty(String provider, String extension, String key, String value);
+```
+
+<a id="api_irtcengine_setextensionproperty__detailed_desc"></a>
+
+启用扩展组件后，可以调用该方法设置其属性。
+
+:::info[注]
+如果你需要为多个扩展组件设置属性，需要多次调用该方法。
+:::
+
+<a id="api_irtcengine_setextensionproperty__timing"></a>
+
+### 调用时机
+
+在调用 [enableExtension](/en/api-reference/rtc/android/extensions#api_irtcengine_enableextension) 方法之后调用该方法。
+
+<a id="api_irtcengine_setextensionproperty__parameters"></a>
+
+### 参数
+
+#### `provider`
+
+扩展组件提供方的名称。
+
+#### `extension`
+
+扩展组件的名称。
+
+#### `key`
+
+扩展组件属性的键。
+
+#### `value`
+
+扩展组件属性键对应的值。
+
+<a id="api_irtcengine_setextensionproperty__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="api_irtcengine_setextensionproviderproperty"></a>
+
+## setExtensionProviderProperty
+
+设置扩展提供方的属性。
+
+<a id="api_irtcengine_setextensionproviderproperty__prototype"></a>
+
+```java
+public abstract int setExtensionProviderProperty(String provider, String key, String value);
+```
+
+<a id="api_irtcengine_setextensionproviderproperty__detailed_desc"></a>
+
+你可以调用该方法根据扩展提供方的类型初始化相关参数。
+
+:::info[注]
+如果你想为多个扩展设置扩展提供方的属性，需要多次调用该方法。
+:::
+
+<a id="api_irtcengine_setextensionproviderproperty__timing"></a>
+
+### 调用时机
+
+在调用 [enableExtension](/en/api-reference/rtc/android/extensions#api_irtcengine_enableextension) 之前， [registerExtension](/en/api-reference/rtc/android/extensions#api_irtcengine_registerextension) 之后调用该方法。
+
+<a id="api_irtcengine_setextensionproviderproperty__parameters"></a>
+
+### 参数
+
+#### `provider`
+
+扩展提供方的名称。
+
+#### `key`
+
+扩展属性的键名。
+
+#### `value`
+
+扩展属性键对应的值。
+
+<a id="api_irtcengine_setextensionproviderproperty__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [RtcEngine](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext"></a>
+
+## onErrorWithContext
+
+扩展运行异常时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__prototype"></a>
+
+```java
+default void onErrorWithContext(ExtensionContext extContext, int error, String message)
+```
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__timing"></a>
+
+### 触发时机
+
+该回调在扩展启用失败或运行过程中发生错误时被触发。
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__parameters"></a>
+
+### 参数
+
+#### `extContext`
+
+扩展的上下文信息。详见 [ExtensionContext](/en/api-reference/rtc/android/class-and-enum/classes/class-extensioncontext)。
+
+#### `error`
+
+错误码。
+
+#### `message`
+
+错误原因。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onextensioneventwithcontext"></a>
+
+## onEventWithContext
+
+扩展事件回调。
+
+<a id="callback_irtcengineeventhandler_onextensioneventwithcontext__prototype"></a>
+
+```java
+default void onEventWithContext(ExtensionContext extContext, String key, String value)
+```
+
+<a id="callback_irtcengineeventhandler_onextensioneventwithcontext__detailed_desc"></a>
+
+你需要注册该回调，用于在扩展运行期间监听事件。
+
+<a id="callback_irtcengineeventhandler_onextensioneventwithcontext__parameters"></a>
+
+### 参数
+
+#### `extContext`
+
+扩展的上下文信息，详见 [ExtensionContext](/en/api-reference/rtc/android/class-and-enum/classes/class-extensioncontext)。
+
+#### `key`
+
+扩展事件的键。
+
+#### `value`
+
+扩展事件键对应的值。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext"></a>
+
+## onStartedWithContext
+
+扩展启用成功回调。
+
+<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__prototype"></a>
+
+```java
+default void onStartedWithContext(ExtensionContext extContext)
+```
+
+<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__timing"></a>
+
+### 触发时机
+
+该回调在扩展成功启用后被触发。
+
+<a id="callback_irtcengineeventhandler_onextensionstartedwithcontext__parameters"></a>
+
+### 参数
+
+#### `extContext`
+
+扩展的上下文信息。详见 [ExtensionContext](/en/api-reference/rtc/android/class-and-enum/classes/class-extensioncontext)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext"></a>
+
+## onStoppedWithContext
+
+扩展被禁用时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__prototype"></a>
+
+```java
+default void onStoppedWithContext(ExtensionContext extContext)
+```
+
+<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__timing"></a>
+
+### 触发时机
+
+该回调在扩展被成功禁用后触发。
+
+<a id="callback_irtcengineeventhandler_onextensionstoppedwithcontext__parameters"></a>
+
+### 参数
+
+#### `extContext`
+
+扩展的上下文信息。详见 [ExtensionContext](/en/api-reference/rtc/android/class-and-enum/classes/class-extensioncontext)。
+
+### 所属接口类
+- [IRtcEngineEventHandler](/en/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)

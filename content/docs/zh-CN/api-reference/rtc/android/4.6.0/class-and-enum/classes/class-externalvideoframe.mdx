@@ -1,0 +1,133 @@
+---
+title: "AgoraVideoFrame"
+description: "用于描述外部视频帧。"
+---
+<a id="class_externalvideoframe__prototype"></a>
+
+```java
+public class AgoraVideoFrame {
+  public static final int FORMAT_NONE = -1;
+  public static final int FORMAT_TEXTURE_2D = 10;
+  public static final int FORMAT_TEXTURE_OES = 11;
+  public static final int FORMAT_I420 = 1;
+  public static final int FORMAT_BGRA = 2;
+  public static final int FORMAT_NV21 = 3;
+  public static final int FORMAT_RGBA = 4;
+  public static final int FORMAT_I422 = 16;
+  public static final int BUFFER_TYPE_NONE = -1;
+  public static final int BUFFER_TYPE_BUFFER = 1;
+  public static final int BUFFER_TYPE_ARRAY = 2;
+  public static final int BUFFER_TYPE_TEXTURE = 3;
+  public int format;
+  public long timeStamp;
+  public int stride;
+  public int height;
+  public int textureID;
+  public boolean syncMode;
+  public float[] transform;
+  public javax.microedition.khronos.egl.EGLContext eglContext10;
+  public android.opengl.EGLContext eglContext14;
+  public byte[] buf;
+  public int cropLeft;
+  public int cropTop;
+  public int cropRight;
+  public int cropBottom;
+  public int rotation;
+  public AlphaStitchMode alphaStitchMode;
+}
+```
+
+<a id="class_externalvideoframe__detailed_desc"></a>
+
+注：
+
+1. stride 的单位为像素（pixel），而非字节（byte）。
+2. 帧宽和高可通过以下方式推导：
+  - 裁剪后宽度： croppedWidth = strideInPixels - cropLeft - cropRight
+  - 裁剪后高度： croppedHeight = height - cropTop - cropBottom
+3. 关于裁剪：
+  - 如果缓冲区中存在冗余数据，可通过裁剪去除。例如帧大小为 360 × 640，但缓冲区的 stride 为 368，多出的 8 像素用于填充，此时可设置： stride = 368， height = 640， cropRight = 8，其余 cropXXX 默认为 0。
+
+<a id="class_externalvideoframe__parameters"></a>
+
+## 属性
+
+### `format`
+
+视频数据的格式：
+
+- 10： TEXTURE_2D。
+- 11： TEXTURE_OES，通常为摄像头采集的数据格式。
+- 1： I420。
+- 3： NV21。
+- 4： RGBA。
+- 16： I422。
+
+### `timeStamp`
+
+视频帧的时间戳，单位为毫秒。设置错误可能导致视频帧丢失或音视频不同步。
+
+### `stride`
+
+视频帧的行跨度，单位为像素。对于纹理类型的视频数据，该字段表示纹理的宽度。
+
+### `height`
+
+视频帧的高度。
+
+### `textureID`
+
+纹理 ID，仅适用于纹理格式的视频数据。
+
+### `syncMode`
+
+是否启用同步模式，仅适用于纹理格式的视频数据：
+
+- true：启用同步模式，SDK 会等待纹理处理完成。
+- false：关闭同步模式。
+
+### `transform`
+
+纹理帧的附加变换参数，仅适用于纹理格式的视频数据。
+
+### `eglContext10`
+
+EGLContext10，仅适用于纹理格式的视频数据。
+
+### `eglContext14`
+
+EGLContext14，仅适用于纹理格式的视频数据。详见 `EGLContext`。
+
+### `buf`
+
+视频帧的数据缓冲区。
+
+### `cropLeft`
+
+左侧裁剪的像素数，默认值为 0。
+
+### `cropTop`
+
+顶部裁剪的像素数，默认值为 0。
+
+### `cropRight`
+
+右侧裁剪的像素数，默认值为 0。
+
+### `cropBottom`
+
+底部裁剪的像素数，默认值为 0。
+
+### `rotation`
+
+顺时针旋转角度，可设置为 0、90、180 或 270，默认值为 0。
+
+### `alphaStitchMode`
+
+视频帧包含 Alpha 通道数据时，表示 `alphaBuffer` 与视频帧的相对位置，详见 `AlphaStitchMode`：
+
+- ALPHA_NO_STITCH (0)：默认，仅包含视频帧， alphaBuffer 未拼接。
+- ALPHA_STITCH_UP (1)： alphaBuffer 在视频帧上方。
+- ALPHA_STITCH_BELOW (2)： alphaBuffer 在视频帧下方。
+- ALPHA_STITCH_LEFT (3)： alphaBuffer 在视频帧左侧。
+- ALPHA_STITCH_RIGHT (4)： alphaBuffer 在视频帧右侧。

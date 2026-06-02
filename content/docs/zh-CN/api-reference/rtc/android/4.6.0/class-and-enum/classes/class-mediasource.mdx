@@ -1,0 +1,102 @@
+---
+title: "MediaPlayerSource"
+description: "用于配置要播放的媒体文件及其播放场景。"
+---
+<a id="class_mediasource__prototype"></a>
+
+```java
+public class MediaPlayerSource {
+  String url;
+  String uri;
+  long startPos;
+  boolean autoPlay;
+  boolean enableCache;
+  boolean enableMultiAudioTrack;
+  Boolean isAgoraSource;
+  Boolean isLiveSource;
+  IMediaPlayerCustomDataProvider provider;
+}
+```
+
+<a id="class_mediasource__parameters"></a>
+
+## 属性
+
+### `url`
+
+要播放的媒体文件的 URL。
+
+:::info[注]
+如果打开的是普通媒体资源，请传入 `url` 的值；如果打开的是自定义媒体资源，请传入 `provider` 的值。声网建议不要在一次调用中同时传入这两个参数的值，否则调用可能失败。
+:::
+
+### `uri`
+
+媒体文件的 URI（统一资源标识符）。
+
+### `startPos`
+
+从该位置（单位为毫秒）开始播放。默认值为 0。
+
+### `autoPlay`
+
+:::info[注]
+如果关闭自动播放，在打开媒体文件后需手动调用 [play](/zh-CN/api-reference/rtc/android/playback/rte-player#api_player_play_player) 方法播放。
+:::
+
+是否在媒体文件打开后自动播放：
+
+- true：（默认）自动播放。
+- false：不自动播放。
+
+### `enableCache`
+
+:::info[注]
+声网仅支持缓存非 HLS 协议传输的点播音视频流。如果需要启用缓存功能，请为 `uri` 赋值；否则，默认基于 `url` 进行缓存。启用该功能后，Media Player 会将正在播放的部分音视频文件缓存于本地设备，可在无网络的情况下播放。缓存统计信息会在播放后每秒更新一次，详见 [CacheStatistics](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-cachestatistics)。
+:::
+
+播放过程中是否缓存媒体文件：
+
+- true：开启缓存。
+- false：（默认）关闭缓存。
+
+### `enableMultiAudioTrack`
+
+:::info[注]
+如果需要为本地播放和发布到频道分别设置音轨，需设置此参数为 true，然后调用 [selectMultiAudioTrack](/zh-CN/api-reference/rtc/android/playback/audio-mixing#api_imediaplayer_selectmultiaudiotrack) 方法选择音轨。
+:::
+
+是否允许在播放媒体资源时选择不同的音轨：
+
+- true：允许选择不同音轨。
+- false：（默认）不允许选择不同音轨。
+
+### `isAgoraSource`
+
+:::info[注]
+如果需要播放通过直播服务分发的直播或点播视频，请将媒体资源的 URL 传入 `url`，并将 `isAgoraSource` 设置为 true；否则无需设置该参数。
+:::
+
+是否为通过 Media Broadcast 服务分发的直播或点播视频资源：
+
+- true：是。
+- false：（默认）否。
+
+### `isLiveSource`
+
+:::info[注]
+如果打开的是直播流，声网建议将该参数设为 true，以便更快加载直播流。若打开的媒体资源并非直播流，但设置了 `isLiveSource=true`，也不会提升加载速度。
+:::
+
+是否为直播流媒体资源：
+
+- true：是直播流。
+- false：（默认）不是直播流。
+
+### `provider`
+
+自定义媒体资源文件的数据提供回调，详见 [IMediaPlayerCustomDataProvider](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaplayercustomdataprovider)。
+
+:::info[注]
+如果打开的是自定义媒体资源，请传入 `provider` 的值；如果打开的是普通媒体资源，请传入 `url` 的值。声网建议不要在一次调用中同时传入 `url` 和 `provider` 的值，否则调用可能失败。
+:::
