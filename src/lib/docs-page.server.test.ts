@@ -11,6 +11,7 @@ vi.mock('./source.server', () => ({
     url: `/llms.mdx/docs/${page.path}`,
   }),
   source: {
+    getNodeMeta: vi.fn(),
     getPage: vi.fn(),
     getPages: vi.fn(),
     getPageTree: vi.fn(),
@@ -24,6 +25,7 @@ vi.mock('./openapi/docs-page.server', () => ({
 const mockedGetPage = vi.mocked(source.getPage);
 const mockedGetPages = vi.mocked(source.getPages);
 const mockedGetPageTree = vi.mocked(source.getPageTree);
+const mockedGetNodeMeta = vi.mocked(source.getNodeMeta);
 const mockedLoadOpenApiEndpointPage = vi.mocked(loadOpenApiEndpointPage);
 
 const pageTree: Root = {
@@ -444,6 +446,7 @@ describe('loadDocsPagePayload', () => {
     );
     mockedGetPages.mockReturnValue([page]);
     mockedGetPageTree.mockReturnValue(pageTree);
+    mockedGetNodeMeta.mockReturnValue(undefined);
   });
 
   it('falls back to generating TOC from processed markdown', async () => {
@@ -863,7 +866,7 @@ describe('loadDocsPagePayload', () => {
     });
   });
 
-  it('returns a scoped Device Kit sidebar with a Back to AI header', async () => {
+  it('returns a metadata-driven scoped Device Kit sidebar with an AI back link', async () => {
     const page = createPage();
     mockedGetPage.mockReturnValue({
       ...page,
@@ -879,6 +882,16 @@ describe('loadDocsPagePayload', () => {
         title: 'Convo AI Device Kit',
       },
     });
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'ai-device-kit-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Convo AI Device Kit',
+            },
+          } as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
 
     const payload = await loadDocsPagePayload('en', 'ai', ['device-kit']);
 
@@ -888,7 +901,7 @@ describe('loadDocsPagePayload', () => {
 
     expect(payload.sidebarHeader).toEqual({
       backHref: '/en/ai',
-      backLabel: 'Back to AI',
+      backLabel: 'AI',
       title: 'Convo AI Device Kit',
     });
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(

@@ -1,21 +1,22 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
-import type { Folder, Node, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import { existsSync, readFileSync } from 'node:fs';
-import path from 'node:path';
 import { getSourceSlugs } from './docs-routing';
 import {
   type DocsSidebarNode,
-  type DocsSidebarSectionNode,
-  filterSidebarNodes,
   getFirstChildPageUrl,
   getFirstTabPageUrl,
+  getPrevNextLinksFromNode,
   getPrevNextLinks,
   getSidebarBreadcrumb,
   getSidebarNodes,
   getTabSummaries,
   pageTreeNodeToSidebarNodes,
 } from './docs-tree';
+import {
+  type DocsNavScopeResolution,
+  getNavScopeSidebarNodes,
+  resolveDocsNavScope,
+} from './docs-nav-scope';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import {
   loadOpenApiEndpointPage,
@@ -38,13 +39,6 @@ const OPENAPI_TAB = 'api-reference';
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
 const RECIPES_ROOT_SLUG = 'recipes';
-const DOCS_CONTENT_ROOT = path.resolve(process.cwd(), 'content/docs');
-
-type DocsSidebarHeader = {
-  backHref: string;
-  backLabel: string;
-  title: string;
-};
 
 const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
   string,
@@ -174,6 +168,7 @@ export async function loadDocsPagePayload(
         openApiPage,
         pageTree,
         pages,
+        source,
         tab,
       });
     }
@@ -198,9 +193,17 @@ export async function loadDocsPagePayload(
     activePath: page.url,
     locale: supportedLocale,
     pageTree,
+    source,
     tab,
   });
   const title = page.data.title ?? page.slugs.at(-1) ?? page.url;
+  const navScope = getDocsNavScope({
+    activePath: page.url,
+    locale,
+    pageTree,
+    source,
+    tab,
+  });
   const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
   const pages = getDocsPages({
     locale: supportedLocale,
@@ -211,7 +214,7 @@ export async function loadDocsPagePayload(
     })),
     tab,
   });
-  const sidebarHeader = getDocsSidebarHeader(page.url, tab);
+  const sidebarHeader = navScope?.header;
 
   return {
     activePath: page.url,
@@ -252,7 +255,7 @@ export async function loadDocsPagePayload(
         locale: targetLocale,
       };
     }),
-    navigation: getPrevNextLinks(pageTree, page.url),
+    navigation: getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
     pages,
     sidebar,
     sidebarHeader,
@@ -416,6 +419,7 @@ async function buildOpenApiDocsPagePayload({
   openApiPage,
   pageTree,
   pages,
+  source,
   tab,
 }: {
   locale: AppLocale;
@@ -426,12 +430,14 @@ async function buildOpenApiDocsPagePayload({
     title: string;
     url: string;
   }[];
+  source: typeof docsSource;
   tab: string;
 }) {
   const sidebar = await getDocsSidebarNodes({
     activePath: openApiPage.activePath,
     locale,
     pageTree,
+    source,
     tab,
   });
   const breadcrumb = getSidebarBreadcrumb(sidebar, openApiPage.activePath);
@@ -473,14 +479,32 @@ async function getDocsSidebarNodes({
   activePath,
   locale,
   pageTree,
+  source,
   tab,
 }: {
   activePath?: string;
   locale: AppLocale | null;
   pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
   tab: string;
 }) {
-  const sidebar = resolveScopedSidebar(pageTree, tab, activePath);
+  const navScope = activePath
+    ? getDocsNavScope({
+        activePath,
+        locale,
+        pageTree,
+        source,
+        tab,
+      })
+    : null;
+  const sidebar = navScope
+    ? getScopedSidebarNodes(navScope)
+    : getNavScopeSidebarNodes({
+        getNodeMeta: (node) =>
+          getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+        root: pageTree,
+        tab,
+      });
 
   if (tab !== OPENAPI_TAB || !locale) {
     return sidebar;
@@ -520,317 +544,36 @@ function getDocsPages({
   return [...pages, ...endpointPages];
 }
 
-function resolveScopedSidebar(
-  pageTree: ReturnType<typeof docsSource.getPageTree>,
-  tab: string,
-  activePath?: string,
-) {
-  if (tab === OPENAPI_TAB && activePath && isRecipesPathEntry(activePath)) {
-    const scopedSidebar = getRecipesScopedSidebar(pageTree, activePath);
-    if (scopedSidebar.length > 0) {
-      return scopedSidebar;
-    }
-  }
-
-  if (tab === 'ai' && activePath && isDeviceKitPathEntry(activePath)) {
-    const scopedSidebar = getDeviceKitScopedSidebar(pageTree, activePath);
-    if (scopedSidebar.length > 0) {
-      return scopedSidebar;
-    }
-  }
-
-  if (tab === 'ai') {
-    return filterAiSidebar(getSidebarNodes(pageTree, tab));
-  }
-
-  if (tab === OPENAPI_TAB) {
-    return filterApiReferenceSidebar(getSidebarNodes(pageTree, tab));
-  }
-
-  return getSidebarNodes(pageTree, tab);
-}
-
-function isDeviceKitPathEntry(activePath: string) {
-  const normalizedPath = activePath.endsWith('/')
-    ? activePath.slice(0, -1)
-    : activePath;
-
-  return (
-    normalizedPath.endsWith(`/choose-your-path/${DEVICE_KIT_PATH_ENTRY_SLUG}`) ||
-    normalizedPath.includes('/ai/device-kit')
-  );
-}
-
-function getDeviceKitScopedSidebar(
-  pageTree: ReturnType<typeof docsSource.getPageTree>,
-  activePath: string,
-) {
-  const localePrefix = activePath.startsWith('/zh-CN/')
-    ? '/zh-CN'
-    : '/en';
-  const deviceKitNodes = filterSidebarNodes(getSidebarNodes(pageTree, 'ai'), (node) =>
-    node.type === 'section'
-      ? true
-      : node.url === `${localePrefix}/ai/device-kit` ||
-        node.url.startsWith(`${localePrefix}/ai/device-kit/`),
-  );
-
-  return deviceKitNodes.flatMap((node) => {
-    if (node.type === 'page') {
-      return [];
-    }
-
-    if (
-      node.title === 'Convo AI Device Kit' &&
-      node.children.some(
-        (child) =>
-          child.type === 'page' && child.url === `${localePrefix}/ai/device-kit`,
-      )
-    ) {
-      return node.children.filter(
-        (child) =>
-          !(child.type === 'page' && child.url === `${localePrefix}/ai/device-kit`),
-      );
-    }
-
-    return [node];
+function getDocsNavScope({
+  activePath,
+  locale,
+  pageTree,
+  source,
+  tab,
+}: {
+  activePath: string;
+  locale: AppLocale | string | null;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+  tab: string;
+}) {
+  return resolveDocsNavScope({
+    activePath,
+    getNodeMeta: (node) =>
+      getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+    root: pageTree,
+    tab,
   });
 }
 
-function isRecipesPathEntry(activePath: string) {
-  const normalizedPath = activePath.endsWith('/')
-    ? activePath.slice(0, -1)
-    : activePath;
-
-  return (
-    normalizedPath.endsWith(`/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`) ||
-    normalizedPath.includes(`/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}/`)
+function getScopedSidebarNodes(navScope: DocsNavScopeResolution) {
+  return pageTreeNodeToSidebarNodes(navScope.sidebarRoot).flatMap((node) =>
+    node.type === 'section' ? node.children : [node],
   );
 }
 
-function getRecipesScopedSidebar(
-  pageTree: ReturnType<typeof docsSource.getPageTree>,
-  activePath: string,
-): DocsSidebarNode[] {
-  const locale = activePath.startsWith('/zh-CN/') ? 'zh-CN' : 'en';
-  const localePrefix = `/${locale}`;
-  const recipesRoot = `${localePrefix}/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`;
-  const recipesFolder = findFolderByIndexUrl(pageTree, recipesRoot);
-
-  if (!recipesFolder) {
-    return buildRecipesScopedSidebarFromMeta(locale, recipesRoot);
-  }
-
-  const nodes = pageTreeNodeToSidebarNodes(recipesFolder);
-
-  if (nodes.length === 1 && nodes[0]?.type === 'section') {
-    return nodes[0].children;
-  }
-
-  return nodes;
-}
-
-function buildRecipesScopedSidebarFromMeta(
-  locale: AppLocale,
-  recipesRoot: string,
-): DocsSidebarNode[] {
-  const metaPath = path.join(
-    DOCS_CONTENT_ROOT,
-    locale,
-    OPENAPI_TAB,
-    RECIPES_ROOT_SLUG,
-    'meta.json',
-  );
-
-  if (!existsSync(metaPath)) {
-    return [];
-  }
-
-  const meta = JSON.parse(readFileSync(metaPath, 'utf8')) as {
-    pages?: string[];
-  };
-
-  const nodes: DocsSidebarNode[] = [];
-  let currentSection: DocsSidebarSectionNode | null = null;
-
-  for (const entry of meta.pages ?? []) {
-    if (isRecipesMetaSeparator(entry)) {
-      currentSection = {
-        children: [],
-        collapsible: false,
-        id: `separator-${entry}`,
-        title: entry.slice(3, -3),
-        type: 'section',
-      };
-      nodes.push(currentSection);
-      continue;
-    }
-
-    const pageNode: DocsSidebarNode = {
-      id: entry === 'index' ? recipesRoot : `${recipesRoot}/${entry}`,
-      title:
-        getRecipesPageTitle(locale, entry) ??
-        (entry === 'index'
-          ? locale === 'zh-CN'
-            ? '示例配方'
-            : 'Recipes'
-          : entry),
-      type: 'page',
-      url: entry === 'index' ? recipesRoot : `${recipesRoot}/${entry}`,
-    };
-
-    if (currentSection) {
-      currentSection.children.push(pageNode);
-    } else {
-      nodes.push(pageNode);
-    }
-  }
-
-  return nodes;
-}
-
-function isRecipesMetaSeparator(entry: string) {
-  return entry.startsWith('---') && entry.endsWith('---');
-}
-
-function getRecipesPageTitle(locale: AppLocale, slug: string): string | null {
-  const basePath = path.join(
-    DOCS_CONTENT_ROOT,
-    locale,
-    OPENAPI_TAB,
-    RECIPES_ROOT_SLUG,
-    slug,
-  );
-  const candidatePaths =
-    slug === 'index'
-      ? [`${basePath}.mdx`, `${basePath}.md`]
-      : [`${basePath}.mdx`, `${basePath}.md`];
-
-  for (const candidatePath of candidatePaths) {
-    if (!existsSync(candidatePath)) {
-      continue;
-    }
-
-    const title = extractFrontmatterTitle(readFileSync(candidatePath, 'utf8'));
-    if (title) {
-      return title;
-    }
-  }
-
-  return null;
-}
-
-function extractFrontmatterTitle(source: string): string | null {
-  const match = source.match(/^---\n([\s\S]*?)\n---/);
-  if (!match) {
-    return null;
-  }
-
-  const titleMatch = match[1]?.match(/^title:\s*(.+)$/m);
-  if (!titleMatch) {
-    return null;
-  }
-
-  return titleMatch[1].trim().replace(/^['"]|['"]$/g, '');
-}
-
-function findFolderByIndexUrl(node: Root | Folder, indexUrl: string): Folder | null {
-  for (const child of node.children) {
-    if (child.type !== 'folder') {
-      continue;
-    }
-
-    if (child.index?.url === indexUrl) {
-      return child;
-    }
-
-    const nestedMatch = findFolderByIndexUrl(child, indexUrl);
-    if (nestedMatch) {
-      return nestedMatch;
-    }
-  }
-
-  return null;
-}
-
-function filterAiSidebar(nodes: DocsSidebarNode[]) {
-  return filterSidebarNodes(nodes, (node) => {
-    if (node.type !== 'page') {
-      return true;
-    }
-
-    return !node.url.startsWith('/en/ai/device-kit') &&
-      !node.url.startsWith('/zh-CN/ai/device-kit');
-  });
-}
-
-function filterApiReferenceSidebar(nodes: DocsSidebarNode[]) {
-  const filteredNodes = filterSidebarNodes(nodes, (node) => {
-    if (node.type !== 'page') {
-      return true;
-    }
-
-    return !node.url.startsWith('/en/api-reference/voice-ai-recipes') &&
-      !node.url.startsWith('/zh-CN/api-reference/voice-ai-recipes');
-  });
-
-  return filteredNodes.flatMap((node) => {
-    if (node.type !== 'section') {
-      return [node];
-    }
-
-    const recipesIndexPage = findSidebarPageByExactUrl(node, '/en/api-reference/recipes')
-      ?? findSidebarPageByExactUrl(node, '/zh-CN/api-reference/recipes');
-
-    if (!recipesIndexPage) {
-      return [node];
-    }
-
-    return [recipesIndexPage];
-  });
-}
-
-function findSidebarPageByExactUrl(
-  node: DocsSidebarNode,
-  url: string,
-): DocsSidebarNode | null {
-  if (node.type === 'page') {
-    return node.url === url ? node : null;
-  }
-
-  for (const child of node.children) {
-    const match = findSidebarPageByExactUrl(child, url);
-    if (match) {
-      return match;
-    }
-  }
-
-  return null;
-}
-
-function getDocsSidebarHeader(
-  activePath: string,
-  tab: string,
-): DocsSidebarHeader | undefined {
-  if (tab === OPENAPI_TAB && isRecipesPathEntry(activePath)) {
-    const isChinese = activePath.includes('/zh-CN/');
-
-    return {
-      backHref: isChinese ? '/zh-CN/api-reference' : '/en/api-reference',
-      backLabel: isChinese ? '返回 API 参考' : 'Back to Reference',
-      title: isChinese ? '示例配方' : 'Recipes',
-    };
-  }
-
-  if (tab !== 'ai' || !isDeviceKitPathEntry(activePath)) {
-    return undefined;
-  }
-
-  return {
-    backHref: activePath.includes('/zh-CN/') ? '/zh-CN/ai' : '/en/ai',
-    backLabel: 'Back to AI',
-    title: 'Convo AI Device Kit',
-  };
+function getDocsMetaData(meta: ReturnType<typeof docsSource.getNodeMeta>) {
+  return meta?.data;
 }
 
 async function addOpenApiEndpointSidebarItems(

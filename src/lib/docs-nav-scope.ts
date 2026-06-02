@@ -146,7 +146,25 @@ export function getNavScopeSidebarNodes({
     return getSidebarNodes(root, tab);
   }
 
+  if (!hasNavScopeDescendant(tabNode, getNodeMeta)) {
+    return getSidebarNodes(root, tab);
+  }
+
   return flattenTabSidebarNodes(tabNode, getNodeMeta);
+}
+
+function hasNavScopeDescendant(
+  folder: Folder,
+  getNodeMeta: GetDocsNodeMeta,
+): boolean {
+  if (getNodeMeta(folder)?.navScope) {
+    return true;
+  }
+
+  return folder.children.some(
+    (child) =>
+      child.type === 'folder' && hasNavScopeDescendant(child, getNodeMeta),
+  );
 }
 
 function flattenTabSidebarNodes(
