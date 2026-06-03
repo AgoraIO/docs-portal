@@ -1,8 +1,6 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { loadDocsPagePayload, loadDocsTabIndex } from './docs-page.server';
-import { loadOpenApiEndpointPage } from './openapi/docs-page.server';
-import { OPENAPI_LANES } from './openapi/lanes';
 import { source } from './source.server';
 
 vi.mock('./source.server', () => ({
@@ -18,15 +16,10 @@ vi.mock('./source.server', () => ({
   },
 }));
 
-vi.mock('./openapi/docs-page.server', () => ({
-  loadOpenApiEndpointPage: vi.fn(),
-}));
-
 const mockedGetPage = vi.mocked(source.getPage);
 const mockedGetPages = vi.mocked(source.getPages);
 const mockedGetPageTree = vi.mocked(source.getPageTree);
 const mockedGetNodeMeta = vi.mocked(source.getNodeMeta);
-const mockedLoadOpenApiEndpointPage = vi.mocked(loadOpenApiEndpointPage);
 
 const pageTree: Root = {
   children: [
@@ -590,6 +583,76 @@ Why teams use it.`,
   };
 }
 
+function createOpenApiPage() {
+  return {
+    data: {
+      _openapi: {
+        method: 'post',
+      },
+      description: 'Create and join a conversational AI agent.',
+      getClientAPIPageProps: vi.fn(async () => ({
+        document: 'convoai-en',
+        operations: [
+          {
+            method: 'post' as const,
+            path: '/v2/projects/{appid}/join',
+          },
+        ],
+        payload: {
+          bundled: {
+            info: {
+              title: 'Conversational AI Agent API Overview',
+            },
+            openapi: '3.1.0',
+            paths: {},
+          },
+        },
+      })),
+      getText: vi.fn(async () => ''),
+      structuredData: {
+        contents: [],
+        headings: [],
+      },
+      title: 'Start a conversational AI agent',
+      toc: [
+        {
+          depth: 2,
+          title: 'Request',
+          url: '#request',
+        },
+      ],
+      type: 'openapi',
+    },
+    path: 'en/api-reference/conversational-ai/rest-api/agent/join.mdx',
+    slugs: [
+      'en',
+      'api-reference',
+      'conversational-ai',
+      'rest-api',
+      'agent',
+      'join',
+    ],
+    type: 'openapi',
+    url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+  };
+}
+
+function createZhOpenApiPage() {
+  return {
+    ...createOpenApiPage(),
+    path: 'zh-CN/api-reference/conversational-ai/rest-api/agent/join.mdx',
+    slugs: [
+      'zh-CN',
+      'api-reference',
+      'conversational-ai',
+      'rest-api',
+      'agent',
+      'join',
+    ],
+    url: '/zh-CN/api-reference/conversational-ai/rest-api/agent/join',
+  };
+}
+
 describe('loadDocsTabIndex', () => {
   beforeEach(() => {
     mockedGetPageTree.mockReturnValue(pageTree);
@@ -618,7 +681,6 @@ describe('loadDocsPagePayload', () => {
   beforeEach(() => {
     const page = createPage();
 
-    mockedLoadOpenApiEndpointPage.mockResolvedValue(null);
     mockedGetPage.mockImplementation((_slugs, locale) =>
       locale === 'zh-CN' ? undefined : page,
     );
@@ -677,42 +739,11 @@ describe('loadDocsPagePayload', () => {
     });
   });
 
-  it('returns OpenAPI content inside the existing docs shell payload when no MDX page exists', async () => {
-    mockedGetPage.mockReturnValue(undefined);
+  it('returns OpenAPI content inside the existing docs shell payload from the merged source', async () => {
+    mockedGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? createZhOpenApiPage() : createOpenApiPage(),
+    );
     mockedGetPageTree.mockReturnValue(apiReferencePageTree);
-    mockedLoadOpenApiEndpointPage.mockResolvedValue({
-      activePath: '/en/api-reference/conversational-ai/rest-api/agent/join',
-      body: {
-        kind: 'openapi',
-        operationPayload: {
-          examples: {
-            curl: 'curl -X POST "https://api.example.com/v2/projects/{appid}/join"',
-            javascript: "await fetch('https://api.example.com/v2/projects/{appid}/join')",
-          },
-          operation: {
-            method: 'POST',
-            operationId: 'start-agent',
-            parameters: [],
-            path: '/v2/projects/{appid}/join',
-            responses: {},
-            servers: [],
-          },
-          publicSourceUrl: '/openapi/conversational-ai/convoai.yaml',
-          requestSchemaRows: [],
-          responseSchemaRows: {},
-        },
-      },
-      contentPath: 'en/api-reference/conversational-ai/rest-api/agent/join.md',
-      description: undefined,
-      lane: OPENAPI_LANES[0],
-      layoutMode: 'openapi',
-      markdownUrl:
-        '/llms.mdx/docs/en/api-reference/conversational-ai/rest-api/agent/join.md',
-      operationId: 'start-agent',
-      slug: 'join',
-      title: 'Start a conversational AI agent',
-      toc: [],
-    });
 
     const payload = await loadDocsPagePayload('en', 'api-reference', [
       'conversational-ai',
@@ -726,7 +757,18 @@ describe('loadDocsPagePayload', () => {
       activeTab: 'api-reference',
       body: {
         kind: 'openapi',
+        pageProps: {
+          document: 'convoai-en',
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+        },
       },
+      contentPath:
+        'en/api-reference/conversational-ai/rest-api/agent/join.mdx',
       layoutMode: 'openapi',
       localeLinks: [
         {
@@ -745,10 +787,6 @@ describe('loadDocsPagePayload', () => {
           title: 'About Agora',
           url: '/en/introduction/about-agora',
         }),
-        expect.objectContaining({
-          title: 'Start a conversational AI agent',
-          url: '/en/api-reference/conversational-ai/rest-api/agent/join',
-        }),
       ]),
       tabs: [
         {
@@ -758,6 +796,13 @@ describe('loadDocsPagePayload', () => {
         },
       ],
       title: 'Start a conversational AI agent',
+      toc: [
+        {
+          depth: 2,
+          title: 'Request',
+          url: '#request',
+        },
+      ],
     });
 
     if (!payload || 'redirectUrl' in payload) {

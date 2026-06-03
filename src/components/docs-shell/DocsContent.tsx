@@ -1,5 +1,6 @@
 import { ClientOnly } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
+import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import { BotIcon, Edit3Icon, ExternalLinkIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,12 +16,8 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
-import type { OpenApiOperationPayload } from '@/lib/openapi/payload';
 import { DocsContentBodyClient } from './DocsContentBody.client';
-import {
-  OpenApiExamplesRail,
-  OpenApiOperationContent,
-} from '../openapi/OpenApiOperationContent';
+import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 
 const TOC_ACTIVE_OFFSET = 96;
 const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
@@ -151,7 +148,7 @@ export function DocsContent({
       </header>
       <div className="prose prose-neutral dark:prose-invert max-w-none">
         {resolvedBody?.kind === 'openapi' ? (
-          <OpenApiOperationContent {...resolvedBody.operationPayload} />
+          <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
         ) : resolvedBody?.kind === 'mdx' ? (
           <ClientOnly fallback={<DocsContentSkeleton />}>
             <DocsContentBodyClient contentPath={resolvedBody.contentPath} />
@@ -169,17 +166,13 @@ export function DocsContent({
   );
 }
 
-export function DocsContentSideRail({ body }: { body?: DocsContentBody }) {
-  if (body?.kind !== 'openapi') {
-    return null;
-  }
-
-  return <OpenApiExamplesRail examples={body.operationPayload.examples} />;
+export function DocsContentSideRail(_props: { body?: DocsContentBody }) {
+  return null;
 }
 
 export type DocsContentBody =
   | { contentPath: string; kind: 'mdx' }
-  | { kind: 'openapi'; operationPayload: OpenApiOperationPayload };
+  | { kind: 'openapi'; pageProps: ClientApiPageProps };
 
 function DocsContentSkeleton() {
   return (
