@@ -964,7 +964,7 @@ describe('loadDocsPagePayload', () => {
     );
   });
 
-  it('compresses the Voice & Video nav scope in the parent Realtime & Media sidebar', async () => {
+  it('keeps a plain nav scope expanded in the parent Realtime & Media sidebar', async () => {
     const page = createPage();
     const realtimePage = {
       ...page,
@@ -1008,7 +1008,7 @@ describe('loadDocsPagePayload', () => {
         '/en/realtime-media/rtm',
       ]),
     );
-    expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
       expect.arrayContaining([
         '/en/realtime-media/rtc/quick-start',
         '/en/realtime-media/rtc/audio/audio-profiles-and-quality',

@@ -2,9 +2,15 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Make `navScope: {}` on `content/docs/en/realtime-media/rtc/meta.json` render the Voice & Video subtree as an independent sidebar instead of emptying the left navigation.
+**Goal:** Make `navScope: {}` on `content/docs/en/realtime-media/rtc/meta.json` switch Voice & Video pages into an independent sidebar after entry, while keeping the full Voice & Video subtree visible in the parent Realtime & Media sidebar.
 
-**Architecture:** Preserve the existing metadata-driven nav-scope model: a plain `navScope: {}` marks a folder as an independent sidebar scope without a version switcher. The fix should be in the nav-scope/sidebar resolver, with regression coverage that models the real `realtime-media` tree shape including separators and nested folders.
+**Architecture:** Preserve the existing metadata-driven nav-scope model and do not add new `navScope` fields. A plain `navScope: {}` marks a folder as an independent sidebar scope without a version switcher. Parent sidebar rendering is inferred from existing tree shape:
+
+- Versioned nav scopes stay compressed to a single folder entry in the parent sidebar.
+- Plain nav scopes with no child folders stay compressed to a single folder entry.
+- Plain nav scopes with ordinary child folders render as the full folder subtree in the parent sidebar, then switch to the scoped sidebar when a page inside the folder is active.
+
+The fix should be in the nav-scope/sidebar resolver, with regression coverage that models the real `realtime-media` tree shape including separators and nested folders.
 
 **Tech Stack:** TypeScript, Vitest, Fumadocs page-tree shapes, TanStack Start docs payload loaders.
 
@@ -17,14 +23,16 @@
 
 - [ ] **Step 1: Write the failing test**
 
-Add a test that builds a `realtime-media` page tree with an `rtc` folder marked by `navScope: {}`. Assert that `/en/realtime-media/rtc` gets a `Voice & Video` scoped sidebar with `/en/realtime-media/rtc`, `/en/realtime-media/rtc/quick-start`, and `/en/realtime-media/rtc/audio/audio-profiles-and-quality`, while excluding sibling `/en/realtime-media/rtm`.
+Add tests that build a `realtime-media` page tree with an `rtc` folder marked by `navScope: {}`. Assert that `/en/realtime-media/rtc` gets a `Voice & Video` scoped sidebar with `/en/realtime-media/rtc`, `/en/realtime-media/rtc/quick-start`, and `/en/realtime-media/rtc/audio/audio-profiles-and-quality`, while excluding sibling `/en/realtime-media/rtm`.
+
+Also assert that `/en/realtime-media` keeps the `Voice & Video` subtree expanded in the parent sidebar, including nested RTC child URLs and sibling `/en/realtime-media/rtm`.
 
 - [ ] **Step 2: Run test to verify it fails**
 
 Run:
 
 ```bash
-bunx vitest run src/lib/docs-page.server.test.ts -t "returns a scoped Voice & Video sidebar from a plain navScope"
+bunx vitest run src/lib/docs-page.server.test.ts -t "Voice & Video"
 ```
 
 Expected: FAIL showing the real bug, or PASS if the root cause is outside mocked payload logic.
@@ -36,14 +44,14 @@ Expected: FAIL showing the real bug, or PASS if the root cause is outside mocked
 
 - [ ] **Step 1: Implement the minimal resolver fix**
 
-Keep `navScope: {}` truthy as a scope marker, but make plain scoped sidebars flatten the scope folder's real index and children. Do not require `versions` for `sidebarRoot`; only versioned scopes should swap `sidebarRoot` to a version folder.
+Keep `navScope: {}` truthy as a scope marker, but infer parent-sidebar behavior from existing metadata and tree shape. Do not require `versions` for `sidebarRoot`; only versioned scopes should swap `sidebarRoot` to a version folder, and no schema field should be added for this parent-sidebar mode.
 
 - [ ] **Step 2: Run the focused regression**
 
 Run:
 
 ```bash
-bunx vitest run src/lib/docs-page.server.test.ts -t "returns a scoped Voice & Video sidebar from a plain navScope"
+bunx vitest run src/lib/docs-page.server.test.ts -t "Voice & Video"
 ```
 
 Expected: PASS.
@@ -105,7 +113,7 @@ Run:
 NODE_OPTIONS='--max-old-space-size=8192' bun run dev --host 127.0.0.1
 ```
 
-Open `/en/realtime-media/rtc` and confirm the desktop sidebar shows the Voice & Video subtree with `Quick Start`, `Audio`, `Video`, and no sibling `RTM` section content. Open `/en/realtime-media` and confirm the parent sidebar shows `Voice & Video` as an entry under Build Live Interaction.
+Open `/en/realtime-media/overview` and confirm the desktop sidebar shows `Voice & Video` expanded with child entries such as `Quick Start`, `Audio`, and `Video`, alongside sibling product areas such as `Signaling`. Open `/en/realtime-media/rtc` and confirm the desktop sidebar switches to the Voice & Video subtree with `Quick Start`, `Audio`, `Video`, and no sibling `RTM` section content.
 
 ### Task 4: Commit The Fix
 
