@@ -1,5 +1,4 @@
 import { type OpenApiJsonValue, toOpenApiJsonValue } from './json';
-import type { OpenApiSchemaRow } from './payload';
 
 const MAX_SCHEMA_DEPTH = 12;
 
@@ -20,6 +19,10 @@ export type OpenApiSchemaTreeNode = {
   required: boolean;
   type: string;
   writeOnly?: boolean;
+};
+
+export type OpenApiSchemaRow = Omit<OpenApiSchemaTreeNode, 'children'> & {
+  depth: number;
 };
 
 export function buildOpenApiSchemaTree(

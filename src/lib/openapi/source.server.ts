@@ -7,14 +7,62 @@ import {
 } from '../i18n/i18n-config';
 import { type OpenApiJsonValue, toOpenApiJsonValue } from './json';
 import type { OpenApiLane } from './lanes';
-import type {
-  NormalizedOpenApiMedia,
-  NormalizedOpenApiOperation,
-  OpenApiParameter,
-  OpenApiParameterLocation,
-  OpenApiResponse,
-} from './payload';
 import { getOpenApiSourceText } from './source-text.server';
+
+export type OpenApiHttpMethod =
+  | 'DELETE'
+  | 'GET'
+  | 'HEAD'
+  | 'OPTIONS'
+  | 'PATCH'
+  | 'POST'
+  | 'PUT'
+  | 'TRACE';
+
+export type OpenApiParameterLocation =
+  | 'cookie'
+  | 'header'
+  | 'path'
+  | 'query';
+
+export type OpenApiParameter = {
+  description?: string;
+  example?: OpenApiJsonValue;
+  examples?: Record<string, { value?: OpenApiJsonValue }>;
+  in: OpenApiParameterLocation;
+  name: string;
+  required: boolean;
+  schema?: OpenApiJsonValue;
+};
+
+export type NormalizedOpenApiMedia = {
+  example?: OpenApiJsonValue;
+  examples?: Record<string, { value?: OpenApiJsonValue }>;
+  schema?: OpenApiJsonValue;
+};
+
+export type OpenApiResponse = {
+  content?: Record<string, NormalizedOpenApiMedia>;
+  description?: string;
+};
+
+export type NormalizedOpenApiOperation = {
+  description?: string;
+  method: OpenApiHttpMethod;
+  operationId: string;
+  parameters: OpenApiParameter[];
+  path: string;
+  requestBody?: {
+    content: Record<string, NormalizedOpenApiMedia>;
+    contentTypes: string[];
+    description?: string;
+    required: boolean;
+  };
+  responses: Record<string, OpenApiResponse>;
+  security?: OpenApiJsonValue;
+  servers: { description?: string; url: string }[];
+  summary?: string;
+};
 
 const HTTP_METHODS = new Set([
   'get',
