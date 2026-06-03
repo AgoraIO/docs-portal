@@ -1,11 +1,20 @@
 import { docs } from 'collections/server';
-import { type InferPageType, loader } from 'fumadocs-core/source';
+import { type InferPageType, loader, multiple } from 'fumadocs-core/source';
 import { buildDocPath, parseSourceSlugs } from './docs-routing';
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import {
+  createLocalizedOpenApiSource,
+  getOpenApiLoaderPlugin,
+} from './openapi/fumadocs-source.server';
 import { docsContentRoute, docsRoute } from './shared';
 
+const openApiSource = await createLocalizedOpenApiSource();
+
 export const source = loader({
-  source: docs.toFumadocsSource(),
+  source: multiple({
+    docs: docs.toFumadocsSource(),
+    openapi: openApiSource,
+  }),
   baseUrl: docsRoute,
   i18n: {
     defaultLanguage: DEFAULT_LOCALE,
@@ -21,6 +30,7 @@ export const source = loader({
       route.slugSegments,
     );
   },
+  plugins: [getOpenApiLoaderPlugin()],
 });
 
 export type PageWithSource = InferPageType<typeof source>;
@@ -35,7 +45,10 @@ export function getPageMarkdownUrl(page: InferPageType<typeof source>) {
 }
 
 export async function getLLMText(page: InferPageType<typeof source>) {
-  const processed = await page.data.getText('processed');
+  const processed =
+    'getText' in page.data && typeof page.data.getText === 'function'
+      ? await page.data.getText('processed')
+      : '';
 
   return `# ${page.data.title} (${page.url})
 

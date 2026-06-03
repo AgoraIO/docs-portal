@@ -26,6 +26,18 @@ vi.mock('./DocsContentBody.client', () => ({
   ),
 }));
 
+vi.mock('../openapi/FumadocsOpenApiContent', () => ({
+  FumadocsOpenApiContent: ({
+    pageProps,
+  }: {
+    pageProps: { operations?: { path: string }[] };
+  }) => (
+    <div data-testid="fumadocs-openapi-content">
+      {pageProps.operations?.[0]?.path}
+    </div>
+  ),
+}));
+
 function renderWithRouter(children: ReactNode) {
   const rootRoute = createRootRoute({
     component: () => <Outlet />,
@@ -98,6 +110,40 @@ describe('DocsContent', () => {
 
     expect(html).toContain('data-testid="docs-content-skeleton"');
     expect(html).toContain('data-skeleton-line="hero"');
+  });
+
+  it('renders OpenAPI content through the Fumadocs content component', async () => {
+    renderWithRouter(
+      <DocsContent
+        body={{
+          kind: 'openapi',
+          pageProps: {
+            operations: [
+              {
+                method: 'post',
+                path: '/v2/projects/{appid}/join',
+              },
+            ],
+            payload: {
+              bundled: {
+                info: {
+                  title: 'Conversational AI Agent API Overview',
+                },
+                openapi: '3.2.0',
+                paths: {},
+              },
+            },
+          },
+        }}
+        slug="join"
+        title="Start a conversational AI agent"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByTestId('fumadocs-openapi-content'),
+    ).toHaveTextContent('/v2/projects/{appid}/join');
   });
 });
 

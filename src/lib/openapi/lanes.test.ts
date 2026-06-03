@@ -12,9 +12,15 @@ describe('openapi lanes', () => {
     expect(getOpenApiLanes()).toEqual([
       expect.objectContaining({
         id: 'convoai',
-        publicSourceUrl: '/openapi/conversational-ai/convoai.yaml',
+        publicSourceUrl: {
+          en: '/openapi/conversational-ai/convoai.en.yaml',
+          'zh-CN': '/openapi/conversational-ai/convoai.zh-CN.yaml',
+        },
         routePrefix: 'api-reference/conversational-ai/rest-api/agent',
-        sourcePath: 'content/openapi/conversational-ai/convoai.yaml',
+        sourcePath: {
+          en: 'content/openapi/conversational-ai/convoai.en.yaml',
+          'zh-CN': 'content/openapi/conversational-ai/convoai.zh-CN.yaml',
+        },
         tab: 'api-reference',
       }),
     ]);

@@ -9,9 +9,9 @@ export type OpenApiLaneOperation = {
 export type OpenApiLane = {
   id: string;
   parentUrl: Record<AppLocale, string>;
-  publicSourceUrl: string;
+  publicSourceUrl: Record<AppLocale, string>;
   routePrefix: string;
-  sourcePath: string;
+  sourcePath: Record<AppLocale, string>;
   tab: string;
   operations: Record<string, OpenApiLaneOperation>;
 };
@@ -23,9 +23,15 @@ export const OPENAPI_LANES = [
       en: '/en/api-reference/conversational-ai/rest-api/agent',
       'zh-CN': '/zh-CN/api-reference/conversational-ai/rest-api/agent',
     },
-    publicSourceUrl: '/openapi/conversational-ai/convoai.yaml',
+    publicSourceUrl: {
+      en: '/openapi/conversational-ai/convoai.en.yaml',
+      'zh-CN': '/openapi/conversational-ai/convoai.zh-CN.yaml',
+    },
     routePrefix: 'api-reference/conversational-ai/rest-api/agent',
-    sourcePath: 'content/openapi/conversational-ai/convoai.yaml',
+    sourcePath: {
+      en: 'content/openapi/conversational-ai/convoai.en.yaml',
+      'zh-CN': 'content/openapi/conversational-ai/convoai.zh-CN.yaml',
+    },
     tab: 'api-reference',
     operations: {
       'start-agent': {
@@ -180,5 +186,7 @@ export function resolveOpenApiEndpointRoute(
 }
 
 export function findOpenApiLaneBySourcePath(sourcePath: string) {
-  return getOpenApiLanes().find((lane) => lane.sourcePath === sourcePath);
+  return getOpenApiLanes().find((lane) =>
+    Object.values(lane.sourcePath).includes(sourcePath),
+  );
 }

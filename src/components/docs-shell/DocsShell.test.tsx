@@ -396,21 +396,20 @@ describe('DocsShell', () => {
     ).toBeInTheDocument();
   });
 
-  it('uses the openapi layout with a dedicated side rail instead of the generic toc rail', async () => {
+  it('uses the openapi layout without the generic toc rail', async () => {
     renderDocsShell({
       layoutMode: 'openapi',
-      sideRail: <div>Code &amp; Examples</div>,
     });
 
     const docsBodyShell = await screen.findByTestId('docs-body-shell');
 
-    expect(docsBodyShell).toHaveClass(
-      'xl:grid-cols-[256px_minmax(0,1fr)_400px]',
-    );
+    expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
-    expect(screen.getByTestId('docs-side-rail')).toHaveTextContent(
-      'Code & Examples',
-    );
+    expect(screen.queryByTestId('docs-side-rail')).not.toBeInTheDocument();
+    for (const footer of screen.getAllByTestId('docs-page-footer')) {
+      expect(footer).toHaveClass('max-w-none');
+      expect(footer).not.toHaveClass('max-w-[var(--content-max)]');
+    }
     expect(screen.queryByText('On this page')).not.toBeInTheDocument();
   });
 

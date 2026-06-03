@@ -1,9 +1,7 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { loadDocsPagePayload, loadDocsTabIndex } from './docs-page.server';
-import { loadOpenApiEndpointPage } from './openapi/docs-page.server';
-import { OPENAPI_LANES } from './openapi/lanes';
-import { source } from './source.server';
+import { type PageWithSource, source } from './source.server';
 
 vi.mock('./source.server', () => ({
   getPageMarkdownUrl: (page: { path: string }) => ({
@@ -18,15 +16,14 @@ vi.mock('./source.server', () => ({
   },
 }));
 
-vi.mock('./openapi/docs-page.server', () => ({
-  loadOpenApiEndpointPage: vi.fn(),
-}));
-
-const mockedGetPage = vi.mocked(source.getPage);
-const mockedGetPages = vi.mocked(source.getPages);
-const mockedGetPageTree = vi.mocked(source.getPageTree);
-const mockedGetNodeMeta = vi.mocked(source.getNodeMeta);
-const mockedLoadOpenApiEndpointPage = vi.mocked(loadOpenApiEndpointPage);
+const mockedGetPage = source.getPage as unknown as ReturnType<typeof vi.fn>;
+const mockedGetPages = source.getPages as unknown as ReturnType<typeof vi.fn>;
+const mockedGetPageTree = source.getPageTree as unknown as ReturnType<
+  typeof vi.fn
+>;
+const mockedGetNodeMeta = source.getNodeMeta as unknown as ReturnType<
+  typeof vi.fn
+>;
 
 const pageTree: Root = {
   children: [
@@ -313,7 +310,14 @@ const apiReferencePageTree: Root = {
                     },
                     {
                       $id: 'api-reference-conversational-ai-rest-api-agent-folder',
-                      children: [],
+                      children: [
+                        {
+                          $id: 'api-reference-conversational-ai-rest-api-agent-join',
+                          name: '/en/api-reference/conversational-ai/rest-api/agent/join',
+                          type: 'page',
+                          url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+                        },
+                      ],
                       index: {
                         $id: 'api-reference-conversational-ai-rest-api-agent-index',
                         name: 'Agent management',
@@ -552,7 +556,7 @@ const realtimeMediaPageTree: Root = {
   name: 'Docs',
 };
 
-function createPage() {
+function createPage(): PageWithSource {
   return {
     data: {
       _exports: {},
@@ -582,12 +586,83 @@ Why teams use it.`,
       },
       title: 'About Agora',
       toc: [],
+      type: 'docs',
     },
     path: 'en/introduction/about-agora.md',
     slugs: ['en', 'introduction', 'about-agora'],
-    type: undefined,
+    type: 'docs',
     url: '/en/introduction/about-agora',
-  };
+  } as unknown as PageWithSource;
+}
+
+function createOpenApiPage(): PageWithSource {
+  return {
+    data: {
+      _openapi: {
+        method: 'post',
+      },
+      description: 'Create and join a conversational AI agent.',
+      getClientAPIPageProps: vi.fn(async () => ({
+        document: 'convoai-en',
+        operations: [
+          {
+            method: 'post' as const,
+            path: '/v2/projects/{appid}/join',
+          },
+        ],
+        payload: {
+          bundled: {
+            info: {
+              title: 'Conversational AI Agent API Overview',
+            },
+            openapi: '3.2.0',
+            paths: {},
+          },
+        },
+      })),
+      getText: vi.fn(async () => ''),
+      structuredData: {
+        contents: [],
+        headings: [],
+      },
+      title: 'Start a conversational AI agent',
+      toc: [
+        {
+          depth: 2,
+          title: 'Request',
+          url: '#request',
+        },
+      ],
+      type: 'openapi',
+    },
+    path: 'en/api-reference/conversational-ai/rest-api/agent/join.mdx',
+    slugs: [
+      'en',
+      'api-reference',
+      'conversational-ai',
+      'rest-api',
+      'agent',
+      'join',
+    ],
+    type: 'openapi',
+    url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+  } as unknown as PageWithSource;
+}
+
+function createZhOpenApiPage(): PageWithSource {
+  return {
+    ...createOpenApiPage(),
+    path: 'zh-CN/api-reference/conversational-ai/rest-api/agent/join.mdx',
+    slugs: [
+      'zh-CN',
+      'api-reference',
+      'conversational-ai',
+      'rest-api',
+      'agent',
+      'join',
+    ],
+    url: '/zh-CN/api-reference/conversational-ai/rest-api/agent/join',
+  } as unknown as PageWithSource;
 }
 
 describe('loadDocsTabIndex', () => {
@@ -618,7 +693,6 @@ describe('loadDocsPagePayload', () => {
   beforeEach(() => {
     const page = createPage();
 
-    mockedLoadOpenApiEndpointPage.mockResolvedValue(null);
     mockedGetPage.mockImplementation((_slugs, locale) =>
       locale === 'zh-CN' ? undefined : page,
     );
@@ -677,42 +751,11 @@ describe('loadDocsPagePayload', () => {
     });
   });
 
-  it('returns OpenAPI content inside the existing docs shell payload when no MDX page exists', async () => {
-    mockedGetPage.mockReturnValue(undefined);
+  it('returns OpenAPI content inside the existing docs shell payload from the merged source', async () => {
+    mockedGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? createZhOpenApiPage() : createOpenApiPage(),
+    );
     mockedGetPageTree.mockReturnValue(apiReferencePageTree);
-    mockedLoadOpenApiEndpointPage.mockResolvedValue({
-      activePath: '/en/api-reference/conversational-ai/rest-api/agent/join',
-      body: {
-        kind: 'openapi',
-        operationPayload: {
-          examples: {
-            curl: 'curl -X POST "https://api.example.com/v2/projects/{appid}/join"',
-            javascript: "await fetch('https://api.example.com/v2/projects/{appid}/join')",
-          },
-          operation: {
-            method: 'POST',
-            operationId: 'start-agent',
-            parameters: [],
-            path: '/v2/projects/{appid}/join',
-            responses: {},
-            servers: [],
-          },
-          publicSourceUrl: '/openapi/conversational-ai/convoai.yaml',
-          requestSchemaRows: [],
-          responseSchemaRows: {},
-        },
-      },
-      contentPath: 'en/api-reference/conversational-ai/rest-api/agent/join.md',
-      description: undefined,
-      lane: OPENAPI_LANES[0],
-      layoutMode: 'openapi',
-      markdownUrl:
-        '/llms.mdx/docs/en/api-reference/conversational-ai/rest-api/agent/join.md',
-      operationId: 'start-agent',
-      slug: 'join',
-      title: 'Start a conversational AI agent',
-      toc: [],
-    });
 
     const payload = await loadDocsPagePayload('en', 'api-reference', [
       'conversational-ai',
@@ -726,7 +769,17 @@ describe('loadDocsPagePayload', () => {
       activeTab: 'api-reference',
       body: {
         kind: 'openapi',
+        pageProps: {
+          document: 'convoai-en',
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+        },
       },
+      contentPath: 'en/api-reference/conversational-ai/rest-api/agent/join.mdx',
       layoutMode: 'openapi',
       localeLinks: [
         {
@@ -745,10 +798,6 @@ describe('loadDocsPagePayload', () => {
           title: 'About Agora',
           url: '/en/introduction/about-agora',
         }),
-        expect.objectContaining({
-          title: 'Start a conversational AI agent',
-          url: '/en/api-reference/conversational-ai/rest-api/agent/join',
-        }),
       ]),
       tabs: [
         {
@@ -758,6 +807,13 @@ describe('loadDocsPagePayload', () => {
         },
       ],
       title: 'Start a conversational AI agent',
+      toc: [
+        {
+          depth: 2,
+          title: 'Request',
+          url: '#request',
+        },
+      ],
     });
 
     if (!payload || 'redirectUrl' in payload) {
@@ -781,6 +837,19 @@ describe('loadDocsPagePayload', () => {
     ).toMatchObject({
       method: 'POST',
       title: 'Start a conversational AI agent',
+    });
+    expect(
+      flattenSidebarPageUrls(payload.sidebar).filter(
+        (url) =>
+          url === '/en/api-reference/conversational-ai/rest-api/agent/join',
+      ),
+    ).toHaveLength(1);
+    expect(payload.navigation).toEqual({
+      next: {
+        title: 'Stop a conversational AI agent',
+        url: '/en/api-reference/conversational-ai/rest-api/agent/leave',
+      },
+      previous: undefined,
     });
   });
 
@@ -865,7 +934,7 @@ describe('loadDocsPagePayload', () => {
             navScope: {},
             title: 'RTC',
           },
-        } as ReturnType<typeof source.getNodeMeta>;
+        } as unknown as ReturnType<typeof source.getNodeMeta>;
       }
 
       if (node.$id === 'api-reference-rtc-android-folder') {
@@ -880,7 +949,7 @@ describe('loadDocsPagePayload', () => {
             },
             title: 'Android API Reference',
           },
-        } as ReturnType<typeof source.getNodeMeta>;
+        } as unknown as ReturnType<typeof source.getNodeMeta>;
       }
 
       return undefined;
@@ -937,7 +1006,7 @@ describe('loadDocsPagePayload', () => {
               navScope: {},
               title: 'Voice & Video',
             },
-          } as ReturnType<typeof source.getNodeMeta>)
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
         : undefined,
     );
 
@@ -991,7 +1060,7 @@ describe('loadDocsPagePayload', () => {
               navScope: {},
               title: 'Voice & Video',
             },
-          } as ReturnType<typeof source.getNodeMeta>)
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
         : undefined,
     );
 
@@ -1130,7 +1199,10 @@ describe('loadDocsPagePayload', () => {
 
   it('redirects the Deploy to IoT devices path entry to the Device Kit product space', async () => {
     await expect(
-      loadDocsPagePayload('en', 'ai', ['choose-your-path', 'quickstart-device-kit']),
+      loadDocsPagePayload('en', 'ai', [
+        'choose-your-path',
+        'quickstart-device-kit',
+      ]),
     ).resolves.toEqual({
       redirectUrl: '/en/ai/device-kit',
     });
@@ -1168,7 +1240,7 @@ describe('loadDocsPagePayload', () => {
               navScope: {},
               title: 'Recipes',
             },
-          } as ReturnType<typeof source.getNodeMeta>)
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
         : undefined,
     );
 
@@ -1197,7 +1269,11 @@ describe('loadDocsPagePayload', () => {
 
   it('redirects moved Device Kit docs pages to their new product paths', async () => {
     await expect(
-      loadDocsPagePayload('en', 'ai', ['device-kit', 'start-here', 'enable-services']),
+      loadDocsPagePayload('en', 'ai', [
+        'device-kit',
+        'start-here',
+        'enable-services',
+      ]),
     ).resolves.toEqual({
       redirectUrl: '/en/ai/device-kit/reference/enable-services',
     });
@@ -1258,7 +1334,7 @@ describe('loadDocsPagePayload', () => {
               navScope: {},
               title: 'Convo AI Device Kit',
             },
-          } as ReturnType<typeof source.getNodeMeta>)
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
         : undefined,
     );
 
@@ -1316,11 +1392,13 @@ describe('loadDocsPagePayload', () => {
               navScope: {},
               title: 'Recipes',
             },
-          } as ReturnType<typeof source.getNodeMeta>)
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
         : undefined,
     );
 
-    const payload = await loadDocsPagePayload('en', 'api-reference', ['recipes']);
+    const payload = await loadDocsPagePayload('en', 'api-reference', [
+      'recipes',
+    ]);
 
     if (!payload || 'redirectUrl' in payload) {
       throw new Error('expected a docs page payload');

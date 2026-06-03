@@ -1,5 +1,6 @@
 import { ClientOnly } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
+import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import { BotIcon, Edit3Icon, ExternalLinkIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,12 +16,8 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
-import type { OpenApiOperationPayload } from '@/lib/openapi/payload';
+import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBodyClient } from './DocsContentBody.client';
-import {
-  OpenApiExamplesRail,
-  OpenApiOperationContent,
-} from '../openapi/OpenApiOperationContent';
 
 const TOC_ACTIVE_OFFSET = 96;
 const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
@@ -58,9 +55,7 @@ export function DocsContent({
           kind: 'mdx',
         } satisfies DocsContentBody)
       : undefined);
-  const resolvedMdxContentPath =
-    resolvedBody?.kind === 'mdx' ? resolvedBody.contentPath : undefined;
-
+  const isOpenApiBody = resolvedBody?.kind === 'openapi';
   useEffect(() => {
     if (resolvedBody?.kind !== 'mdx') {
       return;
@@ -77,10 +72,15 @@ export function DocsContent({
       window.cancelAnimationFrame(frame);
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, [resolvedBody?.kind, resolvedMdxContentPath]);
+  }, [resolvedBody?.kind]);
 
   return (
-    <article className="flex min-w-0 max-w-[var(--content-max)] flex-col gap-9">
+    <article
+      className={cn(
+        'flex min-w-0 flex-col gap-9',
+        isOpenApiBody ? 'max-w-none' : 'max-w-[var(--content-max)]',
+      )}
+    >
       <header className="flex flex-col gap-4 border-b border-[color:var(--line-soft)] pb-7">
         {breadcrumb.length > 0 ? (
           <nav aria-label="Breadcrumb" className="min-w-0">
@@ -149,16 +149,18 @@ export function DocsContent({
           </div>
         ) : null}
       </header>
-      <div className="prose prose-neutral dark:prose-invert max-w-none">
-        {resolvedBody?.kind === 'openapi' ? (
-          <OpenApiOperationContent {...resolvedBody.operationPayload} />
-        ) : resolvedBody?.kind === 'mdx' ? (
-          <ClientOnly fallback={<DocsContentSkeleton />}>
-            <DocsContentBodyClient contentPath={resolvedBody.contentPath} />
-          </ClientOnly>
-        ) : null}
-      </div>
-      {resolvedBody?.kind === 'openapi' ? null : (
+      {isOpenApiBody ? (
+        <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
+      ) : (
+        <div className="prose prose-neutral dark:prose-invert max-w-none">
+          {resolvedBody?.kind === 'mdx' ? (
+            <ClientOnly fallback={<DocsContentSkeleton />}>
+              <DocsContentBodyClient contentPath={resolvedBody.contentPath} />
+            </ClientOnly>
+          ) : null}
+        </div>
+      )}
+      {isOpenApiBody ? null : (
         <DocsTableOfContents
           className="xl:hidden"
           locale={currentLocale}
@@ -169,17 +171,9 @@ export function DocsContent({
   );
 }
 
-export function DocsContentSideRail({ body }: { body?: DocsContentBody }) {
-  if (body?.kind !== 'openapi') {
-    return null;
-  }
-
-  return <OpenApiExamplesRail examples={body.operationPayload.examples} />;
-}
-
 export type DocsContentBody =
   | { contentPath: string; kind: 'mdx' }
-  | { kind: 'openapi'; operationPayload: OpenApiOperationPayload };
+  | { kind: 'openapi'; pageProps: ClientApiPageProps };
 
 function DocsContentSkeleton() {
   return (
@@ -260,9 +254,7 @@ export function DocsTableOfContents({
           (scrollContainer?.getBoundingClientRect().top ?? 0) +
           TOC_ACTIVE_OFFSET;
         const viewportRect = getScrollViewportRect(scrollContainer);
-        const headings = items.map((item) =>
-          findDocsHeadingForHash(item.url),
-        );
+        const headings = items.map((item) => findDocsHeadingForHash(item.url));
         let nextActiveUrl = items[0]?.url ?? '';
         const nextVisibleUrls = new Set<string>();
 

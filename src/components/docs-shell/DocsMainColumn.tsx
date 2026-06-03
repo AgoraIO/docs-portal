@@ -20,11 +20,13 @@ import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsMainColumn({
   children,
+  layoutMode = 'docs',
   locale = DEFAULT_LOCALE,
   next,
   previous,
 }: {
   children: React.ReactNode;
+  layoutMode?: 'docs' | 'openapi';
   locale?: AppLocale | string;
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
@@ -42,7 +44,12 @@ export function DocsMainColumn({
         data-testid="docs-main-mobile-flow"
       >
         <div className="min-w-0">{children}</div>
-        <DocsPageFooter locale={locale} next={next} previous={previous} />
+        <DocsPageFooter
+          layoutMode={layoutMode}
+          locale={locale}
+          next={next}
+          previous={previous}
+        />
       </div>
       <div
         className={cn(
@@ -54,7 +61,12 @@ export function DocsMainColumn({
       >
         <div className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10">
           <div className="min-w-0 flex-1">{children}</div>
-          <DocsPageFooter locale={locale} next={next} previous={previous} />
+          <DocsPageFooter
+            layoutMode={layoutMode}
+            locale={locale}
+            next={next}
+            previous={previous}
+          />
         </div>
       </div>
     </main>
@@ -62,10 +74,12 @@ export function DocsMainColumn({
 }
 
 function DocsPageFooter({
+  layoutMode = 'docs',
   locale,
   next,
   previous,
 }: {
+  layoutMode?: 'docs' | 'openapi';
   locale: AppLocale | string;
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
@@ -76,7 +90,10 @@ function DocsPageFooter({
 
   return (
     <footer
-      className="mt-10 flex max-w-[var(--content-max)] flex-col gap-5 border-t border-[color:var(--line-soft)] pt-6"
+      className={cn(
+        'mt-10 flex flex-col gap-5 border-t border-[color:var(--line-soft)] pt-6',
+        layoutMode === 'openapi' ? 'max-w-none' : 'max-w-[var(--content-max)]',
+      )}
       data-testid="docs-page-footer"
     >
       <div

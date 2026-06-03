@@ -1,32 +1,28 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import { getSourceSlugs } from './docs-routing';
-import {
-  type DocsSidebarNode,
-  getFirstChildPageUrl,
-  getFirstTabPageUrl,
-  getPrevNextLinksFromNode,
-  getPrevNextLinks,
-  getSidebarBreadcrumb,
-  getSidebarNodes,
-  getTabSummaries,
-} from './docs-tree';
+import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import {
   type DocsNavScopeResolution,
   getNavScopeSidebarNodes,
   getScopedNavScopeSidebarNodes,
   resolveDocsNavScope,
 } from './docs-nav-scope';
-import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import { getSourceSlugs } from './docs-routing';
 import {
-  loadOpenApiEndpointPage,
-  type OpenApiEndpointPagePayload,
-} from './openapi/docs-page.server';
+  type DocsSidebarNode,
+  getFirstChildPageUrl,
+  getFirstTabPageUrl,
+  getPrevNextLinksFromNode,
+  getSidebarBreadcrumb,
+  getTabSummaries,
+} from './docs-tree';
+import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLanes,
   getOpenApiOperationIds,
   type OpenApiLane,
+  resolveOpenApiEndpointRoute,
 } from './openapi/lanes';
 import { getOpenApiOperation } from './openapi/source.server';
 import {
@@ -144,35 +140,6 @@ export async function loadDocsPagePayload(
   );
 
   if (!page) {
-    const openApiPage = await loadOpenApiEndpointPage(
-      locale,
-      tab,
-      slugSegments,
-    );
-
-    if (openApiPage) {
-      const openApiLocale = toSupportedLocale(locale);
-      if (!openApiLocale) {
-        return null;
-      }
-
-      const pageTree = source.getPageTree(locale);
-      const pages = source.getPages(locale).map((item) => ({
-        description: item.data.description,
-        title: item.data.title ?? item.slugs.at(-1) ?? item.url,
-        url: item.url,
-      }));
-
-      return await buildOpenApiDocsPagePayload({
-        locale: openApiLocale,
-        openApiPage,
-        pageTree,
-        pages,
-        source,
-        tab,
-      });
-    }
-
     const pageTree = source.getPageTree(locale);
     const fallbackUrl = getFirstChildPageUrl(pageTree, tab, slugSegments);
 
@@ -186,9 +153,17 @@ export async function loadDocsPagePayload(
   }
 
   const pageTree = source.getPageTree(locale);
-  const processedText = await readProcessedText(page);
-  const toc = await resolvePageToc(page, processedText);
   const supportedLocale = toSupportedLocale(locale);
+  const isOpenApiPage = isOpenApiPageWithClientProps(page);
+  const openApiRoute =
+    isOpenApiPage && supportedLocale
+      ? resolveOpenApiEndpointRoute(supportedLocale, tab, slugSegments)
+      : null;
+  const processedText = isOpenApiPage ? '' : await readProcessedText(page);
+  const toc = isOpenApiPage
+    ? normalizeToc(getPageToc(page))
+    : await resolvePageToc(page, processedText);
+  const layoutMode = isOpenApiPage ? ('openapi' as const) : ('docs' as const);
   const sidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,
@@ -219,10 +194,15 @@ export async function loadDocsPagePayload(
   return {
     activePath: page.url,
     activeTab: tab,
-    body: {
-      contentPath: page.path,
-      kind: 'mdx' as const,
-    },
+    body: isOpenApiPage
+      ? {
+          kind: 'openapi' as const,
+          pageProps: await page.data.getClientAPIPageProps(),
+        }
+      : {
+          contentPath: page.path,
+          kind: 'mdx' as const,
+        },
     breadcrumb:
       breadcrumb.length > 0
         ? breadcrumb
@@ -235,7 +215,7 @@ export async function loadDocsPagePayload(
     contentPath: page.path,
     description: page.data.description,
     markdownUrl: getPageMarkdownUrl(page).url,
-    layoutMode: 'docs' as const,
+    layoutMode,
     localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
       const targetPage = source.getPage(page.slugs.slice(1), targetLocale);
       const targetTabEntry = getFirstTabPageUrl(
@@ -255,7 +235,14 @@ export async function loadDocsPagePayload(
         locale: targetLocale,
       };
     }),
-    navigation: getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
+    navigation:
+      openApiRoute && supportedLocale
+        ? getOpenApiPrevNextLinks(
+            openApiRoute.lane,
+            supportedLocale,
+            openApiRoute.operationId,
+          )
+        : getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
     pages,
     sidebar,
     sidebarHeader,
@@ -367,6 +354,10 @@ export type DocsPagePayload = Exclude<
 
 async function readProcessedText(page: PageWithSource) {
   try {
+    if (!hasProcessedText(page)) {
+      return '';
+    }
+
     return await page.data.getText('processed');
   } catch {
     return '';
@@ -374,7 +365,7 @@ async function readProcessedText(page: PageWithSource) {
 }
 
 async function resolvePageToc(page: PageWithSource, processedText: string) {
-  const directToc = normalizeToc(page.data.toc);
+  const directToc = normalizeToc(getPageToc(page));
 
   if (directToc.length > 0) {
     return directToc;
@@ -408,71 +399,34 @@ function normalizeToc(toc: TOCItemType[] | undefined) {
   });
 }
 
+function hasProcessedText(page: PageWithSource): page is PageWithSource & {
+  data: { getText: (kind: 'processed') => Promise<string> };
+} {
+  return 'getText' in page.data && typeof page.data.getText === 'function';
+}
+
+function isOpenApiPageWithClientProps(
+  page: PageWithSource,
+): page is PageWithSource & {
+  data: { getClientAPIPageProps: () => Promise<ClientApiPageProps> };
+} {
+  return (
+    page.type === 'openapi' &&
+    'getClientAPIPageProps' in page.data &&
+    typeof page.data.getClientAPIPageProps === 'function'
+  );
+}
+
+function getPageToc(page: PageWithSource) {
+  return 'toc' in page.data && Array.isArray(page.data.toc)
+    ? page.data.toc
+    : undefined;
+}
+
 function toSupportedLocale(locale: string): AppLocale | null {
   return SUPPORTED_LOCALES.includes(locale as AppLocale)
     ? (locale as AppLocale)
     : null;
-}
-
-async function buildOpenApiDocsPagePayload({
-  locale,
-  openApiPage,
-  pageTree,
-  pages,
-  source,
-  tab,
-}: {
-  locale: AppLocale;
-  openApiPage: OpenApiEndpointPagePayload;
-  pageTree: ReturnType<typeof docsSource.getPageTree>;
-  pages: {
-    description?: string;
-    title: string;
-    url: string;
-  }[];
-  source: typeof docsSource;
-  tab: string;
-}) {
-  const sidebar = await getDocsSidebarNodes({
-    activePath: openApiPage.activePath,
-    locale,
-    pageTree,
-    source,
-    tab,
-  });
-  const breadcrumb = getSidebarBreadcrumb(sidebar, openApiPage.activePath);
-
-  return {
-    ...openApiPage,
-    activeTab: tab,
-    breadcrumb:
-      breadcrumb.length > 0
-        ? breadcrumb
-        : [
-            {
-              title: openApiPage.title,
-              url: openApiPage.activePath,
-            },
-          ],
-    localeLinks: SUPPORTED_LOCALES.map((targetLocale) => ({
-      href: getOpenApiEndpointUrl(
-        openApiPage.lane,
-        targetLocale,
-        openApiPage.operationId,
-      ),
-      isActive: targetLocale === locale,
-      locale: targetLocale,
-    })),
-    navigation: getOpenApiPrevNextLinks(
-      openApiPage.lane,
-      locale,
-      openApiPage.operationId,
-    ),
-    pages: getDocsPages({ locale, pages, tab }),
-    sidebar,
-    sidebarHeader: undefined,
-    tabs: getTabSummaries(pageTree),
-  };
 }
 
 async function getDocsSidebarNodes({
@@ -608,13 +562,18 @@ async function appendEndpointPagesToOpenApiParent(
   tab: string,
 ): Promise<DocsSidebarNode> {
   if (node.type !== 'section') {
-    return node;
+    return decorateOpenApiEndpointSidebarPage(node, locale, tab);
   }
 
+  const children = await Promise.all(
+    node.children.map((child) =>
+      appendEndpointPagesToOpenApiParent(child, locale, tab),
+    ),
+  );
   const lane = getOpenApiLanes().find(
     (item) =>
       item.tab === tab &&
-      node.children.some(
+      children.some(
         (child) =>
           child.type === 'page' && child.url === item.parentUrl[locale],
       ),
@@ -622,15 +581,13 @@ async function appendEndpointPagesToOpenApiParent(
 
   if (lane) {
     const existingUrls = new Set(
-      node.children.flatMap((child) =>
-        child.type === 'page' ? [child.url] : [],
-      ),
+      children.flatMap((child) => (child.type === 'page' ? [child.url] : [])),
     );
     const endpointPages: DocsSidebarNode[] = (
       await Promise.all(
         getOpenApiOperationIds(lane).map(async (operationId) => ({
           id: getOpenApiEndpointUrl(lane, locale, operationId),
-          method: (await getOpenApiOperation(lane, operationId)).method,
+          method: (await getOpenApiOperation(lane, operationId, locale)).method,
           title: lane.operations[operationId].title[locale],
           type: 'page' as const,
           url: getOpenApiEndpointUrl(lane, locale, operationId),
@@ -640,17 +597,39 @@ async function appendEndpointPagesToOpenApiParent(
 
     return {
       ...node,
-      children: [...node.children, ...endpointPages],
+      children: [...children, ...endpointPages],
     };
   }
 
   return {
     ...node,
-    children: await Promise.all(
-      node.children.map((child) =>
-        appendEndpointPagesToOpenApiParent(child, locale, tab),
-      ),
-    ),
+    children,
+  };
+}
+
+async function decorateOpenApiEndpointSidebarPage(
+  node: DocsSidebarNode,
+  locale: AppLocale,
+  tab: string,
+): Promise<DocsSidebarNode> {
+  if (node.type !== 'page') {
+    return node;
+  }
+
+  const slugSegments = node.url.split('/').filter(Boolean).slice(2);
+  const route = resolveOpenApiEndpointRoute(locale, tab, slugSegments);
+
+  if (!route) {
+    return node;
+  }
+
+  return {
+    ...node,
+    id: route.url,
+    method: (await getOpenApiOperation(route.lane, route.operationId, locale))
+      .method,
+    title: route.lane.operations[route.operationId].title[locale],
+    url: route.url,
   };
 }
 
@@ -660,22 +639,37 @@ function getOpenApiPrevNextLinks(
   operationId: string,
 ) {
   const operationIds = getOpenApiOperationIds(lane);
-  const index = operationIds.indexOf(operationId);
-  const previous = operationIds[index - 1];
-  const next = operationIds[index + 1];
+  const currentIndex = operationIds.indexOf(operationId);
+
+  if (currentIndex < 0) {
+    return {};
+  }
 
   return {
-    next: next
-      ? {
-          title: lane.operations[next].title[locale],
-          url: getOpenApiEndpointUrl(lane, locale, next),
-        }
-      : undefined,
-    previous: previous
-      ? {
-          title: lane.operations[previous].title[locale],
-          url: getOpenApiEndpointUrl(lane, locale, previous),
-        }
-      : undefined,
+    next: getOpenApiNavigationLink(
+      lane,
+      locale,
+      operationIds[currentIndex + 1],
+    ),
+    previous: getOpenApiNavigationLink(
+      lane,
+      locale,
+      operationIds[currentIndex - 1],
+    ),
+  };
+}
+
+function getOpenApiNavigationLink(
+  lane: OpenApiLane,
+  locale: AppLocale,
+  operationId: string | undefined,
+) {
+  if (!operationId) {
+    return undefined;
+  }
+
+  return {
+    title: lane.operations[operationId].title[locale],
+    url: getOpenApiEndpointUrl(lane, locale, operationId),
   };
 }

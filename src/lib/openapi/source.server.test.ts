@@ -62,6 +62,14 @@ describe('openapi source loader', () => {
     expect(fromRegistry).toEqual(fromYaml);
   });
 
+  it('loads localized operation summaries from locale-specific YAML', async () => {
+    const english = await getOpenApiOperation(lane, 'start-agent', 'en');
+    const chinese = await getOpenApiOperation(lane, 'start-agent', 'zh-CN');
+
+    expect(english.summary).toBe('Start a conversational AI agent');
+    expect(chinese.summary).toBe('创建对话式智能体');
+  });
+
   it('loads OpenAPI data when runtime cwd has no content or public folders', async () => {
     const originalCwd = process.cwd();
     const runtimeCwd = await fs.mkdtemp(
@@ -75,7 +83,11 @@ describe('openapi source loader', () => {
     try {
       process.chdir(runtimeCwd);
 
-      const operation = await getOpenApiOperation(uncachedLane, 'start-agent');
+      const operation = await getOpenApiOperation(
+        uncachedLane,
+        'start-agent',
+        'en',
+      );
 
       expect(operation.method).toBe('POST');
       expect(operation.path).toBe('/v2/projects/{appid}/join');
