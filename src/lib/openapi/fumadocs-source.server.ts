@@ -1,13 +1,21 @@
 import type { LoaderPlugin, Source } from 'fumadocs-core/source';
-import { createOpenAPI, openapiPlugin } from 'fumadocs-openapi/server';
+import type { Document } from 'fumadocs-openapi';
+import {
+  createOpenAPI,
+  type OpenAPIPageData,
+  openapiPlugin,
+} from 'fumadocs-openapi/server';
 import yaml from 'js-yaml';
 import { type AppLocale, SUPPORTED_LOCALES } from '../i18n/i18n-config';
-import { getOpenApiOperationIds, getOpenApiLanes, type OpenApiLane } from './lanes';
+import { getOpenApiLanes, type OpenApiLane } from './lanes';
 import { getOpenApiSourceText } from './source-text.server';
 
 type OpenApiStaticSource = Source<{
-  metaData: Record<string, unknown>;
-  pageData: Record<string, unknown>;
+  metaData: {
+    description?: string;
+    title?: string;
+  };
+  pageData: OpenAPIPageData;
 }>;
 
 export async function createLocalizedOpenApiSource(): Promise<OpenApiStaticSource> {
@@ -31,7 +39,7 @@ export function getOpenApiDocumentId(lane: OpenApiLane, locale: AppLocale) {
 }
 
 async function createLaneSource(lane: OpenApiLane, locale: AppLocale) {
-  const document = yaml.load(getOpenApiSourceText(lane, locale));
+  const document = yaml.load(getOpenApiSourceText(lane, locale)) as Document;
   const documentId = getOpenApiDocumentId(lane, locale);
   const openapi = createOpenAPI({
     input: () => ({
@@ -47,11 +55,10 @@ async function createLaneSource(lane: OpenApiLane, locale: AppLocale) {
         return output.info.title;
       }
 
-      const operationId = dereferencedDocument.paths?.[output.item.path]?.[
-        output.item.method
-      ]?.operationId;
-      const routeLeaf =
-        operationId && lane.operations[operationId]?.routeLeaf;
+      const operationId =
+        dereferencedDocument.paths?.[output.item.path]?.[output.item.method]
+          ?.operationId;
+      const routeLeaf = operationId && lane.operations[operationId]?.routeLeaf;
 
       if (!routeLeaf) {
         throw new Error(

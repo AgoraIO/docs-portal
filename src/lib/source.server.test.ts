@@ -4,13 +4,7 @@ import { source } from './source.server';
 describe('fumadocs source loader', () => {
   it('resolves localized OpenAPI operation pages from the merged source', () => {
     const page = source.getPage(
-      [
-        'api-reference',
-        'conversational-ai',
-        'rest-api',
-        'agent',
-        'join',
-      ],
+      ['api-reference', 'conversational-ai', 'rest-api', 'agent', 'join'],
       'en',
     );
 

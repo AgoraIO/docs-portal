@@ -16,8 +16,8 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
-import { DocsContentBodyClient } from './DocsContentBody.client';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
+import { DocsContentBodyClient } from './DocsContentBody.client';
 
 const TOC_ACTIVE_OFFSET = 96;
 const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
@@ -55,9 +55,6 @@ export function DocsContent({
           kind: 'mdx',
         } satisfies DocsContentBody)
       : undefined);
-  const resolvedMdxContentPath =
-    resolvedBody?.kind === 'mdx' ? resolvedBody.contentPath : undefined;
-
   useEffect(() => {
     if (resolvedBody?.kind !== 'mdx') {
       return;
@@ -74,7 +71,7 @@ export function DocsContent({
       window.cancelAnimationFrame(frame);
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, [resolvedBody?.kind, resolvedMdxContentPath]);
+  }, [resolvedBody?.kind]);
 
   return (
     <article className="flex min-w-0 max-w-[var(--content-max)] flex-col gap-9">
@@ -253,9 +250,7 @@ export function DocsTableOfContents({
           (scrollContainer?.getBoundingClientRect().top ?? 0) +
           TOC_ACTIVE_OFFSET;
         const viewportRect = getScrollViewportRect(scrollContainer);
-        const headings = items.map((item) =>
-          findDocsHeadingForHash(item.url),
-        );
+        const headings = items.map((item) => findDocsHeadingForHash(item.url));
         let nextActiveUrl = items[0]?.url ?? '';
         const nextVisibleUrls = new Set<string>();
 

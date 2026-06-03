@@ -1,28 +1,26 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import { getSourceSlugs } from './docs-routing';
-import {
-  type DocsSidebarNode,
-  getFirstChildPageUrl,
-  getFirstTabPageUrl,
-  getPrevNextLinksFromNode,
-  getPrevNextLinks,
-  getSidebarBreadcrumb,
-  getSidebarNodes,
-  getTabSummaries,
-} from './docs-tree';
+import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import {
   type DocsNavScopeResolution,
   getNavScopeSidebarNodes,
   getScopedNavScopeSidebarNodes,
   resolveDocsNavScope,
 } from './docs-nav-scope';
+import { getSourceSlugs } from './docs-routing';
+import {
+  type DocsSidebarNode,
+  getFirstChildPageUrl,
+  getFirstTabPageUrl,
+  getPrevNextLinksFromNode,
+  getSidebarBreadcrumb,
+  getTabSummaries,
+} from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLanes,
   getOpenApiOperationIds,
-  type OpenApiLane,
 } from './openapi/lanes';
 import { getOpenApiOperation } from './openapi/source.server';
 import {
@@ -154,12 +152,12 @@ export async function loadDocsPagePayload(
 
   const pageTree = source.getPageTree(locale);
   const supportedLocale = toSupportedLocale(locale);
-  const isOpenApiPage = page.type === 'openapi';
+  const isOpenApiPage = isOpenApiPageWithClientProps(page);
   const processedText = isOpenApiPage ? '' : await readProcessedText(page);
   const toc = isOpenApiPage
-    ? normalizeToc(page.data.toc)
+    ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText);
-  const layoutMode = isOpenApiPage ? 'openapi' : 'docs';
+  const layoutMode = isOpenApiPage ? ('openapi' as const) : ('docs' as const);
   const sidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,
@@ -231,7 +229,10 @@ export async function loadDocsPagePayload(
         locale: targetLocale,
       };
     }),
-    navigation: getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
+    navigation: getPrevNextLinksFromNode(
+      navScope?.sidebarRoot ?? pageTree,
+      page.url,
+    ),
     pages,
     sidebar,
     sidebarHeader,
@@ -343,6 +344,10 @@ export type DocsPagePayload = Exclude<
 
 async function readProcessedText(page: PageWithSource) {
   try {
+    if (!hasProcessedText(page)) {
+      return '';
+    }
+
     return await page.data.getText('processed');
   } catch {
     return '';
@@ -350,7 +355,7 @@ async function readProcessedText(page: PageWithSource) {
 }
 
 async function resolvePageToc(page: PageWithSource, processedText: string) {
-  const directToc = normalizeToc(page.data.toc);
+  const directToc = normalizeToc(getPageToc(page));
 
   if (directToc.length > 0) {
     return directToc;
@@ -382,6 +387,30 @@ function normalizeToc(toc: TOCItemType[] | undefined) {
       },
     ];
   });
+}
+
+function hasProcessedText(page: PageWithSource): page is PageWithSource & {
+  data: { getText: (kind: 'processed') => Promise<string> };
+} {
+  return 'getText' in page.data && typeof page.data.getText === 'function';
+}
+
+function isOpenApiPageWithClientProps(
+  page: PageWithSource,
+): page is PageWithSource & {
+  data: { getClientAPIPageProps: () => Promise<ClientApiPageProps> };
+} {
+  return (
+    page.type === 'openapi' &&
+    'getClientAPIPageProps' in page.data &&
+    typeof page.data.getClientAPIPageProps === 'function'
+  );
+}
+
+function getPageToc(page: PageWithSource) {
+  return 'toc' in page.data && Array.isArray(page.data.toc)
+    ? page.data.toc
+    : undefined;
 }
 
 function toSupportedLocale(locale: string): AppLocale | null {
@@ -545,8 +574,7 @@ async function appendEndpointPagesToOpenApiParent(
       await Promise.all(
         getOpenApiOperationIds(lane).map(async (operationId) => ({
           id: getOpenApiEndpointUrl(lane, locale, operationId),
-          method: (await getOpenApiOperation(lane, operationId, locale))
-            .method,
+          method: (await getOpenApiOperation(lane, operationId, locale)).method,
           title: lane.operations[operationId].title[locale],
           type: 'page' as const,
           url: getOpenApiEndpointUrl(lane, locale, operationId),

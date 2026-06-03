@@ -1,14 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
   createLocalizedOpenApiSource,
-  getOpenApiDocumentId,
   getOpenApiLoaderPlugin,
 } from './fumadocs-source.server';
-import { OPENAPI_LANES } from './lanes';
 
 describe('fumadocs openapi source', () => {
-  const lane = OPENAPI_LANES[0];
-
   it('generates localized operation pages with existing route leaves', async () => {
     const source = await createLocalizedOpenApiSource();
     const pagePaths = source.files
@@ -47,7 +43,6 @@ describe('fumadocs openapi source', () => {
         path: '/v2/projects/{appid}/join',
       },
     ]);
-    expect(props.document).toBe(getOpenApiDocumentId(lane, 'en'));
     expect(props.payload.bundled.info?.title).toBe(
       'Conversational AI Agent API Overview',
     );

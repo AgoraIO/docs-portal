@@ -30,8 +30,12 @@ vi.mock('../openapi/FumadocsOpenApiContent', () => ({
   FumadocsOpenApiContent: ({
     pageProps,
   }: {
-    pageProps: { document: string };
-  }) => <div data-testid="fumadocs-openapi-content">{pageProps.document}</div>,
+    pageProps: { operations?: { path: string }[] };
+  }) => (
+    <div data-testid="fumadocs-openapi-content">
+      {pageProps.operations?.[0]?.path}
+    </div>
+  ),
 }));
 
 function renderWithRouter(children: ReactNode) {
@@ -114,7 +118,6 @@ describe('DocsContent', () => {
         body={{
           kind: 'openapi',
           pageProps: {
-            document: 'convoai-en',
             operations: [
               {
                 method: 'post',
@@ -126,7 +129,7 @@ describe('DocsContent', () => {
                 info: {
                   title: 'Conversational AI Agent API Overview',
                 },
-                openapi: '3.1.0',
+                openapi: '3.2.0',
                 paths: {},
               },
             },
@@ -140,7 +143,7 @@ describe('DocsContent', () => {
 
     expect(
       await screen.findByTestId('fumadocs-openapi-content'),
-    ).toHaveTextContent('convoai-en');
+    ).toHaveTextContent('/v2/projects/{appid}/join');
   });
 });
 

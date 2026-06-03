@@ -1,10 +1,7 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
-import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import yaml from 'js-yaml';
-import {
-  type AppLocale,
-  DEFAULT_LOCALE,
-} from '../i18n/i18n-config';
+import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
+import { type AppLocale, DEFAULT_LOCALE } from '../i18n/i18n-config';
 import { type OpenApiJsonValue, toOpenApiJsonValue } from './json';
 import type { OpenApiLane } from './lanes';
 import { getOpenApiSourceText } from './source-text.server';
@@ -19,11 +16,7 @@ export type OpenApiHttpMethod =
   | 'PUT'
   | 'TRACE';
 
-export type OpenApiParameterLocation =
-  | 'cookie'
-  | 'header'
-  | 'path'
-  | 'query';
+export type OpenApiParameterLocation = 'cookie' | 'header' | 'path' | 'query';
 
 export type OpenApiParameter = {
   description?: string;
@@ -359,7 +352,9 @@ function normalizeParameter(
       required: value.required === true,
       ...(value.schema === undefined
         ? {}
-        : { schema: toOpenApiJsonValue(resolveSchema(value.schema, document)) }),
+        : {
+            schema: toOpenApiJsonValue(resolveSchema(value.schema, document)),
+          }),
     },
   ];
 }
