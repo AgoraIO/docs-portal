@@ -355,6 +355,70 @@ const apiReferencePageTree: Root = {
               name: 'Conversational AI',
               type: 'folder',
             },
+            {
+              $id: 'api-reference-rtc-folder',
+              children: [
+                {
+                  $id: 'api-reference-rtc-android-folder',
+                  children: [
+                    {
+                      $id: 'api-reference-rtc-android-current-folder',
+                      children: [
+                        {
+                          $id: 'api-reference-rtc-android-current-overview',
+                          name: 'Overview',
+                          type: 'page',
+                          url: '/en/api-reference/rtc/android/overview',
+                        },
+                      ],
+                      index: {
+                        $id: 'api-reference-rtc-android-current-index',
+                        name: 'Android API Reference',
+                        type: 'page',
+                        url: '/en/api-reference/rtc/android',
+                      },
+                      name: 'Current',
+                      type: 'folder',
+                    },
+                    {
+                      $id: 'api-reference-rtc-android-4-6-0-folder',
+                      children: [
+                        {
+                          $id: 'api-reference-rtc-android-4-6-0-overview',
+                          name: 'Overview',
+                          type: 'page',
+                          url: '/en/api-reference/rtc/android/4.6.0/overview',
+                        },
+                      ],
+                      index: {
+                        $id: 'api-reference-rtc-android-4-6-0-index',
+                        name: 'Android API Reference',
+                        type: 'page',
+                        url: '/en/api-reference/rtc/android/4.6.0',
+                      },
+                      name: '4.6.0',
+                      type: 'folder',
+                    },
+                  ],
+                  index: {
+                    $id: 'api-reference-rtc-android-index',
+                    name: 'Android API Reference',
+                    type: 'page',
+                    url: '/en/api-reference/rtc/android',
+                  },
+                  name: 'Android API Reference',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'api-reference-rtc-index',
+                name: 'RTC API Reference',
+                type: 'page',
+                url: '/en/api-reference/rtc',
+              },
+              name: 'RTC',
+              type: 'folder',
+            },
           ],
           index: {
             $id: 'api-reference-index',
@@ -655,6 +719,78 @@ describe('loadDocsPagePayload', () => {
     ).toMatchObject({
       method: 'POST',
     });
+  });
+
+  it('shows only current platform entries in a parent versioned API reference scope', async () => {
+    const page = createPage();
+    const rtcPage = {
+      ...page,
+      data: {
+        ...page.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/api-reference/rtc/index.md',
+          path: 'en/api-reference/rtc/index.md',
+        },
+        title: 'RTC API Reference',
+      },
+      path: 'en/api-reference/rtc/index.md',
+      slugs: ['en', 'api-reference', 'rtc', 'index'],
+      url: '/en/api-reference/rtc',
+    };
+
+    mockedGetPage.mockReturnValue(rtcPage);
+    mockedGetPages.mockReturnValue([rtcPage]);
+    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockedGetNodeMeta.mockImplementation((node) => {
+      if (node.$id === 'api-reference-rtc-folder') {
+        return {
+          data: {
+            navScope: {},
+            title: 'RTC',
+          },
+        } as ReturnType<typeof source.getNodeMeta>;
+      }
+
+      if (node.$id === 'api-reference-rtc-android-folder') {
+        return {
+          data: {
+            navScope: {
+              defaultVersion: 'current',
+              versions: [
+                { id: 'current', label: 'v4.6.2', path: '(current)' },
+                { id: '4.6.0', label: 'v4.6.0', path: '4.6.0' },
+              ],
+            },
+            title: 'Android API Reference',
+          },
+        } as ReturnType<typeof source.getNodeMeta>;
+      }
+
+      return undefined;
+    });
+
+    const payload = await loadDocsPagePayload('en', 'api-reference', ['rtc']);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(payload.sidebarHeader).toEqual({
+      backHref: '/en/api-reference',
+      backLabel: 'API Reference',
+      title: 'RTC',
+    });
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual([
+      '/en/api-reference/rtc',
+      '/en/api-reference/rtc/android',
+    ]);
+    expect(payload.sidebar).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: '/en/api-reference/rtc/android/4.6.0',
+        }),
+      ]),
+    );
   });
 
   it('loads nested product pages from multi-segment slugs', async () => {

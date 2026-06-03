@@ -10,11 +10,11 @@ import {
   getSidebarBreadcrumb,
   getSidebarNodes,
   getTabSummaries,
-  pageTreeNodeToSidebarNodes,
 } from './docs-tree';
 import {
   type DocsNavScopeResolution,
   getNavScopeSidebarNodes,
+  getScopedNavScopeSidebarNodes,
   resolveDocsNavScope,
 } from './docs-nav-scope';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
@@ -498,7 +498,11 @@ async function getDocsSidebarNodes({
       })
     : null;
   const sidebar = navScope
-    ? getScopedSidebarNodes(navScope)
+    ? getScopedSidebarNodes({
+        locale,
+        navScope,
+        source,
+      })
     : getNavScopeSidebarNodes({
         getNodeMeta: (node) =>
           getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
@@ -566,10 +570,20 @@ function getDocsNavScope({
   });
 }
 
-function getScopedSidebarNodes(navScope: DocsNavScopeResolution) {
-  return pageTreeNodeToSidebarNodes(navScope.sidebarRoot).flatMap((node) =>
-    node.type === 'section' ? node.children : [node],
-  );
+function getScopedSidebarNodes({
+  locale,
+  navScope,
+  source,
+}: {
+  locale: AppLocale | null;
+  navScope: DocsNavScopeResolution;
+  source: typeof docsSource;
+}) {
+  return getScopedNavScopeSidebarNodes({
+    getNodeMeta: (node) =>
+      getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+    navScope,
+  });
 }
 
 function getDocsMetaData(meta: ReturnType<typeof docsSource.getNodeMeta>) {

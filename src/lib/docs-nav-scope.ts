@@ -153,6 +153,16 @@ export function getNavScopeSidebarNodes({
   return flattenTabSidebarNodes(tabNode, getNodeMeta);
 }
 
+export function getScopedNavScopeSidebarNodes({
+  getNodeMeta,
+  navScope,
+}: {
+  getNodeMeta: GetDocsNodeMeta;
+  navScope: DocsNavScopeResolution;
+}): DocsSidebarNode[] {
+  return flattenNavScopeSidebarNodes(navScope.sidebarRoot, getNodeMeta);
+}
+
 function hasNavScopeDescendant(
   folder: Folder,
   getNodeMeta: GetDocsNodeMeta,
@@ -168,6 +178,13 @@ function hasNavScopeDescendant(
 }
 
 function flattenTabSidebarNodes(
+  folder: Folder,
+  getNodeMeta: GetDocsNodeMeta,
+): DocsSidebarNode[] {
+  return flattenNavScopeSidebarNodes(folder, getNodeMeta);
+}
+
+function flattenNavScopeSidebarNodes(
   folder: Folder,
   getNodeMeta: GetDocsNodeMeta,
 ): DocsSidebarNode[] {
