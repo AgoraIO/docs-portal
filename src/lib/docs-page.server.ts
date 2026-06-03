@@ -630,7 +630,8 @@ async function appendEndpointPagesToOpenApiParent(
       await Promise.all(
         getOpenApiOperationIds(lane).map(async (operationId) => ({
           id: getOpenApiEndpointUrl(lane, locale, operationId),
-          method: (await getOpenApiOperation(lane, operationId)).method,
+          method: (await getOpenApiOperation(lane, operationId, locale))
+            .method,
           title: lane.operations[operationId].title[locale],
           type: 'page' as const,
           url: getOpenApiEndpointUrl(lane, locale, operationId),

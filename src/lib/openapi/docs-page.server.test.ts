@@ -23,7 +23,7 @@ describe('openapi docs page payload', () => {
             method: 'POST',
             path: '/v2/projects/{appid}/join',
           },
-          publicSourceUrl: '/openapi/conversational-ai/convoai.yaml',
+          publicSourceUrl: '/openapi/conversational-ai/convoai.en.yaml',
           requestSchemaRows: expect.arrayContaining([
             expect.objectContaining({ path: expect.any(String) }),
           ]),

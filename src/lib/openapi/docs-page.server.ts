@@ -20,7 +20,11 @@ export async function loadOpenApiEndpointPage(
     return null;
   }
 
-  const operation = await getOpenApiOperation(route.lane, route.operationId);
+  const operation = await getOpenApiOperation(
+    route.lane,
+    route.operationId,
+    locale,
+  );
   const title =
     route.lane.operations[route.operationId].title[locale] ??
     operation.summary ??
@@ -41,7 +45,7 @@ export async function loadOpenApiEndpointPage(
     operationPayload: {
       examples: createOpenApiExamples(operation),
       operation,
-      publicSourceUrl: route.lane.publicSourceUrl,
+      publicSourceUrl: route.lane.publicSourceUrl[locale],
       requestSchemaRows: buildOpenApiSchemaRows(requestSchema, {
         usage: 'request',
       }),

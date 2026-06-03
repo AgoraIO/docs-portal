@@ -1,6 +1,10 @@
 import SwaggerParser from '@apidevtools/swagger-parser';
 import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import yaml from 'js-yaml';
+import {
+  type AppLocale,
+  DEFAULT_LOCALE,
+} from '../i18n/i18n-config';
 import { type OpenApiJsonValue, toOpenApiJsonValue } from './json';
 import type { OpenApiLane } from './lanes';
 import type {
@@ -33,12 +37,14 @@ const documentCache = new Map<string, Promise<OpenApiDocument>>();
 
 export async function getOpenApiOperations(
   lane: OpenApiLane,
+  locale: AppLocale = DEFAULT_LOCALE,
 ): Promise<NormalizedOpenApiOperation[]> {
-  let cachedOperations = operationCache.get(lane.id);
+  const cacheKey = getCacheKey(lane, locale);
+  let cachedOperations = operationCache.get(cacheKey);
 
   if (!cachedOperations) {
-    cachedOperations = loadOpenApiOperations(lane);
-    operationCache.set(lane.id, cachedOperations);
+    cachedOperations = loadOpenApiOperations(lane, locale);
+    operationCache.set(cacheKey, cachedOperations);
   }
 
   return cachedOperations;
@@ -47,8 +53,9 @@ export async function getOpenApiOperations(
 export async function getOpenApiOperation(
   lane: OpenApiLane,
   operationId: string,
+  locale: AppLocale = DEFAULT_LOCALE,
 ): Promise<NormalizedOpenApiOperation> {
-  const operation = (await getOpenApiOperations(lane)).find(
+  const operation = (await getOpenApiOperations(lane, locale)).find(
     (item) => item.operationId === operationId,
   );
 
@@ -61,8 +68,8 @@ export async function getOpenApiOperation(
   return operation;
 }
 
-async function loadOpenApiOperations(lane: OpenApiLane) {
-  const document = await getOpenApiDocument(lane);
+async function loadOpenApiOperations(lane: OpenApiLane, locale: AppLocale) {
+  const document = await getOpenApiDocument(lane, locale);
   const operations: NormalizedOpenApiOperation[] = [];
 
   for (const [operationPath, pathItem] of Object.entries(
@@ -115,22 +122,27 @@ async function loadOpenApiOperations(lane: OpenApiLane) {
   );
 }
 
-async function getOpenApiDocument(lane: OpenApiLane): Promise<OpenApiDocument> {
-  const cached = documentCache.get(lane.id);
+async function getOpenApiDocument(
+  lane: OpenApiLane,
+  locale: AppLocale,
+): Promise<OpenApiDocument> {
+  const cacheKey = getCacheKey(lane, locale);
+  const cached = documentCache.get(cacheKey);
 
   if (cached) {
     return cached;
   }
 
-  const next = loadDereferencedOpenApiDocument(lane);
-  documentCache.set(lane.id, next);
+  const next = loadDereferencedOpenApiDocument(lane, locale);
+  documentCache.set(cacheKey, next);
   return next;
 }
 
 async function loadDereferencedOpenApiDocument(
   lane: OpenApiLane,
+  locale: AppLocale,
 ): Promise<OpenApiDocument> {
-  const document = yaml.load(getOpenApiSourceText(lane));
+  const document = yaml.load(getOpenApiSourceText(lane, locale));
 
   return (await SwaggerParser.dereference(
     document as OpenAPIV3.Document | OpenAPIV3_1.Document,
@@ -140,6 +152,10 @@ async function loadDereferencedOpenApiDocument(
       },
     },
   )) as OpenApiDocument;
+}
+
+function getCacheKey(lane: OpenApiLane, locale: AppLocale) {
+  return `${lane.id}:${locale}`;
 }
 
 function normalizeRequestBody(value: unknown, document: OpenApiDocument) {

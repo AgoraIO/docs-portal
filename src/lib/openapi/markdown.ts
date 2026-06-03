@@ -80,42 +80,43 @@ export function serializeOpenApiOperationMarkdown({
 }
 
 export async function getOpenApiMarkdownPages() {
-  const laneOperations = await Promise.all(
-    getOpenApiLanes().map(async (lane) => ({
-      lane,
-      operations: await getOpenApiOperations(lane),
-    })),
-  );
+  const pages = await Promise.all(
+    getOpenApiLanes().flatMap((lane) =>
+      (['en', 'zh-CN'] as const).map(async (locale) => {
+        const operations = await getOpenApiOperations(lane, locale);
 
-  return laneOperations.flatMap(({ lane, operations }) =>
-    (['en', 'zh-CN'] as const).flatMap((locale) =>
-      getOpenApiOperationIds(lane).flatMap((operationId) => {
-        const operation = operations.find(
-          (item) => item.operationId === operationId,
-        );
-
-        if (!operation) {
-          return [];
-        }
-
-        const url = getOpenApiEndpointUrl(lane, locale, operationId);
-        const title = lane.operations[operationId].title[locale];
-
-        return [
-          {
-            markdown: serializeOpenApiOperationMarkdown({
-              locale,
-              operation,
-              publicSourceUrl: lane.publicSourceUrl,
-              title,
-              url,
-            }),
-            title,
-            url,
-          },
-        ];
+        return { lane, locale, operations };
       }),
     ),
+  );
+
+  return pages.flatMap(({ lane, locale, operations }) =>
+    getOpenApiOperationIds(lane).flatMap((operationId) => {
+      const operation = operations.find(
+        (item) => item.operationId === operationId,
+      );
+
+      if (!operation) {
+        return [];
+      }
+
+      const url = getOpenApiEndpointUrl(lane, locale, operationId);
+      const title = lane.operations[operationId].title[locale];
+
+      return [
+        {
+          markdown: serializeOpenApiOperationMarkdown({
+            locale,
+            operation,
+            publicSourceUrl: lane.publicSourceUrl[locale],
+            title,
+            url,
+          }),
+          title,
+          url,
+        },
+      ];
+    }),
   );
 }
 
@@ -139,13 +140,17 @@ export async function getOpenApiMarkdownByContentPath(path: string) {
     return null;
   }
 
-  const operation = await getOpenApiOperation(route.lane, route.operationId);
+  const operation = await getOpenApiOperation(
+    route.lane,
+    route.operationId,
+    locale,
+  );
   const title = route.lane.operations[route.operationId].title[locale];
 
   return serializeOpenApiOperationMarkdown({
     locale,
     operation,
-    publicSourceUrl: route.lane.publicSourceUrl,
+    publicSourceUrl: route.lane.publicSourceUrl[locale],
     title,
     url: route.url,
   });
