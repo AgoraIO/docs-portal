@@ -1,43 +1,52 @@
 ---
 title: Overview
-description: Choose the right realtime interaction, media processing, delivery, device, and backend capability for your product.
+description: See how Realtime & Media is grouped, what each layer covers, and where different technical topics live.
 ---
 
-Realtime & Media brings together the product areas you use to build live interaction, process session content, connect external media systems, deliver streams to larger audiences, and run realtime experiences on devices or the backend.
+Realtime & Media is the capability domain for teams building products where something needs to happen live, but who still need a clearer map of the technical building blocks involved.
 
-## Explore by job to be done
+Use this tab when your main question is not "what product am I building?" but "what realtime or media capability do I need to implement?" It is organized as a map of Agora's realtime stack, so you can see how the docs are grouped and how the different parts of the stack relate to one another.
+
+The content in this tab is grouped by technical layer rather than by product scenario. As you move through it, you will see capabilities for live interaction, session processing, media interoperability, large-scale delivery, and device or backend participation. Use this overview to understand what each layer covers, how the sections relate, and where different kinds of technical topics live within the tab.
+
+## Where different topics live
+
+The groups below trace the main technical layers in this tab. Read them as a content map first, then go deeper into the related docs for architecture, APIs, and implementation details.
 
 ### Build live interaction
 
-- [Voice & Video](/en/realtime-media/rtc): calling, meetings, co-hosting, and interactive live streaming
+This group covers docs for sessions where users, participants, or services exchange media or state in real time.
+
+- [Voice & Video](/en/realtime-media/rtc): calls, meetings, co-hosting, interactive live rooms, and media quality control
 - [Signaling](/en/realtime-media/rtm): channel messaging, presence, state sync, and realtime coordination
-- [Chat](/en/realtime-media/im): full messaging systems beyond lightweight room coordination
+- [Chat](/en/realtime-media/im): persistent messaging systems beyond lightweight room coordination
 - [Whiteboard](/en/realtime-media/whiteboard): shared visual collaboration inside live sessions
 
 ### Process session content
 
-- [Transcription & Translation](/en/realtime-media/speech-to-text): captions, speech understanding, and live translation
-- [Recording](/en/realtime-media/recording): archive, replay, compliance, and review workflows
-- [Transcoding](/en/realtime-media/transcoding): composition, layout shaping, and output transformation
+This group covers docs for turning session media into text, archives, composites, or downstream assets during or after the session.
 
-### Connect external media
+- [Transcription & Translation](/en/realtime-media/speech-to-text): captions, speech understanding, and multilingual live experiences
+- [Recording](/en/realtime-media/recording): archive, replay, compliance, QA, and post-session review workflows
+- [Transcoding](/en/realtime-media/transcoding): mixing, layout composition, and output transformation
 
-- [Media Push](/en/realtime-media/media-push): send RTC channel media to CDN or downstream systems
-- [Media Pull](/en/realtime-media/media-pull): bring online media streams into a realtime session
-- [RTMP Gateway](/en/realtime-media/rtmp-gateway): bridge RTMP-based devices and systems into Agora
+### Connect external media systems
 
-### Deliver to audiences
+This group covers docs for connecting Agora sessions to external streaming infrastructure.
 
-- [Fusion CDN](/en/realtime-media/fusion-cdn): multi-CDN live distribution for larger viewer populations
+- [Media Push](/en/realtime-media/media-push): send RTC channel media to CDN pipelines or downstream media systems
+- [Media Pull](/en/realtime-media/media-pull): bring online media streams into an interactive realtime session
+- [RTMP Gateway](/en/realtime-media/rtmp-gateway): connect RTMP-based devices and systems to Agora
 
-### Run on devices and backend
+### Deliver to larger audiences
+
+This group covers docs for architectures where interactive participation and large-scale playback are handled separately.
+
+- [Fusion CDN](/en/realtime-media/fusion-cdn): multi-CDN distribution for live playback at audience scale
+
+### Run on devices and backend services
+
+This group covers docs for systems that include embedded devices, edge endpoints, operator consoles, or server-side workers.
 
 - [IoT & Edge](/en/realtime-media/rtsa): device and edge connectivity for cameras, terminals, and embedded endpoints
-- [RTC Server SDK](/en/realtime-media/rtc-server-sdk): backend participation in media send, receive, and control
-
-## Common reading paths
-
-- Interactive live streaming with large audience playback: [Voice & Video](/en/realtime-media/rtc) -> [Media Push](/en/realtime-media/media-push) -> [Fusion CDN](/en/realtime-media/fusion-cdn)
-- Meeting archive and searchable records: [Voice & Video](/en/realtime-media/rtc) -> [Recording](/en/realtime-media/recording) -> [Transcription & Translation](/en/realtime-media/speech-to-text)
-- External stream into an interactive session: [Media Pull](/en/realtime-media/media-pull) or [RTMP Gateway](/en/realtime-media/rtmp-gateway) -> [Voice & Video](/en/realtime-media/rtc)
-- Smart device connectivity with backend media control: [IoT & Edge](/en/realtime-media/rtsa) -> [RTC Server SDK](/en/realtime-media/rtc-server-sdk)
+- [RTC Server SDK](/en/realtime-media/rtc-server-sdk): backend participation in media send, receive, subscribe, and control flows

@@ -1,39 +1,58 @@
 ---
 title: Overview
-description: Choose the right realtime interaction, media processing, delivery, device, and backend capability for your product.
+description: Start here when you need to build, process, connect, or deliver realtime media experiences.
 ---
 
-Realtime & Media brings together the product areas you use to build live interaction, process session content, connect external media systems, deliver streams to larger audiences, and run realtime experiences on devices or the backend.
+Realtime & Media is the capability domain for products that need something to happen live. Use this section when you are deciding how people, devices, backend services, and media streams should connect, stay in sync, and keep working while a session is in progress.
 
-## Explore by job to be done
+Instead of organizing docs around a single product story, this tab is organized around the functional layers most teams assemble when building a realtime experience: live interaction, session intelligence, media routing, large-scale delivery, and device or server participation.
 
-### Build live interaction
+## What you can build from this section
 
-- [Voice & Video](/en/realtime-media/rtc): calling, meetings, co-hosting, and interactive live streaming
+### Create live interaction surfaces
+
+Use these docs when you are defining how users join a session, exchange media, coordinate actions, or collaborate in the same live space.
+
+- [Voice & Video](/en/realtime-media/rtc): calls, meetings, co-hosting, interactive live rooms, and media quality control
 - [Signaling](/en/realtime-media/rtm): channel messaging, presence, state sync, and realtime coordination
-- [Chat](/en/realtime-media/im): full messaging systems beyond lightweight room coordination
+- [Chat](/en/realtime-media/im): persistent and full-featured messaging systems beyond lightweight room coordination
 - [Whiteboard](/en/realtime-media/whiteboard): shared visual collaboration inside live sessions
 
-### Process session content
+### Understand, capture, and transform session content
 
-- [Transcription & Translation](/en/realtime-media/speech-to-text): captions, speech understanding, and live translation
-- [Recording](/en/realtime-media/recording): archive, replay, compliance, and review workflows
-- [Transcoding](/en/realtime-media/transcoding): composition, layout shaping, and output transformation
+Use these docs when media inside the session needs to become text, records, composites, or downstream assets.
 
-### Connect external media
+- [Transcription & Translation](/en/realtime-media/speech-to-text): captions, speech understanding, and multilingual live experiences
+- [Recording](/en/realtime-media/recording): archive, replay, compliance, QA, and post-session review workflows
+- [Transcoding](/en/realtime-media/transcoding): mixing, layout composition, and output transformation
 
-- [Media Push](/en/realtime-media/media-push): send RTC channel media to CDN or downstream systems
-- [Media Pull](/en/realtime-media/media-pull): bring online media streams into a realtime session
-- [RTMP Gateway](/en/realtime-media/rtmp-gateway): bridge RTMP-based devices and systems into Agora
+### Bridge realtime sessions with external media systems
 
-### Deliver to audiences
+Use these docs when your product must ingest outside streams, publish session media to other systems, or interoperate with existing streaming infrastructure.
 
-- [Fusion CDN](/en/realtime-media/fusion-cdn): multi-CDN live distribution for larger viewer populations
+- [Media Push](/en/realtime-media/media-push): send RTC channel media to CDN pipelines or downstream media systems
+- [Media Pull](/en/realtime-media/media-pull): bring online media streams into an interactive realtime session
+- [RTMP Gateway](/en/realtime-media/rtmp-gateway): connect RTMP-based devices and systems to Agora
 
-### Run on devices and backend
+### Deliver playback to larger audiences
+
+Use these docs when interactive participation and large-scale viewing are separate concerns in your architecture.
+
+- [Fusion CDN](/en/realtime-media/fusion-cdn): multi-CDN distribution for live playback at audience scale
+
+### Extend the session to devices and backend services
+
+Use these docs when participants are not just mobile or web clients, but also embedded devices, operator consoles, or server-side workers.
 
 - [IoT & Edge](/en/realtime-media/rtsa): device and edge connectivity for cameras, terminals, and embedded endpoints
-- [RTC Server SDK](/en/realtime-media/rtc-server-sdk): backend participation in media send, receive, and control
+- [RTC Server SDK](/en/realtime-media/rtc-server-sdk): backend participation in media send, receive, subscribe, and control flows
+
+## How to navigate this tab
+
+- Start with [Voice & Video](/en/realtime-media/rtc), [Signaling](/en/realtime-media/rtm), [Chat](/en/realtime-media/im), or [Whiteboard](/en/realtime-media/whiteboard) when your main question is how users interact inside a live session.
+- Start with [Transcription & Translation](/en/realtime-media/speech-to-text), [Recording](/en/realtime-media/recording), or [Transcoding](/en/realtime-media/transcoding) when your main question is what should happen to the media during or after the session.
+- Start with [Media Push](/en/realtime-media/media-push), [Media Pull](/en/realtime-media/media-pull), [RTMP Gateway](/en/realtime-media/rtmp-gateway), or [Fusion CDN](/en/realtime-media/fusion-cdn) when your main question is how to move media across systems or out to larger audiences.
+- Start with [IoT & Edge](/en/realtime-media/rtsa) or [RTC Server SDK](/en/realtime-media/rtc-server-sdk) when your main question is how devices or backend services participate in the realtime workflow.
 
 ## Common reading paths
 
