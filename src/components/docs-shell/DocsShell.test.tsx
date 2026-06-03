@@ -8,7 +8,6 @@ import {
 } from '@tanstack/react-router';
 import {
   act,
-  cleanup,
   fireEvent,
   render,
   screen,
@@ -239,9 +238,8 @@ describe('DocsShell', () => {
       'border-[color:var(--line-strong)]',
     );
     expect(languageControl.className).not.toContain('bg-card');
-    expect(languageControl.className).toContain(
-      'hover:bg-[color:var(--docs-soft-fill)]',
-    );
+    expect(languageControl.className).toContain('hover:bg-accent');
+    expect(languageControl.className).toContain('data-[state=open]:bg-accent');
     expect(languageControl).toHaveTextContent('English');
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
     expect(tabsAiLink).toHaveAttribute('href', '/en/ai');
@@ -283,22 +281,37 @@ describe('DocsShell', () => {
     const desktopSidebar = await screen.findByTestId('docs-sidebar');
 
     expect(desktopSidebar).toHaveTextContent('Android API Reference');
-    fireEvent.click(
+    fireEvent.pointerDown(
       within(desktopSidebar).getByRole('button', {
         name: 'Select documentation version',
       }),
+      { button: 0 },
     );
 
-    const versionOptions = await screen.findByRole('menu', {
-      name: 'Documentation versions',
+    const versionOptions = await waitFor(() => {
+      const menu = document.querySelector<HTMLElement>(
+        '[data-slot="dropdown-menu-content"][aria-label="Documentation versions"]',
+      );
+
+      if (!menu) {
+        throw new Error('expected documentation version dropdown menu');
+      }
+
+      return menu;
     });
 
+    expect(versionOptions).toHaveAttribute(
+      'data-slot',
+      'dropdown-menu-content',
+    );
     expect(
       within(versionOptions).getByRole('menuitem', { name: /v4.6.0/i }),
-    ).toHaveAttribute(
-      'href',
-      '/en/api-reference/rtc/android/4.6.0/overview',
-    );
+    ).toHaveAttribute('href', '/en/api-reference/rtc/android/4.6.0/overview');
+
+    fireEvent.keyDown(versionOptions, { code: 'Escape', key: 'Escape' });
+    await waitFor(() => {
+      expect(versionOptions).not.toBeInTheDocument();
+    });
 
     fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }));
 
@@ -317,26 +330,26 @@ describe('DocsShell', () => {
 
     renderDocsShell(
       {
-      activePath: '/zh-CN/api-reference/rtc/android/overview',
-      activeTab: 'api-reference',
-      children: <article>正文</article>,
-      locale: 'zh-CN',
-      localeLinks: [
-        {
-          href: '/en/api-reference/rtc/android/overview',
-          isActive: false,
-          locale: 'en',
-        },
-        {
-          href: '/zh-CN/api-reference/rtc/android/overview',
-          isActive: true,
-          locale: 'zh-CN',
-        },
-      ],
-      pages: [],
-      sidebar,
-      tabs,
-      toc: [],
+        activePath: '/zh-CN/api-reference/rtc/android/overview',
+        activeTab: 'api-reference',
+        children: <article>正文</article>,
+        locale: 'zh-CN',
+        localeLinks: [
+          {
+            href: '/en/api-reference/rtc/android/overview',
+            isActive: false,
+            locale: 'en',
+          },
+          {
+            href: '/zh-CN/api-reference/rtc/android/overview',
+            isActive: true,
+            locale: 'zh-CN',
+          },
+        ],
+        pages: [],
+        sidebar,
+        tabs,
+        toc: [],
       },
       '/zh-CN/api-reference/overview',
     );
@@ -345,8 +358,12 @@ describe('DocsShell', () => {
       await screen.findByRole('button', { name: '打开导航' }),
     ).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: '搜索文档' })).toHaveLength(2);
-    expect(screen.getByRole('button', { name: '主题: 浅色' })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Open navigation' })).toBeNull();
+    expect(
+      screen.getByRole('button', { name: '主题: 浅色' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Open navigation' }),
+    ).toBeNull();
   });
 
   it('keeps the top docs tabs available from the medium breakpoint upward', async () => {
@@ -581,8 +598,8 @@ describe('DocsShell', () => {
       throw new Error('expected desktop language button');
     }
 
-    fireEvent.click(languageButton);
-    fireEvent.click(await screen.findByRole('link', { name: '简体中文' }));
+    fireEvent.pointerDown(languageButton, { button: 0 });
+    fireEvent.click(await screen.findByRole('menuitem', { name: '简体中文' }));
 
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(
@@ -614,7 +631,7 @@ describe('DocsShell', () => {
       ],
     });
 
-    fireEvent.click(
+    fireEvent.pointerDown(
       (
         await screen.findAllByRole('button', {
           name: 'Language',
@@ -623,10 +640,19 @@ describe('DocsShell', () => {
         (() => {
           throw new Error('expected desktop language button');
         })(),
+      { button: 0 },
     );
 
+    const languageOptions = await screen.findByRole('menu', {
+      name: 'Language',
+    });
+
+    expect(languageOptions).toHaveAttribute(
+      'data-slot',
+      'dropdown-menu-content',
+    );
     expect(
-      await screen.findByRole('link', { name: '简体中文' }),
+      within(languageOptions).getByRole('menuitem', { name: '简体中文' }),
     ).toHaveAttribute('href', '/zh-CN/ai/get-started/quickstart');
   });
 

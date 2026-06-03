@@ -4,12 +4,14 @@ import { Link } from '@tanstack/react-router';
 import { CheckIcon, ChevronDownIcon, ChevronLeftIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/cn';
+import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 
 export function DocsSidebarHeaderBlock({
   className,
@@ -60,37 +62,32 @@ export function DocsSidebarHeaderBlock({
         {header.title}
       </div>
       {versionSwitcher && currentVersion ? (
-        <Popover>
-          <PopoverTrigger asChild>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
             <Button
               aria-label="Select documentation version"
               className={cn(
-                'mt-2 h-8 max-w-full justify-between gap-2 rounded-lg px-2 text-[13px]',
+                'mt-2 h-8 max-w-full justify-between gap-2 rounded-md px-2.5 text-[13px] data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
                 mode === 'desktop' ? 'mx-2 w-[calc(100%-1rem)]' : 'w-full',
               )}
               size="sm"
               variant="outline"
             >
               <span className="min-w-0 truncate">{currentVersion.label}</span>
-              <ChevronDownIcon className="size-3.5 shrink-0" />
+              <ChevronDownIcon aria-hidden="true" className="opacity-60" />
             </Button>
-          </PopoverTrigger>
-          <PopoverContent align="start" className="w-44 p-1">
-            <div
-              aria-label="Documentation versions"
-              className="flex flex-col gap-1"
-              role="menu"
-            >
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="start"
+            aria-label="Documentation versions"
+            className="w-48 rounded-lg p-1"
+          >
+            <DropdownMenuGroup>
               {versionSwitcher.versions.map((version) => (
-                <Button
+                <DropdownMenuItem
                   asChild
-                  className="w-full justify-between rounded-lg"
+                  className="min-h-8 cursor-pointer justify-between rounded-md px-2.5 text-[13px]"
                   key={version.id}
-                  variant={
-                    version.id === versionSwitcher.currentId
-                      ? 'secondary'
-                      : 'ghost'
-                  }
                 >
                   <Link
                     aria-current={
@@ -100,20 +97,19 @@ export function DocsSidebarHeaderBlock({
                     }
                     onClick={onSelectPath}
                     params={{}}
-                    role="menuitem"
                     search={{}}
                     to={version.href}
                   >
-                    <span>{version.label}</span>
+                    <span className="min-w-0 truncate">{version.label}</span>
                     {version.id === versionSwitcher.currentId ? (
-                      <CheckIcon className="size-4" />
+                      <CheckIcon className="opacity-80" />
                     ) : null}
                   </Link>
-                </Button>
+                </DropdownMenuItem>
               ))}
-            </div>
-          </PopoverContent>
-        </Popover>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       ) : null}
     </div>
   );
