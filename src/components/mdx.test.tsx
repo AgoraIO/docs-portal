@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
+import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { ComponentType, ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { getMDXComponents } from './mdx';
@@ -31,6 +32,29 @@ type HeadingComponent = ComponentType<{
 }>;
 
 describe('common MDX registry', () => {
+  it('uses Fumadocs MDX defaults only as fallbacks behind repo-styled components', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const defaults = defaultMdxComponents as Record<string, unknown>;
+
+    expect(components.img).toBe(defaults.img);
+    expect(components.table).toBe(defaults.table);
+    expect(components.Card).toBe(defaults.Card);
+    expect(components.Cards).toBe(defaults.Cards);
+    expect(components.Callout).toBe(defaults.Callout);
+
+    expect(components.a).not.toBe(defaults.a);
+    expect(components.pre).not.toBe(defaults.pre);
+    expect(components.CodeBlockTabs).not.toBe(defaults.CodeBlockTabs);
+    expect(components.CodeBlockTabsList).not.toBe(defaults.CodeBlockTabsList);
+    expect(components.CodeBlockTabsTrigger).not.toBe(
+      defaults.CodeBlockTabsTrigger,
+    );
+    expect(components.CodeBlockTab).not.toBe(defaults.CodeBlockTab);
+    expect(components.h1).not.toBe(defaults.h1);
+    expect(components.h2).not.toBe(defaults.h2);
+    expect(components.h3).not.toBe(defaults.h3);
+  });
+
   it('keeps relative docs links normalized', () => {
     const components = getMDXComponents(undefined, {
       contentPath: 'en/ai/index.md',
