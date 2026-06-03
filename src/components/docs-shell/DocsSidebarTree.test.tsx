@@ -150,10 +150,14 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/en/introduction/other');
 
-    expect(await screen.findByTitle(longTitle)).toHaveClass(
-      'whitespace-normal',
-    );
-    expect(screen.getByTitle(longTitle)).toHaveClass('[display:-webkit-box]');
+    const label = await screen.findByTitle(longTitle);
+    const link = screen.getByRole('link', { name: longTitle });
+
+    expect(label).toHaveClass('whitespace-normal');
+    expect(label).toHaveClass('break-words');
+    expect(label).not.toHaveClass('[display:-webkit-box]');
+    expect(label).not.toHaveClass('[-webkit-line-clamp:2]');
+    expect(link.className).toContain('overflow-visible');
   });
 
   it('renders HTTP method badges for OpenAPI endpoint pages', async () => {
