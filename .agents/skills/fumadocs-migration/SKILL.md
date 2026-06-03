@@ -12,6 +12,11 @@ Use this skill to migrate legacy docs from `/Users/czhen/Documents/GitHub/AgoraI
 - The target content standard is Markdown/MDX native first.
 - Legacy JSX must not survive migrated content.
 - Rendering components are implementation details; content syntax must be standard Markdown, MDX native, or directive/include syntax.
+- Common MDX components must come from Fumadocs UI or repo-local shadcn/radix primitives. Do not invent custom tabs, code blocks, callouts, cards, or platform selectors when Fumadocs or shadcn already provides the primitive.
+- `src/components/mdx.tsx` is the common registry only: link normalization plus repo-approved shadcn/radix wrappers for Fumadocs/core outputs such as tabs, code blocks, generated code tabs, copy buttons, and standard links. Do not put page-specific overview widgets in this registry.
+- Human-authored editorial overview widgets must live outside the common registry, such as `src/components/docs-overview/mdx-components.tsx`, and must be injected only for approved overview content paths.
+- Component styling belongs in Tailwind classes colocated with the component. Do not add selector-heavy component skins, widget variables, or page-specific card styles to `src/styles/app.css`.
+- Global CSS custom properties are reserved for theme, shell layout, shadcn bridge tokens, and Fumadocs integration tokens. Do not add component-local variables for migrated MDX widgets.
 - Shared content is allowed, but use Fumadocs include or a project-approved directive, not legacy `@shared` imports.
 - Platform/product variants must be statically expanded into files, folders, or navigation. Do not keep runtime platform filters.
 - Independent product or platform navigation must be declared with `navScope` in `meta.json`; do not hard-code scoped sidebars in docs-shell code.
@@ -41,7 +46,7 @@ Use this skill to migrate legacy docs from `/Users/czhen/Documents/GitHub/AgoraI
    - Markdown native.
    - Markdown/MDX directive syntax parsed by remark/rehype.
    - Fumadocs MDX native features such as include.
-   - Newly approved runtime widgets only when static syntax cannot represent the content.
+   - Newly approved runtime widgets only when static syntax cannot represent the content. Restrict these to allowlisted editorial overview pages unless the user explicitly approves a broader runtime component surface.
 5. For generated HTML API references, extract and freeze the legacy `nav.toc` tree before writing files. Use that tree to decide target folders, folder index pages, and every `meta.json`.
 6. Update or create `meta.json` from legacy sidebar order. Do not migrate executable JS metadata.
 7. For independent or versioned navigation, update `meta.json` with `navScope` and keep version folder page order inside the version folder.
