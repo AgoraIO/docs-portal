@@ -230,15 +230,9 @@ function navScopeNodeToSidebarNodes(
 
   const meta = getNodeMeta(node);
   if (meta?.navScope) {
-    const href = getFolderHref(node);
-    return [
-      {
-        id: href,
-        title: getMetaTitle(meta, node),
-        type: 'page',
-        url: href,
-      },
-    ];
+    return shouldUseScopedFolderEntryInParent(node, meta, getNodeMeta)
+      ? [getFolderPageNode(node, meta)]
+      : pageTreeNodeToSidebarNodes(node);
   }
 
   if (node.index && node.children.length === 0) {
@@ -253,6 +247,56 @@ function navScopeNodeToSidebarNodes(
   }
 
   return pageTreeNodeToSidebarNodes(node);
+}
+
+function shouldUseScopedFolderEntryInParent(
+  node: Folder,
+  meta: DocsMeta,
+  getNodeMeta: GetDocsNodeMeta,
+): boolean {
+  if (meta.navScope?.versions?.length) {
+    return true;
+  }
+
+  const childFolders = node.children.filter(
+    (child): child is Folder => child.type === 'folder',
+  );
+
+  if (childFolders.length === 0) {
+    return true;
+  }
+
+  return childFolders.some((child) =>
+    hasVersionedNavScopeDescendant(child, getNodeMeta),
+  );
+}
+
+function hasVersionedNavScopeDescendant(
+  folder: Folder,
+  getNodeMeta: GetDocsNodeMeta,
+): boolean {
+  if (getNodeMeta(folder)?.navScope?.versions?.length) {
+    return true;
+  }
+
+  return folder.children.some(
+    (child) =>
+      child.type === 'folder' &&
+      hasVersionedNavScopeDescendant(child, getNodeMeta),
+  );
+}
+
+function getFolderPageNode(
+  node: Folder,
+  meta: DocsMeta,
+): Extract<DocsSidebarNode, { type: 'page' }> {
+  const href = getFolderHref(node);
+  return {
+    id: href,
+    title: getMetaTitle(meta, node),
+    type: 'page',
+    url: href,
+  };
 }
 
 function resolveActiveVersion({

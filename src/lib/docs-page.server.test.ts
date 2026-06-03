@@ -438,6 +438,120 @@ const apiReferencePageTree: Root = {
   name: 'Docs',
 };
 
+const realtimeMediaPageTree: Root = {
+  children: [
+    {
+      $id: 'en-root',
+      children: [
+        {
+          $id: 'realtime-media-folder',
+          children: [
+            {
+              $id: 'realtime-media-build-live-interaction-separator',
+              name: 'Build Live Interaction',
+              type: 'separator',
+            },
+            {
+              $id: 'realtime-media-rtc-folder',
+              children: [
+                {
+                  $id: 'realtime-media-rtc-quick-start-folder',
+                  children: [
+                    {
+                      $id: 'realtime-media-rtc-quick-start-build',
+                      name: 'Build from scratch',
+                      type: 'page',
+                      url: '/en/realtime-media/rtc/quick-start/build-from-scratch',
+                    },
+                  ],
+                  index: {
+                    $id: 'realtime-media-rtc-quick-start-index',
+                    name: 'Quick Start',
+                    type: 'page',
+                    url: '/en/realtime-media/rtc/quick-start',
+                  },
+                  name: 'Quick Start',
+                  type: 'folder',
+                },
+                {
+                  $id: 'realtime-media-rtc-audio-folder',
+                  children: [
+                    {
+                      $id: 'realtime-media-rtc-audio-profiles',
+                      name: 'Audio profiles and quality',
+                      type: 'page',
+                      url: '/en/realtime-media/rtc/audio/audio-profiles-and-quality',
+                    },
+                  ],
+                  index: {
+                    $id: 'realtime-media-rtc-audio-index',
+                    name: 'Audio',
+                    type: 'page',
+                    url: '/en/realtime-media/rtc/audio',
+                  },
+                  name: 'Audio',
+                  type: 'folder',
+                },
+                {
+                  $id: 'realtime-media-rtc-video-folder',
+                  children: [
+                    {
+                      $id: 'realtime-media-rtc-video-profiles',
+                      name: 'Video profiles and quality',
+                      type: 'page',
+                      url: '/en/realtime-media/rtc/video/video-profiles-and-quality',
+                    },
+                  ],
+                  index: {
+                    $id: 'realtime-media-rtc-video-index',
+                    name: 'Video',
+                    type: 'page',
+                    url: '/en/realtime-media/rtc/video',
+                  },
+                  name: 'Video',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'realtime-media-rtc-index',
+                name: 'Voice & Video',
+                type: 'page',
+                url: '/en/realtime-media/rtc',
+              },
+              name: 'Voice & Video',
+              type: 'folder',
+            },
+            {
+              $id: 'realtime-media-rtm-folder',
+              children: [],
+              index: {
+                $id: 'realtime-media-rtm-index',
+                name: 'RTM',
+                type: 'page',
+                url: '/en/realtime-media/rtm',
+              },
+              name: 'Signaling',
+              type: 'folder',
+            },
+          ],
+          index: {
+            $id: 'realtime-media-index',
+            name: 'Overview',
+            type: 'page',
+            url: '/en/realtime-media',
+          },
+          name: 'Realtime & Media',
+          root: true,
+          type: 'folder',
+        },
+      ],
+      name: 'English',
+      type: 'folder',
+    },
+  ],
+  name: 'Docs',
+};
+
 function createPage() {
   return {
     data: {
@@ -792,6 +906,112 @@ describe('loadDocsPagePayload', () => {
         expect.objectContaining({
           url: '/en/api-reference/rtc/android/4.6.0',
         }),
+      ]),
+    );
+  });
+
+  it('returns a scoped Voice & Video sidebar from a plain navScope', async () => {
+    const page = createPage();
+    const rtcPage = {
+      ...page,
+      data: {
+        ...page.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/realtime-media/rtc/index.md',
+          path: 'en/realtime-media/rtc/index.md',
+        },
+        title: 'Voice & Video',
+      },
+      path: 'en/realtime-media/rtc/index.md',
+      slugs: ['en', 'realtime-media', 'rtc', 'index'],
+      url: '/en/realtime-media/rtc',
+    };
+
+    mockedGetPage.mockReturnValue(rtcPage);
+    mockedGetPages.mockReturnValue([rtcPage]);
+    mockedGetPageTree.mockReturnValue(realtimeMediaPageTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'realtime-media-rtc-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Voice & Video',
+            },
+          } as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = await loadDocsPagePayload('en', 'realtime-media', ['rtc']);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(payload.sidebarHeader).toEqual({
+      backHref: '/en/realtime-media',
+      backLabel: 'Realtime & Media',
+      title: 'Voice & Video',
+    });
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+      expect.arrayContaining([
+        '/en/realtime-media/rtc',
+        '/en/realtime-media/rtc/quick-start',
+        '/en/realtime-media/rtc/audio/audio-profiles-and-quality',
+      ]),
+    );
+    expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(
+      '/en/realtime-media/rtm',
+    );
+  });
+
+  it('keeps a plain nav scope expanded in the parent Realtime & Media sidebar', async () => {
+    const page = createPage();
+    const realtimePage = {
+      ...page,
+      data: {
+        ...page.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/realtime-media/index.md',
+          path: 'en/realtime-media/index.md',
+        },
+        title: 'Overview',
+      },
+      path: 'en/realtime-media/index.md',
+      slugs: ['en', 'realtime-media', 'index'],
+      url: '/en/realtime-media',
+    };
+
+    mockedGetPage.mockReturnValue(realtimePage);
+    mockedGetPages.mockReturnValue([realtimePage]);
+    mockedGetPageTree.mockReturnValue(realtimeMediaPageTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'realtime-media-rtc-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Voice & Video',
+            },
+          } as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = await loadDocsPagePayload('en', 'realtime-media', []);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+      expect.arrayContaining([
+        '/en/realtime-media',
+        '/en/realtime-media/rtc',
+        '/en/realtime-media/rtm',
+      ]),
+    );
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+      expect.arrayContaining([
+        '/en/realtime-media/rtc/quick-start',
+        '/en/realtime-media/rtc/audio/audio-profiles-and-quality',
       ]),
     );
   });
