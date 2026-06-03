@@ -21,6 +21,8 @@ import {
   getOpenApiEndpointUrl,
   getOpenApiLanes,
   getOpenApiOperationIds,
+  type OpenApiLane,
+  resolveOpenApiEndpointRoute,
 } from './openapi/lanes';
 import { getOpenApiOperation } from './openapi/source.server';
 import {
@@ -153,6 +155,10 @@ export async function loadDocsPagePayload(
   const pageTree = source.getPageTree(locale);
   const supportedLocale = toSupportedLocale(locale);
   const isOpenApiPage = isOpenApiPageWithClientProps(page);
+  const openApiRoute =
+    isOpenApiPage && supportedLocale
+      ? resolveOpenApiEndpointRoute(supportedLocale, tab, slugSegments)
+      : null;
   const processedText = isOpenApiPage ? '' : await readProcessedText(page);
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
@@ -229,10 +235,14 @@ export async function loadDocsPagePayload(
         locale: targetLocale,
       };
     }),
-    navigation: getPrevNextLinksFromNode(
-      navScope?.sidebarRoot ?? pageTree,
-      page.url,
-    ),
+    navigation:
+      openApiRoute && supportedLocale
+        ? getOpenApiPrevNextLinks(
+            openApiRoute.lane,
+            supportedLocale,
+            openApiRoute.operationId,
+          )
+        : getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
     pages,
     sidebar,
     sidebarHeader,
@@ -552,13 +562,18 @@ async function appendEndpointPagesToOpenApiParent(
   tab: string,
 ): Promise<DocsSidebarNode> {
   if (node.type !== 'section') {
-    return node;
+    return decorateOpenApiEndpointSidebarPage(node, locale, tab);
   }
 
+  const children = await Promise.all(
+    node.children.map((child) =>
+      appendEndpointPagesToOpenApiParent(child, locale, tab),
+    ),
+  );
   const lane = getOpenApiLanes().find(
     (item) =>
       item.tab === tab &&
-      node.children.some(
+      children.some(
         (child) =>
           child.type === 'page' && child.url === item.parentUrl[locale],
       ),
@@ -566,9 +581,7 @@ async function appendEndpointPagesToOpenApiParent(
 
   if (lane) {
     const existingUrls = new Set(
-      node.children.flatMap((child) =>
-        child.type === 'page' ? [child.url] : [],
-      ),
+      children.flatMap((child) => (child.type === 'page' ? [child.url] : [])),
     );
     const endpointPages: DocsSidebarNode[] = (
       await Promise.all(
@@ -584,16 +597,79 @@ async function appendEndpointPagesToOpenApiParent(
 
     return {
       ...node,
-      children: [...node.children, ...endpointPages],
+      children: [...children, ...endpointPages],
     };
   }
 
   return {
     ...node,
-    children: await Promise.all(
-      node.children.map((child) =>
-        appendEndpointPagesToOpenApiParent(child, locale, tab),
-      ),
+    children,
+  };
+}
+
+async function decorateOpenApiEndpointSidebarPage(
+  node: DocsSidebarNode,
+  locale: AppLocale,
+  tab: string,
+): Promise<DocsSidebarNode> {
+  if (node.type !== 'page') {
+    return node;
+  }
+
+  const slugSegments = node.url.split('/').filter(Boolean).slice(2);
+  const route = resolveOpenApiEndpointRoute(locale, tab, slugSegments);
+
+  if (!route) {
+    return node;
+  }
+
+  return {
+    ...node,
+    id: route.url,
+    method: (await getOpenApiOperation(route.lane, route.operationId, locale))
+      .method,
+    title: route.lane.operations[route.operationId].title[locale],
+    url: route.url,
+  };
+}
+
+function getOpenApiPrevNextLinks(
+  lane: OpenApiLane,
+  locale: AppLocale,
+  operationId: string,
+) {
+  const operationIds = getOpenApiOperationIds(lane);
+  const currentIndex = operationIds.indexOf(operationId);
+
+  if (currentIndex < 0) {
+    return {};
+  }
+
+  return {
+    next: getOpenApiNavigationLink(
+      lane,
+      locale,
+      operationIds[currentIndex + 1],
     ),
+    previous: getOpenApiNavigationLink(
+      lane,
+      locale,
+      operationIds[currentIndex - 1],
+    ),
+  };
+}
+
+function getOpenApiNavigationLink(
+  lane: OpenApiLane,
+  locale: AppLocale,
+  operationId: string | undefined,
+) {
+  if (!operationId) {
+    return undefined;
+  }
+
+  return {
+    title: lane.operations[operationId].title[locale],
+    url: getOpenApiEndpointUrl(lane, locale, operationId),
   };
 }

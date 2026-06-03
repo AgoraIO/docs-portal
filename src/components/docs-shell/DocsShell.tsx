@@ -67,7 +67,6 @@ export function DocsShell({
   next,
   sidebar,
   sidebarHeader,
-  sideRail,
   tabs,
   toc,
   layoutMode = 'docs',
@@ -83,7 +82,6 @@ export function DocsShell({
   previous?: { title: string; url: string };
   sidebar: DocsSidebarNode[];
   sidebarHeader?: DocsSidebarHeader;
-  sideRail?: React.ReactNode;
   tabs: TabSummary[];
   toc: TOCItemType[];
 }) {
@@ -321,7 +319,7 @@ export function DocsShell({
           className={cn(
             'mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden',
             isOpenApiLayout
-              ? 'xl:grid-cols-[256px_minmax(0,1fr)_400px]'
+              ? 'xl:grid-cols-[256px_minmax(0,1fr)]'
               : 'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
           )}
           data-testid="docs-body-shell"
@@ -334,38 +332,19 @@ export function DocsShell({
             onSelectPath={() => setIsMobileSheetOpen(false)}
           />
           <DocsMainColumn
+            layoutMode={layoutMode}
             locale={currentLocale}
             next={next}
             previous={previous}
           >
             {children}
           </DocsMainColumn>
-          {isOpenApiLayout ? (
-            sideRail ? (
-              <DocsSideRail>{sideRail}</DocsSideRail>
-            ) : null
-          ) : (
+          {isOpenApiLayout ? null : (
             <DocsTocRail locale={currentLocale} toc={toc} />
           )}
         </div>
       </div>
     </SidebarProvider>
-  );
-}
-
-function DocsSideRail({ children }: { children: React.ReactNode }) {
-  return (
-    <aside
-      className="docs-scrollbar hidden h-full min-h-0 w-[400px] shrink-0 overflow-y-auto bg-transparent xl:block"
-      data-testid="docs-side-rail"
-    >
-      <div
-        className="py-9 pr-4 pl-6"
-        style={{ '--openapi-sticky-top': '2.25rem' } as React.CSSProperties}
-      >
-        {children}
-      </div>
-    </aside>
   );
 }
 

@@ -55,6 +55,7 @@ export function DocsContent({
           kind: 'mdx',
         } satisfies DocsContentBody)
       : undefined);
+  const isOpenApiBody = resolvedBody?.kind === 'openapi';
   useEffect(() => {
     if (resolvedBody?.kind !== 'mdx') {
       return;
@@ -74,7 +75,12 @@ export function DocsContent({
   }, [resolvedBody?.kind]);
 
   return (
-    <article className="flex min-w-0 max-w-[var(--content-max)] flex-col gap-9">
+    <article
+      className={cn(
+        'flex min-w-0 flex-col gap-9',
+        isOpenApiBody ? 'max-w-none' : 'max-w-[var(--content-max)]',
+      )}
+    >
       <header className="flex flex-col gap-4 border-b border-[color:var(--line-soft)] pb-7">
         {breadcrumb.length > 0 ? (
           <nav aria-label="Breadcrumb" className="min-w-0">
@@ -143,16 +149,18 @@ export function DocsContent({
           </div>
         ) : null}
       </header>
-      <div className="prose prose-neutral dark:prose-invert max-w-none">
-        {resolvedBody?.kind === 'openapi' ? (
-          <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
-        ) : resolvedBody?.kind === 'mdx' ? (
-          <ClientOnly fallback={<DocsContentSkeleton />}>
-            <DocsContentBodyClient contentPath={resolvedBody.contentPath} />
-          </ClientOnly>
-        ) : null}
-      </div>
-      {resolvedBody?.kind === 'openapi' ? null : (
+      {isOpenApiBody ? (
+        <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
+      ) : (
+        <div className="prose prose-neutral dark:prose-invert max-w-none">
+          {resolvedBody?.kind === 'mdx' ? (
+            <ClientOnly fallback={<DocsContentSkeleton />}>
+              <DocsContentBodyClient contentPath={resolvedBody.contentPath} />
+            </ClientOnly>
+          ) : null}
+        </div>
+      )}
+      {isOpenApiBody ? null : (
         <DocsTableOfContents
           className="xl:hidden"
           locale={currentLocale}
@@ -161,10 +169,6 @@ export function DocsContent({
       )}
     </article>
   );
-}
-
-export function DocsContentSideRail(_props: { body?: DocsContentBody }) {
-  return null;
 }
 
 export type DocsContentBody =

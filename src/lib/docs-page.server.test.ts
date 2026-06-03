@@ -310,7 +310,14 @@ const apiReferencePageTree: Root = {
                     },
                     {
                       $id: 'api-reference-conversational-ai-rest-api-agent-folder',
-                      children: [],
+                      children: [
+                        {
+                          $id: 'api-reference-conversational-ai-rest-api-agent-join',
+                          name: '/en/api-reference/conversational-ai/rest-api/agent/join',
+                          type: 'page',
+                          url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+                        },
+                      ],
                       index: {
                         $id: 'api-reference-conversational-ai-rest-api-agent-index',
                         name: 'Agent management',
@@ -830,6 +837,19 @@ describe('loadDocsPagePayload', () => {
     ).toMatchObject({
       method: 'POST',
       title: 'Start a conversational AI agent',
+    });
+    expect(
+      flattenSidebarPageUrls(payload.sidebar).filter(
+        (url) =>
+          url === '/en/api-reference/conversational-ai/rest-api/agent/join',
+      ),
+    ).toHaveLength(1);
+    expect(payload.navigation).toEqual({
+      next: {
+        title: 'Stop a conversational AI agent',
+        url: '/en/api-reference/conversational-ai/rest-api/agent/leave',
+      },
+      previous: undefined,
     });
   });
 
