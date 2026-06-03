@@ -22,4 +22,19 @@ describe('Tabs primitive', () => {
       'group-data-[orientation=horizontal]/tabs:after:h-0.5',
     );
   });
+
+  it('keeps triggers content-sized by default', () => {
+    render(
+      <Tabs value="intro">
+        <TabsList variant="line">
+          <TabsTrigger value="intro">Introduction</TabsTrigger>
+        </TabsList>
+      </Tabs>,
+    );
+
+    const trigger = screen.getByRole('tab', { name: 'Introduction' });
+
+    expect(trigger.className).toContain('shrink-0');
+    expect(trigger.className).not.toContain('flex-1');
+  });
 });

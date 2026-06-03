@@ -10,6 +10,11 @@ import {
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
+import {
+  type AppLocale,
+  DEFAULT_LOCALE,
+  normalizeLocale,
+} from '@/lib/i18n/i18n-config';
 import type { OpenApiOperationPayload } from '@/lib/openapi/payload';
 import { DocsContentBodyClient } from './DocsContentBody.client';
 import {
@@ -25,6 +30,7 @@ export function DocsContent({
   breadcrumb = [],
   contentPath,
   description,
+  locale = DEFAULT_LOCALE,
   markdownUrl,
   slug,
   title,
@@ -34,12 +40,15 @@ export function DocsContent({
   breadcrumb?: DocsBreadcrumbItem[];
   contentPath?: string;
   description?: string;
+  locale?: AppLocale | string;
   markdownUrl?: string;
   slug?: string;
   title?: string;
   toc: TOCItemType[];
 }) {
-  const { t } = useTranslation('common');
+  const { i18n } = useTranslation('common');
+  const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const t = i18n.getFixedT(currentLocale, 'common');
   const displayTitle = title ?? slug;
   const resolvedBody =
     body ??
@@ -150,7 +159,11 @@ export function DocsContent({
         ) : null}
       </div>
       {resolvedBody?.kind === 'openapi' ? null : (
-        <DocsTableOfContents className="xl:hidden" toc={toc} />
+        <DocsTableOfContents
+          className="xl:hidden"
+          locale={currentLocale}
+          toc={toc}
+        />
       )}
     </article>
   );
@@ -200,12 +213,15 @@ function DocsContentSkeleton() {
 
 export function DocsTableOfContents({
   className,
+  locale = DEFAULT_LOCALE,
   toc,
 }: {
   className?: string;
+  locale?: AppLocale | string;
   toc: TOCItemType[];
 }) {
-  const { t } = useTranslation('common');
+  const { i18n } = useTranslation('common');
+  const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
   const items = useMemo(
     () => toc.filter((item) => typeof item.title === 'string'),
     [toc],

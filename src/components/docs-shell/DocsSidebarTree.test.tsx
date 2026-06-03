@@ -72,6 +72,8 @@ describe('DocsSidebarTree', () => {
 
     expect(activeButton).toBeInstanceOf(HTMLElement);
     expect(activeButton?.className).not.toContain('font-semibold');
+    expect(activeButton).toHaveClass('h-[30px]', 'items-center');
+    expect(activeButton).not.toHaveClass('h-auto', 'items-start', 'py-1.5');
     expect(activeButton?.className).toContain(
       'data-[active=true]:before:bg-[color:var(--accent-brand)]',
     );
@@ -207,6 +209,8 @@ describe('DocsSidebarTree', () => {
     const linkClasses = link.className.split(/\s+/);
     expect(link.className).toContain('overflow-visible');
     expect(link.className).toContain('min-h-[30px]');
+    expect(link.className).toContain('h-auto');
+    expect(link.className).toContain('items-start');
     expect(linkClasses).not.toContain('overflow-hidden');
     expect(linkClasses).not.toContain('h-[30px]');
   });

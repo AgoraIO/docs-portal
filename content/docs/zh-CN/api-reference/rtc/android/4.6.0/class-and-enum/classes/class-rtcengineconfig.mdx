@@ -1,0 +1,120 @@
+---
+title: "RtcEngineConfig"
+description: "配置 RtcEngine 实例的参数。"
+---
+<a id="class_rtcengineconfig__prototype"></a>
+
+```java
+public class RtcEngineConfig {
+  public IRtcEngineEventHandler mEventHandler;
+  public Context mContext;
+  public String mAppId;
+  public int mAreaCode;
+  public int mChannelProfile;
+  public String mLicense;
+  public int mAudioScenario;
+  public boolean mAutoRegisterAgoraExtensions;
+  public List<String> mExtensionList;
+  public IMediaExtensionObserver mExtensionObserver;
+  public LogConfig mLogConfig;
+  public Integer mThreadPriority;
+  public String mNativeLibPath;
+  public boolean mDomainLimit;
+}
+```
+
+<a id="class_rtcengineconfig__parameters"></a>
+
+## 属性
+
+### `mEventHandler`
+
+事件回调处理器。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)。
+
+### `mContext`
+
+Android Activity 的上下文对象。
+
+### `mAppId`
+
+由声网为项目颁发的 App ID。只有使用相同 App ID 的用户才能加入同一频道进行音视频通话。一个 App ID 只能用于创建一个 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 实例。更换 App ID 时需调用 [destroy [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_destroy1) 销毁原实例后再创建新实例。
+
+### `mAreaCode`
+
+连接区域，适用于有区域限制的场景。支持按位或运算组合多个区域码。详见 [AreaCode](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-areacode)。
+
+### `mChannelProfile`
+
+频道场景类型：
+
+- CHANNEL_PROFILE_COMMUNICATION (0)：通信场景。声网建议使用直播场景以获得更佳的音视频体验。
+- CHANNEL_PROFILE_LIVE_BROADCASTING (1)：（默认）直播场景。
+- CHANNEL_PROFILE_GAME (2)：游戏场景。自 v4.x.x 版本废弃，请改用 CHANNEL_PROFILE_LIVE_BROADCASTING。
+- CHANNEL_PROFILE_CLOUD_GAMING (3)：互动场景，针对低延迟优化，适用于用户频繁互动的场景。自 v4.x.x 版本废弃，请改用 CHANNEL_PROFILE_LIVE_BROADCASTING。
+
+### `mLicense`
+
+用于频道连接验证的许可证，按许可证计费。
+
+### `mAudioScenario`
+
+:::info[注]
+在使用此枚举前，需调用 [getAudioDeviceInfo](/zh-CN/api-reference/rtc/android/device-management/audio-device#api_irtcengine_getaudiodeviceinfo) 检查音频设备是否支持超低延迟采集与播放。若需体验超低延迟，需确保音频设备支持超低延迟（`isLowLatencyAudioSupported` = true ）。
+:::
+
+音频场景类型，不同场景下设备使用的音量类型不同：
+
+- AUDIO_SCENARIO_DEFAULT (0)：（默认）自动场景，SDK 会根据用户角色和音频路由选择合适的音质。
+- AUDIO_SCENARIO_GAME_STREAMING (3)：高音质场景，适用于播放音乐。
+- AUDIO_SCENARIO_CHATROOM (5)：语聊场景，适用于频繁切换角色或控制麦克风静音的场景。
+- AUDIO_SCENARIO_CHORUS (7)：实时合唱场景，适用于网络良好且对超低延迟有较高要求的用户。
+- AUDIO_SCENARIO_MEETING (8)：会议场景，主要传输人声。
+- AUDIO_SCENARIO_AI_CLIENT (10)：AI 对话场景，仅适用于与通过 Conversational AI Engine 创建的智能体交互的场景。
+
+### `mAutoRegisterAgoraExtensions`
+
+是否在初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 时自动注册声网插件：
+
+- true：（默认）自动注册插件。
+- false：不自动注册插件，需调用 enableExtension 手动注册。
+
+### `mExtensionList`
+
+插件库名称列表。
+
+### `mExtensionObserver`
+
+[IMediaExtensionObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaextensionobserver) 实例。详见 [IMediaExtensionObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imediaextensionobserver)。
+
+### `mLogConfig`
+
+日志配置。详见 [LogConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-logconfig)。 默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 日志文件：
+
+- SDK 日志文件包括： agorasdk.log、 agorasdk.1.log、 agorasdk.2.log、 agorasdk.3.log、 agorasdk.4.log
+- API 日志文件包括： agoraapi.log、 agoraapi.1.log、 agoraapi.2.log、 agoraapi.3.log、 agoraapi.4.log
+- 每个日志文件默认大小为 2048 KB，采用 UTF-8 编码。
+- SDK 会将最新日志写入 agorasdk.log 或 agoraapi.log。
+- 当 agorasdk.log 写满时，SDK 会依次删除旧文件并重命名，生成新的日志文件。
+- agoraapi.log 遵循相同的覆盖规则。
+
+### `mThreadPriority`
+
+线程优先级类型。详见 `ThreadPriorityType`。
+
+### `mNativeLibPath`
+
+:::info[注]
+适用于手动集成 SDK。通过 Maven Central 或 JitPack 集成时不适用。请确保该目录存在，否则 [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine) 初始化会失败。
+:::
+
+`.so` 文件的存储目录。该目录必须是 App 的有效私有目录，可通过 `Context.getDir` 获取。
+
+- 设置该参数后，SDK 会从指定目录加载.so 文件，实现动态加载以减小包体积。
+- 若不设置或设为 null，SDK 会从默认编译路径加载.so 文件，包体积会增大。
+
+### `mDomainLimit`
+
+是否启用域名限制：
+
+- true：启用域名限制，适用于物联网设备使用 IoT 卡接入的场景。SDK 仅连接运营商白名单中报备的域名或 IP。
+- false：（默认）不启用域名限制，适用于大多数通用场景。

@@ -1,0 +1,80 @@
+---
+title: "Music"
+description: "用于表示音乐资源的详细信息。"
+---
+<a id="class_music__prototype"></a>
+
+```java
+public class Music {
+  public long songCode;
+  public String name;
+  public String singer;
+  public String poster;
+  public String releaseTime;
+  public int type;
+  public int pitchType;
+  public int durationS;
+  public int[] lyricTypes;
+  public MvProperty[] mvProperties;
+  public ClimaxSegment[] climaxSegments;
+}
+```
+
+<a id="class_music__parameters"></a>
+
+## 属性
+
+### `songCode`
+
+音乐资源的唯一标识符，用于识别某个音乐资源。
+
+### `name`
+
+音乐资源的名称。
+
+### `singer`
+
+歌手名称。
+
+### `poster`
+
+音乐资源海报的下载地址。
+
+### `releaseTime`
+
+音乐资源的发行时间。
+
+### `type`
+
+音乐资源的类型：
+
+- 1：单轨音频，左声道为伴奏，右声道为原唱。
+- 2：单轨音频，仅伴奏。
+- 3：单轨音频，仅原唱。
+- 4：多轨音频。
+
+### `pitchType`
+
+歌曲是否支持评分功能：
+
+- 1：支持评分功能。
+- 2：不支持评分功能。
+
+### `durationS`
+
+音乐资源的总时长（单位为秒）。
+
+### `lyricTypes`
+
+支持的歌词类型：
+
+- 0：xml 格式。
+- 1：lrc 格式。
+
+### `mvProperties`
+
+MV 属性列表，表示该音乐资源包含的 MV 信息。
+
+### `climaxSegments`
+
+音乐高潮片段列表。详见 [ClimaxSegment](/en/api-reference/rtc/android/class-and-enum/classes/class-climaxsegment)。

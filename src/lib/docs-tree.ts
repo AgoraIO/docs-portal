@@ -162,7 +162,7 @@ export function getSidebarNodes(
   }
 
   const nodes: DocsSidebarNode[] = [];
-  const indexItem = getTabIndex(tabNode);
+  const indexItem = tabNode.index;
   const indexUrl = indexItem?.url;
   let pendingIndexNode: DocsSidebarPageNode | null = indexItem
     ? {
@@ -421,6 +421,20 @@ export function getPrevNextLinks(root: Root, currentUrl: string) {
       ? mapPageLink(neighbours.previous)
       : undefined,
   };
+}
+
+export function getPrevNextLinksFromNode(node: Folder | Root, currentUrl: string) {
+  if (node.type === 'folder') {
+    return getPrevNextLinks(
+      {
+        children: [node],
+        name: 'Scoped root',
+      },
+      currentUrl,
+    );
+  }
+
+  return getPrevNextLinks(node, currentUrl);
 }
 
 export function getSidebarBreadcrumb(

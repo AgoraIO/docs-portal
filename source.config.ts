@@ -5,6 +5,7 @@ import {
 import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import remarkDirective from 'remark-directive';
 import { z } from 'zod';
+import { docsMetaSchema } from './src/lib/docs-meta-schema';
 
 const rawDocSchema = z.object({
   title: z.string().optional(),
@@ -88,6 +89,9 @@ export const docs = defineDocs({
     postprocess: {
       includeProcessedMarkdown: true,
     },
+  },
+  meta: {
+    schema: docsMetaSchema,
   },
 });
 

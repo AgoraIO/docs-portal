@@ -11,14 +11,21 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
+import {
+  type AppLocale,
+  DEFAULT_LOCALE,
+  normalizeLocale,
+} from '@/lib/i18n/i18n-config';
 import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsMainColumn({
   children,
+  locale = DEFAULT_LOCALE,
   next,
   previous,
 }: {
   children: React.ReactNode;
+  locale?: AppLocale | string;
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
 }) {
@@ -35,7 +42,7 @@ export function DocsMainColumn({
         data-testid="docs-main-mobile-flow"
       >
         <div className="min-w-0">{children}</div>
-        <DocsPageFooter next={next} previous={previous} />
+        <DocsPageFooter locale={locale} next={next} previous={previous} />
       </div>
       <div
         className={cn(
@@ -47,7 +54,7 @@ export function DocsMainColumn({
       >
         <div className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10">
           <div className="min-w-0 flex-1">{children}</div>
-          <DocsPageFooter next={next} previous={previous} />
+          <DocsPageFooter locale={locale} next={next} previous={previous} />
         </div>
       </div>
     </main>
@@ -55,13 +62,16 @@ export function DocsMainColumn({
 }
 
 function DocsPageFooter({
+  locale,
   next,
   previous,
 }: {
+  locale: AppLocale | string;
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
 }) {
-  const { t } = useTranslation('common');
+  const { i18n } = useTranslation('common');
+  const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
   const [feedback, setFeedback] = useState<'yes' | 'no' | null>(null);
 
   return (

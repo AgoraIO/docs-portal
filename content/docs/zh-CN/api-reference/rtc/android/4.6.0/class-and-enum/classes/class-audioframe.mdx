@@ -1,0 +1,47 @@
+---
+title: "AudioFrame"
+description: "原始音频数据。"
+---
+<a id="class_audioframe__prototype"></a>
+
+```java
+public class AudioFrame {
+  public ByteBuffer buffer;
+  public int sampleRataHz;
+  public int bytesPerSample;
+  public int channelNums;
+  public int samplesPerChannel;
+  public long timestamp;
+}
+```
+
+<a id="class_audioframe__parameters"></a>
+
+## 属性
+
+### `buffer`
+
+音频帧的数据缓冲区。当音频帧使用立体声通道时，数据缓冲区为交叉存储。缓冲区大小计算方式为： `buffer` = `samples` × `channels` × `bytesPerSample`。
+
+### `sampleRataHz`
+
+音频帧中每个声道的采样率（单位为 Hz）。
+
+### `bytesPerSample`
+
+每个采样的字节数。对于 PCM 数据，通常为 16 位（2 字节）。
+
+### `channelNums`
+
+音频通道数（立体声时为交叉存储）。
+
+- 1：单声道。
+- 2：立体声。
+
+### `samplesPerChannel`
+
+音频帧中每个声道的采样数。
+
+### `timestamp`
+
+音频帧的时间戳（单位：毫秒）。

@@ -11,6 +11,7 @@ vi.mock('./source.server', () => ({
     url: `/llms.mdx/docs/${page.path}`,
   }),
   source: {
+    getNodeMeta: vi.fn(),
     getPage: vi.fn(),
     getPages: vi.fn(),
     getPageTree: vi.fn(),
@@ -24,6 +25,7 @@ vi.mock('./openapi/docs-page.server', () => ({
 const mockedGetPage = vi.mocked(source.getPage);
 const mockedGetPages = vi.mocked(source.getPages);
 const mockedGetPageTree = vi.mocked(source.getPageTree);
+const mockedGetNodeMeta = vi.mocked(source.getNodeMeta);
 const mockedLoadOpenApiEndpointPage = vi.mocked(loadOpenApiEndpointPage);
 
 const pageTree: Root = {
@@ -353,6 +355,70 @@ const apiReferencePageTree: Root = {
               name: 'Conversational AI',
               type: 'folder',
             },
+            {
+              $id: 'api-reference-rtc-folder',
+              children: [
+                {
+                  $id: 'api-reference-rtc-android-folder',
+                  children: [
+                    {
+                      $id: 'api-reference-rtc-android-current-folder',
+                      children: [
+                        {
+                          $id: 'api-reference-rtc-android-current-overview',
+                          name: 'Overview',
+                          type: 'page',
+                          url: '/en/api-reference/rtc/android/overview',
+                        },
+                      ],
+                      index: {
+                        $id: 'api-reference-rtc-android-current-index',
+                        name: 'Android API Reference',
+                        type: 'page',
+                        url: '/en/api-reference/rtc/android',
+                      },
+                      name: 'Current',
+                      type: 'folder',
+                    },
+                    {
+                      $id: 'api-reference-rtc-android-4-6-0-folder',
+                      children: [
+                        {
+                          $id: 'api-reference-rtc-android-4-6-0-overview',
+                          name: 'Overview',
+                          type: 'page',
+                          url: '/en/api-reference/rtc/android/4.6.0/overview',
+                        },
+                      ],
+                      index: {
+                        $id: 'api-reference-rtc-android-4-6-0-index',
+                        name: 'Android API Reference',
+                        type: 'page',
+                        url: '/en/api-reference/rtc/android/4.6.0',
+                      },
+                      name: '4.6.0',
+                      type: 'folder',
+                    },
+                  ],
+                  index: {
+                    $id: 'api-reference-rtc-android-index',
+                    name: 'Android API Reference',
+                    type: 'page',
+                    url: '/en/api-reference/rtc/android',
+                  },
+                  name: 'Android API Reference',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'api-reference-rtc-index',
+                name: 'RTC API Reference',
+                type: 'page',
+                url: '/en/api-reference/rtc',
+              },
+              name: 'RTC',
+              type: 'folder',
+            },
           ],
           index: {
             $id: 'api-reference-index',
@@ -444,6 +510,7 @@ describe('loadDocsPagePayload', () => {
     );
     mockedGetPages.mockReturnValue([page]);
     mockedGetPageTree.mockReturnValue(pageTree);
+    mockedGetNodeMeta.mockReturnValue(undefined);
   });
 
   it('falls back to generating TOC from processed markdown', async () => {
@@ -457,6 +524,9 @@ describe('loadDocsPagePayload', () => {
         kind: 'mdx',
       },
       breadcrumb: [
+        {
+          title: 'Get started',
+        },
         {
           title: 'About Agora',
           url: '/en/introduction/about-agora',
@@ -654,6 +724,78 @@ describe('loadDocsPagePayload', () => {
     });
   });
 
+  it('shows only current platform entries in a parent versioned API reference scope', async () => {
+    const page = createPage();
+    const rtcPage = {
+      ...page,
+      data: {
+        ...page.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/api-reference/rtc/index.md',
+          path: 'en/api-reference/rtc/index.md',
+        },
+        title: 'RTC API Reference',
+      },
+      path: 'en/api-reference/rtc/index.md',
+      slugs: ['en', 'api-reference', 'rtc', 'index'],
+      url: '/en/api-reference/rtc',
+    };
+
+    mockedGetPage.mockReturnValue(rtcPage);
+    mockedGetPages.mockReturnValue([rtcPage]);
+    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockedGetNodeMeta.mockImplementation((node) => {
+      if (node.$id === 'api-reference-rtc-folder') {
+        return {
+          data: {
+            navScope: {},
+            title: 'RTC',
+          },
+        } as ReturnType<typeof source.getNodeMeta>;
+      }
+
+      if (node.$id === 'api-reference-rtc-android-folder') {
+        return {
+          data: {
+            navScope: {
+              defaultVersion: 'current',
+              versions: [
+                { id: 'current', label: 'v4.6.2', path: '(current)' },
+                { id: '4.6.0', label: 'v4.6.0', path: '4.6.0' },
+              ],
+            },
+            title: 'Android API Reference',
+          },
+        } as ReturnType<typeof source.getNodeMeta>;
+      }
+
+      return undefined;
+    });
+
+    const payload = await loadDocsPagePayload('en', 'api-reference', ['rtc']);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(payload.sidebarHeader).toEqual({
+      backHref: '/en/api-reference',
+      backLabel: 'API Reference',
+      title: 'RTC',
+    });
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual([
+      '/en/api-reference/rtc',
+      '/en/api-reference/rtc/android',
+    ]);
+    expect(payload.sidebar).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: '/en/api-reference/rtc/android/4.6.0',
+        }),
+      ]),
+    );
+  });
+
   it('loads nested product pages from multi-segment slugs', async () => {
     const basePage = createPage();
     const nestedPage = {
@@ -799,6 +941,16 @@ describe('loadDocsPagePayload', () => {
       },
     });
     mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'api-reference-recipes-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Recipes',
+            },
+          } as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
 
     const payload = await loadDocsPagePayload('en', 'api-reference', []);
 
@@ -863,7 +1015,7 @@ describe('loadDocsPagePayload', () => {
     });
   });
 
-  it('returns a scoped Device Kit sidebar with a Back to AI header', async () => {
+  it('returns a metadata-driven scoped Device Kit sidebar with an AI back link', async () => {
     const page = createPage();
     mockedGetPage.mockReturnValue({
       ...page,
@@ -879,6 +1031,16 @@ describe('loadDocsPagePayload', () => {
         title: 'Convo AI Device Kit',
       },
     });
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'ai-device-kit-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Convo AI Device Kit',
+            },
+          } as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
 
     const payload = await loadDocsPagePayload('en', 'ai', ['device-kit']);
 
@@ -888,7 +1050,7 @@ describe('loadDocsPagePayload', () => {
 
     expect(payload.sidebarHeader).toEqual({
       backHref: '/en/ai',
-      backLabel: 'Back to AI',
+      backLabel: 'AI',
       title: 'Convo AI Device Kit',
     });
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
@@ -927,6 +1089,16 @@ describe('loadDocsPagePayload', () => {
       },
     });
     mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'api-reference-recipes-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Recipes',
+            },
+          } as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
 
     const payload = await loadDocsPagePayload('en', 'api-reference', ['recipes']);
 
@@ -936,7 +1108,7 @@ describe('loadDocsPagePayload', () => {
 
     expect(payload.sidebarHeader).toEqual({
       backHref: '/en/api-reference',
-      backLabel: 'Back to Reference',
+      backLabel: 'API Reference',
       title: 'Recipes',
     });
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(

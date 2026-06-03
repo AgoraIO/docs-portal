@@ -1,0 +1,115 @@
+---
+title: "RemoteVideoStats"
+description: "用于统计远端视频流的相关信息。"
+---
+<a id="class_remotevideostats__prototype"></a>
+
+```java
+public static class RemoteVideoStats {
+    public int uid;
+    public int delay;
+    public int e2eDelay;
+    public int width;
+    public int height;
+    public int receivedBitrate;
+    public int decoderOutputFrameRate;
+    public int rendererOutputFrameRate;
+    public int frameLossRate;
+    public int packetLossRate;
+    public int rxStreamType;
+    public int totalFrozenTime;
+    public int frozenRate;
+    public int avSyncTimeMs;
+    public long totalActiveTime;
+    public long publishDuration;
+    public int mosValue;
+    public int rxVideoBytes;
+  }
+```
+
+<a id="class_remotevideostats__parameters"></a>
+
+## 属性
+
+### `uid`
+
+发送视频流的远端用户 ID。
+
+### `delay`
+
+该字段已废弃。在音视频同步场景下，你可以通过 [RemoteAudioStats](/en/api-reference/rtc/android/class-and-enum/classes/class-remoteaudiostats) 中的 `networkTransportDelay` 和 `jitterBufferDelay` 获取视频延迟数据。视频延迟（毫秒）。
+
+### `e2eDelay`
+
+端到端的视频延迟（毫秒），即从远端用户采集视频到本地用户接收并渲染视频的时间间隔。
+
+### `width`
+
+视频宽度（像素）。
+
+### `height`
+
+视频高度（像素）。
+
+### `receivedBitrate`
+
+自上次统计以来接收到的远端视频码率（Kbps）。
+
+### `decoderOutputFrameRate`
+
+解码远端视频的帧率（fps）。
+
+### `rendererOutputFrameRate`
+
+渲染远端视频的帧率（fps）。
+
+### `frameLossRate`
+
+远端视频的丢帧率（%）。
+
+### `packetLossRate`
+
+使用抗丢包技术后的远端视频丢包率（%）。
+
+### `rxStreamType`
+
+视频流类型：
+
+- 0：高质量流，即高分辨率高码率的视频流。
+- 1：低质量流，即低分辨率低码率的视频流。
+
+### `totalFrozenTime`
+
+远端用户加入频道后远端视频流的卡顿总时长（毫秒）。当视频帧率不低于 5 fps 且两帧可渲染视频帧之间的时间间隔超过 500 毫秒时，认为发生视频卡顿。
+
+### `frozenRate`
+
+视频卡顿总时长占视频可用时长的百分比（%）。只要远端用户在加入频道后未停止发送视频流也未关闭视频功能，则认为视频处于可用状态。
+
+### `avSyncTimeMs`
+
+音频领先于视频的时间（毫秒）。
+
+:::info[注]
+如果该值为负数，表示音频延迟于视频。
+:::
+
+### `totalActiveTime`
+
+视频的总可用时长（毫秒）。只要远端用户或主播在加入频道后未停止发送视频流也未关闭视频模块，则认为视频处于可用状态。
+
+### `publishDuration`
+
+远端视频流的总持续时长（毫秒）。
+
+### `mosValue`
+
+报告区间内远端视频流的质量。该值由声网实时视频 MOS（Mean Opinion Score）评分方法计算，取值范围为 [0, 500]，除以 100 可得 MOS 分值（0 到 5），分值越高表示质量越好。
+
+:::info[注]
+对于纹理视频数据，该参数始终返回 0。
+:::
+
+### `rxVideoBytes`
+
+累计接收到的视频字节数（字节）。

@@ -1,0 +1,338 @@
+---
+title: "媒体资源播放和渲染"
+description: RTC Android API 参考迁移页。
+---
+<a id="toc_mediaplayer_playnrender"></a>
+
+<a id="api_imediaplayer_selectaudiotrack_imediaplayer"></a>
+
+## selectAudioTrack
+
+在播放过程中选择音频轨道。
+
+<a id="api_imediaplayer_selectaudiotrack_imediaplayer__prototype"></a>
+
+```java
+int selectAudioTrack(int index);
+```
+
+<a id="api_imediaplayer_selectaudiotrack_imediaplayer__detailed_desc"></a>
+
+获取音频文件的轨道索引后，可以调用该方法选择指定的音频轨道进行播放。例如，如果一个多轨道文件的不同轨道存储了不同语言的音频内容，可以调用该方法设置播放语言。
+
+:::info[注]
+[selectAudioTrack](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_selectaudiotrack_imediaplayer) 需要在调用 [getStreamInfo](/en/api-reference/rtc/android/playback/media-player/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值之后再调用。
+:::
+
+<a id="api_imediaplayer_selectaudiotrack_imediaplayer__parameters"></a>
+
+### 参数
+
+#### `index`
+
+音频轨道的索引。
+
+<a id="api_imediaplayer_selectaudiotrack_imediaplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/en/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+
+<a id="api_imediaplayer_setaudiodualmonomode"></a>
+
+## setAudioDualMonoMode
+
+设置当前音频文件的声道模式。
+
+<a id="api_imediaplayer_setaudiodualmonomode__prototype"></a>
+
+```java
+int setAudioDualMonoMode(int mode);
+```
+
+<a id="api_imediaplayer_setaudiodualmonomode__detailed_desc"></a>
+
+在立体声音频文件中，左右声道可以存储不同的音频数据。你可以根据需要将声道模式设置为原始模式、左声道模式、右声道模式或混合声道模式。例如，在 KTV 场景中，音乐文件的左声道存储伴奏，右声道存储人声。如果你只需要听伴奏，可以将声道模式设置为左声道模式；如果你需要同时听到伴奏和人声，可以将声道模式设置为混合声道模式。
+
+注：
+
+- 请在调用 open 方法之后调用该方法。
+- 该方法仅适用于立体声音频文件。
+
+<a id="api_imediaplayer_setaudiodualmonomode__parameters"></a>
+
+### 参数
+
+#### `mode`
+
+声道模式：
+
+- AUDIO_DUAL_MONO_STEREO (0)：原始模式。
+- AUDIO_DUAL_MONO_L (1)：左声道模式。该模式用左声道的音频替换右声道，你只能听到左声道的音频。
+- AUDIO_DUAL_MONO_R (2)：右声道模式。该模式用右声道的音频替换左声道，你只能听到右声道的音频。
+- AUDIO_DUAL_MONO_MIX (3)：混合声道模式。该模式将左右声道的音频混合，你可以同时听到左右声道的音频。
+
+<a id="api_imediaplayer_setaudiodualmonomode__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/en/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+
+<a id="api_imediaplayer_setaudiopitch"></a>
+
+## setAudioPitch
+
+设置当前媒体资源的音调。
+
+<a id="api_imediaplayer_setaudiopitch__prototype"></a>
+
+```java
+int setAudioPitch(int pitch);
+```
+
+<a id="api_imediaplayer_setaudiopitch__detailed_desc"></a>
+
+:::info[注]
+请在调用 `open` 方法之后调用此方法。
+:::
+
+<a id="api_imediaplayer_setaudiopitch__parameters"></a>
+
+### 参数
+
+#### `pitch`
+
+按半音阶设置本地音乐文件的音调。默认值为 0，表示保持原始音调。取值范围为 -12 到 12，相邻两个值之间的音调差为一个半音。该参数的绝对值越大，本地音乐文件的音调越高或越低。
+
+<a id="api_imediaplayer_setaudiopitch__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/en/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+
+<a id="api_imediaplayer_setloopcount"></a>
+
+## setLoopCount
+
+设置音效的循环播放次数。
+
+<a id="api_imediaplayer_setloopcount__prototype"></a>
+
+```java
+int setLoopCount(int loopCount);
+```
+
+<a id="api_imediaplayer_setloopcount__detailed_desc"></a>
+
+:::info[注]
+当循环播放完成后，SDK 会触发 [onPlayerStateChanged](/en/api-reference/rtc/android/playback/media-player/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调，并报告播放状态为 `PLAYER_STATE_PLAYBACK_ALL_LOOPS_COMPLETED`。
+:::
+
+<a id="api_imediaplayer_setloopcount__parameters"></a>
+
+### 参数
+
+#### `loopCount`
+
+音效的循环播放次数：
+
+- ≥ 0：播放的次数。例如，设置为 0 表示不循环播放，仅播放一次；设置为 1 表示循环播放一次，共播放两次。
+- -1：无限循环播放音频文件。
+
+<a id="api_imediaplayer_setloopcount__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/en/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+
+<a id="api_imediaplayer_setplaybackspeed"></a>
+
+## setPlaybackSpeed
+
+设置当前音频文件的播放速度。
+
+<a id="api_imediaplayer_setplaybackspeed__prototype"></a>
+
+```java
+int setPlaybackSpeed(int speed);
+```
+
+<a id="api_imediaplayer_setplaybackspeed__detailed_desc"></a>
+
+调用该方法前，需要先调用 `open` 方法。
+
+<a id="api_imediaplayer_setplaybackspeed__parameters"></a>
+
+### 参数
+
+#### `speed`
+
+播放速度。建议设置为 30 到 400 之间的值，具体如下：
+
+- 30：原始速度的 0.3 倍。
+- 100：原始速度。
+- 400：原始速度的 4 倍。
+
+<a id="api_imediaplayer_setplaybackspeed__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/en/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+
+<a id="api_imediaplayer_setplayeroption"></a>
+
+## setPlayerOption
+
+设置媒体播放器选项。
+
+<a id="api_imediaplayer_setplayeroption__prototype"></a>
+
+```java
+int setPlayerOption(String key, int value);
+```
+
+<a id="api_imediaplayer_setplayeroption__detailed_desc"></a>
+
+该方法用于通过 `key` 和 `value` 设置媒体播放器的选项。与 [setPlayerOptionString](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 不同，本方法的 `value` 参数类型为 `int`，而 [setPlayerOptionString](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的 `value` 参数类型为 `String`。这两个方法不能同时使用。一般情况下无需调用此方法，直接使用媒体播放器提供的默认选项即可。
+
+<a id="api_imediaplayer_setplayeroption__scenario"></a>
+
+### 适用场景
+
+适用于需要技术预览或特殊定制功能的场景。
+
+<a id="api_imediaplayer_setplayeroption__timing"></a>
+
+### 调用时机
+
+请在调用 `open` 或 [openWithMediaSource](/en/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法之前调用。
+
+<a id="api_imediaplayer_setplayeroption__parameters"></a>
+
+### 参数
+
+#### `key`
+
+选项的键。
+
+#### `value`
+
+选项的值。
+
+<a id="api_imediaplayer_setplayeroption__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/en/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+
+<a id="api_imediaplayer_setplayeroption2"></a>
+
+## setPlayerOptionString
+
+设置媒体播放器的参数选项。
+
+<a id="api_imediaplayer_setplayeroption2__prototype"></a>
+
+```java
+int setPlayerOptionString(String key, String value);
+```
+
+<a id="api_imediaplayer_setplayeroption2__detailed_desc"></a>
+
+该方法与 [setPlayerOption](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的区别在于： [setPlayerOptionString](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的 `value` 参数类型为 `String`，而 [setPlayerOption](/en/api-reference/rtc/android/playback/media-player/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的 `value` 参数类型也是 `String`。这两个方法不能同时使用。通常情况下无需调用该方法，直接使用媒体播放器提供的默认参数即可。
+
+<a id="api_imediaplayer_setplayeroption2__scenario"></a>
+
+### 适用场景
+
+适用于需要技术预览或特殊定制功能的场景。
+
+<a id="api_imediaplayer_setplayeroption2__timing"></a>
+
+### 调用时机
+
+请在调用 `open` 或 [openWithMediaSource](/en/api-reference/rtc/android/playback/media-player/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法之前调用本方法。
+
+<a id="api_imediaplayer_setplayeroption2__parameters"></a>
+
+### 参数
+
+#### `key`
+
+参数选项的键。
+
+#### `value`
+
+参数选项的值。
+
+<a id="api_imediaplayer_setplayeroption2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/en/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)
+
+<a id="api_imediaplayer_setview"></a>
+
+## setView
+
+设置渲染视图。
+
+<a id="api_imediaplayer_setview__prototype"></a>
+
+```java
+int setView(View videoView);
+```
+
+<a id="api_imediaplayer_setview__detailed_desc"></a>
+
+<a id="api_imediaplayer_setview__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或加入频道后调用该方法。
+
+<a id="api_imediaplayer_setview__parameters"></a>
+
+### 参数
+
+#### `videoView`
+
+渲染视图。
+
+<a id="api_imediaplayer_setview__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+
+### 所属接口类
+- [IMediaPlayer](/en/api-reference/rtc/android/full-sdk-api-list#class_imediaplayer)

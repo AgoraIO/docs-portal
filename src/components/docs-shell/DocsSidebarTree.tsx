@@ -25,13 +25,13 @@ type RenderableSidebarSectionNode = SidebarSectionNode & {
 };
 
 const sidebarToggleClassName =
-  'min-h-[34px] h-auto items-start justify-between rounded-[7px] px-3 py-1.5 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
+  'h-[30px] items-center justify-between rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
 
 const sidebarSubButtonClassName =
-  'min-h-[32px] h-auto items-start rounded-[7px] px-3 py-1.5 text-[12.75px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)]';
+  'h-[30px] rounded-[7px] px-3 text-[13px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)]';
 
 const sidebarPageButtonClassName =
-  'relative min-h-[34px] h-auto items-start rounded-[7px] px-3 py-1.5 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)]';
+  'relative h-[30px] items-center rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)]';
 
 const openApiSidebarButtonClassName =
   'h-auto min-h-[30px] items-start overflow-visible py-1.5';
@@ -197,12 +197,10 @@ function SidebarSection({
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
-          <span className="flex min-w-0 items-start gap-2">
-            <SidebarConfiguredIcon icon={node.icon} />
-            <span className="block text-pretty leading-[1.35] whitespace-normal">
-              {node.title}
-            </span>
-          </span>
+        <span className="flex min-w-0 items-center gap-2">
+          <SidebarConfiguredIcon icon={node.icon} />
+          <span className="block whitespace-normal">{node.title}</span>
+        </span>
         <ChevronDownIcon
           className={cn(
             'size-4 shrink-0 transition-transform',
@@ -286,11 +284,9 @@ function SidebarQuickstartGroup({
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
-        <span className="flex min-w-0 items-start gap-2">
+        <span className="flex min-w-0 items-center gap-2">
           <SidebarConfiguredIcon icon={icon} />
-          <span className="block text-pretty leading-[1.35] whitespace-normal">
-            {title}
-          </span>
+          <span className="block whitespace-normal">{title}</span>
         </span>
         <ChevronDownIcon
           className={cn(
@@ -308,13 +304,13 @@ function SidebarQuickstartGroup({
                 className={sidebarEndpointButtonClassName(child.method)}
                 isActive={child.url === activePath}
                 size="md"
+              >
+                <Link
+                  onClick={onSelectPath}
+                  params={{}}
+                  search={{}}
+                  to={child.url}
                 >
-                  <Link
-                    onClick={onSelectPath}
-                    params={{}}
-                    search={{}}
-                    to={child.url}
-                  >
                   <SidebarPageLabel
                     method={child.method}
                     title={getSidebarDisplayTitle(child.title, child.url)}
@@ -353,11 +349,9 @@ function SidebarNestedSection({
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
-        <span className="flex min-w-0 items-start gap-2">
+        <span className="flex min-w-0 items-center gap-2">
           <SidebarConfiguredIcon icon={node.icon} />
-          <span className="block text-pretty leading-[1.35] whitespace-normal">
-            {node.title}
-          </span>
+          <span className="block whitespace-normal">{node.title}</span>
         </span>
         <ChevronDownIcon
           className={cn(
@@ -383,13 +377,13 @@ function SidebarNestedSection({
                 isActive={child.url === activePath}
                 key={child.id}
                 size="md"
+              >
+                <Link
+                  onClick={onSelectPath}
+                  params={{}}
+                  search={{}}
+                  to={child.url}
                 >
-                  <Link
-                    onClick={onSelectPath}
-                    params={{}}
-                    search={{}}
-                    to={child.url}
-                  >
                   <SidebarPageLabel
                     method={child.method}
                     title={getSidebarDisplayTitle(child.title, child.url)}
@@ -611,10 +605,7 @@ function SidebarPageLink({
 }
 
 function sidebarEndpointButtonClassName(method?: string) {
-  return cn(
-    sidebarSubButtonClassName,
-    method && openApiSidebarButtonClassName,
-  );
+  return cn(sidebarSubButtonClassName, method && openApiSidebarButtonClassName);
 }
 
 function SidebarPageLabel({
@@ -629,7 +620,6 @@ function SidebarPageLabel({
       <span
         className={cn(
           'block min-w-0 flex-1 text-pretty leading-5 whitespace-normal',
-          'leading-[1.35]',
           method ? 'break-words' : 'overflow-hidden',
           !method &&
             '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
