@@ -1,7 +1,23 @@
 ---
 title: MDX component fixture
-description: Temporary fixture for validating MDX tabs and code blocks.
+description: Fixture for validating Fumadocs MDX components, docs content primitives, and local compatibility wrappers.
 ---
+
+# MDX component fixture
+
+This page intentionally stays in the docs tree so component and style changes can be checked in a real route.
+
+## Headings
+
+### Third-level heading
+
+#### Fourth-level heading
+
+##### Fifth-level heading
+
+###### Sixth-level heading
+
+The heading copy buttons, anchor links, and scroll margins should come from Fumadocs heading components while preserving local prose spacing.
 
 ## Plain code
 
@@ -42,6 +58,68 @@ pnpm add @agora/voice-agent
 bun add @agora/voice-agent
 ```
 
+## Normal tabs
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="mac-linux">macOS and Linux</TabsTrigger>
+  <TabsTrigger value="windows-powershell">Windows PowerShell</TabsTrigger>
+</TabsList>
+
+<TabsContent value="mac-linux">
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/AgoraIO/cli/main/install.sh | sh
+agora --version
+```
+
+</TabsContent>
+
+<TabsContent value="windows-powershell">
+
+```powershell
+irm https://raw.githubusercontent.com/AgoraIO/cli/main/install.ps1 | iex
+agora --version
+```
+
+</TabsContent>
+</Tabs>
+
+## Simple item tabs
+
+<Tabs items={["Python", "TypeScript", "Go"]}>
+  <Tab>
+
+```python
+print("voice agent ready")
+```
+
+  </Tab>
+  <Tab>
+
+```ts
+console.log("voice agent ready");
+```
+
+  </Tab>
+  <Tab>
+
+```go
+fmt.Println("voice agent ready")
+```
+
+  </Tab>
+</Tabs>
+
+## Cards
+
+<Cards>
+  <Card title="Quickstart" href="quickstart.md" description="Validates Fumadocs card links and local markdown href normalization." />
+  <Card title="Plain card" description="Cards without href should keep the same vendor chrome.">
+    Nested prose stays inside the Fumadocs card body.
+  </Card>
+</Cards>
+
 ## Callout directives
 
 :::info[Info callout]
@@ -59,6 +137,58 @@ Use tip for short recommendations.
 :::danger[Error callout]
 Legacy `danger` maps to the error callout style.
 :::
+
+<Callout type="success" title="Success callout">
+The explicit `Callout` component should use the same Fumadocs style surface as directive callouts.
+</Callout>
+
+<Callout type="idea" title="Idea callout">
+Idea uses the extra semantic Fumadocs token mapping.
+</Callout>
+
+## Steps
+
+<Steps>
+  <Step>
+    Create an Agora project and copy the App ID.
+  </Step>
+  <Step>
+    Install the SDK with the package manager tabs above.
+  </Step>
+  <Step>
+    Start the agent and verify media events.
+  </Step>
+</Steps>
+
+## Files
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <File name="agent.ts" />
+    <File name="config.ts" />
+  </Folder>
+  <Folder name="content">
+    <File name="quickstart.mdx" />
+  </Folder>
+  <File name="package.json" />
+</Files>
+
+## Accordions
+
+<Accordions>
+  <Accordion title="What should stay local?" id="what-stays-local">
+    Links keep local normalization because relative `.md` and `.mdx` hrefs need locale-aware docs routing.
+  </Accordion>
+  <Accordion title="What uses Fumadocs?" id="what-uses-fumadocs">
+    Headings, cards, callouts, code blocks, tabs, steps, files, and accordions use Fumadocs components and generated style utilities.
+  </Accordion>
+</Accordions>
+
+## Command block
+
+<CommandBlock code={`agora login
+agora project list
+agora agent start --channel demo`} />
 
 <a id="native-links-headings" />
 

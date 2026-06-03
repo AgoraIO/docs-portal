@@ -1,24 +1,29 @@
+import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+import { File, Files, Folder } from 'fumadocs-ui/components/files';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import {
+  Tab as FumadocsTab,
+  Tabs as FumadocsTabs,
+  TabsContent as FumadocsTabsContent,
+  TabsList as FumadocsTabsList,
+  TabsTrigger as FumadocsTabsTrigger,
+} from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
-import { CheckIcon, CopyIcon, TerminalSquareIcon } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 import {
   type AnchorHTMLAttributes,
   Children,
+  type ComponentProps,
+  type ComponentType,
   createContext,
   isValidElement,
   type ReactElement,
   type ReactNode,
   useContext,
-  useRef,
+  useEffect,
+  useMemo,
   useState,
 } from 'react';
-import { Button } from '@/components/ui/button';
-import {
-  Tabs as UiTabs,
-  TabsContent as UiTabsContent,
-  TabsList as UiTabsList,
-  TabsTrigger as UiTabsTrigger,
-} from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
 import { normalizeDocsHref } from '@/lib/docs-link-normalize';
 
@@ -26,82 +31,186 @@ type MDXContext = {
   contentPath?: string;
 };
 
-type PersistableTabsProps = Omit<
-  React.ComponentProps<typeof UiTabs>,
-  'onValueChange' | 'value'
-> & {
+const FumadocsPre = defaultMdxComponents.pre;
+const FumadocsAnchor = defaultMdxComponents.a;
+const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
+const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
+const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
+const CodeBlockTabsValueContext = createContext<string | undefined>(undefined);
+
+type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
+  children?: ReactNode;
   defaultValue?: string;
-  groupId?: string;
   onValueChange?: (value: string) => void;
-  persist?: boolean;
   value?: string;
 };
+type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
+  children?: ReactNode;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+  value?: string;
+};
+type PreProps = ComponentProps<typeof FumadocsPre>;
+type TabValueElement = ReactElement<{
+  children?: ReactNode;
+  value?: unknown;
+}>;
 
-type HeadingProps = React.ComponentProps<'h1'>;
+const ControlledFumadocsTabs = FumadocsTabs as ComponentType<TabsRootProps>;
 
-function Tabs(props: PersistableTabsProps) {
-  const { className, groupId, persist, ...tabsProps } = props;
-  const defaultValue =
-    props.defaultValue ??
-    props.value ??
-    getFirstTabsTriggerValue(props.children);
-  const tabState = usePersistentTabsValue({
-    ...props,
-    defaultValue,
-    groupId,
-    persist,
+function escapeTabValue(value: string) {
+  return value.toLowerCase().replace(/\s/, '-');
+}
+
+function collectTabValues(children: ReactNode, values: string[] = []) {
+  Children.forEach(children, (child) => {
+    if (!isValidElement(child)) {
+      return;
+    }
+
+    const element = child as TabValueElement;
+    const value = element.props.value;
+
+    if (typeof value === 'string' && !values.includes(value)) {
+      values.push(value);
+    }
+
+    collectTabValues(element.props.children, values);
   });
-  const { selectValue, ...rootTabState } = tabState;
 
-  return (
-    <PersistentTabsContext.Provider value={{ selectValue }}>
-      <UiTabs
-        className={cn('my-6 min-w-0 gap-3', className)}
-        {...tabsProps}
-        {...rootTabState}
-        data-tabs-group-id={groupId}
-        data-tabs-persist={persist ? 'true' : undefined}
-      />
-    </PersistentTabsContext.Provider>
-  );
+  return values;
 }
 
-function TabsList({
+function useSafeTabValue({
+  children,
+  defaultValue,
+  items,
+  onValueChange,
+  value,
+}: {
+  children?: ReactNode;
+  defaultValue?: string;
+  items?: string[];
+  onValueChange?: (value: string) => void;
+  value?: string;
+}) {
+  const values = useMemo(() => {
+    if (items?.length) {
+      return items.map(escapeTabValue);
+    }
+
+    return collectTabValues(children);
+  }, [children, items]);
+  const validValues = useMemo(() => new Set(values), [values]);
+  const fallbackValue = defaultValue ?? values.at(0);
+  const initialValue =
+    value ??
+    (defaultValue && validValues.has(defaultValue)
+      ? defaultValue
+      : fallbackValue);
+  const [internalValue, setInternalValue] = useState(initialValue);
+  const isControlled = value !== undefined;
+  const selectedValue = isControlled ? value : internalValue;
+  const safeValue =
+    selectedValue && (validValues.size === 0 || validValues.has(selectedValue))
+      ? selectedValue
+      : fallbackValue;
+
+  useEffect(() => {
+    if (!isControlled && safeValue !== internalValue) {
+      setInternalValue(safeValue);
+    }
+  }, [internalValue, isControlled, safeValue]);
+
+  function setSafeValue(nextValue: string) {
+    const next =
+      validValues.size === 0 || validValues.has(nextValue)
+        ? nextValue
+        : fallbackValue;
+
+    if (!next) {
+      return;
+    }
+
+    if (!isControlled) {
+      setInternalValue(next);
+    }
+
+    onValueChange?.(next);
+  }
+
+  return {
+    safeValue,
+    setSafeValue,
+  };
+}
+
+function Tabs({
+  children,
   className,
+  defaultValue,
+  items,
+  onValueChange,
+  value,
   ...props
-}: React.ComponentProps<typeof UiTabsList>) {
+}: TabsRootProps) {
+  const { safeValue, setSafeValue } = useSafeTabValue({
+    children,
+    defaultValue,
+    items,
+    onValueChange,
+    value,
+  });
+
   return (
-    <UiTabsList
-      className={cn(
-        'h-auto min-h-10 max-w-full flex-wrap justify-start overflow-visible rounded-none border-b bg-transparent p-0',
-        className,
-      )}
-      variant="line"
+    <ControlledFumadocsTabs
       {...props}
-    />
+      className={cn('bg-fd-card', className)}
+      defaultValue={defaultValue}
+      items={items}
+      onValueChange={setSafeValue}
+      value={safeValue}
+    >
+      {children}
+    </ControlledFumadocsTabs>
   );
 }
 
-function TabsTrigger({
+function CodeBlockTabs({
+  children,
   className,
-  onClick,
-  ...triggerProps
-}: React.ComponentProps<typeof UiTabsTrigger>) {
-  const persistentTabs = useContext(PersistentTabsContext);
+  defaultValue,
+  onValueChange,
+  value,
+  ...props
+}: CodeBlockTabsRootProps) {
+  const { safeValue, setSafeValue } = useSafeTabValue({
+    children,
+    defaultValue,
+    onValueChange,
+    value,
+  });
 
   return (
-    <UiTabsTrigger
-      className={cn(
-        'h-10 min-w-0 rounded-none px-3 text-[13px] font-medium whitespace-normal',
-        className,
-      )}
-      onClick={(event) => {
-        if (typeof triggerProps.value === 'string') {
-          persistentTabs?.selectValue(triggerProps.value);
-        }
-        onClick?.(event);
-      }}
-      {...triggerProps}
+    <FumadocsCodeBlockTabs
+      {...props}
+      className={cn('bg-fd-card', className)}
+      defaultValue={defaultValue}
+      onValueChange={setSafeValue}
+      value={safeValue}
+    >
+      <CodeBlockTabsValueContext value={safeValue}>
+        {children}
+      </CodeBlockTabsValueContext>
+    </FumadocsCodeBlockTabs>
+  );
+}
+
+function Pre({ className, ...props }: PreProps) {
+  return (
+    <FumadocsPre
+      className={cn('bg-fd-card shadow-none', className)}
+      {...props}
     />
   );
 }
@@ -109,64 +218,25 @@ function TabsTrigger({
 function TabsContent({
   className,
   ...props
-}: React.ComponentProps<typeof UiTabsContent>) {
+}: ComponentProps<typeof FumadocsTabsContent>) {
   return (
-    <UiTabsContent
-      className={cn('mt-0 min-w-0 rounded-md outline-none', className)}
+    <FumadocsTabsContent
+      className={cn(
+        '[&>figure:only-child]:bg-fd-card [&>figure:only-child]:shadow-none',
+        className,
+      )}
       {...props}
     />
-  );
-}
-
-const PersistentTabsContext = createContext<{
-  selectValue: (value: string) => void;
-} | null>(null);
-
-const CodeBlockTabsContext = createContext(false);
-
-function CodeBlockTabs(props: PersistableTabsProps) {
-  const { className, children, ...tabsProps } = props;
-
-  return (
-    <CodeBlockTabsContext.Provider value>
-      <Tabs
-        className={cn(
-          'not-prose my-6 gap-0 overflow-hidden rounded-md border bg-card shadow-xs',
-          className,
-        )}
-        {...tabsProps}
-      >
-        {children}
-      </Tabs>
-    </CodeBlockTabsContext.Provider>
   );
 }
 
 function CodeBlockTabsList({
   className,
   ...props
-}: React.ComponentProps<typeof UiTabsList>) {
+}: ComponentProps<typeof FumadocsCodeBlockTabsList>) {
   return (
-    <TabsList
-      className={cn(
-        'min-h-9 max-w-full flex-nowrap overflow-x-auto overflow-y-hidden border-b bg-muted/40 px-2 text-muted-foreground',
-        className,
-      )}
-      {...props}
-    />
-  );
-}
-
-function CodeBlockTabsTrigger({
-  className,
-  ...props
-}: React.ComponentProps<typeof UiTabsTrigger>) {
-  return (
-    <TabsTrigger
-      className={cn(
-        'h-9 shrink-0 px-2.5 font-mono text-xs whitespace-nowrap data-[state=active]:text-foreground',
-        className,
-      )}
+    <FumadocsCodeBlockTabsList
+      className={cn('bg-fd-card', className)}
       {...props}
     />
   );
@@ -174,178 +244,24 @@ function CodeBlockTabsTrigger({
 
 function CodeBlockTab({
   className,
+  value,
   ...props
-}: React.ComponentProps<typeof UiTabsContent>) {
+}: ComponentProps<typeof FumadocsCodeBlockTab>) {
+  const selectedValue = useContext(CodeBlockTabsValueContext);
+  const isInactive = selectedValue !== undefined && selectedValue !== value;
+
   return (
-    <TabsContent
+    <FumadocsCodeBlockTab
       className={cn(
-        'm-0 rounded-none border-0 p-0 data-[state=inactive]:hidden',
+        '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
         className,
       )}
+      forceMount
+      hidden={isInactive}
+      value={value}
       {...props}
     />
   );
-}
-
-type CodeBlockPreProps = React.ComponentProps<'pre'> & {
-  icon?: ReactNode;
-  title?: ReactNode;
-  'data-line-numbers'?: boolean | string;
-  'data-line-numbers-start'?: number | string;
-};
-
-function Pre({
-  children,
-  className,
-  icon,
-  title,
-  'data-line-numbers': lineNumbers,
-  'data-line-numbers-start': lineNumbersStart,
-  ...props
-}: CodeBlockPreProps) {
-  const inCodeTab = useContext(CodeBlockTabsContext);
-  const preRef = useRef<HTMLPreElement>(null);
-  const [copied, setCopied] = useState(false);
-  const shouldShowLineNumbers =
-    lineNumbers !== undefined &&
-    lineNumbers !== false &&
-    lineNumbers !== 'false';
-  const lineNumberStart =
-    typeof lineNumbersStart === 'number'
-      ? lineNumbersStart
-      : Number.parseInt(String(lineNumbersStart ?? 1), 10) || 1;
-
-  async function handleCopy() {
-    const text = preRef.current?.textContent?.trimEnd();
-
-    if (!text) {
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
-      copyWithSelectionFallback(preRef.current);
-    }
-
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1500);
-  }
-
-  return (
-    <figure
-      className={cn(
-        'not-prose relative overflow-hidden rounded-md border bg-card text-sm shadow-xs',
-        inCodeTab
-          ? '-mx-px -mb-px rounded-t-none border-x-0 border-b-0'
-          : 'my-6',
-      )}
-      data-testid="mdx-code-block"
-      style={{
-        counterReset: shouldShowLineNumbers
-          ? `line ${lineNumberStart - 1}`
-          : undefined,
-      }}
-    >
-      {title ? (
-        <figcaption className="flex min-h-9 items-center gap-2 border-b bg-muted/40 px-3 text-xs text-muted-foreground">
-          <CodeBlockIcon icon={icon} />
-          <span className="min-w-0 flex-1 truncate">{title}</span>
-          <CopyCodeButton copied={copied} onClick={() => void handleCopy()} />
-        </figcaption>
-      ) : (
-        <div className="absolute top-2 right-2 z-10 rounded-md bg-card/80 backdrop-blur">
-          <CopyCodeButton copied={copied} onClick={() => void handleCopy()} />
-        </div>
-      )}
-      <pre
-        className={cn(
-          'm-0 max-h-[600px] overflow-auto bg-transparent px-3 py-3 pr-12 font-mono text-[13px] leading-5 text-foreground [tab-size:2]',
-          '[&_code]:block [&_code]:min-w-max [&_code]:border-0 [&_code]:bg-transparent [&_code]:p-0 [&_code]:text-inherit',
-          shouldShowLineNumbers &&
-            '[&_code>.line]:grid [&_code>.line]:grid-cols-[2.5rem_1fr] [&_code>.line]:gap-3 [&_code>.line]:before:select-none [&_code>.line]:before:text-right [&_code>.line]:before:text-muted-foreground [&_code>.line]:before:content-[counter(line)] [&_code>.line]:before:[counter-increment:line]',
-          className,
-        )}
-        ref={preRef}
-        {...props}
-      >
-        {children}
-      </pre>
-    </figure>
-  );
-}
-
-function CopyCodeButton({
-  copied,
-  onClick,
-}: {
-  copied: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <Button
-      aria-label={copied ? 'Code copied' : 'Copy code'}
-      className="text-muted-foreground hover:text-foreground"
-      onClick={onClick}
-      size="icon-xs"
-      type="button"
-      variant="ghost"
-    >
-      {copied ? <CheckIcon /> : <CopyIcon />}
-    </Button>
-  );
-}
-
-function CodeBlockIcon({ icon }: { icon?: ReactNode }) {
-  if (!icon) {
-    return (
-      <TerminalSquareIcon
-        aria-hidden="true"
-        className="text-muted-foreground"
-      />
-    );
-  }
-
-  if (typeof icon === 'string') {
-    const svg = parseCodeBlockIcon(icon);
-
-    if (!svg) {
-      return (
-        <TerminalSquareIcon
-          aria-hidden="true"
-          className="text-muted-foreground"
-        />
-      );
-    }
-
-    return (
-      <span
-        aria-hidden="true"
-        className="text-muted-foreground [&_svg]:size-3.5"
-        role="img"
-      >
-        <svg aria-hidden="true" viewBox={svg.viewBox}>
-          <path d={svg.pathD} fill={svg.fill} />
-        </svg>
-      </span>
-    );
-  }
-
-  return <span className="text-muted-foreground [&_svg]:size-3.5">{icon}</span>;
-}
-
-function copyWithSelectionFallback(node: HTMLElement | null) {
-  if (!node || typeof window === 'undefined') {
-    return;
-  }
-
-  const selection = window.getSelection();
-  const range = document.createRange();
-  range.selectNodeContents(node);
-  selection?.removeAllRanges();
-  selection?.addRange(range);
-  document.execCommand('copy');
-  selection?.removeAllRanges();
 }
 
 function CommandBlock({
@@ -382,97 +298,6 @@ function CommandBlock({
   );
 }
 
-function parseCodeBlockIcon(icon: string) {
-  const viewBox = icon.match(/\bviewBox=(["'])(?<value>[^"']+)\1/)?.groups
-    ?.value;
-  const pathD = icon.match(/\bd=(["'])(?<value>[^"']+)\1/)?.groups?.value;
-  const fill = icon.match(/\bfill=(["'])(?<value>[^"']+)\1/)?.groups?.value;
-
-  if (!viewBox || !pathD) {
-    return undefined;
-  }
-
-  return {
-    fill: fill ?? 'currentColor',
-    pathD,
-    viewBox,
-  };
-}
-
-function getFirstTabsTriggerValue(children: ReactNode): string | undefined {
-  return getTabsTriggerValues(children).at(0);
-}
-
-function getTabsTriggerValues(children: ReactNode): string[] {
-  const values: string[] = [];
-
-  for (const child of Children.toArray(children)) {
-    if (!isValidElement(child)) {
-      continue;
-    }
-
-    const childProps = (
-      child as ReactElement<{
-        children?: ReactNode;
-        value?: unknown;
-      }>
-    ).props;
-
-    if (typeof childProps.value === 'string') {
-      values.push(childProps.value);
-    }
-
-    values.push(...getTabsTriggerValues(childProps.children));
-  }
-
-  return values;
-}
-
-function usePersistentTabsValue({
-  children,
-  defaultValue,
-  groupId,
-  onValueChange,
-  persist,
-  value,
-}: PersistableTabsProps) {
-  const validValues = getTabsTriggerValues(children);
-  const fallbackValue = defaultValue ?? value ?? validValues.at(0);
-  const storageKey = persist && groupId ? `docs-tabs:${groupId}` : null;
-  const isControlled = value !== undefined;
-  const [storedValue, setStoredValue] = useState(() => {
-    if (!storageKey || isControlled || typeof window === 'undefined') {
-      return fallbackValue;
-    }
-
-    const saved = window.localStorage.getItem(storageKey);
-    return saved && (validValues.length === 0 || validValues.includes(saved))
-      ? saved
-      : fallbackValue;
-  });
-  const selectValue = (nextValue: string) => {
-    if (
-      storageKey &&
-      (validValues.length === 0 || validValues.includes(nextValue))
-    ) {
-      window.localStorage.setItem(storageKey, nextValue);
-    }
-
-    if (!isControlled) {
-      setStoredValue(nextValue);
-    }
-
-    onValueChange?.(nextValue);
-  };
-
-  return {
-    defaultValue: isControlled ? defaultValue : undefined,
-    onValueChange: selectValue,
-    selectValue,
-    value: isControlled ? value : storedValue,
-  };
-}
-
 function createDocsAnchor(contentPath?: string) {
   function DocsAnchor({
     href,
@@ -483,20 +308,10 @@ function createDocsAnchor(contentPath?: string) {
         ? normalizeDocsHref(href, { contentPath }).href
         : href;
 
-    return <a href={normalizedHref} {...props} />;
+    return <FumadocsAnchor href={normalizedHref} {...props} />;
   }
 
   return DocsAnchor;
-}
-
-function createHeading(level: 1 | 2 | 3 | 4 | 5 | 6) {
-  const Tag = `h${level}` as const;
-
-  function Heading({ children, ...props }: HeadingProps) {
-    return <Tag {...props}>{children}</Tag>;
-  }
-
-  return Heading;
 }
 
 export function getMDXComponents(
@@ -507,21 +322,22 @@ export function getMDXComponents(
     ...defaultMdxComponents,
     a: createDocsAnchor(context?.contentPath),
     CommandBlock,
-    pre: Pre,
     Tabs,
+    Tab: FumadocsTab,
     TabsContent,
-    TabsList,
-    TabsTrigger,
-    CodeBlockTab,
+    TabsList: FumadocsTabsList,
+    TabsTrigger: FumadocsTabsTrigger,
     CodeBlockTabs,
     CodeBlockTabsList,
-    CodeBlockTabsTrigger,
-    h1: createHeading(1),
-    h2: createHeading(2),
-    h3: createHeading(3),
-    h4: createHeading(4),
-    h5: createHeading(5),
-    h6: createHeading(6),
+    CodeBlockTab,
+    pre: Pre,
+    Accordion,
+    Accordions,
+    File,
+    Files,
+    Folder,
+    Step,
+    Steps,
     ...components,
   } satisfies MDXComponents;
 }
