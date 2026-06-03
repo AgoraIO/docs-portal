@@ -1,4 +1,35 @@
 @import "tailwindcss" source('../');
+@import "fumadocs-ui/css/lib/default-colors.css";
+@import "fumadocs-ui/css/preset.css";
+
+:root {
+  --color-fd-background: var(--background);
+  --color-fd-foreground: var(--foreground);
+  --color-fd-card: var(--card);
+  --color-fd-card-foreground: var(--card-foreground);
+  --color-fd-popover: var(--popover);
+  --color-fd-popover-foreground: var(--popover-foreground);
+  --color-fd-primary: var(--primary);
+  --color-fd-primary-foreground: var(--primary-foreground);
+  --color-fd-secondary: var(--secondary);
+  --color-fd-secondary-foreground: var(--secondary-foreground);
+  --color-fd-muted: var(--muted);
+  --color-fd-muted-foreground: var(--muted-foreground);
+  --color-fd-accent: var(--accent);
+  --color-fd-accent-foreground: var(--accent-foreground);
+  --color-fd-border: var(--border);
+  --color-fd-ring: var(--ring);
+  --color-fd-overlay: var(--docs-overlay);
+  --color-fd-info: var(--docs-info);
+  --color-fd-warning: var(--docs-warning);
+  --color-fd-error: var(--docs-error);
+  --color-fd-success: var(--docs-success);
+  --color-fd-idea: var(--docs-idea);
+  --color-fd-diff-remove: var(--docs-diff-remove);
+  --color-fd-diff-remove-symbol: var(--docs-diff-remove-symbol);
+  --color-fd-diff-add: var(--docs-diff-add);
+  --color-fd-diff-add-symbol: var(--docs-diff-add-symbol);
+}
 
 @font-face {
   font-family: "MiSans";
@@ -148,6 +179,16 @@
     --accent-brand: oklch(0.32 0.02 270);
     --accent-brand-soft: oklch(0.32 0.02 270 / 0.08);
     --accent-brand-ring: oklch(0.32 0.02 270 / 0.22);
+    --docs-overlay: rgb(14 15 18 / 0.18);
+    --docs-info: #2563eb;
+    --docs-warning: #b45309;
+    --docs-error: #dc2626;
+    --docs-success: #059669;
+    --docs-idea: #d97706;
+    --docs-diff-remove: rgb(220 38 38 / 0.1);
+    --docs-diff-remove-symbol: #dc2626;
+    --docs-diff-add: rgb(22 163 74 / 0.1);
+    --docs-diff-add-symbol: #16a34a;
     --docs-shadow-sm:
       0 1px 0 rgb(14 15 18 / 0.04), 0 1px 2px rgb(14 15 18 / 0.04);
     --docs-shadow-md:
@@ -176,6 +217,8 @@
     --color-fd-foreground: var(--foreground);
     --color-fd-card: var(--card);
     --color-fd-card-foreground: var(--card-foreground);
+    --color-fd-popover: var(--popover);
+    --color-fd-popover-foreground: var(--popover-foreground);
     --color-fd-primary: var(--primary);
     --color-fd-primary-foreground: var(--primary-foreground);
     --color-fd-secondary: var(--secondary);
@@ -185,6 +228,17 @@
     --color-fd-accent: var(--accent);
     --color-fd-accent-foreground: var(--accent-foreground);
     --color-fd-border: var(--border);
+    --color-fd-ring: var(--ring);
+    --color-fd-overlay: var(--docs-overlay);
+    --color-fd-info: var(--docs-info);
+    --color-fd-warning: var(--docs-warning);
+    --color-fd-error: var(--docs-error);
+    --color-fd-success: var(--docs-success);
+    --color-fd-idea: var(--docs-idea);
+    --color-fd-diff-remove: var(--docs-diff-remove);
+    --color-fd-diff-remove-symbol: var(--docs-diff-remove-symbol);
+    --color-fd-diff-add: var(--docs-diff-add);
+    --color-fd-diff-add-symbol: var(--docs-diff-add-symbol);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
 
@@ -214,6 +268,16 @@
     --accent-brand: oklch(0.88 0.02 270);
     --accent-brand-soft: oklch(0.88 0.02 270 / 0.12);
     --accent-brand-ring: oklch(0.88 0.02 270 / 0.24);
+    --docs-overlay: rgb(0 0 0 / 0.5);
+    --docs-info: #60a5fa;
+    --docs-warning: #f59e0b;
+    --docs-error: #f87171;
+    --docs-success: #34d399;
+    --docs-idea: #fbbf24;
+    --docs-diff-remove: rgb(248 113 113 / 0.14);
+    --docs-diff-remove-symbol: #f87171;
+    --docs-diff-add: rgb(52 211 153 / 0.12);
+    --docs-diff-add-symbol: #34d399;
     --docs-shadow-sm: 0 1px 0 rgb(0 0 0 / 0.25);
     --docs-shadow-md: 0 8px 24px -10px rgb(0 0 0 / 0.5);
 
@@ -610,6 +674,42 @@
     border-color: var(--line);
   }
 
+  .prose :where([data-card]):not(:where(.not-prose, .not-prose *)) {
+    text-decoration: none;
+  }
+
+  .prose :where(.group\/heading):not(:where(.not-prose, .not-prose *)) {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .prose :where(.group\/heading > a):not(:where(.not-prose, .not-prose *)) {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .prose
+    :where(.group\/heading > a):not(:where(.not-prose, .not-prose *)):hover {
+    background: transparent;
+  }
+
+  .prose
+    :where(.group\/heading > button):not(:where(.not-prose, .not-prose *)) {
+    opacity: 0;
+  }
+
+  .prose
+    :where(.group\/heading:hover > button):not(
+      :where(.not-prose, .not-prose *)
+    ),
+  .prose
+    :where(.group\/heading > button:focus-visible):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+    opacity: 1;
+  }
+
   .docs-brand-mark {
     position: relative;
     height: 26px;
@@ -809,4 +909,16 @@
   --sidebar-accent-foreground: var(--accent-brand);
   --sidebar-border: var(--line);
   --sidebar-ring: var(--accent-brand-ring);
+}
+
+@layer utilities {
+  .docs-body :where(*) {
+    --tw-shadow: none;
+    --tw-shadow-colored: none;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-inset-shadow: 0 0 #0000;
+    --tw-inset-ring-shadow: 0 0 #0000;
+    --tw-ring-offset-shadow: 0 0 #0000;
+    box-shadow: none;
+  }
 }
