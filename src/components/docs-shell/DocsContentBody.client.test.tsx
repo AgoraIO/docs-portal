@@ -37,6 +37,18 @@ describe('DocsContentBodyClient', () => {
     expect(options.components.OverviewSpotlightGrid).toBeDefined();
   });
 
+  it('injects page-specific recipe catalog widgets only for the recipes index', () => {
+    useDocsContentMock.mockReturnValueOnce(<p>Recipes</p>);
+
+    render(
+      <DocsContentBodyClient contentPath="en/api-reference/recipes/index.mdx" />,
+    );
+
+    const [, options] = useDocsContentMock.mock.calls[0];
+    expect(options.components.RecipesCatalog).toBeDefined();
+    expect(options.components.FeatureCard).toBeDefined();
+  });
+
   it('does not inject overview widgets into regular docs pages', () => {
     useDocsContentMock.mockReturnValueOnce(<p>Regular page</p>);
 

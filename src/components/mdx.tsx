@@ -37,6 +37,8 @@ type PersistableTabsProps = Omit<
   value?: string;
 };
 
+type HeadingProps = React.ComponentProps<'h1'>;
+
 function Tabs(props: PersistableTabsProps) {
   const { className, groupId, persist, ...tabsProps } = props;
   const defaultValue =
@@ -71,7 +73,7 @@ function TabsList({
   return (
     <UiTabsList
       className={cn(
-        'h-auto min-h-10 w-full justify-start overflow-x-auto rounded-none border-b bg-transparent p-0',
+        'h-auto min-h-10 max-w-full flex-wrap justify-start overflow-visible rounded-none border-b bg-transparent p-0',
         className,
       )}
       variant="line"
@@ -90,7 +92,7 @@ function TabsTrigger({
   return (
     <UiTabsTrigger
       className={cn(
-        'h-10 flex-none rounded-none px-3 text-[13px] font-medium',
+        'h-10 min-w-0 rounded-none px-3 text-[13px] font-medium whitespace-normal',
         className,
       )}
       onClick={(event) => {
@@ -147,7 +149,7 @@ function CodeBlockTabsList({
   return (
     <TabsList
       className={cn(
-        'min-h-9 border-b bg-muted/40 px-2 text-muted-foreground',
+        'min-h-9 max-w-full flex-nowrap overflow-x-auto overflow-y-hidden border-b bg-muted/40 px-2 text-muted-foreground',
         className,
       )}
       {...props}
@@ -162,7 +164,7 @@ function CodeBlockTabsTrigger({
   return (
     <TabsTrigger
       className={cn(
-        'h-9 px-2.5 font-mono text-xs data-[state=active]:text-foreground',
+        'h-9 shrink-0 px-2.5 font-mono text-xs whitespace-nowrap data-[state=active]:text-foreground',
         className,
       )}
       {...props}
@@ -487,6 +489,16 @@ function createDocsAnchor(contentPath?: string) {
   return DocsAnchor;
 }
 
+function createHeading(level: 1 | 2 | 3 | 4 | 5 | 6) {
+  const Tag = `h${level}` as const;
+
+  function Heading({ children, ...props }: HeadingProps) {
+    return <Tag {...props}>{children}</Tag>;
+  }
+
+  return Heading;
+}
+
 export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
@@ -504,6 +516,12 @@ export function getMDXComponents(
     CodeBlockTabs,
     CodeBlockTabsList,
     CodeBlockTabsTrigger,
+    h1: createHeading(1),
+    h2: createHeading(2),
+    h3: createHeading(3),
+    h4: createHeading(4),
+    h5: createHeading(5),
+    h6: createHeading(6),
     ...components,
   } satisfies MDXComponents;
 }

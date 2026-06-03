@@ -12,6 +12,7 @@ const overviewContentPaths = new Set([
   'en/introduction/realtime-audio-video.mdx',
   'en/introduction/messaging-presence.mdx',
   'en/introduction/cloud-media-services.mdx',
+  'en/api-reference/recipes/index.mdx',
   'en/solutions/index.mdx',
   'zh-CN/solutions/index.mdx',
 ]);

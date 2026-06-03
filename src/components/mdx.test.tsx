@@ -25,25 +25,9 @@ type AnchorComponent = ComponentType<{
   children: ReactNode;
   href: string;
 }>;
-type RecipesCatalogComponent = ComponentType<{
-  allCategoriesLabel: string;
-  allProductsLabel: string;
-  allStacksLabel: string;
-  categoryFilterLabel: string;
-  clearFiltersLabel: string;
-  emptyMessage: string;
-  items: Array<{
-    category: string;
-    description: string;
-    href: string;
-    product: string;
-    stack?: string;
-    title: string;
-    tone?: 'blue' | 'green' | 'pink' | 'purple' | 'sand';
-  }>;
-  productFilterLabel: string;
-  searchPlaceholder: string;
-  stackFilterLabel: string;
+type HeadingComponent = ComponentType<{
+  children: ReactNode;
+  id?: string;
 }>;
 
 describe('common MDX registry', () => {
@@ -72,6 +56,72 @@ describe('common MDX registry', () => {
     expect(screen.getByRole('link', { name: 'External' })).toHaveAttribute(
       'href',
       'https://example.com/page.md',
+    );
+  });
+
+  it('renders headings without Fumadocs copy-anchor chrome', () => {
+    const components = getMDXComponents();
+    const Heading = components.h2 as HeadingComponent;
+
+    render(<Heading id="install">Install Agora skills</Heading>);
+
+    const heading = screen.getByRole('heading', {
+      level: 2,
+      name: 'Install Agora skills',
+    });
+
+    expect(heading).toHaveAttribute('id', 'install');
+    expect(
+      within(heading).queryByRole('button', { name: /copy anchor/i }),
+    ).not.toBeInTheDocument();
+    expect(within(heading).queryByRole('link')).not.toBeInTheDocument();
+  });
+
+  it('keeps normal tab triggers wrapping instead of overflowing', () => {
+    const components = getMDXComponents();
+    const Tabs = components.Tabs as TabsComponent;
+    const TabsList = components.TabsList as TabsComponent;
+    const TabsTrigger = components.TabsTrigger as TabsChildComponent;
+
+    render(
+      <Tabs defaultValue="mac">
+        <TabsList>
+          <TabsTrigger value="mac">macOS and Linux</TabsTrigger>
+          <TabsTrigger value="windows">Windows PowerShell</TabsTrigger>
+        </TabsList>
+      </Tabs>,
+    );
+
+    const tablist = screen.getByRole('tablist');
+
+    expect(tablist).toHaveClass('flex-wrap');
+    expect(tablist).toHaveClass('max-w-full');
+  });
+
+  it('keeps generated code tab triggers constrained to the code block', () => {
+    const components = getMDXComponents();
+    const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
+    const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
+    const CodeBlockTabsTrigger =
+      components.CodeBlockTabsTrigger as TabsChildComponent;
+
+    render(
+      <CodeBlockTabs defaultValue="python">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="typescript">
+            TypeScript
+          </CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+      </CodeBlockTabs>,
+    );
+
+    const tablist = screen.getByRole('tablist');
+
+    expect(tablist).toHaveClass('max-w-full');
+    expect(tablist).toHaveClass('overflow-x-auto');
+    expect(screen.getByRole('tab', { name: 'TypeScript' })).toHaveClass(
+      'shrink-0',
     );
   });
 
@@ -241,64 +291,6 @@ describe('common MDX registry', () => {
     expect(components.SolutionCardGrid).toBeUndefined();
     expect(components.OverviewSpotlightGrid).toBeUndefined();
     expect(components.OverviewToolkits).toBeUndefined();
-  });
-});
-
-describe('RecipesCatalog', () => {
-  it('filters cards by selected category and search query', () => {
-    const components = getMDXComponents();
-    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
-
-    render(
-      <RecipesCatalog
-        allCategoriesLabel="All recipe types"
-        allProductsLabel="All products"
-        allStacksLabel="All stacks"
-        categoryFilterLabel="Recipe type"
-        clearFiltersLabel="Clear filters"
-        emptyMessage="No recipes match the current filters."
-        items={[
-          {
-            category: 'Quickstart',
-            description: 'Create a voice agent in Python.',
-            href: '/en/api-reference/recipes/python-quickstart',
-            product: 'Voice AI',
-            stack: 'Python',
-            title: 'Python Quickstart',
-            tone: 'blue',
-          },
-          {
-            category: 'Use case',
-            description: 'A wellness-oriented scenario reference.',
-            href: '/en/api-reference/recipes/wellness-coach',
-            product: 'Voice AI',
-            stack: 'Python',
-            title: 'Wellness Coach',
-            tone: 'pink',
-          },
-        ]}
-        productFilterLabel="Product"
-        searchPlaceholder="Search recipes"
-        stackFilterLabel="Stack"
-      />,
-    );
-
-    expect(screen.getByRole('link', { name: /Python Quickstart/i })).toBeVisible();
-    expect(screen.getByRole('link', { name: /Wellness Coach/i })).toBeVisible();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Use case' }));
-
-    expect(
-      screen.queryByRole('link', { name: /Python Quickstart/i }),
-    ).not.toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Wellness Coach/i })).toBeVisible();
-
-    fireEvent.change(screen.getByPlaceholderText('Search recipes'), {
-      target: { value: 'nomatch' },
-    });
-
-    expect(
-      screen.getByText('No recipes match the current filters.'),
-    ).toBeVisible();
+    expect(components.RecipesCatalog).toBeUndefined();
   });
 });

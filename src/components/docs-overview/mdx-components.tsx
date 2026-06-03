@@ -13,7 +13,12 @@ import {
   ZapIcon,
 } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
-import type { ReactNode } from 'react';
+import {
+  type ReactNode,
+  useDeferredValue,
+  useMemo,
+  useState,
+} from 'react';
 import { cn } from '@/lib/cn';
 
 export function getOverviewMDXComponents(): MDXComponents {
@@ -23,6 +28,7 @@ export function getOverviewMDXComponents(): MDXComponents {
     OverviewSpotlightCard,
     OverviewSpotlightGrid,
     OverviewToolkits,
+    RecipesCatalog,
     SolutionCard,
     SolutionCardGrid,
     ToolkitGroup,
@@ -194,6 +200,17 @@ type SolutionCardIconKind =
 
 type SolutionCardTone = 'blue' | 'green' | 'pink' | 'purple' | 'sand';
 
+type RecipeCatalogItem = {
+  category: string;
+  description: string;
+  href: string;
+  product: string;
+  stack?: string;
+  tags?: string[];
+  title: string;
+  tone?: SolutionCardTone;
+};
+
 function SolutionCard({
   description,
   href,
@@ -255,6 +272,235 @@ function SolutionCard({
       ) : null}
     </a>
   );
+}
+
+function RecipesCatalog({
+  allCategoriesLabel,
+  allProductsLabel,
+  allStacksLabel,
+  categoryFilterLabel,
+  clearFiltersLabel,
+  emptyMessage,
+  items,
+  productFilterLabel,
+  searchPlaceholder,
+  stackFilterLabel,
+}: {
+  allCategoriesLabel: string;
+  allProductsLabel: string;
+  allStacksLabel: string;
+  categoryFilterLabel: string;
+  clearFiltersLabel: string;
+  emptyMessage: string;
+  items: RecipeCatalogItem[];
+  productFilterLabel: string;
+  searchPlaceholder: string;
+  stackFilterLabel: string;
+}) {
+  const [query, setQuery] = useState('');
+  const [activeProduct, setActiveProduct] = useState(allProductsLabel);
+  const [activeCategory, setActiveCategory] = useState(allCategoriesLabel);
+  const [activeStack, setActiveStack] = useState(allStacksLabel);
+  const deferredQuery = useDeferredValue(query);
+
+  const products = useMemo(
+    () => [allProductsLabel, ...getUniqueValues(items.map((item) => item.product))],
+    [allProductsLabel, items],
+  );
+  const categories = useMemo(
+    () => [
+      allCategoriesLabel,
+      ...getUniqueValues(items.map((item) => item.category)),
+    ],
+    [allCategoriesLabel, items],
+  );
+  const stacks = useMemo(
+    () => [
+      allStacksLabel,
+      ...getUniqueValues(items.map((item) => item.stack).filter(Boolean)),
+    ],
+    [allStacksLabel, items],
+  );
+
+  const filteredItems = useMemo(() => {
+    const normalizedQuery = normalizeRecipeFilterValue(deferredQuery);
+
+    return items.filter((item) => {
+      if (
+        activeProduct !== allProductsLabel &&
+        item.product !== activeProduct
+      ) {
+        return false;
+      }
+
+      if (
+        activeCategory !== allCategoriesLabel &&
+        item.category !== activeCategory
+      ) {
+        return false;
+      }
+
+      if (
+        activeStack !== allStacksLabel &&
+        (item.stack ?? '') !== activeStack
+      ) {
+        return false;
+      }
+
+      if (!normalizedQuery) {
+        return true;
+      }
+
+      const haystack = normalizeRecipeFilterValue(
+        [
+          item.title,
+          item.description,
+          item.product,
+          item.category,
+          item.stack,
+          ...(item.tags ?? []),
+        ]
+          .filter(Boolean)
+          .join(' '),
+      );
+
+      return haystack.includes(normalizedQuery);
+    });
+  }, [
+    activeCategory,
+    activeProduct,
+    activeStack,
+    allCategoriesLabel,
+    allProductsLabel,
+    allStacksLabel,
+    deferredQuery,
+    items,
+  ]);
+  const hasActiveFilters =
+    query.length > 0 ||
+    activeProduct !== allProductsLabel ||
+    activeCategory !== allCategoriesLabel ||
+    activeStack !== allStacksLabel;
+
+  return (
+    <section className="not-prose my-8">
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <label className="min-w-0 flex-1">
+          <span className="sr-only">{searchPlaceholder}</span>
+          <input
+            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground shadow-xs outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={searchPlaceholder}
+            type="search"
+            value={query}
+          />
+        </label>
+        {hasActiveFilters ? (
+          <button
+            className="h-10 rounded-md border border-border px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+            onClick={() => {
+              setQuery('');
+              setActiveProduct(allProductsLabel);
+              setActiveCategory(allCategoriesLabel);
+              setActiveStack(allStacksLabel);
+            }}
+            type="button"
+          >
+            {clearFiltersLabel}
+          </button>
+        ) : null}
+      </div>
+      <div className="mt-5 grid gap-4">
+        <RecipesCatalogFilterGroup
+          activeValue={activeProduct}
+          label={productFilterLabel}
+          onSelect={setActiveProduct}
+          values={products}
+        />
+        <RecipesCatalogFilterGroup
+          activeValue={activeCategory}
+          label={categoryFilterLabel}
+          onSelect={setActiveCategory}
+          values={categories}
+        />
+        <RecipesCatalogFilterGroup
+          activeValue={activeStack}
+          label={stackFilterLabel}
+          onSelect={setActiveStack}
+          values={stacks}
+        />
+      </div>
+      {filteredItems.length > 0 ? (
+        <SolutionCardGrid size="small">
+          {filteredItems.map((item) => (
+            <SolutionCard
+              description={item.description}
+              href={item.href}
+              key={item.href}
+              size="small"
+              tags={[
+                item.product,
+                item.category,
+                ...(item.stack ? [item.stack] : []),
+                ...(item.tags ?? []),
+              ]}
+              title={item.title}
+              tone={item.tone ?? 'blue'}
+            />
+          ))}
+        </SolutionCardGrid>
+      ) : (
+        <div className="mt-6 rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center text-sm text-muted-foreground">
+          {emptyMessage}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function RecipesCatalogFilterGroup({
+  activeValue,
+  label,
+  onSelect,
+  values,
+}: {
+  activeValue: string;
+  label: string;
+  onSelect: (value: string) => void;
+  values: string[];
+}) {
+  return (
+    <div className="grid gap-2">
+      <p className="m-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        {label}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {values.map((value) => (
+          <button
+            className={cn(
+              'rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors',
+              value === activeValue
+                ? 'border-primary/30 bg-primary/10 text-foreground'
+                : 'border-border bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground',
+            )}
+            key={value}
+            onClick={() => onSelect(value)}
+            type="button"
+          >
+            {value}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function getUniqueValues(values: Array<string | undefined>) {
+  return [...new Set(values.filter((value): value is string => Boolean(value)))];
+}
+
+function normalizeRecipeFilterValue(value: string) {
+  return value.trim().toLowerCase();
 }
 
 function getSolutionToneClasses(tone: SolutionCardTone) {
