@@ -55,7 +55,9 @@ export function DocsSidebarTree({
   const renderableNodes = normalizeRootSections(
     normalizeBuildNestedSections(
       mergeBestPracticesIntoBuild(
-        mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
+        expandReferenceProductSections(
+          mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
+        ),
       ),
     ),
   );
@@ -548,6 +550,30 @@ function normalizeRootSections(
         }
       : node,
   );
+}
+
+function expandReferenceProductSections(
+  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
+) {
+  const referenceProducts = new Set([
+    'Conversational AI',
+    'Real-Time Communication RTC',
+    'Real-Time Messaging RTM',
+  ]);
+
+  return nodes.map((node) => {
+    if (
+      node.type !== 'section' ||
+      !referenceProducts.has(node.title)
+    ) {
+      return node;
+    }
+
+    return {
+      ...node,
+      collapsible: false,
+    };
+  });
 }
 
 function SidebarPageLink({

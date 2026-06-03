@@ -253,6 +253,40 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
+  it('renders reference product sections as always-expanded headings', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/api-reference/conversational-ai/android',
+            title: 'Android',
+            type: 'page',
+            url: '/en/api-reference/conversational-ai/android',
+          },
+          {
+            id: '/en/api-reference/conversational-ai/ios',
+            title: 'iOS',
+            type: 'page',
+            url: '/en/api-reference/conversational-ai/ios',
+          },
+        ],
+        collapsible: true,
+        id: 'convoai-section',
+        title: 'Conversational AI',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/api-reference/conversational-ai/android');
+
+    expect(await screen.findByText('Conversational AI')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Android' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'iOS' })).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /Conversational AI/i }),
+    ).toBeNull();
+  });
+
   it('opens the realtime section by default on the introduction index page', async () => {
     const tree: DocsSidebarNode[] = [
       {
