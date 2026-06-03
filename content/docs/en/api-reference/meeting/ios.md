@@ -1,6 +1,6 @@
 ---
 title: iOS
-description: Placeholder page for the Flexible Classroom iOS API reference.
+description: Placeholder page for the Meeting iOS API reference.
 ---
 
-This is a placeholder page for the Flexible Classroom iOS API reference.
+This is a placeholder page for the Meeting iOS API reference.

@@ -1,6 +1,6 @@
 ---
 title: RESTful
-description: Placeholder page for the Flexible Classroom RESTful API reference.
+description: Placeholder page for the Meeting RESTful API reference.
 ---
 
-This is a placeholder page for the Flexible Classroom RESTful API reference.
+This is a placeholder page for the Meeting RESTful API reference.

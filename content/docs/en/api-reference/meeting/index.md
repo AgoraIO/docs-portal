@@ -1,6 +1,6 @@
 ---
-title: Flexible Classroom
-description: Placeholder page for the Flexible Classroom API reference.
+title: Meeting
+description: Placeholder page for the Meeting API reference.
 ---
 
-This is a placeholder page for the Flexible Classroom API reference.
+This is a placeholder page for the Meeting API reference.
