@@ -552,7 +552,7 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
-  it('merges best practices into Build as a hardened and optimize group', async () => {
+  it('renders Harden and optimize as a nested Build section', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -562,34 +562,78 @@ describe('DocsSidebarTree', () => {
             type: 'page',
             url: '/en/ai/build/start-stop-agent',
           },
+          {
+            children: [
+              {
+                id: '/en/ai/build/best-practices/audio-setup',
+                title: 'Optimize audio quality',
+                type: 'page',
+                url: '/en/ai/build/best-practices/audio-setup',
+              },
+            ],
+            id: 'best-practices',
+            title: 'Harden and optimize',
+            type: 'section',
+          },
         ],
         id: 'build',
         title: 'Build',
         type: 'section',
       },
+    ];
+
+    renderSidebarTree(tree, '/en/ai/build/best-practices/audio-setup');
+
+    expect(await screen.findByText('Harden and optimize')).toBeInTheDocument();
+    expect(screen.getByText('Build')).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Optimize audio quality' }),
+    ).toBeInTheDocument();
+  });
+
+  it('does not render icons for second-level and third-level AI sidebar headings', async () => {
+    const tree: DocsSidebarNode[] = [
       {
         children: [
           {
-            id: '/en/ai/best-practices/audio-setup',
-            title: 'Optimize audio quality',
-            type: 'page',
-            url: '/en/ai/best-practices/audio-setup',
+            children: [
+              {
+                children: [
+                  {
+                    id: '/en/ai/build/start-stop-agent',
+                    title: 'Start and stop an agent',
+                    type: 'page',
+                    url: '/en/ai/build/start-stop-agent',
+                  },
+                ],
+                collapsible: true,
+                icon: 'Play',
+                id: 'separator-Create and connect an agent',
+                title: 'Create and connect an agent',
+                type: 'section',
+              },
+            ],
+            collapsible: true,
+            icon: 'Wrench',
+            id: 'build',
+            title: 'Build',
+            type: 'section',
           },
         ],
-        id: 'best-practices',
-        title: 'Best practices',
+        collapsible: false,
+        id: 'conversational-ai',
+        title: 'Conversational AI',
         type: 'section',
       },
     ];
 
-    renderSidebarTree(tree, '/en/ai/best-practices/audio-setup');
+    renderSidebarTree(tree, '/en/ai/build/start-stop-agent');
 
+    expect(await screen.findByText('Build')).toBeInTheDocument();
     expect(
-      await screen.findByRole('button', { name: /Harden and optimize/i }),
+      screen.getByRole('button', { name: /Create and connect an agent/i }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: 'Optimize audio quality' }),
-    ).toBeInTheDocument();
+    expect(document.querySelector('.docs-side-icon')).toBeNull();
   });
 
   it('opens selected Build child groups by default on the AI overview page', async () => {
@@ -730,10 +774,17 @@ describe('DocsSidebarTree', () => {
                 url: '/en/ai/build/transcripts',
               },
               {
-                id: '/en/ai/best-practices/audio-setup',
-                title: 'Optimize audio quality',
-                type: 'page',
-                url: '/en/ai/best-practices/audio-setup',
+                children: [
+                  {
+                    id: '/en/ai/build/best-practices/audio-setup',
+                    title: 'Optimize audio quality',
+                    type: 'page',
+                    url: '/en/ai/build/best-practices/audio-setup',
+                  },
+                ],
+                id: 'best-practices',
+                title: 'Harden and optimize',
+                type: 'section',
               },
             ],
             collapsible: true,
@@ -770,5 +821,6 @@ describe('DocsSidebarTree', () => {
     expect(
       screen.getByRole('link', { name: 'Optimize audio quality' }),
     ).toBeInTheDocument();
+    expect(screen.getByText('Harden and optimize')).toBeInTheDocument();
   });
 });
