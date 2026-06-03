@@ -525,6 +525,9 @@ describe('loadDocsPagePayload', () => {
       },
       breadcrumb: [
         {
+          title: 'Get started',
+        },
+        {
           title: 'About Agora',
           url: '/en/introduction/about-agora',
         },
@@ -938,6 +941,16 @@ describe('loadDocsPagePayload', () => {
       },
     });
     mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'api-reference-recipes-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Recipes',
+            },
+          } as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
 
     const payload = await loadDocsPagePayload('en', 'api-reference', []);
 
@@ -1076,6 +1089,16 @@ describe('loadDocsPagePayload', () => {
       },
     });
     mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'api-reference-recipes-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Recipes',
+            },
+          } as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
 
     const payload = await loadDocsPagePayload('en', 'api-reference', ['recipes']);
 
@@ -1085,7 +1108,7 @@ describe('loadDocsPagePayload', () => {
 
     expect(payload.sidebarHeader).toEqual({
       backHref: '/en/api-reference',
-      backLabel: 'Back to Reference',
+      backLabel: 'API Reference',
       title: 'Recipes',
     });
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
