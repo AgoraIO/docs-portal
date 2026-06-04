@@ -11,7 +11,7 @@ Agora provides a flexible, scalable, and standardized conversational AI engine t
 - [Interrupt agents](interrupt-agent.md)
 - [Display live transcripts](transcripts.md)
 - [Receive event notifications](event-notifications.md)
-- [Set optimal audio parameters](./best-practices/audio-setup.md) for iOS and Android
+- [Set optimal audio parameters](../best-practices/audio-setup.md) for iOS and Android
 - [Send picture messages](send-multimodal-messages.md)
 
 Call the toolkit's `chat` API to send a picture message, and listen to `onMessageReceiptUpdated` to receive the picture message receipt.

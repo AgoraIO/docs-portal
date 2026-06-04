@@ -274,11 +274,11 @@ This release includes the following enhancements:
 
 * **Latency optimization best practices**    
 
-    Adds a guide to [Optimize conversation latency](./build/best-practices/optimize-latency.md).
+    Adds a guide to [Optimize conversation latency](../best-practices/optimize-latency.md).
 
 * **Cloud Recording best practices**    
 
-    Adds a guide to [Record conversations with Cloud Recording](./build/best-practices/cloud-recording.md).
+    Adds a guide to [Record conversations with Cloud Recording](../best-practices/cloud-recording.md).
 
 #### API changes
 
@@ -302,7 +302,7 @@ Included in this release:
 
 * **Geofencing**
 
-    Use `geofence` configuration when you [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md) to limit which Agora servers the Conversational AI Engine can access based on geographic regions. See [Restrict agent zones](./build/best-practices/regional-restrictions.md) for details.
+    Use `geofence` configuration when you [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md) to limit which Agora servers the Conversational AI Engine can access based on geographic regions. See [Restrict agent zones](../best-practices/regional-restrictions.md) for details.
 
 * **Agent greeting mode**
 
@@ -624,7 +624,7 @@ Released on July 15, 2025.
     - [**Receive event notifications**](../build/event-notifications.md)
     Track changes in conversation state, performance metrics, and error events.
 
-    - [**Optimize audio settings**](./build/best-practices/audio-setup.md)
+    - [**Optimize audio settings**](../best-practices/audio-setup.md)
     Quickly apply best-practice audio configurations to improve agent responsiveness and clarity.
 
 #### API changes
