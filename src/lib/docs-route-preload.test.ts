@@ -21,9 +21,7 @@ describe('preloadDocsPageContent', () => {
     await preloadDocsPageContent(createMdxPayload('docs/en/about.mdx'));
 
     expect(mockedPreloadDocsContent).toHaveBeenCalledTimes(1);
-    expect(mockedPreloadDocsContent).toHaveBeenCalledWith(
-      'docs/en/about.mdx',
-    );
+    expect(mockedPreloadDocsContent).toHaveBeenCalledWith('docs/en/about.mdx');
   });
 
   it('does not preload OpenAPI payloads', async () => {
