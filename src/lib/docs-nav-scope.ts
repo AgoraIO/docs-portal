@@ -3,8 +3,10 @@ import type { ReactNode } from 'react';
 import type { DocsMeta, DocsNavScopeVersion } from './docs-meta-schema';
 import {
   type DocsSidebarNode,
+  getConfiguredIconName,
   getFirstTabPageUrl,
   getSidebarNodes,
+  isCollapsibleSectionTitle,
   pageTreeNodeToSidebarNodes,
 } from './docs-tree';
 
@@ -150,7 +152,7 @@ export function getNavScopeSidebarNodes({
     return getSidebarNodes(root, tab);
   }
 
-  return flattenTabSidebarNodes(tabNode, getNodeMeta);
+  return flattenParentNavScopeSidebarNodes(tabNode, tab, getNodeMeta);
 }
 
 export function getScopedNavScopeSidebarNodes({
@@ -177,11 +179,92 @@ function hasNavScopeDescendant(
   );
 }
 
-function flattenTabSidebarNodes(
+function flattenParentNavScopeSidebarNodes(
   folder: Folder,
+  tab: string,
   getNodeMeta: GetDocsNodeMeta,
 ): DocsSidebarNode[] {
-  return flattenNavScopeSidebarNodes(folder, getNodeMeta);
+  const nodes: DocsSidebarNode[] = [];
+  const indexUrl = folder.index?.url;
+
+  if (folder.index) {
+    nodes.push({
+      id: folder.index.url,
+      title: normalizeLabel(folder.index.name, tab),
+      type: 'page',
+      url: folder.index.url,
+    });
+  }
+
+  let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
+    null;
+
+  for (const child of folder.children) {
+    if (child.type === 'separator') {
+      const title = typeof child.name === 'string' ? child.name : '';
+      currentSection = null;
+
+      if (title.length > 0) {
+        const icon = getConfiguredIconName(child);
+        currentSection = {
+          children: [],
+          collapsible: isCollapsibleSectionTitle(title),
+          ...(icon ? { icon } : {}),
+          id: `separator-${title}`,
+          title,
+          type: 'section',
+        };
+        nodes.push(currentSection);
+      }
+
+      continue;
+    }
+
+    for (const node of navScopeParentNodeToSidebarNodes(child, getNodeMeta)) {
+      if (node.type === 'page' && node.url === indexUrl) {
+        continue;
+      }
+
+      if (currentSection) {
+        currentSection.children.push(node);
+      } else {
+        nodes.push(node);
+      }
+    }
+  }
+
+  return nodes;
+}
+
+function navScopeParentNodeToSidebarNodes(
+  node: Node,
+  getNodeMeta: GetDocsNodeMeta,
+): DocsSidebarNode[] {
+  if (node.type === 'separator') {
+    return [];
+  }
+
+  if (node.type === 'page') {
+    return [
+      {
+        id: node.url,
+        title: normalizeLabel(node.name, node.url),
+        type: 'page',
+        url: node.url,
+      },
+    ];
+  }
+
+  if (node.type !== 'folder') {
+    return [];
+  }
+
+  const meta = getNodeMeta(node);
+  if (meta?.navScope) {
+    return [getFolderLinkedSectionNode(node, meta)];
+  }
+
+  return navScopeNodeToSidebarNodes(node, getNodeMeta);
 }
 
 function flattenNavScopeSidebarNodes(
@@ -296,6 +379,20 @@ function getFolderPageNode(
     title: getMetaTitle(meta, node),
     type: 'page',
     url: href,
+  };
+}
+
+function getFolderLinkedSectionNode(
+  node: Folder,
+  meta: DocsMeta,
+): Extract<DocsSidebarNode, { type: 'section' }> {
+  return {
+    children: [],
+    collapsible: true,
+    id: `folder-${String(node.$id ?? node.name ?? 'folder')}`,
+    title: getMetaTitle(meta, node),
+    type: 'section',
+    url: getFolderHref(node),
   };
 }
 
@@ -469,7 +566,8 @@ function nodeContainsUrl(node: Node, url: string): boolean {
   }
 
   return (
-    node.index?.url === url || node.children.some((child) => nodeContainsUrl(child, url))
+    node.index?.url === url ||
+    node.children.some((child) => nodeContainsUrl(child, url))
   );
 }
 
@@ -485,7 +583,10 @@ function getRelativePath(folder: Folder, activePath: string): string[] {
     return [];
   }
 
-  return normalizedPath.slice(folderHref.length + 1).split('/').filter(Boolean);
+  return normalizedPath
+    .slice(folderHref.length + 1)
+    .split('/')
+    .filter(Boolean);
 }
 
 function findRelativePageUrl(folder: Folder, relativePath: string[]) {
@@ -542,18 +643,10 @@ function getFirstDescendantPageUrl(folder: Folder): string | null {
 }
 
 function getFolderIndex(node: Folder): Item | undefined {
-  return node.index ?? node.children.find((child): child is Item => child.type === 'page');
-}
-
-function getFolderIndexTitle(index: Item, folderName: ReactNode) {
-  const title = normalizeLabel(index.name, index.url);
-  const normalizedFolderName = normalizeLabel(folderName, title);
-
-  if (title !== normalizedFolderName) {
-    return title;
-  }
-
-  return index.url.includes('/zh-CN/') ? '总览' : 'Overview';
+  return (
+    node.index ??
+    node.children.find((child): child is Item => child.type === 'page')
+  );
 }
 
 function getMetaTitle(meta: DocsMeta, folder: Folder) {
