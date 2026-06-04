@@ -22,6 +22,7 @@ export type DocsSidebarHeader = {
   title: string;
   versionSwitcher?: {
     currentId: string;
+    presentation?: 'dropdown' | 'tabs';
     versions: DocsSidebarHeaderVersion[];
   };
 };
@@ -106,6 +107,7 @@ export function resolveDocsNavScope({
   const versionSwitcher = buildVersionSwitcher({
     activePath,
     activeVersion,
+    presentation: scope.meta.navScope?.presentation,
     scope: scope.node,
     versions: scope.meta.navScope?.versions,
   });
@@ -264,7 +266,9 @@ function navScopeParentNodeToSidebarNodes(
     return [getFolderLinkedSectionNode(node, meta)];
   }
 
-  return navScopeNodeToSidebarNodes(node, getNodeMeta);
+  return hasNavScopeDescendant(node, getNodeMeta)
+    ? pageTreeFolderToParentSidebarNodes(node, getNodeMeta)
+    : navScopeNodeToSidebarNodes(node, getNodeMeta);
 }
 
 function flattenNavScopeSidebarNodes(
@@ -332,11 +336,89 @@ function navScopeNodeToSidebarNodes(
   return pageTreeNodeToSidebarNodes(node);
 }
 
+function pageTreeFolderToParentSidebarNodes(
+  node: Folder,
+  getNodeMeta: GetDocsNodeMeta,
+): DocsSidebarNode[] {
+  const children: DocsSidebarNode[] = [];
+  let pendingIndexNode: Extract<DocsSidebarNode, { type: 'page' }> | null =
+    null;
+  let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
+    null;
+
+  for (const child of node.children) {
+    if (child.type === 'separator') {
+      const title = typeof child.name === 'string' ? child.name : '';
+      currentSection = null;
+
+      if (title.length > 0) {
+        const icon = getConfiguredIconName(child);
+        currentSection = {
+          children: [],
+          collapsible: isCollapsibleSectionTitle(title),
+          ...(icon ? { icon } : {}),
+          id: `separator-${title}`,
+          title,
+          type: 'section',
+        };
+        children.push(currentSection);
+      }
+
+      continue;
+    }
+
+    for (const sidebarNode of navScopeParentNodeToSidebarNodes(
+      child,
+      getNodeMeta,
+    )) {
+      if (pendingIndexNode) {
+        if (currentSection) {
+          currentSection.children.push(pendingIndexNode);
+        } else {
+          children.push(pendingIndexNode);
+        }
+        pendingIndexNode = null;
+      }
+
+      if (currentSection) {
+        currentSection.children.push(sidebarNode);
+      } else {
+        children.push(sidebarNode);
+      }
+    }
+  }
+
+  if (pendingIndexNode) {
+    if (currentSection) {
+      currentSection.children.push(pendingIndexNode);
+    } else {
+      children.push(pendingIndexNode);
+    }
+  }
+
+  const icon = getConfiguredIconName(node, node.index);
+
+  return [
+    {
+      children,
+      collapsible: false,
+      ...(icon ? { icon } : {}),
+      id: `folder-${String(node.$id ?? node.name ?? 'folder')}`,
+      title: normalizeLabel(node.name, node.index?.url ?? 'Folder'),
+      type: 'section',
+    },
+  ];
+}
+
 function shouldUseScopedFolderEntryInParent(
   node: Folder,
   meta: DocsMeta,
   getNodeMeta: GetDocsNodeMeta,
 ): boolean {
+  if (node.index) {
+    return true;
+  }
+
   if (meta.navScope?.versions?.length) {
     return true;
   }
@@ -433,11 +515,13 @@ function resolveActiveVersion({
 function buildVersionSwitcher({
   activePath,
   activeVersion,
+  presentation,
   scope,
   versions,
 }: {
   activePath: string;
   activeVersion?: DocsNavScopeVersion & { node: Folder };
+  presentation?: 'dropdown' | 'tabs';
   scope: Folder;
   versions?: DocsNavScopeVersion[];
 }): DocsSidebarHeader['versionSwitcher'] | undefined {
@@ -466,6 +550,7 @@ function buildVersionSwitcher({
 
   return {
     currentId: activeVersion.id,
+    ...(presentation ? { presentation } : {}),
     versions: switcherVersions,
   };
 }

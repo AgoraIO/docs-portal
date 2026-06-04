@@ -115,6 +115,17 @@ export async function loadDocsPagePayload(
     };
   }
 
+  const realtimeMediaRedirect = resolveRealtimeMediaRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (realtimeMediaRedirect) {
+    return {
+      redirectUrl: realtimeMediaRedirect,
+    };
+  }
+
   const legacyRedirect = resolveLegacyBestPracticesRedirect(
     locale,
     tab,
@@ -342,6 +353,26 @@ function resolveAiDocsRedirect(
     'reference/code-first-architecture': `/${locale}/ai/build/architecture`,
     'reference/architecture': `/${locale}/ai/build/architecture`,
     'best-practices/filler-words': `/${locale}/ai/build/filler-words`,
+  };
+
+  return redirects[normalizedPath] ?? null;
+}
+
+function resolveRealtimeMediaRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (tab !== 'realtime-media') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+
+  const redirects: Record<string, string> = {
+    'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
+    'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
+    'rtc/quick-start/build-from-scratch': `/${locale}/realtime-media/rtc/quick-start/android/build-from-scratch`,
   };
 
   return redirects[normalizedPath] ?? null;

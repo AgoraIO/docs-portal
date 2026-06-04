@@ -59,6 +59,7 @@ function TabIndexPage() {
     contentPath,
     description,
     markdownUrl,
+    sidebarHeader,
     slug,
     toc,
     title,
@@ -72,6 +73,7 @@ function TabIndexPage() {
       description={description}
       locale={params.locale}
       markdownUrl={markdownUrl}
+      sidebarHeader={sidebarHeader}
       slug={slug}
       title={title}
       toc={toc}

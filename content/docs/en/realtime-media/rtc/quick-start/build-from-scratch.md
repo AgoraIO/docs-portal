@@ -1,17 +1,10 @@
 ---
 title: Build from scratch
-description: Start a Voice & Video integration from the foundational client-side audio-video workflow.
+description: Scaffold an Android-first Voice & Video quick-start path from a clean RTC integration baseline.
 ---
 
-This page will cover the end-to-end quickstart for building a Voice & Video experience from scratch.
+This Android variant keeps the same quick-start section but swaps both the page content and the sidebar context.
 
-## Choose a client platform
+## Android focus
 
-Start with the Android client SDK docs, then use the API reference for exact classes, methods, and versioned SDK details.
-
-- [Android API Reference](/en/api-reference/rtc/android)
-- [Android API Reference v4.6.0](/en/api-reference/rtc/android/4.6.0)
-
-## Reference
-
-- [RTC Android API Reference](/en/api-reference/rtc/android)
+Use this page to outline native project setup, SDK wiring, and emulator or device checkpoints for a build-from-scratch flow.
