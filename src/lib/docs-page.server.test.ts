@@ -1217,7 +1217,29 @@ describe('loadDocsPagePayload', () => {
         'quickstart-device-kit',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/ai/device-kit',
+      redirectUrl: '/en/ai/device-kit/start-here/quickstart',
+    });
+  });
+
+  it('redirects the voice agent path entry to the canonical quickstart page', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['choose-your-path', 'quickstart-coding']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/get-started/quickstart',
+    });
+  });
+
+  it('redirects the conversational AI overview path to the canonical quickstart page', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['conversational-ai']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/get-started/quickstart',
+    });
+  });
+
+  it('redirects the Device Kit overview path to the canonical quickstart page', async () => {
+    await expect(loadDocsPagePayload('en', 'ai', ['device-kit'])).resolves.toEqual({
+      redirectUrl: '/en/ai/device-kit/start-here/quickstart',
     });
   });
 
@@ -1324,60 +1346,369 @@ describe('loadDocsPagePayload', () => {
     });
   });
 
-  it('returns a metadata-driven scoped Device Kit sidebar with an AI back link', async () => {
+  it('returns a unified Voice Agent sidebar for device pages', async () => {
     const page = createPage();
+    const unifiedAiPageTree: Root = {
+      children: [
+        {
+          $id: 'en-root-unified-ai',
+          children: [
+            {
+              $id: 'ai-folder',
+              children: [
+                {
+                  $id: 'ai-legacy-coding-entry',
+                  name: 'Voice agent quickstart',
+                  type: 'page',
+                  url: '/en/ai/choose-your-path/quickstart-coding',
+                },
+                {
+                  $id: 'ai-legacy-device-kit-entry',
+                  name: 'Deploy to IoT devices',
+                  type: 'page',
+                  url: '/en/ai/choose-your-path/quickstart-device-kit',
+                },
+                {
+                  $id: 'ai-get-started-folder',
+                  children: [
+                    {
+                      $id: 'ai-quickstart',
+                      name: 'Quickstart',
+                      type: 'page',
+                      url: '/en/ai/get-started/quickstart',
+                    },
+                  ],
+                  name: 'Get started',
+                  type: 'folder',
+                },
+                {
+                  $id: 'ai-build-folder',
+                  children: [
+                    {
+                      $id: 'ai-build-architecture',
+                      name: 'Voice agent app architecture',
+                      type: 'page',
+                      url: '/en/ai/build/architecture',
+                    },
+                    {
+                      $id: 'ai-build-start-stop',
+                      name: 'Start and stop an agent',
+                      type: 'page',
+                      url: '/en/ai/build/start-stop-agent',
+                    },
+                  ],
+                  name: 'Build',
+                  type: 'folder',
+                },
+                {
+                  $id: 'ai-best-practices-folder',
+                  children: [
+                    {
+                      $id: 'ai-best-practices-optimize-latency',
+                      name: 'Optimize latency',
+                      type: 'page',
+                      url: '/en/ai/best-practices/optimize-latency',
+                    },
+                  ],
+                  name: 'Best practices',
+                  type: 'folder',
+                },
+                {
+                  $id: 'ai-models-folder',
+                  children: [
+                    {
+                      $id: 'ai-models-asr',
+                      name: 'ASR',
+                      type: 'page',
+                      url: '/en/ai/models/asr',
+                    },
+                  ],
+                  index: {
+                    $id: 'ai-models-index',
+                    name: 'Models',
+                    type: 'page',
+                    url: '/en/ai/models',
+                  },
+                  name: 'Models',
+                  type: 'folder',
+                },
+                {
+                  $id: 'ai-reference-folder',
+                  children: [
+                    {
+                      $id: 'ai-reference-event-types',
+                      name: 'Notification event types',
+                      type: 'page',
+                      url: '/en/ai/reference/event-types',
+                    },
+                    {
+                      $id: 'ai-reference-release-notes',
+                      name: 'Release notes',
+                      type: 'page',
+                      url: '/en/ai/reference/release-notes',
+                    },
+                    {
+                      $id: 'ai-reference-pricing',
+                      name: 'Pricing',
+                      type: 'page',
+                      url: '/en/ai/reference/pricing',
+                    },
+                  ],
+                  name: 'Reference',
+                  type: 'folder',
+                },
+                {
+                  $id: 'ai-device-kit-folder',
+                  children: [
+                    {
+                      $id: 'device-kit-start-here-folder',
+                      children: [
+                        {
+                          $id: 'device-kit-quickstart',
+                          name: 'Quickstart',
+                          type: 'page',
+                          url: '/en/ai/device-kit/start-here/quickstart',
+                        },
+                        {
+                          $id: 'device-kit-enable-services',
+                          name: 'Enable services',
+                          type: 'page',
+                          url: '/en/ai/device-kit/reference/enable-services',
+                        },
+                      ],
+                      name: 'Start here',
+                      type: 'folder',
+                    },
+                    {
+                      $id: 'device-kit-build-folder',
+                      children: [
+                        {
+                          $id: 'device-kit-run-r1-demo',
+                          name: 'Run the R1 demo',
+                          type: 'page',
+                          url: '/en/ai/device-kit/build/run-the-r1-demo',
+                        },
+                        {
+                          $id: 'device-kit-device-controls',
+                          name: 'Device controls',
+                          type: 'page',
+                          url: '/en/ai/device-kit/build/device-controls',
+                        },
+                      ],
+                      name: 'Build',
+                      type: 'folder',
+                    },
+                    {
+                      $id: 'device-kit-reference-folder',
+                      children: [
+                        {
+                          $id: 'device-kit-pricing',
+                          name: 'Pricing',
+                          type: 'page',
+                          url: '/en/ai/device-kit/reference/pricing',
+                        },
+                        {
+                          $id: 'device-kit-release-notes',
+                          name: 'Release notes',
+                          type: 'page',
+                          url: '/en/ai/device-kit/reference/release-notes',
+                        },
+                      ],
+                      name: 'Reference',
+                      type: 'folder',
+                    },
+                  ],
+                  index: {
+                    $id: 'device-kit-index',
+                    name: 'Convo AI Device Kit',
+                    type: 'page',
+                    url: '/en/ai/device-kit',
+                  },
+                  name: 'Convo AI Device Kit',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'ai-index',
+                name: 'Voice Agent',
+                type: 'page',
+                url: '/en/ai',
+              },
+              name: 'Voice Agent',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
     mockedGetPage.mockReturnValue({
       ...page,
-      path: 'en/ai/device-kit/index.md',
-      slugs: ['en', 'ai', 'device-kit', 'index'],
-      url: '/en/ai/device-kit',
+      path: 'en/ai/device-kit/start-here/quickstart.md',
+      slugs: ['en', 'ai', 'device-kit', 'start-here', 'quickstart'],
+      url: '/en/ai/device-kit/start-here/quickstart',
       data: {
         ...page.data,
         info: {
-          fullPath: '/virtual/content/docs/en/ai/device-kit/index.md',
-          path: 'en/ai/device-kit/index.md',
+          fullPath: '/virtual/content/docs/en/ai/device-kit/start-here/quickstart.md',
+          path: 'en/ai/device-kit/start-here/quickstart.md',
         },
-        title: 'Convo AI Device Kit',
+        title: 'Quickstart',
       },
     });
-    mockedGetNodeMeta.mockImplementation((node) =>
-      node.$id === 'ai-device-kit-folder'
-        ? ({
-            data: {
-              navScope: {},
-              title: 'Convo AI Device Kit',
-            },
-          } as unknown as ReturnType<typeof source.getNodeMeta>)
-        : undefined,
-    );
+    mockedGetPageTree.mockReturnValue(unifiedAiPageTree);
 
-    const payload = await loadDocsPagePayload('en', 'ai', ['device-kit']);
+    const payload = await loadDocsPagePayload('en', 'ai', [
+      'device-kit',
+      'start-here',
+      'quickstart',
+    ]);
 
     if (!payload || 'redirectUrl' in payload) {
       throw new Error('expected a docs page payload');
     }
 
-    expect(payload.sidebarHeader).toEqual({
-      backHref: '/en/ai',
-      backLabel: 'AI',
-      title: 'Convo AI Device Kit',
-    });
+    expect(payload.sidebarHeader).toBeUndefined();
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
       expect.arrayContaining([
-        '/en/ai/device-kit',
+        '/en/ai',
+        '/en/ai/get-started/quickstart',
+        '/en/ai/reference/event-types',
+        '/en/ai/reference/release-notes',
+        '/en/ai/reference/pricing',
         '/en/ai/device-kit/start-here/quickstart',
         '/en/ai/device-kit/build/run-the-r1-demo',
         '/en/ai/device-kit/build/device-controls',
-        '/en/ai/device-kit/plan-rollout/release-notes',
+        '/en/ai/device-kit/reference/pricing',
+        '/en/ai/device-kit/reference/release-notes',
       ]),
     );
-    expect(payload.sidebar).not.toEqual(
+    expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
       expect.arrayContaining([
-        expect.objectContaining({
-          type: 'page',
-          url: '/en/ai/choose-your-path/quickstart-device-kit',
-        }),
+        '/en/ai/conversational-ai',
+        '/en/ai/device-kit',
+        '/en/ai/choose-your-path/quickstart-coding',
+        '/en/ai/choose-your-path/quickstart-device-kit',
+        '/en/ai/device-kit/reference/enable-services',
       ]),
+    );
+    expect(payload.sidebar.map((node) => node.title)).toEqual([
+      'Overview',
+      'Voice agent on software clients',
+      'Voice agent on dedicated devices',
+    ]);
+
+    const softwareSection = payload.sidebar.find(
+      (node) =>
+        node.type === 'section' &&
+        node.title === 'Voice agent on software clients',
+    );
+
+    if (!softwareSection || softwareSection.type !== 'section') {
+      throw new Error('expected the software clients section');
+    }
+
+    expect(
+      softwareSection.children.some(
+        (node) => node.type === 'section' && node.title === 'Reference',
+      ),
+    ).toBe(false);
+
+    const buildSection = softwareSection.children.find(
+      (node) => node.type === 'section' && node.title === 'Build',
+    );
+
+    if (!buildSection || buildSection.type !== 'section') {
+      throw new Error('expected the Build section');
+    }
+
+    expect(
+      buildSection.children.some(
+        (node) => node.type === 'section' && node.title === 'Harden and optimize',
+      ),
+    ).toBe(true);
+
+    const dedicatedDevicesSection = payload.sidebar.find(
+      (node) =>
+        node.type === 'section' &&
+        node.title === 'Voice agent on dedicated devices',
+    );
+
+    if (!dedicatedDevicesSection || dedicatedDevicesSection.type !== 'section') {
+      throw new Error('expected the dedicated devices section');
+    }
+
+    expect(
+      dedicatedDevicesSection.children.some(
+        (node) => node.type === 'section' && node.title === 'Reference',
+      ),
+    ).toBe(false);
+    expect(
+      dedicatedDevicesSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/device-kit/reference/enable-services',
+      ),
+    ).toBe(false);
+    expect(
+      dedicatedDevicesSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/device-kit/reference/release-notes',
+      ),
+    ).toBe(true);
+    expect(
+      dedicatedDevicesSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/device-kit/reference/pricing',
+      ),
+    ).toBe(true);
+    expect(
+      dedicatedDevicesSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/device-kit/start-here/quickstart',
+      ),
+    ).toBe(true);
+    expect(
+      dedicatedDevicesSection.children.some(
+        (node) => node.type === 'section' && node.title === 'Build',
+      ),
+    ).toBe(true);
+    expect(
+      dedicatedDevicesSection.children.some(
+        (node) => node.type === 'section' && node.title === 'Reference',
+      ),
+    ).toBe(false);
+    expect(
+      softwareSection.children.some(
+        (node) =>
+          node.type === 'page' && node.url === '/en/ai/reference/event-types',
+      ),
+    ).toBe(true);
+    expect(
+      softwareSection.children.some(
+        (node) => node.type === 'section' && node.title === 'Models',
+      ),
+    ).toBe(true);
+    expect(
+      softwareSection.children.some(
+        (node) =>
+          node.type === 'page' && node.url === '/en/ai/get-started/quickstart',
+      ),
+    ).toBe(true);
+    expect(
+      payload.sidebar[0],
+    ).toEqual(
+      expect.objectContaining({
+        title: 'Overview',
+        type: 'page',
+        url: '/en/ai',
+      }),
     );
   });
 

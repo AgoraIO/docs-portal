@@ -72,8 +72,12 @@ describe('DocsSidebarTree', () => {
 
     expect(activeButton).toBeInstanceOf(HTMLElement);
     expect(activeButton?.className).not.toContain('font-semibold');
-    expect(activeButton).toHaveClass('h-[30px]', 'items-center');
-    expect(activeButton).not.toHaveClass('h-auto', 'items-start', 'py-1.5');
+    expect(activeButton).toHaveClass(
+      'min-h-[34px]',
+      'h-auto',
+      'items-start',
+      'py-1.5',
+    );
     expect(activeButton?.className).toContain(
       'data-[active=true]:before:bg-[color:var(--accent-brand)]',
     );
