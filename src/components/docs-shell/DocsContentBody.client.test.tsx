@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { DocsContentBodyClient } from './DocsContentBody.client';
+import { DocsContentBody } from './DocsContentBody';
 
 const useDocsContentMock = vi.fn();
 
-vi.mock('@/lib/source.client', () => ({
+vi.mock('@/lib/source.browser', () => ({
   useDocsContent: (...args: unknown[]) => useDocsContentMock(...args),
 }));
 
@@ -17,7 +17,7 @@ describe('DocsContentBodyClient', () => {
     useDocsContentMock.mockReturnValueOnce(<p>Install the Agora CLI.</p>);
 
     const { container } = render(
-      <DocsContentBodyClient contentPath="en/ai/choose-your-path/quickstart-coding.mdx" />,
+      <DocsContentBody contentPath="en/ai/choose-your-path/quickstart-coding.mdx" />,
     );
 
     expect(container.querySelector('.docs-body')).toContainElement(
@@ -28,9 +28,7 @@ describe('DocsContentBodyClient', () => {
   it('injects overview widgets only for approved editorial overview pages', () => {
     useDocsContentMock.mockReturnValueOnce(<p>Overview</p>);
 
-    render(
-      <DocsContentBodyClient contentPath="en/introduction/about-agora.mdx" />,
-    );
+    render(<DocsContentBody contentPath="en/introduction/about-agora.mdx" />);
 
     const [, options] = useDocsContentMock.mock.calls[0];
     expect(options.components.FeatureCard).toBeDefined();
@@ -41,7 +39,7 @@ describe('DocsContentBodyClient', () => {
     useDocsContentMock.mockReturnValueOnce(<p>Recipes</p>);
 
     render(
-      <DocsContentBodyClient contentPath="en/api-reference/recipes/index.mdx" />,
+      <DocsContentBody contentPath="en/api-reference/recipes/index.mdx" />,
     );
 
     const [, options] = useDocsContentMock.mock.calls[0];
@@ -49,15 +47,15 @@ describe('DocsContentBodyClient', () => {
     expect(options.components.FeatureCard).toBeDefined();
   });
 
-  it('does not inject overview widgets into regular docs pages', () => {
+  it('makes shared docs widgets available to regular docs pages without path allowlists', () => {
     useDocsContentMock.mockReturnValueOnce(<p>Regular page</p>);
 
     render(
-      <DocsContentBodyClient contentPath="en/ai/choose-your-path/quickstart-coding.mdx" />,
+      <DocsContentBody contentPath="en/ai/choose-your-path/quickstart-coding.mdx" />,
     );
 
     const [, options] = useDocsContentMock.mock.calls[0];
-    expect(options.components.SolutionCard).toBeUndefined();
-    expect(options.components.FeatureCard).toBeUndefined();
+    expect(options.components.SolutionCard).toBeDefined();
+    expect(options.components.FeatureCard).toBeDefined();
   });
 });

@@ -20,8 +20,8 @@ import { AppProviders } from '@/components/providers/AppProviders';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
 
-vi.mock('./DocsContentBody.client', () => ({
-  DocsContentBodyClient: ({ contentPath }: { contentPath: string }) => (
+vi.mock('./DocsContentBody', () => ({
+  DocsContentBody: ({ contentPath }: { contentPath: string }) => (
     <div data-testid="docs-content-body">{contentPath}</div>
   ),
 }));

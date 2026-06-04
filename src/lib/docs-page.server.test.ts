@@ -1118,10 +1118,35 @@ describe('loadDocsPagePayload', () => {
       slugs: ['en', 'realtime-media', 'rtc', 'quick-start'],
       url: '/en/realtime-media/rtc/quick-start',
     };
+    const androidPage = {
+      ...nestedPage,
+      path: 'en/realtime-media/rtc/android/quick-start/integrate-with-ai-tools.md',
+      slugs: [
+        'en',
+        'realtime-media',
+        'rtc',
+        'android',
+        'quick-start',
+        'integrate-with-ai-tools',
+      ],
+      url: '/en/realtime-media/rtc/quick-start/android/integrate-with-ai-tools',
+    };
 
-    mockedGetPage.mockReturnValue(nestedPage as ReturnType<typeof createPage>);
+    mockedGetPage.mockImplementation((slugs: string[]) => {
+      const normalizedSlugs = slugs.join('/');
+
+      if (
+        normalizedSlugs ===
+        'en/realtime-media/rtc/android/quick-start/integrate-with-ai-tools'
+      ) {
+        return androidPage;
+      }
+
+      return nestedPage;
+    });
     mockedGetPages.mockReturnValue([
       nestedPage as ReturnType<typeof createPage>,
+      androidPage as ReturnType<typeof createPage>,
     ]);
 
     await expect(
@@ -1129,6 +1154,39 @@ describe('loadDocsPagePayload', () => {
     ).resolves.toEqual({
       redirectUrl:
         '/en/realtime-media/rtc/quick-start/android/integrate-with-ai-tools',
+    });
+  });
+
+  it('keeps realtime media quick-start pages when the hardcoded scoped redirect target is missing', async () => {
+    const zhPage = {
+      ...createPage(),
+      path: 'zh-CN/realtime-media/rtc/quick-start/build-from-scratch.md',
+      slugs: [
+        'zh-CN',
+        'realtime-media',
+        'rtc',
+        'quick-start',
+        'build-from-scratch',
+      ],
+      url: '/zh-CN/realtime-media/rtc/quick-start/build-from-scratch',
+    };
+
+    mockedGetPage.mockImplementation((slugs: string[]) =>
+      slugs.join('/') === 'realtime-media/rtc/quick-start/build-from-scratch'
+        ? zhPage
+        : undefined,
+    );
+    mockedGetPages.mockReturnValue([zhPage as ReturnType<typeof createPage>]);
+    mockedGetPageTree.mockReturnValue(realtimeMediaPageTree);
+
+    const payload = await loadDocsPagePayload('zh-CN', 'realtime-media', [
+      'rtc',
+      'quick-start',
+      'build-from-scratch',
+    ]);
+
+    expect(payload).toMatchObject({
+      activePath: '/zh-CN/realtime-media/rtc/quick-start/build-from-scratch',
     });
   });
 
@@ -1223,7 +1281,10 @@ describe('loadDocsPagePayload', () => {
 
   it('redirects the voice agent path entry to the canonical quickstart page', async () => {
     await expect(
-      loadDocsPagePayload('en', 'ai', ['choose-your-path', 'quickstart-coding']),
+      loadDocsPagePayload('en', 'ai', [
+        'choose-your-path',
+        'quickstart-coding',
+      ]),
     ).resolves.toEqual({
       redirectUrl: '/en/ai/get-started/quickstart',
     });
@@ -1238,7 +1299,9 @@ describe('loadDocsPagePayload', () => {
   });
 
   it('redirects the Device Kit overview path to the canonical quickstart page', async () => {
-    await expect(loadDocsPagePayload('en', 'ai', ['device-kit'])).resolves.toEqual({
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['device-kit']),
+    ).resolves.toEqual({
       redirectUrl: '/en/ai/device-kit/start-here/quickstart',
     });
   });
@@ -1553,7 +1616,8 @@ describe('loadDocsPagePayload', () => {
       data: {
         ...page.data,
         info: {
-          fullPath: '/virtual/content/docs/en/ai/device-kit/start-here/quickstart.md',
+          fullPath:
+            '/virtual/content/docs/en/ai/device-kit/start-here/quickstart.md',
           path: 'en/ai/device-kit/start-here/quickstart.md',
         },
         title: 'Quickstart',
@@ -1584,7 +1648,6 @@ describe('loadDocsPagePayload', () => {
         '/en/ai/device-kit/build/device-controls',
         '/en/ai/device-kit/reference/release-notes',
         '/en/ai/device-kit/reference/pricing',
-
       ]),
     );
     expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
@@ -1621,7 +1684,10 @@ describe('loadDocsPagePayload', () => {
       (node) => node.type === 'section' && node.title === 'Reference',
     );
 
-    if (!softwareReferenceSection || softwareReferenceSection.type !== 'section') {
+    if (
+      !softwareReferenceSection ||
+      softwareReferenceSection.type !== 'section'
+    ) {
       throw new Error('expected the software reference section');
     }
 
@@ -1635,7 +1701,8 @@ describe('loadDocsPagePayload', () => {
 
     expect(
       buildSection.children.some(
-        (node) => node.type === 'section' && node.title === 'Harden and optimize',
+        (node) =>
+          node.type === 'section' && node.title === 'Harden and optimize',
       ),
     ).toBe(true);
 
@@ -1645,7 +1712,10 @@ describe('loadDocsPagePayload', () => {
         node.title === 'Voice agent on dedicated devices',
     );
 
-    if (!dedicatedDevicesSection || dedicatedDevicesSection.type !== 'section') {
+    if (
+      !dedicatedDevicesSection ||
+      dedicatedDevicesSection.type !== 'section'
+    ) {
       throw new Error('expected the dedicated devices section');
     }
 
@@ -1658,7 +1728,10 @@ describe('loadDocsPagePayload', () => {
       (node) => node.type === 'section' && node.title === 'Reference',
     );
 
-    if (!dedicatedReferenceSection || dedicatedReferenceSection.type !== 'section') {
+    if (
+      !dedicatedReferenceSection ||
+      dedicatedReferenceSection.type !== 'section'
+    ) {
       throw new Error('expected the dedicated reference section');
     }
     expect(
@@ -1716,9 +1789,7 @@ describe('loadDocsPagePayload', () => {
           node.type === 'page' && node.url === '/en/ai/get-started/quickstart',
       ),
     ).toBe(true);
-    expect(
-      payload.sidebar[0],
-    ).toEqual(
+    expect(payload.sidebar[0]).toEqual(
       expect.objectContaining({
         title: 'Overview',
         type: 'page',

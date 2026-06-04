@@ -120,17 +120,6 @@ export async function loadDocsPagePayload(
     };
   }
 
-  const realtimeMediaRedirect = resolveRealtimeMediaRedirect(
-    locale,
-    tab,
-    slugSegments,
-  );
-  if (realtimeMediaRedirect) {
-    return {
-      redirectUrl: realtimeMediaRedirect,
-    };
-  }
-
   const legacyRedirect = resolveLegacyBestPracticesRedirect(
     locale,
     tab,
@@ -144,6 +133,20 @@ export async function loadDocsPagePayload(
   }
 
   const { source } = await import('./source.server');
+  const realtimeMediaRedirect = resolveRealtimeMediaRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (
+    realtimeMediaRedirect &&
+    hasDocsPageForUrl(source, realtimeMediaRedirect)
+  ) {
+    return {
+      redirectUrl: realtimeMediaRedirect,
+    };
+  }
+
   const slug = slugSegments.at(-1) ?? 'index';
   const page = source.getPage(
     getSourceSlugs({
@@ -389,6 +392,27 @@ function resolveRealtimeMediaRedirect(
   return redirects[normalizedPath] ?? null;
 }
 
+function hasDocsPageForUrl(source: typeof docsSource, url: string) {
+  const [locale, tab, ...slugSegments] = url.split('/').filter(Boolean);
+  const slug = slugSegments.at(-1) ?? 'index';
+
+  if (!locale || !tab) {
+    return false;
+  }
+
+  return Boolean(
+    source.getPage(
+      getSourceSlugs({
+        locale,
+        slug,
+        slugSegments,
+        tab,
+      }),
+      locale,
+    ),
+  );
+}
+
 export type DocsPagePayload = Exclude<
   Awaited<ReturnType<typeof loadDocsPagePayload>>,
   null | { redirectUrl: string }
@@ -525,16 +549,23 @@ async function getDocsSidebarNodes({
 }
 
 function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
-  const aiOverview = findSidebarPageByExactUrlInNodes(nodes, '/en/ai')
-    ?? findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai');
+  const aiOverview =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai');
   const conversationalAiQuickstart =
-    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/get-started/quickstart')
-    ?? findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/get-started/quickstart');
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/get-started/quickstart') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/get-started/quickstart');
   const buildSection = findTopLevelSidebarSection(nodes, 'Build');
-  const bestPracticesSection = findTopLevelSidebarSection(nodes, 'Best practices');
+  const bestPracticesSection = findTopLevelSidebarSection(
+    nodes,
+    'Best practices',
+  );
   const modelsSection = findTopLevelSidebarSection(nodes, 'Models');
   const referenceSection = findTopLevelSidebarSection(nodes, 'Reference');
-  const deviceKitSection = findTopLevelSidebarSection(nodes, 'Convo AI Device Kit');
+  const deviceKitSection = findTopLevelSidebarSection(
+    nodes,
+    'Convo AI Device Kit',
+  );
 
   if (
     !aiOverview ||
@@ -560,7 +591,9 @@ function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
       ...buildSection.children,
       {
         ...stripSidebarSectionMeta(bestPracticesSection),
-        children: stripSidebarSectionMetaFromNodes(bestPracticesSection.children),
+        children: stripSidebarSectionMetaFromNodes(
+          bestPracticesSection.children,
+        ),
         title: 'Harden and optimize',
       },
     ]),
@@ -619,8 +652,11 @@ function flattenDeviceKitSidebarChildren(
 
     if (child.title === 'Start here') {
       const quickstart =
-        findSidebarPageByExactUrl(child, '/en/ai/device-kit/start-here/quickstart')
-        ?? findSidebarPageByExactUrl(
+        findSidebarPageByExactUrl(
+          child,
+          '/en/ai/device-kit/start-here/quickstart',
+        ) ??
+        findSidebarPageByExactUrl(
           child,
           '/zh-CN/ai/device-kit/start-here/quickstart',
         );
@@ -708,7 +744,9 @@ function stripSidebarSectionMetaFromNodes(
   return nodes.map((node) => stripSidebarSectionMetaFromNode(node));
 }
 
-function stripSidebarSectionMetaFromNode(node: DocsSidebarNode): DocsSidebarNode {
+function stripSidebarSectionMetaFromNode(
+  node: DocsSidebarNode,
+): DocsSidebarNode {
   if (node.type === 'page') {
     return node;
   }

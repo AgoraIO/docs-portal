@@ -19,7 +19,7 @@ import {
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
-import { DocsContentBodyClient } from './DocsContentBody.client';
+import { DocsContentBody } from './DocsContentBody';
 
 const TOC_ACTIVE_OFFSET = 96;
 const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
@@ -36,7 +36,7 @@ export function DocsContent({
   title,
   toc,
 }: {
-  body?: DocsContentBody;
+  body?: DocsContentBodyPayload;
   breadcrumb?: DocsBreadcrumbItem[];
   contentPath?: string;
   description?: string;
@@ -57,7 +57,7 @@ export function DocsContent({
       ? ({
           contentPath,
           kind: 'mdx',
-        } satisfies DocsContentBody)
+        } satisfies DocsContentBodyPayload)
       : undefined);
   const isOpenApiBody = resolvedBody?.kind === 'openapi';
   useEffect(() => {
@@ -162,7 +162,7 @@ export function DocsContent({
         <div className="prose prose-neutral dark:prose-invert max-w-none">
           {resolvedBody?.kind === 'mdx' ? (
             <Suspense fallback={<DocsContentSkeleton />}>
-              <DocsContentBodyClient contentPath={resolvedBody.contentPath} />
+              <DocsContentBody contentPath={resolvedBody.contentPath} />
             </Suspense>
           ) : null}
         </div>
@@ -208,7 +208,7 @@ function DocsHeaderScopeTabs({ header }: { header: DocsSidebarHeader }) {
   );
 }
 
-export type DocsContentBody =
+export type DocsContentBodyPayload =
   | { contentPath: string; kind: 'mdx' }
   | { kind: 'openapi'; pageProps: ClientApiPageProps };
 

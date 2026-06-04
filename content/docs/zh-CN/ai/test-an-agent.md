@@ -13,6 +13,6 @@ description: 在智能体真正进入生产前，建议如何验证会话、语�
 ## 推荐页面
 
 - [语音 AI 快速开始](/zh-CN/ai/quick-start)
-- [查看当前状态](/zh-CN/api-reference/query-agent-status)
-- [对话轮次](/zh-CN/api-reference/get-turns)
+- [查看当前状态](/zh-CN/api-reference/conversational-ai/rest-api/agent/query)
+- [对话轮次](/zh-CN/api-reference/conversational-ai/rest-api/agent/turns)
 - [状态码](/zh-CN/api-reference/response-code)

@@ -5,9 +5,17 @@ import mdx from 'fumadocs-mdx/vite';
 import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vitest/config';
 import { getOpenApiPrerenderPaths } from './src/lib/openapi/lanes';
+import { getContentDocsPrerenderPaths } from './src/lib/prerender-content-routes';
 import { shouldPrerenderPage } from './src/lib/prerender-filter';
+import { createDocsPrerenderPaths } from './src/lib/prerender-pages';
 
 const isTest = process.env.VITEST === 'true';
+const docsPrerenderPaths = isTest
+  ? []
+  : createDocsPrerenderPaths({
+      openApiPaths: getOpenApiPrerenderPaths(),
+      pages: getContentDocsPrerenderPaths().map((url) => ({ url })),
+    });
 
 export default defineConfig({
   server: {
@@ -33,10 +41,11 @@ export default defineConfig({
       ? [react()]
       : [
           tanstackStart({
-            pages: getOpenApiPrerenderPaths().map((path) => ({
+            pages: docsPrerenderPaths.map((path) => ({
               path,
             })),
             prerender: {
+              crawlLinks: false,
               enabled: true,
               filter: shouldPrerenderPage,
             },

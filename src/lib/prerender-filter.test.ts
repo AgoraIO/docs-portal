@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { getOpenApiPrerenderPaths } from './openapi/lanes';
 import { shouldPrerenderRoute } from './prerender-filter';
+import { createDocsPrerenderPaths } from './prerender-pages';
 
 describe('shouldPrerenderRoute', () => {
   it('keeps ordinary docs pages in the crawler output', () => {
@@ -20,6 +21,28 @@ describe('shouldPrerenderRoute', () => {
     );
     expect(getOpenApiPrerenderPaths()).toContain(
       '/zh-CN/api-reference/conversational-ai/rest-api/agent/join',
+    );
+  });
+
+  it('seeds canonical source pages instead of relying on crawled links', () => {
+    const paths = createDocsPrerenderPaths({
+      openApiPaths: ['/en/api-reference/conversational-ai/rest-api/agent/join'],
+      pages: [
+        { url: '/zh-CN/ai/domain-overview' },
+        { url: '/en/introduction/about-agora' },
+      ],
+    });
+
+    expect(paths).toEqual([
+      '/',
+      '/en/api-reference/conversational-ai/rest-api/agent/join',
+      '/en/introduction/about-agora',
+      '/zh-CN/ai/domain-overview',
+    ]);
+    expect(paths).toContain('/en/introduction/about-agora');
+    expect(paths).toContain('/zh-CN/ai/domain-overview');
+    expect(paths).toContain(
+      '/en/api-reference/conversational-ai/rest-api/agent/join',
     );
   });
 });

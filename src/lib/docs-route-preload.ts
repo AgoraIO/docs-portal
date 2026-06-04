@@ -1,5 +1,5 @@
 import type { DocsPagePayload } from './docs-page.server';
-import { preloadDocsContent } from './source.client';
+import { preloadDocsContent } from './source.browser';
 
 export async function preloadDocsPageContent(
   payload: DocsPagePayload | null | { redirectUrl: string } | undefined,

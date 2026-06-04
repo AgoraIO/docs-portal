@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { DocsPagePayload } from './docs-page.server';
 import { preloadDocsPageContent } from './docs-route-preload';
-import { preloadDocsContent } from './source.client';
+import { preloadDocsContent } from './source.browser';
 
-vi.mock('./source.client', () => ({
+vi.mock('./source.browser', () => ({
   preloadDocsContent: vi.fn(),
 }));
 

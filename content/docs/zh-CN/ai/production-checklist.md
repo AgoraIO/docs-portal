@@ -14,6 +14,6 @@ description: 从鉴权、状态观测、错误处理到支持路径，整理 AI 
 ## 推荐页面
 
 - [鉴权与 Token](/zh-CN/api-reference/conversational-ai/rest-api/authentication)
-- [查看当前状态](/zh-CN/api-reference/query-agent-status)
+- [查看当前状态](/zh-CN/api-reference/conversational-ai/rest-api/agent/query)
 - [Webhook 事件](/zh-CN/api-reference/ncs-events)
 - [状态码](/zh-CN/api-reference/response-code)
