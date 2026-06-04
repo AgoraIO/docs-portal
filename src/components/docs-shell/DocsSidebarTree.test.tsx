@@ -511,7 +511,7 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
-  it('opens the Build subsection by default inside Get started', async () => {
+  it('keeps the Build subsection collapsed by default inside Get started', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -548,8 +548,8 @@ describe('DocsSidebarTree', () => {
       await screen.findByRole('link', { name: 'Quickstart' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Start and stop an agent' }),
-    ).toBeInTheDocument();
+      screen.queryByRole('link', { name: 'Start and stop an agent' }),
+    ).not.toBeInTheDocument();
   });
 
   it('merges best practices into Build as a hardened and optimize group', async () => {
@@ -592,7 +592,7 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
-  it('opens selected Build child groups by default on the AI overview page', async () => {
+  it('only opens Create and connect an agent by default on the AI overview page', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -644,10 +644,10 @@ describe('DocsSidebarTree', () => {
       await screen.findByRole('link', { name: 'Start and stop an agent' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('link', {
+      screen.queryByRole('link', {
         name: 'Keep conversation context across turns',
       }),
-    ).toBeInTheDocument();
+    ).not.toBeInTheDocument();
 
     fireEvent.click(toggle);
 
@@ -656,7 +656,7 @@ describe('DocsSidebarTree', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('uses shorter sidebar labels for long Build document titles', async () => {
+  it('renders full sidebar labels for long Build document titles', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -684,13 +684,10 @@ describe('DocsSidebarTree', () => {
     renderSidebarTree(tree, '/en/ai/build/build-server-client');
 
     expect(
-      await screen.findByRole('link', { name: 'Build backend and client' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByRole('link', {
+      await screen.findByRole('link', {
         name: 'Build a backend and client from scratch',
       }),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
   });
 
   it('renders updated task-oriented titles from docs metadata', async () => {

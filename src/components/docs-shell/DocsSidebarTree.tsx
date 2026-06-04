@@ -123,7 +123,7 @@ function SidebarSection({
     !node.collapsible ||
     node.children.some((child) => isNodeActive(child, activePath)) ||
     shouldDefaultOpenSection(node.title, activePath) ||
-    node.title === 'Build';
+    shouldDefaultOpenBuildSection(node, activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const splitIndex = node.nestedQuickstartGroup
     ? Math.max(
@@ -298,9 +298,23 @@ function shouldDefaultOpenSection(title: string, activePath: string) {
       /\/(en|zh-CN)\/introduction(?:\/index)?$/.test(activePath)) ||
     (title === 'Get Started' &&
       /\/en\/introduction(?:\/index)?$/.test(activePath)) ||
-    ((title === 'Create and connect an agent' ||
-      title === 'Shape the conversation') &&
+    (title === 'Create and connect an agent' &&
       /\/en\/ai(?:\/index)?$/.test(activePath))
+  );
+}
+
+function shouldDefaultOpenBuildSection(
+  node: SidebarSectionNode,
+  activePath: string,
+) {
+  return (
+    node.title === 'Build' &&
+    /\/en\/ai(?:\/index)?$/.test(activePath) &&
+    node.children.some(
+      (child) =>
+        child.type === 'section' &&
+        child.title === 'Create and connect an agent',
+    )
   );
 }
 
@@ -382,7 +396,7 @@ function SidebarNestedSection({
     !node.collapsible ||
     node.children.some((child) => isNodeActive(child, activePath)) ||
     shouldDefaultOpenSection(node.title, activePath) ||
-    node.title === 'Build';
+    shouldDefaultOpenBuildSection(node, activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
@@ -557,24 +571,39 @@ function mergeBestPracticesIntoBuild(
 function normalizeBuildNestedSections(
   nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
 ) {
-  return nodes.map((node) => {
-    if (node.type !== 'section' || node.title !== 'Build') {
-      return node;
-    }
+  return nodes.map((node) => normalizeBuildNestedSectionNode(node));
+}
 
+function normalizeBuildNestedSectionNode(
+  node: DocsSidebarNode | RenderableSidebarSectionNode,
+): DocsSidebarNode | RenderableSidebarSectionNode {
+  if (node.type !== 'section') {
+    return node;
+  }
+
+  const normalizedChildren = node.children.map((child) =>
+    normalizeBuildNestedSectionNode(child),
+  );
+
+  if (node.title !== 'Build') {
     return {
       ...node,
-      children: node.children.map((child) =>
-        child.type === 'section'
-          ? {
-              ...child,
-              collapsible: true,
-              icon: undefined,
-            }
-          : child,
-      ),
+      children: normalizedChildren,
     };
-  });
+  }
+
+  return {
+    ...node,
+    children: normalizedChildren.map((child) =>
+      child.type === 'section'
+        ? {
+            ...child,
+            collapsible: true,
+            icon: undefined,
+          }
+        : child,
+    ),
+  };
 }
 
 function normalizeRootSections(
