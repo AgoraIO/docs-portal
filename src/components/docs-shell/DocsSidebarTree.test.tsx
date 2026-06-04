@@ -257,6 +257,38 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
+  it('renders linked collapsed sections as navigation entries', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [],
+            collapsible: true,
+            id: 'folder-realtime-media-rtc-folder',
+            title: 'Voice & Video',
+            type: 'section',
+            url: '/en/realtime-media/rtc',
+          },
+        ],
+        collapsible: true,
+        id: 'separator-Build Live Interaction',
+        title: 'Build Live Interaction',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/realtime-media');
+
+    const link = await screen.findByRole('link', {
+      name: /Voice & Video/i,
+    });
+
+    expect(link).toHaveAttribute('href', '/en/realtime-media/rtc');
+    expect(
+      screen.queryByRole('button', { name: /Voice & Video/i }),
+    ).not.toBeInTheDocument();
+  });
+
   it('renders reference product sections as always-expanded headings', async () => {
     const tree: DocsSidebarNode[] = [
       {

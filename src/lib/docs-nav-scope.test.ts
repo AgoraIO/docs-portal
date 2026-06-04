@@ -1,10 +1,7 @@
 import type { Folder, Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import type { DocsMeta } from './docs-meta-schema';
-import {
-  getNavScopeSidebarNodes,
-  resolveDocsNavScope,
-} from './docs-nav-scope';
+import { getNavScopeSidebarNodes, resolveDocsNavScope } from './docs-nav-scope';
 
 const apiReferenceTree: Root = {
   children: [
@@ -261,12 +258,122 @@ describe('docs nav scope', () => {
         url: '/en/api-reference/conversational-ai',
       },
       {
-        id: '/en/api-reference/rtc',
+        children: [],
+        collapsible: true,
+        id: 'folder-rtc-folder',
         title: 'RTC',
-        type: 'page',
+        type: 'section',
         url: '/en/api-reference/rtc',
       },
     ]);
   });
 
+  it('preserves parent separators while rendering plain nav scopes as linked folder groups', () => {
+    const realtimeMediaTree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'realtime-media-folder',
+              children: [
+                {
+                  $id: 'realtime-media-build-live-interaction-separator',
+                  name: 'Build Live Interaction',
+                  type: 'separator',
+                },
+                {
+                  $id: 'realtime-media-rtc-folder',
+                  children: [
+                    {
+                      $id: 'realtime-media-rtc-quick-start',
+                      name: 'Quick Start',
+                      type: 'page',
+                      url: '/en/realtime-media/rtc/quick-start',
+                    },
+                  ],
+                  index: {
+                    $id: 'realtime-media-rtc-index',
+                    name: 'Voice & Video',
+                    type: 'page',
+                    url: '/en/realtime-media/rtc',
+                  },
+                  name: 'Voice & Video',
+                  type: 'folder',
+                },
+                {
+                  $id: 'realtime-media-rtm-folder',
+                  children: [],
+                  index: {
+                    $id: 'realtime-media-rtm-index',
+                    name: 'Signaling',
+                    type: 'page',
+                    url: '/en/realtime-media/rtm',
+                  },
+                  name: 'Signaling',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'realtime-media-index',
+                name: 'Overview',
+                type: 'page',
+                url: '/en/realtime-media',
+              },
+              name: 'Realtime & Media',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(
+      getNavScopeSidebarNodes({
+        getNodeMeta: (node) =>
+          node.$id === 'realtime-media-rtc-folder'
+            ? {
+                navScope: {},
+                pages: ['index', 'quick-start'],
+                title: 'Voice & Video',
+              }
+            : undefined,
+        root: realtimeMediaTree,
+        tab: 'realtime-media',
+      }),
+    ).toEqual([
+      {
+        id: '/en/realtime-media',
+        title: 'Overview',
+        type: 'page',
+        url: '/en/realtime-media',
+      },
+      {
+        children: [
+          {
+            children: [],
+            collapsible: true,
+            id: 'folder-realtime-media-rtc-folder',
+            title: 'Voice & Video',
+            type: 'section',
+            url: '/en/realtime-media/rtc',
+          },
+          {
+            id: '/en/realtime-media/rtm',
+            title: 'Signaling',
+            type: 'page',
+            url: '/en/realtime-media/rtm',
+          },
+        ],
+        collapsible: false,
+        id: 'separator-Build Live Interaction',
+        title: 'Build Live Interaction',
+        type: 'section',
+      },
+    ]);
+  });
 });

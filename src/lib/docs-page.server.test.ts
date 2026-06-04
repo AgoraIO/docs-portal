@@ -1033,7 +1033,7 @@ describe('loadDocsPagePayload', () => {
     );
   });
 
-  it('keeps a plain nav scope expanded in the parent Realtime & Media sidebar', async () => {
+  it('keeps a plain nav scope as a linked folder group in the parent Realtime & Media sidebar', async () => {
     const page = createPage();
     const realtimePage = {
       ...page,
@@ -1070,6 +1070,22 @@ describe('loadDocsPagePayload', () => {
       throw new Error('expected a docs page payload');
     }
 
+    expect(payload.sidebar).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          children: expect.arrayContaining([
+            expect.objectContaining({
+              children: [],
+              title: 'Voice & Video',
+              type: 'section',
+              url: '/en/realtime-media/rtc',
+            }),
+          ]),
+          title: 'Build Live Interaction',
+          type: 'section',
+        }),
+      ]),
+    );
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
       expect.arrayContaining([
         '/en/realtime-media',
@@ -1077,7 +1093,7 @@ describe('loadDocsPagePayload', () => {
         '/en/realtime-media/rtm',
       ]),
     );
-    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+    expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
       expect.arrayContaining([
         '/en/realtime-media/rtc/quick-start',
         '/en/realtime-media/rtc/audio/audio-profiles-and-quality',
@@ -1434,7 +1450,12 @@ function flattenSidebarPageUrls(
   >['sidebar'],
 ): string[] {
   return nodes.flatMap((node) =>
-    node.type === 'page' ? [node.url] : flattenSidebarPageUrls(node.children),
+    node.type === 'page'
+      ? [node.url]
+      : [
+          ...(node.url ? [node.url] : []),
+          ...flattenSidebarPageUrls(node.children),
+        ],
   );
 }
 

@@ -137,6 +137,18 @@ function SidebarSection({
   const leadingChildren = node.children.slice(0, splitIndex);
   const trailingChildren = node.children.slice(splitIndex);
 
+  if (node.url) {
+    return (
+      <SidebarLinkedSection
+        activePath={activePath}
+        icon={node.icon}
+        onSelectPath={onSelectPath}
+        title={node.title}
+        url={node.url}
+      />
+    );
+  }
+
   if (!node.collapsible) {
     return (
       <div>
@@ -244,6 +256,38 @@ function SidebarSection({
           )}
         </SidebarMenuSub>
       ) : null}
+    </SidebarMenuItem>
+  );
+}
+
+function SidebarLinkedSection({
+  activePath,
+  icon,
+  onSelectPath,
+  title,
+  url,
+}: {
+  activePath: string;
+  icon?: string;
+  onSelectPath: () => void;
+  title: string;
+  url: string;
+}) {
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        asChild
+        className={sidebarToggleClassName}
+        isActive={url === activePath}
+      >
+        <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
+          <span className="flex min-w-0 items-center gap-2">
+            <SidebarConfiguredIcon icon={icon} />
+            <span className="block whitespace-normal">{title}</span>
+          </span>
+          <ChevronDownIcon className="size-4 shrink-0 -rotate-90" />
+        </Link>
+      </SidebarMenuButton>
     </SidebarMenuItem>
   );
 }
@@ -556,10 +600,7 @@ function expandReferenceProductSections(
   ]);
 
   return nodes.map((node) => {
-    if (
-      node.type !== 'section' ||
-      !referenceProducts.has(node.title)
-    ) {
+    if (node.type !== 'section' || !referenceProducts.has(node.title)) {
       return node;
     }
 

@@ -41,6 +41,7 @@ export type DocsSidebarSectionNode = {
   id: string;
   title: string;
   type: 'section';
+  url?: string;
 };
 
 export type DocsSidebarNode = DocsSidebarPageNode | DocsSidebarSectionNode;
@@ -172,12 +173,9 @@ export function getSidebarNodes(
         url: indexItem.url,
       }
     : null;
-  let hasEmittedContent = false;
-
   if (pendingIndexNode) {
     nodes.push(pendingIndexNode);
     pendingIndexNode = null;
-    hasEmittedContent = true;
   }
 
   let currentSection: DocsSidebarSectionNode | null = null;
@@ -198,7 +196,6 @@ export function getSidebarNodes(
           type: 'section',
         };
         nodes.push(currentSection);
-        hasEmittedContent = true;
       }
 
       continue;
@@ -216,7 +213,6 @@ export function getSidebarNodes(
           nodes.push(pendingIndexNode);
         }
         pendingIndexNode = null;
-        hasEmittedContent = true;
       }
 
       if (currentSection) {
@@ -224,7 +220,6 @@ export function getSidebarNodes(
       } else {
         nodes.push(node);
       }
-      hasEmittedContent = true;
     }
   }
 
@@ -345,7 +340,6 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
           url: node.index.url,
         }
       : null;
-  let hasEmittedContent = false;
   let currentSection: DocsSidebarSectionNode | null = null;
 
   for (const child of node.children) {
@@ -364,7 +358,6 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
           type: 'section',
         };
         children.push(currentSection);
-        hasEmittedContent = true;
       }
 
       continue;
@@ -378,7 +371,6 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
           children.push(pendingIndexNode);
         }
         pendingIndexNode = null;
-        hasEmittedContent = true;
       }
 
       if (currentSection) {
@@ -386,7 +378,6 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
       } else {
         children.push(sidebarNode);
       }
-      hasEmittedContent = true;
     }
   }
 
@@ -423,7 +414,10 @@ export function getPrevNextLinks(root: Root, currentUrl: string) {
   };
 }
 
-export function getPrevNextLinksFromNode(node: Folder | Root, currentUrl: string) {
+export function getPrevNextLinksFromNode(
+  node: Folder | Root,
+  currentUrl: string,
+) {
   if (node.type === 'folder') {
     return getPrevNextLinks(
       {
@@ -711,7 +705,7 @@ function normalizeLabel(value: ReactNode, fallback: string) {
   return fallback;
 }
 
-function getConfiguredIconName(node: Node, fallback?: Item) {
+export function getConfiguredIconName(node: Node, fallback?: Item) {
   if ('icon' in node && typeof node.icon === 'string' && node.icon.length > 0) {
     return node.icon;
   }
@@ -721,7 +715,7 @@ function getConfiguredIconName(node: Node, fallback?: Item) {
     : undefined;
 }
 
-function isCollapsibleSectionTitle(title: string) {
+export function isCollapsibleSectionTitle(title: string) {
   return (
     title === 'SDK Quickstarts' ||
     title === 'SDK 快速开始' ||
