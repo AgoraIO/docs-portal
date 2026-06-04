@@ -48,7 +48,6 @@ The typical runtime flow is: the client requests tokens, joins the Agora channel
 ### On dedicated devices
 
 Choose this path when you are building for toys, companions, wearables, kiosks, or other embedded hardware. It is the right fit when your team needs a hardware-first workflow for bringing a voice agent to a dedicated device.
-
 - Start with the [device quickstart](device-kit/start-here/quickstart.md)
 - Continue through build and reference topics in the sidebar
 - Built with [Convo AI Device Kit](device-kit/index.md)
