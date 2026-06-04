@@ -1502,16 +1502,16 @@ describe('loadDocsPagePayload', () => {
                       $id: 'device-kit-reference-folder',
                       children: [
                         {
-                          $id: 'device-kit-pricing',
-                          name: 'Pricing',
-                          type: 'page',
-                          url: '/en/ai/device-kit/reference/pricing',
-                        },
-                        {
                           $id: 'device-kit-release-notes',
                           name: 'Release notes',
                           type: 'page',
                           url: '/en/ai/device-kit/reference/release-notes',
+                        },
+                        {
+                          $id: 'device-kit-pricing',
+                          name: 'Pricing',
+                          type: 'page',
+                          url: '/en/ai/device-kit/reference/pricing',
                         },
                       ],
                       name: 'Reference',
@@ -1582,8 +1582,9 @@ describe('loadDocsPagePayload', () => {
         '/en/ai/device-kit/start-here/quickstart',
         '/en/ai/device-kit/build/run-the-r1-demo',
         '/en/ai/device-kit/build/device-controls',
-        '/en/ai/device-kit/reference/pricing',
         '/en/ai/device-kit/reference/release-notes',
+        '/en/ai/device-kit/reference/pricing',
+
       ]),
     );
     expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
@@ -1615,7 +1616,14 @@ describe('loadDocsPagePayload', () => {
       softwareSection.children.some(
         (node) => node.type === 'section' && node.title === 'Reference',
       ),
-    ).toBe(false);
+    ).toBe(true);
+    const softwareReferenceSection = softwareSection.children.find(
+      (node) => node.type === 'section' && node.title === 'Reference',
+    );
+
+    if (!softwareReferenceSection || softwareReferenceSection.type !== 'section') {
+      throw new Error('expected the software reference section');
+    }
 
     const buildSection = softwareSection.children.find(
       (node) => node.type === 'section' && node.title === 'Build',
@@ -1645,23 +1653,30 @@ describe('loadDocsPagePayload', () => {
       dedicatedDevicesSection.children.some(
         (node) => node.type === 'section' && node.title === 'Reference',
       ),
-    ).toBe(false);
+    ).toBe(true);
+    const dedicatedReferenceSection = dedicatedDevicesSection.children.find(
+      (node) => node.type === 'section' && node.title === 'Reference',
+    );
+
+    if (!dedicatedReferenceSection || dedicatedReferenceSection.type !== 'section') {
+      throw new Error('expected the dedicated reference section');
+    }
     expect(
-      dedicatedDevicesSection.children.some(
+      dedicatedReferenceSection.children.some(
         (node) =>
           node.type === 'page' &&
           node.url === '/en/ai/device-kit/reference/enable-services',
       ),
     ).toBe(false);
     expect(
-      dedicatedDevicesSection.children.some(
+      dedicatedReferenceSection.children.some(
         (node) =>
           node.type === 'page' &&
           node.url === '/en/ai/device-kit/reference/release-notes',
       ),
     ).toBe(true);
     expect(
-      dedicatedDevicesSection.children.some(
+      dedicatedReferenceSection.children.some(
         (node) =>
           node.type === 'page' &&
           node.url === '/en/ai/device-kit/reference/pricing',
@@ -1683,9 +1698,9 @@ describe('loadDocsPagePayload', () => {
       dedicatedDevicesSection.children.some(
         (node) => node.type === 'section' && node.title === 'Reference',
       ),
-    ).toBe(false);
+    ).toBe(true);
     expect(
-      softwareSection.children.some(
+      softwareReferenceSection.children.some(
         (node) =>
           node.type === 'page' && node.url === '/en/ai/reference/event-types',
       ),

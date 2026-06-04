@@ -34,6 +34,13 @@ The sidebar is organized around implementation paths, not around a feature catal
 
 Choose this path when you are building for web, mobile, desktop, or backend-driven client experiences. It is the right fit when your team wants to embed voice interaction into a general-purpose software product.
 
+A software-client voice agent usually has two parts:
+
+- **Backend**: owns secrets, generates tokens, and starts or stops the agent session.
+- **Client**: captures audio, joins the channel, and renders conversation state to the user.
+
+The typical runtime flow is: the client requests tokens, joins the Agora channel, asks the backend to start the agent session, and then renders transcripts, state changes, and controls while the user and agent interact in the same channel.
+
 - Start with the [quickstart](get-started/quickstart.md)
 - Continue through build, optimization, models, and reference topics in the sidebar
 - Built with [Conversational AI](conversational-ai/index.md)

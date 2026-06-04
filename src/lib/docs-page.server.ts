@@ -579,7 +579,7 @@ function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
         },
         mergedBuildSection,
         modelsSection,
-        ...flattenReferenceChildren(referenceSection.children),
+        stripSidebarSectionMetaFromNode(referenceSection),
       ]),
       icon: 'Bot',
       id: 'ai-product-software-clients',
@@ -636,14 +636,17 @@ function flattenDeviceKitSidebarChildren(
 
     if (child.title === 'Reference' || child.title === 'Plan rollout') {
       flattened.push(
-        ...flattenReferenceChildren(child.children).filter(
-          (node) =>
-            !(
-              node.type === 'page' &&
-              (node.url === '/en/ai/device-kit/reference/enable-services' ||
-                node.url === '/zh-CN/ai/device-kit/reference/enable-services')
-            ),
-        ),
+        stripSidebarSectionMetaFromNode({
+          ...child,
+          children: child.children.filter(
+            (node) =>
+              !(
+                node.type === 'page' &&
+                (node.url === '/en/ai/device-kit/reference/enable-services' ||
+                  node.url === '/zh-CN/ai/device-kit/reference/enable-services')
+              ),
+          ),
+        }),
       );
       continue;
     }
@@ -652,16 +655,6 @@ function flattenDeviceKitSidebarChildren(
   }
 
   return flattened;
-}
-
-function flattenReferenceChildren(children: DocsSidebarNode[]): DocsSidebarNode[] {
-  return children.flatMap((child) => {
-    if (child.type === 'page') {
-      return [child];
-    }
-
-    return flattenReferenceChildren(child.children);
-  });
 }
 
 function findSidebarPageByExactUrlInNodes(
