@@ -1,4 +1,51 @@
 ---
 title: Console Setup
-description: Learn how to set up and configure the Agora Console.
+description: Use Agora Console to activate services, collect credentials, and prepare the project settings your first integration will rely on.
 ---
+
+## Why this page matters
+
+Before you write much code, most Agora integrations need a small amount of console setup. This is where you make sure the right service is available, the right project is selected, and the credentials your app expects are actually ready.
+
+For many first-time users, the implementation does not fail because the SDK is wrong. It fails because the Console state does not match the quickstart or backend flow they are following.
+
+## What you usually do in Console
+
+For a first integration, Console setup usually means:
+
+- signing in to the right Agora account
+- opening or creating the correct project
+- checking whether the required service is enabled
+- collecting the App ID and certificate details your app needs
+- confirming the authentication mode matches your quickstart or backend design
+
+## Typical first-time setup flow
+
+1. Sign in to Agora Console.
+2. Open the correct project on the **Projects** page.
+3. Confirm that the product or service you want to use is enabled for that project.
+4. Copy the App ID.
+5. If your backend will generate tokens, confirm the App Certificate is available and handled securely.
+6. Make sure your local starter, environment variables, or server configuration use the same project.
+
+## Common setup mistakes
+
+- using the wrong project for the current environment
+- following a token-based quickstart while the project is still configured for App ID only
+- copying credentials from one project and trying to join with another
+- debugging client code before checking whether the service was enabled in Console
+
+## When to revisit this page
+
+Come back here when:
+
+- a quickstart asks you for App ID or certificate values
+- a token flow is failing and you need to confirm project security mode
+- a service appears unavailable even though the code path looks correct
+- you are moving from a test project into a production project
+
+## Where to go next
+
+- Read [Projects](/en/introduction/projects) if you still need to create or inspect the project boundary itself.
+- Read [Pricing & Access](/en/introduction/pricing-access) to confirm billing and service-access expectations.
+- Read [Security and privacy](/en/introduction/security-privacy) before exposing a production app to real users.

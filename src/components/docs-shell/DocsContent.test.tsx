@@ -145,6 +145,50 @@ describe('DocsContent', () => {
       await screen.findByTestId('fumadocs-openapi-content'),
     ).toHaveTextContent('/v2/projects/{appid}/join');
   });
+
+  it('renders scope tabs in the content header when the sidebar header requests tabs presentation', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/realtime-media/rtc/quick-start/android/integrate-with-ai-tools.md"
+        description="Prototype page."
+        sidebarHeader={{
+          backHref: '/en/realtime-media/rtc',
+          backLabel: 'Voice & Video',
+          title: 'Quick Start',
+          versionSwitcher: {
+            currentId: 'android',
+            presentation: 'tabs',
+            versions: [
+              {
+                href: '/en/realtime-media/rtc/quick-start/android/integrate-with-ai-tools',
+                id: 'android',
+                label: 'Android',
+              },
+              {
+                href: '/en/realtime-media/rtc/quick-start/ios/integrate-with-ai-tools',
+                id: 'ios',
+                label: 'iOS',
+              },
+            ],
+          },
+        }}
+        slug="integrate-with-ai-tools"
+        title="Integrate with AI tools"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('tab', { name: 'Android' }),
+    ).toHaveAttribute(
+      'href',
+      '/en/realtime-media/rtc/quick-start/android/integrate-with-ai-tools',
+    );
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'href',
+      '/en/realtime-media/rtc/quick-start/ios/integrate-with-ai-tools',
+    );
+  });
 });
 
 describe('DocsTableOfContents', () => {

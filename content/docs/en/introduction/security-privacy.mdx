@@ -2,6 +2,11 @@
 title: Security & Privacy
 description: Review Agora's security model, encryption layers, geofencing controls, compliance posture, and operational safeguards before production launch.
 ---
+
+## Why this page matters
+
+This is the page to read when your prototype is becoming a real product. At that stage, the question is no longer only whether the integration works. The question becomes whether identity, access, transport, data handling, and operational controls are aligned with your production requirements.
+
 Agora uses a layered security model: Agora protects the platform and transport path, while customers still control identity, key management, application logic, and data exposure decisions.
 
 ## Core controls called out in the source
@@ -17,3 +22,19 @@ Agora uses a layered security model: Agora protects the platform and transport p
 - The shared security pages reference ISO/IEC 27001, 27017, 27018, and 27701 certifications.
 - A bug bounty program and a vulnerability reporting path are available.
 - Security responsibilities are split between Agora's platform controls and customer-owned application controls.
+
+## What to verify before production
+
+Before launch, confirm at least these areas:
+
+- token-based authentication is enabled where appropriate
+- media encryption and transport expectations match your risk model
+- regional restrictions or geofencing needs are understood
+- customer-side key handling and identity logic are not left implicit
+- the team knows which security controls Agora provides and which ones your application still owns
+
+## Where to go next
+
+- Read [Projects](/en/introduction/projects) if you need to confirm project security mode and certificate setup.
+- Read [Console setup](/en/introduction/console-setup) if your console state is not yet aligned with your intended security model.
+- Read [Pricing & Access](/en/introduction/pricing-access) if you are checking production readiness more broadly.

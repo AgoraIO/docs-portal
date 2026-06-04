@@ -1101,7 +1101,7 @@ describe('loadDocsPagePayload', () => {
     );
   });
 
-  it('loads nested product pages from multi-segment slugs', async () => {
+  it('redirects legacy quick-start slugs to the default Android platform scope', async () => {
     const basePage = createPage();
     const nestedPage = {
       ...basePage,
@@ -1126,12 +1126,9 @@ describe('loadDocsPagePayload', () => {
 
     await expect(
       loadDocsPagePayload('en', 'realtime-media', ['rtc', 'quick-start']),
-    ).resolves.toMatchObject({
-      activePath: '/en/realtime-media/rtc/quick-start',
-      activeTab: 'realtime-media',
-      contentPath: 'en/realtime-media/rtc/quick-start.md',
-      slug: 'quick-start',
-      title: 'RTC Quick Start',
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/realtime-media/rtc/quick-start/android/integrate-with-ai-tools',
     });
   });
 

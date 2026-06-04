@@ -1,11 +1,11 @@
 ---
 title: Core Concepts
-description: Learn the core objects and relationships that appear across Agora products and documentation.
+description: Learn the shared concepts that appear across Agora products so you can choose the right build path and understand how the platform fits together.
 ---
 
 Agora covers many product surfaces, but the platform becomes much easier to understand once you recognize the same core concepts repeating across them.
 
-This page introduces the shared concepts that matter before you go deeper into capability pages, SDK guides, or API references.
+This page introduces the shared concepts that matter before you go deeper into capability pages, quickstarts, SDK guides, or API references.
 
 ## Account and project
 
@@ -28,6 +28,19 @@ Most Agora integrations involve some combination of:
 - **Token** as the runtime access credential for clients, users, or participants
 
 The basic rule is simple: account credentials set up trust, and runtime credentials control who can join or act inside a live system.
+
+## Realtime network and transport
+
+Agora is built for products where communication needs to stay live, low-latency, and resilient across device and network conditions.
+
+That usually means:
+
+- participants are connected continuously instead of making one-off requests
+- media, messages, and events may flow at the same time
+- users and devices may join from different regions and unstable networks
+- the system has to keep a shared session usable while conditions change
+
+You do not need to understand every transport detail on day one, but it helps to remember that Agora is optimized for live interaction rather than request-response APIs alone.
 
 ## Users, participants, and devices
 
@@ -55,6 +68,18 @@ Inside that context, participants may:
 
 If you understand the session boundary, it becomes much easier to reason about how RTC, messaging, AI, transcription, and media services fit together.
 
+## UIDs and participant identity
+
+Inside a session, each participant needs an identity the system can use consistently.
+
+Depending on the product and SDK, you may see:
+
+- numeric user IDs
+- string user IDs
+- application-level identities mapped onto Agora runtime identities
+
+The important point is not the exact format. It is that identity must stay consistent enough for clients, servers, callbacks, and room state to agree on who is participating in the session.
+
 ## Media, messages, and events
 
 Most Agora products operate on one or more of these three layers:
@@ -75,19 +100,32 @@ Agora integrations usually split work across:
 
 This split is important because many architecture decisions are really about where control should live.
 
+## Product families and composition
+
+Once these platform primitives are clear, the rest of the docs are easier to navigate:
+
+- **Conversational AI** builds voice agents and spoken AI experiences on top of live sessions.
+- **Real-Time Voice & Video** handles the primary media interaction between participants and devices.
+- **Messaging & Presence** adds room state, chat, signaling, and coordination.
+- **Cloud Media Services** extends sessions with recording, transcription, translation, routing, and transformation.
+
+Most production systems combine more than one family. A typical product might use RTC for live interaction, RTM for room state, AI for agent participation, and cloud services for transcription or recording.
+
 ## Why these concepts matter
 
 If you keep these concepts straight, you can read the rest of the documentation more efficiently:
 
 - capability pages help you identify the right domain
+- quickstarts help you get to first success faster
 - product pages explain how a specific service solves that domain
 - API references define the exact integration details
 - production pages help you secure, operate, and scale the system
 
 ## Where to go next
 
-After this page, continue with:
+After this page, continue with the path that matches your next question:
 
-- [Choose your starting point](/en/introduction/choose-your-starting-point)
-- [Account](/en/introduction/account)
-- [Projects](/en/introduction/projects)
+- Read [About Agora](/en/introduction/about-agora) if you want the platform map and product-family overview.
+- Open [Start with AI](/en/introduction/start-with-ai) if you want an AI-assisted workflow with MCP, Skills, and official starters.
+- Open [Start building](/en/introduction/build-it-yourself) if you already know the product problem you want to solve.
+- Continue with [Projects](/en/introduction/projects), [Console setup](/en/introduction/console-setup), [Pricing & Access](/en/introduction/pricing-access), and [Security and privacy](/en/introduction/security-privacy) when you are ready to configure a real environment.

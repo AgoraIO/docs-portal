@@ -13,7 +13,33 @@ const apiReferenceTree: Root = {
           children: [
             {
               $id: 'convoai-folder',
-              children: [],
+              children: [
+                {
+                  $id: 'convoai-rest-api-folder',
+                  children: [
+                    {
+                      $id: 'convoai-rest-api-authentication',
+                      name: 'Authentication',
+                      type: 'page',
+                      url: '/en/api-reference/conversational-ai/rest-api/authentication',
+                    },
+                  ],
+                  index: {
+                    $id: 'convoai-rest-api-index',
+                    name: 'REST API',
+                    type: 'page',
+                    url: '/en/api-reference/conversational-ai/rest-api',
+                  },
+                  name: 'REST API',
+                  type: 'folder',
+                },
+                {
+                  $id: 'convoai-go-page',
+                  name: 'Go',
+                  type: 'page',
+                  url: '/en/api-reference/conversational-ai/go',
+                },
+              ],
               index: {
                 $id: 'convoai-index',
                 name: 'Conversational AI',
@@ -132,6 +158,14 @@ const apiReferenceTree: Root = {
 };
 
 const metaById = new Map<string, DocsMeta>([
+  [
+    'convoai-rest-api-folder',
+    {
+      navScope: {},
+      pages: ['authentication'],
+      title: 'RESTful',
+    },
+  ],
   ['rtc-folder', { navScope: {}, pages: ['index', 'android'], title: 'RTC' }],
   [
     'android-folder',
@@ -252,10 +286,26 @@ describe('docs nav scope', () => {
         url: '/en/api-reference',
       },
       {
-        id: '/en/api-reference/conversational-ai',
+        children: [
+          {
+            children: [],
+            collapsible: true,
+            id: 'folder-convoai-rest-api-folder',
+            title: 'RESTful',
+            type: 'section',
+            url: '/en/api-reference/conversational-ai/rest-api',
+          },
+          {
+            id: '/en/api-reference/conversational-ai/go',
+            title: 'Go',
+            type: 'page',
+            url: '/en/api-reference/conversational-ai/go',
+          },
+        ],
+        collapsible: false,
+        id: 'folder-convoai-folder',
         title: 'Conversational AI',
-        type: 'page',
-        url: '/en/api-reference/conversational-ai',
+        type: 'section',
       },
       {
         children: [],

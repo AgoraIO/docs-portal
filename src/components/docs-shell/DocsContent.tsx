@@ -1,10 +1,13 @@
+import { Link } from '@tanstack/react-router';
 import { ClientOnly } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import { BotIcon, Edit3Icon, ExternalLinkIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
+import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import {
   findDocsHeadingForHash,
   scrollDocsHashTarget,
@@ -29,6 +32,7 @@ export function DocsContent({
   description,
   locale = DEFAULT_LOCALE,
   markdownUrl,
+  sidebarHeader,
   slug,
   title,
   toc,
@@ -39,6 +43,7 @@ export function DocsContent({
   description?: string;
   locale?: AppLocale | string;
   markdownUrl?: string;
+  sidebarHeader?: DocsSidebarHeader;
   slug?: string;
   title?: string;
   toc: TOCItemType[];
@@ -135,6 +140,9 @@ export function DocsContent({
             </p>
           ) : null}
         </div>
+        {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
+          <DocsHeaderScopeTabs header={sidebarHeader} />
+        ) : null}
         {markdownUrl ? (
           <div className="flex flex-wrap items-center gap-2">
             <a
@@ -168,6 +176,33 @@ export function DocsContent({
         />
       )}
     </article>
+  );
+}
+
+function DocsHeaderScopeTabs({ header }: { header: DocsSidebarHeader }) {
+  const versionSwitcher = header.versionSwitcher;
+
+  if (!versionSwitcher) {
+    return null;
+  }
+
+  return (
+    <Tabs className="w-auto max-w-full" value={versionSwitcher.currentId}>
+      <TabsList className="max-w-full justify-start gap-1 overflow-visible px-0" variant="line">
+        {versionSwitcher.versions.map((version) => (
+          <TabsTrigger asChild key={version.id} value={version.id}>
+            <Link
+              className="h-9 rounded-none px-0 pr-4 text-[13.5px] font-medium after:!bottom-[-3px] data-[state=active]:font-semibold"
+              params={{}}
+              search={{}}
+              to={version.href}
+            >
+              {version.label}
+            </Link>
+          </TabsTrigger>
+        ))}
+      </TabsList>
+    </Tabs>
   );
 }
 

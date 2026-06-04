@@ -9,6 +9,7 @@ export const docsNavScopeVersionSchema = z.object({
 
 export const docsNavScopeSchema = z.object({
   defaultVersion: z.string().min(1).optional(),
+  presentation: z.enum(['dropdown', 'tabs']).optional(),
   versions: z.array(docsNavScopeVersionSchema).min(1).optional(),
 });
 

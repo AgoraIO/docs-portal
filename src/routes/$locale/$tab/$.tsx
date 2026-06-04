@@ -44,6 +44,7 @@ function Page() {
     contentPath,
     description,
     markdownUrl,
+    sidebarHeader,
     slug,
     toc,
     title,
@@ -57,6 +58,7 @@ function Page() {
       description={description}
       locale={params.locale}
       markdownUrl={markdownUrl}
+      sidebarHeader={sidebarHeader}
       slug={slug}
       title={title}
       toc={toc}
