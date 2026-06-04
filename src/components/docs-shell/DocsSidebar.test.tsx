@@ -2,7 +2,9 @@ import { render } from '@testing-library/react';
 import { createRef } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import { getDocsSidebarResetKey } from './DocsShell';
 import { DocsSidebar } from './DocsSidebar';
 import { useTransientScrollbar } from './useTransientScrollbar';
 
@@ -43,7 +45,6 @@ function renderDocsSidebar({
     <SidebarProvider>
       <DocsSidebar
         activePath={activePath}
-        activeTab="introduction"
         nodes={nodes}
         onSelectPath={() => {}}
         resetKey={resetKey}
@@ -58,7 +59,6 @@ function renderDocsSidebar({
         <SidebarProvider>
           <DocsSidebar
             activePath={nextProps.activePath ?? activePath}
-            activeTab="introduction"
             nodes={nodes}
             onSelectPath={() => {}}
             resetKey={nextProps.resetKey ?? resetKey}
@@ -96,5 +96,43 @@ describe('DocsSidebar', () => {
     });
 
     expect(scrollToTop).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('getDocsSidebarResetKey', () => {
+  it('uses the active tab when the sidebar has no scoped header', () => {
+    expect(getDocsSidebarResetKey('introduction')).toBe('introduction');
+  });
+
+  it('includes scoped header and current version identity', () => {
+    const header: DocsSidebarHeader = {
+      backHref: '/en/api-reference/rtc',
+      backLabel: 'RTC',
+      title: 'Android API Reference',
+      versionSwitcher: {
+        currentId: 'current',
+        versions: [],
+      },
+    };
+
+    const currentKey = getDocsSidebarResetKey('api-reference', header);
+    const nextVersionKey = getDocsSidebarResetKey('api-reference', {
+      ...header,
+      versionSwitcher: {
+        currentId: '4.6.0',
+        versions: [],
+      },
+    });
+    const nextScopeKey = getDocsSidebarResetKey('api-reference', {
+      ...header,
+      backHref: '/en/api-reference/rtc/ios',
+      title: 'iOS API Reference',
+    });
+
+    expect(currentKey).toBe(
+      'api-reference\u0000Android API Reference\u0000/en/api-reference/rtc\u0000current',
+    );
+    expect(nextVersionKey).not.toBe(currentKey);
+    expect(nextScopeKey).not.toBe(currentKey);
   });
 });

@@ -13,14 +13,12 @@ import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsSidebar({
   activePath,
-  activeTab,
   header,
   nodes,
   onSelectPath,
   resetKey,
 }: {
   activePath: string;
-  activeTab: string;
   header?: DocsSidebarHeader;
   nodes: DocsSidebarNode[];
   onSelectPath: () => void;
@@ -28,8 +26,6 @@ export function DocsSidebar({
 }) {
   const { isScrollbarVisible, scrollContainerRef, scrollToTop } =
     useTransientScrollbar<HTMLDivElement>();
-
-  void activeTab;
 
   useEffect(() => {
     void resetKey;

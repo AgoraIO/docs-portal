@@ -56,6 +56,22 @@ type LocaleLink = {
   locale: AppLocale;
 };
 
+export function getDocsSidebarResetKey(
+  activeTab: string,
+  sidebarHeader?: DocsSidebarHeader,
+) {
+  if (!sidebarHeader) {
+    return activeTab;
+  }
+
+  return [
+    activeTab,
+    sidebarHeader.title,
+    sidebarHeader.backHref,
+    sidebarHeader.versionSwitcher?.currentId ?? '',
+  ].join('\0');
+}
+
 export function DocsShell({
   activePath,
   activeTab,
@@ -98,6 +114,7 @@ export function DocsShell({
   const headerRef = useRef<HTMLElement | null>(null);
   const [headerOffset, setHeaderOffset] = useState(0);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
+  const sidebarResetKey = getDocsSidebarResetKey(activeTab, sidebarHeader);
 
   useLayoutEffect(() => {
     const node = headerRef.current;
@@ -326,11 +343,10 @@ export function DocsShell({
         >
           <DocsSidebar
             activePath={activePath}
-            activeTab={activeTab}
             header={sidebarHeader}
             nodes={sidebar}
             onSelectPath={() => setIsMobileSheetOpen(false)}
-            resetKey={activeTab}
+            resetKey={sidebarResetKey}
           />
           <DocsMainColumn
             layoutMode={layoutMode}
