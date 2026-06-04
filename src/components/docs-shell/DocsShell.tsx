@@ -330,6 +330,7 @@ export function DocsShell({
             header={sidebarHeader}
             nodes={sidebar}
             onSelectPath={() => setIsMobileSheetOpen(false)}
+            resetKey={activeTab}
           />
           <DocsMainColumn
             layoutMode={layoutMode}

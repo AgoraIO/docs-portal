@@ -5,8 +5,8 @@ import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
 } from '@/components/ui/sidebar';
-import type { DocsSidebarNode } from '@/lib/docs-tree';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+import type { DocsSidebarNode } from '@/lib/docs-tree';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarTree } from './DocsSidebarTree';
 import { useTransientScrollbar } from './useTransientScrollbar';
@@ -17,22 +17,25 @@ export function DocsSidebar({
   header,
   nodes,
   onSelectPath,
+  resetKey,
 }: {
   activePath: string;
   activeTab: string;
   header?: DocsSidebarHeader;
   nodes: DocsSidebarNode[];
   onSelectPath: () => void;
+  resetKey: string;
 }) {
   const { isScrollbarVisible, scrollContainerRef, scrollToTop } =
     useTransientScrollbar<HTMLDivElement>();
 
+  void activeTab;
+
   useEffect(() => {
-    void activeTab;
-    void activePath;
+    void resetKey;
 
     scrollToTop();
-  }, [activePath, activeTab, scrollToTop]);
+  }, [resetKey, scrollToTop]);
 
   return (
     <ShadcnSidebar
