@@ -616,7 +616,7 @@ function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
       ]),
       icon: 'Bot',
       id: 'ai-product-software-clients',
-      title: 'Voice agent on software clients',
+      title: 'Voice agent in apps',
       type: 'section',
     },
     {

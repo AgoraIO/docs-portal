@@ -276,10 +276,6 @@ This release includes the following enhancements:
 
     Adds a guide to [Optimize conversation latency](../best-practices/optimize-latency.md).
 
-* **Cloud Recording best practices**    
-
-    Adds a guide to [Record conversations with Cloud Recording](../best-practices/cloud-recording.md).
-
 #### API changes
 
 This release introduces the following changes to the RESTful API.

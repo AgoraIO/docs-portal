@@ -1661,18 +1661,18 @@ describe('loadDocsPagePayload', () => {
     );
     expect(payload.sidebar.map((node) => node.title)).toEqual([
       'Overview',
-      'Voice agent on software clients',
+      'Voice agent in apps',
       'Voice agent on dedicated devices',
     ]);
 
     const softwareSection = payload.sidebar.find(
       (node) =>
         node.type === 'section' &&
-        node.title === 'Voice agent on software clients',
+        node.title === 'Voice agent in apps',
     );
 
     if (!softwareSection || softwareSection.type !== 'section') {
-      throw new Error('expected the software clients section');
+      throw new Error('expected the apps section');
     }
 
     expect(

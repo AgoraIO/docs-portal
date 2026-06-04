@@ -1,0 +1,79 @@
+---
+title: Voice Agent
+description: Understand what a voice agent is, how this section is organized, and which path to follow in the sidebar.
+---
+
+A Voice Agent is a realtime system that listens to a user, reasons over the conversation, and responds with speech. On Agora, that experience is built from a shared foundation: realtime transport, an agent runtime, AI models, and the endpoint where the conversation is delivered.
+
+This section is designed around a developer decision, not around a flat feature list: where will your agent run? The sidebar uses that mental model to help you move from orientation to implementation without having to re-sort the docs yourself.
+
+## Capabilities
+
+No matter where you ship it, a Voice Agent usually has the same core layers:
+
+- **Realtime transport**: moves audio, events, and conversation state between the user and the agent with low latency.
+- **Agent runtime**: manages the session lifecycle, turn taking, interruptions, memory, and tool orchestration.
+- **Models**: provide ASR, LLM, TTS, and optional multimodal capabilities.
+- **Endpoint**: presents the experience to the user, either through an app or a dedicated device.
+
+The first three layers stay conceptually similar across the docs. The main split in the sidebar happens at the **endpoint** layer, because app teams and device teams need different implementation workflows.
+
+## How this section is organized
+
+The AI sidebar is structured in two paths:
+
+- **In apps**: for web, mobile, desktop, and backend-assisted app experiences.
+- **On dedicated devices**: for embedded or hardware-first endpoints such as toys, wearables, kiosks, and companions.
+
+Both paths share the same Voice Agent idea, but they differ in what teams need to build next. App teams usually care first about session orchestration, UI, model behavior, and runtime events. Device teams usually care first about bring-up, networking, firmware, controls, and hardware integration.
+
+<a id="on-software-clients" />
+<a id="for-software-clients" />
+
+## In apps
+
+Choose this path when the agent lives inside an app, web experience, desktop product, or backend-assisted app architecture. In the sidebar, this is the general Voice Agent path outside of Device Kit.
+
+The reading order is intentional:
+
+- Start with the fastest end-to-end integration.
+- Move into implementation guides for session control, conversation behavior, and runtime handling.
+- Use best practices, model guides, and reference topics when you are tuning or operating the system.
+
+<Cards>
+  <Card
+    title="Get started"
+    href="/en/ai/get-started/quickstart"
+    description="Build the minimal backend-plus-client flow and get a working voice agent running quickly."
+  />
+  <Card
+    title="Build"
+    href="/en/ai/build/start-stop-agent"
+    description="Implement agent lifecycle, memory, interruptions, runtime events, transcripts, multimodal input, and debugging."
+  />
+</Cards>
+
+<a id="on-dedicated-devices" />
+
+## On dedicated devices
+
+Choose this path when the endpoint is purpose-built hardware rather than an app. This path is for teams building embedded voice products such as toys, companions, kiosks, wearables, or other dedicated devices.
+
+Here the sidebar is organized around device bring-up:
+
+- Start with a quick validation path for the device kit.
+- Continue into server setup, network provisioning, controls, firmware, and architecture.
+- Use reference topics for service enablement, pricing, and release planning.
+
+<Cards>
+  <Card
+    title="Start here"
+    href="/en/ai/device-kit/start-here/quickstart"
+    description="Bring up the Convo AI Device Kit quickly and verify the end-to-end device workflow."
+  />
+  <Card
+    title="Build"
+    href="/en/ai/device-kit/build/run-the-r1-demo"
+    description="Work through demo setup, networking, controls, firmware flashing, and system architecture."
+  />
+</Cards>
