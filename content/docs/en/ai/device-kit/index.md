@@ -25,5 +25,5 @@ Use this product space when you need a hardware-first developer workflow instead
 ## Plan rollout
 
 - [Enable services](reference/enable-services.md)
-- [Pricing](plan-rollout/pricing.md)
-- [Release notes](plan-rollout/release-notes.md)
+- [Pricing](reference/pricing.md)
+- [Release notes](reference/release-notes.md)
