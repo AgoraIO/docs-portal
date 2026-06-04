@@ -10,6 +10,8 @@ import {
 import { getSourceSlugs } from './docs-routing';
 import {
   type DocsSidebarNode,
+  type DocsSidebarSectionNode,
+  filterSidebarNodes,
   getFirstChildPageUrl,
   getFirstTabPageUrl,
   getPrevNextLinksFromNode,
@@ -33,8 +35,11 @@ import {
 
 const OPENAPI_TAB = 'api-reference';
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
+const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
 const RECIPES_ROOT_SLUG = 'recipes';
+
+type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 
 const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
   string,
@@ -200,7 +205,7 @@ export async function loadDocsPagePayload(
     })),
     tab,
   });
-  const sidebarHeader = navScope?.header;
+  const sidebarHeader = tab === 'ai' ? undefined : navScope?.header;
 
   return {
     activePath: page.url,
@@ -297,8 +302,12 @@ function resolveDeviceKitRedirect(
 
   const normalizedPath = slugSegments.join('/');
 
+  if (normalizedPath === 'device-kit') {
+    return `/${locale}/ai/device-kit/start-here/quickstart`;
+  }
+
   if (normalizedPath === `choose-your-path/${DEVICE_KIT_PATH_ENTRY_SLUG}`) {
-    return `/${locale}/ai/device-kit`;
+    return `/${locale}/ai/device-kit/start-here/quickstart`;
   }
 
   const redirects: Record<string, string> = {
@@ -310,8 +319,8 @@ function resolveDeviceKitRedirect(
     'device-kit/overview/architecture': `/${locale}/ai/device-kit/build/architecture-overview`,
     'device-kit/reference': `/${locale}/ai/device-kit/build/device-controls`,
     'device-kit/reference/device-controls': `/${locale}/ai/device-kit/build/device-controls`,
-    'device-kit/overview/pricing': `/${locale}/ai/device-kit/plan-rollout/pricing`,
-    'device-kit/overview/release-notes': `/${locale}/ai/device-kit/plan-rollout/release-notes`,
+    'device-kit/overview/pricing': `/${locale}/ai/device-kit/reference/pricing`,
+    'device-kit/overview/release-notes': `/${locale}/ai/device-kit/reference/release-notes`,
     'device-kit/start-here/enable-services': `/${locale}/ai/device-kit/reference/enable-services`,
   };
 
@@ -348,6 +357,8 @@ function resolveAiDocsRedirect(
   const normalizedPath = slugSegments.join('/');
 
   const redirects: Record<string, string> = {
+    'conversational-ai': `/${locale}/ai/get-started/quickstart`,
+    [`choose-your-path/${CONVERSATIONAL_AI_PATH_ENTRY_SLUG}`]: `/${locale}/ai/get-started/quickstart`,
     'build/code-first-architecture': `/${locale}/ai/build/architecture`,
     'build/event-types': `/${locale}/ai/reference/event-types`,
     'reference/code-first-architecture': `/${locale}/ai/build/architecture`,
@@ -473,6 +484,17 @@ async function getDocsSidebarNodes({
   source: typeof docsSource;
   tab: string;
 }) {
+  if (tab === 'ai') {
+    return buildAiProductSidebar(
+      getNavScopeSidebarNodes({
+        getNodeMeta: (node) =>
+          getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+        root: pageTree,
+        tab,
+      }),
+    );
+  }
+
   const navScope = activePath
     ? getDocsNavScope({
         activePath,
@@ -500,6 +522,209 @@ async function getDocsSidebarNodes({
   }
 
   return addOpenApiEndpointSidebarItems(sidebar, locale, tab);
+}
+
+function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
+  const aiOverview = findSidebarPageByExactUrlInNodes(nodes, '/en/ai')
+    ?? findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai');
+  const conversationalAiQuickstart =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/get-started/quickstart')
+    ?? findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/get-started/quickstart');
+  const buildSection = findTopLevelSidebarSection(nodes, 'Build');
+  const bestPracticesSection = findTopLevelSidebarSection(nodes, 'Best practices');
+  const modelsSection = findTopLevelSidebarSection(nodes, 'Models');
+  const referenceSection = findTopLevelSidebarSection(nodes, 'Reference');
+  const deviceKitSection = findTopLevelSidebarSection(nodes, 'Convo AI Device Kit');
+
+  if (
+    !aiOverview ||
+    !conversationalAiQuickstart ||
+    !buildSection ||
+    !bestPracticesSection ||
+    !modelsSection ||
+    !referenceSection ||
+    !deviceKitSection
+  ) {
+    return filterSidebarNodes(nodes, (node) => {
+      if (node.type !== 'page') {
+        return true;
+      }
+
+      return !node.url.includes('/ai/choose-your-path/');
+    });
+  }
+
+  const mergedBuildSection: DocsSidebarSectionNode = {
+    ...stripSidebarSectionMeta(buildSection),
+    children: stripSidebarSectionMetaFromNodes([
+      ...buildSection.children,
+      {
+        ...stripSidebarSectionMeta(bestPracticesSection),
+        children: stripSidebarSectionMetaFromNodes(bestPracticesSection.children),
+        title: 'Harden and optimize',
+      },
+    ]),
+  };
+
+  return [
+    {
+      ...aiOverview,
+      title: 'Overview',
+    },
+    {
+      children: stripSidebarSectionMetaFromNodes([
+        {
+          ...conversationalAiQuickstart,
+          title: 'Quickstart',
+        },
+        mergedBuildSection,
+        modelsSection,
+        stripSidebarSectionMetaFromNode(referenceSection),
+      ]),
+      icon: 'Bot',
+      id: 'ai-product-software-clients',
+      title: 'Voice agent on software clients',
+      type: 'section',
+    },
+    {
+      ...stripSidebarSectionMeta(deviceKitSection),
+      children: stripSidebarSectionMetaFromNodes(
+        flattenDeviceKitSidebarChildren(deviceKitSection.children),
+      ),
+      icon: 'Cpu',
+      id: 'ai-product-dedicated-devices',
+      title: 'Voice agent on dedicated devices',
+      type: 'section',
+    },
+  ];
+}
+
+function flattenDeviceKitSidebarChildren(
+  children: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  const flattened: DocsSidebarNode[] = [];
+
+  for (const child of children) {
+    if (child.type === 'page') {
+      if (
+        child.url === '/en/ai/device-kit' ||
+        child.url === '/zh-CN/ai/device-kit'
+      ) {
+        continue;
+      }
+
+      flattened.push(child);
+      continue;
+    }
+
+    if (child.title === 'Start here') {
+      const quickstart =
+        findSidebarPageByExactUrl(child, '/en/ai/device-kit/start-here/quickstart')
+        ?? findSidebarPageByExactUrl(
+          child,
+          '/zh-CN/ai/device-kit/start-here/quickstart',
+        );
+
+      if (quickstart) {
+        flattened.push({
+          ...quickstart,
+          title: 'Quickstart',
+        });
+      }
+      continue;
+    }
+
+    if (child.title === 'Reference' || child.title === 'Plan rollout') {
+      flattened.push(
+        stripSidebarSectionMetaFromNode({
+          ...child,
+          children: child.children.filter(
+            (node) =>
+              !(
+                node.type === 'page' &&
+                (node.url === '/en/ai/device-kit/reference/enable-services' ||
+                  node.url === '/zh-CN/ai/device-kit/reference/enable-services')
+              ),
+          ),
+        }),
+      );
+      continue;
+    }
+
+    flattened.push(stripSidebarSectionMetaFromNode(child));
+  }
+
+  return flattened;
+}
+
+function findSidebarPageByExactUrlInNodes(
+  nodes: DocsSidebarNode[],
+  url: string,
+): DocsSidebarPageNode | null {
+  for (const node of nodes) {
+    const match = findSidebarPageByExactUrl(node, url);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
+function findSidebarPageByExactUrl(
+  node: DocsSidebarNode,
+  url: string,
+): DocsSidebarPageNode | null {
+  if (node.type === 'page') {
+    return node.url === url ? node : null;
+  }
+
+  for (const child of node.children) {
+    const match = findSidebarPageByExactUrl(child, url);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
+function findTopLevelSidebarSection(
+  nodes: DocsSidebarNode[],
+  title: string,
+): DocsSidebarSectionNode | null {
+  for (const node of nodes) {
+    if (node.type === 'section' && node.title === title) {
+      return node;
+    }
+  }
+
+  return null;
+}
+
+function stripSidebarSectionMetaFromNodes(
+  nodes: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  return nodes.map((node) => stripSidebarSectionMetaFromNode(node));
+}
+
+function stripSidebarSectionMetaFromNode(node: DocsSidebarNode): DocsSidebarNode {
+  if (node.type === 'page') {
+    return node;
+  }
+
+  return {
+    ...stripSidebarSectionMeta(node),
+    children: stripSidebarSectionMetaFromNodes(node.children),
+  };
+}
+
+function stripSidebarSectionMeta(
+  node: DocsSidebarSectionNode,
+): DocsSidebarSectionNode {
+  const { icon: _icon, url: _url, ...rest } = node;
+
+  return rest;
 }
 
 function getDocsPages({

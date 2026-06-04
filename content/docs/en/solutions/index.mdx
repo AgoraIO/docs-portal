@@ -1,145 +1,45 @@
 ---
-title: Choose a solution
-description: Start from the product experience you want to ship, then open the solution path that matches it.
+title: Overview
+description: See how Solutions is grouped by product pattern, what each guide group covers, and how the sections relate.
 ---
 
-<SolutionCardGrid>
-  <SolutionCard
-    description="Host-audience live rooms, co-hosting, PK, and room engagement flows."
-    href="/en/solutions/showroom"
-    tags={["RTC"]}
-    title="Enable live streaming"
-    tone="blue"
-  />
-  <SolutionCard
-    description="Cross-platform voice chat for team play, squad coordination, and low-friction join."
-    href="/en/solutions/game-voice"
-    tags={["RTC"]}
-    title="Add in-game voice"
-    tone="purple"
-  />
-  <SolutionCard
-    description="Structured multi-party meetings with participant control and collaboration flows."
-    href="/en/solutions/meeting"
-    tags={["RTC"]}
-    title="Launch meetings"
-    tone="blue"
-  />
-  <SolutionCard
-    description="Simple device-to-app calling for mini-program, terminal, and lightweight clients."
-    href="/en/solutions/voip-call"
-    tags={["RTC"]}
-    title="Enable lightweight calling"
-    tone="sand"
-  />
-  <SolutionCard
-    description="Teacher-student sessions, classroom orchestration, and teaching-first interaction."
-    href="/en/solutions/flexible-classroom"
-    tags={["RTC"]}
-    title="Run online classrooms"
-    tone="pink"
-  />
-  <SolutionCard
-    description="Realtime media plus control paths for remote operation and operator-device workflows."
-    href="/en/solutions/teleoperation"
-    tags={["RTSA"]}
-    title="Operate devices remotely"
-    tone="green"
-  />
-</SolutionCardGrid>
+Solutions is the scenario domain for developers who already know the kind of product they want to launch, but do not want to assemble the underlying realtime stack from scratch. Use this section when your main question is "what experience am I building?" rather than "which media capability do I need first?"
 
-The cards above cover the six solution paths most teams evaluate first. Pick the one that sounds closest to your target product, then follow that solution guide for architecture, scope, and implementation details.
+This tab is organized by product pattern and business workflow rather than by protocol, API, or infrastructure layer. Each solution path pulls together the capabilities, roles, interaction model, and implementation scope for a recognizable product shape such as live streaming, gaming voice, meetings, classrooms, or connected devices.
 
-## Online classrooms
+Use this overview to understand what kinds of product guides exist in the Solutions tab, how those guides are grouped, where different topics live, and how the sections relate before you move into the individual solution guides.
 
-Use these paths when your product is fundamentally a teaching workflow, not a generic meeting room.
+## How content is grouped
 
-<SolutionCardGrid size="small">
-  <SolutionCard
-    description="Launch faster with a classroom product path."
-    href="/en/solutions/flexible-classroom"
-    size="small"
-    tags={["RTC"]}
-    title="Run online classrooms"
-    tone="pink"
-  />
-  <SolutionCard
-    description="Direct teacher-student sessions."
-    href="/en/solutions/one-to-one-classroom"
-    title="Teach 1-on-1"
-    size="small"
-    tags={["RTC"]}
-    tone="pink"
-  />
-  <SolutionCard
-    description="Small group interactive teaching."
-    href="/en/solutions/small-classroom"
-    title="Teach small groups"
-    size="small"
-    tags={["RTC"]}
-    tone="pink"
-  />
-  <SolutionCard
-    description="Large class with breakout discussion."
-    href="/en/solutions/breakout-classroom"
-    title="Break out large classes"
-    size="small"
-    tags={["RTC"]}
-    tone="pink"
-  />
-  <SolutionCard
-    description="Visual teaching with camera fidelity."
-    href="/en/solutions/art-class"
-    title="Teach art online"
-    size="small"
-    tags={["RTC"]}
-    tone="sand"
-  />
-  <SolutionCard
-    description="Music lessons with audio-first interaction."
-    href="/en/solutions/online-music-class"
-    title="Teach music online"
-    size="small"
-    tags={["RTC"]}
-    tone="purple"
-  />
-</SolutionCardGrid>
+The groups below outline the main product patterns in this tab. Read them as a map of the Solutions content first, then go deeper into the related guides for architecture, scope, and implementation details.
 
-## Connected devices
+## What each group covers
 
-Use these paths when realtime interaction is attached to a device, operator console, or embedded hardware workflow.
+### Live interaction products
 
-<SolutionCardGrid size="small">
-  <SolutionCard
-    description="Realtime control and operator feedback."
-    href="/en/solutions/teleoperation"
-    title="Operate devices remotely"
-    size="small"
-    tags={["RTSA"]}
-    tone="green"
-  />
-  <SolutionCard
-    description="Camera-to-app media connectivity."
-    href="/en/solutions/smart-camera"
-    title="Connect smart cameras"
-    size="small"
-    tags={["RTC"]}
-    tone="blue"
-  />
-  <SolutionCard
-    description="Doorbell and lock communication paths."
-    href="/en/solutions/smart-doorbell"
-    title="Connect smart doorbells"
-    size="small"
-    tags={["RTC"]}
-    tone="sand"
-  />
-  <SolutionCard
-    description="Compact calling on wearable devices."
-    href="/en/solutions/smart-watch"
-    title="Enable watch calling"
-    size="small"
-    tags={["RTC"]}
-    tone="green"
-  />
-</SolutionCardGrid>
+This group covers products centered on people joining a shared live session and interacting in real time.
+
+- [Enable live streaming](/en/solutions/showroom): host-audience rooms, co-hosting, PK, and live room engagement flows
+- [Add in-game voice](/en/solutions/game-voice): low-friction team voice, squad coordination, and game-native voice presence
+- [Launch meetings](/en/solutions/meeting): structured multi-party collaboration with participant control and meeting workflows
+- [Enable lightweight calling](/en/solutions/voip-call): simple realtime calling for mini-programs, terminals, wearables, and lightweight clients
+
+### Online classrooms
+
+This group covers teaching workflows with teacher and student roles, classroom orchestration, and lesson-specific interaction patterns.
+
+- [Run online classrooms](/en/solutions/flexible-classroom): a general classroom path for teaching-first experiences
+- [Teach 1-on-1](/en/solutions/one-to-one-classroom): direct teacher-student sessions
+- [Teach small groups](/en/solutions/small-classroom): small group interactive teaching
+- [Break out large classes](/en/solutions/breakout-classroom): large classes with breakout discussion
+- [Teach art online](/en/solutions/art-class): visual teaching with camera fidelity
+- [Teach music online](/en/solutions/online-music-class): music lessons with audio-first interaction
+
+### Connected devices
+
+This group covers products where realtime interaction is attached to a device, operator console, embedded endpoint, or remote control workflow.
+
+- [Operate devices remotely](/en/solutions/teleoperation): realtime control and operator feedback workflows
+- [Connect smart cameras](/en/solutions/smart-camera): camera-to-app media connectivity
+- [Connect smart doorbells](/en/solutions/smart-doorbell): doorbell and lock communication paths
+- [Enable watch calling](/en/solutions/smart-watch): compact calling on wearable devices

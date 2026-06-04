@@ -72,8 +72,12 @@ describe('DocsSidebarTree', () => {
 
     expect(activeButton).toBeInstanceOf(HTMLElement);
     expect(activeButton?.className).not.toContain('font-semibold');
-    expect(activeButton).toHaveClass('h-[30px]', 'items-center');
-    expect(activeButton).not.toHaveClass('h-auto', 'items-start', 'py-1.5');
+    expect(activeButton).toHaveClass(
+      'min-h-[34px]',
+      'h-auto',
+      'items-start',
+      'py-1.5',
+    );
     expect(activeButton?.className).toContain(
       'data-[active=true]:before:bg-[color:var(--accent-brand)]',
     );
@@ -150,10 +154,14 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/en/introduction/other');
 
-    expect(await screen.findByTitle(longTitle)).toHaveClass(
-      'whitespace-normal',
-    );
-    expect(screen.getByTitle(longTitle)).toHaveClass('[display:-webkit-box]');
+    const label = await screen.findByTitle(longTitle);
+    const link = screen.getByRole('link', { name: longTitle });
+
+    expect(label).toHaveClass('whitespace-normal');
+    expect(label).toHaveClass('break-words');
+    expect(label).not.toHaveClass('[display:-webkit-box]');
+    expect(label).not.toHaveClass('[-webkit-line-clamp:2]');
+    expect(link.className).toContain('overflow-visible');
   });
 
   it('renders HTTP method badges for OpenAPI endpoint pages', async () => {
@@ -507,7 +515,7 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
-  it('opens the Build subsection by default inside Get started', async () => {
+  it('keeps the Build subsection collapsed by default inside Get started', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -544,8 +552,8 @@ describe('DocsSidebarTree', () => {
       await screen.findByRole('link', { name: 'Quickstart' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Start and stop an agent' }),
-    ).toBeInTheDocument();
+      screen.queryByRole('link', { name: 'Start and stop an agent' }),
+    ).not.toBeInTheDocument();
   });
 
   it('merges best practices into Build as a hardened and optimize group', async () => {
@@ -588,7 +596,7 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
-  it('opens selected Build child groups by default on the AI overview page', async () => {
+  it('only opens Create and connect an agent by default on the AI overview page', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -640,10 +648,10 @@ describe('DocsSidebarTree', () => {
       await screen.findByRole('link', { name: 'Start and stop an agent' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('link', {
+      screen.queryByRole('link', {
         name: 'Keep conversation context across turns',
       }),
-    ).toBeInTheDocument();
+    ).not.toBeInTheDocument();
 
     fireEvent.click(toggle);
 
@@ -652,7 +660,7 @@ describe('DocsSidebarTree', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('uses shorter sidebar labels for long Build document titles', async () => {
+  it('renders full sidebar labels for long Build document titles', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -680,13 +688,10 @@ describe('DocsSidebarTree', () => {
     renderSidebarTree(tree, '/en/ai/build/build-server-client');
 
     expect(
-      await screen.findByRole('link', { name: 'Build backend and client' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByRole('link', {
+      await screen.findByRole('link', {
         name: 'Build a backend and client from scratch',
       }),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
   });
 
   it('renders updated task-oriented titles from docs metadata', async () => {

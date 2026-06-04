@@ -25,23 +25,18 @@ type RenderableSidebarSectionNode = SidebarSectionNode & {
 };
 
 const sidebarToggleClassName =
-  'h-[30px] items-center justify-between rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
+  'min-h-[34px] h-auto items-start justify-between rounded-[7px] px-3 py-1.5 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
 
 const sidebarSubButtonClassName =
-  'h-[30px] rounded-[7px] px-3 text-[13px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)]';
+  'min-h-[32px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1.5 text-[12.75px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const sidebarPageButtonClassName =
-  'relative h-[30px] items-center rounded-[7px] px-3 text-[13.5px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)]';
+  'relative min-h-[34px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1.5 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const openApiSidebarButtonClassName =
   'h-auto min-h-[30px] items-start overflow-visible py-1.5';
 
-const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [
-  ['/build/build-server-client', 'Build backend and client'],
-  ['/reference/event-types', 'Event types'],
-  ['/best-practices/optimize-latency', ' Optimize latency'],
-  ['/best-practices/cloud-recording', 'Record conversation'],
-];
+const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [];
 
 export function DocsSidebarTree({
   activePath,
@@ -55,9 +50,7 @@ export function DocsSidebarTree({
   const renderableNodes = normalizeRootSections(
     normalizeBuildNestedSections(
       mergeBestPracticesIntoBuild(
-        expandReferenceProductSections(
-          mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
-        ),
+        mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
       ),
     ),
   );
@@ -123,7 +116,7 @@ function SidebarSection({
     !node.collapsible ||
     node.children.some((child) => isNodeActive(child, activePath)) ||
     shouldDefaultOpenSection(node.title, activePath) ||
-    node.title === 'Build';
+    shouldDefaultOpenBuildSection(node, activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const splitIndex = node.nestedQuickstartGroup
     ? Math.max(
@@ -298,9 +291,23 @@ function shouldDefaultOpenSection(title: string, activePath: string) {
       /\/(en|zh-CN)\/introduction(?:\/index)?$/.test(activePath)) ||
     (title === 'Get Started' &&
       /\/en\/introduction(?:\/index)?$/.test(activePath)) ||
-    ((title === 'Create and connect an agent' ||
-      title === 'Shape the conversation') &&
+    (title === 'Create and connect an agent' &&
       /\/en\/ai(?:\/index)?$/.test(activePath))
+  );
+}
+
+function shouldDefaultOpenBuildSection(
+  node: SidebarSectionNode,
+  activePath: string,
+) {
+  return (
+    node.title === 'Build' &&
+    /\/en\/ai(?:\/index)?$/.test(activePath) &&
+    node.children.some(
+      (child) =>
+        child.type === 'section' &&
+        child.title === 'Create and connect an agent',
+    )
   );
 }
 
@@ -382,7 +389,7 @@ function SidebarNestedSection({
     !node.collapsible ||
     node.children.some((child) => isNodeActive(child, activePath)) ||
     shouldDefaultOpenSection(node.title, activePath) ||
-    node.title === 'Build';
+    shouldDefaultOpenBuildSection(node, activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
@@ -557,24 +564,39 @@ function mergeBestPracticesIntoBuild(
 function normalizeBuildNestedSections(
   nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
 ) {
-  return nodes.map((node) => {
-    if (node.type !== 'section' || node.title !== 'Build') {
-      return node;
-    }
+  return nodes.map((node) => normalizeBuildNestedSectionNode(node));
+}
 
+function normalizeBuildNestedSectionNode(
+  node: DocsSidebarNode | RenderableSidebarSectionNode,
+): DocsSidebarNode | RenderableSidebarSectionNode {
+  if (node.type !== 'section') {
+    return node;
+  }
+
+  const normalizedChildren = node.children.map((child) =>
+    normalizeBuildNestedSectionNode(child),
+  );
+
+  if (node.title !== 'Build') {
     return {
       ...node,
-      children: node.children.map((child) =>
-        child.type === 'section'
-          ? {
-              ...child,
-              collapsible: true,
-              icon: undefined,
-            }
-          : child,
-      ),
+      children: normalizedChildren,
     };
-  });
+  }
+
+  return {
+    ...node,
+    children: normalizedChildren.map((child) =>
+      child.type === 'section'
+        ? {
+            ...child,
+            collapsible: true,
+            icon: undefined,
+          }
+        : child,
+    ),
+  };
 }
 
 function normalizeRootSections(
@@ -588,27 +610,6 @@ function normalizeRootSections(
         }
       : node,
   );
-}
-
-function expandReferenceProductSections(
-  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
-) {
-  const referenceProducts = new Set([
-    'Conversational AI',
-    'Real-Time Communication RTC',
-    'Real-Time Messaging RTM',
-  ]);
-
-  return nodes.map((node) => {
-    if (node.type !== 'section' || !referenceProducts.has(node.title)) {
-      return node;
-    }
-
-    return {
-      ...node,
-      collapsible: false,
-    };
-  });
 }
 
 function SidebarPageLink({
@@ -660,10 +661,7 @@ function SidebarPageLabel({
     <>
       <span
         className={cn(
-          'block min-w-0 flex-1 text-pretty leading-5 whitespace-normal',
-          method ? 'break-words' : 'overflow-hidden',
-          !method &&
-            '[-webkit-box-orient:vertical] [-webkit-line-clamp:2] [display:-webkit-box]',
+          'block min-w-0 flex-1 break-words text-pretty leading-5 whitespace-normal',
         )}
         title={title}
       >
