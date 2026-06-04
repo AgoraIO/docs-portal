@@ -1,8 +1,12 @@
 ---
-title: Receive toolkit agent event
-description: Receive notification of Conversational AI Engine events using the toolkit.
+title: Listen to agent runtime events on software clients
+description: Use toolkit callbacks to update the UI and react to agent events during a live session.
 ---
 Real-time Conversational AI applications require responsive user interfaces that react to agent events. This page explains how to implement agent event handling with the Conversational AI Engine toolkit.
+
+For the combined entry point that compares client toolkit and webhook delivery, see [Get runtime events](get-runtime-events.mdx).
+
+Use this page when you need in-session signals in a mobile or web client. If you need backend monitoring, alerting, or post-session analysis, use [Receive agent runtime events on your server](webhooks.md) instead.
 
 ## Understand the tech
 
@@ -10,7 +14,7 @@ Agora provides a flexible, scalable, and standardized conversational AI engine t
 
 - [Interrupt agents](interrupt-agent.md)
 - [Display live transcripts](transcripts.md)
-- [Receive event notifications](event-notifications.md)
+- [Monitor agent status, errors, and performance](monitor-agent-runtime.md)
 - [Set optimal audio parameters](../best-practices/audio-setup.md) for iOS and Android
 
 The toolkit exposes callback methods that let you listen for various agent-related events and system information:
@@ -258,6 +262,11 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 ### Sample project
 
 - [Conversational-AI-Demo](https://github.com/AgoraIO-Community/Conversational-AI-Demo/)
+
+### Related guides
+
+- [Monitor agent status, errors, and performance](monitor-agent-runtime.md)
+- [Receive agent runtime events on your server](webhooks.md)
 
 ### Folder structure
 

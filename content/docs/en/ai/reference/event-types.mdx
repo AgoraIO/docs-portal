@@ -6,6 +6,18 @@ After enabling Agora message notifications, the Agora notification server sends 
 
 This page explains the types of events returned in channel event callbacks and their meanings.
 
+If you are starting from a product goal instead of an event number, begin with [Monitor agent status, errors, and performance](../build/monitor-agent-runtime.md).
+
+## Choose event types by goal
+
+| Goal | Use these event types | What they help you answer |
+| --- | --- | --- |
+| Confirm that a session started or ended | [`101 agent joined`](#101-agent-joined), [`102 agent left`](#102-agent-left) | Did the agent enter the channel? How did the session end? |
+| Retrieve conversation history after a session | [`103 agent history`](#103-agent-history) | What was said during the session? See [Retrieve conversation history after a session ends](../build/retrieve-session-history.mdx). |
+| Investigate failures and alert on production issues | [`110 agent error`](#110-agent-error), [`102 agent left`](#102-agent-left) | Which module failed? Did the session terminate because of that failure? See [Debug agent failures with runtime events](../build/debug-agent-failures.mdx). |
+| Measure latency and runtime health | [`111 agent metrics`](#111-agent-metrics) | How long do LLM and TTS stages take? Are there regressions? |
+| Track telephony call progress | [`201 inbound call state`](#201-inbound-call-state), [`202 outbound call state`](#202-outbound-call-state) | Where is the SIP call in its lifecycle? |
+
 ## Request header
 
 The message notification callback header contains the following fields:
