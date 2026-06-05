@@ -9,7 +9,7 @@ Product-specific API references are organized under dedicated product groups. Co
 
 - [Recipes](recipes/index.mdx)
 - [Conversational AI](conversational-ai/index.md)
-- [Real-Time Communication RTC](rtc/android/index.mdx)
+- [Real-Time Communication RTC](rtc/index.md)
 - [Real-Time Messaging RTM](rtm/index.md)
 - [Instant Messaging IM](im/index.md)
 - [Real-Time Streaming Acceleration RTSA](rtsa/index.md)

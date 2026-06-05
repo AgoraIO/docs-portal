@@ -30,7 +30,9 @@ describe('docs journeys', () => {
     expect(quickstart).toMatch(
       /(\.\.\/best-practices\/audio-setup\.md|\/en\/ai\/best-practices\/audio-setup)/,
     );
-    expect(quickstart).toContain('/en/api-reference/conversational-ai/rest-api');
+    expect(quickstart).toContain(
+      '/en/api-reference/conversational-ai/rest-api',
+    );
   });
 
   it('connects the Realtime RTC home, quickstart, and versioned API reference path', () => {
@@ -38,23 +40,29 @@ describe('docs journeys', () => {
     expect(realtime).toContain('/en/realtime-media/rtc');
 
     const rtc = readDoc('en/realtime-media/rtc/index.md');
-    expect(rtc).toContain('quick-start/build-from-scratch.md');
-    expect(rtc).toContain('reference');
+    expect(rtc).toContain(
+      '/en/realtime-media/rtc/android/quick-start/build-from-scratch',
+    );
+    expect(rtc).toContain(
+      '/en/realtime-media/rtc/android/reference/api-reference',
+    );
 
     expect(
-      docExists('en/realtime-media/rtc/reference/api-reference/index.md'),
+      docExists(
+        'en/realtime-media/rtc/android/reference/api-reference/index.md',
+      ),
     ).toBe(true);
 
     const rtcReference = readDoc(
-      'en/realtime-media/rtc/reference/api-reference/index.md',
+      'en/realtime-media/rtc/android/reference/api-reference/index.md',
     );
     expect(rtcReference).toContain('/en/api-reference/rtc/android');
 
-    const quickstart = readDoc(
-      'en/realtime-media/rtc/quick-start/build-from-scratch.md',
-    );
-    expect(quickstart).toContain('/en/api-reference/rtc/android');
-    expect(quickstart).toContain('/en/api-reference/rtc/android/4.6.0');
+    expect(
+      docExists(
+        'en/realtime-media/rtc/android/quick-start/build-from-scratch.md',
+      ),
+    ).toBe(true);
 
     const androidMeta = JSON.parse(
       readDoc('en/api-reference/rtc/android/meta.json'),

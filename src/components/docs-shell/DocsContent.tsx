@@ -1,18 +1,17 @@
 import { Link } from '@tanstack/react-router';
-import { ClientOnly } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import { BotIcon, Edit3Icon, ExternalLinkIcon } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
-import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import {
   findDocsHeadingForHash,
   scrollDocsHashTarget,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
+import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import {
   type AppLocale,
@@ -20,7 +19,7 @@ import {
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
-import { DocsContentBodyClient } from './DocsContentBody.client';
+import { DocsContentBody } from './DocsContentBody';
 
 const TOC_ACTIVE_OFFSET = 96;
 const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
@@ -37,7 +36,7 @@ export function DocsContent({
   title,
   toc,
 }: {
-  body?: DocsContentBody;
+  body?: DocsContentBodyPayload;
   breadcrumb?: DocsBreadcrumbItem[];
   contentPath?: string;
   description?: string;
@@ -58,7 +57,7 @@ export function DocsContent({
       ? ({
           contentPath,
           kind: 'mdx',
-        } satisfies DocsContentBody)
+        } satisfies DocsContentBodyPayload)
       : undefined);
   const isOpenApiBody = resolvedBody?.kind === 'openapi';
   useEffect(() => {
@@ -162,9 +161,9 @@ export function DocsContent({
       ) : (
         <div className="prose prose-neutral dark:prose-invert max-w-none">
           {resolvedBody?.kind === 'mdx' ? (
-            <ClientOnly fallback={<DocsContentSkeleton />}>
-              <DocsContentBodyClient contentPath={resolvedBody.contentPath} />
-            </ClientOnly>
+            <Suspense fallback={<DocsContentSkeleton />}>
+              <DocsContentBody contentPath={resolvedBody.contentPath} />
+            </Suspense>
           ) : null}
         </div>
       )}
@@ -188,7 +187,10 @@ function DocsHeaderScopeTabs({ header }: { header: DocsSidebarHeader }) {
 
   return (
     <Tabs className="w-auto max-w-full" value={versionSwitcher.currentId}>
-      <TabsList className="max-w-full justify-start gap-1 overflow-visible px-0" variant="line">
+      <TabsList
+        className="max-w-full justify-start gap-1 overflow-visible px-0"
+        variant="line"
+      >
         {versionSwitcher.versions.map((version) => (
           <TabsTrigger asChild key={version.id} value={version.id}>
             <Link
@@ -206,7 +208,7 @@ function DocsHeaderScopeTabs({ header }: { header: DocsSidebarHeader }) {
   );
 }
 
-export type DocsContentBody =
+export type DocsContentBodyPayload =
   | { contentPath: string; kind: 'mdx' }
   | { kind: 'openapi'; pageProps: ClientApiPageProps };
 

@@ -20,8 +20,8 @@ import { AppProviders } from '@/components/providers/AppProviders';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
 
-vi.mock('./DocsContentBody.client', () => ({
-  DocsContentBodyClient: ({ contentPath }: { contentPath: string }) => (
+vi.mock('./DocsContentBody', () => ({
+  DocsContentBody: ({ contentPath }: { contentPath: string }) => (
     <div data-testid="docs-content-body">{contentPath}</div>
   ),
 }));
@@ -96,7 +96,7 @@ describe('DocsContent', () => {
     expect(within(breadcrumb).getByText('About Agora')).toBeInTheDocument();
   });
 
-  it('renders a content skeleton before client-only MDX content hydrates', () => {
+  it('renders MDX content in the server output without a skeleton', () => {
     const html = renderToString(
       <AppProviders>
         <DocsContent
@@ -108,8 +108,9 @@ describe('DocsContent', () => {
       </AppProviders>,
     );
 
-    expect(html).toContain('data-testid="docs-content-skeleton"');
-    expect(html).toContain('data-skeleton-line="hero"');
+    expect(html).toContain('data-testid="docs-content-body"');
+    expect(html).toContain('en/introduction/about-agora.md');
+    expect(html).not.toContain('data-testid="docs-content-skeleton"');
   });
 
   it('renders OpenAPI content through the Fumadocs content component', async () => {
@@ -178,9 +179,7 @@ describe('DocsContent', () => {
       />,
     );
 
-    expect(
-      await screen.findByRole('tab', { name: 'Android' }),
-    ).toHaveAttribute(
+    expect(await screen.findByRole('tab', { name: 'Android' })).toHaveAttribute(
       'href',
       '/en/realtime-media/rtc/quick-start/android/integrate-with-ai-tools',
     );

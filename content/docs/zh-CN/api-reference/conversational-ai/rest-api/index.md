@@ -8,5 +8,5 @@ REST API 提供对话式智能体的创建、停止、更新、查询、播报�
 ## 页面
 
 - [智能体管理](agent/index.md)
-- [RESTful 鉴权](../authentication.md)
-- [状态码和错误信息](../status-codes.md)
+- [RESTful 鉴权](authentication.mdx)
+- [状态码和错误信息](status-codes.mdx)

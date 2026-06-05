@@ -17,11 +17,11 @@ description: 从创建、启动、更新、打断、查询到停止，梳理智�
 
 ## 当前仓库里的对应文档
 
-- [创建并启动智能体](/zh-CN/api-reference/start-agent)
-- [查看当前状态](/zh-CN/api-reference/query-agent-status)
+- [创建并启动智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join)
+- [查看当前状态](/zh-CN/api-reference/conversational-ai/rest-api/agent/query)
 - [处理打断](/zh-CN/ai/interrupt-agent)
-- [停止智能体](/zh-CN/api-reference/stop-agent)
-- [查看智能体列表](/zh-CN/api-reference/get-agent-list)
+- [停止智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/leave)
+- [查看智能体列表](/zh-CN/api-reference/conversational-ai/rest-api/agent/list)
 
 ## 推荐设计原则
 

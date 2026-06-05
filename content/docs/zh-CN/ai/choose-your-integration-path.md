@@ -17,7 +17,7 @@ description: 在 Agent Studio、REST API、服务端 SDK、客户端接入和 De
 
 优先走 RESTful API 或服务端 SDK：
 
-- [创建并启动智能体](/zh-CN/api-reference/start-agent)
+- [创建并启动智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join)
 - [Go SDK 快速开始](/zh-CN/ai/quick-start-go)
 - [Java SDK 快速开始](/zh-CN/ai/quick-start-java)
 

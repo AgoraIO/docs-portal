@@ -1,6 +1,7 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { getDocsPagePayload } from '@/lib/docs-page';
+import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
 
 export const Route = createFileRoute('/$locale/$tab/$')({
@@ -28,6 +29,8 @@ export const Route = createFileRoute('/$locale/$tab/$')({
         href: payload.redirectUrl,
       });
     }
+
+    await preloadDocsPageContent(payload);
 
     return {
       ...payload,
