@@ -13,12 +13,7 @@ import {
   ZapIcon,
 } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
-import {
-  type ReactNode,
-  useDeferredValue,
-  useMemo,
-  useState,
-} from 'react';
+import { type ReactNode, useDeferredValue, useMemo, useState } from 'react';
 import { cn } from '@/lib/cn';
 
 export function getOverviewMDXComponents(): MDXComponents {
@@ -28,6 +23,8 @@ export function getOverviewMDXComponents(): MDXComponents {
     CapabilityGroupCard,
     CapabilityGroupGrid,
     CapabilityMatrix,
+    OverviewImageCard,
+    OverviewImageCardGrid,
     OverviewLinkBanner,
     OverviewSpotlightCard,
     OverviewSpotlightGrid,
@@ -82,9 +79,7 @@ function CapabilityGroupCard({
 }) {
   return (
     <section className="rounded-[24px] border border-border bg-card p-6 shadow-sm">
-      <h3 className="m-0 text-base font-semibold text-foreground">
-        {title}
-      </h3>
+      <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
         {description}
       </p>
@@ -143,6 +138,93 @@ function CapabilityMatrix({ rows }: { rows: CapabilityMatrixRow[] }) {
         </div>
       ))}
     </section>
+  );
+}
+
+function OverviewImageCardGrid({
+  children,
+  columns = 'three',
+}: {
+  children: ReactNode;
+  columns?: 'three' | 'two';
+}) {
+  return (
+    <section
+      className={cn(
+        'not-prose my-8 grid gap-4',
+        columns === 'two'
+          ? 'md:grid-cols-2 xl:grid-cols-2'
+          : 'md:grid-cols-2 xl:grid-cols-3',
+      )}
+    >
+      {children}
+    </section>
+  );
+}
+
+function OverviewImageCard({
+  compact = false,
+  description,
+  href,
+  imageAlt,
+  imageSrc,
+  title,
+}: {
+  compact?: boolean;
+  description: string;
+  href?: string;
+  imageAlt: string;
+  imageSrc: string;
+  title: string;
+}) {
+  const content = (
+    <>
+      <div
+        className={cn(
+          'overflow-hidden border-b border-border bg-muted/40',
+          compact ? 'aspect-[16/8]' : 'aspect-[16/10]',
+        )}
+      >
+        <img
+          alt={imageAlt}
+          className={cn(
+            'size-full object-cover',
+            href &&
+              'transition-transform duration-300 group-hover:scale-[1.02]',
+          )}
+          loading="lazy"
+          src={imageSrc}
+        />
+      </div>
+      <div className={cn(compact ? 'p-4' : 'p-5')}>
+        <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+        <p
+          className={cn(
+            'mt-2 text-sm text-muted-foreground',
+            compact ? 'leading-5' : 'leading-6',
+          )}
+        >
+          {description}
+        </p>
+      </div>
+    </>
+  );
+
+  if (!href) {
+    return (
+      <section className="overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
+        {content}
+      </section>
+    );
+  }
+
+  return (
+    <a
+      className="group overflow-hidden rounded-[24px] border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+      href={href}
+    >
+      {content}
+    </a>
   );
 }
 
@@ -418,7 +500,10 @@ function RecipesCatalog({
   const deferredQuery = useDeferredValue(query);
 
   const products = useMemo(
-    () => [allProductsLabel, ...getUniqueValues(items.map((item) => item.product))],
+    () => [
+      allProductsLabel,
+      ...getUniqueValues(items.map((item) => item.product)),
+    ],
     [allProductsLabel, items],
   );
   const categories = useMemo(
@@ -610,7 +695,9 @@ function RecipesCatalogFilterGroup({
 }
 
 function getUniqueValues(values: Array<string | undefined>) {
-  return [...new Set(values.filter((value): value is string => Boolean(value)))];
+  return [
+    ...new Set(values.filter((value): value is string => Boolean(value))),
+  ];
 }
 
 function normalizeRecipeFilterValue(value: string) {

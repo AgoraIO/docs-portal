@@ -64,6 +64,18 @@ type OverviewLinkBannerComponent = ComponentType<{
   href: string;
   title: string;
 }>;
+type OverviewImageCardGridComponent = ComponentType<{
+  children: ReactNode;
+  columns?: 'three' | 'two';
+}>;
+type OverviewImageCardComponent = ComponentType<{
+  compact?: boolean;
+  description: string;
+  href?: string;
+  imageAlt: string;
+  imageSrc: string;
+  title: string;
+}>;
 type OverviewSpotlightCardComponent = ComponentType<{
   description?: string;
   href: string;
@@ -244,6 +256,38 @@ describe('overview MDX components', () => {
     ).toBeVisible();
   });
 
+  it('renders overview image cards as non-clickable showcases', () => {
+    const components = getOverviewMDXComponents();
+    const OverviewImageCardGrid =
+      components.OverviewImageCardGrid as OverviewImageCardGridComponent;
+    const OverviewImageCard =
+      components.OverviewImageCard as OverviewImageCardComponent;
+
+    render(
+      <OverviewImageCardGrid>
+        <OverviewImageCard
+          description="Define how users exchange media inside a live session."
+          imageAlt="Video calling overview"
+          imageSrc="/images/video-calling/video-calling-overview.png"
+          title="Build live interaction"
+        />
+      </OverviewImageCardGrid>,
+    );
+
+    expect(
+      screen.queryByRole('link', { name: /Build live interaction/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Define how users exchange media inside a live session.',
+      ),
+    ).toBeVisible();
+    expect(screen.getByAltText('Video calling overview')).toHaveAttribute(
+      'src',
+      '/images/video-calling/video-calling-overview.png',
+    );
+  });
+
   it('renders overview spotlight descriptions when provided', () => {
     const components = getOverviewMDXComponents();
     const OverviewSpotlightCard =
@@ -305,7 +349,9 @@ describe('overview MDX components', () => {
       />,
     );
 
-    expect(screen.getByRole('link', { name: /Python Quickstart/i })).toBeVisible();
+    expect(
+      screen.getByRole('link', { name: /Python Quickstart/i }),
+    ).toBeVisible();
     expect(screen.getByRole('link', { name: /Wellness Coach/i })).toBeVisible();
 
     fireEvent.click(screen.getByRole('button', { name: 'Use case' }));

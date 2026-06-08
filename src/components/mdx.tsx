@@ -1,4 +1,5 @@
 import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
 import { File, Files, Folder } from 'fumadocs-ui/components/files';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import {
@@ -44,6 +45,7 @@ type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
   onValueChange?: (value: string) => void;
   value?: string;
 };
+type DocsCardProps = ComponentProps<typeof FumadocsCard>;
 type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   children?: ReactNode;
   defaultValue?: string;
@@ -314,6 +316,25 @@ function createDocsAnchor(contentPath?: string) {
   return DocsAnchor;
 }
 
+function createDocsCard(contentPath?: string) {
+  function DocsCard({ className, href, ...props }: DocsCardProps) {
+    const normalizedHref =
+      typeof href === 'string'
+        ? normalizeDocsHref(href, { contentPath }).href
+        : href;
+
+    return (
+      <FumadocsCard
+        {...props}
+        className={cn(href && 'docs-card-link', className)}
+        href={normalizedHref}
+      />
+    );
+  }
+
+  return DocsCard;
+}
+
 export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
@@ -321,6 +342,7 @@ export function getMDXComponents(
   return {
     ...defaultMdxComponents,
     a: createDocsAnchor(context?.contentPath),
+    Card: createDocsCard(context?.contentPath),
     CommandBlock,
     Tabs,
     Tab: FumadocsTab,

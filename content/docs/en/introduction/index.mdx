@@ -1,14 +1,21 @@
 ---
 title: Overview
+description: Understand the Agora docs path across Voice Agent, Realtime & Media, Solutions, and SDKs.
 ---
-
 Welcome to the Agora documentation hub. This page helps you quickly find the right documentation path for your project. Explore `Voice Agent` if you’re building real-time AI conversations, `Realtime & Media` if you need live communication or media infrastructure, and `Solutions` if you’re looking for common product patterns such as streaming, meetings, classrooms, or connected devices. 
-
 
 ## Voice Agent
 
-Connect any LLM to real-time voice with low latency. Choose your ASR, TTS, and model — Agora handles the transport and session lifecycle.
+Build speech-first AI experiences that listen, reason, and respond in real time. Voice Agent gives you the transport, session lifecycle, model integration, and runtime foundation needed to ship assistants in apps or on dedicated devices without assembling the stack yourself.
 
+<div className="not-prose my-6 mx-auto w-[80%] overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
+  <img
+    alt="Voice Agent hero visual"
+    className="block w-full"
+    loading="lazy"
+    src="/images/conversational-ai/voice-agent-hero.png"
+  />
+</div>
 
 <Cards>
   <Card
@@ -17,7 +24,7 @@ Connect any LLM to real-time voice with low latency. Choose your ASR, TTS, and m
     title="Quickstart"
   />
   <Card
-    description="Compare architecture, model options, and production integration paths."
+    description="Understand architecture, model choices, runtime structure, and where each Voice Agent path begins."
     href="/en/ai"
     title="Voice Agent overview"
   />
@@ -25,72 +32,76 @@ Connect any LLM to real-time voice with low latency. Choose your ASR, TTS, and m
 
 ## Realtime & Media
 
-Build any product that needs live media — voice, video, messaging, recording, or large-scale streaming — without stitching together multiple vendors.
+Build any product that needs live media — voice, video, messaging, recording, or large-scale streaming, without stitching together multiple vendors. Start from the capability layer that matches the part of your architecture you need to design next.
 
-<Cards>
-  <Card
-    description="See the full capability map for live interaction, media processing, external media connectivity, and large-scale delivery."
-    href="/en/realtime-media/overview"
-    title="Explore Realtime & Media"
+<OverviewImageCardGrid columns="two">
+  <OverviewImageCard
+    compact
+    description="Define how users exchange media, coordinate actions, and collaborate inside the same live session."
+    imageAlt="Realtime video calling interface"
+    imageSrc="/images/video-calling/video-calling-overview.png"
+    title="Build live interaction"
   />
-</Cards>
+  <OverviewImageCard
+    compact
+    description="Turn session media into captions, searchable text, archives, mixed outputs, and downstream assets."
+    imageAlt="Cloud recording workflow overview"
+    imageSrc="/images/cloud-recording/cloud-recording-overview.png"
+    title="Process session content"
+  />
+  <OverviewImageCard
+    compact
+    description="Bridge Agora sessions with external streaming pipelines, broadcast systems, and RTMP-based infrastructure."
+    imageAlt="Media pull workflow overview"
+    imageSrc="/images/media-pull/media-pull-overview.png"
+    title="Connect external media"
+  />
+  <OverviewImageCard
+    compact
+    description="Separate interactive participation from large-scale playback when you need to reach broader audiences."
+    imageAlt="Broadcast streaming overview"
+    imageSrc="/images/broadcast-streaming/broadcast-streaming-overview.png"
+    title="Deliver to larger audiences"
+  />
+</OverviewImageCardGrid>
 
-Each capability area below maps to the products it includes.
-
-<CapabilityMatrix
-  rows={[
-    {
-      title: 'Build live interaction',
-      description: 'Exchange media and state in real time.',
-      items: ['Voice & Video', 'Signaling', 'Chat', 'Whiteboard'],
-    },
-    {
-      title: 'Process session content',
-      description: 'Turn session media into text and downstream assets.',
-      items: ['Transcription', 'Translation', 'Recording', 'Transcoding'],
-    },
-    {
-      title: 'Connect external media',
-      description: 'Bridge Agora sessions to external streaming systems.',
-      items: ['Media Push', 'Media Pull', 'RTMP Gateway'],
-    },
-    {
-      title: 'Deliver to larger audiences',
-      description: 'Scale playback beyond interactive participation.',
-      items: ['Fusion CDN'],
-    },
-  ]}
+<OverviewLinkBanner
+  description="See the full capability map for live interaction, media processing, external media connectivity, audience delivery, and backend or device participation."
+  href="/en/realtime-media/overview"
+  title="Explore Realtime & Media"
 />
 
 
 ## Solutions
 
-Launch common product patterns.
+Launch common product patterns. Start from the experience you want to ship, then move into the solution family that matches your users, workflow, and delivery model.
 
+<OverviewImageCardGrid>
+  <OverviewImageCard
+    description="Use this group for products built around shared realtime participation, from host-audience rooms to meetings and lightweight calling."
+    imageAlt="Interactive live streaming overview"
+    imageSrc="/images/interactive-live-streaming/interactive-live-streaming-overview.png"
+    title="Live interaction products"
+  />
+  <OverviewImageCard
+    description="Use this group for teaching-first experiences with classroom orchestration, teacher-student roles, and lesson-specific interaction patterns."
+    imageAlt="Flexible classroom overview"
+    imageSrc="/images/flexible-classroom/flexible-classroom-overview.png"
+    title="Online classrooms"
+  />
+  <OverviewImageCard
+    description="Use this group for device-attached workflows such as remote control, smart cameras, doorbells, and wearable calling."
+    imageAlt="IoT and device connectivity overview"
+    imageSrc="/images/iot/iot-overview.png"
+    title="Connected devices"
+  />
+</OverviewImageCardGrid>
 
-<Cards>
-  <Card
-    description="Launch host-audience live rooms with co-hosting, PK, and engagement features."
-    href="/en/solutions/showroom"
-    size="small"
-    title="Live streaming solution"
-    variant="platform"
-  />
-  <Card
-    description="Launch structured meeting experiences with participant and room control."
-    href="/en/solutions/meeting"
-    size="small"
-    title="Meeting solution"
-    variant="platform"
-  />
-  <Card
-    description="Launch teaching-first experiences with classroom roles and lesson flows."
-    href="/en/solutions/flexible-classroom"
-    size="small"
-    title="Classroom solution"
-    variant="platform"
-  />
-</Cards>
+<OverviewLinkBanner
+  description="Browse the full Solutions map for business-pattern guides, grouped solution paths, and where each implementation track lives."
+  href="/en/solutions"
+  title="Explore all Solutions"
+/>
 
 ## SDKs and tools
 

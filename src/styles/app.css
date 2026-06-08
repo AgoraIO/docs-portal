@@ -798,6 +798,30 @@
     color: #a16207;
   }
 
+  .docs-card-link {
+    position: relative;
+    padding-inline-end: 3.25rem;
+  }
+
+  .docs-card-link::after {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    content: "→";
+    color: var(--color-fd-muted-foreground);
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+    transition:
+      transform 160ms ease,
+      color 160ms ease;
+  }
+
+  .docs-card-link:hover::after {
+    transform: translateX(2px);
+    color: var(--color-fd-card-foreground);
+  }
+
   :where(input, textarea, select) {
     border-color: var(--input);
     background: var(--bg-card);

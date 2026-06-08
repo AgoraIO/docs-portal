@@ -3,9 +3,10 @@ title: Agora Skills
 description: Install Agora Skills so your AI coding assistant can follow product-aware workflows, choose the right starter, and use official Agora patterns.
 ---
 
-If your coding agent can read docs but still struggles to choose the right Agora workflow, install Skills next. Skills teaches the agent how to route tasks, choose starters, and follow Agora-specific build flows.
+Agora Skills is a product-aware instruction pack for coding agents. It helps an assistant choose the right Agora workflow, follow official build paths, and avoid mixing unrelated setup steps. If your agent can already read docs but still struggles to decide what to build or which starter to use, Skills is the next layer to add.
 
 ## Install Agora Skills
+
 <Tabs>
 <TabsList>
   <TabsTrigger value="skills-cli">Skills CLI</TabsTrigger>
@@ -35,29 +36,8 @@ Use `skills/agora/` as the directory entry point, or load `SKILL.md` directly if
 </TabsContent>
 </Tabs>
 
-## Fastest use
-
-Install Skills, then ask the agent to choose the correct Agora path before it starts scaffolding or editing code.
-
-For example:
-
-```text
-Use Agora Skills and Agora MCP to help me build a web-based conversational AI demo.
-Check the official docs first, choose the right starter, and use the Agora CLI for setup.
-```
-
-## What Skills adds
-
-Without product-specific guidance, coding agents often guess at the wrong architecture or mix unrelated setup steps. Skills reduces that risk by helping the agent:
-
-- identify whether a task belongs to Conversational AI, RTC, RTM, recording, tokens, or another product path
-- choose the most relevant official starter or quickstart
-- follow Agora-specific setup sequences instead of generic scaffolding
-- combine workflow guidance with live documentation from [Agora MCP](/en/introduction/agora-mcp)
-
-## Tool-specific setup notes
-
 If you install Skills manually, the exact location depends on the assistant:
+
 <Tabs>
 <TabsList>
   <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
@@ -98,16 +78,24 @@ Point the tool at `skills/agora/` or the top-level `SKILL.md`.
 </TabsContent>
 </Tabs>
 
-## When to use Skills
+## Fastest use
 
-Use Skills when you want an assistant to help with:
+Install Skills, then ask the agent to choose the correct Agora path before it starts scaffolding or editing code.
 
-- choosing the correct Agora product path
-- starting from an official starter
-- multi-step setup flows that include docs lookup and local execution
-- troubleshooting where product context matters as much as API syntax
+```text
+Use Agora Skills and Agora MCP to help me build a web-based conversational AI demo.
+Check the official docs first, choose the right starter, and use the Agora CLI for setup.
+```
 
-## Related resources
+## When Skills helps
+
+Skills is useful when documentation lookup alone is not enough. It teaches the agent how Agora work is organized: which product path a task belongs to, which official starter is most relevant, and which setup sequence should happen before custom code starts.
+
+That makes it most valuable when the hard part of the task is choosing the correct Agora product path, selecting the right starter, or following a multi-step setup flow that mixes docs lookup with local execution. It is also useful in troubleshooting when product context matters as much as API syntax.
+
+Skills works especially well together with [Agora MCP](/en/introduction/agora-mcp). MCP helps the agent read fresh documentation, while Skills helps it decide how to use that information in an Agora-specific workflow.
+
+## Next steps
 
 - [Agora Skills repository](https://github.com/AgoraIO/skills)
 - [Agora MCP](/en/introduction/agora-mcp)

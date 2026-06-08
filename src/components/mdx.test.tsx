@@ -28,6 +28,11 @@ type AnchorComponent = ComponentType<{
   children: ReactNode;
   href: string;
 }>;
+type CardComponent = ComponentType<{
+  description?: ReactNode;
+  href?: string;
+  title: ReactNode;
+}>;
 type HeadingComponent = ComponentType<{
   children: ReactNode;
   id?: string;
@@ -77,7 +82,7 @@ describe('common MDX registry', () => {
 
     expect(components.img).toBe(defaults.img);
     expect(components.table).toBe(defaults.table);
-    expect(components.Card).toBe(defaults.Card);
+    expect(components.Card).not.toBe(defaults.Card);
     expect(components.Cards).toBe(defaults.Cards);
     expect(components.Callout).toBe(defaults.Callout);
 
@@ -127,6 +132,29 @@ describe('common MDX registry', () => {
       'href',
       'https://example.com/page.md',
     );
+  });
+
+  it('adds jump affordance and normalizes docs card links', () => {
+    const components = getMDXComponents(undefined, {
+      contentPath: 'en/ai/index.md',
+    });
+    const Card = components.Card as CardComponent;
+
+    render(
+      <Card
+        description="Build and run a working voice agent in under 15 minutes."
+        href="choose-your-path/quickstart-coding.mdx"
+        title="Quickstart"
+      />,
+    );
+
+    const card = screen.getByRole('link', { name: /Quickstart/i });
+
+    expect(card).toHaveAttribute(
+      'href',
+      '/en/ai/choose-your-path/quickstart-coding',
+    );
+    expect(card).toHaveClass('docs-card-link');
   });
 
   it('renders headings with Fumadocs copy-anchor chrome', () => {
