@@ -28,58 +28,67 @@ description: 先选对 Agora 的产品入口，再快速进入对应的接入路
 
 先比较声网的实时能力。
 
-[查看 Realtime & Media 总览](/zh-CN/realtime-media)
+<div className="not-prose my-6">
+  <OverviewSpotlightCard
+    description="查看实时互动、媒体处理、外部媒体连接和大规模分发的完整能力地图。"
+    href="/zh-CN/realtime-media"
+    title="查看 Realtime & Media 总览"
+    variant="platform"
+  />
+</div>
 
-<CapabilityGroupGrid>
-  <CapabilityGroupCard
-    title="构建实时互动"
-    description="在同一会话里实时交换媒体和状态。"
-    items={['语音', '视频', '信令', '白板']}
-  />
-  <CapabilityGroupCard
-    title="处理会话内容"
-    description="把会话中的媒体内容转换成文字和下游资产。"
-    items={['转录', '翻译', '录制', '转码']}
-  />
-  <CapabilityGroupCard
-    title="连接外部媒体"
-    description="把 Agora 会话连接到外部流媒体系统。"
-    items={['推流', '拉流', 'RTMP']}
-  />
-  <CapabilityGroupCard
-    title="分发到更大规模观众"
-    description="把实时互动层扩展到更大规模播放。"
-    items={['CDN 分发', '大规模播放']}
-  />
-</CapabilityGroupGrid>
+<CapabilityMatrix
+  rows={[
+    {
+      title: '构建实时互动',
+      description: '在同一会话里实时交换媒体和状态。',
+      items: ['Voice & Video', 'Signaling', 'Chat', 'Whiteboard'],
+    },
+    {
+      title: '处理会话内容',
+      description: '把会话中的媒体内容转换成文字和下游资产。',
+      items: ['转录', '翻译', '录制', '转码'],
+    },
+    {
+      title: '连接外部媒体',
+      description: '把 Agora 会话连接到外部流媒体系统。',
+      items: ['Media Push', 'Media Pull', 'RTMP Gateway'],
+    },
+    {
+      title: '分发到更大规模观众',
+      description: '把实时互动层扩展到更大规模播放。',
+      items: ['Fusion CDN'],
+    },
+  ]}
+/>
 
 ## Solutions
 
 查看常见产品形态的解决方案路径。
 
-<SolutionCardGrid>
-  <SolutionCard
+<OverviewSpotlightGrid size="small">
+  <OverviewSpotlightCard
     description="快速搭建带连麦、PK 和互动玩法的直播产品。"
     href="/zh-CN/solutions/showroom"
-    tags={["RTC"]}
-    title="开启直播互动"
-    tone="blue"
+    size="small"
+    title="直播解决方案"
+    variant="platform"
   />
-  <SolutionCard
+  <OverviewSpotlightCard
     description="快速搭建支持参会者管理和房间控制的会议产品。"
     href="/zh-CN/solutions/meeting"
-    tags={["RTC"]}
-    title="搭建会议产品"
-    tone="purple"
+    size="small"
+    title="会议解决方案"
+    variant="platform"
   />
-  <SolutionCard
+  <OverviewSpotlightCard
     description="快速搭建以课堂角色、课堂控制和教学流程为核心的在线课堂产品。"
     href="/zh-CN/solutions/flexible-classroom"
-    tags={["RTC"]}
-    title="搭建在线课堂"
-    tone="pink"
+    size="small"
+    title="课堂解决方案"
+    variant="platform"
   />
-</SolutionCardGrid>
+</OverviewSpotlightGrid>
 
 ## SDKs and tools
 

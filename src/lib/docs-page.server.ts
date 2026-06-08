@@ -545,7 +545,79 @@ async function getDocsSidebarNodes({
     return sidebar;
   }
 
-  return addOpenApiEndpointSidebarItems(sidebar, locale, tab);
+  const openApiSidebar = await addOpenApiEndpointSidebarItems(
+    sidebar,
+    locale,
+    tab,
+  );
+
+  if (activePath?.startsWith('/en/api-reference/recipes') ||
+      activePath?.startsWith('/zh-CN/api-reference/recipes')) {
+    return restoreRecipesSidebarSections(openApiSidebar);
+  }
+
+  return openApiSidebar;
+}
+
+function restoreRecipesSidebarSections(
+  nodes: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  if (nodes.length === 0) {
+    return nodes;
+  }
+
+  const [indexNode, ...rest] = nodes;
+  const pageNodes = rest.filter(
+    (node): node is DocsSidebarPageNode => node.type === 'page',
+  );
+
+  if (pageNodes.length === 0) {
+    return nodes;
+  }
+
+  const quickstarts = pageNodes.filter((node) =>
+    ['Python Quickstart', 'Golang Quickstart', 'NextJS Quickstart'].includes(
+      node.title,
+    ),
+  );
+  const integrationPatterns = pageNodes.filter((node) =>
+    ['Custom LLM', 'Custom Modalities'].includes(node.title),
+  );
+  const useCases = pageNodes.filter((node) =>
+    ['Wellness Coach', 'Thymia Biomarkers'].includes(node.title),
+  );
+
+  if (
+    quickstarts.length + integrationPatterns.length + useCases.length !==
+    pageNodes.length
+  ) {
+    return nodes;
+  }
+
+  return [
+    indexNode,
+    {
+      children: quickstarts,
+      collapsible: false,
+      id: 'recipes-quickstarts',
+      title: 'Quickstarts',
+      type: 'section',
+    },
+    {
+      children: integrationPatterns,
+      collapsible: false,
+      id: 'recipes-integration-patterns',
+      title: 'Integration patterns',
+      type: 'section',
+    },
+    {
+      children: useCases,
+      collapsible: false,
+      id: 'recipes-use-cases',
+      title: 'Use cases',
+      type: 'section',
+    },
+  ];
 }
 
 function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {

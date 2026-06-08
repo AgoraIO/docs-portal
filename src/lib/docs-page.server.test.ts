@@ -249,7 +249,7 @@ const apiReferencePageTree: Root = {
               children: [
                 {
                   $id: 'api-reference-recipes-quickstarts-separator',
-                  name: 'Voice AI quickstarts',
+                  name: 'Quickstarts',
                   type: 'separator',
                 },
                 {
@@ -265,8 +265,14 @@ const apiReferencePageTree: Root = {
                   url: '/en/api-reference/recipes/golang-quickstart',
                 },
                 {
+                  $id: 'api-reference-recipes-nextjs-quickstart',
+                  name: 'NextJS Quickstart',
+                  type: 'page',
+                  url: '/en/api-reference/recipes/nextjs-quickstart',
+                },
+                {
                   $id: 'api-reference-recipes-integration-separator',
-                  name: 'Voice AI integration patterns',
+                  name: 'Integration patterns',
                   type: 'separator',
                 },
                 {
@@ -276,15 +282,27 @@ const apiReferencePageTree: Root = {
                   url: '/en/api-reference/recipes/custom-llm',
                 },
                 {
-                  $id: 'api-reference-recipes-telephony-separator',
-                  name: 'Telephony recipes',
+                  $id: 'api-reference-recipes-custom-modalities',
+                  name: 'Custom Modalities',
+                  type: 'page',
+                  url: '/en/api-reference/recipes/custom-modalities',
+                },
+                {
+                  $id: 'api-reference-recipes-use-cases-separator',
+                  name: 'Use cases',
                   type: 'separator',
                 },
                 {
-                  $id: 'api-reference-recipes-ivr-agent',
-                  name: 'IVR Agent',
+                  $id: 'api-reference-recipes-wellness-coach',
+                  name: 'Wellness Coach',
                   type: 'page',
-                  url: '/en/api-reference/recipes/ivr-agent',
+                  url: '/en/api-reference/recipes/wellness-coach',
+                },
+                {
+                  $id: 'api-reference-recipes-thymia-biomarkers',
+                  name: 'Thymia Biomarkers',
+                  type: 'page',
+                  url: '/en/api-reference/recipes/thymia-biomarkers',
                 },
               ],
               index: {
@@ -1844,14 +1862,33 @@ describe('loadDocsPagePayload', () => {
         '/en/api-reference/recipes',
         '/en/api-reference/recipes/python-quickstart',
         '/en/api-reference/recipes/golang-quickstart',
+        '/en/api-reference/recipes/nextjs-quickstart',
         '/en/api-reference/recipes/custom-llm',
-        '/en/api-reference/recipes/ivr-agent',
+        '/en/api-reference/recipes/custom-modalities',
+        '/en/api-reference/recipes/wellness-coach',
+        '/en/api-reference/recipes/thymia-biomarkers',
       ]),
     );
     expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
       expect.arrayContaining([
         '/en/api-reference/voice-ai-recipes',
         '/en/api-reference/conversational-ai',
+      ]),
+    );
+    expect(payload.sidebar).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          title: 'Quickstarts',
+          type: 'section',
+        }),
+        expect.objectContaining({
+          title: 'Integration patterns',
+          type: 'section',
+        }),
+        expect.objectContaining({
+          title: 'Use cases',
+          type: 'section',
+        }),
       ]),
     );
   });

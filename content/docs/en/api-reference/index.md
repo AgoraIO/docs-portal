@@ -1,9 +1,7 @@
 ---
-title: API Reference
-description: Product-specific API references are organized under dedicated product groups, with collaboration and packaged solution references listed separately.
+title: Overview
+description: Everything you need to call, look up, or integrate — REST APIs, SDK references, and code recipes across all Agora products and platforms.
 ---
-
-Product-specific API references are organized under dedicated product groups. Collaboration and packaged solution references are grouped separately so they are easier to scan.
 
 ## Pages
 
