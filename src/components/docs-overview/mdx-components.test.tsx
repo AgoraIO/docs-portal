@@ -46,6 +46,19 @@ type FeatureCardComponent = ComponentType<{
   children: ReactNode;
   title: string;
 }>;
+type CapabilityGroupGridComponent = ComponentType<{ children: ReactNode }>;
+type CapabilityGroupCardComponent = ComponentType<{
+  description: string;
+  items: string[];
+  title: string;
+}>;
+type OverviewSpotlightCardComponent = ComponentType<{
+  description?: string;
+  href: string;
+  size?: 'large' | 'small';
+  title: string;
+  variant?: 'checklist' | 'code' | 'platform';
+}>;
 type RecipesCatalogComponent = ComponentType<{
   allCategoriesLabel: string;
   allProductsLabel: string;
@@ -138,6 +151,56 @@ describe('overview MDX components', () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText('Build calling and classroom products.'),
+    ).toBeVisible();
+  });
+
+  it('renders capability group cards for grouped overview sections', () => {
+    const components = getOverviewMDXComponents();
+    const CapabilityGroupGrid =
+      components.CapabilityGroupGrid as CapabilityGroupGridComponent;
+    const CapabilityGroupCard =
+      components.CapabilityGroupCard as CapabilityGroupCardComponent;
+
+    render(
+      <CapabilityGroupGrid>
+        <CapabilityGroupCard
+          description="Sessions where users exchange media or state in real time."
+          items={['Voice & Video', 'Signaling']}
+          title="Build live interaction"
+        />
+      </CapabilityGroupGrid>,
+    );
+
+    expect(screen.getByText('Build live interaction')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Sessions where users exchange media or state in real time.',
+      ),
+    ).toBeVisible();
+    expect(screen.getByText('Voice & Video')).toBeVisible();
+    expect(screen.getByText('Signaling')).toBeVisible();
+  });
+
+  it('renders overview spotlight descriptions when provided', () => {
+    const components = getOverviewMDXComponents();
+    const OverviewSpotlightCard =
+      components.OverviewSpotlightCard as OverviewSpotlightCardComponent;
+
+    render(
+      <OverviewSpotlightCard
+        description="Run a working voice agent in under 15 minutes."
+        href="/en/ai/choose-your-path/quickstart-coding"
+        size="small"
+        title="Voice agent quickstart"
+        variant="code"
+      />,
+    );
+
+    expect(
+      screen.getByRole('link', { name: /Voice agent quickstart/i }),
+    ).toHaveAttribute('href', '/en/ai/choose-your-path/quickstart-coding');
+    expect(
+      screen.getByText('Run a working voice agent in under 15 minutes.'),
     ).toBeVisible();
   });
 

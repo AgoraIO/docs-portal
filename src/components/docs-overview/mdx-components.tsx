@@ -25,6 +25,8 @@ export function getOverviewMDXComponents(): MDXComponents {
   return {
     CardGrid,
     FeatureCard,
+    CapabilityGroupCard,
+    CapabilityGroupGrid,
     OverviewSpotlightCard,
     OverviewSpotlightGrid,
     OverviewToolkits,
@@ -54,6 +56,45 @@ function FeatureCard({
       <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
       <div className="mt-2 text-sm leading-6 text-muted-foreground">
         {children}
+      </div>
+    </section>
+  );
+}
+
+function CapabilityGroupGrid({ children }: { children: ReactNode }) {
+  return (
+    <section className="not-prose my-8 grid gap-4 sm:grid-cols-2">
+      {children}
+    </section>
+  );
+}
+
+function CapabilityGroupCard({
+  description,
+  items,
+  title,
+}: {
+  description: string;
+  items: string[];
+  title: string;
+}) {
+  return (
+    <section className="rounded-[24px] border border-border bg-card p-6 shadow-sm">
+      <h3 className="m-0 text-base font-semibold text-foreground">
+        {title}
+      </h3>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+        {description}
+      </p>
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {items.map((item) => (
+          <span
+            className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+            key={item}
+          >
+            {item}
+          </span>
+        ))}
       </div>
     </section>
   );
@@ -571,11 +612,13 @@ function OverviewSpotlightGrid({
 type OverviewSpotlightVariant = 'checklist' | 'code' | 'platform';
 
 function OverviewSpotlightCard({
+  description,
   href,
   size = 'large',
   title,
   variant = 'platform',
 }: {
+  description?: string;
   href: string;
   size?: OverviewSpotlightSize;
   title: string;
@@ -609,8 +652,17 @@ function OverviewSpotlightCard({
           ) : null}
         </div>
       </div>
-      <div className="flex items-center justify-between gap-3 p-4">
-        <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+      <div className="flex items-start justify-between gap-3 p-4">
+        <div className="min-w-0">
+          <h3 className="m-0 text-base font-semibold text-foreground">
+            {title}
+          </h3>
+          {description ? (
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              {description}
+            </p>
+          ) : null}
+        </div>
         <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
       </div>
     </a>
