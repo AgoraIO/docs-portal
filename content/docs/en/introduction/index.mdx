@@ -2,88 +2,94 @@
 title: Overview
 ---
 
+Welcome to the Agora documentation hub. This page helps you quickly find the right documentation path for your project. Explore `Voice Agent` if you’re building real-time AI conversations, `Realtime & Media` if you need live communication or media infrastructure, and `Solutions` if you’re looking for common product patterns such as streaming, meetings, classrooms, or connected devices. 
+
+
 ## Voice Agent
 
 Connect any LLM to real-time voice with low latency. Choose your ASR, TTS, and model — Agora handles the transport and session lifecycle.
 
-<OverviewSpotlightGrid size="small">
-  <OverviewSpotlightCard
-    href="/en/introduction/start-with-ai"
-    title="Start with AI"
-    variant="platform"
-  />
-  <OverviewSpotlightCard
+
+<Cards>
+  <Card
     description="Build and run a working voice agent in under 15 minutes."
     href="/en/ai/choose-your-path/quickstart-coding"
-    size="small"
-    title="Start building"
-    variant="code"
+    title="Quickstart"
   />
-  <OverviewSpotlightCard
+  <Card
     description="Compare architecture, model options, and production integration paths."
     href="/en/ai"
-    size="small"
-    title="Voice agent overview"
-    variant="platform"
+    title="Voice Agent overview"
   />
-</OverviewSpotlightGrid>
+</Cards>
 
 ## Realtime & Media
 
 Build and ship anything that needs to happen in realtime — calls, live streams, messaging, recording, and media delivery at scale.
 
-[Explore Realtime & Media overview](/en/realtime-media/overview)
+<Cards>
+  <Card
+    description="See the full capability map for live interaction, media processing, external media connectivity, and large-scale delivery."
+    href="/en/realtime-media/overview"
+    title="Explore Realtime & Media"
+  />
+</Cards>
 
-<CapabilityGroupGrid>
-  <CapabilityGroupCard
-    title="Build live interaction"
-    description="Exchange media and state in real time."
-    items={['Voice & Video', 'Signaling', 'Chat', 'Whiteboard']}
-  />
-  <CapabilityGroupCard
-    title="Process session content"
-    description="Turn session media into text and downstream assets."
-    items={['Transcription', 'Translation', 'Recording', 'Transcoding']}
-  />
-  <CapabilityGroupCard
-    title="Connect external media"
-    description="Bridge Agora sessions to external streaming systems."
-    items={['Push', 'Pull', 'RTMP']}
-  />
-  <CapabilityGroupCard
-    title="Deliver to larger audiences"
-    description="Scale playback beyond interactive participation."
-    items={['CDN Distribution']}
-  />
-</CapabilityGroupGrid>
+
+<CapabilityMatrix
+  rows={[
+    {
+      title: 'Build live interaction',
+      description: 'Exchange media and state in real time.',
+      items: ['Voice & Video', 'Signaling', 'Chat', 'Whiteboard'],
+    },
+    {
+      title: 'Process session content',
+      description: 'Turn session media into text and downstream assets.',
+      items: ['Transcription', 'Translation', 'Recording', 'Transcoding'],
+    },
+    {
+      title: 'Connect external media',
+      description: 'Bridge Agora sessions to external streaming systems.',
+      items: ['Media Push', 'Media Pull', 'RTMP Gateway'],
+    },
+    {
+      title: 'Deliver to larger audiences',
+      description: 'Scale playback beyond interactive participation.',
+      items: ['Fusion CDN'],
+    },
+  ]}
+/>
+
 
 ## Solutions
 
 Launch common product patterns.
 
-<SolutionCardGrid>
-  <SolutionCard
+
+<Cards>
+  <Card
     description="Launch host-audience live rooms with co-hosting, PK, and engagement features."
     href="/en/solutions/showroom"
-    tags={['Voice & Video']}
-    title="Enable live streaming"
-    tone="blue"
+    size="small"
+    title="Live streaming solution"
+    variant="platform"
   />
-  <SolutionCard
+  <Card
     description="Launch structured meeting experiences with participant and room control."
     href="/en/solutions/meeting"
-    tags={['Voice & Video']}
-    title="Launch meetings"
-    tone="purple"
+    size="small"
+    title="Meeting solution"
+    variant="platform"
   />
-  <SolutionCard
+  <Card
     description="Launch teaching-first experiences with classroom roles and lesson flows."
     href="/en/solutions/flexible-classroom"
-    tags={['Voice & Video']}
-    title="Run online classrooms"
-    tone="pink"
+    size="small"
+    title="Classroom solution"
+    variant="platform"
   />
-</SolutionCardGrid>
+</Cards>
 
 ## SDKs and tools
 

@@ -27,6 +27,8 @@ export function getOverviewMDXComponents(): MDXComponents {
     FeatureCard,
     CapabilityGroupCard,
     CapabilityGroupGrid,
+    CapabilityMatrix,
+    OverviewLinkBanner,
     OverviewSpotlightCard,
     OverviewSpotlightGrid,
     OverviewToolkits,
@@ -97,6 +99,77 @@ function CapabilityGroupCard({
         ))}
       </div>
     </section>
+  );
+}
+
+type CapabilityMatrixRow = {
+  description: string;
+  items: string[];
+  title: string;
+};
+
+function CapabilityMatrix({ rows }: { rows: CapabilityMatrixRow[] }) {
+  return (
+    <section className="not-prose my-8 overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
+      <div className="grid grid-cols-1 border-b border-border bg-muted/30 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground sm:grid-cols-[220px_minmax(0,1fr)_260px] sm:gap-6 sm:px-6">
+        <span>Capability area</span>
+        <span>What it covers</span>
+        <span>Includes</span>
+      </div>
+      {rows.map((row, index) => (
+        <div
+          className={cn(
+            'grid grid-cols-1 gap-3 px-5 py-4 sm:grid-cols-[220px_minmax(0,1fr)_260px] sm:items-start sm:gap-6 sm:px-6',
+            index > 0 && 'border-t border-border',
+          )}
+          key={row.title}
+        >
+          <h3 className="m-0 text-base font-semibold text-foreground">
+            {row.title}
+          </h3>
+          <p className="m-0 text-sm leading-6 text-muted-foreground">
+            {row.description}
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {row.items.map((item) => (
+              <span
+                className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+                key={item}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+function OverviewLinkBanner({
+  description,
+  href,
+  title,
+}: {
+  description: string;
+  href: string;
+  title: string;
+}) {
+  return (
+    <a
+      className="group not-prose my-6 flex items-center justify-between gap-4 rounded-[24px] border border-border bg-card px-6 py-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+      href={href}
+    >
+      <div className="min-w-0">
+        <h3 className="m-0 text-lg font-semibold tracking-[-0.02em] text-foreground">
+          {title}
+        </h3>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          {description}
+        </p>
+      </div>
+      <ArrowRightIcon className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+    </a>
   );
 }
 

@@ -52,6 +52,18 @@ type CapabilityGroupCardComponent = ComponentType<{
   items: string[];
   title: string;
 }>;
+type CapabilityMatrixComponent = ComponentType<{
+  rows: Array<{
+    description: string;
+    items: string[];
+    title: string;
+  }>;
+}>;
+type OverviewLinkBannerComponent = ComponentType<{
+  description: string;
+  href: string;
+  title: string;
+}>;
 type OverviewSpotlightCardComponent = ComponentType<{
   description?: string;
   href: string;
@@ -179,6 +191,57 @@ describe('overview MDX components', () => {
     ).toBeVisible();
     expect(screen.getByText('Voice & Video')).toBeVisible();
     expect(screen.getByText('Signaling')).toBeVisible();
+  });
+
+  it('renders capability matrix rows for structured overview sections', () => {
+    const components = getOverviewMDXComponents();
+    const CapabilityMatrix =
+      components.CapabilityMatrix as CapabilityMatrixComponent;
+
+    render(
+      <CapabilityMatrix
+        rows={[
+          {
+            description: 'Exchange media and state in real time.',
+            items: ['Voice & Video', 'Signaling'],
+            title: 'Build live interaction',
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByText('Capability area')).toBeVisible();
+    expect(screen.getByText('What it covers')).toBeVisible();
+    expect(screen.getByText('Includes')).toBeVisible();
+    expect(screen.getByText('Build live interaction')).toBeVisible();
+    expect(
+      screen.getByText('Exchange media and state in real time.'),
+    ).toBeVisible();
+    expect(screen.getByText('Voice & Video')).toBeVisible();
+    expect(screen.getByText('Signaling')).toBeVisible();
+  });
+
+  it('renders overview link banners for section-level entry points', () => {
+    const components = getOverviewMDXComponents();
+    const OverviewLinkBanner =
+      components.OverviewLinkBanner as OverviewLinkBannerComponent;
+
+    render(
+      <OverviewLinkBanner
+        description="See the full capability map for live interaction and media delivery."
+        href="/en/realtime-media/overview"
+        title="Explore Realtime & Media overview"
+      />,
+    );
+
+    expect(
+      screen.getByRole('link', { name: /Explore Realtime & Media overview/i }),
+    ).toHaveAttribute('href', '/en/realtime-media/overview');
+    expect(
+      screen.getByText(
+        'See the full capability map for live interaction and media delivery.',
+      ),
+    ).toBeVisible();
   });
 
   it('renders overview spotlight descriptions when provided', () => {
