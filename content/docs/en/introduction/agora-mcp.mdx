@@ -1,0 +1,111 @@
+---
+title: Agora MCP
+description: Connect your AI coding assistant to Agora MCP so it can search the latest official documentation while building or debugging an Agora project.
+---
+
+If your coding agent is about to generate code, look up an API, or compare product paths, MCP is the next thing to install after the CLI. It gives the agent direct access to current Agora documentation in real time.
+
+## Install the MCP server
+
+`Agora MCP` is included when you install [Agora Skills](/en/introduction/agora-skills), but you can also install the MCP server on its own:
+
+```text
+https://mcp.agora.io
+```
+<Tabs>
+<TabsList>
+  <TabsTrigger value="cursor">Cursor</TabsTrigger>
+  <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
+  <TabsTrigger value="codex">Codex</TabsTrigger>
+  <TabsTrigger value="gemini-cli">Gemini CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual installation</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cursor">
+
+Add the following JSON to your MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "agora-docs": {
+      "url": "https://mcp.agora.io"
+    }
+  }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="claude-code">
+
+```shell
+claude mcp add --transport http agora-docs https://mcp.agora.io
+```
+
+</TabsContent>
+
+<TabsContent value="codex">
+
+```shell
+codex mcp add --url https://mcp.agora.io agora-docs
+```
+
+</TabsContent>
+
+<TabsContent value="gemini-cli">
+
+```bash
+gemini mcp add --transport http agora-docs https://mcp.agora.io
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+Add `https://mcp.agora.io` to your MCP client and use `http` or `Streamable HTTP` transport if the client asks for a transport type.
+
+</TabsContent>
+</Tabs>
+
+## Fastest use
+
+Install the server in your coding tool, then ask the agent to search Agora docs before writing code.
+
+For example:
+
+```text
+Use Agora MCP to find the current web quickstart for Conversational AI and explain the minimum setup for a browser voice demo.
+```
+
+## Why use MCP
+
+Use MCP when the assistant needs to:
+
+- confirm the latest SDK methods, parameters, and error-handling guidance
+- compare product or platform paths before implementation
+- read official quickstarts before generating or editing code
+- troubleshoot with current documentation instead of stale assumptions
+
+## Prompting tips
+
+You will usually get better results if you mention:
+
+- the Agora product, such as `Conversational AI`, `Video Calling`, or `Signaling`
+- the target platform, such as `Web`, `iOS`, or `Android`
+- the task type, such as quickstart, API lookup, debugging, or architecture
+
+## Repository-level guidance
+
+If your repository includes `AGENTS.md` or similar instructions, tell the coding agent to prefer Agora MCP for product-specific lookups. This makes the docs check part of the normal workflow instead of an optional extra step.
+
+When an MCP client is not available, these fallback resources still help:
+
+- `https://docs.agora.io/llms.txt`
+- `https://docs-md.agora.io/...` for Markdown page versions
+
+## Related resources
+
+- [Agora MCP server](https://mcp.agora.io)
+- [Agora Skills](/en/introduction/agora-skills)
+- [Start with AI](/en/introduction/start-with-ai)

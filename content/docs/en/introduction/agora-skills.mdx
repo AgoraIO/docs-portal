@@ -1,0 +1,115 @@
+---
+title: Agora Skills
+description: Install Agora Skills so your AI coding assistant can follow product-aware workflows, choose the right starter, and use official Agora patterns.
+---
+
+If your coding agent can read docs but still struggles to choose the right Agora workflow, install Skills next. Skills teaches the agent how to route tasks, choose starters, and follow Agora-specific build flows.
+
+## Install Agora Skills
+<Tabs>
+<TabsList>
+  <TabsTrigger value="skills-cli">Skills CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual installation</TabsTrigger>
+</TabsList>
+
+<TabsContent value="skills-cli">
+
+```bash
+npx skills add github:AgoraIO/skills
+```
+
+Skills activate automatically when the agent detects a relevant Agora task.
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+Clone the repository and point your coding assistant to the Agora skill files:
+
+```bash
+git clone https://github.com/AgoraIO/skills.git ~/agora-skills
+```
+
+Use `skills/agora/` as the directory entry point, or load `SKILL.md` directly if your tool expects a single root file.
+
+</TabsContent>
+</Tabs>
+
+## Fastest use
+
+Install Skills, then ask the agent to choose the correct Agora path before it starts scaffolding or editing code.
+
+For example:
+
+```text
+Use Agora Skills and Agora MCP to help me build a web-based conversational AI demo.
+Check the official docs first, choose the right starter, and use the Agora CLI for setup.
+```
+
+## What Skills adds
+
+Without product-specific guidance, coding agents often guess at the wrong architecture or mix unrelated setup steps. Skills reduces that risk by helping the agent:
+
+- identify whether a task belongs to Conversational AI, RTC, RTM, recording, tokens, or another product path
+- choose the most relevant official starter or quickstart
+- follow Agora-specific setup sequences instead of generic scaffolding
+- combine workflow guidance with live documentation from [Agora MCP](/en/introduction/agora-mcp)
+
+## Tool-specific setup notes
+
+If you install Skills manually, the exact location depends on the assistant:
+<Tabs>
+<TabsList>
+  <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
+  <TabsTrigger value="cursor">Cursor</TabsTrigger>
+  <TabsTrigger value="windsurf">Windsurf</TabsTrigger>
+  <TabsTrigger value="copilot">GitHub Copilot</TabsTrigger>
+  <TabsTrigger value="other-tools">Other tools</TabsTrigger>
+</TabsList>
+
+<TabsContent value="claude-code">
+
+Install as a plugin at user or project scope.
+
+</TabsContent>
+
+<TabsContent value="cursor">
+
+Copy or symlink `skills/agora/` into `.cursor/rules/`.
+
+</TabsContent>
+
+<TabsContent value="windsurf">
+
+Add `skills/agora/` to Cascade context.
+
+</TabsContent>
+
+<TabsContent value="copilot">
+
+Reference the files with `@workspace` or add them to Copilot instructions.
+
+</TabsContent>
+
+<TabsContent value="other-tools">
+
+Point the tool at `skills/agora/` or the top-level `SKILL.md`.
+
+</TabsContent>
+</Tabs>
+
+## When to use Skills
+
+Use Skills when you want an assistant to help with:
+
+- choosing the correct Agora product path
+- starting from an official starter
+- multi-step setup flows that include docs lookup and local execution
+- troubleshooting where product context matters as much as API syntax
+
+## Related resources
+
+- [Agora Skills repository](https://github.com/AgoraIO/skills)
+- [Agora MCP](/en/introduction/agora-mcp)
+- [Agora CLI](/en/introduction/agora-cli)
+- [Start with AI](/en/introduction/start-with-ai)

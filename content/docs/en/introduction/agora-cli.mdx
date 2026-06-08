@@ -1,0 +1,179 @@
+---
+title: Agora CLI
+description: Install the Agora CLI to log in, initialize official starters, write environment files, and run diagnostics for local Agora workflows.
+---
+
+If your first goal is to get an Agora demo running, the CLI is the tool to install first. It handles login, starter initialization, credential export, project binding, and diagnostics.
+
+## Install the CLI
+
+The Agora CLI is distributed as a native Go binary.
+<Tabs>
+<TabsList>
+  <TabsTrigger value="mac-linux">macOS and Linux</TabsTrigger>
+  <TabsTrigger value="windows-powershell">Windows (PowerShell)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="mac-linux">
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/AgoraIO/cli/main/install.sh | sh -s -- --add-to-path
+agora --help
+```
+
+If `agora` is not available after installation, run the installer again with `--add-to-path` or add the install directory to your shell profile manually.
+
+</TabsContent>
+
+<TabsContent value="windows-powershell">
+
+```powershell
+irm https://raw.githubusercontent.com/AgoraIO/cli/main/install.ps1 | iex
+agora --help
+```
+
+If your execution policy blocks inline scripts, download `install.ps1` and run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+</TabsContent>
+</Tabs>
+
+## Fastest use
+
+For the shortest local setup path:
+<Tabs>
+<TabsList>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="go">Go</TabsTrigger>
+</TabsList>
+
+<TabsContent value="typescript">
+
+```bash
+agora login
+agora init my-nextjs-demo --template nextjs
+cd my-nextjs-demo
+pnpm install
+pnpm dev
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```bash
+agora login
+agora init my-python-demo --template python
+cd my-python-demo
+bun install
+bun run dev
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```bash
+agora login
+agora init my-go-demo --template go
+cd my-go-demo
+make setup
+make dev
+```
+
+</TabsContent>
+</Tabs>
+
+If that works, you can move on. If not, come back to the sections below.
+
+## Core commands
+
+Once the CLI is installed, these are the commands you will use most often:
+
+```bash
+agora login
+agora init my-demo --template nextjs
+agora project create my-project --feature rtc --feature convoai
+agora project use my-project
+agora project env --shell
+agora project doctor
+```
+
+- `agora login` authenticates the local machine with your Agora account.
+- `agora init` clones an official starter, binds it to a project, and writes the environment file for that template.
+- `agora project create` creates a project with the required features.
+- `agora project use` switches the active project.
+- `agora project env --shell` prints credentials in a shell-friendly format.
+- `agora project doctor` checks readiness, credentials, feature enablement, and common setup issues.
+
+## When to use the CLI
+
+Use the CLI when you need to:
+
+- sign in to Agora from a local development machine
+- initialize an official starter instead of scaffolding from scratch
+- create or bind a project for a quickstart or tutorial
+- export environment variables for local apps
+- diagnose why a demo, agent, or project configuration is not working
+
+For build-from-scratch paths, you usually add project creation and credential export:
+<Tabs>
+<TabsList>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="go">Go</TabsTrigger>
+</TabsList>
+
+<TabsContent value="typescript">
+
+```bash
+agora login
+agora project create conv-ai-tutorial --feature rtc --feature convoai
+agora project use conv-ai-tutorial
+agora project env --shell
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```bash
+agora login
+agora project create conv-ai-tutorial --feature rtc --feature convoai
+agora project use conv-ai-tutorial
+agora project env --shell
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```bash
+agora login
+agora project create conv-ai-tutorial --feature rtc --feature convoai
+agora project use conv-ai-tutorial
+agora project env --shell
+```
+
+</TabsContent>
+</Tabs>
+
+## Why this matters for coding agents
+
+`Agora Skills` often route a coding agent toward the CLI because the CLI provides the reproducible local steps an agent can execute and verify. This is especially useful for:
+
+- starter bootstrapping
+- project binding
+- environment file generation
+- diagnosing setup failures before deeper debugging starts
+
+## Related resources
+
+- [Agora CLI GitHub](https://github.com/AgoraIO/cli)
+- [Agora CLI developer documentation](https://agoraio.github.io/cli/)
+- [Agora Skills](/en/introduction/agora-skills)
+- [Start with AI](/en/introduction/start-with-ai)
