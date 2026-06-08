@@ -1,54 +1,88 @@
 ---
 title: Overview
-description: Start with the shortest path into Agora, understand the platform map, and choose the capability area that matches your first product milestone.
 ---
 
-<OverviewSpotlightGrid>
+## Voice Agent
+
+Connect any LLM to real-time voice with low latency. Choose your ASR, TTS, and model — Agora handles the transport and session lifecycle.
+
+<OverviewSpotlightGrid size="small">
   <OverviewSpotlightCard
-    href="/en/introduction/get-started/start-with-ai"
-    title="Start with AI"
-    variant="platform"
-  />
-  <OverviewSpotlightCard
+    description="Build and run a working voice agent in under 15 minutes."
     href="/en/ai/choose-your-path/quickstart-coding"
-    title="Voice AI quickstart"
+    size="small"
+    title="Start building"
     variant="code"
   />
   <OverviewSpotlightCard
-    href="/en/realtime-media/rtc/android/quick-start/build-from-scratch"
-    title="Voice & Video quickstart"
-    variant="code"
+    description="Compare architecture, model options, and production integration paths."
+    href="/en/ai"
+    size="small"
+    title="Voice agent overview"
+    variant="platform"
   />
 </OverviewSpotlightGrid>
 
-Agora can look broad when you first land in the docs. The fastest way to get value is to avoid reading everything in order and instead choose the path that matches your first build milestone.
+## Realtime & Media
 
-## Start here
+Build and ship anything that needs to happen in realtime — calls, live streams, messaging, recording, and media delivery at scale.
 
-- Use [Start with AI](/en/introduction/get-started/start-with-ai) if you want an AI-assisted workflow with MCP, Skills, CLI guidance, and official starters.
-- Open the [Voice AI quickstart](/en/ai/choose-your-path/quickstart-coding) if your goal is to get a working voice agent running as quickly as possible.
-- Open the [Voice & Video quickstart](/en/realtime-media/rtc/android/quick-start/build-from-scratch) if your first milestone is a live calling or meeting experience.
+[Explore Realtime & Media overview](/en/realtime-media/overview)
 
-## Understand the platform
+<CapabilityGroupGrid>
+  <CapabilityGroupCard
+    title="Build live interaction"
+    description="Exchange media and state in real time."
+    items={['Voice & Video', 'Signaling', 'Chat', 'Whiteboard']}
+  />
+  <CapabilityGroupCard
+    title="Process session content"
+    description="Turn session media into text and downstream assets."
+    items={['Transcription', 'Translation', 'Recording', 'Transcoding']}
+  />
+  <CapabilityGroupCard
+    title="Connect external media"
+    description="Bridge Agora sessions to external streaming systems."
+    items={['Push', 'Pull', 'RTMP']}
+  />
+  <CapabilityGroupCard
+    title="Deliver to larger audiences"
+    description="Scale playback beyond interactive participation."
+    items={['CDN Distribution']}
+  />
+</CapabilityGroupGrid>
 
-- [About Agora](/en/introduction/about-agora): what Agora is, what problems it solves, how the product families fit together, and where to start
-- [Core Concepts](/en/introduction/core-concepts): shared platform primitives such as sessions, channels, credentials, and realtime building blocks
+## Solutions
 
-## Explore by capability
+Launch common product patterns.
 
-- [Conversational AI](/en/introduction/conversational-ai): voice agents, assistants, tutors, support agents, and spoken AI experiences
-- [Real-Time Voice & Video](/en/introduction/realtime-audio-video): calling, meetings, classrooms, livestream interaction, and device media transport
-- [Messaging & Presence](/en/introduction/messaging-presence): chat, signaling, room state, metadata, and collaborative coordination
-- [Cloud Media Services](/en/introduction/cloud-media-services): recording, speech-to-text, translation, media routing, and stream transformation
-
-## Production basics
-
-- [Projects](/en/introduction/projects): project creation, service enablement, and certificate management
-- [Console setup](/en/introduction/console-setup): credentials, console workflows, and first-time service setup
-- [Pricing & Access](/en/introduction/pricing-access): service enablement and billing boundaries
-- [Security and privacy](/en/introduction/security-privacy): security responsibilities and data handling
+<SolutionCardGrid>
+  <SolutionCard
+    description="Launch host-audience live rooms with co-hosting, PK, and engagement features."
+    href="/en/solutions/showroom"
+    tags={['Voice & Video']}
+    title="Enable live streaming"
+    tone="blue"
+  />
+  <SolutionCard
+    description="Launch structured meeting experiences with participant and room control."
+    href="/en/solutions/meeting"
+    tags={['Voice & Video']}
+    title="Launch meetings"
+    tone="purple"
+  />
+  <SolutionCard
+    description="Launch teaching-first experiences with classroom roles and lesson flows."
+    href="/en/solutions/flexible-classroom"
+    tags={['Voice & Video']}
+    title="Run online classrooms"
+    tone="pink"
+  />
+</SolutionCardGrid>
 
 ## SDKs and tools
+
+Browse SDKs, APIs, and tools.
 
 <OverviewToolkits>
   <ToolkitGroup title="Agent frameworks">
