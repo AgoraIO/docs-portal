@@ -1,0 +1,197 @@
+---
+title: Start with AI
+description: Get an Agora starter running first, then add the AI tooling that makes your coding agent accurate and productive.
+---
+
+This page introduces the fastest way to start building with Agora CLI. It focuses on the practical setup path first: install the required tools, run an official starter, verify that the baseline works, and then use MCP, Skills, and CLI more effectively as you continue.
+
+## Run this now
+
+### 1. Install the Agora CLI
+<Tabs>
+<TabsList>
+  <TabsTrigger value="mac-linux">macOS and Linux</TabsTrigger>
+  <TabsTrigger value="windows-powershell">Windows (PowerShell)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="mac-linux">
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/AgoraIO/cli/main/install.sh | sh -s -- --add-to-path
+agora --help
+```
+
+</TabsContent>
+
+<TabsContent value="windows-powershell">
+
+```powershell
+irm https://raw.githubusercontent.com/AgoraIO/cli/main/install.ps1 | iex
+agora --help
+```
+
+If your execution policy blocks inline scripts, download `install.ps1` and run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+</TabsContent>
+</Tabs>
+
+### 2. Give your coding agent the docs and workflow
+
+Choose one of these:
+
+- Install [Agora MCP](/en/introduction/agora-mcp) if you want the agent to read the latest official docs before generating code.
+<Tabs>
+<TabsList>
+  <TabsTrigger value="codex">Codex</TabsTrigger>
+  <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
+  <TabsTrigger value="cursor">Cursor</TabsTrigger>
+</TabsList>
+
+<TabsContent value="codex">
+
+```bash
+codex mcp add --url https://mcp.agora.io agora-docs
+```
+
+</TabsContent>
+
+<TabsContent value="claude-code">
+
+```bash
+claude mcp add --transport http agora-docs https://mcp.agora.io
+```
+
+</TabsContent>
+
+<TabsContent value="cursor">
+
+Add this to your MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "agora-docs": {
+      "url": "https://mcp.agora.io"
+    }
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+- Install [Agora Skills](/en/introduction/agora-skills) if you also want product-aware routing, starter selection, and Agora-specific workflow guidance.
+<Tabs>
+<TabsList>
+  <TabsTrigger value="skills-cli">Skills CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual installation</TabsTrigger>
+</TabsList>
+
+<TabsContent value="skills-cli">
+
+```bash
+npx skills add github:AgoraIO/skills
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+Clone the repository and point your coding assistant to the Agora skill files:
+
+```bash
+git clone https://github.com/AgoraIO/skills.git ~/agora-skills
+```
+
+Use `skills/agora/` as the directory entry point, or load `SKILL.md` directly if your tool expects a single root file.
+
+</TabsContent>
+</Tabs>
+If you are unsure, install both.
+
+### 3. Log in and start the official web starter
+<Tabs>
+<TabsList>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="go">Go</TabsTrigger>
+</TabsList>
+
+<TabsContent value="typescript">
+
+```bash
+agora login
+agora init my-nextjs-demo --template nextjs
+cd my-nextjs-demo
+pnpm install
+pnpm dev
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```bash
+agora login
+agora init my-python-demo --template python
+cd my-python-demo
+bun install
+bun run dev
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```bash
+agora login
+agora init my-go-demo --template go
+cd my-go-demo
+make setup
+make dev
+```
+
+</TabsContent>
+</Tabs>
+
+This clones the official starter, binds it to your Agora project, and writes the environment you need locally.
+
+### 4. Open the app
+
+Open `http://localhost:3000` and start a conversation.
+
+## Verify it worked
+
+Use a quick smoke test instead of reading deeper docs immediately. If these signals line up, you have a working baseline and can move on to customization.
+
+| Check | What success looks like |
+| --- | --- |
+| App startup | The local app opens without missing credentials or setup errors. |
+| First interaction | You can start a conversation from the UI without manual patching. |
+| Agent join | The agent joins successfully after startup. |
+| Output path | Speech or transcript output appears as expected in the app. |
+
+At that point, you have a working baseline. Only then should you start customizing prompts, runtime behavior, or architecture. This is also the right moment to make your coding agent more specific: tell it the product, platform, language, and goal instead of asking for a generic Agora integration.
+
+## Common failures
+
+Most early failures are not architectural problems. They are install, path, or project-binding problems. Check the symptom first, then apply the smallest fix.
+
+| Symptom | Check first | What to do |
+| --- | --- | --- |
+| `agora` command not found | Whether the installer added the binary to your shell path | Rerun the installer with `--add-to-path`, or add the install directory to your shell profile manually. |
+| Starter initializes but does not run | Whether the runtime dependencies installed successfully for that starter | Reinstall dependencies for the selected starter runtime and rerun the local dev command. |
+| Agent does not join or transcripts do not appear | Whether the project is enabled and credentials are valid | Run `agora project doctor`. |
+| Project setup looks wrong | Whether the active project and env values match what you expect | Run `agora project env --shell` and inspect the exported credentials. |
+
+When debugging, keep the agent grounded in evidence. Give it logs, reproduction steps, and version details so it can reason from concrete failures instead of guessing. Keep MCP enabled whenever it is looking up APIs, auth flows, parameters, or platform differences, and use Skills when it needs help choosing the right Agora workflow rather than only reading docs.
+
+## Next steps
+
+- [Agora CLI](/en/introduction/agora-cli)
+- [Agora MCP](/en/introduction/agora-mcp)
+- [Agora Skills](/en/introduction/agora-skills)
+
