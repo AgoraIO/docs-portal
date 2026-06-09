@@ -139,11 +139,8 @@ export function DocsContent({
             </p>
           ) : null}
         </div>
-        {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
-          <DocsHeaderScopeTabs header={sidebarHeader} />
-        ) : null}
         {markdownUrl ? (
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-col items-start gap-3">
             <a
               className="inline-flex h-7 items-center gap-1.5 rounded-md border border-[color:var(--line-soft)] bg-card px-2.5 text-xs font-medium text-[color:var(--ink-3)] transition-colors hover:border-[color:var(--line-strong)] hover:text-[color:var(--ink-1)]"
               href={markdownUrl}
@@ -153,7 +150,13 @@ export function DocsContent({
               <BotIcon className="size-3.5" />
               {t('docs.viewAsMarkdown')}
             </a>
+            {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
+              <DocsHeaderScopeTabs header={sidebarHeader} />
+            ) : null}
           </div>
+        ) : null}
+        {!markdownUrl && sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
+          <DocsHeaderScopeTabs header={sidebarHeader} />
         ) : null}
       </header>
       {isOpenApiBody ? (

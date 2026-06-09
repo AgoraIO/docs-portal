@@ -42,6 +42,12 @@ export type DocsNavScopeResolution = {
   sidebarRoot: Folder;
 };
 
+export type DocsNavScopeVersionLink = {
+  href: string;
+  id: string;
+  label: string;
+};
+
 export type GetDocsNodeMeta = (node: Folder | Root) => DocsMeta | undefined;
 
 type FolderAncestor = {
@@ -167,6 +173,68 @@ export function getScopedNavScopeSidebarNodes({
   return flattenNavScopeSidebarNodes(navScope.sidebarRoot, getNodeMeta);
 }
 
+export function getSharedNavScopeSidebarNodes({
+  getNodeMeta,
+  navScope,
+}: {
+  getNodeMeta: GetDocsNodeMeta;
+  navScope: DocsNavScopeResolution;
+}): DocsSidebarNode[] {
+  const versions = navScope.scope.meta.navScope?.versions;
+  if (!versions?.length) {
+    return getScopedNavScopeSidebarNodes({ getNodeMeta, navScope });
+  }
+
+  const defaultVersionId =
+    navScope.scope.meta.navScope?.defaultVersion ?? versions[0]?.id;
+  const canonicalFolder = versions
+    .map((version) => ({
+      folder: findVersionFolder(navScope.scope.node, version),
+      version,
+    }))
+    .find(
+      (entry): entry is { folder: Folder; version: DocsNavScopeVersion } =>
+        Boolean(entry.folder) && entry.version.id === defaultVersionId,
+    )?.folder;
+  const targetFolder = navScope.activeVersion?.node ?? canonicalFolder;
+
+  if (!canonicalFolder || !targetFolder) {
+    return getScopedNavScopeSidebarNodes({ getNodeMeta, navScope });
+  }
+
+  const remappedFolder: Folder = {
+    ...navScope.scope.node,
+    children: remapSharedSidebarChildren({
+      canonicalRoot: canonicalFolder,
+      nodes: canonicalFolder.children,
+      targetRoot: targetFolder,
+    }),
+  };
+
+  return flattenNavScopeSidebarNodes(remappedFolder, getNodeMeta);
+}
+
+export function getNavScopeVersionLinks({
+  activePath,
+  getNodeMeta,
+  root,
+  tab,
+}: {
+  activePath: string;
+  getNodeMeta: GetDocsNodeMeta;
+  root: Root;
+  tab: string;
+}): DocsNavScopeVersionLink[] {
+  const navScope = resolveDocsNavScope({
+    activePath,
+    getNodeMeta,
+    root,
+    tab,
+  });
+
+  return navScope?.header.versionSwitcher?.versions ?? [];
+}
+
 function hasNavScopeDescendant(
   folder: Folder,
   getNodeMeta: GetDocsNodeMeta,
@@ -290,6 +358,75 @@ function flattenNavScopeSidebarNodes(
       navScopeNodeToSidebarNodes(child, getNodeMeta),
     ),
   ];
+}
+
+function remapSharedSidebarChildren({
+  canonicalRoot,
+  nodes,
+  targetRoot,
+}: {
+  canonicalRoot: Folder;
+  nodes: Node[];
+  targetRoot: Folder;
+}): Node[] {
+  return nodes.map((node) =>
+    remapSharedSidebarNode({
+      canonicalRoot,
+      node,
+      targetRoot,
+    }),
+  );
+}
+
+function remapSharedSidebarNode({
+  canonicalRoot,
+  node,
+  targetRoot,
+}: {
+  canonicalRoot: Folder;
+  node: Node;
+  targetRoot: Folder;
+}): Node {
+  if (node.type === 'separator') {
+    return node;
+  }
+
+  if (node.type === 'page') {
+    return {
+      ...node,
+      url: remapSharedSidebarUrl(canonicalRoot, node.url, targetRoot),
+    };
+  }
+
+  if (node.type !== 'folder') {
+    return node;
+  }
+
+  return {
+    ...node,
+    children: remapSharedSidebarChildren({
+      canonicalRoot,
+      nodes: node.children,
+      targetRoot,
+    }),
+    ...(node.index
+      ? {
+          index: {
+            ...node.index,
+            url: remapSharedSidebarUrl(canonicalRoot, node.index.url, targetRoot),
+          },
+        }
+      : {}),
+  };
+}
+
+function remapSharedSidebarUrl(
+  canonicalRoot: Folder,
+  url: string,
+  targetRoot: Folder,
+) {
+  const relativePath = getRelativePath(canonicalRoot, url);
+  return findRelativePageUrl(targetRoot, relativePath) ?? url;
 }
 
 function navScopeNodeToSidebarNodes(
@@ -529,8 +666,34 @@ function buildVersionSwitcher({
     return undefined;
   }
 
-  const relativePath = getRelativePath(activeVersion.node, activePath);
-  const switcherVersions = versions.flatMap((version) => {
+  const switcherVersions = resolveVersionSwitcherLinks({
+    activePath,
+    activeVersionNode: activeVersion.node,
+    scope,
+    versions,
+  });
+
+  return {
+    currentId: activeVersion.id,
+    ...(presentation ? { presentation } : {}),
+    versions: switcherVersions,
+  };
+}
+
+function resolveVersionSwitcherLinks({
+  activePath,
+  activeVersionNode,
+  scope,
+  versions,
+}: {
+  activePath: string;
+  activeVersionNode: Folder;
+  scope: Folder;
+  versions: DocsNavScopeVersion[];
+}) {
+  const relativePath = getRelativePath(activeVersionNode, activePath);
+
+  return versions.flatMap((version) => {
     const node = findVersionFolder(scope, version);
     if (!node) {
       return [];
@@ -547,12 +710,6 @@ function buildVersionSwitcher({
       },
     ];
   });
-
-  return {
-    currentId: activeVersion.id,
-    ...(presentation ? { presentation } : {}),
-    versions: switcherVersions,
-  };
 }
 
 function findTabFolder(root: Root, activeTab: string): Folder | null {

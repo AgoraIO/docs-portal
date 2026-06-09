@@ -173,13 +173,19 @@ describe('DocsContent', () => {
             ],
           },
         }}
+        markdownUrl="/llms.mdx/docs/en/realtime-media/rtc/android/quick-start/integrate-with-ai-tools.md"
         slug="integrate-with-ai-tools"
         title="Integrate with AI tools"
         toc={[]}
       />,
     );
 
-    expect(await screen.findByRole('tab', { name: 'Android' })).toHaveAttribute(
+    const markdownLink = await screen.findByRole('link', {
+      name: 'View as Markdown',
+    });
+    const androidTab = await screen.findByRole('tab', { name: 'Android' });
+
+    expect(androidTab).toHaveAttribute(
       'href',
       '/en/realtime-media/rtc/quick-start/android/integrate-with-ai-tools',
     );
@@ -187,6 +193,10 @@ describe('DocsContent', () => {
       'href',
       '/en/realtime-media/rtc/quick-start/ios/integrate-with-ai-tools',
     );
+    expect(
+      markdownLink.compareDocumentPosition(androidTab) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
   });
 });
 

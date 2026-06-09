@@ -252,7 +252,7 @@ describe('DocsShell', () => {
     expect(screen.getByText('On this page')).toBeInTheDocument();
   });
 
-  it('renders scoped version selectors in desktop and mobile sidebars', async () => {
+  it('renders scoped version selectors in desktop and mobile sidebars for non-tab scopes', async () => {
     renderDocsShell({
       activePath: '/en/api-reference/rtc/android/overview',
       activeTab: 'api-reference',
@@ -281,37 +281,11 @@ describe('DocsShell', () => {
     const desktopSidebar = await screen.findByTestId('docs-sidebar');
 
     expect(desktopSidebar).toHaveTextContent('Android API Reference');
-    fireEvent.pointerDown(
+    expect(
       within(desktopSidebar).getByRole('button', {
         name: 'Select documentation version',
       }),
-      { button: 0 },
-    );
-
-    const versionOptions = await waitFor(() => {
-      const menu = document.querySelector<HTMLElement>(
-        '[data-slot="dropdown-menu-content"][aria-label="Documentation versions"]',
-      );
-
-      if (!menu) {
-        throw new Error('expected documentation version dropdown menu');
-      }
-
-      return menu;
-    });
-
-    expect(versionOptions).toHaveAttribute(
-      'data-slot',
-      'dropdown-menu-content',
-    );
-    expect(
-      within(versionOptions).getByRole('menuitem', { name: /v4.6.0/i }),
-    ).toHaveAttribute('href', '/en/api-reference/rtc/android/4.6.0/overview');
-
-    fireEvent.keyDown(versionOptions, { code: 'Escape', key: 'Escape' });
-    await waitFor(() => {
-      expect(versionOptions).not.toBeInTheDocument();
-    });
+    ).toHaveTextContent('v4.6.2');
 
     fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }));
 

@@ -21,7 +21,9 @@ describe('docsMetaSchema', () => {
       docsMetaSchema.parse({
         navScope: {
           defaultVersion: 'current',
+          platformTabs: true,
           presentation: 'tabs',
+          sharedSidebar: true,
           versions: [
             { id: 'current', label: 'v4.6.2', path: '(current)' },
             { id: '4.6.0', label: 'v4.6.0', path: '4.6.0' },
@@ -32,7 +34,9 @@ describe('docsMetaSchema', () => {
       }).navScope,
     ).toEqual({
       defaultVersion: 'current',
+      platformTabs: true,
       presentation: 'tabs',
+      sharedSidebar: true,
       versions: [
         { id: 'current', label: 'v4.6.2', path: '(current)' },
         { id: '4.6.0', label: 'v4.6.0', path: '4.6.0' },
