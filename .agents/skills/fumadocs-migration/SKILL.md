@@ -5,7 +5,7 @@ description: Use when migrating legacy Shengwang/Docusaurus docs into docs-porta
 
 # Fumadocs Migration
 
-Use this skill to migrate legacy docs from `/Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source` into this `docs-portal` repo.
+Use this skill to migrate legacy docs from `/Users/yejiayi/Documents/shengwang-doc-source` into this `docs-portal` repo.
 
 ## Hard Rules
 

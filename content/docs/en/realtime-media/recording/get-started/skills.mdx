@@ -1,0 +1,50 @@
+---
+title: Agora skills
+description: Use Agora Skills with AI coding assistants to speed up Cloud Recording integration work.
+---
+
+Agora Skills is a product-aware instruction pack for coding assistants. It helps the assistant route Cloud Recording tasks to the right setup, API, and troubleshooting flow instead of guessing from generic docs alone.
+
+## Install Agora Skills
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="skills-cli">Skills CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual installation</TabsTrigger>
+</TabsList>
+
+<TabsContent value="skills-cli">
+
+```bash
+npx skills add github:AgoraIO/skills
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+```bash
+git clone https://github.com/AgoraIO/skills.git ~/agora-skills
+```
+
+Point your coding tool at `skills/agora/` or load `SKILL.md` as the entry point.
+
+</TabsContent>
+</Tabs>
+
+## When Skills helps
+
+Use Agora Skills when your assistant needs help with:
+
+- choosing the correct recording mode and API path
+- setting up token and REST authentication flows
+- selecting the right quickstart or middleware path
+- debugging Cloud Recording integration issues with product context
+
+Skills works especially well together with [Agora MCP](mcp), which gives the assistant live access to current docs.
+
+## Related resources
+
+- [Agora Skills repository](https://github.com/AgoraIO/skills)
+- [Agora MCP](mcp)
+- [REST quickstart](getstarted)

@@ -1,0 +1,68 @@
+---
+title: Agora MCP
+description: Connect your coding assistant to Agora MCP so it can read current Cloud Recording documentation while you build.
+---
+
+The Agora MCP server gives your coding assistant direct access to current Agora documentation, so it can check APIs, parameters, and platform-specific notes while you integrate Cloud Recording.
+
+## MCP server URL
+
+```text
+https://mcp.agora.io
+```
+
+## Install the MCP server
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="codex">Codex</TabsTrigger>
+  <TabsTrigger value="claude">Claude</TabsTrigger>
+  <TabsTrigger value="gemini">Gemini CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="codex">
+
+```bash
+codex mcp add --url https://mcp.agora.io agora-docs
+```
+
+</TabsContent>
+
+<TabsContent value="claude">
+
+```bash
+claude mcp add --transport http agora-docs https://mcp.agora.io
+```
+
+</TabsContent>
+
+<TabsContent value="gemini">
+
+```bash
+gemini mcp add --transport http agora-docs https://mcp.agora.io
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+Add `https://mcp.agora.io` to your MCP client and use `http` or `Streamable HTTP` transport if the client asks for a transport type.
+
+</TabsContent>
+</Tabs>
+
+## Best use for Cloud Recording work
+
+Use Agora MCP when the risky part of the task is documentation freshness, for example:
+
+- checking current Cloud Recording REST parameters
+- comparing recording modes or storage options
+- verifying callback fields or error-handling guidance
+- confirming the latest quickstart steps before generating backend code
+
+## Related resources
+
+- [Agora MCP server](https://mcp.agora.io)
+- [Agora Skills](skills)
+- [Cloud Recording RESTful API](../reference/restful-api)

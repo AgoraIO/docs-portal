@@ -1,25 +1,23 @@
 ---
 title: Recording
-description: Recording captures live interaction content into replayable, reviewable, and archivable media assets.
+description: Choose the Agora recording path for archive, replay, review, compliance, and downstream media workflows.
 ---
 
-## What this capability is
+Recording turns live session content into assets you can replay, review, analyze, and preserve. In Agora's media workflow layer, the primary managed path is Cloud Recording.
 
-Recording preserves live audio-video content for archive, replay, quality review, compliance, and post-session analysis.
+## Available path in this subtree
 
-## Main forms
-
-- Cloud Recording
-- Local Server Recording
-
-## What the existing Shengwang docs usually contain
-
-- landing page
-- quickstart
-- user guides
-- recording mode guidance
-- billing and limits
+- [Cloud Recording](overview): Managed recording with REST APIs, cloud storage integration, callbacks, and multiple output modes.
 
 ## What to read first
 
-Start with Cloud Recording if you want a managed path. Move to Local Server Recording when you need deeper operational control.
+1. Start with [Cloud Recording](overview).
+2. Go to [REST quickstart](get-started/getstarted) if you want the shortest implementation path.
+3. Use [Develop](develop) when you already know the mode you need and are working through layouts, files, screenshots, or callbacks.
+4. Keep [Reference](reference) open during backend integration.
+
+## Related capability docs
+
+- [Realtime & Media overview](/en/realtime-media)
+- [Media processing and distribution](/en/realtime-media/media-processing-and-distribution)
+- [Cloud Recording API reference](/en/api-reference/cloud-recording/restful)
