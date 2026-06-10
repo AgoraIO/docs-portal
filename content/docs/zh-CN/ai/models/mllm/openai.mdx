@@ -1,0 +1,32 @@
+---
+title: OpenAI Realtime
+description: 在 Voice Agent 中使用 OpenAI Realtime API 作为 MLLM。
+---
+
+OpenAI Realtime API 提供端到端的实时语音多模态能力，启用后通常不再需要单独配置 ASR、LLM 和 TTS。
+
+## 示例配置
+
+```json
+"mllm": {
+  "enable": true,
+  "api_key": "<openai_key>",
+  "params": {
+    "model": "gpt-4o-realtime-preview",
+    "voice": "alloy",
+    "instructions": "You are a helpful assistant."
+  },
+  "input_modalities": ["audio"],
+  "output_modalities": ["text", "audio"],
+  "vendor": "openai"
+}
+```
+
+## 关键参数
+
+- `enable`：开启 MLLM
+- `api_key`：OpenAI API key
+- `params.model`：Realtime 模型名
+- `params.voice`：音色
+- `input_modalities` / `output_modalities`：输入输出模态
+- `vendor`：设为 `openai`

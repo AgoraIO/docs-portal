@@ -1,0 +1,36 @@
+---
+title: Azure OpenAI
+description: 在 Voice Agent 中集成 Azure OpenAI。
+---
+
+Azure OpenAI 通过 Microsoft Azure 的基础设施提供 OpenAI 模型访问能力，适合已在 Azure 上管理 AI 服务的团队。
+
+## 示例配置
+
+```json
+"llm": {
+  "url": "https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/chat/completions?api-version=AZURE_API_VERSION",
+  "api_key": "<api_key>",
+  "system_messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful chatbot."
+    }
+  ],
+  "max_history": 32,
+  "greeting_message": "你好，我可以帮你做什么？",
+  "failure_message": "请稍等一下。",
+  "style": "openai",
+  "vendor": "azure",
+  "params": {
+    "model": "gpt-4o-mini"
+  }
+}
+```
+
+## 关键参数
+
+- `api_key`：Azure OpenAI API key
+- `url`：包含 Azure 资源名、部署名和 API 版本
+- `vendor`：设为 `azure`
+- `style`：通常使用 `openai`

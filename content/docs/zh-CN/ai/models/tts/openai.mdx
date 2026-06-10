@@ -1,0 +1,29 @@
+---
+title: OpenAI
+description: 在 Voice Agent 中使用 OpenAI 作为 TTS 服务。
+---
+
+OpenAI 提供较易接入的语音合成能力，适合已经在 OpenAI 体系内管理模型调用的团队。
+
+## 使用预设
+
+可直接使用 `openai_tts_1` 预设。
+
+## 示例配置
+
+```json
+"tts": {
+  "vendor": "openai",
+  "params": {
+    "api_key": "<openai_key>",
+    "model": "tts-1",
+    "voice": "alloy"
+  }
+}
+```
+
+## 关键参数
+
+- `params.api_key`：OpenAI API key
+- `params.model`：例如 `tts-1`
+- `params.voice`：音色 ID

@@ -1,0 +1,68 @@
+---
+title: OpenAI
+description: 在 Voice Agent 中集成 OpenAI LLM。
+---
+
+OpenAI 提供从轻量到高能力的多种前沿模型。
+
+## 使用预设
+
+如果你想使用声网托管密钥，可以在 `preset` 字段中选择：
+
+- `openai_gpt_4o_mini`
+- `openai_gpt_4_1_mini`
+- `openai_gpt_5_nano`
+- `openai_gpt_5_mini`
+
+使用预设时，不需要再提供 `url`、`api_key` 或 `model`，但仍可在 `llm` 字段中配置 `system_messages`、`greeting_message` 等额外选项。
+
+## 示例配置
+
+### 使用预设
+
+```json
+"name": "unique_name",
+"preset": "openai_gpt_4o_mini",
+"properties": {
+  "llm": {
+    "system_messages": [
+      {
+        "role": "system",
+        "content": "You are a helpful chatbot."
+      }
+    ],
+    "max_history": 32,
+    "greeting_message": "你好，我可以帮你做什么？",
+    "failure_message": "请稍等一下。"
+  }
+}
+```
+
+### 使用自带 key
+
+```json
+"llm": {
+  "url": "https://api.openai.com/v1/chat/completions",
+  "api_key": "<your_llm_key>",
+  "system_messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful chatbot."
+    }
+  ],
+  "max_history": 32,
+  "greeting_message": "你好，我可以帮你做什么？",
+  "failure_message": "请稍等一下。",
+  "params": {
+    "model": "gpt-4o-mini"
+  }
+}
+```
+
+## 关键参数
+
+- `api_key`：OpenAI API key
+- `url`：Chat Completions 接口地址
+- `params.model`：模型名，例如 `gpt-4o-mini`
+
+完整参数见 [OpenAI API 文档](https://platform.openai.com/docs/api-reference/chat)。

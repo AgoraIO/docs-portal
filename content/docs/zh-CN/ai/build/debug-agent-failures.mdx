@@ -1,0 +1,60 @@
+---
+title: 调试智能体故障
+description: 结合客户端回调、webhook 事件和 turn 级数据，定位智能体为什么失败或表现异常。
+---
+
+一次智能体故障往往不会只体现在一个信号里。要回答“到底发生了什么”，通常需要把以下三类信息串起来看：
+
+- 客户端实时回调
+- 服务端 webhook 持久化事件
+- 对话轮次（turn）级别的数据
+
+## 先看哪一个信号
+
+| 现象 | 先检查 | 再检查 |
+| --- | --- | --- |
+| 智能体意外停止 | `102 agent left` | `110 agent error`、`101 agent joined` |
+| 会话中出现模块报错 | `onAgentError` | `110 agent error` |
+| 会话越来越慢 | `111 agent metrics` | `turns` API |
+| 某一轮对话异常 | `turn_id` | `Query conversation turn information` |
+| UI 状态错乱但会话没挂 | `onAgentStateChanged` | 调试日志 |
+
+## 推荐排障顺序
+
+1. 先确认会话是否真的建立成功：看 `101 agent joined`
+2. 再看它是如何结束的：看 `102 agent left`
+3. 再看是否出现模块级错误：看 `110 agent error`
+4. 再看故障前是否已经出现性能退化：看 `111 agent metrics`
+5. 如果问题集中在某一轮，再去查 `turns` API
+
+## 重点字段
+
+### `102 agent left`
+
+- `status`：正常结束还是失败结束
+- `message`：离开原因
+- `stop_ts`：结束时间
+
+### `110 agent error`
+
+- `errors[].module`：错误出在哪个模块
+- `errors[].code`：供应商或模块错误码
+- `errors[].message`：错误文本
+- `turn_id`：对应哪一轮对话
+
+### `111 agent metrics`
+
+- 判断故障前是否存在性能退化
+- 观察是 LLM、TTS 还是其他链路先变慢
+
+## 实践建议
+
+- 客户端和服务端都保留 `agent_id` 与 `turn_id`
+- 把 `labels` 设计成可筛选的业务维度，例如环境、租户、实验组
+- 不要只盯着最后一个错误事件，很多故障的前兆其实是延迟先升高
+
+## 相关页面
+
+- [监控智能体运行状态](monitor-agent-runtime.mdx)
+- [通知事件类型](../reference/event-types.mdx)
+- [检索会话历史](retrieve-session-history.mdx)

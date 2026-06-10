@@ -1,0 +1,27 @@
+---
+title: Microsoft Azure
+description: 在 Voice Agent 中使用 Azure Speech-to-Text 作为 ASR 服务。
+---
+
+Microsoft Azure 提供面向企业场景的语音识别能力，支持多语言和短语增强。
+
+## 示例配置
+
+```json
+"asr": {
+  "vendor": "microsoft",
+  "params": {
+    "key": "<microsoft_key>",
+    "region": "eastus",
+    "language": "en-US",
+    "phrase_list": ["agora", "conversational", "ai", "engine"]
+  }
+}
+```
+
+## 关键参数
+
+- `params.key`：Azure API key
+- `params.region`：服务地域，例如 `eastus`
+- `params.language`：识别语言
+- `params.phrase_list`：用于增强识别准确率的词组列表

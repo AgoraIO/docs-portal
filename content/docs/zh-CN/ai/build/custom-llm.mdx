@@ -1,0 +1,52 @@
+---
+title: 自定义模型集成
+description: 接入你自己的 LLM 服务，控制模型端点、参数、上下文和响应行为。
+---
+
+如果你不打算只使用声网托管的预设，而是希望自己控制模型端点、鉴权和请求参数，可以走自定义模型集成。
+
+## 适合什么场景
+
+- 你已经有自己的 LLM 服务或代理层
+- 你需要统一做审计、路由、重试或租户隔离
+- 你需要把业务上下文在服务端拼接后再发给模型
+- 你要使用预设未覆盖的模型
+
+## 基本配置方式
+
+在启动智能体时，通过 `llm` 字段传入你的模型地址、API key 和模型参数：
+
+```json
+"llm": {
+  "url": "https://api.openai.com/v1/chat/completions",
+  "api_key": "<your_llm_api_key>",
+  "system_messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful assistant."
+    }
+  ],
+  "max_history": 32,
+  "greeting_message": "你好，我可以帮你做什么？",
+  "failure_message": "抱歉，我暂时无法回答这个问题。",
+  "params": {
+    "model": "gpt-4o-mini"
+  }
+}
+```
+
+## 接入建议
+
+- 在你的服务端统一保存 API key，不要把模型凭据下发到客户端。
+- 把 `system_messages`、业务上下文和短期记忆分层管理，避免混在一起难以维护。
+- 为模型请求打上租户、实验、地域等标签，方便排查延迟和故障。
+
+## 如果你还没准备好自定义模型
+
+如果你只是想先跑通链路，可以先用[预设](presets.mdx)。预设允许你在不提供第三方 API key 的情况下使用声网托管的供应商组合。
+
+## 相关页面
+
+- [使用预设](presets.mdx)
+- [传递自定义信息](custom-information.mdx)
+- [LLM 模型](../models/llm/index.md)

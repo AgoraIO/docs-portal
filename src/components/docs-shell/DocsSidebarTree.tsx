@@ -289,8 +289,9 @@ function shouldDefaultOpenSection(title: string, activePath: string) {
   return (
     ((title === 'Realtime' || title === '实时互动') &&
       /\/(en|zh-CN)\/introduction(?:\/index)?$/.test(activePath)) ||
-    (title === 'Create and connect an agent' &&
-      /\/en\/ai(?:\/index)?$/.test(activePath))
+    ((title === 'Create and connect an agent' ||
+      title === 'CREATE AND CONNECT AN AGENT') &&
+      /\/(en|zh-CN)\/ai(?:\/index)?$/.test(activePath))
   );
 }
 
@@ -299,12 +300,13 @@ function shouldDefaultOpenBuildSection(
   activePath: string,
 ) {
   return (
-    node.title === 'Build' &&
-    /\/en\/ai(?:\/index)?$/.test(activePath) &&
+    (node.title === 'Build' || node.title === '构建') &&
+    /\/(en|zh-CN)\/ai(?:\/index)?$/.test(activePath) &&
     node.children.some(
       (child) =>
         child.type === 'section' &&
-        child.title === 'Create and connect an agent',
+        (child.title === 'Create and connect an agent' ||
+          child.title === 'CREATE AND CONNECT AN AGENT'),
     )
   );
 }

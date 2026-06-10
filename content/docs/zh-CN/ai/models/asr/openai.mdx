@@ -1,0 +1,31 @@
+---
+title: OpenAI（Beta）
+description: 在 Voice Agent 中使用 OpenAI 作为 ASR 服务。
+---
+
+OpenAI 提供低延迟的实时语音转文本能力，适合需要快速集成 OpenAI 语音识别链路的场景。
+
+## 示例配置
+
+```json
+"asr": {
+  "vendor": "openai",
+  "params": {
+    "api_key": "<openai_key>",
+    "input_audio_transcription": {
+      "model": "gpt-4o-mini-transcribe",
+      "prompt": "请将下面的语音转写成文本。",
+      "language": "zh"
+    }
+  }
+}
+```
+
+## 关键参数
+
+- `params.api_key`：OpenAI API key
+- `params.input_audio_transcription.model`：转写模型，例如 `gpt-4o-mini-transcribe`
+- `params.input_audio_transcription.prompt`：用于约束转写风格或上下文的提示词
+- `params.input_audio_transcription.language`：语言代码，例如 `zh`、`en`
+
+更多参数见 [OpenAI Speech-to-Text 文档](https://platform.openai.com/docs/guides/speech-to-text)。

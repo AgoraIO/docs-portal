@@ -1,0 +1,37 @@
+---
+title: Claude Anthropic
+description: 在 Voice Agent 中集成 Anthropic Claude。
+---
+
+Claude 擅长推理、长上下文理解和较自然的对话表达，适合复杂对话和任务型场景。
+
+## 示例配置
+
+```json
+"llm": {
+  "url": "https://api.anthropic.com/v1/messages",
+  "api_key": "<api_key>",
+  "headers": "{\"anthropic-version\":\"2023-06-01\"}",
+  "system_messages": [
+    {
+      "role": "user",
+      "content": "You are a Conversational AI Agent, developed by Agora."
+    }
+  ],
+  "max_history": 32,
+  "greeting_message": "你好，很高兴见到你！",
+  "failure_message": "请稍等一下。",
+  "params": {
+    "model": "claude-3-5-haiku-latest",
+    "max_tokens": 1024
+  },
+  "style": "anthropic"
+}
+```
+
+## 关键参数
+
+- `api_key`：Anthropic API key
+- `headers`：必须带 `anthropic-version`
+- `style`：设为 `anthropic`
+- `params.max_tokens`：Claude 通常需要显式设置
