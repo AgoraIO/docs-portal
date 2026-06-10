@@ -75,14 +75,30 @@ describe('docs journeys', () => {
     );
   });
 
-  it('keeps the existing zh-CN RTC API reference journey entry', () => {
-    expect(
-      docExists('zh-CN/realtime-media/rtc/reference/api-reference/index.md'),
-    ).toBe(true);
-
-    const rtcReference = readDoc(
-      'zh-CN/realtime-media/rtc/reference/api-reference/index.md',
+  it('keeps the zh-CN RTC API navigation aligned with the english structure', () => {
+    const realtimeRtcMeta = JSON.parse(
+      readDoc('zh-CN/realtime-media/rtc/meta.json'),
     );
-    expect(rtcReference).toContain('/zh-CN/api-reference/rtc/android');
+    expect(realtimeRtcMeta.pages).toEqual(['android', 'macOS']);
+
+    const androidReferenceMeta = JSON.parse(
+      readDoc('zh-CN/realtime-media/rtc/android/reference/meta.json'),
+    );
+    const englishAndroidReferenceMeta = JSON.parse(
+      readDoc('en/realtime-media/rtc/android/reference/meta.json'),
+    );
+    expect(androidReferenceMeta.pages).toEqual(
+      englishAndroidReferenceMeta.pages,
+    );
+
+    const androidApiMeta = JSON.parse(
+      readDoc('zh-CN/api-reference/rtc/android/meta.json'),
+    );
+    expect(androidApiMeta.navScope.versions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'current', path: '(current)' }),
+        expect.objectContaining({ id: '4.6.0', path: '4.6.0' }),
+      ]),
+    );
   });
 });
