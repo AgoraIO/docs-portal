@@ -1,0 +1,92 @@
+---
+title: 使用预设
+description: 在一次 API 调用中组合多个声网托管预设，简化 ASR、LLM 和 TTS 的供应商配置。
+---
+
+预设（preset）是由声网托管的供应商配置组合。使用预设时，你无需提供第三方 API key，也不需要自己填写端点地址和模型名，就能快速跑通 ASR、LLM 和 TTS。
+
+## 前提条件
+
+- 已开通[对话式 AI](../reference/enable-conversational-ai.md)
+- 拥有有效的 Agora App ID
+- 准备好用于 REST API 鉴权的 Customer ID / Customer Secret 或 RTC Token
+
+## `preset` 的工作方式
+
+`preset` 字段接受一个逗号分隔的字符串。每个预设对应一个供应商类别，因此你可以在同一个请求里同时指定 ASR、LLM 和 TTS 的预设。
+
+可用预设包括：
+
+| 类别 | 可用预设 |
+| --- | --- |
+| ASR | `deepgram_nova_2`、`deepgram_nova_3` |
+| LLM | `openai_gpt_4o_mini`、`openai_gpt_4_1_mini`、`openai_gpt_5_nano`、`openai_gpt_5_mini` |
+| TTS | `minimax_speech_2_6_turbo`、`minimax_speech_2_8_turbo`、`openai_tts_1` |
+
+## 组合使用示例
+
+下面的示例使用：
+
+- Deepgram Nova 3 作为 ASR
+- GPT-5 Mini 作为 LLM
+- MiniMax Speech 2.6 Turbo 作为 TTS
+
+```bash
+curl --request POST \
+  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/<your_app_id>/join \
+  --header 'Authorization: agora token=<your_agora_token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "name": "my-preset-agent",
+    "preset": "deepgram_nova_3,openai_gpt_5_mini,minimax_speech_2_6_turbo",
+    "properties": {
+      "channel": "my-channel",
+      "token": "<your_rtc_token>",
+      "agent_rtc_uid": "1001",
+      "remote_rtc_uids": ["1002"],
+      "idle_timeout": 120,
+      "llm": {
+        "system_messages": [
+          {
+            "role": "system",
+            "content": "You are a helpful assistant."
+          }
+        ],
+        "greeting_message": "你好，我可以帮你做什么？",
+        "failure_message": "抱歉，我暂时无法处理你的请求。",
+        "max_history": 32
+      },
+      "tts": {
+        "params": {
+          "voice_setting": {
+            "voice_id": "English_captivating_female1"
+          }
+        }
+      },
+      "asr": {
+        "params": {
+          "language": "en",
+          "keyterm": "agora"
+        }
+      }
+    }
+  }'
+```
+
+## 什么时候用预设
+
+- 你想尽快跑通链路
+- 你暂时没有第三方 API key
+- 你先要验证产品和体验，再决定是否切到 BYOK
+
+## 什么时候不用预设
+
+- 你需要接入声网托管范围之外的模型
+- 你必须完全控制模型端点和账号体系
+- 你需要自己处理多租户、风控或专有代理链路
+
+## 相关页面
+
+- [启动和停止智能体](start-stop-agent.mdx)
+- [自定义模型集成](custom-llm.mdx)
+- [LLM 模型](../models/llm/index.md)

@@ -1,0 +1,60 @@
+---
+title: 获取运行时事件
+description: 在客户端回调和服务端 webhook 之间选择合适的运行时事件接收方式。
+---
+
+当你要理解一个 voice agent 在运行中发生了什么时，通常会在两类信号之间选择：
+
+- **客户端组件回调**：适合驱动即时 UI 和本地交互
+- **服务端 webhook**：适合做监控、告警、归档和会后分析
+
+## 如何选择
+
+| 目标 | 优先方式 | 说明 |
+| --- | --- | --- |
+| 让 App 实时展示状态 | 客户端组件回调 | 用于即时更新 UI |
+| 在服务端保存生命周期记录 | webhook | 用于归档、监控和追溯 |
+| 排查会后问题 | webhook + turns API | 用于做完整时间线分析 |
+| 实时感知延迟、错误 | 客户端回调 | 用于即时反馈给用户 |
+
+## 客户端路径
+
+如果你需要在应用内即时响应事件，优先使用客户端组件回调，例如：
+
+- `onAgentStateChanged`
+- `onAgentError`
+- `onAgentMetrics`
+- `onTranscriptUpdated`
+
+对应阅读：
+
+- [监控智能体运行状态](monitor-agent-runtime.mdx)
+- [显示实时转写](transcripts.md)
+
+## 服务端路径
+
+如果你需要在服务端收到持久化的事件通知，优先配置 webhook：
+
+- `101 agent joined`
+- `102 agent left`
+- `103 agent history`
+- `110 agent error`
+- `111 agent metrics`
+
+对应阅读：
+
+- [在服务端接收运行时事件](webhooks.mdx)
+- [通知事件类型](../reference/event-types.mdx)
+
+## 推荐做法
+
+在生产环境里，通常不要二选一，而是分层使用：
+
+- 客户端负责**即时交互**
+- 服务端负责**可追溯记录**
+
+## 相关页面
+
+- [监控智能体运行状态](monitor-agent-runtime.mdx)
+- [调试智能体故障](debug-agent-failures.mdx)
+- [在服务端接收运行时事件](webhooks.mdx)

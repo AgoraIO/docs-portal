@@ -1,0 +1,113 @@
+---
+title: 通知事件类型
+description: 了解对话式 AI webhook 中常见的生命周期、历史、错误和性能事件。
+---
+
+当你在服务端配置 webhook 后，声网会按 `eventType` 推送不同类型的对话式 AI 事件。本文汇总 Voice Agent 常见事件类型及其典型用途。
+
+## 101 agent joined
+
+表示一个智能体已加入频道。
+
+常见用途：
+
+- 确认会话真的建立成功
+- 记录会话开始时间
+- 将会话与业务记录建立关联
+
+典型字段：
+
+- `agent_id`
+- `name`
+- `start_ts`
+- `channel`
+- `labels`
+
+## 102 agent left
+
+表示一个智能体已离开频道。
+
+常见用途：
+
+- 判断会话是正常结束还是异常终止
+- 统计会话时长
+- 记录结束原因
+
+典型字段：
+
+- `agent_id`
+- `name`
+- `start_ts`
+- `stop_ts`
+- `channel`
+- `status`
+- `message`
+- `labels`
+
+## 103 agent history
+
+表示用户和智能体对话历史已可供获取或推送。
+
+常见用途：
+
+- 会后归档转写
+- 客服质检或运营复盘
+- 把历史和 turn 分析数据关联起来
+
+典型字段：
+
+- `agent_id`
+- `name`
+- `channel`
+- `start_ts`
+- `stop_ts`
+- `contents`
+- `labels`
+
+## 110 agent error
+
+表示智能体运行中出现模块级错误。
+
+常见用途：
+
+- 区分是 LLM、TTS、SIP、网络还是其他模块出错
+- 对接告警系统
+- 会后排障
+
+典型字段：
+
+- `agent_id`
+- `errors[].module`
+- `errors[].code`
+- `errors[].message`
+- `turn_id`
+
+## 111 agent metrics
+
+表示智能体运行中的性能指标。
+
+常见用途：
+
+- 追踪 ASR、LLM、TTS 延迟
+- 对比健康会话和异常会话
+- 分析用户感知性能
+
+常见指标包括：
+
+- `asr_ttlw`
+- `llm_ttfb`
+- `llm_ttfs`
+- `tts_ttfb`
+
+## 使用建议
+
+- `101` 和 `102` 适合做生命周期时间线
+- `103` 适合做历史归档
+- `110` 适合做错误监控
+- `111` 适合做性能分析
+
+## 相关页面
+
+- [在服务端接收智能体运行时事件](../build/webhooks.mdx)
+- [监控智能体运行状态](../build/monitor-agent-runtime.mdx)
+- [调试智能体故障](../build/debug-agent-failures.mdx)

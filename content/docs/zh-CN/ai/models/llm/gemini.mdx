@@ -1,0 +1,38 @@
+---
+title: Google Gemini
+description: 在 Voice Agent 中集成 Google Gemini LLM。
+---
+
+Google Gemini 提供支持多模态能力的语言模型，适合需要较强生成能力和 Google AI Studio 接入路径的场景。
+
+## 示例配置
+
+```json
+"llm": {
+  "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=<api_key>",
+  "system_messages": [
+    {
+      "parts": [
+        {
+          "text": "You are a helpful chatbot"
+        }
+      ],
+      "role": "user"
+    }
+  ],
+  "max_history": 32,
+  "greeting_message": "你好，很高兴见到你！",
+  "failure_message": "请稍等一下。",
+  "params": {
+    "model": "gemini-2.0-flash"
+  },
+  "style": "gemini"
+}
+```
+
+## 关键参数
+
+- API key 通过 URL query 传递
+- `system_messages` 使用 `parts` 结构，而不是简单 `content`
+- `style` 设为 `gemini`
+- `params.model`：模型名

@@ -658,17 +658,19 @@ function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
   const conversationalAiQuickstart =
     findSidebarPageByExactUrlInNodes(nodes, '/en/ai/get-started/quickstart') ??
     findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/get-started/quickstart');
-  const buildSection = findTopLevelSidebarSection(nodes, 'Build');
-  const bestPracticesSection = findTopLevelSidebarSection(
-    nodes,
+  const buildSection = findTopLevelSidebarSection(nodes, ['Build', '构建']);
+  const bestPracticesSection = findTopLevelSidebarSection(nodes, [
     'Best practices',
-  );
-  const modelsSection = findTopLevelSidebarSection(nodes, 'Models');
-  const referenceSection = findTopLevelSidebarSection(nodes, 'Reference');
-  const deviceKitSection = findTopLevelSidebarSection(
-    nodes,
+    '最佳实践',
+  ]);
+  const modelsSection = findTopLevelSidebarSection(nodes, ['Models', '模型']);
+  const referenceSection = findTopLevelSidebarSection(nodes, [
+    'Reference',
+    '参考',
+  ]);
+  const deviceKitSection = findTopLevelSidebarSection(nodes, [
     'Convo AI Device Kit',
-  );
+  ]);
 
   if (
     !aiOverview ||
@@ -697,21 +699,24 @@ function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
         children: stripSidebarSectionMetaFromNodes(
           bestPracticesSection.children,
         ),
-        title: 'Harden and optimize',
+        title:
+          buildSection.title === '构建' ? '优化与加固' : 'Harden and optimize',
       },
     ]),
   };
 
+  const isZhCn = aiOverview.url.startsWith('/zh-CN/');
+
   return [
     {
       ...aiOverview,
-      title: 'Overview',
+      title: isZhCn ? '概览' : 'Overview',
     },
     {
       children: stripSidebarSectionMetaFromNodes([
         {
           ...conversationalAiQuickstart,
-          title: 'Quickstart',
+          title: isZhCn ? 'Quickstart' : 'Quickstart',
         },
         mergedBuildSection,
         modelsSection,
@@ -719,7 +724,7 @@ function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
       ]),
       icon: 'Bot',
       id: 'ai-product-software-clients',
-      title: 'Voice agent in apps',
+      title: isZhCn ? 'Voice Agent in apps' : 'Voice agent in apps',
       type: 'section',
     },
     {
@@ -729,7 +734,9 @@ function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
       ),
       icon: 'Cpu',
       id: 'ai-product-dedicated-devices',
-      title: 'Voice agent on dedicated devices',
+      title: isZhCn
+        ? 'Voice Agent on dedicated devices'
+        : 'Voice agent on dedicated devices',
       type: 'section',
     },
   ];
@@ -753,7 +760,7 @@ function flattenDeviceKitSidebarChildren(
       continue;
     }
 
-    if (child.title === 'Start here') {
+    if (child.title === 'Start here' || child.title === '从这里开始') {
       const quickstart =
         findSidebarPageByExactUrl(
           child,
@@ -767,13 +774,17 @@ function flattenDeviceKitSidebarChildren(
       if (quickstart) {
         flattened.push({
           ...quickstart,
-          title: 'Quickstart',
+          title: quickstart.url.startsWith('/zh-CN/') ? 'Quickstart' : 'Quickstart',
         });
       }
       continue;
     }
 
-    if (child.title === 'Reference' || child.title === 'Plan rollout') {
+    if (
+      child.title === 'Reference' ||
+      child.title === '参考' ||
+      child.title === 'Plan rollout'
+    ) {
       flattened.push(
         stripSidebarSectionMetaFromNode({
           ...child,
@@ -830,10 +841,10 @@ function findSidebarPageByExactUrl(
 
 function findTopLevelSidebarSection(
   nodes: DocsSidebarNode[],
-  title: string,
+  titles: string[],
 ): DocsSidebarSectionNode | null {
   for (const node of nodes) {
-    if (node.type === 'section' && node.title === title) {
+    if (node.type === 'section' && titles.includes(node.title)) {
       return node;
     }
   }

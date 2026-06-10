@@ -1,0 +1,25 @@
+---
+title: AssemblyAI
+description: 在 Voice Agent 中使用 AssemblyAI 作为 ASR 服务。
+---
+
+AssemblyAI 提供适合实时语音理解的自动语音识别能力。
+
+## 示例配置
+
+```json
+"asr": {
+  "vendor": "assemblyai",
+  "params": {
+    "api_key": "<assemblyai_key>",
+    "language": "en"
+  }
+}
+```
+
+## 关键参数
+
+- `params.api_key`：AssemblyAI API key
+- `params.language`：识别语言代码
+
+接入前建议同时确认该账号在目标地域的可用性和并发限制。

@@ -1,0 +1,90 @@
+---
+title: 在回复中途打断智能体
+description: 通过语音打断或手动打断，开启新一轮对话。
+---
+
+和智能体互动时，用户经常需要在智能体尚未说完时插话，或者通过按钮、指令主动打断它。对话式 AI 引擎支持两类打断方式：
+
+- **语音打断**：引擎检测到新的用户语音输入后，自动停止智能体当前回复。
+- **手动打断**：你的 App 或后端显式发起打断请求，例如按钮点击或自定义命令。
+
+## 语音打断
+
+对话式 AI 引擎支持基于打断检测的智能语音打断能力，能让用户用更接近真人对话的方式插话。
+
+你可以在创建智能体时，通过 `turn_detection` 参数配置打断行为。以下示例展示了一个常见的配置方式：
+
+```bash
+curl --request POST \
+  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --data '{
+    "name": "unique_name",
+    "properties": {
+      "channel": "channel_name",
+      "token": "token",
+      "agent_rtc_uid": "1001",
+      "remote_rtc_uids": ["1002"],
+      "turn_detection": {
+        "mode": "default",
+        "config": {
+          "speech_threshold": 0.5,
+          "start_of_speech": {
+            "mode": "vad",
+            "vad_config": {
+              "interrupt_duration_ms": 160,
+              "speaking_interrupt_duration_ms": 320,
+              "prefix_padding_ms": 800
+            }
+          },
+          "end_of_speech": {
+            "mode": "semantic",
+            "semantic_config": {
+              "silence_duration_ms": 320,
+              "max_wait_ms": 3000
+            }
+          }
+        }
+      }
+    }
+  }'
+```
+
+如果调用成功，接口会返回 `200` 和智能体信息。
+
+## 手动打断
+
+当你希望由按钮、业务状态机或自定义文本指令来触发打断时，可以走显式打断。
+
+### 调用 RESTful API
+
+使用[打断智能体](../../api-reference/conversational-ai/rest-api/agent/interrupt.md)接口：
+
+```bash
+curl --request POST \
+  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt \
+  --header 'Authorization: Basic <credentials>' \
+  --data '{}'
+```
+
+成功后会返回当前智能体和会话信息。
+
+### 调用客户端组件 API
+
+如果你已经集成客户端组件，也可以从 App 侧发起打断，用于：
+
+- 点击“停止播放”或“重新说一遍”
+- 某个业务按钮切换对话主题
+- 结合自定义指令触发新的对话轮次
+
+## 何时使用哪一种打断
+
+- **用户自然插话**：优先用语音打断。
+- **按钮或显式业务事件**：优先用手动打断。
+- **不想直接打断，而是把信息注入当前对话**：考虑结合[自定义信息](custom-information.mdx)或发送自定义指令。
+
+## 相关页面
+
+- [启动和停止智能体](start-stop-agent.mdx)
+- [监听运行时事件](get-runtime-events.mdx)
+- [调试智能体故障](debug-agent-failures.mdx)

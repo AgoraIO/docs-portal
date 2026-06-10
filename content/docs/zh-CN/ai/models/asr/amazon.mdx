@@ -1,0 +1,27 @@
+---
+title: Amazon Transcribe
+description: 在 Voice Agent 中使用 Amazon Transcribe 作为 ASR 服务。
+---
+
+Amazon Transcribe 适合已经在 AWS 体系内管理语音与 AI 服务的团队。
+
+## 示例配置
+
+```json
+"asr": {
+  "vendor": "amazon",
+  "params": {
+    "access_key": "<aws_access_key_id>",
+    "secret_key": "<aws_secret_access_key>",
+    "region": "us-east-1",
+    "language": "en-US"
+  }
+}
+```
+
+## 关键参数
+
+- `params.access_key`：AWS Access Key ID
+- `params.secret_key`：AWS Secret Access Key
+- `params.region`：区域，例如 `us-east-1`
+- `params.language`：识别语言
