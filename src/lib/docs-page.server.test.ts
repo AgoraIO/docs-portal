@@ -477,6 +477,114 @@ const realtimeMediaPageTree: Root = {
               $id: 'realtime-media-rtc-folder',
               children: [
                 {
+                  $id: 'realtime-media-rtc-android-folder',
+                  children: [
+                    {
+                      $id: 'realtime-media-rtc-android-quick-start-folder',
+                      children: [
+                        {
+                          $id: 'realtime-media-rtc-android-quick-start-build',
+                          name: 'Build from scratch',
+                          type: 'page',
+                          url: '/en/realtime-media/rtc/android/quick-start/build-from-scratch',
+                        },
+                        {
+                          $id: 'realtime-media-rtc-android-quick-start-ai',
+                          name: 'Integrate with AI tools',
+                          type: 'page',
+                          url: '/en/realtime-media/rtc/android/quick-start/integrate-with-ai-tools',
+                        },
+                      ],
+                      index: {
+                        $id: 'realtime-media-rtc-android-quick-start-index',
+                        name: 'Quick Start',
+                        type: 'page',
+                        url: '/en/realtime-media/rtc/android/quick-start',
+                      },
+                      name: 'Quick Start',
+                      type: 'folder',
+                    },
+                    {
+                      $id: 'realtime-media-rtc-android-audio-folder',
+                      children: [
+                        {
+                          $id: 'realtime-media-rtc-android-audio-profiles',
+                          name: 'Audio profiles and quality',
+                          type: 'page',
+                          url: '/en/realtime-media/rtc/android/audio/audio-profiles-and-quality',
+                        },
+                      ],
+                      index: {
+                        $id: 'realtime-media-rtc-android-audio-index',
+                        name: 'Audio',
+                        type: 'page',
+                        url: '/en/realtime-media/rtc/android/audio',
+                      },
+                      name: 'Audio',
+                      type: 'folder',
+                    },
+                    {
+                      $id: 'realtime-media-rtc-android-video-folder',
+                      children: [
+                        {
+                          $id: 'realtime-media-rtc-android-video-profiles',
+                          name: 'Video profiles and quality',
+                          type: 'page',
+                          url: '/en/realtime-media/rtc/android/video/video-profiles-and-quality',
+                        },
+                      ],
+                      index: {
+                        $id: 'realtime-media-rtc-android-video-index',
+                        name: 'Video',
+                        type: 'page',
+                        url: '/en/realtime-media/rtc/android/video',
+                      },
+                      name: 'Video',
+                      type: 'folder',
+                    },
+                  ],
+                  index: {
+                    $id: 'realtime-media-rtc-android-index',
+                    name: 'Android',
+                    type: 'page',
+                    url: '/en/realtime-media/rtc/android',
+                  },
+                  name: 'Android',
+                  type: 'folder',
+                },
+                {
+                  $id: 'realtime-media-rtc-macos-folder',
+                  children: [
+                    {
+                      $id: 'realtime-media-rtc-macos-audio-folder',
+                      children: [
+                        {
+                          $id: 'realtime-media-rtc-macos-audio-profiles',
+                          name: 'Audio profiles and quality',
+                          type: 'page',
+                          url: '/en/realtime-media/rtc/macOS/audio/audio-profiles-and-quality',
+                        },
+                      ],
+                      index: {
+                        $id: 'realtime-media-rtc-macos-audio-index',
+                        name: 'Audio',
+                        type: 'page',
+                        url: '/en/realtime-media/rtc/macOS/audio',
+                      },
+                      name: 'Audio',
+                      type: 'folder',
+                    },
+                  ],
+                  index: {
+                    $id: 'realtime-media-rtc-macos-index',
+                    name: 'macOS',
+                    type: 'page',
+                    url: '/en/realtime-media/rtc/macOS',
+                  },
+                  name: 'macOS',
+                  type: 'folder',
+                },
+                {
                   $id: 'realtime-media-rtc-quick-start-folder',
                   children: [
                     {
@@ -997,7 +1105,7 @@ describe('loadDocsPagePayload', () => {
     );
   });
 
-  it('returns a scoped Voice & Video sidebar from a plain navScope', async () => {
+  it('returns a shared platform sidebar for a realtime-media navScope with shared sidebar metadata', async () => {
     const page = createPage();
     const rtcPage = {
       ...page,
@@ -1021,7 +1129,15 @@ describe('loadDocsPagePayload', () => {
       node.$id === 'realtime-media-rtc-folder'
         ? ({
             data: {
-              navScope: {},
+              navScope: {
+                defaultVersion: 'android',
+                platformTabs: true,
+                sharedSidebar: true,
+                versions: [
+                  { id: 'android', label: 'Android', path: 'android' },
+                  { id: 'macOS', label: 'macOS', path: 'macOS' },
+                ],
+              },
               title: 'Voice & Video',
             },
           } as unknown as ReturnType<typeof source.getNodeMeta>)
@@ -1038,17 +1154,149 @@ describe('loadDocsPagePayload', () => {
       backHref: '/en/realtime-media',
       backLabel: 'Realtime & Media',
       title: 'Voice & Video',
+      versionSwitcher: undefined,
     });
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
       expect.arrayContaining([
         '/en/realtime-media/rtc',
-        '/en/realtime-media/rtc/quick-start',
-        '/en/realtime-media/rtc/audio/audio-profiles-and-quality',
+        '/en/realtime-media/rtc/android/quick-start',
+        '/en/realtime-media/rtc/android/audio/audio-profiles-and-quality',
       ]),
     );
     expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(
       '/en/realtime-media/rtm',
     );
+  });
+
+  it('only exposes platform tabs for realtime-media guide pages that exist on that platform', async () => {
+    const page = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/realtime-media/rtc/android/quick-start/build-from-scratch.md',
+          path: 'en/realtime-media/rtc/android/quick-start/build-from-scratch.md',
+        },
+        title: 'Build from scratch',
+      },
+      path: 'en/realtime-media/rtc/android/quick-start/build-from-scratch.md',
+      slugs: [
+        'en',
+        'realtime-media',
+        'rtc',
+        'android',
+        'quick-start',
+        'build-from-scratch',
+      ],
+      url: '/en/realtime-media/rtc/android/quick-start/build-from-scratch',
+    };
+
+    mockedGetPage.mockReturnValue(page);
+    mockedGetPages.mockReturnValue([page]);
+    mockedGetPageTree.mockReturnValue(realtimeMediaPageTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'realtime-media-rtc-folder'
+        ? ({
+            data: {
+              navScope: {
+                defaultVersion: 'android',
+                platformTabs: true,
+                sharedSidebar: true,
+                versions: [
+                  { id: 'android', label: 'Android', path: 'android' },
+                  { id: 'macOS', label: 'macOS', path: 'macOS' },
+                ],
+              },
+              title: 'Voice & Video',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = await loadDocsPagePayload('en', 'realtime-media', [
+      'rtc',
+      'android',
+      'quick-start',
+      'build-from-scratch',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(payload.sidebarHeader?.versionSwitcher).toEqual({
+      currentId: 'android',
+      presentation: 'tabs',
+      versions: [
+        {
+          href: '/en/realtime-media/rtc/android/quick-start/build-from-scratch',
+          id: 'android',
+          label: 'Android',
+        },
+      ],
+    });
+  });
+
+  it('allows a realtime-media platform page to opt out of platform tabs with page frontmatter', async () => {
+    const page = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        hidePlatformTabs: true,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/realtime-media/rtc/android/quick-start/build-from-scratch.md',
+          path: 'en/realtime-media/rtc/android/quick-start/build-from-scratch.md',
+        },
+        title: 'Build from scratch',
+      },
+      path: 'en/realtime-media/rtc/android/quick-start/build-from-scratch.md',
+      slugs: [
+        'en',
+        'realtime-media',
+        'rtc',
+        'android',
+        'quick-start',
+        'build-from-scratch',
+      ],
+      url: '/en/realtime-media/rtc/android/quick-start/build-from-scratch',
+    };
+
+    mockedGetPage.mockReturnValue(page);
+    mockedGetPages.mockReturnValue([page]);
+    mockedGetPageTree.mockReturnValue(realtimeMediaPageTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'realtime-media-rtc-folder'
+        ? ({
+            data: {
+              navScope: {
+                defaultVersion: 'android',
+                platformTabs: true,
+                sharedSidebar: true,
+                versions: [
+                  { id: 'android', label: 'Android', path: 'android' },
+                  { id: 'macOS', label: 'macOS', path: 'macOS' },
+                ],
+              },
+              title: 'Voice & Video',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = await loadDocsPagePayload('en', 'realtime-media', [
+      'rtc',
+      'android',
+      'quick-start',
+      'build-from-scratch',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(payload.sidebarHeader?.versionSwitcher).toBeUndefined();
   });
 
   it('keeps a plain nav scope as a linked folder group in the parent Realtime & Media sidebar', async () => {
@@ -1075,7 +1323,15 @@ describe('loadDocsPagePayload', () => {
       node.$id === 'realtime-media-rtc-folder'
         ? ({
             data: {
-              navScope: {},
+              navScope: {
+                defaultVersion: 'android',
+                platformTabs: true,
+                sharedSidebar: true,
+                versions: [
+                  { id: 'android', label: 'Android', path: 'android' },
+                  { id: 'macOS', label: 'macOS', path: 'macOS' },
+                ],
+              },
               title: 'Voice & Video',
             },
           } as unknown as ReturnType<typeof source.getNodeMeta>)

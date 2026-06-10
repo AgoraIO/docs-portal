@@ -61,7 +61,9 @@ export function DocsSidebarHeaderBlock({
       >
         {header.title}
       </div>
-      {versionSwitcher && currentVersion ? (
+      {versionSwitcher &&
+      currentVersion &&
+      versionSwitcher.presentation !== 'tabs' ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

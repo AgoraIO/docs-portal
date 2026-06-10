@@ -3,7 +3,9 @@ import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import {
   type DocsNavScopeResolution,
+  getNavScopeVersionLinks,
   getNavScopeSidebarNodes,
+  getSharedNavScopeSidebarNodes,
   getScopedNavScopeSidebarNodes,
   resolveDocsNavScope,
 } from './docs-nav-scope';
@@ -187,6 +189,7 @@ export async function loadDocsPagePayload(
     activePath: page.url,
     locale: supportedLocale,
     pageTree,
+    pageUrl: page.url,
     source,
     tab,
   });
@@ -194,6 +197,16 @@ export async function loadDocsPagePayload(
   const navScope = getDocsNavScope({
     activePath: page.url,
     locale,
+    pageTree,
+    source,
+    tab,
+  });
+  const sidebarHeader = resolveDocsSidebarHeader({
+    activePath: page.url,
+    hidePlatformTabs:
+      'hidePlatformTabs' in page.data ? page.data.hidePlatformTabs : undefined,
+    locale,
+    navScope,
     pageTree,
     source,
     tab,
@@ -208,8 +221,6 @@ export async function loadDocsPagePayload(
     })),
     tab,
   });
-  const sidebarHeader = tab === 'ai' ? undefined : navScope?.header;
-
   return {
     activePath: page.url,
     activeTab: tab,
@@ -499,12 +510,14 @@ async function getDocsSidebarNodes({
   activePath,
   locale,
   pageTree,
+  pageUrl,
   source,
   tab,
 }: {
   activePath?: string;
   locale: AppLocale | null;
   pageTree: ReturnType<typeof docsSource.getPageTree>;
+  pageUrl?: string;
   source: typeof docsSource;
   tab: string;
 }) {
@@ -517,6 +530,24 @@ async function getDocsSidebarNodes({
         tab,
       }),
     );
+  }
+
+  if (
+    shouldUseSharedPlatformSidebar(
+      tab,
+      activePath ?? pageUrl,
+      locale,
+      pageTree,
+      source,
+    )
+  ) {
+    return getSharedRtcSidebarNodes({
+      locale,
+      pageTree,
+      source,
+      tab,
+      activePath,
+    });
   }
 
   const navScope = activePath
@@ -866,6 +897,183 @@ function getDocsPages({
     .filter((page) => !existingUrls.has(page.url));
 
   return [...pages, ...endpointPages];
+}
+
+function resolveDocsSidebarHeader({
+  activePath,
+  hidePlatformTabs,
+  locale,
+  navScope,
+  pageTree,
+  source,
+  tab,
+}: {
+  activePath: string;
+  hidePlatformTabs?: boolean;
+  locale: AppLocale | string | null;
+  navScope: DocsNavScopeResolution | null;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+  tab: string;
+}) {
+  if (tab === 'ai') {
+    return undefined;
+  }
+
+  if (!navScope) {
+    return undefined;
+  }
+
+  if (hidePlatformTabs) {
+    return {
+      ...navScope.header,
+      versionSwitcher: undefined,
+    };
+  }
+
+  if (!shouldUseSharedPlatformSidebar(tab, activePath)) {
+    return navScope.header;
+  }
+
+  const versionLinks = getNavScopeVersionLinks({
+    activePath,
+    getNodeMeta: (node) =>
+      getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+    root: pageTree,
+    tab,
+  }).filter((link) => isSharedPlatformTabUrl(activePath, link.href));
+
+  if (
+    versionLinks.length === 0 ||
+    !versionLinks.some((link) => link.href === activePath)
+  ) {
+    return {
+      ...navScope.header,
+      versionSwitcher: undefined,
+    };
+  }
+
+    return {
+      ...navScope.header,
+      versionSwitcher: {
+        currentId:
+          versionLinks.find((item) => item.href === activePath)?.id ??
+          navScope.header.versionSwitcher?.currentId ??
+          versionLinks[0].id,
+        presentation: 'tabs' as const,
+        versions: versionLinks,
+      },
+    };
+  }
+
+function shouldUseSharedPlatformSidebar(
+  tab: string,
+  activePath: string | undefined,
+  locale?: AppLocale | null,
+  pageTree?: ReturnType<typeof docsSource.getPageTree>,
+  source?: typeof docsSource,
+) {
+  if (
+    tab !== 'realtime-media' ||
+    typeof activePath !== 'string'
+  ) {
+    return false;
+  }
+
+  if (!pageTree || !source) {
+    return true;
+  }
+
+  const navScope = getDocsNavScope({
+    activePath,
+    locale: locale ?? null,
+    pageTree,
+    source,
+    tab,
+  });
+
+  return Boolean(
+    navScope?.scope.meta.navScope?.sharedSidebar &&
+      navScope.scope.meta.navScope?.platformTabs &&
+      navScope.scope.meta.navScope?.versions?.length,
+  );
+}
+
+function getSharedRtcSidebarNodes({
+  activePath,
+  locale,
+  pageTree,
+  source,
+  tab,
+}: {
+  activePath?: string;
+  locale: AppLocale | null;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+  tab: string;
+}) {
+  if (!activePath) {
+    return getNavScopeSidebarNodes({
+      getNodeMeta: (node) =>
+        getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+      root: pageTree,
+      tab,
+    });
+  }
+
+  const navScope = getDocsNavScope({
+    activePath,
+    locale,
+    pageTree,
+    source,
+    tab,
+  });
+
+  if (!navScope) {
+    return getNavScopeSidebarNodes({
+      getNodeMeta: (node) =>
+        getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+      root: pageTree,
+      tab,
+    });
+  }
+
+  return getSharedNavScopeSidebarNodes({
+    getNodeMeta: (node) =>
+      getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+    navScope,
+  });
+}
+
+function isSharedPlatformTabUrl(activePath: string, targetHref: string) {
+  if (!activePath.includes('/realtime-media/')) {
+    return true;
+  }
+
+  const activeSegments = activePath.split('/').filter(Boolean);
+  const targetSegments = targetHref.split('/').filter(Boolean);
+
+  const isActiveScopeIndex = activeSegments.length <= 4;
+  const isTargetScopeIndex = targetSegments.length <= 4;
+
+  if (isActiveScopeIndex || isTargetScopeIndex) {
+    if (isActiveScopeIndex && isTargetScopeIndex) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (activeSegments.length <= 4 || targetSegments.length <= 4) {
+    return true;
+  }
+
+  return (
+    activeSegments[4] !== targetSegments[4]
+      ? activeSegments.slice(5).join('/') === targetSegments.slice(5).join('/')
+      :
+    activeSegments.slice(4).join('/') === targetSegments.slice(4).join('/')
+  );
 }
 
 function getDocsNavScope({

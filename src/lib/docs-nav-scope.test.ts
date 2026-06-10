@@ -172,6 +172,7 @@ const metaById = new Map<string, DocsMeta>([
     {
       navScope: {
         defaultVersion: 'current',
+        platformTabs: true,
         versions: [
           { id: 'current', label: 'v4.6.2', path: '(current)' },
           { id: '4.6.0', label: 'v4.6.0', path: '4.6.0' },

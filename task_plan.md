@@ -1,21 +1,19 @@
 # Task Plan
 
 ## Goal
-Migrate and supplement the English `introduction` tab from `Doc-Source-Private` into Fumadocs-friendly Markdown pages under `content/docs/en/introduction`, using local MDX files as the source of truth, preserving any MDX-only source fragments as comments, localizing images, and removing migrated `.mdx` pages from the target directory.
+Replace the current RTC platform switcher UX so `realtime-media/rtc` uses one shared left sidebar across platforms, and individual guide pages render platform tabs near the page header or markdown action area. A platform tab should only appear when that page exists for that platform.
 
 ## Phases
-- [in_progress] Audit `content/docs/en/introduction` and map each page to its source files in `Doc-Source-Private`
-- [pending] Update repo-local planning files with the English introduction migration scope and source mapping
-- [pending] Rewrite `content/docs/en/introduction` pages in Markdown with complete frontmatter and source-backed content
-- [pending] Copy required image assets into `public/images/...` and update image references to local paths
-- [pending] Update `content/docs/en/introduction/meta.json` if needed and verify no migrated `.mdx` files remain
-- [completed] Run a local verification pass for content paths, links, and image references
-- [completed] Start a local preview server and verify introduction routes return successfully
+- [in_progress] Audit current RTC nav-scope, sidebar, route, and page-header behavior
+- [pending] Implement shared RTC sidebar data and page-level platform tab resolution
+- [pending] Remove RTC platform switching from the left sidebar header while preserving other nav-scope behavior
+- [pending] Add or update focused tests for RTC shared sidebar and platform-tab visibility
+- [pending] Run targeted verification for touched tests and type safety
 
 ## Risks
-- `Doc-Source-Private` does not contain a ready-made `introduction` tree, so several introduction pages must be assembled from multiple product and shared source files.
-- Many source pages are MDX-heavy and rely on components such as `ProductOverview`, `Tabs`, `TabItem`, and token macros; these must be converted into plain Markdown while preserving original MDX snippets as comments.
-- Some shared pages reference image paths like `/images/common/...` that are not yet present in `docs-portal/public`, so assets must be copied deliberately to avoid broken images.
+- RTC guide URLs are partially decoupled from the raw content folder layout, so sidebar links and page-level sibling lookup must follow public URLs rather than file paths alone.
+- Existing nav-scope logic is shared with API Reference version switching, so RTC-specific behavior must not regress versioned API scope navigation.
+- Breadcrumb and active-state matching may break if the shared sidebar uses canonical URLs that differ from a page's platform-specific public route.
 
 ## Follow-up
-- Keep this pass scoped to `content/docs/en/introduction`; do not modify `zh-CN` or YAML sources.
+- Keep this pass scoped to RTC docs behavior under `realtime-media/rtc`; do not redesign other tabs or API Reference version switching in the same change.

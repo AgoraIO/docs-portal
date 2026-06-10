@@ -1,5 +1,13 @@
 # Findings
 
+## 2026-06-09
+- Current RTC platform switching is driven through `navScope` metadata on `content/docs/en/realtime-media/rtc/meta.json`, with `versions` set to `android` and `macOS`.
+- The existing UI renders nav-scope switching from `DocsSidebarHeaderBlock.tsx` as a dropdown in the left sidebar header unless the scope explicitly requests `presentation: 'tabs'`.
+- `DocsContent.tsx` already supports page-header tabs through `sidebarHeader.versionSwitcher.presentation === 'tabs'`, but the switcher is still produced from sidebar-scoped nav-scope logic.
+- `docs-page.server.ts` currently scopes the RTC sidebar to `navScope.sidebarRoot`, which means the left sidebar collapses to the active platform subtree instead of staying shared.
+- RTC guide content is asymmetric today: Android has `quick-start`, `audio`, `video`, `security`, `quality-and-diagnostics`, `media`, and `reference`; macOS currently has only `audio` and `channel-and-connection`.
+- The desired UX is closer to a shared thematic tree plus page-level sibling platform tabs than to the current "switch platform, then scope the whole sidebar" model.
+
 ## 2026-05-20
 - The English `introduction` tab lives at `content/docs/en/introduction` and is still organized as a flat Fumadocs section with separator strings in `meta.json`.
 - The target directory currently contains one migrated `.mdx` page, `content/docs/en/introduction/about-agora.mdx`, while the rest of the pages are `.md`.

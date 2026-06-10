@@ -1,5 +1,12 @@
 # Progress
 
+## 2026-06-09
+- Switched the active task from the older introduction migration notes to RTC platform navigation redesign work.
+- Audited the current RTC implementation across `docs-nav-scope`, `docs-page.server`, `DocsShell`, `DocsSidebarHeaderBlock`, and `DocsContent`.
+- Confirmed that the left sidebar dropdown and scoped RTC sidebar both come from the same `navScope` resolution path.
+- Confirmed that the requested UX needs one shared RTC sidebar plus page-level platform tabs that only list platforms with a matching page.
+- Verified through the real `source.server` runtime that English RTC guide pages resolve to public URLs with an explicit platform segment such as `/en/realtime-media/rtc/android/quick-start/build-from-scratch`, not a shared `/rtc/quick-start/...` route.
+
 ## 2026-05-20
 - Switched the active task in `docs-portal` from `realtime-media` architecture work to English `introduction` content migration.
 - Audited `content/docs/en/introduction` and confirmed that the current pages are mostly hand-written summaries rather than source-backed migrations.
