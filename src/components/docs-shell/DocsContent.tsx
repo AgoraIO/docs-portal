@@ -2,7 +2,14 @@ import { Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import { BotIcon, Edit3Icon, ExternalLinkIcon } from 'lucide-react';
-import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
@@ -23,6 +30,7 @@ import { DocsContentBody } from './DocsContentBody';
 
 const TOC_ACTIVE_OFFSET = 96;
 const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
+const MAIN_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
 
 export function DocsContent({
   body,
@@ -60,6 +68,38 @@ export function DocsContent({
         } satisfies DocsContentBodyPayload)
       : undefined);
   const isOpenApiBody = resolvedBody?.kind === 'openapi';
+  const pageScrollResetKey =
+    resolvedBody?.kind === 'mdx' ? resolvedBody.contentPath : undefined;
+  const previousPageScrollResetKey = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (!pageScrollResetKey) {
+      return;
+    }
+
+    if (
+      previousPageScrollResetKey.current &&
+      previousPageScrollResetKey.current !== pageScrollResetKey
+    ) {
+      const scrollContainer =
+        document.querySelector<HTMLElement>(MAIN_SCROLL_SELECTOR);
+
+      if (scrollContainer) {
+        scrollContainer.scrollTo({
+          behavior: 'auto',
+          top: 0,
+        });
+      } else {
+        window.scrollTo({
+          behavior: 'auto',
+          top: 0,
+        });
+      }
+    }
+
+    previousPageScrollResetKey.current = pageScrollResetKey;
+  }, [pageScrollResetKey]);
+
   useEffect(() => {
     if (resolvedBody?.kind !== 'mdx') {
       return;
@@ -155,7 +195,8 @@ export function DocsContent({
             ) : null}
           </div>
         ) : null}
-        {!markdownUrl && sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
+        {!markdownUrl &&
+        sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
           <DocsHeaderScopeTabs header={sidebarHeader} />
         ) : null}
       </header>

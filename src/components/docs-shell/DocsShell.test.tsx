@@ -172,11 +172,11 @@ describe('DocsShell', () => {
       .find((button) =>
         button.textContent?.includes('Search docs, APIs, guides...'),
       );
-    const languageControl = within(mainHeaderRow)
+    const siteControl = within(mainHeaderRow)
       .getAllByRole('button', {
-        name: 'Language',
+        name: 'Site',
       })
-      .find((button) => button.textContent?.includes('English'));
+      .find((button) => button.textContent?.includes('International site'));
     const themeControl = within(mainHeaderRow).getByRole('button', {
       name: 'Theme: Light',
     });
@@ -194,12 +194,12 @@ describe('DocsShell', () => {
     if (!desktopSearch) {
       throw new Error('expected desktop search trigger in main header row');
     }
-    expect(languageControl).toBeDefined();
-    if (!languageControl) {
-      throw new Error('expected desktop language trigger in main header row');
+    expect(siteControl).toBeDefined();
+    if (!siteControl) {
+      throw new Error('expected desktop site trigger in main header row');
     }
     expect(mainHeaderRow).toContainElement(desktopSearch);
-    expect(mainHeaderRow).toContainElement(languageControl);
+    expect(mainHeaderRow).toContainElement(siteControl);
     expect(mainHeaderRow).toContainElement(themeControl);
     expect(mainHeaderRow.querySelector('.docs-brand-mark')).toBeNull();
     expect(mainHeaderRow).not.toContainElement(tabsIntroductionLink);
@@ -233,14 +233,14 @@ describe('DocsShell', () => {
     expect(githubControl.className).toContain(
       'dark:hover:bg-[color:var(--docs-soft-fill)]',
     );
-    expect(languageControl).toHaveAttribute('data-variant', 'ghost');
-    expect(languageControl.className).not.toContain(
+    expect(siteControl).toHaveAttribute('data-variant', 'ghost');
+    expect(siteControl.className).not.toContain(
       'border-[color:var(--line-strong)]',
     );
-    expect(languageControl.className).not.toContain('bg-card');
-    expect(languageControl.className).toContain('hover:bg-accent');
-    expect(languageControl.className).toContain('data-[state=open]:bg-accent');
-    expect(languageControl).toHaveTextContent('English');
+    expect(siteControl.className).not.toContain('bg-card');
+    expect(siteControl.className).toContain('hover:bg-accent');
+    expect(siteControl.className).toContain('data-[state=open]:bg-accent');
+    expect(siteControl).toHaveTextContent('International site');
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
     expect(tabsAiLink).toHaveAttribute('href', '/en/ai');
     expect(tabsIntroductionLink.className).toContain('after:!bottom-[-3px]');
@@ -561,18 +561,20 @@ describe('DocsShell', () => {
 
     render(<RouterProvider router={router} />);
 
-    const languageButton = (
+    const siteButton = (
       await screen.findAllByRole('button', {
-        name: 'Language',
+        name: 'Site',
       })
-    ).find((button) => button.textContent?.includes('English'));
+    ).find((button) => button.textContent?.includes('International site'));
 
-    if (!languageButton) {
-      throw new Error('expected desktop language button');
+    if (!siteButton) {
+      throw new Error('expected desktop site button');
     }
 
-    fireEvent.pointerDown(languageButton, { button: 0 });
-    fireEvent.click(await screen.findByRole('menuitem', { name: '简体中文' }));
+    fireEvent.pointerDown(siteButton, { button: 0 });
+    fireEvent.click(
+      await screen.findByRole('menuitem', { name: 'China site' }),
+    );
 
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(
@@ -607,26 +609,28 @@ describe('DocsShell', () => {
     fireEvent.pointerDown(
       (
         await screen.findAllByRole('button', {
-          name: 'Language',
+          name: 'Site',
         })
-      ).find((button) => button.textContent?.includes('English')) ??
+      ).find((button) => button.textContent?.includes('International site')) ??
         (() => {
-          throw new Error('expected desktop language button');
+          throw new Error('expected desktop site button');
         })(),
       { button: 0 },
     );
 
-    const languageOptions = await screen.findByRole('menu', {
-      name: 'Language',
+    const siteOptions = await screen.findByRole('menu', {
+      name: 'Site',
     });
 
-    expect(languageOptions).toHaveAttribute(
-      'data-slot',
-      'dropdown-menu-content',
-    );
+    expect(siteOptions).toHaveAttribute('data-slot', 'dropdown-menu-content');
     expect(
-      within(languageOptions).getByRole('menuitem', { name: '简体中文' }),
+      within(siteOptions).getByRole('menuitem', { name: 'China site' }),
     ).toHaveAttribute('href', '/zh-CN/ai/get-started/quickstart');
+    expect(
+      within(siteOptions).getByText(
+        'Product coverage differs between the two sites.',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('keeps compact mobile header controls and exposes locale and theme in the sheet', async () => {
@@ -706,7 +710,7 @@ describe('DocsShell', () => {
       'md:block',
     );
     expect(
-      within(mobileHeaderActions).queryByRole('button', { name: 'Language' }),
+      within(mobileHeaderActions).queryByRole('button', { name: 'Site' }),
     ).toBeNull();
     expect(
       within(mobileHeaderActions).queryByRole('button', {
@@ -728,7 +732,7 @@ describe('DocsShell', () => {
       within(mobileSheet).getByRole('link', { name: 'Quick Start' }),
     ).toBeInTheDocument();
     expect(
-      within(mobileSheet).getByRole('button', { name: 'Language' }),
+      within(mobileSheet).getByRole('button', { name: 'Site' }),
     ).toBeInTheDocument();
     expect(
       within(mobileSheet).getByRole('button', { name: 'Theme: Light' }),

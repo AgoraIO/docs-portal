@@ -391,6 +391,10 @@ function LocaleSwitcher({
 }) {
   const { i18n } = useTranslation('common');
   const t = i18n.getFixedT(currentLocale, 'common');
+  const currentSiteLabel =
+    currentLocale === 'zh-CN'
+      ? t('controls.site.china')
+      : t('controls.site.global');
 
   return (
     <>
@@ -398,25 +402,24 @@ function LocaleSwitcher({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              aria-label={t('controls.language.label')}
+              aria-label={t('controls.site.label')}
               className="h-8 gap-1.5 rounded-md border border-transparent px-2.5 text-[13px] text-muted-foreground hover:border-border hover:bg-accent hover:text-accent-foreground data-[state=open]:border-border data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
               size="sm"
               variant="ghost"
             >
               <LanguagesIcon data-icon="inline-start" />
-              <span>
-                {currentLocale === 'zh-CN'
-                  ? t('controls.language.chinese')
-                  : t('controls.language.english')}
-              </span>
+              <span>{currentSiteLabel}</span>
               <ChevronDownIcon aria-hidden="true" className="opacity-60" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            aria-label={t('controls.language.label')}
-            className="w-48 rounded-lg p-1"
+            aria-label={t('controls.site.label')}
+            className="w-56 rounded-lg p-1"
           >
+            <div className="px-2.5 py-2 text-xs leading-5 text-muted-foreground">
+              {t('controls.site.description')}
+            </div>
             <LocaleOptions
               currentLocale={currentLocale}
               localeLinks={localeLinks}
@@ -430,7 +433,7 @@ function LocaleSwitcher({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              aria-label={t('controls.language.label')}
+              aria-label={t('controls.site.label')}
               className="data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
               size="icon"
               variant="ghost"
@@ -440,9 +443,12 @@ function LocaleSwitcher({
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="start"
-            aria-label={t('controls.language.label')}
-            className="w-48 rounded-lg p-1"
+            aria-label={t('controls.site.label')}
+            className="w-56 rounded-lg p-1"
           >
+            <div className="px-2.5 py-2 text-xs leading-5 text-muted-foreground">
+              {t('controls.site.description')}
+            </div>
             <LocaleOptions
               currentLocale={currentLocale}
               localeLinks={localeLinks}
@@ -479,8 +485,8 @@ function LocaleOptions({
           replaceDocLocale('/', locale);
         const label =
           locale === 'zh-CN'
-            ? t('controls.language.chinese')
-            : t('controls.language.english');
+            ? t('controls.site.china')
+            : t('controls.site.global');
 
         return (
           <DropdownMenuItem
