@@ -5,6 +5,13 @@ import path from 'node:path';
 
 const DEFAULT_SOURCE =
   '/Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source';
+const DEFAULT_PROFILE = 'shengwang-doc-source';
+const DOC_SOURCE_PRIVATE_PROFILE = 'doc-source-private';
+const DOC_SOURCE_PRIVATE_LANES = new Set([
+  'conversational-ai',
+  'open-ai-integration',
+  'real-time-stt',
+]);
 
 const COMPONENT_STATUS = new Map([
   ['Admonition', 'needs-directive-rewrite'],
@@ -55,6 +62,7 @@ function parseArgs(argv) {
   const args = {
     source: DEFAULT_SOURCE,
     out: 'docs/superpowers/reports/fumadocs-migration-audit',
+    profile: DEFAULT_PROFILE,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -66,6 +74,11 @@ function parseArgs(argv) {
     }
     if (arg === '--out') {
       args.out = argv[index + 1];
+      index += 1;
+      continue;
+    }
+    if (arg === '--profile') {
+      args.profile = argv[index + 1];
       index += 1;
       continue;
     }
@@ -81,6 +94,7 @@ function usage() {
   return `Usage:
 node .agents/skills/fumadocs-migration/scripts/audit-legacy-docs.mjs \\
   --source /Users/czhen/Documents/GitHub/AgoraIO/shengwang-doc-source \\
+  --profile shengwang-doc-source \\
   --out docs/superpowers/reports/YYYY-MM-DD-fumadocs-migration-audit`;
 }
 
@@ -124,6 +138,20 @@ async function walk(root) {
   return results;
 }
 
+async function privateSourceScanRoots(sourceRoot) {
+  const entries = await fs.readdir(sourceRoot, { withFileTypes: true });
+
+  return entries
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .filter(
+      (name) =>
+        !name.startsWith('.') &&
+        name !== 'scripts' &&
+        name !== 'data',
+    );
+}
+
 function relative(sourceRoot, filePath) {
   return path.relative(sourceRoot, filePath).split(path.sep).join('/');
 }
@@ -154,7 +182,11 @@ function productAndPlatformFromHtmlPath(relativePath) {
   };
 }
 
-function analyzeMarkdownFile(relativePath, content) {
+function topLevelLane(relativePath) {
+  return relativePath.split('/')[0] ?? null;
+}
+
+function analyzeMarkdownFile(relativePath, content, profile) {
   const components = {};
   const statuses = [];
   const componentMatches = content.matchAll(/<([A-Z][A-Za-z0-9_]*)\b/g);
@@ -169,6 +201,13 @@ function analyzeMarkdownFile(relativePath, content) {
   const sharedImports =
     (content.match(/from\s+['"]@shared\//g) ?? []).length +
     (content.match(/import\s+.*['"]@shared\//g) ?? []).length;
+  const sharedDocsImports = (
+    content.match(/from\s+['"]@docs\/shared\//g) ?? []
+  ).length;
+  const siteRestImports = (
+    content.match(/from\s+['"]@site\/src\/components\/rest-api\//g) ?? []
+  ).length;
+  const privateVariables = (content.match(/<(?:Vpd|Vg)\b/g) ?? []).length;
   const legacyAnchors = (content.match(/<a\s+(?:name|id)=/g) ?? []).length;
   const platformFilters = (content.match(/<PlatformFilter\b/g) ?? []).length;
   const imageSizing =
@@ -190,6 +229,10 @@ function analyzeMarkdownFile(relativePath, content) {
   ).length;
 
   if (sharedImports > 0) statuses.push('needs-include-standardization');
+  if (sharedDocsImports > 0) {
+    statuses.push('needs-private-include-standardization');
+  }
+  if (siteRestImports > 0) statuses.push('needs-openapi-decision');
   if (legacyAnchors > 0) statuses.push('needs-anchor-normalization');
   if (platformFilters > 0) statuses.push('needs-platform-expansion');
   if (imageSizing > 0) statuses.push('needs-image-standard');
@@ -200,6 +243,21 @@ function analyzeMarkdownFile(relativePath, content) {
   if (landingPageHints > 0 || relativePath.endsWith('/landing-page.mdx')) {
     statuses.push('needs-landing-page-normalization');
   }
+  if (privateVariables > 0) statuses.push('needs-product-specific-rules');
+
+  if (profile === DOC_SOURCE_PRIVATE_PROFILE) {
+    const lane = topLevelLane(relativePath);
+    if (lane === 'ten-agent' || lane === 'ten-framework') {
+      statuses.push('needs-product-specific-rules');
+    } else if (
+      lane &&
+      !DOC_SOURCE_PRIVATE_LANES.has(lane) &&
+      lane !== 'shared' &&
+      lane !== 'assets'
+    ) {
+      statuses.push('needs-lane-mapping');
+    }
+  }
 
   return {
     path: relativePath,
@@ -208,6 +266,9 @@ function analyzeMarkdownFile(relativePath, content) {
     matches: {
       components,
       sharedImports,
+      sharedDocsImports,
+      siteRestImports,
+      privateVariables,
       legacyAnchors,
       platformFilters,
       imageSizing,
@@ -223,6 +284,15 @@ function analyzeMetadataFile(relativePath) {
     path: relativePath,
     kind: 'metadata-js',
     statuses: ['needs-metadata-migration'],
+    matches: {},
+  };
+}
+
+function analyzePrivateCategoryFile(relativePath) {
+  return {
+    path: relativePath,
+    kind: 'category-json',
+    statuses: ['needs-category-migration'],
     matches: {},
   };
 }
@@ -277,6 +347,13 @@ function isGeneratedHtmlDoc(relativePath) {
   return GENERATED_EXTENSIONS.has(path.extname(relativePath).toLowerCase());
 }
 
+function isPrivateCategoryFile(relativePath, profile) {
+  return (
+    profile === DOC_SOURCE_PRIVATE_PROFILE &&
+    relativePath.endsWith('/_category_.json')
+  );
+}
+
 function summarize(report) {
   const summary = {
     markdownFiles: 0,
@@ -300,6 +377,7 @@ function summarize(report) {
       summary.markdownFiles += 1;
     }
     if (file.kind === 'metadata-js') summary.metadataFiles += 1;
+    if (file.kind === 'category-json') summary.metadataFiles += 1;
     if (file.kind === 'openapi-source') summary.openapiSources += 1;
 
     for (const status of file.statuses ?? []) {
@@ -310,6 +388,7 @@ function summarize(report) {
     const componentNames = Object.keys(matches.components ?? {});
     if (componentNames.length > 0) summary.filesWithLegacyJsx += 1;
     if ((matches.sharedImports ?? 0) > 0) summary.filesWithSharedImports += 1;
+    if ((matches.sharedDocsImports ?? 0) > 0) summary.filesWithSharedImports += 1;
     if ((matches.legacyAnchors ?? 0) > 0) summary.filesWithLegacyAnchors += 1;
     if ((matches.platformFilters ?? 0) > 0) summary.filesWithPlatformFilters += 1;
     if ((matches.frontmatterArtifacts ?? 0) > 0) {
@@ -431,7 +510,10 @@ async function main() {
     throw new Error(`Source path does not exist: ${sourceRoot}`);
   }
 
-  const scanRoots = ['docs', 'docs-api-reference', 'shared', 'html-docs'];
+  const scanRoots =
+    args.profile === DOC_SOURCE_PRIVATE_PROFILE
+      ? await privateSourceScanRoots(sourceRoot)
+      : ['docs', 'docs-api-reference', 'shared', 'html-docs'];
   const files = (
     await Promise.all(scanRoots.map((root) => walk(path.join(sourceRoot, root))))
   ).flat();
@@ -450,7 +532,12 @@ async function main() {
 
     if (ext === '.md' || ext === '.mdx') {
       const content = await fs.readFile(filePath, 'utf8');
-      report.files.push(analyzeMarkdownFile(rel, content));
+      report.files.push(analyzeMarkdownFile(rel, content, args.profile));
+      continue;
+    }
+
+    if (isPrivateCategoryFile(rel, args.profile)) {
+      report.files.push(analyzePrivateCategoryFile(rel));
       continue;
     }
 
