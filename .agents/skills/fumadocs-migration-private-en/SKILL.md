@@ -34,6 +34,7 @@ This is a source-specific entrypoint for the private English docs source. Reuse 
 - Convert `_category_.json` labels and ordering into static `meta.json`; do not keep executable metadata or runtime label substitution.
 - Route `@docs/shared/**` to Fumadocs `<include>` only when the shared fragment is content-only. If the fragment depends on runtime variables, props, or product context, statically expand it or defer the page.
 - Use the `@site/src/components/rest-api/**` decision path from `references/private-source.md` to choose between OpenAPI lane migration and prose/reference rewrite. Do not carry source-private REST JSX into the portal.
+- For Conversational AI REST routes, check `content/openapi/conversational-ai/convoai.en.yaml` and `content/openapi/conversational-ai/openapi.meta.json` before rewriting any endpoint page. If the operation already exists in the English OpenAPI source, treat the source MDX as route wiring or supplemental prose input, not as the primary endpoint content source.
 
 ## Scope
 

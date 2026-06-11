@@ -28,7 +28,13 @@
 ## Shared And REST Decision Summary
 
 - `@docs/shared/**`: prefer `<include>` for content-only fragments, otherwise statically expand or defer.
-- `@site/src/components/rest-api/**`: send true endpoint reference content to the OpenAPI lane; rewrite prose-heavy pages as normal docs pages; defer mixed runtime-widget pages.
+- `@site/src/components/rest-api/**`: first check whether the repo already has English OpenAPI source for that product and operation; send true endpoint reference content to the OpenAPI lane; rewrite prose-heavy pages as normal docs pages; defer mixed runtime-widget pages.
+
+## Conversational AI REST Note
+
+- `content/openapi/conversational-ai/convoai.en.yaml` already contains English operation definitions such as `start-agent`, `get-history`, and related agent-management endpoints.
+- `content/openapi/conversational-ai/openapi.meta.json` already maps that source into the Conversational AI REST route family.
+- If a source page such as `conversational-ai/rest-api/agent/join.mdx` or `history.mdx` exists but the target leaf page is missing, treat that as an OpenAPI route-generation or publication gap first, not proof that the endpoint needs hand-authored Markdown.
 
 ## Expansion And Deferral Policy
 

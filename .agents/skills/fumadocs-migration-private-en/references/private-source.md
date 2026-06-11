@@ -49,6 +49,18 @@
 - If the source mixes product widgets, runtime props, and REST JSX in a way that prevents a clear split, mark the page deferred and record why.
 - Do not preserve `@site/src/components/rest-api/**` imports or add compatibility wrappers in the portal.
 
+## OpenAPI-Backed REST Checks
+
+- Before rewriting a private-source REST endpoint page, check whether the target repo already has English OpenAPI source for the same product.
+- For Conversational AI, inspect:
+  - `content/openapi/conversational-ai/convoai.en.yaml`
+  - `content/openapi/conversational-ai/openapi.meta.json`
+- If the operation already exists in the English OpenAPI source, the migration task is usually one of these:
+  - verify that the generated route is wired correctly
+  - add or fix surrounding prose pages such as authentication or status-code guides
+  - record a route-generation or renderer gap if the target leaf page is missing
+- Do not rewrite a large `RestAPILayout` page into hand-authored endpoint Markdown when the English OpenAPI source already covers the same operation.
+
 ## Deferred Variable Policy
 
 - `<Vpd />` and `<Vg />` are expansion markers, not target syntax.
