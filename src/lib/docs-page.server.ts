@@ -530,14 +530,23 @@ async function getDocsSidebarNodes({
   tab: string;
 }) {
   if (tab === 'ai') {
-    return buildAiProductSidebar(
-      getNavScopeSidebarNodes({
-        getNodeMeta: (node) =>
-          getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
-        root: pageTree,
-        tab,
-      }),
-    );
+    const aiNodes = getNavScopeSidebarNodes({
+      getNodeMeta: (node) =>
+        getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+      root: pageTree,
+      tab,
+    });
+    const apiReferenceNodes =
+      locale === null
+        ? []
+        : getNavScopeSidebarNodes({
+            getNodeMeta: (node) =>
+              getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+            root: pageTree,
+            tab: OPENAPI_TAB,
+          });
+
+    return buildAiProductSidebar(aiNodes, apiReferenceNodes);
   }
 
   if (
@@ -659,7 +668,10 @@ function restoreRecipesSidebarSections(
   ];
 }
 
-function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
+function buildAiProductSidebar(
+  nodes: DocsSidebarNode[],
+  apiReferenceNodes: DocsSidebarNode[] = [],
+): DocsSidebarNode[] {
   const aiOverview =
     findSidebarPageByExactUrlInNodes(nodes, '/en/ai') ??
     findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai');
@@ -698,6 +710,122 @@ function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
     });
   }
 
+  const conversationalAiApiReferenceSection = findTopLevelSidebarSection(
+    apiReferenceNodes,
+    ['Conversational AI'],
+  );
+  const conversationalAiRestApiSection = conversationalAiApiReferenceSection
+    ? findNestedSidebarSectionByExactUrl(
+        conversationalAiApiReferenceSection,
+        '/en/api-reference/conversational-ai/rest-api',
+      ) ??
+      findNestedSidebarSectionByExactUrl(
+        conversationalAiApiReferenceSection,
+        '/zh-CN/api-reference/conversational-ai/rest-api',
+      )
+    : null;
+
+  const isZhCn = aiOverview.url.startsWith('/zh-CN/');
+  const aiLocalePrefix = isZhCn ? '/zh-CN' : '/en';
+
+  const restApiPage = {
+    id: `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`,
+    linked: true,
+    title: isZhCn ? 'REST API' : 'RESTful API',
+    type: 'page',
+    url: `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`,
+  } satisfies DocsSidebarPageNode;
+
+  const manualServerSdkSection =
+    ({
+          children: [
+            {
+              id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`,
+              title: 'TypeScript',
+              type: 'page',
+              url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`,
+            },
+            {
+              id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/go`,
+              title: 'Go',
+              type: 'page',
+              url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/go`,
+            },
+            {
+              id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/python`,
+              title: 'Python',
+              type: 'page',
+              url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/python`,
+            },
+          ],
+          collapsible: true,
+          id: `ai-reference-server-sdk-${isZhCn ? 'zh-CN' : 'en'}`,
+          title: 'Server SDK',
+          type: 'section',
+          url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk`,
+        } satisfies DocsSidebarSectionNode);
+
+  const manualClientToolkitSection =
+    ({
+          children: [
+            {
+              id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/android`,
+              title: 'Android',
+              type: 'page',
+              url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/android`,
+            },
+            {
+              id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/ios`,
+              title: 'iOS',
+              type: 'page',
+              url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/ios`,
+            },
+            {
+              id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/web`,
+              title: 'Web',
+              type: 'page',
+              url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/web`,
+            },
+          ],
+          collapsible: true,
+          id: `ai-reference-client-toolkit-${isZhCn ? 'zh-CN' : 'en'}`,
+          title: isZhCn ? 'Client Toolkit' : 'Client toolkit',
+          type: 'section',
+          url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit`,
+        } satisfies DocsSidebarSectionNode);
+
+  const referenceLeadingChildren = referenceSection.children.filter(
+    (child) =>
+      child.type === 'page' &&
+      (child.url === '/en/ai/reference/event-types' ||
+        child.url === '/zh-CN/ai/reference/event-types'),
+  );
+  const referenceTrailingChildren = referenceSection.children.filter(
+    (child) =>
+      !(
+        child.type === 'page' &&
+        (child.url === '/en/ai/reference/event-types' ||
+          child.url === '/zh-CN/ai/reference/event-types' ||
+          child.url === '/en/ai/reference/restful-api' ||
+          child.url === '/zh-CN/ai/reference/restful-api' ||
+          child.url === '/en/ai/reference/server-sdk' ||
+          child.url === '/en/ai/reference/client-toolkit' ||
+          child.url === '/zh-CN/ai/reference/server-sdk' ||
+          child.url === '/zh-CN/ai/reference/client-toolkit')
+      ),
+  );
+
+  const mergedReferenceSection: DocsSidebarSectionNode = {
+    ...stripSidebarSectionMeta(referenceSection),
+    children: [
+      restApiPage,
+      manualServerSdkSection,
+      manualClientToolkitSection,
+      ...referenceLeadingChildren,
+      ...stripSidebarSectionMetaFromNodes(referenceTrailingChildren),
+    ],
+  };
+
   const mergedBuildSection: DocsSidebarSectionNode = {
     ...stripSidebarSectionMeta(buildSection),
     children: stripSidebarSectionMetaFromNodes([
@@ -713,8 +841,6 @@ function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
     ]),
   };
 
-  const isZhCn = aiOverview.url.startsWith('/zh-CN/');
-
   return [
     {
       ...aiOverview,
@@ -728,7 +854,7 @@ function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
         },
         mergedBuildSection,
         modelsSection,
-        stripSidebarSectionMetaFromNode(referenceSection),
+        mergedReferenceSection,
       ]),
       icon: 'Bot',
       id: 'ai-product-software-clients',
@@ -839,6 +965,28 @@ function findSidebarPageByExactUrl(
 
   for (const child of node.children) {
     const match = findSidebarPageByExactUrl(child, url);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
+function findNestedSidebarSectionByExactUrl(
+  node: DocsSidebarNode,
+  url: string,
+): DocsSidebarSectionNode | null {
+  if (node.type === 'page') {
+    return null;
+  }
+
+  if (node.url === url) {
+    return node;
+  }
+
+  for (const child of node.children) {
+    const match = findNestedSidebarSectionByExactUrl(child, url);
     if (match) {
       return match;
     }
