@@ -11,10 +11,11 @@ const enCommon = {
       dark: 'Dark',
       system: 'System',
     },
-    language: {
-      label: 'Language',
-      english: 'English',
-      chinese: '简体中文',
+    site: {
+      label: 'Site',
+      description: 'Product coverage differs between the two sites.',
+      global: 'International site',
+      china: 'China site',
     },
   },
   docs: {

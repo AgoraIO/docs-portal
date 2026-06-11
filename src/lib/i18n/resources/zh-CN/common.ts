@@ -11,10 +11,11 @@ const zhCnCommon = {
       dark: '深色',
       system: '跟随系统',
     },
-    language: {
-      label: '语言',
-      english: 'English',
-      chinese: '简体中文',
+    site: {
+      label: '站点',
+      description: '两个站点覆盖的产品范围并不完全相同。',
+      global: '国际站',
+      china: '中国站',
     },
   },
   docs: {

@@ -5,8 +5,13 @@ import { type PageWithSource, source } from './source.server';
 
 vi.mock('./source.server', () => ({
   getPageMarkdownUrl: (page: { path: string }) => ({
-    segments: page.path.split('/').filter(Boolean),
-    url: `/llms.mdx/docs/${page.path}`,
+    segments: page.path
+      .split('/')
+      .filter(Boolean)
+      .map((segment, index, array) =>
+        index === array.length - 1 ? segment.replace(/\.mdx$/, '.md') : segment,
+      ),
+    url: `/llms.mdx/docs/${page.path.replace(/\.mdx$/, '.md')}`,
   }),
   source: {
     getNodeMeta: vi.fn(),
@@ -925,6 +930,8 @@ describe('loadDocsPagePayload', () => {
           url: '/en/introduction/about-agora',
         }),
       ]),
+      markdownUrl:
+        '/llms.mdx/docs/en/api-reference/conversational-ai/rest-api/agent/join.md',
       tabs: [
         {
           id: 'api-reference',
@@ -1940,9 +1947,7 @@ describe('loadDocsPagePayload', () => {
     ]);
 
     const softwareSection = payload.sidebar.find(
-      (node) =>
-        node.type === 'section' &&
-        node.title === 'Voice agent in apps',
+      (node) => node.type === 'section' && node.title === 'Voice agent in apps',
     );
 
     if (!softwareSection || softwareSection.type !== 'section') {

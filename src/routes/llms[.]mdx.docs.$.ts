@@ -7,28 +7,35 @@ export const Route = createFileRoute('/llms.mdx/docs/$')({
     handlers: {
       GET: async ({ params }) => {
         const { getLLMText, source } = await import('@/lib/source');
+        const { getOpenApiMarkdownByContentPath } = await import(
+          '@/lib/openapi/markdown'
+        );
         const slugs = getSourceSlugsFromContentPath(params._splat ?? '');
         const locale = normalizeLocale(
           params._splat?.split('/').filter(Boolean)[0],
         );
         const page = source.getPage(slugs, locale ?? undefined);
-        if (!page) {
-          const { getOpenApiMarkdownByContentPath } = await import(
-            '@/lib/openapi/markdown'
-          );
+        const isOpenApiPage =
+          page?.type === 'openapi' &&
+          'getClientAPIPageProps' in page.data &&
+          typeof page.data.getClientAPIPageProps === 'function';
+
+        if (!page || isOpenApiPage) {
           const openApiMarkdown = await getOpenApiMarkdownByContentPath(
             params._splat ?? '',
           );
 
-          if (!openApiMarkdown) {
-            throw notFound();
+          if (openApiMarkdown) {
+            return new Response(openApiMarkdown, {
+              headers: {
+                'Content-Type': 'text/markdown',
+              },
+            });
           }
 
-          return new Response(openApiMarkdown, {
-            headers: {
-              'Content-Type': 'text/markdown',
-            },
-          });
+          if (!page) {
+            throw notFound();
+          }
         }
 
         return new Response(await getLLMText(page), {
