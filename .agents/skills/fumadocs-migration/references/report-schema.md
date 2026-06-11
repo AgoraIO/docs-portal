@@ -48,18 +48,24 @@ The audit script writes JSON and Markdown. JSON is the source of truth; Markdown
 - `ready-native`: no obvious legacy syntax detected.
 - `needs-directive-rewrite`: old callouts, tabs, cards, or other JSX should become directives/native syntax.
 - `needs-include-standardization`: legacy `@shared` import or shared runtime variable found.
+- `needs-private-include-standardization`: `@docs/shared/**` import from `Doc-Source-Private` found.
 - `needs-platform-expansion`: runtime platform filtering or filename/platform matrix needs static expansion.
 - `needs-table-normalization`: legacy table components found.
 - `needs-image-standard`: image width, inline images, or old image component found.
 - `needs-api-reference-source`: hand-authored or generated-looking API reference MDX needs structured source decision.
+- `needs-openapi-decision`: private-source REST JSX must be classified as OpenAPI-generated or authored reference prose.
+- `needs-structured-reference-rewrite`: private-source REST/reference content should remain authored prose/reference after classification.
 - `has-openapi-source`: OpenAPI YAML/JSON source found.
 - `deferred-generated-api`: generated HTML/API artifact intentionally deferred.
 - `needs-source-discovery`: generated API artifact exists but source/generator is unknown.
 - `manual-html-review`: HTML appears hand-authored or cannot be classified.
 - `needs-landing-page-normalization`: landing/card-heavy MDX needs IA/content rewrite.
 - `needs-metadata-migration`: legacy executable sidebar/product/platform metadata found.
+- `needs-category-migration`: `_category_.json` source navigation metadata must become `meta.json`.
 - `needs-anchor-normalization`: legacy anchor or JSX heading IDs found.
 - `needs-frontmatter-cleanup`: legacy build-injected frontmatter or variables found.
+- `needs-product-specific-rules`: source-private variables or widgets require product-specific migration rules.
+- `needs-lane-mapping`: the source top-level lane is not yet mapped to an approved target route family.
 
 ## Review Rule
 
