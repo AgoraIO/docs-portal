@@ -1,0 +1,121 @@
+---
+title: "Fastboard release notes"
+description: "Track iOS release notes for the Fastboard SDK."
+---
+
+The Fastboard SDK is the latest generation of the Interactive Whiteboard SDK launched by Agora to help developers quickly build whiteboard applications. It simplifies the APIs of the Interactive Whiteboard SDK and implements the core functionality with a default user interface (UI). In addition, the Fastboard SDK integrates [window-manager](https://github.com/netless-io/window-manager) and extensions from [netless-app](https://github.com/netless-io/netless-app) to allow developers to easily add extensions to extend the functionality of their whiteboard applications. With the Fastboard SDK, you do not need to learn the complex concepts of the interactive whiteboard; you can join a whiteboard room with a few lines of code and instantly use the rich editing tools to start real-time interactive collaboration.
+
+## v1.4.2
+
+Released on July 28, 2025.
+
+#### Issues fixed
+
+This version fixes the following issues:
+
+- Setting `drawOnlyApplePencil` does not take effect on some high-version iOS devices.
+- The `warning: duplicate UUIDs` error occurs when installing the SDK using Cocoapods, which does not match the expected behavior.
+
+#### Improvements
+
+Since this version, there is no distinction between YYModel and YYKit when integrating the SDK. Users who previously integrated the SDK using `pod 'Fastboard/core-YYKit'` can switch to `pod 'Fastboard'`.
+
+## v1.4.0
+
+Released on July 28, 2025.
+
+#### Improvements
+
+Since this version, there is no distinction between YYModel and YYKit when integrating the SDK. Users who previously integrated the SDK using `pod 'Fastboard/core-YYKit'` can switch to `pod 'Fastboard'`.
+
+## v1.2.2
+
+v1.2.2 was released on January 19, 2024.
+
+#### New features
+
+This release provides the following new features:
+
+**Insert dynamic documents**
+
+This release adds the  [`insertPptx`](https://docs.agora.io/en/en/realtime-media/whiteboard/reference/uikit-sdk/web/index.mdx#insertpptx) method to insert and display a dynamic document in the whiteboard sub-window.
+
+**Custom UI elements**
+
+This release provides new style options for the whiteboard panel and control bar:
+
+- `FastRoomPanelItemAsset`:
+  - `selectedBackgroundCornerradius`: The radius of the background corner when selected.
+  - `selectedBackgroundEdgeinset`: The padding of the background when selected.
+	:::info
+If you are migrating from v1.1.0 and earlier, you can set `selectedBackgroundCornerradius` to `0` and set `selectedBackgroundEdgeinset` to `UIEdgeInsetsZero`.
+:::
+
+- `FastRoomControlBarAssets`:
+
+  - `backgroundColor`: The background color of the control bar.
+  - `borderColor`: The color of the control bar border.
+  - `effectStyle`: A ground glass effect. See [UIBlurEffect](https://developer.apple.com/documentation/uikit/uiblureffect).
+
+**Show user cursor**
+
+This version adds a new `userPayload` attribute to the `FastRoomConfiguration` class, which is used to synchronize and display the user cursor position in the whiteboard room. Starting with this release, the SDK will display the user cursor by default.
+
+#### Improvements
+
+This release modified the default eraser behavior. The eraser now does not erase pictures by default.
+
+#### Fixed issue
+
+This version fixes the following issues:
+
+- The display error that occurred when setting the background color of the teaching aids in operating systems earlier than iOS 13.
+- Setting `drawOnlyApplePencil` on devices with system versions earlier than iOS 14 could cause a crash.
+- The style of the shape tool could be displayed incorrectly when initializing the shape tool.
+
+## v1.0.6
+
+v1.0.6 was released on June 6, 2022.
+
+#### New features
+**1. Modifying the theme of the whiteboard user interface (UI)**
+
+This release adds the `apply` method to the `FastRoomThemeManager` class for modifying the theme of the whiteboard UI. This method enables you to set the theme of the whiteboard UI to a predefined theme provided by the SDK or to a custom theme.
+
+**2. Modifying the color set of the palette**
+
+This release provides the `defaultColors` property in the `FastRoomDefaultOperationItem` class to support modifying the default color set of the whiteboard tools' palette.
+
+**3. Enabling/Disabling Apple Pencil's system settings**
+
+This release provides the `followSystemPencilBehavior` property in the `FastRoom` class for enabling or disabling the system settings of the Apple Pencil for the whiteboard app. Setting `followSystemPencilBehavior` as `YES` enables the Apple Pencil to follow the system settings in your whiteboard app. This allows users to use the system functions of the Apple Pencil to operate the whiteboard. For example, users can double tap their Apple Pencil to switch between the current tool and eraser, or use their Apple Pencil to draw and sketch on the whiteboard. Setting `followSystemPencilBehavior` as `NO` disables the Apple Pencil from following the system settings in your whiteboard app. In this state, the system functions of the Apple Pencil are not available for your whiteboard app users.
+
+## v1.0.3
+
+v1.0.3 was released on March 25, 2022. This is the first official release of the UI Kit for iOS.
+
+#### Features
+
+**Implementations of the core whiteboard functionality and user interface (UI)**
+
+This release directly implements the basic functions of the interactive whiteboard with a default UI. After integrating the UI Kit and calling `joinRoom` to join the whiteboard room, you can use the following functions:
+
+- The whiteboard toolbar, which includes all basic whiteboard editing tools, such as pencil, text editor, and shape tools. It also supports setting stroke width, font size, and stroke color.
+
+- The whiteboard page control, which enables you to add and switch whiteboard pages.
+
+- The view control, which you can use to zoom in and out of the current whiteboard page and adjust the view.
+
+- Undo and redo an action.
+
+#### Display files
+
+The UI Kit supports inserting and displaying files in multiple formats on the whiteboard, such as images in PNG and JPG formats, audio and video in MP3 and MP4 formats, and documents in PPT, PPTX, DOC, DOCX, and PDF formats. For detailed implementation steps, see [Display Files](../../../build/scenes/display-files-fast/web/).
+
+#### Reference
+
+- [Join a Whiteboard Room](../../../build/get-started-sdk/web/): Describes how to quickly join a whiteboard room and experience interactive whiteboard features using the UI Kit.
+
+- [Display Files](../../../build/scenes/display-files-fast/web/): Describes how to call the UI Kit's APIs to insert images, play audio and video, and present documents on the whiteboard.
+
+- [API Reference](../../../reference/uikit-sdk/web/): Provides a detailed API reference for the UI Kit.

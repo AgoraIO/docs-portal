@@ -62,6 +62,7 @@ export const docs = defineDocs({
       },
       remarkImageOptions: {
         external: false,
+        onError: 'ignore',
         useImport: false,
       },
       remarkCodeTabOptions: {

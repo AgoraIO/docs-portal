@@ -1,0 +1,572 @@
+---
+title: "Contact management"
+description: "Shows how to call the Agora Chat RESTful APIs to create and manage contacts."
+---
+
+Contact management refers to operations such as adding and removing contacts, and adding and removing users from the blocklist.
+
+This page shows how to call the Chat RESTful APIs to create and manage contacts. 
+
+Before calling the following methods, make sure you understand the call frequency limit as described in [Limitations](../reference/limitations.md).
+
+## Common parameters
+
+The following table lists common request and response parameters of the Chat RESTful APIs:
+
+### Request parameters 
+
+| Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Required |
+| :--------- | :----- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                       | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                             | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                | Yes |
+| `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
+Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
+::: | Yes |
+
+### Response parameters 
+
+| Parameter | Type | Description |
+| :------------------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `action` | String | The request method. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service . This is the same as `app_name`. |
+| `uri` | String | The request URI. |
+| `path` | String | The request path, which is part of the request URL. You can safely ignore this parameter. |
+| `entities ` | JSON | The response entity. |
+| `entities.uuid` | String | The user's UUID. A unique internal identifier generated by the Chat service for the user in this request. This is used for generating the user token. |
+| `entities.type` | String | The type of the object. You can safely ignore this parameter. |
+| `entities.created` | Number | The Unix timestamp (ms) when the user is registered. |
+| `entities.modified` | Number | The Unix timestamp (ms) when the user information is last modified. |
+| `entities.username` | String | The username. The unique account the user is logged in with. |
+| `entities.activated` | Bool | Whether the user is active:`true`: The user is active.`false`: The user is in banned. |
+| `timestamp` | Number | The Unix timestamp (ms) of the HTTP response. |
+| `duration` | Number | The duration (ms) from when the HTTP request is sent to the time the response is received. |
+
+## Authorization
+
+Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request is sent, the following `Authorization` field must be filled in the request header:
+
+```html
+Authorization: Bearer ${YourAppToken}
+```
+
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication.md).
+
+## Adding a contact
+
+This method adds a user under the same App Key as contacts. The number of contacts supported differs by plan version; the maximum number of contacts supported by the free version is 100. For details, see [Limitations](../reference/limitations.md).
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```shell
+POST https://{host}/{org_name}/{app_name}/users/{owner_username}/contacts/users/{friend_username}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :-------------- | :----- | :------------------- | :------- |
+| `owner_username` | String | The user ID of the current user. | Yes |
+| `friend_username` | String | The username to be added as a contact. | Yes |
+
+For other parameters and detailed descriptions, see [Common parameters](#param).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Content-Type` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds. For the fields and descriptions of the response body, see [Common parameters](#param).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/contacts/users/user2'
+```
+
+#### Response example
+
+```json
+{
+    "path": "/users/4759aa70-XXXX-XXXX-925f-6fa0510823ba/contacts",
+    "uri": "https://XXXX/XXXX/XXXX/users/4759aa70-XXXX-XXXX-925f-6fa0510823ba/contacts",
+    "timestamp": 1542598913819,
+    "organization": "XXXX",
+    "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
+    "entities": [
+        {
+            "uuid": "b2aade90-XXXX-XXXX-a974-f3368f82e4f1",
+            "type": "user",
+            "created": 1542356523769,
+            "modified": 1542597334500,
+            "username": "user2",
+            "activated": true,
+        }
+    ],
+    "action": "post",
+    "duration": 63,
+    "applicationName": "XXXX"
+}
+```
+
+## Removing a contact
+
+This method removes the user from the contact list. 
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```shell
+DELETE https://{host}/{org_name}/{app_name}/users/{owner_username}/contacts/users/{friend_username}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :-------------- | :----- | :------------------- | :------- |
+| `owner_username` | String | The username of the current user. | Yes |
+| `friend_username` | String | The username to be removed from the contact list. | Yes |
+
+For other parameters and detailed descriptions, see [Common parameters](#param).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds. For the fields and descriptions of the response body, see [Common parameters](#param).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/contacts/users/user2'
+```
+
+#### Response example
+
+```json
+{
+    "path": "/users/4759aa70-XXXX-XXXX-925f-6fa0510823ba/contacts",
+    "uri": "https://XXXX/XXXX/XXXX/users/4759aa70-XXXX-XXXX-925f-6fa0510823ba/contacts",
+    "timestamp": 1542599266616,
+    "organization": "XXXX",
+    "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
+    "entities": [
+        {
+            "uuid": "b2aade90-XXXX-XXXX-a974-f3368f82e4f1",
+            "type": "user",
+            "created": 1542356523769,
+            "modified": 1542597334500,
+            "username": "user2",
+            "activated": true,
+        }
+    ],
+    "action": "delete",
+    "duration": 350,
+    "applicationName": "XXXX"
+}
+```
+
+## Retrieving the contact list
+
+This method retrieves the local user's contact list.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```shell
+GET https://{host}/{org_name}/{app_name}/users/{owner_username}/contacts/users
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :------------- | :----- | :----------------- | :------- |
+| `owner_username` | String | The username of the current user. | Yes |
+
+For other fields and descriptions, see [Common parameters](#param).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds, and the response body contains the following fields:
+
+| Parameter | Type | Description |
+| :---- | :----- | :------------------- |
+| `data` | Array | The contact list data. |
+| `count` | Number | The number of contacts. |
+
+For other fields and descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/contacts/users'
+```
+
+#### Response example
+
+```json
+{
+    "uri": "http://XXXX/XXXX/XXXX/users/user1/contacts/users",
+    "timestamp": 1543819826513,
+    "entities": [],
+    "count": 2,
+    "action": "get",
+    "data": [
+        "user3",
+        "user2"
+    ],
+    "duration": 12   
+}
+```
+## Retrieving the contact list with pagination
+
+Retrieves the contact list with pagination.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```shell
+GET https://{host}/{org_name}/{app_name}/user/{username}/contacts?limit={N}&cursor={cursor}&needReturnRemark={true/false}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `username`  | String | The user ID of the current user.    | Yes  |
+
+For other parameters and detailed descriptions, see [Common Parameters](#param).
+
+#### Query parameter
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `limit` | Number     | The number of contacts that you expect to retrieve each time. The value range is [1,50] and the default value is `10`. This parameter is required only for paginated queries. | No |
+| `cursor` | String  | The starting position for data query. This parameter is required only for paginated queries.  For the first query, you do not need to set `cursor` and the server returns contacts of the number specified with `limit` in the descending order of their addition. You can get the cursor from the response body and pass it in the URL of the next query request. If there is no longer a `cursor` field in the response body, all contacts in the app are retrieved. | No |
+| `needReturnRemark` | Boolean | Whether to return contact remarks: `true`: Return;(Default) `false`: Not return.   | No |
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :------ | :------- |
+| `Content-Type` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following parameters:
+
+| Parameter | Type | Description |
+| :----- | :--- | :----------- |
+| `count`                  | Number | The number of contacts on the current page.  |
+| `data`                   | Object | The contact list object that is returned.  |
+| `data.contacts`          | Array  | The contact list data that is returned. |
+| `data.contacts.remark`   | String | The contact remarks.          |
+| `data.contacts.username` | String | The user ID of a contact. |
+
+For other fields and descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status code](#code) table for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+# Replace {YourAppToken} with the app token generated in your server.
+curl --location 'https://{host}/{org_name}/{app_name}/user/{username}/contacts?limit=10&needReturnRemark=true' \
+-H 'Content-Type: application/json' \
+-H 'Accept: application/json' \
+-H 'Authorization: Bearer  '
+```
+
+#### Response example
+
+```json
+{
+  "uri": "http://{host}/{org_name}/{app_name}/users/{username}/rostersByPage",
+  "timestamp": 1706238297509,
+  "entities": [],
+  "count": 1,
+  "action": "get",
+  "data": {
+    "contacts": [
+      {
+        "remark": null,
+        "username": "username"
+      }
+    ]
+  },
+  "duration": 27
+}
+```
+
+## Add user to blacklist
+
+Adds the specified user or users to the blocklist. Once you add a user to the blocklist, you can no longer receive messages from that user. The maximum number of users in the blocklist for each user is 500.
+
+For each App Key, the call frequency limit of this method is 50 per second.
+
+### HTTP request
+
+```shell
+POST https://{host}/{org_name}/{app_name}/users/{owner_username}/blocks/users
+```
+
+#### Path parameter
+
+For the descriptions of the path parameters of this method, see [Common parameters](#param).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Content-Type` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+The request body is a JSON object, which contains the following fields:
+
+| Field | Type | Description | Required |
+| :-------- | :--------- | :------------------------------------------------ | :------- |
+| `usernames` | An array of usernames | The usernames to be added to the blocklist, such as ["user1", "user2"]. You can pass in a maximum of 50 user IDs each time. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds, and the response body contains the following fields:
+
+| Parameter | Type | Description |
+| :--- | :---- | :----------------------------- |
+| `data` | Array | An array of usernames to add to the blocklist. |
+
+For other fields and descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{ "usernames": [ "user2" ] }' 'http://XXXX/XXXX/XXXX/users/user1/blocks/users'
+```
+
+#### Response example
+
+```json
+{
+    "uri": "https://XXXX/XXXX/XXXX",
+    "timestamp": 1542600372046,
+    "organization": "XXXX",
+    "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
+    "entities": [],
+    "action": "post",
+    "data": [
+        "user2"
+    ],
+    "duration": 110,
+    "applicationName": "XXXX"
+}
+```
+
+## Retrieving the blocklist
+
+This method retrieves the current user's blocklist.
+
+For each App Key, the call frequency limit of this method is 50 per second.
+
+### HTTP request
+
+```shell
+GET https://{host}/{org_name}/{app_name}/users/{owner_username}/blocks/users?pageSize={N}&cursor={cursor}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| --- | --- | --- | --- |
+| `owner_username` | String | current user id. | Yes |
+
+For other parameters and detailed descriptions, see [Common parameters](#param).
+
+#### Query parameter
+
+| Parameter | Type | Description | Required |
+| --- | --- | --- | --- |
+| `pageSize` | Number | The number of users on the blocklist that you expect to retrieve on each page. The value range is [1,50].  | No |
+| `cursor` | String | Where to start getting data.   | No |
+
+:::info
+If neither `pageSize` nor `cursor` is specified, the server returns the blocklist of up to 500 users that are added most recently. If `pageSize` is specified and `cursor` is ignored, the server returns the blocklist of up to 50 users are added most recently.
+:::
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the app admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds, and the response body contains the following fields:
+
+| Parameter | Type | Description |
+| :--- | :---- | :------------------------- |
+| `data` | Array | An array of usernames in the blocklist. |
+| `count` | Number | The number of retrieved users on the blocklist. |
+
+For other fields and descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'https://XXXX/XXXX/XXXX/users/user1/blocks/users?pageSize=2'
+```
+
+#### Response example
+
+```json
+{
+    "uri": "http://XXXX/XXXX/XXXX/users/user1/blocks/users",
+    "timestamp": 1542599978751,
+    "entities": [],
+    "count": 2,
+    "action": "get",
+    "data": [
+        "tst05",
+        "tst04"
+    ],
+    "duration": 4
+}
+```
+
+## Removing a user from the blocklist
+
+Removes the specified user from the blocklist. After removing a user from the blocklist, that user resumes their previous relationship with the current user, as one of the following:
+- A contact who can send and receive messages with the current user.
+- a stranger who has not been added as contact.
+
+For each App Key, the call frequency limit of this method is 50 per second.
+
+### HTTP request
+
+```shell
+DELETE https://{host}/{org_name}/{app_name}/users/{owner_username}/blocks/users/{blocked_username}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :--------------- | :----- | :--------------------- | :------- |
+| `owner_username` | String | The user ID of the current user. | Yes |
+| `blocked_username` | String | The username to be removed from the blocklist. | Yes |
+
+For other parameters and detailed descriptions, see [Common parameters](#param).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request is successful. For fields and descriptions of the response body, see [Common parameter](#param).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../reference/http-status-codes.md)(#code) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/blocks/users/user2'
+```
+
+#### Response example
+
+```json
+{
+    "path": "/users/4759aa70-XXXX-XXXX-925f-6fa0510823ba/blocks",
+    "uri": "https://XXXX/XXXX/XXXX/users/4759aa70-XXXX-XXXX-925f-6fa0510823ba/blocks",
+    "timestamp": 1542600712985,
+    "organization": "XXXX",
+    "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
+    "entities": [
+        {
+            "uuid": "b2aade90-XXXX-XXXX-a974-f3368f82e4f1",
+            "type": "user",
+            "created": 1542356523769,
+            "modified": 1542597334500,
+            "username": "user2",
+            "activated": true,
+        }
+    ],
+    "action": "delete",
+    "duration": 20,
+    "applicationName": "XXXX"
+}
+```
+
+## Status codes
+
+For details, see [HTTP Status Codes](../reference/http-status-codes.md).

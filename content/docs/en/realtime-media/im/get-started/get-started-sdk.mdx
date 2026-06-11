@@ -1,0 +1,997 @@
+---
+title: "SDK quickstart"
+description: "A highly reliable global communication platform where users can chat one-to-one, in groups or in chat rooms."
+---
+Instant messaging enhances user engagement by enabling users to connect and form a community within the app. Increased engagement can lead to increased user satisfaction and loyalty to your app. An instant messaging feature can also provide real-time support to users, allowing them to get help and answers to their questions quickly. The Chat SDK enables you to embed real-time messaging in any app, on any device, anywhere.
+
+This page guides you through implementing peer-to-peer messaging into your app using the Chat SDK for Web.
+
+## Understand the tech
+
+The following figure shows the workflow of sending and receiving peer-to-peer messages using Chat SDK.
+
+Chat SDK workflow
+
+![understand](/images/im/get-started-sdk-understand.png)
+
+1. Clients retrieve an authentication token from your app server.
+1. Users log in to Chat using the app key, their user ID, and token.
+1. Clients send and receive messages through Chat as follows:
+	1. Client A sends a message to Client B. The message is sent to  Chat.
+	1. The server delivers the message to Client B. When Client B receives a message, the SDK triggers an event.
+	1. Client B listens for the event to read and display the message.
+
+## Prerequisites
+
+In order to follow the procedure on this page, you must have:
+
+- A valid [Agora account](../reference/manage-agora-account.md#create-an-agora-account).
+- An [Agora project](../reference/manage-agora-account.md#create-an-agora-project) for which you have [enabled Chat](./enable.md#enable-).
+- The [App Key](./enable.md#get-chat-project-information) for the project.
+- Internet access.
+
+	Ensure that no firewall is blocking your network communication.
+
+<Tabs defaultValue="web" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+  <TabsTrigger value="react-native">React Native</TabsTrigger>
+  <TabsTrigger value="unity">Unity</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- An Android emulator or a physical Android device.
+- Android Studio 3.6 or higher.
+- Java Development Kit (JDK). You can refer to the [Android User Guide](https://developer.android.com/studio/write/java8-support) for applicable versions.
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- Xcode. This page uses Xcode 13.0 as an example.
+- A device running iOS 10 or later.
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- A Windows or macOS computer that meets the following requirements:
+  - A browser supported by the Agora Chat SDK: 
+    - Internet Explorer 9 or later
+    - FireFox 10 or later
+    - Chrome 54 or later
+    - Safari 6 or later
+  - Access to the Internet. If your network has a firewall, follow the instructions in [Firewall Requirements](https://docs.agora.io/en/Agora%20Platform/firewall) to access Agora services.
+- [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
+</TabsContent>
+
+<TabsContent value="flutter">
+
+- Flutter 2.10 or higher.
+- Dart 2.16 or higher.
+
+- If your target platform is iOS:
+    - macOS
+    - Xcode 12.4 or higher with Xcode Command Line Tools
+    - CocoaPods
+    - An iOS emulator or a physical iOS device running iOS 10.0 or higher
+
+- If your target platform is Android:
+    - macOS or Windows
+    - Android Studio 4.0 or higher with JDK 1.8 or higher
+    - An Android emulator or a physical Android device running Android SDK API 21 or higher
+
+</TabsContent>
+
+<TabsContent value="react-native">
+
+If your target platform is iOS:
+
+- macOS 10.15.7 or later
+- Xcode 12.4 or later, including command line tools
+- React Native 0.66.5 or later
+- NodeJs 16 or later, including npm package management tool
+- CocoaPods package management tool
+- Yarn compile and run tool
+- Watchman debugging tool
+- A physical or virtual mobile device running iOS 10.0 or later
+
+If your target platform is Android:
+
+- macOS 10.15.7 or later, or Windows 10 or later
+- Android Studio 4.0 or later, including JDK 1.8 or later
+- React Native 0.66.5 or later
+- CocoaPods package management tool if your operating system is macOS.
+- Powershell 5.1 or later if your operating system is Windows.
+- NodeJs 16 or later, including npm package management tool
+- Yarn compile and run tool
+- Watchman debugging tool
+- A physical or virtual mobile device running Android 6.0 or later
+
+For more information, see [Setting up the environment](https://reactnative.dev/docs/environment-setup).
+
+</TabsContent>
+
+<TabsContent value="unity">
+
+In order to follow the procedure in this page, you must have the following:
+
+</TabsContent>
+
+<TabsContent value="windows">
+
+- A device running Windows 7 or higher.
+- Visual Studio IDE 2019 or later
+- .Net Framework 4.5.2 or later
+
+</TabsContent>
+
+</Tabs>
+
+## Project setup
+
+<Tabs defaultValue="web" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+  <TabsTrigger value="react-native">React Native</TabsTrigger>
+  <TabsTrigger value="unity">Unity</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+To integrate Chat into your app, do the following:
+
+1. Method 1: Use `mavenCentral` to automatically integrate:
+
+    1. In Android Studio, create a new **Phone and Tablet** [Android project](https://developer.android.com/studio/projects/create-project) with an **Empty Activity**. Choose **Java** as the project language, and ensure that the **Minimum SDK** version is set to `21` or higher. 
+
+        Android Studio automatically starts gradle sync. Wait for the sync to succeed before you continue.
+
+    1. Add Chat SDK to your project dependencies. 
+
+        To add the SDK to your project:
+        
+        1. In `/Gradle Scripts/build.gradle (Module: .app)`, add the following line under `dependencies`:
+
+            ```groovy
+            dependencies {
+                ...
+                implementation 'io.agora.rtc:chat-sdk:'
+            }
+            ```
+
+            Replace `` with the version number for the latest Chat SDK release, for example `1.3.1`. You can obtain the latest version information using [Maven Central Repository Search](https://central.sonatype.com/artifact/io.agora.rtc/chat-sdk/versions).
+
+        1. To download the SDK from Maven Central, press **Sync Now**.
+
+    1. Add permissions for network and device access.
+
+        To add the necessary permissions, in `/app/Manifests/AndroidManifest.xml`, add the following permissions after ``:
+            
+        ```xml
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+        <uses-permission android:name="android.permission.WAKE_LOCK"/>
+        <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+        ```
+
+    1. Prevent code obfuscation.
+
+    In `/Gradle Scripts/proguard-rules.pro`, add the following line:
+
+    ```java
+    -keep class io.agora.** {*;}
+    -dontwarn  io.agora.**
+    ```
+
+1. Method 2: Dynamically load .so library files
+
+    In order to reduce the size of the application installation package, the SDK provides `ChatOptions#setNativeLibBasePath` method to support dynamic loading of the `.so` files required by the SDK. Taking SDK 1.3.0 as an example, the `.so` file includes two files: `libcipherdb.so` and `.libhyphenate.so`. The steps to implement this function are as follows:
+
+    1. Download the latest version of the SDK and unzip it.
+    1. Integrate the `agorachat_1.3.0.jar` file into your project.
+    1. Upload `.so` files for all schemas to your server and ensure that the application can download `.so` files for the target schemas over the network.
+    1. When the application runs, it checks whether the `.so` file exists. If not found, the app downloads the `.so` file and saves it to your custom app's private directory.
+    1. When calling `ChatClient#init`, set the app private directory where the `.so` file is located as a parameter into the `ChatOptions#setNativeLibBasePath` method.
+    1. The SDK will automatically load `.so` files from the specified path upon initialization.
+
+    ```java
+    // Assume that you have put two .so libraries, `libcipherdb.so` and `libagora-chat-sdk.so` in the /data/data/packagename/files directory of the app.
+    String filesPath = mContext.getFilesDir().getAbsolutePath();
+
+    ChatOptions options = new ChatOptions();
+    options.setNativeLibBasePath(filesPath);
+
+    ChatClient.getInstance().init(mContext, options);
+    ```
+    :::tip
+This method is applicable when you integrate the SDK manually but not when you integrate the SDK with Maven Central.You can specify the path of `.so` files with the path parameter in the `ChatOptions#setNativeLibBasePath` method. The path must be a valid and private directory of the app.If you set this parameter, the SDK will use `System.load` to load the `.so` library from the directory you specify, so that the app dynamically loads the required `.so` files when it runs, thereby reducing the package size.If you do not set this parameter or set it to `null`, the SDK will use `system.load` to load the `.so` library from the default path, when compiling the app, thus increasing the package size compared to the previous method.Since March 6, 2024, using this method to reduce the app size no longer meets the requirements of Google Play. For details, refer to the [Developer Program Policies](https://support.google.com/googleplay/android-developer/answer/14906471?hl=en&visit_id=638555962315571301-1274648059&rd=1) issued by Google. If your app needs to be listed on Google Play, please try other ways to reduce the app size. For details, see [App size optimization](/en/realtime-media/rtc/best-practices/app-size-optimization#dynamically-load-so-files).
+:::
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+To integrate Chat into your app, do the following:
+
+1. [Create a new project](https://help.apple.com/xcode/mac/current/#/dev07db0e578) for this Web app using the **App** template. Select the **Storyboard** Interface and **Swift** Language.
+
+    If you have not already added team information, click **Add account…**, input your Apple ID, then click **Next**.
+
+1. [Enable automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your project.
+    [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) to deploy your iOS app to an iPhone or iPad.
+1. Add project permissions for microphone and camera usage:
+
+    1. Open **Info** in the project navigation panel, then add the following properties to the [Information Property List](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6):
+
+        | Key                          | Type   | Value                  |
+        |------------------------------|--------|------------------------|
+        | NSMicrophoneUsageDescription | String | Access the microphone. |
+        | NSCameraUsageDescription     | String | Access the camera.     |
+
+1. Integrate Agora Chat SDK into your project:
+
+    1.  In Xcode, click **File** &gt; **Add Packages...**, then paste the following link in the search:
+        ```
+        https://github.com/AgoraIO/AgoraChat_iOS.git
+        ```
+
+        You see the available Agora packages. In **AgoraChat_iOS**, specify the latest Chat SDK version, for example `1.0.9`. You can obtain the latest version information in the [release notes](../overview/release-notes.md).
+
+    1.  Click **Add Package**. In the new window, click **Add Package**.
+
+        You see **AgoraChat** in **Package Dependencies** for your project.
+
+:::warning
+The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/AgoraChat_PrivacyInfo.xcprivacy) file that you can include in your project. If you are using Chat SDK 1.2 or earlier, refer to [Add a privacy manifest file](#add-a-privacy-manifest-file) for details.
+:::
+
+</TabsContent>
+
+<TabsContent value="web">
+
+To create the environment necessary to add peer-to-peer messaging into your app, do the following:
+
+1. Use VITE to create a new project. If VITE is not installed, run `npm i vite -g` to install it. Then, run `npm create vite@latest agora_quickstart`. In this example, we choose "React + JavaScript" to create the project.
+
+ The project directory now has the following structure:
+
+  ```text
+  agora_quickstart
+  ├─ index.html
+  ├─ main.js
+  └─ package.json
+  ```
+
+2. Integrate the Agora Chat SDK into your project through npm. 
+   Add 'agora-chat' and 'vite' to the 'package.json' file.
+
+   ```json
+    {
+        "name": "agora_quickstart",
+        "private": true,
+        "version": "0.0.0",
+        "type": "module",
+        "scripts": {
+            "dev": "vite",
+            "build": "vite build",
+            "preview": "vite preview"
+        },
+        "dependencies":{
+            "agora-chat": "latest"
+        },
+        "devDependencies": {
+            "vite": "^3.0.7"
+        }
+    }
+   ```
+
+</TabsContent>
+
+<TabsContent value="flutter">
+
+To integrate Chat into your app, do the following:
+
+1. **Set up a Flutter environment for a Chat project**
+
+    In the terminal, run the following command:
+
+    ```bash
+    flutter doctor
+    ```
+    Flutter checks your development device and helps you [set up](https://docs.flutter.dev/get-started/editor) your local development environment. Make sure that your system passes all the checks.
+
+1. **Create a new Flutter app**
+
+    In the IDE of your choice, create a new [Flutter Application project](https://docs.flutter.dev/development/tools/android-studio#creating-a-new-project).
+
+    You can also create a new project from the terminal using the following command:
+
+    ```bash
+    flutter create 
+    ```
+
+1. **Add Chat SDK to your project**
+
+    Add the following line to the `/pubspec.yaml` file under `dependencies`:
+
+    ```yaml
+    dependencies:
+    ...
+      # For x.y.z, fill in a specific SDK version number. For example, 1.0.9
+      agora_chat_sdk: ^x.y.z
+    ...
+    ```
+    To get the latest Web Chat SDK version number, visit [pub.dev](https://pub.dev/packages?q=agora_chat_sdk).
+
+    You can also add the Chat SDK dependency to your project by running the following command in the project folder:
+
+    ```bash
+    flutter pub add agora_chat_sdk
+    ```
+
+1. **Use the Flutter framework to download dependencies to your app**
+
+    Open a terminal window and execute the following command in the project folder:
+
+    ```bash
+    flutter pub get
+    ```
+
+1. **Add platform specific requirements**
+
+    Update the minimum version requirements for your target platforms as follows:
+
+    * **Android**
+
+        * In the `/android/app/build.gradle` file, set the Android `minSdkVersion` to `21` under `defaultConfig {`.
+
+            ``` json
+            android {
+                defaultConfig {
+                    minSdkVersion 21
+                }
+            }
+            ```
+
+        * In the `/android/app/proguard-rules.pro` file, add the following lines to prevent code obfuscation:
+
+            ```bash
+            -keep class com.hyphenate.** {*;}
+            -dontwarn  com.hyphenate.**
+            ```
+
+    * **iOS**
+
+        Open the `/ios/Runner.xcodeproj` file in **Xcode**, and select **TARGETS** > **Runner** in the left sidebar. In the **General** > **Deployment Info** section, set the minimum iOS version to `iOS 10.0`.
+
+</TabsContent>
+
+<TabsContent value="react-native">
+
+Follow these steps to create a React Native project and add Agora Chat into your app.
+
+1. Prepare the development environment according to your development system and target platform.
+
+2. In your terminal, navigate to the directory where you want to create the project, and run the following command to create a React Native project:
+
+   ```sh
+   npx @react-native-community/cli@latest init --version 0.76 simple_demo
+   ```
+
+   The created project name is `simple_demo`.
+
+   Initialize the project:
+
+   ```sh
+   cd simple_demo
+   yarn set version 1.22.19
+   yarn
+   ```
+
+You can use npm or other tools.
+
+3. In the terminal, run the following command to add dependencies:
+
+   ```sh
+   yarn add react-native-agora-chat
+   ```
+
+4. Initialize the native part.
+
+   For iOS platform, use `cocoapods` to initialize:
+
+   ```sh
+   cd ios && pod install && cd ..
+   ```
+
+</TabsContent>
+
+<TabsContent value="unity">
+
+1. **Create a Unity project**:
+
+    1. In Unity Hub, select **Projects**, then click **New Project**.
+
+    1. In **All templates**, select **3D**. Set the **Project name** and **Location**, then click **Create Project**.
+        
+        Your project opens in Unity Editor.
+
+2. **Integrate  Chat SDK  into your project**:
+
+    1. Unzip [ Chat SDK for Unity](/sdks) to a local folder:
+
+    1. In Unity, click **Assets > Import Package > Custom Package**.
+
+    1. Navigate to the Chat SDK package and click *Open*.
+
+    1. In **Import Unity Package**, click **Import**.
+
+</TabsContent>
+
+<TabsContent value="windows">
+
+This section shows how to integrate Chat SDK into your project.
+
+1. Create a Windows project
+
+    1. Open **Visual Studio** and [Create a C# WPF app](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/get-started/create-app-visual-studio?view=netdesktop-7.0#create-a-wpf-app) named `AgoraWindowsChat`.
+    1. Set the **Active solution configuration** as **Debug** and **Active solution platform** as **x64**.
+
+2. Integrate the Chat SDK
+
+    1. [Download](/sdks) the Chat SDK NuGet package.
+
+    2. In Solution Explorer, right-click `` and select **Manage NuGet Packages...**.
+
+    3. On the `NuGet: ` page, select the **Gear** icon at the top right.
+
+    4. In **Options**,
+        1. Click **+** at the top right, then select the new package source.
+        1. Set **Name**, then set **Source** to the parent directory of the Nuget package resides.
+        1. Click **OK**.
+
+    5. Go back to the `NuGet: ` page, open the **Package source** drop-down list at the top right, then
+      select the package you just added.
+
+    6. In **Browse** on the `NuGet: ` page, select **agora_chat_sdk**, then click **Install**.
+
+          If you don't see **agora_chat_sdk**, refresh the page.
+
+    7. In **Preview Changes**, click **OK**
+
+You have installed Chat SDK.
+
+</TabsContent>
+
+</Tabs>
+
+## Implement peer-to-peer messaging
+This section shows how to use the Chat SDK to implement peer-to-peer messaging in your app, step by step.
+
+<Tabs defaultValue="web" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+  <TabsTrigger value="react-native">React Native</TabsTrigger>
+  <TabsTrigger value="unity">Unity</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+_No platform-specific content._
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+_No platform-specific content._
+
+</TabsContent>
+
+<TabsContent value="web">
+
+Copy the following code to the `App.jsx` file to implement the UI:
+
+```jsx
+
+function App() {
+  // Replaces  with your app key.
+  const appKey = "";
+  const [userId, setUserId] = useState("");
+  const [token, setToken] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [peerId, setPeerId] = useState("");
+  const [message, setMessage] = useState("");
+  const [logs, setLogs] = useState([]);
+  const chatClient = useRef(null);
+
+  // Logs into Agora Chat.
+  const handleLogin = () => {
+    if (userId && token) {
+      chatClient.current.open({
+        user: userId,
+        // Use agoraToken for v1.2.1 and earlier, but accessToken for 1.2.2 and later.
+        accessToken: token,
+      });
+    } else {
+      addLog("Please enter userId and token");
+    }
+  };
+
+  // Logs out.
+  const handleLogout = () => {
+    chatClient.current.close();
+    setIsLoggedIn(false);
+    setUserId("");
+    setToken("");
+    setPeerId("");
+  };
+
+  // Sends a peer-to-peer message.
+  const handleSendMessage = async () => {
+    if (message.trim()) {
+      try {
+        const options = {
+          chatType: "singleChat", // Sets the chat type as a one-to-one chat.
+          type: "txt", // Sets the message type.
+          to: peerId, // Sets the recipient of the message with user ID.
+          msg: message, // Sets the message content.
+        };
+        let msg = AgoraChat.message.create(options);
+
+        await chatClient.current.send(msg);
+        addLog(`Message send to ${peerId}: ${message}`);
+        setMessage("");
+      } catch (error) {
+        addLog(`Message send failed: ${error.message}`);
+      }
+    } else {
+      addLog("Please enter message content");
+    }
+  };
+
+  // Add log.
+  const addLog = (log) => {
+    setLogs((prevLogs) => [...prevLogs, log]);
+  };
+
+  useEffect(() => {
+    // Initializes the Web client.
+    chatClient.current = new AgoraChat.connection({
+      appKey: appKey,
+    });
+
+    // Adds the event handler.
+    chatClient.current.addEventHandler("connection&message", {
+      // Occurs when the app is connected to Agora Chat.
+      onConnected: () => {
+        setIsLoggedIn(true);
+        addLog(`User ${userId} Connect success !`);
+      },
+      // Occurs when the app is disconnected from Agora Chat.
+      onDisconnected: () => {
+        setIsLoggedIn(false);
+        addLog(`User Logout!`);
+      },
+      // Occurs when a text message is received.
+      onTextMessage: (message) => {
+        addLog(`${message.from}: ${message.msg}`);
+      },
+      // Occurs when the token is about to expire.
+      onTokenWillExpire: () => {
+        addLog("Token is about to expire");
+      },
+      // Occurs when the token has expired.
+      onTokenExpired: () => {
+        addLog("Token has expired");
+      },
+      onError: (error) => {
+        addLog(`on error: ${error.message}`);
+      },
+    });
+  }, []);
+
+  return (
+    <>
+      
+        Agora Chat Examples
+        {!isLoggedIn ? (
+          <>
+            
+              UserID: 
+               setUserId(e.target.value)}
+                placeholder="Enter the user ID"
+              />
+            
+            
+              Token: 
+               setToken(e.target.value)}
+                placeholder="Enter the token"
+              />
+            
+            Login
+          
+        ) : (
+          <>
+            Welcome, {userId}
+            Logout
+            
+              Peer userID: 
+               setPeerId(e.target.value)}
+                placeholder="Enter the peer user ID"
+              />
+            
+            
+              Peer message: 
+               setMessage(e.target.value)}
+                placeholder="Input message"
+              />
+              Send
+            
+          
+        )}
+
+        Operation log
+        
+          {logs.map((log, index) => (
+            {log}
+          ))}
+        
+      
+    
+  );
+}
+
+export default App;
+```
+
+</TabsContent>
+
+<TabsContent value="flutter">
+
+_No platform-specific content._
+
+</TabsContent>
+
+<TabsContent value="react-native">
+
+## Implementation
+
+This section introduces the codes you need to add to your project to start one-to-one messaging.
+
+</TabsContent>
+
+<TabsContent value="unity">
+
+_No platform-specific content._
+
+</TabsContent>
+
+<TabsContent value="windows">
+
+_No platform-specific content._
+
+</TabsContent>
+
+</Tabs>
+
+## Test your implementation
+
+To ensure that you have implemented Peer-to-Peer Messaging in your app:
+
+<Tabs defaultValue="web" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+  <TabsTrigger value="react-native">React Native</TabsTrigger>
+  <TabsTrigger value="unity">Unity</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+1. Create an app instance for the first user:
+
+    1. [Register a user](./enable.md#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable.md#generate-a-user-token).
+
+    1. In the `MainActivity` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable.md#get-chat-project-information).
+
+    1. Connect a physical Android device to your development device.
+
+    1. In Android Studio, click **Run app**. A moment later you see the project installed on your device.
+
+1. Create an app instance for the second user:
+
+    1. Register a second user in Agora Console and generate a user token.
+
+    1. In the `MainActivity` class, update `userId` and `token` with values for the second user. Make sure you use the same `appKey` as for the first user.
+
+    1. Run the modified app on a device emulator or a second physical Android device.
+
+1. On each device, click **Join** to log in to  Chat.
+
+1. Edit the recipient name on each device to show the user ID of the user logged in to the other device.
+
+1. Type a message in the **Message** box of either device and press **`>>`**. 
+    
+    The message is sent and appears on the other device.
+
+1. Press **Leave** to log out of  Chat.
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+1. Create an app instance for the first user:
+
+    1. [Register a user](./enable.md#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable.md#generate-a-user-token).
+
+    1. In the `ViewController` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable.md#get-chat-project-information).
+
+    1. Connect a physical Web device to your development device.
+
+    1. In Xcode, click **Run app**. A moment later you see the project installed on your device.
+
+1. Create an app instance for the second user:
+
+    1. Register a second user in Agora Console and generate a user token.
+
+    1. In the `ViewController` class, update `userId` and `token` with values for the second user. Make sure you use the same `appKey` as for the first user.
+
+    1. Run the modified app on a device emulator or a second physical Web device.
+
+1. On each device, click **Join** to log in to the Chat.
+
+1. Edit the recipient name on each device to show the user ID of the user logged in to the other device.
+
+1. Type a message in the **Message** box of either device and press **`>>`**.
+
+    The message is sent and appears on the other device.
+
+1. Press **Leave** to log out of the Chat.
+
+</TabsContent>
+
+<TabsContent value="web">
+
+Use vite to build the project. You can run below commands to run the project.
+
+```bash
+$ npm install
+```
+```bash
+$ npm run dev
+```
+
+The following page opens in your browser:
+
+![Agora chat examples web](/images/im/agora-chat-examples-empty.png)
+
+To validate the peer-to-peer messaging you have just integrated into your Web app using Agora Chat:
+
+1. Log in
+
+   Fill in the user ID of the sender (`Leo`) in the **user id** box and agora token in the **token** box, and click **Login** to log in to the app.
+
+1. Send a message
+
+   Fill in the user ID of the receiver (`Roy`) in the **single chat id** box and type in the message ("Hi, how are you doing?") to send in the **message content** box, and click **Send** to send the message.
+
+	![Send a message](/images/im/send-message-web.png)
+
+1. Log out
+
+   Click **Logout** to log out of the app.
+
+1. Receive the message
+
+   Open the same page in a new window, log in as the receiver (`Roy`) and receive the message ("Hi, how are you doing?") sent from **Leo**.
+
+   ![Receive a message](/images/im/receive-message-web.png)
+
+</TabsContent>
+
+<TabsContent value="flutter">
+
+1. Create an app instance for the first user:
+
+    1. [Register a user](./enable.md#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable.md#generate-a-user-token).
+
+    1. In the `_MyHomePageState` class, update `appKey`, `token`, and `userId` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable.md#get-chat-project-information).
+
+    1. Connect a physical test device to your development device.
+
+    1. In your IDE, click **Run app** or launch your app from the terminal using `flutter run lib/main.dart`. A moment later you see the project installed on your device.
+
+1. Create an app instance for the second user:
+
+    1. Register a second user in Agora Console and generate a user token.
+
+    1. In the `_MyHomePageState` class, update `userId` and `token` with values for the second user. Make sure you use the same `appKey` as for the first user.
+
+    1. Run the modified app on a device emulator or a second physical test device.
+
+1. On each device, click **Join** to log in to  Chat.
+
+1. Edit the recipient name on each device to show the user ID of the user logged in to the other device.
+
+1. Type a message in the **Message** box of either device and press **`>>`**. 
+    
+    The message is sent and appears on the other device.
+
+1. Press **Leave** to log out of  Chat.
+
+</TabsContent>
+
+<TabsContent value="react-native">
+
+:::info
+You can log in to the app by either modifying the fields in the `App.js` file as stated below, or entering the required fields in the user interface.
+:::
+
+To validate the peer-to-peer messaging you have just integrated into your app using Agora Chat, perform the following operations:
+
+1. Log in  
+a. In the [`App.js`](#sign-in) file, replace the placeholders of `appKey`, `username`, and `chatToken` with the App Key, user ID, and Agora token of the sender.  
+b. Run and [build](#build) your app.  
+c. On your simulator or physical device, click **SIGN IN** to log in with the sender account.
+
+2. Send a message  
+Fill in the user ID of the receiver in the **Enter the username you want to send** box, type in te message to send in the **Enter content** box, and click **SEND TEXT** to send the message.
+
+3. Log out  
+Click **SIGN OUT** to log out of the sender account.
+
+4. Receive the message  
+a. After signing out, change the values of `appKey`, `username`, and `chatToken` to the user ID, Agora token, and App Key of the receiver in the [`App.js`](#sign-in) file.  
+b. Run the app on another device or simulator with the receiver account and receive the message sent in step 2.
+
+You can also read from the logs on the UI to see whether you have successfully signed in, signed out, and sent and received a text message.
+
+</TabsContent>
+
+<TabsContent value="unity">
+
+1. [Register a user](./enable.md#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable.md#generate-a-user-token).
+
+1. In the `NewBehaviourScript` class, update `userId`, `token`, and `appKey` with values from Agora Console. To get your app key, see [Get Chat project information](./enable.md#get-chat-project-information).
+
+1. In Unity Editor, click **Play**. A moment later you see the project installed on your development device.
+
+1. Click **Join** to log in to  Chat.
+
+1. Type the recipient user name in the **Recepient Name** field.
+
+1. Type a message in the **Message** field and press **`>>`**. 
+    
+    The message is sent and a confirmation message is displayed in the debug console.
+    
+1. [Register the recipient user](./enable.md#register-a-user) in Agora Console and [Generate a user token](./enable.md#generate-a-user-token).
+
+1. In the `NewBehaviourScript` class, update `userId` and `token` with values you generated for recipient. Make sure you use the same `appKey` as for both users.
+
+1. Save your changes and click **Play** to run the app.
+
+1. Click **Join** to log in to the Chat.
+    
+    You see a message in the scroll view that you sent earlier.
+
+</TabsContent>
+
+<TabsContent value="windows">
+
+1. Create an app instance for the first user:
+
+    1. [Register a user](./enable.md#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable.md#generate-a-user-token).
+
+    1. In the `MainWindow` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable.md#get-chat-project-information).
+
+    1. Click the **Start** button. You see the following interface:
+    
+        ![image](/images/im/chat-windows-interface.png)   
+
+1. Create an app instance for the second user:
+
+   1. Register a second user in Agora Console and generate a user token.
+
+    1. Build a second instance of your app after updating `userId` and `token` with values for the second user. Make sure you use the same `appKey` as for the first user.
+
+    1. Click the **Start** button to launch the second instance. 
+
+1. On each instance, click **Join** to log in to Agora Chat. 
+
+1. Edit the recipient name in each app instance to show the user ID of the user logged in to the other instance.
+
+1. Type a message in the **Message** box of either instance and press **`>>`**. The message is sent and appears on the other app. 
+    
+    ![image](/images/im/chat-windows-communication.png)
+
+1. Press **Leave** to log out from Agora Chat.
+
+</TabsContent>
+
+</Tabs>
+
+## Reference
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
+
+* For more code samples, see [Samples and demos](../reference/downloads.md).
+
+<Tabs defaultValue="web" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+  <TabsTrigger value="react-native">React Native</TabsTrigger>
+  <TabsTrigger value="unity">Unity</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+* [Manual install](../reference/manual-sdk-install.md) shows you how to integrate Chat SDK into your project manually.
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+_No platform-specific content._
+
+</TabsContent>
+
+<TabsContent value="web">
+
+For details:
+
+* [Manual install](../reference/manual-sdk-install.md) shows you how to integrate Chat SDK into your project manually.
+
+* [Sample code](https://github.com/AgoraIO/Agora-Chat-API-Examples/blob/main/Chat-Web/src/index.js) for getting
+  started with Chat.
+
+* Install the [demo  app](../reference/downloads.md).
+
+</TabsContent>
+
+<TabsContent value="flutter">
+
+_No platform-specific content._
+
+</TabsContent>
+
+<TabsContent value="react-native">
+
+For details, see the [sample code](https://github.com/AgoraIO/Agora-Chat-API-Examples/tree/main/Chat-RN/quick_start_demo) for getting started with Chat.
+
+</TabsContent>
+
+<TabsContent value="unity">
+
+_No platform-specific content._
+
+</TabsContent>
+
+<TabsContent value="windows">
+
+* Avoid blocked callbacks  
+  Each callback of a Chat client instance is triggered from internal threads. To avoid blocking internal threads, Agora recommends that you execute your operations in other threads when callbacks are triggered.
+
+</TabsContent>
+
+</Tabs>

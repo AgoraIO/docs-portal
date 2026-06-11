@@ -1,0 +1,943 @@
+---
+title: "Manage group members"
+description: "Shows how to manage group members by calling the Agora Chat RESTful APIs."
+---
+
+Group member management involves operations such as member creation and deletion.  Chat provides multiple APIs for adding and retrieving group members, adding a group administrator, and transferring the group owner.
+
+This page shows how to manage group members by calling the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../../reference/limitations.md#call-limit-of-server-sides).
+
+## Common parameters
+
+The following table lists common request and response parameters of the Chat RESTful APIs:
+
+### Request parameters 
+
+| Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
+| :--------- | :----- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                      | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                           | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                              | Yes |
+| `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
+Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.
+::: | Yes |
+
+### Response parameters 
+
+| Parameter | Type | Description |
+| :---------------- | :----- | :---------------------------------------------------------------- |
+| `action` | String | The request method. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service. This is the same as `app_name`. |
+| `uri` | String | The request URI. |
+| `path` | String | The request path, which is part of the request URI. You can safely ignore this parameter. |
+| `entities ` | JSON | The response entity. |
+| `data` | JSON | The details of the response. |
+| `timestamp` | Number | The Unix timestamp (ms) of the HTTP response. |
+| `duration` | Number | The duration (ms) from when the HTTP request is sent to the time the response is received. |
+
+## Authorization
+
+Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request is sent, the following `Authorization` field must be filled in the request header:
+
+```html
+Authorization: Bearer ${YourAppToken}
+```
+
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../../develop/authentication.md).
+
+## Retrieving group members
+
+Retrieves the member list of the specified chat group with pagination.
+
+### HTTP request
+
+```shell
+GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users
+
+// Gets the member list of the group with pagination.
+GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users?pagenum={N}&pagesize={N}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :------------------------------------------------ | :------- |
+| `group_id` | String | The group ID. | Yes |
+
+#### Query parameter
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :------------------------------------------------ | :------- |
+| `pagenum` | Number | The current page number. The query starts from the first page by default. | No |
+| `pagesize` | Number | The number of members to retrieve per page. The default value is 10. The value range is [1,100].  | No |
+
+For other parameters and detailed descriptions, see [Common parameters](#common-parameters).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body contains the following parameters.
+
+| Parameter | Type | Description |
+| :----- | :----- | :--------------------------------------- |
+| `owner` | String | The username of the group owner, for example, `{"owner":"user1"}`. |
+| `member` | String | The username of a group admin or regular group member, for example, `{"member":"user2"}`. |
+| `count` | String | The number of group members retrieved at this call of this API. |
+
+For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](#code) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X GET -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/users?pagenum=2&pagesize=2' -H 'Authorization: Bearer '
+```
+
+#### Response example
+
+```json
+{
+    "action": "get",
+    "application": "527cd7e0-XXXX-XXXX-9f59-ef10ecd81ff0",
+    "params": {
+        "pagesize": [
+          "2"
+        ],
+        "pagenum": [
+          "2"
+        ]
+    },
+    "uri": "http://XXXX/XXXX/XXXX/chatgroups/10130212061185/users",
+    "entities": [],
+    "data": [
+    {
+            "owner": "user1"
+    },
+    {
+            "member": "user2"
+    }
+    ],
+    "timestamp": 1489074511416,
+    "duration": 0,
+    "organization": "XXXX",
+    "applicationName": "XXXX",
+    "count": 2
+}
+```
+
+## Adding a user to the chat group
+
+Adds the specified user to the chat group.  If the user is already a member of the chat group, an error is returned.
+
+### HTTP request
+
+```shell
+POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users/{username}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :-------- | :------- |
+| `group_id` | String | The group ID. | Yes |
+
+For other parameters and detailed descriptions, see [Common parameters](#common-parameters).
+
+#### Request parameters
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Content-Type` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body contains the following parameters.
+
+| Parameter | Type | Description |
+| :------ | :------ | :------------------------------------------------ |
+| `result` | Boolean | Whether the user is successfully added to the chat group. true: Yes.false: No. |
+| `groupid` | String | The group ID. |
+| `action` | String | The request method. |
+| `user` | String | The username added to the chat group. |
+
+For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](#code) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/user4'
+```
+
+#### Response example
+
+```json
+{
+    "action": "post",
+    "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
+    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/user4",
+    "entities": [],
+    "data": {
+      "result": true,
+      "groupid": "66016455491585",
+      "action": "add_member",
+      "user": "user4"
+    },
+    "timestamp": 1542364958405,
+    "duration": 0,
+    "organization": "XXXX",
+    "applicationName": "XXXX"
+}
+```
+
+## Adding multiple users to the chat group
+
+Adds multiple users to the specified chat group. You can add a maximum of 60 users into a chat group each time. If the users are already members of the chat group, an error is returned in the response body.
+### HTTP request
+
+```shell
+POST https://{host}/{org_name}/{app_name}/chatgroups/{chatgroupid}/users
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :-------- | :------- |
+| `group_id` | String | The group ID. | Yes |
+
+For other parameters and detailed descriptions, see [Common parameters](#common-parameters).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Content-Type` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+| :-------- | :---- | :------------------------ | :------- |
+| `usernames` | Array |  The usernames to add to the chat group. You can pass in a maximum of 60 usernames each time. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body contains the following parameters.
+
+| Parameter | Type | Description |
+| :--------- | :----- | :---------------------- |
+| `newmembers` | Array | The array of usernames that are added to the group. |
+| `groupid` | String | The group ID. |
+| `action` | String | The request method. |
+
+For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](#code) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{
+    "usernames": [
+      "user4","user5"
+    ]
+}' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users'
+```
+
+#### Response example
+
+```json
+{
+    "action": "post",
+    "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
+    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users",
+    "entities": [],
+    "data": {
+      "newmembers": [
+        "user5",
+        "user4"
+      ],
+      "groupid": "66016455491585",
+      "action": "add_member"
+    },
+    "timestamp": 1542365557942,
+    "duration": 0,
+    "organization": "XXXX",
+    "applicationName": "XXXX"
+}
+```
+
+## Removing a chat group member
+
+Removes the specified user from the chat group. If the specified user is not in the chat group, an error is returned.
+
+Once a member is removed from a chat group, they are also removed from all the threads they have joined in this chat group.
+
+### HTTP request
+
+```shell
+DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users/{username}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :-------- | :------- |
+| `group_id` | String | The group ID. | Yes |
+
+For other parameters and detailed descriptions, see [Common parameters](#common-parameters).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body contains the following parameters.
+
+| Parameter | Type | Description |
+| :------ | :------ | :------------------------------------------------ |
+| `result` | Boolean | Whether the user is successfully removed from the chat group. true: Yes.false: No. |
+| `groupid` | String | The group ID. |
+| `action` | String | The request method. |
+| `user` | String | The usernames removed from the chat group. |
+
+For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](#code) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/user3'
+```
+
+#### Response example
+
+```json
+{
+    "action": "delete",
+    "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
+    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/user3",
+    "entities": [],
+    "data": {
+      "result": true,
+      "action": "remove_member",
+      "user": "user3",
+      "groupid": "66016455491585"
+    },
+    "timestamp": 1542365943067,
+    "duration": 0,
+    "organization": "XXXX",
+    "applicationName": "XXXX"
+}
+```
+
+## Removing multiple group members
+
+Removes multiple users from the chat group. You can remove a maximum of 60 members from the chat group each time. If the specified users are not in the group, an error is returned.
+
+Once a member is removed from a chat group, they are also removed from all the threads they have joined in this chat group.
+
+### HTTP request
+
+```
+DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users/{members}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :----------------------------------------------------------- | :------- |
+| group_id | String | The group ID. | Yes |
+| members | String | The usernames of group members separated by the comma (,). For example, `user1, user2`. | Yes |
+
+For the descriptions of other path parameters, see [Common Parameters](#common-parameters).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds to and the `data` field in the response body contains the following parameters.
+
+| Parameter | Type | Description |
+| :------ | :------ | :------------------------------------------------ |
+| `result` | Boolean | Whether the user is successfully removed from the chat group. true: Yes.false: No. |
+| `groupid` | String | The group ID. |
+| `reason` | String | The reason why the users fail to be removed from the chat group. |
+| `action` | String | The request method. |
+| `user` | String | The usernames removed from the chat group. |
+
+For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](#code) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/ttestuser0015981,user2,user3'
+```
+
+#### Response example
+
+```json
+{
+    "action": "delete",
+    "application": "9b848cf0-XXXX-XXXX-b5b8-0f74e8e740f7",
+    "uri": "https://XXXX/XXXX/XXXX",
+    "entities": [],
+    "data": [{
+        "result": false,
+        "action": "remove_member",
+        "reason": "user ttestuser0015981 doesn't exist.",
+        "user": "user1",
+        "groupid": "1433492852257879"
+    },
+    {
+        "result": true,
+        "action": "remove_member",
+        "user": "user2",
+        "groupid": "1433492852257879"
+    },
+    {
+        "result": true,
+        "action": "remove_member",
+        "user": "user3",
+        "groupid": "1433492852257879"
+    }],
+    "timestamp": 1433492935318,
+    "duration": 84,
+    "organization": "XXXX",
+    "applicationName": "XXXX"
+}
+```
+
+## Setting custom attributes of a group member
+
+Sets the custom attributes of a group member, such as adding a nickname or avatar. Each custom attribute should be in key-value format.
+
+### HTTP request
+
+```shell
+PUT https://{host}/{org_name}/{app_name}/metadata/chatgroup/{group_id}/user/{username}
+```
+ 
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :-------------- | :----- | :------- | :----------- |
+| `username`  | String | The user ID of a group member for which custom attributes are set. | Yes   |
+
+For other parameters and detailed descriptions, see [Common parameters](#common-parameters).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :-------------- | :----- | :------- | :----------- |
+| `Content-Type`  | String | The parameter type. Set it as `application/json`. | Yes   |
+| `Accept`        | String | The parameter type. Set it as `application/json`.| Yes       | 
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by a space and then the obtained token value. | Yes       | 
+
+#### Response body
+
+| Parameter | Type | Description | 
+| :--------- | :--- | :------- | 
+| `metaData` | JSON | Custom attributes of a group member to set. Each attribute is represented as a key-value pair:  The key indicates the attribute name and cannot exceed 16 bytes.  The value indicates the attribute value and cannot exceed 512 bytes. Passing an empty string to the value means to delete the attribute.  For a single group member, the total length of custom attributes cannot exceed 4 KB.    |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds and the response body contains the following parameters.
+
+| Field | Type | Description |
+| :----- | :--- | :----------------------- |
+| `data` | JSON | Custom attributes of a group member that are set. |
+
+For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../../reference/http-status-codes.md) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl --location --request PUT 'https://XXXX/XXXX/XXXX/metadata/chatgroup/207059303858177/user/test2' \
+-H 'Content-Type: application/json' \
+-H 'Accept: application/json'
+-H 'Authorization: Bearer ' \
+-d '{
+    "metaData": {
+          "key1": "value1"
+    }
+}'
+```
+
+#### Response example
+
+```json
+{
+  "timestamp": 1678674135533,
+  "data": {
+    "key1": "value1"
+  },
+  "duration": 53
+}
+```
+
+## Retrieving all custom attributes of a group member
+
+Retrieves all custom attributes of a group member.
+
+### HTTP request
+
+```shell
+GET https://{host}/{org_name}/{app_name}/metadata/chatgroup/{group_id}/user/{username}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :-------------- | :----- | :------- | :----------- |
+| `username`  | String | The user ID of a group member whose custom attributes are to be retrieved. | Yes   |
+
+For other parameters and detailed descriptions, see [Common parameters](#common-parameters).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :-------------- | :----- | :------- | :----------- |
+| `Content-Type`  | String | The parameter type. Set it as `application/json`. | Yes   |
+| `Accept`        | String | The parameter type. Set it as `application/json`.| Yes       | 
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes       | 
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds and the response body will contain the following parameters.
+
+| Field | Type | Description |
+| :----- | :--- | :----------------------- |
+| `data` | JSON | All custom attributes of a group member that are retrieved. |
+
+For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../../reference/http-status-codes.md) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl --location --request GET 'https://XXXX/XXXX/XXXX/metadata/chatgroup/207059303858177/user/test2' \
+-H 'Content-Type: application/json' \
+-H 'Accept: application/json'
+-H 'Authorization: Bearer ' \
+-d ''
+```
+
+#### Response example
+
+```json
+{
+  "timestamp": 1678674211840,
+  "data": {
+    "key1": "value1"
+  },
+  "duration": 6
+}
+```
+
+## Retrieving custom attributes of multiple group members by attribute key
+
+Retrieves custom attributes of multiple group members by attribute key. You can retrieve custom attributes of at most 10 group members each time.
+
+### HTTP request
+
+```shell
+POST https://{host}/{org_name}/{app_name}/metadata/chatgroup/{group_id}/get
+```
+
+#### Path parameter
+
+For the parameters and detailed descriptions, see [Common parameters](#common-parameters).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :-------------- | :----- | :------- | :----------- |
+| `Content-Type`  | String | The parameter type. Set it as `application/json`. | Yes   |
+| `Accept`        | String | The parameter type. Set it as `application/json`.| Yes       | 
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes       | 
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+| :----------- | :--------- | :------- | :------------- |
+| `targets`    | JSON Array | The user IDs of group members whose custom attributes are to be retrieved. You can pass in at most 10 user IDs.   | Yes       | 
+| `properties` | JSON Array | The array of keys of custom attributes to retrieve. If you pass in an empty string or no value to the parameter, all custom attributes of the group members will be returned. | Yes      | 
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds and the response body will contain the following parameters.
+
+| Field | Type | Description                                                                                           |
+| :----- | :--- | :------------------------------------------------------------------------------------------------ |
+| `data` | JSON | The custom attributes of the group members that are retrieved. As shown in the following response example, `test1` and `test2` are user IDs of group members to which the retrieved custom attributes belong.  |
+
+For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../../reference/http-status-codes.md) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl --location --request POST 'https://XXXX/XXXX/XXXX/metadata/chatgroup/207059303858177/get' \
+-H 'Content-Type: application/json' \
+-H 'Accept: application/json'
+-H 'Authorization: Bearer ' \
+-d '{
+    "targets":["test1","test2"],
+    "properties":["key1","key2"]
+}'
+```
+
+#### Response example
+
+```json
+{
+  "timestamp": 1678674292783,
+  "data": {
+    "test1": {
+      "key1": "value1"
+    },
+    "test2": {
+      "key1": "value1"
+    }
+  },
+  "duration": 2
+}
+```
+
+## Retrieving group admin list
+
+Retrieves the list of the chat group admins.
+
+### HTTP request
+
+```shell
+GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/admin
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :-------- | :------- |
+| `group_id` | String | The group ID. | Yes |
+
+For other parameters and detailed descriptions, see [Common parameters](#common-parameters).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Content-Type` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds， and the `data` field in the response body contain the information of the chat group admins. For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](#code) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X GET HTTP://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin -H 'Authorization: Bearer '
+```
+
+#### Response example
+
+```json
+{
+    "action": "get",
+    "application": "527cd7e0-XXXX-XXXX-9f59-ef10ecd81ff0",
+    "uri": "http://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin",
+    "entities": [],
+    "data": ["user1"],
+    "timestamp": 1489073361210,
+    "duration": 0,
+    "organization": "XXXX",
+    "applicationName": "XXXX",
+    "count": 1
+}
+```
+
+## Adding a group admin
+
+Adds a regular group member to the group admin list. A chat group admin has the privilege to manage the chat group blocklist and mute chat group members. You can add a maximum of 99 chat group admins.
+
+### HTTP request
+
+```shell
+POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/admin
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :-------- | :------- |
+| `group_id` | String | The group ID. | Yes |
+
+For other parameters and detailed descriptions, see [Common parameters](#common-parameters).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Content-Type` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :---------------------------- | :------- |
+| `newadmin` | String | The username of the chat group admin. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body contains the following parameters.
+
+| Parameter | Type | Description |
+| :------ | :------ | :------------------------------------------------ |
+| `data` | String | The user IDs promoted to group admins. |
+| `count` | Number   | The number of users to be promoted as group admins. |
+
+For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](#code) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X POST -H 'Content-type: application/json' -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin' -d '{"newadmin":"user1"}' -H 'Authorization: Bearer '
+```
+
+#### Response example
+
+```json
+{
+    "action": "post",
+    "application": "52XXXXf0",
+    "applicationName": "demo",
+    "data": {
+        "result": "success",
+        "newadmin": "man"
+    },
+    "duration": 0,
+    "entities": [],
+    "organization": "XXXX",
+    "properties": {},
+    "timestamp": 1680074570600,
+    "uri": "http://XXXX/XXXX/XXXX/chatgroups/190141728620545/admin"
+}
+```
+
+## Removing a group admin
+
+Removes the specified user from the chat group admin list.
+
+### HTTP request
+
+```shell
+DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/admin/{username}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :-------- | :------- |
+| `group_id` | String | The group ID. | Yes |
+
+For other parameters and detailed descriptions, see [Common parameters](#common-parameters).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body contains the following parameters.
+
+| Parameter | Type | Description |
+| :------- | :------ | :---------------------------------------------- |
+| `result` | Boolean | Whether the group admin is successfully demoted to a regular group member:`true`: Yes.`false`: No. |
+| `oldadmin` | String | The ID of the group admin demoted to a regular group member. |
+
+For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](#code) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X DELETE -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin/user1' -H 'Authorization: Bearer '
+```
+
+#### Response example
+
+```json
+{
+    "action": "delete",
+    "application": "527cd7e0-XXXX-XXXX-9f59-ef10ecd81ff0",
+    "uri": "http://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin/user1",
+    "entities": [],
+    "data": {
+        "result": "success",
+        "oldadmin": "user1"
+    },
+    "timestamp": 1489073432732,
+    "duration": 1,
+    "organization": "XXXX",
+    "applicationName": "XXXX"
+}
+```
+
+## Transferring group ownership
+
+Changes the group owner to another group member. Group owners possess all group privileges.
+
+### HTTP request
+
+```shell
+PUT https://{host}/{org_name}/{app_name}/chatgroups/{group_id}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :-------- | :------- |
+| `group_id` | String | The group ID. | Yes |
+
+For other parameters and detailed descriptions, see [Common parameters](#common-parameters).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :------------ | :----- | :----------------------------------------------------------- | :------- |
+| `Content-Type` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+| :------- | :----- | :------------------ | :------- |
+| `newowner` | String | The username of the new group owner. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is 200, the request succeeds and the `data` field in the response body will contain the following parameters.
+
+| Parameter | Type | Description |
+| :------- | :------ | :---------------------------------------------- |
+| `newowner` | Boolean | Whether the user is successfully set as the chat group owner. true: Yes; false: No. |
+
+For other fields and descriptions, see [Common parameters](#common-parameters).
+
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](#code) for possible causes.
+
+### Example
+
+#### Request example
+
+```shell
+curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{     "newowner": "user2"   }' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585'
+```
+
+#### Response example
+
+```json
+{
+    "action": "put",
+    "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
+    "uri": "http://XXXX/XXXX/XXXX/chatgroups/66016455491585",
+    "entities": [],
+    "data": {
+      "newowner": true
+    },
+    "timestamp": 1542537813420,
+    "duration": 0,
+    "organization": "XXXX",
+    "applicationName": "XXXX"
+}
+```
+
+## Status codes
+
+For details, see [HTTP Status Codes](../../reference/http-status-codes.md).
