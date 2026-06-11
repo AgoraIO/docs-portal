@@ -1,19 +1,23 @@
 ---
-title: Whiteboard
-description: Whiteboard supports multi-user collaboration, teaching, and visual interaction inside realtime products.
+title: "Whiteboard"
+description: "Build collaborative whiteboard experiences with Agora Interactive Whiteboard and Fastboard."
 ---
 
-## What this capability is
+Whiteboard adds a shared visual workspace to realtime products so teams can draw, annotate, present files, and collaborate live.
 
-Whiteboard adds a shared visual workspace to realtime products so teams and users can annotate, explain, and collaborate live.
+![Interactive Whiteboard overview](/images/interactive-whiteboard/interactive-whiteboard-overview.png)
 
-## Common scenarios
+## What you can build
 
-- online education
-- collaborative explanation
-- shared annotation
-- realtime creation
+- Real-time drawing, writing, annotation, and room collaboration tools
+- File conversion and presentation workflows for PPT, PPTX, Word, and PDF content
+- Custom whiteboard experiences with the low-level Whiteboard SDK
+- Faster integrations with the Fastboard SDK
+- Room, scene, screenshot, token, and file-conversion flows through REST APIs
 
-## What to read first
+## Start here
 
-If users need to act on the same visual surface together, whiteboard is often more effective than text or video alone.
+- [Product overview](overview/)
+- [SDK quickstart](build/get-started-sdk/)
+- [Fastboard quickstart](build/get-started-uikit/)
+- [REST API overview](reference/rest-api/overview.md)

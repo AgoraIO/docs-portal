@@ -54,8 +54,8 @@ Agora Console assigns the following information to each project that enables Cha
 - **Data Center**: Agora provides several data centers for the service in different regions, including Singapore, Frankfurt (Germany), and Virginia (USA). After the plan is changed, the data center remains unchanged.
 - **AppKey**: The unique identifier that Chat assigns to each app. The **AppKey** is of the form `${OrgName}#{AppName}`.
     :::info
-The **AppKey** is not the same as your project App ID. You can get your **AppKey** from the Chat configuration section of Agora Console.
-:::
+    The **AppKey** is not the same as your project App ID. You can get your **AppKey** from the Chat configuration section of Agora Console.
+    :::
 - **OrgName**: The unique identifier that Chat assigns to each enterprise (organization).
 - **AppName**: The name that Chat assigns to each app. Each app under the same enterprise (organization) must have a unique App Name.
 - **API request url**: The domain of the WebSocket and RESTful API request that Agora assigns to each project.
