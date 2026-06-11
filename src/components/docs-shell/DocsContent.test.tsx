@@ -20,6 +20,8 @@ import { AppProviders } from '@/components/providers/AppProviders';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
 
+const clipboardWriteText = vi.fn();
+
 vi.mock('./DocsContentBody', () => ({
   DocsContentBody: ({ contentPath }: { contentPath: string }) => (
     <div data-testid="docs-content-body">{contentPath}</div>
@@ -58,6 +60,13 @@ function renderWithRouter(children: ReactNode) {
 }
 
 describe('DocsContent', () => {
+  Object.defineProperty(window.navigator, 'clipboard', {
+    configurable: true,
+    value: {
+      writeText: clipboardWriteText,
+    },
+  });
+
   it('renders page breadcrumb, LLM markdown link, title, and description', async () => {
     renderWithRouter(
       <DocsContent
@@ -85,8 +94,11 @@ describe('DocsContent', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('Learn the platform basics.')).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'View as Markdown' }),
-    ).toHaveAttribute('href', '/llms.mdx/docs/en/introduction/about-agora.md');
+      screen.getByRole('button', { name: 'Copy Page' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Copy Page more actions' }),
+    ).toBeInTheDocument();
     expect(screen.queryByText(/Reading time/)).not.toBeInTheDocument();
 
     const breadcrumb = screen.getByLabelText('Breadcrumb');
@@ -180,8 +192,8 @@ describe('DocsContent', () => {
       />,
     );
 
-    const markdownLink = await screen.findByRole('link', {
-      name: 'View as Markdown',
+    const copyMenuButton = await screen.findByRole('button', {
+      name: 'Copy Page more actions',
     });
     const androidTab = await screen.findByRole('tab', { name: 'Android' });
 
@@ -194,11 +206,10 @@ describe('DocsContent', () => {
       '/en/realtime-media/rtc/quick-start/ios/integrate-with-ai-tools',
     );
     expect(
-      markdownLink.compareDocumentPosition(androidTab) &
+      copyMenuButton.compareDocumentPosition(androidTab) &
         Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
   });
-
   it('scrolls the active docs container to the top when a different docs page is rendered', async () => {
     const { rerender } = render(
       <AppProviders>
@@ -252,6 +263,119 @@ describe('DocsContent', () => {
         behavior: 'auto',
         top: 0,
       });
+    });
+  });
+
+  it('renders copy page menu actions for AI tools, MCP, and markdown', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.md"
+        description="Learn the platform basics."
+        locale="en"
+        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        slug="introduction/about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    fireEvent.pointerDown(
+      await screen.findByRole('button', { name: 'Copy Page more actions' }),
+      { button: 0 },
+    );
+
+    expect(await screen.findByText('AI tools')).toBeInTheDocument();
+    expect(
+      screen.getByRole('menuitem', { name: 'Open in ChatGPT' }),
+    ).toHaveAttribute(
+      'href',
+      expect.stringContaining('https://chatgpt.com/?q='),
+    );
+    expect(
+      screen.getByRole('menuitem', { name: 'Open in Claude' }),
+    ).toHaveAttribute(
+      'href',
+      expect.stringContaining('https://claude.ai/new?q='),
+    );
+    expect(
+      screen.getByRole('menuitem', { name: 'Connect to Cursor' }),
+    ).toHaveAttribute('href', '/en/introduction/agora-mcp');
+    expect(
+      screen.getByRole('menuitem', { name: 'Connect to VS Code' }),
+    ).toHaveAttribute('href', '/en/introduction/agora-mcp');
+    expect(
+      screen.getByRole('menuitem', { name: 'View as Markdown' }),
+    ).toHaveAttribute('href', '/llms.mdx/docs/en/introduction/about-agora.md');
+  });
+
+  it('copies MCP config and command from the copy page menu', async () => {
+    clipboardWriteText.mockReset();
+    clipboardWriteText.mockResolvedValue(undefined);
+
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.md"
+        locale="en"
+        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        slug="introduction/about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    fireEvent.pointerDown(
+      await screen.findByRole('button', { name: 'Copy Page more actions' }),
+      { button: 0 },
+    );
+
+    fireEvent.click(
+      await screen.findByRole('menuitem', { name: 'Copy MCP Config' }),
+    );
+    await waitFor(() => {
+      expect(clipboardWriteText).toHaveBeenCalledWith(`{
+  "mcpServers": {
+    "agora-docs": {
+      "url": "https://mcp.agora.io"
+    }
+  }
+}`);
+    });
+
+    fireEvent.pointerDown(
+      screen.getByRole('button', { name: 'Copy Page more actions' }),
+      { button: 0 },
+    );
+    fireEvent.click(
+      await screen.findByRole('menuitem', { name: 'Copy MCP Command' }),
+    );
+    await waitFor(() => {
+      expect(clipboardWriteText).toHaveBeenLastCalledWith(
+        `code --add-mcp '{"name":"agora-docs","url":"https://mcp.agora.io"}'`,
+      );
+    });
+  });
+
+  it('copies the markdown url from the primary copy button', async () => {
+    clipboardWriteText.mockReset();
+    clipboardWriteText.mockResolvedValue(undefined);
+
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.md"
+        locale="en"
+        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        slug="introduction/about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Copy Page' }));
+
+    await waitFor(() => {
+      expect(clipboardWriteText).toHaveBeenCalledWith(
+        'https://docs.agora.io/llms.mdx/docs/en/introduction/about-agora.md',
+      );
     });
   });
 });
