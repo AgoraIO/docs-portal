@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
-import { BotIcon, Edit3Icon, ExternalLinkIcon } from 'lucide-react';
+import { Edit3Icon, ExternalLinkIcon } from 'lucide-react';
 import {
   Suspense,
   useCallback,
@@ -27,6 +27,7 @@ import {
 } from '@/lib/i18n/i18n-config';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
+import { DocsCopyMenu } from './docs-copy-menu';
 
 const TOC_ACTIVE_OFFSET = 96;
 const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
@@ -55,9 +56,8 @@ export function DocsContent({
   title?: string;
   toc: TOCItemType[];
 }) {
-  const { i18n } = useTranslation('common');
+  useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
-  const t = i18n.getFixedT(currentLocale, 'common');
   const displayTitle = title ?? slug;
   const resolvedBody =
     body ??
@@ -181,15 +181,12 @@ export function DocsContent({
         </div>
         {markdownUrl ? (
           <div className="flex flex-col items-start gap-3">
-            <a
-              className="inline-flex h-7 items-center gap-1.5 rounded-md border border-[color:var(--line-soft)] bg-card px-2.5 text-xs font-medium text-[color:var(--ink-3)] transition-colors hover:border-[color:var(--line-strong)] hover:text-[color:var(--ink-1)]"
-              href={markdownUrl}
-              rel="noreferrer"
-              target="_blank"
-            >
-              <BotIcon className="size-3.5" />
-              {t('docs.viewAsMarkdown')}
-            </a>
+            <DocsCopyMenu
+              locale={currentLocale}
+              markdownUrl={markdownUrl}
+              slug={slug ?? ''}
+              title={displayTitle ?? ''}
+            />
             {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
               <DocsHeaderScopeTabs header={sidebarHeader} />
             ) : null}

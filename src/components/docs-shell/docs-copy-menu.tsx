@@ -1,0 +1,239 @@
+import { Link } from '@tanstack/react-router';
+import {
+  BotIcon,
+  CheckIcon,
+  CopyIcon,
+  EllipsisIcon,
+  ExternalLinkIcon,
+} from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
+const AGORA_DOCS_BASE_URL = 'https://docs.agora.io';
+const AGORA_DOCS_MCP_URL = 'https://mcp.agora.io';
+const AGORA_DOCS_MCP_NAME = 'agora-docs';
+const AGORA_MCP_DOC_URL = '/en/introduction/agora-mcp';
+const CHATGPT_BASE_URL = 'https://chatgpt.com/';
+const CLAUDE_BASE_URL = 'https://claude.ai/new';
+const COPY_STATE_MS = 1500;
+
+function buildCanonicalPageUrl(locale: string, slug: string) {
+  return `${AGORA_DOCS_BASE_URL}/${locale}/${slug}`;
+}
+
+function buildMarkdownPageUrl(markdownUrl: string) {
+  return `${AGORA_DOCS_BASE_URL}${markdownUrl}`;
+}
+
+function buildAiPrompt(input: {
+  markdownUrl: string;
+  pageUrl: string;
+  title: string;
+}) {
+  return [
+    `Use this Agora docs page as context: ${input.title}`,
+    `Canonical page: ${input.pageUrl}`,
+    `Markdown page: ${buildMarkdownPageUrl(input.markdownUrl)}`,
+  ].join('\n');
+}
+
+function buildChatGptUrl(input: {
+  markdownUrl: string;
+  pageUrl: string;
+  title: string;
+}) {
+  return `${CHATGPT_BASE_URL}?q=${encodeURIComponent(buildAiPrompt(input))}`;
+}
+
+function buildClaudeUrl(input: {
+  markdownUrl: string;
+  pageUrl: string;
+  title: string;
+}) {
+  return `${CLAUDE_BASE_URL}?q=${encodeURIComponent(buildAiPrompt(input))}`;
+}
+
+function getCursorMcpConfig() {
+  return JSON.stringify(
+    {
+      mcpServers: {
+        [AGORA_DOCS_MCP_NAME]: {
+          url: AGORA_DOCS_MCP_URL,
+        },
+      },
+    },
+    null,
+    2,
+  );
+}
+
+function getVsCodeMcpCommand() {
+  return `code --add-mcp '{"name":"${AGORA_DOCS_MCP_NAME}","url":"${AGORA_DOCS_MCP_URL}"}'`;
+}
+
+export function DocsCopyMenu({
+  locale,
+  markdownUrl,
+  slug,
+  title,
+}: {
+  locale: string;
+  markdownUrl: string;
+  slug: string;
+  title: string;
+}) {
+  const { t } = useTranslation('common');
+  const [copiedAction, setCopiedAction] = useState<'config' | 'command' | null>(
+    null,
+  );
+  const pageUrl = buildCanonicalPageUrl(locale, slug);
+
+  const copy = async (kind: 'config' | 'command', value: string) => {
+    await navigator.clipboard.writeText(value);
+    setCopiedAction(kind);
+    window.setTimeout(() => {
+      setCopiedAction((current) => (current === kind ? null : current));
+    }, COPY_STATE_MS);
+  };
+
+  return (
+    <DropdownMenu>
+      <div className="inline-flex items-stretch rounded-md border border-[color:var(--line-soft)] bg-card">
+        <Button
+          aria-label={t('docs.copyPage')}
+          className="h-7 gap-1.5 rounded-r-none border-0 px-2.5 text-xs font-medium text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)]"
+          onClick={() =>
+            void copy('command', buildMarkdownPageUrl(markdownUrl))
+          }
+          size="sm"
+          variant="ghost"
+        >
+          {copiedAction === 'command' ? (
+            <CheckIcon className="size-3.5" />
+          ) : (
+            <BotIcon className="size-3.5" />
+          )}
+          <span>
+            {copiedAction === 'command' ? t('docs.copied') : t('docs.copyPage')}
+          </span>
+        </Button>
+        <DropdownMenuTrigger asChild>
+          <Button
+            aria-label={`${t('docs.copyPage')} more actions`}
+            className="h-7 rounded-l-none border-0 border-l border-l-[color:var(--line-soft)] px-2 text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)] data-[state=open]:text-[color:var(--ink-1)]"
+            size="sm"
+            variant="ghost"
+          >
+            <EllipsisIcon className="size-3.5" />
+          </Button>
+        </DropdownMenuTrigger>
+      </div>
+      <DropdownMenuContent
+        align="start"
+        aria-label={t('docs.copyPage')}
+        className="w-64 rounded-lg p-1"
+      >
+        <DropdownMenuLabel>{t('docs.copyMenuAiTools')}</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <a
+              href={buildChatGptUrl({
+                markdownUrl,
+                pageUrl,
+                title,
+              })}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {t('docs.openInChatGpt')}
+              <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
+            </a>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <a
+              href={buildClaudeUrl({
+                markdownUrl,
+                pageUrl,
+                title,
+              })}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {t('docs.openInClaude')}
+              <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
+            </a>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>{t('docs.copyMenuMcp')}</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link params={{}} search={{}} to={AGORA_MCP_DOC_URL}>
+              {t('docs.connectToCursor')}
+              <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link params={{}} search={{}} to={AGORA_MCP_DOC_URL}>
+              {t('docs.connectToVsCode')}
+              <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => void copy('config', getCursorMcpConfig())}
+          >
+            {copiedAction === 'config' ? (
+              <CheckIcon className="size-3.5" />
+            ) : (
+              <CopyIcon className="size-3.5" />
+            )}
+            {copiedAction === 'config'
+              ? t('docs.copied')
+              : t('docs.copyMcpConfig')}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => void copy('command', getVsCodeMcpCommand())}
+          >
+            {copiedAction === 'command' ? (
+              <CheckIcon className="size-3.5" />
+            ) : (
+              <CopyIcon className="size-3.5" />
+            )}
+            {copiedAction === 'command'
+              ? t('docs.copied')
+              : t('docs.copyMcpCommand')}
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>{t('docs.copyMenuOther')}</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <a href={markdownUrl} rel="noreferrer" target="_blank">
+              {t('docs.viewAsMarkdown')}
+              <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
+            </a>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export {
+  buildAiPrompt,
+  buildCanonicalPageUrl,
+  buildChatGptUrl,
+  buildClaudeUrl,
+  getCursorMcpConfig,
+  getVsCodeMcpCommand,
+};
