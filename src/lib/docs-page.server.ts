@@ -234,14 +234,22 @@ export async function loadDocsPagePayload(
           kind: 'mdx' as const,
         },
     breadcrumb:
-      breadcrumb.length > 0
-        ? breadcrumb
-        : [
+      navScope?.scope.meta.sidebarIndexTitle &&
+      page.url === navScope.scope.node.index?.url
+        ? [
             {
               title,
               url: page.url,
             },
-          ],
+          ]
+        : breadcrumb.length > 0
+          ? breadcrumb
+          : [
+              {
+                title,
+                url: page.url,
+              },
+            ],
     contentPath: page.path,
     description: page.data.description,
     markdownUrl: getPageMarkdownUrl(page).url,
