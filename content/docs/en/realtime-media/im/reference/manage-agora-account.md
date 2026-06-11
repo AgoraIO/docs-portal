@@ -1,0 +1,83 @@
+---
+title: "Agora account management"
+description: "Explains how to manage your Agora account"
+---
+
+## Get started with Agora
+
+To join a Chat session, you need an Agora App ID. This section shows you how to set up an Agora account, create an Agora project and get the required information from [Agora Console](https://console.agora.io/v2).
+
+### Sign up for an Agora account
+
+To use Agora products and services, create an Agora account with your email, phone number, or a third-party account.
+
+Once you sign up successfully, your account is automatically logged in. Follow the on-screen instructions to create your first project and test out real-time communications.
+
+For later visits, log in to [Agora Console](https://console.agora.io/v2) with your phone number, email address, or linked third-party account.
+
+### Create an Agora project
+
+To create an Agora project, do the following:
+
+1.  In [Agora Console](https://console.agora.io/v2), open the [Projects](https://console.agora.io/v2/project-management) page.
+
+1.  Click **Create New**.
+
+1.  Follow the on-screen instructions to enter a project name and use case, and check **Secured mode: APP ID + Token (Recommended)** as the authentication mechanism.
+
+    ![configure_project](/images/signaling/create_new_project.png)
+
+1.  Click **Submit**. You see the new project on the **Projects** page.
+
+### Get the App ID
+
+Agora automatically assigns a unique identifier to each project, called an App ID.
+
+To copy this App ID, find your project on the [Projects](https://console.agora.io/v2/project-management) page in  Agora Console, and click the copy icon in the **App ID** column.
+
+![configure_project](/images/signaling/app-id.png)
+
+## Security and authentication
+
+Use the following features from your Agora account to implement security and authentication features in your apps.
+
+### Get the App Certificate
+
+When generating an authentication token on your app server, you need an App Certificate, in addition to the App ID. 
+
+To get an App Certificate, do the following:
+
+1.  On the [Projects](https://console.agora.io/v2/project-management) page, click the pencil icon to edit the project you want to use.
+
+    ![Console project management page](/images/common/console-project-management-page.png)
+
+1.  Click the copy icon under **Primary Certificate**.
+
+    ![Console primary certificate](/images/common/console-primary-certificate.png)
+
+### Generate temporary tokens
+
+To ensure communication security, best practice is to use tokens to authenticate the users who log in from your app.
+
+To generate a temporary RTC token for use in your  projects:
+
+1. On the [Projects](https://console.agora.io/v2/project-management) page, click the pencil icon next to your project.
+
+1. On the **Security** panel, click **Generate Temp Token**, enter a channel name in the pop-up box and click **Generate**. Copy the generated RTC token for use in your Chat projects.
+
+To generate a token for other Agora products:
+
+1. In your browser, navigate to the [Agora token builder](https://agora-token-generator-demo.vercel.app/).
+
+1. Choose the Agora product your user wants to log in to. Fill in **App ID** and **App Certificate** with the
+details of your project in Agora Console.
+
+1. Customize the token for each user. The required fields are visible in the Agora token builder.
+
+    In , each authentication token you create is specific for a user ID in your app. You create a token for each user in the channel. When you call `login` using , ensure that the UID is the same as you used to create the token.
+
+1. Click **Generate Token**.
+
+    The token appears in Token Builder.
+
+1. Copy the token and use it in your app.

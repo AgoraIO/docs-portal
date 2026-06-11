@@ -1,0 +1,510 @@
+---
+title: "Manage chat group member attributes"
+description: "Introduces how to use the Agora Chat SDK to manage the attributes of the members of a chat group in your app."
+---
+
+s enable real-time messaging among multiple users.
+
+This page shows how to use the Agora Chat SDK to manage the attributes of the members of a chat group in your app.
+
+## Understand the tech
+
+### Android
+
+The Chat SDK provides the `Group`, `GroupManager`, and `GroupChangeListener` classes for chat group management, which allows you to implement the following features:
+
+- Set custom attributes of a group member via key and value items.
+- Fetch group member custom attributes.
+- Listen for attribute changes of a group member.
+
+### iOS
+
+The Chat SDK provides the `IAgoraChatGroupManager`, `AgoraChatGroupManagerDelegate`, and `AgoraChatGroup` classes for chat group management, which allows you to implement the following features:
+
+- Set custom attributes of a group member via key and value items.
+- Fetch group member custom attributes.
+- Listen for attribute changes of a group member.
+
+### Flutter
+
+The Chat SDK provides the `ChatGroup`, `ChatGroupManager`, and `ChatGroupEventHandler` classes for chat group management, which allows you to implement the following features:
+
+- Set custom attributes of a group member via key and value items.
+- Fetch group member custom attributes.
+- Listen for attribute changes of a group member.
+
+### React Native
+
+The Chat SDK provides the `ChatGroup`, `ChatGroupManager`, and `ChatGroupEventListener` classes for chat group management, which allows you to implement the following features:
+
+- Set custom attributes of a group member via key and value items.
+- Fetch group member custom attributes.
+- Listen for attribute changes of a group member.
+
+### Windows
+
+The Chat SDK provides the `Group`, `IGroupManager`, and `IGroupManagerDelegate` classes for chat group management, which allows you to implement the following features:
+
+- Set custom attributes of a group member via key and value items.
+- Fetch group member custom attributes.
+- Listen for attribute changes of a group member.
+
+### Web
+
+The Chat SDK provides the `GroupManager` and `Group` classes for chat group management, which allows you to implement the following features:
+
+- Set custom attributes of a group member via key and value items.
+- Fetch group member custom attributes.
+- Listen for attribute changes of a group member.
+
+### Unity
+
+The Chat SDK provides the `Group`, `IGroupManager`, and `IGroupManagerDelegate` classes for chat group management, which allows you to implement the following features:
+
+- Set custom attributes of a group member via key and value items.
+- Fetch group member custom attributes.
+- Listen for attribute changes of a group member.
+
+## Prerequisites
+
+Before proceeding, ensure that you meet the following requirements:
+
+- You have initialized the Chat SDK. For details, [SDK quickstart](../../get-started/get-started-sdk.md).
+- You understand the call frequency limits of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations.md).
+- You understand the number of chat groups and chat group members supported by different pricing plans as described in [Pricing Plan Details](../../reference/pricing-plan-details.md).
+
+## Implementation
+
+This section describes how to call the APIs provided by the Chat SDK to implement chat group features.
+
+### Android
+
+### Set custom attributes of a group member via key and value items
+
+Each chat group member can set their own attributes. Chat group admins/owners can also modify all members' attributes. Each custom attribute should be in key-value format.
+
+Refer to the following sample code to set a custom attribute of a group member:
+
+```java
+Map attributeMap = new HashMap<>();
+attributeMap.put("nickName",nickName);
+
+ChatClient.getInstance().groupManager().asyncSetGroupMemberAttributes(groupId, userId, attributeMap, new CallBack() {
+    @Override
+    public void onSuccess() {
+    }
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
+
+### Fetch group member custom attributes
+
+Chat group members and group admins/owners can retrieve custom attributes of multiple group members by attribute key.
+
+Refer to the following sample code to use the attribute key to fetch custom attributes of multiple group members:
+
+```java
+List keyList = new ArrayList<>();
+keyList.add("nickName");
+
+List userIds = new ArrayList<>();
+userIds.add("Tom");
+userIds.add("Jack");
+
+ChatClient.getInstance().groupManager().asyncFetchGroupMembersAttributes(groupId, userIds, keyList, new ValueCallBack>>() {
+    @Override
+    public void onSuccess(Map> value) {
+        if (value != null){
+            for (String user : userIds) {
+                Map map = value.get(user);
+                if (map != null){
+                   //……
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
+
+### Listen for attribute changes of a group member
+
+`GroupChangeListener` class holds callbacks that can be used to monitor the change of any key-value items. When such a change occurs, an `onGroupMemberAttributeChanged` callback will notify the Client SDK by returning chat group ID, UID, and key-value pairs of the changes.
+
+```java
+//Create a GroupChangeListener object
+GroupChangeListener groupChangeListener = new GroupChangeListener() {
+    @Override
+    public void onGroupMemberAttributeChanged(String groupId, String userId, Map attribute, String from) {
+        if ( attribute != null && attribute.size() > 0){
+            //EMLog.d(TAG,"onGroupMemberAttributeChanged: " + groupId +" - "+ attribute.toString());
+        }
+    }
+};
+
+//Add a group change listener:
+ChatClient.getInstance().groupManager().addGroupChangeListener(groupChangeListener);
+
+//Remove a group change listener:
+ChatClient.getInstance().groupManager().removeGroupChangeListener(groupChangeListener);
+```
+
+### iOS
+
+### Set custom attributes of a group member via key and value items
+
+Each chat group member can set their own attributes. Chat group admins/owners can also modify all members' attributes. Each custom attribute should be in key-value format.
+
+Refer to the following sample code to set a custom attribute of a group member:
+
+```objc
+[AgoraChatClient.sharedClient.groupManager setMemberAttribute:@"groupId" userId:@"userId" attributes:@{@"key":@"value"} completion:^(AgoraChatError * _Nullable error) {
+
+    }];
+```
+
+### Fetch group member custom attributes
+
+Chat group members and group admins/owners can retrieve custom attributes of multiple group members by attribute key.
+
+Refer to the following sample code to use the attribute key to fetch custom attributes of multiple group members:
+
+```objc
+[AgoraChatClient.sharedClient.groupManager fetchMembersAttributes:@"groupId" userIds:@[@"userId1",@"userId2"] keys:@[@"key1",@"key2"] completion:^(NSDictionary *> * _Nullable attributes, AgoraChatError * _Nullable error) {
+
+}];
+```
+
+### Listen for attribute changes of a group member
+
+`AgoraChatGroupManagerDelegate` class holds callbacks that can be used to monitor the change of any key-value items. When such a change occurs, an `onAttributesChangedOfGroupMember` callback will notify the Client SDK by returning chat group ID, UID, and key-value pairs of the changes.
+
+```objc
+- (void)onAttributesChangedOfGroupMember:(NSString *)groupId userId:(NSString *)userId attributes:(NSDictionary *)attributes operatorId:(NSString *)operatorId {
+}
+```
+
+### Flutter
+
+### Set custom attributes of a group member via key and value items
+
+Each chat group member can set their own attributes. Chat group admins/owners can also modify all members' attributes. Each custom attribute should be in key-value format.
+
+Refer to the following sample code to set a custom attribute of a group member:
+
+```dart
+await ChatClient.getInstance.groupManager.setMemberAttributes(
+  groupId: groupId,
+  userId: userId,
+  attributes: {'key': 'value'},
+);
+```
+
+### Fetch group member custom attributes
+
+Chat group members and group admins/owners can retrieve custom attributes of multiple group members by attribute key.
+
+Refer to the following sample code to use the attribute key to fetch custom attributes of multiple group members:
+
+```dart
+// keys The array of keys of custom attributes to otain. If the array is empty or no key is passed in, all custom attributes of these members are obtained.
+try { 
+  Map> usersAttributeMaps = 
+      await ChatClient.getInstance.groupManager.fetchMembersAttributes( 
+    groupId: groupId, 
+    userIds: userIds, 
+    keys: keys, 
+  );}
+on ChatError catch (e) {
+debugPrint(
+"fetch members attributes failed, e: ${e.code} , ${e.description}");
+}
+```
+
+### Listen for attribute changes of a group member
+
+`ChatGroupEventHandler` class holds callbacks that can be used to monitor the change of any key-value items. When such a change occurs, an `onAttributesChangedOfGroupMember` callback will notify the Client SDK by returning chat group ID, UID, and key-value pairs of the changes.
+
+```dart
+// Add an event handler
+ChatClient.getInstance.groupManager.addEventHandler(
+  'UNIQUE_HANDLER_ID',
+  ChatGroupEventHandler(
+    onAttributesChangedOfGroupMember:
+        (groupId, userId, attributes, operatorId) {},
+  ),
+);
+
+...
+// Remove an event handler
+ChatClient.getInstance.groupManager.removeEventHandler('UNIQUE_HANDLER_ID');
+```
+
+### React Native
+
+### Set custom attributes of a group member via key and value items
+
+Each chat group member can set their own attributes. Chat group admins/owners can also modify all members' attributes. Each custom attribute should be in key-value format.
+
+Refer to the following sample code to set a custom attribute of a group member:
+
+```typescript
+// groupId: The group ID.
+// member: The user ID of the group member.
+// attributes: The custom attributes to set.
+ChatClient.getInstance()
+  .groupManager.setMemberAttribute(groupId, member, attributes)
+  .then(() => {
+    console.log("set group members attributes success.");
+  })
+  .catch((reason) => {
+    console.log("set group members attributes fail.", reason);
+  });
+
+```
+
+### Fetch group member custom attributes
+
+Chat group members and group admins/owners can retrieve custom attributes of multiple group members by attribute key.
+
+Refer to the following sample code to use the attribute key to fetch custom attributes of multiple group members:
+
+```typescript
+// groupId: The group ID.
+// members: The array of user IDs of group members.
+// attributeKeys: The array of keys of custom attributes to otain. If the array is empty or no key is passed in, all custom attributes of these members are obtained.
+ChatClient.getInstance()
+  .groupManager.fetchMembersAttributes(groupId, members, attributeKeys)
+  .then((result: Map>) => { 
+    console.log("get group members attributes success.", result); 
+  })
+  .catch((reason) => { 
+    console.log("get group members attributes fail.", reason); 
+  });
+```
+
+### Listen for attribute changes of a group member
+
+`ChatGroupEventListener` class holds callbacks that can be used to monitor the change of any key-value items. When such a change occurs, an `onMemberAttributesChanged` callback will notify the Client SDK by returning chat group ID, UID, and key-value pairs of the changes.
+
+```typescript
+ onMemberAttributesChanged(params: {
+    groupId: string;
+    member: string;
+    attributes: any;
+    operator: string;
+  }): void {
+    console.log(`${QuickTestScreenBase.TAG}: onStateChanged:`, params);
+    this.that.setState({
+      recvResult: `onMemberAttributesChanged: ` + params,
+    });
+  }
+```
+
+### Windows
+
+### Set custom attributes of a group member via key and value items
+
+Each chat group member can set their own attributes. Chat group admins/owners can also modify all members' attributes. Each custom attribute should be in key-value format.
+
+Refer to the following sample code to set a custom attribute of a group member:
+
+```csharp
+Dictionary dict = new Dictionary();
+dict.Add("key", "value");
+
+SDKClient.Instance.GroupManager.SetMemberAttributes(groupId, userId, dict, new CallBack(
+    onSuccess: () =>
+    {
+        Console.WriteLine($"SetMemberAttributes success.");
+    },
+    onError: (code, desc) =>
+    {
+        Console.WriteLine($"SetMemberAttributes failed, code:{code}, desc:{desc}");
+    }
+));
+
+```
+
+### Fetch group member custom attributes
+
+Chat group members and group admins/owners can retrieve custom attributes of multiple group members by attribute key.
+
+Refer to the following sample code to use the attribute key to fetch custom attributes of multiple group members:
+
+```csharp
+List userList = new List();
+userList.Add("user");
+
+// keyList: The array of keys for custom attributes of group members. If you pass in no value or an empty array, this method retrieves all custom attributes of these group members.
+List keyList = new List();
+keyList.Add("key");
+
+SDKClient.Instance.GroupManager.FetchMemberAttributes(groupId, userList, keyList, new ValueCallBack>>(
+    onSuccess: (dict) =>
+    {
+
+    },
+    onError: (code, desc) =>
+    {
+
+    }
+));
+```
+
+### Listen for attribute changes of a group member
+
+`IGroupManagerDelegate` class holds callbacks that can be used to monitor the change of any key-value items. When such a change occurs, an `OnUpdateMemberAttributesFromGroup` callback will notify the Client SDK by returning chat group ID, UID, and key-value pairs of the changes.
+
+```csharp
+// Inherit and implement `IGroupManagerDelegate`.
+public class GroupManagerDelegate : IGroupManagerDelegate {
+    public void OnUpdateMemberAttributesFromGroup(string groupId, string userId, Dictionary attributes, string from)
+    {
+
+    }
+}
+
+// Add a delegate.
+GroupManagerDelegate adelegate = new GroupManagerDelegate();
+SDKClient.Instance.GroupManager.AddGroupManagerDelegate(adelegate);
+
+// Remove the delegate when it is unnecessary.
+SDKClient.Instance.GroupManager.RemoveGroupManagerDelegate(adelegate);
+```
+
+### Web
+
+### Set custom attributes of a group member via key and value items
+
+Each chat group member can set their own attributes. Chat group admins/owners can also modify all members' attributes. Each custom attribute should be in key-value format.
+
+Refer to the following sample code to set a custom attribute of a group member:
+
+```javascript
+const options = {
+  groupId: "groupId",
+  userId: "userId",
+  memberAttributes: {
+    key: "value",
+  },
+};
+
+chatClient
+  .setGroupMemberAttributes(options)
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((e) => {
+    console.log(e);
+  });
+```
+
+### Fetch group member custom attributes
+
+Chat group members and group admins/owners can retrieve custom attributes of multiple group members by attribute key.
+
+Refer to the following sample code to use the attribute key to fetch custom attributes of multiple group members:
+
+```javascript
+const options = {
+  groupId: "groupId",
+  userId: "userId",
+};
+
+chatClient
+  .getGroupMemberAttributes(options)
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((e) => {
+    console.log(e);
+  });
+```
+
+### Listen for attribute changes of a group member
+
+`GroupEvent` class holds callbacks that can be used to monitor the change of any key-value items. When such a change occurs, a `memberAttributesUpdate` callback will notify the Client SDK by returning chat group ID, UID, and key-value pairs of the changes.
+
+```javascript
+case "memberAttributesUpdate":
+    break;
+```
+
+### Unity
+
+### Set custom attributes of a group member via key and value items
+
+Each chat group member can set their own attributes. Chat group admins/owners can also modify all members' attributes. Each custom attribute should be in key-value format.
+
+Refer to the following sample code to set a custom attribute of a group member:
+
+```csharp
+Dictionary dict = new Dictionary();
+dict.Add("key", "value");
+
+SDKClient.Instance.GroupManager.SetMemberAttributes(groupId, userId, dict, new CallBack(
+    onSuccess: () =>
+    {
+        Console.WriteLine($"SetMemberAttributes success.");
+    },
+    onError: (code, desc) =>
+    {
+        Console.WriteLine($"SetMemberAttributes failed, code:{code}, desc:{desc}");
+    }
+));
+
+```
+
+### Fetch group member custom attributes
+
+Chat group members and group admins/owners can retrieve custom attributes of multiple group members by attribute key.
+
+Refer to the following sample code to use the attribute key to fetch custom attributes of multiple group members:
+
+```csharp
+List userList = new List();
+userList.Add("user");
+
+// keyList: The array of keys for custom attributes of group members. If you pass in no value or an empty array, this method retrieves all custom attributes of these group members.
+List keyList = new List();
+keyList.Add("key");
+
+SDKClient.Instance.GroupManager.FetchMemberAttributes(groupId, userList, keyList, new ValueCallBack>>(
+    onSuccess: (dict) =>
+    {
+
+    },
+    onError: (code, desc) =>
+    {
+
+    }
+));
+```
+
+### Listen for attribute changes of a group member
+
+`IGroupManagerDelegate` class holds callbacks that can be used to monitor the change of any key-value items. When such a change occurs, an `OnUpdateMemberAttributesFromGroup` callback will notify the Client SDK by returning chat group ID, UID, and key-value pairs of the changes.
+
+```csharp
+
+// Inherit and implement `IGroupManagerDelegate`.
+public class GroupManagerDelegate : IGroupManagerDelegate {
+
+    public void OnUpdateMemberAttributesFromGroup(string groupId, string userId, Dictionary attributes, string from)
+    {
+    }
+}
+
+// Add a delegate.
+GroupManagerDelegate adelegate = new GroupManagerDelegate();
+SDKClient.Instance.GroupManager.AddGroupManagerDelegate(adelegate);
+
+// Remove the delegate when it is unnecessary.
+SDKClient.Instance.GroupManager.RemoveGroupManagerDelegate(adelegate);
+```

@@ -1,5 +1,15 @@
 # Findings
 
+## 2026-06-11
+- The real migration scope is the entire `Doc-Source-Private/agora-chat` tree, not just `overview/product-overview.mdx`.
+- Source navigation is defined by top-level and nested `_category_.json` files plus per-page `sidebar_position` values; the main top-level groups are `overview`, `get-started`, `develop`, `client-api`, `restful-api`, `agora-console`, and `reference`.
+- Most `agora-chat` source pages are thin wrappers whose real content lives under `shared/chat-sdk/**` and `shared/common/**`. Any migration pipeline must recursively expand imports such as `import Foo from '@docs/shared/chat-sdk/...';`.
+- Common legacy patterns in this tree include `ProductOverview`, `PlatformWrapper`, `ProductWrapper`, `Link`, `Vg`, `Vpd`, `Vpl`, `Admonition`, `Tabs`, and `CodeBlock`.
+- Platform-specific content is often composed by importing an `index.mdx` that then imports platform files like `android.mdx`, `ios.mdx`, and `web.mdx`; those platform files are usually wrapped in `PlatformWrapper`.
+- The source repo includes a useful exporter at `scripts/export/mdx2md.py` that already knows how to expand imports, convert several legacy components, and copy images, but it currently cannot run in this environment because `yaml` and `bs4` are missing and the script assumes a `docs/` directory wrapper that `Doc-Source-Private` no longer has.
+- The source image pool for chat content lives under `Doc-Source-Private/assets/images/chat`, with many referenced files such as `chat-overview.png`, `get-started-sdk-understand.png`, `chat-call-logic-*.svg`, and offline push screenshots.
+- Existing portal content already contains dedicated AI-tooling pages such as `introduction/agora-mcp.mdx` and `introduction/agora-skills.mdx`, which may overlap semantically with `agora-chat/get-started/mcp.mdx` and `skills.mdx`.
+
 ## 2026-06-09
 - Current RTC platform switching is driven through `navScope` metadata on `content/docs/en/realtime-media/rtc/meta.json`, with `versions` set to `android` and `macOS`.
 - The existing UI renders nav-scope switching from `DocsSidebarHeaderBlock.tsx` as a dropdown in the left sidebar header unless the scope explicitly requests `presentation: 'tabs'`.

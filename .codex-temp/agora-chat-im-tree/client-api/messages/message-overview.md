@@ -1,0 +1,133 @@
+---
+title: "Messages overview"
+description: "Provides overview to the message types and message features supported by the Agora Chat SDK."
+---
+
+In real-time messaging apps, messages are transmitted from the message sender to the message receiver. This page provides overview to the message types and message features supported by the Chat SDK.
+
+## Message types
+
+The Chat SDK supports the following types of messages.
+
+### Text messages
+
+The message content is text, including hyperlinks and emojis. The maximum data length of a text message is 5 KB.
+
+### Image messages
+
+Image messages are essentially attachment messages. To send an image message, you need to upload the image to the chat server. When the recipient receives the message, the SDK automatically downloads the image thumbnail. The image cannot exceed 10 MB and the maximum data length of an image message is 5 KB.
+
+### Voice messages
+
+Voice messages are essentially attachment messages. To send a voice message, you need to upload the audio file to the chat server. When the recipient receives a voice message, the SDK automatically downloads the audio file. The voice file cannot exceed 10 MB and the maximum data length of a voice message is 5 KB.
+
+### Video messages
+
+Video messages are essentially attachment messages. To send a video message, you need to upload the video file to the chat server. When the recipient receives a video message, the SDK automatically downloads the video file thumbnail. To download the video file, the user needs to tap the thumbnail. The video file cannot exceed 10 MB and the maximum data length of a video message is 5 KB.
+
+### File messages
+
+File messages are essentially attachment messages. To send a file message, you need to upload the file to the chat server. When the recipient receives a file message, the SDK automatically downloads the file. The attachment cannot exceed 10 MB and the maximum data length of a file message is 5 KB.
+
+### Location messages
+
+To send location messages, you need to use a third-party map service provider to get the longitude and latitude information of the location. When the recipient receives a location message, the SDK displays the location in the third-party map service provider according to the longitude and latitude information.
+
+### Command messages
+
+Command messages tell the recipient to take a certain action. After receiving a command message, the recipients deal with the command themselves. You do not need to render command messages on the user interface. You can use command messages to update the avatar and nickname and synchronize this update. Command messages are not stored in the local database. The maximum data length of a command message is 3 KB.
+
+### Extended messages
+
+In cases where text, attachment, and location messages do not meet your business requirement, you can use extended messages. One typical use case is sending messages that quote an earlier text or image message. The data length of an extended message must not exceed that of the original message type.
+
+### Custom messages
+
+This is a self-defined message type. You can customize multiple message types and add a name to each type. Typical use cases are red-packet messages and template messages. The maximum data length of a custom message is 5 KB.
+## Message features
+
+The Chat SDK supports sending and receiving messages, managing historical messages, and managing message read receipts.
+
+You can implement the following features with the chat APIs.
+
+### Send and receive messages
+
+All chat users can send and receive messages.
+- In s, two users send messages to each other. 
+- In s, group members send and receive messages in the . 
+- In s,  members send and receive messages in the .
+
+In the use-cases above, the messages between the two users, in each , and in each  are also known as a conversation.
+
+### Retrieve all local conversations
+
+The Chat SDK stores the messages that have been sent and received in the local database. You can manage these messages by retrieving all the conversations on the local device. 
+
+### Retrieve the specified conversation
+
+You can retrieve the messages of the specified conversation. When a user enters the conversation, this user reads all the messages in this conversation.
+
+### Retrieve the number of unread messages
+
+Since messages are stored with the read status, you can also retrieve the number of the unread messages in each conversation.
+
+### Set all messages read
+
+Once you read all the messages, the number of the unread messages are cleared. You can also clear the number of unread messages of the specified conversation or all the conversations.
+
+### Delete conversation and historical messages
+
+You can delete the conversations on the local device, and while doing so, you can choose whether to clear the chat history or not.
+
+### Search for messages with keywords
+
+You can search for a message in a conversation using keywords.
+
+### Import messages to the database
+
+You can import messages from third-party apps into the local database.
+
+### Insert messages
+
+You can insert a message to the conversation. This can be applied to use cases such as receiving a notification message.
+
+### Retrieve conversations from the server
+
+Apart from the local device, you can also retrieve conversations from the server. 
+
+### Retrieve historical messages of the specified conversation
+
+The Chat SDK stores historical messages in the chat server, and you can retrieve historical messages in each conversation from the server with pagination. The time duration for storing historical messages varies according to your pricing plan. See [Limitations of message storage duration](#limitations).
+
+### Message resending mechanism
+
+- For Android, iOS, Unity, React Native, and Flutter, the message resending mechanism is as follows:
+
+  After the client calls the method of sending a message, it will wait for the server to return a response. The response timeout period is 10 seconds. If the sending fails due to a response timeout, the client will try to send the message again by reconnecting to the server through a persistent connection to send the message. If the sending fails again, the SDK considers the sending of the message failed, and returns error code 300 (`SERVER_NOT_REACHABLE` for Android, Unity, and Windows and `EMErrorServerNotReachable` for iOS), indicating that the server is unreachable.
+
+- For Web, the message resending mechanism is as follows:
+
+  When sending a message, if the WebSocket is disconnected and is reconnecting to the server, the message will be resent after reconnection; if the WebSocket is disconnected during message sending, the SDK will display error code 510 and the error message `MESSAGE_WEBSOCKET_DISCONNECTED `, indicating that the network disconnection caused the message sending failure.
+
+### Message delivery receipt
+
+The SDK supports sending a message delivery receipt when the message is successfully sent.
+
+### Message read receipt
+
+In s and s, the SDK supports sending a message read receipt when the message receiver has read the message.
+
+## Limitations of message storage duration
+
+The storage duration for historical messages varies according to your pricing plans:
+
+| Chat plan | Message storage duration (days) |
+|--- | --- |
+| **Free** | 7 days |
+| **Starter** | 90 days |
+| **Pro** | 180 days |
+| **Enterprise** | Custom (180 days by default) |
+
+:::info
+Message attachments like images, voices, videos, and other files can be stored on the server for seven days by default. To raise the limit, you can contact support@agora.io.
+:::

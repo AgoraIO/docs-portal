@@ -1,0 +1,1676 @@
+---
+title: "Manage chat room members"
+description: "Shows how to use the Agora Chat SDK to manage the members of a chat room in your app."
+---
+
+s enable real-time messaging among multiple users.
+
+This page shows how to use the Chat SDK to manage the members of a chat room in your app.
+
+## Understand the tech
+
+### Android
+
+The Chat SDK provides the `ChatManager` and `ChatRoom` classes for chat room management, which allows you to implement the following features:
+
+### iOS
+
+The Chat SDK provides the `IAgoraChatroomManager`, `AgoraChatroomManagerDelegate`, and `AgoraChatRoom` classes for chat room management, which allows you to implement the following features:
+
+### Flutter
+
+The Chat SDK provides the `ChatRoom`, `ChatRoomManager`, and `ChatRoomEventHandler` classes for chat room management, which allows you to implement the following features:
+
+### React Native
+
+The Chat SDK provides the `ChatRoom`, `ChatRoomManager`, and `ChatRoomEventListener` classes for chat room management, which allows you to implement the following features:
+
+### Windows
+
+The Chat SDK provides the`Room`, `IRoomManager`, and `IRoomManagerDelegate` classes for chat room management, which allow you to implement the following features:
+
+### Unity
+
+The Chat SDK provides the`Room`, `IRoomManager`, and `IRoomManagerDelegate` classes for chat room management, which allow you to implement the following features:
+
+### Web
+
+The Chat SDK allows you to implement the following features:
+
+- Remove a member from a chat room
+- Retrieve the member list of a chat room
+- Manage the blocklist of a chat room
+- Manage the mute list of a chat room
+- Mute and unmute all the chat room members
+- Manage the chat room allow list
+- Manage the owner and admins of a chat room
+
+## Prerequisites
+
+Before proceeding, ensure that you meet the following requirements:
+
+- You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk.mdx).
+- You understand the call frequency limit of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations.md).
+- You understand the number of chat rooms supported by different pricing plans as described in [Pricing Plan Details](../../reference/pricing-plan-details.md).
+
+## Implementation
+
+This section introduces how to call the APIs provided by the Chat SDK to implement the features listed above.
+
+### Android
+
+### Manage chat room members
+
+All the chat room members can call `fetchChatRoomMembers` to retrieve the member list of the current chat room.
+
+```java
+// pageSize: The number of chat room members to retrieve per page. The maximum value is 1000.
+// cursor: The starting position for data query. Pass in `null` or an empty string at the first call and the server returns chat room members, starting from the latest one.
+Map members = ChatClient.getInstance().chatroomManager().fetchChatRoomMembers(chatRoomId, cursor, pageSize);
+```
+
+The chat room owner and admin can call `removeChatRoomMembers` to remove one or more members from the chat room. Once a member is removed, this member receives the `onRemovedFromChatRoom` callback, and the other chat room members receive the `onMemberExited` callback. After being removed from a chat room, you can join this chat room again.
+
+```java
+ChatClient.getInstance().chatroomManager().removeChatRoomMembers(chatRoomId, members);
+```
+
+### Manage the chat room blocklist
+
+The chat room owner and admin can add the specified member into the chat room blocklist and remove them from it. Once a chat room member is added to the blocklist, this member cannot send or receive chat room messages, nor can this member join the chat room again.
+
+```java
+// The chat room owner or admin call blockChatroomMembers to add the specified member to the chat room blocklist.
+ChatRoom chatRoom = ChatClient.getInstance().chatroomManager().blockChatroomMembers(chatRoomId, members);
+
+// The chat room owner or admin call unblockChatroomMembers to remove the specified user out of the blocklist.
+ChatRoom chatRoom = ChatClient.getInstance().chatroomManager().unblockChatRoomMembers(chatRoomId, members);
+
+// The chat room owner or admin call fetchChatRoomBlackList to retrieve the blocklist of the current chat room.
+ChatClient.getInstance().chatroomManager().fetchChatRoomBlackList(chatRoomId, new ValueCallBack>() {
+    @Override
+    public void onSuccess(List value) {
+
+    }
+
+    @Override
+    public void onError(int error, String errorMsg) {
+
+    }
+});
+```
+
+### Manage the chat room mute list
+
+To manage the messages in the chat room, the chat room owner and admin can add the specified member to the chat room mute list and remove them from it. Once a chat room member is added to the mute list, this member can no longer send chat room messages, not even after being added to the chat room allow list.
+
+```java
+// The chat room owner or admin call muteChatRoomMembers to add the specified user to the chat room blocklist. The muted member and all the other chat room admins or owner receive the onMuteListAdded callback.
+// duration: The mute duration. If you pass `-1`, members are muted permanently.
+ChatRoom chatRoom = ChatClient.getInstance().chatroomManager().muteChatRoomMembers(chatRoomId, members, duration);
+
+// The chat room owner or admin can call unMuteChatRoomMembers to remove the specified user from the chat room blocklist. The unmuted member and all the other chat room admins or owner receive the onMuteListRemoved callback.
+ChatRoom chatRoom = ChatClient.getInstance().chatroomManager().unMuteChatRoomMembers(chatRoomId, members);
+
+// The chat room owner or admin can call fetchChatRoomMuteList to fetch the mute list of the current chat room.
+Map memberMap =  ChatClient.getInstance().chatroomManager().fetchChatRoomMuteList(chatRoomId, pageNum, pageSize);
+```
+
+### Mute and unmute all the chat room members
+
+The chat room owner or admin can mute or unmute all the chat room members using `muteAllMembers`. Once all the members are muted, only those in the chat room allow list can send messages in the chat room.
+
+Unlike muting a chat room member, this kind of mute does not expire automatically after a certain period and you need to call the `unmuteAllMembers` method to unmute all members in the chat room.
+
+```java
+// The chat room owner or admin can call muteAllMembers to mute all the chat room members. Once all the members are muted, these members receive the onAllMemberMuteStateChanged callback.
+ChatClient.getInstance().chatroomManager().muteAllMembers(chatRoomId, new ValueCallBack() {
+    @Override
+    public void onSuccess(ChatRoom value) {
+
+    }
+
+    @Override
+    public void onError(int error, String errorMsg) {
+
+    }
+});
+
+// The chat room owner or admin can call unmuteAllMembers to unmute all the chat room members. Once all the members are unmuted, these members receive the onAllMemberMuteStateChanged callback.
+ChatClient.getInstance().chatroomManager().unmuteAllMembers(chatRoomId, new ValueCallBack() {
+    @Override
+    public void onSuccess(ChatRoom value) {
+
+    }
+
+    @Override
+    public void onError(int error, String errorMsg) {
+
+    }
+});
+```
+
+### Manage the chat room allow list
+
+The chat room owner and admins are added to the chat room allow list by default.
+
+Members in the chat room allow list can send chat room messages even when the chat room owner or admin has muted all the chat room members using `muteAllMembers`. However, if a member is already in the chat room mute list, this member still cannot send messages in the chat room even after being added to the allow list of the chat room.
+
+Messages sent by members in the chat room allow list are of high priority and will be delivered first, but there is no guarantee that they will be delivered. When the load is high, the server discards low-priority messages first. If the load is still high even then, the server discards high-priority messages.
+
+```java
+// The chat room owner or admin can call addToChatRoomWhiteList to add the specified member to the chat room allow list.
+ChatClient.getInstance().chatroomManager().addToChatRoomWhiteList(chatRoomId, members, new ValueCallBack() {
+    @Override
+    public void onSuccess(ChatRoom value) {
+
+    }
+
+    @Override
+    public void onError(int error, String errorMsg) {
+
+    }
+});
+
+// The chat room owner or admin can call removeFromChatRoomWhiteList to remove the specified member from the chat room allow list.
+ChatClient.getInstance().chatroomManager().removeFromChatRoomWhiteList(chatRoomId, members, new ValueCallBack() {
+    @Override
+    public void onSuccess(ChatRoom value) {
+
+    }
+
+    @Override
+    public void onError(int error, String errorMsg) {
+
+    }
+});
+
+// Chat room members can call checkIfInChatRoomWhiteList to check whether they are in the chat room allow list.
+ChatClient.getInstance().chatroomManager().checkIfInChatRoomWhiteList(chatRoomId, new ValueCallBack() {
+    @Override
+    public void onSuccess(Boolean value) {
+
+    }
+
+    @Override
+    public void onError(int error, String errorMsg) {
+
+    }
+});
+
+// The chat room owner or admin can call fetchChatRoomWhiteList to retrieve the allow list of the current chat room.
+ChatClient.getInstance().chatroomManager().fetchChatRoomWhiteList(chatRoomId, new ValueCallBack>() {
+    @Override
+    public void onSuccess(List value) {
+
+    }
+
+    @Override
+    public void onError(int error, String errorMsg) {
+
+    }
+});
+```
+
+### Manage chat room ownership and admin
+
+The chat room owner can transfer the ownership to the specified chat room member. Once the ownership is transferred, the original chat room owner becomes a regular member. The new chat room owner and the chat room admins receive the `onOwnerChanged` callback.
+
+The chat room owner can also add admins. Once added to the chat room admin list, the newly added admin and the other chat room admins receive the `onAdminAdded` callback.
+
+```java
+// The chat room owner can call changeOwner to transfer the ownership to the other chat room member.
+ChatRoom chatRoom = ChatClient.getInstance().chatroomManager().changeOwner(chatRoomId, newOwner);
+
+// The chat room owner can call addChatRoomAdmin to add the chat room admin.
+ChatRoom chatRoom = ChatClient.getInstance().chatroomManager().addChatRoomAdmin(chatRoomId, admin);
+
+// The chat room owner can call removeChatRoomAdmin to remove the chat room admin. The removed admin and the other admins receive the onAdminRemoved callback.
+ChatRoom chatRoom = ChatClient.getInstance().chatroomManager().removeChatRoomAdmin(chatRoomId, admin);
+```
+
+### Listen for chat room events
+
+For details, see [Chat Room Events](manage-chatrooms#listen-for-chat-room-events).
+
+### iOS
+
+### Manage chat room members
+
+All chat room members can call `getChatroomMemberListFromServerWithId` to retrieve the member list of the current chat room.
+
+```objc
+// pageSize: The number of chat room members to retrieve per page. The maximum value is 1000.
+// cursor: The starting position for data query. Pass in `nil` or an empty string at the first call and the server returns chat room members, starting from the latest one.
+AgoraChatError *error = nil;
+[[AgoraChatClient sharedClient].roomManager getChatroomMemberListFromServerWithId:@"chatroomId" cursor:1 pageSize:20 error:&error];
+```
+
+The chat room owner and admin can call `removeMembers` to remove one or more members from the chat room. Once a member is removed, the other chat room members receive the `didDismissFromChatroom` callback. After being removed from a chat room, the chat user can join this chat room again.
+
+```objc
+AgoraChatError *error = nil;
+[[AgoraChatClient sharedClient].roomManager removeMembers:@[@"userName"] fromChatroom:@"chatroomId" error:&error];
+```
+
+### Manage the chat room block list
+
+The chat room owner and admins can add and remove the specified member from the chat room block list. Once a chat room member is added to the block list, this member cannot send or receive chat room messages, nor can they join the chat room again.
+
+```objc
+// The chat room owner or admin can call blockMembers to add the specified member to the chat room block list.
+AgoraChatError *error = nil;
+[[AgoraChatClient sharedClient].roomManager blockMembers:@[@"userName"] fromChatroom:@"chatroomId" error:&error];
+
+// The chat room owner or admin can call unblockMembers to remove the specified user from the block list.
+AgoraChatError *error = nil;
+[[AgoraChatClient sharedClient].roomManager unblockMembers:@[@"userName"] fromChatroom:@"chatroomId" error:&error];
+
+// The chat room owner or admin can call getChatroomBlacklistFromServerWithId to retrieve the block list of the current chat room.
+AgoraChatError *error = nil;
+[[AgoraChatClient sharedClient].roomManager getChatroomBlacklistFromServerWithId:@"chatroomId" pageNumber:1 pageSize:20 error:&error];
+```
+
+### Manage the chat room mute list
+
+The chat room owner and admins can add and remove the specified member from the chat room mute list. Once a chat room member is added to the mute list, this member can no longer send chat room messages, not even after being added to the chat room allow list.
+
+```objc
+// The chat room owner or admin can call muteMembers to add the specified user to the chat room mute list.
+// The muted member and all the other chat room admins or owner receive the onMuteListAdded callback.
+// muteMilliseconds: The mute duration. If you pass `-1`, members are muted permanently.
+AgoraChatError *error = nil;
+[[AgoraChatClient sharedClient].roomManager muteMembers:@[@"userName"] muteMilliseconds:-1 fromChatroom:@"chatroomId" error:&error];
+
+// The chat room owner or admin can call unMuteChatRoomMembers to remove the specified user from the chat room mute list.
+// The unmuted member and all the other chat room admins or owner receive the chatroomMuteListDidUpdate callback.
+AgoraChatError *error = nil;
+[[AgoraChatClient sharedClient].roomManager unmuteMembers:@[@"userName"] fromChatroom:@"chatroomId" error:&error];
+
+// The chat room owner or admin can call getChatroomMuteListFromServerWithId to retrieve the mute list of the current chat room.
+AgoraChatError *error = nil;
+[[AgoraChatClient sharedClient].roomManager getChatroomMuteListFromServerWithId:@"chatroomId" pageNumber:1 pageSize:20 error:&error];
+```
+
+### Mute and unmute all chat room members
+
+The chat room owner and admins can mute or unmute all the chat room members. Once all the members are muted, only those in the chat room allow list can send messages in the chat room.
+
+As the mute does not expire in a certain period, you need to call the API of unmuting all chat group members to stop muting them.
+
+```objc
+// The chat room owner or admin can call muteAllMembersFromChatroom to mute all the chat room members.
+// Once all the members are muted, these members receive the chatroomMuteListDidUpdate callback.
+ChatClient.getInstance().chatroomManager().muteAllMembers(chatRoomId, new ValueCallBack() {
+AgoraChatError *error = nil;
+[AgoraChatClient.sharedClient.roomManager muteAllMembersFromChatroom:@"chatRoomId" error:&error];
+
+// The chat room owner or admin can call unmuteAllMembersFromChatroom to unmute all the chat room members.
+// Once all the members are unmuted, these members receive the chatroomMuteListDidUpdate callback.
+AgoraChatError *error = nil;
+[AgoraChatClient.sharedClient.roomManager unmuteAllMembersFromChatroom:@"chatRoomId" error:&error];
+```
+
+### Manage the chat room allow list
+
+The chat room owner and admins are added to the chat room allow list by default.
+
+Members in the chat room allow list can send chat room messages even when the chat room owner or an admin has muted all the chat room members. However, if a member is already in the chat room mute list, the member still cannot send messages in the chat room even after being added to the chat room allow list.
+
+```objc
+// The chat room owner or admin can call addWhiteListMembers to add the specified member to the chat room allow list.
+AgoraChatError *error = nil;  
+[AgoraChatClient.sharedClient.roomManager addWhiteListMembers:@[@"userId1",@"userId2"] fromChatroom:@"aChatroomId" error:&error];
+
+// The chat room owner or admin can call removeWhiteListMembers to remove the specified member from the chat room allow list.
+AgoraChatError *error = nil;  
+[AgoraChatClient.sharedClient.roomManager removeWhiteListMembers:@[@"userId1",@"userId2"] fromChatroom:@"aChatroomId" error:&error];
+
+// Chat room members can call isMemberInWhiteListFromServerWithChatroomId to check whether they are in the chat room allow list.
+AgoraChatError *error = nil;
+[AgoraChatClient.sharedClient.roomManager isMemberInWhiteListFromServerWithChatroomId:@"aChatroomId" error:&error];
+
+// The chat room owner or admin can call getChatroomWhiteListFromServerWithId to retrieve the allow list of the current chat room.
+AgoraChatError *error = nil;
+[AgoraChatClient.sharedClient.roomManager getChatroomWhiteListFromServerWithId:@"aChatroomId" error:&error];
+```
+
+### Manage chat room ownership and admin
+
+The chat room owner can transfer ownership to the specified chat room member. Once ownership is transferred, the original chat room owner becomes a chat room member. The new chat room owner and the chat room admins receive the `chatroomOwnerDidUpdate` callback.
+
+The chat room owner can add admins. Once added to the chat room admin list, the newly added admin and the other chat room admins receive the `chatroomAdminListDidUpdate` callback.
+
+The chat room owner can remove admins. Once removed from the chat room admin list, the removed admin and the other chat room admins receive the `chatroomAdminListDidUpdate` callback.
+
+```objc
+// The chat room owner can call updateChatroomOwner to transfer ownership to the other chat room member.
+AgoraChatError *error = nil;
+[[AgoraChatClient sharedClient].roomManager updateChatroomOwner:@"chatroomId" newOwner:@"textString" error:&error];
+
+// The chat room owner can call addAdmin to add a chat room admin.
+AgoraChatError *error = nil;
+[[AgoraChatClient sharedClient].roomManager addAdmin:@"userName" toChatroom:@"chatroomId" error:&error];
+
+// The chat room owner can call removeAdmin to remove a chat room admin.
+AgoraChatError *error = nil;
+[[AgoraChatClient sharedClient].roomManager removeAdmin:@"userName" fromChatroom:@"chatroomId" error:&error];
+```
+
+### Listen for chat room events
+
+For details, see [Chat Room Events](manage-chatrooms#listen-for-chat-room-events).
+
+### Flutter
+
+### Remove a member from a chat room
+
+Only the chat room owner and admins can call `removeChatRoomMembers` to remove the specified member from a chat room. Once removed from the chat room, this member receives the `ChatRoomEventHandler#onRemovedFromChatRoom` callback, while all the other members receive the `ChatRoomEventHandler#onMemberExitedFromChatRoom` callback. Users can join the chat room again after being removed.
+
+The following code sample shows how to remove a member from a chat room:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.removeChatRoomMembers(
+    roomId,
+    members,
+  );
+} on ChatError catch (e) {
+}
+```
+
+### Retrieve the chat room member list
+
+All chat room members can call `fetchChatRoomMembers` to retrieve the member list of the current chat room.
+
+The following code sample shows how to retrieve the chat room member list:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.fetchChatRoomMembers(
+    roomId,
+    // pageSize: The number of chat room members to retrieve per page. The maximum value is 1000.
+    pageSize: pageSize,
+    // cursor: The starting position for data query. For the first query, pass in `null` or an empty string at the first call and the server returns chat room members, starting from the latest one.
+    cursor: cursor,
+  );
+} on ChatError catch (e) {
+}
+```
+
+### Manage the chat room blocklist
+
+#### Add a member to the chat room blocklist
+
+Only the chat room owner and admins can call `blockChatRoomMembers` to add the specified member to the chat room blocklist. Once added to the blocklist, this member receives the `ChatRoomEventHandler#onRemovedFromChatRoom` callback, while all the other members receive the `ChatRoomEventHandler#onMemberExitedFromChatRoom` callback. After being added to blocklist, this user cannot send or receive messages in the chat room. They can no longer join the chat room again until they are removed from the blocklist.
+
+The following code sample shows how to add a member to the chat room blocklist:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.blockChatRoomMembers(
+    roomId,
+    members
+  );
+} on ChatError catch (e) {
+}
+```
+
+#### Remove a member from the chat room blocklist
+
+Only the chat room owner and admins can call `unBlockChatRoomMembers` to remove one or more members from the chat room blocklist.
+
+The following code sample shows how to remove a member from the chat room blocklist:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.unBlockChatRoomMembers(
+    roomId,
+    members
+  );
+} on ChatError catch (e) {
+}
+```
+
+#### Retrieve the chat room blocklist
+
+Only the chat room owner and admins can call `fetchChatRoomBlockList` to retrieve the chat room blocklist.
+
+The following code sample shows how to retrieve the chat room blocklist:
+
+```dart
+try {
+  List? list= await ChatClient.getInstance.chatRoomManager.fetchChatRoomBlockList(
+    roomId,
+    pageNum: pageNum,
+    pageSize: pageSize,
+  );
+} on ChatError catch (e) {
+}
+```
+
+### Manage the chat room mute list
+
+#### Add a member to the chat room mute list
+
+Only the chat room owner and admins can call `muteChatRoomMembers` to add the specified member to the chat room mute list. Once added to the mute list, this member and all the other chat room admins or owner receive the `ChatRoomEventHandler#onMuteListAddedFromChatRoom` callback.
+
+**Note**: The chat room owner can mute chat room admins and regular members, whereas chat room admins can only mute regular members.
+
+The following code sample shows how to add a member to the chat room mute list:
+
+```dart
+// duration: The mute duration. If you pass `-1`, members are muted permanently.
+try {
+  await ChatClient.getInstance.chatRoomManager.muteChatRoomMembers(
+    roomId,
+    members
+  );
+} on ChatError catch (e) {
+}
+```
+
+#### Remove a member from the chat room mute list
+
+Only the chat room owner and admins can call `unMuteChatRoomMembers` to remove the specified member from the chat room mute list. Once removed from the mute list, this member and all the other chat room admins or owner receive the `ChatRoomEventHandler#onMuteListRemovedFromChatRoom` callback.
+
+**Note**: The chat room owner can unmute chat room admins and regular members, whereas chat room admins can only unmute regular members.
+
+The following code sample shows how to remove a member from the chat room mute list:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.unMuteChatRoomMembers(
+    roomId,
+    members
+  );
+} on ChatError catch (e) {
+}
+```
+
+#### Retrieve the chat room mute list
+
+Only the chat room owner and admins can call `fetchChatRoomMuteList` to retrieve the chat room mute list.
+
+The following code sample shows how to retrieve the chat room mute list:
+
+```dart
+try {
+  List? list =
+      await ChatClient.getInstance.chatRoomManager.fetchChatRoomMuteList(
+    roomId,
+    pageNum: pageNum,
+    pageSize: pageSize,
+  );
+} on ChatError catch (e) {
+}
+```
+
+### Manage the chat room allow list
+
+The chat room owner and admins are added to the chat room allow list by default.
+
+#### Add a member to the chat room allow list
+
+Only the chat room owner and admins can call `addMembersToChatRoomAllowList` to add the specified member to the chat room allow list. Members in the chat room allow list can send chat room messages even when the chat room owner or admin has muted all chat room members. However, if a member is already in the chat room mute list, this member still cannot send messages in the chat room even after being added to the chat room allow list. Once added to the allow list, this member and all the other chat room admins or owner receive the `ChatRoomEventHandler#onAllowListAddedFromChatRoom` callback.
+
+The following code sample shows how to add a member to the chat room allow list:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.addMembersToChatRoomAllowList(
+    roomId,
+    members
+  );
+} on ChatError catch (e) {
+}
+```
+
+#### Remove a member from the chat room allow list
+
+Only the chat room owner and admins can call `removeMembersFromChatRoomAllowList` to remove the specified member from the chat room allow list. Once removed from the chat room allow list, this member and all the other chat room admins or owner receive the `ChatRoomEventHandler#onAllowListRemovedFromChatRoom` callback.
+
+The following code sample shows how to remove a member from the chat room allow list:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.removeMembersFromChatRoomAllowList(
+    roomId,
+    members
+  );
+} on ChatError catch (e) {
+}
+```
+
+#### Check whether a user is added to the allow list
+
+All chat room members can call `isMemberInChatRoomAllowList` to check whether they are added to the chat room allow list.
+
+The following code sample shows how to check whether a user is on the chat room allow list:
+
+```dart
+try {
+  bool isInAllowList = await ChatClient.getInstance.chatRoomManager.isMemberInChatRoomAllowList(roomId);
+} on ChatError catch (e) {
+}
+```
+
+### Mute and unmute all the chat room members
+
+#### Mute all the chat room members
+
+Only the chat room owner and admins can call `muteAllChatRoomMembers` to mute all the chat room members. Once all the members are muted, the `ChatRoomEventHandler#onAllChatRoomMemberMuteStateChanged` callback is triggered and only those in the chat room allow list can send messages in the chat room.
+
+Unlike muting a chat room member, this kind of mute does not expire automatically after a certain period and you need to call the `unMuteAllChatRoomMembers` method to unmuting all members in the chat room.
+
+The following sample code shows how to mute all the chat room members:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.muteAllChatRoomMembers();
+} on ChatError catch (e) {
+}
+```
+
+#### Unmute all the chat room members
+
+Only the chat room owner and admins can call `unMuteAllChatRoomMembers` to unmute all the chat room members. Once all the members are muted, the `ChatRoomEventHandler#onAllChatRoomMemberMuteStateChanged` callback is triggered.
+
+The following sample code shows how to unmute all the chat room members:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.unMuteAllChatRoomMembers();
+} on ChatError catch (e) {
+}
+```
+
+### Manage the chat room owner and admins
+
+#### Transfer the chat room ownership
+
+Only the chat room owner can call `changeOwner` to transfer the ownership to the specified chat room member. Once the ownership is transferred, the former chat room owner becomes a regular member. The new chat room owner and the chat room admins receive the `ChatRoomEventHandler#onOwnerChangedFromChatRoom` callback.
+
+The following code sample shows how to transfer the chat room ownership:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.changeOwner(
+    roomId,
+    newOwner,
+  );
+} on ChatError catch (e) {
+}
+```
+
+#### Add a chat room admin
+
+Only the chat room owner can call `addChatRoomAdmin` to add an admin. Once promoted to an admin, the new admin and the other chat room admins receive the `ChatRoomEventHandler#onAdminAddedFromChatRoom` callback.
+
+The following code sample shows how to add a chat room admin:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.addChatRoomAdmin(
+    roomId,
+    memberId,
+  );
+} on ChatError catch (e) {
+}
+```
+
+#### Remove a chat room admin
+
+Only the chat room owner can call `removeChatRoomAdmin` to remove an admin. Once demoted to a regular member, the former admin and the other chat room admins receive the `ChatRoomEventHandler#onAdminRemovedFromChatRoom` callback.
+
+The following code sample shows how to remove a chat room admin:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.removeChatRoomAdmin(
+    roomId,
+    adminId,
+  );
+} on ChatError catch (e) {
+}
+```
+
+### Listen for chat room events
+
+For details, see [Chat Room Events](manage-chatrooms#listen-for-chat-room-events).
+
+### React Native
+
+### Remove a member from a chat room
+
+Only the chat room owner and admins can call `removeChatRoomMembers` to remove one or more members from a chat room. Once removed from the chat room, this member receives the `onRemoved` callback, while all the other members receive the `onMemberExited` callback. Users can join the chat room again after being removed.
+The following code sample shows how to remove members from a chat room:
+
+```typescript
+List members = new List();
+members.Add("member1");
+members.Add("member2");
+
+SDKClient.Instance.RoomManager.DeleteRoomMembers(roomId, members, new CallBack(
+    onSuccess: () => {
+        Console.WriteLine($"DeleteRoomMembers success.");
+    },
+    onError: (code, desc) => {
+        Console.WriteLine($"DeleteRoomMembers failed, code:{code}, desc:{desc}");
+    }
+));
+```
+
+### Retrieve the chat room member list
+
+All chat room members can call `fetchChatRoomMembers` to retrieve the member list of the current chat room.
+
+The following code sample shows how to retrieve the chat room member list:
+
+```typescript
+```typescript
+// pageSize: The number of chat room members to retrieve per page. The maximum value is 1000.
+// cursor: The starting position for data query. Pass in `null` or an empty string at the first call and the server returns chat room members, starting from the latest one.
+ChatClient.getInstance()
+  .roomManager.fetchChatRoomMembers(roomId, cursor, pageSize)
+  .then((members) => {
+    console.log("get members success.", members);
+  })
+  .catch((reason) => {
+    console.log("get members fail.", reason);
+  });
+```
+
+### Manage the chat room blocklist
+
+#### Add a member to the chat room blocklist
+
+Only the chat room owner and admins can call `blockChatRoomMembers` to add the specified member to the chat room blocklist. Once added to the blocklist, this member receives the `onRemoved` callback, while all the other members receive the `onMemberExited` callback. After being added to blocklist, this user cannot send or receive messages in the chat room. They can no longer join the chat room again until they are removed from the blocklist.
+
+The following code sample shows how to add a member to the chat room blocklist:
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.blockChatRoomMembers(roomId, members)
+  .then(() => {
+    console.log("block members success.");
+  })
+  .catch((reason) => {
+    console.log("block members fail.", reason);
+  });
+```
+
+#### Remove a member from the chat room blocklist
+
+Only the chat room owner and admins can call `unblockChatRoomMembers` to remove the specified member from the chat room blocklist.
+
+The following code sample shows how to remove a member from the chat room blocklist:
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.unblockChatRoomMembers(roomId, members)
+  .then(() => {
+    console.log("unblock members success.");
+  })
+  .catch((reason) => {
+    console.log("unblock members fail.", reason);
+  });
+```
+
+#### Retrieve the chat room blocklist
+
+Only the chat room owner and admins can call `fetchChatRoomBlockList` to retrieve the chat room blocklist.
+
+The following code sample shows how to retrieve the chat room blocklist:
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.fetchChatRoomBlockList(roomId, pageNum, pageSize)
+  .then((members) => {
+    console.log("block members success.", members);
+  })
+  .catch((reason) => {
+    console.log("block members fail.", reason);
+  });
+```
+
+### Manage the chat room mute list
+
+#### Add a member to the chat room mute list
+
+Only the chat room owner and admins can call `muteChatRoomMembers` to add the specified member to the chat room mute list. Once added to the mute list, this member and all the other chat room admins or owner receive the `onMuteListAdded` callback.
+
+**Note**: The chat room owner can mute chat room admins and regular members, whereas chat room admins can only mute regular members.
+
+The following code sample shows how to add a member to the chat room mute list:
+
+```typescript
+// duration: The mute duration. If you pass `-1`, members are muted permanently.
+ChatClient.getInstance()
+  .roomManager.muteChatRoomMembers(roomId, muteMembers, duration)
+  .then(() => {
+    console.log("mute members success.");
+  })
+  .catch((reason) => {
+    console.log("mute members fail.", reason);
+  });
+```
+
+#### Remove a member from the chat room mute list
+
+Only the chat room owner and admins can call `unMuteChatRoomMembers` to remove the specified member from the chat room mute list. Once removed from the mute list, this member and all the other chat room admins or owner receive the `onMuteListRemoved` callback.
+
+**Note**: The chat room owner can unmute chat room admins and regular members, whereas chat room admins can only unmute regular members.
+
+The following code sample shows how to remove a member from the chat room mute list:
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.unMuteChatRoomMembers(roomId, unMuteMembers)
+  .then(() => {
+    console.log("unMute members success.");
+  })
+  .catch((reason) => {
+    console.log("unMute members fail.", reason);
+  });
+```
+
+#### Retrieve the chat room mute list
+
+Only the chat room owner and admins can call `fetchChatRoomMuteList` to retrieve the chat room mute list.
+
+The following code sample shows how to retrieve the chat room mute list:
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.fetchChatRoomMuteList(roomId, pageNum, pageSize)
+  .then((members) => {
+    console.log("get mute members success.", members);
+  })
+  .catch((reason) => {
+    console.log("get mute members fail.", reason);
+  });
+```
+
+#### Check if a member is on the chat room mute list
+
+All chat room members can call `isMemberInChatRoomMuteList` to check whether they are on the mute list of a specific chat room. When called, the method returns a boolean value indicating the member’s current mute list status.
+
+The following code sample shows how to check whether you are on the chat room mute list:
+
+```ts
+ChatClient.getInstance()
+  .roomManager.isMemberInChatRoomMuteList('roomId123')
+  .then((v) => {
+    console.log('Whether I am in the chat room mute list:', v);
+  })
+  .catch((error) => {
+    console.log('Failed to check if I am in the chat room mute list:', error);
+  });
+```
+
+### Manage the chat room allow list
+
+The chat room owner and admins are added to the chat room allow list by default.
+
+Members in the chat room allow list can send chat room messages even when the chat room owner or an admin has muted all the chat room members. However, if a member is already in the chat room mute list, this member still cannot send messages in the chat room even after being added to the chat room allow list.
+
+#### Retrieve the allow list of the chat room
+
+Only the chat room owner or admin can call `fetchChatRoomAllowListFromServer` to retrieve the allow list of the current chat room.
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.fetchChatRoomAllowListFromServer(roomId)
+  .then((members) => {
+    console.log("get members success.", members);
+  })
+  .catch((reason) => {
+    console.log("get members fail.", reason);
+  });
+```
+
+#### Add a member to the chat room allow list
+
+Only the chat room owner or admin can call `addMembersToChatRoomAllowList` to add a member to the chat room allow list. The member added to the allow list, the chat room owner, and admins, except the operator, receive the `ChatRoomEventListener#onAllowListAdded` event.
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.addMembersToChatRoomAllowList(roomId, members)
+  .then((members) => {
+    console.log("success.", members);
+  })
+  .catch((reason) => {
+    console.log("fail.", reason);
+  });
+```
+
+#### Remove a member from the chat room allow list
+
+Only the chat room owner or admin can call `removeMembersFromChatRoomAllowList` to remove a member from the chat room allow list. The member removed from the allow list, the chat room owner, and admins, except the operator, receive the `ChatRoomEventListener#onAllowListRemoved` event.
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.removeMembersFromChatRoomAllowList(roomId, members)
+  .then((members) => {
+    console.log("success.", members);
+  })
+  .catch((reason) => {
+    console.log("fail.", reason);
+  });
+```
+
+#### Check whether the current user is in the chat room allow list
+
+Chat room members can call `isMemberInChatRoomAllowList` to check whether they are in the chat room allow list.
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.isMemberInChatRoomAllowList(roomId)
+  .then((members) => {
+    console.log("success.", members);
+  })
+  .catch((reason) => {
+    console.log("fail.", reason);
+  });
+```
+
+### Mute and unmute all the chat room members
+
+#### Mute all the chat room members
+
+Only the chat room owner and admins can call `muteAllChatRoomMembers` to mute all the chat room members. Once all the members are muted, the `ChatRoomEventListener#onAllChatRoomMemberMuteStateChanged` callback is triggered and only those in the chat room allow list can send messages in the chat room.
+
+Unlike muting a chat room member, this kind of mute does not expire automatically after a certain period and you need to call the `unMuteAllChatRoomMembers` method to unmute all members in the chat room.
+
+The following sample code shows how to mute all the chat room members:
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.muteAllChatRoomMembers(roomId)
+  .then((members) => {
+    console.log("success.", members);
+  })
+  .catch((reason) => {
+    console.log("fail.", reason);
+  });
+```
+
+#### Unmute all the chat room members
+
+Only the chat room owner and admins can call `unMuteAllChatRoomMembers` to unmute all the chat room members. Once all the members are muted, the `onAllChatRoomMemberMuteStateChanged` callback is triggered.
+
+The following sample code shows how to unmute all the chat room members:
+
+```dart
+try {
+  await ChatClient.getInstance.chatRoomManager.unMuteAllChatRoomMembers();
+} on ChatError catch (e) {
+}
+```
+
+### Manage the chat room owner and admins
+
+#### Transfer the chat room ownership
+
+Only the chat room owner can call `changeOwner` to transfer the ownership to the specified chat room member. Once the ownership is transferred, the former chat room owner becomes a regular member. The new chat room owner and the chat room admins receive the `onOwnerChanged` callback.
+
+The following code sample shows how to transfer the chat room ownership:
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.changeOwner(roomId, newOwner)
+  .then(() => {
+    console.log("change owner success.");
+  })
+  .catch((reason) => {
+    console.log("change owner fail.", reason);
+  });
+```
+
+#### Add a chat room admin
+
+Only the chat room owner can call `addChatRoomAdmin` to add an admin. Once promoted to an admin, the new admin and the other chat room admins receive the `onAdminAdded` callback.
+
+The following code sample shows how to add a chat room admin:
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.addChatRoomAdmin(roomId, admin)
+  .then(() => {
+    console.log("add admin success.");
+  })
+  .catch((reason) => {
+    console.log("add admin fail.", reason);
+  });
+```
+
+#### Remove a chat room admin
+
+Only the chat room owner can call `removeChatRoomAdmin` to remove an admin. Once demoted to a regular member, the former admin and the other chat room admins receive the `onAdminRemoved` callback.
+
+The following code sample shows how to remove a chat room admin:
+
+```typescript
+ChatClient.getInstance()
+  .roomManager.removeChatRoomAdmin(roomId, admin)
+  .then(() => {
+    console.log("remove admin success.");
+  })
+  .catch((reason) => {
+    console.log("remove admin fail.", reason);
+  });
+```
+
+### Listen for chat room events
+
+For details, see [Chat Room Events](manage-chatrooms#listen-for-chat-room-events).
+
+### Windows
+
+### Remove a member from a chat room
+
+Only the chat room owner and admins can call `DeleteRoomMembers` to remove one or more members from a chat room. Once removed from the chat room, the member receives the `OnRemovedFromRoom` callback, while all the other members receive the `OnMemberExitedFromRoom` callback. Users can join the chat room again after being removed.
+
+The following code sample shows how to remove members from a chat room:
+
+```csharp
+List members = new List();
+members.Add("member1");
+members.Add("member2");
+SDKClient.Instance.RoomManager.DeleteRoomMembers(roomId, members, new CallBack(
+    onSuccess: () => {
+        Console.WriteLine($"DeleteRoomMembers success.");
+    },
+    onError: (code, desc) => {
+        Console.WriteLine($"DeleteRoomMembers failed, code:{code}, desc:{desc}");
+    }
+));
+```
+
+### Retrieve the chat room member list
+
+All chat room members can call `FetchRoomMembers` to retrieve the member list of the current chat room.
+
+The following code sample shows how to retrieve the chat room member list:
+
+```csharp
+// pageSize: The number of chat room members to retrieve per page. The maximum value is 1000.
+// cursor: The starting position for data query. Pass in `null` or an empty string at the first call and the server returns chat room members, starting from the latest one.
+SDKClient.Instance.RoomManager.FetchRoomMembers(roomId, cursor, pageSize, callback: new ValueCallBack>(
+  // `members` is of the CursorResult type
+  onSuccess: (members) => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Manage the chat room blocklist
+
+The chat room owner and admins are added to the chat room allow list by default.
+
+#### Add a member to the chat room blocklist
+
+Only the chat room owner and admins can call `BlockRoomMembers` to add the specified member to the chat room blocklist. Once added to the blocklist, this member receives the `OnRemovedFromRoom` callback, while all the other members receive the `OnMemberExitedFromRoom` callback. After being added to blocklist, this user cannot send or receive messages in the chat room. They can no longer join the chat room again until they are removed from the blocklist.
+
+The following code sample shows how to add a member to the chat room blocklist:
+
+```csharp
+SDKClient.Instance.RoomManager.BlockRoomMembers(roomId, members, new CallBack(
+  onSuccess: () =>
+  {
+  },
+  onError: (code, desc) =>
+  {
+  }
+));
+```
+
+#### Remove a member from the chat room blocklist
+
+Only the chat room owner and admins can call `UnBlockRoomMembers` to remove the specified member from the chat room blocklist.
+
+The following code sample shows how to remove a member from the chat room blocklist:
+
+```csharp
+SDKClient.Instance.RoomManager.UnBlockRoomMembers(roomId, members, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+#### Retrieve the chat room blocklist
+
+Only the chat room owner and admins can call `FetchRoomBlockList` to retrieve the chat room blocklist.
+
+The following code sample shows how to retrieve the chat room blocklist:
+
+```csharp
+SDKClient.Instance.RoomManager.FetchRoomBlockList(roomId, pageNum, pageSize, callback: new ValueCallBack>(
+  // `list` is of List type
+  onSuccess: (list) => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Manage the chat room mute list
+
+#### Add a member to the chat room mute list
+
+Only the chat room owner and admins can call `MuteRoomMembers` to add the specified member to the chat room mute list. Once added to the mute list, this member and all the other chat room admins or owner receive the `OnMuteListAddedFromRoom` callback.
+
+**Note**: The chat room owner can mute chat room admins and regular members, whereas chat room admins can only mute regular members.
+
+The following code sample shows how to add a member to the chat room mute list:
+
+```csharp
+// muteMilliseconds: The mute duration. If you pass `-1`, members are muted permanently.
+SDKClient.Instance.RoomManager.MuteRoomMembers(roomId, members, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+#### Remove a member from the chat room mute list
+
+Only the chat room owner and admins can call `UnMuteRoomMembers` to remove the specified member from the chat room mute list. Once removed from the mute list, this member and all the other chat room admins or owner receive the `OnMuteListRemovedFromRoom` callback.
+
+**Note**: The chat room owner can unmute chat room admins and regular members, whereas chat room admins can only unmute regular members.
+
+The following code sample shows how to remove a member from the chat room mute list:
+
+```csharp
+SDKClient.Instance.RoomManager.UnMuteRoomMembers(roomId, members, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Manage the chat room allow list
+
+Messages sent by members in the chat room allow list are of high priority and will be delivered first, but there is no guarantee that they will be successfully delivered. When the load is high, the server discards low-priority messages first. If the load is high even then, the server also discards high-priority messages.
+
+#### Add a member to the chat room allow list
+
+Only the chat room owner and admins can call `AddAllowListMembers` to add the specified member to the chat room allow list. Members in the chat room allow list can send chat room messages even when the chat room owner or admin has muted all chat room members. However, if a member is already in the chat room mute list, this member still cannot send messages in the chat room even after being added to the chat room allow list. Once added to the allow list, this member and all the other chat room admins or owner receive the `IRoomManagerDelegate#OnAddAllowListMembersFromChatroom` callback.
+
+The following code sample shows how to add a member to the chat room allow list:
+
+```csharp
+SDKClient.Instance.RoomManager.AddAllowListMembers(roomId, list, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+#### Remove a member from the chat room allow list
+
+Only the chat room owner and admins can call `RemoveAllowListMembers` to remove the specified member from the chat room allow list. Once removed from the chat room allow list, this member and all the other chat room admins or owner receive the `IRoomManagerDelegate#OnRemoveAllowListMembersFromChatroom` callback.
+
+The following code sample shows how to remove a member from the chat room allow list:
+
+```csharp
+SDKClient.Instance.RoomManager.RemoveAllowListMembers(roomId, list, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+  ));
+```
+
+#### Check whether a user is added to the allow list
+
+All chat room members can call `CheckIfInRoomAllowList` to check whether they are added to the chat room allow list.
+
+The following code sample shows how to check whether a user is on the chat room allow list:
+
+```csharp
+SDKClient.Instance.RoomManager.CheckIfInRoomAllowList(roomId, new ValueCallBack(
+  onSuccess: (b) => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+#### Retrieve the chat room mute list
+
+Only the chat room owner and admins can call `FetchRoomMuteList` to retrieve the chat room mute dictionary.
+
+The following code sample shows how to retrieve the chat room mute dictionary:
+
+```csharp
+SDKClient.Instance.RoomManager.FetchRoomMuteList(roomId, pageSize, pageNum, callback: new ValueCallBack>(
+  onSuccess: (dict) => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Mute and unmute all the chat room members
+
+#### Mute all the chat room members
+
+Only the chat room owner and admins can call `MuteRoomMembers` to mute all the chat room members. Once all the members are muted, the `IRoomManagerDelegate#OnAllMemberMuteChangedFromChatroom` callback is triggered and only those in the chat room allow list can send messages in the chat room.
+
+Unlike muting a chat room member, this kind of mute does not expire automatically after a certain period and you need to call the `UnMuteAllRoomMembers` method to unmute all members in the chat room.
+
+The following sample code shows how to mute all the chat room members:
+
+```csharp
+SDKClient.Instance.RoomManager.MuteRoomMembers(roomId, members, new CallBack(
+   onSuccess: () => {
+   },
+   onError: (code, desc) => {
+   }
+));
+```
+
+#### Unmute all the chat room members
+
+Only the chat room owner and admins can call `UnMuteAllRoomMembers` to unmute all the chat room members. Once all the members are muted, the `IRoomManagerDelegate#OnAllMemberMuteChangedFromChatroom` callback is triggered.
+
+The following sample code shows how to unmute all the chat room members:
+
+```csharp
+SDKClient.Instance.RoomManager.UnMuteAllRoomMembers(roomId, new ValueCallBack(
+   onSuccess: (room) => {
+   },
+   onError: (code, desc) => {
+   }
+));
+```
+
+### Manage the chat room owner and admins
+
+#### Transfer the chat room ownership
+
+Only the chat room owner can call `ChangeRoomOwner` to transfer the ownership to the specified chat room member. Once the ownership is transferred, the former chat room owner becomes a regular member. The new chat room owner and the chat room admins receive the `OnOwnerChangedFromRoom` callback.
+
+The following code sample shows how to transfer the chat room ownership:
+
+```csharp
+SDKClient.Instance.RoomManager.ChangeRoomOwner(roomId, newOwner, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+#### Add a chat room admin
+
+Only the chat room owner can call `AddRoomAdmin` to add an admin. Once promoted to an admin, the new admin and the other chat room admins receive the `OnAdminAddedFromRoom` callback.
+
+The following code sample shows how to add a chat room admin:
+
+```csharp
+SDKClient.Instance.RoomManager.AddRoomAdmin(roomId, adminId, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+#### Remove a chat room admin
+
+Only the chat room owner can call `RemoveRoomAdmin` to remove an admin. Once demoted to a regular member, the former admin and the other chat room admins receive the `OnAdminRemovedFromRoom` callback.
+
+The following code sample shows how to remove a chat room admin:
+
+```csharp
+SDKClient.Instance.RoomManager.RemoveRoomAdmin(roomId, adminId, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Listen for chat Room Events
+
+For details, see [Chat Room Events](manage-chatrooms#listen-for-chat-room-events).
+
+### Unity
+
+### Remove a member from a chat room
+
+Only the chat room owner and admins can call `DeleteRoomMembers` to remove one or more members from a chat room. Once removed from the chat room, this member receives the `OnRemovedFromRoom` callback, while all the other members receive the `OnMemberExitedFromRoom` callback. Users can join the chat room again after being removed.
+
+The following code sample shows how to remove a member from a chat room:
+
+```csharp
+SDKClient.Instance.RoomManager.DeleteRoomMembers(roomId, members, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Retrieve the chat room member list
+
+All chat room members can call `FetchRoomMembers` to retrieve the member list of the current chat room.
+
+The following code sample shows how to retrieve the chat room member list:
+
+```csharp
+// pageSize: The number of chat room members to retrieve per page. The maximum value is 1000.
+// cursor: The starting position for data query. Pass in `null` or an empty string at the first call and the server returns chat room members, starting from the latest one.
+SDKClient.Instance.RoomManager.FetchRoomMembers(roomId, cursor, pageSize, callback: new ValueCallBack>(
+  // `members` is of the CursorResult type
+  onSuccess: (members) => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Manage the chat room blocklist
+
+#### Add a member to the chat room blocklist
+
+Only the chat room owner and admins can call `BlockRoomMembers` to add the specified member to the chat room blocklist. Once added to the blocklist, this member receives the `OnRemovedFromRoom` callback, while all the other members receive the `OnMemberExitedFromRoom` callback. After being added to blocklist, this user cannot send or receive messages in the chat room. They can no longer join the chat room again until they are removed from the blocklist.
+
+The following code sample shows how to add a member to the chat room blocklist:
+
+```csharp
+SDKClient.Instance.RoomManager.BlockRoomMembers(roomId, members, new CallBack(
+  onSuccess: () =>
+  {
+  },
+  onError: (code, desc) =>
+  {
+  }
+));
+```
+
+#### Remove a member from the chat room blocklist
+
+Only the chat room owner and admins can call `UnBlockRoomMembers` to remove the specified member from the chat room blocklist.
+
+The following code sample shows how to remove a member from the chat room blocklist:
+
+```csharp
+SDKClient.Instance.RoomManager.UnBlockRoomMembers(roomId, members, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+#### Retrieve the chat room blocklist
+
+Only the chat room owner and admins can call `FetchRoomBlockList` to retrieve the chat room blocklist.
+
+The following code sample shows how to retrieve the chat room blocklist:
+
+```csharp
+SDKClient.Instance.RoomManager.FetchRoomBlockList(roomId, pageNum, pageSize, callback: new ValueCallBack>(
+  // `list` is of List type
+  onSuccess: (list) => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Manage the chat room allow list
+
+The chat room owner and admins are added to the chat room allow list by default.
+
+Messages sent by members in the chat room allow list are of high priority and will be delivered first, but there is no guarantee that they will be successfully delivered. When the load is high, the server discards low-priority messages first. If the load is high even then, the server also discards high-priority messages.
+
+#### Add a member to the chat room allow list
+
+Only the chat room owner and admins can call `AddAllowListMembers` to add the specified member to the chat room allow list. Members in the chat room allow list can send chat room messages even when the chat room owner or admin has muted all chat room members. However, if a member is already in the chat room mute list, this member still cannot send messages in the chat room even after being added to the chat room allow list. Once added to the allow list, this member and all the other chat room admins or owner receive the `IRoomManagerDelegate#OnAddAllowListMembersFromChatroom` callback.
+
+The following code sample shows how to add a member to the chat room allow list:
+
+```csharp
+SDKClient.Instance.RoomManager.AddAllowListMembers(roomId, list, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+#### Remove a member from the chat room allow list
+
+Only the chat room owner and admins can call `RemoveAllowListMembers` to remove the specified member from the chat room allow list. Once removed from the chat room allow list, this member and all the other chat room admins or owner receive the `IRoomManagerDelegate#OnRemoveAllowListMembersFromChatroom` callback.
+
+The following code sample shows how to remove a member from the chat room allow list:
+
+```csharp
+SDKClient.Instance.RoomManager.RemoveAllowListMembers(roomId, list, new CallBack(
+   onSuccess: () => {
+   },
+   onError: (code, desc) => {
+   }
+));
+```
+
+#### Check whether a user is added to the allow list
+
+All chat room members can call `CheckIfInRoomAllowList` to check whether they are added to the chat room allow list.
+
+The following code sample shows how to check whether a user is on the chat room allow list:
+
+```csharp
+SDKClient.Instance.RoomManager.CheckIfInRoomAllowList(roomId, new ValueCallBack(
+  onSuccess: (b) => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Manage the chat room mute list
+
+#### Add a member to the chat room mute list
+
+Only the chat room owner and admins can call `MuteRoomMembers` to add the specified member to the chat room mute list. Once added to the mute list, this member and all the other chat room admins or owner receive the `OnMuteListAddedFromRoom` callback.
+
+**Note**: The chat room owner can mute chat room admins and regular members, whereas chat room admins can only mute regular members.
+
+The following code sample shows how to add a member to the chat room mute list:
+
+```csharp
+// muteMilliseconds: The mute duration. If you pass `-1`, members are muted permanently.
+SDKClient.Instance.RoomManager.MuteRoomMembers(roomId, members, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+#### Remove a member from the chat room mute list
+
+Only the chat room owner and admins can call `UnMuteRoomMembers` to remove the specified member from the chat room mute list. Once removed from the mute list, this member and all the other chat room admins or owner receive the `OnMuteListRemovedFromRoom` callback.
+
+**Note**: The chat room owner can unmute chat room admins and regular members, whereas chat room admins can only unmute regular members.
+
+The following code sample shows how to remove a member from the chat room mute list:
+
+```csharp
+SDKClient.Instance.RoomManager.UnMuteRoomMembers(roomId, members, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+#### Retrieve the chat room mute dictionary
+
+Only the chat room owner and admins can call `FetchRoomMuteList` to retrieve the chat room mute dictionary.
+
+The following code sample shows how to retrieve the chat room mute dictionary:
+
+```csharp
+SDKClient.Instance.RoomManager.FetchRoomMuteList(roomId, pageSize, pageNum, callback: new ValueCallBack>(
+  onSuccess: (dict) => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Mute and unmute all the chat room members
+
+#### Mute all the chat room members
+
+Only the chat room owner and admins can call `MuteRoomMembers` to mute all the chat room members. Once all the members are muted, the `IRoomManagerDelegate#OnAllMemberMuteChangedFromChatroom` callback is triggered and only those in the chat room allow list can send messages in the chat room.
+
+Unlike muting a chat room member, this kind of mute does not expire automatically after a certain period and you need to call the `UnMuteAllRoomMembers` method to unmute all members in the chat room.
+
+The following sample code shows how to mute all the chat room members:
+
+```csharp
+SDKClient.Instance.RoomManager.MuteRoomMembers(roomId, members, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+#### Unmute all the chat room members
+
+Only the chat room owner and admins can call `UnMuteAllRoomMembers` to unmute all the chat room members. All members in the chat room can receive the `IRoomManagerDelegate#OnAllMemberMuteChangedFromChatroom` event and only those in the chat room allow list can send messages in the chat room.
+
+The following sample code shows how to unmute all the chat room members:
+
+```csharp
+SDKClient.Instance.RoomManager.UnMuteAllRoomMembers(roomId, new ValueCallBack(
+  onSuccess: (room) => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Manage the chat room owner and admins
+
+#### Transfer the chat room ownership
+
+Only the chat room owner can call `ChangeRoomOwner` to transfer the ownership to the specified chat room member. Once the ownership is transferred, the former chat room owner becomes a regular member. The new chat room owner and the chat room admins receive the `OnOwnerChangedFromRoom` callback.
+
+The following code sample shows how to transfer the chat room ownership:
+
+```csharp
+SDKClient.Instance.RoomManager.ChangeRoomOwner(roomId, newOwner, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+#### Add a chat room admin
+
+Only the chat room owner can call `AddRoomAdmin` to add an admin. Once promoted to an admin, the new admin and the other chat room admins receive the `OnAdminAddedFromRoom` callback.
+
+The following code sample shows how to add a chat room admin:
+
+```csharp
+SDKClient.Instance.RoomManager.AddRoomAdmin(roomId, adminId, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+#### Remove a chat room admin
+
+Only the chat room owner can call `RemoveRoomAdmin` to remove an admin. Once demoted to a regular member, the former admin and the other chat room admins receive the `OnAdminRemovedFromRoom` callback.
+
+The following code sample shows how to remove a chat room admin:
+
+```csharp
+SDKClient.Instance.RoomManager.RemoveRoomAdmin(roomId, adminId, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) => {
+  }
+));
+```
+
+### Listen for chat Room Events
+
+For details, see [Chat Room Events](manage-chatrooms#listen-for-chat-room-events).
+
+### Web
+
+### Retrieve the chat room member list
+
+All chat room members can call `listChatRoomMembers` to retrieve the member list of the current chat room.
+
+```javascript
+const options = {
+  // The current page number, starting from 1.
+  pageNum: 1,
+  // pageSize: The number of chat room members to retrieve per page. The maximum value is 1000.
+  pageSize: 10,
+  chatRoomId: "chatRoomId",
+};
+chatClient.listChatRoomMembers(options).then((res) => console.log(res));
+```
+
+### Manage the chat room blocklist
+
+The chat room owner and admins can add and remove the specified members from the chat room blocklist. Once a chat room member is added to the blocklist, this member cannot send or receive chat room messages, nor can they join the chat room again.
+
+```javascript
+// The chat room owner or admin can call blockChatRoomMembers to add the specified members to the chat room blocklist.
+const options = {
+  chatRoomId: "chatRoomId",
+  usernames: ["user1", "user2"], // The array of usernames
+};
+chatClient.blockChatRoomMembers(options).then((res) => console.log(res));
+
+// The chat room owner or admin can call unblockChatRoomMembers to remove the specified users from the blocklist.
+const options = {
+  chatRoomId: "chatRoomId",
+  usernames: ["user1", "user2"], // The array of usernames
+};
+
+chatClient.unblockChatRoomMembers(options).then((res) => console.log(res));
+
+// The chat room owner or admin can call getChatRoomBlocklist to retrieve the blocklist of the current chat room.
+const options = {
+  chatRoomId: "chatRoomId",
+};
+chatClient.getChatRoomBlocklist(options);
+```
+
+### Manage the chat room mute list
+
+The chat room owner and admins can add and remove the specified members from the chat room mute list. Once a chat room member is added to the mute list, this member can no longer send chat room messages, not even after being added to the chat room allow list.
+
+```javascript
+// The chat room owner or admin can call muteChatRoomMember to add the specified user to the chat room blocklist.
+// The muted member and all other chat room admins or owner receive the muteMember callback.
+const options = {
+  chatRoomId: "chatRoomId", // The ID of the chat room
+  username: "username", // The username of the muted user
+  muteDuration: -1, // muteDuration: The mute duration. If you pass `-1`, members are muted permanently.
+};
+chatClient.muteChatRoomMember(options).then((res) => console.log(res));
+
+// The chat room owner or admin can call unmuteChatRoomMember to remove the specified user from the chat room mute list.
+// The unmuted member and all the other chat room admins or owner receive the unmuteMember callback.
+const options = {
+  chatRoomId: "chatRoomId",
+  username: "username",
+};
+chatClient.unmuteChatRoomMember(options).then((res) => console.log(res));
+
+// The chat room owner or admin can call getChatRoomMuteList to retrieve the mute list of the current chat room.
+const options = {
+  chatRoomId: "chatRoomId",
+};
+chatClient.getChatRoomMuteList(options).then((res) => console.log(res));
+```
+
+### Mute and unmute all chat room members
+
+The chat room owner and admins can mute or unmute all chat room members. All members in the group can receive the `muteAllMembers` event.
+
+Once all members are muted, only those in the chat room allow list can send messages in the chat room.
+
+Unlike muting a chat room member, this kind of mute does not expire automatically after a certain period and you need to call the `enableSendChatRoomMsg` method to unmute all members in the chat room.
+
+```javascript
+// The chat room owner or admin can call disableSendChatRoomMsg to mute all the chat room members.
+// Once all the members are muted, these members receive the muteAllMembers callback.
+const options = {
+  chatRoomId: "chatRoomId",
+};
+chatClient.disableSendChatRoomMsg(options).then((res) => console.log(res));
+
+// The chat room owner or admin can call enableSendChatRoomMsg to unmute all the chat room members.
+// Once all the members are unmuted, these members receive the unmuteAllMembers callback.
+const options = {
+  chatRoomId: "chatRoomId",
+};
+chatClient.enableSendChatRoomMsg(options).then((res) => {
+  console.log(res);
+});
+```
+
+### Manage the chat room allow list
+
+The chat room owner and admins are added to the chat room allow list by default.
+
+Members in the chat room allow list can send chat room messages even when the chat room owner or an admin has muted all the chat room members. However, if a member is already in the chat room mute list, this member still cannot send messages in the chat room even after being added to the chat room allow list.
+
+```javascript
+// The chat room owner or admin can call addUsersToChatRoomAllowlist to add the specified member to the chat room allow list.
+const options = {
+  chatRoomId: "chatRoomId",
+  users: ["user1", "user2"], // The array of usernames
+};
+chatClient.addUsersToChatRoomAllowlist(options);
+
+// The chat room owner or admin can call removeChatRoomAllowlistMember to remove the specified member from the chat room allow list.
+const options = {
+  chatRoomId: "chatRoomId",
+  userName: "user",
+};
+chatClient.removeChatRoomAllowlistMember(options);
+
+// Chat room members can call isInChatRoomAllowlist to check whether they are in the chat room allow list.
+const options = {
+  chatRoomId: "chatRoomId",
+  userName: "user",
+};
+chatClient.isInChatRoomAllowlist(options);
+
+// The chat room owner or admin can call getChatRoomAllowlist to retrieve the allow list of the current chat room.
+const options = {
+  chatRoomId: "chatRoomId",
+};
+chatClient.getChatRoomAllowlist(options).then((res) => console.log(res));
+```
+
+### Manage the chat room admins
+
+The chat room owner can add admins. Once added to the chat room admin list, the newly added admin and the other chat room admins receive the `setAdmin` callback.
+
+The chat room owner can remove admins. Once removed from the chat room admin list, the removed admin and the other chat room admins receive the `removeAdmin` callback.
+
+```javascript
+// The chat room owner can call setChatRoomAdmin to add admins.
+const options = {
+  chatRoomId: "chatRoomId",
+  username: "user1",
+};
+chatClient.setChatRoomAdmin(options).then((res) => console.log(res));
+
+// The chat room owner can call removeChatRoomAdmin to remove admins.
+const options = {
+  chatRoomId: "chatRoomId",
+  username: "user1",
+};
+chatClient.removeChatRoomAdmin(options).then((res) => console.log(res));
+```
+
+### Listen for chat room events
+
+For details, see [Chat Room Events](manage-chatrooms#listen-for-chat-room-events).

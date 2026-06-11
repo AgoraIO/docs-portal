@@ -1,0 +1,77 @@
+---
+title: "Manual install"
+description: "Links to the manual downloads for this product and explanations on how to install them."
+---
+
+### Android
+
+To manually install Chat SDK from a download:
+
+1. [Download](/sdks) the latest version of the Chat SDK for Web, and extract files from the package to a local folder, ``.
+
+1. Copy the following files and subfolders from the `libs` folder of the downloaded SDK to the corresponding directory of your project:
+
+    | File or subfolder                                      | Path of your project                  |
+    | ------------------------------------------------------ | ------------------------------------- |
+    | `agorachat_x.y.x.jar`                                  | `~/app/libs/`                         |
+    | `/arm64-v8a/libagora-chat-sdk.so` and `libsqlite.so`   | `~/app/src/main/jniLibs/arm64-v8a/`   |
+    | `/armeabi-v7a/libagora-chat-sdk.so` and `libsqlite.so` | `~/app/src/main/jniLibs/armeabi-v7a/` |
+    | `/x86/libagora-chat-sdk.so` and `libsqlite.so`         | `~/app/src/main/jniLibs/x86/`         |
+    | `/x86_64/libagora-chat-sdk.so` and `libsqlite.so`      | `~/app/src/main/jniLibs/x86_64/`      |
+
+    `x.y.z` refers to the version number of the Chat SDK you downloaded.
+
+1. In Android Studio, select the `Project Files/app/libs/agorachat_x.y.z.jar` file on the navigation bar, right-click, and then select **add as a library**.
+
+### Flutter
+
+To manually install Chat SDK use either:
+
+- **Yaml package manager**:
+
+  Add the following line to the `/pubspec.yaml` file under `dependencies`:
+
+  ```yaml
+  dependencies:
+  ...
+      # Fill in a specific SDK version number for x.y.z
+      # For example, 1.0.9
+      agora_chat_sdk: ^x.y.z
+  ...
+  ```
+
+  To get the latest Web Chat SDK version number, visit [pub.dev](https://pub.dev/packages?q=agora_chat_sdk).
+
+- **Pub dev**
+
+  Run the following command in the project folder:
+
+  ```bash
+  flutter pub add agora_chat_sdk
+  ```
+
+### Unity
+
+To manually install Chat SDK:
+
+1. Unzip [ Chat SDK for Unity](/sdks) to a local folder:
+
+1. In Unity, click **Assets > Import Package > Custom Package**.
+
+1. Navigate to the Chat SDK package and click *Open*.
+
+1. In **Import Unity Package**, click **Import**.
+
+### Web
+
+To manually install Chat SDK use either:
+
+1. Unzip [ Chat SDK for Web](/sdks) to a local folder:
+
+1. In the SDK folder, save `libs/Agora-chat.js` to your project directory.
+
+1. Open the HTML file in your project directory and add the following code to import Chat SDK :
+
+    ```javascript
+    
+    ```
