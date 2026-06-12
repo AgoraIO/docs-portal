@@ -7,7 +7,7 @@ import {
   ThumbsDownIcon,
   ThumbsUpIcon,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
@@ -24,15 +24,34 @@ export function DocsMainColumn({
   locale = DEFAULT_LOCALE,
   next,
   previous,
+  resetKey,
 }: {
   children: React.ReactNode;
   layoutMode?: 'docs' | 'openapi';
   locale?: AppLocale | string;
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
+  resetKey?: string;
 }) {
-  const { isScrollbarVisible, scrollContainerRef } =
+  const { isScrollbarVisible, scrollContainerRef, scrollToTop } =
     useTransientScrollbar<HTMLDivElement>();
+  const previousResetKey = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (!resetKey) {
+      return;
+    }
+
+    if (previousResetKey.current && previousResetKey.current !== resetKey) {
+      scrollToTop();
+      window.scrollTo({
+        behavior: 'auto',
+        top: 0,
+      });
+    }
+
+    previousResetKey.current = resetKey;
+  }, [resetKey, scrollToTop]);
 
   return (
     <main

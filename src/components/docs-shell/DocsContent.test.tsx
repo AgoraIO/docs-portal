@@ -210,62 +210,6 @@ describe('DocsContent', () => {
         Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
   });
-  it('scrolls the active docs container to the top when a different docs page is rendered', async () => {
-    const { rerender } = render(
-      <AppProviders>
-        <div
-          data-testid="docs-main-desktop-scroll"
-          style={{ height: 200, overflow: 'auto' }}
-        >
-          <DocsContent
-            contentPath="en/introduction/about-agora.md"
-            slug="about-agora"
-            title="About Agora"
-            toc={[]}
-          />
-        </div>
-      </AppProviders>,
-    );
-
-    const scrollContainer = screen.getByTestId('docs-main-desktop-scroll');
-    const scrollTo = vi.fn(({ top }: { top: number }) => {
-      scrollContainer.scrollTop = top;
-    });
-
-    Object.defineProperty(scrollContainer, 'scrollTop', {
-      configurable: true,
-      value: 240,
-      writable: true,
-    });
-    Object.defineProperty(scrollContainer, 'scrollTo', {
-      configurable: true,
-      value: scrollTo,
-    });
-
-    rerender(
-      <AppProviders>
-        <div
-          data-testid="docs-main-desktop-scroll"
-          style={{ height: 200, overflow: 'auto' }}
-        >
-          <DocsContent
-            contentPath="en/introduction/quick-start.md"
-            slug="quick-start"
-            title="Quick Start"
-            toc={[]}
-          />
-        </div>
-      </AppProviders>,
-    );
-
-    await waitFor(() => {
-      expect(scrollTo).toHaveBeenCalledWith({
-        behavior: 'auto',
-        top: 0,
-      });
-    });
-  });
-
   it('renders copy page menu actions for AI tools, MCP, and markdown', async () => {
     renderWithRouter(
       <DocsContent

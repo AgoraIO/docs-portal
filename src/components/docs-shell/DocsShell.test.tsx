@@ -516,6 +516,75 @@ describe('DocsShell', () => {
     });
   });
 
+  it('resets desktop main-column scroll position when the active path changes', async () => {
+    function ShellWithPathSwitcher() {
+      const [activePath, setActivePath] = useState(
+        '/en/introduction/about-agora',
+      );
+
+      return (
+        <>
+          <button
+            onClick={() => setActivePath('/en/introduction/quick-start')}
+            type="button"
+          >
+            Switch page
+          </button>
+          <DocsShell
+            activePath={activePath}
+            activeTab="introduction"
+            localeLinks={[
+              {
+                href: '/en/introduction',
+                isActive: true,
+                locale: 'en',
+              },
+              {
+                href: '/zh-CN/introduction',
+                isActive: false,
+                locale: 'zh-CN',
+              },
+            ]}
+            locale="en"
+            pages={[
+              {
+                title: 'Quick Start',
+                url: '/en/introduction/quick-start',
+              },
+            ]}
+            sidebar={sidebar}
+            tabs={tabs}
+            toc={[]}
+          >
+            <article>{activePath}</article>
+          </DocsShell>
+        </>
+      );
+    }
+
+    const windowScrollTo = vi.fn();
+    Object.defineProperty(window, 'scrollTo', {
+      configurable: true,
+      value: windowScrollTo,
+      writable: true,
+    });
+
+    renderWithRouter(<ShellWithPathSwitcher />);
+
+    const mainScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    mainScroll.scrollTop = 180;
+
+    fireEvent.click(screen.getByRole('button', { name: 'Switch page' }));
+
+    await waitFor(() => {
+      expect(mainScroll.scrollTop).toBe(0);
+    });
+    expect(windowScrollTo).toHaveBeenCalledWith({
+      behavior: 'auto',
+      top: 0,
+    });
+  });
+
   it('switches locale while preserving the current tab and slug path', async () => {
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
