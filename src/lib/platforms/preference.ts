@@ -1,6 +1,7 @@
 import { PLATFORM_PREFERENCE_STORAGE_KEY, type PlatformKey } from './registry';
 
 export const PLATFORM_DATASET_KEY = 'docsPlatform';
+export const PLATFORM_PREFERENCE_EVENT = 'docs-portal:platform-change';
 
 export function getStoredPlatformPreference(): string | null {
   if (typeof window === 'undefined') {
@@ -21,6 +22,12 @@ export function setStoredPlatformPreference(platform: PlatformKey) {
     } catch {
       // Ignore storage errors and still sync the live DOM dataset.
     }
+
+    window.dispatchEvent(
+      new CustomEvent(PLATFORM_PREFERENCE_EVENT, {
+        detail: platform,
+      }),
+    );
   }
 
   syncPlatformDataset(platform);

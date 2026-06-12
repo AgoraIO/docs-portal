@@ -3,10 +3,10 @@ import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import {
   type DocsNavScopeResolution,
-  getNavScopeVersionLinks,
   getNavScopeSidebarNodes,
-  getSharedNavScopeSidebarNodes,
+  getNavScopeVersionLinks,
   getScopedNavScopeSidebarNodes,
+  getSharedNavScopeSidebarNodes,
   resolveDocsNavScope,
 } from './docs-nav-scope';
 import { getSourceSlugs } from './docs-routing';
@@ -29,6 +29,7 @@ import {
   resolveOpenApiEndpointRoute,
 } from './openapi/lanes';
 import { getOpenApiOperation } from './openapi/source.server';
+import { buildCanonicalPlatformTocText } from './platforms/processed-text';
 import {
   type source as docsSource,
   getPageMarkdownUrl,
@@ -457,7 +458,9 @@ async function resolvePageToc(page: PageWithSource, processedText: string) {
   }
 
   try {
-    return normalizeToc(await getTableOfContents(processedText));
+    return normalizeToc(
+      await getTableOfContents(buildCanonicalPlatformTocText(processedText)),
+    );
   } catch {
     return [];
   }
@@ -599,8 +602,10 @@ async function getDocsSidebarNodes({
     tab,
   );
 
-  if (activePath?.startsWith('/en/api-reference/recipes') ||
-      activePath?.startsWith('/zh-CN/api-reference/recipes')) {
+  if (
+    activePath?.startsWith('/en/api-reference/recipes') ||
+    activePath?.startsWith('/zh-CN/api-reference/recipes')
+  ) {
     return restoreRecipesSidebarSections(openApiSidebar);
   }
 
@@ -714,15 +719,15 @@ function buildAiProductSidebar(
     apiReferenceNodes,
     ['Conversational AI'],
   );
-  const conversationalAiRestApiSection = conversationalAiApiReferenceSection
-    ? findNestedSidebarSectionByExactUrl(
+  const _conversationalAiRestApiSection = conversationalAiApiReferenceSection
+    ? (findNestedSidebarSectionByExactUrl(
         conversationalAiApiReferenceSection,
         '/en/api-reference/conversational-ai/rest-api',
       ) ??
       findNestedSidebarSectionByExactUrl(
         conversationalAiApiReferenceSection,
         '/zh-CN/api-reference/conversational-ai/rest-api',
-      )
+      ))
     : null;
 
   const isZhCn = aiOverview.url.startsWith('/zh-CN/');
@@ -736,63 +741,61 @@ function buildAiProductSidebar(
     url: `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`,
   } satisfies DocsSidebarPageNode;
 
-  const manualServerSdkSection =
-    ({
-          children: [
-            {
-              id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`,
-              title: 'TypeScript',
-              type: 'page',
-              url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`,
-            },
-            {
-              id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/go`,
-              title: 'Go',
-              type: 'page',
-              url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/go`,
-            },
-            {
-              id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/python`,
-              title: 'Python',
-              type: 'page',
-              url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/python`,
-            },
-          ],
-          collapsible: true,
-          id: `ai-reference-server-sdk-${isZhCn ? 'zh-CN' : 'en'}`,
-          title: 'Server SDK',
-          type: 'section',
-          url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk`,
-        } satisfies DocsSidebarSectionNode);
+  const manualServerSdkSection = {
+    children: [
+      {
+        id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`,
+        title: 'TypeScript',
+        type: 'page',
+        url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`,
+      },
+      {
+        id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/go`,
+        title: 'Go',
+        type: 'page',
+        url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/go`,
+      },
+      {
+        id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/python`,
+        title: 'Python',
+        type: 'page',
+        url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/python`,
+      },
+    ],
+    collapsible: true,
+    id: `ai-reference-server-sdk-${isZhCn ? 'zh-CN' : 'en'}`,
+    title: 'Server SDK',
+    type: 'section',
+    url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk`,
+  } satisfies DocsSidebarSectionNode;
 
-  const manualClientToolkitSection =
-    ({
-          children: [
-            {
-              id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/android`,
-              title: 'Android',
-              type: 'page',
-              url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/android`,
-            },
-            {
-              id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/ios`,
-              title: 'iOS',
-              type: 'page',
-              url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/ios`,
-            },
-            {
-              id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/web`,
-              title: 'Web',
-              type: 'page',
-              url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/web`,
-            },
-          ],
-          collapsible: true,
-          id: `ai-reference-client-toolkit-${isZhCn ? 'zh-CN' : 'en'}`,
-          title: isZhCn ? 'Client Toolkit' : 'Client toolkit',
-          type: 'section',
-          url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit`,
-        } satisfies DocsSidebarSectionNode);
+  const manualClientToolkitSection = {
+    children: [
+      {
+        id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/android`,
+        title: 'Android',
+        type: 'page',
+        url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/android`,
+      },
+      {
+        id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/ios`,
+        title: 'iOS',
+        type: 'page',
+        url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/ios`,
+      },
+      {
+        id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/web`,
+        title: 'Web',
+        type: 'page',
+        url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/web`,
+      },
+    ],
+    collapsible: true,
+    id: `ai-reference-client-toolkit-${isZhCn ? 'zh-CN' : 'en'}`,
+    title: isZhCn ? 'Client Toolkit' : 'Client toolkit',
+    type: 'section',
+    url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit`,
+  } satisfies DocsSidebarSectionNode;
 
   const referenceLeadingChildren = referenceSection.children.filter(
     (child) =>
@@ -908,7 +911,9 @@ function flattenDeviceKitSidebarChildren(
       if (quickstart) {
         flattened.push({
           ...quickstart,
-          title: quickstart.url.startsWith('/zh-CN/') ? 'Quickstart' : 'Quickstart',
+          title: quickstart.url.startsWith('/zh-CN/')
+            ? 'Quickstart'
+            : 'Quickstart',
         });
       }
       continue;
@@ -1120,18 +1125,18 @@ function resolveDocsSidebarHeader({
     };
   }
 
-    return {
-      ...navScope.header,
-      versionSwitcher: {
-        currentId:
-          versionLinks.find((item) => item.href === activePath)?.id ??
-          navScope.header.versionSwitcher?.currentId ??
-          versionLinks[0].id,
-        presentation: 'tabs' as const,
-        versions: versionLinks,
-      },
-    };
-  }
+  return {
+    ...navScope.header,
+    versionSwitcher: {
+      currentId:
+        versionLinks.find((item) => item.href === activePath)?.id ??
+        navScope.header.versionSwitcher?.currentId ??
+        versionLinks[0].id,
+      presentation: 'tabs' as const,
+      versions: versionLinks,
+    },
+  };
+}
 
 function shouldUseSharedPlatformSidebar(
   tab: string,
@@ -1140,10 +1145,7 @@ function shouldUseSharedPlatformSidebar(
   pageTree?: ReturnType<typeof docsSource.getPageTree>,
   source?: typeof docsSource,
 ) {
-  if (
-    tab !== 'realtime-media' ||
-    typeof activePath !== 'string'
-  ) {
+  if (tab !== 'realtime-media' || typeof activePath !== 'string') {
     return false;
   }
 
@@ -1235,12 +1237,9 @@ function isSharedPlatformTabUrl(activePath: string, targetHref: string) {
     return true;
   }
 
-  return (
-    activeSegments[4] !== targetSegments[4]
-      ? activeSegments.slice(5).join('/') === targetSegments.slice(5).join('/')
-      :
-    activeSegments.slice(4).join('/') === targetSegments.slice(4).join('/')
-  );
+  return activeSegments[4] !== targetSegments[4]
+    ? activeSegments.slice(5).join('/') === targetSegments.slice(5).join('/')
+    : activeSegments.slice(4).join('/') === targetSegments.slice(4).join('/');
 }
 
 function getDocsNavScope({

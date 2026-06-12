@@ -1,4 +1,8 @@
-import { getCanonicalPlatform, isKnownPlatform, type PlatformKey } from './registry';
+import {
+  getCanonicalPlatform,
+  isKnownPlatform,
+  type PlatformKey,
+} from './registry';
 
 export type PlatformGroupMode = 'inline' | 'structured';
 
@@ -75,9 +79,7 @@ export function validatePlatformGroup<T>(nodes: PlatformGroupInput<T>): void {
 
     if (seen.has(node.platform)) {
       throw new Error(
-        mode === 'inline'
-          ? `Duplicate platform key "${node.platform}" in the same group.`
-          : 'Platform groups cannot contain duplicate platforms.',
+        `Duplicate platform key "${node.platform}" in the same group.`,
       );
     }
 

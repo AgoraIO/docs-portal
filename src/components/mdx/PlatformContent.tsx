@@ -7,3 +7,7 @@ export function PlatformStructured(): never {
     'PlatformStructured should be transformed at MDX compile time.',
   );
 }
+
+export function PlatformProcessedMarker(): null {
+  return null;
+}

@@ -251,6 +251,46 @@ describe('common MDX registry', () => {
     expect(inactivePanel).toHaveAttribute('aria-hidden', 'true');
   });
 
+  it('shares platform preference updates across multiple rendered groups', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <>
+        <Group
+          canonicalPlatform="javascript"
+          groupMode="structured"
+          platforms='["javascript","android"]'
+        >
+          <Panel platform="javascript">Group 1 JS</Panel>
+          <Panel platform="android">Group 1 Android</Panel>
+        </Group>
+        <Group
+          canonicalPlatform="javascript"
+          groupMode="inline"
+          platforms='["javascript","android"]'
+        >
+          <Panel platform="javascript">Group 2 JS</Panel>
+          <Panel platform="android">Group 2 Android</Panel>
+        </Group>
+      </>,
+    );
+
+    fireEvent.mouseDown(screen.getAllByRole('tab', { name: 'Android' })[0], {
+      button: 0,
+      ctrlKey: false,
+    });
+
+    expect(
+      screen.getByText('Group 1 Android').closest('section'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('Group 2 Android').closest('section'),
+    ).toBeVisible();
+    expect(document.documentElement.dataset.docsPlatform).toBe('android');
+  });
+
   it('renders Fumadocs normal tab triggers', () => {
     const components = getMDXComponents();
     const Tabs = components.Tabs as TabsComponent;

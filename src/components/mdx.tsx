@@ -25,16 +25,14 @@ import {
   useMemo,
   useState,
 } from 'react';
-import {
-  PlatformInline,
-  PlatformStructured,
-} from './mdx/PlatformContent';
-import {
-  PlatformPanel,
-  PlatformTabsGroup,
-} from './mdx/PlatformTabsGroup';
 import { cn } from '@/lib/cn';
 import { normalizeDocsHref } from '@/lib/docs-link-normalize';
+import {
+  PlatformInline,
+  PlatformProcessedMarker,
+  PlatformStructured,
+} from './mdx/PlatformContent';
+import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
 
 type MDXContext = {
   contentPath?: string;
@@ -369,6 +367,7 @@ export function getMDXComponents(
     Step,
     Steps,
     PlatformInline,
+    _PlatformProcessedMarker: PlatformProcessedMarker,
     PlatformStructured,
     _PlatformTabsGroup: PlatformTabsGroup,
     _PlatformPanel: PlatformPanel,

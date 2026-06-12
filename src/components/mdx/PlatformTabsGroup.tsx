@@ -1,8 +1,4 @@
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-} from 'fumadocs-ui/components/tabs';
+import { Tabs, TabsList, TabsTrigger } from 'fumadocs-ui/components/tabs';
 import {
   Children,
   cloneElement,
@@ -13,9 +9,11 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { DEFAULT_LOCALE, type AppLocale } from '@/lib/i18n/i18n-config';
+import { cn } from '@/lib/cn';
+import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
   getStoredPlatformPreference,
+  PLATFORM_PREFERENCE_EVENT,
   setStoredPlatformPreference,
   syncPlatformDataset,
 } from '@/lib/platforms/preference';
@@ -24,7 +22,6 @@ import {
   isKnownPlatform,
   type PlatformKey,
 } from '@/lib/platforms/registry';
-import { cn } from '@/lib/cn';
 
 type ControlledTabsProps = React.ComponentProps<typeof Tabs> & {
   onValueChange?: (value: string) => void;
@@ -56,9 +53,17 @@ export function PlatformTabsGroup({
     const parsed = JSON.parse(platforms) as string[];
     return parsed.filter(isKnownPlatform);
   }, [platforms]);
-  const [activePlatform, setActivePlatform] = useState<PlatformKey>(
-    canonicalPlatform,
-  );
+  const [activePlatform, setActivePlatform] = useState<PlatformKey>(() => {
+    const stored = getStoredPlatformPreference();
+
+    if (stored && isKnownPlatform(stored) && parsedPlatforms.includes(stored)) {
+      return stored;
+    }
+
+    return parsedPlatforms.includes(canonicalPlatform)
+      ? canonicalPlatform
+      : (parsedPlatforms[0] ?? canonicalPlatform);
+  });
 
   useEffect(() => {
     const stored = getStoredPlatformPreference();
@@ -81,6 +86,48 @@ export function PlatformTabsGroup({
   useEffect(() => {
     syncPlatformDataset(activePlatform);
   }, [activePlatform]);
+
+  useEffect(() => {
+    function handlePreferenceChange(event: Event) {
+      const nextPlatform =
+        event instanceof CustomEvent
+          ? event.detail
+          : getStoredPlatformPreference();
+
+      if (
+        typeof nextPlatform === 'string' &&
+        isKnownPlatform(nextPlatform) &&
+        parsedPlatforms.includes(nextPlatform)
+      ) {
+        setActivePlatform(nextPlatform);
+      }
+    }
+
+    function handleStorage(event: StorageEvent) {
+      if (event.key !== 'docs-portal:platform:v1') {
+        return;
+      }
+
+      if (
+        typeof event.newValue === 'string' &&
+        isKnownPlatform(event.newValue) &&
+        parsedPlatforms.includes(event.newValue)
+      ) {
+        setActivePlatform(event.newValue);
+      }
+    }
+
+    window.addEventListener(PLATFORM_PREFERENCE_EVENT, handlePreferenceChange);
+    window.addEventListener('storage', handleStorage);
+
+    return () => {
+      window.removeEventListener(
+        PLATFORM_PREFERENCE_EVENT,
+        handlePreferenceChange,
+      );
+      window.removeEventListener('storage', handleStorage);
+    };
+  }, [parsedPlatforms]);
 
   const panelChildren = Children.map(children, (child) => {
     if (!isValidElement<PlatformPanelProps>(child)) {

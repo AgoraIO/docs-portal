@@ -30,6 +30,8 @@ Shared paragraph.
     expect(result).toContain('groupMode="structured"');
     expect(result).toContain('platform="android"');
     expect(result).toContain('platform="javascript"');
+    expect(result).toContain('_PlatformProcessedMarker');
+    expect(result).toContain('close="true"');
   });
 
   it('throws a readable error for duplicate platforms in one group', async () => {
@@ -44,5 +46,23 @@ Shared paragraph.
         remarkPlugins: [remarkPlatformContent],
       }),
     ).rejects.toThrow('Duplicate platform key "android" in the same group.');
+  });
+
+  it('throws a readable error for nested platform content blocks', async () => {
+    const source = `
+> quoted intro
+>
+> <PlatformInline platform="android">A</PlatformInline>
+> <PlatformInline platform="javascript">B</PlatformInline>
+`;
+
+    await expect(
+      compile(source, {
+        jsx: true,
+        remarkPlugins: [remarkPlatformContent],
+      }),
+    ).rejects.toThrow(
+      'PlatformInline is only supported at the top-level page flow in v1.',
+    );
   });
 });

@@ -2,12 +2,14 @@ import { describe, expect, it } from 'vitest';
 import {
   createPlatformGroup,
   splitPlatformRuns,
+  type SharedLeaf,
+  type PlatformLeaf,
   validatePlatformGroup,
 } from './mdx-groups';
 
 describe('platform mdx groups', () => {
   it('splits non-consecutive platform blocks into separate groups', () => {
-    const nodes = [
+    const nodes: Array<PlatformLeaf<string> | SharedLeaf<string>> = [
       { kind: 'shared', value: 'before' },
       { kind: 'platform', mode: 'structured', platform: 'android', value: 'A' },
       {
@@ -19,7 +21,7 @@ describe('platform mdx groups', () => {
       { kind: 'shared', value: 'middle' },
       { kind: 'platform', mode: 'inline', platform: 'android', value: 'C' },
       { kind: 'platform', mode: 'inline', platform: 'javascript', value: 'D' },
-    ] as const;
+    ];
 
     expect(splitPlatformRuns(nodes)).toEqual([
       [
@@ -85,7 +87,7 @@ describe('platform mdx groups', () => {
           value: 'B',
         },
       ]),
-    ).toThrow('Platform groups cannot contain duplicate platforms.');
+    ).toThrow('Duplicate platform key "android" in the same group.');
   });
 
   it('creates a validated group with canonical-platform metadata', () => {

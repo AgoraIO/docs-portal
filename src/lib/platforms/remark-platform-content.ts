@@ -1,8 +1,6 @@
 import type { Root } from 'mdast';
-import type {
-  MdxJsxAttribute,
-  MdxJsxFlowElement,
-} from 'mdast-util-mdx-jsx';
+import type { MdxJsxAttribute, MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
+import { visit } from 'unist-util-visit';
 import {
   createPlatformGroup,
   type PlatformGroupMode,
@@ -18,6 +16,19 @@ type PlatformContentNode = MdxJsxFlowElement;
 
 export function remarkPlatformContent() {
   return (tree: Root) => {
+    visit(tree, (node, _index, parent) => {
+      if (
+        node.type === 'mdxJsxFlowElement' &&
+        typeof node.name === 'string' &&
+        PLATFORM_COMPONENT_NAMES.has(node.name) &&
+        parent?.type !== 'root'
+      ) {
+        throw new Error(
+          `${node.name} is only supported at the top-level page flow in v1.`,
+        );
+      }
+    });
+
     const nextChildren: Root['children'] = [];
 
     for (let index = 0; index < tree.children.length; ) {
@@ -63,7 +74,25 @@ export function remarkPlatformContent() {
           type: 'mdxJsxFlowElement',
           name: '_PlatformPanel',
           attributes: [createAttribute('platform', leaf.platform)],
-          children: node.children,
+          children: [
+            {
+              type: 'mdxJsxFlowElement',
+              name: '_PlatformProcessedMarker',
+              attributes: [
+                createAttribute('groupMode', group.mode),
+                createAttribute('canonicalPlatform', group.canonicalPlatform),
+                createAttribute('platform', leaf.platform),
+              ],
+              children: [],
+            },
+            ...node.children,
+            {
+              type: 'mdxJsxFlowElement',
+              name: '_PlatformProcessedMarker',
+              attributes: [createAttribute('close', 'true')],
+              children: [],
+            },
+          ],
         })),
       });
 
@@ -82,7 +111,9 @@ function createAttribute(name: string, value: string): MdxJsxAttribute {
   };
 }
 
-function toPlatformLeaf(node: Root['children'][number]): PlatformLeaf<PlatformContentNode> | null {
+function toPlatformLeaf(
+  node: Root['children'][number],
+): PlatformLeaf<PlatformContentNode> | null {
   if (node.type !== 'mdxJsxFlowElement') {
     return null;
   }
