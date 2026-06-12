@@ -28,6 +28,10 @@ _Avoid_: prose rewrite, structural simplification, summary-first replacement
 The smallest technical change required when a legacy page cannot be carried over verbatim because the rebuilt docs site does not support the same MDX syntax, wrapper components, globals, or rendering behavior.
 _Avoid_: design rewrite, opportunistic cleanup, editorial modernization, aesthetic simplification
 
+**Migration-seed content**:
+Existing target-side content that was created as a starter, placeholder-adjacent summary, or IA scaffold and may be replaced or merged when a migrated page provides materially higher source coverage for the same topic.
+_Avoid_: authoritative hand-authored content, unknown existing content
+
 **Page-level platform tabs**:
 A platform switcher rendered directly under the page header area and above the main body content, used when one migrated document contains multiple platform variants that should share a single route and a single page shell.
 _Avoid_: deleting platform content, inline prose flattening of all variants
@@ -71,6 +75,26 @@ _Avoid_: intuition, page vibe, undocumented exceptions
 **Complex-page workflow**:
 The required migration path for pages that hit any **Complex-page trigger**, including scripted normalization, staging review, page-level verification, and possible blocker reporting before any final route write.
 _Avoid_: direct final write, best-effort port
+
+**Target-collision resolution**:
+The required classification and decision step when the intended final target path already exists, distinguishing placeholder, migration-seed, mixed, authoritative, and unknown content before overwrite, merge, or bypass decisions are made.
+_Avoid_: treating every non-placeholder page as untouchable unknown content
+
+**Shared-bundle container page**:
+A legacy shared page whose body contains multiple product branches, usually gated by `ProductWrapper` or equivalent conditions, and which must be reduced to the target product scope before final migration decisions are made.
+_Avoid_: one-shot full-page promotion, raw multi-product expansion into a product-local route
+
+**Product-scope extraction**:
+The mandatory removal of non-target-product branches, assets, and examples from a **Shared-bundle container page** after expansion and before final normalization or page-fatal evaluation.
+_Avoid_: evaluating page-fatal conditions against pre-extraction shared output
+
+**Reference narrowing**:
+An exceptional migration strategy, not the default, where a broad shared reference page is reduced below full-page fidelity only because an explicit user instruction or product-specific rule requires it.
+_Avoid_: using narrowing as the default response to broad shared prose pages
+
+**Product-relevant semantic coverage**:
+The minimum set of concepts, warnings, examples, definitions, and operational instructions from a legacy page that must survive in the target product route for the migration to still count as high-fidelity for that product.
+_Avoid_: full shared-page coverage as a hard requirement, summary-only replacement
 
 **Page-level verification**:
 A migration gate that checks an individual normalized page before it is promoted into the final docs tree.
@@ -141,17 +165,22 @@ _Avoid_: types-only verification, unit-test-only completion
 - **Content staging** contains both **MDX-authored pages** and **OpenAPI sources**.
 - A **High-fidelity migration** should produce an **MDX-authored page** whose content remains recognizably the same page as the legacy source.
 - A **Compatibility adaptation** is allowed inside a **High-fidelity migration**, but only after direct carry-over has failed.
+- **Migration-seed content** may be replaced or merged during a **High-fidelity migration** when the migrated page supersedes it with higher source coverage.
 - A legacy `PlatformWrapper` should migrate to **Page-level platform tabs** when multiple platform variants must remain on one route and the platform switch belongs to the page header region rather than a single code example.
 - Source-controlled platform variants may live in separate repository files, but they should still render as one page with **Page-level platform tabs** when they represent one logical document.
 - A migrated page should only be recorded as an unsupported platform-variant case after the existing **Page-level platform tabs** surface has been shown insufficient for that page.
 - Apple-shared legacy content such as `platform="ios, macos"` may render under both iOS and macOS page-level tabs without being split into separately rewritten prose sources.
 - Shared legacy content must be expanded into the migrated target page rather than preserved as a runtime dependency on the source repo, while retaining original paragraphs, headings, code samples, and tab structure unless the target runtime has been proven unable to carry them.
+- A **Shared-bundle container page** must undergo **Product-scope extraction** before page-fatal evaluation or final promotion.
+- After **Product-scope extraction**, the default unit of a **High-fidelity migration** remains the full source prose page rather than a reduced subset.
+- **Reference narrowing** is an exception path and must not be triggered only because a shared prose page is broad, cross-product, or larger than a preferred product-local reference page.
 - If the source repo already contains the desired paragraphs, headings, code samples, tabs, or platform structure, migration should preserve them directly rather than replacing them with a cleaner static rewrite.
 - A **Migration execution protocol** should produce a **Normalized staging file** before writing a final migrated docs page.
 - A **Hard-stop signal** requires the migration to stop before final page output and to emit a **Migration blocker report** entry instead.
 - A **Page-fatal trigger** blocks only the current page from entering the final docs tree; it must not be widened into a batch-wide stop rule.
 - A **Complex-page trigger** must be derived from machine-detectable evidence in the source or normalized content, not from a subjective judgment about the page.
 - The **Complex-page workflow** must run before final route output for any page that hits a **Complex-page trigger**.
+- **Target-collision resolution** must run before final promotion when the intended target path already exists.
 - **Page-level verification** must pass before a **Normalized staging file** is promoted into a final docs route.
 - **Batch-level verification** must pass before the migration batch is considered complete.
 - Legacy language tabs inside examples should migrate to **Code-block tabs**, not **Page-level platform tabs**.

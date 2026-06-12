@@ -141,6 +141,10 @@ The following rules are mandatory:
 - Migrate legacy `PlatformWrapper` usage to target-compatible structures only when platform differentiation is required to preserve original semantics.
 - Use page-level platform tabs when one logical document must preserve multiple platform variants on one route.
 - Use code-block tabs only for code-example-local language or package-manager variants.
+- If a shared-content dependency is a multi-product container, perform product-scope extraction before deciding whether the page is promotable, staged-only, or deferred.
+- For shared prose pages that remain within current scope after expansion and product-branch pruning, the default promotion unit is the full page, not a reduced subset.
+- Product-branch pruning removes only non-target-product branches; it must not be used to shrink or summarize the target product semantics.
+- Unless the user explicitly asks otherwise, default to one source prose page mapping to one final prose page after compatibility adaptation.
 - Preserve legacy internal links when the target page does not yet exist by treating them as deferred unresolved links.
 - Do not rewrite unresolved legacy links to a nearby but semantically different page.
 - Unknown existing target content must never be overwritten; it must be recorded and left unchanged.
@@ -176,6 +180,8 @@ Page-fatal triggers:
 - final page fails page-level verification
 - final page contains image references whose assets are missing from `public/images/**`
 
+For shared multi-product pages, page-fatal evaluation must happen after product-scope extraction. A removable non-target product branch is not itself a page-fatal condition.
+
 ### 7.2 Complex-page triggers
 
 Complex-page triggers are a closed list. The agent must not invent new triggers at runtime.
@@ -195,6 +201,14 @@ Resource dependency triggers:
 - source references shared image directories outside product-private assets, such as `/images/common/**`, `/images/console/**`, `/images/video-sdk/**`, `/images/chat/**`, or equivalent shared trees
 - source references assets introduced by shared-content dependencies rather than only product-private assets
 - source requires asset sync into `public/images/**` before the page can render safely
+
+Target collision triggers:
+- intended target file already exists and is not an obvious placeholder
+- intended target landing page already exists with seed or mixed authored content that may require merge review instead of direct overwrite
+
+Shared reference triggers:
+- source page is a broad shared glossary, security, policy, or similar reference page whose semantic scope exceeds the target product
+- source page is a multi-product shared container whose branches are selected by `ProductWrapper` or equivalent product gating
 
 ## 8. Flow Definitions
 
@@ -217,14 +231,73 @@ Complex-flow minimum steps:
 1. audit
 2. classify
 3. expand
-4. normalize
-5. stage
-6. page-verify
-7. promote
-8. batch-verify
-9. report
+4. extract
+5. normalize
+6. stage
+7. page-verify
+8. promote
+9. batch-verify
+10. report
 
 The order is mandatory.
+
+The `extract` step is mandatory whenever the page hits a target collision trigger or shared reference trigger, even if no new compatibility syntax needs to be normalized.
+
+### 8.3 Target collision resolution
+
+When the intended target path already exists, the agent must classify the existing file into one of these buckets before deciding whether final promotion is allowed:
+
+- `placeholder`
+- `navigation metadata`
+- `migration-seed content`
+- `authoritative hand-authored content`
+- `mixed existing content`
+
+Rules:
+- `placeholder` may be replaced in the same batch when the real page is created.
+- `migration-seed content` may be replaced or merged when the migrated page preserves the same topic with materially higher source coverage.
+- `mixed existing content` must not be overwritten directly; it requires merge review or staged-only output.
+- `authoritative hand-authored content` must not be overwritten without an explicit rule or user decision.
+
+The agent must not collapse `migration-seed content` into `unknown existing content`.
+
+### 8.4 Product-scope extraction
+
+Product-scope extraction is a mandatory sub-flow for shared container pages.
+
+Minimum extraction responsibilities:
+1. expand shared dependencies far enough to expose product-conditional branches
+2. remove branches that do not apply to the target product
+3. keep all branches, examples, assets, headings, and prose that are required to preserve the target product semantics in full
+4. re-evaluate complexity and page-fatal conditions on the extracted result rather than on the pre-extraction shared bundle
+
+Allowed outcomes after extraction:
+- one source page promotes to one final page
+- one source page promotes to multiple final pages when the extracted topics remain semantically separate
+- one source page remains staged-only or deferred if the extracted result still fails page-level verification
+
+### 8.5 Shared reference narrowing
+
+Some shared reference sources are wider than a single product route should carry. Typical examples include:
+- glossary
+- security
+- policy
+- infrastructure overview
+- shared notification-center references
+
+By default, these pages still promote as full pages when they remain prose, pass compatibility adaptation, and pass page-level verification.
+
+Allowed behaviors:
+- promote the full shared reference page under the target product route after compatibility adaptation
+- prune non-target-product branches from a product-gated shared container, then promote the full remaining page
+- keep one source page mapped to one final page even when the page remains broad or cross-product in scope
+
+Disallowed behaviors unless explicitly requested by the user or by a product-specific rule:
+- shrinking a shared prose page into a product-only subset because the page feels too broad
+- replacing a full shared prose page with a summary page plus externalized canonical-reference linking
+- splitting a single source prose page into multiple final pages purely to reduce size or widen perceived IA cleanliness
+
+Breadth alone is not a blocker. A broad shared prose page may be deferred only when, after compatibility adaptation and any required product-branch pruning, it still hits a page-fatal trigger or falls outside the stated task scope.
 
 ## 9. Required Responsibilities
 
@@ -235,10 +308,12 @@ The spec must distinguish tasks that must be scripted from those that may remain
 - shared recursion expansion
 - variable expansion
 - machine-detectable trigger scanning
+- product-scope extraction from multi-product shared containers
 - asset reference collection
 - asset existence verification
 - shared asset sync into `public/images/**`
 - structural normalization of legacy wrappers, tabs, callouts, and details blocks
+- target collision classification scaffolding
 - frontmatter sanitation checks
 - staging generation
 - blocker report scaffolding
@@ -282,9 +357,11 @@ Simple-flow page precheck checklist:
 
 Complex-flow page verification checklist includes all of the above, plus:
 - shared expansion is complete
+- product-scope extraction is complete when required
 - structural normalization is complete
 - staging artifact exists
 - normalized staging output itself contains no page-fatal trigger
+- target collision resolution state is recorded when a final target path already existed before the batch
 
 A staging page may still be complex after normalization; complexity alone is not failure. Only page-fatal conditions block promotion.
 
@@ -309,6 +386,9 @@ If an image reference remains but the asset is still missing, this becomes a pag
 Before writing target files, the agent must inspect the target product directory and classify existing files as:
 - placeholder page
 - navigation metadata
+- migration-seed content
+- authoritative hand-authored content
+- mixed existing content
 - unknown existing content
 
 Default assumption:
@@ -317,6 +397,9 @@ Default assumption:
 Rules:
 - placeholders may be replaced or removed only when the corresponding real target page is created in the same batch
 - navigation metadata may be updated according to the IA contract
+- migration-seed content may be replaced or merged when the migrated source clearly supersedes it
+- authoritative hand-authored content must not be overwritten
+- mixed existing content must not be overwritten directly; it must be staged for merge review or bypassed
 - unknown existing content must not be overwritten
 - unknown existing content must be recorded and bypassed
 
