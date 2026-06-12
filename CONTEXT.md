@@ -20,6 +20,70 @@ _Avoid_: MDX endpoint page, generated MDX shadow
 A canonical documentation page authored under `content/docs/**` and compiled by Fumadocs MDX.
 _Avoid_: OpenAPI endpoint page
 
+**High-fidelity migration**:
+A content-porting mode where a legacy documentation page is carried into the rebuilt docs site with the smallest possible set of changes: route placement, frontmatter normalization, asset and link rewriting, and the minimum compatibility edits required by the target MDX/runtime surface.
+_Avoid_: prose rewrite, structural simplification, summary-first replacement
+
+**Compatibility adaptation**:
+The smallest technical change required when a legacy page cannot be carried over verbatim because the rebuilt docs site does not support the same MDX syntax, wrapper components, globals, or rendering behavior.
+_Avoid_: design rewrite, opportunistic cleanup, editorial modernization, aesthetic simplification
+
+**Page-level platform tabs**:
+A platform switcher rendered directly under the page header area and above the main body content, used when one migrated document contains multiple platform variants that should share a single route and a single page shell.
+_Avoid_: deleting platform content, inline prose flattening of all variants
+
+**Code-block tabs**:
+A code-sample-local tab set used only for language or package-manager variants inside a single code example block, not for switching the page's primary platform variant.
+_Avoid_: page-level platform switching, unrelated prose switching
+
+**Variable expansion**:
+The mandatory resolution of legacy variable components such as `Vg`, `Vpd`, and `Vpl` into their final display text by reading the source variable maps and recursively expanding references until plain text is reached.
+_Avoid_: guessing, leaving JSX variable tags in output, partial expansion
+
+**Deferred unresolved link**:
+A legacy internal docs link that is preserved in migrated content because its original target has not yet been migrated and there is no equivalent target route in the current pilot scope.
+_Avoid_: opportunistic target substitution, silent deletion, semantic rewrite
+
+**Migration execution protocol**:
+A mandatory multi-stage migration workflow that separates audit, scripted normalization, staging review, final route placement, and verification, instead of allowing one-step direct writes from legacy source into `content/docs/**`.
+_Avoid_: ad hoc direct migration, one-shot page rewrite
+
+**Normalized staging file**:
+An intermediate Markdown or MDX artifact produced after legacy runtime constructs, variables, shared imports, and incompatible wrappers have been normalized, but before the page is committed to its final target IA path.
+_Avoid_: final page, legacy source file, scratch notes
+
+**Migration blocker report**:
+A per-batch Markdown report that records every page or fragment that could not be migrated safely, including source path, intended target path, blocker type, attempted adaptation, and deferral reason.
+_Avoid_: silent skip, cumulative junk log, commit message note
+
+**Hard-stop signal**:
+A predefined migration failure condition that requires the agent to stop writing final docs pages and switch to staging or blocker reporting.
+_Avoid_: best-effort continuation, subjective discomfort
+
+**Page-fatal trigger**:
+A fatal migration condition scoped to one page, meaning that page must not be written into the final docs tree until remediated, while the rest of the batch may continue.
+_Avoid_: batch-wide stop, silent continuation of a broken page
+
+**Complex-page trigger**:
+A machine-detectable migration risk signal, such as shared-expansion depth, runtime wrapper residue, tabs, raw XML/HTML examples, or shared image references, used to decide whether a page must enter the complex-page workflow.
+_Avoid_: intuition, page vibe, undocumented exceptions
+
+**Complex-page workflow**:
+The required migration path for pages that hit any **Complex-page trigger**, including scripted normalization, staging review, page-level verification, and possible blocker reporting before any final route write.
+_Avoid_: direct final write, best-effort port
+
+**Page-level verification**:
+A migration gate that checks an individual normalized page before it is promoted into the final docs tree.
+_Avoid_: batch-only verification, post-merge discovery
+
+**Batch-level verification**:
+A migration gate that checks the full migration batch after final pages, navigation files, assets, and blocker reporting have been produced.
+_Avoid_: single-page success as completion proof
+
+**Unsupported migration case**:
+A legacy content shape that the rebuilt docs site has been shown unable to carry after trying the existing MDX/runtime surface, including page-level platform tabs, code-block tabs, variable expansion, and shared-content expansion.
+_Avoid_: aesthetic objections, file-length objections, style-only objections
+
 **OpenAPI endpoint registry**:
 A docs-portal consumption layer that maps **OpenAPI source** operations to canonical page routes without turning them into Fumadocs MDX source files.
 _Avoid_: Fumadocs source fork, generated MDX page source
@@ -75,6 +139,25 @@ _Avoid_: types-only verification, unit-test-only completion
 ## Relationships
 
 - **Content staging** contains both **MDX-authored pages** and **OpenAPI sources**.
+- A **High-fidelity migration** should produce an **MDX-authored page** whose content remains recognizably the same page as the legacy source.
+- A **Compatibility adaptation** is allowed inside a **High-fidelity migration**, but only after direct carry-over has failed.
+- A legacy `PlatformWrapper` should migrate to **Page-level platform tabs** when multiple platform variants must remain on one route and the platform switch belongs to the page header region rather than a single code example.
+- Source-controlled platform variants may live in separate repository files, but they should still render as one page with **Page-level platform tabs** when they represent one logical document.
+- A migrated page should only be recorded as an unsupported platform-variant case after the existing **Page-level platform tabs** surface has been shown insufficient for that page.
+- Apple-shared legacy content such as `platform="ios, macos"` may render under both iOS and macOS page-level tabs without being split into separately rewritten prose sources.
+- Shared legacy content must be expanded into the migrated target page rather than preserved as a runtime dependency on the source repo, while retaining original paragraphs, headings, code samples, and tab structure unless the target runtime has been proven unable to carry them.
+- If the source repo already contains the desired paragraphs, headings, code samples, tabs, or platform structure, migration should preserve them directly rather than replacing them with a cleaner static rewrite.
+- A **Migration execution protocol** should produce a **Normalized staging file** before writing a final migrated docs page.
+- A **Hard-stop signal** requires the migration to stop before final page output and to emit a **Migration blocker report** entry instead.
+- A **Page-fatal trigger** blocks only the current page from entering the final docs tree; it must not be widened into a batch-wide stop rule.
+- A **Complex-page trigger** must be derived from machine-detectable evidence in the source or normalized content, not from a subjective judgment about the page.
+- The **Complex-page workflow** must run before final route output for any page that hits a **Complex-page trigger**.
+- **Page-level verification** must pass before a **Normalized staging file** is promoted into a final docs route.
+- **Batch-level verification** must pass before the migration batch is considered complete.
+- Legacy language tabs inside examples should migrate to **Code-block tabs**, not **Page-level platform tabs**.
+- Legacy `Vg`, `Vpd`, and `Vpl` usages must undergo **Variable expansion** before migrated content is considered complete.
+- A legacy internal docs link with no migrated equivalent in the current pilot should remain present as a **Deferred unresolved link** rather than being deleted or rewritten to a nearby page.
+- An **Unsupported migration case** exists only when the current docs runtime has been shown unable to compile, render, or correctly express the original content semantics; style or elegance concerns do not qualify.
 - An **OpenAPI source** produces one or more **OpenAPI endpoint pages**.
 - An **OpenAPI endpoint page** is not an **MDX-authored page** and must not be duplicated as a full MDX shadow.
 - The **OpenAPI endpoint registry** consumes **OpenAPI sources** for this docs website, but the **OpenAPI source** remains portable content data rather than docs-portal-specific page source.
