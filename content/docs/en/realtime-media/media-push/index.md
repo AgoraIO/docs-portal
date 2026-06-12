@@ -1,18 +1,23 @@
 ---
-title: Media Push
-description: Media Push sends live interaction content into broadcast-style delivery and downstream media distribution systems.
+title: "Media Push"
+description: "Enables the injection of an external media stream into a real-time Agora channel, allowing the hosts and audience to see and hear the additional stream while interacting with each other."
 ---
 
-## What this capability is
+![Media Push overview](/images/media-push/media-push-overview.png)
 
-Media Push exports content from a live interactive channel into broader live-delivery or downstream distribution systems.
+Agora's Media Push service streams audio and video from Agora channels to CDNs and other RTMP-based platforms. With advanced edge transcoding, it minimizes latency and provides full control over the layout and appearance of the stream. This enables seamless distribution to multiple destinations, combining real-time engagement with broad audience reach.
 
-## Common scenarios
+Extend the reach of your Agora streams to third-party services. Whether it’s live events, webinars, or hybrid broadcasts, Media Push amplifies your content while preserving the low-latency, high-quality experience that Agora is known for.
 
-- bypass/live push
-- outward distribution of interactive content
-- delivery into CDN or broadcast workflows
+## Quick links
 
-## What to read first
+- [Enable Media Push](./get-started/enable-media-push)
+- [API reference](../../api-reference/media-push)
 
-First decide whether you only need bypass push or a fuller distribution stack. If you also need multi-CDN orchestration, continue into Fusion CDN Live Streaming.
+## Key features
+
+- **Hybrid streaming use cases**: Ideal for hybrid use cases where a small audience group can interact with the host(s) and each other, while most of the audience only listens/watches.
+- **Global CDN compatibility**: Media Push works with major CDN providers across the globe, with support for RTMP and RTMPS protocols.
+- **Easy-to-use RESTful API**: Agora’s RESTful API makes integration easy while providing flexibility to customers.
+- **Audience expansion**: Uploading live interactive content to CDN enables customers to expand their audience for use cases where only a section of a large audience needs live engagement.
+- **Wide range of use cases**: Upload to CDN works for any use case, and is particularly useful for verticals like virtual events, social live streaming, education webinars and more.
