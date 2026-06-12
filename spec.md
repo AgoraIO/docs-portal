@@ -143,6 +143,7 @@ The following rules are mandatory:
 - Use code-block tabs only for code-example-local language or package-manager variants.
 - Preserve legacy internal links when the target page does not yet exist by treating them as deferred unresolved links.
 - Do not rewrite unresolved legacy links to a nearby but semantically different page.
+- When a normalized page still carries product-semantic ambiguity, mixed product models, or mismatched examples, the agent must treat this as a page risk that requires explicit block-level handling rather than subjective cleanup.
 - Unknown existing target content must never be overwritten; it must be recorded and left unchanged.
 
 ## 7. Trigger-Based Execution Protocol
@@ -196,6 +197,19 @@ Resource dependency triggers:
 - source references assets introduced by shared-content dependencies rather than only product-private assets
 - source requires asset sync into `public/images/**` before the page can render safely
 
+### 7.3 Semantic-risk triggers
+
+Semantic-risk triggers are a closed list. The agent must not invent new semantic-risk triggers at runtime.
+
+If a page hits any semantic-risk trigger after normalization, it must enter `salvage-flow` before promotion is allowed.
+
+Semantic-risk triggers:
+- page-level examples, payloads, code samples, or data models contradict the product-specific reference material preserved in the same normalized page
+- a shared-content expansion mixes generic multi-product explanation with product-specific reference details in one route and the mixed content cannot be promoted verbatim without introducing ambiguity
+- the normalized page contains route, anchor, or prerequisite references that are structurally valid but no longer align with the target IA for that product
+- the normalized page contains product-specific event, request, response, or configuration sections whose surrounding explanatory blocks still describe another product model or a generic wrapper contract
+- the normalized page contains one or more unsafe blocks that require explicit disposition before the page can become promotion-safe
+
 ## 8. Flow Definitions
 
 ### 8.1 Simple-flow
@@ -226,6 +240,39 @@ Complex-flow minimum steps:
 
 The order is mandatory.
 
+### 8.3 Salvage-flow
+
+Use `salvage-flow` when a normalized page hits any semantic-risk trigger.
+
+`salvage-flow` is a mandatory subflow under `complex-flow`, not an optional rewrite mode.
+
+`salvage-flow` minimum steps:
+1. block-inventory
+2. semantic-risk-scan
+3. disposition
+4. fragment-verify
+5. page-verify
+6. promote-or-defer
+
+Required rules:
+- the agent must classify the normalized page into explicit blocks before promotion
+- each unsafe block must receive exactly one disposition action
+- the agent must not leave any unsafe block in the final promoted page without an explicit disposition record
+- a page may still be promoted if every unsafe block has been resolved, replaced, split, or deferred at fragment level and the remaining final page is promotion-safe
+- if unsafe blocks cannot be isolated without breaking the page meaning, the page remains `staged-only` or `deferred-with-report`
+
+Allowed disposition actions:
+- `keep-as-safe-block`
+- `replace-with-static-adaptation`
+- `split-to-separate-target-page`
+- `defer-fragment-with-report`
+- `drop-with-report`
+
+Disallowed behaviors:
+- silent deletion of an unsafe block
+- vague “manually cleaned up” promotion with no block-level record
+- whole-page promotion when the page still contains an unresolved unsafe block
+
 ## 9. Required Responsibilities
 
 The spec must distinguish tasks that must be scripted from those that may remain agent-authored.
@@ -241,6 +288,10 @@ The spec must distinguish tasks that must be scripted from those that may remain
 - structural normalization of legacy wrappers, tabs, callouts, and details blocks
 - frontmatter sanitation checks
 - staging generation
+- block inventory generation for salvage-flow pages
+- machine-detectable semantic-risk scanning
+- disposition recording for unsafe blocks
+- fragment-level verification and report scaffolding
 - blocker report scaffolding
 
 ### 9.2 May be agent-authored
@@ -261,6 +312,7 @@ Staging artifacts are required for:
 - complex-flow pages
 - deferred pages where partial normalization work has already occurred
 - remediation of polluted final pages
+- salvage-flow pages that require block-level disposition
 
 Recommended staging location:
 - `docs/superpowers/staging/YYYY-MM-DD-<product>/`
@@ -285,6 +337,13 @@ Complex-flow page verification checklist includes all of the above, plus:
 - structural normalization is complete
 - staging artifact exists
 - normalized staging output itself contains no page-fatal trigger
+
+Salvage-flow page verification checklist includes all of the above, plus:
+- a block inventory exists
+- every unsafe block has an explicit disposition action
+- fragment-level deferrals are recorded in the blocker report
+- the promoted page contains no unresolved semantic-risk trigger
+- any replaced or split block preserves page-level product semantics more safely than the unmodified normalized block
 
 A staging page may still be complex after normalization; complexity alone is not failure. Only page-fatal conditions block promotion.
 
@@ -343,6 +402,11 @@ Each report entry must contain at least:
 - why final promotion was blocked
 - next missing rule, tool, or compatibility contract
 
+If the blocker is fragment-scoped rather than page-scoped, the report entry must also contain:
+- block id
+- block disposition
+- whether the parent page was promoted, staged-only, or deferred
+
 ## 15. Pollution Remediation Contract
 
 If a broken page has already entered the final docs tree, the agent must not stop at recording the problem.
@@ -365,6 +429,7 @@ The batch should continue migrating safe pages even if some pages become deferre
 A migration batch succeeds when:
 - all safely promotable pages are promoted
 - all page-fatal pages are kept out of the final docs tree or remediated
+- all salvage-flow pages are either promoted as promotion-safe pages or recorded with fragment-aware blocker reporting
 - blockers are recorded
 - required verification is run
 
@@ -384,6 +449,7 @@ For each migration batch, the agent must produce:
 - concise migration summary
 - verification results
 - repo-local migration tooling when needed for repeatable execution
+- block inventory and disposition evidence for any salvage-flow page
 
 Migration tooling is a first-class deliverable for complex-page migration work.
 
@@ -402,6 +468,7 @@ The batch is not complete until:
 - no legacy runtime dependency remains in final promoted pages
 - no unresolved variable JSX remains
 - page-fatal pages are absent from the final docs tree or remediated
+- no promoted salvage-flow page contains an unresolved unsafe block
 - deferred items are listed explicitly
 - shared image assets required by promoted pages are present
 

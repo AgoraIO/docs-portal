@@ -72,6 +72,34 @@ _Avoid_: intuition, page vibe, undocumented exceptions
 The required migration path for pages that hit any **Complex-page trigger**, including scripted normalization, staging review, page-level verification, and possible blocker reporting before any final route write.
 _Avoid_: direct final write, best-effort port
 
+**Semantic-risk trigger**:
+A machine-detectable post-normalization risk signal showing that a page's product semantics are still unsafe for direct promotion, such as contradictory examples, mixed product models, or target-IA-misaligned guidance.
+_Avoid_: syntax-only failure, vague discomfort, style preference
+
+**Unsafe block**:
+A bounded content block inside a normalized page that cannot safely enter the final docs tree until it receives an explicit disposition action.
+_Avoid_: whole-page fatal by default, invisible cleanup target
+
+**Block inventory**:
+A structured record of the normalized page broken into promotion-relevant content blocks, including safe blocks, unsafe blocks, and their disposition.
+_Avoid_: freeform page notes, undocumented cleanup
+
+**Fragment-level deferral**:
+A deferral state scoped to one or more unsafe blocks within a page, allowing the parent page to be promoted only if the deferred fragment is isolated and reported explicitly.
+_Avoid_: silent omission, fake page completeness
+
+**Salvage-flow**:
+A mandatory complex-page subworkflow that converts a semantically risky normalized page into a promotion-safe page through block inventory, semantic-risk scan, explicit disposition, fragment verification, and final page verification.
+_Avoid_: ad hoc rewrite, intuition-based promotion
+
+**Promotion-safe page**:
+A final docs page that may originate from a semantically risky source, but only after every unsafe block has been explicitly resolved, replaced, split, or deferred at fragment level.
+_Avoid_: “mostly correct” page, implicit cleanup
+
+**Disposition action**:
+The explicit handling decision recorded for an unsafe block during **Salvage-flow**, such as keep, replace, split, defer, or drop with report.
+_Avoid_: undocumented edit, silent deletion
+
 **Page-level verification**:
 A migration gate that checks an individual normalized page before it is promoted into the final docs tree.
 _Avoid_: batch-only verification, post-merge discovery
@@ -152,6 +180,12 @@ _Avoid_: types-only verification, unit-test-only completion
 - A **Page-fatal trigger** blocks only the current page from entering the final docs tree; it must not be widened into a batch-wide stop rule.
 - A **Complex-page trigger** must be derived from machine-detectable evidence in the source or normalized content, not from a subjective judgment about the page.
 - The **Complex-page workflow** must run before final route output for any page that hits a **Complex-page trigger**.
+- A **Semantic-risk trigger** is evaluated after normalization and before promotion; it does not replace syntax checks, but adds a semantic safety gate for complex migrated pages.
+- A page that hits a **Semantic-risk trigger** must enter **Salvage-flow** before promotion is allowed.
+- **Salvage-flow** begins with a **Block inventory** and ends only when the page is either a **Promotion-safe page** or explicitly recorded as staged-only/deferred.
+- Every **Unsafe block** must receive exactly one **Disposition action**.
+- **Fragment-level deferral** is allowed only when the deferred fragment is isolated, reported, and does not make the promoted parent page semantically misleading.
+- A **Promotion-safe page** may differ from the normalized staging page, but only through explicit **Disposition actions** that reduce semantic risk without silently changing product meaning.
 - **Page-level verification** must pass before a **Normalized staging file** is promoted into a final docs route.
 - **Batch-level verification** must pass before the migration batch is considered complete.
 - Legacy language tabs inside examples should migrate to **Code-block tabs**, not **Page-level platform tabs**.
@@ -234,3 +268,5 @@ _Avoid_: types-only verification, unit-test-only completion
 - "schema table" sounded like a shallow or horizontally wide table; resolved: render nested contracts as a **Schema tree** with guarded recursion.
 - "public YAML" sounded like another maintained file; resolved: `/openapi/**` is a **Published OpenAPI asset** derived at build time.
 - "done" was too narrow when it meant only typecheck or unit tests; resolved: use the **OpenAPI lane acceptance gate** for completion.
+- "complex page" was broad enough to hide post-normalization semantic mismatches; resolved: use **Semantic-risk trigger** plus **Salvage-flow** instead of treating all remaining risk as syntax or staging-only.
+- "deferred page" was too coarse when only one section was unsafe; resolved: use **Fragment-level deferral** when block boundaries are explicit and the parent page can still become a **Promotion-safe page**.
