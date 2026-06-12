@@ -19,6 +19,7 @@ Target repository:
 Primary target content surface:
 - `content/docs/{locale}/**`
 
+Primary static asset surface:
 - `public/images/**`
 
 Out of scope unless explicitly added in a later task:
