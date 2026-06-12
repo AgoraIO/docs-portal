@@ -1,0 +1,820 @@
+openapi: 3.1.0
+x-stoplight:
+  id: v54qxj1s68u71
+info:
+  title: 实时转录翻译 Restful API
+  version: 7.x
+  description: |
+    声网提供的实时转录翻译 API，支持实时实时转录翻译、翻译和字幕录制功能。
+  summary: 本页面介绍实时转录翻译服务端 RESTful API 的基本信息。
+servers:
+  - url: 'https://api.sd-rtn.com/cn'
+    description: ''
+paths:
+  '/api/speech-to-text/v1/projects/{appid}/join':
+    post:
+      tags:
+        - 实时转录翻译
+      summary: 加入频道开始实时转录翻译
+      description: |
+        你可以通过该方法设置是否需要启用字幕录制、字幕翻译功能。
+      operationId: join
+      parameters:
+        - $ref: '#/components/parameters/appid'
+      security:
+        - Basic Auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JoinRequest'
+            examples:
+              fullExample:
+                value:
+                  languages:
+                    - zh-CN
+                  keywords:
+                    - 声网
+                    - Agora
+                    - 实时互动
+                  name: agora-test
+                  maxIdleTime: 50
+                  rtcConfig:
+                    channelName: agora-test
+                    subBotUid: '47091'
+                    pubBotUid: '88222'
+                  translateConfig:
+                    languages:
+                      - source: zh-CN
+                        target:
+                          - en-US
+                          - ar-SA
+                          - id-ID
+                          - fr-FR
+                          - ja-JP
+                  captionConfig:
+                    sliceDuration: 60
+                    storage:
+                      accessKey: test-oss
+                      secretKey: test-oss
+                      bucket: test-oss
+                      vendor: 11
+                      region: 0
+                    extensionParams:
+                      endpoint: 'http://host:9002'
+                      type: s3
+                      provider: Minio
+      responses:
+        '200':
+          description: 如果返回的状态码为 `200`，表示请求成功。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+              examples:
+                Example 1:
+                  value:
+                    agent_id: 1NT29X11GQSxxxxx80BEIN56XF
+                    create_ts: 1735035893
+                    status: STARTING
+        非 200:
+          description: 如果返回的状态码不为 `200`，请求失败。请根据 `details` 和 `reason` 字段进行排查。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-stoplight:
+        id: 8cszmljwg1pj9
+  '/api/speech-to-text/v1/projects/{appid}/agents/{agentId}':
+    get:
+      tags:
+        - 实时转录翻译
+      summary: 获取实时转录翻译任务的状态
+      description: 获取实时转录翻译任务的状态。
+      operationId: get
+      security:
+        - Basic Auth: []
+      parameters:
+        - $ref: '#/components/parameters/appid'
+        - $ref: '#/components/parameters/agentId'
+      responses:
+        '200':
+          description: 如果返回的状态码为 `200`，表示请求成功。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentStatusResponse'
+              examples:
+                Example 1:
+                  value:
+                    message: ok
+                    agent_id: 1NT29X11GQSxxxxx80BEIN56XF
+                    create_ts: 1735035893
+                    status: RUNNING
+        非 200:
+          description: 如果返回的状态码不为 `200`，请求失败。请根据 `message` 和 `status` 字段进行排查。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentErrorResponse'
+      x-stoplight:
+        id: q5zhmt9clu0jy
+  '/api/speech-to-text/v1/projects/{appid}/agents/{agentId}/leave':
+    post:
+      tags:
+        - 实时转录翻译
+      summary: 停止实时转录翻译
+      description: 开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。
+      operationId: leave
+      security:
+        - Basic Auth: []
+      parameters:
+        - $ref: '#/components/parameters/appid'
+        - $ref: '#/components/parameters/agentId'
+      responses:
+        '200':
+          description: 如果返回的状态码为 `200`，表示请求成功。
+        非 200:
+          description: 如果返回的状态码不为 `200`，请求失败。
+      x-stoplight:
+        id: n1q3bmienpsha
+  '/api/speech-to-text/v1/projects/{appid}/agents/{agentId}/update':
+    post:
+      tags:
+        - 实时转录翻译
+      summary: 更新实时转录翻译任务
+      description: '通过 [`join`](./join) 方法开始转写任务后，你可以发起 `update` 请求更新转写任务配置。'
+      operationId: update
+      security:
+        - Basic Auth: []
+      parameters:
+        - $ref: '#/components/parameters/appid'
+        - $ref: '#/components/parameters/agentId'
+        - name: sequenceId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: 已废弃。`update` 请求的序列号。取值需要大于或等于 0。请确保后一次 `update` 请求的序列号大于前一次 `update` 请求的序列号。序列号可以确保声网服务器按照你指定的最新配置来更新转写任务。
+        - name: updateMask
+          in: query
+          required: true
+          schema:
+            type: string
+          description: '已废弃。指定的更新配置项。如果需要更新多个字段的配置，则需要以逗号作为间隔符。例如：`updateMask=languages,rtcConfig.subscribeAudioUids,translateConfig.enable,translateConfig.languages,uidLanguagesConfig`。'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRequest'
+      responses:
+        '200':
+          description: 如果返回的状态码为 `200`，表示请求成功。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+              examples:
+                Example 1:
+                  value:
+                    agent_id: 1NT29X11GQSxxxxx80BEIN56XF
+                    create_ts: 1735035893
+                    status: RUNNING
+        非 200:
+          description: 如果返回的状态码不为 `200`，请求失败。请根据 `details` 和 `reason` 字段进行排查。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-stoplight:
+        id: 22wvkg0m89suu
+  '/api/speech-to-text/v1/projects/{appid}/agents':
+    get:
+      tags:
+        - 实时转录翻译
+      summary: 获取任务列表
+      description: 检索符合指定条件的实时转录翻译任务列表。
+      operationId: get-task-list
+      security:
+        - Basic Auth: []
+      parameters:
+        - $ref: '#/components/parameters/appid'
+        - name: channel
+          in: query
+          description: 查询指定频道名下的任务列表。
+          schema:
+            type: string
+            examples:
+              - TEST
+        - name: from_time
+          in: query
+          description: 查询列表开始时间戳（秒），默认为 1 天前。
+          schema:
+            type: integer
+            examples:
+              - 1733013296
+        - name: to_time
+          in: query
+          description: 查询列表结束时间戳（秒），默认为当前时刻。
+          schema:
+            type: integer
+            examples:
+              - 1734016896
+        - name: state
+          in: query
+          description: |-
+            指定需要查询任务的状态，单次查询不支持指定多种状态：
+            - `STARTING` (1)：正在启动的任务。
+            - `RUNNING` (2)：正在运行的任务。
+            - `STOPPING` (3)：正在停止的任务。
+            - `STOPPED` (4)：已完成退出的任务。
+            - `RECOVERING` (5)：正在恢复的任务。
+            - `FAILED` (6)：执行失败的任务。
+
+          schema:
+            type: string
+            default: '2'
+            examples:
+              - '1'
+        - name: limit
+          in: query
+          description: 分页获取单次返回的最大条数。
+          schema:
+            type: integer
+            default: 20
+            examples:
+              - 20
+        - name: cursor
+          in: query
+          description: 分页游标，即分页起始位置的 `agent_id`。
+          schema:
+            type: string
+            examples:
+              - agent_id
+      responses:
+        '200':
+          description: 如果返回的状态码为 `200`，表示请求成功。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskListResponse'
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      count: 1
+                      list:
+                        - start_ts: 1735035893
+                          status: RUNNING
+                          agent_id: 1NT29X11GQSxxxxx80BEIN56XF
+                    meta:
+                      cursor: ''
+                      total: 1
+                    status: ok
+        非 200:
+          description: 如果返回的状态码不为 `200`，请求失败。请根据响应包体中的字段进行排查。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-stoplight:
+        id: 0ar5tao1h52r0
+components:
+  parameters:
+    appid:
+      name: appid
+      in: path
+      required: true
+      schema:
+        type: string
+      description: '你的项目的 App ID，可在[声网控制台](https://console.shengwang.cn/)获取。'
+    agentId:
+      name: agentId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: '服务的 ID。通过 [`join`](./join) 方法中的响应包体获取。'
+  schemas:
+    JoinRequest:
+      type: object
+      x-stoplight:
+        id: 36ei71ylbtt9v
+      required:
+        - languages
+        - rtcConfig
+        - name
+      properties:
+        languages:
+          type: array
+          description: |
+            必选，实时转录翻译需要识别的语种，最多支持 4 种语言。
+            可参考[支持识别的语言](https://doc.shengwang.cn/doc/speech-to-text/restful/api/supported-languages)进行设置。
+          maxItems: 4
+          items:
+            type: string
+        uidLanguagesConfig:
+          type: array
+          description: |
+            可选，配置指定用户 ID 的转写语种。最多支持 5 个配置项。
+          maxItems: 5
+          items:
+            $ref: '#/components/schemas/UidLanguagesConfig'
+        maxIdleTime:
+          type: integer
+          description: |
+            可选，最大频道空闲时间，单位为秒。取值范围 [5,2592000]，默认为 30 秒。
+            超出最大频道空闲时间后，转写会自动结束。
+            > 频道空闲：直播频道内无任何主播，或通信频道内无任何用户。
+          minimum: 5
+          maximum: 2592000
+          default: 30
+        rtcConfig:
+          $ref: '#/components/schemas/RtcConfig'
+        translateConfig:
+          $ref: '#/components/schemas/TranslateConfig'
+        captionConfig:
+          $ref: '#/components/schemas/CaptionConfig'
+        keywords:
+          type: array
+          description: |
+            可选，热词列表。用于提升转写时对特定词汇的识别准确率。最多支持 500 个词。
+          maxItems: 500
+          items:
+            type: string
+        name:
+          type: string
+          description: |
+            必选，服务的唯一标识，长度在 64 个字符以内。
+            > 相同标识不可重复创建。
+          maxLength: 64
+    UidLanguagesConfig:
+      type: object
+      required:
+        - uid
+        - languages
+      properties:
+        uid:
+          type: string
+          description: |
+            必选，需要进行转写的用户 ID。最多允许为 5 个 uid 配置 uid 维度的语种识别。
+        languages:
+          type: array
+          items:
+            type: string
+          description: |
+            必选，需要识别的转录语种。每个 uid 最多支持设置 4 种语言。
+            可参考[支持的语言](https://doc.shengwang.cn/doc/speech-to-text/restful/api/supported-languages)进行设置。
+          maxItems: 4
+      x-stoplight:
+        id: 0i2gh4n8s058x
+    RtcConfig:
+      type: object
+      description: 必选，实时字幕配置。将用户语音转为文字后，可以把文本信息作为字幕推送至频道内以配合 UI 实时显示。
+      x-stoplight:
+        id: b7wlo0hwvbigp
+      required:
+        - channelName
+        - subBotUid
+        - pubBotUid
+      properties:
+        channelName:
+          type: string
+          description: 必选，需要进行转写的频道名。
+        subBotUid:
+          type: string
+          description: |-
+            必选，订阅音视频流的机器人 ID。
+            > 该字段已废弃。
+        subBotToken:
+          type: string
+          description: |
+            可选，订阅音视频流的机器人使用的 Token，用于加入频道时鉴权。
+            如果你的项目启用了 App 证书，你需要在你的 Token 服务器上生成一个 Token 然后传入该字段，
+            详见[使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication)。
+
+            > 该字段已废弃。
+        pubBotUid:
+          type: string
+          description: 必选，把字幕信息推送至频道内的机器人 ID。
+        pubBotToken:
+          type: string
+          description: |
+            推送字幕的机器人使用的 Token，用于加入频道时鉴权。
+            如果你的项目启用了 App 证书，你需要在你的 Token 服务器上生成一个 Token 然后传入该字段，
+            详见[使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication)。
+        subscribeAudioUids:
+          type: array
+          description: |
+            可选，用户 ID。如果你需要指定订阅某些用户的音频流，可以设置该字段。
+            数组长度不得超过 32。如果没有指定，默认订阅频道内所有用户的音频流。
+            > 该字段和 `unSubscribeAudioUids` 只能设一个。
+          maxItems: 32
+          items:
+            type: string
+        unSubscribeAudioUids:
+          type: array
+          description: |
+            可选，用户 ID。如果你想要指定不订阅某些用户的音频流，可以设置该字段。
+            数组长度不得超过 5。
+          maxItems: 5
+          items:
+            type: string
+        cryptionMode:
+          type: integer
+          description: |+
+            可选，加解密模式。启用该字段后，拉流会使用解密模式，推送字幕至频道内会使用加密模式。
+            - `0`：不加密。
+            - `1`：AES_128_XTS 加密模式。128 位 AES 加密，XTS 模式。
+            - `2`：AES_128_ECB 加密模式。128 位 AES 加密，ECB 模式。
+            - `3`：AES_256_XTS 加密模式。256 位 AES 加密，XTS 模式。
+            - `4`：SM4_128_ECB 加密模式。128 位 SM4 加密，ECB 模式。
+            - `5`：AES_128_GCM 加密模式。128 位 AES 加密，GCM 模式。
+            - `6`：AES_256_GCM 加密模式。256 位 AES 加密，GCM 模式。
+            - `7`：AES_128_GCM2 加密模式。128 位 AES 加密，GCM 模式。相比于 AES_128_GCM 加密模式，AES_128_GCM2 加密模式安全性更高且需要设置密钥和盐。
+            - `8`：AES_256_GCM2 加密模式。256 位 AES 加密，GCM 模式。相比于 AES_256_GCM 加密模式，AES_256_GCM2 加密模式安全性更高且需要设置密钥和盐。
+            > <ul><li>该字段已废弃。</li><li>解密方式必须与频道设置的加密方式一致。</li></ul>
+
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+        secret:
+          type: string
+          description: 可选，与加解密相关的密钥。仅需在 `cryptionMode` 非 `0` 时设置。
+        salt:
+          type: string
+          description: 可选，与加解密相关的盐。Base64 编码、32 位字节。仅需在 `cryptionMode` 为 `7` 或 `8` 时设置。
+        enableJsonProtocol:
+          type: boolean
+          description: |
+            可选，推送至频道内的字幕数据的编码格式。
+            - `true`：使用 JSON 格式推送字幕，数据经过 gzip 压缩（带宽更小，但需解码）。
+            - `false`：使用 Protobuf 格式推送字幕（默认）。数据体积更小，适合对传输效率要求高的场景。
+    CaptionConfig:
+      type: object
+      description: 可选，字幕录制配置。
+      properties:
+        sliceDuration:
+          type: integer
+          description: |
+            可选，录制字幕文件的切片大小，单位为秒。默认 60 秒，取值范围 [5, 28800]。
+          default: 60
+          minimum: 5
+          maximum: 28800
+        storage:
+          $ref: '#/components/schemas/StorageConfig'
+        extensionParams:
+          $ref: '#/components/schemas/CaptionExtensionParams'
+      x-stoplight:
+        id: 5czwpsqeg4h6j
+    CaptionExtensionParams:
+      type: object
+      description: 可选，第三方云存储扩展配置。当 `storage.vendor` 为 `11` 时，可通过该字段指定标准 S3 兼容对象存储的接入信息。
+      required:
+        - endpoint
+        - type
+        - provider
+      properties:
+        endpoint:
+          type: string
+          description: 必选，S3 兼容服务的访问 URL，需包含 scheme。例如 `http://host:9002`。当 `storage.vendor` 为 `11` 时必填。
+        type:
+          type: string
+          description: 必选，rclone 后端类型。标准 S3 场景固定为 `s3`。
+          default: s3
+        provider:
+          type: string
+          description: 必选，供应商名称。例如 MinIO 对应 `Minio`。
+        region:
+          type: string
+          description: 可选，rclone S3 后端的 region。若提供，则会覆盖根据 `storage.region` 推导出的默认行为。
+        tag:
+          type: string
+          description: 可选，对象标签的基础字符串。仅当 `storage.vendor` 为腾讯云、阿里云或 Amazon S3 时生效；`vendor = 11` 时当前不生效。
+        tagByRule:
+          type: array
+          description: 可选，按文件名规则在 `tag` 上追加 `key=value`。与 `tag` 同时存在时优先按规则生成。仅腾讯云、阿里云和 Amazon S3 生效。
+          items:
+            type: object
+            additionalProperties: true
+        sse:
+          type: string
+          description: 可选，服务端加密意图。`aes256` 表示 AES256，`kms` 表示 AWS KMS。仅 Amazon S3 生效。
+          enum:
+            - aes256
+            - kms
+        overwritekeys:
+          type: array
+          description: 可选，按上传文件扩展名映射目标对象名，用于覆盖 `DstFileName`。
+          items:
+            type: object
+            additionalProperties: true
+    StorageConfig:
+      type: object
+      description: 必选，第三方云存储的配置项。
+      required:
+        - accessKey
+        - secretKey
+        - bucket
+        - vendor
+        - region
+      properties:
+        accessKey:
+          type: string
+          description: 必选，第三方云存储的 Access Key（访问密钥）。
+        secretKey:
+          type: string
+          description: 必选，第三方云存储的 Secret Key。
+        bucket:
+          type: string
+          description: 必选，第三方云存储的 Bucket 名称。
+        vendor:
+          type: integer
+          description: |
+            必选，第三方云存储平台。
+            - `1`：[Amazon S3](https://aws.amazon.com/cn/s3/?c=s&sec=srv)
+            - `2`：[阿里云](https://www.aliyun.com/product/oss)
+            - `3`：[腾讯云](https://cloud.tencent.com/product/cos)
+            - `5`：[Microsoft Azure](https://azure.microsoft.com/zh-cn/products/storage/blobs/)
+            - `6`：[谷歌云](https://cloud.google.com/storage)
+            - `7`：[华为云](https://www.huaweicloud.com/product/obs.html)
+            - `8`：[百度智能云](https://cloud.baidu.com/product/bos.html)
+            - `11`：其他兼容 S3 协议的标准对象存储（如 MinIO 及部分自建云存储）
+          enum:
+            - 1
+            - 2
+            - 3
+            - 5
+            - 6
+            - 7
+            - 8
+            - 11
+        region:
+          type: integer
+          description: |
+            必选，第三方云存储指定的地区信息。
+            > 为确保录制文件上传的成功率和实时性，第三方云存储的 `region` 与你发起请求的应用服务器必须在同一个区域中。
+            例如：你发起请求的 App 服务器在中国大陆地区，则第三方云存储需要设置为中国大陆区域内。
+            详见[第三方存储地区说明](https://doc.shengwang.cn/doc/cloud-recording/restful/api/reference)。
+        fileNamePrefix:
+          type: array
+          items:
+            type: string
+          description: |
+            可选，录制文件在第三方云存储中的存储位置。
+            前缀长度（包括斜杠）不得超过 128 个字符。
+            字符串中不得出现斜杠、下划线、括号等符号字符。
+            以下为支持的字符集范围：
+            - 26 个小写英文字母 a~z
+            - 26 个大写英文字母 A~Z
+            - 10 个数字 0-9
+          maxLength: 128
+      x-stoplight:
+        id: 79zy83lzzb5ox
+    TranslateConfig:
+      type: object
+      description: 可选，字幕翻译配置。
+      properties:
+        languages:
+          type: array
+          description: |
+            必选，翻译语言数组。数组长度不得超过 4，即最多支持对 4 种不同的源语进行翻译。
+          maxItems: 4
+          items:
+            $ref: '#/components/schemas/LanguagePair'
+      x-stoplight:
+        id: zt7hqft5egl5d
+    LanguagePair:
+      type: object
+      description: 翻译语言对配置
+      required:
+        - source
+        - target
+      properties:
+        source:
+          type: string
+          description: |
+            必选，翻译的源语言。
+            支持翻译的源语言详见[支持的语言](https://doc.shengwang.cn/doc/speech-to-text/restful/api/supported-languages)。
+        target:
+          type: array
+          items:
+            type: string
+          description: |
+            必选，翻译的目标语言。数组长度不得超过 10。
+            支持翻译的目标语言详见[支持的语言](https://doc.shengwang.cn/doc/speech-to-text/restful/api/supported-languages)。
+            > - 源语言为单语言时，翻译的目标语言需要和源语言不同，否则会报错。例如中文输入时，翻译的目标语言不能选择中文。
+            > - 源语言为多语言混合输入时，翻译的目标语言可以和源语种重复，例如中文和英文混合输入时，翻译的目标语言可以是中文，那么混入输入的中文和英文都会被翻译成中文。
+          maxItems: 10
+      x-stoplight:
+        id: gb61micv0tyxf
+    UpdateRequest:
+      type: object
+      properties:
+        languages:
+          type: array
+          items:
+            type: string
+          description: |
+            实时转录翻译需要识别的语种，最多支持 4 种语言。
+            可参考[支持识别的语言](https://doc.shengwang.cn/doc/speech-to-text/restful/api/supported-languages)进行设置。
+          maxItems: 4
+        keywords:
+          type: array
+          description: |
+            热词列表。用于提升转写时对特定词汇的识别准确率。最多支持 500 个词。
+          maxItems: 500
+          items:
+            type: string
+        uidLanguagesConfig:
+          type: array
+          description: |
+            配置指定用户 ID 的转写语种。最多支持 5 个配置项。
+            > 如果你在调用 [`join`](./join) 时设置了该字段，现在需要不指定任何用户，则将该字段设为 `[]`（空数组）。
+          maxItems: 5
+          items:
+            $ref: '#/components/schemas/UidLanguagesConfig'
+        rtcConfig:
+          type: object
+          description: 订阅配置。
+          properties:
+            subscribeAudioUids:
+              type: array
+              items:
+                type: string
+              description: |
+                用户 ID。如果你需要指定订阅某些用户的音频流，可以设置该字段。
+                如果需要订阅所有用户的音频流，则 `subscribeAudioUids` 填 `["all"]`。
+                数组长度不得超过 32。
+              maxItems: 32
+        translateConfig:
+          type: object
+          description: |
+            字幕翻译配置。如果你在调用 [`join`](./join) 时启用了翻译功能，如需关闭该功能，可将 `enable` 设为 `false`。
+            如果你未启用翻译功能，可将 `enable` 设为 `true` 并设置 `languages` 来开启翻译功能。
+          properties:
+            enable:
+              type: boolean
+              description: |
+                是否把转写后的文字进行翻译：
+                - `true`：翻译。
+                - `false`：不翻译。
+            languages:
+              type: array
+              items:
+                $ref: '#/components/schemas/LanguagePair'
+              description: |
+                翻译语言数组。数组长度不得超过 4，即最多支持对 4 种不同的源语进行翻译。
+              maxItems: 4
+      x-stoplight:
+        id: tgc7tbprq7loh
+    AgentResponse:
+      type: object
+      x-stoplight:
+        id: jjvjie7qtwcja
+      properties:
+        agent_id:
+          type: string
+          description: 服务的 ID。
+        create_ts:
+          type: integer
+          description: 服务创建时的 Unix 时间戳（秒）。
+        status:
+          type: string
+          description: |-
+            服务的状态：
+            - `STARTING`：服务开始启动。
+            - `RUNNING`：服务进行中。
+            - `STOPPING`：服务退出中。
+            - `STOPPED`：服务退出成功。
+            - `RECOVERING`：服务恢复中。
+            - `FAILED`：服务退出失败。
+          enum:
+            - STARTING
+            - RUNNING
+            - STOPPING
+            - STOPPED
+            - RECOVERING
+            - FAILED
+    AgentStatusResponse:
+      type: object
+      x-stoplight:
+        id: ie3c1amji3h26
+      properties:
+        message:
+          type: string
+          description: 请求结果的详细信息。
+        agent_id:
+          type: string
+          description: 服务的 ID。
+        create_ts:
+          type: integer
+          description: 服务创建时的 Unix 时间戳（秒）。
+        status:
+          type: string
+          enum:
+            - STARTING
+            - RUNNING
+            - STOPPING
+            - STOPPED
+            - RECOVERING
+            - FAILED
+          description: |-
+            服务的状态：
+            - `STARTING`：服务开始启动。
+            - `RUNNING`：服务进行中。
+            - `STOPPING`：服务退出中。
+            - `STOPPED`：服务退出成功。
+            - `RECOVERING`：服务恢复中。
+            - `FAILED`：服务退出失败。
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: 请求失败的详细信息。
+        reason:
+          type: string
+          description: 请求失败的原因。
+      x-stoplight:
+        id: sueaj0amubwdr
+    AgentErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 请求失败的详细信息。
+        agent_id:
+          type: string
+          description: 服务的 ID。
+        create_ts:
+          type: integer
+          description: 服务创建时的 Unix 时间戳（秒）。
+        status:
+          type: string
+          description: 服务的状态。如果返回的状态码不为 `200`，请求失败。请根据 `details` 和 `reason` 字段进行排查
+          enum:
+            - FAILED
+      x-stoplight:
+        id: sdu2crz99oyr7
+    TaskListResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            count:
+              type: integer
+              description: 本次返回的任务数量。
+            list:
+              type: array
+              description: 满足条件的任务列表。
+              items:
+                type: object
+                properties:
+                  start_ts:
+                    type: integer
+                    description: 任务创建时间戳。
+                  status:
+                    type: string
+                    description: |-
+                      任务状态：
+                      - `STARTING`：任务开始启动。
+                      - `RUNNING`：任务进行中。
+                      - `STOPPING`：任务退出中。
+                      - `STOPPED`：任务退出成功。
+                      - `RECOVERING`：任务恢复中。
+                      - `FAILED`：任务退出失败。
+                  agent_id:
+                    type: string
+                    description: 任务 ID。
+        meta:
+          type: object
+          description: 返回列表的元信息。
+          properties:
+            cursor:
+              type: string
+              description: 分页游标。
+            total:
+              type: integer
+              description: 满足本次查询条件的任务总数量。
+        status:
+          type: string
+          description: 请求状态。
+  securitySchemes:
+    Basic Auth:
+      type: http
+      scheme: basic
+      description: '**HTTP 基本认证**：每次发送 HTTP 请求时，都必须在请求 Header 部填入 `Authorization` 字段。关于如何生成该字段的值，请参考[实现 HTTP 基本认证](https://doc.shengwang.cn/doc/speech-to-text/restful/user-guides/http-basic-auth)。'
+security:
+  - Basic Auth: []
