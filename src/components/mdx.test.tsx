@@ -17,6 +17,16 @@ type TabsChildComponent = ComponentType<{
   children: ReactNode;
   value: string;
 }>;
+type PlatformGroupComponent = ComponentType<{
+  canonicalPlatform: string;
+  children: ReactNode;
+  groupMode: 'inline' | 'structured';
+  platforms: string;
+}>;
+type PlatformPanelComponent = ComponentType<{
+  children: ReactNode;
+  platform: string;
+}>;
 type CodeBlockPreComponent = ComponentType<{
   children: ReactNode;
   className?: string;
@@ -186,6 +196,59 @@ describe('common MDX registry', () => {
     expect(components.TabsList).toBe(fumadocsTabs.TabsList);
     expect(components.TabsTrigger).toBe(fumadocsTabs.TabsTrigger);
     expect(components.TabsContent).not.toBe(fumadocsTabs.TabsContent);
+  });
+
+  it('registers platform sentinels and internal platform renderers', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+
+    expect(components.PlatformInline).toBeDefined();
+    expect(components.PlatformStructured).toBeDefined();
+    expect(components._PlatformTabsGroup).toBeDefined();
+    expect(components._PlatformPanel).toBeDefined();
+  });
+
+  it('renders transformed platform groups with persisted preference fallback and hidden inactive panels', () => {
+    window.localStorage.setItem('docs-portal:platform:v1', 'ios');
+
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <Group
+        canonicalPlatform="javascript"
+        groupMode="structured"
+        platforms='["javascript","android"]'
+      >
+        <Panel platform="javascript">
+          <h2 id="js-install">Install JS SDK</h2>
+        </Panel>
+        <Panel platform="android">
+          <h2 id="android-install">Install Android SDK</h2>
+        </Panel>
+      </Group>,
+    );
+
+    expect(screen.getByRole('tab', { name: 'JavaScript' })).toHaveAttribute(
+      'data-state',
+      'active',
+    );
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'data-state',
+      'inactive',
+    );
+
+    const activePanel = screen
+      .getByText('Install JS SDK')
+      .closest('[data-platform-panel="javascript"]');
+    const inactivePanel = screen
+      .getByText('Install Android SDK')
+      .closest('[data-platform-panel="android"]');
+
+    expect(activePanel).not.toHaveAttribute('hidden');
+    expect(activePanel).toHaveAttribute('aria-hidden', 'false');
+    expect(inactivePanel).toHaveAttribute('hidden');
+    expect(inactivePanel).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('renders Fumadocs normal tab triggers', () => {

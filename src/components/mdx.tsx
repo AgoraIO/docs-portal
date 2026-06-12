@@ -25,6 +25,14 @@ import {
   useMemo,
   useState,
 } from 'react';
+import {
+  PlatformInline,
+  PlatformStructured,
+} from './mdx/PlatformContent';
+import {
+  PlatformPanel,
+  PlatformTabsGroup,
+} from './mdx/PlatformTabsGroup';
 import { cn } from '@/lib/cn';
 import { normalizeDocsHref } from '@/lib/docs-link-normalize';
 
@@ -360,6 +368,10 @@ export function getMDXComponents(
     Folder,
     Step,
     Steps,
+    PlatformInline,
+    PlatformStructured,
+    _PlatformTabsGroup: PlatformTabsGroup,
+    _PlatformPanel: PlatformPanel,
     ...components,
   } satisfies MDXComponents;
 }
