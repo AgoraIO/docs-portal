@@ -1,0 +1,60 @@
+---
+title: "Pricing"
+description: "Introduces the billing policy for the Media Pull service provided by Agora."
+---
+
+This page describes how Media Pull usage is billed.
+
+:::info
+Your billing details may differ if you have signed a contract with Agora.
+:::
+
+## Billing components
+
+Media Pull billing comprises transcoding charges and RTC channel usage charges​ charges:
+
+- **Transcoding charges**: Charges for injecting an online media stream into an RTC channel. This charge is not included in Agora's policy of granting 10,000 minutes of free usage per month.
+
+- **RTC channel usage charges**: Charges for subscribing to streams in an RTC channel. These charges are included in real-time communication usage. They may also count toward the voice call audio minutes included in [Agora's 10,000 minutes of free usage per month](https://docs.agora.io/en/voice-calling/reference/billing-policies#free-of-charge-policy).
+
+## Transcoding charges
+
+Transcoding charges are incurred when you inject an online stream into an RTC channel.
+Based on the injected stream, transcoding charges are categorized as follows:
+
+- **Audio transcoding charges**: If you inject an audio stream into an RTC channel, audio transcoding charges are incurred.
+
+  *Audio transcoding charges = Audio transcoding unit price × Audio transcoding service minutes*
+
+- **Video transcoding charges**: If you inject a video stream or an audio and video stream into an RTC channel, video transcoding charges are incurred.
+
+  *Video transcoding charges = Video transcoding unit price × Video transcoding service minutes*
+
+### Transcoding pricing
+
+The following table shows the transcoding prices for Media Pull:
+
+| Service | Resolution / Type | Pricing ($US/1,000 minutes) |
+|---|---|---|
+|Audio | Audio stream | $1.15 |
+| H.264 HD video | Output resolution up to 921,600 (1280 × 720)| $6.86 |
+| H.264 FHD video | Output resolution greater than 921,600 (1280 × 720), up to 2,073,600 (1920 × 1080)| $15.49 |
+
+### Transcoding duration
+Agora calculates transcoding duration as the time between when Media Pull is enabled and when it is destroyed.
+
+- **Audio transcoding duration**: The time during which Media Pull transcodes an audio stream.
+- **Video transcoding duration**: The time during which Media Pull transcodes a video stream or an audio and video stream.
+
+:::info
+When using Media Pull, if `playTs` is greater than `createTs`, the interval between these timestamps is billed as audio transcoding duration.
+:::
+
+## RTC channel usage charges
+Injecting an online stream into an RTC channel using the Media Pull service incurs RTC charges. This usage is billed as part of real-time communication charges.
+
+### Channel usage pricing
+Since the Media Pull service only publishes streams to the RTC channel and does not subscribe to or receive streams, channel usage is billed the same as audio usage, at **$0.99 per 1,000 minutes (USD)**.
+
+### Channel usage duration
+Channel usage duration is the time from when the Media Pull service starts publishing streams to the RTC channel until it stops.
