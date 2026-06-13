@@ -139,6 +139,22 @@ Do not use migration as a reason to perform editorial rewrites, structural beaut
 
 For prose migration, high fidelity means source-faithful carry-over by default. After shared expansion, variable expansion, and required product-scope extraction, the expanded source page body is the authoritative content shape for migration.
 
+### 6.0 Anti-Drift Contract
+
+This spec is intentionally hostile to "good enough" prose rewrites.
+
+The agent must not satisfy migration by producing a shorter, cleaner, portal-style substitute for the source page. A migrated page is valid only when the final promoted body is traceable to the expanded source page body.
+
+The following are always disallowed unless the user explicitly requests them:
+- replacing a source page with a newly written summary page
+- replacing long source sections with a shorter restatement
+- preserving only the "main points" of a source page
+- writing a new page from source reading notes instead of from expanded source content
+- generating final content from a script or template that does not ingest the actual source page body
+- using build success, route success, or sidebar completeness as evidence of content fidelity
+
+If the agent cannot yet preserve a page faithfully, the correct default is to keep solving the page in `complex-flow`, not to publish a reduced page.
+
 The following rules are mandatory:
 
 - Expand legacy shared-content dependencies into migrated content or into target-approved static forms.
@@ -156,6 +172,9 @@ The following rules are mandatory:
 - Preserve legacy links that point into explicitly excluded lanes by default as deferred unresolved links; these links do not by themselves block final promotion.
 - Do not rewrite unresolved legacy links to a nearby but semantically different page.
 - Unknown existing target content must never be overwritten; it must be recorded and left unchanged.
+- A complex page must not use `deferred` as the first escape hatch merely because it is large, shared, awkward, or expensive to normalize.
+- For pages that remain in current task scope, `deferred` is allowed only after the required resolution attempts defined by this spec have been performed and recorded.
+- The default response to complexity is mandatory resolution work, not simplification.
 
 ### 6.5 Excluded-Lane Link Contract
 
@@ -248,6 +267,48 @@ Usually-disallowed additions include:
 
 If a migration run adds prose that is not traceable to the expanded source page, that is a migration defect unless the user explicitly requested the addition.
 
+### 6.7 No-Summary Promotion Rule
+
+The agent must never promote a page whose body is materially shorter because the source was summarized, compressed, merged, collapsed, or selectively restated for readability.
+
+The following are summary-style defects and must be treated as source-fidelity failures:
+- replacing a source section with one or two synthetic paragraphs
+- collapsing multiple source sections into one generic section
+- removing examples, tables, warnings, or procedure steps because they feel repetitive
+- replacing detailed operational prose with higher-level explanation
+- keeping only representative examples from a longer source page without an explicit extraction rule
+
+If a page legitimately needs scope extraction, the extraction must follow product-scope or task-scope rules and preserve the full remaining target-product semantics. Extraction is not permission to summarize.
+
+### 6.8 Mandatory Resolution Attempt Contract
+
+For in-scope pages that hit `complex-page` triggers, the agent must attempt to resolve the page before considering `deferred`.
+
+Minimum required attempt sequence:
+1. classify the page and target route
+2. expand shared dependencies
+3. expand variables
+4. collect and sync assets
+5. normalize unsupported syntax
+6. perform product-scope extraction when required
+7. stage the normalized output
+8. run page-level verification against the expanded source
+
+Only after the above attempts are performed and recorded may the page become:
+- `remediated-and-promoted`
+- `staged-only`
+- `deferred-with-report`
+
+The blocker report must record which of the required attempts were completed and exactly what still prevented promotion.
+
+The following are not valid reasons, by themselves, to skip the required attempts:
+- the page is long
+- the page is shared
+- the page uses many imports
+- the page would take too long to normalize manually
+- the page already has a placeholder target
+- the agent can quickly write a cleaner substitute
+
 ### 6.4 Frontmatter Fidelity Rules
 
 Source frontmatter is authoritative by default for migrated prose pages.
@@ -308,6 +369,10 @@ Page-fatal triggers:
 - a prose section from the expanded source page was removed without a documented extraction or compatibility reason
 - source prose was paraphrased or rewritten into portal-style explanatory prose instead of being carried over
 - a source link was replaced with a semantically different nearby target link instead of being preserved or marked deferred unresolved
+- the final page is a summary, digest, compressed rewrite, or hand-authored substitute for the expanded source page
+- the final page was generated from a migration helper that did not ingest and preserve the expanded source page body
+- a complex page was promoted without a staging artifact
+- a complex page was promoted without recorded page-level fidelity evaluation against the expanded source page
 
 For shared multi-product pages, page-fatal evaluation must happen after product-scope extraction. A removable non-target product branch is not itself a page-fatal condition.
 
@@ -376,6 +441,15 @@ Complex-flow minimum steps:
 The order is mandatory.
 
 The `extract` step is mandatory whenever the page hits a target collision trigger or shared reference trigger, even if no new compatibility syntax needs to be normalized.
+
+Complex-flow has an additional hard requirement:
+- the agent must treat promotion as forbidden until staging and page-fidelity evidence exist
+
+Complex-flow must not be short-circuited into:
+- direct hand-authored final-page reconstruction
+- direct final-page summarization
+- "temporary" reduced-content promotion
+- promotion justified only by successful build output
 
 ### 8.3 Target collision resolution
 
@@ -472,6 +546,9 @@ The spec must distinguish tasks that must be scripted from those that may remain
 - frontmatter sanitation checks
 - staging generation
 - blocker report scaffolding
+- source-to-staging content trace collection
+- source-to-final fidelity check scaffolding
+- promotion gating based on evidence presence
 
 ### 9.2 May be agent-authored
 
@@ -496,6 +573,36 @@ Recommended staging location:
 
 The exact filename scheme may vary, but the staging artifact must be durable enough for review and re-entry.
 
+### 10.1 Promotion Gate
+
+For a `complex-flow` page, the staging artifact is not optional evidence; it is the minimum promotion gate.
+
+The agent must not promote a complex page unless all of the following exist:
+- expanded source input
+- normalized staging artifact
+- recorded page-level verification result
+- recorded target-collision decision when applicable
+
+If any item above is missing, final promotion is prohibited.
+
+Build success, MDX parse success, or visual plausibility are not substitutes for this gate.
+
+### 10.2 Final-Tree Protection
+
+The final docs tree is a protected surface.
+
+The agent must not place provisional, partial, compressed, placeholder-like, or review-pending content into `content/docs/**` merely to preserve momentum.
+
+Allowed content states in the final tree:
+- fully verified promoted page
+- pre-existing untouched page
+
+Disallowed content states in the final tree:
+- summary substitute
+- reduced-content temporary page
+- partially normalized page awaiting later expansion
+- page known to violate source-fidelity rules
+
 ## 11. Page-Level Precheck And Verification
 
 Every page must pass page-level precheck before final promotion.
@@ -514,6 +621,8 @@ Every migrated prose page must answer the following checks at page level against
 - Has any source prose been paraphrased into portal-style explanatory prose instead of being carried over?
 - Have any source links been replaced with a semantically different nearby target link instead of being preserved or marked deferred unresolved?
 - If any answer above is `no`, is the exact reason recorded as a compatibility adaptation, extraction decision, or blocker?
+- Is the final page demonstrably a carried-over transformation of the expanded source page rather than a newly authored summary?
+- Is the final page free of any "temporary simplified migration" reasoning or content shortcuts?
 
 This checklist is mandatory for both `simple-flow` and `complex-flow` pages.
 
@@ -539,6 +648,8 @@ Complex-flow page verification checklist includes all of the above, plus:
 - target collision resolution state is recorded when a final target path already existed before the batch
 - a source-to-staging fidelity check confirms that source prose was not silently summarized, paraphrased, or structurally rewritten
 - the page-level fidelity checklist has been explicitly evaluated against the expanded source page
+- the final page body is derived from the staging artifact, not re-authored separately
+- the blocker report records unresolved issues when promotion is denied
 
 A staging page may still be complex after normalization; complexity alone is not failure. Only page-fatal conditions block promotion.
 
@@ -622,6 +733,7 @@ Each report entry must contain at least:
 - blocker type
 - exact failing pattern
 - attempted adaptation
+- completed mandatory resolution attempts
 - why final promotion was blocked
 - next missing rule, tool, or compatibility contract
 
@@ -644,6 +756,8 @@ It must enter a remediation loop:
 5. update blocker reporting with remediation status
 
 “Broken final page left in tree” is never an acceptable stable state.
+
+This includes pages that are syntactically valid and build successfully but violate source-fidelity rules. A compressed rewrite in the final tree is pollution even when the app builds.
 
 ## 16. Batch Completion Rules
 
@@ -695,6 +809,17 @@ The batch is not complete until:
 - shared image assets required by promoted pages are present
 - final promoted prose pages remain source-faithful after required expansion and compatibility adaptation
 - final promoted heading text and heading hierarchy remain source-faithful unless a documented compatibility exception exists
+- every promoted complex page has staging evidence and recorded page-level fidelity evidence
+- no promoted page is a summary substitute for an in-scope source page
+
+## 18.1 Non-Acceptance Conditions
+
+The batch must be considered failed if any of the following occurred, even if build verification succeeded:
+- an in-scope complex page was promoted without staging evidence
+- an in-scope complex page was promoted as a simplified rewrite
+- the final docs tree contains a page known to be materially shorter because of summarization rather than allowed extraction
+- `deferred` was used before the mandatory resolution attempt sequence was completed and recorded
+- a migration helper or script generated final content without ingesting the actual expanded source page body
 
 ## 19. Pilot Appendix: Signaling
 
