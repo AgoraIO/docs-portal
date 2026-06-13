@@ -1,5 +1,5 @@
 ---
-title: Speech-to-Text
+title: Speech to Text
 description: API reference entry points for Speech-to-Text.
 ---
 
