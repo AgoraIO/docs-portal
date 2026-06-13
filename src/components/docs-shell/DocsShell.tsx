@@ -353,6 +353,7 @@ export function DocsShell({
             locale={currentLocale}
             next={next}
             previous={previous}
+            resetKey={activePath}
           >
             {children}
           </DocsMainColumn>

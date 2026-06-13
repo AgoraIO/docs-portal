@@ -51,7 +51,7 @@ Delete legacy build artifacts such as `displayed_sidebar`, `ag_product`, `ag_pla
 
 ## Platform Variants
 
-Platform differences belong in static content structure:
+Platform differences default to static content structure:
 
 ```text
 content/docs/zh-CN/realtime-media/rtm2/android/...
@@ -59,9 +59,47 @@ content/docs/zh-CN/realtime-media/rtm2/ios/...
 content/docs/zh-CN/realtime-media/rtm2/javascript/...
 ```
 
-Do not keep `<PlatformFilter>` or equivalent runtime filtering. Code-language examples may use tabs/directives when they describe one conceptual page.
+Do not keep `<PlatformFilter>` or equivalent runtime filtering.
 
-Same-page guide variants should use the existing Fumadocs-compatible tabs:
+Use the repo's platform content blocks when one page intentionally combines shared prose with repeated platform-specific sections:
+
+```mdx
+Shared setup note.
+
+<PlatformStructured platform="android">
+### Install on Android
+
+Use Gradle to add the SDK.
+</PlatformStructured>
+
+<PlatformStructured platform="javascript">
+### Install with JavaScript
+
+Use npm to add the SDK.
+</PlatformStructured>
+
+Shared follow-up note.
+
+<PlatformInline platform="android">
+Use `./gradlew assemble`.
+</PlatformInline>
+
+<PlatformInline platform="javascript">
+Use `npm run build`.
+</PlatformInline>
+```
+
+Rules:
+
+- `PlatformStructured` and `PlatformInline` must appear as consecutive top-level flow siblings.
+- Each consecutive group must contain at least two platforms.
+- Do not duplicate the same platform key inside one group.
+- Nested platform blocks are not supported in v1.
+- These blocks are for platform-body variants, not tiny code-language toggles.
+
+Code-language examples may still use tabs/directives when they describe one conceptual page.
+
+Small same-section variants should use the existing Fumadocs-compatible tabs:
 
 ```mdx
 <Tabs defaultValue="android" groupId="platform" persist>

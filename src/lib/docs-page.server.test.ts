@@ -882,6 +882,56 @@ describe('loadDocsPagePayload', () => {
     });
   });
 
+  it('generates TOC from shared content plus canonical platform headings only', async () => {
+    const page = createPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## Shared intro
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="javascript" platform="android" />
+## Install Android SDK
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="javascript" platform="javascript" />
+## Install JavaScript SDK
+JavaScript body
+<_PlatformProcessedMarker close="true" />
+
+## Shared follow-up`,
+    );
+
+    mockedGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? undefined : page,
+    );
+
+    await expect(
+      loadDocsPagePayload('en', 'introduction', ['about-agora']),
+    ).resolves.toMatchObject({
+      toc: [
+        {
+          depth: 2,
+          title: 'Shared intro',
+          url: '#shared-intro',
+        },
+        {
+          depth: 2,
+          title: 'Install JavaScript SDK',
+          url: '#install-javascript-sdk',
+        },
+        {
+          depth: 2,
+          title: 'Shared follow-up',
+          url: '#shared-follow-up',
+        },
+      ],
+    });
+  });
+
   it('returns OpenAPI content inside the existing docs shell payload from the merged source', async () => {
     mockedGetPage.mockImplementation((_slugs, locale) =>
       locale === 'zh-CN' ? createZhOpenApiPage() : createOpenApiPage(),
