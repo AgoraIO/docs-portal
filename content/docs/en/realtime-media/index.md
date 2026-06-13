@@ -23,7 +23,7 @@ Use these docs when you are defining how users join a session, exchange media, c
 Use these docs when media inside the session needs to become text, records, composites, or downstream assets.
 
 - [Transcription & Translation](/en/realtime-media/speech-to-text): captions, speech understanding, and multilingual live experiences
-- [Recording](/en/realtime-media/recording): archive, replay, compliance, QA, and post-session review workflows
+- [Cloud Recording](/en/realtime-media/cloud-recording): archive, replay, compliance, QA, and post-session review workflows
 - [Transcoding](/en/realtime-media/transcoding): mixing, layout composition, and output transformation
 
 ### Bridge realtime sessions with external media systems
@@ -50,13 +50,13 @@ Use these docs when participants are not just mobile or web clients, but also em
 ## How to navigate this tab
 
 - Start with [Voice & Video](/en/realtime-media/rtc), [Signaling](/en/realtime-media/rtm), [Chat](/en/realtime-media/im), or [Whiteboard](/en/realtime-media/whiteboard) when your main question is how users interact inside a live session.
-- Start with [Transcription & Translation](/en/realtime-media/speech-to-text), [Recording](/en/realtime-media/recording), or [Transcoding](/en/realtime-media/transcoding) when your main question is what should happen to the media during or after the session.
+- Start with [Transcription & Translation](/en/realtime-media/speech-to-text), [Cloud Recording](/en/realtime-media/cloud-recording), or [Transcoding](/en/realtime-media/transcoding) when your main question is what should happen to the media during or after the session.
 - Start with [Media Push](/en/realtime-media/media-push), [Media Pull](/en/realtime-media/media-pull), [RTMP Gateway](/en/realtime-media/rtmp-gateway), or [Fusion CDN](/en/realtime-media/fusion-cdn) when your main question is how to move media across systems or out to larger audiences.
 - Start with [IoT & Edge](/en/realtime-media/rtsa) or [RTC Server SDK](/en/realtime-media/rtc-server-sdk) when your main question is how devices or backend services participate in the realtime workflow.
 
 ## Common reading paths
 
 - Interactive live streaming with large audience playback: [Voice & Video](/en/realtime-media/rtc) -> [Media Push](/en/realtime-media/media-push) -> [Fusion CDN](/en/realtime-media/fusion-cdn)
-- Meeting archive and searchable records: [Voice & Video](/en/realtime-media/rtc) -> [Recording](/en/realtime-media/recording) -> [Transcription & Translation](/en/realtime-media/speech-to-text)
+- Meeting archive and searchable records: [Voice & Video](/en/realtime-media/rtc) -> [Cloud Recording](/en/realtime-media/cloud-recording) -> [Transcription & Translation](/en/realtime-media/speech-to-text)
 - External stream into an interactive session: [Media Pull](/en/realtime-media/media-pull) or [RTMP Gateway](/en/realtime-media/rtmp-gateway) -> [Voice & Video](/en/realtime-media/rtc)
 - Smart device connectivity with backend media control: [IoT & Edge](/en/realtime-media/rtsa) -> [RTC Server SDK](/en/realtime-media/rtc-server-sdk)
