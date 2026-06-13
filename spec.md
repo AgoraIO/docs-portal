@@ -176,6 +176,24 @@ The following rules are mandatory:
 - For pages that remain in current task scope, `deferred` is allowed only after the required resolution attempts defined by this spec have been performed and recorded.
 - The default response to complexity is mandatory resolution work, not simplification.
 
+### 6.0.1 Target MDX Compatibility Contract
+
+Source-faithful migration is constrained by the target repo's actual MDX runtime.
+
+The agent must normalize final content into a closed compatibility subset rather than assuming any MDX syntax that "looks reasonable" will compile or prerender.
+
+Minimum required rules:
+- `TabsList`, `TabsTrigger`, and `TabsContent` must appear only inside a matching `Tabs` root.
+- `Accordion` must appear only inside `Accordions`.
+- Do not place `Accordions`, `Tabs`, or other block MDX components inside Markdown list items unless the target repo already demonstrates that exact nesting pattern.
+- Do not rely on GitHub-style heading-id syntax such as `## Title {#id}` unless the target repo has already proven that syntax is accepted in the current content pipeline.
+- Prefer plain Markdown headings over custom heading-id syntax when stable fragment preservation is not strictly required.
+- Raw HTML inside Markdown tables is disallowed unless the target repo already uses and successfully builds the same pattern.
+- In prose and table cells, literal `<`, `>`, and `<=` style comparison text must be escaped or wrapped in code spans when needed to avoid MDX expression parsing.
+- Code fences may contain raw `<...>` text freely; code-fence contents must not be treated as page-fatal syntax by themselves.
+
+When a candidate normalization would produce syntactically ambiguous MDX, the agent must choose the simpler target-compatible form even if that means dropping a non-essential presentational wrapper.
+
 ### 6.5 Excluded-Lane Link Contract
 
 Some migration tasks intentionally exclude one or more target lanes, such as REST API, generated API, or AI tooling surfaces.
@@ -199,6 +217,28 @@ An excluded-lane dependency becomes page-fatal only when:
 - the page cannot preserve its core meaning without that linked lane being present
 - the page still contains legacy runtime syntax or unresolved variable syntax
 - the page fails another independent page-level verification rule
+
+### 6.5.1 Link Rewrite Decision Matrix
+
+When rewriting links during migration, use the following default matrix:
+
+- In-scope source page -> exact promoted target exists:
+  rewrite to the exact promoted target route.
+- In-scope source page -> target not yet promoted in the current batch:
+  preserve the source link target or classify it as deferred unresolved.
+- Explicitly excluded lane -> exact equivalent target already exists:
+  rewrite only to that exact equivalent target.
+- Explicitly excluded lane -> no exact equivalent target exists:
+  preserve the original target and record an excluded-lane dependency.
+- Shared reference anchor -> anchor preserved exactly:
+  rewrite to the promoted target plus the preserved anchor.
+- Shared reference anchor -> anchor not preserved exactly:
+  do not invent a nearby anchor; preserve the original link target or record it as deferred unresolved.
+
+Disallowed behaviors:
+- rewriting a source link to a nearby "good enough" target
+- rewriting a REST/API source link to a prose page merely because the API lane is excluded
+- dropping a source link silently because the target is inconvenient
 
 ### 6.6 AI Tooling Page Contract
 
@@ -332,6 +372,23 @@ Disallowed frontmatter adaptation unless explicitly requested:
 - replacing a specific source title with the product name just because the page became `index.mdx`
 - inventing a new description when a usable source description already exists
 
+### 6.4.1 Frontmatter Normalization Contract
+
+Frontmatter normalization is allowed only to the extent required by target compatibility.
+
+Required rules:
+- Preserve source `title` text exactly unless a documented compatibility blocker requires change.
+- Preserve source `description` text exactly unless a documented compatibility blocker requires change.
+- Legacy YAML block scalars such as `description: >` must be normalized into a single final display string without changing wording.
+- Remove legacy build-only or runtime-only fields such as `sidebar_position`, `type`, `platform_selector`, `last_update`, and equivalent source-only metadata unless the target repo explicitly uses them in authored content.
+- Final promoted frontmatter must contain only target-supported keys.
+- If a source page lacks a usable `description`, omit it rather than inventing one.
+
+Disallowed behaviors:
+- shortening a long source description for style reasons alone
+- synthesizing a new marketing-style description when the source description is sparse but valid
+- carrying legacy operational metadata into final promoted pages just because it parses
+
 ## 7. Trigger-Based Execution Protocol
 
 This spec uses a trigger-based protocol instead of agent intuition.
@@ -374,6 +431,8 @@ Page-fatal triggers:
 - a complex page was promoted without a staging artifact
 - a complex page was promoted without recorded page-level fidelity evaluation against the expanded source page
 
+Compatibility residue inside fenced code blocks does not count as legacy runtime syntax for page-fatal evaluation.
+
 For shared multi-product pages, page-fatal evaluation must happen after product-scope extraction. A removable non-target product branch is not itself a page-fatal condition.
 
 When any of the source-fidelity page-fatal triggers above is discovered before promotion, the page must be repaired before it can enter the final docs tree.
@@ -408,6 +467,13 @@ Target collision triggers:
 Shared reference triggers:
 - source page is a broad shared glossary, security, policy, or similar reference page whose semantic scope exceeds the target product
 - source page is a multi-product shared container whose branches are selected by `ProductWrapper` or equivalent product gating
+
+Shared container detection must include these common source forms, not just the quoted-string form:
+- `ProductWrapper product="a,b"`
+- `ProductWrapper notAllowed="a,b"`
+- `ProductWrapper product={["a","b"]}`
+- `ProductWrapper notAllowed={["a","b"]}`
+- equivalent whitespace or closing-tag variants such as `</ProductWrapper >`
 
 ## 8. Flow Definitions
 
@@ -638,6 +704,7 @@ Simple-flow page precheck checklist:
 - no page-fatal trigger remains
 - source heading text and heading levels are preserved unless a recorded compatibility reason exists
 - no synthetic explanatory prose has been added beyond allowed compatibility glue
+- target-compatible MDX structure is satisfied for any tabs, accordions, or other block MDX components that remain after normalization
 
 Complex-flow page verification checklist includes all of the above, plus:
 - shared expansion is complete
@@ -650,6 +717,7 @@ Complex-flow page verification checklist includes all of the above, plus:
 - the page-level fidelity checklist has been explicitly evaluated against the expanded source page
 - the final page body is derived from the staging artifact, not re-authored separately
 - the blocker report records unresolved issues when promotion is denied
+- any surviving MDX component nesting has been validated against the target compatibility contract rather than inferred from source syntax alone
 
 A staging page may still be complex after normalization; complexity alone is not failure. Only page-fatal conditions block promotion.
 
@@ -714,6 +782,23 @@ Rules:
 - unknown existing content must be recorded and bypassed
 
 Unknown existing content is not fatal for the batch; it must be recorded and left unchanged.
+
+### 13.1 Existing Content Classification Guidance
+
+Use the following defaults when classifying existing target files:
+
+- `placeholder page`:
+  obviously generic filler text, explicit placeholder wording, or empty shell content.
+- `migration-seed content`:
+  short starter content that appears topic-relevant but materially under-covers the source page and is not clearly authoritative.
+- `authoritative hand-authored content`:
+  substantial topic coverage, repo-native wording, or signs of deliberate maintenance beyond migration scaffolding.
+- `mixed existing content`:
+  partial migrated content mixed with hand-authored edits or uncertain manual augmentation.
+- `unknown existing content`:
+  content that cannot be safely classified from local evidence alone.
+
+The agent must not classify a target file as `placeholder` merely because it is short, and must not classify a target file as `migration-seed content` merely because replacing it would be convenient.
 
 ## 14. Blocker And Report Contract
 
@@ -811,6 +896,21 @@ The batch is not complete until:
 - final promoted heading text and heading hierarchy remain source-faithful unless a documented compatibility exception exists
 - every promoted complex page has staging evidence and recorded page-level fidelity evidence
 - no promoted page is a summary substitute for an in-scope source page
+
+### 18.0.1 Verification Layering
+
+Verification results must be reported in layers:
+
+- `page-local verification`:
+  syntax, fidelity, image handling, and target-path correctness for the migrated pages themselves.
+- `content-pipeline verification`:
+  MDX/content build or prerender failures caused by migrated content.
+- `repo-global verification`:
+  failures in broader app code, routing, or unrelated docs surfaces.
+- `pre-existing unrelated failure`:
+  a repo-global failure that local evidence shows was not introduced by the current migration batch.
+
+If `bun run types:check` or `bun run build` fails for reasons unrelated to the migrated pages, the batch report must say so explicitly with file paths and failing commands. The agent must still fix any migrated-page failures discovered before attributing the remaining failure to unrelated repo state.
 
 ## 18.1 Non-Acceptance Conditions
 

@@ -1,6 +1,6 @@
 ---
 title: "REST quickstart"
-description: "Start cloud recording, query cloud recording status, and stop cloud recording by sending a RESTful API request."
+description: ">"
 ---
 Cloud Recording enables you to record and store real-time audio and video streams from channels. To implement Cloud Recording, you set up a self-hosted backend that interacts with Agora servers to manage recording tasks. This guide introduces the essential Cloud Recording RESTful APIs you use to manage the recording process.
 
@@ -86,8 +86,8 @@ The following figure shows the API call sequence to start and manage cloud recor
 The following APIs are optional and can be called multiple times. However, they must be called during a recording session, that is, after recording starts and before it ends:
 
 - [`query`](#query): Query the recording status
-- [`update`](/en/api-reference/cloud-recording/restful#update): Update the subscription list
-- [`updateLayout`](/en/api-reference/cloud-recording/restful#updatelayout): Update the video layout
+- [`update`](#update): Update the subscription list
+- [`updateLayout`](#update-video-layout): Update the video layout
 
 ### Use basic HTTP authentication
 
@@ -239,8 +239,10 @@ You can also use Postman to generate code snippets written in various programmin
 - To streamline the use of Agora RESTful APIs within your infrastructure, see
 [Quickstart using middleware](/en/realtime-media/cloud-recording/middleware-quickstart). The community middleware project provides RESTful APIs for tasks such as token generation and cloud recording management.
 
+<a name="update"></a>
 - To update the subscription lists during the recording, call [`update`](/en/api-reference/cloud-recording/restful#update). You can call this method multiple times. See [Set up subscription lists](/en/realtime-media/cloud-recording/build/subscription) for details.
 
+<a name="updateLayout"></a>
 - To set or update the video layout during the recording, call the [`updateLayout`](/en/api-reference/cloud-recording/restful#updatelayout) method. See [Set Video Layout](/en/realtime-media/cloud-recording/build/layout) for details.
 
 - [Common errors in cloud recording](/en/realtime-media/cloud-recording/reference/common-errors) lists common error codes and error messages in the response body.
