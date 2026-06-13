@@ -55,7 +55,7 @@ This section presents sample API calls to `start`, `stop`, `update`, and `query`
 
 ### Authentication
 
-Real-Time STT RESTful APIs require basic HTTP authentication. Set the `Authorization` parameter to a Base64-encoded credential in every HTTP request header. For details on how to get the `Authorization` value, see [RESTful authentication](../rest-api/restful-authentication).
+Real-Time STT RESTful APIs require basic HTTP authentication. Set the `Authorization` parameter to a Base64-encoded credential in every HTTP request header. For details on how to get the `Authorization` value, see [RESTful authentication](../reference/restful-authentication).
 
 ### Start an agent
 
