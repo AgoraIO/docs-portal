@@ -1,5 +1,5 @@
 ---
-title: Voice & Video Call
+title: Voice Call
 description: xxx
 ---
 
