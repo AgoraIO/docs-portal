@@ -10,6 +10,7 @@ import { shouldPrerenderPage } from './src/lib/prerender-filter';
 import { createDocsPrerenderPaths } from './src/lib/prerender-pages';
 
 const isTest = process.env.VITEST === 'true';
+const isLocalPreviewBuild = process.env.DOCS_LOCAL_PREVIEW === 'true';
 const docsPrerenderPaths = isTest
   ? []
   : createDocsPrerenderPaths({
@@ -46,7 +47,7 @@ export default defineConfig({
             })),
             prerender: {
               crawlLinks: false,
-              enabled: true,
+              enabled: !isLocalPreviewBuild,
               filter: shouldPrerenderPage,
             },
           }),

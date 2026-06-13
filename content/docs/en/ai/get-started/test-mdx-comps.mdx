@@ -254,6 +254,32 @@ Platform-specific content should live in static routes instead of runtime filter
 
 Code-language tabs are only for one conceptual page with language-specific commands or examples.
 
+## Platform content blocks
+
+Shared setup note before platform instructions.
+
+<PlatformStructured platform="android">
+### Install on Android
+
+Use Gradle to add the SDK.
+</PlatformStructured>
+
+<PlatformStructured platform="javascript">
+### Install with JavaScript
+
+Use npm to add the SDK.
+</PlatformStructured>
+
+Shared note after structured block.
+
+<PlatformInline platform="android">
+Use `./gradlew assemble`.
+</PlatformInline>
+
+<PlatformInline platform="javascript">
+Use `npm run build`.
+</PlatformInline>
+
 <a id="api-reference-fallback" />
 
 ## API reference fallback

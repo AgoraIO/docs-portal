@@ -23,6 +23,19 @@ describe('openapi lanes', () => {
         },
         tab: 'api-reference',
       }),
+      expect.objectContaining({
+        id: 'speech-to-text',
+        publicSourceUrl: {
+          en: '/openapi/speech-to-text/v7.en.yaml',
+          'zh-CN': '/openapi/speech-to-text/v7.zh-CN.yaml',
+        },
+        routePrefix: 'api-reference/speech-to-text/restful',
+        sourcePath: {
+          en: 'content/openapi/speech-to-text/v7.en.yaml',
+          'zh-CN': 'content/openapi/speech-to-text/v7.zh-CN.yaml',
+        },
+        tab: 'api-reference',
+      }),
     ]);
   });
 
@@ -54,10 +67,22 @@ describe('openapi lanes', () => {
       routeLeaf: 'join',
       url: '/en/api-reference/conversational-ai/rest-api/agent/join',
     });
+    expect(
+      resolveOpenApiEndpointRoute('en', 'api-reference', [
+        'speech-to-text',
+        'restful',
+        'join',
+      ]),
+    ).toMatchObject({
+      lane: expect.objectContaining({ id: 'speech-to-text' }),
+      operationId: 'join',
+      routeLeaf: 'join',
+      url: '/en/api-reference/speech-to-text/restful/join',
+    });
   });
 
   it('derives operation order and static paths from lane operations', () => {
-    const [lane] = getOpenApiLanes();
+    const [lane, sttLane] = getOpenApiLanes();
 
     expect(getOpenApiOperationIds(lane)).toEqual([
       'start-agent',
@@ -74,6 +99,16 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/conversational-ai/rest-api/agent/join',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(20);
+    expect(getOpenApiOperationIds(sttLane)).toEqual([
+      'join',
+      'query',
+      'leave',
+      'update',
+      'list',
+    ]);
+    expect(getOpenApiPrerenderPaths()).toContain(
+      '/en/api-reference/speech-to-text/restful/join',
+    );
+    expect(getOpenApiPrerenderPaths()).toHaveLength(30);
   });
 });
