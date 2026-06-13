@@ -4,9 +4,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "bun run openapi:sync && vite build",
-    "start": "vite preview",
-    "preview": "vite preview",
+    "build": "node scripts/sync-openapi-assets.mjs && vite build",
+    "build:local-preview": "DOCS_LOCAL_PREVIEW=true node scripts/sync-openapi-assets.mjs && DOCS_LOCAL_PREVIEW=true vite build",
+    "start": "srvx --prod --host 127.0.0.1 --port 3001 --dir ./.vercel/output/functions/__server.func --entry index.mjs --static ../../static",
+    "preview": "srvx --prod --host 127.0.0.1 --port 3001 --dir ./.vercel/output/functions/__server.func --entry index.mjs --static ../../static",
     "test": "vitest run",
     "types:check": "fumadocs-mdx && tsc --noEmit",
     "postinstall": "fumadocs-mdx",
