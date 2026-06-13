@@ -1,24 +1,18 @@
 ---
-title: "Media Pull"
-description: "Enables you to pull audio and video streams from Agora channels and upload them to a Content Delivery Network (CDN) to reach a larger audience."
+title: Media Pull
+description: Media Pull brings external online media streams into an existing realtime experience.
 ---
 
-![Media Pull overview](/images/media-pull/media-pull-overview.png)
+## What this capability is
 
-Agora's Media Pull service enables the injection of external media streams into real-time Agora channels. Hosts and audiences can seamlessly view and hear the additional streams while interacting in real-time, enhancing engagement and content versatility. The service is designed to work with Agora's Voice Calling, Video Calling, and Interactive Live Streaming.
+Media Pull lets you ingest external online media into a live realtime experience so the system is not limited to locally captured user audio-video.
 
-With support for multiple streaming protocols, extensive media formats, and ultra-low latency, Media Pull ensures smooth and flexible media injection. Control playback timing for injected streams to synchronize content seamlessly within your channel, creating dynamic and interactive experiences.
+## Common scenarios
 
-## Quick links
+- external media ingestion
+- remote content input
+- mixed-source interactive experiences
 
-- [Quickstart](./get-started/enable-media-pull)
-- [API reference](../../api-reference/media-pull)
+## What to read first
 
-## Key features
-
-- **Easy to integrate with RESTful API**: Inject an online media stream into the Agora channel as a live video source using the RESTful API.
-- **External content in your channel**: After the injection succeeds, the online media stream automatically plays in the Agora channel, and remote users can see the content of the media stream.
-- **Ultra-low latency**: The audio or video stream is injected with ultra-low latency, allowing the audience to see and hear the stream in real time.
-- **Timed media stream injection**: Hosts can control when to start playing the injected media stream to coordinate timed media stream playback.
-- **Extensive media format support**: Supports video codec formats H.264, H.265, and VP9; audio codec formats: AAC and OPUS; and container formats FLV, MP4, MPEG-TS, Matroska (MKV), and HLS.
-- **Support for multiple streaming protocols**: Support for HTTPS, and RTMP streaming protocols.
+Start by confirming source format and target scenario, then decide whether transcoding or pushing should be combined with the ingestion flow.
