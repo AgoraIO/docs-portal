@@ -108,5 +108,5 @@ Follow these steps to enable one or more features and configure the storage sett
 
 ## Reference
 After enabling the Interactive Whiteboard, you can refer to the following documents to use its functions:
-- [Join a whiteboard room](get-started-sdk/web/)
+- [Join a whiteboard room](get-started-sdk/)
 - [File conversion overview](../reference/rest-api/file-conversion.md)

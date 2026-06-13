@@ -20,6 +20,7 @@ const rawDocSchema = z.object({
 export const docs = defineDocs({
   dir: 'content/docs',
   docs: {
+    async: true,
     schema: rawDocSchema,
     mdxOptions: applyMdxPreset({
       rehypeCodeOptions: {

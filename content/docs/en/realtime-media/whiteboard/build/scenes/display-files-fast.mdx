@@ -1,0 +1,480 @@
+---
+title: "Display files using Fastboard"
+description: "Display and manage files in Fastboard across Android, iOS, and Web."
+---
+
+Use the platform tabs below to switch between Android, iOS, and Web Fastboard file workflows in one place.
+
+<Tabs defaultValue="web" groupId="whiteboard-display-files-fast-platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+The Agora Fastboard SDK supports inserting and displaying multiple types of files on the whiteboard, such as images, audio and video, and documents. This enables users to quickly share information in compelling ways in order to create an immersive experience.
+
+This page describes how to call the Fastboard SDK's APIs to insert images, present documents, and play audio and video on the whiteboard.
+
+## Insert Images
+
+Fastboard provides the [`insertImage`](../../../../reference/uikit-sdk#insertimage) method for inserting and displaying an image in the main window of the whiteboard. You can call this method and pass in the URL, width, and height of the image to display a specified image.
+
+### Prerequisites
+
+Before you start, make sure you meet the following requirements:
+
+- Integrate Fastboard in your project and join the room. See [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room).
+
+- Prepare the URL of the image. Make sure that your app clients can access the URL; otherwise, the image cannot be displayed properly.
+
+- Make sure that the image is in PNG, JPG/JPEG, or WEBP format.
+
+### Implementations
+
+The following steps show how to implement inserting an image in the [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room) project:
+
+1. In `/app/java/com.example.<projectname>/MainActivity`, replace `fastRoom.join()` with the following code:
+
+    ```java
+        // Joins the whiteboard room
+        fastRoom.join { room ->
+            // Calls `insertImage`, and pass in the URL, width, and height of the image
+            room.`insertImage`("https://flat-storage.oss-accelerate.aliyuncs.com/cloud-storage/2022-02/15/ebe8320a-a90e-4e03-ad3a-a5dc06ae6eda/ebe8320a-a90e-4e03-ad3a-a5dc06ae6eda.png", 512, 512)
+        }
+    ```
+
+2. Run the project. You can see the inserted image on the whiteboard after the app refreshes.
+
+Fastboard does not provide a UI for `insertImage`. You need to implement the UI yourself.
+
+## Play audio and video
+
+The Fastboard integrates the media player extension and provides the [`insertVideo`](../../../../reference/uikit-sdk#insertvideo) method for playing audio and video files. You can simply call `insertVideo
+` and pass in the URL of the audio or video file and the title of the sub-window play the audio and video in a sub-window on the whiteboard.
+
+### Prerequisites
+
+Before you start, make sure you meet the following requirements:
+
+- Integrate the Fastboard in your project and join the room. See [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room).
+
+- Prepare the URL of the audio or video. Make sure that your app clients can access the URL; otherwise, the audio and video cannot be loaded properly.
+
+- Make sure that the audio and video files are in MP3 or MP4 format.
+
+### Implementations
+
+The following steps show how to implement playing a video in the [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room) project:
+
+1. In `/app/java/com.example.<projectname>/MainActivity`, replace `fastRoom.join()` with the following code:
+
+        ```java
+        // Joins the whiteboard room
+        fastRoom.join { room ->
+                    // Calls insertVideo, and pass in the URL of the video file and the title of sub-window
+                    room.insertVideo("https://flat-storage.oss-accelerate.aliyuncs.com/cloud-storage/2022-02/15/55509848-5437-463e-b52c-f81d1319c837/55509848-5437-463e-b52c-f81d1319c837.mp4", "test1.mp4")
+                }
+        ```
+
+2. Run the project. You can see the sub-window named `test1.mp4` after the app refreshes. Click the start button to play the video.
+
+Fastboard does not provide a UI for `insertVideo`. You need to implement the UI yourself.
+
+## Present documents
+
+Fastboard integrates the docs viewer and slide extensions and provides the [`insertDocs`](../../../../reference/uikit-sdk#insertdocs) method for presenting documents. You can simply call `insertDocs` and pass in the information on a document conversion task, such as the task UUID and token, to present the document in a paginated format in a sub-window on the whiteboard. The implementation workflow is as follows:
+
+1. Upload the source document to a third-party cloud storage service, and call the [Start file conversion (POST) API](../../../../reference/rest-api/file-conversion.md#start-file-conversion) to create a file conversion task. When the call succeeds, the Agora server returns UUID in the response body, which is the UUID of the file conversion task.
+
+2. Call the [Generate a Task Token (POST) API](../../../generate-token-rest.md), and pass the UUID in the request path to generate a task token for the file conversion task.
+
+3. After joining the whiteboard room, call the `insertDocs` method, and pass the following information in the params parameter of the method:
+
+    - `taskUUID`: String. The UUID of the file conversion task.
+
+    - `taskToken`: String. The token of the file conversion task.
+
+    - `fileType`: String. The file type `.pdf` represents a static document; `.pptx` represents a dynamic document.
+
+    - `title`: String. The title of the sub-window.
+
+### Prerequisites
+
+Before you start, make sure you meet the following requirements:
+
+- Integrate Fastboard in your project and join the room. See [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room).
+
+- Understand and enable the [file-conversion service](../../../file-conversion-overview.md).
+
+### Implementations
+
+The following steps show how to implement presenting an animated PPTX document in the [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room) project:
+
+1. Upload the PPTX source document to a third-party cloud storage service and call the [Start file conversion (POST) API](../../../../reference/rest-api/file-conversion.md#start-file-conversion) to create a dynamic-file conversion task that converts the PPTX file to HTML web pages.
+
+2. Launch a file conversion task and get the UUID and token of the task.
+
+3. In `/app/java/com.example.<projectname>/MainActivity`, replace `fastRoom.join()` with the following code:
+
+            ```java
+        // Joins the whiteboard room
+        fastRoom.join { room ->
+            // Parameterts of the converted document
+            val params = FastInsertDocParams(
+                "Task UUID",
+                "Task Token",
+                "pptx",
+                "My PPT"
+            )
+            // Calls insertDocs to insert the converted document, and register the callbacks to get call results
+            room.insertDocs(params, object : FastResult<String> {
+                override fun onSuccess(value: String) {
+                }
+                override fun onError(exception: Exception?) {
+                }
+            })
+        }
+            ```
+4. Run the project. You can see the sub-window named `My PPT` after the app refreshes. Click the arrow on the window to show your document page by page.
+</TabsContent>
+
+<TabsContent value="ios">
+The Agora Fastboard SDK supports inserting and displaying multiple types of files on the whiteboard, such as images, audio and video, and documents. This enables users to quickly share information in compelling ways in order to create an immersive experience.
+
+This page describes how to call the Fastboard SDK's APIs to insert images, present documents, and play audio and video on the whiteboard.
+
+## Insert Images
+
+Fastboard provides the [`insertImg`](../../../../reference/uikit-sdk#nsertimg) method for inserting and displaying an image in the main window of the whiteboard. You can call this method and pass in the URL, width, and height of the image to display a specified image.
+
+### Prerequisites
+
+Before you start, make sure you meet the following requirements:
+
+- Integrate the Fastboard in your project, and join the room. See [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room).
+
+- Prepare the URL of the image. Make sure that your app clients can access the URL; otherwise, the image cannot be displayed properly.
+
+- Make sure that the image is in PNG, JPG/JPEG, or WEBP format.
+
+### Implementations
+
+The following steps show how to implement inserting an image in the [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room) project:
+
+1. In `ViewController.swift`, replace `fastRoom.joinRoom()` with the following code:
+    ```swift
+        fastRoom.joinRoom() {
+            // Calls insertImg, and passes in the URL, width, and height of the image
+            fastRoom.insertImg(URL(string: "https://test.aliyuncs.com/cloud-storage/2022-xx/15/e3xxda.png")!,
+            imageSize: .init(width: 100, height: 100))
+        }
+    ```
+2. Run the project. You can see the inserted image on the whiteboard after the app refreshes.
+
+Fastboard does not provide a UI for `insertImg`. You need to implement the UI yourself.
+
+## Play audio and video
+
+Fastboard integrates the media player extension and provides the [`insertMedia`](../../../../reference/uikit-sdk#insertmedia) method for playing audio and video files. You can simply call `insertMedia` and pass in the URL of the audio or video file and the title of the sub-window play the audio and video in a sub-window on the whiteboard.
+
+### Prerequisites
+
+Before you start, make sure you meet the following requirements:
+
+- Integrate Fastboard in your project, and join the room. See [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room).
+
+- Prepare the URL of the audio or video. Make sure that your app clients can access the URL; otherwise, the audio and video cannot be loaded properly.
+
+- Make sure that the audio and video files are in MP3 or MP4 format.
+
+### Implementations
+
+The following steps show how to implement playing a video in the [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room) project:
+
+1. In `ViewController.swift`, replace `fastRoom.join()` with the following code:
+    ```swift
+        fastRoom.joinRoom(){
+            // Calls insertMedia, and passes in the URL of the video file and the title of sub-window
+            fastRoom.insertMedia(URL(string: "https://test.aliyuncs.com/cloud-storage/2022-xx/15/52xxx37.mp4")!,
+            title: "test1.mp4",
+            completionHandler: nil)
+        }
+        ```
+
+2. Run the project. You can see the sub-window named `test1.mp4` after the app refreshes. Click the start button to play the video.
+
+:::info
+The Fastboard SDK does not provides a UI for `insertMedia`. You need to implement the UI yourself.
+:::
+
+## Present documents
+
+The Agora Fastboard SDK integrates the docs viewer and slide extensions and provides the [`insertStaticDocument`](../../../../reference/uikit-sdk#insertstaticdocument) and [`insertPptx`](../../../../reference/uikit-sdk#insertpptx) methods for presenting documents. You can simply call `insertStaticDocument` or `insertPptx` and pass in the information on the converted files to present a document in a paginated format in a sub-window on the whiteboard. The implementation workflow is as follows:
+
+1. Upload the source document to a third-party cloud storage service, and call the Start file conversion (POST) API to create a file conversion task. When the call succeeds, the Agora server returns uuid in the response body, which is the unique identifier (UUID) of the file conversion task.
+
+2. Call the [Generate a task token (POST) API](../../../generate-token-rest.md#generate-a-task-token-post), and pass the uuid in the request path to generate a task token for the file conversion task.
+
+3. Call the [Query file conversion progress](../../../../reference/rest-api/file-conversion.md#query-the-progress-of-a-file-conversion-task), and pass in the UUID and token of the conversion task to get the information on the converted files, that is, the value of the `convertedFileList` parameter in the response body.
+
+4. After joining the whiteboard room, call `insertStaticDocument` or `insertPptx` depending on the document type, and pass in the following parameters:
+
+    - `pages`: The list of converted files. You need to convert `convertedFileList` to a `WhitePptPage` array yourself.
+
+    - `title`: The title of the sub-window.
+
+    - `completionHandler`: The callback that reports the call results. Passing in `nil` means not registering the callback.
+
+### Prerequisites
+
+Before you start, make sure you meet the following requirements:
+
+- Integrate Fastboard in your project and join the room. See [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room).
+
+- Understand and enable the [file-conversion service](../../../file-conversion-overview.md).
+
+### Implementations
+
+The following steps show how to implement presenting an animated PPTX document in the [Join a Whiteboard Room](../../../get-started-uikit/) project:
+
+1. Successfully launch a dynamic-document conversion task, and call the [Query file conversion progress](../../../../reference/rest-api/file-conversion.md#query-the-progress-of-a-file-conversion-task) to get the list of converted files.
+
+2. In `ViewController.swift`, add the following line after `import Fastboard`:
+
+        ```swift
+        import UIKit
+        import Fastboard
+        // Imports the Whiteboard SDK
+        import Whiteboard
+        ```
+
+3. In `ViewController.swift`, replace `fastRoom.join()` with the following code:
+
+        ```swift
+        fastRoom.joinRoom(){
+            // Defines the value of convertedFileList in the file conversion result as a jsonStr variable
+            let jsonStr =
+        """
+                [{
+                    "width": 1280,
+                    "height": 720,
+                    "conversionFileUrl": "pptx://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/1.slide",
+                    "preview": "https://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/preview/1.png"
+                },
+                {
+                    "width": 1280,
+                    "height": 720,
+                    "conversionFileUrl": "pptx://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/2.slide",
+                    "preview": "https://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/preview/2.png"
+                },
+                {
+                    "width": 1280,
+                    "height": 720,
+                    "conversionFileUrl": "pptx://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/3.slide",
+                    "preview": "https://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/preview/3.png"
+                }]
+        """
+            // Converts jsonStr to a WhitePptPage array
+            let dic = try! JSONSerialization.jsonObject(with: jsonStr.data(using: .utf8)!) as! [[String: Any]]
+            let pages = dic.map { item -> WhitePptPage in
+                let url = item["conversionFileUrl"] as? String
+                let pre = item["preview"] as? String
+                let w = item["width"] as? Int
+                let h = item["height"] as? Int
+                return WhitePptPage(src: url!, preview: pre!, size: .init(width: w!, height: h!))
+            }
+            // Calls `insertPptx` to insert and display the document
+            fastRoom.`insertPptx`(pages, title: "My PPT")
+            return
+        }
+        ```
+
+4. Run the project. You can see the sub-window named `My PPT` after the app refreshes. Click the arrow on the window to show your document page by page.
+</TabsContent>
+
+<TabsContent value="web">
+The Agora Fastboard SDK supports inserting and displaying multiple types of files on the whiteboard, such as images, audio and video, and documents. This enables users to quickly share information in compelling ways in order to create an immersive experience.
+
+This page describes how to call the Fastboard SDK's APIs to insert images, present documents, and play audio and video on the whiteboard.
+
+## Insert Images
+
+Fastboard provides the [`insertImage`](../../../../reference/uikit-sdk#insertimage) method for inserting and displaying an image in the main window of the whiteboard. You can call this method and pass in the URL of the image to display a specified image.
+
+### Prerequisites
+
+Before you start, make sure you meet the following requirements:
+
+- Integrate Fastboard in your project, and join the room. See [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room).
+
+- Prepare the URL of the image. Make sure that your app clients can access the URL; otherwise, the image cannot be displayed properly.
+
+- Make sure that the image is in PNG, JPG/JPEG, or WEBP format.
+
+### Implementations
+
+The following steps show how to implement inserting an image in the [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room) project:
+
+1. Open the `main.js` file, and add the following after `mountFastboard(document.getElementById("app"));`:
+    ```javascript
+        await app.insertImage(
+            "https://web-cdn.agora.io/website-files/images/interactive-whiteboard-text-tab-1.png"
+        );
+    ```
+2. Run the following command to run the project:
+    ```sh
+        npm run dev
+    ```
+You can see the inserted image after the `index.html` page opens.
+
+<div class = "alert info">Fastboard does not provide a UI for `insertImage`. You need to implement the UI yourself.</div>
+
+## Play audio and video
+
+Fastboard integrates the media player extension and provides the [`insertMedia`](../../../../reference/uikit-sdk#insertmedia) method for playing audio and video files. You can simply call `insertMedia` and pass in the audio and video file name and URL to play the audio and video in a sub-window on the whiteboard.
+
+### Prerequisites
+
+Before you start, make sure you meet the following requirements:
+
+- Integrate Fastboard in your project, and join the room. See [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room).
+
+- Prepare the URL of the audio or video. Make sure that your app clients can access the URL; otherwise, the audio and video cannot be loaded properly.
+
+- Make sure that the audio and video files are in MP3 or MP4 format.
+
+### Implementations
+
+The following steps show how to implement playing a video in the [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room) project:
+
+1. Open the `main.js` file, and add the following after `mountFastboard(document.getElementById("app"));`:
+    ```javascript
+        await app.insertMedia(
+            "test1.mp4",
+            "https://beings.oss-cn-hxxxou.aliyuncs.com/test/aaa59xxxxxxxc695def4/1606277539701637%E7%9A%84%E5%89%AF%E6%9C%AC.mp4"
+        );
+    ```
+
+2. Run the following command to run the project:
+
+    ```javascript
+        npm run dev
+    ```
+
+You can see the sub-window named `test1.mp4` after the `index.html` page opens. Click the start button to play the video.
+
+<div class = "alert info">Fastboard does not provide a UI for insertMedia. You need to implement the UI yourself.</div>
+
+## Present documents
+
+Fastboard integrates the docs viewer and slide extensions and provides the [`insertDocs`](../../../../reference/uikit-sdk#insertdocs-12) method for presenting documents. You can simply call `insertDocs` and pass the parameters of a document to present the document in a paginated format in a sub-window on the whiteboard. The implementation workflow is as follows:
+
+1. Call the [Start file conversion (POST) API](../../../../reference/rest-api/file-conversion.md#start-file-conversion) to convert the source document to a paginated set of images or web pages.
+
+2. Call the [Query file conversion progress (GET) API](../../../../reference/rest-api/file-conversion.md#query-the-progress-of-a-file-conversion-task) to get the conversion result.
+
+3. Call `insertDocs`, and pass the width, height, and URL of each image or web page in order in the scenes parameter.
+
+When converting a source document to images or web pages, note the following:
+
+- Ensure the format of the converted images or web pages is supported by Fastboard.
+
+    Fastboard supports inserting and displaying images or web pages in the following formats:
+
+    - Static images in PNG, JPG/JPEG, and WEBP formats converted from PPT, PPTX, DOC, DOCX, and PDF files. See [Static-file conversion service](../../../../reference/rest-api/file-conversion.md#static-file-conversion).
+
+    - HTML web pages converted from PPTX files. See [Dynamic-file conversion service](../../../../reference/rest-api/file-conversion.md#dynamic-file-conversion).
+
+- Ensure the converted images or web pages are accessible on the public network.
+
+    In addition, if the server that stores the images or web pages has a different domain from that of your web application, you need to configure [Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS); otherwise, your app clients might fail to access and load these images or web pages.
+
+### Prerequisites
+
+Before you start, make sure you meet the following requirements:
+
+- Integrate Fastboard in your project, and join the room. See [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room).
+
+- Complete file conversion, and generate a set of URLs for the converted images or web pages.
+
+### Implementations
+
+The following steps show how to implement presenting a three-page, animated PPTX file in the [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room) project:
+
+1. Upload the PPTX source document to a third-party cloud storage service, and call the [Start file conversion (POST) API](../../../../reference/rest-api/file-conversion.md#start-file-conversion) to create a dynamic-file conversion task that converts the PPTX file to HTML web pages.
+
+2. Call the [Query file conversion progress (GET) API](../../../../reference/rest-api/file-conversion.md#query-the-progress-of-a-file-conversion-task) to get the file conversion result.
+
+3. Open the [Join the whiteboard room](../../../get-started-uikit#join-the-whiteboard-room) project, and add the following lines to the `main.js` file:
+    ```javascript
+        // Pass the conversion result (the entire response body returned by the Query file conversion progress (GET) API) in the response parameter.
+        var response = {
+            "uuid": "01xxxx82",
+            "type": "dynamic",
+            "status": "Finished",
+            "progress": {
+                "totalPageSize": 3,
+                "convertedPageSize": 3,
+                "convertedPercentage": 100,
+                "convertedFileList": [
+                    {
+                        "width": 1280,
+                        "height": 720,
+                        "conversionFileUrl": "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/01612xxx882/1.slide",
+                        "preview": "https://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/01612xxx882/preview/1.png"
+                    },
+                    {
+                        "width": 1280,
+                        "height": 720,
+                        "conversionFileUrl": "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/01612xxx882/2.slide",
+                        "preview": "https://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/01612xxx882/preview/2.png"
+                    },
+                    {
+                        "width": 1280,
+                        "height": 720,
+                        "conversionFileUrl": "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/01612xxx882/3.slide",
+                        "preview": "https://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/01612xxx882/preview/3.png"
+                    }
+                ],
+                "currentStep": "Packaging"
+            }
+        };
+
+        // Call insertDocs to insert the doc.
+        var btn = document.getElementById("addPPT");
+        btn.onclick = async function addPPT() {
+            await app.insertDocs("My PPT", response);
+        };
+    ```
+
+4. Add the following code to the `index.html` file to load the button for displaying the document on the web page:
+    ```xml
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>Vite App</title>
+            </head>
+            <body>
+                <div
+                        id="app"
+                        style="width: 600px; height: 400px; border: 1px solid;"
+                ></div>
+                <!--Define the style of the button and add it to the web page-->
+                <div style="display: inline-block;">
+                <div id="viewDocs" class="Prev" style="width: 50px; border: 1px solid; position: fixed; bottom: 430px; right：20px;">
+                    Show My PPT
+                </div>
+            </div>
+                <script type="module" src="/main.js"></script>
+                </body>
+            </html>
+    ```
+You can see the **Show My PPT** button when the `index.html` page opens. Click the button, and the SDK loads your document in a sub-window. Click the arrow to show your document page by page.
+
+<div class = "alert info">Fastboard also provides another `insertDocs method` for inserting and displaying documents. For details, see [API reference](../../../../reference/uikit-sdk/).</div>
+</TabsContent>
+</Tabs>
