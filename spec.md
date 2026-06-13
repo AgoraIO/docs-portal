@@ -86,6 +86,7 @@ Allowed behaviors:
 Disallowed behaviors:
 - using the landing page as a dumping ground for all conceptual or onboarding content
 - forcing all quickstart pages into `build/**`
+- treating landing-page placement as permission to rewrite source body structure, heading hierarchy, or prose wording
 
 ### 5.3 Build
 
@@ -132,6 +133,8 @@ Default to high-fidelity migration: preserve original page semantics, paragraphs
 
 Do not use migration as a reason to perform editorial rewrites, structural beautification, summarization, or opportunistic content compression.
 
+For prose migration, high fidelity means source-faithful carry-over by default. After shared expansion, variable expansion, and required product-scope extraction, the expanded source page body is the authoritative content shape for migration.
+
 The following rules are mandatory:
 
 - Expand legacy shared-content dependencies into migrated content or into target-approved static forms.
@@ -148,6 +151,82 @@ The following rules are mandatory:
 - Preserve legacy internal links when the target page does not yet exist by treating them as deferred unresolved links.
 - Do not rewrite unresolved legacy links to a nearby but semantically different page.
 - Unknown existing target content must never be overwritten; it must be recorded and left unchanged.
+
+### 6.1 Source-Faithful Prose Rules
+
+Unless an explicit compatibility blocker prevents it, the migrated final page must preserve the expanded source page body with only the minimum necessary changes for:
+- frontmatter normalization
+- route placement
+- shared-content expansion
+- variable expansion
+- target-supported syntax conversion
+- asset path normalization
+- semantically identical internal link rewriting when the correct target route already exists
+
+The following are disallowed unless the user explicitly requests them:
+- rewriting source prose into a newly authored summary
+- replacing source paragraphs with portal-style explanatory prose
+- adding synthetic intro sections, outro sections, or "next steps" prose not present in the source body
+- replacing a source sentence with a broader conceptual explanation
+- collapsing prose into bullets for readability alone
+- replacing source operational language with cleaner or more generic wording
+
+If the source content feels sparse, awkward, or portal-inconsistent, the default action is still source-faithful migration rather than rewrite.
+
+Landing-page placement is a route-shell adaptation only. When a source page maps to `index.md` or `index.mdx`, that changes the final filename and route role, but it does not create an exception for rewriting the page body.
+
+### 6.2 Heading Fidelity Rules
+
+The expanded source heading tree is authoritative by default.
+
+Mandatory rules:
+- Preserve source heading text unless variable expansion or a documented compatibility adaptation requires a literal change.
+- Preserve source heading levels unless the target runtime cannot safely express the same structure.
+- Route placement into `index.md` or `index.mdx`, `build/**`, or `reference/**` does not justify changing in-page heading wording or heading levels.
+- Preserve intermediate headings even when the route path already implies the topic.
+
+The following are disallowed unless a documented compatibility blocker requires them:
+- renaming headings to better match target style
+- promoting or demoting headings to make the page read more cleanly
+- splitting one source section into several new headings
+- removing a source heading because nearby prose appears sufficient
+- flattening or re-rooting headings because the page became the product landing page
+
+### 6.3 No-Added-Prose Rule
+
+Migration must not invent new explanatory body prose beyond the minimum connective text required by a compatibility adaptation.
+
+Usually-disallowed additions include:
+- new opening summaries
+- new "what this page covers" prose
+- new recommendation or best-practice commentary that is not in the source
+- new cross-links framed as narrative body text
+- new closing sections such as "Next steps" or "Related pages" when these were not present in the source body
+
+If a migration run adds prose that is not traceable to the expanded source page, that is a migration defect unless the user explicitly requested the addition.
+
+### 6.4 Frontmatter Fidelity Rules
+
+Source frontmatter is authoritative by default for migrated prose pages.
+
+Mandatory rules:
+- Preserve source `title` by default.
+- Preserve source `description` by default.
+- Only remove source frontmatter fields that are clearly legacy-runtime-specific, build-injected, or unsupported by the target content model.
+- If a source wrapper page contains only frontmatter plus a shared-content import, treat that wrapper frontmatter as the page-level frontmatter source of truth unless an explicit compatibility blocker prevents it.
+
+Allowed frontmatter adaptation:
+- quote-style normalization
+- whitespace normalization
+- removal of unsupported legacy metadata keys
+- variable expansion inside supported fields
+- the smallest text normalization required when a source `description` contains unresolved runtime syntax that cannot be preserved verbatim
+
+Disallowed frontmatter adaptation unless explicitly requested:
+- rewriting a source `title` to better match target IA wording
+- rewriting a source `description` to be more portal-native
+- replacing a specific source title with the product name just because the page became `index.mdx`
+- inventing a new description when a usable source description already exists
 
 ## 7. Trigger-Based Execution Protocol
 
@@ -179,8 +258,20 @@ Page-fatal triggers:
 - final page contains unfenced raw XML, HTML, storyboard, or config samples
 - final page fails page-level verification
 - final page contains image references whose assets are missing from `public/images/**`
+- source `title` changed without a documented compatibility reason
+- source `description` changed without a documented compatibility reason
+- expanded source heading text changed without a documented compatibility reason
+- expanded source heading level changed without a documented compatibility reason
+- a prose section was added that does not exist in the expanded source page
+- a prose section from the expanded source page was removed without a documented extraction or compatibility reason
+- source prose was paraphrased or rewritten into portal-style explanatory prose instead of being carried over
+- a source link was replaced with a semantically different nearby target link instead of being preserved or marked deferred unresolved
 
 For shared multi-product pages, page-fatal evaluation must happen after product-scope extraction. A removable non-target product branch is not itself a page-fatal condition.
+
+When any of the source-fidelity page-fatal triggers above is discovered before promotion, the page must be repaired before it can enter the final docs tree.
+
+When any of the source-fidelity page-fatal triggers above is discovered after promotion, the page is considered polluted final content and must enter the remediation loop immediately. Recording the defect is not sufficient by itself.
 
 ### 7.2 Complex-page triggers
 
@@ -321,7 +412,6 @@ The spec must distinguish tasks that must be scripted from those that may remain
 ### 9.2 May be agent-authored
 
 - final IA bucket decisions
-- target page titles and descriptions
 - deferred unresolved link reasoning
 - concise migration summaries
 - narrow high-fidelity prose cleanup that does not change page meaning
@@ -346,14 +436,35 @@ The exact filename scheme may vary, but the staging artifact must be durable eno
 
 Every page must pass page-level precheck before final promotion.
 
+### 11.1 Source-to-final fidelity checklist
+
+Every migrated prose page must answer the following checks at page level against the expanded source page body:
+
+- Is the source wrapper `title` preserved?
+- Is the source wrapper `description` preserved?
+- Is the expanded source lead prose preserved without summary-style rewrite?
+- Are expanded source headings preserved with the same text?
+- Are expanded source headings preserved with the same heading levels?
+- Has any prose section been added that does not exist in the expanded source page?
+- Has any prose section from the expanded source page been removed?
+- Has any source prose been paraphrased into portal-style explanatory prose instead of being carried over?
+- Have any source links been replaced with a semantically different nearby target link instead of being preserved or marked deferred unresolved?
+- If any answer above is `no`, is the exact reason recorded as a compatibility adaptation, extraction decision, or blocker?
+
+This checklist is mandatory for both `simple-flow` and `complex-flow` pages.
+
 Simple-flow page precheck checklist:
 - frontmatter parses
+- source `title` is preserved unless a recorded compatibility reason exists
+- source `description` is preserved unless a recorded compatibility reason exists
 - no legacy runtime residue remains
 - no bare angle-bracket placeholders remain in prose
 - no unfenced XML, HTML, storyboard, or config samples remain in prose
 - internal links are classified as resolved or deferred unresolved links
 - image assets referenced by the page exist in `public/images/**`
 - no page-fatal trigger remains
+- source heading text and heading levels are preserved unless a recorded compatibility reason exists
+- no synthetic explanatory prose has been added beyond allowed compatibility glue
 
 Complex-flow page verification checklist includes all of the above, plus:
 - shared expansion is complete
@@ -362,6 +473,8 @@ Complex-flow page verification checklist includes all of the above, plus:
 - staging artifact exists
 - normalized staging output itself contains no page-fatal trigger
 - target collision resolution state is recorded when a final target path already existed before the batch
+- a source-to-staging fidelity check confirms that source prose was not silently summarized, paraphrased, or structurally rewritten
+- the page-level fidelity checklist has been explicitly evaluated against the expanded source page
 
 A staging page may still be complex after normalization; complexity alone is not failure. Only page-fatal conditions block promotion.
 
@@ -487,6 +600,8 @@ The batch is not complete until:
 - page-fatal pages are absent from the final docs tree or remediated
 - deferred items are listed explicitly
 - shared image assets required by promoted pages are present
+- final promoted prose pages remain source-faithful after required expansion and compatibility adaptation
+- final promoted heading text and heading hierarchy remain source-faithful unless a documented compatibility exception exists
 
 ## 19. Pilot Appendix: Signaling
 
