@@ -1,0 +1,157 @@
+---
+title: "Individual recording"
+description: "How to record audio and video in individual recording mode using command line."
+---
+The On-Premise Recording SDK supports two recording modes:
+
+- Individual recording mode: This is the default recording mode. The SDK generates one audio and/or video file for each UID.
+- Composite recording mode: Generates a single mixed audio and video file for all UIDs in a channel, or mixes the audio of all UIDs in the channel into an audio file and the video of all UIDs into a video file.
+
+See [Differences between individual recording mode and composite recording mode](https://docs.agora.io/en/help/integration-issues/recording_mode) to decide which mode you should use.
+
+## Prerequisites
+
+Before continuing, follow the [Quickstart](/en/realtime-media/on-premise-recording/index) guide to integrate the Recording SDK and implement the basic recording functionality.
+
+## Implement individual recording
+
+The implementation of individual recording is largely similar to the steps in the [Quickstart](/en/realtime-media/on-premise-recording/index) guide. The main differences are in the configuration parameters and the APIs used.
+
+Refer to the following call sequence diagram to understand the recording workflow.
+
+### Sequence diagram
+
+![Sequence diagram](/images/on-premise-recording/individual-recording-logic-cpp.svg)
+
+**C++**
+
+To implement individual recording in your app, follow these steps:
+
+1. Initialize the recorder with [`enableMix`](/on-premise-recording/reference/api-reference#initialize) set to `false` to enable individual recording mode.
+2. Subscribe to the audio and video streams of the users you want to record.
+3. Join the channel using [`joinChannel`](/on-premise-recording/reference/api-reference#joinchannel).
+4. Wait for the [`onUserJoined`](/on-premise-recording/reference/api-reference#onuserjoined) callback to get the `uid` of each remote user.
+5. Configure recording for the specific `uid`:
+   - Use [`setRecorderConfigByUid`](/on-premise-recording/reference/api-reference#setrecorderconfigbyuid) to define video and audio settings, storage path, and maximum duration.
+   - Optionally use [`enableAndUpdateVideoWatermarksByUid`](/on-premise-recording/reference/api-reference#enableandupdatevideowatermarksbyuid) to apply watermarks.
+6. Start and stop recording for each user:
+   - Call [`startSingleRecordingByUid`](/on-premise-recording/reference/api-reference#startsinglerecordingbyuid) to start.
+   - Call [`stopSingleRecordingByUid`](/on-premise-recording/reference/api-reference#stopsinglerecordingbyuid) to stop.
+
+Refer to the following code to implement these steps:
+```cpp
+// Initialize the recorder in individual recording mode
+recorder->initialize(service, false);
+
+// Subscribe to all audio and video streams
+recorder->subscribeAllAudio();
+recorder->subscribeAllVideo(options);
+
+// Join the channel
+recorder->joinChannel(config.token.c_str(), config.ChannelName.c_str(), config.UserId.c_str());
+
+// After receiving the onUserJoined callback, configure recording for the given uid
+agora::media::MediaRecorderConfiguration config;
+config.fps = config_.video.fps;
+config.width = config_.video.width;
+config.height = config_.video.height;
+config.channel_num = config_.audio.numOfChannels;
+config.sample_rate = config_.audio.sampleRate;
+
+// Generate a unique file name using uid and timestamp
+std::string curTime = getCurrentTimeAsString();
+std::string storagePath = config_.recorderPath + std::string(uid) + "_" + curTime + ".mp4";
+config.storagePath = storagePath.c_str();
+config.streamType = static_cast<agora::media::MediaRecorderStreamType>(config_.recorderStreamType);
+config.maxDurationMs = config_.maxDuration * 1000;
+
+// Apply configuration for the specific user
+recorder_->setRecorderConfigByUid(config, uid);
+
+// Apply watermarks (optional)
+recorder_->enableAndUpdateVideoWatermarksByUid(watermarks, config_.waterMarks.size(), uid);
+
+// Start recording for the user
+recorder_->startSingleRecordingByUid(uid);
+
+// ...
+
+// Stop recording for the user
+recorder_->stopSingleRecordingByUid(uid);
+```
+**Java**
+
+To implement individual recording mode, configure the recorder and use the appropriate APIs as follows:
+
+1. Initialize the recorder with [`enableMix`](/on-premise-recording/reference/api-reference#initialize) set to `false`.
+2. Subscribe to the audio and video streams of the users you want to record.
+3. Join the channel and listen for the [`onUserJoined`](/on-premise-recording/reference/api-reference-eventhandler#onuserjoined) callback to get the `userId` of each remote user.
+4. Configure individual recording for each user:
+   - Use [`setRecorderConfigByUid`](/on-premise-recording/reference/api-reference#setrecorderconfigbyuid) to define recording options.
+   - Optionally, call [`enableAndUpdateVideoWatermarksByUid`](/on-premise-recording/reference/api-reference#enableandupdatevideowatermarksbyuid) to apply watermarks.
+5. Start and stop the recording for each user:
+   - Call [`startSingleRecordingByUid`](/on-premise-recording/reference/api-reference#startsinglerecordingbyuid) to start recording.
+   - Call [`stopSingleRecordingByUid`](/on-premise-recording/reference/api-reference#stopsinglerecordingbyuid) to stop recording.
+
+Refer to the following code to implement these steps:
+```java
+// Initialize the recorder with individual recording mode enabled
+agoraMediaRtcRecorder.initialize(agoraService, false);
+
+// Subscribe to all audio and high-quality video streams
+agoraMediaRtcRecorder.subscribeAllAudio();
+VideoSubscriptionOptions options = new VideoSubscriptionOptions();
+options.setEncodedFrameOnly(false);
+options.setType(Constants.VideoStreamType.VIDEO_STREAM_HIGH);
+agoraMediaRtcRecorder.subscribeAllVideo(options);
+
+// Join the channel
+agoraMediaRtcRecorder.joinChannel(
+    recorderConfig.getToken(),
+    recorderConfig.getChannelName(),
+    recorderConfig.getUserId()
+);
+
+// In the onUserJoined callback, configure individual recording for the user
+MediaRecorderConfiguration config = new MediaRecorderConfiguration();
+config.setFps(recorderConfig.getVideo().getFps());
+config.setWidth(recorderConfig.getVideo().getWidth());
+config.setHeight(recorderConfig.getVideo().getHeight());
+config.setChannelNum(recorderConfig.getAudio().getNumOfChannels());
+config.setSampleRate(recorderConfig.getAudio().getSampleRate());
+
+// Set a unique file name based on UID and timestamp
+String curTime = getCurrentTimeAsString();
+String storagePath = recorderConfig.getRecorderPath() + uid + "_" + curTime + ".mp4";
+config.setStoragePath(storagePath);
+config.setStreamType(Constants.MediaRecorderStreamType.STREAM_TYPE_BOTH);
+config.setMaxDurationMs(recorderConfig.getMaxDuration() * 1000);
+
+// Apply the configuration for the specific UID
+agoraMediaRtcRecorder.setRecorderConfigByUid(config, uid);
+
+// Apply a watermark (optional)
+agoraMediaRtcRecorder.enableAndUpdateVideoWatermarksByUid(watermarks, uid);
+
+// Start recording for the specific UID
+agoraMediaRtcRecorder.startSingleRecordingByUid(uid);
+
+// ...
+
+// Stop recording for the specific UID
+agoraMediaRtcRecorder.stopSingleRecordingByUid(uid);
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Considerations
+
+The individual recording mode supports a specific set of APIs. Calling unsupported methods in the wrong mode has no effect. When using the individual recording recording mode, the following methods do not work:
+
+  * [`setRecorderConfig`](/on-premise-recording/reference/api-reference#setrecorderconfig)
+  * [`enableAndUpdateVideoWatermarks`](/on-premise-recording/reference/api-reference#enableandupdatevideowatermarks)
+  * [`setVideoMixingLayout`](/on-premise-recording/reference/api-reference#setvideomixinglayout)
+  * [`startRecording`](/on-premise-recording/reference/api-reference#startrecording)
+  * [`stopRecording`](/on-premise-recording/reference/api-reference#stoprecording)
