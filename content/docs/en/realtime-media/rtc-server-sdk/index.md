@@ -1,18 +1,28 @@
 ---
-title: RTC Server SDK
-description: RTC Server SDK fits systems where the backend directly sends, receives, or controls RTC media flows.
+title: Server Gateway
+description: xxx
 ---
 
 ## What this capability is
 
-RTC Server SDK allows backend systems to participate directly in RTC media and session control instead of acting only as a business API layer.
+RTM owns the messaging, state, and presence side of realtime systems. It complements RTC and AI flows with channel messages, synchronization, and event coordination.
 
 ## Common scenarios
 
-- backend send/receive media flows
-- backend control of media paths
-- server-side mixing and processing
+- channel messaging
+- presence and user state
+- room collaboration
+- business event synchronization
+
+## What the existing Shengwang docs usually contain
+
+- product landing page
+- service enablement
+- quickstart
+- user guides
+- API reference
+- billing and FAQ
 
 ## What to read first
 
-If the backend needs to participate directly in realtime media handling, start here instead of starting from client-only SDK documentation.
+First decide whether your main need is channel messaging, state sync, or presence. Then run the quickstart to validate the shortest possible flow.
