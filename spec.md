@@ -48,6 +48,8 @@ The migration must preserve this target sidebar contract while reclassifying leg
 
 The agent must not invent additional top-level product sections unless the target repository already uses them for that product or the task explicitly requires them.
 
+The sidebar contract constrains left-navigation sections, not the full set of product-root sibling pages. Product-root sibling pages that remain outside `build/**` and `reference/**` may still be promoted when they fit the task scope and do not require adding a new top-level sidebar section.
+
 ## 4. Global Source Classification
 
 Before editing files, classify each legacy source page into one of these buckets:
@@ -56,6 +58,7 @@ Before editing files, classify each legacy source page into one of these buckets
 - build or capability page
 - non-API reference or support page
 - API reference or generated API page
+- AI tooling or ecosystem page
 - shared-content dependency
 - unsupported migration case
 
@@ -124,6 +127,7 @@ Typical deferred sources:
 - generated HTML API references
 - platform-bound API error catalogs that are tightly coupled to API/reference generation
 - pages whose correct target depends on OpenAPI or generated reference pipelines
+- AI tooling or ecosystem pages inside a product tree when the task did not explicitly request that lane
 
 Deferred content must be listed explicitly in migration output rather than silently skipped.
 
@@ -149,8 +153,47 @@ The following rules are mandatory:
 - Product-branch pruning removes only non-target-product branches; it must not be used to shrink or summarize the target product semantics.
 - Unless the user explicitly asks otherwise, default to one source prose page mapping to one final prose page after compatibility adaptation.
 - Preserve legacy internal links when the target page does not yet exist by treating them as deferred unresolved links.
+- Preserve legacy links that point into explicitly excluded lanes by default as deferred unresolved links; these links do not by themselves block final promotion.
 - Do not rewrite unresolved legacy links to a nearby but semantically different page.
 - Unknown existing target content must never be overwritten; it must be recorded and left unchanged.
+
+### 6.5 Excluded-Lane Link Contract
+
+Some migration tasks intentionally exclude one or more target lanes, such as REST API, generated API, or AI tooling surfaces.
+
+When a promotable prose page contains links into an explicitly excluded lane, the default behavior is:
+- preserve the source link target as-is when possible
+- classify the link as a `deferred unresolved link` or `excluded-lane dependency`
+- allow final promotion if the page otherwise passes compatibility adaptation and page-level verification
+
+Allowed behaviors:
+- preserve the original excluded-lane link
+- replace the link with semantically equivalent target routing only when that exact target already exists
+- record the dependency in the blocker or migration report without blocking the containing page
+
+Disallowed behaviors unless explicitly requested:
+- rewriting an excluded-lane link to a nearby but semantically different non-API page
+- summarizing away the surrounding operational prose just to avoid the excluded-lane link
+- treating excluded-lane dependencies as batch-fatal
+
+An excluded-lane dependency becomes page-fatal only when:
+- the page cannot preserve its core meaning without that linked lane being present
+- the page still contains legacy runtime syntax or unresolved variable syntax
+- the page fails another independent page-level verification rule
+
+### 6.6 AI Tooling Page Contract
+
+Some source product trees contain pages that document AI tooling, MCP, skills, agents, or broader ecosystem workflows rather than the product capability itself.
+
+Unless the task explicitly includes that lane, these pages are out of scope for product prose migration by default.
+
+Default behavior:
+- classify the page as `AI tooling or ecosystem page`
+- record it as deferred content
+- do not force the page into `Quickstart`, `Build`, `Reference`, or a product-root sibling route by agent discretion alone
+
+Allowed exception:
+- if the user explicitly includes these pages in scope, the task may define a product-specific mapping rule
 
 ### 6.1 Source-Faithful Prose Rules
 
@@ -257,7 +300,6 @@ Page-fatal triggers:
 - final page frontmatter cannot be parsed
 - final page contains unfenced raw XML, HTML, storyboard, or config samples
 - final page fails page-level verification
-- final page contains image references whose assets are missing from `public/images/**`
 - source `title` changed without a documented compatibility reason
 - source `description` changed without a documented compatibility reason
 - expanded source heading text changed without a documented compatibility reason
@@ -292,6 +334,7 @@ Resource dependency triggers:
 - source references shared image directories outside product-private assets, such as `/images/common/**`, `/images/console/**`, `/images/video-sdk/**`, `/images/chat/**`, or equivalent shared trees
 - source references assets introduced by shared-content dependencies rather than only product-private assets
 - source requires asset sync into `public/images/**` before the page can render safely
+- source depends on remote-hosted legacy images that may require availability classification or reporting
 
 Target collision triggers:
 - intended target file already exists and is not an obvious placeholder
@@ -390,6 +433,26 @@ Disallowed behaviors unless explicitly requested by the user or by a product-spe
 
 Breadth alone is not a blocker. A broad shared prose page may be deferred only when, after compatibility adaptation and any required product-branch pruning, it still hits a page-fatal trigger or falls outside the stated task scope.
 
+### 8.6 Shared Reference Promotion Contract
+
+Shared reference pages such as billing, firewall, glossary, security, status, policy, or similar cross-product prose may promote directly into the current product `reference/**` area when they satisfy compatibility and verification requirements.
+
+Default behavior:
+- expand the shared source
+- extract non-target-product branches only when the source is explicitly product-gated
+- preserve the full remaining shared prose page
+- promote it as a `shared-derived promoted page` when it passes page-level verification
+
+Allowed behaviors:
+- promote the full shared prose page under the current product route
+- record in the report that the page is shared-derived
+- keep broad cross-product explanatory scope when the page still serves as valid product reference material
+
+Disallowed behaviors unless explicitly requested:
+- deferring a shared reference page only because it is broad
+- shrinking a valid shared reference page into a product-only summary
+- forcing a shared reference page into a separate global reference lane when the task asked for product migration
+
 ## 9. Required Responsibilities
 
 The spec must distinguish tasks that must be scripted from those that may remain agent-authored.
@@ -403,6 +466,7 @@ The spec must distinguish tasks that must be scripted from those that may remain
 - asset reference collection
 - asset existence verification
 - shared asset sync into `public/images/**`
+- remote image classification
 - structural normalization of legacy wrappers, tabs, callouts, and details blocks
 - target collision classification scaffolding
 - frontmatter sanitation checks
@@ -461,7 +525,7 @@ Simple-flow page precheck checklist:
 - no bare angle-bracket placeholders remain in prose
 - no unfenced XML, HTML, storyboard, or config samples remain in prose
 - internal links are classified as resolved or deferred unresolved links
-- image assets referenced by the page exist in `public/images/**`
+- image references are classified as local verified assets, remote-hosted assets, or unverified retained assets
 - no page-fatal trigger remains
 - source heading text and heading levels are preserved unless a recorded compatibility reason exists
 - no synthetic explanatory prose has been added beyond allowed compatibility glue
@@ -492,7 +556,29 @@ The agent must not assume only product-private image directories are relevant.
 
 If a page depends on shared image directories, this is a complex-page trigger.
 
-If an image reference remains but the asset is still missing, this becomes a page-fatal trigger.
+This contract applies only to repository-hosted asset paths such as `/images/**`.
+
+### 12.1 Remote Image Tolerance Contract
+
+Remote-hosted image URLs such as `https://...` are allowed to remain in final promoted pages by default.
+
+Default behavior:
+- preserve the original remote image URL
+- do not require downloading or localizing the asset
+- do not treat a missing local mirror as a page-fatal trigger
+- record the page as using `remote-hosted legacy asset` or `image-not-verified` when verification was not performed
+
+Repository-hosted image paths such as `/images/**` may remain in final promoted pages even when the file is currently missing, unless the task explicitly requires image availability verification or localization.
+
+Default behavior for missing repository-hosted images:
+- preserve the original image syntax
+- do not block final promotion for image absence alone
+- record the page as `local-missing-image-kept` or equivalent report status
+
+An image problem becomes blocking only when:
+- the image syntax itself breaks MDX or page parsing
+- the task explicitly requires image verification, localization, or visual completeness
+- the page depends on a broken image adaptation that introduced another page-fatal condition
 
 ## 13. Existing Target Content Contract
 
@@ -538,6 +624,13 @@ Each report entry must contain at least:
 - attempted adaptation
 - why final promotion was blocked
 - next missing rule, tool, or compatibility contract
+
+When a page promotes successfully while retaining known soft defects or deferred dependencies, the migration summary or report should also record them using non-blocking statuses such as:
+- `excluded-lane-dependency-kept`
+- `shared-derived promoted page`
+- `remote-image-kept`
+- `local-missing-image-kept`
+- `image-not-verified`
 
 ## 15. Pollution Remediation Contract
 
