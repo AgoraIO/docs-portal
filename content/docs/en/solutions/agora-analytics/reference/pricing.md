@@ -1,0 +1,230 @@
+---
+title: "Pricing"
+description: "Provides you with information on billing, fee deductions, free-of-charge policy, and any suspension to your account based on the account type."
+---
+
+# Pricing
+
+Agora Analytics manages analytics features and API access through pricing plans. To use a feature or an API, you
+subscribe to the plan that provides access to that feature or API.
+
+## Price plan features
+
+Agora Analytics offers the Starter, Standard, Premium, and Enterprise price plans. The features available in each
+pricing plan are listed in the following sections.
+
+### Call Inspector
+
+The available features for Call Inspector are:
+
+| Feature                              | Starter | Standard       | Premium       | Enterprise       |
+|--------------------------------------|:-------:|:--------------:|:-------------:|:----------------:|
+| Access through Agora Console         | ✔       | ✔              | ✔             | ✔                |
+| Data retention                       | 3 days  | 7 days         | 14 days       | 30 days          |
+| Call Inspector RESTful API           | ✘       | Standard-level | Premium-level | Enterprise-level |
+| Support for embedding in web portals | ✘       | ✔              | ✔             | ✔                |
+
+For details about the Standard, Premium, and Enterprise-level Call Inspector RESTful APIs, see [RESTful API](https://docs.agora.io/en/agora-analytics/reference/api).
+
+### Data Insights and Data Insights Plus
+
+The available features for Data Insights and Data Insights Plus are:
+
+<table>
+    <colgroup>
+        <col/>
+        <col/>
+        <col style={{ textAlign: 'center' }}/>
+        <col style={{ textAlign: 'center' }}/>
+        <col style={{ textAlign: 'center' }}/>
+        <col style={{ textAlign: 'center' }}/>
+    </colgroup>
+    <thead>
+    <tr>
+        <th>Module</th>
+        <th>Feature</th>
+        <th style={{ textAlign: 'center' }}>Starter</th>
+        <th style={{ textAlign: 'center' }}>Standard</th>
+        <th style={{ textAlign: 'center' }}>Premium</th>
+        <th style={{ textAlign: 'center' }}>Enterprise</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="odd">
+        <td rowspan='8' colspan='1'><p><strong>Data Insights</strong></p></td>
+        <td><p>Access through Agora Console</p></td>
+        <td><p>✘</p></td>
+        <td><p>✔</p></td>
+        <td><p>✔</p></td>
+        <td><p>✔</p></td>
+    </tr>
+    <tr class="even">
+        <td><p>Data retention</p></td>
+        <td><p>✘</p></td>
+        <td><p>30 days</p></td>
+        <td><p>60 days</p></td>
+        <td><p>90 days</p></td>
+    </tr>
+    <tr class="odd">
+        <td rowspan='2' colspan='1'><p>Data granularity</p></td>
+        <td><p>✘</p></td>
+        <td><p><strong>Usage Overview</strong>: Day</p></td>
+        <td><p><strong>Usage Overview</strong>: Day/Hour</p></td>
+        <td><p><strong>Usage Overview</strong>: Day/Hour</p></td>
+    </tr>
+    <tr >
+        <td><p>✘</p></td>
+        <td><p><strong>Quality Overview</strong>: Day/Hour</p></td>
+        <td><p><strong>Quality Overview</strong>: Day/Hour/Minute</p></td>
+        <td><p><strong>Quality Overview</strong>: Day/Hour/Minute</p></td>
+    </tr>
+    <tr class="even">
+        <td rowspan='2' colspan='1'><p>Data latency</p></td>
+        <td><p>N/A</p></td>
+        <td><p><strong>Usage Overview</strong>: 24 hours</p></td>
+        <td><p><strong>Usage Overview</strong>: 12 hours</p></td>
+        <td><p><strong>Usage Overview</strong>: 6 hours</p></td>
+    </tr>
+    <tr class="even">
+        <td><p>N/A</p></td>
+        <td><p><strong>Quality Overview</strong>: 12 hours</p></td>
+        <td><p><strong>Quality Overview</strong>: 6 hours</p></td>
+        <td><p><strong>Quality Overview</strong>: 6 hours</p></td>
+    </tr>
+    <tr class="odd">
+        <td><p>Support for embedding in web portals</p></td>
+        <td><p>✘</p></td>
+        <td><p>✘</p></td>
+        <td><p>✔</p></td>
+        <td><p>✔</p></td>
+    </tr>
+    <tr class="odd">
+        <td><p>Data Insights RESTful API</p></td>
+        <td><p>✘</p></td>
+        <td><p>✘</p></td>
+        <td><p>✔</p></td>
+        <td><p>✔</p></td>
+    </tr>
+    <tr class="odd">
+        <td rowspan='8' colspan='1'><p><strong>Data Insights Plus</strong></p><p>With Premium or Enterprise
+            subscription you
+            access these features as well as Data Insights.</p></td>
+        <td><p>Multi-dimensional cross analysis</p></td>
+        <td><p>✘</p></td>
+        <td><p>✔</p></td>
+        <td><p>✔</p></td>
+        <td><p>✔</p></td>
+    </tr>
+    <tr >
+        <td><p>Data sampling analysis</p></td>
+        <td><p>✘</p></td>
+        <td><p>✘</p></td>
+        <td><p>✔</p></td>
+        <td><p>✔</p></td>
+    </tr>
+    <tr >
+        <td><p>Comparative analysis</p></td>
+        <td><p>✘</p></td>
+        <td><p>✘</p></td>
+        <td><p>✔</p></td>
+        <td><p>✔</p></td>
+    </tr>
+    </tbody>
+</table>
+
+For details about the Standard, Premium, and Enterprise-level Data Insights RESTful APIs, see [RESTful API](https://docs.agora.io/en/agora-analytics/reference/api).
+
+Data Insights Plus is only available with the Premium or Enterprise subscription plans.
+
+### Real-time Monitoring
+
+The available features for Real-time Monitoring are:
+
+| Feature                              | Starter | Standard | Premium       | Enterprise       |
+|--------------------------------------|:-------:|:--------:|:-------------:|:----------------:|
+| Access through Agora Console         | ✘       | ✔        | ✔             | ✔                |
+| Real-time Monitoring RESTful API     | ✘       | ✘        | Premium-level | Enterprise-level |
+| Data sampling                        | ✘       | ✔        | ✔             | ✔                |
+| Support for embedding in web portals | ✘       | ✔        | ✔             | ✔                |
+
+For details about the Standard, Premium, and Enterprise-level Real-time Monitoring RESTful APIs, see [RESTful API](https://docs.agora.io/en/agora-analytics/reference/api).
+
+### Alert Notifications
+
+The available features for Alert Notifications are:
+
+| Feature                              | Starter | Standard | Premium | Enterprise |
+|--------------------------------------|:-------:|:--------:|:-------:|:----------:|
+| Access through Agora Console         | ✘       | ✘        | ✔       | ✔          |
+| Support for embedding in web portals | ✘       | ✘        | ✘       | ✔          |
+
+### Datadog integration
+
+The available features for Datadog integration are:
+
+| Feature                      | Starter | Standard | Premium | Enterprise |
+|------------------------------|:-------:|:--------:|:-------:|:----------:|
+| Real-time data push to [Datadog platform](https://www.datadoghq.com/)    | ✘       | ✘       | ✔      | ✔          |
+
+Datadog integration is only available with the Premium or Enterprise subscription plans.
+
+## Prices
+
+The subscription fees for the price plans are:
+
+|                                             | Starter   | Standard  | Premium   | Enterprise |
+|---------------------------------------------|:-------:|:--------:|:-------:|:----------:|
+| Subscription fee per month (US$)            | 0         | 449       | 999       | 1,599      |
+
+You can also subscribe to Agora Analytics packages through our support plans. For details, visit [Agora Support Plans](https://www.agora.io/en/pricing/support-plans/).
+
+## Plan management
+
+This section tells you how to subscribe and unsubscribe to an Agora Analytics price plan.
+
+### Subscribe to a plan
+
+To subscribe to an Agora Analytics pricing plan, do the following:
+
+1.  Log in to [Agora Console](https://console.agora.io/v2).
+
+2.  On the left navigation bar, click **Agora Analytics** &gt; **Pricing Plan** .
+
+3.  Choose the plan you want to use, and click **Subscribe**.
+
+    **For the Enterprise pricing plan, contact support@agora.io to discuss your subscription**
+
+4.  Follow the on-screen instructions to complete your payment.
+
+Subscription takes effect immediately. After subscribing to a plan, you can click **My Package Subscription** on the upper right corner to view your subscription details.
+
+By default, subscription to Agora Analytics pricing plans is automatically renewed. You can cancel it at any time. See [Unsubscribe from a plan](#unsubscribe-from-a-plan-or-switch-to-another-plan) for details.
+
+Agora Analytics charges are billed to your account on the first of every month until you cancel your subscription. Your subscription fee for the subsequent month is listed in the once-time bill. For details, see [Billing policies and free-of-charge policy](billing-policies.md).
+
+### Unsubscribe from a plan or switch to another plan
+
+To unsubscribe from an Agora Analytics pricing plan, do the following:
+
+1.  In Agora Console, click **Agora Analytics** &gt; **Pricing Plan** on the left navigation bar .
+
+2.  On the upper right corner, click **My Package Subscription**.
+
+3.  Find the plan you want to unsubscribe, and click **Cancel** in the **Action** column.
+
+To switch to another plan, do the following:
+
+1.  In Agora Console, click **Agora Analytics** &gt; **Pricing Plan** on the left navigation bar.
+
+2.  Choose the plan you want to switch to, and click **Subscribe**.
+For the Enterprise pricing plan, contact support@agora.io to subscribe.
+
+3.  Read the pop-up window carefully, and click **Confirm to switch**.
+
+Unsubscribing from a plan or switching to another plan takes effect on the first of the next month. For the current month, you still have access to the features and APIs provided by the plan. The subscription fee you paid for this month is not refunded, and any excess usage that occurs in this month is charged.
+
+## See also
+
+-   [Pricing for Video SDK](https://docs-md.agora.io/en/video-calling/overview/pricing.md)
+
+-   [What are Agora’s policies on billing, fee deductions, and account suspension](billing-policies.md)
