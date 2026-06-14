@@ -1,0 +1,1660 @@
+---
+title: "In-call quality monitoring"
+description: ""
+---
+
+During a call, Video SDK triggers callbacks related to the video calling quality. These callbacks enable you to monitor your users' experience, troubleshoot issues, and optimize their overall experience
+
+<Tabs defaultValue="web" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+  <TabsTrigger value="electron">Electron</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+  <TabsTrigger value="react-native">React Native</TabsTrigger>
+  <TabsTrigger value="unity">Unity</TabsTrigger>
+  <TabsTrigger value="unreal">Unreal Engine</TabsTrigger>
+  <TabsTrigger value="blueprint">Unreal Blueprint</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+## Understand the tech
+
+After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
+
+When there is a change in the audio or video state of a user, Video SDK triggers a callback to report the latest state and the reason for the change. The following figure shows the audio transmission process between app clients:
+
+**Audio transmission process**
+
+![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+
+To monitor the call quality, Agora provides the following call quality notifications:
+
+**Network quality**
+
+The network quality callback provides insight into the uplink and downlink last mile network quality for each participant in the channel. Last mile refers to the network from your device to Agora server. The [Network quality scores](#network-quality-score) are calculated based on factors such as sending or receiving bitrate, network packet loss rate, round-trip delay, and network jitter.
+
+**Statistics**
+
+The statistics callback, triggered every 2 seconds, reports key metrics such as call duration, the number of participants, system CPU usage, and app CPU usage.
+
+**Audio quality**
+
+Callbacks related to audio quality cover both local and remote audio streams. You monitor statistics and status changes, to gain insights into the quality of audio streams and any related reasons for status changes.
+
+**Video quality**
+
+Video quality callbacks provide information on both local and remote video streams. You receive statistics and status change notifications, that enable you to understand the quality of video streams and any related reasons for status changes.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
+
+## Implement in-call quality monitoring
+
+In `IRtcEngineEventHandler`, implement the following real-time interaction quality statistics callbacks and audio or video state monitoring callbacks to understand user interaction experience:
+
+- `onNetworkQuality`: Reports uplink and downlink last mile network quality.
+- `onRtcStats`: Reports real-time interaction statistics.
+- `onLocalAudioStats`: Reports statistics for the sent audio stream.
+- `onLocalAudioStateChanged`: Reports local audio stream state changes.
+- `onRemoteAudioStats`: Reports statistics for the received remote audio stream.
+- `onRemoteAudioStateChanged`: Reports remote audio stream state changes.
+- `onLocalVideoStats`: Reports statistics for the sent video stream.
+- `onLocalVideoStateChanged`: Reports local video stream state changes.
+- `onRemoteVideoStats`: Reports statistics for the received remote video stream.
+- `onRemoteVideoStateChanged`: Reports remote video stream state changes.
+
+In your app, add the following code:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Example implementation in Java
+private final IRtcEngineEventHandler iRtcEngineEventHandler = new IRtcEngineEventHandler() {
+  // Implement the onNetworkQuality callback
+  @Override
+  public void onNetworkQuality(int uid, int txQuality, int rxQuality) {
+    Log.i(TAG, "onNetworkQuality->" + "UID: " + uid + ", TX Quality: " + txQuality + ", RX Quality: " + rxQuality);
+  }
+
+  // Implement the onLocalAudioStateChanged callback
+  @Override
+  public void onLocalAudioStateChanged(int state, int error) {
+    super.onLocalAudioStateChanged(state, error);
+    Log.i(TAG, "onLocalAudioStateChanged->" + "State: " + state + ", Error: " + error);
+  }
+
+  // Implement the onRemoteAudioStateChanged callback
+  @Override
+  public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapsed) {
+    super.onRemoteAudioStateChanged(uid, state, reason, elapsed);
+    Log.i(TAG, "onRemoteAudioStateChanged->" + "UID: " + uid + ", State: " + state + ", Reason: " + reason + ", Elapsed: " + elapsed);
+  }
+
+  // Implement the onLocalVideoStateChanged callback
+  @Override
+  public void onLocalVideoStateChanged(Constants.VideoSourceType source, int state, int error) {
+    super.onLocalVideoStateChanged(source, state, error);
+    Log.i(TAG, "onLocalVideoStateChanged->" + "State: " + state + ", Error: " + error);
+  }
+
+  // Implement the onRemoteVideoStateChanged callback
+  @Override
+  public void onRemoteVideoStateChanged(int uid, int remoteVideoState, int reason, int elapsed) {
+    super.onRemoteVideoStateChanged(uid, remoteVideoState, reason, elapsed);
+    Log.i(TAG, "onRemoteVideoStateChanged->" + "UID: " + uid + ", State: " + remoteVideoState + ", Reason: " + reason + ", Elapsed: " + elapsed);
+  }
+
+  // Implement the onRemoteAudioStats callback
+  @Override
+  public void onRemoteAudioStats(RemoteAudioStats remoteAudioStats) {
+    Log.i(TAG, "onRemoteAudioStats->" + "Received bitrate: " + remoteAudioStats.receivedBitrate);
+  }
+
+  // Implement the onLocalAudioStats callback
+  @Override
+  public void onLocalAudioStats(LocalAudioStats localAudioStats) {
+    Log.i(TAG, "onLocalAudioStats->" + "Network transport delay: " + localAudioStats.networkTransportDelay);
+  }
+
+  // Implement the onRemoteVideoStats callback
+  @Override
+  public void onRemoteVideoStats(RemoteVideoStats remoteVideoStats) {
+    Log.i(TAG, "onRemoteVideoStats->" + "Received bitrate: " + remoteVideoStats.receivedBitrate);
+  }
+
+  // Implement the onLocalVideoStats callback
+  @Override
+  public void onLocalVideoStats(LocalVideoStats localVideoStats) {
+    Log.i(TAG, "onLocalVideoStats->" + "Sent frame rate: " + localVideoStats.sentFrameRate);
+    // Log other specific information as needed
+  }
+
+  // Implement the onRtcStats callback
+  @Override
+  public void onRtcStats(RtcStats rtcStats) {
+    Log.i(TAG, "onRtcStats->" + "User count: " + rtcStats.userCount + ", Packet loss rate: " + rtcStats.rxPacketLossRate);
+  }
+};
+``` 
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Example implementation in Kotlin
+private val iRtcEngineEventHandler = object : IRtcEngineEventHandler() {
+  // Implement the onNetworkQuality callback
+  override fun onNetworkQuality(uid: Int, txQuality: Int, rxQuality: Int) {
+    Log.i(TAG, "onNetworkQuality-> UID: $uid, TX Quality: $txQuality, RX Quality: $rxQuality")
+  }
+
+  // Implement the onLocalAudioStateChanged callback
+  override fun onLocalAudioStateChanged(state: Int, error: Int) {
+    super.onLocalAudioStateChanged(state, error)
+    Log.i(TAG, "onLocalAudioStateChanged-> State: $state, Error: $error")
+  }
+
+  // Implement the onRemoteAudioStateChanged callback
+  override fun onRemoteAudioStateChanged(uid: Int, state: Int, reason: Int, elapsed: Int) {
+    super.onRemoteAudioStateChanged(uid, state, reason, elapsed)
+    Log.i(TAG, "onRemoteAudioStateChanged-> UID: $uid, State: $state, Reason: $reason, Elapsed: $elapsed")
+  }
+
+  // Implement the onLocalVideoStateChanged callback
+  override fun onLocalVideoStateChanged(source: Constants.VideoSourceType, state: Int, error: Int) {
+    super.onLocalVideoStateChanged(source, state, error)
+    Log.i(TAG, "onLocalVideoStateChanged-> State: $state, Error: $error")
+  }
+
+  // Implement the onRemoteVideoStateChanged callback
+  override fun onRemoteVideoStateChanged(uid: Int, remoteVideoState: Int, reason: Int, elapsed: Int) {
+    super.onRemoteVideoStateChanged(uid, remoteVideoState, reason, elapsed)
+    Log.i(TAG, "onRemoteVideoStateChanged-> UID: $uid, State: $remoteVideoState, Reason: $reason, Elapsed: $elapsed")
+  }
+
+  // Implement the onRemoteAudioStats callback
+  override fun onRemoteAudioStats(remoteAudioStats: RemoteAudioStats) {
+    Log.i(TAG, "onRemoteAudioStats-> Received bitrate: \${remoteAudioStats.receivedBitrate}")
+  }
+
+  // Implement the onLocalAudioStats callback
+  override fun onLocalAudioStats(localAudioStats: LocalAudioStats) {
+    Log.i(TAG, "onLocalAudioStats-> Network transport delay: \${localAudioStats.networkTransportDelay}")
+  }
+
+  // Implement the onRemoteVideoStats callback
+  override fun onRemoteVideoStats(remoteVideoStats: RemoteVideoStats) {
+    Log.i(TAG, "onRemoteVideoStats-> Received bitrate: \${remoteVideoStats.receivedBitrate}")
+  }
+
+  // Implement the onLocalVideoStats callback
+  override fun onLocalVideoStats(localVideoStats: LocalVideoStats) {
+    Log.i(TAG, "onLocalVideoStats-> Sent frame rate: \${localVideoStats.sentFrameRate}")
+    // Log other specific information as needed
+  }
+
+  // Implement the onRtcStats callback
+  override fun onRtcStats(rtcStats: RtcStats) {
+    Log.i(TAG, "onRtcStats-> User count: \${rtcStats.userCount}, Packet loss rate: \${rtcStats.rxPacketLossRate}")
+  }
+}
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+## Reference
+
+### Network quality score
+
+| Value | Enumeration | Description |
+|:-----:|:------------|:------------|
+| 0 | `QUALITY_UNKNOWN` | Network quality is unknown. |
+| 1 | `QUALITY_EXCELLENT` | The network quality is excellent. |
+| 2 | `QUALITY_GOOD` | The network quality is good, but the bitrate may be slightly lower than excellent. |
+| 3 | `QUALITY_POOR` | The network quality is average, and users may experience a slight decrease in call quality. |
+| 4 | `QUALITY_BAD` | The network quality is poor, and users may be unable to maintain smooth calls. |
+| 5 | `QUALITY_VBAD` | The network quality is extremely poor, making it almost impossible to make calls. |
+| 6 | `QUALITY_DOWN` | The network connection is interrupted, and the user is completely unable to make calls. |
+| 8 | `QUALITY_DETECTING` | Last-mile network quality detection is in progress. |
+
+ ### API reference
+
+- [`onNetworkQuality`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onnetworkquality)
+
+- [`onRemoteAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+
+- [`onRemoteVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+- [`onLocalAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+
+- [`onLocalVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged)
+
+- [`onRemoteAudioStats`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostats)
+
+- [`onRemoteVideoStats`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostats)
+
+- [`onLocalAudioStats`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostats)
+
+- [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
+
+- [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
+</TabsContent>
+
+<TabsContent value="ios">
+## Understand the tech
+
+After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
+
+When there is a change in the audio or video state of a user, Video SDK triggers a callback to report the latest state and the reason for the change. The following figure shows the audio transmission process between app clients:
+
+**Audio transmission process**
+
+![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+
+To monitor the call quality, Agora provides the following call quality notifications:
+
+**Network quality**
+
+The network quality callback provides insight into the uplink and downlink last mile network quality for each participant in the channel. Last mile refers to the network from your device to Agora server. The [Network quality scores](#network-quality-score) are calculated based on factors such as sending or receiving bitrate, network packet loss rate, round-trip delay, and network jitter.
+
+**Statistics**
+
+The statistics callback, triggered every 2 seconds, reports key metrics such as call duration, the number of participants, system CPU usage, and app CPU usage.
+
+**Audio quality**
+
+Callbacks related to audio quality cover both local and remote audio streams. You monitor statistics and status changes, to gain insights into the quality of audio streams and any related reasons for status changes.
+
+**Video quality**
+
+Video quality callbacks provide information on both local and remote video streams. You receive statistics and status change notifications, that enable you to understand the quality of video streams and any related reasons for status changes.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
+
+## Implement in-call quality monitoring
+
+In the `AgoraRtcEngineDelegate`, implement the necessary callbacks to monitor real-time interaction quality and audio or video stream status. Key callbacks include:
+
+- `networkQuality`: Reports upstream and downstream last mile network quality.
+- `reportRtcStats`: Provides real-time interaction statistics.
+- `localAudioStats`: Reports statistics on sent audio streams.
+- `localAudioStateChange`: Reports local audio stream state changes.
+- `remoteAudioStats`: Reports statistics on received remote audio streams.
+- `remoteAudioStateChangedOfUid`: Reports remote audio stream state changes.
+- `localVideoStats`: Reports statistics on sent video streams.
+- `localVideoStateChangedOfState`: Reports local video stream state changes.
+- `remoteVideoStats`: Reports statistics on received remote video streams.
+- `remoteVideoStateChangedOfUid`: Reports remote video stream state changes.
+
+In your app, add the following code:
+
+```swift
+extension JoinChannelVideoMain: AgoraRtcEngineDelegate {
+  // Reports upstream and downstream last mile network quality
+  func rtcEngine(_ engine: AgoraRtcEngineKit, networkQuality uid: UInt, txQuality: AgoraNetworkQuality, rxQuality: AgoraNetworkQuality) {
+    // Add logic to state the network quality
+  }
+
+  // Provides real-time interaction statistics
+  func rtcEngine(_ engine: AgoraRtcEngineKit, reportRtcStats stats: AgoraChannelStats) {
+    // Add your logic here
+  }
+
+  // Reports statistics on sent audio streams
+  func rtcEngine(_ engine: AgoraRtcEngineKit, localAudioStats stats: AgoraRtcLocalAudioStats) {
+    // Handle the local audio stats
+  }
+
+  // Reports local audio stream state changes
+  func rtcEngine(_ engine: AgoraRtcEngineKit, localAudioStateChange state: AgoraAudioLocalState, error: AgoraAudioLocalError) {
+    // Handle local audio state change
+  }
+
+  // Reports statistics on received remote audio streams
+  func rtcEngine(_ engine: AgoraRtcEngineKit, remoteAudioStats stats: AgoraRtcRemoteAudioStats) {
+    // Handle the remote audio stats
+  }
+
+  // Reports remote audio stream state changes
+  func rtcEngine(_ engine: AgoraRtcEngineKit, remoteAudioStateChangedOfUid uid: UInt, state: AgoraAudioRemoteState, reason: AgoraAudioRemoteStateReason, elapsed: Int) {
+    // Handle remote audio state change
+  }
+
+  // Reports statistics on sent video streams
+  func rtcEngine(_ engine: AgoraRtcEngineKit, localVideoStats stats: AgoraRtcLocalVideoStats) {
+    // Handle video stream statistics
+  }
+
+  // Reports local video stream state changes
+  func rtcEngine(_ engine: AgoraRtcEngineKit, localVideoStateChangedOfState state: AgoraLocalVideoStreamState, error: AgoraLocalVideoStreamError) {
+    // Handle local video state change
+  }
+
+  // Reports statistics on received remote video streams
+  func rtcEngine(_ engine: AgoraRtcEngineKit, remoteVideoStats stats: AgoraRtcRemoteVideoStats) {
+    // Handle the remote video stream's statistics
+  }
+
+  // Reports remote video stream state changes
+  func rtcEngine(_ engine: AgoraRtcEngineKit, remoteVideoStateChangedOfUid uid: UInt, state: AgoraRemoteVideoState, reason: AgoraRemoteVideoStateReason, elapsed: Int) {
+    // Handle remote video state change
+  }
+}
+```
+
+## Reference
+
+### Network quality score
+
+| Value | Enumeration | Description |
+|:-----:|:------------|:------------|
+| 0 | `AgoraNetworkQualityUnknown` | Network quality is unknown. |
+| 1 | `AgoraNetworkQualityExcellent` | The network quality is excellent. |
+| 2 | `AgoraNetworkQualityGood` | The network quality is good, but the bitrate may be slightly lower than excellent. |
+| 3 | `AgoraNetworkQualityPoor` | The network quality is average, and users may experience a slight decrease in call quality. |
+| 4 | `AgoraNetworkQualityBad` | The network quality is poor, and users are unable to make smooth calls. |
+| 5 | `AgoraNetworkQualityVBad` | The network quality is extremely poor, making it almost impossible for users to make calls. |
+| 6 | `AgoraNetworkQualityDown` | The network connection is interrupted, and the user is completely unable to make a call. |
+| 8 | `AgoraNetworkQualityDetecting` | Last-mile detection tests are underway. |
+
+### API reference
+
+- [`rtcEngine(_:networkQuality:txQuality:rxQuality:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:networkquality:txquality:rxquality:))
+- [`rtcEngine(_:reportRtcStats:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:reportrtcstats:))
+- [`rtcEngine(_:localAudioStats:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:localaudiostats:))
+- [`rtcEngine(_:localAudioStateChanged:reason:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:localaudiostatechanged:error:))
+- [`rtcEngine(_:remoteAudioStats:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remoteaudiostats:))
+- [`rtcEngine(_:remoteAudioStateChangedOfUid:state:reason:elapsed:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remoteaudiostatechangedofuid:state:reason:elapsed:))
+- [`rtcEngine(_:localVideoStats:sourceType:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostats:sourcetype:))
+- [`rtcEngine(_:localVideoStateChangedOf:reason:sourceType:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostatechangedof:reason:sourcetype:))
+- [`rtcEngine(_:remoteVideoStats:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remotevideostats:))
+- [`rtcEngine(_:remoteVideoStateChangedOfUid:state:reason:elapsed:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remotevideostatechangedofuid:state:reason:elapsed:))
+</TabsContent>
+
+<TabsContent value="macos">
+## Understand the tech
+
+After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
+
+When there is a change in the audio or video state of a user, Video SDK triggers a callback to report the latest state and the reason for the change. The following figure shows the audio transmission process between app clients:
+
+**Audio transmission process**
+
+![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+
+To monitor the call quality, Agora provides the following call quality notifications:
+
+**Network quality**
+
+The network quality callback provides insight into the uplink and downlink last mile network quality for each participant in the channel. Last mile refers to the network from your device to Agora server. The [Network quality scores](#network-quality-score) are calculated based on factors such as sending or receiving bitrate, network packet loss rate, round-trip delay, and network jitter.
+
+**Statistics**
+
+The statistics callback, triggered every 2 seconds, reports key metrics such as call duration, the number of participants, system CPU usage, and app CPU usage.
+
+**Audio quality**
+
+Callbacks related to audio quality cover both local and remote audio streams. You monitor statistics and status changes, to gain insights into the quality of audio streams and any related reasons for status changes.
+
+**Video quality**
+
+Video quality callbacks provide information on both local and remote video streams. You receive statistics and status change notifications, that enable you to understand the quality of video streams and any related reasons for status changes.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
+
+## Implement in-call quality monitoring
+
+In the `AgoraRtcEngineDelegate`, implement the necessary callbacks to monitor real-time interaction quality and audio or video stream status. Key callbacks include:
+
+- `networkQuality`: Reports upstream and downstream last mile network quality.
+- `reportRtcStats`: Provides real-time interaction statistics.
+- `localAudioStats`: Reports statistics on sent audio streams.
+- `localAudioStateChange`: Reports local audio stream state changes.
+- `remoteAudioStats`: Reports statistics on received remote audio streams.
+- `remoteAudioStateChangedOfUid`: Reports remote audio stream state changes.
+- `localVideoStats`: Reports statistics on sent video streams.
+- `localVideoStateChangedOfState`: Reports local video stream state changes.
+- `remoteVideoStats`: Reports statistics on received remote video streams.
+- `remoteVideoStateChangedOfUid`: Reports remote video stream state changes.
+
+In your app, add the following code:
+
+```swift
+extension JoinChannelVideoMain: AgoraRtcEngineDelegate {
+  // Reports upstream and downstream last mile network quality
+  func rtcEngine(_ engine: AgoraRtcEngineKit, networkQuality uid: UInt, txQuality: AgoraNetworkQuality, rxQuality: AgoraNetworkQuality) {
+    // Add logic to state the network quality
+  }
+
+  // Provides real-time interaction statistics
+  func rtcEngine(_ engine: AgoraRtcEngineKit, reportRtcStats stats: AgoraChannelStats) {
+    // Add your logic here
+  }
+
+  // Reports statistics on sent audio streams
+  func rtcEngine(_ engine: AgoraRtcEngineKit, localAudioStats stats: AgoraRtcLocalAudioStats) {
+    // Handle the local audio stats
+  }
+
+  // Reports local audio stream state changes
+  func rtcEngine(_ engine: AgoraRtcEngineKit, localAudioStateChange state: AgoraAudioLocalState, error: AgoraAudioLocalError) {
+    // Handle local audio state change
+  }
+
+  // Reports statistics on received remote audio streams
+  func rtcEngine(_ engine: AgoraRtcEngineKit, remoteAudioStats stats: AgoraRtcRemoteAudioStats) {
+    // Handle the remote audio stats
+  }
+
+  // Reports remote audio stream state changes
+  func rtcEngine(_ engine: AgoraRtcEngineKit, remoteAudioStateChangedOfUid uid: UInt, state: AgoraAudioRemoteState, reason: AgoraAudioRemoteStateReason, elapsed: Int) {
+    // Handle remote audio state change
+  }
+
+  // Reports statistics on sent video streams
+  func rtcEngine(_ engine: AgoraRtcEngineKit, localVideoStats stats: AgoraRtcLocalVideoStats) {
+    // Handle video stream statistics
+  }
+
+  // Reports local video stream state changes
+  func rtcEngine(_ engine: AgoraRtcEngineKit, localVideoStateChangedOfState state: AgoraLocalVideoStreamState, error: AgoraLocalVideoStreamError) {
+    // Handle local video state change
+  }
+
+  // Reports statistics on received remote video streams
+  func rtcEngine(_ engine: AgoraRtcEngineKit, remoteVideoStats stats: AgoraRtcRemoteVideoStats) {
+    // Handle the remote video stream's statistics
+  }
+
+  // Reports remote video stream state changes
+  func rtcEngine(_ engine: AgoraRtcEngineKit, remoteVideoStateChangedOfUid uid: UInt, state: AgoraRemoteVideoState, reason: AgoraRemoteVideoStateReason, elapsed: Int) {
+    // Handle remote video state change
+  }
+}
+```
+
+## Reference
+
+### Network quality score
+
+| Value | Enumeration | Description |
+|:-----:|:------------|:------------|
+| 0 | `AgoraNetworkQualityUnknown` | Network quality is unknown. |
+| 1 | `AgoraNetworkQualityExcellent` | The network quality is excellent. |
+| 2 | `AgoraNetworkQualityGood` | The network quality is good, but the bitrate may be slightly lower than excellent. |
+| 3 | `AgoraNetworkQualityPoor` | The network quality is average, and users may experience a slight decrease in call quality. |
+| 4 | `AgoraNetworkQualityBad` | The network quality is poor, and users are unable to make smooth calls. |
+| 5 | `AgoraNetworkQualityVBad` | The network quality is extremely poor, making it almost impossible for users to make calls. |
+| 6 | `AgoraNetworkQualityDown` | The network connection is interrupted, and the user is completely unable to make a call. |
+| 8 | `AgoraNetworkQualityDetecting` | Last-mile detection tests are underway. |
+
+### API reference
+
+- [`rtcEngine(_:networkQuality:txQuality:rxQuality:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:networkquality:txquality:rxquality:))
+- [`rtcEngine(_:reportRtcStats:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:reportrtcstats:))
+- [`rtcEngine(_:localAudioStats:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:localaudiostats:))
+- [`rtcEngine(_:localAudioStateChanged:reason:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:localaudiostatechanged:error:))
+- [`rtcEngine(_:remoteAudioStats:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remoteaudiostats:))
+- [`rtcEngine(_:remoteAudioStateChangedOfUid:state:reason:elapsed:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remoteaudiostatechangedofuid:state:reason:elapsed:))
+- [`rtcEngine(_:localVideoStats:sourceType:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostats:sourcetype:))
+- [`rtcEngine(_:localVideoStateChangedOf:reason:sourceType:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostatechangedof:error:sourcetype:))
+- [`rtcEngine(_:remoteVideoStats:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remotevideostats:))
+- [`rtcEngine(_:remoteVideoStateChangedOfUid:state:reason:elapsed:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remotevideostatechangedofuid:state:reason:elapsed:))
+</TabsContent>
+
+<TabsContent value="web">
+Try out the [online demo](https://webdemo-global.agora.io/index.html) for displaying [In-call Statistics](https://webdemo-global.agora.io/example/advanced/displayCallStats/index.html).
+
+## Understand the tech
+
+After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
+
+When there is a change in the audio or video state of a user, Video SDK triggers a callback to report the latest state and the reason for the change. The following figure shows the audio transmission process between app clients:
+
+**Audio transmission process**
+
+![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+
+To monitor the call quality, Agora provides the following call quality notifications:
+
+**Network quality**
+
+The network quality callback provides insight into the uplink and downlink last mile network quality for each participant in the channel. Last mile refers to the network from your device to Agora server. The [Network quality scores](#network-quality-score) are calculated based on factors such as sending or receiving bitrate, network packet loss rate, round-trip delay, and network jitter.
+
+**Statistics**
+
+The statistics callback, triggered every 2 seconds, reports key metrics such as call duration and the number of participants.
+
+**Audio quality**
+
+Callbacks related to audio quality cover both local and remote audio streams. You monitor statistics and status changes, to gain insights into the quality of audio streams and any related reasons for status changes.
+
+**Video quality**
+
+Video quality callbacks provide information on both local and remote video streams. You receive statistics and status change notifications, that enable you to understand the quality of video streams and any related reasons for status changes.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
+
+## Implement in-call quality monitoring
+
+Implement the following real-time interaction quality statistics methods and audio or video state monitoring methods to understand user interaction experience:
+
+- `network-quality`: Reports uplink and downlink last mile network quality.
+- `getRTCStats`: Reports real-time interaction statistics.
+- `getLocalAudioStats`: Reports statistics for the sent audio stream.
+- `getRemoteAudioStats`: Reports statistics for the received remote audio stream.
+- `getLocalVideoStats`: Reports statistics for the sent video stream.
+- `getRemoteVideoStats`: Reports statistics for the received remote video stream.
+
+In your app, add the following code:
+
+```javascript
+// Subscribe to the "network-quality" event to receive uplink network conditions
+agoraEngine.on("network-quality", (quality) => {
+ console.log("Network quality:", quality);
+});
+
+// Get remote network quality
+const remoteNetworkQuality = client.getRemoteNetworkQuality();
+
+// Get local audio and video statistics
+const localStats = {
+ video: client.getLocalVideoStats(),
+ audio: client.getLocalAudioStats()
+};
+
+// Get overall channel statistics
+const rtcStats = agoraEngine.getRTCStats();
+console.log("Channel statistics:", rtcStats);
+
+// Get remote user's audio statistics using the remote UID
+const remoteAudioStats = agoraEngine.getRemoteAudioStats(remoteUID);
+console.log("Remote user audio statistics:", remoteAudioStats);
+
+// Get remote user's video statistics using the remote UID
+const remoteVideoStats = agoraEngine.getRemoteVideoStats(remoteUID);
+console.log("Remote user video statistics:", remoteVideoStats);
+
+```
+
+The SDK reports abnormal events in the channel through the `AgoraRTCClient.on("exception")` callback. Unusual events are not errors, but often cause call quality issues. After an abnormal event occurs, if the situation returns to normal, you receive this callback again. 
+
+```js
+client.on("exception", function(evt) {
+ console.log(evt.code, evt.msg, evt.uid);
+})
+```
+
+This callback returns:
+
+* `code`: event code.
+* `msg`: Prompt message.
+* `uid`: UID of the user where exception or recovery has occurred.
+
+Each abnormal event has a corresponding recovery event, as described in the following table:
+
+| Event code| Message and description | Event code| Recovery message and description |
+|:--|:--|:--|:--|
+| 1001 | `FRAMERATE_INPUT_TOO_LOW` <br/> Video capture frame rate is too low | 3001 | `FRAMERATE_INPUT_TOO_LOW_RECOVER` <br/> Video capture frame rate returns to normal|
+| 1002 | `FRAMERATE_SENT_TOO_LOW` <br/> Video sending bitrate is too low | 3002 | `FRAMERATE_SENT_TOO_LOW_RECOVER` <br/> Video sending frame rate returns to normal |
+| 1003 | `SEND_VIDEO_BITRATE_TOO_LOW` <br/> Video sending bitrate is too low | 3003 | `SEND_VIDEO_BITRATE_TOO_LOW_RECOVER` <br/> Video sending bitrate returns to normal |
+| 1005 | `RECV_VIDEO_DECODE_FAILED` <br/> Receiving video decoding failed | 3005 | `RECV_VIDEO_DECODE_FAILED_RECOVER` <br/> Receiving video decoding returns to normal |
+| 2001 | `AUDIO_INPUT_LEVEL_TOO_LOW` <br/> Send volume too low | 4001 | `AUDIO_INPUT_LEVEL_TOO_LOW_RECOVER` <br/> Send volume back to normal |
+| 2002 | `AUDIO_OUTPUT_LEVEL_TOO_LOW` <br/> Receive volume too low | 4002 | `AUDIO_OUTPUT_LEVEL_TOO_LOW_RECOVER` <br/> Receiving volume returns to normal |
+| 2003 | `SEND_AUDIO_BITRATE_TOO_LOW` <br/> Audio sending bitrate is too low | 4003 | `SEND_AUDIO_BITRATE_TOO_LOW_RECOVER` <br/> Audio sending bitrate returns to normal |
+| 2005 | `RECV_AUDIO_DECODE_FAILED` <br/> Failed to decode received audio | 4005 | `RECV_AUDIO_DECODE_FAILED_RECOVER` <br/> Received audio decoding returns to normal |
+
+## Reference
+
+### Network quality score
+
+| Value | Description |
+|:-----:|:------------|
+| 0 | The network quality is unknown. |
+| 1 | The network quality is excellent. |
+| 2 | The network quality is good, but the bitrate is slightly lower than excellent. |
+| 3 | Users can feel the communication is slightly impaired. |
+| 4 | Users cannot communicate smoothly. |
+| 5 | The quality is so bad that users can barely communicate. |
+| 6 | The network is down and users cannot communicate at all. |
+
+ ### API reference
+
+- [`network-quality`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#event_network_quality)
+
+- [`getRTCStats`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#getrtcstats)
+
+- [`getLocalAudioStats`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#getlocalaudiostats)
+
+- [`getRemoteAudioStats`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#getremoteaudiostats)
+
+- [`getLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#getlocalvideostats)
+
+- [`getRemoteVideoStats`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#getremotevideostats)
+</TabsContent>
+
+<TabsContent value="windows">
+## Understand the tech
+
+After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
+
+When there is a change in the audio or video state of a user, Video SDK triggers a callback to report the latest state and the reason for the change. The following figure shows the audio transmission process between app clients:
+
+**Audio transmission process**
+
+![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+
+To monitor the call quality, Agora provides the following call quality notifications:
+
+**Network quality**
+
+The network quality callback provides insight into the uplink and downlink last mile network quality for each participant in the channel. Last mile refers to the network from your device to Agora server. The [Network quality scores](#network-quality-score) are calculated based on factors such as sending or receiving bitrate, network packet loss rate, round-trip delay, and network jitter.
+
+**Statistics**
+
+The statistics callback, triggered every 2 seconds, reports key metrics such as call duration, the number of participants, system CPU usage, and app CPU usage.
+
+**Audio quality**
+
+Callbacks related to audio quality cover both local and remote audio streams. You monitor statistics and status changes, to gain insights into the quality of audio streams and any related reasons for status changes.
+
+**Video quality**
+
+Video quality callbacks provide information on both local and remote video streams. You receive statistics and status change notifications, that enable you to understand the quality of video streams and any related reasons for status changes.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
+
+## Implement in-call quality monitoring
+
+In `IRtcEngineEventHandler`, implement the following real-time interaction quality statistics callbacks and audio or video state monitoring callbacks to understand user interaction experience:
+
+- `onNetworkQuality`: Reports uplink and downlink last mile network quality.
+- `onRtcStats`: Reports real-time interaction statistics.
+- `onLocalAudioStats`: Reports statistics for the sent audio stream.
+- `onLocalAudioStateChanged`: Reports local audio stream state changes.
+- `onRemoteAudioStats`: Reports statistics for the received remote audio stream.
+- `onRemoteAudioStateChanged`: Reports remote audio stream state changes.
+- `onLocalVideoStats`: Reports statistics for the sent video stream.
+- `onLocalVideoStateChanged`: Reports local video stream state changes.
+- `onRemoteVideoStats`: Reports statistics for the received remote video stream.
+- `onRemoteVideoStateChanged`: Reports remote video stream state changes.
+
+In your app, add the following code:
+
+```cpp
+class FUserRtcEventHandler : public agora::rtc::IRtcEngineEventHandler
+{
+  public:
+  void onNetworkQuality(agora::rtc::uid_t uid, int txQuality, int rxQuality) override
+  {
+    AsyncTask(ENamedThreads::GameThread, [=]()
+    {
+      // Log uplink and downlink last mile network quality
+      UBFL_Logger::Print(FString::Printf(TEXT("%s Network quality: UID: %u, TX Quality: %d, RX Quality: %d"), *FString(FUNCTION_MACRO), uid, txQuality, rxQuality), WidgetPtr->GetLogMsgViewPtr());
+      // ... (your implementation)
+    });
+  }
+
+  void onRtcStats(const agora::rtc::RtcStats& stats) override
+  {
+    AsyncTask(ENamedThreads::GameThread, [=]()
+    {
+      // Log real-time interaction statistics
+      UBFL_Logger::Print(FString::Printf(TEXT("%s User(s): %d"), *FString(FUNCTION_MACRO), stats.userCount), WidgetPtr->GetLogMsgViewPtr());
+      UBFL_Logger::Print(FString::Printf(TEXT("Packet loss rate: %d"), *FString(FUNCTION_MACRO), stats.rxPacketLossRate), WidgetPtr->GetLogMsgViewPtr());
+      // ... (your implementation)
+    });
+  }
+
+  void onLocalAudioStats(const agora::rtc::LocalAudioStats& stats) override
+  {
+    AsyncTask(ENamedThreads::GameThread, [=]()
+    {
+      // Log statistics for the sent audio stream
+      UBFL_Logger::Print(FString::Printf(TEXT("%s Sent audio stream stats: %d"), *FString(FUNCTION_MACRO), stats.sentAudioBitrate), WidgetPtr->GetLogMsgViewPtr());
+      // ... (your implementation)
+    });
+  }
+
+  void onLocalAudioStateChanged(agora::rtc::LOCAL_AUDIO_STREAM_STATE state, agora::rtc::LOCAL_AUDIO_STREAM_ERROR error) override
+  {
+    AsyncTask(ENamedThreads::GameThread, [=]()
+    {
+      // Log local audio stream state changes
+      UBFL_Logger::Print(FString::Printf(TEXT("%s Local audio stream state changed: State: %d, Error: %d"), *FString(FUNCTION_MACRO), state, error), WidgetPtr->GetLogMsgViewPtr());
+      // ... (your implementation)
+    });
+  }
+
+  void onRemoteAudioStats(const agora::rtc::RemoteAudioStats& stats) override
+  {
+    AsyncTask(ENamedThreads::GameThread, [=]()
+    {
+      // Log statistics for the received remote audio stream
+      UBFL_Logger::Print(FString::Printf(TEXT("%s Received remote audio stream stats: %d"), *FString(FUNCTION_MACRO), stats.receivedBitrate), WidgetPtr->GetLogMsgViewPtr());
+      // ... (your implementation)
+    });
+  }
+
+  void onRemoteAudioStateChanged(agora::rtc::uid_t uid, agora::rtc::REMOTE_AUDIO_STATE state, agora::rtc::REMOTE_AUDIO_STATE_REASON reason, int elapsed) override
+  {
+    AsyncTask(ENamedThreads::GameThread, [=]()
+    {
+      // Log remote audio stream state changes
+      UBFL_Logger::Print(FString::Printf(TEXT("%s Remote audio stream state changed: UID: %u, State: %d, Reason: %d, Elapsed: %d"), *FString(FUNCTION_MACRO), uid, state, reason, elapsed), WidgetPtr->GetLogMsgViewPtr());
+      // ... (your implementation)
+    });
+  }
+
+  void onLocalVideoStats(const agora::rtc::LocalVideoStats& stats) override
+  {
+    AsyncTask(ENamedThreads::GameThread, [=]()
+    {
+      // Log statistics for the sent video stream
+      UBFL_Logger::Print(FString::Printf(TEXT("%s Sent video stream stats: %d"), *FString(FUNCTION_MACRO), stats.sentBitrate), WidgetPtr->GetLogMsgViewPtr());
+      // ... (your implementation)
+    });
+  }
+
+  void onLocalVideoStateChanged(agora::rtc::VIDEO_SOURCE_TYPE source, agora::rtc::LOCAL_VIDEO_STREAM_STATE state, agora::rtc::LOCAL_VIDEO_STREAM_ERROR error) override
+  {
+    AsyncTask(ENamedThreads::GameThread, [=]()
+    {
+      // Log local video stream state changes
+      UBFL_Logger::Print(FString::Printf(TEXT("%s Local video stream state changed: Source: %d, State: %d, Error: %d"), *FString(FUNCTION_MACRO), source, state, error), WidgetPtr->GetLogMsgViewPtr());
+      // ... (your implementation)
+    });
+  }
+
+  void onRemoteVideoStats(const agora::rtc::RemoteVideoStats& stats) override
+  {
+    AsyncTask(ENamedThreads::GameThread, [=]()
+    {
+      // Log statistics for the received remote video stream
+      UBFL_Logger::Print(FString::Printf(TEXT("%s Received remote video stream stats: %d"), *FString(FUNCTION_MACRO), stats.receivedBitrate), WidgetPtr->GetLogMsgViewPtr());
+      // ... (your implementation)
+    });
+  }
+
+  void onRemoteVideoStateChanged(agora::rtc::uid_t uid, agora::rtc::REMOTE_VIDEO_STATE state, agora::rtc::REMOTE_VIDEO_STATE_REASON reason, int elapsed) override
+  {
+    AsyncTask(ENamedThreads::GameThread, [=]()
+    {
+      // Log remote video stream state changes
+      UBFL_Logger::Print(FString::Printf(TEXT("%s Remote video stream state changed: UID: %u, State: %d, Reason: %d, Elapsed: %d"), *FString(FUNCTION_MACRO), uid, state, reason, elapsed), WidgetPtr->GetLogMsgViewPtr());
+      // ... (your implementation)
+    });
+  }
+};
+```
+
+## Reference
+
+### Network quality score
+
+| Value | Enumeration | Description |
+|:-----:|:------------|:------------|
+| 0 | `QUALITY_UNKNOWN` | Network quality is unknown. |
+| 1 | `QUALITY_EXCELLENT` | The network quality is excellent. |
+| 2 | `QUALITY_GOOD` | The network quality is good, but the bitrate may be slightly lower than excellent. |
+| 3 | `QUALITY_POOR` | The network quality is average, and users may experience a slight decrease in call quality. |
+| 4 | `QUALITY_BAD` | The network quality is poor, and users are unable to make smooth calls. |
+| 5 | `QUALITY_VBAD` | The network quality is extremely poor, making it almost impossible for users to make calls. |
+| 6 | `QUALITY_DOWN` | The network connection is interrupted, and the user is completely unable to make a call. |
+| 8 | `QUALITY_DETECTING` | Last-mile detection tests are underway. |
+
+ ### API reference
+
+- [`onNetworkQuality`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onnetworkquality)
+
+- [`onRemoteAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+
+- [`onRemoteVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+- [`onLocalAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+
+- [`onLocalVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged)
+
+- [`onRemoteAudioStats`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostats)
+
+- [`onRemoteVideoStats`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostats)
+
+- [`onLocalAudioStats`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostats)
+
+- [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
+
+- [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
+</TabsContent>
+
+<TabsContent value="electron">
+## Understand the tech
+
+After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
+
+When there is a change in the audio or video state of a user, Video SDK triggers a callback to report the latest state and the reason for the change. The following figure shows the audio transmission process between app clients:
+
+**Audio transmission process**
+
+![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+
+To monitor the call quality, Agora provides the following call quality notifications:
+
+**Network quality**
+
+The network quality callback provides insight into the uplink and downlink last mile network quality for each participant in the channel. Last mile refers to the network from your device to Agora server. The [Network quality scores](#network-quality-score) are calculated based on factors such as sending or receiving bitrate, network packet loss rate, round-trip delay, and network jitter.
+
+**Statistics**
+
+The statistics callback, triggered every 2 seconds, reports key metrics such as call duration, the number of participants, system CPU usage, and app CPU usage.
+
+**Audio quality**
+
+Callbacks related to audio quality cover both local and remote audio streams. You monitor statistics and status changes, to gain insights into the quality of audio streams and any related reasons for status changes.
+
+**Video quality**
+
+Video quality callbacks provide information on both local and remote video streams. You receive statistics and status change notifications, that enable you to understand the quality of video streams and any related reasons for status changes.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
+
+## Implement in-call quality monitoring
+
+In `IRtcEngineEventHandler`, implement the following real-time interaction quality statistics callbacks and audio or video state monitoring callbacks to understand user interaction experience:
+
+- `onNetworkQuality`: Reports uplink and downlink last mile network quality.
+- `onRtcStats`: Reports real-time interaction statistics.
+- `onLocalAudioStats`: Reports statistics for the sent audio stream.
+- `onLocalAudioStateChanged`: Reports local audio stream state changes.
+- `onRemoteAudioStats`: Reports statistics for the received remote audio stream.
+- `onRemoteAudioStateChanged`: Reports remote audio stream state changes.
+- `onLocalVideoStats`: Reports statistics for the sent video stream.
+- `onLocalVideoStateChanged`: Reports local video stream state changes.
+- `onRemoteVideoStats`: Reports statistics for the received remote video stream.
+- `onRemoteVideoStateChanged`: Reports remote video stream state changes.
+
+In your app, add the following code:
+
+```javascript
+const EventHandler = {
+ // Report real-time interactive statistical information
+ onRtcStats: (connection, state) => {
+  console.log(`connection:${connection}, state:${state}`);
+ },
+
+ // Report statistics on the audio streams sent
+ onLocalAudioStats: (connection, state) => {
+  console.log(`connection:${connection}, state:${state}`);
+ },
+
+ // Report local audio stream status monitoring
+ onLocalAudioStateChanged: (connection, state, error) => {
+  console.log(`connection:${connection}, state:${state}, error:${error}`);
+ },
+
+ // Report statistics on received far-end audio streams
+ onRemoteAudioStats: (connection, state) => {
+  console.log(`connection:${connection}, state:${state}`);
+ },
+ // Report remote audio stream status monitoring
+ onRemoteAudioStateChanged: (
+  connection,
+  remoteUid,
+  state,
+  reason,
+  elapsed
+ ) => {
+  console.log(
+   `connection:${connection},remoteUid:${remoteUid}, state:${state}, reason:${reason}, elapsed:${elapsed}`
+  );
+ },
+
+ // Report statistics on video streams sent
+ onLocalVideoStats: (source, stats) => {
+  console.log(`source:${source}, stats:${stats}`);
+ },
+ // Report local video stream status monitoring
+ onLocalVideoStateChanged: (source, state, error) => {
+  console.log(`source:${source}, state:${state}, error:${error}`);
+ },
+
+ // Report statistics on received remote video streams
+ onRemoteVideoStats: (connection, stats) => {
+  console.log(`connection:${connection}, stats:${stats}`);
+ },
+ // Report remote video stream status monitoring
+ onRemoteVideoStateChanged: (
+  connection,
+  remoteUid,
+  state,
+  reason,
+  elapsed
+ ) => {
+  console.log(
+   `connection:${connection},remoteUid:${remoteUid}, state:${state}, reason:${reason}, elapsed:${elapsed}`
+  );
+ },
+};
+// Register event callbacks
+let rtcEngine = createAgoraRtcEngine();
+rtcEngine.registerEventHandler(EventHandler);
+```
+
+## Reference
+
+### Network quality score
+
+| Value | Enumeration | Description |
+|:-----:|:------------|:------------|
+| 0 | `QualityUnknown` | The network quality is unknown. |
+| 1 | `QualityExcellent` | The network quality is excellent. |
+| 2 | `QualityGood` | The network quality is good, but the bitrate is slightly lower than excellent. |
+| 3 | `QualityPoor` | Users can feel the communication is slightly impaired. |
+| 4 | `QualityBad` | Users cannot communicate smoothly. |
+| 5 | `QualityVbad` | The quality is so bad that users can barely communicate. |
+| 6 | `QualityDown` | The network is down and users cannot communicate at all. |
+
+ ### API reference
+
+- [`onNetworkQuality`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onnetworkquality)
+
+- [`onRemoteAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+
+- [`onRemoteVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+- [`onLocalAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+
+- [`onLocalVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged)
+
+- [`onRemoteAudioStats`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostats)
+
+- [`onRemoteVideoStats`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostats)
+
+- [`onLocalAudioStats`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostats)
+
+- [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
+
+- [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
+</TabsContent>
+
+<TabsContent value="flutter">
+## Understand the tech
+
+After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
+
+When there is a change in the audio or video state of a user, Video SDK triggers a callback to report the latest state and the reason for the change. The following figure shows the audio transmission process between app clients:
+
+**Audio transmission process**
+
+![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+
+To monitor the call quality, Agora provides the following call quality notifications:
+
+**Network quality**
+
+The network quality callback provides insight into the uplink and downlink last mile network quality for each participant in the channel. Last mile refers to the network from your device to Agora server. The [Network quality scores](#network-quality-score) are calculated based on factors such as sending or receiving bitrate, network packet loss rate, round-trip delay, and network jitter.
+
+**Statistics**
+
+The statistics callback, triggered every 2 seconds, reports key metrics such as call duration, the number of participants, system CPU usage, and app CPU usage.
+
+**Audio quality**
+
+Callbacks related to audio quality cover both local and remote audio streams. You monitor statistics and status changes, to gain insights into the quality of audio streams and any related reasons for status changes.
+
+**Video quality**
+
+Video quality callbacks provide information on both local and remote video streams. You receive statistics and status change notifications, that enable you to understand the quality of video streams and any related reasons for status changes.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
+
+## Implement in-call quality monitoring
+
+In `RtcEngineEventHandler`, implement the following real-time interaction quality statistics callbacks and audio or video state monitoring callbacks to understand user interaction experience:
+
+- `onNetworkQuality`: Reports uplink and downlink last mile network quality.
+- `onRtcStats`: Reports real-time interaction statistics.
+- `onLocalAudioStats`: Reports statistics for the sent audio stream.
+- `onLocalAudioStateChanged`: Reports local audio stream state changes.
+- `onRemoteAudioStats`: Reports statistics for the received remote audio stream.
+- `onRemoteAudioStateChanged`: Reports remote audio stream state changes.
+- `onLocalVideoStats`: Reports statistics for the sent video stream.
+- `onLocalVideoStateChanged`: Reports local video stream state changes.
+- `onRemoteVideoStats`: Reports statistics for the received remote video stream.
+- `onRemoteVideoStateChanged`: Reports remote video stream state changes.
+
+In your app, add the following code:
+
+```dart
+@override
+RtcEngineEventHandler getEventHandler() {
+ return RtcEngineEventHandler(
+  // Reports the last mile network quality of each user in the channel
+  onNetworkQuality: (
+   RtcConnection connection,
+   int remoteUid,
+   QualityType txQuality,
+   QualityType rxQuality,
+  ) {
+   // Use downlink network quality to update the network status
+   networkQuality = rxQuality.index;
+
+   print(
+    'onNetworkQuality - Connection: $connection, RemoteUid: $remoteUid, TxQuality: $txQuality, RxQuality: $rxQuality',
+   );
+  },
+  // Reports the statistics of the current call
+  onRtcStats: (
+   RtcConnection connection,
+   RtcStats stats,
+  ) {
+   counter += 1;
+   String msg = "";
+
+   if (counter == 5) {
+    msg = "${stats.userCount} user(s)";
+   } else if (counter == 10) {
+    msg = "Last mile delay: ${stats.lastmileDelay}";
+    counter = 0;
+   }
+   if (msg.isNotEmpty) print(msg);
+  },
+  // Occurs when the remote video stream state changes
+  onRemoteVideoStateChanged: (
+   RtcConnection connection,
+   int remoteUid,
+   RemoteVideoState state,
+   RemoteVideoStateReason reason,
+   int elapsed,
+  ) {
+   print(
+    'onRemoteVideoStateChanged - Connection: $connection, RemoteUid: $remoteUid, State: $state, Reason: $reason, Elapsed: $elapsed',
+   );
+  },
+  // Reports the statistics of the video stream sent by each remote user
+  onRemoteVideoStats: (
+   RtcConnection connection,
+   RemoteVideoStats stats,
+  ) {
+   print(
+    'onRemoteVideoStats - Connection: $connection, Stats: $stats',
+   );
+  },
+  // Reports statistics of the audio stream from the local user
+  onLocalAudioStats: (
+   RtcConnection connection,
+   LocalAudioStats stats,
+  ) {
+   print(
+    'onLocalAudioStats - Connection: $connection, Stats: $stats',
+   );
+  },
+  // Occurs when the local audio state changes
+  onLocalAudioStateChanged: (
+   RtcConnection connection,
+   LocalAudioStreamState state,
+   LocalAudioStreamError error,
+  ) {
+   print(
+    'onLocalAudioStateChanged - Connection: $connection, State: $state, Error: $error',
+   );
+  },
+  // Reports statistics of the audio stream from each remote user
+  onRemoteAudioStats: (
+   RtcConnection connection,
+   RemoteAudioStats stats,
+  ) {
+   print(
+    'onRemoteAudioStats - Connection: $connection, Stats: $stats',
+   );
+  },
+  // Occurs when the remote audio state changes
+  onRemoteAudioStateChanged: (
+   RtcConnection connection,
+   int remoteUid,
+   RemoteAudioState state,
+   RemoteAudioStateReason reason,
+   int elapsed,
+  ) {
+   print(
+    'onRemoteAudioStateChanged - Connection: $connection, RemoteUid: $remoteUid, State: $state, Reason: $reason, Elapsed: $elapsed',
+   );
+  },
+  // Reports statistics of the video stream from the local user
+  onLocalVideoStats: (
+   RtcConnection connection,
+   LocalVideoStats stats,
+  ) {
+   print(
+    'onLocalVideoStats - Connection: $connection, Stats: $stats',
+   );
+  },
+  // Occurs when the local video state changes
+  onLocalVideoStateChanged: (
+   RtcConnection connection,
+   LocalVideoStreamState state,
+   LocalVideoStreamError error,
+  ) {
+   print(
+    'onLocalVideoStateChanged - Connection: $connection, State: $state, Error: $error',
+   );
+  },
+ );
+}
+```
+
+## Reference
+
+### Network quality score
+
+| Value | Enumeration | Description |
+|:-----:|:------------|:------------|
+| 0 | `qualityUnknown` | The network quality is unknown. |
+| 1 | `qualityExcellent` | The network quality is excellent. |
+| 2 | `qualityGood` | The network quality is good, but the bitrate is slightly lower than excellent. |
+| 3 | `qualityPoor` | Users can feel the communication is slightly impaired. |
+| 4 | `qualityBad` | Users cannot communicate smoothly. |
+| 5 | `qualityVbad` | The quality is so bad that users can barely communicate. |
+| 6 | `qualityDown` | The network is down and users cannot communicate at all. |
+
+ ### API reference
+
+- [`onNetworkQuality`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onnetworkquality)
+
+- [`onRemoteAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+
+- [`onRemoteVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+- [`onLocalAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+
+- [`onLocalVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged)
+
+- [`onRemoteAudioStats`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostats)
+
+- [`onRemoteVideoStats`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostats)
+
+- [`onLocalAudioStats`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostats)
+
+- [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
+
+- [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
+</TabsContent>
+
+<TabsContent value="react-native">
+## Understand the tech
+
+After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
+
+When there is a change in the audio or video state of a user, Video SDK triggers a callback to report the latest state and the reason for the change. The following figure shows the audio transmission process between app clients:
+
+**Audio transmission process**
+
+![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+
+To monitor the call quality, Agora provides the following call quality notifications:
+
+**Network quality**
+
+The network quality callback provides insight into the uplink and downlink last mile network quality for each participant in the channel. Last mile refers to the network from your device to Agora server. The [Network quality scores](#network-quality-score) are calculated based on factors such as sending or receiving bitrate, network packet loss rate, round-trip delay, and network jitter.
+
+**Statistics**
+
+The statistics callback, triggered every 2 seconds, reports key metrics such as call duration, the number of participants, system CPU usage, and app CPU usage.
+
+**Audio quality**
+
+Callbacks related to audio quality cover both local and remote audio streams. You monitor statistics and status changes, to gain insights into the quality of audio streams and any related reasons for status changes.
+
+**Video quality**
+
+Video quality callbacks provide information on both local and remote video streams. You receive statistics and status change notifications, that enable you to understand the quality of video streams and any related reasons for status changes.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
+
+## Implement in-call quality monitoring
+
+In `IRtcEngineEventHandler`, implement the following real-time interaction quality statistics callbacks and audio or video state monitoring callbacks to understand user interaction experience:
+
+- `onNetworkQuality`: Reports uplink and downlink last mile network quality.
+- `onRtcStats`: Reports real-time interaction statistics.
+- `onLocalAudioStats`: Reports statistics for the sent audio stream.
+- `onLocalAudioStateChanged`: Reports local audio stream state changes.
+- `onRemoteAudioStats`: Reports statistics for the received remote audio stream.
+- `onRemoteAudioStateChanged`: Reports remote audio stream state changes.
+- `onLocalVideoStats`: Reports statistics for the sent video stream.
+- `onLocalVideoStateChanged`: Reports local video stream state changes.
+- `onRemoteVideoStats`: Reports statistics for the received remote video stream.
+- `onRemoteVideoStateChanged`: Reports remote video stream state changes.
+
+In your app, add the following code:
+
+```javascript
+const EventHandler = {
+ // Report real-time interactive statistical information
+ onRtcStats: (connection, state) => {
+  console.log(`connection:${connection}, state:${state}`);
+ },
+
+ // Report statistics on the audio streams sent
+ onLocalAudioStats: (connection, state) => {
+  console.log(`connection:${connection}, state:${state}`);
+ },
+
+ // Report local audio stream status monitoring
+ onLocalAudioStateChanged: (connection, state, error) => {
+  console.log(`connection:${connection}, state:${state}, error:${error}`);
+ },
+
+ // Report statistics on received far-end audio streams
+ onRemoteAudioStats: (connection, state) => {
+  console.log(`connection:${connection}, state:${state}`);
+ },
+ // Report remote audio stream status monitoring
+ onRemoteAudioStateChanged: (
+  connection,
+  remoteUid,
+  state,
+  reason,
+  elapsed
+ ) => {
+  console.log(
+   `connection:${connection},remoteUid:${remoteUid}, state:${state}, reason:${reason}, elapsed:${elapsed}`
+  );
+ },
+
+ // Report statistics on video streams sent
+ onLocalVideoStats: (source, stats) => {
+  console.log(`source:${source}, stats:${stats}`);
+ },
+ // Report local video stream status monitoring
+ onLocalVideoStateChanged: (source, state, error) => {
+  console.log(`source:${source}, state:${state}, error:${error}`);
+ },
+
+ // Report statistics on received remote video streams
+ onRemoteVideoStats: (connection, stats) => {
+  console.log(`connection:${connection}, stats:${stats}`);
+ },
+ // Report remote video stream status monitoring
+ onRemoteVideoStateChanged: (
+  connection,
+  remoteUid,
+  state,
+  reason,
+  elapsed
+ ) => {
+  console.log(
+   `connection:${connection},remoteUid:${remoteUid}, state:${state}, reason:${reason}, elapsed:${elapsed}`
+  );
+ },
+};
+// Register event callbacks
+let rtcEngine = createAgoraRtcEngine();
+rtcEngine.registerEventHandler(EventHandler);
+```
+
+## Reference
+
+ ### Network quality score
+
+| Value | Enumeration | Description |
+|:-----:|:------------|:------------|
+| 0 | `QualityUnknown` | The network quality is unknown. |
+| 1 | `QualityExcellent` | The network quality is excellent. |
+| 2 | `QualityGood` | The network quality is good, but the bitrate is slightly lower than excellent. |
+| 3 | `QualityPoor` | Users can feel the communication is slightly impaired. |
+| 4 | `QualityBad` | Users cannot communicate smoothly. |
+| 5 | `QualityVbad` | The quality is so bad that users can barely communicate. |
+| 6 | `QualityDown` | The network is down and users cannot communicate at all. |
+
+### API reference
+
+- [`onNetworkQuality`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onnetworkquality)
+
+- [`onRemoteAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+
+- [`onRemoteVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+- [`onLocalAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+
+- [`onLocalVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged)
+
+- [`onRemoteAudioStats`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostats)
+
+- [`onRemoteVideoStats`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostats)
+
+- [`onLocalAudioStats`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostats)
+
+- [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
+
+- [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
+</TabsContent>
+
+<TabsContent value="unity">
+## Understand the tech
+
+After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
+
+When there is a change in the audio or video state of a user, Video SDK triggers a callback to report the latest state and the reason for the change. The following figure shows the audio transmission process between app clients:
+
+**Audio transmission process**
+
+![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+
+To monitor the call quality, Agora provides the following call quality notifications:
+
+**Network quality**
+
+The network quality callback provides insight into the uplink and downlink last mile network quality for each participant in the channel. Last mile refers to the network from your device to Agora server. The [Network quality scores](#network-quality-score) are calculated based on factors such as sending or receiving bitrate, network packet loss rate, round-trip delay, and network jitter.
+
+**Statistics**
+
+The statistics callback, triggered every 2 seconds, reports key metrics such as call duration, the number of participants, system CPU usage, and app CPU usage.
+
+**Audio quality**
+
+Callbacks related to audio quality cover both local and remote audio streams. You monitor statistics and status changes, to gain insights into the quality of audio streams and any related reasons for status changes.
+
+**Video quality**
+
+Video quality callbacks provide information on both local and remote video streams. You receive statistics and status change notifications, that enable you to understand the quality of video streams and any related reasons for status changes.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
+
+## Implement in-call quality monitoring
+
+In `IRtcEngineEventHandler`, implement the following real-time interaction quality statistics callbacks and audio or video state monitoring callbacks to understand user interaction experience:
+
+- `OnNetworkQuality`: Reports uplink and downlink last mile network quality.
+- `OnRtcStats`: Reports real-time interaction statistics.
+- `OnLocalAudioStats`: Reports statistics for the sent audio stream.
+- `OnLocalAudioStateChanged`: Reports local audio stream state changes.
+- `OnRemoteAudioStats`: Reports statistics for the received remote audio stream.
+- `OnRemoteAudioStateChanged`: Reports remote audio stream state changes.
+- `OnLocalVideoStats`: Reports statistics for the sent video stream.
+- `OnLocalVideoStateChanged`: Reports local video stream state changes.
+- `OnRemoteVideoStats`: Reports statistics for the received remote video stream.
+- `OnRemoteVideoStateChanged`: Reports remote video stream state changes.
+
+In your game, add the following code:
+
+```csharp
+// Event handler class to handle the events raised by Agora's RtcEngine instance
+internal class EventHandler : IRtcEngineEventHandler
+{
+  public override void OnNetworkQuality(RtcConnection connection, uint remoteUid, int txQuality, int rxQuality) 
+  {
+    Debug.Log($"OnNetworkQuality - Connection: {connection}, RemoteUid: {remoteUid}, TxQuality: {txQuality}, RxQuality: {rxQuality}");
+  }
+
+  public override void OnRtcStats(RtcConnection connection, RtcStats rtcStats) 
+  {
+    string msg = $"{rtcStats.userCount} user(s)";
+    msg += $"Packet loss rate: {rtcStats.rxPacketLossRate}";
+    Debug.Log(msg);
+  }
+
+  public override void OnRemoteVideoStateChanged(RtcConnection connection, uint remoteUid, REMOTE_VIDEO_STATE state, REMOTE_VIDEO_STATE_REASON reason, int elapsed) 
+  {
+    string msg = $"Remote video state changed: \n Uid = {remoteUid}\n NewState = {state}\n reason = {reason}\n elapsed = {elapsed}";
+    Debug.Log(msg);
+  }
+
+  public override void OnRemoteVideoStats(RtcConnection connection, RemoteVideoStats stats) 
+  {
+    string msg = $"Remote Video Stats: \n User id = {stats.uid}\n Received bitrate = {stats.receivedBitrate}\n Total frozen time = {stats.totalFrozenTime}";
+    Debug.Log(msg);
+  }
+
+  public override void OnLocalAudioStats(RtcConnection connection, LocalAudioStats stats)
+  {
+    string msg = $"Local Audio Stats: \n Bytes sent = {stats.bytesSent}\n Bitrate = {stats.bitrate}\n NumChannels = {stats.numChannels}\n SentSampleRate = {stats.sentSampleRate}";
+    Debug.Log(msg);
+  }
+
+  public override void OnLocalAudioStateChanged(RtcConnection connection, LOCAL_AUDIO_STREAM_STATE state, LOCAL_AUDIO_STREAM_ERROR error)
+  {
+    string msg = $"Local Audio State Changed: \n State = {state}\n Error = {error}";
+    Debug.Log(msg);
+  }
+
+  public override void OnRemoteAudioStats(RtcConnection connection, RemoteAudioStats stats)
+  {
+    string msg = $"Remote Audio Stats: \n User id = {stats.uid}\n Received bitrate = {stats.receivedBitrate}\n Buffer size = {stats.bufferSize}\n Network transport delay = {stats.networkTransportDelay}";
+    Debug.Log(msg);
+  }
+
+  public override void OnRemoteAudioStateChanged(RtcConnection connection, uint remoteUid, REMOTE_AUDIO_STATE state, REMOTE_AUDIO_STATE_REASON reason, int elapsed)
+  {
+    string msg = $"Remote Audio State Changed: \n RemoteUid = {remoteUid}\n State = {state}\n Reason = {reason}\n Elapsed = {elapsed}";
+    Debug.Log(msg);
+  }
+
+  public override void OnLocalVideoStats(RtcConnection connection, LocalVideoStats stats)
+  {
+    string msg = $"Local Video Stats: \n Sent bitrate = {stats.sentBitrate}\n Sent frame rate = {stats.sentFrameRate}\n Encoder output frame rate = {stats.encoderOutputFrameRate}\n Capture frame rate = {stats.captureFrameRate}";
+    Debug.Log(msg);
+  }
+
+  public override void OnLocalVideoStateChanged(VIDEO_SOURCE_TYPE source, LOCAL_VIDEO_STREAM_STATE state, LOCAL_VIDEO_STREAM_ERROR error)
+  {
+    string msg = $"Local Video State Changed: \n State = {state}\n Error = {error}";
+    Debug.Log(msg);
+  }
+}
+```
+
+## Reference
+
+### Network quality score
+ 
+| Value | Enumeration | Description |
+|:-----:|:------------|:------------|
+| 0 | `QUALITY_UNKNOWN` | The quality is unknown or the user is not receiving a stream. |
+| 1 | `QUALITY_EXCELLENT` | The quality is excellent. |
+| 2 | `QUALITY_GOOD` | The network quality is good, but the bitrate is slightly lower than excellent. |
+| 3 | `QUALITY_POOR` | Users can feel the communication is slightly impaired. |
+| 4 | `QUALITY_BAD` | Users cannot communicate smoothly. |
+| 5 | `QUALITY_VBAD` | The quality is so bad that users can barely communicate. |
+| 6 | `QUALITY_DOWN` | The network is down, and users cannot communicate at all. |
+
+ ### API reference
+
+- [`onNetworkQuality`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onnetworkquality)
+
+- [`onRemoteAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+
+- [`onRemoteVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+- [`onLocalAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+
+- [`onLocalVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged)
+
+- [`onRemoteAudioStats`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostats)
+
+- [`onRemoteVideoStats`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostats)
+
+- [`onLocalAudioStats`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostats)
+
+- [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
+
+- [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
+</TabsContent>
+
+<TabsContent value="unreal">
+## Understand the tech
+
+After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
+
+When there is a change in the audio or video state of a user, Video SDK triggers a callback to report the latest state and the reason for the change. The following figure shows the audio transmission process between app clients:
+
+**Audio transmission process**
+
+![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+
+To monitor the call quality, Agora provides the following call quality notifications:
+
+**Network quality**
+
+The network quality callback provides insight into the uplink and downlink last mile network quality for each participant in the channel. Last mile refers to the network from your device to Agora server. The [Network quality scores](#network-quality-score) are calculated based on factors such as sending or receiving bitrate, network packet loss rate, round-trip delay, and network jitter.
+
+**Statistics**
+
+The statistics callback, triggered every 2 seconds, reports key metrics such as call duration, the number of participants, system CPU usage, and app CPU usage.
+
+**Audio quality**
+
+Callbacks related to audio quality cover both local and remote audio streams. You monitor statistics and status changes, to gain insights into the quality of audio streams and any related reasons for status changes.
+
+**Video quality**
+
+Video quality callbacks provide information on both local and remote video streams. You receive statistics and status change notifications, that enable you to understand the quality of video streams and any related reasons for status changes.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
+
+## Implement in-call quality monitoring
+
+In `IRtcEngineEventHandler`, implement the following real-time interaction quality statistics callbacks and audio or video state monitoring callbacks to understand user interaction experience:
+
+- `onNetworkQuality`: Reports uplink and downlink last mile network quality.
+- `onRtcStats`: Reports real-time interaction statistics.
+- `onLocalAudioStats`: Reports statistics for the sent audio stream.
+- `onLocalAudioStateChanged`: Reports local audio stream state changes.
+- `onRemoteAudioStats`: Reports statistics for the received remote audio stream.
+- `onRemoteAudioStateChanged`: Reports remote audio stream state changes.
+- `onLocalVideoStats`: Reports statistics for the sent video stream.
+- `onLocalVideoStateChanged`: Reports local video stream state changes.
+- `onRemoteVideoStats`: Reports statistics for the received remote video stream.
+- `onRemoteVideoStateChanged`: Reports remote video stream state changes.
+
+In your game, add the following code:
+
+```csharp
+class MyRtcEngineEventHandler : public IRtcEngineEventHandler
+{
+  public:
+  // Implement the onNetworkQuality callback
+  virtual void onNetworkQuality(uid_t uid, int txQuality, int rxQuality) override
+  {
+    UE_LOG(LogTemp, Warning, TEXT("onNetworkQuality - Uid: %d, TxQuality: %d, RxQuality: %d"), uid, txQuality, rxQuality);
+  }
+
+  // Implement the onRtcStats callback
+  virtual void onRtcStats(const agora::rtc::RtcStats& stats) override
+  {
+    UE_LOG(LogTemp, Warning, TEXT("onRtcStats - User(s): %d"), stats.userCount);
+    UE_LOG(LogTemp, Warning, TEXT("Packet loss rate: %d"), stats.rxPacketLossRate);
+  }
+
+  // Implement the onRemoteVideoStateChanged callback
+  virtual void onRemoteVideoStateChanged(uid_t uid, REMOTE_VIDEO_STATE state, REMOTE_VIDEO_STATE_REASON reason, int elapsed) override
+  {
+    UE_LOG(LogTemp, Warning, TEXT("onRemoteVideoStateChanged - Uid: %d, NewState: %d, Reason: %d, Elapsed: %d"), uid, state, reason, elapsed);
+  }
+
+  // Implement the onRemoteVideoStats callback
+  virtual void onRemoteVideoStats(const agora::rtc::RemoteVideoStats& stats) override
+  {
+    UE_LOG(LogTemp, Warning, TEXT("onRemoteVideoStats - User id: %d, Received bitrate: %d, Total frozen time: %d"),
+      stats.uid, stats.receivedBitrate, stats.totalFrozenTime);
+  }
+
+  // Implement the onLocalAudioStats callback
+  virtual void onLocalAudioStats(const agora::rtc::LocalAudioStats& stats) override
+  {
+    UE_LOG(LogTemp, Warning, TEXT("onLocalAudioStats - Sent bitrate: %d, Sent sample rate: %d"),
+      stats.sentBitrate, stats.sentSampleRate);
+  }
+
+  // Implement the onLocalAudioStateChanged callback
+  virtual void onLocalAudioStateChanged(LOCAL_AUDIO_STREAM_STATE state, LOCAL_AUDIO_STREAM_ERROR error) override
+  {
+    UE_LOG(LogTemp, Warning, TEXT("onLocalAudioStateChanged - State: %d, Error: %d"), state, error);
+  }
+
+  // Implement the onRemoteAudioStats callback
+  virtual void onRemoteAudioStats(const agora::rtc::RemoteAudioStats& stats) override
+  {
+    UE_LOG(LogTemp, Warning, TEXT("onRemoteAudioStats - User id: %d, Received bitrate: %d, Network delay: %d"),
+      stats.uid, stats.receivedBitrate, stats.networkTransportDelay);
+  }
+
+  // Implement the onRemoteAudioStateChanged callback
+  virtual void onRemoteAudioStateChanged(uid_t uid, REMOTE_AUDIO_STATE state, REMOTE_AUDIO_STATE_REASON reason, int elapsed) override
+  {
+    UE_LOG(LogTemp, Warning, TEXT("onRemoteAudioStateChanged - Uid: %d, NewState: %d, Reason: %d, Elapsed: %d"), uid, state, reason, elapsed);
+  }
+
+  // Implement the onLocalVideoStats callback
+  virtual void onLocalVideoStats(const agora::rtc::VIDEO_SOURCE_TYPE source, const const agora::rtc::LocalVideoStats& stats) override
+  {
+    UE_LOG(LogTemp, Warning, TEXT("onLocalVideoStats - Sent frame rate: %d, Encoded frame width: %d"),
+      stats.sentFrameRate, stats.encodedFrameWidth);
+  }
+
+  // Implement the onLocalVideoStateChanged callback
+  virtual void onLocalVideoStateChanged(VIDEO_SOURCE_TYPE source, LOCAL_VIDEO_STREAM_STATE state, LOCAL_VIDEO_STREAM_ERROR error) override
+  {
+    UE_LOG(LogTemp, Warning, TEXT("onLocalVideoStateChanged - State: %d, Error: %d"), state, error);
+  }
+};
+```
+
+## Reference
+
+### Network quality score
+ 
+| Value | Enumeration | Description |
+|:-----:|:------------|:------------|
+| 0 | `QUALITY_UNKNOWN` | The quality is unknown or the user is not receiving a stream. |
+| 1 | `QUALITY_EXCELLENT` | The quality is excellent. |
+| 2 | `QUALITY_GOOD` | The network quality is good, but the bitrate is slightly lower than excellent. |
+| 3 | `QUALITY_POOR` | Users can feel the communication is slightly impaired. |
+| 4 | `QUALITY_BAD` | Users cannot communicate smoothly. |
+| 5 | `QUALITY_VBAD` | The quality is so bad that users can barely communicate. |
+| 6 | `QUALITY_DOWN` | The network is down, and users cannot communicate at all. |
+
+### API reference
+
+- [`onNetworkQuality`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onnetworkquality)
+
+- [`onRemoteAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+
+- [`onRemoteVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+- [`onLocalAudioStateChanged`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+
+- [`onLocalVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged)
+
+- [`onRemoteAudioStats`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremoteaudiostats)
+
+- [`onRemoteVideoStats`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onremotevideostats)
+
+- [`onLocalAudioStats`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalaudiostats)
+
+- [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
+
+- [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
+</TabsContent>
+
+<TabsContent value="blueprint">
+**This feature guide is not available yet.**
+</TabsContent>
+
+</Tabs>
