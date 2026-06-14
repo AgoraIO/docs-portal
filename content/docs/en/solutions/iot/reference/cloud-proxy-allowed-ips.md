@@ -32,12 +32,13 @@ Follow these guidelines to configure cloud proxy settings.
     >     - If you use cloud proxy with [Restricted media zones](https://docs.agora.io/en/iot/advanced-features/geofencing), add only the IP addresses dedicated to your specified region.
     >     - If you do not restrict media zones, add all IP addresses to ensure connectivity.
 
+    :::
+
 * **Open required ports**: Make sure all necessary firewall ports are accessible.
 * **Test connectivity**: Validate your configuration before deploying to production.
 
 To use Agora Cloud Proxy, your end users must first configure their firewall to trust the following IP address and port ranges. 
 
-:::
 ### Native RTC Force UDP mode
 
 #### North America
