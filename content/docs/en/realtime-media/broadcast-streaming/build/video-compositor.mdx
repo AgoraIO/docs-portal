@@ -1,0 +1,521 @@
+---
+title: "Video Compositor (Beta)"
+description: "Integrate the Video Compositor extension to combine multiple local video streams"
+---
+
+The Video Compositor extension for the Web SDK enables local users to seamlessly merge multiple video streams and images into a single video track. This feature allows for the simultaneous display of multiple video feeds in the same video container, making it ideal for applications such as online education, remote conferencing, and live broadcasts. With the Video Compositor extension, users can easily share and manage multiple video streams to implement features like picture-in-picture for a more engaging and dynamic viewing experience.
+
+Try out the [online demo](https://webdemo-global.agora.io/example/plugin/videoCompositor/index.html) to experience the Video Compositor extension.
+
+:::info
+To integrate the Video Compositor extension, use version 4.12.0 or later of the Web SDK.
+:::
+
+## Understand the tech
+
+The following figure shows how the Video Compositor extension creates a composite video track from multiple inputs:
+
+![Video compositor extension technology](/images/extensions-marketplace/video-compositor-tech.png)
+
+To share a composite video you implement the following steps:
+
+1. Create a video input layer `IBaseProcessor` for each video track and an image input layer `HTMLImageElement` for each image.
+1. Connect the pipeline between each video track and its corresponding input layer, injecting the video stream into the input layer. The compositor combines all input layers.
+1. Connect the pipeline between the compositor and the local video track, then output the combined video to the SDK.
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project using the Web SDK version 4.12.0 or later.
+
+## Implement the logic
+
+This section shows you how to integrate and use the Video Compositor extension in your project.
+
+Consider a remote conference use-case where the presenter uses images, video files, and their own camera video to augment their presentation. The presenter wants their audience to see the following effect:
+
+![Video compositor use case](/images/extensions-marketplace/video-compositor-usecase.png)
+
+In this use-case, you need to composite the following content into a single video track:
+
+- A screen sharing video track showing the presentation.
+- Two local images.
+- Source video track 1: Created from the video stream captured by the camera, with the background removed using the [Virtual Background extension](https://docs-md.agora.io/en/video-calling/advanced-features/virtual-background.md).
+- Source video track 2: Created from a local video file.
+
+This guide uses the sample use-case to introduce steps required to create a composite video track.
+
+### Integrate the extension
+
+For this example, integrate both the Virtual Background extension and the Video Compositor extension.
+
+1. Integrate the [Virtual Background](https://docs-md.agora.io/en/video-calling/advanced-features/virtual-background.md) extension. Ensure that you understand the [considerations](https://docs-md.agora.io/en/video-calling/advanced-features/virtual-background.md).
+
+1. Run the following command to integrate the [Video Compositor extension](https://www.npmjs.com/package/agora-extension-video-compositor) into your project using npm:
+
+  ```bash
+  npm install agora-extension-video-compositor
+  ```
+
+1. Import the Video Compositor extension in either of the following ways:
+
+  - **Method 1:** Add the following code to the JavaScript file:
+
+    ```javascript
+    import VideoCompositingExtension from "agora-extension-video-compositor";
+    ```
+
+  - **Method 2:** Import it in the HTML file through the `script` tag. After importing, you can directly use the `VideoCompositingExtension` object in the JavaScript file:
+
+    ```javascript
+    <script src="./agora-extension-video-compositor.js"></script>
+    ```
+
+### Register the extension
+
+After creating the `AgoraRTCClient` object, create a `VideoCompositingExtension` object. Call `AgoraRTC.registerExtensions` to register the extension, and then create a `VideoTrackCompositor` object.
+
+```typescript
+// Create a Client object
+const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+// Create VideoCompositingExtension and VirtualBackgroundExtension objects
+const extension = new VideoCompositingExtension();
+const vbExtension = new VirtualBackgroundExtension();
+// Register extensions
+AgoraRTC.registerExtensions([extension, vbExtension]);
+// Create a VideoTrackCompositor object
+let compositor = extension.createProcessor();
+let vbProcessor = null;
+```
+
+### Inject images
+
+Follow these steps to inject images into the local video stream:
+
+1. Call the `createScreenVideoTrack`, `createCameraVideoTrack`, and `createCustomVideoTrack` methods respectively to create three video tracks:
+
+  ```typescript
+  // Create a screen sharing video track 
+  screenShareTrack = await AgoraRTC.createScreenVideoTrack({
+   encoderConfig: { frameRate: 15 },
+  });
+
+  // Create a source video track using the video captured by the camera
+  sourceVideoTrack1 = await AgoraRTC.createCameraVideoTrack({
+   cameraId: videoSelect.value,
+   encoderConfig: "720p_1",
+  });
+
+  // Create a source video track using a local video file
+  const width = 1280,
+   height = 720;
+  const videoElement = await createVideoElement(
+   width,
+   height,
+   "./assets/loop-video.mp4"
+  );
+  const mediaStream = videoElement.captureStream();
+  const msTrack = mediaStream.getVideoTracks()[0];
+  sourceVideoTrack2 = AgoraRTC.createCustomVideoTrack({
+   mediaStreamTrack: msTrack,
+  });
+  ```
+
+1. Create the input layers of the image and video tracks in order, from bottom to top. The layers created later overlay the earlier ones. In the following code, the screen-sharing image layer is at the bottom, and the image of the source video track 2 is at the top layer:
+
+  ```typescript
+  // Create the input layer for the screen sharing video track
+  const screenShareEndpoint = processor.createInputEndpoint({
+   x: 0,
+   y: 0,
+   width: 1280,
+   height: 720,
+   fit: "cover",
+  });
+  // Create the input layer of the image
+  compositor.addImage("./assets/city.jpg", {
+   x: 960,
+   y: 0,
+   width: 320,
+   height: 180,
+   fit: "cover",
+  });
+  compositor.addImage("./assets/space.jpg", {
+   x: 0,
+   y: 540,
+   width: 320,
+   height: 180,
+   fit: "cover",
+  });
+  // Create input layers for source video tracks 1 and 2
+  const endpoint1 = compositor.createInputEndpoint({
+   x: 0,
+   y: 0,
+   width: 320,
+   height: 180,
+   fit: "cover",
+  });
+  const endpoint2 = compositor.createInputEndpoint({
+   x: 960,
+   y: 540,
+   width: 320,
+   height: 180,
+   fit: "cover",
+  });
+  // Set the virtual background of the source video track 1
+  if (!vbProcessor) {
+   vbProcessor = vbExtension.createProcessor();
+   await vbProcessor.init("./assets/wasms");
+   vbProcessor.enable();
+   vbProcessor.setOptions({ type: "none" });
+  }
+  // Connect the pipeline between the video input layer and the video track
+  screenShareTrack
+   .pipe(screenShareEndpoint)
+   .pipe(screenShareTrack.processorDestination);
+  sourceVideoTrack1
+   .pipe(vbProcessor)
+   .pipe(endpoint1)
+   .pipe(sourceVideoTrack1.processorDestination);
+  sourceVideoTrack2
+   .pipe(endpoint2)
+   .pipe(sourceVideoTrack2.processorDestination);
+  ```
+
+1. Merge all input layers and inject the output into the local video track:
+
+  ```javascript
+  const canvas = document.createElement("canvas");
+  canvas.getContext("2d");
+  // Create a local video track
+  localTracks.videoTrack = AgoraRTC.createCustomVideoTrack({
+   mediaStreamTrack: canvas.captureStream().getVideoTracks()[0],
+  });
+
+  // Set the merge options
+  compositor.setOutputOptions(1280, 720, 15);
+  // Start merging the images
+  await compositor.start();
+  // Inject the combined video into the local video track
+  localTracks.videoTrack
+   .pipe(compositor)
+   .pipe(localTracks.videoTrack.processorDestination);
+  ```
+
+1. Play and publish the local video track:
+
+  ```javascript
+  // Play the local video track
+  localTracks.videoTrack.play("local-player");
+
+  // Publish local audio and video tracks
+  localTracks.audioTrack =
+   localTracks.audioTrack || (await AgoraRTC.createMicrophoneAudioTrack());
+  await client.publish(Object.values(localTracks));
+  ```
+
+### Stop injecting images
+
+When you need to leave the channel, call `unpipe` to disconnect the pipelines of the compositor and all video tracks, and stop all audio and video tracks. Otherwise, an error may occur when you join the channel again:
+
+```typescript
+async function leave() {
+ await client.leave();
+ localTracks.audioTrack?.close();
+ localTracks.videoTrack?.unpipe();
+ localTracks.videoTrack?.close();
+ compositor?.unpipe();
+ vbProcessor?.unpipe();
+ sourceVideoTrack1?.unpipe();
+ sourceVideoTrack1?.close();
+ sourceVideoTrack2?.unpipe();
+ sourceVideoTrack2?.close();
+ screenShareTrack?.unpipe();
+ screenShareTrack.close();
+}
+```
+
+### Complete sample code
+
+This section presents the minimum code to integrate the Video Compositor extension into your project. Copy the following into your script file:
+
+**Complete sample code to integrate the Video Compositor extension**
+
+```js
+// Create Client object
+const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+const extension = new VideoCompositingExtension();
+const vbExtension = new VirtualBackgroundExtension();
+AgoraRTC.registerExtensions([extension, vbExtension]);
+let compositor = extension.createProcessor();
+let vbProcessor = null;
+
+let localTracks = {
+ videoTrack: null,
+ audioTrack: null,
+};
+let screenShareTrack = null;
+let sourceVideoTrack1 = null;../../../video-calling/advanced-features/virtual-background
+let sourceVideoTrack2 = null;
+
+async function join() {
+ // Create screen sharing video track
+ screenShareTrack = await AgoraRTC.createScreenVideoTrack({
+  encoderConfig: { frameRate: 15 },
+ });
+
+ // Create source video track 1
+ sourceVideoTrack1 = await AgoraRTC.createCameraVideoTrack({
+  cameraId: videoSelect.value,
+  encoderConfig: "720p_1",
+ });
+
+ // Create source video track 2
+ const width = 1280,
+  height = 720;
+ const videoElement = await createVideoElement(
+  width,
+  height,
+  "./assets/loop-video.mp4"
+ );
+ const mediaStream = videoElement.captureStream();
+ const msTrack = mediaStream.getVideoTracks()[0];
+ sourceVideoTrack2 = AgoraRTC.createCustomVideoTrack({
+  mediaStreamTrack: msTrack,
+ });
+
+ // Create video tracks and image input layers in z-axis order from bottom to top
+ const screenShareEndpoint = compositor.createInputEndpoint({
+  x: 0,
+  y: 0,
+  width: 1280,
+  height: 720,
+  fit: "cover",
+ });
+ compositor.addImage("./assets/city.jpg", {
+  x: 960,
+  y: 0,
+  width: 320,
+  height: 180,
+  fit: "cover",
+ });
+ compositor.addImage("./assets/space.jpg", {
+  x: 0,
+  y: 540,
+  width: 320,
+  height: 180,
+  fit: "cover",
+ });
+ const endpoint1 = compositor.createInputEndpoint({
+  x: 0,
+  y: 0,
+  width: 320,
+  height: 180,
+  fit: "cover",
+ });
+ const endpoint2 = compositor.createInputEndpoint({
+  x: 960,
+  y: 540,
+  width: 320,
+  height: 180,
+  fit: "cover",
+ });
+
+ // Remove background from source video track 1
+ if (!vbProcessor) {
+  vbProcessor = vbExtension.createProcessor();
+  await vbProcessor.init("./assets/wasms");
+  vbProcessor.enable();
+  vbProcessor.setOptions({ type: "none" });
+ }
+ // Connect video input pipelines
+ screenShareTrack
+  .pipe(screenShareEndpoint)
+  .pipe(screenShareTrack.processorDestination);
+ sourceVideoTrack1
+  .pipe(vbProcessor)
+  .pipe(endpoint1)
+  .pipe(sourceVideoTrack1.processorDestination);
+ sourceVideoTrack2
+  .pipe(endpoint2)
+  .pipe(sourceVideoTrack2.processorDestination);
+
+ // Inject merged video into local video track
+ const canvas = document.createElement("canvas");
+ canvas.getContext("2d");
+ localTracks.videoTrack = AgoraRTC.createCustomVideoTrack({
+  mediaStreamTrack: canvas.captureStream().getVideoTracks()[0],
+ });
+
+ compositor.setOutputOptions(1280, 720, 15);
+ await compositor.start();
+ localTracks.videoTrack
+  .pipe(compositor)
+  .pipe(localTracks.videoTrack.processorDestination);
+
+ // Play and publish local audio and video tracks
+ localTracks.videoTrack.play("local-player");
+ localTracks.audioTrack =
+  localTracks.audioTrack || (await AgoraRTC.createMicrophoneAudioTrack());
+ await client.publish(Object.values(localTracks));
+}
+
+// Leave channel and disconnect all video input pipelines
+async function leave() {
+ await client.leave();
+ localTracks.audioTrack?.close();
+ localTracks.videoTrack?.unpipe();
+ localTracks.videoTrack?.close();
+ compositor?.unpipe();
+ vbProcessor?.unpipe();
+ sourceVideoTrack1?.unpipe();
+ sourceVideoTrack1?.close();
+ sourceVideoTrack2?.unpipe();
+ sourceVideoTrack2?.close();
+ screenShareTrack?.unpipe();
+ screenShareTrack.close();
+}
+``` 
+
+## Reference
+
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product. 
+
+- For a working example, check out the [Video Compositor extension](https://webdemo.agora.io/example/plugin/videoCompositor/index.html?_gl=1*1437x8t*_gcl_au*MTM4NzU5ODkyNy4xNzE5NTgxMTUy*_ga*MjA2MzYxMjY4Mi4xNzAzMDczMjA1*_ga_BFVGG7E02W*MTcxOTY1MDQ3NS4zNTQuMC4xNzE5NjUwNDc1LjAuMC4w) extension.
+
+### Considerations
+
+- **Browser support**:
+ - The Video Compositor extension supports Chrome 91 and above, Edge 91 and above, and the latest version of Firefox. For the best experience, use Chrome or Edge 94 and above.
+ - Due to a [bug](https://bugs.webkit.org/show_bug.cgi?id=181663&from_wecom=1) in certain versions of Safari, only iOS Safari 15.4 and above and macOS Safari 13 and above are supported.
+
+- **Performance considerations**:
+
+ - The Video Compositor extension can combine up to two video streams (from cameras or local video files), one screen sharing stream, and two images. Combining more image sources can affect performance and user experience.
+ - If you need to use multiple media processing extensions simultaneously, Agora recommends using an Intel Core i5 4-core or higher processor. When multiple extensions are enabled, other programs running with high resource usage may cause your app to experience audio and video freezes.
+
+### API reference
+
+This section provides the API reference for the Video Compositor extension.
+
+#### `IVideoCompositingExtension`
+
+##### `createInputEndpoint`
+
+Creates a compositor.
+
+  ```typescript
+  createProcessor(): VideoTrackCompositor;
+  ```
+
+- **Return value**: `VideoTrackCompositor`: The `VideoTrackCompositor` object corresponding to the compositor.
+
+#### `IVideoTrackCompositor`
+
+##### `createInputEndpoint`
+
+Creates an input layer for the video track.
+
+  ```typescript
+  createInputEndpoint(option: LayerOption): IBaseProcessor;
+  ```
+
+- **Parameters**:
+
+  `option`: Layout options for the video input. See [LayerOption](#layeroption) for details.
+
+- **Return value**:
+
+  `IBaseProcessor`: The `IBaseProcessor` object corresponding to the video input layer.
+
+##### `addImage`
+
+Creates an input layer for the image:
+
+  ```typescript
+  addImage(url: string, option: LayerOption): HTMLImageElement;
+  ```
+
+- **Parameters**:
+
+  `url`: You can pass in the following values:
+     - The relative path to the local image.
+     - The URL of the online image. Ensure that the URL can be loaded by the `HTMLImageElement` object and can be accessed across domains.
+
+  `option`: Layout options for image input. See [LayerOption](#layeroption) for details.
+
+- **Return value**:
+
+  `HTMLImageElement`: The `HTMLImageElement` object corresponding to the image input layer.
+
+:::note
+To change the image after calling this method, modify the `src` attribute of the `HTMLImageElement` object returned by this method.
+
+:::
+##### `removeImage`
+
+Deletes the input layer of the image.
+
+  ```typescript
+  removeImage(imgElement: HTMLImageElement): void;
+  ```
+
+- **Parameters**:
+
+  * `imgElement`: The `HTMLImageElement` object corresponding to the image input layer.
+
+##### `setOutputOptions`
+
+Sets properties of the compositor's output video.
+
+  ```typescript
+  setOutputOptions(width: number, height: number, fps?: number): void;
+  ```
+
+- **Parameters**:
+
+  - `width`: Output video width (px).
+  - `height`: Output video height (px).
+  - `fps`: (optional) Frame rate of the output video. The default value is 15 frames per second.
+
+##### `start`
+
+Starts merging images. The compositor merges the contents of all input layers and outputs a video:
+
+  ```typescript
+  start(): Promise<void>;
+  ```
+
+##### `stop`
+
+Stops merging images.
+
+  ```typescript
+  stop(): Promise<void>;
+  ```
+
+#### Type definition
+
+##### `LayerOption`
+
+Display options for the layer. Used by the [createInputEndpoint](#createinputendpoint) and [addImage](#addimage) methods.
+
+```typescript
+export type LayerOption = {
+ x: number;
+ y: number;
+ width: number;
+ height: number;
+ fit?: "contain" | "cover" | "fill";
+};
+```
+
+**Attributes**:
+
+- `x`: Number. The horizontal displacement of the upper left corner of the layer relative to the upper left corner of the canvas.
+- `y`: Number. The vertical displacement of the upper left corner of the layer relative to the upper left corner of the canvas.
+- `width`: Number. The width of the layer (px).
+- `height`: Number. The height of the layer (px).
+- `fit`: (optional) String. The parameter specifies how the video or image content fits within the layer. It can be set to one of the following values:
+   - `"contain"`: The content is scaled proportionally to ensure it is fully displayed within the layer, with any remaining space filled with black.
+   - `"cover"`: The content is scaled proportionally to fill the entire layer, with any excess content outside the layer being clipped.
+   - `"fill"`: The content is stretched to completely fill the layer, potentially altering the original aspect ratio.

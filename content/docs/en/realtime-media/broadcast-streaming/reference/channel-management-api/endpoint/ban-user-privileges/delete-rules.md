@@ -1,0 +1,150 @@
+---
+title: "Delete rule"
+description: "API reference for deleting a rule to ban users"
+---
+
+<LeftColumn
+  method="DELETE"
+  endpoint="https://api.agora.io/dev/v1/kicking-rule"
+ >
+
+Use this endpoint to delete a specified banning rule.
+
+## Request
+
+The request URL and request body is case-sensitive. All requests must use HTTPS.
+
+### Request header
+
+- `Content-Type`: `application/json`
+- The request header must contain the `Authorization` field. For details, see [RESTful authentication](../../restful-authentication.md).
+
+### Request body
+
+<div className="api-mime-type">APPLICATION/JSON</div>
+
+<ParameterList title="BODY" required={true}>
+ <Parameter name="appid" type="string" required={true}>
+  The App ID of the project. You can get it through one of the following methods:
+  - Copy from the [Agora Console](https://console.agora.io)
+  - Call the [Get all projects](../../agora-console-rest-api.md) API, and read the value of the `vendor_key` field in the response body.
+ </Parameter>
+
+ <Parameter name="id" type="number" required={true}>
+  The ID of the rule to delete.
+ </Parameter>
+</ParameterList>
+
+## Response
+
+A `200` status code indicates success. The response body contains the following parameters:
+
+<ParameterList title="OK">
+ <Parameter name="status" type="string">
+  The status of this request. `success` means the request succeeds.
+ </Parameter>
+ <Parameter name="id" type="number">
+  The ID of the deleted rule.
+ </Parameter>
+</ParameterList>
+
+If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](../../response-status-code.md) for details.
+
+</LeftColumn>
+
+<RightColumn>
+
+<Section title="Authorization">
+ This endpoint requires [Basic authentication](../../restful-authentication.md).
+</Section>
+
+<Section title="Request example">
+
+Test this request in [Postman](https://documenter.getpostman.com/view/6319646/SVSLr9AM#af1b1648-86b5-4d15-9fba-fcc1394e30e5) or use one of the following code examples:
+
+**Curl**
+```bash
+curl --request DELETE \
+ --url https://api.sd-rtn.com/dev/v1/kicking-rule \
+ --header 'Accept: application/json' \
+ --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+ --header 'Content-Type: application/json' \
+ --data '{
+ "appid": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+ "id": 1953
+}'
+```
+
+**Node.js**
+```js
+const https = require('https');
+
+const options = {
+ method: 'DELETE',
+ hostname: 'api.sd-rtn.com',
+ port: null,
+ path: '/dev/v1/kicking-rule',
+ headers: {
+  Authorization: 'Basic <your_base64_encoded_credentials>',
+  'Content-Type': 'application/json',
+  Accept: 'application/json'
+ }
+};
+
+const req = https.request(options, function (res) {
+ const chunks = [];
+ res.on('data', function (chunk) {
+  chunks.push(chunk);
+ });
+
+ res.on('end', function () {
+  const body = Buffer.concat(chunks);
+  console.log(body.toString());
+ });
+});
+
+req.write(JSON.stringify({
+ appid: '4855xxxxxxxxxxxxxxxxxxxxxxxxeae2',
+ id: 1953
+}));
+req.end();
+```
+
+**Python**
+```python
+import http.client
+import json
+
+conn = http.client.HTTPSConnection("api.sd-rtn.com")
+
+payload = {
+  "appid": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+  "id": 1953
+}
+
+headers = {
+  'Authorization': "Basic <your_base64_encoded_credentials>",
+  'Content-Type': "application/json",
+  'Accept': "application/json"
+}
+
+conn.request("DELETE", "/dev/v1/kicking-rule", json.dumps(payload), headers)
+
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</Section>
+
+<Section title="Response example">
+
+```json
+{
+ "status": "success",
+ "id": 1953
+}
+```
+
+</Section>
+</RightColumn>
