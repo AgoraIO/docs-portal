@@ -1,0 +1,129 @@
+---
+title: "Security"
+description: "How Agora approaches security, encryption, access control, and compliance for realtime services."
+---
+
+# Security
+
+## Information security policy
+
+This section provides information security policy for Agora services.
+
+Agora services provide built-in encryption and customized encryption. You can use either of them to implement encryption. The following diagram describes the encrypted data transmission process:
+
+![Encrypted data transmission process](/images/common/encrypted-data-transmission-process.svg)
+
+#### Purpose
+
+Agora is committed to safeguarding the confidentiality, integrity, and availability of all users' physical and electronic information assets.
+
+- Confidentiality against unauthorized access and eavesdropping
+- Integrity against tampering and forgery
+- Availability of data transmission through the Agora SDRTN(R)
+
+#### Scope
+
+This article describes how Agora protects customer data with security controls.
+
+### Data classification
+
+All customer data, in all formats or media types, is classified according to protected categories such as customer account data, end user data, call content, and logs.
+
+### Data security
+
+The communication between the user and the Agora server is protected by transmission protocols such as the Agora private transmission protocol, Transport Layer Security (TLS), and WebSocket Secure (WSS). You can also use AES or a customized encryption algorithm for the encryption of audio and video data.
+
+During data transmission, the Agora SDRTN(R) does not transmit any encryption key information. Call content can only be decrypted on the terminal device, such as the client app or the customer's on-premise recording server, through the client authorization key.
+
+### Data availability
+
+- Large and distributed data centers
+- Rapid recovery and isolation in case of severe attacks
+- DDoS attack prevention through anti-DDoS firewalls
+
+### Data storage
+
+When customers use Agora recording services, recorded video or audio files are stored on the storage server provided by the customer.
+
+### Access authorization
+
+End users can access the Agora SDRTN(R) using a dynamic key. For token-based access patterns, see the relevant token authentication documentation for the underlying RTC products you use with Media Gateway.
+
+### Electronic and physical access controls
+
+Agora strictly controls internal data access, uses independent accounts and authorization systems, records access logs, and protects operating servers in certified data centers.
+
+### Shared responsibilities
+
+Customers retain control of the security measures they choose to protect their personal information, platform, applications, systems, and networks.
+
+### Security training and non-compliance
+
+Agora conducts regular information protection, security, and compliance training and applies internal measures when non-compliance occurs.
+
+### Reporting potential security risks
+
+Report potential risks to `security@agora.io`. To facilitate troubleshooting and verification, include:
+
+- Your contact information
+- The version of the impacted SDK or solution
+- A description of the potential risks
+- Miscellaneous technical details, such as system configurations and reproduction steps
+
+### Security FAQ
+
+#### How do I use an Agora SDK to protect my data security?
+
+Agora services provide encryption for audio and video data. Customers can use AES-128, AES-256, or other preset algorithms, or use customized encryption algorithms to achieve encryption. The encryption key is completely generated and distributed by the customer.
+
+#### Is Agora HIPAA compliant?
+
+Yes.
+
+#### Does the Agora server cache audio and video data?
+
+Agora servers cache audio and video data briefly during transmission and release all cached audio and video data immediately after the call.
+
+## Whitepaper
+
+People engage longer when they see, hear, and interact with each other. The future of meaningful human connections is made possible now with Agora's Real-Time Engagement Platform. People rely on Agora's Real-Time Engagement Platform to exchange millions of calls and messages, with vivid voice and video embedded in any application, on any device, anywhere.
+
+Agora, Inc. offers a professional Real-Time Engagement Platform as a Service with compliance, safety, security, and trust. From its Software-Defined Real-Time Network architecture to day-to-day business operations, Agora continually invests in innovations and business processes that build trust with customers, investors, and the developer community.
+
+### Agora security programs
+
+Agora incorporates security into its products and services and integrates security practices into everyday business operations. To improve the overall information security posture in an efficient and effective manner, Agora has built its security framework against the ISO 27001 Information Security Management Standard.
+
+### Ongoing monitoring and improvement
+
+Agora continuously monitors and improves its information security programs by implementing measures such as:
+
+- Internal audits of the information security management system at least once a year
+- Internal security reviews and testing before deployment into production systems
+- Regular penetration testing by third-party security experts
+- A bug bounty program that works with security researchers to identify and report vulnerabilities
+
+### Security compliance
+
+Agora adheres to regional and international information security standards as well as industry requirements and uses international best practices.
+
+### Compliance certifications and attestations
+
+Agora highlights certifications and attestations such as:
+
+- ISO/IEC 27001
+- ISO/IEC 27018
+- SOC 2
+- PCI DSS related security posture statements
+
+### Regional security and data privacy regulations
+
+Agora aligns its programs with requirements such as GDPR, HIPAA, CCPA, and COPPA.
+
+### Product security
+
+Agora adopts industry-recognized security standards and best security practices at every layer, from infrastructure to application, to secure the organization and its customers.
+
+## Agora bug bounty program
+
+Agora encourages security researchers to report bugs and vulnerabilities through its security reporting channels and bug bounty workflow.
