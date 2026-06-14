@@ -57,9 +57,9 @@ sudo yum install wget
 sudo yum groupinstall X11
 ```
 
-## Get an Agora App ID and an Video SDK Temporary Token
+## Get an Agora App ID and a Video SDK temporary token
 
-See [Get Started with Agora](https://docs.agora.io/en/server-gateway/reference/manage-agora-account) to learn how to get an **Agora App ID** and an **Video SDK temporary token**.
+See [Manage your Agora account](build/manage-agora-account.md) to learn how to get an **Agora App ID** and a **Video SDK temporary token**.
 
 ## Get the SDK
 
