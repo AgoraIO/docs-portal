@@ -1,6 +1,6 @@
 ---
 title: "Product overview"
-description: "Quickly implement real-time audio and video transmission and intercommunication for IoT use cases.."
+description: "Quickly implement real-time audio and video transmission and intercommunication for IoT use cases."
 ---
 
 # IoT SDK
@@ -13,7 +13,7 @@ Built on Agora’s Software-Defined Real-Time Network (SDRTN®), the IoT SDK ens
 
 ## Start building with
 
-- [SDK quickstart](index.md) - Customize your experience from the start with our flexible Video SDK.
+- [SDK quickstart](index.md) - Build and validate a basic IoT SDK integration path.
 - [Authentication](build/authentication-workflow.md)
 - [API reference](https://docs.agora.io/en/api-reference)
 - [Samples](https://github.com/AgoraIO/API-Examples)
