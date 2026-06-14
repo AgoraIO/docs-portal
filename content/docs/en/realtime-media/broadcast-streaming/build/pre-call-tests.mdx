@@ -1,0 +1,2037 @@
+---
+title: "Pre-call tests"
+description: ""
+---
+
+In video calling implementations that demand high communication quality, pre-call detection helps identify and troubleshoot issues beforehand, ensuring seamless real-time interaction.
+
+<Tabs defaultValue="web" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+  <TabsTrigger value="electron">Electron</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+  <TabsTrigger value="react-native">React Native</TabsTrigger>
+  <TabsTrigger value="unity">Unity</TabsTrigger>
+  <TabsTrigger value="unreal">Unreal Engine</TabsTrigger>
+  <TabsTrigger value="blueprint">Unreal Blueprint</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your app.
+
+## Understand the tech
+
+Pre-call testing typically covers two aspects: 
+
+- **Equipment quality test**
+
+  To test whether the local microphone, speaker, and camera are working properly, you run an echo test. The basic process of conducting an echo test is as follows:
+
+  **Pre-call echo test**
+
+![Echo Test](/images/video-sdk/pre-call-echo-test.svg)
+
+- **Network quality analysis**
+
+  The quality of the last mile network affects the smoothness and clarity of the audio and video that the user sends and receives. Last mile refers to the last leg of communication network between the edge server of the Agora SDRTN® and the end-user devices. Network quality analysis enables you to get feedback on the available bandwidth, packet loss rate, network jitter, and round-trip delay of the upstream and downstream last-mile networks. The following figure shows the basic process of running a last-mile probe test.
+
+  **Pre-call last mile test**
+
+![Last Mile Test](/images/video-sdk/pre-call-last-mile-test.svg)
+
+:::info
+Best practice is to run the device test first and then perform a network test.
+
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) project and that your app has obtained permissions to use the relevant devices.
+
+## Implement pre-call testing
+This section shows you how to implement pre-call testing in your project.
+
+### Equipment quality test
+
+The SDK provides the `startEchoTest` [3/3] method to test the network connection and whether the audio and video devices are working properly. Refer to the following steps to implement the device quality test:
+
+1. Before joining a channel, call `startEchoTest` [3/3] with `EchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
+
+1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+
+1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+:::note
+Using `startEchoTest` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
+:::
+To implement running an echo test in your app, refer to the following code:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Test audio device
+private void testAudioDevice() {
+  // Create an EchoTestConfiguration instance
+  EchoTestConfiguration config = new EchoTestConfiguration();
+  // Disable video device testing
+  config.enableVideo = false;
+  // Enable audio device testing
+  config.enableAudio = true;
+  // Set the interval for returning test results
+  config.intervalInSeconds = MAX_COUNT_DOWN;
+  // Identify each test by channel name
+  config.channelId = "AudioEchoTest" + (new Random().nextInt(1000) + 10000);
+  // Start the test
+  engine.startEchoTest(config);
+}
+
+// Test video device
+private void testVideoDevice() {
+  // Create an EchoTestConfiguration instance
+  EchoTestConfiguration config = new EchoTestConfiguration();
+  // Enable video device testing
+  config.enableVideo = true;
+  // Specify the view for rendering the local user's video
+  config.view = requireView().findViewById(R.id.surfaceView);
+  // Disable audio device testing
+  config.enableAudio = false;
+  // Set the expected delay for video rendering
+  config.intervalInSeconds = MAX_COUNT_DOWN;
+  // Identify each test by channel name
+  config.channelId = "VideoEchoTest" + (new Random().nextInt(1000) + 10000);
+  // Start the test
+  engine.startEchoTest(config);
+}
+``` 
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Test audio device
+private fun testAudioDevice() {
+  // Create an EchoTestConfiguration instance
+  val config = EchoTestConfiguration().apply {
+    // Disable video device testing
+    enableVideo = false
+    // Enable audio device testing
+    enableAudio = true
+    // Set the interval for returning test results
+    intervalInSeconds = MAX_COUNT_DOWN
+    // Identify each test by channel name
+    channelId = "AudioEchoTest" + (Random().nextInt(1000) + 10000)
+  }
+  // Start the test
+  engine.startEchoTest(config)
+}
+
+// Test video device
+private fun testVideoDevice() {
+  // Create an EchoTestConfiguration instance
+  val config = EchoTestConfiguration().apply {
+    // Enable video device testing
+    enableVideo = true
+    // Specify the view for rendering the local user's video
+    view = requireView().findViewById(R.id.surfaceView)
+    // Disable audio device testing
+    enableAudio = false
+    // Set the expected delay for video rendering
+    intervalInSeconds = MAX_COUNT_DOWN
+    // Identify each test by channel name
+    channelId = "VideoEchoTest" + (Random().nextInt(1000) + 10000)
+  }
+  // Start the test
+  engine.startEchoTest(config)
+}
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Network quality analysis
+
+The SDK provides the `startLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
+
+1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
+
+1. After you start the test, the SDK triggers the following callbacks:
+  
+  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+
+To implement network quality testing in your app, refer to the following code:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Configure a LastmileProbeConfig instance
+LastmileProbeConfig config = new LastmileProbeConfig(){};
+// Probe uplink network quality
+config.probeUplink = true;
+// Probe downlink network quality
+config.probeDownlink = true;
+// User's expected maximum sending bitrate (bps). Range: [100000,5000000]
+config.expectedUplinkBitrate = 100000;
+// User's expected maximum receiving bitrate (bps). Range: [100000,5000000]
+config.expectedDownlinkBitrate = 100000;
+// Start the network quality probe
+engine.startLastmileProbeTest(config);
+
+// Register callbacks
+public void onLastmileQuality(int quality) {
+  statisticsInfo.setLastMileQuality(quality);
+  updateLastMileResult();
+}
+public void onLastmileProbeResult(LastmileProbeResult lastmileProbeResult) {
+  statisticsInfo.setLastMileProbeResult(lastmileProbeResult);
+  updateLastMileResult();
+}
+
+// Stop the network quality probe
+engine.stopLastmileProbeTest();
+``` 
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Configure a LastmileProbeConfig instance
+val config = LastmileProbeConfig().apply {
+  // Probe uplink network quality
+  probeUplink = true
+  // Probe downlink network quality
+  probeDownlink = true
+  // User's expected maximum sending bitrate (bps). Range: [100000, 5000000]
+  expectedUplinkBitrate = 500000 // Adjust as needed
+  // User's expected maximum receiving bitrate (bps). Range: [100000, 5000000]
+  expectedDownlinkBitrate = 500000 // Adjust as needed
+}
+
+// Start the network quality probe
+engine.startLastmileProbeTest(config)
+
+// Register callbacks
+fun onLastmileQuality(quality: Int) {
+  // Ensure statisticsInfo is initialized and updated
+  statisticsInfo.lastMileQuality = quality
+  updateLastMileResult() // Implement this function to handle the quality update
+}
+
+fun onLastmileProbeResult(lastmileProbeResult: LastmileProbeResult) {
+  // Ensure statisticsInfo is initialized and updated
+  statisticsInfo.lastMileProbeResult = lastmileProbeResult
+  updateLastMileResult() // Implement this function to handle the probe result update
+}
+
+// Stop the network quality probe when done
+engine.stopLastmileProbeTest()
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Troubleshooting device and network issues
+
+If you encounter problems while running pre-call tests, first ensure that you have implemented the API calls properly. To troubleshoot device and network issues, refer to the following table:
+
+| Problem | Solution |
+|:---|:---------------|
+| Can't hear sound when testing audio devices. | <ul><li>Check that the recording device and the playback device are working properly, and are not occupied by other programs.</li><li>Check that the network connection is normal.</li></ul> |
+| Cannot see the screen when testing video devices. | <ul><li>Check that the video device is working properly and not occupied by other programs.</li><li>Check whether the network connection is normal.</li></ul> |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate.</li></ul> |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+
+### Sample project
+
+Agora provides an open-source [PreCallTest](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample-Audio/app/src/main/java/io/agora/api/example/examples/advanced/PreCallTest.java) sample project for your reference. Download and explore this project for a more detailed example.
+
+### API reference
+
+- [`startEchoTest` [3/3]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_startechotest3)
+- [`stopEchoTest`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_stopechotest)
+- [`startLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_stoplastmileprobetest)
+- [`onLastmileQuality`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmilequality)
+- [`onLastmileProbeResult`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmileproberesult)
+</TabsContent>
+
+<TabsContent value="ios">
+This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your app.
+
+## Understand the tech
+
+Pre-call testing typically covers two aspects: 
+
+- **Equipment quality test**
+
+  To test whether the local microphone, speaker, and camera are working properly, you run an echo test. The basic process of conducting an echo test is as follows:
+
+  **Pre-call echo test**
+
+![Echo Test](/images/video-sdk/pre-call-echo-test.svg)
+
+- **Network quality analysis**
+
+  The quality of the last mile network affects the smoothness and clarity of the audio and video that the user sends and receives. Last mile refers to the last leg of communication network between the edge server of the Agora SDRTN® and the end-user devices. Network quality analysis enables you to get feedback on the available bandwidth, packet loss rate, network jitter, and round-trip delay of the upstream and downstream last-mile networks. The following figure shows the basic process of running a last-mile probe test.
+
+  **Pre-call last mile test**
+
+![Last Mile Test](/images/video-sdk/pre-call-last-mile-test.svg)
+
+:::info
+Best practice is to run the device test first and then perform a network test.
+
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) project and that your app has obtained permissions to use the relevant devices.
+
+## Implement pre-call testing
+This section shows you how to implement pre-call testing in your project.
+
+### Equipment quality test
+
+The SDK provides the `startEchoTest(withConfig:)` method to test the network connection and whether the audio and video devices are working properly. Refer to the following steps to implement the device quality test:
+
+1. Before joining a channel, call `startEchoTest(withConfig:)` with `AgoraEchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
+
+1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+
+1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+:::note
+Using `startEchoTest(withConfig:)` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
+:::
+To implement running an echo test in your app, refer to the following code:
+
+``` swift
+// Test audio device
+@IBAction func doAudioTest(sender: UIButton) {
+ let testConfig = AgoraEchoTestConfiguration()
+ // Set the interval for returning test results
+ testConfig.intervalInSeconds = 10
+ // Enable audio device test
+ testConfig.enableAudio = true
+ // Disable video device test
+ testConfig.enableVideo = false
+ // Identify each test by channel name
+ testConfig.channelId = "AudioEchoTest" + "\(Int.random(in: 1...1000))"
+ // Start the audio device test
+ let ret = agoraKit.startEchoTest(withConfig: testConfig)
+}
+
+// Test video device
+@IBAction func doVideoTest(_ sender: UIButton) {
+ let testConfig = AgoraEchoTestConfiguration()
+ // Set the delay for video frame
+ testConfig.intervalInSeconds = 2
+ // Disable audio device test
+ testConfig.enableAudio = false
+ // Enable video device test
+ testConfig.enableVideo = true
+ // Identify each test by channel name
+ testConfig.channelId = "VideoEchoTest" + "\(Int.random(in: 1...1000))"
+ // Set the view for rendering local user's video
+ testConfig.view = videoCanvasView
+ // Start the video device test
+ let ret = agoraKit.startEchoTest(withConfig: testConfig)
+}
+```
+
+### Network quality analysis
+
+The SDK provides the `startLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
+
+1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
+
+1. After calling this method, the SDK triggers the following callbacks:
+  
+  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+  
+  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+
+To implement network quality testing in your app, refer to the following code:
+
+``` swift
+// Create a network probe configuration object
+let config = AgoraLastmileProbeConfig()
+// Probe uplink network
+config.probeUplink = true;
+// Probe downlink network
+config.probeDownlink = true;
+// Expected uplink bitrate (bps). Value range is [100000,5000000]
+config.expectedUplinkBitrate = 100000;
+// Expected downlink bitrate (bps). Value range is [100000,5000000]
+config.expectedDownlinkBitrate = 100000;
+
+// Start the network quality probe
+agoraKit.startLastmileProbeTest(config)
+
+// Define callback functions to receive network quality statistics
+func rtcEngine(_ engine: AgoraRtcEngineKit, lastmileQuality quality: AgoraNetworkQuality) {
+  lastmileResultLabel.text = "Quality: \(quality.description())"
+}
+func rtcEngine(_ engine: AgoraRtcEngineKit, lastmileProbeTest result: AgoraLastmileProbeResult) {
+ // Round-Trip Time (RTT)
+ let rtt = "Rtt: \(result.rtt)ms"
+ // Downlink network bandwidth
+ let downlinkBandWidth = "DownlinkAvailableBandwidth: \(result.downlinkReport.availableBandwidth)Kbps"
+ // Downlink jitter buffer
+ let downlinkJitter = "DownlinkJitter: \(result.downlinkReport.jitter)ms"
+ // Downlink packet loss rate
+ let downlinkLoss = "DownlinkLoss: \(result.downlinkReport.packetLossRate)%"
+ // Uplink network bandwidth
+ let uplinkBandwidth = "UplinkAvailableBandwidth: \(result.uplinkReport.availableBandwidth)Kbps"
+ // Uplink jitter buffer
+ let uplinkJitter = "UplinkJitter: \(result.uplinkReport.jitter)ms"
+ // Uplink packet loss rate
+ let uplinkLoss = "UplinkLoss: \(result.uplinkReport.packetLossRate)%"
+
+ lastmileProbResultLabel.text = [rtt, downlinkBandWidth, downlinkJitter, downlinkLoss,uplinkBandwidth,uplinkJitter,uplinkLoss].joined(separator: "\n")
+}
+
+// Stop the network quality probe
+agoraKit.stopLastmileProbeTest()
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Troubleshooting device and network issues
+
+If you encounter problems while running pre-call tests, first ensure that you have implemented the API calls properly. To troubleshoot device and network issues, refer to the following table:
+
+| Problem | Solution |
+|:---|:---------------|
+| Can't hear sound when testing audio devices. | <ul><li>Check that the recording device and the playback device are working properly, and are not occupied by other programs.</li><li>Check that the network connection is normal.</li></ul> |
+| Cannot see the screen when testing video devices. | <ul><li>Check that the video device is working properly and not occupied by other programs.</li><li>Check whether the network connection is normal.</li></ul> |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate.</li></ul> |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+
+### Sample project
+
+Agora provides an open-source [PreCallTest](https://github.com/AgoraIO/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/PrecallTest/PrecallTest.swift) sample project for your reference. Download and explore this project for a more detailed example.
+
+### API reference
+
+- [`startEchoTest(withConfig:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/startechotest(withconfig:))
+- [`stopEchoTest()`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/stopechotest())
+- [`startLastmileProbeTest(_:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/startlastmileprobetest(_:))
+- [`stopLastmileProbeTest()`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/stoplastmileprobetest())
+- [`rtcEngine(_:lastmileQuality:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:lastmilequality:))
+- [`rtcEngine(_:lastmileProbeTest:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:lastmileprobetest:))
+</TabsContent>
+
+<TabsContent value="macos">
+This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your app.
+
+## Understand the tech
+
+Pre-call testing typically covers two aspects: 
+
+- **Equipment quality test**
+
+  To test whether the local microphone, speaker, and camera are working properly, you run an echo test. The basic process of conducting an echo test is as follows:
+
+  **Pre-call echo test**
+
+![Echo Test](/images/video-sdk/pre-call-echo-test.svg)
+
+- **Network quality analysis**
+
+  The quality of the last mile network affects the smoothness and clarity of the audio and video that the user sends and receives. Last mile refers to the last leg of communication network between the edge server of the Agora SDRTN® and the end-user devices. Network quality analysis enables you to get feedback on the available bandwidth, packet loss rate, network jitter, and round-trip delay of the upstream and downstream last-mile networks. The following figure shows the basic process of running a last-mile probe test.
+
+  **Pre-call last mile test**
+
+![Last Mile Test](/images/video-sdk/pre-call-last-mile-test.svg)
+
+:::info
+Best practice is to run the device test first and then perform a network test.
+
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) project and that your app has obtained permissions to use the relevant devices.
+
+## Implement pre-call testing
+This section shows you how to implement pre-call testing in your project.
+
+### Equipment quality test
+
+The SDK provides the `startEchoTest(withConfig:)` method to test the network connection and whether the audio and video devices are working properly. Refer to the following steps to implement the device quality test:
+
+1. Before joining a channel, call `startEchoTest(withConfig:)` with `AgoraEchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
+
+1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+
+1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+:::note
+Using `startEchoTest(withConfig:)` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
+:::
+To implement running an echo test in your app, refer to the following code:
+
+``` swift
+// Test audio device
+@IBAction func doAudioTest(sender: UIButton) {
+ let testConfig = AgoraEchoTestConfiguration()
+ // Set the interval for returning test results
+ testConfig.intervalInSeconds = 10
+ // Enable audio device test
+ testConfig.enableAudio = true
+ // Disable video device test
+ testConfig.enableVideo = false
+ // Identify each test by channel name
+ testConfig.channelId = "AudioEchoTest" + "\(Int.random(in: 1...1000))"
+ // Start the audio device test
+ let ret = agoraKit.startEchoTest(withConfig: testConfig)
+}
+
+// Test video device
+@IBAction func doVideoTest(_ sender: UIButton) {
+ let testConfig = AgoraEchoTestConfiguration()
+ // Set the delay for video frame
+ testConfig.intervalInSeconds = 2
+ // Disable audio device test
+ testConfig.enableAudio = false
+ // Enable video device test
+ testConfig.enableVideo = true
+ // Identify each test by channel name
+ testConfig.channelId = "VideoEchoTest" + "\(Int.random(in: 1...1000))"
+ // Set the view for rendering local user's video
+ testConfig.view = videoCanvasView
+ // Start the video device test
+ let ret = agoraKit.startEchoTest(withConfig: testConfig)
+}
+```
+
+### Network quality analysis
+
+The SDK provides the `startLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
+
+1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
+
+1. After calling this method, the SDK triggers the following callbacks:
+  
+  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+  
+  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+
+To implement network quality testing in your app, refer to the following code:
+
+``` swift
+// Create a network probe configuration object
+let config = AgoraLastmileProbeConfig()
+// Probe uplink network
+config.probeUplink = true;
+// Probe downlink network
+config.probeDownlink = true;
+// Expected uplink bitrate (bps). Value range is [100000,5000000]
+config.expectedUplinkBitrate = 100000;
+// Expected downlink bitrate (bps). Value range is [100000,5000000]
+config.expectedDownlinkBitrate = 100000;
+
+// Start the network quality probe
+agoraKit.startLastmileProbeTest(config)
+
+// Define callback functions to receive network quality statistics
+func rtcEngine(_ engine: AgoraRtcEngineKit, lastmileQuality quality: AgoraNetworkQuality) {
+  lastmileResultLabel.text = "Quality: \(quality.description())"
+}
+func rtcEngine(_ engine: AgoraRtcEngineKit, lastmileProbeTest result: AgoraLastmileProbeResult) {
+ // Round-Trip Time (RTT)
+ let rtt = "Rtt: \(result.rtt)ms"
+ // Downlink network bandwidth
+ let downlinkBandWidth = "DownlinkAvailableBandwidth: \(result.downlinkReport.availableBandwidth)Kbps"
+ // Downlink jitter buffer
+ let downlinkJitter = "DownlinkJitter: \(result.downlinkReport.jitter)ms"
+ // Downlink packet loss rate
+ let downlinkLoss = "DownlinkLoss: \(result.downlinkReport.packetLossRate)%"
+ // Uplink network bandwidth
+ let uplinkBandwidth = "UplinkAvailableBandwidth: \(result.uplinkReport.availableBandwidth)Kbps"
+ // Uplink jitter buffer
+ let uplinkJitter = "UplinkJitter: \(result.uplinkReport.jitter)ms"
+ // Uplink packet loss rate
+ let uplinkLoss = "UplinkLoss: \(result.uplinkReport.packetLossRate)%"
+
+ lastmileProbResultLabel.text = [rtt, downlinkBandWidth, downlinkJitter, downlinkLoss,uplinkBandwidth,uplinkJitter,uplinkLoss].joined(separator: "\n")
+}
+
+// Stop the network quality probe
+agoraKit.stopLastmileProbeTest()
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Troubleshooting device and network issues
+
+If you encounter problems while running pre-call tests, first ensure that you have implemented the API calls properly. To troubleshoot device and network issues, refer to the following table:
+
+| Problem | Solution |
+|:---|:---------------|
+| Can't hear sound when testing audio devices. | <ul><li>Check that the recording device and the playback device are working properly, and are not occupied by other programs.</li><li>Check that the network connection is normal.</li></ul> |
+| Cannot see the screen when testing video devices. | <ul><li>Check that the video device is working properly and not occupied by other programs.</li><li>Check whether the network connection is normal.</li></ul> |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate.</li></ul> |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+
+### Sample project
+
+Agora provides an open-source [PreCallTest](https://github.com/AgoraIO/API-Examples/blob/main/macOS/APIExample/Examples/Advanced/PrecallTest/PrecallTest.swift) sample project for your reference. Download and explore this project for a more detailed example.
+
+### API reference
+
+- [`startEchoTest(withConfig:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/startechotest(withconfig:))
+- [`stopEchoTest()`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/stopechotest())
+- [`startLastmileProbeTest(_:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/startlastmileprobetest(_:))
+- [`stopLastmileProbeTest()`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/stoplastmileprobetest())
+- [`rtcEngine(_:lastmileQuality:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:lastmilequality:))
+- [`rtcEngine(_:lastmileProbeTest:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:lastmileprobetest:))
+</TabsContent>
+
+<TabsContent value="web">
+This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your app.
+
+## Understand the tech
+
+Pre-call testing typically covers two aspects: 
+
+- **Equipment quality test**
+
+  Device quality testing involves testing whether the local microphone, speaker, and camera are working properly.
+
+- **Network quality analysis**
+
+  The quality of the last mile network affects the smoothness and clarity of the audio and video that the user sends and receives. Last mile refers to the last leg of communication network between the edge server of the Agora SDRTN® and the end-user devices. Network quality analysis enables you to get feedback on the available bandwidth, packet loss rate, network jitter, and round-trip delay of the upstream and downstream last-mile networks. It enables you to examine if current network conditions are good enough to meet the requirements of the currently selected audio bitrate or the target video bitrate.
+
+:::info
+Best practice is to run the device test first and then perform a network test.
+
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) project and that your app has obtained permissions to use the relevant devices.
+
+## Implement pre-call testing
+This section shows you how to implement pre-call testing in your project.
+
+### Equipment quality test
+
+You test the recording and playback devices separately.
+
+#### Recording equipment testing
+
+Refer to the following steps to test the local microphone and camera:
+
+1. Call `AgoraRTC.getDevices` to get the available devices and their IDs.
+
+1. When calling `AgoraRTC.createCameraVideoTrack` and `AgoraRTC.createMicrophoneAudioTrack` to create local audio and video track objects, pass in `cameraId` and `microphoneId` to specify the devices you want to test.
+
+1. After creating the local audio or video track object, call `CameraVideoTrack.play` to play the local video track:
+
+  1. If you are testing the microphone, call `MicrophoneAudioTrack.getVolumeLevel` to get the volume level. If the volume is greater than `0`, it means that the microphone is working normally.
+
+  1. When testing the camera, if you see the picture after playing the video track, it means that the camera is working normally.
+
+To implement recording equipment tests in your app, refer to the following code:
+
+``` javascript
+// Get all audio and video devices
+AgoraRTC.getDevices()
+ .then(devices => {
+  const audioDevices = devices.filter(function(device){
+    return device.kind === "audioinput";
+  });
+  const videoDevices = devices.filter(function(device){
+    return device.kind === "videoinput";
+  });
+
+  var selectedMicrophoneId = audioDevices[0].deviceId;
+  var selectedCameraId = videoDevices[0].deviceId;
+  return Promise.all([
+   AgoraRTC.createCameraVideoTrack({ cameraId: selectedCameraId }),
+   AgoraRTC.createMicrophoneAudioTrack({ microphoneId: selectedMicrophoneId }),
+  ]);
+ })
+ .then([videoTrack, audioTrack] => {
+  videoTrack.play("<ELEMENT_ID_IN_DOM>");
+  setInterval(() => {
+   const level = audioTrack.getVolumeLevel();
+   console.log("local stream audio level", level);
+  }, 1000);
+ });
+```
+:::note
+- Best practice is to draw the volume change and camera screen on the UI so that users can judge if the device is working properly.
+- Device IDs are randomly generated, and in some cases the ID of the same device may change. Best practice is to call `AgoraRTC.getDevices` to get the device ID every time you test the device.
+:::
+#### Playback device testing
+
+The Agora SDK for Web does not provide an API for testing audio playback devices. Use the following methods to test the audio playback devices:
+
+- Create an audio player on the page using the HTML5 `<audio>` element. Prompt the user to play the audio file and confirm that the sound is audible.
+
+- After capturing the microphone audio, call `MicrophoneAudioTrack.play` to play the microphone sound and prompt the user to subjectively verify that the playback is audible.
+
+### Network quality analysis
+
+Refer to the following steps to perform a network quality test before a call or live broadcast:
+
+1. Call `createClient` twice, to create two clients:
+  - `uplinkClient`: To test the connection status of the uplink network.
+  - `downlinkClient`: To test the connection status of the downlink network.
+
+1. Both clients call `join` to enter a channel for testing.
+
+1. Call `createMicrophoneAndCameraTracks` to create audio and video tracks.
+
+1. Call `publish` on `uplinkClient` to publish audio and video tracks and `subscribe` on `downlinkClient` to subscribe to audio and video tracks.
+
+1. Listen to the `uplinkClient.on("network-quality")` event to get the uplink network status between the local device and Agora server.
+
+1. Listen to `downlinkClient.on("network-quality")` event to get the downlink network status between the local device and the Agora server. The SDK triggers the `client.on("network-quality")` callback every two seconds.
+
+1. To get specific statistics about the sent or received media tracks, such as send/receive bitrate, end-to-end latency, call `getLocalAudioStats` and `getLocalVideoStats` on `uplinkClient` to get the uplink statistics, and `getRemoteAudioStats` and `getRemoteVideoStats` on `downlinkClient` to get the downlink statistics. 
+
+The following figure summarizes the calling sequence of network quality tests:
+
+  **Pre-call last mile test**
+
+![Network quality analysis](/images/video-sdk/pre-call-network-quality-web.svg)
+
+To implement network quality testing in your app, refer to the following code:
+
+``` typescript
+// Get uplink network quality
+uplinkClient.on("network-quality", (quality) => {
+ console.log("uplink network quality", quality.uplinkNetworkQuality);
+});
+
+// Get downlink network quality
+downlinkClient.on("network-quality", (quality) => {
+ console.log("downlink network quality", quality.downlinkNetworkQuality);
+});
+
+// Get uplink statistics
+uplinkVideoStats = uplinkClient.getLocalVideoStats();
+// Get downlink statistics
+downlinkVideoStats = downlinkClient.getRemoteVideoStats()[<UPLINKCLIENT_UID>];
+
+console.log("uplink video stats", uplinkVideoStats);
+console.log("downlink video stats", downlinkVideoStats);
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Troubleshooting device and network issues
+
+If you encounter problems while running pre-call tests, first ensure that you have implemented the API calls properly. To troubleshoot device and network issues, refer to the following table:
+
+| Problem | Solution |
+|:---|:---------------|
+| Can't hear sound when testing audio devices. | <ul><li>Check that the recording device and the playback device are working properly, and are not occupied by other programs.</li><li>Check that the network connection is normal.</li></ul> |
+| Cannot see the screen when testing video devices. | <ul><li>Check that the video device is working properly and not occupied by other programs.</li><li>Check whether the network connection is normal.</li></ul> |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate.</li></ul> |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+
+### Sample project
+
+Agora provides the following open-source projects for your reference: 
+
+- [JoinChannelAudio](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx)
+
+Download or view the code for more detailed examples.
+
+### API reference
+
+- Equipment testing :
+  - [getDevices](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#getdevices)
+  - [getCameras](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#getcameras)
+  - [getMicrophones](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#getmicrophones)
+  - [createMicrophoneAudioTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createmicrophoneaudiotrack)
+  - [createCameraVideoTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcameravideotrack)
+
+- Network analysis:
+  - [network-quality](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#event_network_quality)
+  - [getLocalAudioStats](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#getlocalaudiostats)
+  - [getLocalVideoStats](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#getlocalvideostats)
+  - [getRemoteAudioStats](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#getremoteaudiostats)
+  - [getRemoteVideoStats](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#getremotevideostats)
+</TabsContent>
+
+<TabsContent value="windows">
+This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your app.
+
+## Understand the tech
+
+Pre-call testing typically covers two aspects: 
+
+- **Equipment quality test**
+
+  To test whether the local microphone, speaker, and camera are working properly, you run an echo test. The basic process of conducting an echo test is as follows:
+
+  **Pre-call echo test**
+
+![Echo Test](/images/video-sdk/pre-call-echo-test.svg)
+
+- **Network quality analysis**
+
+  The quality of the last mile network affects the smoothness and clarity of the audio and video that the user sends and receives. Last mile refers to the last leg of communication network between the edge server of the Agora SDRTN® and the end-user devices. Network quality analysis enables you to get feedback on the available bandwidth, packet loss rate, network jitter, and round-trip delay of the upstream and downstream last-mile networks. The following figure shows the basic process of running a last-mile probe test.
+
+  **Pre-call last mile test**
+
+![Last Mile Test](/images/video-sdk/pre-call-last-mile-test.svg)
+
+:::info
+Best practice is to run the device test first and then perform a network test.
+
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) project and that your app has obtained permissions to use the relevant devices.
+
+## Implement pre-call testing
+This section shows you how to implement pre-call testing in your project.
+
+### Equipment quality test
+
+The SDK provides the `startEchoTest` [3/3] method to test the network connection and whether the audio and video devices are working properly. Refer to the following steps to implement the device quality test:
+
+1. Before joining a channel, call `startEchoTest` [3/3] with `EchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
+
+1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+
+1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+:::note
+Using `startEchoTest` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
+:::
+To implement running an echo test in your app, refer to the following code:
+
+``` cpp
+// Test audio device
+void testAudioDevice() {
+  EchoTestConfiguration config;
+  // Enable audio device test
+  config.enableAudio = true;
+  // Disable video device test
+  config.enableVideo = false;
+  // Set the interval for returning test results
+  config.intervalInSeconds = m_audioEchoInterval;
+  // Identify the test channel
+  config.channelId = "AudioEchoTestChannel";
+  // Start the test
+  m_rtcEngine->startEchoTest(config);
+}
+
+// Test video device
+void testVideoDevice() {
+  EchoTestConfiguration config;
+  // Disable audio device test
+  config.enableAudio = false;
+  // Enable video device test
+  config.enableVideo = true;
+  // Specify the view for rendering local user video
+  config.view = m_VideoTest.GetVideoSafeHwnd();
+  // Set the expected delay for video frames
+  config.intervalInSeconds = m_videoEchoInterval;
+  // Identify the test channel
+  config.channelId = "VideoEchoTestChannel";
+  // Start the test
+  m_rtcEngine->startEchoTest(config);
+}
+```
+
+### Network quality analysis
+
+Video SDK provides the `startLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
+
+1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
+
+1. After you start the test, the SDK triggers the following callbacks:
+  
+  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+
+To implement network quality testing in your app, refer to the following code:
+
+``` cpp
+// Callback registration
+void onLastmileQuality(int quality) {
+}
+
+void onLastmileProbeResult(LastmileProbeResult result) {
+}
+
+// Configure a LastmileProbeConfig instance
+LastmileProbeConfig config;
+// Confirm probing uplink network quality
+config.probeUplink = true;
+// Confirm probing downlink network quality
+config.probeDownlink = true;
+// Expected maximum sending bitrate, in bps, range [100000,5000000]
+config.expectedUplinkBitrate = 100000;
+// Expected maximum receiving bitrate, in bps, range [100000,5000000]
+config.expectedDownlinkBitrate = 100000;
+// Start network quality probing
+m_rtcEngine->startLastmileProbeTest(config);
+
+// Stop network quality probing
+m_rtcEngine->stopLastmileProbeTest();
+
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Troubleshooting device and network issues
+
+If you encounter problems while running pre-call tests, first ensure that you have implemented the API calls properly. To troubleshoot device and network issues, refer to the following table:
+
+| Problem | Solution |
+|:---|:---------------|
+| Can't hear sound when testing audio devices. | <ul><li>Check that the recording device and the playback device are working properly, and are not occupied by other programs.</li><li>Check that the network connection is normal.</li></ul> |
+| Cannot see the screen when testing video devices. | <ul><li>Check that the video device is working properly and not occupied by other programs.</li><li>Check whether the network connection is normal.</li></ul> |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate.</li></ul> |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+
+### Sample project
+
+Agora provides an open-source [PreCallTest](https://github.com/AgoraIO/API-Examples/tree/4.0.0-GA/windows/APIExample/APIExample/Advanced/PreCallTest) sample project for your reference. Download and explore this project for a more detailed example.
+
+### API reference
+
+- [`startEchoTest` [3/3]](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_startechotest3)
+- [`stopEchoTest`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_stopechotest)
+- [`startLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_stoplastmileprobetest)
+- [`onLastmileQuality`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmilequality)
+- [`onLastmileProbeResult`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmileproberesult)
+</TabsContent>
+
+<TabsContent value="electron">
+This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your app.
+
+## Understand the tech
+
+Pre-call testing typically covers two aspects: 
+
+- **Equipment quality test**
+
+  To test whether the local microphone, speaker, and camera are working properly, you run an echo test. The basic process of conducting an echo test is as follows:
+
+  **Pre-call echo test**
+
+![Echo Test](/images/video-sdk/pre-call-echo-test.svg)
+
+- **Network quality analysis**
+
+  The quality of the last mile network affects the smoothness and clarity of the audio and video that the user sends and receives. Last mile refers to the last leg of communication network between the edge server of the Agora SDRTN® and the end-user devices. Network quality analysis enables you to get feedback on the available bandwidth, packet loss rate, network jitter, and round-trip delay of the upstream and downstream last-mile networks. The following figure shows the basic process of running a last-mile probe test.
+
+  **Pre-call last mile test**
+
+![Last Mile Test](/images/video-sdk/pre-call-last-mile-test.svg)
+
+:::info
+Best practice is to run the device test first and then perform a network test.
+
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) project and that your app has obtained permissions to use the relevant devices.
+
+## Implement pre-call testing
+This section shows you how to implement pre-call testing in your project.
+
+### Equipment quality test
+
+The SDK provides the `startEchoTest` method to test the network connection and whether the audio and video devices are working properly. Refer to the following steps to implement the device quality test:
+
+1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
+
+1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+
+1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+
+To implement running an echo test in your app, refer to the following code:
+
+``` typescript
+this.engine.startEchoTest(10);
+this.engine.stopEchoTest();
+```
+
+#### Audio recording device test
+
+To test whether a local audio recording device, such as a microphone, is working properly, refer to the following steps.
+
+1. Call `startRecordingDeviceTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
+
+1. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `onAudioVolumeIndication` callback.
+
+1. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
+:::note
+Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+:::
+To implement running a recording device test in your app, refer to the following code:
+
+``` typescript
+this.engine.getAudioDeviceManager().setRecordingDevice(deviceId);
+this.engine.registerEventHandler({
+ onAudioVolumeIndication(
+  connection: RtcConnection,
+  speakers: AudioVolumeInfo[],
+  speakerNumber: number,
+  totalVolume: number
+ ){},
+});
+this.engine.getAudioDeviceManager().startRecordingDeviceTest(1000);
+this.engine.getAudioDeviceManager().stopRecordingDeviceTest();
+```
+
+#### Audio playback device test
+
+To test that the local audio playback device is working properly, refer to the following steps:
+
+1. Call `startPlaybackDeviceTest` and set the `audioFileName` parameter to the absolute path of the audio file to be played.
+
+1. If the user hears the audio, the playback device is working properly. The SDK triggers the `onAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
+
+1. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
+
+To implement running a playback device test in your app, refer to the following code:
+
+``` typescript
+this.engine.getAudioDeviceManager().setPlaybackDevice(deviceId);
+this.engine.getAudioDeviceManager().startPlaybackDeviceTest(filePath);
+this.engine.getAudioDeviceManager().stopPlaybackDeviceTest();
+```
+
+#### Audio device loopback test
+
+To test if the local audio device loop is working properly, refer to the following steps:
+
+1. Call `startAudioDeviceLoopbackTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
+
+1. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `onAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
+
+1. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
+:::note
+Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+:::
+To implement an audio loopback device test in your app, refer to the following code:
+
+``` typescript
+this.engine.registerEventHandler({
+ onAudioVolumeIndication(
+  connection: RtcConnection,
+  speakers: AudioVolumeInfo[],
+  speakerNumber: number,
+  totalVolume: number
+ ){},
+}); this.engine.getAudioDeviceManager().startAudioDeviceLoopbackTest(1000);
+this.engine.getAudioDeviceManager().stopAudioDeviceLoopbackTest();
+```
+
+### Network quality analysis
+
+The SDK provides the `startLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
+
+1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
+
+1. After you start the test, the SDK triggers the following callbacks:
+  
+  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+
+To implement network quality testing in your app, refer to the following code:
+
+``` typescript
+this.engine.registerEventHandler({
+ onLastmileQuality(quality: QualityType) {},
+ onLastmileProbeResult(result: LastmileProbeResult) {},
+});
+this.engine.startLastmileProbeTest({
+ probeUplink: true,
+ probeDownlink: true,
+ expectedUplinkBitrate: 100000,
+ expectedDownlinkBitrate: 100000,
+});
+this.engine.stopLastmileProbeTest();
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Troubleshooting device and network issues
+
+If you encounter problems while running pre-call tests, first ensure that you have implemented the API calls properly. To troubleshoot device and network issues, refer to the following table:
+
+| Problem | Solution |
+|:---|:---------------|
+| Can't hear sound when testing audio devices. | <ul><li>Check that the recording device and the playback device are working properly, and are not occupied by other programs.</li><li>Check that the network connection is normal.</li></ul> |
+| Cannot see the screen when testing video devices. | <ul><li>Check that the video device is working properly and not occupied by other programs.</li><li>Check whether the network connection is normal.</li></ul> |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate.</li></ul> |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+
+### API reference
+
+- [`startLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_stoplastmileprobetest)
+- [`onLastmileQuality`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmilequality)
+- [`onLastmileProbeResult`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmileproberesult)
+- [`onAudioVolumeIndication`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication)
+</TabsContent>
+
+<TabsContent value="flutter">
+This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your app.
+
+## Understand the tech
+
+Pre-call testing typically covers two aspects: 
+
+- **Equipment quality test**
+
+  To test whether the local microphone, speaker, and camera are working properly, you run an echo test. The basic process of conducting an echo test is as follows:
+
+  **Pre-call echo test**
+
+![Echo Test](/images/video-sdk/pre-call-echo-test.svg)
+
+- **Network quality analysis**
+
+  The quality of the last mile network affects the smoothness and clarity of the audio and video that the user sends and receives. Last mile refers to the last leg of communication network between the edge server of the Agora SDRTN® and the end-user devices. Network quality analysis enables you to get feedback on the available bandwidth, packet loss rate, network jitter, and round-trip delay of the upstream and downstream last-mile networks. The following figure shows the basic process of running a last-mile probe test.
+
+  **Pre-call last mile test**
+
+![Last Mile Test](/images/video-sdk/pre-call-last-mile-test.svg)
+
+:::info
+Best practice is to run the device test first and then perform a network test.
+
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) project and that your app has obtained permissions to use the relevant devices.
+
+## Implement pre-call testing
+This section shows you how to implement pre-call testing in your project.
+
+### Equipment quality test
+
+The SDK provides the `startEchoTest` method to test the network connection and whether the audio and video devices are working properly. Refer to the following steps to implement the device quality test:
+
+1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
+
+1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+
+1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+
+To implement running an echo test in your app, refer to the following code:
+
+``` dart
+// Start the echo test
+// Only a host can call startEchoTest
+await _engine.startEchoTest();
+
+// Wait and check if you can hear voice playback
+
+// Stop the echo test
+// Call stopEchoTest to end the echo test. Until you call stopEchoTest, you cannot start another test or join a channel.
+await _engine.stopEchoTest();
+```
+
+#### Audio recording device test
+
+To test whether a local audio recording device, such as a microphone, is working properly, refer to the following steps.
+
+1. Call `startRecordingDeviceTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
+
+1. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `onAudioVolumeIndication` callback.
+
+1. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
+:::note
+Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+:::
+To implement running a recording device test in your app, refer to the following code:
+
+``` dart
+// Select an audio capture device
+await _audioDeviceManager.setRecordingDevice(deviceId);
+
+// Implement the audio volume indication callback
+onAudioVolumeIndication: (RtcConnection connection,
+  List<AudioVolumeInfo> speakers, int speakerNumber, int totalVolume) {
+  logSink.log('[onAudioVolumeIndication] speakers: ${speakers.toString()}, speakerNumber: $speakerNumber, totalVolume: $totalVolume');
+},
+
+// Start audio capture device test
+await _audioDeviceManager.startRecordingDeviceTest(1000);
+
+// Stop audio capture device test
+await _audioDeviceManager.stopRecordingDeviceTest();
+```
+
+#### Audio playback device test
+
+To test that the local audio playback device is working properly, refer to the following steps:
+
+1. Call `startPlaybackDeviceTest` and set the `audioFileName` parameter to the absolute path of the audio file to be played.
+
+1. If the user hears the audio, the playback device is working properly. The SDK triggers the `onAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
+
+1. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
+
+To implement running a playback device test in your app, refer to the following code:
+
+``` dart
+// Select an audio playback device
+await _audioDeviceManager.setPlaybackDevice(_selectedPlaybackDeviceId);
+
+// Specify the absolute path of the audio file to start the playback device test
+await _audioDeviceManager.startPlaybackDeviceTest(filePath);
+
+// Stopping the audio playback device test
+await _audioDeviceManager.stopPlaybackDeviceTest();
+```
+
+#### Audio device loopback test
+
+To test if the local audio device loop is working properly, refer to the following steps:
+
+1. Call `startAudioDeviceLoopbackTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
+
+1. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `onAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
+
+1. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
+:::note
+Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+:::
+To implement an audio loopback device test in your app, refer to the following code:
+
+``` dart
+await _audioDeviceManager.startAudioDeviceLoopbackTest(1000);
+
+await _audioDeviceManager.stopAudioDeviceLoopbackTest();
+```
+
+### Network quality analysis
+
+The SDK provides the `startLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
+
+1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
+
+1. After you start the test, the SDK triggers the following callbacks:
+  
+  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+
+To implement network quality testing in your app, refer to the following code:
+
+``` dart
+// Configure a LastmileProbeConfig instance
+LastmileProbeConfig config = const LastmileProbeConfig(
+  probeUplink: true, // Probe uplink network quality
+  probeDownlink: true, // Probe downlink network quality
+  expectedUplinkBitrate: 100000, // Desired maximum transmit bitrate in bps, in the range [100000,5000000].
+  expectedDownlinkBitrate: 100000, // Desired maximum receive bitrate in bps, in the range [100000,5000000].
+);
+
+// Start the probe test
+await _engine.startLastmileProbeTest(config);
+
+// Stop the probe test
+await _engine.stopLastmileProbeTest();
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Troubleshooting device and network issues
+
+If you encounter problems while running pre-call tests, first ensure that you have implemented the API calls properly. To troubleshoot device and network issues, refer to the following table:
+
+| Problem | Solution |
+|:---|:---------------|
+| Can't hear sound when testing audio devices. | <ul><li>Check that the recording device and the playback device are working properly, and are not occupied by other programs.</li><li>Check that the network connection is normal.</li></ul> |
+| Cannot see the screen when testing video devices. | <ul><li>Check that the video device is working properly and not occupied by other programs.</li><li>Check whether the network connection is normal.</li></ul> |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate.</li></ul> |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+
+### API reference
+
+- [`startRecordingDeviceTest`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startrecordingdevicetest)
+- [`stopRecordingDeviceTest`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stoprecordingdevicetest)
+- [`startPlaybackDeviceTest`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startplaybackdevicetest)
+- [`stopPlaybackDeviceTest`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stopplaybackdevicetest)
+- [`startAudioDeviceLoopbackTest`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startaudiodeviceloopbacktest)
+- [`stopAudioDeviceLoopbackTest`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stopaudiodeviceloopbacktest)
+- [`startEchoTest`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/api_irtcengine_startechotest3.html)
+- [`stopEchoTest`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_stopechotest)
+- [`startLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_stoplastmileprobetest)
+- [`onLastmileQuality`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmilequality)
+- [`onLastmileProbeResult`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmileproberesult)
+</TabsContent>
+
+<TabsContent value="react-native">
+This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your app.
+
+## Understand the tech
+
+Pre-call testing typically covers two aspects: 
+
+- **Equipment quality test**
+
+  To test whether the local microphone, speaker, and camera are working properly, you run an echo test. The basic process of conducting an echo test is as follows:
+
+  **Pre-call echo test**
+
+![Echo Test](/images/video-sdk/pre-call-echo-test.svg)
+
+- **Network quality analysis**
+
+  The quality of the last mile network affects the smoothness and clarity of the audio and video that the user sends and receives. Last mile refers to the last leg of communication network between the edge server of the Agora SDRTN® and the end-user devices. Network quality analysis enables you to get feedback on the available bandwidth, packet loss rate, network jitter, and round-trip delay of the upstream and downstream last-mile networks. The following figure shows the basic process of running a last-mile probe test.
+
+  **Pre-call last mile test**
+
+![Last Mile Test](/images/video-sdk/pre-call-last-mile-test.svg)
+
+:::info
+Best practice is to run the device test first and then perform a network test.
+
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) project and that your app has obtained permissions to use the relevant devices.
+
+## Implement pre-call testing
+This section shows you how to implement pre-call testing in your project.
+
+### Equipment quality test
+
+The SDK provides the `startEchoTest` method to test the network connection and whether the audio and video devices are working properly. Refer to the following steps to implement the device quality test:
+
+1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
+
+1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+
+1. To stop the test, call `stopEchoTest`, and then call `joinChannelByToken` to join a channel.
+
+To implement running an echo test in your app, refer to the following code:
+
+``` typescript
+this.engine.startEchoTest(10);
+this.engine.stopEchoTest();
+```
+
+### Network quality analysis
+
+The SDK provides the `startLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
+
+1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
+
+1. After you start the test, the SDK triggers the following callbacks:
+  
+  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+
+To implement network quality testing in your app, refer to the following code:
+
+``` typescript
+this.engine.registerEventHandler({
+ onLastmileQuality(quality: QualityType) {},
+ onLastmileProbeResult(result: LastmileProbeResult) {},
+});
+this.engine.startLastmileProbeTest({
+ probeUplink: true,
+ probeDownlink: true,
+ expectedUplinkBitrate: 100000,
+ expectedDownlinkBitrate: 100000,
+});
+this.engine.stopLastmileProbeTest();
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Troubleshooting device and network issues
+
+If you encounter problems while running pre-call tests, first ensure that you have implemented the API calls properly. To troubleshoot device and network issues, refer to the following table:
+
+| Problem | Solution |
+|:---|:---------------|
+| Can't hear sound when testing audio devices. | <ul><li>Check that the recording device and the playback device are working properly, and are not occupied by other programs.</li><li>Check that the network connection is normal.</li></ul> |
+| Cannot see the screen when testing video devices. | <ul><li>Check that the video device is working properly and not occupied by other programs.</li><li>Check whether the network connection is normal.</li></ul> |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate.</li></ul> |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+
+### Sample projects
+
+Agora provides an open-source React Native [JoinChannelAudio](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx) sample project for your reference. Download and explore this project for a more detailed example.
+
+During the process of adjusting call volume, refer to the [AudioMixing](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/AudioMixing/AudioMixing.tsx) project to adjust the playback volume of a mix or sound file.
+
+### API reference
+
+- [`startEchoTest`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_startechotest3)
+- [`stopEchoTest`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_stopechotest)
+- [`startLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_stoplastmileprobetest)
+- [`adjustRecordingSignalVolume`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`onAudioVolumeIndication`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication)
+</TabsContent>
+
+<TabsContent value="unity">
+This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your game.
+
+## Understand the tech
+
+Pre-call testing typically covers two aspects: 
+
+- **Equipment quality test**
+
+  To test whether the local microphone, speaker, and camera are working properly, you run an echo test. The basic process of conducting an echo test is as follows:
+
+  **Pre-call echo test**
+
+![Echo Test](/images/video-sdk/pre-call-echo-test.svg)
+
+- **Network quality analysis**
+
+  The quality of the last mile network affects the smoothness and clarity of the audio and video that the user sends and receives. Last mile refers to the last leg of communication network between the edge server of the Agora SDRTN® and the end-user devices. Network quality analysis enables you to get feedback on the available bandwidth, packet loss rate, network jitter, and round-trip delay of the upstream and downstream last-mile networks. The following figure shows the basic process of running a last-mile probe test.
+
+  **Pre-call last mile test**
+
+![Last Mile Test](/images/video-sdk/pre-call-last-mile-test.svg)
+
+:::info
+Best practice is to run the device test first and then perform a network test.
+
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) project and that your game has obtained permissions to use the relevant devices.
+
+## Implement pre-call testing
+This section shows you how to implement pre-call testing in your project.
+
+### Equipment quality test
+
+The SDK provides the `StartEchoTest` method to test the network connection and whether the audio and video devices are working properly. Refer to the following steps to implement the device quality test:
+
+1. Before joining a channel, call `StartEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
+
+1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+
+1. To stop the test, call `StopEchoTest`, and then call `JoinChannel` to join a channel.
+
+To implement running an echo test in your game, refer to the following code:
+
+``` csharp
+// Start Echo Test
+// Only a host can call StartEchoTest.
+RtcEngine.StartEchoTest(2);
+
+// Wait and check if you can hear voice playback
+
+// Stop the echo test
+// Call stopEchoTest to end the echo test. Until you call stopEchoTest, you cannot start another test or join a channel.
+RtcEngine.StopEchoTest();
+```
+
+#### Audio recording device test
+
+To test whether a local audio recording device, such as a microphone, is working properly, refer to the following steps.
+
+1. Call `StartRecordingDeviceTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
+
+1. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `OnAudioVolumeIndication` callback.
+
+1. When you are done testing, call `StopRecordingDeviceTest` to stop the test.
+:::note
+Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `OnAudioVolumeIndication` callback may not be received.
+:::
+To implement running a recording device test in your game, refer to the following code:
+
+``` csharp
+// Create the IRtcEngine object
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+UserEventHandler handler = new UserEventHandler(this);
+RtcEngineContext context = new RtcEngineContext(_appID, 0,
+            CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
+            AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+// Initialize IRtcEngine
+RtcEngine.Initialize(context);
+// Set up listen callbacks
+RtcEngine.InitEventHandler(handler);
+// Get the IAudioDeviceManager object.
+IAudioDeviceManager audioDeviceManager = RtcEngine.GetAudioDeviceManager();
+// Enable local audio recording test
+audioDeviceManager.StartRecordingDeviceTest(100);
+
+class UserEventHandler : IRtcEngineEventHandler
+{
+  // Implement the audio volume callback 
+  public override void OnAudioVolumeIndication(RtcConnection connection, AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume)
+  {
+
+  }
+}
+```
+
+#### Audio playback device test
+
+To test that the local audio playback device is working properly, refer to the following steps:
+
+1. Call `StartPlaybackDeviceTest` and set the `testAudioFilePath` parameter to the absolute path of the audio file to be played.
+
+1. If the user hears the audio, the playback device is working properly. The SDK triggers the `OnAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
+
+1. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
+
+``` csharp
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+UserEventHandler handler = new UserEventHandler(this);
+RtcEngineContext context = new RtcEngineContext(_appID, 0,
+            CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
+            AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+RtcEngine.Initialize(context);
+// Set up listen callbacks
+RtcEngine.InitEventHandler(handler);
+// Test the local audio playback device
+IAudioDeviceManager audioDeviceManager = RtcEngine.GetAudioDeviceManager();
+audioDeviceManager.StartPlaybackDeviceTest("/User/hello.mp3");
+
+class UserEventHandler : IRtcEngineEventHandler
+{
+  // Implement the audio volume callback interface
+  public override void OnAudioVolumeIndication(RtcConnection connection, AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume)
+  {
+
+  }
+}
+```
+
+#### Audio equipment loop detection
+
+#### Audio device loopback test
+
+To test if the local audio device loop is working properly, refer to the following steps:
+
+1. Call `StartAudioDeviceLoopbackTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
+
+1. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `oOnAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
+
+1. When you are done testing, call `StopAudioDeviceLoopbackTest` to stop the recording device test.
+:::note
+Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+:::
+To implement an audio loopback device test in your game, refer to the following code:
+
+``` csharp
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+UserEventHandler handler = new UserEventHandler(this);
+RtcEngineContext context = new RtcEngineContext(_appID, 0,
+          CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
+          AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+RtcEngine.Initialize(context);
+// Set up the callbacks
+RtcEngine.InitEventHandler(handler);
+// Test the local audio device loop 
+IAudioDeviceManager audioDeviceManager = RtcEngine.GetAudioDeviceManager();
+audioDeviceManager.StartAudioDeviceLoopbackTest(100);
+
+// Call StopAudioDeviceLoopbackTest when you are done testing
+audioDeviceManager.StopAudioDeviceLoopbackTest();
+
+class UserEventHandler : IRtcEngineEventHandler
+{
+  // Implement the audio volume callback interface
+  public override void OnAudioVolumeIndication(RtcConnection connection, AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume)
+  {
+
+  }
+}
+```
+
+### Network quality analysis
+
+The SDK provides the `StartLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
+
+1. Before joining a channel or switching user roles, call `StartLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
+
+1. After you start the test, the SDK triggers the following callbacks:
+  
+  - `OnLastmileQuality`: This callback is triggered two seconds after `StartLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+  - `OnLastmileProbeResult`: This callback is triggered 30 seconds after `StartLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+
+To implement network quality testing in your game, refer to the following code:
+
+``` csharp
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+UserEventHandler handler = new UserEventHandler(this);
+RtcEngineContext context = new RtcEngineContext(_appID, 0,
+            CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
+            AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+RtcEngine.Initialize(context);
+// Set up callbacks
+RtcEngine.InitEventHandler(handler);
+// Start last-mile network inspection
+RtcEngine.StartLastmileProbeTest(new LastmileProbeConfig());
+
+// Stop the network test. 
+// Agora recommends not calling any other APIs until the test is over
+RtcEngine.StopLastmileProbeTest();
+
+class UserEventHandler : IRtcEngineEventHandler
+{
+  // This callback occurs approximately 2 seconds after the Last-mile network test starts
+  public override void OnLastmileQuality(int quality)
+  {
+
+  }
+
+  // This callback occurs approximately 30 seconds after the Last-mile network test starts
+  public override void OnLastmileProbeResult(LastmileProbeResult result)
+  {
+
+  }
+}
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Troubleshooting device and network issues
+
+If you encounter problems while running pre-call tests, first ensure that you have implemented the API calls properly. To troubleshoot device and network issues, refer to the following table:
+
+| Problem | Solution |
+|:---|:---------------|
+| Can't hear sound when testing audio devices. | <ul><li>Check that the recording device and the playback device are working properly, and are not occupied by other programs.</li><li>Check that the network connection is normal.</li></ul> |
+| Cannot see the screen when testing video devices. | <ul><li>Check that the video device is working properly and not occupied by other programs.</li><li>Check whether the network connection is normal.</li></ul> |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate.</li></ul> |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+
+### API reference
+ 
+- [`StartRecordingDeviceTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startrecordingdevicetest)
+- [`StopRecordingDeviceTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stoprecordingdevicetest)
+- [`StartPlaybackDeviceTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startplaybackdevicetest)
+- [`StopPlaybackDeviceTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stopplaybackdevicetest)
+- [`StartAudioDeviceLoopbackTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startaudiodeviceloopbacktest)
+- [`StopAudioDeviceLoopbackTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stopaudiodeviceloopbacktest)
+- [`StartEchoTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_startechotest2)
+- [`StopEchoTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_stopechotest)
+- [`StartLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_startlastmileprobetest)
+- [`StopLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_stoplastmileprobetest)
+- [`OnlastmileQuality`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmilequality)
+- [`OnlastmileProbeResult`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmileproberesult)
+</TabsContent>
+
+<TabsContent value="unreal">
+This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your game.
+
+## Understand the tech
+
+Pre-call testing typically covers two aspects: 
+
+- **Equipment quality test**
+
+  To test whether the local microphone, speaker, and camera are working properly, you run an echo test. The basic process of conducting an echo test is as follows:
+
+  **Pre-call echo test**
+
+![Echo Test](/images/video-sdk/pre-call-echo-test.svg)
+
+- **Network quality analysis**
+
+  The quality of the last mile network affects the smoothness and clarity of the audio and video that the user sends and receives. Last mile refers to the last leg of communication network between the edge server of the Agora SDRTN® and the end-user devices. Network quality analysis enables you to get feedback on the available bandwidth, packet loss rate, network jitter, and round-trip delay of the upstream and downstream last-mile networks. The following figure shows the basic process of running a last-mile probe test.
+
+  **Pre-call last mile test**
+
+![Last Mile Test](/images/video-sdk/pre-call-last-mile-test.svg)
+
+:::info
+Best practice is to run the device test first and then perform a network test.
+
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) project and that your game has obtained permissions to use the relevant devices.
+
+## Implement pre-call testing
+This section shows you how to implement pre-call testing in your project.
+
+### Equipment quality test
+
+The SDK provides the `startEchoTest` method to test the network connection and whether the audio and video devices are working properly. Refer to the following steps to implement the device quality test:
+
+1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
+
+1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+
+1. To stop the test, call `stopEchoTest`, and then call `joinChannelByToken` to join a channel.
+
+To implement running an echo test in your game, refer to the following code:
+
+``` cpp
+// Start the echo test
+// Only the host can call startEchoTest
+rtcEngine.startEchoTest(10);
+
+// Wait and check if you can hear your own voice played back
+
+// Stop the echo test
+// You must call stopEchoTest to end the echo test. Otherwise, you will not be able to do another echo test or join the channel
+rtcEngine.stopEchoTest
+```
+
+#### Audio recording device test
+
+To test whether a local audio recording device, such as a microphone, is working properly, refer to the following steps.
+
+1. Call `startRecordingDeviceTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
+
+1. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `onAudioVolumeIndication` callback.
+
+1. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
+:::note
+Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+:::
+To implement running a recording device test in your game, refer to the following code:
+
+``` cpp
+// Select an audio capture device
+lpDeviceManager->setRecordingDevice(strDeviceID);
+
+// Implement the audio volume callback 
+virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers, 
+                   unsigned int speakerNumber, 
+                   int totalVolume) {
+  (void)speakers;
+  (void)speakerNumber;
+  (void)totalVolume;
+}
+
+// Start audio capture device test
+(*lpDeviceManager)->startRecordingDeviceTest(1000);
+
+// Stop the audio capture device test
+(*lpDeviceManager)->stopRecordingDeviceTest();
+```
+
+#### Audio playback device test
+
+To test that the local audio playback device is working properly, refer to the following steps:
+
+1. Call `startPlaybackDeviceTest` and set the `audioFileName` parameter to the absolute path of the audio file to be played.
+
+1. If the user hears the audio, the playback device is working properly. The SDK triggers the `onAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
+
+1. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
+
+To implement running a playback device test in your game, refer to the following code:
+
+``` cpp
+// Select an audio playback device
+lpDeviceManager->setPlaybackDevice(strDeviceID);
+
+// Specify the absolute path of the audio file to start the playback device test
+(*lpDeviceManager)->startPlaybackDeviceTest(filePath);
+
+// Stop the audio playback device test
+(*lpDeviceManager)->stopPlaybackDeviceTest();
+```
+
+#### Audio device loopback test
+
+To test if the local audio device loop is working properly, refer to the following steps:
+
+1. Call `startAudioDeviceLoopbackTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
+
+1. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `onAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
+
+1. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
+:::note
+Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+:::
+### Network quality analysis
+
+The SDK provides the `startLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
+
+1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
+
+1. After you start the test, the SDK triggers the following callbacks:
+  
+  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+
+To implement network quality testing in your game, refer to the following code:
+
+``` cpp
+// Register the callback interface
+// This callback occurs approximately 2 seconds after starting Last-mile network probe test
+void onLastmileQuality(int quality) {
+}
+
+// This callback occurs approximately 30 seconds after starting Last-mile network probe test
+void onLastmileProbeResult(LastmileProbeResult) {
+  // (1) Optionally, you can end the test inside the callback. Agora recommends not calling other API methods until the testing is completed
+  lpAgoraEngine->stopLastmileProbeTest();
+}
+
+// Configure a LastmileProbeConfig instance
+LastmileProbeConfig config;
+// Enable detection of uplink network quality
+config.probeUplink = true;
+// Enable detection of downlink network quality
+config.probeDownlink = true;
+// Desired maximum transmit bitrate in bps, range [100000,5000000].
+config.expectedUplinkBitrate = 100000;
+// Desired maximum receive bitrate in bps, range [100000,5000000].
+config.expectedDownlinkBitrate = 100000;
+// Start last-mile network probing before joining a channel.
+lpAgoraEngine->startLastmileProbeTest(config);
+
+// (2) You can also choose to end the test at another time. Agora does not recommend calling any other API methods until testing is complete.
+lpAgoraEngine->stopLastmileProbeTest();
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Troubleshooting device and network issues
+
+If you encounter problems while running pre-call tests, first ensure that you have implemented the API calls properly. To troubleshoot device and network issues, refer to the following table:
+
+| Problem | Solution |
+|:---|:---------------|
+| Can't hear sound when testing audio devices. | <ul><li>Check that the recording device and the playback device are working properly, and are not occupied by other programs.</li><li>Check that the network connection is normal.</li></ul> |
+| Cannot see the screen when testing video devices. | <ul><li>Check that the video device is working properly and not occupied by other programs.</li><li>Check whether the network connection is normal.</li></ul> |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate.</li></ul> |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+
+### Sample project
+
+Agora provides an open-source Unreal Engine [sample project](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example) for your reference. Download and explore this project for a more detailed example.
+
+### API reference
+
+- [`startRecordingDeviceTest`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startrecordingdevicetest)
+- [`stopRecordingDeviceTest`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stoprecordingdevicetest)
+- [`startPlaybackDeviceTest`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startplaybackdevicetest)
+- [`stopPlaybackDeviceTest`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stopplaybackdevicetest)
+- [`startAudioDeviceLoopbackTest`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startaudiodeviceloopbacktest)
+- [`stopAudioDeviceLoopbackTest`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stopaudiodeviceloopbacktest)
+- [`startEchoTest`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_startechotest)
+- [`stopEchoTest`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_stopechotest)
+- [`startLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_stoplastmileprobetest)
+- [`onlastmileQuality`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmilequality)
+- [`onlastmileProbeResult`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmileproberesult)
+</TabsContent>
+
+<TabsContent value="blueprint">
+This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your game.
+
+## Understand the tech
+
+Pre-call testing typically covers two aspects: 
+
+- **Equipment quality test**
+
+  To test whether the local microphone, speaker, and camera are working properly, you run an echo test. The basic process of conducting an echo test is as follows:
+
+  **Pre-call echo test**
+
+![Echo Test](/images/video-sdk/pre-call-echo-test.svg)
+
+- **Network quality analysis**
+
+  The quality of the last mile network affects the smoothness and clarity of the audio and video that the user sends and receives. Last mile refers to the last leg of communication network between the edge server of the Agora SDRTN® and the end-user devices. Network quality analysis enables you to get feedback on the available bandwidth, packet loss rate, network jitter, and round-trip delay of the upstream and downstream last-mile networks. The following figure shows the basic process of running a last-mile probe test.
+
+  **Pre-call last mile test**
+
+![Last Mile Test](/images/video-sdk/pre-call-last-mile-test.svg)
+
+:::info
+Best practice is to run the device test first and then perform a network test.
+
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) project and that your game has obtained permissions to use the relevant devices.
+
+## Implement pre-call testing
+This section shows you how to implement pre-call testing in your project.
+
+### Equipment quality test
+
+The SDK provides the `startEchoTest` method to test the network connection and whether the audio and video devices are working properly. Refer to the following steps to implement the device quality test:
+
+#### Start the echo test
+
+1. Create the UMG
+
+  Create a button control named **Btn_StartEchoTest** that you click to start the voice call loop test.
+
+  ![Create UMG](/images/video-sdk/connection-status-mng-blueprint-lastmile-quality-startechotest-umg.png)
+
+1. Bind UI events
+
+  Create a **Bind Event to On Clicked** node that connects the **Btn_StartEchoTest** control and the `OnStartEchoTestClicked` callback. When you press the button to start the voice call test, the `OnStartEchoTestClicked` callback is triggered. This is shown in the following figure:
+
+  ![Bind UI Events](/images/video-sdk/connection-status-mng-blueprint-lastmile-quality-startechotest-bind-ui-events.png)
+
+1. Implement the UI event
+
+  Create the `OnStartEchoTestClicked` callback function. When this callback is triggered, the **Start Echo Test** method is called to start the test. When the echo test starts, the user speaks into the microphone. If the recording is played back after the set time interval, it means that the audio device and network connection are working normally. In this example, configure the `Config` parameter of **Start Echo Test** as follows:
+    - **Enable Audio** is checked by default, which means audio device detection is enabled.
+    - Uncheck **Enable Video** to disable video device testing.
+    - Input **Token** and **Channel Id** (channel name).
+    - **Interval In Seconds** is set to **2** by default. This is the time interval between when you start the call and when the recording plays back.
+
+  ![Implement UI Events](/images/video-sdk/connection-status-mng-blueprint-lastmile-quality-startechotest-impl-ui-events.png)
+
+##### Stop voice call detection
+
+1. Create UMG
+
+  Create a button control named **Btn_StopEchoTest**. You click the button to stop the echo test. As shown in the following figure:
+
+  ![Create UMG](/images/video-sdk/connection-status-mng-blueprint-lastmile-quality-stopechotest-umg.png)
+
+1. Bind UI events
+
+  Create a **Bind Event to On Clicked** node that connects the **Btn_StopEchoTest** control and the `OnStopEchoTestClicked` callback. The `OnStopEchoTestClicked` callback is triggered when you press the button to stop the voice call test. This is shown in the following figure:
+
+  ![Bind UI Events](/images/video-sdk/connection-status-mng-blueprint-lastmile-quality-stopechotest-bind-ui-events.png)
+
+1. Implement the UI event
+
+  Create `OnStoptEchoTestClicked` callback function. After getting the test result, you press the stop button to trigger this callback and call the **Stop Echo Test** method to stop the test. 
+
+  ![Implement UI Events](/images/video-sdk/connection-status-mng-blueprint-lastmile-quality-stopechotest-impl-ui-events.png)
+
+#### Audio recording device detection
+
+To test whether a local audio recording device, such as a microphone, is working properly, refer to the following steps.
+
+1. Call `StartRecordingDeviceTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
+
+1. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `FOnAudioVolumeIndication` callback.
+
+1. When you are done testing, call `StopRecordingDeviceTest` to stop the test.
+:::note
+Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `FOnAudioVolumeIndication` callback may not be received.
+:::
+#### Audio playback device test
+
+To test that the local audio playback device is working properly, refer to the following steps:
+
+1. Call `StartPlaybackDeviceTest` and set the `testAudioFilePath` parameter to the absolute path of the audio file to be played.
+
+1. If the user hears the audio, the playback device is working properly. The SDK triggers the `FOnAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
+
+1. When you are done testing, call `StopPlaybackDeviceTest` to stop the test.
+
+#### Audio device loopback test
+
+To test if the local audio device loop is working properly, refer to the following steps:
+
+1. Call `StartAudioDeviceLoopbackTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
+
+1. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `FOnAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
+
+1. When you are done testing, call `StopAudioDeviceLoopbackTest` to stop the recording device test.
+:::note
+Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+:::
+### Network quality analysis
+
+The SDK provides the `StartLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
+
+1. Before joining a channel or switching user roles, call `StartLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
+
+1. After you start the test, the SDK triggers the following callbacks:
+  
+  - `FOnLastmileQuality`: This callback is triggered two seconds after `StartLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+  - `FOnLastmileProbeResult`: This callback is triggered 30 seconds after `StartLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+1. Call `StopLastmileProbeTest` to stop last-mile network testing.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Troubleshooting device and network issues
+
+If you encounter problems while running pre-call tests, first ensure that you have implemented the API calls properly. To troubleshoot device and network issues, refer to the following table:
+
+| Problem | Solution |
+|:---|:---------------|
+| Can't hear sound when testing audio devices. | <ul><li>Check that the recording device and the playback device are working properly, and are not occupied by other programs.</li><li>Check that the network connection is normal.</li></ul> |
+| Cannot see the screen when testing video devices. | <ul><li>Check that the video device is working properly and not occupied by other programs.</li><li>Check whether the network connection is normal.</li></ul> |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate.</li></ul> |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+
+### Sample project
+
+Agora provides an open-source [JoinChannelAudio](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic/JoinChannelAudio) sample project for your reference. Download and explore the project for a more detailed example.
+
+### API reference
+
+- [`StartEchoTest`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_startechotest)
+- [`StopEchoTest`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_stopechotest)
+- [`StartEchoTest`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_startechotest)
+- [`StartRecordingDeviceTest`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startrecordingdevicetest)
+- [`StopRecordingDeviceTest`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stoprecordingdevicetest)
+- [`StartPlaybackDeviceTest`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startplaybackdevicetest)
+- [`StopPlaybackDeviceTest`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stopplaybackdevicetest)
+- [`StartAudioDeviceLoopbackTest`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startaudiodeviceloopbacktest)
+- [`StopAudioDeviceLoopbackTest`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stopaudiodeviceloopbacktest)
+- [`StartLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_startlastmileprobetest)
+- [`StopLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_stoplastmileprobetest)
+- [`FOnLastmileQuality`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmilequality)
+- [`FOnLastmileProbeResult`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlastmileproberesult)
+</TabsContent>
+
+</Tabs>

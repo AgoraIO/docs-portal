@@ -1,0 +1,160 @@
+---
+title: "Query host list"
+description: "API reference for querying the user list"
+---
+
+<LeftColumn
+  method="GET"
+  endpoint="https://api.agora.io/dev/v1/channel/user/{appid}/{channelName}/hosts_only"
+ >
+
+Use this endpoint to get the list of hosts in a specified channel. This endpoint is only available in the `LIVE_BROADCASTING` profile (`mode = 2`); all users in the channel must use the same profile, otherwise query results may be inaccurate.
+
+## Request
+
+The request URL and request body is case-sensitive. All requests must use HTTPS.
+
+### Request header
+
+- `Content-Type`: `application/json`
+- The request header must contain the `Authorization` field. For details, see [RESTful authentication](../../restful-authentication.md).
+
+### Path parameters
+
+<PathParameter name="appid" type="string" required={true}>
+ The App ID of the project. You can get it through one of the following methods:
+ - Copy from the [Agora Console](https://console.agora.io)
+ - Call the [Get all projects](../../agora-console-rest-api.md) API, and read the value of the `vendor_key` field in the response body.
+</PathParameter>
+
+<PathParameter name="channelName" type="string" required={true}>
+ The channel name.
+</PathParameter>
+
+## Response
+
+A `200` status code indicates success. The response body contains the following parameters:
+
+<ParameterList title="OK">
+ <Parameter name="success" type="boolean">
+  The state of this request:
+  - `true`: Success.
+  - `false`: Reserved for future use.
+ </Parameter>
+
+ <Parameter name="data" type="object">
+  User information.
+
+  <Parameter name="channel_exist" type="boolean">
+   Whether the specified channel exists:
+   - `true`: The channel exists.
+   - `false`: The channel does not exist. When this is `false`, no other fields are returned.
+  </Parameter>
+
+  <Parameter name="mode" type="number">
+   The channel profile:
+   - `1`: The `COMMUNICATION` profile.
+   - `2`: The `LIVE_BROADCASTING` profile.
+  </Parameter>
+
+  <Parameter name="broadcasters" type="array">
+   User IDs of all hosts in the channel. Returned only when `mode` is `2`.
+  </Parameter>
+ </Parameter>
+</ParameterList>
+
+If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](../../response-status-code.md) for details.
+
+## Reference
+
+### Synchronizing host online status
+
+To synchronize the online status of hosts, you can use this endpoint or the [query user status](https://docs-md.agora.io/en/query-user-status.md) endpoint. This endpoint requires a lower call frequency and offers higher efficiency, so Agora recommends it for this purpose.
+
+</LeftColumn>
+
+<RightColumn>
+
+<Section title="Authorization">
+ This endpoint requires [Basic authentication](../../restful-authentication.md).
+</Section>
+
+<Section title="Request example">
+
+**Curl**
+```bash
+curl --request GET \
+ --url https://api.sd-rtn.com/dev/v1/channel/user/<appid>/<channelName>/hosts_only \
+ --header 'Accept: application/json' \
+ --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+**Node.js**
+```js
+const https = require('https');
+
+const options = {
+ method: 'GET',
+ hostname: 'api.sd-rtn.com',
+ port: null,
+ path: '/dev/v1/channel/user/<appid>/<channelName>/hosts_only',
+ headers: {
+  Accept: 'application/json',
+  Authorization: 'Basic <your_base64_encoded_credentials>'
+ }
+};
+
+const req = https.request(options, function (res) {
+ const chunks = [];
+
+ res.on('data', function (chunk) {
+  chunks.push(chunk);
+ });
+
+ res.on('end', function () {
+  const body = Buffer.concat(chunks);
+  console.log(body.toString());
+ });
+});
+
+req.end();
+```
+
+**Python**
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.sd-rtn.com")
+
+headers = {
+  'Accept': "application/json",
+  'Authorization': "Basic <your_base64_encoded_credentials>"
+}
+
+conn.request("GET", "/dev/v1/channel/user/<appid>/<channelName>/hosts_only", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</Section>
+
+<Section title="Response example">
+
+```json
+{
+ "success": true,
+ "data": {
+  "channel_exist": true,
+  "mode": 2,
+  "broadcasters": [
+   574332,
+   1347839
+  ]
+ }
+}
+```
+
+</Section>
+</RightColumn>
