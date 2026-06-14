@@ -376,9 +376,9 @@ Use this list to quickly check what measures you have or have not taken to best 
 
 1. [Enable token-based authentication](https://docs.agora.io/en/agora-analytics/get-started/manage-agora-account) on [Agora Console](https://console.agora.io/v2).
 2. Disable *No certificate* in your project management page. Once it is done your app authenticates users with tokens only.
-3. [Deploy a token server](https://docs-md.agora.io/en/video-calling/token-authentication/deploy-token-server.md) in your backend services.
+3. [Deploy a token server](https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server) in your backend services.
 4. Protect the token server and only allow the app backend server to connect to the token server.
-5. Set the token expiration date to a reasonable time. See [Deploy a token server](https://docs-md.agora.io/en/video-calling/token-authentication/deploy-token-server.md).
+5. Set the token expiration date to a reasonable time. See [Deploy a token server](https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server).
 6. If needed, contact  support@agora.io to enable token privilege and set token per role.
 7. For additional security if needed work with the Agora SA team to customize the token server and modify the token join privilege to a low time, like 5 min. This is more advance and recommended after app development is completed.
 8. Channel encryption key management – generate a random key (secret) per channel at the time of creating the channel, do not reuse encryption keys.

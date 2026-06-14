@@ -225,6 +225,6 @@ Unsubscribing from a plan or switching to another plan takes effect on the first
 
 ## See also
 
--   [Pricing for Video SDK](https://docs-md.agora.io/en/video-calling/overview/pricing.md)
+-   [Pricing for Video SDK](https://docs.agora.io/en/video-calling/overview/pricing)
 
 -   [What are Agora’s policies on billing, fee deductions, and account suspension](billing-policies.md)

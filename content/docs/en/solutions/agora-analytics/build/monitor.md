@@ -122,9 +122,9 @@ To see the specific data, hover your mouse on a bubble.
 |---------------------|-------------------------------------------------------------------------------------------------------------------|
 | In-call users    | The total number of users across all in-use channels. A user joining multiple channels is counted multiple times.    |
 | Number of in-use channels | The total number of in-use channels, as determined by uniquely named channels that contain users.           |
-| Number of Cloud Recording workers | See [Cloud Recording](https://docs-md.agora.io/en/cloud-recording/overview/product-overview.md). |
-| Number of Media Pull workers | See [Media Pull](https://docs-md.agora.io/en/cloud-recording/overview/media-pull.md).         |
-| Number of Media Push workers | See [Media Push](https://docs-md.agora.io/en/cloud-recording/overview/media-push.md).        |
+| Number of Cloud Recording workers | See [Cloud Recording](https://docs.agora.io/en/cloud-recording/overview/product-overview). |
+| Number of Media Pull workers | See [Media Pull](https://docs.agora.io/en/media-pull/overview/product-overview). |
+| Number of Media Push workers | See [Media Push](https://docs.agora.io/en/media-push/overview/product-overview). |
 
 ### Quality metrics
 
