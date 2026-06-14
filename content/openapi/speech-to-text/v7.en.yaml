@@ -1,0 +1,1348 @@
+openapi: 3.1.0
+x-stoplight:
+  id: v54qxj1s68u71
+info:
+  title: Speech-to-Text REST API
+  version: 7.x
+  description: >-
+    Agora provides the Real-Time STT REST API for real-time transcription,
+    translation, and caption recording.
+  summary: >-
+    This page introduces the basic information of the Real-Time STT server-side
+    REST API.
+servers:
+  - url: https://api.agora.io
+    description: ''
+paths:
+  /api/speech-to-text/v1/projects/{appid}/join:
+    post:
+      tags:
+        - Speech-to-Text
+      summary: Start a Real-time STT agent
+      description: Use this method to start subtitle recording and subtitle translation.
+      operationId: join
+      parameters:
+        - $ref: '#/components/parameters/appid'
+      security:
+        - Basic Auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JoinRequest'
+            examples:
+              fullExample:
+                value:
+                  languages:
+                    - en-US
+                  keywords:
+                    - Agora
+                    - STT
+                  name: agora-test
+                  maxIdleTime: 50
+                  rtcConfig:
+                    channelName: agora-test
+                    pubBotUid: '88222'
+                  translateConfig:
+                    languages:
+                      - source: en-US
+                        target:
+                          - ar-SA
+                          - id-ID
+                          - fr-FR
+                          - ja-JP
+                  captionConfig:
+                    sliceDuration: 60
+                    storage:
+                      accessKey: test-oss
+                      secretKey: test-oss
+                      bucket: test-oss
+                      vendor: 2
+                      region: 3
+      responses:
+        '200':
+          description: If the returned status code is `200`, the request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+              examples:
+                Example 1:
+                  value:
+                    agent_id: Agent ID.
+                    create_ts: null
+                    status: RUNNING
+        default:
+          description: >-
+            If the returned status code is not `200`, the request failed. Refer
+            to the `detail` and `reason` fields to understand the possible
+            reasons for failure.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Example 1:
+                  value:
+                    detail: Details of the request failure.
+                    reason: The reason why the request failed.
+      x-stoplight:
+        id: 8cszmljwg1pj9
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request POST \
+              --url https://api.agora.io/api/speech-to-text/v1/projects/:appid/join \
+              --header 'Authorization: Basic <credentials>' \
+              --data '{
+              "languages": [
+                "en-US"
+              ],
+              "keywords": [
+                "Agora",
+                "STT"
+              ],
+              "name": "agora-test",
+              "maxIdleTime": 50,
+              "rtcConfig": {
+                "channelName": "agora-test",
+                "pubBotUid": "88222"
+              },
+              "translateConfig": {
+                "languages": [
+                  {
+                    "source": "en-US",
+                    "target": [
+                      "ar-SA",
+                      "id-ID",
+                      "fr-FR",
+                      "ja-JP"
+                    ]
+                  }
+                ]
+              },
+              "captionConfig": {
+                "sliceDuration": 60,
+                "storage": {
+                  "accessKey": "test-oss",
+                  "secretKey": "test-oss",
+                  "bucket": "test-oss",
+                  "vendor": 2,
+                  "region": 3
+                }
+              }
+            }'
+        - lang: python
+          label: Python
+          source: >-
+            import requests
+
+
+            url =
+            "https://api.agora.io/api/speech-to-text/v1/projects/:appid/join"
+
+
+            payload = {
+                "languages": ["en-US"],
+                "keywords": ["Agora","STT"],
+                "name": "agora-test",
+                "maxIdleTime": 50,
+                "rtcConfig": {
+                    "channelName": "agora-test",
+                    "pubBotUid": "88222"
+                },
+                "translateConfig": {
+                    "languages": [
+                        {
+                            "source": "en-US",
+                            "target": ["ar-SA", "id-ID", "fr-FR", "ja-JP"]
+                        }
+                    ]
+                },
+                "captionConfig": {
+                    "sliceDuration": 60,
+                    "storage": {
+                        "accessKey": "test-oss",
+                        "secretKey": "test-oss",
+                        "bucket": "test-oss",
+                        "vendor": 2,
+                        "region": 3
+                    }
+                }
+            }
+
+            headers = {"Authorization": "Basic <credentials>"}
+
+
+            response = requests.request("POST", url, json=payload,
+            headers=headers)
+
+
+            print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const url =
+            'https://api.agora.io/api/speech-to-text/v1/projects/:appid/join';
+
+            const options = {
+              method: 'POST',
+              headers: {Authorization: 'Basic <credentials>'},
+              body: JSON.stringify({
+                languages: ['en-US'],
+                keywords: ['Agora','STT'],
+                name: 'agora-test',
+                maxIdleTime: 50,
+                rtcConfig: {channelName: 'agora-test', pubBotUid: '88222'},
+                translateConfig: {
+                  languages: [{source: 'en-US', target: ['ar-SA', 'id-ID', 'fr-FR', 'ja-JP']}]
+                },
+                captionConfig: {
+                  sliceDuration: 60,
+                  storage: {
+                    accessKey: 'test-oss',
+                    secretKey: 'test-oss',
+                    bucket: 'test-oss',
+                    vendor: 2,
+                    region: 3
+                  }
+                }
+              })
+            };
+
+
+            fetch(url, options)
+              .then(res => res.json())
+              .then(json => console.log(json))
+              .catch(err => console.error(err));
+  /api/speech-to-text/v1/projects/{appid}/agents/{agentId}:
+    get:
+      tags:
+        - Speech-to-Text
+      summary: Query the task status
+      description: Use this method to query the status of a Real-time STT task.
+      operationId: query
+      security:
+        - Basic Auth: []
+      parameters:
+        - $ref: '#/components/parameters/appid'
+        - $ref: '#/components/parameters/agentId'
+      responses:
+        '200':
+          description: If the returned status code is `200`, the request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentStatusResponse'
+              examples:
+                Example 1:
+                  value:
+                    message: Details of the request result.
+                    agent_id: Agent ID.
+                    create_ts: null
+                    status: RUNNING
+        default:
+          description: >-
+            If the returned status code is not `200`, the request failed. Refer
+            to `message` and `code` fields to understand the possible reasons
+            for failure.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentErrorResponse'
+              examples:
+                Example 1:
+                  value:
+                    message: Details of the failed request.
+                    agent_id: Agent ID.
+                    create_ts: null
+                    status: FAILED
+      x-stoplight:
+        id: q5zhmt9clu0jy
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request GET \
+              --url https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents/:agentId \
+              --header 'Authorization: Basic <credentials>'
+        - lang: python
+          label: Python
+          source: >-
+            import requests
+
+
+            url =
+            "https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents/:agentId"
+
+
+            headers = {"Authorization": "Basic <credentials>"}
+
+
+            response = requests.request("GET", url, headers=headers)
+
+
+            print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const url =
+            'https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents/:agentId';
+
+            const options = {method: 'GET', headers: {Authorization: 'Basic
+            <credentials>'}};
+
+
+            fetch(url, options)
+              .then(res => res.json())
+              .then(json => console.log(json))
+              .catch(err => console.error(err));
+  /api/speech-to-text/v1/projects/{appid}/agents/{agentId}/leave:
+    post:
+      tags:
+        - Speech-to-Text
+      summary: Stop a Real-time STT agent
+      description: Use this method to leave the channel and stop transcription.
+      operationId: leave
+      security:
+        - Basic Auth: []
+      parameters:
+        - $ref: '#/components/parameters/appid'
+        - $ref: '#/components/parameters/agentId'
+      responses:
+        '200':
+          description: If the returned status code is `200`, the request was successful.
+        default:
+          description: If the returned status code is not `200`, the request failed.
+      x-stoplight:
+        id: n1q3bmienpsha
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request POST \
+              --url https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents/:agentId/leave \
+              --header 'Authorization: Basic <credentials>'
+        - lang: python
+          label: Python
+          source: >-
+            import requests
+
+
+            url =
+            "https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents/:agentId/leave"
+
+
+            headers = {"Authorization": "Basic <credentials>"}
+
+
+            response = requests.request("POST", url, headers=headers)
+
+
+            print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const url =
+            'https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents/:agentId/leave';
+
+            const options = {method: 'POST', headers: {Authorization: 'Basic
+            <credentials>'}};
+
+
+            fetch(url, options)
+              .then(res => res.json())
+              .then(json => console.log(json))
+              .catch(err => console.error(err));
+  /api/speech-to-text/v1/projects/{appid}/agents/{agentId}/update:
+    post:
+      tags:
+        - Speech-to-Text
+      summary: Update task configuration
+      description: Use this method to update the configuration of a Real-time STT task.
+      operationId: update
+      security:
+        - Basic Auth: []
+      parameters:
+        - $ref: '#/components/parameters/appid'
+        - $ref: '#/components/parameters/agentId'
+        - name: sequenceId
+          in: query
+          required: true
+          deprecated: true
+          schema:
+            type: integer
+            format: int64
+          description: >-
+            The sequence number of `update` requests. The integer value must be
+            greater than or equal to 0. Ensure that the `sequenceId` of the next
+            `update` request is greater than the value you specified for the
+            previous request. The parameter ensures that Agora updates the
+            transcription task according to the latest configuration you
+            specified.
+        - name: updateMask
+          in: query
+          required: true
+          deprecated: true
+          schema:
+            type: string
+          description: >-
+            The specified update configuration item. To update multiple fields,
+            use a comma separator. For example:
+            `updateMask=languages,rtcConfig.subscribeAudioUids,translateConfig.enable,translateConfig.languages`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRequest'
+      responses:
+        '200':
+          description: If the returned status code is `200`, the request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+              examples:
+                Example 1:
+                  value:
+                    agent_id: Agent ID.
+                    create_ts: null
+                    status: RUNNING
+        default:
+          description: >-
+            If the returned status code is not `200`, the request failed. Refer
+            to the `detail` and `reason` fields to understand the possible
+            reasons for failure.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Example 1:
+                  value:
+                    detail: Details of the request failure.
+                    reason: The reason why the request failed.
+      x-stoplight:
+        id: 22wvkg0m89suu
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request POST \
+              --url 'https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents/:agentid/update?sequenceId=1&updateMask=translateConfig.enable,translateConfig.languages' \
+              --header 'Authorization: Basic <credentials>' \
+              --data '{
+              "translateConfig": {
+                "enable": true,
+                "languages": [
+                  {
+                    "source": "en-US",
+                    "target": ["ja-JP"]
+                  }
+                ]
+              }
+            }'
+        - lang: python
+          label: Python
+          source: >-
+            import requests
+
+
+            url =
+            "https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents/:agentid/update"
+
+            params = {
+                "sequenceId": 1,
+                "updateMask": "translateConfig.enable,translateConfig.languages"
+            }
+
+            payload = {
+                "translateConfig": {
+                    "enable": True,
+                    "languages": [
+                        {
+                            "source": "en-US",
+                            "target": ["ja-JP"]
+                        }
+                    ]
+                }
+            }
+
+            headers = {"Authorization": "Basic <credentials>"}
+
+
+            response = requests.request("POST", url, params=params,
+            json=payload, headers=headers)
+
+            print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const url =
+            'https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents/:agentid/update?sequenceId=1&updateMask=translateConfig.enable,translateConfig.languages';
+
+            const options = {
+              method: 'POST',
+              headers: {Authorization: 'Basic <credentials>'},
+              body: JSON.stringify({
+                translateConfig: {
+                  enable: true,
+                  languages: [
+                    {
+                      source: 'en-US',
+                      target: ['ja-JP']
+                    }
+                  ]
+                }
+              })
+            };
+
+
+            fetch(url, options)
+              .then(res => res.json())
+              .then(json => console.log(json))
+              .catch(err => console.error(err));
+  /api/speech-to-text/v1/projects/{appid}/agents:
+    get:
+      tags:
+        - Speech-to-Text
+      summary: List Real-time STT agents
+      description: >-
+        Use this method to retrieve a list of real-time transcription and
+        translation agents that match specified criteria.
+      operationId: list
+      security:
+        - Basic Auth: []
+      parameters:
+        - $ref: '#/components/parameters/appid'
+        - name: channel
+          in: query
+          description: Filters the agent list by channel name.
+          schema:
+            type: string
+            examples:
+              - TEST
+        - name: from_time
+          in: query
+          description: The start of the query time range, as a Unix timestamp in seconds.
+          schema:
+            type: integer
+            examples:
+              - 1733013296
+        - name: to_time
+          in: query
+          description: The end of the query time range, as a Unix timestamp in seconds.
+          schema:
+            type: integer
+            examples:
+              - 1734016896
+        - name: state
+          in: query
+          description: >-
+            Filters agents by status. Only one status value can be specified per
+            request:
+
+            - `0` - `IDLE`: The agent is not initialized.
+
+            - `1` - `STARTING`: The agent is starting.
+
+            - `2` - `RUNNING`: The agent is running.
+
+            - `3` - `STOPPING`: The agent is exiting.
+
+            - `4` - `STOPPED`: The agent exited successfully.
+
+            - `5` - `RECOVERING`: The agent is recovering.
+
+            - `6` - `FAILED`: The agent exited with a failure.
+          schema:
+            type: string
+            default: '2'
+            examples:
+              - '1'
+        - name: limit
+          in: query
+          description: The maximum number of agents to return per page.
+          schema:
+            type: integer
+            default: 20
+            examples:
+              - 20
+        - name: cursor
+          in: query
+          description: >-
+            The pagination cursor. Set this to the `agent_id` of the last item
+            from the previous page to retrieve the next page of results.
+          schema:
+            type: string
+            examples:
+              - agent_id
+      responses:
+        '200':
+          description: If the returned status code is `200`, the request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskListResponse'
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      count: 1
+                      list:
+                        - start_ts: 1735035893
+                          status: RUNNING
+                          agent_id: 1NT29X11GQSxxxxx80BEIN56XF
+                    meta:
+                      cursor: ''
+                      total: 1
+                    status: ok
+        default:
+          description: >-
+            If the returned status code is not `200`, the request failed. Refer
+            to the `detail` and `reason` fields to understand the possible
+            reasons for failure.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Example 1:
+                  value:
+                    detail: Details of the request failure.
+                    reason: The reason why the request failed.
+      x-stoplight:
+        id: 0ar5tao1h52r0
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request GET \
+              --url 'https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents?state=2&limit=20' \
+              --header 'Authorization: Basic <credentials>'
+        - lang: python
+          label: Python
+          source: >-
+            import requests
+
+
+            url =
+            "https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents"
+
+
+            params = {
+                "state": 2,
+                "limit": 20
+            }
+
+            headers = {"Authorization": "Basic <credentials>"}
+
+
+            response = requests.request("GET", url, headers=headers,
+            params=params)
+
+
+            print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const url =
+            'https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents?state=2&limit=20';
+
+            const options = {
+              method: 'GET',
+              headers: {Authorization: 'Basic <credentials>'}
+            };
+
+
+            fetch(url, options)
+              .then(res => res.json())
+              .then(json => console.log(json))
+              .catch(err => console.error(err));
+components:
+  parameters:
+    appid:
+      name: appid
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The App ID of the project.
+    agentId:
+      name: agentId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The unique identifier of the agent you received in the response body of the `join` method.
+  schemas:
+    JoinRequest:
+      type: object
+      x-stoplight:
+        id: 36ei71ylbtt9v
+      required:
+        - languages
+        - rtcConfig
+        - name
+      properties:
+        languages:
+          type: array
+          description: >-
+            The transcription languages you want to recognize. You can specify
+            up to four languages. For a complete list, see [Supported
+            languages](https://docs.agora.io/en/real-time-stt/develop/supported-languages).
+            Choosing multiple transcription languages can affect both quality
+            and cost. For best practices, see [Optimize transcription quality
+            and
+            cost](https://docs.agora.io/en/real-time-stt/best-practice/optimize-quality).
+          maxItems: 4
+          items:
+            type: string
+        uidLanguagesConfig:
+          type: array
+          description: >-
+            Configure the transcription language for the specified user ID.
+            Supports up to 5 configuration items.
+          maxItems: 5
+          items:
+            $ref: '#/components/schemas/UidLanguagesConfig'
+        maxIdleTime:
+          type: integer
+          description: >-
+            Maximum channel idle time, in seconds. When the specified time is
+            exceeded, the transcription task ends automatically. Idle time means
+            that there is no host in a live broadcast channel, or there is no
+            user in a communication channel.
+          minimum: 5
+          maximum: 2592000
+          default: 30
+        rtcConfig:
+          $ref: '#/components/schemas/RtcConfig'
+        translateConfig:
+          $ref: '#/components/schemas/TranslateConfig'
+        captionConfig:
+          $ref: '#/components/schemas/CaptionConfig'
+        extensionParams:
+          $ref: '#/components/schemas/CaptionExtensionParams'
+        keywords:
+          type: array
+          description: >-
+            Keyword list. Use it to improve the recognition accuracy of specific
+            words during transcription. Supports up to 500 words.
+          maxItems: 500
+          items:
+            type: string
+        name:
+          type: string
+          description: >-
+            Unique ID of the agent. Maximum length is 64 characters. You cannot
+            use the same ID repeatedly.
+          maxLength: 64
+    UidLanguagesConfig:
+      type: object
+      required:
+        - uid
+        - languages
+      properties:
+        uid:
+          type: string
+          description: >-
+            The ID of the user to be transcribed. You may configure a maximum of
+            5 uids for language recognition at the uid level.
+        languages:
+          type: array
+          items:
+            type: string
+          description: >-
+            The transcription languages to recognize. Each uid can support a
+            maximum of 4 languages. Refer to [Supported
+            Languages](https://docs.agora.io/en/real-time-stt/develop/supported-languages)
+            for details.
+          maxItems: 4
+      x-stoplight:
+        id: 0i2gh4n8s058x
+      description: >-
+        Configure the transcription language for the specified user ID. Supports
+        up to 5 configuration items.
+    RtcConfig:
+      type: object
+      description: >-
+        Real-time subtitle configuration. After a user's voice is converted to
+        text, the information is pushed to the channel as subtitles to match the
+        UI real-time display.
+      x-stoplight:
+        id: b7wlo0hwvbigp
+      required:
+        - channelName
+        - pubBotUid
+      properties:
+        channelName:
+          type: string
+          description: The name of the channel to transcribe.
+        subBotUid:
+          type: string
+          deprecated: true
+          description: >-
+            The ID of the bot that subscribes to the audio stream. This is
+            always identical to the value of the `pubBotUid`.
+        subBotToken:
+          type: string
+          deprecated: true
+          description: >-
+            The token used by the subscribing bot for channel authentication.
+            Required only when your project has [App
+            Certificate](https://docs.agora.io/en/video-calling/overview/core-concepts?platform=android#app-certificate)
+            enabled. Generate this token on your token server. For details, see
+            [Token
+            authentication](https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server).
+        pubBotUid:
+          type: string
+          description: >-
+            The ID of the bot that pushes subtitle information to the channel.
+            All UIDs within a channel must be unique. Ensure no other user or
+            service bot is using this UID in the same channel.
+        pubBotToken:
+          type: string
+          description: >-
+            The token used by the subtitle-pushing bot for channel
+            authentication. Required only when your project has [App
+            Certificate](https://docs.agora.io/en/video-calling/overview/core-concepts?platform=android#app-certificate)
+            enabled. Generate this token on your token server. For details, see
+            [Token
+            authentication](https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server).
+        subscribeAudioUids:
+          type: array
+          description: >-
+            The user IDs for the audio streams you want to subscribe. Set this
+            parameter if you need to subscribe to the audio stream of certain
+            users. Maximum array length: 32. You can set either
+            `subscribeAudioUids` or `unSubscribeAudioUids`.
+          maxItems: 32
+          items:
+            type: string
+        unSubscribeAudioUids:
+          type: array
+          description: >-
+            The user IDs for the audio streams you **do not** want to subscribe.
+            Set this parameter if you don't need to subscribe to the audio
+            stream of certain users. Maximum array length: 5. You can set either
+            `subscribeAudioUids` or `unSubscribeAudioUids`.
+          maxItems: 5
+          items:
+            type: string
+        cryptionMode:
+          type: integer
+          deprecated: true
+          description: >-
+            The encryption and decryption mode. When enabled, this mode is used
+            for both decrypting incoming streams and encrypting outgoing
+            subtitles.
+
+            - `0`: No encryption
+
+            - `1`: `AES_128_XTS` 128-bit AES encryption, XTS mode
+
+            - `2`: `AES_128_ECB` 128-bit AES encryption, ECB mode
+
+            - `3`: `AES_256_XTS` 256-bit AES encryption, XTS mode
+
+            - `4`: `SM4_128_ECB` 128-bit SM4 encryption, ECB mode
+
+            - `5`: `AES_128_GCM` 128-bit AES encryption, GCM mode
+
+            - `6`: `AES_256_GCM` 256-bit AES encryption, GCM mode
+
+            - `7`: `AES_128_GCM2` 128-bit AES encryption, GCM mode, Compared
+            with `AES_128_GCM` encryption mode, this encryption mode is more
+            secure and requires setting a key and salt.
+
+            - `8`: `AES_256_GCM2` 256-bit AES encryption, GCM mode, Compared
+            with `AES_256_GCM` encryption mode, this encryption mode is more
+            secure and requires setting a key and salt.
+
+            The decryption method must match the encryption method set for the
+            channel.
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+        secret:
+          type: string
+          description: >-
+            The encryption/decryption key. Required when `cryptionMode` is not
+            `0`.
+        salt:
+          type: string
+          description: >-
+            A Base64-encoded, 32-byte encryption/decryption salt. Required only
+            when `cryptionMode` is `7` or `8`.
+        enableJsonProtocol:
+          type: boolean
+          description: >-
+            Set the encoding format of the subtitle data pushed to the channel.
+
+            - `true`: Use JSON to push subtitles and compress data with gzip.
+            Uses less bandwidth, but requires decoding.
+
+            - `false`: Use Protobuf to push subtitles (default). The data volume
+            is smaller. Suitable for scenarios with high transmission efficiency
+            requirements.
+    CaptionConfig:
+      type: object
+      description: Subtitle recording configuration.
+      properties:
+        sliceDuration:
+          type: integer
+          description: The slice size of the recorded subtitle file, in seconds.
+          default: 60
+          minimum: 5
+          maximum: 28800
+        storage:
+          $ref: '#/components/schemas/StorageConfig'
+      x-stoplight:
+        id: 5czwpsqeg4h6j
+    CaptionExtensionParams:
+      type: object
+      description: >-
+        Optional third-party cloud storage extension configuration. When
+        `storage.vendor` is set to `11`, use this field to specify access
+        information for standard S3-compatible object storage.
+      properties:
+        endpoint:
+          type: string
+          description: >-
+            The access URL for the S3-compatible service, including the scheme.
+            For example, `http://host:9002`. Required when `storage.vendor` is
+            `11`.
+        type:
+          type: string
+          description: The rclone backend type. For standard S3, set this to `s3`.
+          default: s3
+        provider:
+          type: string
+          description: The storage provider name. For example, `Minio` for MinIO.
+        region:
+          type: string
+          description: >-
+            The rclone S3 backend region. If provided, this overrides the
+            default region inferred from `storage.region`.
+        tag:
+          type: string
+          description: >-
+            A base string for the object tag. Only effective when
+            `storage.vendor` is Tencent Cloud, Alibaba Cloud, or Amazon S3.
+        tagByRule:
+          type: array
+          description: >-
+            Appends key=value to the tag according to the filename rules. When
+            both the tag and the filename exist, the rule takes precedence. Only
+            applicable to Tencent Cloud, Alibaba Cloud, and Amazon S3.
+          items:
+            type: object
+            additionalProperties: true
+        sse:
+          type: string
+          description: >-
+            Server-side encryption method. `aes256` for AES-256 encryption,
+            `kms` for AWS KMS. Only available for Amazon S3.
+          enum:
+            - aes256
+            - kms
+        overwritekeys:
+          type: object
+          description: >-
+            Maps the target object name using the uploaded file extension, used
+            to override DstFileName.
+          additionalProperties: true
+    StorageConfig:
+      type: object
+      description: The configuration for third-party cloud storage.
+      required:
+        - accessKey
+        - secretKey
+        - bucket
+        - vendor
+        - region
+      properties:
+        accessKey:
+          type: string
+          description: The access key of the third-party cloud storage.
+        secretKey:
+          type: string
+          description: The secret key of the third-party cloud storage.
+        bucket:
+          type: string
+          description: The bucket name of the third-party cloud storage.
+        vendor:
+          type: integer
+          description: >-
+            The third-party cloud storage platform:
+
+            - `1`: Amazon S3
+
+            - `2`: Alibaba Cloud
+
+            - `3`: Tencent Cloud
+
+            - `5`: Microsoft Azure
+
+            - `6`: Google Cloud
+
+            - `7`: Huawei Cloud
+
+            - `8`: Baidu Smart Cloud
+
+            - `11`: Other S3-compatible object storage systems, such as MinIO
+            and self-hosted cloud storage systems
+          enum:
+            - 1
+            - 2
+            - 3
+            - 5
+            - 6
+            - 7
+            - 8
+            - 11
+        region:
+          type: integer
+          description: >-
+            The region information for the third-party cloud storage. To ensure
+            successful and real-time uploading of recorded files, the cloud
+            storage region must match the region of the application server where
+            you initiate the request. For example, if your App server is in East
+            US, set the cloud storage region to East US as well. See
+            [third-party storage
+            regions](https://docs.agora.io/en/cloud-recording/reference/region-vendor)
+            for details.
+        fileNamePrefix:
+          type: array
+          items:
+            type: string
+          description: >-
+            The storage location of the recorded file in the third-party cloud
+            storage. The prefix length (including slashes) must not exceed 128
+            characters. The following characters are supported:
+
+            - Lowercase English letters (a-z)
+
+            - Uppercase English letters (A-Z)
+
+            - Numbers (0-9)
+
+            Symbols like slashes, underscores, and brackets must not appear in
+            the string.
+          maxLength: 128
+      x-stoplight:
+        id: 79zy83lzzb5ox
+    TranslateConfig:
+      type: object
+      description: Subtitle translation configuration.
+      properties:
+        languages:
+          type: array
+          description: >-
+            The translation languages array. You can specify a maximum of 4
+            different source languages.
+          maxItems: 4
+          items:
+            $ref: '#/components/schemas/LanguagePair'
+      x-stoplight:
+        id: zt7hqft5egl5d
+    LanguagePair:
+      type: object
+      description: Translation language pair configuration.
+      required:
+        - source
+        - target
+      properties:
+        source:
+          type: string
+          description: >-
+            The source language for translation. Refer to [Supported
+            Languages](https://docs.agora.io/en/real-time-stt/develop/supported-languages#real-time-translation)
+            for details.
+        target:
+          type: array
+          items:
+            type: string
+          description: >-
+            The target languages for translation. You can configure up to 10
+            target languages for each source language. Refer to [Supported
+            Languages](https://docs.agora.io/en/real-time-stt/develop/supported-languages#real-time-translation)
+            for details.
+
+            - **Single-language input**: If you set the source language to a
+            single language, the target language must be different, otherwise an
+            error is returned. For example, if you set the source language to
+            English, you cannot set the target language to English.
+
+            - **Mixed-language input**: If you set the source language to
+            mixed-language input, you can set the target language to one of the
+            source languages. For example, if you set the source languages to
+            Chinese and English, setting the target language to English
+            translates both into English.
+          maxItems: 10
+      x-stoplight:
+        id: gb61micv0tyxf
+    UpdateRequest:
+      type: object
+      properties:
+        languages:
+          type: array
+          items:
+            type: string
+          description: >-
+            The transcription languages to recognize. You can specify up to 4
+            languages. Refer to [Supported
+            Languages](https://docs.agora.io/en/real-time-stt/develop/supported-languages#real-time-translation)
+            for details. Choosing multiple transcription languages can affect
+            both quality and cost. For best practices, see [Optimize
+            transcription quality and
+            cost](https://docs.agora.io/en/real-time-stt/best-practice/optimize-quality).
+          maxItems: 4
+        keywords:
+          type: array
+          description: >-
+            Keyword list. Use it to improve the recognition accuracy of specific
+            words during transcription. Supports up to 500 words.
+          maxItems: 500
+          items:
+            type: string
+        uidLanguagesConfig:
+          type: array
+          description: >-
+            Configure the transcription language for the specified user ID.
+            Supports up to 5 configuration items. If you set this field when
+            calling `join` and now wish to specify no users, set this field to
+            an empty array `[]`.
+          maxItems: 5
+          items:
+            $ref: '#/components/schemas/UidLanguagesConfig'
+        rtcConfig:
+          type: object
+          description: Subscription configuration.
+          properties:
+            subscribeAudioUids:
+              type: array
+              items:
+                type: string
+              description: >-
+                The user IDs of the audio streams you want to subscribe to.
+                Specify this parameter only if you need to subscribe to specific
+                users. To subscribe to audio streams of all users, use
+                `["all"]`. Maximum array length: 32.
+              maxItems: 32
+        translateConfig:
+          type: object
+          description: Subtitle translation configuration.
+          properties:
+            enable:
+              type: boolean
+              description: >-
+                Whether to translate the transcribed text:
+
+                - `true`: Translate.
+
+                - `false`: Do not translate.
+
+                If you enabled translation when calling `join`, you can turn it
+                off by setting `enable` to `false`. If you did not enable
+                translation, you can turn it on by setting `enable` to `true`
+                and specifying `languages`.
+            languages:
+              type: array
+              items:
+                $ref: '#/components/schemas/LanguagePair'
+              description: >-
+                The translation languages array. You can specify a maximum of 4
+                different source languages.
+              maxItems: 4
+      x-stoplight:
+        id: tgc7tbprq7loh
+    AgentResponse:
+      type: object
+      x-stoplight:
+        id: jjvjie7qtwcja
+      properties:
+        agent_id:
+          type: string
+          description: The ID of the agent.
+        create_ts:
+          type: integer
+          description: The Unix timestamp (in seconds) when the agent was created.
+        status:
+          type: string
+          description: >-
+            The current status of the agent:
+
+            - `IDLE`: The agent is not initialized
+
+            - `STARTING`: The agent is starting
+
+            - `RUNNING`: The agent is running
+
+            - `STOPPING`: The agent is exiting
+
+            - `STOPPED`: The agent exited successfully
+
+            - `RECOVERING`: The agent is recovering
+
+            - `FAILED`: Agent exit failed
+          enum:
+            - IDLE
+            - STARTING
+            - RUNNING
+            - STOPPING
+            - STOPPED
+            - RECOVERING
+            - FAILED
+    AgentStatusResponse:
+      type: object
+      x-stoplight:
+        id: ie3c1amji3h26
+      properties:
+        message:
+          type: string
+          description: Details of the request result
+        agent_id:
+          type: string
+          description: The ID of the agent.
+        create_ts:
+          type: integer
+          description: >-
+            The Unix timestamp (in seconds) when the transcription task was
+            created.
+        status:
+          type: string
+          enum:
+            - IDLE
+            - STARTING
+            - RUNNING
+            - STOPPING
+            - STOPPED
+            - RECOVERING
+            - FAILED
+          description: >-
+            The current status of the agent:
+
+            - `IDLE`: The agent is not initialized
+
+            - `STARTING`: The agent is starting
+
+            - `RUNNING`: The agent is running
+
+            - `STOPPING`: The agent is exiting
+
+            - `STOPPED`: The agent exited successfully
+
+            - `RECOVERING`: The agent is recovering
+
+            - `FAILED`: Agent exit failed
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Details of the request failure.
+        reason:
+          type: string
+          description: The reason why the request failed.
+      x-stoplight:
+        id: sueaj0amubwdr
+    AgentErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Details of the failed request.
+        agent_id:
+          type: string
+          description: The ID of the agent.
+        create_ts:
+          type: integer
+          description: >-
+            The Unix timestamp (in seconds) when the transcription task was
+            created.
+        status:
+          type: string
+          description: >-
+            The status of the agent. If the returned status code is not 200, the
+            request failed. Troubleshoot according to the `details` and `reason`
+            fields.
+          enum:
+            - FAILED
+      x-stoplight:
+        id: sdu2crz99oyr7
+    TaskListResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            count:
+              type: integer
+              description: The number of agents returned in this response.
+            list:
+              type: array
+              description: The list of agents matching the query criteria.
+              items:
+                type: object
+                properties:
+                  start_ts:
+                    type: integer
+                    description: >-
+                      The Unix timestamp (in seconds) when the agent was
+                      created.
+                  status:
+                    type: string
+                    description: >-
+                      The current status of the agent:
+
+                      - `IDLE`: The agent is not initialized.
+
+                      - `STARTING`: The agent is starting.
+
+                      - `RUNNING`: The agent is running.
+
+                      - `STOPPING`: The agent is exiting.
+
+                      - `STOPPED`: The agent exited successfully.
+
+                      - `RECOVERING`: The agent is recovering.
+
+                      - `FAILED`: The agent exited with a failure.
+                  agent_id:
+                    type: string
+                    description: The agent ID.
+        meta:
+          type: object
+          description: Metadata about the returned list.
+          properties:
+            cursor:
+              type: string
+              description: The pagination cursor for the next page of results.
+            total:
+              type: integer
+              description: The total number of agents matching the query criteria.
+        status:
+          type: string
+          description: The request status.
+  securitySchemes:
+    Basic Auth:
+      type: http
+      scheme: basic
+      description: >-
+        **HTTP basic authentication**. Include the `Authorization` header in
+        every HTTP request. For details on how to generate this value, see the
+        RESTful authentication guide.
+security:
+  - Basic Auth: []
