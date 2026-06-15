@@ -1,0 +1,163 @@
+---
+title: "Core concepts"
+description: "Ideas that are central to developing with Agora."
+---
+
+RTC (Real-Time Communication) refers to real-time communication technology, which allows almost instant exchange of audio and other types of data between the sender and the receiver.
+
+Voice SDK provide real-time audio interaction services, with multi-platform and multi-device support. This includes high-definition voice calls, interactive live streaming, as well as one-on-one and multi-group chats.
+
+This guide introduces the key processes and concepts you need to know to use Voice SDK.
+
+Agora relies on the following fundamental concepts to enable seamless real-time communication:
+
+<a name="agora-sd-rtn"></a>
+### Agora SDRTN®
+
+Agora's core engagement services are powered by its Software-Defined Real-Time Network (SDRTN®), a global infrastructure accessible anytime, anywhere. Unlike traditional networks, Agora SDRTN® is not restricted by devices, phone numbers, or telecom coverage areas. With data centers in over 200 countries and regions, it ensures sub-second latency and high availability for real-time media.
+
+Agora SDRTN® enables live user engagement through real-time communication (RTC), offering:
+
+- Unmatched quality of service
+- High availability and accessibility
+- True scalability
+- Low cost
+
+## Channel concepts
+
+Agora uses channels to group users together, enabling seamless communication and interaction. Channels serve as the foundation for transmitting real-time data, whether audio, video, or signaling, and play a crucial role in connecting users and services.
+
+### Channel
+
+A channel organizes users into a group and is identified by a unique channel name. Users who connect to the same channel are able to communicate with each other. A channel is created when the first user joins and ceases to exist when the last user leaves.
+
+Channels are created by calling the methods for transmitting real-time data. Agora uses different channels to transmit different types of data:
+
+- A Voice SDK channel is used for transmitting audio data.
+
+- A Signaling channel is used for transmitting messaging or signaling data.
+
+These channels are independent of each other.
+
+Additional services provided by Agora, such as Cloud Recording and Speech to Text, join the Voice SDK channel to provide real-time recording, transmission acceleration, media playback, and content moderation.
+
+### Channel profile
+
+The Voice SDK applies different optimization methods according to the selected channel profile. Agora supports the following channel profiles:
+
+| Channel profile  | Description   |
+|--------------------|-----------------|
+| **Communication**   | This profile is suitable for one-on-one or group calls, where all users in the channel talk freely.   |
+| **Live Broadcasting** | In a live streaming channel, users have two client roles: *host* and *audience*. The *host* sends and receives streams, while the *audience* only receives streams with the sending function disabled. |
+
+### Stream
+
+A stream is a sequence of digitally encoded, coherent signals that contain media data. Users in a channel [publish](#publish) local streams and [subscribe](#subscribe) to remote streams from other users.
+
+### User role
+
+The user role defines whether a user in a channel has the permission to publish streams. There are two user roles:
+
+- **Host**: A user who can publish streams to a channel.
+- **Audience**: A User who can only subscribe to remote media streams. A user with this role cannot publish streams.
+
+### Publish
+
+Publishing is the act of sending a user’s audio data to the channel. Usually, the published stream is created by the audio data sampled from a microphone. You can also publish media streams from other sources, such as an online music file.
+
+After successfully publishing a stream, the SDK uses it to send media data to other users in the channel. Users communicate with each other in real-time by publishing local streams and subscribing to remote streams.
+
+### Subscribe
+
+Subscribing is the act of receiving media streams published by remote users to the channel. A user receives audio data from other users by subscribing to one or more of their streams. You either directly play the subscribed streams or process incoming data for other purposes such as recording.
+
+### User ID
+
+In Voice Calling, the UID is an integer value that uniquely identifies a user within the context of a channel. When joining a channel, you have the option to either assign a specific UID to the user or pass `0` or `null` and allow Agora to automatically generate and assign a UID to the user. If two users attempt to join the same channel with the same UID, it can lead to unexpected behavior.
+
+The UID is used by Agora's services and components to identify and manage users within a channel. Ensure that UIDs are properly assigned to prevent conflicts.
+
+### RTC connection 
+
+The connection between the SDK and the channel. When publishing or subscribing to multiple streams in multiple channels, a connection is used to specify the target channel.
+
+## Credentials
+
+To ensure reliable access and secure communication, Agora uses credentials such as the App ID, App Certificate, and tokens to identify applications, authenticate their requests, and authorize their access on its platform.
+
+### App ID
+
+The App ID is a unique key generated by Agora to identify each project and provide billing and other statistical data services. The App ID is critical for connecting users within your app. It is used to initialize the Agora Engine in your app, and as one of the required keys to create authentication tokens for secure communication. Retrieve the App ID for your project using the [Agora Console](https://console.agora.io/v2/project-management).
+
+App IDs are stored on the front-end client and do not provide access control. Projects using only an App ID allow any user with the App ID to join. For access control, especially in production environments, choose the **App ID + Token** mechanism for user authentication when creating a new project. Without authentication tokens, your environment is open to anyone with access to your App ID.
+
+### App Certificate
+
+An App Certificate is a unique key generated by the Agora Console to secure projects through token authentication. It is required, along with the App ID, to generate a token that proves authorization between your systems and Agora's network. App Certificates are used to generate Voice Calling authentication tokens.
+
+Store the App Certificate securely in your backend systems. If your App Certificate is compromised or to meet security compliance requirements, you can invalidate certificates and create new ones through the Agora Console.
+
+### Tokens
+
+A token is a dynamic key generated using the App ID, App Certificate, user ID, and expiration timestamp. Tokens authenticate and secure access to Agora's services, ensuring only authorized users can join a channel and participate in real-time communication.
+
+Tokens are generated on your server and passed to the client for use in Voice Calling. The token generation process involves digitally signing the App ID, App Certificate, user ID, and expiration timestamp using a specific algorithm, preventing tampering or forgery.
+
+During development and testing, use the Agora Console to generate temporary tokens. For production environments, implement a token server as part of your security infrastructure to control access to your channels.
+
+### Agora Console
+
+[Agora Console](https://console.agora.io/v2) is the main dashboard where you manage your Agora projects and services. Before you can use Agora's SDKs, you must first create a project in the Agora Console. See [Agora account management](manage-agora-account.md) for
+ details.
+
+![Create project in Agora Console](/images/common/create-project.svg)
+
+Agora Console provides an intuitive interface for developers to query and manage their Agora account. After registering an Agora account, you use the Agora Console to perform the following tasks:
+
+- Manage your account
+- Create and configure Agora projects and services
+- Get an App ID and the App certificate
+- Generate temporary tokens for development and testing
+- Manage members and roles
+- Check call quality and usage
+- Check bills and make payments
+- Access product resources
+
+See [Agora account management](manage-agora-account.md) for details on how to manage all aspects of your Agora account.
+
+Agora also provides RESTful APIs that you use to implement features such as creating a project and fetching usage numbers programmatically.
+
+## Audio concepts
+
+### Audio interaction workflow
+
+The following figure illustrates the workflow of using the Voice SDK to implement basic audio interaction.
+
+![orientation_adaptive_locked_landscape](/images/common/basic-audio-and-video.svg)
+
+Agora relies on the following fundamental concepts to enable seamless real-time communication:
+
+### Audio module
+
+In audio interaction, the main functions of the audio module are as shown in the figure below:
+
+![Audio module functions](/images/common/audio-module.svg)
+
+After you call `registerAudioFrameObserver`, you can obtain the raw audio data at the following observation points in the audio transmission process:
+
+1. Obtain the raw audio data of ear monitoring through the `onEarMonitoringAudioFrame` callback. 
+2. Obtain the captured raw audio data through the `onRecordAudioFrame` callback. 
+3. Obtain the raw audio playback data of each individual stream through the `onPlaybackAudioFrameBeforeMixing` callback.
+4. Obtain the raw audio playback data of all mixed streams through the `onPlaybackAudioFrame` callback.
+5. Obtain the raw audio data after mixing the captured and playback audio through the `onMixedAudioFrame` callback. 
+  (5) `onMixedAudioFrame` = (2) `onRecordAudioFrame` + (4) `onPlaybackAudioFrame`
+
+### Audio routing
+
+The audio output device used by the app when playing audio. Common audio routes include wired headphones, earpieces, speakers, Bluetooth headphones, and others.
+
+ The APIs used by the audio module are as follows:
+
+ - Enable local audio collection: `enableLocalAudio`
+ - Set local playback device: `setPlaybackDevice`
+ - Set up audio routing: `setDefaultAudioRouteToSpeakerphone`

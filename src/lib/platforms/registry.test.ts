@@ -10,11 +10,23 @@ import {
 describe('platform registry', () => {
   it('exposes a stable canonical priority order', () => {
     expect(PLATFORM_CANONICAL_PRIORITY).toEqual([
+      'web',
       'javascript',
       'android',
       'ios',
+      'macos',
+      'windows',
+      'electron',
       'flutter',
       'react-native',
+      'react-js',
+      'unity',
+      'unreal',
+      'blueprint',
+      'python',
+      'linux-cpp',
+      'linux-c',
+      'linux-java',
     ]);
   });
 
@@ -31,13 +43,16 @@ describe('platform registry', () => {
 
   it('falls back to the first available platform when no canonical priority matches', () => {
     expect(getCanonicalPlatform(['unity', 'web'])).toEqual({
-      platform: 'unity',
-      usedFallback: true,
+      platform: 'web',
+      usedFallback: false,
     });
   });
 
   it('recognizes only registered platform keys', () => {
     expect(isKnownPlatform('android')).toBe(true);
+    expect(isKnownPlatform('web')).toBe(true);
+    expect(isKnownPlatform('electron')).toBe(true);
+    expect(isKnownPlatform('react-js')).toBe(true);
     expect(isKnownPlatform('js')).toBe(false);
   });
 
@@ -45,6 +60,8 @@ describe('platform registry', () => {
     expect(getPlatformLabel('javascript', 'en')).toBe('JavaScript');
     expect(getPlatformLabel('javascript', 'zh-CN')).toBe('JavaScript');
     expect(getPlatformLabel('ios', 'en')).toBe('iOS');
+    expect(getPlatformLabel('web', 'en')).toBe('Web');
+    expect(getPlatformLabel('react-js', 'en')).toBe('React');
   });
 
   it('uses a namespaced storage key', () => {
