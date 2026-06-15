@@ -3,36 +3,6 @@ title: "Start an audio and video call"
 description: "Shows how to implement real-time audio and video communications using the AgoraChatCallKit."
 ---
 
-### All except Android
-
-### All except iOS
-
-### All except Web
-
-### Unity
-
-**Currently, there is no CallKit for this platform.**
-
-### Flutter
-
-**Currently, there is no CallKit for this platform.**
-
-### Windows
-
-**Currently, there is no CallKit for this platform.**
-
-### React Native
-
-**Currently, there is no CallKit for this platform.**
-
-### All except Unity
-
-### All except Windows
-
-### All except Flutter
-
-### All except React Native
-
 `AgoraChatCallKit` is an open-source audio and video UI library developed based on Agora's real-time communications and signaling services. With this library, you can implement audio and video calling functionalities with enhanced synchronization between multiple devices. In use-cases where a user ID is logged in to multiple devices, once the user deals with an incoming call that is ringing on one device, all the other devices stop ringing simultaneously.
 
 This page describes how to implement real-time audio and video communications using the `AgoraChatCallKit`.
@@ -41,56 +11,55 @@ This page describes how to implement real-time audio and video communications us
 
 The basic process for implementing real-time audio and video communications with `AgoraChatCallKit` is as follows:
 
-### Android
-
+<PlatformStructured platform="android">
 1. Initialize `AgoraChatCallKit` by calling `init` and add the `AgoraChatCallKit` event listener by calling `setCallKitListener`.
 2. Call `startSingleCall` or `startInviteMultipleCall` on the caller's client to send a call invitation for one-to-one or group calls.
 3. On the callee's client, accept or decline the call invitation after receiving `onReceivedCall`. Once a user accepts the invitation, they enter the call.
 4. When the call ends, the SDK triggers the `onEndCallWithReason` callback.
+</PlatformStructured>
 
-### iOS
-
+<PlatformStructured platform="ios">
 1. Initialize `AgoraChatCallKit` by calling `init`.
 2. Call `startSingleCallWithUid` or `startInviteUsers` on the caller's client to send a call invitation for one-to-one or group calls.
 3. On the callee's client, accept or decline the call invitation after receiving `callDidReceive`. Once a user accepts the invitation, they enter the call.
 4. When the call ends, the SDK triggers the `callDidEnd` callback.
+</PlatformStructured>
 
-### Web
-
+<PlatformStructured platform="javascript">
 1. Initialize `AgoraChatCallKit` by calling `init`.
 2. Call `startCall` on the caller's client to send a call invitation for one-to-one or group calls.
 3. On the callee's client, accept or decline the call invitation after receiving `onInvite`. Once a user accepts the invitation, they enter the call.
 4. When the call ends, the SDK triggers the `onStateChange` callback.
+</PlatformStructured>
 
 ## Prerequisites
 
 Before proceeding, ensure that your development environment meets the following requirements:
 
-### Android
-
+<PlatformStructured platform="android">
 - [Java Development Kit](https://www.oracle.com/java/technologies/downloads/) 1.8 or later.
 - Android Studio 3.5 or later.
 - `targetSdkVersion` 30.
 - `minSdkVersion` 21.
 - Gradle 4.6 or later.
 - a Chat project that has integrated the Chat SDK and implemented the [basic real-time chat functionalities](../get-started/get-started-sdk.mdx), including users logging in and out and sending and receiving messages.
+</PlatformStructured>
 
-### iOS
-
+<PlatformStructured platform="ios">
 - Xcode 9.0 or later.
 - A device running iOS 10.0 or later.
 - A Chat project that has integrated the Chat SDK and implemented the [basic real-time chat functionalities](../get-started/get-started-sdk.mdx), including users logging in and out and sending and receiving messages.
+</PlatformStructured>
 
-### Web
-
+<PlatformStructured platform="javascript">
 - A valid [Agora account](../reference/manage-agora-account.md#create-an-agora-account).
 - An Agora project that has [enabled Chat](../get-started/enable.md).
 - A Chat project that has integrated the Chat SDK and implemented the [basic real-time chat functionalities](../get-started/get-started-sdk.mdx), including users logging in and out and sending and receiving messages.
+</PlatformStructured>
 
 ## Project setup
 
-### Android
-
+<PlatformStructured platform="android">
 Take the following steps to integrate the `AgoraChatCallKit` into your project and set up the development environment.
 
 1. Add the dependency
@@ -128,9 +97,9 @@ Take the following steps to integrate the `AgoraChatCallKit` into your project a
     
     
     ```
+</PlatformStructured>
 
-### iOS
-
+<PlatformStructured platform="ios">
 Take the following steps to integrate the `AgoraChatCallKit` into your project and set up the development environment.
 
 ### Add the AgoraChatCallKit framework
@@ -164,9 +133,9 @@ Open the `info.plist` file, and add the following permissions:
 | --- | --- | --- |
 | `Privacy - Microphone Usage Description` | String | The description for using the microphone. For example, to access the microphone. |
 | `Privacy - Camera Usage Description` | String | The description for using the camera. For example, to access the camera. |
+</PlatformStructured>
 
-### Web
-
+<PlatformStructured platform="javascript">
 1. In your terminal, run the following command to install the call kit:
 
    ```bash
@@ -178,13 +147,13 @@ Open the `info.plist` file, and add the following permissions:
    ```javascript
    import Callkit from 'chat-callkit';
    ```
+</PlatformStructured>
 
 ## Implement audio and video calling
 
 This section introduces the core steps for implementing audio and video calls in your project.
 
-### Android
-
+<PlatformStructured platform="android">
 ### Initialize AgoraChatCallKit
 
 Call `init` to initialize the `AgoraChatCallKit` after the Chat SDK is initialized. You can also add callback events to listen for and set the configurations. Refer to the following sample code:
@@ -359,9 +328,9 @@ public enum EaseCallEndReason {
    ....
 }
 ```
+</PlatformStructured>
 
-### iOS
-
+<PlatformStructured platform="ios">
 ### Initialize AgoraChatCallKit
 
 Call `init` to initialize the `AgoraChatCallKit`.
@@ -583,9 +552,9 @@ A one-to-one call ends as soon as one of the two users hangs up, while a group c
     }
 }
 ```
+</PlatformStructured>
 
-### Web
-
+<PlatformStructured platform="javascript">
 ### Initialize AgoraChatCallKit
 
 Call `init` to initialize the `AgoraChatCallKit`.
@@ -727,13 +696,13 @@ function Call() {
 ### End the call
 
 A one-to-one call ends as soon as one of the two users hangs up, while a group call ends only after the local user hangs up. If the local user hangs up the call, the SDK triggers `onStateChange` with the `info.type` of `hangup`. If the remote user hangs up the call, the SDK triggers `onStateChange` with the `info.type` of `user-left`.
+</PlatformStructured>
 
 ## Next steps
 
 This section contains extra steps you can take for the audio and video call functionalities in your project.
 
-### Android
-
+<PlatformStructured platform="android">
 ### Call exceptions
 
 If exceptions or errors occur during a call, the SDK triggers the `onCallError` callback in the `EaseCallKitListener` class, which reports the detailed information of the exception in `AggoraChatCallError`. 
@@ -845,9 +814,9 @@ default void onGenerateRTCToken(String userId, String channelName, EaseCallKitTo
 In use-cases where the app runs on the background or goes offline, use push notifications to ensure that the callee receives the call invitation. To enable push notifications, see [Set up push notifications](../develop/offline-push#set-up-push-notifications).
 
 Once push notifications are enabled, when a call invitation arrives, a notification message pops out on the notification panel. Users can click the message to see the call invitation.
+</PlatformStructured>
 
-### iOS
-
+<PlatformStructured platform="ios">
 ### Call exceptions
 
 If exceptions or errors occur during a call, the SDK triggers the `callDidOccurError` callback, which reports the detailed information of the exception in `AgoraChatCallError`. 
@@ -884,21 +853,21 @@ Once you enable token authentication, ensure that you listen for the `callDidReq
     [AgoraChatCallManager.sharedManager setRTCToken:rtcToken channelName:aChannelName uid: The Agora UID];
 }
 ```
+</PlatformStructured>
 
-### Web
-
+<PlatformStructured platform="javascript">
 ### Authenticate users with the  token
 
 To enhance communication security, Agora recommends that you authenticate app users with the  token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](../reference/manage-agora-account.md#enable-the-primary-certificate).
 
 Tokens are generated on your app server using the token generator provided by Agora. After you retrieve the token, pass the token to the callkit when calling `startCall` and `answerCall`. For how to generate a token on the server and retrieve and renew the token on the client, see  [Secure authentication with tokens](./authentication.md).
+</PlatformStructured>
 
 ## Reference
 
 This section provides other reference information that you can refer to when implementing real-time audio and video communications functionalities.
 
-### Android
-
+<PlatformStructured platform="android">
 ### API list
 
 The `AgoraChatCallKit` provides the following APIs:
@@ -945,9 +914,9 @@ The `AgoraChatCallKit` provides the following APIs:
 Agora provides an open-source [AgoraChat-android](https://github.com/AgoraIO-Usecase/AgoraChat-android) sample project on GitHub. You can download the sample to try it out or view the source code.
 
 The sample project uses the Chat user ID to join a channel, which enables displaying the user ID in the view of the call. If you use the methods of the Agora  to start a call, you can also use the Integer UID to join a channel.
+</PlatformStructured>
 
-### iOS
-
+<PlatformStructured platform="ios">
 ### API list
 
 The `AgoraChatCallKit` framework contains the `AgoraChatCallManager` and `AgoraChatCallDelegate` classes.
@@ -995,9 +964,9 @@ You can configure the following project settings according to your use case:
 
 - To run the app in the background, go to `info.plist`, click `+`, and add `Required background modes`. Set `Type` as `Array`, and add `App plays audio or streams audio/video using AirPlay` as a value under `Required background modes`.
 - To use the Apple `PushKit` and `CallKit`, go to **TARGETS** > **Project Name** > **Signing and Capabilities**. Under **Background Modes**, check `Voice over IP`.
+</PlatformStructured>
 
-### Web
-
+<PlatformStructured platform="javascript">
 ### API list
 
 `AgoraChatCallKit` provides the following APIs:
@@ -1032,3 +1001,4 @@ Attributes:
 Agora provides an open-source [AgoraChatCallKit](https://github.com/AgoraIO-Usecase/AgoraChat-CallKit-web/tree/master/demo) sample project on GitHub. You can download the sample to try it out or view the source code.
 
 The sample project uses the Chat user ID to join a channel, which enables displaying the user ID in the view of the call. If you use the methods of the Agora  to start a call, you can also use the Integer UID to join a channel.
+</PlatformStructured>
