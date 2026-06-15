@@ -1,0 +1,795 @@
+---
+title: "Join multiple channels"
+description: "Broadcast or subscribe to multiple channels."
+---
+Agora Video SDK enables you to simultaneously join multiple channels. This capability allows you to receive and publish audio and video streams across multiple channels concurrently.
+
+<PlatformStructured platform="android">
+## Understand the tech
+
+Video SDK's multi-channel functionality is based on two key components:
+
+* <code>RtcConnection</code>
+
+    The <code>RtcConnection</code> object identifies a connection. It contains the following information:
+
+    - Channel name
+    - User ID of the local user
+
+    You create multiple <code>RtcConnection</code> objects, each with a different channel name and user ID. Each <code>RtcConnection</code> instance can independently publish multiple audio streams and a single video stream.
+
+* <code>RtcEngineEx</code>
+
+    The class contains methods tailored for interacting with a designated <code>RtcConnection</code> object.
+
+    To join multiple channels, you call <code>rtc_join_channel_ex</code> method in the <code>RtcEngineEx</code> class multiple times, using a different <code>RtcConnection</code> instance each time.
+
+When joining multiple channels:
+
+- Ensure that the user ID for each <code>RtcConnection</code> object is unique and nonzero.
+- Configure publishing and subscribing options for the <code>RtcConnection</code> object in <code>rtc_join_channel_ex</code>.
+
+- Pass the <code>rtc_event_handler_class</code> object to the <code>rtc_event_handler_parameter</code> parameter when calling the <code>rtc_join_channel_ex</code> method to receive multiple channel-related event notifications.
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+## Understand the tech
+
+Video SDK's multi-channel functionality is based on two key components:
+
+* <code>RtcConnection</code>
+
+    The <code>RtcConnection</code> object identifies a connection. It contains the following information:
+
+    - Channel name
+    - User ID of the local user
+
+    You create multiple <code>RtcConnection</code> objects, each with a different channel name and user ID. Each <code>RtcConnection</code> instance can independently publish multiple audio streams and a single video stream.
+
+* <code>RtcEngineEx</code>
+
+    The class contains methods tailored for interacting with a designated <code>RtcConnection</code> object.
+
+    To join multiple channels, you call <code>rtc_join_channel_ex</code> method in the <code>RtcEngineEx</code> class multiple times, using a different <code>RtcConnection</code> instance each time.
+
+When joining multiple channels:
+
+- Ensure that the user ID for each <code>RtcConnection</code> object is unique and nonzero.
+- Configure publishing and subscribing options for the <code>RtcConnection</code> object in <code>rtc_join_channel_ex</code>.
+<PlatformWrapper notAllowed="unity, react-native, electron">
+- Pass the <code>rtc_event_handler_class</code> object to the <code>rtc_event_handler_parameter</code> parameter when calling the <code>rtc_join_channel_ex</code> method to receive multiple channel-related event notifications.
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+## Understand the tech
+
+Video SDK's multi-channel functionality is based on two key components:
+
+* <code>RtcConnection</code>
+
+    The <code>RtcConnection</code> object identifies a connection. It contains the following information:
+
+    - Channel name
+    - User ID of the local user
+
+    You create multiple <code>RtcConnection</code> objects, each with a different channel name and user ID. Each <code>RtcConnection</code> instance can independently publish multiple audio streams and a single video stream.
+
+* <code>RtcEngineEx</code>
+
+    The class contains methods tailored for interacting with a designated <code>RtcConnection</code> object.
+
+    To join multiple channels, you call <code>rtc_join_channel_ex</code> method in the <code>RtcEngineEx</code> class multiple times, using a different <code>RtcConnection</code> instance each time.
+
+When joining multiple channels:
+
+- Ensure that the user ID for each <code>RtcConnection</code> object is unique and nonzero.
+- Configure publishing and subscribing options for the <code>RtcConnection</code> object in <code>rtc_join_channel_ex</code>.
+<PlatformWrapper notAllowed="unity, react-native, electron">
+- Pass the <code>rtc_event_handler_class</code> object to the <code>rtc_event_handler_parameter</code> parameter when calling the <code>rtc_join_channel_ex</code> method to receive multiple channel-related event notifications.
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+## Understand the tech
+
+Video SDK's multi-channel functionality is based on two key components:
+
+* <code>RtcConnection</code>
+
+    The <code>RtcConnection</code> object identifies a connection. It contains the following information:
+
+    - Channel name
+    - User ID of the local user
+
+    You create multiple <code>RtcConnection</code> objects, each with a different channel name and user ID. Each <code>RtcConnection</code> instance can independently publish multiple audio streams and a single video stream.
+
+* <code>RtcEngineEx</code>
+
+    The class contains methods tailored for interacting with a designated <code>RtcConnection</code> object.
+
+    To join multiple channels, you call <code>rtc_join_channel_ex</code> method in the <code>RtcEngineEx</code> class multiple times, using a different <code>RtcConnection</code> instance each time.
+
+When joining multiple channels:
+
+- Ensure that the user ID for each <code>RtcConnection</code> object is unique and nonzero.
+- Configure publishing and subscribing options for the <code>RtcConnection</code> object in <code>rtc_join_channel_ex</code>.
+<PlatformWrapper notAllowed="unity, react-native, electron">
+- Pass the <code>rtc_event_handler_class</code> object to the <code>rtc_event_handler_parameter</code> parameter when calling the <code>rtc_join_channel_ex</code> method to receive multiple channel-related event notifications.
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+## Understand the tech
+
+Video SDK's multi-channel functionality is based on two key components:
+
+* <code>RtcConnection</code>
+
+    The <code>RtcConnection</code> object identifies a connection. It contains the following information:
+
+    - Channel name
+    - User ID of the local user
+
+    You create multiple <code>RtcConnection</code> objects, each with a different channel name and user ID. Each <code>RtcConnection</code> instance can independently publish multiple audio streams and a single video stream.
+
+* <code>RtcEngineEx</code>
+
+    The class contains methods tailored for interacting with a designated <code>RtcConnection</code> object.
+
+    To join multiple channels, you call <code>rtc_join_channel_ex</code> method in the <code>RtcEngineEx</code> class multiple times, using a different <code>RtcConnection</code> instance each time.
+
+When joining multiple channels:
+
+- Ensure that the user ID for each <code>RtcConnection</code> object is unique and nonzero.
+- Configure publishing and subscribing options for the <code>RtcConnection</code> object in <code>rtc_join_channel_ex</code>.
+<PlatformWrapper notAllowed="unity, react-native, electron">
+- Pass the <code>rtc_event_handler_class</code> object to the <code>rtc_event_handler_parameter</code> parameter when calling the <code>rtc_join_channel_ex</code> method to receive multiple channel-related event notifications.
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+## Understand the tech
+
+Video SDK's multi-channel functionality is based on two key components:
+
+* <code>RtcConnection</code>
+
+    The <code>RtcConnection</code> object identifies a connection. It contains the following information:
+
+    - Channel name
+    - User ID of the local user
+
+    You create multiple <code>RtcConnection</code> objects, each with a different channel name and user ID. Each <code>RtcConnection</code> instance can independently publish multiple audio streams and a single video stream.
+
+* <code>RtcEngineEx</code>
+
+    The class contains methods tailored for interacting with a designated <code>RtcConnection</code> object.
+
+    To join multiple channels, you call <code>rtc_join_channel_ex</code> method in the <code>RtcEngineEx</code> class multiple times, using a different <code>RtcConnection</code> instance each time.
+
+When joining multiple channels:
+
+- Ensure that the user ID for each <code>RtcConnection</code> object is unique and nonzero.
+- Configure publishing and subscribing options for the <code>RtcConnection</code> object in <code>rtc_join_channel_ex</code>.
+<PlatformWrapper notAllowed="unity, react-native, electron">
+- Pass the <code>rtc_event_handler_class</code> object to the <code>rtc_event_handler_parameter</code> parameter when calling the <code>rtc_join_channel_ex</code> method to receive multiple channel-related event notifications.
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+## Understand the tech
+
+Video SDK's multi-channel functionality is based on two key components:
+
+* <code>RtcConnection</code>
+
+    The <code>RtcConnection</code> object identifies a connection. It contains the following information:
+
+    - Channel name
+    - User ID of the local user
+
+    You create multiple <code>RtcConnection</code> objects, each with a different channel name and user ID. Each <code>RtcConnection</code> instance can independently publish multiple audio streams and a single video stream.
+
+* <code>RtcEngineEx</code>
+
+    The class contains methods tailored for interacting with a designated <code>RtcConnection</code> object.
+
+    To join multiple channels, you call <code>rtc_join_channel_ex</code> method in the <code>RtcEngineEx</code> class multiple times, using a different <code>RtcConnection</code> instance each time.
+
+When joining multiple channels:
+
+- Ensure that the user ID for each <code>RtcConnection</code> object is unique and nonzero.
+- Configure publishing and subscribing options for the <code>RtcConnection</code> object in <code>rtc_join_channel_ex</code>.
+<PlatformWrapper notAllowed="unity, react-native, electron">
+- Pass the <code>rtc_event_handler_class</code> object to the <code>rtc_event_handler_parameter</code> parameter when calling the <code>rtc_join_channel_ex</code> method to receive multiple channel-related event notifications.
+</PlatformStructured>
+<PlatformStructured platform="unity">
+- Use the `connection` parameter in each callback to identify the corresponding channel.
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+- Use the `connection` parameter in each callback to identify the corresponding channel.
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+- Use the `connection` parameter in each callback to identify the corresponding channel.
+</PlatformStructured>
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/index) in your project.
+
+## Implementation
+
+This section explains how to join a second channel as a host after you have already joined the first channel.
+
+<PlatformStructured platform="android">
+1. Declare variables for `RtcEngineEx` and `RtcConnection` objects.
+
+<Tabs defaultValue="tab1">
+<Tabs defaultValue="tab1">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+
+<TabsContent value="java">
+```java
+private RtcEngineEx engine;
+private RtcConnection rtcConnection2 = new RtcConnection();
+```
+</TabsContent>
+
+<TabsContent value="kotlin">
+```kotlin
+private lateinit var engine: RtcEngineEx
+private val rtcConnection2 = RtcConnection()
+```
+</TabsContent>
+</Tabs></Tabs>
+
+1. Initialize the engine instance.
+
+<Tabs defaultValue="tab1">
+<Tabs defaultValue="tab1">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+
+<TabsContent value="java">
+```java
+engine = (RtcEngineEx) RtcEngine.create(config);
+```
+</TabsContent>
+
+<TabsContent value="kotlin">
+```kotlin
+engine = RtcEngine.create(config) as RtcEngineEx
+```
+</TabsContent>
+</Tabs></Tabs>
+
+1. Join the channel using a random user ID.
+
+<Tabs defaultValue="tab1">
+<Tabs defaultValue="tab1">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+
+<TabsContent value="java">
+```java
+private boolean joinSecondChannel() {
+     ChannelMediaOptions option = new ChannelMediaOptions();
+     mediaOptions.autoSubscribeAudio = true;
+     mediaOptions.autoSubscribeVideo = true;
+     rtcConnection2.channelId = "channel-2";
+     rtcConnection2.localUid = new Random().nextInt(512)+512;
+     int ret = engine.joinChannelEx("your token", rtcConnection2, mediaOptions,
+         iRtcEngineEventHandler2);
+     return (ret == 0);
+ }
+```
+</TabsContent>
+
+<TabsContent value="kotlin">
+```kotlin
+private fun joinSecondChannel(): Boolean {
+    val mediaOptions = ChannelMediaOptions().apply {
+        autoSubscribeAudio = true
+        autoSubscribeVideo = true
+    }
+    rtcConnection2.channelId = "channel-2"
+    rtcConnection2.localUid = (Random().nextInt(512) + 512)
+    val ret = engine.joinChannelEx("your token", rtcConnection2, mediaOptions, iRtcEngineEventHandler2)
+    return ret == 0
+}
+```
+</TabsContent>
+</Tabs></Tabs>
+
+1. Listen for events in `rtcConnection2` and set up the remote video in the `onUserJoined` callback.
+
+<Tabs defaultValue="tab1">
+<Tabs defaultValue="tab1">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+
+<TabsContent value="java">
+```java
+private final IRtcEngineEventHandler iRtcEngineEventHandler2 = new IRtcEngineEventHandler() {
+    @Override
+    public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+        Log.i(TAG, String.format("channel2 onJoinChannelSuccess channel %s uid %d", channel2, uid));
+        showLongToast(String.format("onJoinChannelSuccess channel %s uid %d", channel2, uid));
+    }
+    @Override
+    public void onUserJoined(int uid, int elapsed) {
+        Log.i(TAG, "channel2 onUserJoined->" + uid);
+        showLongToast(String.format("user %d joined!", uid));
+        Context context = getContext();
+        if (context == null) {
+            return;
+        }
+        handler.post(() ->
+        {
+            // Display the remote video stream
+            SurfaceView surfaceView = null;
+            if (fl_remote2.getChildCount() > 0) {
+                fl_remote2.removeAllViews();
+            }
+            // Create the rendering view through RtcEngine
+            surfaceView = new SurfaceView(context);
+            surfaceView.setZOrderMediaOverlay(true);
+            // Add the view to the remote container
+            fl_remote2.addView(surfaceView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            // Set the remote view
+            engine.setupRemoteVideoEx(new VideoCanvas(surfaceView, RENDER_MODE_FIT, uid), rtcConnection2);
+        });
+    }
+};
+```
+</TabsContent>
+
+<TabsContent value="kotlin">
+```kotlin
+private val iRtcEngineEventHandler2 = object : IRtcEngineEventHandler() {
+    override fun onJoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
+        Log.i(TAG, String.format("channel2 onJoinChannelSuccess channel %s uid %d", channel2, uid))
+        showLongToast(String.format("onJoinChannelSuccess channel %s uid %d", channel2, uid))
+    }
+
+    override fun onUserJoined(uid: Int, elapsed: Int) {
+        Log.i(TAG, "channel2 onUserJoined->$uid")
+        showLongToast("user $uid joined!")
+
+        val context = context
+        if (context == null) {
+            return
+        }
+
+        handler.post {
+            // Display the remote video stream
+            var surfaceView: SurfaceView? = null
+            if (fl_remote2.childCount > 0) {
+                fl_remote2.removeAllViews()
+            }
+            // Create the rendering view through RtcEngine
+            surfaceView = SurfaceView(context)
+            surfaceView?.zOrderMediaOverlay = true
+            // Add the view to the remote container
+            fl_remote2.addView(surfaceView, FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+
+            // Set the remote view
+            engine.setupRemoteVideoEx(VideoCanvas(surfaceView, RENDER_MODE_FIT, uid), rtcConnection2)
+        }
+    }
+}
+```
+</TabsContent>
+</Tabs></Tabs>
+</PlatformStructured>
+<PlatformStructured platform="electron">
+1. Join the second channel
+
+    Call `joinChannelEx` to join a secondary channel by specifying the `RtcConnection` object and using a random user ID.
+
+    ```javascript
+    let token2 = "token2";
+    const channelId2 = "channel2";
+    let uid2 = 321;
+
+    // Join multiple channels
+    rtcEngine.joinChannelEx(
+        token2,
+        // RtcConnection
+        {
+            channelId: channelId2,
+            localUid: uid2,
+        },
+        // ChannelMediaOptions
+        {
+            clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+            publishMicrophoneTrack: false,
+            publishCameraTrack: false,
+            autoSubscribeAudio: false,
+            autoSubscribeVideo: false,
+            publishSecondaryCameraTrack: true,
+        }
+    );
+    ```
+
+2. Set up remote user video
+
+    Listen to the `onUserJoined` callback and set up the remote video.
+
+    ```javascript
+    const EventHandles = {
+        // Monitor remote user joining channel events
+        onUserJoined: ({ channelId, localUid }, remoteUid, elapsed) => {
+            console.log('Remote user ' + remoteUid + ' joined');
+            // After the remote user joins the channel, set the remote video window
+            rtcEngine.setupRemoteVideoEx(
+                {
+                    sourceType: VideoSourceType.VideoSourceRemote,
+                    uid: remoteUid,
+                    view: remoteVideoContainer,
+                    setupMode: VideoViewSetupMode.VideoViewSetupAdd,
+                },
+                {
+                    channelId: channelId2,
+                    localUid: uid2,
+                },
+            );
+        },
+        // Other event callbacks
+    };
+
+    // Register event callback
+    rtcEngine.registerEventHandler(EventHandles);
+    ```
+</PlatformStructured>
+<PlatformStructured platform="flutter">
+The Web implementation of this feature is not yet available. Please refer to the [API Reference](../../api-reference).
+</PlatformStructured>
+<PlatformStructured platform="ios">
+1.  Define an `AgoraRtcConnection` object in your project's `ViewController.swift` file.
+
+    ```swift
+    let connection1 = AgoraRtcConnection()
+    ```
+
+2.  Join the channel using a random user ID.
+
+    ```swift
+    var mediaOptions = AgoraRtcChannelMediaOptions()
+    mediaOptions.autoSubscribeVideo = .of(true)
+    mediaOptions.autoSubscribeAudio = .of(true)
+    connection1.channelId = channelName1
+    connection1.localUid = UInt.random(in: 1001...2000)
+    var result = agoraKit.joinChannelEx(byToken: "your token", connection: connection1, delegate: channel1, mediaOptions: mediaOptions, joinSuccess: nil)
+    channel1.channelId = channelName1
+    channel1.connectionDelegate = self
+    if result != 0 {
+        self.showAlert(title: "Error", message: "joinChannel1 call failed: \(result), please check your params")
+    }
+    ```
+
+3.  Set up the remote video in the `didJoinedOfUid` callback.
+
+    ```swift
+    func rtcEngine(_ engine: AgoraRtcEngineKit, channelId: String, didJoinedOfUid uid: UInt, elapsed: Int) {
+        LogUtils.log(message: "remote user join: \(uid) \(elapsed)ms", level: .info)
+        // In this operation, only one remote video view is available
+        // Here, we check if there's a view tagged with that UID
+        let videoCanvas = AgoraRtcVideoCanvas()
+        videoCanvas.uid = uid
+        // The view to be bound
+        videoCanvas.view = channelId == channelName1 ? channel1RemoteVideo.videoView : channel2RemoteVideo.videoView
+        videoCanvas.renderMode = .hidden
+        let connection = AgoraRtcConnection()
+        agoraKit.setupRemoteVideoEx(videoCanvas, connection: connection)
+    }
+    ```
+</PlatformStructured>
+<PlatformStructured platform="macos">
+
+</PlatformStructured>
+<PlatformStructured platform="react-js">
+The Web implementation of this feature is not yet available. Please refer to the [API Reference](../../api-reference).
+</PlatformStructured>
+<PlatformStructured platform="react-native">
+1. Join the second channel
+
+    Call `joinChannelEx` to join a secondary channel by specifying the `RtcConnection` object and using a random user ID.
+
+    ```javascript
+    let token2 = "token2";
+    const channelId2 = "channel2";
+    let uid2 = 321;
+
+    // Join multiple channels
+    rtcEngine.joinChannelEx(
+        token2,
+        // RtcConnection
+        {
+            channelId: channelId2,
+            localUid: uid2,
+        },
+        // ChannelMediaOptions
+        {
+            clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+            publishMicrophoneTrack: false,
+            publishCameraTrack: false,
+            autoSubscribeAudio: false,
+            autoSubscribeVideo: false,
+            publishSecondaryCameraTrack: true,
+        }
+    );
+    ```
+
+2. Set up remote user video
+
+    Listen to the `onUserJoined` callback and set the remote video.
+
+    ```jsx
+    // Register callback for when a remote user joins the current channel
+    agoraEngine.registerEventHandler(
+        {
+            onUserJoined: (_connection: RtcConnection, uid: number) => {
+                showMessage("remote user " + uid + " added");
+                setRemoteUid(uid);
+            },
+        }
+    );
+
+    // Creating a Remote View Using RtcSurfaceView
+    <RtcSurfaceView
+        canvas={
+            {
+                uid: remoteUid,
+                sourceType: VideoSourceType.VideoSourceRemote,
+            }
+        }
+        style={styles.videoView}
+    />;
+    ```
+</PlatformStructured>
+<PlatformStructured platform="unity">
+1. Join the second channel
+
+    Call `JoinChannelEx` to join the second channel:
+
+    ```csharp
+    ChannelMediaOptions options2 = new ChannelMediaOptions();
+    // Automatically subscribe to remote audio
+    options2.autoSubscribeAudio.SetValue(true);
+    // Automatically subscribe to remote video
+    options2.autoSubscribeVideo.SetValue(true);
+    // Publish audio from the microphone
+    options2.publishMicrophoneTrack.SetValue(true);
+    // Publish video from the camera
+    options2.publishCameraTrack.SetValue(true);
+    // Set the user role to broadcaster
+    options2.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+    // Join the second channel with a unique user ID
+    ret = RtcEngine.JoinChannelEx(_token, new RtcConnection(_channelName, UID2), options2);
+    Debug.Log("JoinChannelEx returns: " + ret);
+    ```
+
+2. Set up remote user video
+
+    Listen for the `OnUserJoined` callback and call `SetForUser` to set up video rendering for the remote user:
+
+    ```csharp
+    public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed)
+    {
+        Debug.Log(string.Format("OnUserJoined uid: {0}, elapsed: {1}", uid, elapsed));
+        // Create a view for the remote user
+        var videoSurface = MakeImageSurface(uid.ToString());
+        // Set up video rendering
+        videoSurface.SetForUser(uid, connection.channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
+        // Callback when the Texture size changes
+        videoSurface.OnTextureSizeModify += (int width, int height) =>
+        {
+            var transform = videoSurface.GetComponent<RectTransform>();
+            if (transform)
+            {
+                // If rendering in a RawImage, set the RawImage size
+                transform.sizeDelta = new Vector2(width / 2, height / 2);
+                transform.localScale = Vector3.one;
+            }
+            else
+            {
+                // If rendering in a MeshRenderer, set the MeshRenderer size
+                float scale = (float)height / (float)width;
+                videoSurface.transform.localScale = new Vector3(-1, 1, scale);
+            }
+            Debug.Log("OnTextureSizeModify: " + width + " " + height);
+        };
+    }
+
+    private static VideoSurface MakeImageSurface(string goName)
+    {
+        GameObject go = new GameObject { name = goName };
+        // Add RawImage for rendering
+        go.AddComponent<RawImage>();
+        // Make the object draggable
+        go.AddComponent<UIElementDrag>();
+
+        var canvas = GameObject.Find("VideoCanvas");
+        if (canvas != null)
+        {
+            go.transform.parent = canvas.transform;
+            Debug.Log("Video view added");
+        }
+        else
+        {
+            Debug.Log("Canvas is null, video view not added");
+        }
+
+        // Set transform properties
+        go.transform.Rotate(0f, 0f, 180f);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localScale = new Vector3(2f, 3f, 1f);
+
+        // Add VideoSurface component
+        var videoSurface = go.AddComponent<VideoSurface>();
+        return videoSurface;
+    }
+    ```
+</PlatformStructured>
+<PlatformStructured platform="unreal">
+The Web implementation of this feature is not yet available. Please refer to the [API Reference](../../api-reference).
+</PlatformStructured>
+<PlatformStructured platform="web">
+The Web implementation of this feature is not yet available. Please refer to the [API Reference](../../api-reference).
+</PlatformStructured>
+<PlatformStructured platform="windows">
+1. Define a connection and join the channel using a random user ID.
+
+    ```cpp
+    agora::rtc::ChannelMediaOptions options2;
+    options2.autoSubscribeAudio = false;
+    options2.autoSubscribeVideo = false;
+    options2.publishAudioTrack = false;
+    options2.publishCameraTrack = false;
+    options2.publishSecondaryCameraTrack = true;
+    options2.clientRoleType = CLIENT_ROLE_BROADCASTER;
+    // Define the connection
+    connection.localUid = generateUid();
+    connection.channelId = szChannelId.data();
+    // Join the channel
+    int ret = m_rtcEngine->joinChannelEx(APP_TOKEN, connection, options2, &m_camera2EventHandler);
+    ```
+
+2. Listen for the `onUserJoined` callback and set up the remote video.
+
+    ```cpp
+    // Listen for the onUserJoined callback
+    void CAGEngineEventHandler::onUserJoined(uid_t uid, int elapsed) {
+        LPAGE_USER_JOINED lpData = new AGE_USER_JOINED;
+
+        lpData->uid = uid;
+        lpData->elapsed = elapsed;
+
+        if (m_hMainWnd != NULL)
+            ::PostMessage(m_hMainWnd, WM_MSGID(EID_USER_JOINED), (WPARAM)lpData, 0);
+    }
+    ```
+
+3.  Set up the remote video
+
+    ```cpp
+    VideoCanvas canvas;
+    canvas.renderMode = RENDER_MODE_FIT;
+    canvas.uid = 123;
+    canvas.view = videoWnd.GetSafeHwnd();
+
+    connection.localUid = 123;
+    connection.channelId = "channel123";
+
+    // Set up the remote video
+    rtcEngine->setupRemoteVideoEx(canvas, connection);
+    ```
+</PlatformStructured>
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+<PlatformStructured platform="android">
+### Sample project
+
+Agora provides the [JoinMultipleChannels](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/JoinMultipleChannel.java) open-source sample project for your reference. Download the project or view the source code for a more detailed example.
+
+### API reference
+
+- [`RtcEngineEx`]({{global.API_REF_ANDROID_ROOT}}/class_irtcengineex.html#class_irtcengineex)
+- [`RtcConnection`]({{global.API_REF_ANDROID_ROOT}}/class_rtcconnection.html)
+- [`joinChannelEx`]({{global.API_REF_ANDROID_ROOT}}/class_irtcengineex.html#api_irtcengineex_joinchannelex)
+- [`setupRemoteVideoEx`]({{global.API_REF_ANDROID_ROOT}}/class_irtcengineex.html#api_irtcengineex_setupremotevideoex)
+</PlatformStructured>
+<PlatformStructured platform="electron">
+### Sample project
+
+Agora provides the [JoinMultipleChannel](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/JoinMultipleChannel/JoinMultipleChannel.tsx) open-source sample project for your reference. Download the project or view the source code for a more detailed example.
+
+### API reference
+
+- [`IRtcEngineEx`]({{global.API_REF_ELECTRON_ROOT}}/class_irtcengineex.html#class_irtcengineex)
+- [`RtcConnection`]({{global.API_REF_ELECTRON_ROOT}}/class_rtcconnection.html)
+- [`joinChannelEx`]({{global.API_REF_ELECTRON_ROOT}}/class_irtcengineex.html#api_irtcengineex_joinchannelex)
+- [`onUserJoined`]({{global.API_REF_ELECTRON_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onuserjoined)
+</PlatformStructured>
+<PlatformStructured platform="flutter">
+
+</PlatformStructured>
+<PlatformStructured platform="ios">
+### Sample project
+
+Agora offers the [JoinMultiChannels](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/JoinMultiChannel) open-source sample project for your reference. Download the project or view the source code for a more detailed example.
+
+### API reference
+
+- [`AgoraRtcEngineKit`]({{Global.API_REF_IOS_ROOT}}/agorartckit/agorartcenginekit)
+- [`AgoraRtcConnection`]({{global.API_REF_IOS_ROOT}}/agorartckit/agorartcconnection)
+- [`joinChannelExByToken` [1/2]]({{global.API_REF_IOS_ROOT}}/agorartckit/agorartcenginekit/joinchannelex(bytoken:channelid:useraccount:delegate:mediaoptions:joinsuccess:))
+- [`setupRemoteVideoEx`]({{global.API_REF_IOS_ROOT}}/agorartckit/agorartcenginekit/setupremotevideoex(_:connection:))
+</PlatformStructured>
+<PlatformStructured platform="macos">
+### Sample project
+
+Agora offers the [JoinMultiChannels](https://github.com/AgoraIO/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/JoinMultiChannel) open-source sample project for your reference. Download the project or view the source code for a more detailed example.
+
+### API reference
+
+- [`AgoraRtcEngineKit`]({{Global.API_REF_MACOS_ROOT}}/agorartckit/agorartcenginekit)
+- [`AgoraRtcConnection`]({{global.API_REF_MACOS_ROOT}}/agorartckit/agorartcconnection)
+- [`joinChannelExByToken` [1/2]]({{global.API_REF_MACOS_ROOT}}/agorartckit/agorartcenginekit/joinchannelex(bytoken:channelid:useraccount:delegate:mediaoptions:joinsuccess:))
+- [`setupRemoteVideoEx`]({{global.API_REF_MACOS_ROOT}}/agorartckit/agorartcenginekit/setupremotevideoex(_:connection:))
+</PlatformStructured>
+<PlatformStructured platform="react-js">
+
+</PlatformStructured>
+<PlatformStructured platform="react-native">
+### Sample project
+
+Agora provides the [JoinMultipleChannel](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/JoinMultipleChannel/JoinMultipleChannel.tsx) open-source sample project for your reference. Download the project or view the source code for a more detailed example.
+
+### API reference
+
+- [`IRtcEngineEx`]({{global.API_REF_RN_ROOT}}/class_irtcengineex.html#class_irtcengineex)
+- [`RtcConnection`]({{global.API_REF_RN_ROOT}}/class_rtcconnection.html)
+- [`joinChannelEx`]({{global.API_REF_RN_ROOT}}/class_irtcengineex.html#api_irtcengineex_joinchannelex)
+- [`onUserJoined`]({{global.API_REF_RN_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onuserjoined)
+</PlatformStructured>
+<PlatformStructured platform="unity">
+### API reference
+
+- [`IRtcEngineEx`]({{global.API_REF_UNITY_ROOT}}/class_irtcengineex.html#class_irtcengineex)
+- [`RtcConnection`]({{global.API_REF_UNITY_ROOT}}/class_rtcconnection.html)
+- [`JoinChannelEx`]({{global.API_REF_UNITY_ROOT}}/class_irtcengineex.html#api_irtcengineex_joinchannelex)
+- [`VideoSurface`]({{global.API_REF_UNITY_ROOT}}/class_videosurface.html#class_videosurface)
+- [`OnUserJoined`]({{global.API_REF_UNITY_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onuserjoined)
+</PlatformStructured>
+<PlatformStructured platform="unreal">
+
+</PlatformStructured>
+<PlatformStructured platform="web">
+
+</PlatformStructured>
+<PlatformStructured platform="windows">
+### Sample project
+
+Agora provides the [MultiChannels](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/MultiChannel) open-source sample project for your reference. Download the project or view the source code for a more detailed example.
+
+### API reference
+
+- [`RtcEngineEx`]({{global.API_REF_CPP_ROOT}}/class_irtcengineex.html#class_irtcengineex)
+- [`RtcConnection`]({{global.API_REF_CPP_ROOT}}/class_rtcconnection.html)
+- [`joinChannelEx`]({{global.API_REF_CPP_ROOT}}/class_irtcengineex.html#api_irtcengineex_joinchannelex)
+- [`setupRemoteVideoEx`]({{global.API_REF_CPP_ROOT}}/class_irtcengineex.html#api_irtcengineex_setupremotevideoex)
+</PlatformStructured>
+
+**This feature guide is not available yet.**

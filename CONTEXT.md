@@ -34,6 +34,22 @@ _Avoid_: deleting platform content, inline prose flattening of all variants
 A code-sample-local tab set used only for language or package-manager variants inside a single code example block, not for switching the page's primary platform variant.
 _Avoid_: page-level platform switching, unrelated prose switching
 
+**Platform group**:
+A contiguous set of page-level platform variants that occupy the same logical position in one migrated document and should render as one platform-switchable body segment.
+_Avoid_: merging separated platform segments into one group, splitting one logical group for cosmetic reasons
+
+**Shared segment**:
+Any non-platform content between platform groups that applies to all variants, such as shared headings, paragraphs, admonitions, images, tables, or lists, and therefore terminates one platform group before the next begins.
+_Avoid_: treating shared prose as platform-local residue, silently absorbing shared content into an adjacent platform group
+
+**Single-platform block**:
+A valid page-level platform content block that has only one platform variant at its logical position. It should remain platform-scoped but should not force visible platform tabs by itself.
+_Avoid_: treating single-platform content as migration failure, flattening it into unrelated shared prose
+
+**Platform-run normalization**:
+The migration step that converts legacy platform wrappers and adjacent platform-specific content into target-compatible page-level platform groups, preserving group boundaries, shared segments, and per-platform semantics.
+_Avoid_: grouping by file order alone, deleting repeated platform-local content because it appears structurally inconvenient
+
 **Variable expansion**:
 The mandatory resolution of legacy variable components such as `Vg`, `Vpd`, and `Vpl` into their final display text by reading the source variable maps and recursively expanding references until plain text is reached.
 _Avoid_: guessing, leaving JSX variable tags in output, partial expansion
@@ -128,9 +144,14 @@ _Avoid_: types-only verification, unit-test-only completion
 - **Migration-seed content** may be replaced or merged during a **High-fidelity migration** when the migrated page supersedes it with higher source coverage.
 - A legacy `PlatformWrapper` should migrate to **Page-level platform tabs** when multiple platform variants must remain on one route and the platform switch belongs to the page header region rather than a single code example.
 - Source-controlled platform variants may live in separate repository files, but they should still render as one page with **Page-level platform tabs** when they represent one logical document.
+- A contiguous sequence of page-level platform blocks forms one **Platform group**.
+- A **Shared segment** always terminates the current **Platform group** before any later platform block begins a new group.
+- A **Single-platform block** is still a valid **Platform group**, but it should not render a meaningless one-tab switcher.
+- The same platform may appear more than once on a page only when those occurrences belong to different **Platform groups** separated by a **Shared segment**.
 - A migrated page should only be recorded as an unsupported platform-variant case after the existing **Page-level platform tabs** surface has been shown insufficient for that page.
 - Apple-shared legacy content such as `platform="ios, macos"` may render under both iOS and macOS page-level tabs without being split into separately rewritten prose sources.
 - Shared legacy content must be expanded into the migrated target page rather than preserved as a runtime dependency on the source repo, while retaining original paragraphs, headings, code samples, and tab structure unless the target runtime has been proven unable to carry them.
+- **Platform-run normalization** must preserve platform-local semantics and group boundaries rather than collapsing all platform content into one global page-level switcher.
 - A **Shared-bundle container page** must undergo **Product-scope extraction** before page-fatal evaluation or final promotion.
 - After **Product-scope extraction**, the default unit of a **High-fidelity migration** remains the full source prose page rather than a reduced subset.
 - **Reference narrowing** is an exception path and must not be triggered only because a shared prose page is broad, cross-product, or larger than a preferred product-local reference page.

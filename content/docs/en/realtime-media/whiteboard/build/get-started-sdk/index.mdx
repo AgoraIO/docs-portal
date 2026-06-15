@@ -1,0 +1,466 @@
+---
+title: 'Whiteboard SDK quickstart'
+description: 'Build a basic Interactive Whiteboard app with the Whiteboard SDK.'
+---
+
+Interactive Whiteboard rooms enable users to present ideas, share multi-media content, and collaborate on projects on a shared whiteboard from multiple devices simultaneously.
+
+This article describes how to create a basic project and use the Whiteboard SDK to implement basic whiteboard features.
+
+<a id="join-the-interactive-whiteboard-room-from-your-app-client" />
+
+<PlatformStructured platform="android">
+## Understand the tech
+
+The following figure shows the workflow to join an Interactive Whiteboard room.
+
+<details>
+<summary>Interactive Whiteboard room joining workflow</summary>
+
+![](https://web-cdn.agora.io/docs-files/1620443996218)
+</details>
+
+When an app client requests to join an Interactive Whiteboard room, the app client and your app server interact with the Interactive Whiteboard server in the following steps:
+
+1. The app server sends a request with the SDK token to the Interactive Whiteboard server to create a whiteboard room.
+2. The Interactive Whiteboard server returns the room UUID to the app server when a room is created successfully.
+3. The app server generates a room token using the returned room UUID and sends the room token and UUID to the app client.
+4. The app client initializes a Whiteboard SDK instance with the App Identifier received from the Agora Console.
+5. The app client calls a method to join the Interactive Whiteboard room using the room UUID and room token.
+
+## Prerequisites
+
+- Android Studio
+- Android API level 19 or higher
+- A valid [Agora account](../manage-agora-account.md#sign-up-and-log-in)
+- An Agora project with the Interactive Whiteboard enabled. Get the app identifier and SDK token from the Agora Console. See [Enable and configure Interactive Whiteboard](../enable-whiteboard.md)
+
+## Project setup
+
+### Create an Android project
+
+[Create a project](https://developer.android.com/studio/projects/create-project) in Android Studio.
+
+- Set the project name as `WhiteBoard`.
+- Set the package name as `com.example.whiteboard`.
+- Select Empty Activity.
+- Select API 19 for Minimum SDK.
+
+### Add Android device permission
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.whiteboard">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.WhiteBoard">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
+```
+
+### Get Whiteboard SDK
+
+```gradle
+dependencies {
+    implementation 'com.github.netless-io:whiteboard-android:<version>'
+}
+```
+
+You can find the latest SDK version number in the [Release Notes](../../overview/release-notes/).
+
+### Prevent code obfuscation
+
+```text
+-keep class com.herewhite.** { *; }
+```
+
+### Create a room
+
+Call the Interactive Whiteboard RESTful API on your app server to create a room. See [Create a room (POST)](../../reference/rest-api/room-management.md#create-a-room-post).
+
+```javascript
+var request = require("request");
+var options = {
+  "method": "POST",
+  "url": "https://api.netless.link/v5/rooms",
+  "headers": {
+    "token": "Your SDK Token",
+    "Content-Type": "application/json",
+    "region": "us-sv"
+  },
+  body: JSON.stringify({
+    "isRecord": false
+  })
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### Generate a Room Token
+
+After creating a room and getting the `uuid` of the room, you need to generate a Room Token on your app server and send it to the app client.
+
+- Use code. See [Generate a Token from your app server](../generate-token-app-server.md). Recommended.
+- Call the Interactive Whiteboard RESTful API. See [Generate a Room Token (POST)](../generate-token-rest.md#generate-a-room-token-post).
+
+```javascript
+var request = require('request');
+var options = {
+  "method": "POST",
+  "url": "https://api.netless.link/v5/tokens/rooms/<Room UUID>",
+  "headers": {
+    "token": "Your SDK Token",
+    "Content-Type": "application/json",
+    "region": "us-sv"
+  },
+  body: JSON.stringify({"lifespan":3600000,"role":"admin"})
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### Create user interface and join the whiteboard room
+
+```java
+package com.example.whiteboard;
+
+public class MainActivity extends AppCompatActivity {
+    final String appId = "Your App Identifier";
+    final String uuid = "Room UUID";
+    final String roomToken = "Room Token";
+    final String uid = "User uid";
+
+    WhiteboardView whiteboardView;
+    WhiteSdkConfiguration sdkConfiguration = new WhiteSdkConfiguration(appId, true);
+    RoomParams roomParams = new RoomParams(uuid, roomToken, uid);
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        whiteboardView = findViewById(R.id.white);
+        sdkConfiguration.setRegion(Region.us);
+        WhiteSdk whiteSdk = new WhiteSdk(whiteboardView, MainActivity.this, sdkConfiguration);
+        whiteSdk.joinRoom(roomParams, new Promise<Room>() {
+            @Override
+            public void then(Room wRoom) {
+                MemberState memberState = new MemberState();
+                memberState.setCurrentApplianceName("pencil");
+                memberState.setStrokeColor(new int[]{255, 0, 0});
+                wRoom.setMemberState(memberState);
+            }
+
+            @Override
+            public void catchEx(SDKError t) {
+                Object o = t.getMessage();
+                Log.i("showToast", o.toString());
+                Toast.makeText(MainActivity.this, o.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+```
+
+## Reference
+
+Build the project in Android Studio, and run it on a simulator or a physical mobile device.
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+## Understand the tech
+
+The following figure shows the workflow to join an Interactive Whiteboard room.
+
+<details>
+<summary>Interactive Whiteboard room joining workflow</summary>
+
+![](https://web-cdn.agora.io/docs-files/1620443996218)
+</details>
+
+When an app client requests to join an Interactive Whiteboard room, the app client and your app server interact with the Interactive Whiteboard server in the following steps:
+
+1. The app server sends a request with the SDK token to the Interactive Whiteboard server to create a whiteboard room.
+2. The Interactive Whiteboard server returns the room UUID to the app server when a room is created successfully.
+3. The app server generates a room token using the returned room UUID and sends the room token and UUID to the app client.
+4. The app client initializes a Whiteboard SDK instance with the App Identifier received from the Agora Console.
+5. The app client calls a method to join the Interactive Whiteboard room using the room UUID and room token.
+
+## Prerequisites
+
+- Xcode 12.0 or later
+- iOS 9.0 or later
+- The [latest version](https://cocoapods.org/) of CocoaPods
+- A valid [Agora account](../manage-agora-account.md#sign-up-and-log-in)
+- An Agora project with the Interactive Whiteboard enabled. Get the app identifier and SDK token from the Agora Console. See [Enable and configure Interactive Whiteboard](../enable-whiteboard.md)
+
+## Project setup
+
+### Create a project in Xcode
+
+- Set Product Name to `Whiteboard`.
+- Set Organization Identifier to `agora`.
+- Select `Swift` for Language.
+- Select `Storyboard` for User Interface.
+
+To use the Objective-C SDK in your Swift app, create a bridging header and add:
+
+```objective-c
+#import <Whiteboard/Whiteboard.h>
+```
+
+### Get Whiteboard SDK
+
+```text
+pod init
+```
+
+```ruby
+platform :ios, '10.0'
+target 'Whiteboard' do
+    pod 'Whiteboard'
+end
+```
+
+```text
+pod install
+```
+
+### Create a room
+
+Call the Interactive Whiteboard RESTful API on your app server to create a room. See [Create a room (POST)](../../reference/rest-api/room-management.md#create-a-room-post).
+
+```javascript
+var request = require("request");
+var options = {
+  "method": "POST",
+  "url": "https://api.netless.link/v5/rooms",
+  "headers": {
+    "token": "Your SDK Token",
+    "Content-Type": "application/json",
+    "region": "us-sv"
+  },
+  body: JSON.stringify({
+    "isRecord": false
+  })
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### Generate a Room Token
+
+After creating a room and getting the `uuid` of the room, you need to generate a Room Token on your app server and send it to the app client.
+
+- Use code. See [Generate a Token from your app server](../generate-token-app-server.md). Recommended.
+- Call the Interactive Whiteboard RESTful API. See [Generate a Room Token (POST)](../generate-token-rest.md#generate-a-room-token-post).
+
+```javascript
+var request = require('request');
+var options = {
+  "method": "POST",
+  "url": "https://api.netless.link/v5/tokens/rooms/<Room UUID>",
+  "headers": {
+    "token": "Your SDK Token",
+    "Content-Type": "application/json",
+    "region": "us-sv"
+  },
+  body: JSON.stringify({"lifespan":3600000,"role":"admin"})
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### Join the whiteboard room
+
+```swift
+import UIKit
+class ViewController: UIViewController {
+    var config: WKWebViewConfiguration?
+    var boardView: WhiteBoardView?
+    var roomConfig: WhiteRoomConfig?
+    var memberState: WhiteMemberState?
+    var room: WhiteRoom?
+    var sdk: WhiteSDK?
+    var sdkConfig: WhiteSdkConfiguration?
+    var commonDelegate: WhiteCommonCallbackDelegate?
+    var roomCallbackDelegate: WhiteRoomCallbackDelegate?
+
+    func setupViews() {
+        self.config = WKWebViewConfiguration()
+        self.boardView = WhiteBoardView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height), configuration: self.config!)
+        self.view.addSubview(self.boardView!)
+    }
+
+    func initSDK() {
+        self.sdkConfig = WhiteSdkConfiguration(app: "Your App Indentifier")
+        sdkConfig.region = WhiteRegionUS
+        self.sdk = WhiteSDK(whiteBoardView: self.boardView!, config: self.sdkConfig!, commonCallbackDelegate: self.commonDelegate)
+    }
+
+    func joinRoom() {
+        self.roomConfig = WhiteRoomConfig(uuid: "Your uuid", roomToken:"Your room token", uid: "user uid")
+        self.memberState = WhiteMemberState()
+        self.memberState?.currentApplianceName = WhiteApplianceNameKey.AppliancePencil
+        self.memberState?.strokeColor = [255,0,0]
+        self.sdk!.joinRoom(with: self.roomConfig!, callbacks: roomCallbackDelegate, completionHandler: { (success, room, error) in
+            if success {
+                self.room = room
+                self.room!.setMemberState(self.memberState!)
+            }
+        })
+    }
+}
+```
+
+## Reference
+
+Build the project in Xcode, and run it on a simulator or a physical mobile device.
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+## Understand the tech
+
+The following figure shows the workflow to join an Interactive Whiteboard room.
+
+<details>
+<summary>Interactive Whiteboard room joining workflow</summary>
+
+![](https://web-cdn.agora.io/docs-files/1620443996218)
+</details>
+
+When an app client requests to join an Interactive Whiteboard room, the app client and your app server interact with the Interactive Whiteboard server in the following steps:
+
+1. The app server sends a request with the SDK token to the Interactive Whiteboard server to create a whiteboard room.
+2. The Interactive Whiteboard server returns the room UUID to the app server when a room is created successfully.
+3. The app server generates a room token using the returned room UUID and sends the room token and UUID to the app client.
+4. The app client initializes a Whiteboard SDK instance with the App Identifier received from the Agora Console.
+5. The app client calls a method to join the Interactive Whiteboard room using the room UUID and room token.
+
+## Prerequisites
+
+- A web browser that meets the minimum version requirements in [Supported platforms](../../overview/supported-platforms/).
+- A valid [Agora account](../manage-agora-account.md#sign-up-and-log-in).
+- An Agora project with the Interactive Whiteboard enabled. Get the app identifier and SDK token from the Agora Console. See [Enable and configure Interactive Whiteboard](../enable-whiteboard.md).
+
+## Project setup
+
+### Create a basic web application
+
+```text
+agora_join_whiteboard_room/
+├── index.html
+└── joinWhiteboard.js
+```
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./joinWhiteboard.js"></script>
+    </head>
+    <body>
+        <div id="whiteboard" style="width: 100%; height: 100vh;"></div>
+    </body>
+</html>
+```
+
+### Create a room
+
+Call [/v5/rooms (POST)](../../reference/rest-api/room-management.md#create-a-room-post) on your app server to create a room.
+
+```javascript
+var request = require("request");
+var options = {
+  "method": "POST",
+  "url": "https://api.netless.link/v5/rooms",
+  "headers": {
+    "token": "Your SDK Token",
+    "Content-Type": "application/json",
+    "region": "us-sv"
+  },
+  body: JSON.stringify({
+    "isRecord": false
+  })
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### Generate a room token
+
+After creating a room and getting the `uuid` of the room, your app server needs to generate a room token and send it to the app client.
+
+- Use code. See [Generate a Token from your app server](../generate-token-app-server.md). Recommended.
+- Call the Interactive Whiteboard RESTful API. See [Generate a Room Token (POST)](../generate-token-rest.md#generate-a-room-token-post).
+
+```javascript
+var request = require('request');
+var options = {
+  "method": "POST",
+  "url": "https://api.netless.link/v5/tokens/rooms/<Room UUID>",
+  "headers": {
+    "token": "Your SDK Token",
+    "Content-Type": "application/json",
+    "region": "us-sv"
+  },
+  body: JSON.stringify({"lifespan":3600000,"role":"admin"})
+
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+### Join the whiteboard room
+
+In `index.html`, add `<script src="https://sdk.netless.link/white-web-sdk/2.15.16.js"></script>` right below the `<head>` line.
+
+Open `joinWhiteboard.js` and add the following code:
+
+```javascript
+var whiteWebSdk = new WhiteWebSdk({
+  appIdentifier: "Your App Identifier",
+  region: "us-sv",
+});
+
+var joinRoomParams = {
+  uuid: "Your room UUID",
+  uid: "user uid",
+  roomToken: "Your room token",
+};
+
+whiteWebSdk.joinRoom(joinRoomParams).then(function(room) {
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+}).catch(function(err) {
+    console.error(err);
+});
+```
+
+## Reference
+
+Open `index.html` in your browser. If the application runs successfully, you can use your mouse to write and draw on the page.
+</PlatformStructured>

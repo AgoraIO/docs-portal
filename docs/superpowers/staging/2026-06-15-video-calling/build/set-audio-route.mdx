@@ -1,0 +1,734 @@
+---
+title: "Device management"
+---
+<PlatformStructured platform="web">
+Video SDK provides APIs for managing input and output devices. Use these APIs to switch devices dynamically during Video Calling and implement hot-swap logic when devices are added or removed.
+</PlatformStructured>
+
+Audio routing refers to selection of the audio output device used for playback by your app. This can include a variety of devices such as earpieces, headphones, speakers, and Bluetooth devices capable of playing audio.
+
+<PlatformStructured platform="android">
+
+This page shows you how to change audio routing in your app.
+
+## Understand the tech
+
+Audio routing enables you to change the playback device from the default device to a selected device.
+
+<PlatformStructured platform="react-native">
+:::info
+This guide is applicable to Android and iOS only.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+<PlatformWrapper notAllowed="web">
+This page shows you how to change audio routing in your app.
+
+## Understand the tech
+
+Audio routing enables you to change the playback device from the default device to a selected device.
+
+<PlatformWrapper platform="react-native, unity">
+
+:::info
+This guide is applicable to Android and iOS only.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+<PlatformWrapper notAllowed="web">
+This page shows you how to change audio routing in your app.
+
+## Understand the tech
+
+Audio routing enables you to change the playback device from the default device to a selected device.
+
+<PlatformWrapper platform="react-native, unity">
+
+:::info
+This guide is applicable to Android and iOS only.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+<PlatformWrapper notAllowed="web">
+This page shows you how to change audio routing in your app.
+
+## Understand the tech
+
+Audio routing enables you to change the playback device from the default device to a selected device.
+
+<PlatformWrapper platform="react-native, unity">
+
+:::info
+This guide is applicable to Android and iOS only.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+<PlatformWrapper notAllowed="web">
+This page shows you how to change audio routing in your app.
+
+## Understand the tech
+
+Audio routing enables you to change the playback device from the default device to a selected device.
+
+<PlatformWrapper platform="react-native, unity">
+
+:::info
+This guide is applicable to Android and iOS only.
+:::
+</PlatformStructured>
+
+#### Default audio routing
+
+The routing employed by the device itself, such as the speakers on a mobile device, is called the default audio routing of that device.
+
+The SDK uses the following default audio routing in different use-cases:
+
+- **Voice call**: Earpiece
+- **Video call**: Speaker
+- **Live voice call**: Speaker
+- **Live video streaming**: Speaker
+
+## Change audio routing
+
+<PlatformStructured platform="android">
+Depending on your role, you can change audio routing in the following ways:
+
+- **Device user**: Add or remove external devices, such as headphones or Bluetooth devices.
+- **App developer**:
+    - Before joining a channel, call <code>{props.setAudioRouteAPI}</code> to change the default audio routing.
+    - After joining a channel, call <code>{props.setEnableSpeakerphoneAPI}</code> to set the current audio routing.
+
+Regardless of the method used to make changes to audio routing, the priority for the changes to take effect follows these principles:
+
+1. User behavior has the highest priority for audio routing changes.
+When a user connects an external device such as a wired headset, or a Bluetooth headset, audio routing automatically switches to the external device. If the user connects multiple external devices successively, audio routing will automatically switch to the last connected device.
+
+1. When no external device is connected, the SDK uses the default audio routing.
+Call <code>{props.setAudioRouteAPI}</code> to change this default setting. If the current audio route is the device itself, <code>{props.setAudioRouteAPI}</code> modifies the current audio route.
+
+1. Without system limitations, calling <code>{props.setEnableSpeakerphoneAPI}</code> switches the current audio routing regardless of whether the current audio routing is an external device, a speaker, or an earpiece.
+However, this method only works for the current channel, it does not change the default audio routing of the device. If the user leaves the current channel and joins a new channel, the SDK still uses the default audio route.
+
+<PlatformStructured platform="unity">
+:::info[Information]
+Due to iOS system limitations, some audio routing is not recognized when using **in-call volume** mode.  To use an external sound card or microphone, set the **audio application** scenario to the **high quality** scenario <code>{props.audioScenario}</code>. In this scenario, the SDK switches to **media volume** to work around this issue.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+:::info[Information]
+Due to iOS system limitations, some audio routing is not recognized when using **in-call volume** mode.  To use an external sound card or microphone, set the **audio application** scenario to the **high quality** scenario <code>{props.audioScenario}</code>. In this scenario, the SDK switches to **media volume** to work around this issue.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+:::info[Information]
+Due to iOS system limitations, some audio routing is not recognized when using **in-call volume** mode.  To use an external sound card or microphone, set the **audio application** scenario to the **high quality** scenario <code>{props.audioScenario}</code>. In this scenario, the SDK switches to **media volume** to work around this issue.
+:::
+</PlatformStructured>
+
+Any changes to the audio route trigger the <code>{props.onAudioRouteChangedAPI}</code> callback. Use this callback to get the current audio route.
+
+### Plug and unplug devices to change audio routing
+
+Audio routing changes when the user connects an audio device. For example, when headphones are plugged in, audio routing automatically switches to headphones. When multiple devices are connected, audio routing switches to the last connected device.
+
+Refer to the following example to see how plugging and unplugging a device changes the audio routing:
+
+1. A user joins the channel. Audio is routed to speakers.
+
+1. The user plugs in headphones. Audio routing changes to headphones.
+
+1. The user connects the mobile device to a Bluetooth audio device without unplugging the headset. Audio routing changes to the Bluetooth audio device.
+
+1. The user disconnects the Bluetooth audio device from the mobile device. Audio routing changes back to headphones.
+
+### Change the default audio routing
+
+Before joining a channel, call the <code>{props.setAudioRouteAPI}</code> method to switch the default audio routing to either the handset or the speakerphone. Set the `defaultToSpeaker` parameter of this method to `true` to set the default audio route to speakerphone, and to `false` to set the default audio route to handset. The setting remains valid until you destroy the engine.
+
+Refer to the following example to understand how to change the default audio routing:
+
+1. The user plugs in the headset. Audio is routed to the headset.
+
+1. The user unplugs the headset. Audio routing is changed to the default audio routing of the mobile device, depending on your usage scenario.
+
+1. Call <code>{props.setAudioRouteAPI}(true)</code> in the app. Audio routing is changed to speakerphone.
+
+1. User plugs in headphones. Audio routing changes to headphones.
+
+1. Call <code>{props.setAudioRouteAPI}(true)</code>. The audio is still routed to the headset because <code>{props.setAudioRouteAPI}</code> only works for the audio routing of the device.
+
+1. The user unplugs the headphones. The audio routing is changed to speakerphone.
+
+### Changing the current audio routing
+
+If the operating system allows it, call the <code>{props.setEnableSpeakerphoneAPI}</code> method to change the current audio routing to speaker.
+
+Refer to the following example to understand how to change the current audio routing:
+
+- Example 1:
+    1. User joins a channel. Audio is routed to the speaker.
+    1. User plugs in headphones. Audio routing is changed to headphones.
+    1. App calls <code>{props.setEnableSpeakerphoneAPI}(true)</code>. Audio is still routed to headphones.
+
+- Example 2:
+    1. A user joins a voice call channel. Audio is routed to the speakerphone.
+    1. App calls <code>{props.setEnableSpeakerphoneAPI}(true)</code>. Audio routing is changed to speakerphone.
+    1. User plugs in headset. Audio routing changes to headset.
+    1. User unplugs the headset. Audio routing changes to earpiece.
+
+:::info[Information]
+If the user uses an external audio playback device, such as a Bluetooth headset or a wired headset, setting <code>{props.setEnableSpeakerphoneAPI}(true)</code> is invalid and the audio is played through the external device.
+:::
+</PlatformStructured>
+<PlatformStructured platform="electron">
+
+</PlatformStructured>
+<PlatformStructured platform="flutter">
+
+</PlatformStructured>
+<PlatformStructured platform="ios">
+
+</PlatformStructured>
+<PlatformStructured platform="macos">
+
+</PlatformStructured>
+<PlatformStructured platform="react-js">
+
+</PlatformStructured>
+<PlatformStructured platform="react-native">
+
+</PlatformStructured>
+<PlatformStructured platform="unity">
+
+</PlatformStructured>
+<PlatformStructured platform="unreal">
+
+</PlatformStructured>
+<PlatformStructured platform="web">
+## Understand the tech
+
+Managing audio and video devices involves selecting, switching, and handling changes in media input and output devices. The Video SDK provides APIs to:
+
+* Change the default audio output route to a selected device.
+* List available devices, including microphones and cameras.
+* Dynamically switch devices during Video Calling.
+* Detect device changes (added or removed) and enable hot-swapping.
+
+### Change the default audio route
+
+To change the audio output device, retrieve a list of available media devices, filter for audio output devices, and select the desired `deviceId`.
+```js
+// Request a list of media devices and filter audio output devices.
+const devices = await navigator.mediaDevices.enumerateDevices();
+const audioOutputs = devices.filter(device => device.kind == "audiooutput");
+
+const audioContext = new AudioContext();
+
+// Pick the first available audio output.
+const deviceId = audioOutputs[0].deviceId;
+await audioContext.setSinkId(deviceId)
+```
+
+For further details on changing the default audio route, see [Change the destination output device in Web Audio](https://developer.chrome.com/blog/audiocontext-setsinkid).
+
+### Change audio or video capture devices
+
+To set an audio or video capture device, retrieve available microphones and cameras using `AgoraRTC.getMicrophones()` and `AgoraRTC.getCameras()`. Then, call `setDevice(deviceId)` with the desired `deviceId` to use the selected capture device.
+```js
+// Get available microphones and cameras
+const microphones = await AgoraRTC.getMicrophones();
+const cameras = await AgoraRTC.getCameras();
+
+if (!microphones.length || !cameras.length) {
+  console.error("No microphone or camera found");
+  return;
+}
+
+// Switch to the first available microphone
+localAudioTrack.setDevice(microphones[0].deviceId );
+// Switch to the first available camera
+localVideoTrack.setDevice(cameras[0].deviceId);
+```
+
+Where `localVideoTrack` and `localAudioTrack` refer to the tracks you created using `AgoraRTC.createCameraVideoTrack` and `AgoraRTC.createMicrophoneAudioTrack`.
+
+:::info
+You can call `setDevice` to change the capture device even after publishing a track. However, on certain mobile devices, this operation may fail due to hardware or browser limitations.
+:::
+
+## Hot-swap capture devices
+
+Video SDK provides the `onMicrophoneChanged` and `onCameraChanged` callbacks to detect changes in the plug-in status of audio and video devices. Implement listeners for these callbacks and call `setDevice()` to switch to a newly connected device automatically.
+```javascript
+AgoraRTC.onMicrophoneChanged = async (changedDevice) => {
+  // When a new device is detected, switch to the new device
+  if (changedDevice.state === "ACTIVE") {
+    microphoneTrack.setDevice(changedDevice.device.deviceId);
+  } else if (changedDevice.device.label === microphoneTrack.getTrackLabel()) {
+    // Switch to an existing device when the unplugged device is the current device
+    const oldMicrophones = await AgoraRTC.getMicrophones();
+    oldMicrophones[0] && microphoneTrack.setDevice(oldMicrophones[0].deviceId);
+  }
+};
+
+AgoraRTC.onCameraChanged = async (changedDevice) => {
+  // When a new device is detected, switch to the new device
+  if (changedDevice.state === "ACTIVE") {
+    cameraTrack.setDevice(changedDevice.device.deviceId);
+  } else if (changedDevice.device.label === cameraTrack.getTrackLabel()) {
+    // Switch to an existing device when the unplugged device is the current device
+    const oldCameras = await AgoraRTC.getCameras();
+    oldCameras[0] && cameraTrack.setDevice(oldCameras[0].deviceId);
+  }
+};
+```
+
+:::warning
+If the user adds a virtual or a faulty device, hot-swap routing logic may result in no picture or no sound when the device is plugged-in or unplugged.
+:::
+</PlatformStructured>
+<PlatformStructured platform="windows">
+
+</PlatformStructured>
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+<PlatformStructured platform="android">
+### API reference
+
+- [`setDefaultAudioRoutetoSpeakerphone`]({{global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_setdefaultaudioroutetospeakerphone)
+
+- [`setEnableSpeakerphone`]({{global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_setenablespeakerphone)
+
+- [`onAudioRouteChanged`]({{global.API_REF_ANDROID_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudioroutingchanged)
+</PlatformStructured>
+<PlatformStructured platform="electron">
+
+</PlatformStructured>
+<PlatformStructured platform="flutter">
+
+</PlatformStructured>
+<PlatformStructured platform="ios">
+### API reference
+
+- [`setDefaultAudioRouteToSpeakerphone`]({{Global.API_REF_IOS_ROOT_RTC_KIT}}/agorartcenginekit/setdefaultaudioroutetospeakerphone(_:))
+
+- [`setEnableSpeakerphone`]({{Global.API_REF_IOS_ROOT_RTC_KIT}}/agorartcenginekit/setenablespeakerphone(_:))
+
+- [`didAudioRouteChanged`]({{Global.API_REF_IOS_ROOT_RTC_KIT}}/agorartcenginedelegate/rtcengine(_:didaudioroutechanged:))
+</PlatformStructured>
+<PlatformStructured platform="macos">
+
+</PlatformStructured>
+<PlatformStructured platform="react-js">
+
+</PlatformStructured>
+<PlatformStructured platform="react-native">
+### Sample project
+
+Agora provides the [AudioCallRoute](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/AudioCallRoute/AudioCallRoute.tsx) open-source sample project for your reference. Download the project or view the source code for a more detailed example.
+
+### API reference
+
+- [`setDefaultAudioRouteToSpeakerphone`]({{global.API_REF_RN_ROOT}}/class_irtcengine.html#api_irtcengine_setdefaultaudioroutetospeakerphone)
+
+- [`setEnableSpeakerphone`]({{global.API_REF_RN_ROOT}}/class_irtcengine.html#api_irtcengine_setenablespeakerphone)
+
+- [`onAudioRoutingChanged`]({{global.API_REF_RN_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudioroutingchanged)
+</PlatformStructured>
+<PlatformStructured platform="unity">
+### Sample project
+
+Agora provides the [AudioCallRoute](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/blob/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/AudioCallRoute/AudioCallRoute.cs) open-source sample project for your reference. Download the project or view the source code for a more detailed example.
+
+### API reference
+
+- [`SetDefaultAudioRouteToSpeakerphone`]({{global.API_REF_UNITY_ROOT}}/class_irtcengine.html#api_irtcengine_setdefaultaudioroutetospeakerphone)
+
+- [`SetEnableSpeakerphone`]({{global.API_REF_UNITY_ROOT}}/class_irtcengine.html#api_irtcengine_setenablespeakerphone)
+
+- [`OnAudioRoutingChanged`]({{global.API_REF_UNITY_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudioroutingchanged)
+</PlatformStructured>
+<PlatformStructured platform="unreal">
+
+</PlatformStructured>
+<PlatformStructured platform="web">
+### API reference
+
+- [`setDevice`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#setdevice)
+
+- [`onMicrophoneChanged`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#onmicrophonechanged)
+
+- [`onCameraChanged`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#oncamerachanged)
+</PlatformStructured>
+<PlatformStructured platform="windows">
+
+</PlatformStructured>
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+:::info
+This guide is applicable to Android and iOS only.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+<PlatformWrapper notAllowed="web">
+This page shows you how to change audio routing in your app.
+
+## Understand the tech
+
+Audio routing enables you to change the playback device from the default device to a selected device.
+
+<PlatformWrapper platform="react-native, unity">
+
+:::info
+This guide is applicable to Android and iOS only.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+<PlatformWrapper notAllowed="web">
+This page shows you how to change audio routing in your app.
+
+## Understand the tech
+
+Audio routing enables you to change the playback device from the default device to a selected device.
+
+<PlatformWrapper platform="react-native, unity">
+
+:::info
+This guide is applicable to Android and iOS only.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+<PlatformWrapper notAllowed="web">
+This page shows you how to change audio routing in your app.
+
+## Understand the tech
+
+Audio routing enables you to change the playback device from the default device to a selected device.
+
+<PlatformWrapper platform="react-native, unity">
+
+:::info
+This guide is applicable to Android and iOS only.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+<PlatformWrapper notAllowed="web">
+This page shows you how to change audio routing in your app.
+
+## Understand the tech
+
+Audio routing enables you to change the playback device from the default device to a selected device.
+
+<PlatformWrapper platform="react-native, unity">
+
+:::info
+This guide is applicable to Android and iOS only.
+:::
+</PlatformStructured>
+
+#### Default audio routing
+
+The routing employed by the device itself, such as the speakers on a mobile device, is called the default audio routing of that device.
+
+The SDK uses the following default audio routing in different use-cases:
+
+- **Voice call**: Earpiece
+- **Video call**: Speaker
+- **Live voice call**: Speaker
+- **Live video streaming**: Speaker
+
+## Change audio routing
+
+<PlatformStructured platform="android">
+Depending on your role, you can change audio routing in the following ways:
+
+- **Device user**: Add or remove external devices, such as headphones or Bluetooth devices.
+- **App developer**:
+    - Before joining a channel, call <code>{props.setAudioRouteAPI}</code> to change the default audio routing.
+    - After joining a channel, call <code>{props.setEnableSpeakerphoneAPI}</code> to set the current audio routing.
+
+Regardless of the method used to make changes to audio routing, the priority for the changes to take effect follows these principles:
+
+1. User behavior has the highest priority for audio routing changes.
+When a user connects an external device such as a wired headset, or a Bluetooth headset, audio routing automatically switches to the external device. If the user connects multiple external devices successively, audio routing will automatically switch to the last connected device.
+
+1. When no external device is connected, the SDK uses the default audio routing.
+Call <code>{props.setAudioRouteAPI}</code> to change this default setting. If the current audio route is the device itself, <code>{props.setAudioRouteAPI}</code> modifies the current audio route.
+
+1. Without system limitations, calling <code>{props.setEnableSpeakerphoneAPI}</code> switches the current audio routing regardless of whether the current audio routing is an external device, a speaker, or an earpiece.
+However, this method only works for the current channel, it does not change the default audio routing of the device. If the user leaves the current channel and joins a new channel, the SDK still uses the default audio route.
+
+<PlatformStructured platform="unity">
+:::info[Information]
+Due to iOS system limitations, some audio routing is not recognized when using **in-call volume** mode.  To use an external sound card or microphone, set the **audio application** scenario to the **high quality** scenario <code>{props.audioScenario}</code>. In this scenario, the SDK switches to **media volume** to work around this issue.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+:::info[Information]
+Due to iOS system limitations, some audio routing is not recognized when using **in-call volume** mode.  To use an external sound card or microphone, set the **audio application** scenario to the **high quality** scenario <code>{props.audioScenario}</code>. In this scenario, the SDK switches to **media volume** to work around this issue.
+:::
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+:::info[Information]
+Due to iOS system limitations, some audio routing is not recognized when using **in-call volume** mode.  To use an external sound card or microphone, set the **audio application** scenario to the **high quality** scenario <code>{props.audioScenario}</code>. In this scenario, the SDK switches to **media volume** to work around this issue.
+:::
+</PlatformStructured>
+
+Any changes to the audio route trigger the <code>{props.onAudioRouteChangedAPI}</code> callback. Use this callback to get the current audio route.
+
+### Plug and unplug devices to change audio routing
+
+Audio routing changes when the user connects an audio device. For example, when headphones are plugged in, audio routing automatically switches to headphones. When multiple devices are connected, audio routing switches to the last connected device.
+
+Refer to the following example to see how plugging and unplugging a device changes the audio routing:
+
+1. A user joins the channel. Audio is routed to speakers.
+
+1. The user plugs in headphones. Audio routing changes to headphones.
+
+1. The user connects the mobile device to a Bluetooth audio device without unplugging the headset. Audio routing changes to the Bluetooth audio device.
+
+1. The user disconnects the Bluetooth audio device from the mobile device. Audio routing changes back to headphones.
+
+### Change the default audio routing
+
+Before joining a channel, call the <code>{props.setAudioRouteAPI}</code> method to switch the default audio routing to either the handset or the speakerphone. Set the `defaultToSpeaker` parameter of this method to `true` to set the default audio route to speakerphone, and to `false` to set the default audio route to handset. The setting remains valid until you destroy the engine.
+
+Refer to the following example to understand how to change the default audio routing:
+
+1. The user plugs in the headset. Audio is routed to the headset.
+
+1. The user unplugs the headset. Audio routing is changed to the default audio routing of the mobile device, depending on your usage scenario.
+
+1. Call <code>{props.setAudioRouteAPI}(true)</code> in the app. Audio routing is changed to speakerphone.
+
+1. User plugs in headphones. Audio routing changes to headphones.
+
+1. Call <code>{props.setAudioRouteAPI}(true)</code>. The audio is still routed to the headset because <code>{props.setAudioRouteAPI}</code> only works for the audio routing of the device.
+
+1. The user unplugs the headphones. The audio routing is changed to speakerphone.
+
+### Changing the current audio routing
+
+If the operating system allows it, call the <code>{props.setEnableSpeakerphoneAPI}</code> method to change the current audio routing to speaker.
+
+Refer to the following example to understand how to change the current audio routing:
+
+- Example 1:
+    1. User joins a channel. Audio is routed to the speaker.
+    1. User plugs in headphones. Audio routing is changed to headphones.
+    1. App calls <code>{props.setEnableSpeakerphoneAPI}(true)</code>. Audio is still routed to headphones.
+
+- Example 2:
+    1. A user joins a voice call channel. Audio is routed to the speakerphone.
+    1. App calls <code>{props.setEnableSpeakerphoneAPI}(true)</code>. Audio routing is changed to speakerphone.
+    1. User plugs in headset. Audio routing changes to headset.
+    1. User unplugs the headset. Audio routing changes to earpiece.
+
+:::info[Information]
+If the user uses an external audio playback device, such as a Bluetooth headset or a wired headset, setting <code>{props.setEnableSpeakerphoneAPI}(true)</code> is invalid and the audio is played through the external device.
+:::
+</PlatformStructured>
+<PlatformStructured platform="electron">
+
+</PlatformStructured>
+<PlatformStructured platform="flutter">
+
+</PlatformStructured>
+<PlatformStructured platform="ios">
+
+</PlatformStructured>
+<PlatformStructured platform="macos">
+
+</PlatformStructured>
+<PlatformStructured platform="react-js">
+
+</PlatformStructured>
+<PlatformStructured platform="react-native">
+
+</PlatformStructured>
+<PlatformStructured platform="unity">
+
+</PlatformStructured>
+<PlatformStructured platform="unreal">
+
+</PlatformStructured>
+<PlatformStructured platform="web">
+## Understand the tech
+
+Managing audio and video devices involves selecting, switching, and handling changes in media input and output devices. The Video SDK provides APIs to:
+
+* Change the default audio output route to a selected device.
+* List available devices, including microphones and cameras.
+* Dynamically switch devices during Video Calling.
+* Detect device changes (added or removed) and enable hot-swapping.
+
+### Change the default audio route
+
+To change the audio output device, retrieve a list of available media devices, filter for audio output devices, and select the desired `deviceId`.
+```js
+// Request a list of media devices and filter audio output devices.
+const devices = await navigator.mediaDevices.enumerateDevices();
+const audioOutputs = devices.filter(device => device.kind == "audiooutput");
+
+const audioContext = new AudioContext();
+
+// Pick the first available audio output.
+const deviceId = audioOutputs[0].deviceId;
+await audioContext.setSinkId(deviceId)
+```
+
+For further details on changing the default audio route, see [Change the destination output device in Web Audio](https://developer.chrome.com/blog/audiocontext-setsinkid).
+
+### Change audio or video capture devices
+
+To set an audio or video capture device, retrieve available microphones and cameras using `AgoraRTC.getMicrophones()` and `AgoraRTC.getCameras()`. Then, call `setDevice(deviceId)` with the desired `deviceId` to use the selected capture device.
+```js
+// Get available microphones and cameras
+const microphones = await AgoraRTC.getMicrophones();
+const cameras = await AgoraRTC.getCameras();
+
+if (!microphones.length || !cameras.length) {
+  console.error("No microphone or camera found");
+  return;
+}
+
+// Switch to the first available microphone
+localAudioTrack.setDevice(microphones[0].deviceId );
+// Switch to the first available camera
+localVideoTrack.setDevice(cameras[0].deviceId);
+```
+
+Where `localVideoTrack` and `localAudioTrack` refer to the tracks you created using `AgoraRTC.createCameraVideoTrack` and `AgoraRTC.createMicrophoneAudioTrack`.
+
+:::info
+You can call `setDevice` to change the capture device even after publishing a track. However, on certain mobile devices, this operation may fail due to hardware or browser limitations.
+:::
+
+## Hot-swap capture devices
+
+Video SDK provides the `onMicrophoneChanged` and `onCameraChanged` callbacks to detect changes in the plug-in status of audio and video devices. Implement listeners for these callbacks and call `setDevice()` to switch to a newly connected device automatically.
+```javascript
+AgoraRTC.onMicrophoneChanged = async (changedDevice) => {
+  // When a new device is detected, switch to the new device
+  if (changedDevice.state === "ACTIVE") {
+    microphoneTrack.setDevice(changedDevice.device.deviceId);
+  } else if (changedDevice.device.label === microphoneTrack.getTrackLabel()) {
+    // Switch to an existing device when the unplugged device is the current device
+    const oldMicrophones = await AgoraRTC.getMicrophones();
+    oldMicrophones[0] && microphoneTrack.setDevice(oldMicrophones[0].deviceId);
+  }
+};
+
+AgoraRTC.onCameraChanged = async (changedDevice) => {
+  // When a new device is detected, switch to the new device
+  if (changedDevice.state === "ACTIVE") {
+    cameraTrack.setDevice(changedDevice.device.deviceId);
+  } else if (changedDevice.device.label === cameraTrack.getTrackLabel()) {
+    // Switch to an existing device when the unplugged device is the current device
+    const oldCameras = await AgoraRTC.getCameras();
+    oldCameras[0] && cameraTrack.setDevice(oldCameras[0].deviceId);
+  }
+};
+```
+
+:::warning
+If the user adds a virtual or a faulty device, hot-swap routing logic may result in no picture or no sound when the device is plugged-in or unplugged.
+:::
+</PlatformStructured>
+<PlatformStructured platform="windows">
+
+</PlatformStructured>
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+<PlatformStructured platform="android">
+### API reference
+
+- [`setDefaultAudioRoutetoSpeakerphone`]({{global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_setdefaultaudioroutetospeakerphone)
+
+- [`setEnableSpeakerphone`]({{global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_setenablespeakerphone)
+
+- [`onAudioRouteChanged`]({{global.API_REF_ANDROID_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudioroutingchanged)
+</PlatformStructured>
+<PlatformStructured platform="electron">
+
+</PlatformStructured>
+<PlatformStructured platform="flutter">
+
+</PlatformStructured>
+<PlatformStructured platform="ios">
+### API reference
+
+- [`setDefaultAudioRouteToSpeakerphone`]({{Global.API_REF_IOS_ROOT_RTC_KIT}}/agorartcenginekit/setdefaultaudioroutetospeakerphone(_:))
+
+- [`setEnableSpeakerphone`]({{Global.API_REF_IOS_ROOT_RTC_KIT}}/agorartcenginekit/setenablespeakerphone(_:))
+
+- [`didAudioRouteChanged`]({{Global.API_REF_IOS_ROOT_RTC_KIT}}/agorartcenginedelegate/rtcengine(_:didaudioroutechanged:))
+</PlatformStructured>
+<PlatformStructured platform="macos">
+
+</PlatformStructured>
+<PlatformStructured platform="react-js">
+
+</PlatformStructured>
+<PlatformStructured platform="react-native">
+### Sample project
+
+Agora provides the [AudioCallRoute](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/AudioCallRoute/AudioCallRoute.tsx) open-source sample project for your reference. Download the project or view the source code for a more detailed example.
+
+### API reference
+
+- [`setDefaultAudioRouteToSpeakerphone`]({{global.API_REF_RN_ROOT}}/class_irtcengine.html#api_irtcengine_setdefaultaudioroutetospeakerphone)
+
+- [`setEnableSpeakerphone`]({{global.API_REF_RN_ROOT}}/class_irtcengine.html#api_irtcengine_setenablespeakerphone)
+
+- [`onAudioRoutingChanged`]({{global.API_REF_RN_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudioroutingchanged)
+</PlatformStructured>
+<PlatformStructured platform="unity">
+### Sample project
+
+Agora provides the [AudioCallRoute](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/blob/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/AudioCallRoute/AudioCallRoute.cs) open-source sample project for your reference. Download the project or view the source code for a more detailed example.
+
+### API reference
+
+- [`SetDefaultAudioRouteToSpeakerphone`]({{global.API_REF_UNITY_ROOT}}/class_irtcengine.html#api_irtcengine_setdefaultaudioroutetospeakerphone)
+
+- [`SetEnableSpeakerphone`]({{global.API_REF_UNITY_ROOT}}/class_irtcengine.html#api_irtcengine_setenablespeakerphone)
+
+- [`OnAudioRoutingChanged`]({{global.API_REF_UNITY_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudioroutingchanged)
+</PlatformStructured>
+<PlatformStructured platform="unreal">
+
+</PlatformStructured>
+<PlatformStructured platform="web">
+### API reference
+
+- [`setDevice`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#setdevice)
+
+- [`onMicrophoneChanged`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#onmicrophonechanged)
+
+- [`onCameraChanged`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#oncamerachanged)
+</PlatformStructured>
+<PlatformStructured platform="windows">
+
+</PlatformStructured>
+</PlatformStructured>
+
+**This feature guide is not available yet.**
