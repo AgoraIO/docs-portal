@@ -1,0 +1,106 @@
+---
+title: Pricing
+description: Pricing for Agora Cloud Transcoding.
+---
+
+
+
+# Pricing
+
+This guide explains how pricing works for the Cloud Transcoding service.
+
+> ℹ️ **Info**
+> If you have a signed contract with Agora, your contract terms take precedence over the pricing information in this document.
+
+## Service workflow
+
+Here's how the Cloud Transcoding Service works:
+
+1. **Stream publishing:** Users publish audio/video streams through Agora SDRTN®.
+2. **Stream subscription:** Agora transcoding servers subscribe to streams
+3. **Processing:** Agora transcodes (converts) or passes-through streams as needed
+4. **Distribution:** The processed stream is delivered to chosen destinations (RTC channels or CDN)
+
+You are charged for steps 2 (subscription) and 3 (processing).
+
+## How billing works
+
+Agora calculates your monthly usage across all projects in your developer account and issues bills accordingly. The Cloud Transcoding charges consist of two components:
+
+| Fee Type | What It Covers | Calculation |
+|----------|----------------|-------------|
+| **Subscription fee** | The duration when Agora service subscribes to audio and video streams | Based on the actual duration of audio and video streams processed |
+| **Processing fee** | The computational cost of processing and converting streams |  Based on the type and duration of media processing performed |
+
+The subscription and processing fees are not covered by the free minutes and are charged separately.
+
+## Pricing breakdown
+
+The following breakdown explains how Cloud Transcoding is billed.
+
+### Subscription fee
+
+When transcoding starts, the service joins channels as a virtual participant to access streams. This follows the same pricing structure as Agora real-time audio and video services.
+
+- Audio subscription fee = Audio unit price × Audio duration  
+- Video subscription fee = Video unit price × Video duration
+
+> ℹ️ **Info**
+> If dual-stream mode is used, Agora only subscribes to the main video stream for cost efficiency.
+
+### Media processing fee
+
+Media processing varies based on the type of processing required:
+
+**Audio processing**
+
+When outputting audio streams, audio processing fees apply. For audio, the processing fee is the same for non-transcoding or transcoding. It is calculated as follows:
+
+`Audio transcoding duration × Audio transcoding unit price`
+
+**Video processing**
+
+Agora offers two types of video processing:
+
+- Video pass-through (No transcoding)  
+    When video is output without format conversion, video pass-through fees apply. It is calculated as follows:
+
+    `Video duration × Video non-transcoding unit price`
+
+- Video transcoding  
+    When video format conversion is required, video transcoding fees apply. It is calculated as follows:
+
+    `Video transcoding duration × Video transcoding unit price`
+
+## Pricing tables
+
+The following tables show the applicable rates for media processing
+
+### Media pass-through (No transcoding)
+
+| Category | Pricing ($US/1,000 minutes) |
+|:---------|:--------------------------:|
+| Audio streams | 1.99 |
+| Video stream  | 1.99 |
+
+### With transcoding
+
+| Category | Pricing ($US/1,000 minutes) |
+|:---------|:--------------------------:|
+| Audio stream | 1.99 |
+| Video stream - HD | 7.99 |
+| Video stream - Full HD | 15.99 |
+
+Video resolutions are defined as follows:
+
+| Resolution type | Range |
+|:-----|:-----------------|
+| High-Definition (HD) | Up to 921,600 pixels (1280 × 720) |
+| Full High-Definition (Full HD) | From greater than 921,600 pixels (1280 × 720) to 2,073,600 pixels (1920 × 1080) |
+
+## Duration calculation
+
+- **Monitoring:** Agora tracks the exact start and stop times of each transcoding task
+- **Precision:** Calculated in seconds for accuracy
+- **Billing:** Displayed in seconds in your console, rounded to minutes on invoices
+- **Minimum charge:** Partial seconds/minutes are rounded up to the next full unit
