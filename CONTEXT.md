@@ -1,6 +1,8 @@
 # Docs Portal Context
 
-This context defines the project language for the Shengwang docs portal migration and rendering pipeline.
+This context defines the project language for the Shengwang docs portal repository.
+
+Migration behavior, migration protocol, migration acceptance rules, and migration prohibitions belong in `spec.md`, not in this glossary.
 
 ## Language
 
@@ -19,6 +21,54 @@ _Avoid_: MDX endpoint page, generated MDX shadow
 **MDX-authored page**:
 A canonical documentation page authored under `content/docs/**` and compiled by Fumadocs MDX.
 _Avoid_: OpenAPI endpoint page
+
+**Migration-seed content**:
+Existing target-side content that was created as a starter, placeholder-adjacent summary, or IA scaffold and may be replaced or merged when a migrated page provides materially higher source coverage for the same topic.
+_Avoid_: authoritative hand-authored content, unknown existing content
+
+**Page-level platform tabs**:
+A platform switcher rendered directly under the page header area and above the main body content, used when one migrated document contains multiple platform variants that should share a single route and a single page shell.
+_Avoid_: deleting platform content, inline prose flattening of all variants
+
+**Code-block tabs**:
+A code-sample-local tab set used only for language or package-manager variants inside a single code example block, not for switching the page's primary platform variant.
+_Avoid_: page-level platform switching, unrelated prose switching
+
+**Variable expansion**:
+The mandatory resolution of legacy variable components such as `Vg`, `Vpd`, and `Vpl` into their final display text by reading the source variable maps and recursively expanding references until plain text is reached.
+_Avoid_: guessing, leaving JSX variable tags in output, partial expansion
+
+**Deferred unresolved link**:
+A legacy internal docs link that is preserved in migrated content because its original target has not yet been migrated and there is no equivalent target route in the current pilot scope.
+_Avoid_: opportunistic target substitution, silent deletion, semantic rewrite
+
+**Normalized staging file**:
+An intermediate Markdown or MDX artifact produced after legacy runtime constructs, variables, shared imports, and incompatible wrappers have been normalized, but before the page is committed to its final target IA path.
+_Avoid_: final page, legacy source file, scratch notes
+
+**Migration blocker report**:
+A per-batch Markdown report that records every page or fragment that could not be migrated safely, including source path, intended target path, blocker type, attempted adaptation, and deferral reason.
+_Avoid_: silent skip, cumulative junk log, commit message note
+
+**Shared-bundle container page**:
+A legacy shared page whose body contains multiple product branches, usually gated by `ProductWrapper` or equivalent conditions, and which must be reduced to the target product scope before final migration decisions are made.
+_Avoid_: one-shot full-page promotion, raw multi-product expansion into a product-local route
+
+**Product-scope extraction**:
+The mandatory removal of non-target-product branches, assets, and examples from a **Shared-bundle container page** after expansion and before final normalization or page-fatal evaluation.
+_Avoid_: evaluating page-fatal conditions against pre-extraction shared output
+
+**Reference narrowing**:
+An exceptional migration strategy, not the default, where a broad shared reference page is reduced below full-page fidelity only because an explicit user instruction or product-specific rule requires it.
+_Avoid_: using narrowing as the default response to broad shared prose pages
+
+**Product-relevant semantic coverage**:
+The minimum set of concepts, warnings, examples, definitions, and operational instructions from a legacy page that must survive in the target product route for the migration to still count as high-fidelity for that product.
+_Avoid_: full shared-page coverage as a hard requirement, summary-only replacement
+
+**Unsupported migration case**:
+A legacy content shape that the rebuilt docs site has been shown unable to carry after trying the existing MDX/runtime surface, including page-level platform tabs, code-block tabs, variable expansion, and shared-content expansion.
+_Avoid_: aesthetic objections, file-length objections, style-only objections
 
 **OpenAPI endpoint registry**:
 A docs-portal consumption layer that maps **OpenAPI source** operations to canonical page routes without turning them into Fumadocs MDX source files.
@@ -75,6 +125,20 @@ _Avoid_: types-only verification, unit-test-only completion
 ## Relationships
 
 - **Content staging** contains both **MDX-authored pages** and **OpenAPI sources**.
+- **Migration-seed content** may be replaced or merged during a **High-fidelity migration** when the migrated page supersedes it with higher source coverage.
+- A legacy `PlatformWrapper` should migrate to **Page-level platform tabs** when multiple platform variants must remain on one route and the platform switch belongs to the page header region rather than a single code example.
+- Source-controlled platform variants may live in separate repository files, but they should still render as one page with **Page-level platform tabs** when they represent one logical document.
+- A migrated page should only be recorded as an unsupported platform-variant case after the existing **Page-level platform tabs** surface has been shown insufficient for that page.
+- Apple-shared legacy content such as `platform="ios, macos"` may render under both iOS and macOS page-level tabs without being split into separately rewritten prose sources.
+- Shared legacy content must be expanded into the migrated target page rather than preserved as a runtime dependency on the source repo, while retaining original paragraphs, headings, code samples, and tab structure unless the target runtime has been proven unable to carry them.
+- A **Shared-bundle container page** must undergo **Product-scope extraction** before page-fatal evaluation or final promotion.
+- After **Product-scope extraction**, the default unit of a **High-fidelity migration** remains the full source prose page rather than a reduced subset.
+- **Reference narrowing** is an exception path and must not be triggered only because a shared prose page is broad, cross-product, or larger than a preferred product-local reference page.
+- If the source repo already contains the desired paragraphs, headings, code samples, tabs, or platform structure, migration should preserve them directly rather than replacing them with a cleaner static rewrite.
+- Legacy language tabs inside examples should migrate to **Code-block tabs**, not **Page-level platform tabs**.
+- Legacy `Vg`, `Vpd`, and `Vpl` usages must undergo **Variable expansion** before migrated content is considered complete.
+- A legacy internal docs link with no migrated equivalent in the current pilot should remain present as a **Deferred unresolved link** rather than being deleted or rewritten to a nearby page.
+- An **Unsupported migration case** exists only when the current docs runtime has been shown unable to compile, render, or correctly express the original content semantics; style or elegance concerns do not qualify.
 - An **OpenAPI source** produces one or more **OpenAPI endpoint pages**.
 - An **OpenAPI endpoint page** is not an **MDX-authored page** and must not be duplicated as a full MDX shadow.
 - The **OpenAPI endpoint registry** consumes **OpenAPI sources** for this docs website, but the **OpenAPI source** remains portable content data rather than docs-portal-specific page source.
