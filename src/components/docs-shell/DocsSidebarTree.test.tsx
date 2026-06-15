@@ -579,8 +579,21 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
-  it('only opens Create and connect an agent by default on the AI overview page', async () => {
+  it('keeps Create and connect an agent collapsed by default on the AI overview page', async () => {
     const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/ai/get-started/quickstart',
+            title: 'Quickstart',
+            type: 'page',
+            url: '/en/ai/get-started/quickstart',
+          },
+        ],
+        id: 'get-started',
+        title: 'Get started',
+        type: 'section',
+      },
       {
         children: [
           {
@@ -620,26 +633,21 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/en/ai');
 
-    const toggle = await screen.findByRole('button', {
-      name: /Create and connect an agent/i,
-    });
-    await screen.findByRole('button', {
-      name: /Shape the conversation/i,
-    });
+    await screen.findByTitle('Build');
 
     expect(
-      await screen.findByRole('link', { name: 'Start and stop an agent' }),
-    ).toBeInTheDocument();
+      await screen.findByRole('button', { name: /Create and connect an agent/i }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.getByRole('button', { name: /Shape the conversation/i }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.queryByRole('link', { name: 'Start and stop an agent' }),
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('link', {
         name: 'Keep conversation context across turns',
       }),
-    ).not.toBeInTheDocument();
-
-    fireEvent.click(toggle);
-
-    expect(
-      screen.queryByRole('link', { name: 'Start and stop an agent' }),
     ).not.toBeInTheDocument();
   });
 

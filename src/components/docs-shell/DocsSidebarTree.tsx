@@ -116,8 +116,7 @@ function SidebarSection({
   const defaultOpen =
     !node.collapsible ||
     node.children.some((child) => isNodeActive(child, activePath)) ||
-    shouldDefaultOpenSection(node.title, activePath) ||
-    shouldDefaultOpenBuildSection(node, activePath);
+    shouldDefaultOpenSection(node.title, activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const splitIndex = node.nestedQuickstartGroup
     ? Math.max(
@@ -373,27 +372,8 @@ function SidebarLinkedSection({
 
 function shouldDefaultOpenSection(title: string, activePath: string) {
   return (
-    ((title === 'Realtime' || title === '实时互动') &&
-      /\/(en|zh-CN)\/introduction(?:\/index)?$/.test(activePath)) ||
-    ((title === 'Create and connect an agent' ||
-      title === 'CREATE AND CONNECT AN AGENT') &&
-      /\/(en|zh-CN)\/ai(?:\/index)?$/.test(activePath))
-  );
-}
-
-function shouldDefaultOpenBuildSection(
-  node: SidebarSectionNode,
-  activePath: string,
-) {
-  return (
-    (node.title === 'Build' || node.title === '构建') &&
-    /\/(en|zh-CN)\/ai(?:\/index)?$/.test(activePath) &&
-    node.children.some(
-      (child) =>
-        child.type === 'section' &&
-        (child.title === 'Create and connect an agent' ||
-          child.title === 'CREATE AND CONNECT AN AGENT'),
-    )
+    (title === 'Realtime' || title === '实时互动') &&
+    /\/(en|zh-CN)\/introduction(?:\/index)?$/.test(activePath)
   );
 }
 
@@ -474,8 +454,7 @@ function SidebarNestedSection({
   const defaultOpen =
     !node.collapsible ||
     node.children.some((child) => isNodeActive(child, activePath)) ||
-    shouldDefaultOpenSection(node.title, activePath) ||
-    shouldDefaultOpenBuildSection(node, activePath);
+    shouldDefaultOpenSection(node.title, activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
