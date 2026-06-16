@@ -95,6 +95,7 @@ export const docs = defineDocs({
     },
   },
   meta: {
+    files: ['**/meta.{json,yaml}'],
     schema: docsMetaSchema,
   },
 });

@@ -19,7 +19,7 @@ The following workflow shows how to use Call Inspector features:
 > ℹ️ **Enable Call Inspector**
 > To enable Call Inspector, subscribe to an Agora Analytics pricing plan. For details, see [Pricing](../reference/pricing.md).
 
-## Use Call Search<a name="search"></a>
+## Use Call Search
 
 On the Call Search page, you can apply multiple filters such as channel name, call duration, call freeze rates, and number of users to search calls and view their basic information.
 
@@ -37,14 +37,14 @@ To search calls, follow these steps:
 
 The accessible time range depends on the data retention policy for Call Inspector features in your [Pricing Plan](../reference/pricing.md).
 
-## Get Call Overview<a name="overview"></a>
+## Get Call Overview
 
 The Call Overview page is designed to help you quickly understand the overall situation of a large-scale call, so that you can locate problems or users and inspect user-specific issues. This page includes a summary of exceptions, as well as comprehensive metric statistics.
 
 To enter the Call Overview page, follow these steps:
 
 1. [Subscribe](../reference/pricing.md) to the Premium or Enterprise pricing plan. Other pricing plans do not provide access to the Call Overview page.
-2. [Use Call Search](#search) to find the call you want to inspect, then click **Call Details** in the **Action** column.
+2. [Use Call Search](#use-call-search) to find the call you want to inspect, then click **Call Details** in the **Action** column.
    - If [the number of Accumulated Call Users (ACU)](../reference/call-search-terms.md) is greater than or equal to 50, you enter the Call Overview page.
    - If the number of ACU is less than 50, you first enter the Call Details page. Click the **Call Overview** tab on the top to switch.
 
@@ -58,9 +58,9 @@ This section shows issues that might significantly affect user experience in the
 
 |          | Description | Notes |
 | -------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Statistical insights | Important conclusions related to audio and video freezing. | <ul><li>If the number of [ACU](../reference/call-search-terms.md) for the current call is less than 20 or no conclusion is available, this subsection is hidden.</li><li>The data granularity of this subsection is one minute. If fewer than 20 (included) users are online during a given minute, the data point for this minute is ignored.</li><li>In the upper right corner of this subsection, click the arrow icon `>` to scroll to [Detailed statistics](#data).</li></ul> |
+| Statistical insights | Important conclusions related to audio and video freezing. | <ul><li>If the number of [ACU](../reference/call-search-terms.md) for the current call is less than 20 or no conclusion is available, this subsection is hidden.</li><li>The data granularity of this subsection is one minute. If fewer than 20 (included) users are online during a given minute, the data point for this minute is ignored.</li><li>In the upper right corner of this subsection, click the arrow icon `>` to scroll to [Detailed statistics](#detailed-statistics).</li></ul> |
 
-### Detailed statistics <a name="data"></a>
+### Detailed statistics
 
 This section displays call quality statistics through various charts to help monitor and analyze large-scale calls.
 
@@ -78,7 +78,7 @@ This section includes the following subsections:
 | Trend tracking | Relations between the following metrics and time:<ul><li>Audio freezing users: The number of users whose audio freeze rate is greater than 3%.</li><li>Video freezing users: The number of users whose video freeze rate is greater than 5%.</li><li>Number of in-call users</li><li>[Audio freeze rate](../reference/call-search-terms.md)</li><li>[Video freeze rate](../reference/call-search-terms.md)</li></ul> | <ul><li>If the number of ACU in the current call does not exceed 20, this subsection is hidden.</li><li>All the metrics displayed in the subsection are calculated by minute.</li><li>The value of Peak Call Users to the left of the line chart is for reference only. The more precise metric is [Peak Concurrent Users](../reference/call-search-terms.md) at the top of the page.</li></ul> |
 | Metric Analysis | Distribution of audio freeze rate and video freeze rate by geography, device, network, SDK version, and operating system. | If the number of ACU in the current call does not exceed 20, this subsection is hidden. |
 
-## View Call Details<a name="details"></a>
+## View Call Details
 
 The Call Details page helps you locate user-specific quality issues and exceptions. It consists of the following subpages:
 
@@ -92,7 +92,7 @@ For details on how to troubleshoot common call-quality issues, see [Troubleshoot
 
 To view the Call Details homepage, follow these steps:
 
-1.  [Use Call Search](#search) to find the call, then click **Call Details** in the **Action** column.
+1.  [Use Call Search](#use-call-search) to find the call, then click **Call Details** in the **Action** column.
 
     -   If the [ACU](../reference/call-search-terms.md) is greater than or equal to 50, first enter the Call Overview page. Click the **Call Details** tab on the top to switch.
 
@@ -192,7 +192,7 @@ This page contains the following information for the selected sender:
 
 ![1650435355537](https://web-cdn.agora.io/docs-files/1650435355537)
 
-## View Call Diagnosis (Beta)<a name="diagnosis"></a>
+## View Call Diagnosis (Beta)
 
 The Call Diagnosis page embeds Agora's auto-diagnosis engine to examine user experience issues and detect exceptions. The engine gives diagnosis conclusions based on a mapping between experience issues and possible causes. Currently, the engine is able to detect a number of call experience issues and host-specific issues. For details, see [Diagnosis checklist items](../reference/call-search-terms.md).
 
@@ -200,7 +200,7 @@ The Call Diagnosis page embeds Agora's auto-diagnosis engine to examine user exp
 
 To view the Call Diagnosis page, follow these steps:
 
-1. [Use Call Search](#search) to find the call you want to inspect, then click **Call Details** in the **Action** column.
+1. [Use Call Search](#use-call-search) to find the call you want to inspect, then click **Call Details** in the **Action** column.
 2. Click the **Call Diagnosis (Beta)** tab at the top of the page.
 3. Add the following filters, as needed:
    - User: Enter the user ID to add users one by one, or use advanced search to add users in a batch. You can add up to 10 users for each diagnosis.
