@@ -48,7 +48,7 @@ Create and publish the streaming key by calling the following endpoint:
 
 `PUT https://api.agora.io/:region/v1/projects/:appId/rtls/ingress/streamkeys`
 
-The REST API reference for Media Gateway remains out of scope for this prose migration.
+For authentication details, see [RESTful authentication](./reference/restful-authentication.mdx).
 
 > ℹ️ **Info**
 > To explore the RESTful API parameters, obtain sample code in various client languages, or test Media Gateway requests, refer to the [Postman API reference](https://documenter.getpostman.com/view/6319646/SVSLr9AM#6aed9690-285e-45f0-a329-c995adbd0956).
