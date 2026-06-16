@@ -216,12 +216,12 @@ describe('common MDX registry', () => {
 
     render(
       <Group
-        canonicalPlatform="javascript"
+        canonicalPlatform="web"
         groupMode="structured"
-        platforms='["javascript","android"]'
+        platforms='["web","android"]'
       >
-        <Panel platform="javascript">
-          <h2 id="js-install">Install JS SDK</h2>
+        <Panel platform="web">
+          <h2 id="web-install">Install Web SDK</h2>
         </Panel>
         <Panel platform="android">
           <h2 id="android-install">Install Android SDK</h2>
@@ -229,7 +229,7 @@ describe('common MDX registry', () => {
       </Group>,
     );
 
-    expect(screen.getByRole('tab', { name: 'JavaScript' })).toHaveAttribute(
+    expect(screen.getByRole('tab', { name: 'Web' })).toHaveAttribute(
       'data-state',
       'active',
     );
@@ -239,8 +239,8 @@ describe('common MDX registry', () => {
     );
 
     const activePanel = screen
-      .getByText('Install JS SDK')
-      .closest('[data-platform-panel="javascript"]');
+      .getByText('Install Web SDK')
+      .closest('[data-platform-panel="web"]');
     const inactivePanel = screen
       .getByText('Install Android SDK')
       .closest('[data-platform-panel="android"]');
@@ -251,6 +251,23 @@ describe('common MDX registry', () => {
     expect(inactivePanel).toHaveAttribute('aria-hidden', 'true');
   });
 
+  it('hides the platform tablist when a group only has one platform', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <Group canonicalPlatform="web" groupMode="structured" platforms='["web"]'>
+        <Panel platform="web">
+          <h2 id="web-only">Web Only</h2>
+        </Panel>
+      </Group>,
+    );
+
+    expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+    expect(screen.getByText('Web Only')).toBeVisible();
+  });
+
   it('shares platform preference updates across multiple rendered groups', () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
@@ -259,19 +276,19 @@ describe('common MDX registry', () => {
     render(
       <>
         <Group
-          canonicalPlatform="javascript"
+          canonicalPlatform="web"
           groupMode="structured"
-          platforms='["javascript","android"]'
+          platforms='["web","android"]'
         >
-          <Panel platform="javascript">Group 1 JS</Panel>
+          <Panel platform="web">Group 1 Web</Panel>
           <Panel platform="android">Group 1 Android</Panel>
         </Group>
         <Group
-          canonicalPlatform="javascript"
+          canonicalPlatform="web"
           groupMode="inline"
-          platforms='["javascript","android"]'
+          platforms='["web","android"]'
         >
-          <Panel platform="javascript">Group 2 JS</Panel>
+          <Panel platform="web">Group 2 Web</Panel>
           <Panel platform="android">Group 2 Android</Panel>
         </Group>
       </>,

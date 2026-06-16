@@ -6,6 +6,7 @@ import {
   type PlatformGroupMode,
   type PlatformLeaf,
 } from './mdx-groups';
+import { normalizePlatformKey } from './registry';
 
 const PLATFORM_COMPONENT_NAMES = new Map<string, PlatformGroupMode>([
   ['PlatformInline', 'inline'],
@@ -69,6 +70,7 @@ export function remarkPlatformContent() {
           createAttribute('groupMode', group.mode),
           createAttribute('canonicalPlatform', group.canonicalPlatform),
           createAttribute('platforms', JSON.stringify(group.platforms)),
+          createAttribute('showTabs', group.showTabs ? 'true' : 'false'),
         ],
         children: run.map(({ leaf, node }) => ({
           type: 'mdxJsxFlowElement',
@@ -137,7 +139,7 @@ function toPlatformLeaf(
   return {
     kind: 'platform',
     mode,
-    platform,
+    platform: normalizePlatformKey(platform),
     value: node,
   };
 }

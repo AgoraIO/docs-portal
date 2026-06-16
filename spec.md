@@ -194,6 +194,31 @@ Minimum required rules:
 
 When a candidate normalization would produce syntactically ambiguous MDX, the agent must choose the simpler target-compatible form even if that means dropping a non-essential presentational wrapper.
 
+### 6.0.2 Platform-Variant Migration Contract
+
+When a source page contains multiple platform variants, migration must preserve them as target-compatible page-level platform content rather than flattening them into shared prose.
+
+Mandatory rules:
+- Normalize legacy `PlatformWrapper` or equivalent source platform gating into target-compatible page-level platform structures.
+- Treat a contiguous run of platform-scoped content at one logical location in the page as one platform group.
+- Treat any shared heading, paragraph, admonition, image, table, list, or equivalent non-platform content as a group boundary that terminates the current platform group before the next one begins.
+- A platform group may contain one variant or multiple variants. Single-platform groups are valid and must not be treated as migration failure.
+- A single-platform group must remain platform-scoped in the normalized page body, but it must not force a visible one-tab switcher by itself.
+- The same platform key may appear more than once on one final page only when each occurrence belongs to a different platform group separated by shared content.
+- Duplicate platform keys inside one platform group are invalid and must be resolved during normalization rather than deferred to runtime.
+- When two adjacent platform runs would otherwise merge incorrectly, insert or preserve the minimum faithful shared separator needed to keep the groups distinct; do not delete platform-local content merely to satisfy grouping constraints.
+- Use page-level platform tabs only for page-body platform variants that share one route and one document shell.
+- Use code-block tabs only for code-example-local language, SDK-language, version, or package-manager variants. Do not promote code-example-local tabbing into page-level platform groups.
+- Preserve shared platform content for multiple targets, such as Apple-shared prose for iOS and macOS, only when the source semantics are actually shared; do not duplicate or fork such prose without need.
+- If platform-local content exists in multiple source-controlled files but represents one logical page, merge it into one final route with page-level platform grouping unless a product-specific rule explicitly requires separate routes.
+
+Required normalization decisions to record or make explicit during complex-flow:
+- which source wrapper or syntax established each platform boundary
+- which shared segments split platform groups
+- whether a group is multi-platform or single-platform
+- whether any repeated platform key was resolved by splitting groups rather than deleting content
+- whether any platform-scoped content was converted into shared prose, and the exact compatibility reason if so
+
 ### 6.5 Excluded-Lane Link Contract
 
 Some migration tasks intentionally exclude one or more target lanes, such as REST API, generated API, or AI tooling surfaces.

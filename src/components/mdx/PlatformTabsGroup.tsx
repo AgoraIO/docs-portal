@@ -42,17 +42,20 @@ export function PlatformTabsGroup({
   groupMode,
   locale = DEFAULT_LOCALE,
   platforms,
+  showTabs = 'true',
 }: {
   canonicalPlatform: PlatformKey;
   children?: ReactNode;
   groupMode: 'inline' | 'structured';
   locale?: AppLocale;
   platforms: string;
+  showTabs?: string;
 }) {
   const parsedPlatforms = useMemo(() => {
     const parsed = JSON.parse(platforms) as string[];
     return parsed.filter(isKnownPlatform);
   }, [platforms]);
+  const shouldShowTabs = showTabs !== 'false' && parsedPlatforms.length > 1;
   const [activePlatform, setActivePlatform] = useState<PlatformKey>(() => {
     const stored = getStoredPlatformPreference();
 
@@ -153,13 +156,15 @@ export function PlatformTabsGroup({
         onValueChange={handlePlatformChange}
         value={activePlatform}
       >
-        <TabsList>
-          {parsedPlatforms.map((platform) => (
-            <TabsTrigger key={platform} value={platform}>
-              {getPlatformLabel(platform, locale)}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+        {shouldShowTabs ? (
+          <TabsList>
+            {parsedPlatforms.map((platform) => (
+              <TabsTrigger key={platform} value={platform}>
+                {getPlatformLabel(platform, locale)}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        ) : null}
       </ControlledTabs>
       {panelChildren}
     </div>

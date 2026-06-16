@@ -1,0 +1,56 @@
+---
+title: 'Supported platforms'
+description: 'Lists the platform requirements for Interactive Whiteboard and Fastboard.'
+---
+
+<PlatformStructured platform="android">
+## Understand the tech
+
+Interactive Whiteboard and Fastboard support interoperability across Android, iOS, and Web. Each platform has its own runtime and browser requirements.
+
+## Prerequisites
+
+Before integrating the SDK, confirm the minimum supported OS version for your target platform.
+
+## Reference
+
+- Compatible with Android 5.0 (SDK API Level 21) and above.
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+## Understand the tech
+
+Interactive Whiteboard and Fastboard support interoperability across Android, iOS, and Web. Each platform has its own runtime and browser requirements.
+
+## Prerequisites
+
+Before integrating the SDK, confirm the minimum supported OS version for your target platform.
+
+## Reference
+
+- Compatible with iOS 9.0 and above.
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+## Understand the tech
+
+Whiteboard and Fastboard SDKs support multiple platforms and interoperability between platforms. For specific compatibility requirements, see the relevant platforms.
+
+## Prerequisites
+
+Before integrating the SDK, confirm the browser and operating system combinations used by your target users.
+
+## Reference
+
+- Compatible with Android 5.0 (SDK API Level 21) and above.
+- Compatible with iOS 9.0 and above.
+
+| Operating system | Browser/Webview | Version requirements | Remarks |
+| --- | --- | --- | --- |
+| Windows | Chrome | 69+ | Full support for 69+, partial support for version 58+ |
+| Windows | Edge | 79+ | Full support for 79+, partial support for version 12+ |
+| Windows | Firefox | 105+ | Full support for 105+, partial support for version 58+ |
+| macOS | Chrome | 69+ | Full support for 69+, partial support for version 58+ |
+| macOS | Safari | 16+ | Full support for 16+, partial support for version 11+ |
+| macOS | Firefox | 105+ | Full support for 105+, partial support for version 58+ |
+</PlatformStructured>

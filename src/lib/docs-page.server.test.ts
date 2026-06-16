@@ -892,14 +892,14 @@ describe('loadDocsPagePayload', () => {
     docsPage.data.getText = vi.fn(
       async () => `## Shared intro
 
-<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="javascript" platform="android" />
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
 ## Install Android SDK
 Android body
 <_PlatformProcessedMarker close="true" />
 
-<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="javascript" platform="javascript" />
-## Install JavaScript SDK
-JavaScript body
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Install Web SDK
+Web body
 <_PlatformProcessedMarker close="true" />
 
 ## Shared follow-up`,
@@ -920,8 +920,8 @@ JavaScript body
         },
         {
           depth: 2,
-          title: 'Install JavaScript SDK',
-          url: '#install-javascript-sdk',
+          title: 'Install Web SDK',
+          url: '#install-web-sdk',
         },
         {
           depth: 2,
