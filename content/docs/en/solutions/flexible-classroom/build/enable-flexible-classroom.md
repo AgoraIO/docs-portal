@@ -1,0 +1,241 @@
+---
+title: "Configure Flexible Classroom"
+description: "Enable the Flexible Classroom service and configure storage and recording in Agora Console."
+---
+
+# Configure Flexible Classroom
+
+This page introduces how to enable and configure Flexible Classroom in Agora Console.
+
+## Prerequisites
+
+In order to follow this procedure you must have:
+
+* An Agora [account](manage-agora-account.md) and [project](manage-agora-account.md).
+
+* The whiteboard feature in Flexible Classroom requires third-party cloud storage. Currently, Flexible Classroom supports [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls).
+
+## Enable Flexible Classroom
+
+Follow these steps to enable the Flexible Classroom service in Agora Console:
+
+1. Log into Agora Console and navigate to the [Project Management](https://console.agora.io/v2/project-management) page.
+2. On the **Project Management** page, find the project for which you want to enable the Flexible Classroom service, and click **Edit**.
+
+   ![](https://web-cdn.agora.io/docs-files/1641364355621)
+
+3. Under **Extensions**, find **Flexible Classroom** and click **Enable**.
+
+   ![](https://web-cdn.agora.io/docs-files/1641364671472)
+
+4. Read the pop-up prompt carefully, and click **Enable**.
+
+   ![](https://web-cdn.agora.io/docs-files/1641364770765)
+
+5. After you successfully enable the Flexible Classroom service, the status changes to **Enabled**:
+
+   ![](https://web-cdn.agora.io/docs-files/1641364962001)
+
+## Configure the whiteboard feature
+
+If you want to upload PPT, Word, or PDF files to a Flexible Classroom and display these files on the whiteboard, you need to configure the whiteboard feature in Agora Console. Before configuring the whiteboard feature, ensure that you have enabled a third-party cloud storage service. Currently, Agora only supports [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls).
+
+To configure the whiteboard feature, take the following steps:
+
+1. On the Flexible Classroom configuration page in Agora Console, find the whiteboard module:
+
+   ![configure-whiteboard-feature](/images/flexible-classroom/configure-whiteboard-feature.png)
+
+1. To use PPT, Word, PDF and other courseware, you need to enable advanced services. Go to Configuration under Advanced Services to enable and configure the document-to-webpage, document-to-picture, and screenshot services for Smart Classroom. For details, see [Enable whiteboard server-side features](https://docs.agora.io/en/interactive-whiteboard/get-started/enable-whiteboard).
+
+1. Configure a third-party cloud storage service for storing files uploaded in a classroom. Fill in the following information:
+
+   * `region`: The location of the data center you specified when creating a bucket in Amazon S3.
+   * `endpoint`: The domain name used to access the Amazon S3 service, such as s3.us-east-2.amazonaws.com.
+   * `Bucket`: The bucket name in Amazon S3.
+   * `folder`: The domain name used to access the Amazon S3 service, such as whiteboard.
+   * `accessKey`: The Access Key provided by Amazon S3, which is used to identify visitors.
+   * `secretKey`: The Secret Key provided by Amazon S3, which is used to authenticate signatures.
+
+   For further information on how to obtain these parameters, see the [Amazon S3 document](https://docs.aws.amazon.com/general/latest/gr/s3.html).
+
+## Configure classroom storage and recording
+
+To setup and configure storage and recording in for your classrooms:
+
+1.  **Setup third-party cloud storage**
+
+    1. On the **Flexible Classroom configuration** page, find the whiteboard module, as shown in the following figure:
+
+        ![](https://web-cdn.agora.io/docs-files/1641366278596)
+
+    1. Enable the advanced services. See [Enable whiteboard server-side features](https://docs.agora.io/en/interactive-whiteboard/get-started/enable-whiteboard).
+
+    1. Configure a third-party cloud storage service for storing files uploaded in a classroom. Fill in the following information:
+          - `region`: The location of the data center you specified when creating a bucket in Amazon S3.
+          - `endpoint`: The domain name used to access the Amazon S3 service, such as `s3.us-east-2.amazonaws.com`.
+          - `Bucket`: The bucket name in Amazon S3.
+          - `folder`: The domain name used to access the Amazon S3 service, such as `whiteboard`.
+          - `accessKey`: The Access Key provided by Amazon S3, which is used to identify visitors.
+          - `secretKey`: The Secret Key provided by Amazon S3, which is used to authenticate signatures.
+
+       > ℹ️ **Info**
+       > For how to get these parameters, see the [Amazon S3 document](https://docs.aws.amazon.com/general/latest/gr/s3.html).
+
+1. **Configure your classroom**
+
+     1. Find the cloud recording module on the **Flexible Classroom configuration** page in Agora Console:
+
+        ![](https://web-cdn.agora.io/docs-files/1641368314262)
+
+        > ℹ️ **Information**
+        > The recording config can be set to default. Set the storage config to customized; otherwise, the recording cannot be stored in your OSS account.
+
+    1. Configure storage
+
+        Pass in the `storageConfig` JSON object for storing recorded files. Use the following fields to specify the url and storage location of the recording file.
+        
+        * `endpoint`: (required) String. The full path composed of the Bucket name and the access domain name. For example, if your Bucket name is "agora-recording", and the OSS access domain name is "oss-cn-shanghai.aliyuncs.com", then the `endpoint` field is set to `https:// agora-recording.oss-cn-shanghai.aliyuncs.com`
+
+         * `fileNamePrefix`: (Optional) JSONArray. An array of strings that specifies the storage location of the recording file in the third-party cloud storage. The prefix length, including slashes, cannot exceed 128 characters. The string supports 26 uppercase and lowercase English letters az, AZ, and 10 numbers 0-9. Slashes, underscores, brackets, and other symbol characters are not allowed. You can use variables to specify a dynamic path. When you initiate recording, Flexible Classroom will replace variables with real values.
+
+         Sample `storageConfig`:
+
+         ```json
+         {
+               "vendor": 2,
+               "region": 3,
+               "bucket": "xxxxx",
+               "accessKey": "xxxxxxf",
+               "secretKey": "xxxxx",
+               "endpoint": "https://agora-recording.oss-cn-shanghai.aliyuncs.com",
+               "fileNamePrefix": [
+                  "scenario",
+                  "recording"
+               ]
+         }
+         ```
+
+         To set the path dynamically, you can use these two types of variables:
+
+         | Type | Variable | Description |
+         | :--- | :--- | :--- |
+         | Fixed variables | ``${appId}`` | App ID |
+         | Fixed variables | ``${roomUuid}`` | The UUID of the class to be recorded |
+         | Date variables | ``${yyyy}`` | Year |
+         | Date variables | ``${MM}`` | Month |
+         | Date variables | ``${dd}`` | Day |
+         | Date variables | ``${yyyyMMdd}``, ``${yyyyMM}``, ``${yyyy-dd}``, ``${MM_dd}`` | Date variables can be combined into different formats |
+
+         For example, you set `fileNamePrefix` field as follows:
+
+         ```json
+            "fileNamePrefix": [
+            "scenario", 
+            "recording",
+            "${appId}",
+            "${yyyyMM}",
+            "${roomUuid}"
+            ]
+         ```
+         The recording storage path will be similar to `/scenario/recording/[appID]/202303/[roomUUID]/filename.mp4`.
+
+         For complete parameter descriptions, see [storageConfig](https://docs.agora.io/en/cloud-recording/reference/restful-api).
+
+    1. Configure recording.
+
+       By default, you record teacher audio and video in [composite recording mode](https://docs.agora.io/en/cloud-recording/develop/composite-mode). Your recorded files are stored in Agora's Amazon S3 account. To change the default behavior, Pass in the `recordingConfig` JSON object:
+
+        ```json
+        {
+            "maxIdleTime": 30,
+            "streamTypes": 2,
+            "channelType": 0
+        }
+        ```
+
+       For parameter descriptions, see [recordingConfig](https://docs.agora.io/en/cloud-recording/reference/restful-api).
+
+## Configure Chat
+
+To enable and configure Chat:
+
+1. In Agora Console, navigate to [Project Management](https://console.agora.io/v2/project-management).
+
+1. Click **Config** next to the project for which you want to enable Chat.
+
+1. In the **Features** section of the **Edit Project** page, click **Enable/Configure** next to **Chat**.
+
+   ![](/images/flexible-classroom/enable-chat.png)
+
+1. Select the data center location.
+
+   ![](/images/flexible-classroom/select-data-center.png)
+
+    Agora generates the Chat-related `AppKey`, `OrgName`, `AppName`, and API access information.
+
+1. In the **Features** section of the **Edit Project** page, click **Config** next to **Flexible Classroom**.
+
+1. In the **Chat** section, complete the required fields:
+
+   ![](/images/flexible-classroom/synchronize-chat.png)
+
+   - **API host**: The REST API access address generated when enabling Chat.
+   - **orgName**: The unique identifier of the enterprise generated when enabling Chat.
+   - **superAdmin**: The super administrator username prefix. Only numbers and letters are supported. Agora uses `${superAdmin}-${timestamp}` as the super administrator to create a chat room.
+   - **appName**: The unique name of the app generated when enabling Chat.
+   - **appKey**: The unique identifier of the app generated when enabling Chat.
+
+## Considerations
+
+#### AWS S3 account configuration
+
+To ensure that Agora can access files in your third-party cloud storage space, you should enable public access or higher permissions for third-party storage spaces.
+
+Configure your AWS S3 account as follows:
+
+* Bucket policy
+
+   ```json
+   {
+      "Version":"2012-10-17",
+      "Id":"Policy1622700880591",
+      "Statement":[
+         {
+            "Sid":"Stmt1622700872941",
+            "Effect":"Allow",
+            "Principal":"*",
+            "Action":["s3:GetObject","s3:PutObject"],
+            "Resource":"arn:aws-cn:s3:::agora-adc-artifacts/"
+         }
+      ]
+   }
+   ```
+   ![](/images/flexible-classroom/configure-aws-ss1.png)
+
+* Cross-origin resource sharing
+
+   ```json
+   [
+      {
+         "AllowedHeaders":[
+            "*"
+         ],
+         "AllowedMethods":[
+            "PUT",
+            "GET"
+         ],
+         "AllowedOrigins":[
+            "*"
+         ],
+         "ExposeHeaders":[
+            
+         ]
+      }
+   ]
+   ```
+   ![](/images/flexible-classroom/configure-aws-ss2.png)
+
+#### Service limit
+
+Flexible Classroom supports a maximum of 10,000 people online at the same time. If you need to extend your limit, contact technical support.

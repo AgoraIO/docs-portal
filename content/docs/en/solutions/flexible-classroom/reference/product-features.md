@@ -1,0 +1,44 @@
+---
+title: "Flexible classroom features"
+description: "Product architecture, basic and advanced features."
+---
+
+# Flexible classroom features
+
+## Overall product architecture
+
+The following figure shows the overall product architecture of Flexible Classroom:
+
+![Product Architecture](https://web-cdn.agora.io/docs-files/1658392957746)
+
+## Basic features
+
+| Feature | Description|
+|:----|:------------|
+| Real-time audio and video interaction | Multi-people audio and video call; recording; screen sharing; on/off stage; taking screenshots |
+| Real-time messaging | Text messages; emoji; images; muting all; announcement |
+| Interactive whiteboard | Supports rich drawing tools, including brushes, text boxes, shapes, erasers, paging, laser pointer, undo, and redo; allows teachers and teaching assistants to save contents on the whiteboard to their local device as JPG images; allows teachers and teaching assistants on the PC to drop local images to the whiteboard area and insert the images into the whiteboard |
+| Courseware management | Allows teachers to upload files in classrooms to help students better understand the class. Supported formats include PPT, PPTX, DOC, DOCX, PDF, MP3, MP4, PNG, JPG, and GIF |
+| Teaching tools | *Rewards*: Teachers can reward students with virtual credits, such as stars and trophies, for good performance during the class; *Pop-up quiz*: This tool is applicable to use-cases where the teacher asks a single-choice or multiple-choice question and requests the whole class to answer the question together. The teacher can set up the choices and the correct answer, and then trigger answering. The teacher can see the number of students who have submitted an answer and the percentage that are correct in real time; *Polling tool*: This tool is applicable to use-cases where the teacher wants to get feedback from the whole class. The teacher can set up the subject, choices, and start and end time of the poll. Flexible Classroom also provides live visualization of polling results; *Countdown timer*: The teacher can find the countdown timer in the toolbox and set an initial value. After the teacher clicks the start button, students see a countdown window; *Breakout rooms*: Supports the "breakout rooms" feature in small classrooms. Teachers can create breakout rooms manually, where the teacher manually assigns students to each breakout room, or automatically, where the system randomly assigns the whole class to breakout rooms after the teacher sets up the number of breakout rooms. No matter which way the teacher chooses, a class supports up to 20 breakout rooms with a maximum of 17 members in each room. The features that are available in breakout rooms include real-time audio and video interaction, messaging, whiteboard, and screen sharing. After the breakout session begins, the teacher and teaching assistants have the ability to dynamically join or leave any of the breakout rooms. They can also send announcements to all the breakout rooms. Students are notified in their chat to check for the announcements |
+
+## Advanced features
+
+| Feature | Description|
+|:----|:------------|
+| Room | Customizes room properties for personalized needs at the room level, such as letting students take a break during the class; sets the start time of a class; sets the class duration; sets the run-late time of a class, after which the room is closed and users are kicked out immediately; configures the upper limit on the number of students on the stage, with a default maximum of six students at the same time; configures the upper limit on the number of students raising their hands, with a default maximum of ten students at the same time; configures whether students go onto the stage by default after entering the classroom; configures the storage region, which must be consistent with the region of the OSS used to store class files and recording files; supports in-class event monitoring, which synchronizes events in real time |
+| User | Customizes user properties, such as avatar, age, or gender; displays the information of all users in the classroom, such as whether the user is on stage, whether the camera and microphone are on or off, and the number of rewards; customizes rewards; requests a student to go onto the stage; kicks students out of the room |
+| Stream | Configures video encoding parameters, including bitrate, resolution, and mirror mode; encrypts audio and video streams; manages permission to send audio and video streams |
+| Device and media | Turns media devices on or off and conducts device tests; controls video rendering; controls audio playback |
+| UIKit/UIStore | Configures multiple languages; adjusts the classroom layout; changes the classroom colors |
+| Widget |Implements pluggable widgets, such as the interactive whiteboard, pop-up quiz, and countdown timer. |
+| Recording | Configures the resolution of recording files; configures the storage address of recording files; configures the start time and end time of a recording session |
+
+## Supported classroom types
+
+| Classroom type | Example | Applicable scene | Supported platform |
+|---|---|---|---|
+| 1-to-1 interactive teaching | One teacher provides exclusive online tutoring to one student. | Suitable for 1-to-1 personalized VIP tutoring. | Web, Electron, Android, iOS |
+| Small interactive online classroom | One teacher with multiple students watching and listening in real time. During the class, the teacher can invite students to *come on stage* to speak and interact with them using real-time audio and video. The class size limit is 200; contact support@agora.io to extend it. | Suitable for teaching use-cases that emphasize peer learning, interactivity, and participation. The class size generally does not exceed 20 people. | Web, Electron, Android, iOS |
+| Large interactive live classroom | One teacher with multiple students watching and listening in real time. During the class, students can *raise their hands* to request to speak and interact with the teacher using real-time audio and video. The class size limit is 5,000; contact support@agora.io to extend it. | Often used in open classes or diversion classes, where teachers deliver the lectures and assistant teachers help answer questions. | Web, Electron, Android, iOS |
+| Cloud classroom | The new UI style and interactive experience that are closer to education users' habits. One teacher interacting with multiple students using real-time audio and video. The class size limit is 50; contact support@agora.io to extend it. | Suitable for small classroom teaching use-cases with strong interaction. The class size does not exceed 50 people. Having no more than 10-20 attendees is recommended. | Web |
+| Online proctoring | Online proctoring refers to online monitoring of candidates' behavior through webcams, microphones, and screen sharing during online exams. The recommended online proctoring use-case is for one examiner to proctor 25 to 50 candidates at the same time. For more information, contact support@agora.io. | School exams; certification exams; recruitment | Web, iOS |
