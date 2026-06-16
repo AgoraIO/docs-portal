@@ -8,14 +8,14 @@ describe('canonical platform toc text', () => {
 
 Shared intro
 
-<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="javascript" platform="android" />
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
 ## Install Android SDK
 Android body
 <_PlatformProcessedMarker close="true" />
 
-<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="javascript" platform="javascript" />
-## Install JavaScript SDK
-JavaScript body
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Install Web SDK
+Web body
 <_PlatformProcessedMarker close="true" />
 
 ## Shared follow-up
@@ -23,7 +23,7 @@ JavaScript body
 
     const filtered = buildCanonicalPlatformTocText(processedText);
 
-    expect(filtered).toContain('## Install JavaScript SDK');
+    expect(filtered).toContain('## Install Web SDK');
     expect(filtered).not.toContain('## Install Android SDK');
     expect(filtered).toContain('## Shared follow-up');
   });

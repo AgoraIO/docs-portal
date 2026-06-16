@@ -1,0 +1,197 @@
+---
+title: "Get rule list"
+description: "API reference for getting a list of user banning rules"
+---
+
+<LeftColumn
+  method="GET"
+  endpoint="https://api.agora.io/dev/v1/kicking-rule"
+ >
+
+Use this endpoint to get the list of all banning rules.
+
+## Request
+
+The request URL and request body is case-sensitive. All requests must use HTTPS.
+
+### Request header
+
+- `Content-Type`: `application/json`
+- The request header must contain the `Authorization` field. For details, see [RESTful authentication](../../restful-authentication.md).
+
+### Query parameters
+
+<ParameterList title="QUERY">
+ <Parameter name="appid" type="string" required={true}>
+  The App ID of the project. You can get it through one of the following methods:
+  - Copy from the [Agora Console](https://console.agora.io)
+  - Call the [Get all projects](../../agora-console-rest-api.md) API, and read the value of the `vendor_key` field in the response body.
+ </Parameter>
+</ParameterList>
+
+## Response
+
+A `200` status code indicates success. The response body contains the following parameters:
+
+<ParameterList title="OK">
+ <Parameter name="status" type="string">
+  The status of this request. `success` means the request succeeds.
+ </Parameter>
+
+ <Parameter name="rules" type="array">
+  The list of banning rules. Each object in the array represents one banning rule and contains the following fields:
+
+  <Parameter name="id" type="number">
+   The rule ID. Required to update or delete the rule.
+  </Parameter>
+
+  <Parameter name="appid" type="string">
+   The App ID of the project.
+  </Parameter>
+
+  <Parameter name="uid" type="number">
+   The user ID.
+  </Parameter>
+
+  <Parameter name="opid" type="number">
+   The operation ID, which can be used to track operation records when troubleshooting.
+  </Parameter>
+
+  <Parameter name="cname" type="string">
+   The channel name.
+  </Parameter>
+
+  <Parameter name="ip" type="string">
+   The IP address of the user.
+  </Parameter>
+
+  <Parameter name="ts" type="string">
+   The UTC time when this rule expires.
+  </Parameter>
+
+  <Parameter name="privileges" type="array">
+   The banned user privileges. Possible values:
+   - `join_channel`: Bans a user from joining a channel or kicks a user out of a channel.
+   - `publish_audio`: Bans a user from publishing audio.
+   - `publish_video`: Bans a user from publishing video.
+  </Parameter>
+
+  <Parameter name="createAt" type="string">
+   The UTC time when this rule was created.
+  </Parameter>
+
+  <Parameter name="updateAt" type="string">
+   The UTC time when this rule was last updated.
+  </Parameter>
+ </Parameter>
+</ParameterList>
+
+If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](../../response-status-code.md) for details.
+
+## Reference
+
+### Best practices for rule management
+
+To maximize the success rate of create, update, and delete operations, query requests are assigned a lower priority. Under poor network conditions, the success rate and accuracy of GET requests may degrade and some request records may be missing from the results.
+
+When you call POST to create a rule where `time` is not set to `0`, use the following best practices to update or delete it later:
+
+- Save the rule ID returned in the POST request on your server, and rely on this ID for subsequent update and delete operations.
+- To ensure that you can still obtain the rule ID under poor network conditions, set the timeout for the POST request to 20 seconds or higher. Make sure that the timeout is set to no less than 5 seconds.
+- In case the POST request times out or returns a `504` error, use the response of the GET method to obtain the rule ID. If the rule exists, it indicates that the POST request was successful, and you can save the rule ID on your server.
+
+</LeftColumn>
+
+<RightColumn>
+
+<Section title="Authorization">
+ This endpoint requires [Basic authentication](../../restful-authentication.md).
+</Section>
+
+<Section title="Request example">
+
+Test this request in [Postman](https://documenter.getpostman.com/view/6319646/SVSLr9AM#0640d215-02df-4185-abba-456fd233a7d8) or use one of the following code examples:
+
+**Curl**
+```bash
+curl --request GET \
+ --url 'https://api.sd-rtn.com/dev/v1/kicking-rule?appid=4855xxxxxxxxxxxxxxxxxxxxxxxxeae2' \
+ --header 'Accept: application/json' \
+ --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+**Node.js**
+```js
+const https = require('https');
+const options = {
+ method: 'GET',
+ hostname: 'api.sd-rtn.com',
+ port: null,
+ path: '/dev/v1/kicking-rule?appid=4855xxxxxxxxxxxxxxxxxxxxxxxxeae2',
+ headers: {
+  Authorization: 'Basic <your_base64_encoded_credentials>',
+  Accept: 'application/json'
+ }
+};
+
+const req = https.request(options, function (res) {
+ const chunks = [];
+ res.on('data', function (chunk) {
+  chunks.push(chunk);
+ });
+
+ res.on('end', function () {
+  const body = Buffer.concat(chunks);
+  console.log(body.toString());
+ });
+});
+
+req.end();
+```
+
+**Python**
+```python
+import http.client
+
+conn = http.client.HTTPSConnection("api.sd-rtn.com")
+
+headers = {
+  'Authorization': "Basic <your_base64_encoded_credentials>",
+  'Accept': "application/json"
+}
+
+conn.request("GET", "/dev/v1/kicking-rule?appid=4855xxxxxxxxxxxxxxxxxxxxxxxxeae2", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+</Section>
+
+<Section title="Response example">
+
+```json
+{
+ "status": "success",
+ "rules": [
+  {
+   "id": 1953,
+   "appid": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+   "uid": 589517928,
+   "opid": 1406,
+   "cname": "11",
+   "ip": "192.168.0.1",
+   "ts": "2026-01-09T07:23:06.000Z",
+   "privileges": [
+    "join_channel"
+   ],
+   "createAt": "2026-01-09T06:23:06.000Z",
+   "updateAt": "2026-01-09T14:23:06.000Z"
+  }
+ ]
+}
+```
+
+</Section>
+</RightColumn>

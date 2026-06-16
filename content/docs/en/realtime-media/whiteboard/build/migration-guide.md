@@ -51,4 +51,4 @@ To create a new Agora account and migrate Netless projects to that account, foll
 After a successful migration, you can refer to the following guides to enable and integrate the Interactive Whiteboard into your app:
 
 - [Enable and Configure Interactive Whiteboard](enable-whiteboard.md)
-- [Join an Interactive Whiteboard Room](get-started-sdk/web/)
+- [Join an Interactive Whiteboard Room](get-started-sdk/)

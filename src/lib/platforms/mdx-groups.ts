@@ -23,6 +23,7 @@ export type PlatformGroupInput<T = unknown> = Array<PlatformLeaf<T>>;
 export type PlatformGroup<T = unknown> = {
   canonicalPlatform: string;
   mode: PlatformGroupMode;
+  showTabs: boolean;
   usedCanonicalFallback: boolean;
   platforms: string[];
   nodes: PlatformGroupInput<T>;
@@ -56,10 +57,6 @@ export function splitPlatformRuns<T>(
 export function validatePlatformGroup<T>(nodes: PlatformGroupInput<T>): void {
   if (nodes.length === 0) {
     throw new Error('Platform groups must contain at least one node.');
-  }
-
-  if (nodes.length < 2) {
-    throw new Error('Platform groups must contain at least two variants.');
   }
 
   const mode = nodes[0].mode;
@@ -98,6 +95,7 @@ export function createPlatformGroup<T>(
   return {
     canonicalPlatform: canonical.platform,
     mode: nodes[0].mode,
+    showTabs: nodes.length > 1,
     usedCanonicalFallback: canonical.usedFallback,
     platforms,
     nodes,

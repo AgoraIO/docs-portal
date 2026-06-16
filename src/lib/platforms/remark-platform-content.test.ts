@@ -10,9 +10,9 @@ describe('remarkPlatformContent', () => {
 Android install
 </PlatformStructured>
 
-<PlatformStructured platform="javascript">
+<PlatformStructured platform="web">
 ## Install
-JavaScript install
+Web install
 </PlatformStructured>
 
 Shared paragraph.
@@ -26,12 +26,60 @@ Shared paragraph.
     );
 
     expect(result).toContain('_PlatformTabsGroup');
-    expect(result).toContain('canonicalPlatform="javascript"');
+    expect(result).toContain('canonicalPlatform="web"');
     expect(result).toContain('groupMode="structured"');
     expect(result).toContain('platform="android"');
-    expect(result).toContain('platform="javascript"');
+    expect(result).toContain('platform="web"');
     expect(result).toContain('_PlatformProcessedMarker');
     expect(result).toContain('close="true"');
+  });
+
+  it('preserves a single top-level platform block as a one-panel group', async () => {
+    const source = `
+Shared intro.
+
+<PlatformStructured platform="web">
+## Web only
+Web body
+</PlatformStructured>
+
+Shared outro.
+`;
+
+    const result = String(
+      await compile(source, {
+        jsx: true,
+        remarkPlugins: [remarkPlatformContent],
+      }),
+    );
+
+    expect(result).toContain('_PlatformTabsGroup');
+    expect(result).toContain('canonicalPlatform="web"');
+    expect(result).toContain('platforms="[&quot;web&quot;]"');
+    expect(result).toContain('platform="web"');
+  });
+
+  it('normalizes legacy platform aliases before validating groups', async () => {
+    const source = `
+<PlatformStructured platform="react-js">
+React content
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+Web content
+</PlatformStructured>
+`;
+
+    const result = String(
+      await compile(source, {
+        jsx: true,
+        remarkPlugins: [remarkPlatformContent],
+      }),
+    );
+
+    expect(result).toContain('canonicalPlatform="web"');
+    expect(result).toContain('platform="javascript"');
+    expect(result).not.toContain('platform="react-js"');
   });
 
   it('throws a readable error for duplicate platforms in one group', async () => {
@@ -53,7 +101,7 @@ Shared paragraph.
 > quoted intro
 >
 > <PlatformInline platform="android">A</PlatformInline>
-> <PlatformInline platform="javascript">B</PlatformInline>
+> <PlatformInline platform="web">B</PlatformInline>
 `;
 
     await expect(

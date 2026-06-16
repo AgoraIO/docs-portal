@@ -1,0 +1,117 @@
+---
+title: 'Release notes'
+description: 'Track Whiteboard SDK release notes across Android, iOS, and Web.'
+---
+
+<PlatformStructured platform="android">
+## Understand the tech
+
+This page tracks Android release notes for the Whiteboard SDK.
+
+## Reference
+
+## v2.16.95
+
+Released on July 28, 2025.
+
+:::info[Note]
+The wrapped Web SDK has been upgraded to v2.16.51.
+:::
+
+#### New features
+
+**Domain preselection**
+
+This version adds the `WhiteSDK.prepareWhiteConnectionForAppId` method to preselect an optimal access domain, which can improve the connection speed when users join a whiteboard room for the first time.
+
+**Whiteboard window style override**
+
+This version adds the `WhiteWindowParams.overwriteStyles` method to override whiteboard window styles using CSS, allowing for customization of UI details.
+
+#### Fixed issues
+
+- `drawOnlyPencil` does not work on Android 17 and above.
+
+#### API changes
+
+**Added**
+
+- `prepareWhiteConnectionForAppId`
+- `overwriteStyles`
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+## Understand the tech
+
+This page tracks iOS release notes for the Whiteboard SDK.
+
+## Reference
+
+:::info[Note]
+To ensure a consistent user experience across different platforms while enabling native access on each platform, the Whiteboard SDK for iOS is implemented by creating a wrapper for the Whiteboard SDK for Web, rather than being a completely native SDK. Therefore, each iOS SDK version by default includes the updates of the Web SDK version that it is built upon. The corresponding Web SDK version is provided in each iOS release note, so that you can refer to the relevant Web SDK release note for updates.
+:::
+
+## v2.16.112
+
+Released on July 28, 2025.
+
+#### New features
+
+**High-performance whiteboard drawing tools**
+
+This release introduces the `appliance-plugin` that provides a set of high-performance whiteboard drawing tools. To use it, install `@netless/appliance-plugin` and enable it with the `WhiteSdkConfiguration.enableAppliancePlugin` configuration option.
+
+**PPT rendering error handling**
+
+This version adds the `SlideListener.onSlideError` method for listening to PPT rendering errors. If an error occurs, you can call `WhiteSdk.recoverSlide` to recover rendering.
+
+**Auto focus behavior**
+
+This release adds the `WhiteSdkConfiguration.useWebKeyboardInjection` property, which controls whether WKWebView is allowed to automatically gain input focus.
+
+#### API changes
+
+**Added**
+
+- `WhiteSdkConfiguration.enableAppliancePlugin`
+- `WhiteSdkConfiguration.useWebKeyboardInjection`
+- `WhiteMemberState.strokeOpacity`
+- `WhiteMemberState.fillOpacity`
+- `WhiteMemberState.fillColor`
+- `onSlideError`
+- `recoverSlide`
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+## Understand the tech
+
+This page tracks Web release notes for the Whiteboard SDK.
+
+## Reference
+
+## v2.16.112
+
+Released on July 28, 2025.
+
+#### New features
+
+**High-performance whiteboard drawing tools**
+
+This release introduces the `appliance-plugin` that provides a set of high-performance whiteboard drawing tools. To use it, install `@netless/appliance-plugin` and enable it with the `WhiteWebSdkConfiguration.enableAppliancePlugin` configuration option.
+
+**PPT rendering error handling**
+
+This version adds slide rendering error callbacks and recovery support for dynamic document rendering.
+
+**Main-view tooling updates**
+
+This release improves whiteboard tool interactions in multi-window and presentation scenarios.
+
+#### API changes
+
+**Added**
+
+- `enableAppliancePlugin`
+- Slide rendering error callbacks
+- Recovery support for failed slide rendering
+</PlatformStructured>

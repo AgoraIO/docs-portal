@@ -15,12 +15,12 @@ describe('platform mdx groups', () => {
       {
         kind: 'platform',
         mode: 'structured',
-        platform: 'javascript',
+        platform: 'web',
         value: 'B',
       },
       { kind: 'shared', value: 'middle' },
       { kind: 'platform', mode: 'inline', platform: 'android', value: 'C' },
-      { kind: 'platform', mode: 'inline', platform: 'javascript', value: 'D' },
+      { kind: 'platform', mode: 'inline', platform: 'web', value: 'D' },
     ];
 
     expect(splitPlatformRuns(nodes)).toEqual([
@@ -34,7 +34,7 @@ describe('platform mdx groups', () => {
         {
           kind: 'platform',
           mode: 'structured',
-          platform: 'javascript',
+          platform: 'web',
           value: 'B',
         },
       ],
@@ -48,7 +48,7 @@ describe('platform mdx groups', () => {
         {
           kind: 'platform',
           mode: 'inline',
-          platform: 'javascript',
+          platform: 'web',
           value: 'D',
         },
       ],
@@ -62,7 +62,7 @@ describe('platform mdx groups', () => {
         {
           kind: 'platform',
           mode: 'structured',
-          platform: 'javascript',
+          platform: 'web',
           value: 'B',
         },
       ]),
@@ -102,15 +102,16 @@ describe('platform mdx groups', () => {
         {
           kind: 'platform',
           mode: 'structured',
-          platform: 'javascript',
+          platform: 'web',
           value: 'B',
         },
       ]),
     ).toEqual({
-      canonicalPlatform: 'javascript',
+      canonicalPlatform: 'web',
       mode: 'structured',
+      showTabs: true,
       usedCanonicalFallback: false,
-      platforms: ['flutter', 'javascript'],
+      platforms: ['flutter', 'web'],
       nodes: [
         {
           kind: 'platform',
@@ -121,8 +122,35 @@ describe('platform mdx groups', () => {
         {
           kind: 'platform',
           mode: 'structured',
-          platform: 'javascript',
+          platform: 'web',
           value: 'B',
+        },
+      ],
+    });
+  });
+
+  it('allows a single platform node and marks the group as tabless', () => {
+    expect(
+      createPlatformGroup([
+        {
+          kind: 'platform',
+          mode: 'structured',
+          platform: 'web',
+          value: 'A',
+        },
+      ]),
+    ).toEqual({
+      canonicalPlatform: 'web',
+      mode: 'structured',
+      showTabs: false,
+      usedCanonicalFallback: false,
+      platforms: ['web'],
+      nodes: [
+        {
+          kind: 'platform',
+          mode: 'structured',
+          platform: 'web',
+          value: 'A',
         },
       ],
     });

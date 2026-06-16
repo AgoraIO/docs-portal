@@ -5,34 +5,28 @@ import {
   getCanonicalPlatform,
   getPlatformLabel,
   isKnownPlatform,
+  normalizePlatformKey,
 } from './registry';
 
 describe('platform registry', () => {
   it('exposes a stable canonical priority order', () => {
     expect(PLATFORM_CANONICAL_PRIORITY).toEqual([
       'web',
-      'javascript',
       'android',
       'ios',
-      'macos',
-      'windows',
-      'electron',
+      'javascript',
       'flutter',
       'react-native',
-      'react-js',
-      'unity',
-      'unreal',
-      'blueprint',
-      'python',
-      'linux-cpp',
-      'linux-c',
-      'linux-java',
     ]);
   });
 
   it('resolves canonical platform by priority, not declaration order', () => {
     expect(getCanonicalPlatform(['ios', 'android'])).toEqual({
       platform: 'android',
+      usedFallback: false,
+    });
+    expect(getCanonicalPlatform(['flutter', 'web'])).toEqual({
+      platform: 'web',
       usedFallback: false,
     });
     expect(getCanonicalPlatform(['flutter', 'javascript'])).toEqual({
@@ -46,22 +40,50 @@ describe('platform registry', () => {
       platform: 'web',
       usedFallback: false,
     });
+    expect(getCanonicalPlatform(['unity', 'blueprint'])).toEqual({
+      platform: 'unity',
+      usedFallback: true,
+    });
   });
 
   it('recognizes only registered platform keys', () => {
     expect(isKnownPlatform('android')).toBe(true);
     expect(isKnownPlatform('web')).toBe(true);
-    expect(isKnownPlatform('electron')).toBe(true);
     expect(isKnownPlatform('react-js')).toBe(true);
+    expect(isKnownPlatform('windows')).toBe(true);
+    expect(isKnownPlatform('macos')).toBe(true);
+    expect(isKnownPlatform('electron')).toBe(true);
+    expect(isKnownPlatform('unity')).toBe(true);
+    expect(isKnownPlatform('unreal')).toBe(true);
+    expect(isKnownPlatform('blueprint')).toBe(true);
+    expect(isKnownPlatform('python')).toBe(true);
+    expect(isKnownPlatform('linux-cpp')).toBe(true);
+    expect(isKnownPlatform('linux-c')).toBe(true);
+    expect(isKnownPlatform('linux-java')).toBe(true);
     expect(isKnownPlatform('js')).toBe(false);
   });
 
+  it('normalizes legacy platform aliases to registered keys', () => {
+    expect(normalizePlatformKey('react-js')).toBe('javascript');
+    expect(normalizePlatformKey('android')).toBe('android');
+  });
+
   it('returns locale-specific labels from the registry', () => {
+    expect(getPlatformLabel('web', 'en')).toBe('Web');
+    expect(getPlatformLabel('web', 'zh-CN')).toBe('Web');
     expect(getPlatformLabel('javascript', 'en')).toBe('JavaScript');
     expect(getPlatformLabel('javascript', 'zh-CN')).toBe('JavaScript');
     expect(getPlatformLabel('ios', 'en')).toBe('iOS');
-    expect(getPlatformLabel('web', 'en')).toBe('Web');
-    expect(getPlatformLabel('react-js', 'en')).toBe('React');
+    expect(getPlatformLabel('windows', 'en')).toBe('Windows');
+    expect(getPlatformLabel('macos', 'en')).toBe('macOS');
+    expect(getPlatformLabel('electron', 'en')).toBe('Electron');
+    expect(getPlatformLabel('unity', 'en')).toBe('Unity');
+    expect(getPlatformLabel('unreal', 'en')).toBe('Unreal Engine');
+    expect(getPlatformLabel('blueprint', 'en')).toBe('Unreal Blueprint');
+    expect(getPlatformLabel('python', 'en')).toBe('Python');
+    expect(getPlatformLabel('linux-cpp', 'en')).toBe('Linux C++');
+    expect(getPlatformLabel('linux-c', 'en')).toBe('Linux C');
+    expect(getPlatformLabel('linux-java', 'en')).toBe('Linux Java');
   });
 
   it('uses a namespaced storage key', () => {
