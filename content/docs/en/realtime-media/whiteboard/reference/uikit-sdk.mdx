@@ -1,0 +1,398 @@
+---
+title: 'Fastboard API'
+description: 'The API reference guide for the Fastboard SDK.'
+---
+
+This page provides the API reference for the Fastboard SDK.
+
+<PlatformStructured platform="android">
+## Understand the tech
+
+This section provides the API reference for the Fastboard SDK on Android.
+
+## Reference
+
+## FastboardView class
+
+### getFastboard
+
+```java
+public Fastboard getFastboard()
+```
+
+Get the `Fastboard` object.
+
+The Fastboard SDK does not support initializing a `Fastboard` instance directly. To get the `Fastboard` object, you need to add the `FastboardView` object to the app's layout, and then call the `getFastboard` method.
+
+## Fastboard class
+
+### createFastRoom
+
+```java
+public FastRoom createFastRoom(FastRoomOptions roomOptions)
+```
+
+### preloadWhiteboardView
+
+```java
+public static void preloadWhiteboardView() {
+    WhiteboardViewManager.get().preload();
+}
+```
+
+### destroy
+
+```java
+public void destroy()
+```
+
+### setConfig
+
+```java
+public static void setConfig(FastboardConfig config)
+```
+
+### FastRoomOptions
+
+```java
+public class FastRoomOptions {
+     private final String appId;
+     private final String uuid;
+     private final String token;
+     private final String uid;
+     private final boolean writable;
+     private final FastRegion fastRegion;
+}
+```
+
+### FastRegion
+
+- `CN_HZ`
+- `US_SV`
+- `SG`
+- `IN_MUM`
+- `EU`
+
+### FastUserPayload
+
+```java
+public class FastUserPayload {
+     private final String nickName;
+     private final String avatar;
+}
+```
+
+### FastboardConfig
+
+```java
+public class FastboardConfig {
+    private final boolean enablePreload;
+    private final int preloadCount;
+    private final boolean autoPreload;
+}
+```
+
+## FastRoom class
+
+### join [1/2]
+
+```java
+public void join()
+```
+
+### join [2/2]
+
+```java
+public void join(@Nullable OnRoomReadyCallback onRoomReadyCallback)
+```
+
+### setWritable
+
+```java
+public void setWritable(boolean writable)
+```
+
+### registerApp
+
+```java
+public void registerApp(FastRegisterAppParams params, FastResult<Boolean> result)
+```
+
+### insertImage
+
+```java
+public void insertImage(String url, int width, int height)
+```
+
+### insertVideo
+
+```java
+public void insertVideo(String url, String title)
+```
+
+### insertStaticDoc
+
+```java
+public void insertStaticDoc(DocPage[] pages, String title, FastResult<String> result)
+```
+
+### insertPptx
+
+```java
+public void insertPptx(String taskUuid, String prefixUrl, String title, FastResult<String> result)
+```
+
+### insertDocs
+
+```java
+public void insertDocs(FastInsertDocParams params, FastResult<String> result)
+```
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+## Understand the tech
+
+This section provides the API reference for the Fastboard SDK on iOS.
+
+## Reference
+
+## Fastboard class
+
+### createFastRoom
+
+```swift
+public class func createFastRoom(withFastRoomConfig config: FastRoomConfiguration)
+```
+
+Create a `FastRoom` instance.
+
+### FastRoomConfiguration
+
+```swift
+public init(appIdentifier: String,
+                 roomUUID: String,
+                 roomToken: String,
+                 region: Region,
+                 userUID: String,
+                 userPayload: FastUserPayload? = nil)
+```
+
+### Region
+
+- `CN`
+- `US`
+- `SG`
+- `IN`
+- `EU`
+
+### FastUserPayload
+
+```swift
+public class FastUserPayload: NSObject {
+    let nickName: String?
+    let avatar: String?
+}
+```
+
+## FastRoom class
+
+### joinRoom
+
+```swift
+public func joinRoom(completionHandler: ((Result<WhiteRoom, FastRoomError>)->Void)? = nil)
+```
+
+### disconnectRoom
+
+```swift
+public func disconnectRoom()
+```
+
+### insertImg
+
+```swift
+public func insertImg(_ src: URL, imageSize: CGSize)
+```
+
+### insertMedia
+
+```swift
+public func insertMedia(_ src: URL, title: String, completionHandler: ((String)->Void)? = nil)
+```
+
+### insertPptx
+
+```swift
+public func insertPptx(
+     uuid: String,
+     url: String,
+     title: String,
+     completionHandler: ((String)->Void)? = nil
+ )
+```
+
+### insertStaticDocument
+
+```swift
+public func insertStaticDocument(_ pages: [WhitePptPage],
+                                      title: String,
+                                      completionHandler: ((String)->Void)? = nil)
+```
+
+### followSystemPencilBehavior
+
+```swift
+public static var followSystemPencilBehavior
+```
+
+## FastRoomThemeManager class
+
+### apply
+
+```swift
+public func apply(_ theme: FastRoomThemeAsset)
+```
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+## Understand the tech
+
+This section provides the API reference for the Fastboard SDK on Web.
+
+## Reference
+
+## createFastboard
+
+```typescript
+createFastboard(options: FastboardOptions): Promise;
+```
+
+## createUI
+
+```typescript
+createUI(app?: FastboardApp | null, div?: Element): UI;
+```
+
+## createReplayUI
+
+```typescript
+createReplayUI(player?: FastboardPlayer | null, div?: Element): ReplayUI;
+```
+
+### canOperate
+
+```typescript
+get canOperate(): boolean
+```
+
+## mount
+
+```typescript
+mount(app: FastboardApp, div: HTMLDivElement, options?: MountProps): {
+ update(props?: MountProps | undefined): void;
+ destroy(): void;
+};
+```
+
+## dispatchDocsEvent
+
+```typescript
+export function dispatchDocsEvent(
+  fastboard: FastboardApp | WindowManager,
+  event: "prevPage" | "nextPage" | "prevStep" | "nextStep" | "jumpToPage",
+  options: DocsEventOptions = {}
+)
+```
+
+## FastboardApp class
+
+### undo
+
+```typescript
+undo(): void
+```
+
+### redo
+
+```typescript
+redo(): void
+```
+
+### moveCamera
+
+```typescript
+moveCamera(camera: Partial<Camera>): void
+```
+
+### moveCameraToContain
+
+```typescript
+moveCameraToContain(rect: Rectangle): void;
+```
+
+### setAppliance
+
+```typescript
+setAppliance(appliance: ApplianceNames, shape?: ShapeType): void;
+```
+
+### setStrokeWidth
+
+```typescript
+setStrokeWidth(strokeWidth: number): void
+```
+
+### setStrokeColor
+
+```typescript
+setStrokeColor(strokeColor: Color): void
+```
+
+### setTextColor
+
+```typescript
+setTextColor(textColor: Color): void
+```
+
+### setTextSize
+
+```typescript
+setTextSize(textSize: number): void
+```
+
+### insertImage
+
+```typescript
+async insertImage(url: string, crossOrigin?: boolean | string)
+```
+
+### insertMedia
+
+```typescript
+insertMedia(title: string, src: string): Promise<string | undefined>
+```
+
+### insertDocs [1/2]
+
+```typescript
+insertDocs(title: string, response: ProjectorResponse): Promise<string | undefined>;
+```
+
+### insertDocs [2/2]
+
+```typescript
+insertDocs(params: InsertDocsParams): Promise<string | undefined>;
+```
+
+### removePage
+
+```typescript
+removePage(index?): Promise<boolean>
+```
+
+### jumpPage
+
+```typescript
+jumpPage(index: number)
+```
+</PlatformStructured>

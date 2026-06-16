@@ -59,20 +59,7 @@ Released on July 28, 2025.
 
 **High-performance whiteboard drawing tools**
 
-This release introduces the `appliance-plugin` that provides a set of high-performance whiteboard drawing tools. To use it, install `@netless/appliance-plugin` and enable it with the `WhiteSdkConfiguration.enableAppliancePlugin` configuration option. For details, see the [`appliance-plugin` documentation](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md).
-
-:::info
-- `@netless/appliance-plugin` is an external dependency and must be installed separately.
-- To ensure consistent rendering of strokes, enable the plugin on all platforms (Web, Android, and iOS). Strokes drawn with the plugin will not appear on platforms where it is not enabled.
-- After enabling the plugin, historical whiteboard content is still visible but cannot be edited or upgraded. To avoid affecting the user experience, we recommend enabling the plugin on a new whiteboard. Disabling the plugin will remove content drawn with it.
-:::
-
-Once the plugin is enabled, you can:
-
-- Use the new laser pencil tool `LASER_PENCIL`.
-- Use the `WhiteMemberState.strokeOpacity` property to set line transparency.
-- Use the `WhiteMemberState.fillOpacity` property to set fill transparency.
-- Use the `WhiteMemberState.fillColor` property to set fill color.
+This release introduces the `appliance-plugin` that provides a set of high-performance whiteboard drawing tools. To use it, install `@netless/appliance-plugin` and enable it with the `WhiteSdkConfiguration.enableAppliancePlugin` configuration option.
 
 **PPT rendering error handling**
 
