@@ -94,12 +94,26 @@ export const platformRegistry = {
     },
     order: 120,
   },
+  'linux-cpp': {
+    label: {
+      en: 'Linux C++',
+      'zh-CN': 'Linux C++',
+    },
+    order: 125,
+  },
   'linux-c': {
     label: {
       en: 'Linux C',
       'zh-CN': 'Linux C',
     },
     order: 130,
+  },
+  'linux-java': {
+    label: {
+      en: 'Linux Java',
+      'zh-CN': 'Linux Java',
+    },
+    order: 140,
   },
 } as const;
 

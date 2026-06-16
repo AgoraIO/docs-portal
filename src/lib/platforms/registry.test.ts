@@ -57,7 +57,9 @@ describe('platform registry', () => {
     expect(isKnownPlatform('unreal')).toBe(true);
     expect(isKnownPlatform('blueprint')).toBe(true);
     expect(isKnownPlatform('python')).toBe(true);
+    expect(isKnownPlatform('linux-cpp')).toBe(true);
     expect(isKnownPlatform('linux-c')).toBe(true);
+    expect(isKnownPlatform('linux-java')).toBe(true);
     expect(isKnownPlatform('js')).toBe(false);
   });
 
@@ -79,7 +81,9 @@ describe('platform registry', () => {
     expect(getPlatformLabel('unreal', 'en')).toBe('Unreal Engine');
     expect(getPlatformLabel('blueprint', 'en')).toBe('Unreal Blueprint');
     expect(getPlatformLabel('python', 'en')).toBe('Python');
+    expect(getPlatformLabel('linux-cpp', 'en')).toBe('Linux C++');
     expect(getPlatformLabel('linux-c', 'en')).toBe('Linux C');
+    expect(getPlatformLabel('linux-java', 'en')).toBe('Linux Java');
   });
 
   it('uses a namespaced storage key', () => {
