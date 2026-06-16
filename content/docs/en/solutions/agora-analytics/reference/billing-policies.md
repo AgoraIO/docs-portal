@@ -1,0 +1,273 @@
+---
+title: "Billing policies and free-of-charge policy"
+description: "Provides you with information on billing, fee deductions, free-of-charge policy and any suspension to your account based on the account type."
+---
+
+# Billing policies and free-of-charge policy
+
+This page explains billing, account settlement, end-of-life policies, and any applicable free-of-charge policies for this product.
+
+## Billing and account policies
+
+Agora Console provides billing information, fee deduction details, and account suspension notices based on your account type.
+
+:::info
+> If you have signed a contract with Agora, the contract terms override all billing, deduction, and suspension details described on this page.
+
+### Paid accounts
+
+Your account is a paid account if you have registered with Agora and completed any of the following:
+
+- Added a credit card to your account or topped up your balance using a bank account.
+- Made a recent payment.
+- Signed a contract with Agora.
+
+### Billing cycle
+
+Agora provides each account with [10,000 free minutes](#free-of-charge-policy) every month. 
+
+On the first day of each month, Agora issues your bill for the previous calendar month. 
+
+To view billing information for your projects:
+
+1. In [Agora Console](https://console.agora.io/v2), click home.
+
+2. Click **Billing**.
+
+    You see the detailed billing information for your projects, including billing period, due date, and amount.
+
+    ![View bills](/images/video-sdk/bills.png)
+
+#### Additional charges
+
+This section describes the additional charges applicable to your account.
+
+#### Singapore goods and services tax
+
+As of November 2021, Agora Singapore charges [9% Singapore Goods and Services Tax (GST)](https://www.iras.gov.sg/taxes/goods-services-tax-(gst)/basics-of-gst/goods-and-services-tax-(gst)-what-it-is-and-how-it-works) on invoices for all Agora services provided to accounts located in Singapore. Agora determines the account location based on the tax identification number, contact address, or billing address that you have provided. All GST collected from Singapore accounts is paid to the Singapore tax authority.
+
+If you have any questions, contact support@agora.io.
+
+#### Fee deduction
+
+On the sixth day of each month, Agora automatically deducts the fee for the previous month and notifies you by email. No fee is deducted if you meet both of the following conditions:
+
+- Your monthly usage does not exceed the free quota.
+- You do not use any other charged Agora services or products.
+
+If your account balance is negative after the deduction, Agora sends you an email, reminding you to [top up your account](pricing.md) at your earliest convenience and avoid account suspension.
+
+#### Account suspension
+
+If your account balance remains negative for 5 days after the deduction date, Agora suspends your account and notifies you by email. During suspension, none of your projects can access Agora services.
+
+To restore access, top up your account as soon as possible. Once your balance is zero or greater, Agora unfreezes your account.
+
+### Free accounts
+
+Your account is a free account if you have registered with Agora and have not completed any of the following:
+
+- Added a credit card to your account or topped up your balance using a bank account.
+- Made a recent payment.
+- Signed a contract with Agora.
+
+Free accounts include 10,000 free minutes per month. For details, see [Free-of-charge policy](#free-of-charge-policy).
+
+#### Free account suspension 
+
+Agora suspends your account on the second day after any of the following occur:
+
+- Your total usage exceeds the free quota of a service or product.
+- You use Agora services or products not included in the free quota. 
+
+After account suspension, none of your projects can access Agora services. To restore access:
+
+1. Add a credit card to your account or top up your balance using a bank account. This unfreezes your account and upgrades it to a paid account.
+
+2. Purchase a [pre-paid monthly package](https://docs.agora.io/en/agora-analytics/overview/subscription-packages) or [top-up package](https://docs.agora.io/en/agora-analytics/overview/subscription-packages). This option is highly recommended.
+
+## Free-of-charge policy
+
+:::info
+> Agora offers a new [pricing](https://docs.agora.io/en/video-calling/overview/pricing) model. If your account uses this model, you receive a monthly free usage package by default instead of the 10,000 free minutes described below.
+
+Agora provides each account with 10,000 free minutes per month and deducts them in the following order:
+
+-   Broadcast Streaming audio minutes
+-   Voice call, video call, and Interactive Live Streaming audio minutes
+-   On-premise recording audio minutes
+-   Cloud recording audio non-transcoding minutes
+-   Cloud recording audio minutes
+-   Web page recording audio minutes
+-   Cloud Proxy audio minutes
+-   Broadcast Streaming HD video minutes
+-   Voice call, video call, and Interactive Live Streaming HD video minutes
+-   On-premise recording HD video minutes
+-   Cloud recording HD video minutes
+-   Web page recording HD video minutes
+-   Cloud Proxy HD video minutes
+-   Broadcast Streaming Full HD* video minutes
+-   Voice call, video call, and Interactive Live Streaming Full HD* video minutes
+-   On-premise recording Full HD* video minutes
+-   Cloud recording Full HD* video minutes
+-   Web page recording Full HD* video minutes
+-   Cloud Proxy Full HD* video minutes
+-   Broadcast Streaming 2K video minutes
+-   Voice call, video call, and Interactive Live Streaming  2K video minutes
+-   On-premise recording 2K video minutes
+-   Cloud recording 2K video minutes
+-    Broadcast Streaming 2K+ video minutes
+-   Voice call, video call, Interactive Live Streaming 2K+ video minutes
+-   On-premise recording 2K+ video minutes
+-   Cloud recording 2K+ video minutes
+-   Cloud proxy 2K+ video minutes
+
+\* HD+ minutes are also included in the shared 10,000 free minutes.
+
+If your total service minutes do not exceed 10,000 minutes, the service is free-of-charge. After the 10,000 free-of-charge minutes are fully deducted, Agora charges you for the additional service minutes. Agora clears any remaining free-of-charge minutes at the end of each calendar month.
+
+:::info
+> The 10,000 free-of-charge minutes policy does not apply to the Signaling SDK, the Chat SDK, or the IoT SDK.
+
+### How service minutes are calculated
+
+Service minutes are calculated either by the number of users or by the number of streams. Agora calculates service minutes **by the number of users**.
+
+#### Approach 1: calculate by the number of users
+
+Suppose N users talk for M minutes in a channel, the total service minutes = N \* M.
+
+-   If two users talk for 10 minutes, the total service minutes are: 2 \* 10 = 20.
+
+-   If five users talk for 10 minutes, the total service minutes are: 5 \* 10 = 50.
+
+-   If 10 users talk for 10 minutes, the total service minutes are: 10 \* 10 = 100.
+
+In this approach, service minutes depend only on the number of users in the channel, regardless of how many streams each user subscribes to.
+
+#### Approach 2: calculate by the number of streams
+
+Suppose N users talk for M minutes in a channel, and each user subscribes to all remote streams in the channel, the total service minutes = N \* (N-1) \* M.
+
+-   If two users talk for 10 minutes, the total service minutes are: 2 \* (2-1) \* 10 = 20.
+
+-   If five users talk for 10 minutes, the total service minutes are: 5 \* (5-1) \* 10 = 200.
+
+-   If 10 users talk for 10 minutes, the total service minutes are: 10 \* (10-1) \* 10 = 900.
+
+In this approach, every remote stream that a user subscribes to is counted separately.
+
+#### Comparison of calculation approaches
+
+The following table compares service minutes under each approach:
+
+| Use-case                        | Service minutes by the number of users | Service minutes by the number of streams |
+|---------------------------------|----------------------------------------|------------------------------------------|
+| Two users talk for 10 minutes.  | 20 minutes                             | 20 minutes                               |
+| Five users talk for 10 minutes. | 50 minutes                             | 200 minutes                              |
+| 10 users talk for 10 minutes.   | 100 minutes                            | 900 minutes                              |
+
+The difference between the two approaches increases as more users join the channel.
+
+### Agora's calculation method
+
+Agora calculates service minutes **by the number of users**. Service minutes are also calculated based on aggregate video resolution. For details, see [Calculate aggregate video resolution](pricing.md).
+
+## Account settlement
+
+To ensure billing transparency and smooth service continuity, Agora implements real-time account balance reservation based on estimated usage across all Agora products for SSP customers. This does not apply to customers with a signed contract.
+
+:::info
+> For uninterrupted access to Agora's products and services, ensure at least one of the following:
+> - Add a valid credit card for auto-recharge to your Agora account, **or**
+> - Maintain sufficient funds in your Agora Console balance to cover your estimated usage.
+
+Agora employs the following policies to manage your account balance and ensure uninterrupted access to its products and services.
+
+### Real-time usage and estimated bill
+ 
+You can view your real-time usage and estimated monthly bill at any time directly in the Agora Console.
+
+![bill estimate preview](/images/console/bill-estimate-preview.png)
+ 
+### Real-time reservation of balance
+ 
+Your reserved balance is updated continuously based on your real-time bill estimation. The corresponding estimated amount is reserved from your available balance at all times.
+ 
+![Available and reserved balance](/images/console/available-reserved-balance.png)
+
+### Auto-recharge and account suspension
+ 
+On the **7th, 14th, 21st, and 28th** of each calendar month (excluding February 28), if your available balance is in arrears by more than **$50**:
+ 
+- If a valid credit card is linked, the system automatically recharges your balance to zero.
+- If no credit card is linked, or if auto-recharge fails, a notification email is sent to you.
+- Top up your wallet within the **24-hour grace period** to avoid account suspension.
+- If your balance remains in arrears after 24 hours, your account is suspended until the balance is restored to zero or above.
+
+### Monthly billing
+ 
+Your final bill is issued monthly. After bill finalization:
+ 
+- Any overpaid amount is refunded to your balance.
+- Any undercharged amount is deducted accordingly.
+
+### Balance withdrawal
+ 
+You can withdraw your available balance at any time directly from the Agora Console.
+
+![Withdraw balance](/images/console/withdraw-balance.png)
+
+## End-of-life policy
+
+Agora is committed to providing regular updates to core products, extensions, and tools. These updates include new features, updated APIs, bug fixes, security patches, and documentation improvements. Agora strongly encourages developers to update to the latest product releases to benefit from new features, security enhancements, and other improvements.
+
+This section outlines the stages that an Agora product or service moves through, from pre-GA Beta to general availability to retirement, and the support Agora provides during each phase.
+
+### Default introduction period
+
+Agora guarantees a minimum introduction period of 12 months from the release of a product on the [Agora Developer Center](https://docs.agora.io/en/). During this period, Agora does not initiate any end-of-support or end-of-life actions. After the 12-month period, Agora may transition a product into the Maintenance phase, which marks the beginning of the end-of-support phase.
+
+### SDK lifecycle
+
+| Phase | Description |
+|-------|-------------|
+|Beta | During this phase, SDKs are intended solely for early access and feedback purposes. They are not recommended for use in production environments. Beta products fall outside of the EOL policy and are intended for evaluation purposes only. For more information, see the Beta Service Agreement.|
+|General Availability (GA)|SDKs in this phase are fully supported by Agora. Agora provides support for new services, API updates, feature enhancements, bug fixes, and security patches. Agora guarantees a minimum of 12 months of support for GA SDKs. For details on client SDK support periods, see [Client SDK support periods​](#client-sdk-support-periods).|
+|Retirement (EOL) SDKs: (Maintenance)| When an SDK enters the Retirement phase, Agora announces its retirement with a minimum notice period of 60 days, which is approximately 2 months. This announcement will include crucial timelines and guidelines to assist developers in migrating to the latest recommended SDK version. Agora communicates retirement announcements through email, the Agora Console notifications center, and SDK documentation, and may also post announcements on social media or the [Agora blog](https://www.agora.io/en/blog/). When a product or service reaches the end-of-support or end-of-life stage, Agora stops providing security updates, non-security updates, and assisted support.
+
+### Client SDK support periods
+
+Agora provides the following support periods for client SDKs:
+
+| Release | Support |
+|---------|---------|
+| Major release | Agora guarantees support for at least 12 months starting from the date of a major release.  |
+| Minor release | For minor releases, Agora ensures support for at least 6 months from the release date.  |
+
+### Maintenance support for retired SDKs
+
+Occasionally, Agora may transition a product SDK into a maintenance support phase focused primarily on bug fixes and security patches. In such cases, Agora notifies customers at least 60 days, approximately 2 months, in advance of the retirement period for the affected SDK.
+
+During the Retirement phase, products entering the EOS/EOL phase will continue to be supported as follows:
+
+| Duration | Support |
+|---|---|
+| Months 1–6 after EOL announcement | Agora provides bug fixes and security updates. New feature requests are not accepted. |
+| Months 7–12 after EOL announcement | Agora provides security updates only. |
+| After 12 months | Agora no longer supports the product or service, unless a support extension was arranged before the end of the 12-month period. |
+
+:::info
+> Using an SDK beyond its maintenance support cycle is not recommended and is entirely at the developer's discretion and risk.
+
+Agora is committed to delivering the best SDK experience to its developers. This policy ensures that you have access to the latest features and security updates with clear guidance on the support timelines.
+
+### Support extensions
+
+Customers may apply to extend support for a retired SDK for a temporary period, subject to Agora's discretion and commercial terms. Agora reviews each request and decides whether to grant the customer a license to use the product or service for a limited period beyond the EOL timeline.
+
+### Additional information
+
+If you need more time to transition to the latest version of a product or service, contact your Agora account manager, partnership manager, or device manufacturer for assistance.
+
+Agora is committed to providing support throughout the lifecycle of its products and services to ensure the best possible developer experience.

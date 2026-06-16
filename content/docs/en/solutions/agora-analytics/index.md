@@ -1,25 +1,15 @@
 ---
-title: Analytics
-description: xxx
+title: "Service activation"
+description: "How to activate Agora Analytics for your account."
 ---
 
-## What this capability is
+# Service activation
 
-Recording preserves live audio-video content for archive, replay, quality review, compliance, and post-session analysis.
+To activate Agora Analytics, follow these steps:
 
-## Main forms
+1. Contact your account executive, solutions architect, or email support@agora.io to learn about the available Agora Analytics plans.
 
-- Cloud Recording
-- Local Server Recording
+1. The account team or your solutions architect will open a support ticket with [Technical support](mailto:support@agora.io) to request activation. Make sure the ticket includes your Customer ID and the specific Agora Analytics plan you want activated.
 
-## What the existing Shengwang docs usually contain
-
-- landing page
-- quickstart
-- user guides
-- recording mode guidance
-- billing and limits
-
-## What to read first
-
-Start with Cloud Recording if you want a managed path. Move to Local Server Recording when you need deeper operational control.
+:::info
+> Activation typically takes up to 2 business days.
