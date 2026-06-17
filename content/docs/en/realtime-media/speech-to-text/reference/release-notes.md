@@ -17,7 +17,7 @@ Included in this release:
 
 - **Support for additional languages**
 
-  This version expands the supported language lists for real-time transcription and real-time translation. See [Supported languages](../build/supported-languages) for the full list.
+  This version expands the supported language lists for real-time transcription and real-time translation. See [Supported languages](./supported-languages) for the full list.
 
 #### Upgrade notes
 
