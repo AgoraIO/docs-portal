@@ -3,8 +3,6 @@ title: "Restrict media zones"
 description: "Control and customize Signaling data routing in your app"
 ---
 
-# Restrict media zones
-
 To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN zones that users can connect to.
 
 ## Understand the tech
@@ -23,7 +21,7 @@ The following zones are available:
 
 ## Prerequisites
 
-Ensure that you have implemented the [SDK quickstart](sdk-quickstart.mdx) in your project.
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Configure geographical zones
 

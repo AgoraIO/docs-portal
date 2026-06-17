@@ -3,8 +3,6 @@ title: "Cloud proxy migration guide"
 description: "Cloud Proxy IP migration list"
 ---
 
-# Cloud proxy migration guide
-
 Agora has updated IP whitelist configuration to enhance security and simplify management. This guide helps you update your cloud proxy settings to avoid service interruptions. Following are the key changes:
 
 * **Reduced IP ranges**: Narrower network segments improve security

@@ -3,8 +3,6 @@ title: "Security"
 description: "How Agora handles security."
 ---
 
-# Security
-
 ## Information security policy
 
 This section provides information security policy for Agora services.
@@ -364,6 +362,7 @@ The media encryption on Web SDK is done via WebRTC standard but the interoperabi
 
 ![img](/images/common/media-encryption.svg)
 
+<!-- NOTE: shared cross-product mention of Signaling (not a separable product tail) — the geofencing subsection below names both Video SDK and Signaling SDK -->
 ### Level 4 - Network geofencing
 
 To conform to the laws and regulations of different countries and regions, the Agora Video SDK and the Signaling SDK support network geofencing, which limits the transmission of data to within a specified region.
@@ -374,7 +373,7 @@ These SDKs support network geofencing in the following regions: global (default)
 
 Use this list to quickly check what measures you have or have not taken to best protect the security of you app and users:
 
-1. [Enable token-based authentication](../build/manage-agora-account.md) on [Agora Console](https://console.agora.io/v2).
+1. [Enable token-based authentication](./manage-agora-account.md) on [Agora Console](https://console.agora.io/v2).
 2. Disable *No certificate* in your project management page. Once it is done your app authenticates users with tokens only.
 3. [Deploy a token server](https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server) in your backend services.
 4. Protect the token server and only allow the app backend server to connect to the token server.

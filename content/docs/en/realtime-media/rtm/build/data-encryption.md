@@ -3,8 +3,6 @@ title: "Data encryption"
 description: "Add Agora built-in encryption method to your app."
 ---
 
-# Data encryption
-
 Agora places great emphasis on the security of user data and privacy. Signaling provides TLS encryption at the transport layer and 256-bit AES encryption on the client side to effectively protect user data.
 
 ## Understand the tech
@@ -13,13 +11,13 @@ Signaling provides the following security features:
 
 - **Transport layer encryption**: Data transmission between the client, server, and Signaling server is encrypted using TLS.
 - **Message encryption**: Each message is protected with end-to-end encryption after you configure the encryption parameters.
-- **Token authorization**: The SDK incorporates time-based access control strategies to ensure that only authorized users can access Signaling resources. For details, see [Secure authentication with tokens](authentication-workflow.md).
+- **Token authorization**: The SDK incorporates time-based access control strategies to ensure that only authorized users can access Signaling resources. For details, see [Secure authentication with tokens](../get-started/authentication-workflow.md).
 
 If your application requires enhanced data security, implement message-level encryption. Best practice is to use a combination of TLS encryption for data transmission and end-to-end AES encryption for messages.
 
 ## Prerequisites
 
-Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from [SDK quickstart](sdk-quickstart.mdx).
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from [SDK quickstart](../index.mdx).
 
 ## Implement end-to-end message encryption
 

@@ -3,8 +3,6 @@ title: "Glossary"
 description: "A list of terms used in Agora documentation."
 ---
 
-# Glossary
-
 ## A
 
 ### Agora Analytics

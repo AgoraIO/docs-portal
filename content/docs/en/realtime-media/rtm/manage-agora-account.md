@@ -3,8 +3,6 @@ title: "Agora account management"
 description: "Create, manage and update your Agora account."
 ---
 
-# Agora account management
-
 This page shows you how to sign up for an Agora account, create a new project, and get the app ID and app certificate to generate a temporary token. 
 
 ## Get started with Agora
@@ -65,6 +63,7 @@ To copy this App ID, find your project on the [Projects](https://console.agora.i
 
 ![configure_project](/images/signaling/app-id.png)
 
+<!-- PRODUCT-SPECIFIC TAIL (Signaling) START — globalization candidate: the section below is Signaling-specific (Presence/Storage/Stream channel configuration); the content above (account signup, project creation, App ID) is generic and reusable across products. -->
 ## Enable and configure Signaling
 
 Before using Signaling, you need to enable it for each app ID in Agora Console and configure its main features.
@@ -138,6 +137,7 @@ The activation of Stream Channel functionality in Signaling directly depends on 
 3. Wait for confirmation before implementing Stream Channel features.
 
 For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+<!-- PRODUCT-SPECIFIC TAIL (Signaling) END -->
 
 ## Security and authentication
 
@@ -184,4 +184,4 @@ details of your project in Agora Console.
 
 1. Copy the token and use it in your app.
 
-For more information on managing other aspects of your Agora account, see [Agora console overview](../reference/console-overview.md).
+For more information on managing other aspects of your Agora account, see [Agora console overview](./console-overview.md).

@@ -3,15 +3,13 @@ title: "Message channels"
 description: "Communicate using message channels."
 ---
 
-# Message channels
-
 Signaling provides message channels for implementing publish-subscribe (pub/sub) messaging in your app. In a message channel, you subscribe to a channel to receive messages. However, you do not need to join the channel to publish messages. This page shows you how to use Signaling SDK pub/sub messaging to implement various communication model into your app. 
 
 ## Understand the tech
 
 Pub/sub is the simplest form of messaging. Signaling creates a channel when a user subscribes to it. Your app listens for events which contain messages users publish to a channel.
 
-Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../reference/limitations.md).
+Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations.md).
 
 ### Communication models in message channels
 
@@ -27,7 +25,7 @@ Signaling SDK enables you to implement a variety of communication models using m
 
 ## Prerequisites
 
-Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](sdk-quickstart.mdx) page.
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
 
 ## Implement message channels
 
@@ -37,7 +35,14 @@ This section shows you how to subscribe, unsubscribe, and send messages to a mes
 
 Use the `subscribe` method to subscribe to a message channel. After you subscribe, you receive `onMessageEvent` and other event notifications for the channel.
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 // Subscribe to a channel with options
 String channelName = "test_channel";
@@ -59,8 +64,10 @@ mRtmClient.subscribe(channelName, options, new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 // Subscribe to a channel with options
 val channelName = "test_channel"
@@ -81,10 +88,20 @@ mRtmClient.subscribe(channelName, options, object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 To subscribe to multiple channels, call `subscribe` multiple times:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 // Subscribe to multiple channels with options
 String channelName1 = "chats.room1";
@@ -119,8 +136,10 @@ mRtmClient.subscribe(channelName2, options, new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 // Subscribe to multiple channels with options
 val channelName1 = "chats.room1"
@@ -152,6 +171,9 @@ mRtmClient.subscribe(channelName2, options, object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 Signaling allows a single client to subscribe to up to 50 message channels simultaneously. However, to optimize client performance and bandwidth usage, best practice is to limit subscriptions to 30 channels. If you have very large or highly active channels, consider further reducing the number of simultaneous subscriptions.
@@ -160,7 +182,7 @@ Signaling allows a single client to subscribe to up to 50 message channels simul
 
 ### Send a message
 
-To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends messages to one channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../reference/limitations.md) for details.
+To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends messages to one channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../../reference/limitations.md) for details.
 
 :::info
 The `publish` method can only be used with a message channel and a user channel; it does not apply to a stream channel.
@@ -256,7 +278,7 @@ Refer to the following sample code for sending messages:
     ```
 
 :::info
-Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](https://docs.agora.io/en/signaling/core-functionality/message-payload-structuring).
+Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../messaging/message-payload-structuring.md).
 
 :::
 
@@ -264,7 +286,14 @@ Signaling currently supports only string and binary message formats. To send oth
 
 By default, you receive message events for all channels you subscribe to. If you don't wish to receive messages from specific channels, while still receiving other types of event notifications from these channels, adjust the subscription settings accordingly. Refer to the following code snippet:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 // Subscribe to a channel with customized options
 String channelName = "test_channel";
@@ -286,8 +315,10 @@ mRtmClient.subscribe(channelName, options, new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 // Subscribe to a channel with customized options
 val channelName = "test_channel"
@@ -308,6 +339,9 @@ mRtmClient.subscribe(channelName, options, object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 In this example, setting `withMessage` to `false` ensures that messages from `test_channel` do not trigger event notifications. However, you continue to receive notifications for other events, such as presence updates, metadata changes, and lock status alterations.
 
@@ -315,7 +349,14 @@ In this example, setting `withMessage` to `false` ensures that messages from `te
 
 To stop receiving message and all other event notifications from a channel, call `unsubscribe`.
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 // Unsubscribe from a channel
 String channelName = "chats.room1";
@@ -331,8 +372,10 @@ mRtmClient.unsubscribe(channelName, new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 // Unsubscribe from a channel
 val channelName = "chats.room1"
@@ -346,6 +389,9 @@ mRtmClient.unsubscribe(channelName, object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 This method only unsubscribes from one channel at a time. To unsubscribe from multiple channels, call this method multiple times.
 

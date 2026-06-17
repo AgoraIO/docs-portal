@@ -3,15 +3,13 @@ title: "Store channel metadata"
 description: "Use metadata to enhance channel features in Signaling clients."
 ---
 
-# Store channel metadata
-
 The Signaling storage service enables you to store and share contextual channel data in your app, such as props, announcements, member lists, and relationship chains. When channel metadata is set, updated, or deleted, the SDK triggers a storage event notification. Other users in the channel receive this notification within 100ms and use the information according to your business logic. 
 
 ## Understand the tech
 
-Use channel metadata to store and share channel level information such as room attributes, group announcements, and auction item price updates. A set of channel metadata for a specific channel facilitates business-level data storage and real-time notifications. Each channel has only one set of channel metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../reference/limitations.md). Each metadata item has `key`, `value`, and `revision` properties.
+Use channel metadata to store and share channel level information such as room attributes, group announcements, and auction item price updates. A set of channel metadata for a specific channel facilitates business-level data storage and real-time notifications. Each channel has only one set of channel metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../../reference/limitations.md). Each metadata item has `key`, `value`, and `revision` properties.
 
-Channel metadata is stored permanently in the Signaling database. The data persists even after a channel is destroyed. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../reference/pricing.md) for details.
+Channel metadata is stored permanently in the Signaling database. The data persists even after a channel is destroyed. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../../reference/pricing.md) for details.
 
 The storage service is available for both message channels and stream channels. Use the `channelType` parameter in the storage event to determine the channel type.
 
@@ -20,8 +18,8 @@ The storage service is available for both message channels and stream channels. 
 Ensure that you have:
 
 - Integrated the Signaling SDK in your project.
-- Implemented the framework functionality from the [SDK quickstart](sdk-quickstart.mdx) page.
-- Enabled storage in [Storage configuration](manage-agora-account.md).
+- Implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
+- Enabled storage in [Storage configuration](../../manage-agora-account.md).
 
 ## Implement channel metadata storage
 
@@ -33,7 +31,14 @@ To create a new metadata item for the channel, or to update the `value` of an ex
 
 The following example saves a set of metadata items for a message channel named `channel1`. Signaling adds `timestamp` and `authorUid` information to each metadata item it stores.
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Quantity", "20"));
@@ -52,8 +57,10 @@ mRtmClient.getStorage().setChannelMetadata("channel1", RtmChannelType.MESSAGE, m
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val metadata = Metadata()
 metadata.items.add(MetadataItem("Quantity", "20"))
@@ -70,6 +77,9 @@ mRtmClient.getStorage().setChannelMetadata("channel1", RtmChannelType.MESSAGE, m
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 The `onSuccess` callback notifies you of the successful completion of the storage operation. Additionally, Signaling triggers an `onStorageEvent` notification of event type `UPDATE` within 100 ms to inform other channel members. 
 
@@ -77,7 +87,14 @@ The `onSuccess` callback notifies you of the successful completion of the storag
 
 To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 mRtmClient.getStorage().getChannelMetadata("channel1", RtmChannelType.MESSAGE, new ResultCallback<Metadata>() {
     @Override
@@ -95,8 +112,10 @@ mRtmClient.getStorage().getChannelMetadata("channel1", RtmChannelType.MESSAGE, n
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 mRtmClient.getStorage().getChannelMetadata("channel1", RtmChannelType.MESSAGE, object : ResultCallback<Metadata> {
     override fun onSuccess(data: Metadata) {
@@ -112,6 +131,9 @@ mRtmClient.getStorage().getChannelMetadata("channel1", RtmChannelType.MESSAGE, o
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 Signaling SDK returns the following data structure:
 
@@ -152,7 +174,14 @@ To modify existing metadata items for a specified channel, call `updateChannelMe
 
 The following example updates the value of a metadata item:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("T-shirt", "299"));
@@ -172,8 +201,10 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val metadata = Metadata()
 metadata.items.add(MetadataItem("T-shirt", "299"))
@@ -191,6 +222,9 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 The `onSuccess` callback notifies you of the successful completion of the storage operation. Additionally, Signaling triggers an `onStorageEvent` notification of event type `UPDATE` within 100 ms to inform other channel members. 
 
@@ -198,7 +232,14 @@ The `onSuccess` callback notifies you of the successful completion of the storag
 
 To delete metadata items that are no longer required, call `removeChannelMetadata`. Refer to the following sample code:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 Metadata metadata = new Metadata();
 MetadataItem announcement = new MetadataItem();
@@ -217,8 +258,10 @@ mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val metadata = Metadata()
 val announcement = MetadataItem()
@@ -235,6 +278,9 @@ mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 Setting the `value` for a metadata item that is being deleted has no effect.
 
@@ -242,7 +288,14 @@ The `onSuccess` callback notifies you of the successful completion of the storag
 
 To delete the entire set of metadata for a channel, do not specify any metadata items when calling `removeChannelMetadata`. Refer to the following sample code:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 Metadata metadata = new Metadata();
 mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE, metadata, new MetadataOptions(true, true), "", new ResultCallback<Void>() {
@@ -257,8 +310,10 @@ mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val metadata = Metadata()
 mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE, metadata, MetadataOptions(true, true), "", object : ResultCallback<Void> {
@@ -271,6 +326,9 @@ mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 Once channel metadata is deleted, it cannot be recovered. If you need data restoration, back up the metadata before deleting it.
@@ -319,7 +377,14 @@ When setting channel metadata, or a single channel metadata item, use the revisi
 
 The following sample shows how to use `majorRevision` and `revision` to update channel metadata and a metadata item:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 Metadata metadata = new Metadata();
 metadata.setMajorRevision(734874892);
@@ -342,8 +407,10 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val metadata = Metadata()
 metadata.setMajorRevision(734874892)
@@ -364,6 +431,9 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 In this example, CAS verification for channel metadata and metadata items is enabled by setting `majorRevision` and `revision` parameters to positive integers. Upon receiving the update call request, Signaling first verifies the provided major revision number against the latest value in the database. If there's a mismatch, it returns an error; if the values match, Signaling verifies the `revision` number for each metadata item using a similar logic.
 
@@ -380,7 +450,14 @@ Compared to CAS, which controls the version of channel metadata, locks offer a h
 
 The following code demonstrates using a lock to update channel metadata. The user calling `updateChannelMetadata` must acquire the lock first for the call to succeed. 
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Quantity", "40"));
@@ -403,8 +480,10 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val metadata = Metadata()
 metadata.items.add(MetadataItem("Quantity", "40"))
@@ -425,6 +504,9 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](https://docs.agora.io/en/signaling/reference/api).
 

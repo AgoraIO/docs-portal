@@ -3,8 +3,6 @@ title: "Manual install"
 description: "Links to the manual downloads for this product, and explanations on how to install them."
 ---
 
-# Manual install
-
 To manually install Signaling SDK, do one of the following:
 
 ## Through the Agora website

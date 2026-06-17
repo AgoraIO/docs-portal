@@ -3,8 +3,6 @@ title: "Topics"
 description: "Implement topics in stream channels."
 ---
 
-# Topics
-
 Topics are a mechanism for managing transmission and distribution of data in stream channels. After joining a stream channel, users cannot publish directly to the channel. Stream channels implement message sending and receiving through topics. All subscribers of a topic receive data sent by the publishers for the topic within 100 milliseconds.
 
 Compared to message channels, the topic mechanism in stream Channels has a higher message transmission rate, greater message concurrency, and synchronization capability with audio and video data transmission. Topics are therefore ideally suited to Metaverse, AR/VR, interactive games, real-time collaboration, and parallel control use-cases.
@@ -27,9 +25,9 @@ Ensure that you have:
 
 * Activated stream channel capability in [Agora Console](https://console.agora.io/v2). To do so, go to **Projects** > Edit project > **All features** > **Signaling** > **Stream channel configuration** and toggle to enable.
 
-* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](sdk-quickstart.mdx) page.
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
 
-* Implemented the functionality to create and join a stream channel. See [Stream channels](message-channel.md)
+* Implemented the functionality to create and join a stream channel. See [Stream channels](stream-channel.md)
 
 ## Implement topics in stream channels
 
@@ -43,7 +41,14 @@ When joining a topic, set sending attributes using `options`. These parameters a
 
 Use the following code to join a topic:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 var options = new JoinTopicOptions();
 options.messageQos = RtmMessageQos.ORDERED;
@@ -59,8 +64,10 @@ mStreamChannel.joinTopic("topic_name", options, new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val options = JoinTopicOptions()
 options.messageQos = RtmMessageQos.ORDERED
@@ -74,6 +81,9 @@ mStreamChannel.joinTopic("topic_name", options, object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 After a user successfully joins a topic, the SDK triggers an `onTopicEvent` of type `REMOTE_JOIN`. All users in the channel, who have enabled listening to topic events, receive this event notification.
 
@@ -83,7 +93,14 @@ When you no longer need to send messages to a topic, or the number of topics cur
 
 Refer to the following code to leave a topic:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 mStreamChannel.leaveTopic("Motion", new ResultCallback<Void>() {
     @Override
@@ -97,8 +114,10 @@ mStreamChannel.leaveTopic("Motion", new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 mStreamChannel.leaveTopic("Motion", object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
@@ -110,6 +129,9 @@ mStreamChannel.leaveTopic("Motion", object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 After a user successfully leaves a topic, the SDK triggers an `onTopicEvent` of type `REMOTE_LEAVE`. All users in the channel, who have enabled listening to topic events, receive this event notification.
 
@@ -120,7 +142,14 @@ To subscribe to message publishers in a topic, specify the message publishers li
 
 Refer to the following code to subscribe to a topic:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 TopicOptions options = new TopicOptions();
 options.users = new ArrayList<>(Arrays.asList("user_name"));
@@ -137,8 +166,10 @@ mStreamChannel.subscribeTopic("Motion", options, new ResultCallback<SubscribeTop
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val options = TopicOptions()
 options.users = ArrayList(listOf("user_name"))
@@ -153,6 +184,9 @@ mStreamChannel.subscribeTopic("Motion", options, object : ResultCallback<Subscri
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 * If you do not fill in the message publishers list when subscribing to a topic, up to 64 users are randomly subscribed by default. If there are less than 64 users in the topic, all users are subscribed.
@@ -166,7 +200,14 @@ To stop receiving messages from a particular message publisher in a topic, or to
 
 Refer to the following code to unsubscribe:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 var topicName = "Motion";
 var options = new TopicOptions();
@@ -184,8 +225,10 @@ mStreamChannel.unsubscribeTopic(topicName.toString(), options, new ResultCallbac
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val topicName = "Motion"
 val options = TopicOptions()
@@ -201,10 +244,13 @@ mStreamChannel.unsubscribeTopic(topicName.toString(), options, object : ResultCa
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 ### Add a topic event listener
 
-To set up an event listener for topic events, refer to [Add event listener](add-event-listener.md). After successfully adding a topic event handler, you receive `onTopicEvent` notifications for all topics in all stream channels you join or subscribe to. The event returns the following data:
+To set up an event listener for topic events, refer to [Add event listener](../messaging/add-event-listener.md). After successfully adding a topic event handler, you receive `onTopicEvent` notifications for all topics in all stream channels you join or subscribe to. The event returns the following data:
 
 | Attribute     | Description           |
 |---------------|-----------------------|
@@ -238,7 +284,7 @@ A single client can have an unlimited number of topics at the same time, and the
 - The number of topics that a user can subscribe to concurrently.
 - The number of message publishers that can be concurrently subscribed to in a topic.
 
-For details, see [API usage restrictions](../reference/limitations.md).
+For details, see [API usage restrictions](../../reference/limitations.md).
 
 ### Topic naming
 
@@ -262,7 +308,7 @@ The following characters are not supported:
 - `.`, `*`, `/`, `\`, `\0`
 - Non-printable ASCII characters
 
-Although the Signaling SDK does not require it, best practice when naming a topic is to use meaningful prefix characters to indicate the purpose of the topic or the type of messages published in it. Topic naming recommendations are similar to [Channel naming recommendations](channel-naming.md).
+Although the Signaling SDK does not require it, best practice when naming a topic is to use meaningful prefix characters to indicate the purpose of the topic or the type of messages published in it. Topic naming recommendations are similar to [Channel naming recommendations](../../reference/channel-naming.md).
 
 ### API reference
 

@@ -3,23 +3,21 @@ title: "Store user metadata"
 description: "Use metadata to enhance user features in Signaling clients."
 ---
 
-# Store user metadata
-
 The Signaling storage service enables you to store and share contextual user data in your app, such as name, date-of-birth, avatar, and connections. When user metadata is set, updated, or deleted, the SDK triggers a storage event notification. Other users in the channel receive this notification within 100ms and use the information according to your business logic. 
 
 ## Understand the tech
 
-Use metadata enables you to store and share user level information. A set of user metadata facilitates business-level data storage and real-time notifications. Each user has only one set of user metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../reference/limitations.md). Each metadata item has `key`, `value`, and `revision` properties.
+Use metadata enables you to store and share user level information. A set of user metadata facilitates business-level data storage and real-time notifications. Each user has only one set of user metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../../reference/limitations.md). Each metadata item has `key`, `value`, and `revision` properties.
 
-User metadata is stored permanently in the Signaling database. The data persists even after a user logs out. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../reference/pricing.md) for details.
+User metadata is stored permanently in the Signaling database. The data persists even after a user logs out. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../../reference/pricing.md) for details.
 
 ## Prerequisites
 
 Ensure that you have:
 
 - Integrated the Signaling SDK in your project .
-- Implemented the framework functionality from the [SDK quickstart](sdk-quickstart.mdx) page.
-- Enabled storage in [Storage configuration](manage-agora-account.md).
+- Implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
+- Enabled storage in [Storage configuration](../../manage-agora-account.md).
 
 ## Implement user metadata storage
 
@@ -31,7 +29,14 @@ To create a new metadata item for the user, or to update the `value` of am exist
 
 The following example saves a set of metadata items for a specified user. It configures the `options` parameter to add timestamp and modifier information to each metadata item.
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Name", "Tony"));
@@ -54,8 +59,10 @@ mRtmClient.getStorage().setUserMetadata("Tony", metadata, options, new ResultCal
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val metadata = Metadata().apply {
     items.add(MetadataItem("Name", "Tony"))
@@ -78,6 +85,9 @@ mRtmClient.getStorage().setUserMetadata("Tony", metadata, options, object : Resu
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 The `onSuccess` callback notifies you of the successful completion of the storage operation. Additionally, Signaling triggers an `onStorageEvent` notification of event type `UPDATE` within 100 ms to inform all users who have subscribed to the this user's metadata. 
 
@@ -85,7 +95,14 @@ The `onSuccess` callback notifies you of the successful completion of the storag
 
 To retrieve all metadata items associated with a specific user, call `getUserMetadata`. Refer to the following example:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 mRtmClient.getStorage().getUserMetadata("Tony", new ResultCallback<Metadata>() {
     @Override
@@ -103,8 +120,10 @@ mRtmClient.getStorage().getUserMetadata("Tony", new ResultCallback<Metadata>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 mRtmClient.getStorage().getUserMetadata("Tony", object : ResultCallback<Metadata> {
     override fun onSuccess(data: Metadata) {
@@ -120,10 +139,20 @@ mRtmClient.getStorage().getUserMetadata("Tony", object : ResultCallback<Metadata
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 You can also leave the `userId` parameter blank to get the local user's metadata:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 mRtmClient.getStorage().getUserMetadata("", new ResultCallback<Metadata>() {
     @Override
@@ -137,8 +166,10 @@ mRtmClient.getStorage().getUserMetadata("", new ResultCallback<Metadata>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 mRtmClient.getStorage().getUserMetadata("", object : ResultCallback<Metadata> {
     override fun onSuccess(data: Metadata) {
@@ -150,6 +181,9 @@ mRtmClient.getStorage().getUserMetadata("", object : ResultCallback<Metadata> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 Signaling SDK returns the following data structure:
 
@@ -188,7 +222,14 @@ To modify existing metadata items, call `updateUserMetadata`. If the metadata it
 
 The following example updates the value of an existing metadata item:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Age", "45"));
@@ -205,8 +246,10 @@ mRtmClient.getStorage().updateUserMetadata("Tony", metadata, new MetadataOptions
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val metadata = Metadata().apply {
     items.add(MetadataItem("Age", "45"))
@@ -222,6 +265,9 @@ mRtmClient.getStorage().updateUserMetadata("Tony", metadata, MetadataOptions(tru
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 The `onSuccess` callback notifies you of the successful completion of the storage operation. Additionally, Signaling triggers an `onStorageEvent` notification of event type `UPDATE` within 100 ms to inform all users who have subscribed to the this user's metadata. 
 
@@ -229,7 +275,14 @@ The `onSuccess` callback notifies you of the successful completion of the storag
 
 To delete metadata items that are no longer required, call `removeUserMetadata`. Refer to the following sample code:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 Metadata metadata = new Metadata();
 MetadataItem age = new MetadataItem();
@@ -248,8 +301,10 @@ mRtmClient.getStorage().removeUserMetadata("Tony", metadata, new MetadataOptions
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val metadata = Metadata().apply {
     val age = MetadataItem().apply { key = "Age" }
@@ -266,6 +321,9 @@ mRtmClient.getStorage().removeUserMetadata("Tony", metadata, MetadataOptions(tru
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 Setting the `value` for a metadata item that is being deleted has no effect.
 
@@ -273,7 +331,14 @@ The `onSuccess` callback notifies you of the successful completion of the storag
 
 To delete the entire set of metadata for a user, do not add any metadata items when calling `removeUserMetadata`. Refer to the following sample code:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 Metadata metadata = new Metadata();
 
@@ -289,8 +354,10 @@ mRtmClient.getStorage().removeUserMetadata("Tony", metadata, null, new ResultCal
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val metadata = Metadata()
 
@@ -304,6 +371,9 @@ mRtmClient.getStorage().removeUserMetadata("Tony", metadata, null, object : Resu
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 When terminating a user account, it is common to delete the entire set of user's metadata. Once user metadata is deleted, it cannot be recovered. If you need data restoration, back up the metadata before deleting it.
@@ -324,7 +394,14 @@ Currently, Signaling only supports the full data update mode. This means that wh
 
 To monitor updates to a user's metadata, you subscribe to their metadata. Refer to the following sample code:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 mRtmClient.getStorage().subscribeUserMetadata("Tony", new ResultCallback<Void>() {
     @Override
@@ -338,8 +415,10 @@ mRtmClient.getStorage().subscribeUserMetadata("Tony", new ResultCallback<Void>()
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 mRtmClient.getStorage().subscribeUserMetadata("Tony", object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
@@ -351,6 +430,9 @@ mRtmClient.getStorage().subscribeUserMetadata("Tony", object : ResultCallback<Vo
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 When there are changes in the user metadata, Signaling triggers an `onStorageEvent` notification of event type `UPDATE` within 100 ms to inform all users who have subscribed to this user's metadata. 
 
@@ -358,7 +440,14 @@ When there are changes in the user metadata, Signaling triggers an `onStorageEve
 
 When you no longer need to receive notifications about a user's metadata updates, unsubscribe from the users's metadata. Refer to the following sample code:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 mRtmClient.getStorage().unsubscribeUserMetadata("Tony", new ResultCallback<Void>() {
     @Override
@@ -372,8 +461,10 @@ mRtmClient.getStorage().unsubscribeUserMetadata("Tony", new ResultCallback<Void>
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 mRtmClient.getStorage().unsubscribeUserMetadata("Tony", object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
@@ -385,6 +476,9 @@ mRtmClient.getStorage().unsubscribeUserMetadata("Tony", object : ResultCallback<
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 ## Version control
 
@@ -410,7 +504,14 @@ When setting user metadata, or a single user metadata item, use the revision att
 
 The following code snippet demonstrates how to employ `majorRevision` and `revision` for updating user metadata and metadata items:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 Metadata metadata = new Metadata();
 metadata.setMajorRevision(734874892);
@@ -431,8 +532,10 @@ mRtmClient.getStorage().updateUserMetadata("Tony", metadata, options, new Result
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val metadata = Metadata()
 metadata.majorRevision = 734874892
@@ -451,6 +554,9 @@ mRtmClient.getStorage().updateUserMetadata("Tony", metadata, options, object : R
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 In this example, CAS verification for user metadata and metadata items is enabled by setting `majorRevision` and `revision` parameters to positive integers. Upon receiving the update call request, Signaling first verifies the provided major revision number against the latest value in the database. If there's a mismatch, it returns an error; if the values match, Signaling verifies the `revision` number for each metadata item using a similar logic.
 
