@@ -14,7 +14,15 @@ Documentation content is the source of truth under `content/docs/{en,zh-CN}`. To
 - `bun run lint` runs Biome checks on config and `src`.
 - `bun run format` formats files with Biome.
 - `bun run openapi:sync` copies maintained OpenAPI assets into `public/openapi`.
-- `bun run build` syncs OpenAPI assets and creates the production build.
+- `bun run build:raw` runs `openapi:sync` and then `vite build`.
+- `bun run build` runs `scripts/build-static-docs.mjs`, which performs the production build flow used for Vercel output.
+
+### Build Output Contract
+
+- `public/openapi` contains synced OpenAPI source assets copied from `content/openapi`.
+- `public/generated/openapi` contains generated static exports used by this build pipeline, including OpenAPI search documents, page payload JSON, and LLM markdown/text exports.
+- Vercel deploys depend on the repository's `build` script, so if runtime code reads from `/generated/openapi/...`, those assets must be produced by the build flow.
+- See `docs/build-output.md` before changing `build`, `build:raw`, `scripts/build-static-docs.mjs`, or any route that reads `/generated/openapi/...`.
 
 ## Coding Style & Naming Conventions
 

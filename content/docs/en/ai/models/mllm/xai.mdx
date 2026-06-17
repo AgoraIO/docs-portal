@@ -1,0 +1,89 @@
+---
+title: xAI Grok
+description: Integrate xAI Grok as a realtime multimodal model provider for Voice Agent.
+---
+
+xAI Grok provides multimodal large language model capabilities with realtime audio processing, enabling natural voice conversations without separate ASR and TTS components.
+
+> **Info**
+> Enabling MLLM disables standalone ASR, LLM, and TTS because the MLLM handles end-to-end voice processing directly.
+
+## Sample configuration
+
+The following example shows a starting `mllm` configuration you can use when you [start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+```json
+"mllm": {
+  "enable": true,
+  "vendor": "xai",
+  "url": "wss://api.x.ai/v1/realtime",
+  "api_key": "<xai_api_key>",
+  "messages": [
+    {
+      "role": "user",
+      "content": "<history_content>"
+    }
+  ],
+  "output_modalities": [
+    "audio",
+    "text"
+  ],
+  "params": {
+    "voice": "eve",
+    "language": "en",
+    "sample_rate": 24000
+  },
+  "turn_detection": {
+    // see examples below
+  },
+  "greeting_message": "Hello, how can I help?"
+}
+```
+
+## Turn detection
+
+Set turn detection inside the `mllm` object when you [start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+
+> **Info**
+> When `mllm.turn_detection` is defined, the top-level `turn_detection` object has no effect.
+
+### Server VAD
+
+```json
+"turn_detection": {
+  "mode": "server_vad",
+  "server_vad_config": {
+    "threshold": 0.5,
+    "prefix_padding_ms": 640,
+    "silence_duration_ms": 900
+  }
+}
+```
+
+### Agora VAD
+
+```json
+"turn_detection": {
+  "mode": "agora_vad",
+  "agora_vad_config": {
+    "threshold": 0.5,
+    "interrupt_duration_ms": 160,
+    "prefix_padding_ms": 800,
+    "silence_duration_ms": 640
+  }
+}
+```
+
+## Key parameters
+
+- `vendor`: Set to `xai`.
+- `url`: Use `wss://api.x.ai/v1/realtime` for the xAI Realtime API endpoint.
+- `api_key`: Your xAI API key from the [xAI Console](https://console.x.ai/home).
+- `messages`: Optional conversation history passed into the model as context.
+- `params.voice`: Voice identifier for audio output, for example `eve` or `rex`.
+- `params.language`: Language code for speech recognition and synthesis, for example `en`.
+- `params.sample_rate`: Audio sample rate in Hz, for example `24000`.
+- `output_modalities`: Use `["audio"]` for audio only or `["text", "audio"]` for both.
+- `greeting_message`: Initial message spoken when the user joins.
+
+For the full request schema, see [`mllm` in the start-agent API](../../../api-reference/conversational-ai/rest-api/agent/join.md#properties-mllm). For provider-specific capabilities and limits, see the [xAI Voice Agent API](https://docs.x.ai/developers/model-capabilities/audio/voice-agent).

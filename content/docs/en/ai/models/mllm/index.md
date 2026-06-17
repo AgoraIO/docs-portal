@@ -10,3 +10,4 @@ Multimodal large language models (MLLMs) can process realtime audio and text in 
 - [OpenAI Realtime](openai.md)
 - [Google Gemini Live](gemini.md)
 - [Google Vertex AI](google-vertex-ai.md)
+- [xAI Grok](xai.md)

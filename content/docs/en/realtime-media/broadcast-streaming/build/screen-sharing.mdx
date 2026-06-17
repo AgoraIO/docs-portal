@@ -1,0 +1,2935 @@
+---
+title: "Screen sharing"
+description: "Implement key workflow steps required to develop a fully functional video calling app"
+---
+
+During Broadcast Streaming sessions, hosts use the screen sharing feature in the Agora Video SDK to share their screen content with other users or viewers in the form of a video stream. Screen sharing is typically used in the following use-cases:
+
+| Use-case | Description |
+|:---|:---------------|
+| Online education | Teachers share their slides, software, or other teaching materials with students for classroom demonstrations. |
+| Game live broadcast | Hosts share their game footage with the audience. |
+| Interactive live broadcast | Anchors share their screens and interact with the audience. |
+| Video conferencing | Meeting participants share the screen to show a presentation or documents. |
+| Remote control | A controlled terminal displays its desktop on the master terminal. |
+
+<Tabs defaultValue="web" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+  <TabsTrigger value="electron">Electron</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+  <TabsTrigger value="react-native">React Native</TabsTrigger>
+  <TabsTrigger value="unity">Unity</TabsTrigger>
+  <TabsTrigger value="unreal">Unreal Engine</TabsTrigger>
+  <TabsTrigger value="blueprint">Unreal Blueprint</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+Agora screen sharing offers the following advantages:
+
+- **Ultra HD quality experience**: Supports Ultra HD video (4K resolution, 60 FPS frame rate), giving users a smoother, high-definition, ultimate picture experience.
+- **Multi-app support**: Compatible with many mainstream apps such as WPS Office, Microsoft Office Power Point, Visual Studio Code, Adobe Photoshop, Windows Media Player, and Scratch. This makes it convenient for users to directly share specific apps.
+- **Multi-device support**: Supports multiple devices sharing at the same time. Screen sharing is compatible with Windows 8 systems, devices without independent graphics cards, dual graphics card devices, and external screen devices.
+- **Multi-platform adaptation**: Supports iOS, Android, macOS, Windows, Web, Unity, Flutter, React Native, Unreal Engine, and other platforms.
+- **High security**: Supports sharing only a single app or part of the screen. Also supports blocking specified app windows, effectively ensuring user information security.
+
+This page shows you how to implement screen sharing in your app.
+
+## Understand the tech
+
+The screen sharing feature provides the following screen sharing modes for use in various use-cases:
+
+**Screen sharing use-cases**
+
+![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+
+- **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
+- **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
+- **Share a designated screen area**: If you only want to share a portion of the screen or app window, you can set a sharing area when starting screen sharing.
+
+Screen sharing modes are available on different platforms as follows:
+
+- **Desktop** (Windows and macOS): Supports all screen sharing features listed above.
+
+- **Mobile** (Android and iOS): Only supports sharing the entire screen.
+
+## Prerequisites
+
+- On the Android platform, please ensure that the user has granted **screen capture** permission to the app.
+
+- Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Set up your project
+
+## Implement screen sharing
+
+This section introduces how to implement screen sharing in your project. The basic API call sequence is shown in the figure below:
+
+**API call sequence**
+
+![API call sequence](/images/video-sdk/screen-sharing-android-ios.svg)
+
+Choose one of the following methods to enable screen sharing according to your use-case:
+
+- Call `startScreenCapture` before joining the channel, then call `joinChannel [2/2]` to join the channel and set `publishScreenCaptureVideo` to **true** to start screen sharing.
+
+- Call `startScreenCapture` after joining the channel, then call `updateChannelMediaOptions` to update the channel media options and set `publishScreenCaptureVideo` to **true** to start screen sharing.
+
+The flow diagram and implementation steps in this article demonstrate the first use-case.
+
+### Integrate screen sharing plug-in
+
+Screen sharing in the Agora Video SDK is implemented through a plug-in. You can automatically integrate the plug-in through Maven Central or manual import of the **aar** file.
+
+**Automatic integration**
+When integrating the SDK through Maven Central, add dependencies by modifying the `dependencies` field in the `/Gradle Scripts/build.gradle(Module: <projectname>.app)` file as follows:
+
+```java
+dependencies {
+  // Replace x.y.z in the following code with the specific SDK version number. You can get the latest version number from the release notes.
+  def agora_sdk_version = "x.y.z"
+  // If the value above contains $ signs, use "" instead of ''.
+
+  // Choose one of the following blocks:
+  // Integration solution 1
+  implementation "io.agora.rtc:full-rtc-basic:\${agora_sdk_version}"
+  implementation "io.agora.rtc:full-screen-sharing:\${agora_sdk_version}"
+  implementation "io.agora.rtc:screen-capture:\${agora_sdk_version}"
+
+  // Integration solution 2
+  implementation "io.agora.rtc:full-sdk:\${agora_sdk_version}"
+  implementation "io.agora.rtc:full-screen-sharing:\${agora_sdk_version}"
+}
+```
+
+**Manual integration**
+1. Copy the `AgoraScreenShareExtension.aar` file from the downloaded SDK to the `/app/libs/` directory.
+
+1. Add the following line to the `dependencies` node of the `/app/build.gradle` file to support importing `aar` files:
+
+  ```java
+  implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
+  ```
+
+1. Ensure that the file `libagora_screen_capture_extension.so` exists in the `jniLibs` folder of your project. If it does not, copy it manually from the downloaded SDK folder.
+
+1. Add the following code to the `/Gradle Scripts/build.gradle(Module: <projectname>.app` file to specify the location of the JNI library:
+
+  ```java
+  android {
+     // ...
+     sourceSets {
+      main {
+       jniLibs.srcDirs = ['src/main/jniLibs']
+      }
+     }
+    }
+  ```
+
+### Set up the audio scenario
+
+Call `setAudioScenario` and set the audio scenario to `AUDIO_SCENARIO_GAME_STREAMING` (high-quality scenario) to improve the success rate of capturing system audio during screen sharing. This step is optional.
+
+### Enable screen capture
+
+Call `startScreenCapture` to start capturing the screen and set the following parameters according to your application scenario:
+
+- `captureVideo`: Whether to capture system video during screen sharing.
+- `captureAudio`: Whether to capture system audio during screen sharing.
+- `audioCaptureParameters`:
+  - `sampleRate`: Audio sample rate (Hz). The default value is 16000.
+  - `channels`: The number of audio channels. The default value is 2.
+  - `captureSignalVolume`: The volume of the captured system audio.
+  - `allowCaptureCurrentApp`: Whether to capture audio from the current app.
+- `videoCaptureParameters`:
+  - `width`: Specifies the width in pixels of the video encoding resolution. The default value is 1280.
+  - `height`: Specifies the height in pixels of the video encoding resolution. The default value is 720. 
+  - `frameRate`: Video encoding frame rate (FPS). The default value is 15.
+  - `bitrate`: Video encoding bitrate (Kbps).
+  - `contentHint`: Content type of screen sharing video. Choose from the following:
+    - `SCREEN_CAPTURE_CONTENT_HINT_NONE`: (Default) No content hint.
+    - `SCREEN_CAPTURE_CONTENT_HINT_MOTION`: Motion-intensive content. Choose this option if you prefer smoothness or when you are sharing a video clip, movie, or video game.
+    - `SCREEN_CAPTURE_CONTENT_HINT_DETAILS`: Motionless content. Choose this option if you prefer sharpness or when you are sharing a picture, PowerPoint slides, or texts.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Set parameters for screen capture
+screenCaptureParameters.captureVideo = true;
+screenCaptureParameters.videoCaptureParameters.width = 720;
+screenCaptureParameters.videoCaptureParameters.height = (int) (720 * 1.0f / metrics.widthPixels * metrics.heightPixels);
+screenCaptureParameters.videoCaptureParameters.framerate = DEFAULT_SHARE_FRAME_RATE;
+screenCaptureParameters.captureAudio = screenAudio.isChecked();
+screenCaptureParameters.audioCaptureParameters.captureSignalVolume = screenAudioVolume.getProgress();
+engine.startScreenCapture(screenCaptureParameters);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Set parameters for screen capture
+screenCaptureParameters.captureVideo = true
+screenCaptureParameters.videoCaptureParameters.width = 720
+screenCaptureParameters.videoCaptureParameters.height = (720 * 1.0f / metrics.widthPixels * metrics.heightPixels).toInt()
+screenCaptureParameters.videoCaptureParameters.framerate = DEFAULT_SHARE_FRAME_RATE
+screenCaptureParameters.captureAudio = screenAudio.isChecked
+screenCaptureParameters.audioCaptureParameters.captureSignalVolume = screenAudioVolume.progress
+engine.startScreenCapture(screenCaptureParameters)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Publish a screen sharing video stream in a channel
+
+Call `joinChannel` [2/2] to join the channel. Set the `options` parameter to publish the captured screen sharing video stream as follows:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+ChannelMediaOptions options = new ChannelMediaOptions();
+options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+options.autoSubscribeVideo = true;
+options.autoSubscribeAudio = true;
+// Do not publish camera-captured video
+options.publishCameraTrack = false;
+// Do not publish microphone-captured audio
+options.publishMicrophoneTrack = false;
+// Publish screen-captured video in the channel
+options.publishScreenCaptureVideo = true;
+// Publish screen-captured audio in the channel
+options.publishScreenCaptureAudio = true;
+// Join the channel with the channel media options set above
+int res = engine.joinChannel(accessToken, channelId, 0, options);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+val options = ChannelMediaOptions().apply {
+  clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+  autoSubscribeVideo = true
+  autoSubscribeAudio = true
+  // Do not publish camera-captured video
+  publishCameraTrack = false
+  // Do not publish microphone-captured audio
+  publishMicrophoneTrack = false
+  // Publish screen-captured video in the channel
+  publishScreenCaptureVideo = true
+  // Publish screen-captured audio in the channel
+  publishScreenCaptureAudio = true
+}
+
+// Join the channel with the channel media options set above
+val res = engine.joinChannel(accessToken, channelId, 0, options)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Set up a screen sharing scene (Optional)
+
+Call the `setScreenCaptureScenario` method to set the screen sharing scenario and choose the `screenScenario` that best fits your application from the following:
+
+- `SCREEN_SCENARIO_DOCUMENT`: Prioritizes video quality for screen sharing with reduced latency for the receiver.
+- `SCREEN_SCENARIO_GAMING`: Focuses on achieving smooth screen sharing for gaming scenarios.
+- `SCREEN_SCENARIO_VIDEO`: Optimizes the screen sharing experience for video playback by enhancing smoothness.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+engine.setScreenCaptureScenario(Constants.SCREEN_SCENARIO_VIDEO);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+engine.setScreenCaptureScenario(Constants.SCREEN_SCENARIO_VIDEO)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Update screen sharing (Optional)
+
+If you want to update the screen sharing parameters, such as the video encoding resolution, frame rate, or bitrate, call `updateScreenCaptureParameters` to modify the parameter values. 
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+ScreenCaptureParameters screenCaptureParameters = new ScreenCaptureParameters();
+
+// Set new screen sharing parameters
+screenCaptureParameters.captureVideo = true;
+screenCaptureParameters.videoCaptureParameters.width = 1280;
+screenCaptureParameters.videoCaptureParameters.height = 720;
+screenCaptureParameters.videoCaptureParameters.framerate = 30;
+
+// Update the screen sharing parameters
+engine.updateScreenCaptureParameters(screenCaptureParameters);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+val screenCaptureParameters = ScreenCaptureParameters()
+
+// Set new screen sharing parameters
+screenCaptureParameters.captureVideo = true
+screenCaptureParameters.videoCaptureParameters.width = 1280
+screenCaptureParameters.videoCaptureParameters.height = 720
+screenCaptureParameters.videoCaptureParameters.framerate = 30
+
+// Update the screen sharing parameters
+engine.updateScreenCaptureParameters(screenCaptureParameters)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Stop screen sharing
+
+Call `stopScreenCapture` to stop screen sharing within the channel.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+engine.stopScreenCapture();
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+engine.stopScreenCapture()
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Limitations
+
+Be aware of the following limitations:
+
+- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](../reference/pricing.md) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
+
+- Due to Android performance limitations, screen sharing does not support Android TV.
+
+- When using screen sharing on Huawei mobile phones, do not adjust the video encoding resolution of the screen sharing stream during the sharing process to avoid crashes.
+
+- Some Xiaomi phones do not support capturing system audio during screen sharing.
+
+- On Android 9 and later, to avoid system termination when the app is backed up, it is recommended to add the foreground service permission: `android.permission.FOREGROUND_SERVICE` to the `/app/Manifests/AndroidManifest.xml` file.
+
+- Screen capture is only available for Android API level 21 (Android 5) or later. On earlier versions the SDK reports error codes `ERR_SCREEN_CAPTURE_PERMISSION_DENIED(16)` and `ERR_ SCREEN_CAPTURE_SYSTEM_NOT_SUPPORTED(2)`.
+
+- Capturing system audio is only available for Android API level 29 (Android 10) or later. On earlier versions, the SDK reports the error code `ERR_SCREEN_CAPTURE_SYSTEM_AUDIO_NOT_SUPPORTED(3)`.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open-source Android [sample project](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/ScreenSharing.java) on GitHub. Download and explore this project for a more detailed example.
+
+### API reference
+
+- [`startScreenCapture`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapture)
+- [`ScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_screencaptureparameters2.html)
+- [`updateScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureparameters)
+- [`stopScreenCapture`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
+- <Link to="{{Global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_setscreencapturescenario">`setScreenCaptureScenario
+`</Link>
+</TabsContent>
+
+<TabsContent value="ios">
+Agora screen sharing offers the following advantages:
+
+- **Ultra HD quality experience**: Supports Ultra HD video (4K resolution, 60 FPS frame rate), giving users a smoother, high-definition, ultimate picture experience.
+- **Multi-app support**: Compatible with many mainstream apps such as WPS Office, Microsoft Office Power Point, Visual Studio Code, Adobe Photoshop, Windows Media Player, and Scratch. This makes it convenient for users to directly share specific apps.
+- **Multi-device support**: Supports multiple devices sharing at the same time. Screen sharing is compatible with Windows 8 systems, devices without independent graphics cards, dual graphics card devices, and external screen devices.
+- **Multi-platform adaptation**: Supports iOS, Android, macOS, Windows, Web, Unity, Flutter, React Native, Unreal Engine, and other platforms.
+- **High security**: Supports sharing only a single app or part of the screen. Also supports blocking specified app windows, effectively ensuring user information security.
+
+This page shows you how to implement screen sharing in your app.
+
+## Understand the tech
+
+The screen sharing feature provides the following screen sharing modes for use in various use-cases:
+
+**Screen sharing use-cases**
+
+![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+
+- **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
+- **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
+- **Share a designated screen area**: If you only want to share a portion of the screen or app window, you can set a sharing area when starting screen sharing.
+
+Screen sharing modes are available on different platforms as follows:
+
+- **Desktop** (Windows and macOS): Supports all screen sharing features listed above.
+
+- **Mobile** (Android and iOS): Only supports sharing the entire screen.
+
+## Prerequisites
+
+- Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Set up your project
+
+Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream. You use the iOS native `ReplayKit` framework in the extension to record the screen, and then send the screen sharing stream to the main process.
+
+**Screen sharing iOS tech**
+
+![Screen Sharing iOS Tech](/images/video-sdk/screen-sharing-ios-tech.svg)
+
+Take the following steps to set up your screen sharing project:
+
+1. Go to your project folder and open the `.xcodeproj` file with Xcode.
+1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
+
+  ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+
+1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.swift` files.
+1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
+
+1. Modify project settings to implement the screen sharing code logic, and choose one of the following three methods according to your business needs:
+
+  - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **SampleHandler** to **AgoraReplayKitHandler**:
+
+    ![Use AgoraReplayKitHandler](/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
+
+  - If you need to implement some additional business logic, you can inherit the `AgoraReplayKitHandler` class. Modify the `SampleHandler.swift` file as follows:
+
+      ``` swift
+      import ReplayKit
+      import AgoraReplayKitExtension
+
+      class SampleHandler: AgoraReplayKitHandler {
+        override func broadcastStarted(withSetupInfo setupInfo: [String : NSObject]?) {
+          // User request to start broadcasting
+          super.broadcastStarted(withSetupInfo: setupInfo)
+        }
+      }
+      ```
+
+  - If you want to use the iOS native **SampleHandler** without inheriting the `AgoraReplayKitHandler` class, refer to the following code to modify the `SampleHandler.swift` file:
+
+      ``` swift
+      import ReplayKit
+      import AgoraReplayKitExtension
+
+      class SampleHandler: RPBroadcastSampleHandler, AgoraReplayKitExtDelegate {
+        override func broadcastStarted(withSetupInfo setupInfo: [String : NSObject]?) {
+          // User request to start broadcasting
+          AgoraReplayKitExt.shareInstance().start(self)
+        }
+        override func broadcastPaused() {
+          // User request to pause the broadcast
+          AgoraReplayKitExt.shareInstance().pause()
+        }
+
+        override func broadcastResumed() {
+          // User request to resume broadcasting
+          AgoraReplayKitExt.shareInstance().resume()
+        }
+
+        override func broadcastFinished() {
+          // User request to stop broadcasting
+          AgoraReplayKitExt.shareInstance().stop()
+        }
+
+        override func processSampleBuffer(_ sampleBuffer: CMSampleBuffer, with sampleBufferType: RPSampleBufferType) {
+          AgoraReplayKitExt.shareInstance().push(sampleBuffer, with: sampleBufferType)
+        }
+
+        func broadcastFinished(_ broadcast: AgoraReplayKitExt, reason: AgoraReplayKitExtReason) {
+          var tip = ""
+          switch reason {
+          case AgoraReplayKitExtReasonInitiativeStop:
+            tip = "AgoraReplayKitExtReasonInitiativeStop"
+
+          case AgoraReplayKitExtReasonConnectFail:
+            tip = "AgoraReplayKitExReasonConnectFail"
+
+          case AgoraReplayKitExtReasonDisconnect:
+            tip = "AgoraReplayKitExReasonDisconnect"
+
+          default: break
+          }
+
+          let error = NSError(domain: NSCocoaErrorDomain,
+                    code: 0,
+                    userInfo: [NSLocalizedFailureReasonErrorKey: tip])
+          self .finishBroadcastWithError(error as Error)
+        }
+      }
+      ```
+
+### Automatically integrate dynamic libraries
+
+When integrating the Agora Video SDK through CocoaPods, you need to add the following content in the `Podfile` file to specify the integration of the screen sharing dynamic library `AgoraReplayKitExtension.xcframework`. Refer to the following sample code:
+
+```ruby
+platform :ios, '9.0'
+target 'Your App' do
+# Integration of only base libraries and screen sharing dynamic libraries
+# Please replace x.y.z in the following code with the specific SDK version number. 
+# You can get the latest version number from the release notes.
+pod 'AgoraRtcEngine_iOS', 'x.y.z', :subspecs => ['RtcBasic', 'ReplayKit']
+end
+```
+
+The screen sharing dynamic library encapsulates screen recording with Apple **ReplayKit**. Use the SDK capture function to get system recording data and send it to other users in the channel.
+
+## Implement screen sharing
+
+This section introduces how to implement screen sharing in your project. The basic API call sequence is shown in the figure below: 
+
+**Screen share process**
+
+![Screen Share Process](/images/video-sdk/screen-sharing-android-ios.svg)
+
+Depending on the actual business use-case, you can choose either of the following methods to call the API to implement screen sharing:
+
+- Call `startScreenCapture` before joining the channel, then call `joinChannelByToken [2/4]` to join the channel and set `publishScreenCaptureVideo` to **true** to start screen sharing.
+
+- Call `startScreenCapture` after joining the channel, then call `updateChannelWithMediaOptions` to update the channel media options and set `publishScreenCaptureVideo` to **true** to start screen sharing.
+
+### Set up the audio scenario
+
+Call the `setAudioScenario` method and set the audio scenario to `AgoraAudioScenarioGameStreaming` (high-quality scenario) to improve the success rate of capturing system audio during screen sharing.
+
+### Enable screen capture
+
+1. Call `startScreenCapture` to start screen capture and set the parameters according to your application scenario:
+
+  - `captureVideo`: Whether to capture system video during screen sharing.
+  - `captureAudio`: Whether to capture system audio during screen sharing.
+  - `captureSignalVolume`: The volume of the captured system audio.
+  - `dimensions`: Resolution of video encoding.
+  - `frameRate`: Video encoding frame rate (FPS).
+  - `bitrate`: Video encoding bitrate (Kbps).
+  - `contentHint`: Content type of screen sharing video.
+
+  ``` swift
+  // Set parameters for screen capture
+  private lazy var screenParams: AgoraScreenCaptureParameters2 = {
+    let params = AgoraScreenCaptureParameters2()
+    params.captureVideo = true
+    params.captureAudio = true
+    
+    let audioParams = AgoraScreenAudioParameters()
+    // Set the captured system volume
+    audioParams.captureSignalVolume = 50
+    params.audioParams = audioParams
+    
+    let videoParams = AgoraScreenVideoParameters()
+    // Set the resolution of the shared screen
+    videoParams.dimensions = screenShareVideoDimension()
+    // Set the video encoding frame rate
+    videoParams.frameRate = .FPS15
+    // Set the video encoding bitrate
+    videoParams.bitrate = AgoraVideoBitrateStandard
+    params.videoParams = videoParams
+    
+    return params
+  }()
+
+  // Enable screen capture
+  agoraKit.startScreenCapture(screenParams)
+  ```
+
+1. Combine this with a manual action by the user to make the app turn on screen sharing. There are two ways to do this:
+
+  1. Prompt the user to long click the **screen recording** button in the **Control Center** on iOS and choose to use the extension you created to start recording.
+  
+  2. Use Apple's new [RPSystemBroadcastPickerView](https://developer.apple.com/documentation/replaykit/rpsystembroadcastpickerview) in iOS 12.0 to make the **Enable Screen Sharing** button pop up on the app interface, prompting the user to click the button to start recording. The sample code is as follows:
+
+    ``` swift
+    let frame = CGRect(x: 0, y:0, width: 60, height: 60)
+    systemBroadcastPicker = RPSystemBroadcastPickerView(frame: frame)
+    systemBroadcastPicker?.showsMicrophoneButton = false
+    systemBroadcastPicker?.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
+    // Get the Bundle Identifier of the main application
+    let bundleId = Bundle.main.bundleIdentifier ?? ""
+    // Set the Extension Name
+    systemBroadcastPicker?.preferredExtension = "\(bundleId).Agora-ScreenShare-Extension"
+    ```
+
+:::warning
+:::
+    > `RPSystemBroadcastPickerView` has some usage limitations and may become invalid in subsequent versions of iOS.
+
+### Publish a screen sharing video stream in a channel
+
+After joining the channel, call `updateChannelWithMediaOptions` to publish the captured screen sharing video stream as follows:
+
+  ``` swift
+  // Define the behavior of rtcEngine when performing screen video capture (state is capturing, sourceType is screen)
+  func rtcEngine(_ engine: AgoraRtcEngineKit, localVideoStateChangedOf state: AgoraVideoLocalState, error: AgoraLocalVideoStreamError, sourceType: AgoraVideoSourceType) {
+    switch (state, sourceType) {
+    case (.capturing, .screen):
+      // Publish screen captured videos in the channel
+      option.publishScreenCaptureVideo = true
+      // Publish screen captured videos in the channel
+      option.publishScreenCaptureAudio = true
+      // Avoid release of camera-captured video
+      option.publishCameraTrack = false
+      // Update the channel settings with the options set above
+      agoraKit.updateChannel(with: option)
+
+    default: break
+    }
+  }
+  ```
+
+### Set up a screen sharing scene (Optional)
+
+Call the `setScreenCaptureScenario` method to set the screen sharing scenario. Choose the `scenarioType` that best fits your application from the following:
+
+- `AgoraScreenScenarioDocument`: Document scene
+- `AgoraScreenScenarioGaming`: Game scene
+- `AgoraScreenScenarioVideo`: Video scene
+- `AgoraScreenScenarioRDC`: Remote control scene
+
+``` swift
+agoraKit.setScreenCaptureScenario(.video)
+```
+
+### Update screen sharing (Optional)
+
+If you want to update the screen sharing parameters, such as the video encoding resolution, frame rate, or bitrate, call `updateScreenCapture` to modify the parameter values.
+
+``` swift
+agoraKit.updateScreenCapture(screenParams)
+```
+
+### Stop screen sharing
+
+Call `stopScreenCapture` to stop screen sharing within the channel. 
+
+``` swift
+agoraKit.stopScreenCapture()
+// Stop sharing captured video in the channel
+option.publishScreenCaptureVideo = false
+// Stop sharing captured audio in the channel
+option.publishScreenCaptureAudio = false
+// Publish camera-captured video in the channel
+option.publishCameraTrack = true
+agoraKit.updateChannel(with: option)
+```
+
+### Limitations
+
+Be aware of the following limitations:
+
+- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](../reference/pricing.md) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
+- Due to system limitations, screen sharing is only supported on iOS 12.0 and above.
+- This feature requires a high level of device performance. Agora recommends that you use an iPhone X or above.
+- After the user turns on screen sharing on an iOS device, the audio routing automatically switches to the earpiece due to system limitations.
+  - If you are using **call volume**, you can manually switch the audio routing. For example, you can switch the audio routing to speaker as desired.
+  - If you are using **media volume**, you cannot manually switch audio routing due to system limitations.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO/API-Examples) for your reference:
+
+  - [Agora-ScreenShare-Extension](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/Agora-ScreenShare-Extension): Implements the extension process.
+  - [ScreenShare](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/ScreenShare): Screen sharing in `AgoraRtcEngineKit`.
+
+### API reference
+
+- [`startScreenCapture`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/startscreencapture(_:))
+- [`updateScreenCapture`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/updatescreencapture(_:))
+- [`stopScreenCapture`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/stopscreencapture())
+</TabsContent>
+
+<TabsContent value="macos">
+Agora screen sharing offers the following advantages:
+
+- **Ultra HD quality experience**: Supports Ultra HD video (4K resolution, 60 FPS frame rate), giving users a smoother, high-definition, ultimate picture experience.
+- **Multi-app support**: Compatible with many mainstream apps such as WPS Office, Microsoft Office Power Point, Visual Studio Code, Adobe Photoshop, Windows Media Player, and Scratch. This makes it convenient for users to directly share specific apps.
+- **Multi-device support**: Supports multiple devices sharing at the same time. Screen sharing is compatible with Windows 8 systems, devices without independent graphics cards, dual graphics card devices, and external screen devices.
+- **Multi-platform adaptation**: Supports iOS, Android, macOS, Windows, Web, Unity, Flutter, React Native, Unreal Engine, and other platforms.
+- **High security**: Supports sharing only a single app or part of the screen. Also supports blocking specified app windows, effectively ensuring user information security.
+
+This page shows you how to implement screen sharing in your app.
+
+## Understand the tech
+
+The screen sharing feature provides the following screen sharing modes for use in various use-cases:
+
+**Screen sharing use-cases**
+
+![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+
+- **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
+- **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
+- **Share a designated screen area**: If you only want to share a portion of the screen or app window, you can set a sharing area when starting screen sharing.
+
+Screen sharing modes are available on different platforms as follows:
+
+- **Desktop** (Windows and macOS): Supports all screen sharing features listed above.
+
+- **Mobile** (Android and iOS): Only supports sharing the entire screen.
+
+### Advanced features
+
+You can enable the following advanced screen sharing features by adjusting the parameters when starting screen sharing:
+
+- **Shield a specified app window**: When sharing the screen, if you don't want to expose a specific app window, you can choose to shield it so that the window will not appear in the shared screen.
+- **Stroke**: If you need to outline the area being shared, you can stroke a specified app window or screen and customize the width, color, and transparency of the stroke.
+- **Pin an app window to the front**: If you share multiple app windows at the same time, the windows may block each other. You can specify an app window and bring it to the front to prevent it from being blocked by other windows.
+- **Set the sharing scenario**: The SDK automatically adjusts the Quality of Experience (QOE) policy according to the scenario you choose:
+  - When sharing documents, slides, tables, or in remote control applications, set the sharing scene to either **document** or **remote control**. The SDK prioritizes optimizing image quality and minimizing latency, thus enhancing the viewing experience for the recipient of the shared video.
+  - When sharing games, movies, or live video broadcasts, set the shared scene to **game** or **video**. The SDK prioritizes smoothness of video at the receiving end.
+
+## Prerequisites
+
+- To implement screen sharing, please make sure not to manually remove the screen sharing dynamic library `AgoraScreenCaptureExtension.xcframework` when integrating the SDK, otherwise the function will not work properly.
+
+- Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Set up your project
+
+## Implement screen sharing
+
+This section shows you how to implement screen sharing in your project. The basic API call sequence is shown in the figure below:
+
+**Screen share process**
+
+![Screen Share Process](/images/video-sdk/screen-sharing-macos-unreal-windows.svg)
+
+Depending on your business use-case, you can choose either of the following methods to implement screen sharing:
+
+- Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId` before joining the channel, then call `joinChannelByToken[2/4]` to join the channel and set `publishScreenTrack` or `publishSecondaryScreenTrack` to **true** to start screen sharing.
+
+- Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId` after joining the channel, then call `updateChannelWithMediaOptions` to set `publishScreenTrack` or `publishSecondaryScreenTrack` to **true** to start screen sharing.
+
+The flow diagram and implementation steps in this article demonstrate the first use-case.
+
+### Get resource list
+
+Call `getScreenCaptureSourcesWithThumbSize` to get an object list of screens and windows that can be shared. The list contains important information such as **window ID** and **screen ID**. This enables users to choose a certain screen or a window, through the thumbnails in the list, for sharing. 
+
+``` swift
+// Get available screen information
+@IBAction func onScreentThumbnailButton(_ sender: NSButton) {
+  let result = agoraKit.getScreenCaptureSources(withThumbSize: NSScreen.main?.frame.size ?? .zero, iconSize: .zero, includeScreen: true)
+  saveThumbnailToDesktop(result: result, type: .screen)
+}
+
+// Get information about available windows
+@IBAction func onWindowThumbnailButton(_ sender: NSButton) {
+  let result = agoraKit.getScreenCaptureSources(withThumbSize: selectedResolution?.size() ?? .zero, iconSize: .zero, includeScreen: true)
+  saveThumbnailToDesktop(result: result, type: .window)
+}
+```
+
+### Enable screen capture
+
+Depending on the actual application use-case, choose one of the following three screen sharing methods.
+
+#### Share the entire screen
+
+Call `startScreenCaptureByDisplayId` with the following parameters to start sharing the whole screen:
+
+- Set `displayId` to the `sourceId` (screen ID) obtained in the previous step.
+- Set your desired video encoding properties in `captureParams`:
+  - In document scenes or remote control scenes, best practice is to set `dimensions` to **1920 × 1080** and `frameRate` as **10 FPS**.
+  - In game scenes or video scenes, best practice is to set `dimensions` to **960 × 720** and `frameRate` to **15 FPS**.
+
+``` swift
+// Start sharing the specified screen
+let result = agoraKit.startScreenCapture(byDisplayId: UInt32(screen.id), regionRect: .zero, captureParams: params)
+```
+
+#### Share app window
+
+Call `startScreenCaptureByWindowId` with the following parameters to start sharing an entire app window:
+
+- Set `windowId` to the `sourceId` (window ID) obtained in the previous step.
+- Set your desired video encoding properties in `captureParams`:
+  - In document scenes or remote control scenes, best practice is to set `dimensions` to **1920 × 1080** and `frameRate` as **10 FPS**.
+  - In game scenes or video scenes, best practice is to set `dimensions` to **960 × 720** and `frameRate` to **15 FPS**.
+
+``` swift
+// Start sharing a specified app window
+let result = agoraKit.startScreenCapture(byWindowId: UInt32(window.id), regionRect: .zero, captureParams: params)
+```
+
+#### Share a designated area
+
+Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId` method to start sharing, and set `regionRect` to the position of the area you want to share relative to the whole screen or window. The sample code is as follows:
+
+``` swift
+// Set the parameters of the area you want to share
+// The next line of code specifies a rectangle with a length and width of 100px and an x-coordinate and y-coordinate of 0 in the upper-left corner of the rectangle.
+let captureRect = CGRect(x: 0, y: 0, width: 100, height: 100)
+let result = agoraKit.startScreenCapture(byWindowId: UInt32(window.id), regionRect: captureRect, captureParams: params)
+```
+:::note
+If the sharing area is set to extend beyond the boundaries of the screen, only the content within the screen is shared. If the width or height is set to 0, the entire screen is shared.
+:::
+### Set up a screen sharing scenario 
+
+Call the `setScreenCaptureScenario` method to set the screen sharing scenario. Set the `scenarioType` to any one of the following according to your usage scenario:
+
+- `AgoraScreenScenarioDocument`: Document scenario
+- `AgoraScreenScenarioGaming`: Game scenario
+- `AgoraScreenScenarioVideo`: Video scenario
+- `AgoraScreenScenarioRDC`: Remote control scenario
+
+The sample code is as follows:
+
+``` swift
+agoraKit.setScreenCaptureScenario(.video)
+```
+
+### Capture system audio (Optional)
+
+To capture and publish the audio played in the shared screen or window simultaneously, call `enableLoopbackRecording` to start sound card capture.
+
+After you call this method, the audio played by other processes in the system is published to the remote end. To turn off sound card acquisition, call the method again.
+
+### Join a channel and publish a screen sharing video stream
+
+Call `joinChannelByToken`[2/4] to join the channel and set the channel media options.
+
+``` swift
+// Set the channel profile
+agoraKit.setChannelProfile(.liveBroadcasting)
+// Set the user role
+agoraKit.setClientRole(.broadcaster)
+// Set channel media options
+// Publish screen capture video in the channel
+// To publish a second screen capture video in the channel, replace the next line of code with the following: mediaOptions.publishSecondaryScreenTrack = true
+mediaOptions.publishScreenTrack = true
+// Join the channel
+let result = self.agoraKit.joinChannel(byToken: token, channelId: channel, uid: 0, mediaOptions: option)
+```
+
+#### Additional notes
+
+This example demonstrates publishing the screen sharing stream directly in the channel without publishing the stream captured by the camera. In a real-world scenario, the requirements may be different. Adjust the code logic based on your scenario.
+
+To publish the stream captured by the camera and the screen sharing stream at the same time, refer to the following steps:
+
+- Call `joinChannelByToken`[2/4] to join the first channel and publish the video stream recorded by the camera in that channel.
+- Call `joinChannelEx` to join a second channel in which to publish the screen sharing stream.
+
+### Update screen sharing area or parameters
+
+To dynamically update the screen sharing area or parameters in the channel, call the following methods:
+
+- To update the shared region of the screen, call the `updateScreenCaptureRegion` method to reset the `regionRect` parameter and define a new sharing area.
+
+- To update the screen sharing parameters, such as video encoding resolution, frame rate, or bitrate, to stroke the screen or app window, or to block a specified window, call the `updateScreenCaptureParameters` method and update the `captureParams` parameter configuration.
+
+``` swift
+// Update screen sharing area
+let region = NSMakeRect(0, 0, !toggleRegionalScreening ? rect!.width/2 : rect!.width, !toggleRegionalScreening ? rect!.height/2 : rect!.height)
+agoraKit.updateScreenCaptureRegion(region)
+// Update screen sharing parameters
+agoraKit.updateScreenCaptureParameters(capParam)
+```
+
+### Stroke the screen
+
+Depending on your scenario, you may stroke the shared screen or window in one of the following ways:
+
+- Stroke when enabling screen sharing: Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId`, set `highLighted` in `captureParams` to `true`, and set both `highLightColor` and `highLightWidth` to specify the stroke color and width.
+
+- Stroke after screen sharing is enabled: Call `updateScreenCaptureParameters`, set `highLighted` in `captureParams` to `true`, and set both `highLightColor` and `highLightWidth` to specify the stroke color and width.
+
+``` swift
+let params = AgoraScreenCaptureParameters()
+params.frameRate = FPS
+params.dimensions = resolution.size()
+// Set the stroke width of the screen
+params.highLightWidth = 5
+// Set the stroke color of the screen
+params.highLightColor = .green
+// Enable screen stroke
+params.highLighted = true
+let result = agoraKit.startScreenCapture(byDisplayId: UInt32(screen.id), regionRect: .zero, captureParams: params)
+```
+
+### Block windows
+
+Depending on your usage scenario, you may block a specified window in one of the following ways:
+
+- Block windows when enabling screen sharing: Call `startScreenCaptureByDisplayId`, set `excludeWindowList` in `captureParams` to the list of windows you want to block.
+
+- Block windows after screen sharing is enabled: Call `updateScreenCaptureParameters`, set `excludeWindowList` in `captureParams` to the list of windows you want to block.
+
+``` swift
+let captureParams = AgoraScreenCaptureParameters()
+captureParams.excludeWindowList = windowlist.filter({ $0.id != window.id })
+agoraKit.updateScreenCaptureParameters(captureParams)
+```
+
+### Stop screen sharing
+
+Call `stopScreenCapture` to stop screen sharing within a channel. 
+
+``` swift
+// Stop screen sharing
+agoraKit.stopScreenCapture()
+```
+
+### Limitations
+
+Be aware of the following limitations:
+
+- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see the billing instructions for details. The default resolution is **1280 × 720**, but you can adjust it according to your business needs.
+- To share 4K resolution Ultra-HD video during screen sharing, your device needs to meet certain requirements. The minimum device specifications recommended by Agora are: 2021 M1 MacBook Pro 16-inch.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open source macOS [sample project](https://github.com/AgoraIO/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/ScreenShare) on GitHub. Download and explore this project for a more detailed example.
+
+### API reference
+
+- [`startScreenCaptureByDisplayId`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/startscreencapture(bydisplayid:regionrect:captureparams:))
+- [`startScreenCaptureByWindowId`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/startscreencapture(bywindowid:regionrect:captureparams:))
+- [`updateScreenCaptureRegion`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/updatescreencaptureregion(_:))
+- [`updateScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/updatescreencaptureparameters(_:))
+- [`stopScreenCapture`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/stopscreencapture())
+</TabsContent>
+
+<TabsContent value="web">
+Try out the [online demo](https://webdemo-global.agora.io/index.html) for [Screen sharing](https://webdemo-global.agora.io/example/advanced/shareTheScreen/index.html).
+
+Agora screen sharing offers the following advantages:
+
+- **Ultra HD quality experience**: Supports Ultra HD video (4K resolution, 60 FPS frame rate), giving users a smoother, high-definition, ultimate picture experience.
+- **Multi-app support**: Compatible with many mainstream apps such as WPS Office, Microsoft Office Power Point, Visual Studio Code, Adobe Photoshop, Windows Media Player, and Scratch. This makes it convenient for users to directly share specific apps.
+- **Multi-device support**: Supports multiple devices sharing at the same time. Screen sharing is compatible with Windows 8 systems, devices without independent graphics cards, dual graphics card devices, and external screen devices.
+- **Multi-platform adaptation**: Supports iOS, Android, macOS, Windows, Web, Unity, Flutter, React Native, Unreal Engine, and other platforms.
+- **High security**: Supports sharing only a single app or part of the screen. Also supports blocking specified app windows, effectively ensuring user information security.
+
+This page shows you how to implement screen sharing in your app.
+
+## Understand the tech
+
+The screen sharing feature provides the following screen sharing modes for use in various use-cases:
+
+**Screen sharing use-cases**
+
+![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+
+- **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
+- **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
+- **Share a designated screen area**: If you only want to share a portion of the screen or app window, you can set a sharing area when starting screen sharing.
+
+Screen sharing modes are available on different platforms as follows:
+
+- **Desktop** (Windows and macOS): Supports all screen sharing features listed above.
+
+- **Mobile** (Android and iOS): Screen sharing is not supported on mobile browsers.
+
+## Prerequisites
+
+- The Agora Video SDK only supports screen sharing in the following desktop browsers:
+  - Chrome 58 or above.
+  - Firefox 56 or above.
+  - Edge 80 and above on Windows 10+ platform.
+  - Safari 13 or above.
+
+- Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Set up your project
+
+## Implement screen sharing
+
+This section shows you how to implement screen sharing in your Web project.
+
+### Chrome browser
+
+The Agora Web SDK supports screen sharing on Chrome version 58 and higher. Follow these steps to share your screen.
+
+Call `createScreenVideoTrack` to create a screen sharing track.
+
+This method requires Chrome 74 or above. If you are using an older version, use the screen sharing plug-in to share the screen.
+
+```javascript
+AgoraRTC.createScreenVideoTrack({
+  // Configure screen sharing encoding parameters, see API documentation for details
+  encoderConfig: "1080p_1",
+  // Set the video transmission optimization mode to prioritize quality ("detail"), or smoothness ("motion")
+  optimizationMode: "detail"
+}).then(localScreenTrack => );
+```
+
+#### Share audio
+
+The Web SDK supports simultaneous sharing the screen and locally played background sounds on Windows and macOS platforms with the Chrome browser version 74 and higher.
+
+When calling the `createScreenVideoTrack` method, set the `withAudio` parameter to `enable`.
+
+The `createScreenVideoTrack` method returns a list containing the following:
+
+- Video track object for screen sharing.
+- Audio track object for local background sound playback.
+
+``` javascript
+AgoraRTC.createScreenVideoTrack({
+ encoderConfig: "1080p_1",
+}, "enable").then(([screenVideoTrack, screenAudioTrack])=> );
+```
+
+> 📝 **Note**
+> - After you call the method, the end user must check **Share Audio** in the screen sharing popup box for the setting to take effect.
+>  ![Chrome Screen Share](/images/video-sdk/tmp_screen-sharing-web-chrome.png)
+> - If you choose to share a single app window, the audio cannot be shared.
+
+### Edge browser
+
+Video SDK for Web supports screen sharing on Edge 80 and higher on the Windows 10+ platform.
+
+To create a screen sharing track, call `createScreenVideoTrack` as follows:
+
+``` javascript
+AgoraRTC.createScreenVideoTrack({
+ // Configure the screen sharing encoding parameters here, refer to the API documentation for details
+ encoderConfig: "1080p_1",
+}).then(localScreenTrack => );
+```
+
+### Firefox browser
+
+Video SDK for Web supports screen sharing on Firefox 56 and higher. For Firefox, you specify the type of screen sharing by setting `screenSourceType`.
+
+Choose one of the following values for `screenSourceType`:
+
+- `screen`: Share the entire screen.
+- `application`: Share all windows of an application (Firefox does not support this mode on Windows).
+- `window`: Share a window of an application.
+
+``` javascript
+AgoraRTC.createScreenVideoTrack({
+ screenSourceType: 'screen' // 'screen', 'application', 'window'
+}).then(localScreenTrack => );
+```
+
+### Safari browser
+
+Video SDK for Web supports screen sharing on Safari 13 and higher on the macOS platform.
+
+To create a screen sharing track, call `createScreenVideoTrack` as follows:
+
+``` javascript
+AgoraRTC.createScreenVideoTrack({
+ // Configure the screen sharing encoding parameters here, refer to the API documentation for details
+ encoderConfig: "1080p_1",
+}).then(localScreenTrack => );
+```
+
+#### Additional notes
+
+When using screen sharing on Safari, the entire screen is shared by default, and you cannot choose the content to share.
+
+### Electron
+
+For Electron, you need to draw the selection interface for screen sharing yourself. For quick integration, Agora provides a default selection interface.
+
+If you use Electron v17.x or higher, add the following code to the main process to ensure that you obtain the screen sharing source:
+
+``` javascript
+const { ipcMain, desktopCapturer } = require("electron");
+
+ipcMain.handle("DESKTOP_CAPTURER_GET_SOURCES", (event, opts) => desktopCapturer.getSources(opts));
+```
+
+#### Default interface
+
+If you choose to use the default interface, there is no difference between using screen sharing under Electron and eb. Just call `createScreenVideoTrack` directly:
+
+``` javascript
+AgoraRTC.createScreenVideoTrack({
+ encoderConfig: "1080p_1",
+}).then(localScreenTrack => );
+```
+
+The SDK provides its own default interface for end users to select a screen or window to share, as shown in the following figure:
+
+![Electron Screen Share Default Interface](/images/video-sdk/tmp_screen-sharing-web-electron-default-interface.png)
+
+#### Custom interface
+
+To customize the selection interface, refer to the following steps:
+
+1. Call the `AgoraRTC.getElectronScreenSources` method provided by the SDK to get information about the screens that can be shared. `sources` is a list of `source` objects that contain information about the sharing source and `sourceId`. Its `source` properties are as follows:
+
+  ![Electron Screen Share Custom Interface Source Properties](/images/video-sdk/screen-sharing-web-electron-custom-interface-source-properties.png)
+
+  - **`id`**: The `sourceId`.
+  - **`name`**: The name of the screen source.
+  - **`thumbnail`**: The snapshot of the screen source.
+
+  ``` javascript
+  AgoraRTC.getElectronScreenSources().then(sources => {
+   console.log(sources);
+  })
+  ```
+
+1. Based on the attributes of `source`, draw a selection interface using HTML and CSS to allow the user to select the screen source to be shared. The corresponding relationship between the properties of `source` and the screen sharing selection interface is as follows:
+
+  ![Electron Screen Share Custom Interface Thumbnail Name Relationship](/images/video-sdk/tmp_screen-sharing-web-electron-custom-interface-thumbnail-name.jpg)
+
+1. Get the `sourceId` selected by the user.
+
+1. Call the `createScreenVideoTrack` method and fill in `sourceId` with `electronScreenSourceId` to create the corresponding screen share stream.
+
+  ``` javascript
+  AgoraRTC.createScreenVideoTrack({
+   // Fill in the sourceId selected by the user
+   electronScreenSourceId： sourceId,
+  }).then(localScreenTrack => );
+  ```
+
+##### Additional notes
+
+- The `getElectronScreenSources` method is a wrapper around `desktopCapturer.getSources` provided by Electron, see [desktopCapturer](https://electronjs.org/docs/api/desktop-capturer) for details.
+- Passing in a non-Electron `sourceId` is ignored.
+
+### Share screen and start video simultaneously
+
+An `AgoraRTCClient` object can only send one video track at a time. If you need to share the screen and turn on camera video capture at the same time, create two `AgoraRTCClient`s, one to send the screen sharing track and the other to send the camera track.
+
+``` javascript
+async function startScreenCall() {
+ const screenClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+ await screenClient.join("<APP_ID", "<CHANNEL>", "<TOKEN>");
+
+ const screenTrack = await AgoraRTC.createScreenVideoTrack();
+ await screenClient.publish(screenTrack);
+
+ return screenClient;
+}
+
+async function startVideoCall() {
+ const videoClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+ await videoClient.join("<APP_ID", "<CHANNEL>", "<TOKEN>");
+
+ const videoTrack = await AgoraRTC.createCameraVideoTrack();
+ await videoClient.publish(videoTrack);
+
+ return videoClient;
+}
+
+Promise.all([startScreenCall(), startVideoCall()]).then(() => );
+```
+
+Subscribing to your own track incurs additional charges, as illustrated in the following figure:
+
+![Electron Screen Share Subscribing Yourself Additional Charges](/images/video-sdk/screen-sharing-web-electron-subscribing-yourself.svg)
+
+- To avoid double billing, best practice is to store the `uid` returned by each client after successfully joining a channel in a list. Each time a `user-published` event is monitored, check if the track is a local track; if so, do not subscribe.
+- The client sharing the screen should not subscribe to any streams.
+
+### Limitations
+
+Be aware of the following limitations:
+
+- An `AgoraRTCClient` object can only send one video track.
+- The user ID of the user publishing screen sharing should not be fixed at the same value, otherwise sharing streams with the same user ID may cause mutual kicks in some scenarios.
+- During screen sharing, the client publishing the local stream should not subscribe to the local screen sharing track, to avoid additional billing.
+- When screen sharing on the Windows platform, sharing the QQ chat window causes a black screen.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides open source Web sample projects which you can download or view the source code in **index.js** and experience:
+
+  - [GitHub-shareTheScreen](https://github.com/AgoraIO/API-Examples-Web/tree/main/src/example/advanced/shareTheScreen): Screen sharing implementation in GitHub.
+</TabsContent>
+
+<TabsContent value="windows">
+Agora screen sharing offers the following advantages:
+
+- **Ultra HD quality experience**: Supports Ultra HD video (4K resolution, 60 FPS frame rate), giving users a smoother, high-definition, ultimate picture experience.
+- **Multi-app support**: Compatible with many mainstream apps such as WPS Office, Microsoft Office Power Point, Visual Studio Code, Adobe Photoshop, Windows Media Player, and Scratch. This makes it convenient for users to directly share specific apps.
+- **Multi-device support**: Supports multiple devices sharing at the same time. Screen sharing is compatible with Windows 8 systems, devices without independent graphics cards, dual graphics card devices, and external screen devices.
+- **Multi-platform adaptation**: Supports iOS, Android, macOS, Windows, Web, Unity, Flutter, React Native, Unreal Engine, and other platforms.
+- **High security**: Supports sharing only a single app or part of the screen. Also supports blocking specified app windows, effectively ensuring user information security.
+
+This page shows you how to implement screen sharing in your app.
+
+## Understand the tech
+
+The screen sharing feature provides the following screen sharing modes for use in various use-cases:
+
+**Screen sharing use-cases**
+
+![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+
+- **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
+- **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
+- **Share a designated screen area**: If you only want to share a portion of the screen or app window, you can set a sharing area when starting screen sharing.
+
+Screen sharing modes are available on different platforms as follows:
+
+- **Desktop** (Windows and macOS): Supports all screen sharing features listed above.
+
+- **Mobile** (Android and iOS): Only supports sharing the entire screen.
+
+### Advanced features
+
+You can enable the following advanced screen sharing features by adjusting the parameters when starting screen sharing:
+
+- **Shield a specified app window**: When sharing the screen, if you don't want to expose a specific app window, you can choose to shield it so that the window will not appear in the shared screen.
+- **Stroke**: If you need to outline the area being shared, you can stroke a specified app window or screen and customize the width, color, and transparency of the stroke.
+- **Pin an app window to the front**: If you share multiple app windows at the same time, the windows may block each other. You can specify an app window and bring it to the front to prevent it from being blocked by other windows.
+- **Set the sharing scenario**: The SDK automatically adjusts the Quality of Experience (QOE) policy according to the scenario you choose:
+  - When sharing documents, slides, tables, or in remote control applications, set the sharing scene to either **document** or **remote control**. The SDK prioritizes optimizing image quality and minimizing latency, thus enhancing the viewing experience for the recipient of the shared video.
+  - When sharing games, movies, or live video broadcasts, set the shared scene to **game** or **video**. The SDK prioritizes smoothness of video at the receiving end.
+
+## Prerequisites
+
+- To implement screen sharing, ensure that you have not removed the screen sharing dynamic library (`libagora_screen_capture_extension.dll`) when integrating the SDK, otherwise the function will not work properly.
+
+- Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Set up your project
+
+## Implement screen sharing
+
+This section shows you how to implement screen sharing in your project. The basic API call sequence is shown in the figure below:
+
+**Screen share process**
+
+![Screen Share Process](/images/video-sdk/screen-sharing-macos-unreal-windows.svg)
+
+Depending on your business use-case, choose either of the following methods to implement screen sharing:
+
+- Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId` before joining the channel, then call `joinChannel` [2/2] to join the channel and set `publishScreenTrack` or `publishSecondaryScreenTrack` to **true** to start screen sharing.
+
+- Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId` after joining the channel, then call `updateChannelMediaOptions` to set `publishScreenTrack` or `publishSecondaryScreenTrack` to **true** to start screen sharing.
+
+The flow diagram and implementation steps in this article demonstrate the first use-case.
+
+### Get resource list
+
+Call `getScreenCaptureSources` to get an object list of shareable screens and windows. The list contains important information such as **window ID** and **screen ID**. This enables users to choose a certain screen or a window for sharing through the thumbnails in the list.
+
+``` cpp
+{
+  // Get information about a specified shareable window or screen
+  agora::rtc::IScreenCaptureSourceList* listCapture = m_rtcEngine->getScreenCaptureSources(sz, sz, true);
+  for (int i = 0; i < listCapture->getCount(); i++)
+  {
+    // Returns information about a shareable window or screen
+    agora::rtc::ScreenCaptureSourceInfo info = listCapture->getSourceInfo(i);
+  }
+
+  // Get the number of windows and screens that can be shared
+  return static_cast<int>(m_listWnd.GetCount());
+}
+```
+
+### Enable screen sharing
+
+Depending on the actual application use-case, choose one of the following screen sharing methods.
+
+#### Share the entire screen
+
+Call `startScreenCaptureByDisplayId` with the following parameters to start sharing the whole screen:
+
+- Set `displayId` to the `sourceId` (screen ID) obtained in the previous step.
+- Set your desired video encoding properties in `captureParams`:
+  - In document scenes or remote control scenes, best practice is to set `dimensions` to **1920 × 1080** and `frameRate` to **10 FPS**.
+  - In game scenes or video scenes, best practice is to set `dimensions` to **960 × 720** and `frameRate` to **15 FPS**.
+
+``` cpp
+// Start sharing the specified screen
+m_rtcEngine->startScreenCaptureByDisplayId(id, regionRect, capParam);
+```
+
+#### Share app window
+
+Call `startScreenCaptureByWindowId` with the following parameters to start sharing an app window:
+
+- Set `windowId` to the `sourceId` (window ID) obtained in the previous step.
+- Set your desired video encoding properties in `captureParams`:
+  - In document scenes or remote control scenes, best practice is to set `dimensions` to **1920 × 1080** and `frameRate` to **10 FPS**.
+  - In game scenes or video scenes, best practice is to set `dimensions` to **960 × 720** and `frameRate` to **15 FPS**.
+
+``` cpp
+// Start sharing a specified app window
+ret = m_rtcEngine->startScreenCaptureByWindowId(hWnd, rcCapWnd, capParam);
+```
+
+#### Share a designated area
+
+Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId` method to start sharing, and set `regionRect` to the position of the area you want to share relative to the whole screen or window. The sample code is as follows:
+
+``` cpp
+// Set the parameters of the area you want to share
+m_screenRegion = { 0,0,heightX,heightY };
+agora::rtc::Rectangle rcCapWnd = { m_screenRegion.x, m_screenRegion.y, (int)(m_screenRegion.width * scale), (int)(m_screenRegion.height * scale) };
+...
+m_rtcEngine->startScreenCaptureByDisplayId(id, rcCapWnd, m_screenParam);
+```
+:::note
+If the sharing area is set to extend beyond the boundaries of the screen, only the content within the screen is shared. If the width or height is set to 0, the entire screen is shared.
+:::
+### Set up a screen sharing scenario
+
+Call the `setScreenCaptureScenario` method to set the screen sharing scenario. Set the `screenScenario` to one of the following according to your usage scenario:
+
+- `SCREEN_SCENARIO_DOCUMENT` (1) : Document scenario
+- `SCREEN_SCENARIO_GAMING` (2) : Game scenario
+- `SCREEN_SCENARIO_VIDEO` (3) : Video scenario
+- `SCREEN_SCENARIO_RDC` (4) : Remote control scenario
+
+``` cpp
+m_rtcEngine->setScreenCaptureScenario(type);
+```
+
+### Capture system audio (Optional)
+
+To capture and publish the audio played in the shared screen or window simultaneously, call `enableLoopbackRecording` to start sound card capture.
+
+After you call this method, the audio played by other processes in the system is published to the remote end. To turn off sound card acquisition, call the method again.
+
+### Join a channel and publish a screen sharing video stream
+
+Call `joinChannel`[2/2] to join the channel and set the channel media options.
+
+``` cpp
+// Set channel media options
+ChannelMediaOptions option;
+option.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+option.clientRoleType = CLIENT_ROLE_BROADCASTER;
+option.publishMicrophoneTrack = true;
+// Publish screen captured video in the channel
+// To publish a second screen video in the channel, replace the next line of code with option.publishSecondaryScreenTrack = true;
+option.publishScreenTrack = true;
+// Join the channel
+m_rtcEngine->joinChannel("Your Token", "Your ChannelId", 0, option)
+```
+
+#### Additional notes
+
+This example demonstrates publishing the screen sharing stream directly in the channel without publishing the stream captured by the camera. In a real-world scenario, the requirements may be different from the description in this document. Adjust the code logic based on your scenario.
+
+To publish the stream captured by the camera and the screen sharing stream at the same time, refer to the following steps:
+
+- Call `joinChannel` [2/2] to join the first channel and publish the video stream recorded by the camera in that channel.
+- Call `joinChannelEx` to join a second channel in which to publish the screen sharing stream.
+
+### Update screen sharing area or parameters (Optional)
+
+To dynamically update the screen sharing area or parameters in the channel, call the following methods:
+
+- To update the shared region of the screen, call the `updateScreenCaptureRegion` method to reset the `regionRect` parameter and define a new sharing area.
+
+- To update the screen sharing parameters, such as video encoding resolution, frame rate, bitrate, or to stroke the screen or app window, or block a specified window, call the `updateScreenCaptureParameters` method and update the `captureParams` parameter configuration.
+
+``` cpp
+// Update the screen sharing area
+int ret = m_rtcEngine->updateScreenCaptureRegion(rect);
+
+// Update screen sharing parameters
+int ret = m_rtcEngine->updateScreenCaptureParameters(m_screenParam);
+```
+
+### Stroke the screen (Optional)
+
+Depending on your scenario, you may stroke the shared screen or window in one of the following ways:
+
+- Stroke when enabling screen sharing: Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId`, set `enableHighLight` in `captureParams` to `true`, and set both `highLightColor` and `highLightWidth` to specify the stroke color and width.
+
+- Stroke after screen sharing is enabled: Call `updateScreenCaptureParameters`, set `enableHighLight` in `captureParams` to `true`, and set both `highLightColor` and `highLightWidth` to specify the stroke color and width.
+
+``` cpp
+bool highLight = m_chkHighLight.GetCheck();
+m_screenParam.enableHighLight = highLight;
+// Set the stroke color of the screen
+m_screenParam.highLightColor = 0xFFFF0000;
+// Set the stroke width of the screen
+m_screenParam.highLightWidth = 5;
+// Enable screen stroke
+int ret = m_rtcEngine->updateScreenCaptureParameters(m_screenParam);
+```
+
+### Block windows (Optional)
+
+Depending on your usage scenario, you may block a specified window in one of the following ways:
+
+- Block windows when enabling screen sharing: Call `startScreenCaptureByDisplayId`, set `excludeWindowList` in `captureParams` to the list of windows you want to block.
+
+- Block windows after screen sharing is enabled: Call `updateScreenCaptureParameters`, set `excludeWindowList` in `captureParams` to the list of windows you want to block.
+
+``` cpp
+m_screenParam.excludeWindowList = excludeViews;
+m_screenParam.excludeWindowCount = count;
+
+int ret = m_rtcEngine->updateScreenCaptureParameters(m_screenParam);
+```
+:::note
+On the Windows platform, you can block up to 24 windows.
+:::
+### Stop screen sharing
+
+Call `stopScreenCapture` to stop screen sharing within a channel.
+
+``` cpp
+// Stop screen sharing
+ret = m_rtcEngine->stopScreenCapture();
+```
+
+### Limitations
+
+Be aware of the following limitations:
+
+- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](../reference/pricing.md) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
+
+- To share 4K resolution Ultra-HD video during screen sharing, your device needs to meet certain requirements. The minimum device specifications recommended by Agora are: intel(R) Core(TM) i7-9750H CPU @ 2.60GHZ.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open source Windows [sample project](https://github.com/AgoraIO/API-Examples/blob/main/windows/APIExample/APIExample/Advanced/ScreenShare/AgoraScreenCapture.cpp) on GitHub. Download and explore this project for a more detailed example.
+
+### API reference
+
+- [`getScreenCaptureSources`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_getscreencapturesources)
+- [`startScreenCaptureByDisplayId`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebydisplayid)
+- [`startScreenCaptureByWindowId`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebywindowid)
+- [`setScreenCaptureScenario`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setscreencapturescenario)
+- [`updateScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureparameters)
+- [`updateScreenCaptureRegion`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureregion)
+- [`stopScreenCapture` [1/2]](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
+</TabsContent>
+
+<TabsContent value="electron">
+Agora screen sharing offers the following advantages:
+
+- **Ultra HD quality experience**: Supports Ultra HD video (4K resolution, 60 FPS frame rate), giving users a smoother, high-definition, ultimate picture experience.
+- **Multi-app support**: Compatible with many mainstream apps such as WPS Office, Microsoft Office Power Point, Visual Studio Code, Adobe Photoshop, Windows Media Player, and Scratch. This makes it convenient for users to directly share specific apps.
+- **Multi-device support**: Supports multiple devices sharing at the same time. Screen sharing is compatible with Windows 8 systems, devices without independent graphics cards, dual graphics card devices, and external screen devices.
+- **Multi-platform adaptation**: Supports iOS, Android, macOS, Windows, Web, Unity, Flutter, React Native, Unreal Engine, and other platforms.
+- **High security**: Supports sharing only a single app or part of the screen. Also supports blocking specified app windows, effectively ensuring user information security.
+
+This page shows you how to implement screen sharing in your app.
+
+## Understand the tech
+
+The screen sharing feature provides the following screen sharing modes for use in various use-cases:
+
+**Screen sharing use-cases**
+
+![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+
+- **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
+- **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
+- **Share a designated screen area**: If you only want to share a portion of the screen or app window, you can set a sharing area when starting screen sharing.
+
+Screen sharing modes are available on different platforms as follows:
+
+- **Desktop** (Windows and macOS): Supports all screen sharing features listed above.
+
+- **Mobile** (Android and iOS): Only supports sharing the entire screen.
+
+## Prerequisites
+
+- Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Set up your project
+
+Windows or macOS system assigns a unique **Display ID** for each screen and a unique **Window ID** for each window. Agora provides the following two screen sharing solutions:
+
+  - Share a specific screen or part of a specified screen using **Display ID**.
+  - Share a specific window or part of a specified window using **Window ID**.
+
+The API calling sequence is shown in the figure below:
+
+**API calling sequence**
+
+![API Calling Sequence](/images/video-sdk/screen-sharing-flutter-electron.svg)
+
+## Implement screen sharing
+
+This section shows you how to implement screen sharing in your project.
+
+### Get a list of shareable screens and windows
+Call the `getScreenCaptureSources` method to get the **Display ID** or **Window ID** of the source you want to share. 
+
+``` typescript
+const sources = engine.getScreenCaptureSources(
+ { width: 1920, height: 1080 },
+ { width: 64, height: 64 },
+ true
+);
+```
+
+### Share a specific screen or window
+
+- Share a specific screen using **Display ID** on macOS or Windows:
+
+  ``` typescript
+  engine.startScreenCaptureByDisplayId(
+   targetSource.sourceId,
+   {},
+   {
+    dimensions: { width, height },
+    frameRate,
+    bitrate,
+    captureMouseCursor,
+    excludeWindowList,
+    excludeWindowCount: excludeWindowList.length,
+    highLightWidth,
+    highLightColor,
+    enableHighLight,
+   }
+  );
+  ```
+
+- Share a specific window using **Window ID** on macOS or Windows:
+
+  ``` typescript
+  engine.startScreenCaptureByWindowId(
+   targetSource.sourceId,
+   {},
+   {
+    dimensions: { width, height },
+    frameRate,
+    bitrate,
+    windowFocus,
+    highLightWidth,
+    highLightColor,
+    enableHighLight,
+   }
+  );
+  ```
+
+### Capture system audio (Optional)
+
+To capture and publish the audio played in the shared screen or window simultaneously, call `enableLoopbackRecording` to start sound card capture.
+
+After you call this method, the audio played by other processes in the system is published to the remote end. To turn off sound card acquisition, call the method again.
+
+### Join a channel and publish screen share streams
+
+- To publish only a screen sharing stream, add the following code to your project:
+
+  ``` typescript
+  agoraRtcEngine.joinChannel(token, channelId, uid, {
+   autoSubscribeAudio: true,
+   autoSubscribeVideo: true,
+   publishMicrophoneTrack: false,
+   publishCameraTrack: false,
+   clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+   publishScreenTrack: true,
+  });
+  ```
+
+:::info
+To share captured audio during screen sharing, call `enableLoopbackRecording` to enable the sound card capture function and merge the sound played by the sound card with the local audio stream.
+
+:::
+- To publish both a screen sharing stream and the video stream captured by the local camera simultaneously, add the following code to your project:
+
+  ``` typescript
+  // Call joinChannel to publish a stream of video captured by the local camera
+  agoraRtcEngine.joinChannel(token, channelId, uid, {
+   autoSubscribeAudio: true,
+   autoSubscribeVideo: true,
+   publishMicrophoneTrack: true,
+   publishCameraTrack: true,
+   clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+   publishScreenTrack: false,
+  });
+
+  // Call joinChannelEx to publish a screen-sharing stream
+  agoraRtcEngine.joinChannelEx(
+   token2,
+   { channelId, localUid: uid2 },
+   {
+    autoSubscribeAudio: false,
+    autoSubscribeVideo: false,
+    publishMicrophoneTrack: false,
+    publishCameraTrack: false,
+    clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+    publishScreenTrack: true,
+   }
+  );
+  ```
+
+### Limitations
+
+Be aware of the following limitations:
+
+- The video unit price for a screen-shared stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you for the default resolution of 1920 x 1080 (2,073,600). See [Pricing](../reference/pricing.md) for details.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open source Electron [sample project](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/ScreenShare/ScreenShare.tsx) on GitHub. Download and explore this project for a more detailed example.
+
+### API reference
+
+- [`getScreenCaptureSources`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_getscreencapturesources)
+
+- [`startScreenCaptureByDisplayId`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebydisplayid)
+
+- [`startScreenCaptureByWindowId`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebywindowid)
+
+- [`ScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_screencaptureparameters.html)
+
+- [`updateScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureparameters)
+
+- [`stopScreenCapture`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
+
+- [`enableLoopbackRecording`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enableloopbackrecording)
+</TabsContent>
+
+<TabsContent value="flutter">
+Agora screen sharing offers the following advantages:
+
+- **Ultra HD quality experience**: Supports Ultra HD video (4K resolution, 60 FPS frame rate), giving users a smoother, high-definition, ultimate picture experience.
+- **Multi-app support**: Compatible with many mainstream apps such as WPS Office, Microsoft Office Power Point, Visual Studio Code, Adobe Photoshop, Windows Media Player, and Scratch. This makes it convenient for users to directly share specific apps.
+- **Multi-device support**: Supports multiple devices sharing at the same time. Screen sharing is compatible with Windows 8 systems, devices without independent graphics cards, dual graphics card devices, and external screen devices.
+- **Multi-platform adaptation**: Supports iOS, Android, macOS, Windows, Web, Unity, Flutter, React Native, Unreal Engine, and other platforms.
+- **High security**: Supports sharing only a single app or part of the screen. Also supports blocking specified app windows, effectively ensuring user information security.
+
+This page shows you how to implement screen sharing in your app.
+
+## Understand the tech
+
+The screen sharing feature provides the following screen sharing modes for use in various use-cases:
+
+**Screen sharing use-cases**
+
+![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+
+- **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
+- **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
+- **Share a designated screen area**: If you only want to share a portion of the screen or app window, you can set a sharing area when starting screen sharing.
+
+Screen sharing modes are available on different platforms as follows:
+
+- **Desktop** (Windows and macOS): Supports all screen sharing features listed above.
+
+- **Mobile** (Android and iOS): Only supports sharing the entire screen.
+
+## Prerequisites
+
+- Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Set up your project
+
+Set up your project according to your target platform.
+
+### iOS 
+
+Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream. You use the iOS native `ReplayKit` framework in the extension to record the screen, and then send the screen sharing stream to the main process.
+
+**API calling sequence**
+
+![Screen Sharing Flutter Tech](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+
+Take the following steps to set up your screen sharing project:
+
+1. Go to your project folder and open the `ios/.xcodeproj` file with Xcode.
+1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
+
+  ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+
+1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
+1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
+The memory usage of **Broadcast Upload Extension** is limited to 50 MB. Make sure that the memory usage of **Screen Sharing Extension** does not exceed 50 MB.
+
+1. Modify project settings to implement the screen sharing code logic, and choose one of the following two methods according to your business needs:
+
+  - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **SampleHandler** to **AgoraReplayKitHandler**:
+
+    ![Use AgoraReplayKitHandler](/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
+
+  - If you need to implement some additional business logic, refer to the following code to modify the `SampleHandler.m` file:
+
+    ``` objective-c
+    #import "SampleHandler.h"
+
+    @implementation SampleHandler
+
+    - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo {
+      // User requests to start broadcasting
+    }
+
+    - (void)broadcastPaused {
+      // User requests a pause in broadcasting, screen sharing pauses
+    }
+
+    - (void)broadcastResumed {
+      // User requests to resume broadcasting, screen sharing resumes
+    }
+
+    - (void)broadcastFinished {
+      // User requests to stop broadcasting
+    }
+
+    - (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType {
+
+      switch (sampleBufferType) {
+        case RPSampleBufferTypeVideo:
+          break;
+        case RPSampleBufferTypeAudioApp:
+          break;
+        case RPSampleBufferTypeAudioMic:
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    @end
+    ```
+
+### macOS and Windows
+
+Agora currently supports the following two screen sharing options on the macOS and Windows platforms:
+
+  - Share a specific screen or a portion of a specified screen using `displayId`.
+  - Share a specific window or a portion of a specified window using `windowId`.
+
+The API calling sequence is shown in the figure below:
+
+**API calling sequence**
+
+![API Calling Sequence](/images/video-sdk/screen-sharing-flutter-electron.svg)
+
+## Implement screen sharing
+
+This section shows you how to implement screen sharing in your project. Choose the method for your target platform.
+
+### iOS implementation
+
+- Start screen sharing
+
+  1. Set the parameters according to your application use-case and call `startScreenCapture` to start screen sharing:
+
+    - `captureVideo`: Whether to capture system video during screen sharing.
+    - `captureAudio`: Whether to capture system audio during screen sharing.
+    - `captureSignalVolume`: The volume of the captured system audio.
+    - `dimensions`: Resolution of video encoding.
+    - `frameRate`: Video encoding frame rate (FPS).
+    - `bitrate`: Video encoding bitrate (Kbps).
+    - `contentHint`: Content type of screen sharing video.
+
+    ``` dart
+    await rtcEngine.startScreenCapture(
+      const ScreenCaptureParameters2(captureAudio: true, captureVideo: true));
+    ```
+
+  2. Combine the call to `startScreenCapture` with the user's action to enable screen sharing in your app. To do this, use one of the following methods:
+
+    - Prompt the user to long click the **screen recording** button in the **Control Center** on iOS and choose to use the extension you created to start recording.
+    
+    - Use Apple's new [RPSystemBroadcastPickerView](https://developer.apple.com/documentation/replaykit/rpsystembroadcastpickerview) in iOS 12.0 to make the **Enable Screen Sharing** button pop up on the app interface, prompting the user to click the button to start recording.
+
+- Stop screen sharing
+
+  Call `stopScreenCapture` to stop screen sharing within the channel.
+
+    ``` dart
+    await _engine.stopScreenCapture();
+    ```
+
+### Android implementation
+
+When enabling screen sharing on Android, you only need to call the `startScreenCapture` method. Refer to the `screen_sharing.dart` file in the Agora Video SDK to implement screen sharing.
+
+### macOS and Windows implementation
+
+1. Get the screen ID or the window ID
+
+  To get the **Display ID** or **Window ID**, call the `getScreenCaptureSources` method provided in `agora_rtc_engine`.
+
+    ``` dart
+    await rtcEngine.getScreenCaptureSources(
+        thumbSize: thumbSize, iconSize: iconSize, includeScreen: true);
+    ```
+
+1. Share a specified screen or window
+
+  To share a specified screen on macOS or Windows using **Display ID**, refer to the following code:
+
+    ``` dart
+    await rtcEngine.startScreenCaptureByDisplayId(
+      displayId: sourceId!,
+      regionRect: const Rectangle(x: 0, y: 0, width: 0, height: 0),
+      captureParams: const ScreenCaptureParameters(
+       captureMouseCursor: true,
+       frameRate: 30,
+      ));
+    ```
+
+  To share a specified window using **Window ID** on macOS or Windows, use the following code:
+
+    ``` dart
+    await rtcEngine.startScreenCaptureByWindowId(
+     windowId: sourceId!,
+     regionRect: const Rectangle(x: 0, y: 0, width: 0, height: 0),
+     captureParams: const ScreenCaptureParameters(
+      captureMouseCursor: true,
+      frameRate: 30,
+     ),
+    );
+    ```
+
+1. Join the channel and publish a screen sharing stream
+
+  To publish only the screen sharing stream, refer to the following code:
+
+    ``` dart
+    await _engine.joinChannelEx(
+      token: '',
+      connection: RtcConnection(
+        channelId: _controller.text, localUid: shareShareUid),
+      options: const ChannelMediaOptions(
+       autoSubscribeVideo: true,
+       autoSubscribeAudio: true,
+       publishScreenTrack: true,
+       publishSecondaryScreenTrack: true,
+       publishCameraTrack: false,
+       publishMicrophoneTrack: false,
+       publishScreenCaptureAudio: true,
+       publishScreenCaptureVideo: true,
+       clientRoleType: ClientRoleType.clientRoleBroadcaster,
+      ));
+    ```
+
+  To publish the screen sharing stream and the video stream captured by local camera simultaneously, add the following code to your project:
+
+    ``` dart
+    await _engine.joinChannelEx(
+      token: '',
+      connection:
+        RtcConnection(channelId: _controller.text, localUid: localUid),
+      options: const ChannelMediaOptions(
+       publishCameraTrack: true,
+       publishMicrophoneTrack: true,
+       clientRoleType: ClientRoleType.clientRoleBroadcaster,
+      ));
+
+    await _engine.joinChannelEx(
+      token: '',
+      connection: RtcConnection(
+        channelId: _controller.text, localUid: shareShareUid),
+      options: const ChannelMediaOptions(
+       autoSubscribeVideo: true,
+       autoSubscribeAudio: true,
+       publishScreenTrack: true,
+       publishSecondaryScreenTrack: true,
+       publishCameraTrack: false,
+       publishMicrophoneTrack: false,
+       publishScreenCaptureAudio: true,
+       publishScreenCaptureVideo: true,
+       clientRoleType: ClientRoleType.clientRoleBroadcaster,
+      ));
+    ```
+
+### Limitations
+
+Be aware of the following limitations:
+
+- The video unit price for a screen sharing stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](../reference/pricing.md) for details.
+
+#### iOS platform
+
+- Before starting screen sharing, call the `setAudioScenario` method and set the **audio scenario** to `audioScenarioGameStreaming` (high sound quality scenario) to improve the success rate of capturing system audio during screen sharing.
+- Due to system limitations, screen sharing is only supported on iOS 12.0 and above.
+- This feature requires a high level of device performance. Agora recommends that you use an iPhone X or above.
+
+#### Android platform
+
+- Before starting screen sharing, call the `setAudioScenario` method and set the **audio scenario** to `audioScenarioGameStreaming` (high sound quality scenario) to improve the success rate of capturing system audio during screen sharing.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides open source sample projects on GitHub for your reference:
+
+  - [Screen sharing Dart project](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/lib/examples/advanced/screen_sharing/screen_sharing.dart): Implements screen sharing using Dart.
+  - [Screen sharing Objective-C project](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/ios/ScreenSharing): Implements screen sharing using Objective-C.
+
+### API reference
+
+- Android, iOS
+  - [`startScreenCapture`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_startscreencapture)
+  - [`stopScreenCapture`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
+  - [`updateScreenCapture`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_updatescreencapture)
+
+- macOS, Windows
+  - [`getScreenCaptureSources`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_getscreencapturesources)
+  - [`startScreenCaptureByDisplayId`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebydisplayid)
+  - [`startScreenCaptureByWindowId`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebywindowid)
+  - [`updateScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureparameters)
+  - [`updateScreenCaptureRegion`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureregion)
+  - [`setScreenCaptureContentHint`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setscreencapturecontenthint)
+  - [`setScreenCaptureScenario`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setscreencapturescenario)
+  - [`stopScreenCapture`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
+</TabsContent>
+
+<TabsContent value="react-native">
+Agora screen sharing offers the following advantages:
+
+- **Ultra HD quality experience**: Supports Ultra HD video (4K resolution, 60 FPS frame rate), giving users a smoother, high-definition, ultimate picture experience.
+- **Multi-app support**: Compatible with many mainstream apps such as WPS Office, Microsoft Office Power Point, Visual Studio Code, Adobe Photoshop, Windows Media Player, and Scratch. This makes it convenient for users to directly share specific apps.
+- **Multi-device support**: Supports multiple devices sharing at the same time. Screen sharing is compatible with Windows 8 systems, devices without independent graphics cards, dual graphics card devices, and external screen devices.
+- **Multi-platform adaptation**: Supports iOS, Android, macOS, Windows, Web, Unity, Flutter, React Native, Unreal Engine, and other platforms.
+- **High security**: Supports sharing only a single app or part of the screen. Also supports blocking specified app windows, effectively ensuring user information security.
+
+This page shows you how to implement screen sharing in your app.
+
+## Understand the tech
+
+The screen sharing feature provides the following screen sharing modes for use in various use-cases:
+
+**Screen sharing use-cases**
+
+![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+
+- **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
+- **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
+- **Share a designated screen area**: If you only want to share a portion of the screen or app window, you can set a sharing area when starting screen sharing.
+
+Screen sharing modes are available on different platforms as follows:
+
+- **Desktop** (Windows and macOS): Supports all screen sharing features listed above.
+
+- **Mobile** (Android and iOS): Only supports sharing the entire screen.
+
+## Prerequisites
+
+- Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Set up your project
+
+### iOS platform
+
+Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream. You use the iOS native `ReplayKit` framework in the extension to record the screen, and then send the screen sharing stream to the main process.
+
+  ![Screen Sharing React Native Tech](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+
+## Implement screen sharing
+
+This section introduces how to implement screen sharing in your project.
+
+### Android implementation
+
+When enabling screen sharing on Android, you only need to call the `startScreenCapture` method. Refer to the [screen sharing sample project](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/ScreenShare/ScreenShare.tsx) to implement screen sharing.
+
+### iOS implementation
+
+Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream. You use the iOS native `ReplayKit` framework in the extension to record the screen, and then send the screen sharing stream to the main process.
+
+**Screen sharing React Native tech**
+
+![Screen Sharing React Native Tech](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+
+Take the following steps to set up your screen sharing project:
+
+1. Go to your project folder and open the `ios/.xcodeproj` file with Xcode.
+
+1. Create a **Broadcast Upload Extension** to enable the process of screen sharing:
+  1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
+
+    ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+
+  1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.h` files.
+  1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
+  1. Modify project settings to implement the screen sharing code logic, and choose one of the following methods according to your business needs:
+
+    - To use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **$(PRODUCT_MODULE_NAME}.SampleHandler** to **AgoraReplayKitHandler**:
+
+      ![Use AgoraReplayKitHandler](/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
+
+    - To implement additional business logic, refer to the following code to modify the `SampleHandler.h` file:
+
+      ``` objective-c
+      #import "SampleHandler.h"
+      #import "AgoraReplayKitExt.h"
+      #import <sys/time.h>
+
+      @interface SampleHandler ()<AgoraReplayKitExtDelegate>
+
+      @end
+
+      @implementation SampleHandler
+
+      - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo {
+       // User request to start broadcasting
+       [[AgoraReplayKitExt shareInstance] start:self];
+
+      }
+
+      - (void)broadcastPaused {
+       // User requests to pause the broadcast, screen sharing is paused
+       NSLog(@"broadcastPaused");
+       [[AgoraReplayKitExt shareInstance] pause];
+      }
+
+      - (void)broadcastResumed {
+       // User requests to resume broadcasting, screen sharing is resumed
+       NSLog(@"broadcastResumed");
+       [[AgoraReplayKitExt shareInstance] resume];
+
+      }
+
+      - (void)broadcastFinished {
+       // User requests to stop broadcasting
+       NSLog(@"broadcastFinished");
+       [[AgoraReplayKitExt shareInstance] stop];
+
+      }
+
+      - (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType {
+       [[AgoraReplayKitExt shareInstance] pushSampleBuffer:sampleBuffer withType:sampleBufferType];
+      }
+
+      #pragma mark - AgoraReplayKitExtDelegate
+
+      - (void)broadcastFinished:(AgoraReplayKitExt *_Nonnull)broadcast reason:(AgoraReplayKitExtReason)reason {
+       switch (reason) {
+         case AgoraReplayKitExtReasonInitiativeStop:
+           {
+             NSLog(@"AgoraReplayKitExtReasonInitiativeStop");
+           }
+           break;
+         case AgoraReplayKitExtReasonConnectFail:
+           {
+             NSLog(@"AgoraReplayKitExReasonConnectFail");
+           }
+           break;
+
+         case AgoraReplayKitExtReasonDisconnect:
+           {
+             NSLog(@"AgoraReplayKitExReasonDisconnect");
+           }
+           break;
+         default:
+           break;
+       }
+      }
+
+      @end
+      ```
+
+1. Combine the call to `startScreenCapture` with the user's action to enable screen sharing in your app. To do this, use one of the following methods:
+
+  - Use Apple's new [RPSystemBroadcastPickerView](https://developer.apple.com/documentation/replaykit/rpsystembroadcastpickerview) in iOS 12.0 to make the **Enable Screen Sharing** button pop up on the app interface, prompting the user to click the button to start recording.
+  
+    > 📝 **information**
+    > This is the default method for React Native SDK, but `RPSystemBroadcastPickerView` has some usage restrictions and may not work in later versions of iOS. If it fails, use the following method instead.
+  
+  - Prompt the user to long click the **screen recording** button in the **Control Center** on iOS and choose to use the extension you created to start recording.
+
+#### Development notes
+
+* If you use **Cocoapods**, add the following content to the `Podfile` file to add a dependency for your screen sharing extension. Replace `ScreenSharing` with the target name of your screen sharing extension:
+
+  ``` ruby
+  target 'ScreenSharing' do
+    # Change the version to match the SDK dependency in the node_modules/react-native-agora/react-native-agora.podspec file
+    pod 'AgoraRtcEngine_iOS', 'version'
+  end
+  ```
+
+* The memory usage of **Broadcast Upload Extension** is limited to 50 MB. Make sure that the memory usage of **Screen Sharing Extension** does not exceed 50 MB.
+### Limitations
+
+Be aware of the following limitations:
+
+#### iOS platform
+
+- Due to system limitations, screen sharing is only supported on iOS 12.0 and above.
+- This feature requires a high level of device performance. Agora recommends that you use an iPhone X or above.
+- The video unit price for a screen-sharing stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](../reference/pricing.md) for details.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides open source sample projects on GitHub for your reference:
+
+  - [React Native Screen Sharing Examples](https://github.com/AgoraIO-Extensions/react-native-agora): Agora screen sharing examples.
+  - [ScreenShare](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/ScreenShare/ScreenShare.tsx): Example project implements the screen sharing process.
+
+### API reference
+
+- [`startScreenCapture`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapture)
+- [`stopScreenCapture`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
+- [`updateScreenCapture`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencapture)
+</TabsContent>
+
+<TabsContent value="unity">
+Agora screen sharing offers the following advantages:
+
+- **Ultra HD quality experience**: Supports Ultra HD video (4K resolution, 60 FPS frame rate), giving users a smoother, high-definition, ultimate picture experience.
+- **Multi-app support**: Compatible with many mainstream apps such as WPS Office, Microsoft Office Power Point, Visual Studio Code, Adobe Photoshop, Windows Media Player, and Scratch. This makes it convenient for users to directly share specific apps.
+- **Multi-device support**: Supports multiple devices sharing at the same time. Screen sharing is compatible with Windows 8 systems, devices without independent graphics cards, dual graphics card devices, and external screen devices.
+- **Multi-platform adaptation**: Supports iOS, Android, macOS, Windows, Web, Unity, Flutter, React Native, Unreal Engine, and other platforms.
+- **High security**: Supports sharing only a single app or part of the screen. Also supports blocking specified app windows, effectively ensuring user information security.
+
+This page shows you how to implement screen sharing in your game.
+
+## Understand the tech
+
+The screen sharing feature provides the following screen sharing modes for use in various use-cases:
+
+**Screen sharing use-cases**
+
+![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+
+- **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
+- **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
+- **Share a designated screen area**: If you only want to share a portion of the screen or app window, you can set a sharing area when starting screen sharing.
+
+Screen sharing modes are available on different platforms as follows:
+
+- **Desktop** (Windows and macOS): Supports all screen sharing features listed above.
+
+- **Mobile** (Android and iOS): Only supports sharing the entire screen.
+
+## Prerequisites
+
+- Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Set up your project
+
+### iOS platform
+
+You use the iOS native `ReplayKit` framework in the extension to record the screen, and then add the screen sharing stream to the channel as a user. Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream.
+
+  ![Screen Sharing Unity Tech](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+
+### macOS and Windows platforms
+
+Windows or macOS systems assign a unique **Display ID** to each screen and a unique **Window ID** to each window. Agora currently supports the following two screen sharing options on the macOS, Windows platforms:
+
+  - Share a specific screen or part of a specified screen: Call `GetScreenCaptureSources` to get the **Display ID** and then call `StartScreenCaptureByDisplayId` to start screen sharing.
+  - Share a specific window or part of a specified window: Call `GetScreenCaptureSources` to get the **Window ID** and then call `StartScreenCaptureByWindowId` to start screen sharing.
+
+## Implement screen sharing
+
+This section introduces how to implement screen sharing in your project.
+
+### Android implementation
+
+When enabling screen sharing on Android, call the `StartScreenCapture` method. Depending on the actual business use-case, choose either of the following methods to implement screen sharing:
+
+  - Call `StartScreenCapture` before joining the channel, then call `JoinChannel[2/2]` to join the channel and set `publishScreenCaptureVideo` to `true` to start screen sharing.
+
+    ``` csharp
+    // Call StartScreenCapture to enable screen sharing before joining a channel.
+    ScreenCaptureParameters2 screenCaptureParameters2 = new ScreenCaptureParameters2();
+    screenCaptureParameters2.captureVideo = true;
+    screenCaptureParameters2.captureAudio = true;
+    RtcEngine.StartScreenCapture(screenCaptureParameters2);
+    // Call JoinChannel to join a channel.
+    ChannelMediaOptions channelMediaOptions = new ChannelMediaOptions();
+    channelMediaOptions.publishScreenCaptureVideo.SetValue(true);
+    channelMediaOptions.publishScreenCaptureAudio.SetValue(true);
+    channelMediaOptions.publishCameraTrack.SetValue(false);
+    channelMediaOptions.publishMicrophoneTrack.SetValue(false);
+    RtcEngine.JoinChannel("token", "channelId", uid, channelMediaOptions);
+    ```
+
+  - Call `StartScreenCapture` after joining the channel, then call `UpdateChannelMediaOptions` to set `publishScreenCaptureVideo` to `true` to start screen sharing.
+
+    ``` csharp
+    // Call JoinChannel to join the channel.
+    RtcEngine.JoinChannel(_token, _channelName);
+    ScreenCaptureParameters2 screenCaptureParameters2 = new ScreenCaptureParameters2();
+    screenCaptureParameters2.captureVideo = true;
+    screenCaptureParameters2.captureAudio = true;
+    // Enable screen sharing.
+    RtcEngine.StartScreenCapture(screenCaptureParameters2);
+    ChannelMediaOptions channelMediaOptions = new ChannelMediaOptions();
+    channelMediaOptions.publishScreenCaptureVideo.SetValue(true);
+    channelMediaOptions.publishScreenCaptureAudio.SetValue(true);
+    channelMediaOptions.publishCameraTrack.SetValue(false);
+    channelMediaOptions.publishMicrophoneTrack.SetValue(false);
+    // Update channel media options.
+    RtcEngine.UpdateChannelMediaOptions(channelMediaOptions);
+    ```
+
+### iOS implementation
+Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream. You use the iOS native `ReplayKit` framework in the extension to record the screen, and then add the screen sharing stream to the channel as a user. 
+
+**Screen sharing Unity tech**
+
+![Screen Sharing Unity Tech](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+
+Take the following steps to set up your screen sharing project:
+
+1. Package the iOS project in **Unity Editor** and export the Xcode project.
+1. Go to your project folder and open the `unity-iphone/.xcodeproj` folder with Xcode.
+1. Create a **Broadcast Upload Extension** to enable the process of screen sharing:
+  1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
+
+    ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+
+  1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
+  1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
+  1. Modify project settings to implement the screen sharing code logic, and choose one of the following two methods according to your business needs:
+
+    - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **$(PRODUCT_MODULE_NAME}.SampleHandler** to **AgoraReplayKitHandler**:
+
+      ![Use AgoraReplayKitHandler](/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
+
+    - If you need to implement some additional business logic, refer to the following code to modify the `SampleHandler.m` file:
+
+      ``` objective-c
+      #import "SampleHandler.h"
+      #import "AgoraReplayKitExt.h"
+      #import <sys/time.h>
+
+      @interface SampleHandler ()<AgoraReplayKitExtDelegate>
+
+      @end
+
+      @implementation SampleHandler
+
+      - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo {
+       [[AgoraReplayKitExt shareInstance] start:self];
+
+      }
+
+      - (void)broadcastPaused {
+       NSLog(@"broadcastPaused");
+       [[AgoraReplayKitExt shareInstance] pause];
+      }
+
+      - (void)broadcastResumed {
+       NSLog(@"broadcastResumed");
+       [[AgoraReplayKitExt shareInstance] resume];
+
+      }
+
+      - (void)broadcastFinished {
+       NSLog(@"broadcastFinished");
+       [[AgoraReplayKitExt shareInstance] stop];
+
+      }
+
+      - (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType {
+       [[AgoraReplayKitExt shareInstance] pushSampleBuffer:sampleBuffer withType:sampleBufferType];
+      }
+
+      #pragma mark - AgoraReplayKitExtDelegate
+
+      - (void)broadcastFinished:(AgoraReplayKitExt *_Nonnull)broadcast reason:(AgoraReplayKitExtReason)reason {
+        switch (reason) {
+          case AgoraReplayKitExtReasonInitiativeStop:
+          {
+
+          }
+          break;
+          case AgoraReplayKitExtReasonConnectFail:
+          {
+
+          }
+          break;
+
+          case AgoraReplayKitExtReasonDisconnect:
+          {
+
+          }
+          break;
+          default:
+          break;
+        }
+      }
+
+      @end
+      ```
+
+1. Select the extension you created in **TARGETS** and add all frameworks under the path **Frameworks/Agora-RTC-Plugin/Agora-Unity-RTC-SDK/Plugins/iOS/** in **General/Frameworks and Libraries**.
+1. To start screen sharing, call `StartScreenCapture` combined with the user's action. For example, prompt the user to press and hold the **Screen Recording** button in the Control Center on iOS, and select the extension you created to start recording.
+:::note
+<ul><li>Make sure your app and extension have the same **TARGETS/Deployment/iOS** version. The memory usage of **Broadcast Upload Extension** is limited to 50 MB. </li><li>Make sure that the memory usage of **Screen Sharing Extension** does not exceed 50 MB.</li></ul>
+:::
+### macOS and Windows implementation
+
+Windows and macOS systems assign a unique **Display ID** to each screen and a unique **Window ID** to each window. Agora currently supports the following screen sharing options for macOS and Windows:
+
+  - Share a specific screen or a portion of a specified screen: Call `GetScreenCaptureSources` to get the **Display ID** and then call `StartScreenCaptureByDisplayId` to start screen sharing.
+  - Share a specific window or a portion of a specified window: Call `GetScreenCaptureSources` to get the **Window ID** and then call `StartScreenCaptureByWindowId` to start screen sharing.
+
+Take the following steps to implement screen sharing on macOS and Windows:
+
+1. Get a list of screens and windows that can be shared. Call `GetScreenCaptureSources` method to get the **Display ID** of the screen or the **Window ID** of the window to be shared:
+
+  ``` csharp
+  SIZE thumbSize = new SIZE(360,240);
+  SIZE iconSize = new SIZE(360,240);
+  ScreenCaptureSourceInfo[] screenCaptureSourceInfos = RtcEngine.GetScreenCaptureSources(thumbSize, iconSize, true);
+  ```
+
+1. Share the specified screen or window. Depending on the sharing object, call the `StartScreenCaptureByDisplayId` or `StartScreenCaptureByWindowId` method to start screen sharing:
+
+  ``` csharp
+  ScreenCaptureSourceInfo info = screenCaptureSourceInfos[0];
+  if (info.type == ScreenCaptureSourceType.ScreenCaptureSourceType_Screen)
+  {
+    ulong displayId = info.sourceId;
+    RtcEngine.StartScreenCaptureByDisplayId((uint)displayId, default(Rectangle),default(ScreenCaptureParameters));
+  }
+   else if (info.type == ScreenCaptureSourceType.ScreenCaptureSourceType_Window)
+  {
+     ulong windowId = info.sourceId;
+     RtcEngine.StartScreenCaptureByWindowId(windowId, default(Rectangle),default(ScreenCaptureParameters));
+  }
+  ```
+
+1. Join a channel and publish screen sharing stream.
+  
+  - To publish only the screen sharing stream, add the following code to your project:
+
+    ``` csharp
+    ChannelMediaOptions options = new ChannelMediaOptions();
+     options.publishCameraTrack.SetValue(false);
+     options.publishScreenTrack.SetValue(true);
+
+    #if UNITY_ANDROID || UNITY_IPHONE
+     options.publishScreenCaptureAudio.SetValue(true);
+     options.publishScreenCaptureVideo.SetValue(true);
+    #endif
+      RtcEngine.UpdateChannelMediaOptions(options);
+    ```
+
+  - To publish a screen sharing stream and the video stream captured by a local camera simultaneously, add the following code to your project:
+
+    ``` csharp
+    // Join a channel and push the camera stream
+    RtcEngine.EnableAudio();
+    RtcEngine.EnableVideo();
+    RtcEngine.SetClientRole(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+
+    ChannelMediaOptions options = new ChannelMediaOptions();
+    options.autoSubscribeAudio.SetValue(true);
+    options.autoSubscribeVideo.SetValue(true);
+
+    options.publishCameraTrack.SetValue(true);
+    options.publishScreenTrack.SetValue(false);
+    options.enableAudioRecordingOrPlayout.SetValue(true);
+    options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+    RtcEngine.JoinChannel(_token, _channelName, this.Uid1, options);
+
+    // Join a channel and push the screen sharing stream
+    ChannelMediaOptions options = new ChannelMediaOptions();
+    options.autoSubscribeAudio.SetValue(false);
+    options.autoSubscribeVideo.SetValue(false);
+    options.publishCameraTrack.SetValue(false);
+    options.publishScreenTrack.SetValue(true);
+    options.enableAudioRecordingOrPlayout.SetValue(false);
+    #if UNITY_ANDROID || UNITY_IPHONE
+    options.publishScreenCaptureAudio.SetValue(true);
+    options.publishScreenCaptureVideo.SetValue(true);
+    #endif
+    options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+    var ret = RtcEngine.JoinChannelEx(_token, new RtcConnection(_channelName, this.Uid2), options);
+    ```
+
+### Limitations
+
+Be aware of the following limitations:
+
+- The video unit price for a screen-sharing stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](../reference/pricing.md) for details.
+- Due to system limitations, screen sharing is only supported on iOS 12.0 and above.
+- This feature requires a high level of device performance. Agora recommends that you use an iPhone X or above.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open-source Unity [sample project](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/ScreenShare) on GitHub. Download and explore this project for a more detailed example.
+
+### API reference
+
+- Common
+  - [`EnableAudio`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_enableaudio)
+  - [`EnableVideo`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_enablevideo)
+  - [`SetClientRole` [1/2]](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setclientrole)
+  - [`UpdateChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_updatechannelmediaoptions)
+  - [`ChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_channelmediaoptions.html)
+  - [`JoinChannel` [2/2]](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2)
+  - [`JoinChannelEx`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineex.html#api_irtcengineex_joinchannelex)
+
+- Android
+  - [`StartScreenCapture` [1/2]](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapture)
+  - [`StopScreenCapture` [1/2]](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
+  - [`JoinChannel` [2/2]](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2)
+
+- iOS
+  - [`StartScreenCapture` [1/2]](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapture)
+  - [`StopScreenCapture` [1/2]](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
+  - [`UpdateScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureparameters)
+
+- macOS, Windows
+  - [`GetScreenCaptureSources`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_getscreencapturesources)
+  - [`StartScreenCaptureByDisplayId`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebydisplayid)
+  - [`StartScreenCaptureByWindowId`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebywindowid)
+</TabsContent>
+
+<TabsContent value="unreal">
+Agora screen sharing offers the following advantages:
+
+- **Ultra HD quality experience**: Supports Ultra HD video (4K resolution, 60 FPS frame rate), giving users a smoother, high-definition, ultimate picture experience.
+- **Multi-app support**: Compatible with many mainstream apps such as WPS Office, Microsoft Office Power Point, Visual Studio Code, Adobe Photoshop, Windows Media Player, and Scratch. This makes it convenient for users to directly share specific apps.
+- **Multi-device support**: Supports multiple devices sharing at the same time. Screen sharing is compatible with Windows 8 systems, devices without independent graphics cards, dual graphics card devices, and external screen devices.
+- **Multi-platform adaptation**: Supports iOS, Android, macOS, Windows, Web, Unity, Flutter, React Native, Unreal Engine, and other platforms.
+- **High security**: Supports sharing only a single app or part of the screen. Also supports blocking specified app windows, effectively ensuring user information security.
+
+This page shows you how to implement screen sharing in your game.
+
+## Understand the tech
+
+The screen sharing feature provides the following screen sharing modes for use in various use-cases:
+
+**Screen sharing use-cases**
+
+![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+
+- **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
+- **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
+- **Share a designated screen area**: If you only want to share a portion of the screen or app window, you can set a sharing area when starting screen sharing.
+
+Screen sharing modes are available on different platforms as follows:
+
+- **Desktop** (Windows and macOS): Supports all screen sharing features listed above.
+
+- **Mobile** (Android and iOS): Only supports sharing the entire screen.
+
+### Advanced features
+
+You can enable the following advanced screen sharing features by adjusting the parameters when starting screen sharing:
+
+- **Shield a specified app window**: When sharing the screen, if you don't want to expose a specific app window, you can choose to shield it so that the window will not appear in the shared screen.
+- **Stroke**: If you need to outline the area being shared, you can stroke a specified app window or screen and customize the width, color, and transparency of the stroke.
+- **Pin an app window to the front**: If you share multiple app windows at the same time, the windows may block each other. You can specify an app window and bring it to the front to prevent it from being blocked by other windows.
+- **Set the sharing scenario**: The SDK automatically adjusts the Quality of Experience (QOE) policy according to the scenario you choose:
+  - When sharing documents, slides, tables, or in remote control applications, set the sharing scene to either **document** or **remote control**. The SDK prioritizes optimizing image quality and minimizing latency, thus enhancing the viewing experience for the recipient of the shared video.
+  - When sharing games, movies, or live video broadcasts, set the shared scene to **game** or **video**. The SDK prioritizes smoothness of video at the receiving end.
+
+## Prerequisites
+
+- To implement screen sharing, please make sure not to manually remove the screen sharing dynamic library (libagora_screen_capture_extension.dll) when integrating the SDK, otherwise the function will not work properly.
+
+- Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Set up your project
+
+## Implement screen sharing
+
+This section shows you how to implement screen sharing in your project. The basic API call sequence is shown in the figure below:
+
+**Screen share process**
+
+![Screen Share Process](/images/video-sdk/screen-sharing-macos-unreal-windows.svg)
+
+To enable screen sharing, choose one of the following methods according to your use-case:
+
+- Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId` before joining the channel, then call `joinChannel [2/2]` to join the channel and set `publishScreenTrack` or `publishSecondaryScreenTrack` to `true` to start screen sharing.
+
+- Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId` after joining the channel, then call `updateChannelMediaOptions` to set `publishScreenTrack` or `publishSecondaryScreenTrack` to `true` to start screen sharing.
+
+The flow diagram and implementation steps in this article are based on the first use-case.
+
+### Get resource list
+
+Call `getScreenCaptureSources` to get an object list of screens and windows available for sharing. The list contains important information such as the **window ID** and **screen ID**. This enables users to choose a certain screen or window, through the thumbnails in the list, for sharing. 
+
+``` cpp
+{
+  // Get information about a specified shareable window or screen
+  agora::rtc::IScreenCaptureSourceList* listCapture = m_rtcEngine->getScreenCaptureSources(sz, sz, true);
+  for (int i = 0; i < listCapture->getCount(); i++)
+  {
+    // Returns information about a shareable window or screen
+    agora::rtc::ScreenCaptureSourceInfo info = listCapture->getSourceInfo(i);
+  }
+
+  // Get the number of windows and screens that can be shared
+  return static_cast<int>(m_listWnd.GetCount());
+}
+```
+
+### Enable screen sharing
+
+Depending on your application use-case, choose one of the following screen sharing methods.
+
+#### Share the entire screen
+
+Call `startScreenCaptureByDisplayId` with the following parameters to start sharing the whole screen:
+
+- Set `sourceId` to the `displayId` (screen ID) obtained in the resource list.
+- Set your desired video encoding properties in `captureParams`:
+  - In document scenes or remote control scenes, it is recommended to set `dimensions` to **1920 × 1080** and `frameRate` as **10 FPS**.
+  - In game scenes or video scenes, it is recommended to set `dimensions` to **960 × 720** and `frameRate` to **15 FPS**.
+
+``` cpp
+// Start sharing the specified screen
+m_rtcEngine->startScreenCaptureByDisplayId(id, regionRect, capParam);
+```
+
+#### Share app window
+
+Call `startScreenCaptureByWindowId` with the following parameters to start sharing an app window:
+
+- Set `sourceId` to the `windowId` obtained in the resource list.
+- Set your desired video encoding properties in `captureParams`:
+  - In document scenes or remote control scenes, it is recommended to set `dimensions` to **1920 × 1080** and `frameRate` as **10 FPS**.
+  - In game scenes or video scenes, it is recommended to set `dimensions` to **960 × 720** and `frameRate` to **15 FPS**.
+
+``` cpp
+// Start sharing a specified app window
+ret = m_rtcEngine->startScreenCaptureByWindowId(hWnd, rcCapWnd, capParam);
+```
+
+#### Share a designated area
+
+Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId` method to start sharing, and set `regionRect` to the area you want to share relative to the whole screen or window. The sample code is as follows:
+
+``` cpp
+// Set the parameters of the area you want to share
+m_screenRegion = { 0,0,heightX,heightY };
+agora::rtc::Rectangle rcCapWnd = { m_screenRegion.x, m_screenRegion.y, (int)(m_screenRegion.width * scale), (int)(m_screenRegion.height * scale) };
+...
+m_rtcEngine->startScreenCaptureByDisplayId(id, rcCapWnd, m_screenParam);
+```
+:::note
+If the sharing area is set to extend beyond the boundaries of the screen, only the content within the screen is shared. If the width or height is set to 0, the entire screen is shared.
+:::
+### Set up a screen sharing scenario (Optional)
+
+Call the `setScreenCaptureScenario` method to set the screen sharing scenario. Set the `screenScenario` to any one of the following according to the actual usage scenario:
+
+- `SCREEN_SCENARIO_DOCUMENT`: Document scenario
+- `SCREEN_SCENARIO_GAMING`: Game scenario
+- `SCREEN_SCENARIO_VIDEO`: Video scenario
+- `SCREEN_SCENARIO_RDC`: Remote control scenario
+
+``` cpp
+m_rtcEngine->setScreenCaptureScenario(type);
+```
+
+### Capture system audio (Optional)
+
+To capture and publish the audio played in the shared screen or window simultaneously, call `enableLoopbackRecording` to start sound card capture.
+
+After you call this method, the audio played by other processes in the system is published to the remote end. To turn off sound card acquisition, call the method again.
+
+### Join a channel and publish a screen sharing video stream
+
+Call `joinChannel`[2/2] to join the channel and set the channel media options. 
+
+``` cpp
+// Set Channel Media Options
+ChannelMediaOptions option;
+option.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+option.clientRoleType = CLIENT_ROLE_BROADCASTER;
+option.publishMicrophoneTrack = true;
+// Publish the screen captured video to the channel
+// To publish a second screen captured video in the channel, replace the next line of code with option.publishSecondaryScreenTrack = true；
+option.publishScreenTrack = true;
+// Join the channel
+m_rtcEngine->joinChannel("Your Token", "Your ChannelId", 0, option)
+```
+
+#### Additional notes
+
+This article demonstrates publishing the screen sharing stream directly in the channel without publishing the stream captured by the camera. In a real-world scenario, the requirements may be different from the description in this document. Adjust the code logic based on your scenario. 
+
+To publish the stream captured by the camera and the screen sharing stream at the same time, refer to the following steps:
+
+- Call `joinChannel`[2/2] to join the first channel and publish the video stream captured by the camera in this channel.
+- Call `joinChannelEx` to join a second channel and publish a screen sharing stream.
+
+### Update screen sharing area or parameters
+
+To dynamically update the screen sharing area or parameters in the channel, call the following methods:
+
+- To update the shared region of the screen, call the `updateScreenCaptureRegion` method to reset the `regionRect` parameter and define a new sharing area.
+- - To update the screen sharing parameters, such as video encoding resolution, frame rate, bitrate, or to stroke the screen or app window, or block a specified
+window, call the `updateScreenCaptureParameters` method and update the `captureParams` parameter configuration.
+
+``` cpp
+// Update the screen share area
+int ret = m_rtcEngine->updateScreenCaptureRegion(rect);
+
+// Update screen sharing parameters
+int ret = m_rtcEngine->updateScreenCaptureParameters(m_screenParam);
+```
+
+### Stroke the screen 
+
+Depending on your scenario, you may stroke the shared screen or window in one of the following ways:
+
+- Stroke when enabling screen sharing: Call `startScreenCaptureByDisplayId` or `startScreenCaptureByWindowId`, set `enableHighLight` in `captureParams` to `true`, and set both `highLightColor` and `highLightWidth` to specify the stroke color and width.
+
+- Stroke after screen sharing is enabled: Call `updateScreenCaptureParameters`, set `enableHighLight` in `captureParams` to `true`, and set both `highLightColor` and `highLightWidth` to specify the stroke color and width.
+
+``` cpp
+bool highLigne = m_chkHighLight.GetCheck();
+m_screenParam.enableHighLight = highLigne;
+// Setting the stroke color of the screen
+m_screenParam.highLightColor = 0xFFFF0000;
+// Setting the stroke width of the screen
+m_screenParam.highLightWidth = 5;
+// Enable Screen Stroke
+int ret = m_rtcEngine->updateScreenCaptureParameters(m_screenParam);
+```
+
+### Block window
+
+Depending on your usage scenario, you may block a specified window in one of the following ways:
+
+- Block windows when enabling screen sharing: Call `startScreenCaptureByDisplayId`, set `excludeWindowList` in `captureParams` to the list of windows you want to block.
+
+- Block windows after screen sharing is enabled: Call `updateScreenCaptureParameters`, set `excludeWindowList` in `captureParams` to the list of windows you want to block.
+
+``` cpp
+m_screenParam.excludeWindowList = excludeViews;
+m_screenParam.excludeWindowCount = count;
+
+int ret = m_rtcEngine->updateScreenCaptureParameters(m_screenParam);
+```
+:::note
+On the Windows platform, you can block up to 24 windows.
+:::
+### Stop screen sharing
+
+Call `stopScreenCapture` to stop sharing the screen within a channel. 
+
+``` cpp
+// Stop screen sharing
+ret = m_rtcEngine->stopScreenCapture();
+```
+
+### Limitations
+
+Be aware of the following limitations:
+
+- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](../reference/pricing.md) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
+- To share 4K Ultra-HD resolution video during screen sharing, your device needs to meet certain requirements. The minimum device specifications recommended by Agora are: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHZ.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open source Unreal Engine [sample project](https://github.com/AgoraIO/API-Examples/blob/main/windows/APIExample/APIExample/Advanced/ScreenShare/AgoraScreenCapture.cpp) on GitHub. Download and explore this project for a more detailed example.
+
+### API reference
+
+- [`getScreenCaptureSources`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_getscreencapturesources)
+
+- [`startScreenCaptureByDisplayId`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebydisplayid)
+
+- [`startScreenCaptureByWindowId`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebywindowid)
+
+- [`setScreenCaptureScenario`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_setscreencapturescenario)
+
+- [`updateScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureparameters)
+
+- [`updateScreenCaptureRegion`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureregion)
+
+- [`stopScreenCapture`[1/2]](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
+</TabsContent>
+
+<TabsContent value="blueprint">
+Agora screen sharing offers the following advantages:
+
+- **Ultra HD quality experience**: Supports Ultra HD video (4K resolution, 60 FPS frame rate), giving users a smoother, high-definition, ultimate picture experience.
+- **Multi-app support**: Compatible with many mainstream apps such as WPS Office, Microsoft Office Power Point, Visual Studio Code, Adobe Photoshop, Windows Media Player, and Scratch. This makes it convenient for users to directly share specific apps.
+- **Multi-device support**: Supports multiple devices sharing at the same time. Screen sharing is compatible with Windows 8 systems, devices without independent graphics cards, dual graphics card devices, and external screen devices.
+- **Multi-platform adaptation**: Supports iOS, Android, macOS, Windows, Web, Unity, Flutter, React Native, Unreal Engine, and other platforms.
+- **High security**: Supports sharing only a single app or part of the screen. Also supports blocking specified app windows, effectively ensuring user information security.
+
+This page shows you how to implement screen sharing in your game.
+
+## Understand the tech
+
+The screen sharing feature provides the following screen sharing modes for use in various use-cases:
+
+**Screen sharing use-cases**
+
+![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+
+- **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
+- **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
+- **Share a designated screen area**: If you only want to share a portion of the screen or app window, you can set a sharing area when starting screen sharing.
+
+Screen sharing modes are available on different platforms as follows:
+
+- **Desktop** (Windows and macOS): Supports all screen sharing features listed above.
+
+- **Mobile** (Android and iOS): Only supports sharing the entire screen.
+
+## Prerequisites
+
+- Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Set up your project
+
+### Android and iOS 
+
+Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream. You use the iOS native `ReplayKit` framework in the extension to record the screen, and then send the screen sharing stream to the main process.
+
+**Screen sharing sequence**
+
+![Screen Sharing Blueprint Tech Android iOS](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+
+Refer to the [iOS Screen Sharing Guide](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/blob/main/Agora-Unreal-SDK-CPP-Example/IOS%20ScreenShare%20Guide.md) to create an Extension for your Unreal (Blueprint) project.
+
+### Windows and macOS
+
+Agora currently supports the following screen sharing solutions for macOS and Windows platforms:
+
+  - Share a specified screen or part of a specified screen using the `displayId`.
+  - Share a specified window or part of a specified window using the `windowId`.
+
+The basic API call sequence is shown in the figure below:
+![Screen Sharing Blueprint Tech Windows macOS](/images/video-sdk/screen-sharing-blueprint-windows-macos-tech.png)
+
+## Implement screen sharing
+
+This section shows you how to implement screen sharing in your project.
+
+### Android and iOS platforms
+
+This subsection describes how to start and stop screen sharing on Android and iOS mobile platforms.
+
+#### Create buttons
+
+Create two button controls named `Btn_StartScreenCapture` and `Btn_StopScreenCapture`. Users **start** or **stop** screen sharing using these two buttons as shown in the figure below:
+
+![Create UMG](/images/video-sdk/screen-sharing-blueprint-android-ios-mobile-umg.png)
+
+#### Join a channel and publish the screen sharing stream
+
+Refer to the following steps to join a channel and publish a screen sharing stream:
+
+1. In **Bind UIEvent**, bind the UI event of clicking the **Start Screen Share** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StartScreenShare` button control and the `OnStartScreenShareClicked` callback functions respectively. This callback is triggered when the user clicks the **Start Screen Share** button as shown in the following figure:
+
+  ![Bind UI Start](/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-start.png)
+
+1. Create and implement the `OnStartScreenShareClicked` callback. When a button click triggers this callback, execute the following flow:
+
+  1. Call the **Stop Screen Capture** method to pause the ongoing screen sharing process.
+  1. Call **Start Screen Capture** method to start screen capture, and check **Capture Audio** and **Capture Video** in **Make ScreenCaptureParameters2** to capture system audio and screen video.
+  1. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the screen-captured video stream to the channel:
+    - Set **Publish Camera Track** to `AGORA FALSE VALUE` to cancel publishing the video stream collected by the camera.
+    - Set **Publish Screen Capture Video** to `AGORA TRUE VALUE` to publish the screen-captured video stream.
+    - Set **Publish Screen Capture Audio** to `AGORA TRUE VALUE` to publish the screen-captured audio stream.
+    - Set **Auto Subscribe Video** to `AGORA TRUE VALUE` to automatically subscribe to all video streams.
+    - Set **Auto Subscribe Audio** to `AGORA TRUE VALUE` to automatically subscribe to all audio streams.
+    - Check **Client Role Type Set Value** and set **Client Role Type** to `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` to set the user role as host or audience.
+    - Check **Channel Profile Set Value** and set **Channel Profile** to `CHANNEL_PROFILE_LIVE_BROADCASTING` to set the channel scene to live broadcast scene as shown below:
+
+    ![Join Channel and Publish Screen Sharing Stream](/images/video-sdk/screen-sharing-blueprint-android-ios-mobile-start.png)
+
+#### Stop screen sharing
+
+Follow the steps below to stop screen capture:
+
+1. In **Bind UIEvent**, bind the UI event of clicking the **Stop Screen Sharing** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StopScreenShare` button control and the `OnStopScreenShareClicked` callback function respectively. This callback is triggered when the user clicks the **Stop Screen Share** button. 
+
+  ![Bind UI Event for Stop Button Click](/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-stop.png)
+
+1. Create and implement the `OnStopScreenShareClicked` callback. When a button click triggers this callback, **Stop Screen Capture** is called to stop screen sharing as shown in the following image:
+
+  ![Bind UI Event for Stop Button Click](/images/video-sdk/screen-sharing-blueprint-android-ios-stop.png)
+
+### Windows and macOS platforms
+
+This subsection describes how to start and stop screen capture on Windows and macOS mobile platforms.
+
+#### Create the user interface
+
+Refer to the following steps to create a UMG:
+
+1. Create a **ComboBoxString** (drop-down list box) control named `CBS_DisplayID` for the user to select the screen or window to share from a drop-down list.
+
+1. Create two **Button** controls named `Btn_StartScreenCapture` and `Btn_StopScreenCapture`, for the user to start or stop screen sharing. 
+
+  ![Windows macOS UMG](/images/video-sdk/screen-sharing-blueprint-windows-macos-umg.png)
+
+#### Add the basic process
+
+In **EventGraph**, add and connect the event nodes required for screen sharing as shown in the following diagram:
+
+![EventGraph](/images/video-sdk/screen-sharing-blueprint-windows-macos-event-graph.png)
+
+The main nodes are as follows:
+
+| Node | Description |
+|:---|:---------------|
+| Get Screen Display Id | After initializing the Agora Engine, get information about the shareable screens and windows. Use this information to set the options and indexes in the drop-down lists. |
+| Init Default Screen Capture Config | Prepare the parameter configuration for screen sharing and save the configuration for later use. |
+
+#### Get available screens and windows
+
+Follow the steps below to obtain and add available screens and windows:
+
+1. In **Get Screen Display Id**, refer to the following steps to get the currently available screen and window resources and add them to the options in the drop-down list:
+
+  1. Call the **Get Screen Capture Sources** method to return a list of shareable screens and windows, and call **Get Count** to get the number of shareable screens and windows, as shown in the following figure:
+
+    ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-screen-capture-sources.png)
+
+  1. Traverse the list, call **Get Source Info** to get information about a specific screen or window, and add the **Source Name** to each of the options in the drop-down list for the users to choose from. Call **Release** to release the list of shareable screens and windows. Refer to the following figure:
+
+    ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-source-info.png)
+
+1. In **Bind UIEvent**, bind the UI event of the dropdown list selection change. Create a **Bind Event to On Selection Changed** node that connects the `CBS_DisplayID` drop-down list control and the `OnCBDisplayIDSelectionChanged` callback function, respectively. This callback is triggered when the user selects the specified screen or window in the drop-down list as shown in the following figure:
+
+  ![Bind Event On Selection Changed](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-event-to-on-selection-changed.png)
+
+1. Create and implement the `OnCBDisplayIDSelectionChanged` callback. When an option change triggers this callback, it looks up the index of the option and sets the option by index as shown below:
+
+  ![OnCBDisplayIDSelectionChanged](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-cbdisplay-id-selection-changed.png)
+
+#### Configure screen sharing parameters
+
+In **Init Default Screen Capture Config**, configure screen sharing parameters such as **Dimensions**, **Frame Rate**, and **Bitrate**. Make advanced configurations as follows:
+
+- **Screen Stroke**: Check **Enable High Light** and set **High Light Width** and **High Light Color** to specify the stroke width and color. The SDK strokes the shared screen or window according to your settings.
+
+- **Shield Window**: Set **Exclude Window List** to the list of windows you want to shield. When you subsequently call **Start Screen Capture by Display Id**, the specified window is shielded.
+
+Save this configuration for subsequent use when starting screen capture. Refer to the following figure:
+
+![Save Screen Share Config](/images/video-sdk/screen-sharing-blueprint-windows-macos-save-config.png)
+
+#### Join a channel and publish a screen sharing stream
+
+1. In **Bind UIEvent**, bind the event of clicking the **Start Screen Share** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StartScreenShare` button control and the `OnStartScreenShareClicked` callback functions, respectively. This callback is triggered when the user clicks the **Start Screen Share** button as shown below:
+
+  ![Bind Event to On Clicked](/images/video-sdk/screen-sharing-blueprint-windows-macos-create-bind-event-to-on-clicked-node.png)
+
+1. Create and implement the `OnStartScreenShareClicked` callback. When the callback is triggered, the following process is executed:
+  1. Call the **Stop Screen Capture** method to pause the ongoing screen sharing process.
+  1. Based on the list of available screens and windows saved in the previous steps, find the element that corresponds to the option and determine whether the option is a `ScreenCaptureSourceType_Screen` (screen) or a `ScreenCaptureSourceType_Window` (window) by using the **Type** in the element.
+
+    ![OnStartScreenShareClicked callback](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-start-screen-share-clicked.png)
+
+  1. If the shared target is a screen, call **Start Screen Capture by Display Id** to pass in the screen ID and the parameter configuration saved in the previous steps to start capturing the video stream of the specified screen. If the shared target is a window, call **Start Screen Capture by Window Id** to pass in the window ID and the parameter configuration to start capturing the video stream of the specified window. To share a specific region of a screen or window, set the **Region Rect** parameter to the position of the region you want to share relative to the entire screen or window.
+  1. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the captured screen sharing stream:
+    - Set **Publish Camera Track** to `AGORA FALSE VALUE` to cancel publishing camera-captured video streams.
+    - Set **Publish Screen Track** to `AGORA TRUE VALUE` to publish screen-captured video streams.
+    - Set **Auto Subscribe Video** to `AGORA TRUE VALUE` to automatically subscribe to all video streams.
+    - Set **Auto Subscribe Audio** to `AGORA TRUE VALUE` to automatically subscribe to all audio streams.
+    - Check **Client Role Type Set Value** and set **Client Role Type** to `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` to set the user's role as anchor or audience.
+    - Check **Channel Profile Set Value** and set **Channel Profile** to `CHANNEL_PROFILE_LIVE_BROADCASTING`.
+
+    ![Call Join Channel](/images/video-sdk/screen-sharing-blueprint-windows-macos-call-join-channel.png)
+
+#### Stop screen sharing and leave the channel
+
+1. In **Bind UIEvent**, bind the event of clicking the **Stop Screen Sharing** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StopScreenShare` button control and the `OnStopScreenShareClicked` callback functions respectively. This callback is triggered when the user clicks the **Stop Screen Share** button. Refer to the following figure:
+
+  ![Bind UI Event of Stop Button Click](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-ui-stop.png)
+
+1. Create and implement the `OnStopScreenShareClicked` callback. When a button click triggers this callback, **Stop Screen Capture** is called to stop screen sharing as shown below:
+
+  ![OnStopScreenShareClicked callback](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-stop-screen-share-clicked.png)
+
+### Limitations
+
+Be aware of the following limitations:
+
+- The video unit price for a screen-shared stream is based on the **video resolution** you set in `FScreenCaptureParameters`. If you do not pass dimensions in `FScreenCaptureParameters`, Agora bills at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](../reference/pricing.md) for details.
+
+#### Android and iOS platforms
+
+- Before starting screen sharing, call the `SetAudioScenario` method and set the **audio scenario** to `AUDIO_SCENARIO_GAME_STREAMING` (high sound quality scenario) to improve the success rate of capturing system audio during screen sharing.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open source Unreal (Blueprint) [sample project](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) on GitHub for your reference:
+
+  - [ScreenShare](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Advance/ScreenShare): implements screen sharing.
+  - [ScreenShareWhileVideoCall](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Advance/ScreenShareWhileVideoCall): implements screen sharing while on a video call.
+
+### API reference
+
+- Android, iOS
+  - [`StartScreenCapture`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapture)
+  - [`StopScreenCapture`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
+  - [`UpdateScreenCapture`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencapture)
+
+- macOS, Windows
+  - [`GetScreenCaptureSources`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_getscreencapturesources)
+  - [`StartScreenCaptureByDisplayId`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebydisplayid)
+  - [`StartScreenCaptureByWindowId`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebywindowid)
+  - [`UpdateScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureparameters)
+  - [`UpdateScreenCaptureRegion`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureregion)
+  - [`SetScreenCaptureContentHint`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_setscreencapturecontenthint)
+  - [`SetScreenCaptureScenario`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_setscreencapturescenario)
+  - [`StopScreenCapture`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
+</TabsContent>
+
+</Tabs>

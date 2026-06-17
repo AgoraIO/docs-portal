@@ -1,0 +1,129 @@
+---
+title: "Optimize video transmission"
+description: ""
+---
+
+<Tabs defaultValue="web" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+  <TabsTrigger value="electron">Electron</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+  <TabsTrigger value="react-native">React Native</TabsTrigger>
+  <TabsTrigger value="unity">Unity</TabsTrigger>
+  <TabsTrigger value="unreal">Unreal Engine</TabsTrigger>
+  <TabsTrigger value="blueprint">Unreal Blueprint</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="ios">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="macos">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="web">
+Agora prioritizes both clarity and smoothness in video experience. However, this can be challenging in weak network conditions, often requiring a trade-off. Use-cases and products have unique requirements; for instance, screen sharing prioritizes clarity, while casual video calls prioritize smoothness. The Video SDK offers a transmission optimization feature to address these needs.
+
+## Understand the tech
+
+To optimize the video transmission, the Agora Video SDK offers two transmission optimization strategies for local video tracks:
+
+**Clear Priority**: 
+
+This strategy prioritizes clarity by automatically setting a minimum bit rate based on the capture resolution and frame rate. Even during network fluctuations, the sending bit rate will not drop below this threshold, ensuring a clear video picture. In most cases, the SDK will maintain the send resolution, although it may reduce the frame rate if necessary.
+
+**Smoothness First**: 
+
+In this approach, smoothness takes precedence over clarity. The SDK does not enforce a minimum bit rate policy, allowing the sending end to dynamically adjust the bit rate in response to network fluctuations. This ensures that the receiving end's video picture remains uninterrupted or free from freezing. Typically, the SDK will maintain the frame rate, but it may reduce the send resolution if needed.
+These strategies provide users with flexibility to prioritize either clarity or smoothness based on their specific use cases and network conditions
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+
+## Implementation 
+
+When creating a local video track using the `createCameraVideoTrack`, `createScreenVideoTrack`, or `createCustomVideoTrack` methods, you have the option to specify the transmission optimization mode through the `optimizationMode` parameter:
+
+- `"motion"`: Prioritizes smoothness, ensuring a stable video stream even in challenging network conditions.
+- `"detail"`: Prioritizes clarity, maintaining a clear video image even if network conditions degrade.
+
+If the `optimizationMode` parameter is not specified, the SDK will apply default optimization modes based on the type of video track:
+
+- For screen sharing video tracks, the default optimization strategy is clarity first, prioritizing a clear image over smoothness.
+- For other types of local video tracks, such as camera or custom tracks, the default optimization strategy aims to balance clarity and smoothness. This means that the SDK will adjust the frame rate and resolution under weak network conditions to maintain a satisfactory viewing experience.
+
+During a video call, live broadcast, or screen sharing session, you can dynamically adjust the video transmission mode using the `setOptimizationMode` method. For example, if you switch from presenting slides (requiring clarity) to showing a video (requiring smoothness), you can switch the transmission optimization mode from `detail` to `motion` to ensure that the video remains fluid even in fluctuating network conditions.
+
+```javascript
+// Use default strategy
+const videoTrack2 = await AgoraRTC.createScreenVideoTrack();
+```
+
+```javascript
+const videoTrack = await AgoraRTC.createCameraVideoTrack({
+ // Use clear priority
+ optimizationMode: "detail",
+});
+```
+
+```javascript
+const videoTrack2 = await AgoraRTC.createCameraVideoTrack({
+ // Use smoothness priority
+ optimizationMode: "motion",
+});
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+For more audio settings, see [Achieve high audio quality](https://docs-md.agora.io/en/video-calling/best-practices/best-practices-sound-quality.md).
+
+### Frequently asked questions​
+
+* [What is the difference between the in-call volume and the media volume?](https://docs-md.agora.io/en/help/integration-issues/system_volume.md)
+
+### API reference
+
+- [`optimizationMode`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/cameravideotrackinitconfig.html#optimizationmode)
+- [`setOptimizationMode`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalvideotrack.html#setoptimizationmode)
+</TabsContent>
+
+<TabsContent value="windows">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="electron">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="flutter">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="react-native">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="unity">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="unreal">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="blueprint">
+**This feature guide is not available yet.**
+</TabsContent>
+
+</Tabs>

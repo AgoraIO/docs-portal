@@ -6,6 +6,7 @@ import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import remarkDirective from 'remark-directive';
 import { z } from 'zod';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
+import { remarkPlatformContent } from './src/lib/platforms/remark-platform-content';
 
 const rawDocSchema = z.object({
   title: z.string().optional(),
@@ -65,6 +66,7 @@ export const docs = defineDocs({
       },
       remarkImageOptions: {
         external: false,
+        onError: 'ignore',
         useImport: false,
       },
       remarkCodeTabOptions: {
@@ -87,11 +89,13 @@ export const docs = defineDocs({
             },
           },
         ],
+        remarkPlatformContent,
         ...plugins,
       ],
     }),
   },
   meta: {
+    files: ['**/meta.{json,yaml}'],
     schema: docsMetaSchema,
   },
 });

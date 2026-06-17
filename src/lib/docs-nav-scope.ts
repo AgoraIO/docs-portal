@@ -170,7 +170,11 @@ export function getScopedNavScopeSidebarNodes({
   getNodeMeta: GetDocsNodeMeta;
   navScope: DocsNavScopeResolution;
 }): DocsSidebarNode[] {
-  return flattenNavScopeSidebarNodes(navScope.sidebarRoot, getNodeMeta);
+  return flattenNavScopeSidebarNodes(
+    navScope.sidebarRoot,
+    getNodeMeta,
+    navScope.scope.meta,
+  );
 }
 
 export function getSharedNavScopeSidebarNodes({
@@ -211,7 +215,11 @@ export function getSharedNavScopeSidebarNodes({
     }),
   };
 
-  return flattenNavScopeSidebarNodes(remappedFolder, getNodeMeta);
+  return flattenNavScopeSidebarNodes(
+    remappedFolder,
+    getNodeMeta,
+    navScope.scope.meta,
+  );
 }
 
 export function getNavScopeVersionLinks({
@@ -342,13 +350,16 @@ function navScopeParentNodeToSidebarNodes(
 function flattenNavScopeSidebarNodes(
   folder: Folder,
   getNodeMeta: GetDocsNodeMeta,
+  rootMeta?: DocsMeta,
 ): DocsSidebarNode[] {
   return [
     ...(folder.index
       ? [
           {
             id: folder.index.url,
-            title: normalizeLabel(folder.index.name, folder.index.url),
+            title:
+              rootMeta?.sidebarIndexTitle ??
+              normalizeLabel(folder.index.name, folder.index.url),
             type: 'page' as const,
             url: folder.index.url,
           },

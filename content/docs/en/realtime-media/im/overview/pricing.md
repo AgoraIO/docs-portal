@@ -1,0 +1,108 @@
+---
+title: "Pricing"
+description: "Explains how your bill for using Agora Chat is calculated."
+---
+
+This page explains how your bill for using Chat is calculated.
+
+Note that if you have already signed a contract with Agora, the billing terms and conditions within that contract take precedence.
+
+## Overview
+
+Each month, Agora calculates your bill for using Chat, [issues your bill, and deducts your fee](../reference/billing-policies.md). If you subscribe, cancel, or switch to another plan, your fee is prorated for the current month. If your account is [suspended](../reference/billing-policies.md), Agora stores your app data for six months. Agora suggests you top up your account in a timely fashion or export the data before it is deleted.
+
+## Composition
+
+When each month finishes, Agora calculates your usage of Chat in your [Agora account](../reference/manage-agora-account.md#create-an-agora-account). After deducting the usage included in your plan, Agora multiplies any excess usage by the corresponding unit price and adds this to the plan fee to get the total cost for that month. The formula is as follows:
+
+**Total cost = Plan fee + Excess usage × Unit price of the excess usage + (Optional) Add-on fee**
+
+### Plan fee
+
+Agora bills you based on the total number of MAUs (Monthly Active Users) in the [Agora account](../reference/manage-agora-account.md#create-an-agora-account).
+
+- MAU is the number of unique end users who log in to Agora Chat, connect to Agora Chat servers, and establish a long-lived connection at any time across a calendar month.
+- If a unique end-user connects to Agora Chat multiple times across a calendar month, they are counted as 1 MAU.
+- The end user is considered logged in when you call the “open” function in step 6 during the user authentication process [here](../develop/authentication.md#use-tokens-for-user-authentication).
+- Once logged in, that end user is counted towards the MAU, regardless of if they send or receive messages.
+
+:::info
+A best practice when managing your Agora Chat MAU is to authenticate your end users, create only one UID for each of them, and use UID persistently. Creating multiple UIDs for a unique end user will bloat your Agora Chat MAU.
+:::
+
+Chat offers four pricing plans: Free, Starter, Pro, and Enterprise. See [details of each pricing plan](../reference/pricing-plan-details.md) for their features and limitations. The following table outlines the base fee and included usage for each plan:
+
+| Chat plan | Fee (US$)  | Included usage (MAU) |
+| :-------------- | :--------- | :------------------- |
+| Free            | 0          | 500                  |
+| Starter         | 349        | 5,000                |
+| Pro             | 699        | 10,000               |
+| Enterprise      | Customized | Customized, requires a minimum monthly commitment of 100K MAU |
+
+### Bundle discount
+If you integrates both Chat and Agora's RTC offerings (such as video calls, audio calls, or live streaming), contact our sales team to get bundle discount.
+
+| Chat plan       | Fee (US$)     |
+| :-------------- | :---------    |
+| Free            |  N/A          |
+| Starter         | Contact sales |
+| Pro             | Contact sales |
+| Enterprise      | Contact sales |
+
+### Price of excess usage
+
+If your MAU exceeds the included usage of the pricing plan, the excess usage fees are incurred. The following table outlines the unit price of excess usage for each plan:
+
+| Chat plan | Unit price of excess usage (US$/MAU) |
+| :-------------- | :----------------------------------- |
+| Free            |    N/A*       |
+| Starter         | 0.05     |
+| Pro             | 0.05        |
+| Enterprise      | Customized           |
+
+*The Free plan does not allow you to exceed the included usage of MAU. Once the MAU exceeds 500, the server declines the subsequent login requests.
+
+For example, a user buys the Starter Chat plan, which includes 5,000 MAU, and uses the Chat service in Project A and Project B. For that month, the total number of MAU for Project A is 2,370 and for Project B is 7,865. Therefore, the total cost of that month's Chat is as follows: (2,370 + 7,865 - 5,000) * 0.05 + 349 = US$610.75.
+
+### (Optional) Add-on fee
+
+Chat provides the translation and content moderation features to meet your business requirements. Once enabled these features, the add-on fees are incurred. The following table outlines the pricing of these two features:
+
+| Add-on service | Pricing |
+| :-------------- | :----------------------------------- |
+| Translation | $0.02/1,000 characters* |
+| AI-Powered Content Moderation | $1.5/1,000 transactions** |
+
+*The number of characters count special characters and white spaces. For example, "I love you!" contains 11 characters in total, with eight letters, two white spaces, and one special character.
+
+**AI-Powered Content Moderation supports text moderation and image moderation. For text moderation, each transaction equals 3 KB of text content (roughly around 30 sentences). For image moderation, each image counts one transaction.
+
+## Plan management
+
+### Subscribe to the pricing plan
+
+Before using Chat, refer to the following steps to subscribe to a plan:
+
+1. Log in to [Agora Console](https://console.agora.io/v2), on the left navigation bar, click **Package** > **Chat** > **Subscribe** on the left navigation bar.
+2. Check [pricing plan details](../reference/pricing-plan-details.md), choose the plan you want to use, click **Subscribe**, and make the payment.
+
+Subscription takes effect immediately. After subscribing to a plan, you can click **Package** > **Chat** > **Manage**, and on this page you can click **Show More** to view your subscription details.
+
+### Unsubscribe from a plan
+
+By default, your subscription to Chat pricing plans is automatically renewed. You can unsubscribe at any time from . Cancelling your subscription takes effect immediately and will delete all the Chat-related data.
+
+### Switch to another plan
+
+If you want to upgrade your present plan, you can click the **Subscribe** button of another plan:
+
+1. On **Package** > **Chat** > **Subscribe** page, you can choose the plan you want to use and click **Subscribe**.
+2. Read the content in the pop-up, and then click **Save**.
+
+Reach out to our sales if you would like to subscribe to the Agora Chat Enterprise plan.
+
+Switching to another plan takes effect immediately and the subscription base fee will be calculated on a pro-rated basis.
+
+## Reference
+
+For detailed information on our pricing plans, see [Pricing Plan Details](../reference/pricing-plan-details.md).

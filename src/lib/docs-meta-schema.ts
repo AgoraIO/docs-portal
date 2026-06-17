@@ -17,6 +17,7 @@ export const docsNavScopeSchema = z.object({
 
 export const docsMetaSchema = metaSchema.extend({
   navScope: docsNavScopeSchema.optional(),
+  sidebarIndexTitle: z.string().min(1).optional(),
 });
 
 export type DocsMeta = z.infer<typeof docsMetaSchema>;

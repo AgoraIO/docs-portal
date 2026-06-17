@@ -95,6 +95,7 @@ function SidebarNodeRenderer({
   return (
     <SidebarPageLink
       activePath={activePath}
+      linked={node.linked}
       method={node.method}
       onSelectPath={onSelectPath}
       title={node.title}
@@ -115,8 +116,7 @@ function SidebarSection({
   const defaultOpen =
     !node.collapsible ||
     node.children.some((child) => isNodeActive(child, activePath)) ||
-    shouldDefaultOpenSection(node.title, activePath) ||
-    shouldDefaultOpenBuildSection(node, activePath);
+    shouldDefaultOpenSection(node.title, activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const splitIndex = node.nestedQuickstartGroup
     ? Math.max(
@@ -134,6 +134,8 @@ function SidebarSection({
     return (
       <SidebarLinkedSection
         activePath={activePath}
+        children={node.children}
+        collapsible={node.collapsible}
         icon={node.icon}
         onSelectPath={onSelectPath}
         title={node.title}
@@ -255,59 +257,123 @@ function SidebarSection({
 
 function SidebarLinkedSection({
   activePath,
+  children,
+  collapsible,
   icon,
   onSelectPath,
   title,
   url,
 }: {
   activePath: string;
+  children: DocsSidebarNode[];
+  collapsible?: boolean;
   icon?: string;
   onSelectPath: () => void;
   title: string;
   url: string;
 }) {
+  const defaultOpen =
+    !collapsible ||
+    children.some((child) => isNodeActive(child, activePath)) ||
+    url === activePath;
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  if (children.length === 0) {
+    return (
+      <SidebarMenuItem>
+        <SidebarMenuButton
+          asChild
+          className={sidebarToggleClassName}
+          isActive={url === activePath}
+        >
+          <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
+            <span className="flex min-w-0 items-center gap-2">
+              <SidebarConfiguredIcon icon={icon} />
+              <span className="block whitespace-normal">{title}</span>
+            </span>
+            <ChevronDownIcon className="size-4 shrink-0 -rotate-90" />
+          </Link>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    );
+  }
+
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton
-        asChild
-        className={sidebarToggleClassName}
-        isActive={url === activePath}
-      >
-        <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
-          <span className="flex min-w-0 items-center gap-2">
-            <SidebarConfiguredIcon icon={icon} />
-            <span className="block whitespace-normal">{title}</span>
-          </span>
-          <ChevronDownIcon className="size-4 shrink-0 -rotate-90" />
-        </Link>
-      </SidebarMenuButton>
+      <div className="flex items-stretch gap-1">
+        <SidebarMenuButton
+          asChild
+          className={cn(sidebarToggleClassName, 'min-w-0 flex-1 justify-start')}
+          isActive={url === activePath}
+        >
+          <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
+            <span className="flex min-w-0 items-center gap-2">
+              <SidebarConfiguredIcon icon={icon} />
+              <span className="block whitespace-normal">{title}</span>
+            </span>
+          </Link>
+        </SidebarMenuButton>
+        <SidebarMenuButton
+          aria-expanded={isOpen}
+          className={cn(
+            sidebarToggleClassName,
+            'w-10 shrink-0 justify-center px-0',
+          )}
+          onClick={() => setIsOpen((value) => !value)}
+          type="button"
+        >
+          <ChevronDownIcon
+            className={cn(
+              'size-4 shrink-0 transition-transform',
+              isOpen ? 'rotate-0' : '-rotate-90',
+            )}
+          />
+        </SidebarMenuButton>
+      </div>
+      {isOpen ? (
+        <SidebarMenuSub>
+          {children.map((child) =>
+            child.type === 'section' ? (
+              <SidebarMenuSubItem key={child.id}>
+                <SidebarNestedSection
+                  activePath={activePath}
+                  node={child}
+                  onSelectPath={onSelectPath}
+                />
+              </SidebarMenuSubItem>
+            ) : (
+              <SidebarMenuSubItem key={child.id}>
+                <SidebarMenuSubButton
+                  asChild
+                  className={sidebarEndpointButtonClassName(child.method)}
+                  isActive={child.url === activePath}
+                  size="md"
+                >
+                  <Link
+                    onClick={onSelectPath}
+                    params={{}}
+                    search={{}}
+                    to={child.url}
+                  >
+                    <SidebarPageLabel
+                      method={child.method}
+                      title={getSidebarDisplayTitle(child.title, child.url)}
+                    />
+                  </Link>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+            ),
+          )}
+        </SidebarMenuSub>
+      ) : null}
     </SidebarMenuItem>
   );
 }
 
 function shouldDefaultOpenSection(title: string, activePath: string) {
   return (
-    ((title === 'Realtime' || title === '实时互动') &&
-      /\/(en|zh-CN)\/introduction(?:\/index)?$/.test(activePath)) ||
-    ((title === 'Create and connect an agent' ||
-      title === 'CREATE AND CONNECT AN AGENT') &&
-      /\/(en|zh-CN)\/ai(?:\/index)?$/.test(activePath))
-  );
-}
-
-function shouldDefaultOpenBuildSection(
-  node: SidebarSectionNode,
-  activePath: string,
-) {
-  return (
-    (node.title === 'Build' || node.title === '构建') &&
-    /\/(en|zh-CN)\/ai(?:\/index)?$/.test(activePath) &&
-    node.children.some(
-      (child) =>
-        child.type === 'section' &&
-        (child.title === 'Create and connect an agent' ||
-          child.title === 'CREATE AND CONNECT AN AGENT'),
-    )
+    (title === 'Realtime' || title === '实时互动') &&
+    /\/(en|zh-CN)\/introduction(?:\/index)?$/.test(activePath)
   );
 }
 
@@ -388,8 +454,7 @@ function SidebarNestedSection({
   const defaultOpen =
     !node.collapsible ||
     node.children.some((child) => isNodeActive(child, activePath)) ||
-    shouldDefaultOpenSection(node.title, activePath) ||
-    shouldDefaultOpenBuildSection(node, activePath);
+    shouldDefaultOpenSection(node.title, activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
@@ -614,12 +679,14 @@ function normalizeRootSections(
 
 function SidebarPageLink({
   activePath,
+  linked,
   method,
   onSelectPath,
   title,
   url,
 }: {
   activePath: string;
+  linked?: boolean;
   method?: string;
   onSelectPath: () => void;
   title: string;
@@ -637,6 +704,7 @@ function SidebarPageLink({
       >
         <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
           <SidebarPageLabel
+            linked={linked}
             method={method}
             title={getSidebarDisplayTitle(title, url)}
           />
@@ -651,9 +719,11 @@ function sidebarEndpointButtonClassName(method?: string) {
 }
 
 function SidebarPageLabel({
+  linked,
   method,
   title,
 }: {
+  linked?: boolean;
   method?: string;
   title: string;
 }) {
@@ -671,6 +741,8 @@ function SidebarPageLabel({
         <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
           {method}
         </span>
+      ) : linked ? (
+        <ChevronDownIcon className="ml-auto size-4 shrink-0 -rotate-90 text-[color:var(--ink-4)]" />
       ) : null}
     </>
   );

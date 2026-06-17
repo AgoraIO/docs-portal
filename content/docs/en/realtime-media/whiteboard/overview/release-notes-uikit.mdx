@@ -1,0 +1,120 @@
+---
+title: 'Fastboard release notes'
+description: 'Track Fastboard SDK release notes across Android, iOS, and Web.'
+---
+
+Shared intro.
+
+<PlatformStructured platform="android">
+## Understand the tech
+
+The Fastboard SDK is the latest generation of the Whiteboard SDK launched by Agora to help developers quickly build whiteboard applications.
+
+## Reference
+
+## v1.7.2
+
+Released on July 28, 2025.
+
+#### New features
+
+**Register third-party window apps**
+
+This version adds the [`registerApp`](../../reference/uikit-sdk/#registerapp) method to the `FastRoom` class.
+
+**Set stroke thickness range**
+
+This version introduces the [`setStrokeRange`](../../reference/uikit-sdk/#setstrokerange) method in the `FastUiSettings` class.
+
+#### Bug fixes
+
+- The [`setToolboxEdgeMargin`](../../reference/uikit-sdk/#settoolboxedgemargin) method did not work when Toolbox Gravity was not specified.
+- UI updates did not take effect on the first call of [`setResource`](../../reference/uikit-sdk/#setresource).
+- The brush color was not in the custom color list when first entering the room after setting it with [`setToolsColors`](../../reference/uikit-sdk/#settoolscolors).
+
+## v1.6.2
+
+Released on July 28, 2025.
+
+#### New features
+
+- `preloadWhiteboardView`
+- `insertStaticDoc`
+- `insertPptx`
+- `FastboardConfig`
+- `FastLogger`
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+## Understand the tech
+
+The Fastboard SDK is the latest generation of the Interactive Whiteboard SDK launched by Agora to help developers quickly build whiteboard applications.
+
+## Reference
+
+## v1.4.2
+
+Released on July 28, 2025.
+
+#### Issues fixed
+
+- Setting `drawOnlyApplePencil` does not take effect on some high-version iOS devices.
+- The `warning: duplicate UUIDs` error occurs when installing the SDK using Cocoapods.
+
+#### Improvements
+
+Since this version, there is no distinction between YYModel and YYKit when integrating the SDK.
+
+## v1.2.2
+
+Released on January 19, 2024.
+
+#### New features
+
+- `insertPptx`
+- `FastRoomPanelItemAsset`
+- `FastRoomControlBarAssets`
+- `userPayload`
+
+#### Reference
+
+- [Join a Whiteboard Room](../build/get-started-sdk/)
+- [Display Files](../build/scenes/display-files-fast/)
+- [API Reference](../reference/uikit-sdk/)
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+## Understand the tech
+
+The Fastboard SDK is the latest generation of the whiteboard SDK launched by Agora to help developers quickly build whiteboard applications.
+
+## Reference
+
+## v1.1.0
+
+Released on July 28, 2025.
+
+#### New features
+
+- `FastboardOptions.enableAppInMainViewPlugin`
+- `markPen`
+
+#### Bug fixes
+
+- The declaration file `full.d.ts` was missing when using the full package import.
+- The toolbar did not display when the floating bar was set to `false`.
+
+## v1.0.0
+
+Released on July 28, 2025.
+
+#### New features
+
+- Full package reference support
+- `appliance-plugin`
+- `canOperate`
+- `toggleDottedLine`
+- `setPencilEraserSize`
+- `insertImage.crossOrigin`
+- `jumpPage`
+</PlatformStructured>

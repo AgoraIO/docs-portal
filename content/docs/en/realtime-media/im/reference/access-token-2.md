@@ -1,0 +1,322 @@
+---
+title: "Update the token-based authentication mechanism"
+description: "Describes how to build and update the token-based authentication mechanism step-by-step."
+---
+
+If you integrate the Chat SDK and Agora  at the same time, Agora recommends you update the token-based authentication mechanism from [AccessToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/src/AccessToken.h) to [AccessToken2](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/cpp/src/AccessToken2.h). 
+
+This document uses the JAVA server and the Web client as examples to guide you how to build and update the token-based authentication mechanism step-by-step. 
+
+## Prerequisites 
+- You have built a token server based on Spring Framework and a Web client using Chat according to [Authenticate Your Users with Tokens](../develop/authentication.md).
+
+- You have added the  Token service based on [AccessToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/src/AccessToken.h) to the token server of Chat. To do this, in `AgoraChatTokenController.java` file, import the `RtcTokenBuilder` with `import com.agora.chat.token.io.agora.media.RtcTokenBuilder;` and add the following method: 
+
+  ```java
+  // Generate  AccessToken
+  @GetMapping("/rtc/{rtcChannelName}/{rtcUserId}/{role}/token")
+  public String getRtcToken(@PathVariable String rtcChannelName, @PathVariable int rtcUserId, @PathVariable int role) {
+  
+      if (!StringUtils.hasText(appid) || !StringUtils.hasText(appcert)) {
+          return "appid or appcert is empty";
+      }
+  
+      RtcTokenBuilder builder = new RtcTokenBuilder();
+  
+      RtcTokenBuilder.Role rtcRole;
+  
+      switch(role) {
+          case 1:
+          default:
+              rtcRole = RtcTokenBuilder.Role.Role_Publisher;
+              break;
+          case 2:
+              rtcRole = RtcTokenBuilder.Role.Role_Subscriber;
+              break;
+      }
+  
+      return builder.buildTokenWithUid(appid, appcert, rtcChannelName, rtcUserId, rtcRole, expire);
+  }
+  ```
+- You have added the authentication logic to the client using the using the . To do this, create a `agoraRtcTokenClient` folder with the following two files: 
+  - `index.html  `：
+
+    ```html
+    
+    
+     
+       Token demo
+     
+    
+    
+       Token demo
+       
+       
+     
+    
+    ```
+  
+  - `client.js`. Replace `` with your App ID. 
+  
+    ```javascript
+    var rtc = {
+      // For the local audio and video tracks. 
+      localAudioTrack: null,
+      localVideoTrack: null,
+    };
+    
+    var options = {
+      // Pass your App ID here. 
+      appId: "",
+      // Set the channel name. 
+      channel: "ChannelA",
+      // Set the user role as host (who can both send and receive streams) or audience (who can only receive streams). 
+      role: "host",
+    };
+    
+    // Fetch a token from the sever. 
+    function fetchToken(uid, channelName, tokenRole) {
+    
+    url = 'http://localhost:8090/rtc/' + channelName + '/' + uid + '/' + tokenRole + '/' + 'token'
+    
+    return new Promise(function (resolve) {
+    
+        fetch(url)
+            .then(res => res.text())
+            .then((token => { resolve(token); }))
+    
+    })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+    
+    async function startBasicCall() {
+      const client = AgoraRTC.createClient({ mode: "live", codec: "vp9" });
+      client.setClientRole(options.role);
+      const uid = 123456;
+    
+      // Fetch a token before calling join to join a channel. 
+      let token = await fetchToken(uid, options.channel, 1);
+    
+      await client.join(options.appId, options.channel, token, uid);
+      rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+      rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+      await client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
+      const localPlayerContainer = document.createElement("div");
+      localPlayerContainer.id = uid;
+      localPlayerContainer.style.width = "640px";
+      localPlayerContainer.style.height = "480px";
+      document.body.append(localPlayerContainer);
+    
+      rtc.localVideoTrack.play(localPlayerContainer);
+    
+      console.log("publish success!");
+    
+      client.on("user-published", async (user, mediaType) => {
+        await client.subscribe(user, mediaType);
+        console.log("subscribe success");
+    
+        if (mediaType === "video") {
+          const remoteVideoTrack = user.videoTrack;
+          const remotePlayerContainer = document.createElement("div");
+          remotePlayerContainer.textContent =
+            "Remote user " + user.uid.toString();
+          remotePlayerContainer.style.width = "640px";
+          remotePlayerContainer.style.height = "480px";
+          document.body.append(remotePlayerContainer);
+          remoteVideoTrack.play(remotePlayerContainer);
+        }
+    
+        if (mediaType === "audio") {
+          const remoteAudioTrack = user.audioTrack;
+          remoteAudioTrack.play();
+        }
+    
+        client.on("user-unpublished", (user) => {
+          const remotePlayerContainer = document.getElementById(user.uid);
+          remotePlayerContainer.remove();
+        });
+      });
+    
+      // When token-privilege-will-expire occurs, fetch a new token from the server and call renewToken to renew the token. 
+      client.on("token-privilege-will-expire", async function () {
+        let token = await fetchToken(uid, options.channel, 1);
+        await client.renewToken(token);
+      });
+    
+      // When token-privilege-did-expire occurs, fetch a new token from the server and call join to rejoin the channel.
+      client.on("token-privilege-did-expire", async function () {
+        console.log("Fetching the new Token");
+        let token = await fetchToken(uid, options.channel, 1);
+        console.log("Rejoining the channel with new Token");
+        await rtc.client.join(options.appId, options.channel, token, uid);
+      });
+    }
+     
+    startBasicCall();
+    ```
+  
+- To test the AccessToken server, open index.html with a supported browser to perform the following actions: 
+   - Successfully joining a channel.
+   - Renewing a token every 10 seconds.
+
+## Implementation
+
+To upgrade your authentication mechanism to AccessToken 2, use the following procedure. 
+
+### Upgrade the token server to AccessToken2
+
+This section shows you how to upgrade the token server to AccessToken2. 
+
+1. Import `RtcTokenBuilder2` with the following code:  
+
+   ```java
+   import com.agora.chat.token.io.agora.media.RtcTokenBuilder2;
+   ```
+2. Replace the code for `getRtcToken` method with the following logic:
+
+   ```java
+   // Generate  AccessToken2
+   public String getRtcToken(@PathVariable String rtcChannelName, @PathVariable int rtcUserId, @PathVariable int role) {
+   
+       if (!StringUtils.hasText(appid) || !StringUtils.hasText(appcert)) {
+           return "appid or appcert is empty";
+       }
+   
+       RtcTokenBuilder2 builder = new RtcTokenBuilder2();
+   
+       RtcTokenBuilder2.Role rtcRole;
+   
+       switch(role) {
+           case 1:
+           default:
+               rtcRole = RtcTokenBuilder2.Role.ROLE_PUBLISHER;
+               break;
+           case 2:
+               rtcRole = RtcTokenBuilder2.Role.ROLE_SUBSCRIBER;
+               break;
+       }
+   
+       return builder.buildTokenWithUid(appid, appcert, rtcChannelName, rtcUserId, rtcRole, expire);
+   }
+   ```
+
+  No extra action is required for the client to get compatible with AccessToken2. 
+
+### Test the AccessToken2 server
+
+Open `index.html` with a supported browser to perform the following actions: 
+   - Successfully joining a channel.
+   - Renewing a token every 10 seconds.
+
+## Reference
+
+This section introduces token generator libraries, version requirements, and related documents about AccessToken2. 
+
+### SDK compatibility for AccessToken2
+
+AccessToken2 supports the following versions of the Agora ：
+
+| SDK                | First SDK version to support AccessToken2 |
+| :------------------- | :------------------------------- |
+|  Native SDK       | 3.5.2                            |
+|  ELectron SDK     | 3.5.2                            |
+|  Unity SDK        | 3.5.2                            |
+|  React Native SDK | 3.5.2                            |
+|  Flutter SDK      | 4.2.0                            |
+|  Web SDK          | 4.8.0                            |
+|  WeChat Mini Program SDK   | Not supported                    |
+
+ SDKs that use AccessToken2 can interoperate with  SDKs that use AccessToken. Also, the  that supports AccessToken2 also supports AccessToken. 
+
+:::info
+If you use other  extentions, such as Agora Cloud Recording and Media Push, contact [support@agora.io](mailto:support@agora.io) for technical support before upgrading to AccessToken2. 
+:::
+
+### Token generator libraries
+
+Agora provides an open-source [AgoraDynamicKey](https://github.com/AgoraIO/Tools/tree/release/accesstoken2/DynamicKey/AgoraDynamicKey) repository on GitHub, which enables you to generate AccessToken2 on your server with programming languages such as C++, Java, and Go. 
+
+| Language | Algorithm   | Core Method                                                  | Sample Code                                                  |
+| :------- | :---------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
+| C++      | HMAC-SHA256 | [buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/cpp/src/RtcTokenBuilder2.h) | [RtcTokenBuilder2Sample.cpp](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/cpp/sample/RtcTokenBuilder2Sample.cpp) |
+| Go       | HMAC-SHA256 | [buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2/rtctokenbuilder.go) | [sample.go](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/go/sample/rtctokenbuilder2/sample.go) |
+| Java     | HMAC-SHA256 | [buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/media/RtcTokenBuilder2.java) | [RtcTokenBuilder2Sample.java](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/sample/RtcTokenBuilder2Sample.java) |
+| Node.js  | HMAC-SHA256 | [buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/nodejs/src/RtcTokenBuilder2.js) | [RtcTokenBuilder2Sample.js](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/nodejs/sample/RtcTokenBuilder2Sample.js) |
+| PHP      | HMAC-SHA256 | [buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/php/src/RtcTokenBuilder2.php) | [RtcTokenBuilder2Sample.php](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/php/sample/RtcTokenBuilder2Sample.php) |
+| Python   | HMAC-SHA256 | [buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/python/src/RtcTokenBuilder2.py) | [RtcTokenBuilder2Sample.py](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/python/sample/RtcTokenBuilder2Sample.py) |
+| Python3  | HMAC-SHA256 | [buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/python3/src/RtcTokenBuilder2.py) | [RtcTokenBuilder2Sample.py](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/python3/sample/RtcTokenBuilder2Sample.py) |
+
+### API reference
+
+Taking Java as an example, this section introduces the parameters and descriptions for the method to generate an AccessToken2. 
+
+```java
+public String buildTokenWithUid(String appId, String appCertificate, String channelName, int uid, Role role, int expire) 
+```
+
+| Parameter        | Description                                                  |
+| :--------------- | :----------------------------------------------------------- |
+| `appId`          | The App ID of your Agora project.                            |
+| `appCertificate` | The App Certificate of your Agora project.                   |
+| `channelName`    | The channel name. The string length must be less than 64 bytes. Supported character scopes are: All lowercase English letters: a to z. All upper English letters: A to Z. All numeric characters: 0 to 9. The space character. Punctuation characters and other symbols, including: "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ",".  |
+| `uid`            | The user ID of the user to be authenticated. A 32-bit unsigned integer with a value range from 1 to (2³² - 1). It must be unique. Set `uid` as 0, if you do not want to authenticate the user ID, that is, any `uid` from the app client can join the channel. |
+| `role`           | The privilege of the user, either as a publisher or a subscriber. This parameter determines whether a user can publish streams in the channel. `ROLE_PUBLISHER(1)`: (default) The user has the privilege of a publisher, that is, the user can publish streams in the channel. `ROLE_SUBSCRIBER(2)`: The user has the privilege of a subscriber, that is, the user can only subscribe to streams, not publish them, in the channel. This value takes effect only if you have enabled co-host authentication. For details, see [Enable co-host authentication](#enable-co-host-authentication). |
+| `expire`         | The Unix timestamp (in seconds) when an AccessToken expires. Set this parameter as the current timestamp plus the valid period of AccessToken2. For example, if you set `expire` as the current timestamp plus 600, the AccessToken2 expires in 10 minutes. An AccessToken2 is valid for 24 hours at most. If you set it to a period longer than 24 hours, the AccessToken2 is still valid for 24 hours. |
+
+#### API for privilege-level expiration configuration
+
+To facilitate privilege-level configuration in a channel, Agora provides an overloaded method to support configuring the expiration of the AccessToken2 and related privileges:
+
+- Join a channel
+- Publish audio
+- Publish video
+- Publish data stream
+
+Take Java as an example: 
+
+```java
+public String buildTokenWithUid(String appId, String appCertificate, String channelName, int uid, int tokenExpire, int joinChannelPrivilegeExpire, int pubAudioPrivilegeExpire, int pubVideoPrivilegeExpire, int pubDataStreamPrivilegeExpire) 
+```
+
+This method generates an  AccessToken2 and supports configuring the following privileges:
+
+- The expiration time of AccessToken2
+- Joining an  channel
+- Publishing audio in an  channel
+- Publishing video in an  channel
+- Publishing data stream in an  channel
+
+The privileges of publishing audio in an  channel, publishing video in an  channel, and publishing data stream in an  channel only take effect after enabling co-host authentication. 
+
+You can assign multiple privileges to a user. The maximum valid period of each privilege is 24 hours. When a privilege is about to expire or has expired, the  triggers the `onTokenPriviegeWillExpire` callback or the `onRequestToken` callback. You need to take the following actions in your own app logic:
+
+1. Tag the type of privilege which is about to expire or has expired in your app logic.
+2. The app fetches a new AccessToken2 from the token server.
+3. The SDK calls `renewToken` to renew the AccessToken2, or `joinChannel`to rejoin the channel.  
+
+You need to set an appropriate expiration timestamp. For example, if the expiration time of joining a channel is earlier than that of publishing audio in the channel, when the privilege of joining a channel expires, the user is kicked out of the  channel. Even if the privilege of publishing audio is still valid, the privilege does not mean anything for the user. 
+
+| Parameter                      | Description                                                  |
+| :----------------------------- | :----------------------------------------------------------- |
+| `tokenExpire`                  | Number of seconds passed from the generation of AccessToken2 to the expiration of AccessToken2. Set this parameter as the current timestamp plus the valid period of AccessToken2. For example, if you set `tokenExpire`  as the current timestamp plus 600, the AccessToken2 expires in 10 minutes. An AccessToken2 is valid for 24 hours at most. If you set it to 0 or a period longer than 24 hours, the AccessToken2 is still valid for 24 hours. |
+| `joinChannelPrivilegeExpire`   | Number of seconds passed from the generation of AccessToken2 to the expiration of the privilege of joining a channel. Set this parameter as the current timestamp plus the valid period of the privilege of joining a channel. For example, if you set `joinChannelPrivilegeExpire` as the current timestamp plus 600, the privilege expires 10 minutes after generation. |
+| `pubAudioPrivilegeExpire`      | Number of seconds passed from the generation of AccessToken2 to the expiration of the privilege of publishing audio in a channel. Set this parameter as the current timestamp plus the valid period of publishing audio in a channel. For example, if you set `pubAudioPrivilegeExpire`  as the current timestamp plus 600, the privilege expires 10 minutes after generation. If you do not want to enable this privilege, set this parameter to the current timestamp. |
+| `pubVideoPrivilegeExpire`      | Number of seconds passed from the generation of AccessToken2 to the expiration of the privilege of publishing video in a channel. Set this parameter as the current timestamp plus the valid period of publishing video in a channel. For example, if you set `pubVideoPrivilegeExpire` as the current timestamp plus 600, the privilege expires 10 minutes after generation. If you do not want to enable this privilege, set this parameter to the current timestamp. |
+| `pubDataStreamPrivilegeExpire` | Number of seconds passed from the generation of AccessToken2 to the expiration of the privilege of publishing data stream in a channel. Set this parameter as the current timestamp plus the valid period of publishing video in a channel. For example, if you set `pubDataStreamPrivilegeExpire` as the current timestamp plus 600, the privilege expires 10 minutes after generation. If you do not want to enable this privilege, set this parameter to the current timestamp. |
+
+### Enable co-host authentication
+
+Refer to the following steps to enable this function in Agora Console: 
+
+1. Log on to [Agora Console](https://console.agora.io/v2). Under **Projects**, choose a project for which you want to enable co-host authentication, click the **Edit** icon, and enter the **Edit Project** page.
+2. In the Features area, click **Enable authentication**.
+3. Follow the on-screen instructions to know more about this function, check the box, and click **Enable**. 
+
+Co-host authentication takes effect in 5 minutes. 
+
+Once you have enabled co-host authentication, a user using your app must meet both of the following requirements to publish streams in a channel: 
+
+- The `role` in `setClientRole` is set as `"BROADCASTER"`.
+- The `role` in the code for generating tokens is set as `ROLE_PUBLISHER`.

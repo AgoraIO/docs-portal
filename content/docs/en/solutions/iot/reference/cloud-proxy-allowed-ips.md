@@ -1,0 +1,277 @@
+---
+title: "IP addresses for Cloud Proxy"
+description: "If your app is running inside a restricted network, clear one of the following IP addresses for Cloud Proxy to work effectively."
+---
+
+# IP addresses for Cloud Proxy
+
+This guide provides configuration details you need to set up IoT SDK Cloud Proxy services across all supported regions. Cloud Proxy enables secure communication through firewalls by using designated IP addresses and ports.
+
+:::info
+If you configured cloud proxy settings using an older version of this guide, you may need to update your firewall rules. Refer to the [Cloud proxy migration guide](https://docs.agora.io/en/iot/reference/cloud-proxy-migration-guide).
+:::
+## Understand the tech
+
+Agora deploys dedicated servers to run the cloud proxy service. Agora owns the IP addresses and fully controls the traffic on these addresses. The following network infrastructure components support your deployment:
+
+* **Access point networks**: Each access point uses a single cloud-hosted IP address.
+* **Cloud machine networks**: Use single-point IPs for better security.
+* **Physical machine networks**: Use a /28 subnet mask for each network segment.
+* **Regional deployment**: Includes configurations for North America, Europe, India, Japan, Southeast Asia, and China.
+
+## Implementation guidelines
+
+Follow these guidelines to configure cloud proxy settings.
+
+* **Check your SDK version**: Configuration requirements vary depending on the SDK version you're using.
+* **Configure regional IPs**: Add the correct IP addresses for your target regions.
+
+    :::info
+    When adding IP addresses:
+    - If you use cloud proxy with [Restricted media zones](https://docs.agora.io/en/iot/advanced-features/geofencing), add only the IP addresses dedicated to your specified region.
+    - If you do not restrict media zones, add all IP addresses to ensure connectivity.
+    :::
+
+* **Open required ports**: Make sure all necessary firewall ports are accessible.
+* **Test connectivity**: Validate your configuration before deploying to production.
+
+To use Agora Cloud Proxy, your end users must first configure their firewall to trust the following IP address and port ranges. 
+
+### Native RTC Force UDP mode
+
+#### North America
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38`, `184.72.16.87`, `35.168.106.53`, `35.156.231.150`, `15.237.134.178`, `54.178.26.110`, `52.221.23.86`, `13.230.60.35`, `15.206.47.129`, `13.127.149.196`, `13.209.247.137`, `13.124.182.235`, `23.98.43.152`, `107.155.14.132`, `69.28.51.142` | UDP | `8443` |
+| Cloud Proxy | `128.14.195.192/28`, `128.14.245.16/28`, `128.14.72.80/28`, `128.14.200.208/28` | UDP | `4590-4600`, `8001-8010` |
+
+#### Europe
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38`, `184.72.16.87`, `35.168.106.53`, `35.156.231.150`, `15.237.134.178`, `54.178.26.110`, `52.221.23.86`, `13.230.60.35`, `15.206.47.129`, `13.127.149.196`, `13.209.247.137`, `13.124.182.235`, `23.98.43.152`, `107.155.14.132`, `69.28.51.142` | UDP | `8443` |
+| Cloud Proxy | `104.166.160.208/28`, `23.236.110.32/28`, `104.166.142.134`, `104.166.161.4` | UDP | `4590-4600`, `8001-8010` |
+
+#### Asia, excluding Mainland China
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38`, `184.72.16.87`, `35.168.106.53`, `35.156.231.150`, `15.237.134.178`, `54.178.26.110`, `52.221.23.86`, `13.230.60.35`, `15.206.47.129`, `13.127.149.196`, `13.209.247.137`, `13.124.182.235`, `23.98.43.152`, `107.155.14.132`, `69.28.51.142` | UDP | `8443` |
+| Cloud Proxy | `128.1.186.240/28`, `129.227.73.32/28`, `103.193.127.208/28` | UDP | `4590-4600`, `8001-8010` |
+
+#### Japan
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38`, `184.72.16.87`, `35.168.106.53`, `35.156.231.150`, `15.237.134.178`, `54.178.26.110`, `52.221.23.86`, `13.230.60.35`, `15.206.47.129`, `13.127.149.196`, `13.209.247.137`, `13.124.182.235`, `23.98.43.152`, `107.155.14.132`, `69.28.51.142` | UDP | `8443` |
+| Cloud Proxy | `129.227.113.112/28`, `129.227.55.96/28`, `122.10.153.74`, `129.227.234.123` | UDP | `4590-4600`, `8001-8010` |
+
+#### India
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38`, `184.72.16.87`, `35.168.106.53`, `35.156.231.150`, `15.237.134.178`, `54.178.26.110`, `52.221.23.86`, `13.230.60.35`, `15.206.47.129`, `13.127.149.196`, `13.209.247.137`, `13.124.182.235`, `23.98.43.152`, `107.155.14.132`, `69.28.51.142` | UDP | `8443` |
+| Cloud Proxy | `129.227.217.128/28`, `129.227.108.208/28`, `128.1.105.112/28` | UDP | `4590-4600`, `8001-8010` |
+
+#### Mainland China
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38` | UDP | `8443` |
+| Cloud Proxy | `14.29.38.144/28`, `27.45.161.144/28`, `183.232.200.144/28`, `115.238.206.0/28`, `106.3.209.0/28`, `112.13.216.0/28`, `219.153.111.128/28`, `221.178.42.0/28`, `113.207.12.0/28` | UDP | `4590-4600`, `8001-8010` |
+
+### Native RTC Force TCP mode
+
+#### North America
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `101.132.108.165`, `123.56.235.221`, `52.54.85.111`, `184.72.18.217`, `52.28.239.238`, `3.9.120.239`, `13.250.89.184`, `18.176.162.64`, `168.138.214.216`, `20.193.241.143`, `3.109.116.108`, `3.36.161.253`, `15.164.88.208`, `164.52.43.58`, `54.205.123.178`, `50.18.20.222` | TCP | `443` |
+| Cloud Proxy | `128.14.195.192/28`, `128.14.245.16/28`, `128.14.72.80/28`, `128.14.200.208/28` | TCP | `443` |
+
+#### Europe
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `101.132.108.165`, `123.56.235.221`, `52.54.85.111`, `184.72.18.217`, `52.28.239.238`, `3.9.120.239`, `13.250.89.184`, `18.176.162.64`, `168.138.214.216`, `20.193.241.143`, `3.109.116.108`, `3.36.161.253`, `15.164.88.208`, `164.52.43.58`, `54.205.123.178`, `50.18.20.222` | TCP | `443` |
+| Cloud Proxy | `104.166.160.208/28`, `23.236.110.32/28`, `104.166.142.134`, `104.166.161.4` | TCP | `443` |
+
+#### Asia, excluding Mainland China
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `101.132.108.165`, `123.56.235.221`, `52.54.85.111`, `184.72.18.217`, `52.28.239.238`, `3.9.120.239`, `13.250.89.184`, `18.176.162.64`, `168.138.214.216`, `20.193.241.143`, `3.109.116.108`, `3.36.161.253`, `15.164.88.208`, `164.52.43.58`, `54.205.123.178`, `50.18.20.222` | TCP | `443` |
+| Cloud Proxy | `128.1.186.240/28`, `129.227.73.32/28`, `103.193.127.208/28` | TCP | `443` |
+
+#### Japan
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `101.132.108.165`, `123.56.235.221`, `52.54.85.111`, `184.72.18.217`, `52.28.239.238`, `3.9.120.239`, `13.250.89.184`, `18.176.162.64`, `168.138.214.216`, `20.193.241.143`, `3.109.116.108`, `3.36.161.253`, `15.164.88.208`, `164.52.43.58`, `54.205.123.178`, `50.18.20.222` | TCP | `443` |
+| Cloud Proxy | `129.227.113.112/28`, `129.227.55.96/28`, `122.10.153.74`, `129.227.234.123` | TCP | `443` |
+
+#### India
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `101.132.108.165`, `123.56.235.221`, `52.54.85.111`, `184.72.18.217`, `52.28.239.238`, `3.9.120.239`, `13.250.89.184`, `18.176.162.64`, `168.138.214.216`, `20.193.241.143`, `3.109.116.108`, `3.36.161.253`, `15.164.88.208`, `164.52.43.58`, `54.205.123.178`, `50.18.20.222` | TCP | `443` |
+| Cloud Proxy | `129.227.217.128/28`, `129.227.108.208/28`, `128.1.105.112/28` | TCP | `443` |
+
+#### Mainland China
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `101.132.108.165`, `123.56.235.221` | TCP | `443` |
+| Cloud Proxy | `14.29.38.144/28`, `27.45.161.144/28`, `183.232.200.144/28`, `115.238.206.0/28`, `106.3.209.0/28`, `112.13.216.0/28`, `219.153.111.128/28`, `221.178.42.0/28`, `113.207.12.0/28` | TCP | `443` |
+
+### Web RTC Cloud Proxy
+
+#### North America
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `47.252.17.251`, `170.106.135.177` | UDP/TCP | `443` |
+| Cloud Proxy | `128.14.195.192/28`, `128.14.245.16/28`, `128.14.72.80/28`, `128.14.200.208/28` | UDP/TCP | `443` |
+
+#### Europe
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `47.254.149.145`, `162.62.220.8` | UDP/TCP | `443` |
+| Cloud Proxy | `104.166.160.208/28`, `23.236.110.32/28`, `148.153.25.149`, `148.153.25.148`, `148.153.25.147`, `148.153.25.146`, `148.153.25.184`, `148.153.93.18`, `148.153.93.19`, `148.153.93.24`, `148.153.93.25`, `148.153.93.27` | UDP/TCP | `443` |
+
+#### India
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `147.139.34.215`, `129.226.26.104` | UDP/TCP | `443` |
+| Cloud Proxy | `129.227.217.128/28`, `129.227.108.208/28`, `128.1.105.112/28` | UDP/TCP | `443` |
+
+#### Japan
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `47.245.7.250`, `43.128.248.97` | UDP/TCP | `443` |
+| Cloud Proxy | `129.227.113.112/28`, `129.227.55.96/28`, `164.52.24.41`, `164.52.6.29`, `164.52.24.44`, `164.52.24.43`, `103.101.125.21`, `103.101.125.26`, `103.101.125.20`, `103.101.125.22`, `122.10.153.90` | UDP/TCP | `443` |
+
+#### Asia, excluding Mainland China
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `161.117.177.218`, `104.250.52.195` | UDP/TCP | `443` |
+| Cloud Proxy | `128.1.186.240/28`, `129.227.73.32/28`, `103.193.127.208/28` | UDP/TCP | `443` |
+
+#### Mainland China
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `139.196.42.124`, `123.56.57.206` | UDP/TCP | `443` |
+| Cloud Proxy | `14.29.38.144/28`, `27.45.161.144/28`, `183.232.200.144/28`, `115.238.206.0/28`, `106.3.209.0/28`, `112.13.216.0/28`, `219.153.111.128/28`, `221.178.42.0/28`, `113.207.12.0/28` | UDP/TCP | `443` |
+
+### Web Signaling Cloud Proxy
+
+#### North America
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling and AP Service | `35.169.70.181`, `107.155.14.132`, `52.52.84.170` | UDP/TCP | `443` |
+| Cloud Proxy | `128.14.195.192/28`, `128.14.245.16/28`, `128.14.72.80/28`, `128.14.200.208/28` | UDP/TCP | `443` |
+
+#### Europe
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling and AP Service | `128.1.78.146`, `35.178.208.187` | UDP/TCP | `443` |
+| Cloud Proxy | `104.166.160.208/28`, `23.236.110.32/28`, `104.166.142.134`, `104.166.161.4` | UDP/TCP | `443` |
+
+#### India
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling and AP Service | `129.227.98.170`, `129.154.38.143` | UDP/TCP | `443` |
+| Cloud Proxy | `129.227.217.128/28`, `129.227.108.208/28`, `128.1.105.112/28` | UDP/TCP | `443` |
+
+#### Japan
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling and AP Service | `52.68.71.190`, `168.138.222.84` | UDP/TCP | `443` |
+| Cloud Proxy | `129.227.113.112/28`, `129.227.55.96/28`, `122.10.153.74`, `129.227.234.123` | UDP/TCP | `443` |
+
+#### Asia, excluding Mainland China
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling and AP Service - Asia | `47.74.211.17`, `52.221.23.86`, `23.98.43.152`, `47.244.4.122`, `164.52.43.59`, `13.124.182.235` | UDP/TCP | `443` |
+| Cloud Proxy  | `128.1.186.240/28`, `129.227.73.32/28`, `103.193.127.208/28` | UDP/TCP | `443` |
+
+#### Mainland China
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling and AP Service | `52.80.192.229`, `47.96.234.219` | UDP/TCP | `443` |
+| Cloud Proxy | `14.29.38.144/28`, `27.45.161.144/28`, `183.232.200.144/28`, `115.238.206.0/28`, `106.3.209.0/28`, `112.13.216.0/28`, `219.153.111.128/28`, `221.178.42.0/28`, `113.207.12.0/28` | UDP/TCP | `443` |
+
+## Best practices 
+
+### Regional deployment
+
+- **Global deployments**:
+    - Open network segments for all overseas regions to ensure service availability
+    - Especially important for deployments without specific region requirements
+  
+### Domain vs IP whitelisting
+
+- **AP and Signaling**: 
+    Consider the following options
+    - Enable domain name whitelisting (eliminates need for HTTPS/WSS IP whitelists)
+    - Configure IP whitelisting
+  
+- **Media**:
+  - Can only use IP whitelisting. Domain whitelisting is not available.
+  
+- **DNS requirements**:
+  - Open DNS resolution port `53` in addition to port `443`
+  - Verify connectivity by pinging the provided domain names
+
+### Port configuration requirements
+
+- **TCP/UDP requirements**:
+    - TCP port `443`: Required for all configurations
+    - UDP port `443`: Required for Proxy3 only (proxy4/5 only need TCP `443`)
+  
+- **Regional considerations**:
+    - If your region is uncertain, configure all whitelists
+    - For region-specific deployments like Japan, consider opening the entire region, such as Asia
+
+## Validation and testing
+
+Validate and test your configuration before rolling it out to production.
+
+### Validate configuration
+
+To verify that your Cloud Proxy configuration is working correctly:
+
+1. Enable Cloud Proxy mode in your application (for example, UDP Cloud Proxy)
+2. Join a channel and check for successful connection
+3. Monitor the network quality metrics in your application
+4. Test from multiple geographic locations if possible
+
+### Test performance
+
+To test your configuration:
+
+1. **Identify SDK version**:
+   Use the SDK's version identification method to confirm your current version.
+
+2. **Test connectivity**:
+   Configure the Cloud Proxy UDP mode and enable the lastmile test to check connectivity.
+
+3. **Monitor performance**:
+   - Track latency, packet loss, and jitter
+   - Test across all targeted regions
+
+### Get support
+
+For implementation assistance, contact [support@agora.io](mailto:support@agora.io) with your specific SDK version and region requirements.

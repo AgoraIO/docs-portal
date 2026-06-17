@@ -1,27 +1,23 @@
 ---
-title: Speech-to-Text
-description: Speech-to-Text provides ultra-low-latency transcription and subtitle capabilities for multilingual and voice-understanding workflows.
+title: "Real-Time Speech to Text"
+description: "Create a better user experience with the most accurate live transcription and subtitling."
 ---
 
-## What this capability is
+![Real-Time Speech to Text](/images/real-time-stt/real-time-stt.png)
 
-Speech-to-Text turns live speech into readable text, and optionally translated text, making it a core capability for subtitles, understanding, and multilingual communication.
+Agora's Real-Time Speech to Text transcribes live audio streams into text, enabling closed captions, live transcription, and AI-powered workflows. Translate transcribed text into multiple languages in real-time, or pass it directly to large language models to bridge real-time communication with intelligent applications.
 
-## Common scenarios
+## Quick links
 
-- meeting captions
-- multilingual live streaming
-- voice understanding
-- AI preprocessing
+- [REST API reference](../../api-reference/speech-to-text/restful/join)
+- [Sample server](https://github.com/AgoraIO/agora-rtt-server)
+- [REST quickStart](./get-started/quickstart): Use REST APIs to start, manage, query, and stop a real-time speech-to-text agent for live audio transcription and translation.
 
-## What the existing Shengwang docs usually contain
+## Key features
 
-- landing page
-- live demo
-- quickstart
-- recommended reading
-- webhook and API coverage
-
-## What to read first
-
-Start with the landing page and demo to validate latency and accuracy, then move into quickstart and quality optimization.
+- **Live transcription for RTC**: Integrated with Agora’s voice and video service, live transcription and captions improve accessibility for your audience. Perfect for meetings, live streaming, lectures, interviews, live shopping, and more.
+- **Real-time translation (Beta)**: Break down language barriers with live speech-to-text translation to multiple languages during real-time communication or live streaming. The high accuracy translation text, delivered with ultra low latency, can be integrated with LLMs for enhanced capabilities.
+- **Cloud-based STT**: Cloud-based service converts voice to text for active or specific hosts and then distributes the text to all participants in the channel for further processing. The service does not depend on the client's device performance and network conditions.
+- **Speaker labeling**: Label each transcribed text with the speaker's UID. Separate transcription of each host ensures accuracy even when multiple hosts are talking simultaneously.
+- **Caption recording**: Upload the transcriptions as .vtt files to cloud storage, then play back audio or video recordings with closed captions (CC). The timestamps in the .vtt file ensure that the text is perfectly synchronized with the audio or video, so that it appears exactly where it was generated.
+- **Multi-language support**: Real-time transcription supports all major languages and dialects. Real-time translation supports translation into 40+ target languages.

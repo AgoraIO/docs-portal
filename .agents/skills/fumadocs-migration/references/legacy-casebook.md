@@ -47,7 +47,30 @@ Android-only content
 </PlatformFilter>
 ```
 
-Target: place the content in the Android page or directory during migration. Do not keep runtime platform filters.
+Target:
+
+- If the source IA is already page- or nav-level split by platform, place the content in the target platform page or directory.
+- If one page mixes shared prose with repeated platform sections, rewrite the source into consecutive top-level `PlatformStructured` or `PlatformInline` blocks.
+
+Example target:
+
+```mdx
+Shared setup note.
+
+<PlatformStructured platform="android">
+### Install on Android
+
+Use Gradle to add the SDK.
+</PlatformStructured>
+
+<PlatformStructured platform="javascript">
+### Install with JavaScript
+
+Use npm to add the SDK.
+</PlatformStructured>
+```
+
+Do not keep runtime platform filters.
 
 ## Tables
 

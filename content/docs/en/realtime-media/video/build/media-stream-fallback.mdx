@@ -1,0 +1,146 @@
+---
+title: "Media stream fallback"
+description: "Automatically adjust video quality in poor network conditions"
+---
+
+In poor network conditions, audio and video quality may degrade. When the network becomes too unstable to maintain both, Video SDK automatically adjusts by reducing video quality or, if needed, switching to audio-only mode to maintain audio performance.
+
+<Tabs defaultValue="web" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+  <TabsTrigger value="electron">Electron</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+  <TabsTrigger value="react-native">React Native</TabsTrigger>
+  <TabsTrigger value="unity">Unity</TabsTrigger>
+  <TabsTrigger value="unreal">Unreal Engine</TabsTrigger>
+  <TabsTrigger value="blueprint">Unreal Blueprint</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="ios">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="macos">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="web">
+## Understand the tech
+
+In Video Calling, dual-stream mode involves transmitting two video streams simultaneously from the sender's end, each with a different resolution. One stream is optimized for devices with larger screens or better network conditions, while the other is tailored for smaller screens or poorer network conditions.
+
+When stream fallback is enabled, the system intelligently switches between the high-quality and low-quality streams based on network conditions. This dynamic adjustment ensures optimal performance during Video Calling sessions, adapting in real-time to varying network bandwidths and device capabilities.
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Implement media stream fallback
+
+This section shows you how to implement the media stream fallback feature:
+
+1. Before joining a channel, call `AgoraRTCClient.enableDualStream` on the host to activate dual stream mode.
+
+2. On the receiving end, call `AgoraRTCClient.setStreamFallbackOption` to configure the fallback behavior for receiving media streams and set the `fallbackType` parameter to one of the following values:
+
+  - `LOW_STREAM: = 1`: Automatically subscribe to the low-video stream under poor network conditions.
+
+  - `AUDIO_ONLY: = 2`: Subscribe to the low-quality video stream when the network conditions worsen, and subscribe to audio only when the conditions become too poor to support video transmission.
+
+  Additionally, when dual-stream mode is enabled on the host, the audience can call the `setRemoteVideoStreamType` method to specify receiving only the low resolution video stream by setting `streamType` to `1`.
+
+4. During the session, the SDK triggers the `AgoraRTCClient.on("stream-fallback")` callback when a remote video stream falls back to an audio stream or switches back to video after the network conditions improve, providing users with information regarding the current stream reception status. Similarly, the `AgoraRTCClient.on("stream-type-changed")` callback is triggered when the remote video stream switches between high and low resolutions.
+
+In the following sample code, `client` refers to the local client object created using `AgoraRTC.createClient`.
+
+- **Host configuration**
+ 
+  Enable dual stream mode
+
+  ```javascript
+  client.enableDualStream().then(() => {
+   console.log("Enable dual stream success!")
+  }).catch(err => {
+   console.log(err)
+  });
+  ```
+
+- **Audience configuration**
+
+  - In a weak network environment, first attempt to receive the low resolution stream; if video display is not feasible due to poor network conditions, only the audio stream is received.
+
+    ```javascript
+    // Set fallback option to low resolution video or audio-only
+    client.setStreamFallbackOption(remoteUid, 2)
+    ```
+
+  - To ensure call quality, you can also manually switch the subscribed video stream to low resolution.
+
+    ```javascript
+    // Manually switch to low resolution
+    client.setRemoteVideoStreamType(remoteUid, 1);
+    ```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Limitations
+
+Media stream fallback has the following limitations:
+
+- The `enableDualStream` method is not applicable to audio-only call use-cases.
+
+- Consider the following limitations on mobile devices:
+
+  - It is not possible to send high and low resolution streams using `h264` encoding on Android Chrome.
+  - When sending a low resolution stream on iOS Safari and setting video properties using `setLowStreamParameter`, the `bitrate` setting is not supported. The small stream resolution must be proportional to the large stream resolution.
+  - Some browsers are not fully compatible with dual-stream mode when using the `setRemoteVideoStreamType` method. Known issues include:
+    - macOS Safari: The frame rate and resolution of high- and low-resolution streams are the same.
+    - iOS Safari 11: Switching between high- and low-resolution streams is not supported.
+    - Firefox: The frame rate of low-resolution streams is fixed at 30 fps.
+
+### API reference
+
+- [`enableDualStreamMode`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#enabledualstream)
+- [`setStreamFallbackOption`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#setstreamfallbackoption)
+- [`setRemoteVideoStreamType`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#setremotevideostreamtype)
+</TabsContent>
+
+<TabsContent value="windows">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="electron">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="flutter">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="react-native">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="unity">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="unreal">
+**This feature guide is not available yet.**
+</TabsContent>
+
+<TabsContent value="blueprint">
+**This feature guide is not available yet.**
+</TabsContent>
+
+</Tabs>

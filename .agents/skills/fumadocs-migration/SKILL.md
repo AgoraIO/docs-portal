@@ -18,11 +18,14 @@ Use this skill to migrate legacy docs from `/Users/czhen/Documents/GitHub/AgoraI
 - Component styling belongs in Tailwind classes colocated with the component. Do not add selector-heavy component skins, widget variables, or page-specific card styles to `src/styles/app.css`.
 - Global CSS custom properties are reserved for theme, shell layout, shadcn bridge tokens, and Fumadocs integration tokens. Do not add component-local variables for migrated MDX widgets.
 - Shared content is allowed, but use Fumadocs include or a project-approved directive, not legacy `@shared` imports.
-- Platform/product variants must be statically expanded into files, folders, or navigation. Do not keep runtime platform filters.
+- Platform/product variants should default to static files, folders, or navigation when the source IA is already split that way. When one page intentionally mixes shared content with repeated platform-specific sections, migrate to the repo's `PlatformInline` / `PlatformStructured` authoring blocks instead of inventing custom runtime filters.
 - Independent product or platform navigation must be declared with `navScope` in `meta.json`; do not hard-code scoped sidebars in docs-shell code.
 - When API reference versions differ by platform, place version folders under the platform folder, not under the product root.
 - Use `(current)` for current-version clean URLs when a versioned scope should omit the version segment.
-- Same-page platform variants should use existing `Tabs` or generated `CodeBlockTabs` with `groupId` and `persist`; do not create custom platform tab components.
+- Same-page variants should use:
+  - `Tabs` or generated `CodeBlockTabs` for small language/example switches inside one conceptual section.
+  - `PlatformInline` / `PlatformStructured` for document-body platform variants that must preserve shared prose between repeated platform sections.
+  Do not create ad hoc platform tab components in content.
 - Do not add legacy compatibility plugins, old component maps, or Docusaurus runtime variable shims.
 - Do not add relative JSON `$schema` paths to migrated `meta.json` files.
 - `bun run types:check` is the minimum compile gate before claiming migrated content is complete.

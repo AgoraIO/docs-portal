@@ -1,5 +1,13 @@
 # Progress
 
+## 2026-06-11
+- Confirmed the user wants the entire `Doc-Source-Private/agora-chat` tree migrated into `content/docs/en/realtime-media/im`.
+- Audited all source files under `agora-chat`, including nested `_category_.json` files and the current destination `im` directory state.
+- Verified that most source pages are wrappers around `shared/chat-sdk/**` and `shared/common/**`, so the migration needs recursive import expansion rather than direct copy.
+- Sampled representative pages for three major patterns: landing page (`overview/product-overview`), shared wrapper (`get-started/get-started-sdk`), and platform-specific list content (`reference/downloads`).
+- Investigated the existing source export tooling and confirmed it is conceptually reusable but blocked in the current environment by missing Python modules and a changed source directory layout.
+- Updated the local planning files to track this broader migration task before continuing with implementation.
+
 ## 2026-06-09
 - Switched the active task from the older introduction migration notes to RTC platform navigation redesign work.
 - Audited the current RTC implementation across `docs-nav-scope`, `docs-page.server`, `DocsShell`, `DocsSidebarHeaderBlock`, and `DocsContent`.

@@ -1,0 +1,74 @@
+---
+title: "Release notes"
+description: "New features, improvements and resolved issues for Real-time STT."
+---
+
+This document tracks important changes and improvements to the Real-Time STT.
+
+## Releases
+
+### v7.2.2
+
+Released on May 18, 2026
+
+#### New features
+
+Included in this release:
+
+- **Support for additional languages**
+
+  This version expands the supported language lists for real-time transcription and real-time translation. See [Supported languages](../build/supported-languages) for the full list.
+
+#### Upgrade notes
+
+- **Updated target language configuration rules for real-time translation**
+
+  This version updates the rules for configuring source and target languages in real-time translation, for both single-language and mixed-language input scenarios:
+
+  - **Single-language input**: If you set the source language to a single language, the target language must be different, otherwise an error is returned. For example, if you set the source language to English, you cannot set the target language to English.
+
+  - **Mixed-language input**: If you set the source language to mixed-language input, you can set the target language to one of the source languages. For example, if you set the source languages to Spanish and English, setting the target language to English translates both into English.
+
+### v7.2.1
+
+Released on April 20, 2026
+
+#### New Features
+
+Included in this release:
+
+- **Support for caption storage**
+
+  This version adds support for writing recorded subtitles to standard S3-compatible object storage. You can configure parameters such as `endpoint`, `type`, and `provider` in the `captionConfig.extensionParams` of the transcription request to connect to S3-compatible storage services such as MinIO, as well as some self-hosted object storage. See [Record captions](../build/record-captions) for details.
+
+- **Agent list API**
+
+  This version adds a [List Real-time STT agents](../../../api-reference/speech-to-text/restful/list) API. Use it to retrieve real-time transcription and translation tasks that meet specified criteria by channel, time range, and task status.
+
+### v7.2
+
+Released on March 30, 2026
+
+#### New Features
+
+Included in this release:
+
+- **Keywords functionality**
+
+  The transcription API now supports configuring `keywords` to improve the recognition accuracy of specific words such as proper nouns and industry terms. You can configure up to 500 keywords per request. To specify keywords, pass the list in the `keywords` parameter of the request body when creating a transcription task or real-time transcription service.
+
+- **Unique `sentence_id`**
+
+  When parsing transcription data, each subtitle carries a unique identifier `sentence_id`. When both original and translated subtitles are enabled, use this ID to match original and translated subtitles for the same sentence, ensuring accurate subtitle alignment.
+
+### v7.0
+
+Released on May 1, 2025
+
+#### Improvements
+
+This release includes the following enhancements:
+
+- Supports updating the configuration of the STT agent.
+- Enhances the scalability of STT by supporting multiple endpoints.
+- API deprecations. Refer to the API reference for details.

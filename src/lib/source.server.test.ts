@@ -14,4 +14,12 @@ describe('fumadocs source loader', () => {
     );
     expect(page?.data._openapi?.method).toBe('post');
   });
+
+  it('ignores internal proposal report JSON files when resolving docs pages', () => {
+    const page = source.getPage(['solutions', 'agora-analytics'], 'en');
+
+    expect(page?.type).toBe('page');
+    expect(page?.url).toBe('/en/solutions/agora-analytics');
+    expect(page?.data.title).toBe('Agora Analytics');
+  });
 });

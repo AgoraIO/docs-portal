@@ -1,0 +1,162 @@
+---
+title: "Release notes"
+description: "Information about changes in each release of Agora Analytics."
+---
+
+# Release notes
+
+Agora Analytics is a tool that tracks and analyzes the usage and quality of calls. You can use this tool to locate quality issues, find root causes, and fix the issues to improve the final user experience.
+
+## 2023.08
+
+**New features**
+
+[Data Insights Plus](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/data-insight-plus) provides valuable insights into indicators,
+dimensions, and trends. Users can analyze data, view time series changes, examine distribution patterns, and compare data across different periods.
+
+Data Insights Plus helps businesses make better decisions by providing deeper insights into their data. With Data Insights Plus, businesses can:
+
+- Analyze data across multiple dimensions: See how different dimensions of the RTC influence data. Identify quality and usage trends and patterns.
+- Perform user sampling analysis: Drill down into data and understand the impact areas with greater granularity.
+- Perform comparative analysis: Compare trends with historical data to identify areas for improvement.
+
+## 2023.04
+
+**New features**
+
+Media service is an important auxiliary product of real-time audio and video. This release upgrades the [Usage Insights](../build/data-insight.md) and [Real-time Monitoring](../build/monitor.md) modules to support querying historical or real-time scale of the Cloud Recording, Media Pull, and Media Push services. The Usage Insights module now includes a new Media Service panel that presents peak numbers of Cloud Recording and Media Pull concurrent workers. The Real-time Monitoring module includes three new charts for the number of Cloud Recording, Media Pull, and Media Push workers, respectively.
+
+## 2023.03
+
+**Improvement**
+
+This release upgrades some RESTful APIs under the real-time audio and video (RTC) product:
+
+- Data Insights RESTful API
+  - Adds a new query interface to obtain aggregated quality metrics under a specified dimension for a specified time range.
+  - Adds a new query interface to obtain aggregated usage metrics under a specified dimension for a specified time range.
+
+See [API reference](https://docs.agora.io/en/agora-analytics/reference/api).
+
+- Real-time Monitoring RESTful APIs
+  - Adds `dimension` and `dimensionValues` parameters to the query real-time scale and query real-time quality interfaces, which can be used to specify the query dimension.
+  - Adds a new query interface for top 20 real-time scale metrics groups, which can be used to obtain the top 20 groups of real-time call volumes under a specified dimension.
+  - Adds a new query interface for top 20 real-time quality metrics groups, which can be used to obtain the top 20 groups of quality-related metrics under a specified dimension.
+
+See [API reference](https://docs.agora.io/en/agora-analytics/reference/api).
+
+## 2022.09
+
+**Improvement**
+
+This release improves the calculation of the video freeze rate. By optimizing data collection and analysis methods and eliminating the influence of special use-cases such as screen sharing, the accuracy of the video freeze rate is further improved. This improvement applies to the following features:
+- Call Inspector
+- Data Insights
+- Real-time Monitoring
+- Alert Notifications
+
+## 2022.08
+
+**Improvement**
+
+To improve the balance between timeliness and accuracy, this release adds a data recalculation mechanism to Data Insights. The data latency of Data Insights can be as low as six hours, but  internal resource scheduling or poor user network conditions can cause unexpected data reporting delays. With the data recalculation mechanism, the data for each day is recalculated two days later. For example, the data for July 6, 2022, is recalculated in the early hours of July 8, 2022.
+
+## 2022.05
+
+**New features**
+
+This release launches a new version of Call Inspector. This new version has the following advantages over the previous version:
+
+- Locating user-specific issues through call-specific issues is more efficient, especially for large-scale calls.
+- Key quality metrics and events now offer receiver's and sender's views, making it convenient to locate exceptions.
+- Agora's auto-diagnosis engine is fully integrated to reduce the time cost of inspecting a call through intuitive conclusions. All features related to the auto-diagnosis engine are currently in beta.
+
+For full details, see [Call Inspector Overview](../build/call-search.md).
+
+## 2021.11
+
+This release retires the Realtime (Beta) and Real-time Alarm (Beta) features on November 1, 2021, and adds the [Real-time Monitoring](../build/monitor.md) and [Alert Notifications](../build/alarm.md) features:
+
+-   Real-time Monitoring: Provides visualized data for multiple call metrics in real time.
+
+-   Alert Notifications: Sends alerts to you through e-mails or API callbacks when abnormal metrics or events are detected in your Agora Video SDK projects.
+
+This release also adds the [Real-time Monitoring RESTful APIs](https://docs.agora.io/en/agora-analytics/reference/api) to query the real-time scale and quality metrics.
+
+## 2021.07
+
+This release includes changes to the Data Insights function as follows:
+- Optimizes the usage and quality metrics and adds options for data granularity.
+- Improves the Data Insights RESTful APIs:
+- Updates the /beta/insight/usage/by\_time endpoint.
+- Adds the /beta/insight/quality/by\_time ([Query quality metrics](https://docs.agora.io/en/agora-analytics/reference/api)) endpoint.
+
+## 2021.05
+
+This release includes changes to the Call Inspector RESTful APIs as follows:
+- Updates the /beta/analytics/call/lists endpoint.
+- Replaces the /beta/analytics/call/details endpoint with /beta/analytics/call/sessions ([Get session details](https://docs.agora.io/en/agora-analytics/reference/api)) and /beta/analytics/call/metrics ([Get quality metrics](https://docs.agora.io/en/agora-analytics/reference/api)).
+
+## 2020.09
+
+**New features**
+
+#### 1. Big Channel RESTful API (Beta)
+
+This release adds the Big Channel RESTful API, and you can get the following data:
+
+-   The number of users who have a poor communication experience in a Big Channel. Poor communication experience in this case refers to video freezes and channel-join delay.
+
+-   The number of users who try to join a Big Channel.
+
+-   Users' call rating for a Big Channel.
+
+-   The number of online users in a Big Channel.
+
+**Improvement**
+
+#### 1. Call Inspector
+
+-   Moves the event timeline from the **Quality of Experience Overview** page to the **End-to-End Details** page. You can see the event timeline on the **Audio/Video Upstream Bitrate and Packet Loss** and **Audio/Video Downstream Bitrate and End-to-End Packet Loss** diagrams.
+
+-   Adds the following statistics on the **End-to-End Details** page:
+
+-   Bitrate of the sent high-quality video
+
+-   Bitrate of the sent low-quality video
+
+-   Frame rate of the captured video
+
+-   Resolution of the sent video
+
+-   Supports submitting a ticket on the **Quality of Experience Overview** page.
+
+-   Improves the user interface design.
+
+#### 2. Others
+
+Except for RESTful APIs, all Agora Analytics functions use the local time zone by default.
+
+## 2020.05
+
+This release adds the Real-time Alarm function (Beta), to help you identify abnormalities, analyze quality factors, and locate the source of each abnormal issue, all in real time.
+
+## 2020.01
+
+This release adds the Big Channel function (Beta), which provides the Big Channel monitoring and issues diagnosis, and improves the operational efficiency of user activities in Big Channels.
+
+## 2019.10
+
+This release adds the Realtime function (Beta), which helps to monitor the live status of your project. It also informs you of any abnormalities that occur along with their root cause. See details in [Realtime Monitor](../build/monitor.md).
+
+## 2019.09
+
+This release adds the Data Insights function (Beta), which provides statistics on the usage and quality of your project over a specified period of time. You can view the quality statistics in various dimensions, such as country and SDK version. See details in [Data Insights](../build/data-insight.md).
+
+## 2019.08
+
+This release adds key events in Call Inspector function, which improves the efficiency of call search.
+
+## 2018.08
+
+This release provides Call Inspector function, which helps to search calls and analyze quality issues. See details in [Call Inspector](../build/call-search.md).

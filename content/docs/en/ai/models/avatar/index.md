@@ -10,3 +10,4 @@ Avatar providers add a visual agent layer to the voice experience. Choose a prov
 - [Akool](akool.md)
 - [Anam](anam.md)
 - [HeyGen](heygen.md)
+- [Generic avatar provider](generic.md)
