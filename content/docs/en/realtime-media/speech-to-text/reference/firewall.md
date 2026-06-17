@@ -17,7 +17,7 @@ The following table lists the support of Agora products for the two solutions:
 |Interactive Gaming SDK | ✘ |✘|
 
 - When using the firewall whitelist, add the domains and ports to the firewall whitelist, and do not set restrictions on IP addresses.
-- When using Agora cloud proxy, refer to [Connect to Agora through a restricted network](https://docs.agora.io/en/real-time-stt/advanced-features/cloud-proxy)
+- When using Agora cloud proxy, refer to [Cloud proxy](../../video/build/cloud-proxy)
 
 ###  Video SDK (Web)
 

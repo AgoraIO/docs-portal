@@ -5,9 +5,9 @@ description: "Enable the Real-Time STT service"
 
 Real-Time STT is designed to provide service for channels. The recommended solution is to call RESTful APIs on the server side. But in a real-world use-case, the service is always enabled on the end user's side. This requires the user's app to notify the app's server, and the server to call RESTful APIs.
 
-If the end user's app calls RESTful APIs, the app needs to store the customer ID and customer secret to generate a Base64-encoded credential and fill it in the HTTP header (as explained in [Authenticate REST calls](https://docs.agora.io/en/real-time-stt/reference/restful-authentication). Since it is not safe to store the customer ID and secret in the app, Agora provides a new method for HTTP authentication without storing customer ID and secret.
+If the end user's app calls RESTful APIs, the app needs to store the customer ID and customer secret to generate a Base64-encoded credential and fill it in the HTTP header, as explained in [RESTful authentication](../reference/restful-authentication). Since it is not safe to store the customer ID and secret in the app, Agora provides a new method for HTTP authentication without storing customer ID and secret.
 
-This page explains how to enable Real-Time STT on the client's side. For more information, see [Authenticate REST calls](https://docs.agora.io/en/real-time-stt/reference/restful-authentication).
+This page explains how to enable Real-Time STT on the client's side. For more information, see [RESTful authentication](../reference/restful-authentication).
 
 ## Prerequisites
 
