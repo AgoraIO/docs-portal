@@ -66,7 +66,7 @@ Agora deducts Standard minutes from the balance in your subscribed package. If y
 - When you purchase a paid package, the free minutes are reflected in the package price through discounts. The 10,000 free minutes per month no longer apply.
 - Different packages support different value-added features. Purchase a package that fits your business needs.
 :::
-For subscription, upgrade, downgrade and other package details, see [Subscription packages](subscription-packages.md)
+For subscription, upgrade, downgrade and other package details, see [Subscription packages](../subscription-packages.md)
 
 #### Additional usage
 
