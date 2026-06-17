@@ -47,26 +47,57 @@ This restores CI and keeps Vercel deployability, but it is not the final archite
 
 ## Known Exception Pages
 
-These pages are currently treated as known heavyweight hydration exceptions:
+The hydration exception list is now a single shared source of truth in
+`src/components/docs-shell/hydrated-docs-content-suffixes.mjs`. It is consumed by
+BOTH the runtime hydration decision (`docs-content-hydration.ts`) and the static
+build verifier (`scripts/build-static-docs.mjs`), so the two can no longer drift.
 
-- `en/realtime-media/broadcast-streaming/build/ai-noise-suppression.mdx`
-- `en/realtime-media/broadcast-streaming/build/in-call-quality-monitoring.mdx`
-- `en/realtime-media/broadcast-streaming/build/play-media.mdx`
-- `en/realtime-media/broadcast-streaming/build/preload-channels.mdx`
-- `en/realtime-media/broadcast-streaming/build/screen-sharing.mdx`
-- `en/realtime-media/broadcast-streaming/build/use-an-extension.mdx`
-- `en/realtime-media/broadcast-streaming/build/voice-activity-detection.mdx`
-- `en/realtime-media/cloud-recording/build/receive-notifications.mdx`
-- `en/realtime-media/cloud-recording/reference/common-errors.md`
-- `en/realtime-media/im/client-api/chat-group/manage-group-member-attributes.mdx`
-- `en/realtime-media/im/client-api/chat-room/manage-chatroom-members.mdx`
-- `en/realtime-media/im/agora-console/content-moderation-microsoft.md`
+Matching is by content-path **suffix**, so one entry applies across every IA tab
+that shares that suffix (e.g. `/build/play-media.mdx` covers the `video`, `voice`,
+`interactive-live-streaming`, and `broadcast-streaming` copies at once). This is
+what previously caused CI failures: the runtime list matched by suffix while the
+build verifier matched exact `broadcast-streaming` paths, so sibling-tab copies
+hydrated correctly at runtime but failed the build's static-HTML check.
 
-If these pages move, rename, split, or get IA remaps, update:
+Current suffixes (see the `.mjs` for the authoritative list):
+
+- `/build/ai-noise-suppression.mdx`
+- `/build/in-call-quality-monitoring.mdx`
+- `/build/play-media.mdx`
+- `/build/preload-channels.mdx`
+- `/build/receive-notifications.mdx`
+- `/build/screen-sharing.mdx`
+- `/build/use-an-extension.mdx`
+- `/build/voice-activity-detection.mdx`
+- `/build/virtual-background.mdx`
+- `/client-api/chat-group/manage-group-member-attributes.mdx`
+- `/client-api/chat-room/manage-chatroom-members.mdx`
+- `/reference/common-errors.md` / `.mdx`
+- `/agora-console/content-moderation-microsoft.md` / `.mdx`
+- `/im/client-api/messages/manage-messages.md`
+- `/im/client-api/messages/send-receive-messages.md`
+- `/im/client-api/messages/translate-messages.md`
+- `/im/client-api/presence.md`
+- `/im/client-api/reaction.md`
+- `/im/client-api/threading/thread-management.md`
+- `/im/client-api/threading/thread-messages.md`
+- `/im/client-api/user-attributes.md`
+- `/im/reference/access-token-2.md`
+- `/media-pull/reference/restful-api.md`
+- `/media-push/build/restful-api.md`
+- `/rtc-server-sdk/build/stringuid.md`
+
+To add, remove, or adjust an exception, edit only
+`src/components/docs-shell/hydrated-docs-content-suffixes.mjs`. Both consumers and
+their tests derive from it:
 
 - `src/components/docs-shell/docs-content-hydration.ts`
 - `scripts/build-static-docs.mjs`
-- related tests
+- related tests (`docs-content-hydration.test.ts`, `build-static-docs.test.ts`)
+
+When choosing a suffix, keep it specific enough not to over-match unrelated pages.
+Prefer a product-scoped suffix (e.g. `/im/client-api/presence.md`) over a bare
+leaf (`/presence.md`) unless cross-tab coverage is intended.
 
 ## Build Contract Checks
 
@@ -163,13 +194,25 @@ Impact:
 
 - Future "bundle cleanup" work must not treat `public/fonts/misans/*` or the `src/styles/app.css` font-face setup as disposable.
 
-### 6. IA/path changes can invalidate exception lists silently
+### 6. IA/path changes can invalidate the exception list silently
 
-The tactical fix uses explicit content-path and output-path allowlists.
+The tactical fix uses a single suffix-based allowlist
+(`src/components/docs-shell/hydrated-docs-content-suffixes.mjs`) consumed by both
+the runtime hydration decision and the static build verifier. This removes the
+earlier drift between two separately-maintained lists (a suffix list at runtime
+versus exact full output paths in the build script), which previously let
+sibling-tab copies of an already-hydrated page pass at runtime but fail the
+build verifier.
 
 Impact:
 
-- If navigation/content paths change, the exception list can drift out of sync and CI may fail again.
+- The two consumers can no longer disagree about which pages are hydration exceptions.
+- A suffix still matches across every IA tab that shares it. Adding a broad suffix
+  (e.g. `/build/play-media.mdx`) intentionally exempts every tab's copy at once;
+  use a product-scoped suffix (e.g. `/media-pull/reference/restful-api.md`) when
+  only one page should be exempt.
+- If a heavyweight page is renamed or its slug changes, its suffix must be updated
+  in the shared list or the build can fail again.
 
 ## Release Questions To Answer
 

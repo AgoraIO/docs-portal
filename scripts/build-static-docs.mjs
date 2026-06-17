@@ -15,6 +15,7 @@ import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { buildStaticAssetAudit } from './audit-static-assets.mjs';
+import { HYDRATED_DOCS_CONTENT_SUFFIXES } from '../src/components/docs-shell/hydrated-docs-content-suffixes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -27,23 +28,24 @@ const DOCS_BODY_PATTERN =
 const DOCS_SKELETON_PATTERN =
   /<div class="space-y-4 py-2" data-testid="docs-content-skeleton" role="status">[\s\S]*?<\/div><\/div><aside class="flex flex-col gap-4 xl:hidden">/;
 const DOCS_SKELETON_MARKER = 'data-testid="docs-content-skeleton"';
-const STATIC_HTML_OPTIONAL_SKELETON_PATH_SUFFIXES = [
-  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'ai-noise-suppression', 'index.html'),
-  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'in-call-quality-monitoring', 'index.html'),
-  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'play-media', 'index.html'),
-  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'preload-channels', 'index.html'),
-  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'screen-sharing', 'index.html'),
-  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'use-an-extension', 'index.html'),
-  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'voice-activity-detection', 'index.html'),
-  path.join('en', 'realtime-media', 'cloud-recording', 'build', 'receive-notifications', 'index.html'),
-  path.join('en', 'realtime-media', 'cloud-recording', 'reference', 'common-errors', 'index.html'),
-  path.join('en', 'realtime-media', 'im', 'client-api', 'chat-group', 'manage-group-member-attributes', 'index.html'),
-  path.join('en', 'realtime-media', 'im', 'client-api', 'chat-room', 'manage-chatroom-members', 'index.html'),
-  path.join('en', 'realtime-media', 'im', 'agora-console', 'content-moderation-microsoft', 'index.html'),
-];
-const STATIC_HTML_OPTIONAL_SKELETON_PATHS = new Set(
-  STATIC_HTML_OPTIONAL_SKELETON_PATH_SUFFIXES,
-);
+// Pages allowed to keep skeleton markup in static HTML are exactly the pages
+// the runtime routes to the hydrated-client path. Both decisions are driven by
+// the single shared suffix list so the build verifier and the runtime can never
+// drift apart (see src/components/docs-shell/hydrated-docs-content-suffixes.mjs).
+// A content suffix like `/build/play-media.mdx` becomes the route-output suffix
+// `/build/play-media/index.html`, matched against the emitted static HTML path.
+const STATIC_HTML_OPTIONAL_SKELETON_OUTPUT_SUFFIXES =
+  HYDRATED_DOCS_CONTENT_SUFFIXES.map(
+    (suffix) => `${suffix.replace(/\.mdx?$/, '')}/index.html`,
+  );
+
+function isOptionalSkeletonOutputPath(relativePath) {
+  const normalized = relativePath.split(path.sep).join('/');
+
+  return STATIC_HTML_OPTIONAL_SKELETON_OUTPUT_SUFFIXES.some((suffix) =>
+    normalized.endsWith(suffix),
+  );
+}
 const JPG_MIN_BYTES = 30 * 1024;
 const PNG_MIN_BYTES = 40 * 1024;
 const STATIC_HTML_TEST_ID_PATTERN = /\sdata-testid="[^"]*"/g;
@@ -496,7 +498,7 @@ export function verifyPatchedStaticHtml(outputRoot, patchSummary) {
     if (html.includes(DOCS_SKELETON_MARKER)) {
       const relativePath = path.relative(staticRoot, filePath);
 
-      if (STATIC_HTML_OPTIONAL_SKELETON_PATHS.has(relativePath)) {
+      if (isOptionalSkeletonOutputPath(relativePath)) {
         continue;
       }
 
@@ -510,9 +512,9 @@ export function verifyPatchedStaticHtml(outputRoot, patchSummary) {
 
   if (htmlFilesWithSkeleton.length > 0) {
     throw new Error(
-      `static HTML still contains docs skeleton markup: ${htmlFilesWithSkeleton
-        .slice(0, 10)
-        .join(', ')}`,
+      `static HTML still contains docs skeleton markup (${htmlFilesWithSkeleton.length} files):\n${htmlFilesWithSkeleton
+        .map((relativePath) => `  - ${relativePath}`)
+        .join('\n')}`,
     );
   }
 }

@@ -80,12 +80,41 @@ describe('docs-content-hydration', () => {
       'en/realtime-media/im/client-api/chat-group/manage-group-member-attributes.mdx',
       'en/realtime-media/im/client-api/chat-room/manage-chatroom-members.mdx',
       'en/realtime-media/im/agora-console/content-moderation-microsoft.md',
+      // Newly added heavyweight pages that failed verifyPatchedStaticHtml.
+      'en/realtime-media/im/client-api/messages/manage-messages.md',
+      'en/realtime-media/im/client-api/messages/send-receive-messages.md',
+      'en/realtime-media/im/client-api/messages/translate-messages.md',
+      'en/realtime-media/im/client-api/presence.md',
+      'en/realtime-media/im/client-api/reaction.md',
+      'en/realtime-media/im/client-api/threading/thread-management.md',
+      'en/realtime-media/im/client-api/threading/thread-messages.md',
+      'en/realtime-media/im/client-api/user-attributes.md',
+      'en/realtime-media/im/reference/access-token-2.md',
+      'en/realtime-media/media-pull/reference/restful-api.md',
+      'en/realtime-media/media-push/build/restful-api.md',
+      'en/realtime-media/rtc-server-sdk/build/stringuid.md',
+      'en/solutions/interactive-live-streaming/build/virtual-background.mdx',
     ];
 
     for (const contentPath of heavyPages) {
       expect(shouldHydrateDocsMdxContent(contentPath)).toBe(true);
       expect(shouldPreloadDocsMdxContent(contentPath)).toBe(true);
       expect(shouldUseStaticDocsHtmlBody(contentPath)).toBe(false);
+    }
+  });
+
+  it('applies suffix-based hydration across every IA tab that shares a heavy page', () => {
+    // The same `/build/*` suffix appears under multiple product tabs. All copies
+    // must hydrate, not just the broadcast-streaming one, so the static build
+    // verifier exempts every tab's emitted HTML.
+    const tabs = [
+      'en/realtime-media/video/build/play-media.mdx',
+      'en/realtime-media/voice/build/in-call-quality-monitoring.mdx',
+      'en/solutions/interactive-live-streaming/build/preload-channels.mdx',
+    ];
+
+    for (const contentPath of tabs) {
+      expect(shouldHydrateDocsMdxContent(contentPath)).toBe(true);
     }
   });
 });

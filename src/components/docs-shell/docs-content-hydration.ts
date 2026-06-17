@@ -1,21 +1,5 @@
 import { isAiContentPath } from '@/lib/docs-source-buckets';
-
-const HYDRATED_DOCS_CONTENT_SUFFIXES = [
-  '/build/ai-noise-suppression.mdx',
-  '/build/in-call-quality-monitoring.mdx',
-  '/client-api/chat-group/manage-group-member-attributes.mdx',
-  '/client-api/chat-room/manage-chatroom-members.mdx',
-  '/build/play-media.mdx',
-  '/build/preload-channels.mdx',
-  '/build/receive-notifications.mdx',
-  '/build/screen-sharing.mdx',
-  '/build/use-an-extension.mdx',
-  '/build/voice-activity-detection.mdx',
-  '/reference/common-errors.md',
-  '/reference/common-errors.mdx',
-  '/agora-console/content-moderation-microsoft.md',
-  '/agora-console/content-moderation-microsoft.mdx',
-] as const;
+import { HYDRATED_DOCS_CONTENT_SUFFIXES } from './hydrated-docs-content-suffixes.mjs';
 
 export function shouldHydrateDocsMdxContent(contentPath: string) {
   return HYDRATED_DOCS_CONTENT_SUFFIXES.some((suffix) =>

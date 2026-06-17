@@ -64,6 +64,13 @@ describe('build-static-docs', () => {
       'static/en/realtime-media/cloud-recording/build/receive-notifications/index.html',
       'static/en/realtime-media/im/client-api/chat-group/manage-group-member-attributes/index.html',
       'static/en/realtime-media/im/client-api/chat-room/manage-chatroom-members/index.html',
+      // Sibling-tab copies of an already-hydrated suffix must also be exempt;
+      // the old exact-path allowlist only covered broadcast-streaming.
+      'static/en/realtime-media/video/build/play-media/index.html',
+      'static/en/solutions/interactive-live-streaming/build/preload-channels/index.html',
+      // Newly added heavyweight IM/media pages.
+      'static/en/realtime-media/im/client-api/messages/send-receive-messages/index.html',
+      'static/en/realtime-media/media-pull/reference/restful-api/index.html',
     ];
 
     for (const relativePath of htmlPaths) {
