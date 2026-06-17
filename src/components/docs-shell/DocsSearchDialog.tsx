@@ -3,7 +3,6 @@
 import { useNavigate } from '@tanstack/react-router';
 import { SearchIcon } from 'lucide-react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
   CommandDialog,
@@ -19,6 +18,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { useTranslation } from '@/lib/i18n/react';
 
 export type SearchEntry = {
   description?: string;
@@ -29,12 +29,12 @@ export type SearchEntry = {
 export function DocsSearchDialog({
   locale = DEFAULT_LOCALE,
   mode = 'desktop',
-  pages,
+  pages = [],
   tabs,
 }: {
   locale?: AppLocale | string;
   mode?: 'desktop' | 'mobile';
-  pages: SearchEntry[];
+  pages?: SearchEntry[];
   tabs: TabSummary[];
 }) {
   const { i18n } = useTranslation('common');

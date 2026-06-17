@@ -1,7 +1,8 @@
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
-import { createClientAPIPage } from 'fumadocs-openapi/ui/create-client';
 import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/cn';
+import { createClientAPIPageLite } from '@/lib/openapi/create-client-lite';
 import {
   buildOpenApiSchemaRows,
   type OpenApiSchemaRow,
@@ -11,7 +12,7 @@ const LEGACY_DOC_ORIGIN = 'https://doc.shengwang.cn';
 const LEGACY_DOC_PATH_PATTERN =
   /(]\()(\/(?:api-center|basics|codebox|doc|faq)(?:[^)]*))(\))/g;
 
-const ClientAPIPage = createClientAPIPage({
+const ClientAPIPage = createClientAPIPageLite({
   playground: {
     enabled: false,
   },
@@ -29,11 +30,68 @@ const ClientAPIPage = createClientAPIPage({
 
 export function FumadocsOpenApiContent({
   className,
-  pageProps,
+  payloadAssetPath,
+  payloadMeta,
 }: {
   className?: string;
-  pageProps: ClientApiPageProps;
+  payloadAssetPath: string;
+  payloadMeta: {
+    document: string;
+    operations: Array<{
+      method: string;
+      path: string;
+    }>;
+    showDescription: true;
+  };
 }) {
+  const [pageProps, setPageProps] = useState<ClientApiPageProps | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch(payloadAssetPath)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load OpenAPI payload: ${payloadAssetPath}`);
+        }
+
+        return response.json();
+      })
+      .then((payload) => {
+        if (cancelled) {
+          return;
+        }
+
+        setPageProps(payload as ClientApiPageProps);
+      })
+      .catch(() => {
+        if (cancelled) {
+          return;
+        }
+
+        setPageProps({
+          ...payloadMeta,
+          payload: {
+            bundled: {
+              info: {
+                title: payloadMeta.document,
+              },
+              openapi: '3.1.0',
+              paths: {},
+            },
+          },
+        });
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [payloadAssetPath, payloadMeta]);
+
+  if (!pageProps) {
+    return null;
+  }
+
   return (
     <div className={cn('not-prose openapi-operation', className)}>
       <ClientAPIPage {...pageProps} />

@@ -16,17 +16,12 @@ describe('shouldPrerenderRoute', () => {
   });
 
   it('includes openapi endpoint canonical routes for static generation', () => {
-    expect(getOpenApiPrerenderPaths()).toContain(
-      '/en/api-reference/conversational-ai/rest-api/agent/join',
-    );
-    expect(getOpenApiPrerenderPaths()).toContain(
-      '/zh-CN/api-reference/conversational-ai/rest-api/agent/join',
-    );
+    expect(getOpenApiPrerenderPaths()).toEqual([]);
   });
 
   it('seeds canonical source pages instead of relying on crawled links', () => {
     const paths = createDocsPrerenderPaths({
-      openApiPaths: ['/en/api-reference/conversational-ai/rest-api/agent/join'],
+      openApiPaths: [],
       pages: [
         { url: '/zh-CN/ai/domain-overview' },
         { url: '/en/introduction/about-agora' },
@@ -35,14 +30,13 @@ describe('shouldPrerenderRoute', () => {
 
     expect(paths).toEqual([
       '/',
-      '/en/api-reference/conversational-ai/rest-api/agent/join',
       '/en/introduction/about-agora',
       '/zh-CN/ai/domain-overview',
     ]);
     expect(paths).toContain('/en/introduction/about-agora');
     expect(paths).toContain('/zh-CN/ai/domain-overview');
-    expect(paths).toContain(
-      '/en/api-reference/conversational-ai/rest-api/agent/join',
+    expect(paths).not.toContain(
+      '/en/api-reference/conversational-ai/rest-api/agent',
     );
   });
 });

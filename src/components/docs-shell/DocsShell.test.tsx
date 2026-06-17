@@ -18,9 +18,22 @@ import { type ComponentProps, type ReactNode, useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
-import { i18n } from '@/lib/i18n/i18n';
 import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
 import { DocsShell } from './DocsShell';
+
+const getDocsPagePayloadMock = vi.fn();
+
+vi.mock('fumadocs-openapi/ui/create-client', () => ({
+  createClientAPIPage: () => () => null,
+}));
+
+vi.mock('@/lib/docs-page', () => ({
+  getDocsPagePayload: (...args: unknown[]) => getDocsPagePayloadMock(...args),
+}));
+
+vi.mock('../openapi/FumadocsOpenApiContent', () => ({
+  FumadocsOpenApiContent: () => <div data-testid="fumadocs-openapi-content" />,
+}));
 
 const tabs: TabSummary[] = [
   {
@@ -85,12 +98,6 @@ function renderDocsShell(
     ],
     locale: 'en',
     next: undefined,
-    pages: [
-      {
-        title: 'Quick Start',
-        url: '/en/introduction/quick-start',
-      },
-    ],
     previous: undefined,
     sidebar,
     tabs,
@@ -149,10 +156,11 @@ function renderWithRouter(
 }
 
 describe('DocsShell', () => {
-  afterEach(async () => {
+  afterEach(() => {
     vi.useRealTimers();
     window.localStorage.removeItem(LOCALE_STORAGE_KEY);
-    await i18n.changeLanguage('en');
+    document.documentElement.lang = 'en';
+    getDocsPagePayloadMock.mockReset();
     vi.restoreAllMocks();
   });
 
@@ -172,11 +180,11 @@ describe('DocsShell', () => {
       .find((button) =>
         button.textContent?.includes('Search docs, APIs, guides...'),
       );
-    const languageControl = within(mainHeaderRow)
+    const siteControl = within(mainHeaderRow)
       .getAllByRole('button', {
-        name: 'Language',
+        name: 'Site',
       })
-      .find((button) => button.textContent?.includes('English'));
+      .find((button) => button.textContent?.includes('Global site'));
     const themeControl = within(mainHeaderRow).getByRole('button', {
       name: 'Theme: Light',
     });
@@ -194,12 +202,12 @@ describe('DocsShell', () => {
     if (!desktopSearch) {
       throw new Error('expected desktop search trigger in main header row');
     }
-    expect(languageControl).toBeDefined();
-    if (!languageControl) {
-      throw new Error('expected desktop language trigger in main header row');
+    expect(siteControl).toBeDefined();
+    if (!siteControl) {
+      throw new Error('expected desktop site trigger in main header row');
     }
     expect(mainHeaderRow).toContainElement(desktopSearch);
-    expect(mainHeaderRow).toContainElement(languageControl);
+    expect(mainHeaderRow).toContainElement(siteControl);
     expect(mainHeaderRow).toContainElement(themeControl);
     expect(mainHeaderRow.querySelector('.docs-brand-mark')).toBeNull();
     expect(mainHeaderRow).not.toContainElement(tabsIntroductionLink);
@@ -233,14 +241,13 @@ describe('DocsShell', () => {
     expect(githubControl.className).toContain(
       'dark:hover:bg-[color:var(--docs-soft-fill)]',
     );
-    expect(languageControl).toHaveAttribute('data-variant', 'ghost');
-    expect(languageControl.className).not.toContain(
+    expect(siteControl).toHaveAttribute('data-variant', 'ghost');
+    expect(siteControl.className).not.toContain(
       'border-[color:var(--line-strong)]',
     );
-    expect(languageControl.className).not.toContain('bg-card');
-    expect(languageControl.className).toContain('hover:bg-accent');
-    expect(languageControl.className).toContain('data-[state=open]:bg-accent');
-    expect(languageControl).toHaveTextContent('English');
+    expect(siteControl.className).not.toContain('bg-card');
+    expect(siteControl.className).toContain('hover:bg-accent');
+    expect(siteControl).toHaveTextContent('Global site');
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
     expect(tabsAiLink).toHaveAttribute('href', '/en/ai');
     expect(tabsIntroductionLink.className).toContain('after:!bottom-[-3px]');
@@ -291,17 +298,17 @@ describe('DocsShell', () => {
 
     const mobileDialog = await screen.findByRole('dialog');
 
-    expect(mobileDialog).toHaveTextContent('Android API Reference');
+    await waitFor(() => {
+      expect(mobileDialog).toHaveTextContent('Android API Reference');
+    });
     expect(
-      within(mobileDialog).getByRole('button', {
+      await within(mobileDialog).findByRole('button', {
         name: 'Select documentation version',
       }),
     ).toHaveTextContent('v4.6.2');
   });
 
   it('uses the route locale for shell chrome before i18n bootstrap changes global language', async () => {
-    await i18n.changeLanguage('en');
-
     renderDocsShell(
       {
         activePath: '/zh-CN/api-reference/rtc/android/overview',
@@ -320,7 +327,6 @@ describe('DocsShell', () => {
             locale: 'zh-CN',
           },
         ],
-        pages: [],
         sidebar,
         tabs,
         toc: [],
@@ -347,6 +353,22 @@ describe('DocsShell', () => {
 
     expect(docsTabsStrip).toHaveClass('hidden', 'md:block');
     expect(docsTabsStrip).not.toHaveClass('lg:block');
+  });
+
+  it('falls back to locale default tabs when the payload omits them', async () => {
+    renderDocsShell({
+      activeTab: 'introduction',
+      tabs: [],
+    });
+
+    const docsTabsStrip = await screen.findByTestId('docs-tabs-strip');
+
+    expect(
+      within(docsTabsStrip).getByRole('tab', { name: 'Introduction' }),
+    ).toHaveAttribute('href', '/en/introduction');
+    expect(
+      within(docsTabsStrip).getByRole('tab', { name: 'Voice Agent' }),
+    ).toHaveAttribute('href', '/en/ai');
   });
 
   it('renders the desktop docs body shell regions and keeps pagination inside the main column', async () => {
@@ -417,7 +439,8 @@ describe('DocsShell', () => {
       'docs-scrollbar',
       'h-full',
       'min-h-0',
-      'overflow-y-auto',
+      'overflow-visible',
+      'lg:overflow-y-auto',
     );
     expect(screen.getByTestId('docs-toc-rail')).toHaveClass(
       'docs-scrollbar',
@@ -475,12 +498,6 @@ describe('DocsShell', () => {
               },
             ]}
             locale="en"
-            pages={[
-              {
-                title: 'Quick Start',
-                url: '/en/introduction/quick-start',
-              },
-            ]}
             sidebar={
               activeTab === 'introduction'
                 ? sidebar
@@ -516,6 +533,215 @@ describe('DocsShell', () => {
     });
   });
 
+  it('hydrates deferred AI sidebars on the client when prerender payload omits them', async () => {
+    getDocsPagePayloadMock.mockResolvedValueOnce({
+      sidebar: [
+        {
+          id: 'ai-release-notes',
+          title: 'Release notes',
+          type: 'page',
+          url: '/en/ai/release-notes',
+        },
+      ],
+    });
+
+    renderDocsShell(
+      {
+        activePath: '/en/ai/release-notes',
+        activeTab: 'ai',
+        contentPath: 'en/ai/release-notes.md',
+        sidebar: [],
+      },
+      '/en/ai/release-notes',
+    );
+
+    await waitFor(() => {
+      expect(getDocsPagePayloadMock).toHaveBeenCalledWith({
+        data: {
+          includeSidebar: true,
+          locale: 'en',
+          slugSegments: ['release-notes'],
+          tab: 'ai',
+        },
+      });
+    });
+  });
+
+  it('hydrates deferred realtime-media rtc sidebars on the client when prerender payload omits them', async () => {
+    getDocsPagePayloadMock.mockResolvedValueOnce({
+      sidebar: [
+        {
+          id: 'rtc-android',
+          title: 'Android',
+          type: 'page',
+          url: '/en/realtime-media/rtc/android',
+        },
+      ],
+    });
+
+    renderDocsShell(
+      {
+        activePath: '/en/realtime-media/rtc',
+        activeTab: 'realtime-media',
+        contentPath: 'en/realtime-media/rtc/index.md',
+        sidebar: [],
+        tabs: [
+          ...tabs,
+          {
+            icon: 'Zap',
+            id: 'realtime-media',
+            title: 'Realtime Media',
+            url: '/en/realtime-media',
+          },
+        ],
+      },
+      '/en/realtime-media/rtc',
+    );
+
+    await waitFor(() => {
+      expect(getDocsPagePayloadMock).toHaveBeenCalledWith({
+        data: {
+          includeSidebar: true,
+          locale: 'en',
+          slugSegments: ['rtc'],
+          tab: 'realtime-media',
+        },
+      });
+    });
+  });
+
+  it('hydrates deferred ordinary api-reference sidebars on the client when prerender payload omits them', async () => {
+    getDocsPagePayloadMock.mockResolvedValueOnce({
+      sidebar: [
+        {
+          id: 'enable-ncs',
+          title: 'Enable NCS',
+          type: 'page',
+          url: '/en/api-reference/enable-ncs',
+        },
+      ],
+    });
+
+    renderDocsShell(
+      {
+        activePath: '/en/api-reference/enable-ncs',
+        activeTab: 'api-reference',
+        contentPath: 'en/api-reference/enable-ncs/index.md',
+        sidebar: [],
+        tabs: [
+          ...tabs,
+          {
+            icon: 'Wrench',
+            id: 'api-reference',
+            title: 'Reference',
+            url: '/en/api-reference',
+          },
+        ],
+        toc: [],
+      },
+      '/en/api-reference/enable-ncs',
+    );
+
+    await waitFor(() => {
+      expect(getDocsPagePayloadMock).toHaveBeenCalledWith({
+        data: {
+          includeSidebar: true,
+          locale: 'en',
+          slugSegments: ['enable-ncs'],
+          tab: 'api-reference',
+        },
+      });
+    });
+  });
+
+  it('hydrates deferred ordinary docs sidebars on the client when prerender payload omits them', async () => {
+    getDocsPagePayloadMock.mockResolvedValueOnce({
+      sidebar: [
+        {
+          id: 'about-agora',
+          title: 'About Agora',
+          type: 'page',
+          url: '/en/introduction/about-agora',
+        },
+      ],
+    });
+
+    renderDocsShell(
+      {
+        activePath: '/en/introduction/about-agora',
+        activeTab: 'introduction',
+        contentPath: 'en/introduction/about-agora.mdx',
+        sidebar: [],
+      },
+      '/en/introduction/about-agora',
+    );
+
+    await waitFor(() => {
+      expect(getDocsPagePayloadMock).toHaveBeenCalledWith({
+        data: {
+          includeSidebar: true,
+          locale: 'en',
+          slugSegments: ['about-agora'],
+          tab: 'introduction',
+        },
+      });
+    });
+  });
+
+  it('keeps prerender header chrome on a lightweight path', async () => {
+    const previousPrerendering = process.env.TSS_PRERENDERING;
+    process.env.TSS_PRERENDERING = 'true';
+
+    try {
+      renderDocsShell();
+
+      expect(
+        await screen.findByTestId('docs-prerender-search-trigger-desktop'),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('docs-prerender-search-trigger-mobile'),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('docs-prerender-site-switcher'),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('docs-prerender-theme-trigger'),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId('docs-prerender-github-link'),
+      ).toHaveAttribute(
+        'href',
+        'https://github.com/Shengwang-Community/docs-portal',
+      );
+      expect(
+        within(screen.getByTestId('docs-tabs-strip')).getByRole('link', {
+          name: 'Introduction',
+        }),
+      ).toHaveAttribute('href', '/en/introduction');
+      expect(
+        screen.queryByTestId('docs-search-trigger-skeleton-desktop'),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'Search docs' }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'Site' }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'Theme: Light' }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('tab', { name: 'Introduction' }),
+      ).not.toBeInTheDocument();
+    } finally {
+      if (previousPrerendering === undefined) {
+        delete process.env.TSS_PRERENDERING;
+      } else {
+        process.env.TSS_PRERENDERING = previousPrerendering;
+      }
+    }
+  });
+
   it('switches locale while preserving the current tab and slug path', async () => {
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
@@ -541,7 +767,6 @@ describe('DocsShell', () => {
               },
             ]}
             locale="en"
-            pages={[]}
             sidebar={[]}
             tabs={tabs}
             toc={[]}
@@ -561,18 +786,23 @@ describe('DocsShell', () => {
 
     render(<RouterProvider router={router} />);
 
-    const languageButton = (
+    const siteButton = (
       await screen.findAllByRole('button', {
-        name: 'Language',
+        name: 'Site',
       })
-    ).find((button) => button.textContent?.includes('English'));
+    ).find((button) => button.textContent?.includes('Global site'));
 
-    if (!languageButton) {
-      throw new Error('expected desktop language button');
+    if (!siteButton) {
+      throw new Error('expected desktop site button');
     }
 
-    fireEvent.pointerDown(languageButton, { button: 0 });
-    fireEvent.click(await screen.findByRole('menuitem', { name: '简体中文' }));
+    fireEvent.click(siteButton);
+    fireEvent.click(
+      await screen.findByRole('link', {
+        name: 'China site',
+        hidden: true,
+      }),
+    );
 
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(
@@ -604,29 +834,74 @@ describe('DocsShell', () => {
       ],
     });
 
-    fireEvent.pointerDown(
+    fireEvent.click(
       (
         await screen.findAllByRole('button', {
-          name: 'Language',
+          name: 'Site',
         })
-      ).find((button) => button.textContent?.includes('English')) ??
+      ).find((button) => button.textContent?.includes('Global site')) ??
         (() => {
-          throw new Error('expected desktop language button');
+          throw new Error('expected desktop site button');
         })(),
-      { button: 0 },
     );
 
-    const languageOptions = await screen.findByRole('menu', {
-      name: 'Language',
-    });
+    const siteOptions = await screen.findAllByLabelText('Site');
+    const sitePanel = siteOptions.find(
+      (element) => element.tagName.toLowerCase() === 'div',
+    );
 
-    expect(languageOptions).toHaveAttribute(
-      'data-slot',
-      'dropdown-menu-content',
+    if (!sitePanel) {
+      throw new Error('expected site options panel');
+    }
+
+    expect(sitePanel).toHaveTextContent(
+      'Product coverage differs between these two sites.',
     );
     expect(
-      within(languageOptions).getByRole('menuitem', { name: '简体中文' }),
+      within(sitePanel).getByRole('link', { name: 'China site' }),
     ).toHaveAttribute('href', '/zh-CN/ai/get-started/quickstart');
+  });
+
+  it('renders scoped version links when the version picker is opened', async () => {
+    renderDocsShell({
+      activePath: '/en/api-reference/rtc/android/overview',
+      activeTab: 'api-reference',
+      sidebarHeader: {
+        backHref: '/en/api-reference/rtc',
+        backLabel: 'RTC',
+        title: 'Android API Reference',
+        versionSwitcher: {
+          currentId: 'current',
+          versions: [
+            {
+              href: '/en/api-reference/rtc/android/overview',
+              id: 'current',
+              label: 'v4.6.2',
+            },
+            {
+              href: '/en/api-reference/rtc/android/4.6.0/overview',
+              id: '4.6.0',
+              label: 'v4.6.0',
+            },
+          ],
+        },
+      },
+    });
+
+    const desktopSidebar = await screen.findByTestId('docs-sidebar');
+    const versionButton = within(desktopSidebar).getByRole('button', {
+      name: 'Select documentation version',
+    });
+
+    fireEvent.click(versionButton);
+
+    const versionOptions = await screen.findByLabelText(
+      'Documentation versions',
+    );
+
+    expect(
+      within(versionOptions).getByRole('link', { name: 'v4.6.0' }),
+    ).toHaveAttribute('href', '/en/api-reference/rtc/android/4.6.0/overview');
   });
 
   it('keeps compact mobile header controls and exposes locale and theme in the sheet', async () => {
@@ -654,12 +929,6 @@ describe('DocsShell', () => {
               },
             ]}
             locale="en"
-            pages={[
-              {
-                title: 'Quick Start',
-                url: '/en/introduction/quick-start',
-              },
-            ]}
             sidebar={sidebar}
             tabs={tabs}
             toc={[]}
@@ -706,7 +975,7 @@ describe('DocsShell', () => {
       'md:block',
     );
     expect(
-      within(mobileHeaderActions).queryByRole('button', { name: 'Language' }),
+      within(mobileHeaderActions).queryByRole('button', { name: 'Site' }),
     ).toBeNull();
     expect(
       within(mobileHeaderActions).queryByRole('button', {
@@ -728,7 +997,7 @@ describe('DocsShell', () => {
       within(mobileSheet).getByRole('link', { name: 'Quick Start' }),
     ).toBeInTheDocument();
     expect(
-      within(mobileSheet).getByRole('button', { name: 'Language' }),
+      within(mobileSheet).getByRole('button', { name: 'Site' }),
     ).toBeInTheDocument();
     expect(
       within(mobileSheet).getByRole('button', { name: 'Theme: Light' }),

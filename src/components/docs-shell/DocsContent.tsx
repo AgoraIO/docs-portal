@@ -1,30 +1,57 @@
-import { Link } from '@tanstack/react-router';
+import { ClientOnly, Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
-import { BotIcon, Edit3Icon, ExternalLinkIcon } from 'lucide-react';
-import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { BotIcon } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
-import {
-  findDocsHeadingForHash,
-  scrollDocsHashTarget,
-  syncDocsHashTargetFromLocation,
-} from '@/lib/docs-hash';
+import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+import {
+  isAiContentPath,
+  isApiReferenceContentPath,
+  isRtcAndroidApiReferenceContentPath,
+} from '@/lib/docs-source-buckets';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { useTranslation } from '@/lib/i18n/react';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
-import { DocsContentBody } from './DocsContentBody';
+import { FumadocsOpenApiContentHydrated } from '../openapi/FumadocsOpenApiContentHydrated';
+import { DocsTableOfContents } from './DocsTableOfContents';
+import { DocsTableOfContentsHydrated } from './DocsTableOfContentsHydrated';
+import { shouldUseStaticDocsHtmlBody } from './docs-content-hydration';
+import { getInitialStaticDocsHtml } from './docs-static-html';
 
-const TOC_ACTIVE_OFFSET = 96;
-const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
+const shouldLoadPrerenderDocsBodies =
+  import.meta.env.MODE === 'test' ||
+  process.env.DOCS_FORCE_PRERENDER_BODIES === 'true' ||
+  (import.meta.env.SSR && process.env.TSS_PRERENDERING === 'true');
+
+const prerenderDocsBodyModules = shouldLoadPrerenderDocsBodies
+  ? await Promise.all([
+      import('./DocsAiContentBody'),
+      import('./DocsApiReferenceContentBody'),
+      import('./DocsContentBody'),
+      import('./DocsRtcAndroidApiReferenceContentBody'),
+    ])
+  : null;
+
+const DocsAiContentBody = prerenderDocsBodyModules?.[0].DocsAiContentBody;
+const DocsApiReferenceContentBody =
+  prerenderDocsBodyModules?.[1].DocsApiReferenceContentBody;
+const DocsContentBody = prerenderDocsBodyModules?.[2].DocsContentBody;
+const DocsRtcAndroidApiReferenceContentBody =
+  prerenderDocsBodyModules?.[3].DocsRtcAndroidApiReferenceContentBody;
+
+function getMarkdownUrl(contentPath: string) {
+  return `/llms.mdx/docs/${contentPath.replace(/\.mdx?$/, '.md')}`;
+}
 
 export function DocsContent({
+  activePath,
   body,
   breadcrumb = [],
   contentPath,
@@ -36,6 +63,7 @@ export function DocsContent({
   title,
   toc,
 }: {
+  activePath?: string;
   body?: DocsContentBodyPayload;
   breadcrumb?: DocsBreadcrumbItem[];
   contentPath?: string;
@@ -50,6 +78,7 @@ export function DocsContent({
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const t = i18n.getFixedT(currentLocale, 'common');
+  const shouldRenderInlineContent = import.meta.env.MODE === 'test';
   const displayTitle = title ?? slug;
   const resolvedBody =
     body ??
@@ -60,6 +89,69 @@ export function DocsContent({
         } satisfies DocsContentBodyPayload)
       : undefined);
   const isOpenApiBody = resolvedBody?.kind === 'openapi';
+  const isApiReferenceMdx =
+    resolvedBody?.kind === 'mdx' &&
+    isApiReferenceContentPath(resolvedBody.contentPath);
+  const isAiMdx =
+    resolvedBody?.kind === 'mdx' && isAiContentPath(resolvedBody.contentPath);
+  const isRtcAndroidApiReferenceMdx =
+    resolvedBody?.kind === 'mdx' &&
+    isRtcAndroidApiReferenceContentPath(resolvedBody.contentPath);
+  const shouldUseLightweightApiReferenceFallback =
+    import.meta.env.MODE !== 'test' &&
+    (isApiReferenceMdx || isRtcAndroidApiReferenceMdx);
+  const payloadStaticHtml = resolvedBody?.kind === 'mdx' ? resolvedBody.html ?? null : null;
+  const patchedStaticHtml =
+    resolvedBody?.kind === 'mdx' && activePath
+      ? getPatchedStaticDocsHtml(activePath)
+      : null;
+  const staticHtml = payloadStaticHtml ?? patchedStaticHtml;
+  const shouldPreferStaticHtmlBody =
+    resolvedBody?.kind === 'mdx' &&
+    staticHtml !== null &&
+    shouldUseStaticDocsHtmlBody(resolvedBody.contentPath);
+  const resolvedMarkdownUrl =
+    markdownUrl ??
+    (resolvedBody?.kind === 'mdx'
+      ? getMarkdownUrl(resolvedBody.contentPath)
+      : undefined);
+  const shouldRenderPrerenderInlineContent =
+    !shouldPreferStaticHtmlBody &&
+    (shouldRenderInlineContent ||
+      process.env.DOCS_FORCE_PRERENDER_BODIES === 'true' ||
+      (import.meta.env.SSR && process.env.TSS_PRERENDERING === 'true'));
+  const pageIdentity =
+    resolvedBody?.kind === 'mdx' ? resolvedBody.contentPath : null;
+  const previousPageIdentityRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (resolvedBody?.kind !== 'mdx') {
+      previousPageIdentityRef.current = null;
+      return;
+    }
+
+    if (previousPageIdentityRef.current === null) {
+      previousPageIdentityRef.current = pageIdentity;
+      return;
+    }
+
+    if (previousPageIdentityRef.current === pageIdentity) {
+      return;
+    }
+
+    previousPageIdentityRef.current = pageIdentity;
+
+    const scrollContainer = document.querySelector<HTMLElement>(
+      '[data-testid="docs-main-desktop-scroll"]',
+    );
+
+    if (!scrollContainer) {
+      return;
+    }
+
+    scrollContainer.scrollTo({ behavior: 'auto', top: 0 });
+  }, [pageIdentity, resolvedBody?.kind]);
+
   useEffect(() => {
     if (resolvedBody?.kind !== 'mdx') {
       return;
@@ -80,6 +172,7 @@ export function DocsContent({
 
   return (
     <article
+      data-dr={resolvedBody?.kind === 'mdx' ? activePath : undefined}
       className={cn(
         'flex min-w-0 flex-col gap-9',
         isOpenApiBody ? 'max-w-none' : 'max-w-[var(--content-max)]',
@@ -139,11 +232,11 @@ export function DocsContent({
             </p>
           ) : null}
         </div>
-        {markdownUrl ? (
+        {resolvedMarkdownUrl ? (
           <div className="flex flex-col items-start gap-3">
             <a
               className="inline-flex h-7 items-center gap-1.5 rounded-md border border-[color:var(--line-soft)] bg-card px-2.5 text-xs font-medium text-[color:var(--ink-3)] transition-colors hover:border-[color:var(--line-strong)] hover:text-[color:var(--ink-1)]"
-              href={markdownUrl}
+              href={resolvedMarkdownUrl}
               rel="noreferrer"
               target="_blank"
             >
@@ -155,29 +248,198 @@ export function DocsContent({
             ) : null}
           </div>
         ) : null}
-        {!markdownUrl && sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
+        {!markdownUrl &&
+        sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
           <DocsHeaderScopeTabs header={sidebarHeader} />
         ) : null}
       </header>
       {isOpenApiBody ? (
-        <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
+        shouldRenderPrerenderInlineContent ? (
+          <FumadocsOpenApiContent
+            payloadAssetPath={resolvedBody.payloadAssetPath}
+            payloadMeta={resolvedBody.payloadMeta}
+          />
+        ) : (
+          <ClientOnly
+            fallback={
+              <FumadocsOpenApiContent
+                payloadAssetPath={resolvedBody.payloadAssetPath}
+                payloadMeta={resolvedBody.payloadMeta}
+              />
+            }
+          >
+            <FumadocsOpenApiContentHydrated
+              payloadAssetPath={resolvedBody.payloadAssetPath}
+              payloadMeta={resolvedBody.payloadMeta}
+            />
+          </ClientOnly>
+        )
       ) : (
         <div className="prose prose-neutral dark:prose-invert max-w-none">
           {resolvedBody?.kind === 'mdx' ? (
-            <Suspense fallback={<DocsContentSkeleton />}>
-              <DocsContentBody contentPath={resolvedBody.contentPath} />
-            </Suspense>
+            staticHtml ? (
+              <DocsStaticHtmlBody html={staticHtml} />
+            ) : shouldRenderPrerenderInlineContent ? (
+              isRtcAndroidApiReferenceMdx ? (
+                DocsRtcAndroidApiReferenceContentBody ? (
+                  <DocsRtcAndroidApiReferenceContentBody
+                    contentPath={resolvedBody.contentPath}
+                  />
+                ) : (
+                  <DocsApiReferencePrerenderFallback
+                    locale={currentLocale}
+                    toc={toc}
+                  />
+                )
+              ) : isApiReferenceMdx ? (
+                DocsApiReferenceContentBody ? (
+                  <DocsApiReferenceContentBody
+                    contentPath={resolvedBody.contentPath}
+                  />
+                ) : (
+                  <DocsApiReferencePrerenderFallback
+                    locale={currentLocale}
+                    toc={toc}
+                  />
+                )
+              ) : isAiMdx ? (
+                DocsAiContentBody ? (
+                  <DocsAiContentBody contentPath={resolvedBody.contentPath} />
+                ) : (
+                  <DocsContentSkeleton />
+                )
+              ) : DocsContentBody ? (
+                <DocsContentBody contentPath={resolvedBody.contentPath} />
+              ) : (
+                <DocsContentSkeleton />
+              )
+            ) : (
+              <ClientOnly
+                fallback={
+                  shouldPreferStaticHtmlBody ? (
+                    <DocsStaticHtmlBody html={staticHtml} />
+                  ) : isRtcAndroidApiReferenceMdx ? (
+                    shouldUseLightweightApiReferenceFallback ? (
+                      <DocsApiReferencePrerenderFallback
+                        locale={currentLocale}
+                        toc={toc}
+                      />
+                    ) : (
+                      <DocsContentSkeleton />
+                    )
+                  ) : isApiReferenceMdx ? (
+                    shouldUseLightweightApiReferenceFallback ? (
+                      <DocsApiReferencePrerenderFallback
+                        locale={currentLocale}
+                        toc={toc}
+                      />
+                    ) : (
+                      staticHtml ? (
+                        <DocsStaticHtmlBody html={staticHtml} />
+                      ) : (
+                        <DocsContentSkeleton />
+                      )
+                    )
+                  ) : (
+                    staticHtml ? (
+                      <DocsStaticHtmlBody html={staticHtml} />
+                    ) : (
+                      <DocsContentSkeleton />
+                    )
+                  )
+                }
+              >
+                <DocsStaticHtmlBody html={staticHtml ?? ''} />
+              </ClientOnly>
+            )
           ) : null}
         </div>
       )}
       {isOpenApiBody ? null : (
-        <DocsTableOfContents
-          className="xl:hidden"
-          locale={currentLocale}
-          toc={toc}
-        />
+        isRtcAndroidApiReferenceMdx ? (
+          <DocsTableOfContentsHydrated
+            className="xl:hidden"
+            contentPath={resolvedBody.contentPath}
+            locale={currentLocale}
+            toc={toc}
+          />
+        ) : (
+          <DocsTableOfContents
+            className="xl:hidden"
+            locale={currentLocale}
+            toc={toc}
+          />
+        )
       )}
     </article>
+  );
+}
+
+function DocsContentSkeleton() {
+  return (
+    <div
+      className="space-y-4 py-2"
+      data-testid="docs-content-skeleton"
+      role="status"
+    >
+      <div className="h-4 w-1/3 rounded bg-[color:var(--line-soft)]" />
+      <div className="h-4 w-full rounded bg-[color:var(--line-soft)]" />
+      <div className="h-4 w-5/6 rounded bg-[color:var(--line-soft)]" />
+      <span className="sr-only">Loading documentation content</span>
+    </div>
+  );
+}
+
+function DocsStaticHtmlBody({ html }: { html: string }) {
+  return (
+    <div
+      className="docs-body"
+      dangerouslySetInnerHTML={{ __html: html }}
+      suppressHydrationWarning
+    />
+  );
+}
+
+function DocsApiReferencePrerenderFallback({
+  locale,
+  toc,
+}: {
+  locale: AppLocale;
+  toc: TOCItemType[];
+}) {
+  const { i18n } = useTranslation('common');
+  const t = i18n.getFixedT(locale, 'common');
+  const items = toc.filter((item) => item.url && typeof item.title === 'string');
+
+  return (
+    <div
+      className="space-y-4 py-2"
+      data-testid="docs-api-reference-prerender-fallback"
+    >
+      <p className="text-sm text-muted-foreground">
+        {t('docs.toc')}
+      </p>
+      {items.length > 0 ? (
+        <ul className="space-y-2 text-sm text-muted-foreground">
+          {items.map((item) => (
+            <li key={item.url}>
+              <a href={item.url}>{item.title}</a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div
+          className="space-y-3"
+          data-testid="docs-content-skeleton"
+          role="status"
+        >
+          <div className="h-4 w-1/3 rounded bg-[color:var(--line-soft)]" />
+          <div className="h-4 w-full rounded bg-[color:var(--line-soft)]" />
+          <div className="h-4 w-5/6 rounded bg-[color:var(--line-soft)]" />
+          <span className="sr-only">Loading documentation content</span>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -212,264 +474,25 @@ function DocsHeaderScopeTabs({ header }: { header: DocsSidebarHeader }) {
 }
 
 export type DocsContentBodyPayload =
-  | { contentPath: string; kind: 'mdx' }
-  | { kind: 'openapi'; pageProps: ClientApiPageProps };
-
-function DocsContentSkeleton() {
-  return (
-    <div
-      aria-hidden="true"
-      className="not-prose flex flex-col gap-5 py-1"
-      data-testid="docs-content-skeleton"
-    >
-      <div className="flex flex-col gap-2">
-        <span
-          className="h-4 w-24 rounded bg-[color:var(--surface-muted)]"
-          data-skeleton-line="eyebrow"
-        />
-        <span
-          className="h-7 w-full max-w-xl rounded bg-[color:var(--surface-muted)]"
-          data-skeleton-line="hero"
-        />
-      </div>
-      <div className="flex flex-col gap-3">
-        <span className="h-4 w-full rounded bg-[color:var(--surface-muted)]" />
-        <span className="h-4 w-[92%] rounded bg-[color:var(--surface-muted)]" />
-        <span className="h-4 w-[76%] rounded bg-[color:var(--surface-muted)]" />
-      </div>
-      <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <span className="h-24 rounded-lg border border-[color:var(--line-soft)] bg-card" />
-        <span className="h-24 rounded-lg border border-[color:var(--line-soft)] bg-card" />
-      </div>
-    </div>
-  );
-}
-
-export function DocsTableOfContents({
-  className,
-  locale = DEFAULT_LOCALE,
-  toc,
-}: {
-  className?: string;
-  locale?: AppLocale | string;
-  toc: TOCItemType[];
-}) {
-  const { i18n } = useTranslation('common');
-  const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
-  const items = useMemo(
-    () => toc.filter((item) => typeof item.title === 'string'),
-    [toc],
-  );
-  const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
-    () => items[0]?.url ?? '',
-  );
-  const [visibleUrls, setVisibleUrls] = useState<Set<string>>(
-    () => new Set(items[0]?.url ? [items[0].url] : []),
-  );
-
-  const scrollToHeading = useCallback((url: string) => {
-    setPrimaryActiveUrl(url);
-    setVisibleUrls((current) => {
-      const next = new Set(current);
-      next.add(url);
-      return next;
-    });
-    scrollDocsHashTarget(url);
-  }, []);
-
-  useEffect(() => {
-    if (items.length === 0) {
-      return;
-    }
-
-    let frame = 0;
-    const updateActiveUrl = () => {
-      if (frame) {
-        window.cancelAnimationFrame(frame);
-      }
-
-      frame = requestAnimationFrame(() => {
-        const scrollContainer = getActiveDocsScrollContainer();
-        const boundary =
-          (scrollContainer?.getBoundingClientRect().top ?? 0) +
-          TOC_ACTIVE_OFFSET;
-        const viewportRect = getScrollViewportRect(scrollContainer);
-        const headings = items.map((item) => findDocsHeadingForHash(item.url));
-        let nextActiveUrl = items[0]?.url ?? '';
-        const nextVisibleUrls = new Set<string>();
-
-        for (const [index, item] of items.entries()) {
-          const heading = headings[index];
-
-          if (!heading) {
-            continue;
-          }
-
-          const sectionTop = heading.getBoundingClientRect().top;
-          const sectionBottom = getSectionBottomForItem(index, headings, items);
-
-          if (
-            sectionBottom - viewportRect.top >
-              TOC_VISIBLE_INTERSECTION_THRESHOLD &&
-            viewportRect.bottom - sectionTop >
-              TOC_VISIBLE_INTERSECTION_THRESHOLD
-          ) {
-            nextVisibleUrls.add(item.url);
-          }
-
-          if (sectionTop <= boundary) {
-            nextActiveUrl = item.url;
-          }
-        }
-
-        setPrimaryActiveUrl(nextActiveUrl);
-        setVisibleUrls(nextVisibleUrls);
-      });
+  | { contentPath: string; html?: string; kind: 'mdx' }
+  | {
+      kind: 'openapi';
+      payloadAssetPath: string;
+      payloadMeta: {
+        document: string;
+        operations: Array<{
+          method: string;
+          path: string;
+        }>;
+        showDescription: true;
+      };
     };
 
-    const scrollContainer = getDesktopDocsScrollContainer();
-    const observer = new MutationObserver(updateActiveUrl);
-
-    scrollContainer?.addEventListener('scroll', updateActiveUrl, {
-      passive: true,
-    });
-    window.addEventListener('scroll', updateActiveUrl, { passive: true });
-    window.addEventListener('resize', updateActiveUrl);
-    observer.observe(document.body, { childList: true, subtree: true });
-    updateActiveUrl();
-
-    return () => {
-      if (frame) {
-        window.cancelAnimationFrame(frame);
-      }
-
-      scrollContainer?.removeEventListener('scroll', updateActiveUrl);
-      window.removeEventListener('scroll', updateActiveUrl);
-      window.removeEventListener('resize', updateActiveUrl);
-      observer.disconnect();
-    };
-  }, [items]);
-
-  return (
-    <aside className={cn('flex flex-col gap-4', className)}>
-      <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
-        {t('docs.toc')}
-      </div>
-      {items.length > 0 ? (
-        <nav className="flex flex-col border-l border-border">
-          {items.map((item) => {
-            const isPrimary = item.url === primaryActiveUrl;
-            const isVisible = visibleUrls.has(item.url);
-
-            return (
-              <a
-                aria-current={isPrimary ? 'location' : undefined}
-                className={cn(
-                  '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-sm leading-5 text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]',
-                  isVisible &&
-                    'border-[color:var(--line-strong)] text-[color:var(--ink-2)]',
-                  isPrimary &&
-                    'border-[color:var(--accent-brand)] text-[color:var(--ink-1)]',
-                  item.depth > 2 && 'pl-6',
-                  item.depth > 3 && 'pl-8',
-                )}
-                data-primary={isPrimary ? 'true' : undefined}
-                data-visible={isVisible ? 'true' : undefined}
-                href={item.url}
-                key={item.url}
-                onClick={(event) => {
-                  if (!item.url.startsWith('#')) {
-                    return;
-                  }
-
-                  event.preventDefault();
-                  scrollToHeading(item.url);
-                }}
-              >
-                {item.title}
-              </a>
-            );
-          })}
-        </nav>
-      ) : (
-        <p className="text-sm text-muted-foreground">{t('docs.tocEmpty')}</p>
-      )}
-      <div className="mt-2 flex flex-col gap-1 border-t border-[color:var(--line)] pt-3">
-        <a
-          className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
-          href="https://github.com/Shengwang-Community/docs-portal/tree/main/content/docs"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <Edit3Icon className="size-3.5" />
-          {t('docs.editPage')}
-        </a>
-        <a
-          className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
-          href="https://github.com/Shengwang-Community/docs-portal"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <ExternalLinkIcon className="size-3.5" />
-          {t('docs.viewGithub')}
-        </a>
-      </div>
-    </aside>
-  );
-}
-
-function getActiveDocsScrollContainer() {
-  return getDesktopDocsScrollContainer();
-}
-
-function getDesktopDocsScrollContainer() {
-  return document.querySelector<HTMLElement>(
-    '[data-testid="docs-main-desktop-scroll"]',
-  );
-}
-
-function getScrollViewportRect(scrollContainer: HTMLElement | null) {
-  if (scrollContainer) {
-    const rect = scrollContainer.getBoundingClientRect();
-
-    return {
-      bottom: rect.bottom,
-      top: rect.top,
-    };
+declare global {
+  interface Window {
   }
-
-  return {
-    bottom: window.innerHeight,
-    top: 0,
-  };
 }
 
-function getSectionBottomForItem(
-  itemIndex: number,
-  headings: Array<HTMLElement | null>,
-  items: TOCItemType[],
-) {
-  const currentItem = items[itemIndex];
-
-  for (let index = itemIndex + 1; index < items.length; index += 1) {
-    const nextHeading = headings[index];
-    const nextItem = items[index];
-
-    if (nextHeading && nextItem.depth <= currentItem.depth) {
-      return nextHeading.getBoundingClientRect().top;
-    }
-  }
-
-  return (
-    headings[itemIndex]?.closest('.prose, article')?.getBoundingClientRect()
-      .bottom ?? document.body.getBoundingClientRect().bottom
-  );
-}
-
-function requestAnimationFrame(callback: FrameRequestCallback) {
-  if (typeof window.requestAnimationFrame === 'function') {
-    return window.requestAnimationFrame(callback);
-  }
-
-  return window.setTimeout(() => callback(window.performance.now()), 0);
+function getPatchedStaticDocsHtml(activePath: string) {
+  return getInitialStaticDocsHtml(activePath);
 }

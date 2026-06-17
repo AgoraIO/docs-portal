@@ -134,13 +134,7 @@ export function getOpenApiEndpointUrl(
 }
 
 export function getOpenApiPrerenderPaths() {
-  return getOpenApiLanes().flatMap((lane) =>
-    SUPPORTED_LOCALES.flatMap((locale) =>
-      getOpenApiOperationIds(lane).map((operationId) =>
-        getOpenApiEndpointUrl(lane, locale, operationId),
-      ),
-    ),
-  );
+  return [];
 }
 
 export function resolveOpenApiEndpointRoute(

@@ -36,7 +36,10 @@ export const source = loader({
 export type PageWithSource = InferPageType<typeof source>;
 
 export function getPageMarkdownUrl(page: InferPageType<typeof source>) {
-  const segments = page.path.split('/').filter(Boolean);
+  const segments = page.path
+    .replace(/\.mdx$/, '.md')
+    .split('/')
+    .filter(Boolean);
 
   return {
     segments,

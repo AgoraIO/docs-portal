@@ -109,7 +109,10 @@ export async function getOpenApiOperation(
   return operation;
 }
 
-async function loadOpenApiOperations(lane: OpenApiLane, locale: AppLocale) {
+async function loadOpenApiOperations(
+  lane: OpenApiLane,
+  locale: AppLocale,
+): Promise<NormalizedOpenApiOperation[]> {
   const document = await getOpenApiDocument(lane, locale);
   const operations: NormalizedOpenApiOperation[] = [];
 
@@ -163,6 +166,10 @@ async function loadOpenApiOperations(lane: OpenApiLane, locale: AppLocale) {
   );
 }
 
+function getCacheKey(lane: OpenApiLane, locale: AppLocale) {
+  return `${lane.id}:${locale}`;
+}
+
 async function getOpenApiDocument(
   lane: OpenApiLane,
   locale: AppLocale,
@@ -193,10 +200,6 @@ async function loadDereferencedOpenApiDocument(
       },
     },
   )) as OpenApiDocument;
-}
-
-function getCacheKey(lane: OpenApiLane, locale: AppLocale) {
-  return `${lane.id}:${locale}`;
 }
 
 function normalizeRequestBody(value: unknown, document: OpenApiDocument) {

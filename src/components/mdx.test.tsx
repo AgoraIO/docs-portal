@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import * as fumadocsTabs from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { ComponentType, ReactNode } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { getMDXComponents } from './mdx';
 
@@ -172,6 +173,27 @@ describe('common MDX registry', () => {
     expect(
       within(heading).getByRole('button', { name: /copy anchor/i }),
     ).toBeInTheDocument();
+    expect(within(heading).getByRole('link')).toHaveAttribute(
+      'href',
+      '#install',
+    );
+  });
+
+  it('renders static headings without copy-anchor chrome', () => {
+    const components = getMDXComponents(undefined, { staticRender: true });
+    const Heading = components.h4 as HeadingComponent;
+
+    render(<Heading id="install">Install Agora skills</Heading>);
+
+    const heading = screen.getByRole('heading', {
+      level: 4,
+      name: 'Install Agora skills',
+    });
+
+    expect(heading).toHaveAttribute('id', 'install');
+    expect(
+      within(heading).queryByRole('button', { name: /copy anchor/i }),
+    ).not.toBeInTheDocument();
     expect(within(heading).getByRole('link')).toHaveAttribute(
       'href',
       '#install',
@@ -398,10 +420,15 @@ describe('common MDX registry', () => {
     expect(
       screen.getByText('print("hello")').closest('[role=tabpanel]')?.className,
     ).toContain('[&>figure]:m-0');
-    expect(screen.getByText('console.log("hello")')).toBeInTheDocument();
+    const inactiveCodePanel = screen
+      .getByRole('tab', { name: 'TypeScript' })
+      .getAttribute('aria-controls');
+
+    expect(inactiveCodePanel).toBeTruthy();
     expect(
-      screen.getByText('console.log("hello")').closest('[role=tabpanel]'),
+      document.getElementById(inactiveCodePanel as string),
     ).not.toBeVisible();
+    expect(screen.queryByText('console.log("hello")')).not.toBeInTheDocument();
   });
 
   it('switches generated code tabs when a trigger is clicked', () => {
@@ -445,19 +472,24 @@ describe('common MDX registry', () => {
       'data-state',
       'active',
     );
+    const npmPanelId = screen
+      .getByRole('tab', { name: 'npm' })
+      .getAttribute('aria-controls');
+    const pnpmPanelId = screen
+      .getByRole('tab', { name: 'pnpm' })
+      .getAttribute('aria-controls');
+
+    expect(npmPanelId).toBeTruthy();
+    expect(pnpmPanelId).toBeTruthy();
+    expect(document.getElementById(npmPanelId as string)).not.toBeVisible();
+    expect(document.getElementById(pnpmPanelId as string)).toBeVisible();
     expect(
-      screen
-        .getByText('npm install @agora/voice-agent')
-        .closest('[role=tabpanel]'),
-    ).not.toBeVisible();
-    expect(
-      screen
-        .getByText('pnpm add @agora/voice-agent')
-        .closest('[role=tabpanel]'),
-    ).toBeVisible();
+      screen.queryByText('npm install @agora/voice-agent'),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText('pnpm add @agora/voice-agent')).toBeInTheDocument();
   });
 
-  it('keeps inactive generated code tab content mounted', () => {
+  it('unmounts inactive generated code tab content', () => {
     const components = getMDXComponents();
     const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
     const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
@@ -485,12 +517,7 @@ describe('common MDX registry', () => {
       </CodeBlockTabs>,
     );
 
-    const inactiveCodePanel = screen
-      .getByText('console.log("hello")')
-      .closest('[role=tabpanel]');
-
-    expect(inactiveCodePanel).toBeInTheDocument();
-    expect(inactiveCodePanel).not.toBeVisible();
+    expect(screen.queryByText('console.log("hello")')).not.toBeInTheDocument();
 
     expect(screen.getByRole('tab', { name: 'TypeScript' })).toHaveAttribute(
       'data-state',
@@ -554,6 +581,68 @@ describe('common MDX registry', () => {
       'data-state',
       'inactive',
     );
+  });
+
+  it('renders only the active MDX tab content in static markup', () => {
+    const components = getMDXComponents(undefined, { staticRender: true });
+    const Tabs = components.Tabs as TabsComponent;
+    const TabsList = components.TabsList as TabsComponent;
+    const TabsTrigger = components.TabsTrigger as TabsChildComponent;
+    const TabsContent = components.TabsContent as TabsChildComponent;
+
+    const html = renderToStaticMarkup(
+      <Tabs defaultValue="android">
+        <TabsList>
+          <TabsTrigger value="android">Android</TabsTrigger>
+          <TabsTrigger value="ios">iOS</TabsTrigger>
+        </TabsList>
+        <TabsContent value="android">Android instructions</TabsContent>
+        <TabsContent value="ios">iOS instructions</TabsContent>
+      </Tabs>,
+    );
+
+    expect(html).toContain('Android instructions');
+    expect(html).not.toContain('iOS instructions');
+  });
+
+  it('renders static code blocks without Shiki token spans', () => {
+    const components = getMDXComponents(undefined, { staticRender: true });
+    const Pre = components.pre as CodeBlockPreComponent;
+
+    const html = renderToStaticMarkup(
+      <Pre className="language-js" title="Example">
+        <code>
+          <span className="line">
+            <span style={{ color: '#ff0000' }}>const</span>
+            <span style={{ color: '#00ff00' }}> value = 1;</span>
+          </span>
+        </code>
+      </Pre>,
+    );
+
+    expect(html).toContain('<pre');
+    expect(html).toContain('const value = 1;');
+    expect(html).not.toContain('--shiki-light');
+    expect(html).not.toContain('style=');
+  });
+
+  it('collapses blank lines in static code blocks', () => {
+    const components = getMDXComponents(undefined, { staticRender: true });
+    const Pre = components.pre as CodeBlockPreComponent;
+
+    const html = renderToStaticMarkup(
+      <Pre className="language-js">
+        <code>
+          <span className="line">const one = 1;</span>
+          <span className="line"></span>
+          <span className="line"></span>
+          <span className="line">const two = 2;</span>
+        </code>
+      </Pre>,
+    );
+
+    expect(html).toContain('const one = 1;\nconst two = 2;');
+    expect(html).not.toContain('const one = 1;\n\nconst two = 2;');
   });
 
   it('does not expose overview-only widgets from the common registry by default', () => {

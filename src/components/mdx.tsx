@@ -30,6 +30,7 @@ import { normalizeDocsHref } from '@/lib/docs-link-normalize';
 
 type MDXContext = {
   contentPath?: string;
+  staticRender?: boolean;
 };
 
 const FumadocsPre = defaultMdxComponents.pre;
@@ -38,6 +39,9 @@ const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
 const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
 const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
 const CodeBlockTabsValueContext = createContext<string | undefined>(undefined);
+const TabsValueContext = createContext<string | undefined>(undefined);
+const TabsStaticPruneContext = createContext(false);
+const StaticRenderContext = createContext(false);
 
 type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
   children?: ReactNode;
@@ -51,6 +55,10 @@ type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   value?: string;
+};
+type HeadingProps = ComponentProps<'h1'> & {
+  children?: ReactNode;
+  id?: string;
 };
 type PreProps = ComponentProps<typeof FumadocsPre>;
 type TabValueElement = ReactElement<{
@@ -151,11 +159,14 @@ function Tabs({
   children,
   className,
   defaultValue,
+  groupId,
   items,
   onValueChange,
+  persist,
   value,
   ...props
 }: TabsRootProps) {
+  const isStaticRender = useContext(StaticRenderContext);
   const { safeValue, setSafeValue } = useSafeTabValue({
     children,
     defaultValue,
@@ -169,11 +180,15 @@ function Tabs({
       {...props}
       className={cn('bg-fd-card', className)}
       defaultValue={defaultValue}
+      groupId={groupId}
       items={items}
       onValueChange={setSafeValue}
+      persist={persist}
       value={safeValue}
     >
-      {children}
+      <TabsStaticPruneContext value={isStaticRender && !groupId && !persist}>
+        <TabsValueContext value={safeValue}>{children}</TabsValueContext>
+      </TabsStaticPruneContext>
     </ControlledFumadocsTabs>
   );
 }
@@ -209,6 +224,16 @@ function CodeBlockTabs({
 }
 
 function Pre({ className, ...props }: PreProps) {
+  const isStaticRender = useContext(StaticRenderContext);
+
+  if (isStaticRender) {
+    return (
+      <pre className={cn('shiki', className)}>
+        <code>{extractStaticCodeText(props.children)}</code>
+      </pre>
+    );
+  }
+
   return (
     <FumadocsPre
       className={cn('bg-fd-card shadow-none', className)}
@@ -217,16 +242,61 @@ function Pre({ className, ...props }: PreProps) {
   );
 }
 
+function extractStaticCodeText(children: ReactNode) {
+  return extractTextNode(children)
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{2,}/g, '\n')
+    .trimEnd();
+}
+
+function extractTextNode(node: ReactNode): string {
+  if (node === null || node === undefined || typeof node === 'boolean') {
+    return '';
+  }
+
+  if (typeof node === 'string' || typeof node === 'number') {
+    return String(node);
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(extractTextNode).join('');
+  }
+
+  if (isValidElement(node)) {
+    const element = node as ReactElement<{ children?: ReactNode }>;
+    const text = extractTextNode(element.props.children);
+
+    if (element.props.className === 'line') {
+      return `${text}\n`;
+    }
+
+    return text;
+  }
+
+  return '';
+}
+
 function TabsContent({
   className,
+  value,
   ...props
 }: ComponentProps<typeof FumadocsTabsContent>) {
+  const selectedValue = useContext(TabsValueContext);
+  const shouldPruneStaticPanels = useContext(TabsStaticPruneContext);
+  const isInactive =
+    selectedValue !== undefined && value !== undefined && selectedValue !== value;
+
+  if (shouldPruneStaticPanels && isInactive) {
+    return null;
+  }
+
   return (
     <FumadocsTabsContent
       className={cn(
         '[&>figure:only-child]:bg-fd-card [&>figure:only-child]:shadow-none',
         className,
       )}
+      value={value}
       {...props}
     />
   );
@@ -258,7 +328,6 @@ function CodeBlockTab({
         '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
         className,
       )}
-      forceMount
       hidden={isInactive}
       value={value}
       {...props}
@@ -335,16 +404,88 @@ function createDocsCard(contentPath?: string) {
   return DocsCard;
 }
 
+function createStaticHeading(
+  Tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6',
+): ComponentType<HeadingProps> {
+  function StaticHeading({
+    children,
+    className,
+    id,
+    ...props
+  }: HeadingProps) {
+    const headingClassName = cn(
+      'group/heading flex scroll-m-28 flex-row items-center gap-1',
+      className,
+    );
+
+    if (!id) {
+      return (
+        <Tag className={headingClassName} {...props}>
+          {children}
+        </Tag>
+      );
+    }
+
+    return (
+      <Tag className={headingClassName} id={id} {...props}>
+        <a data-card="" href={`#${id}`}>
+          {children}
+        </a>
+      </Tag>
+    );
+  }
+
+  return StaticHeading;
+}
+
 export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
+  const isStaticRender = Boolean(context?.staticRender);
+  const defaultHeadingComponents = defaultMdxComponents as MDXComponents & {
+    h1?: ComponentType<HeadingProps>;
+    h2?: ComponentType<HeadingProps>;
+    h3?: ComponentType<HeadingProps>;
+    h4?: ComponentType<HeadingProps>;
+    h5?: ComponentType<HeadingProps>;
+    h6?: ComponentType<HeadingProps>;
+  };
+  const TabsWithContext = (props: TabsRootProps) => (
+    <StaticRenderContext value={isStaticRender}>
+      <Tabs {...props} />
+    </StaticRenderContext>
+  );
+  const PreWithContext = (props: PreProps) => (
+    <StaticRenderContext value={isStaticRender}>
+      <Pre {...props} />
+    </StaticRenderContext>
+  );
+  const H1 = isStaticRender
+    ? createStaticHeading('h1')
+    : defaultHeadingComponents.h1;
+  const H2 = isStaticRender
+    ? createStaticHeading('h2')
+    : defaultHeadingComponents.h2;
+  const H3 = isStaticRender
+    ? createStaticHeading('h3')
+    : defaultHeadingComponents.h3;
+  const H4 = isStaticRender
+    ? createStaticHeading('h4')
+    : defaultHeadingComponents.h4;
+  const H5 = isStaticRender
+    ? createStaticHeading('h5')
+    : defaultHeadingComponents.h5;
+  const H6 = isStaticRender
+    ? createStaticHeading('h6')
+    : defaultHeadingComponents.h6;
+
   return {
     ...defaultMdxComponents,
     a: createDocsAnchor(context?.contentPath),
     Card: createDocsCard(context?.contentPath),
     CommandBlock,
-    Tabs,
+    Tabs: TabsWithContext,
     Tab: FumadocsTab,
     TabsContent,
     TabsList: FumadocsTabsList,
@@ -352,7 +493,13 @@ export function getMDXComponents(
     CodeBlockTabs,
     CodeBlockTabsList,
     CodeBlockTab,
-    pre: Pre,
+    h1: H1,
+    h2: H2,
+    h3: H3,
+    h4: H4,
+    h5: H5,
+    h6: H6,
+    pre: PreWithContext,
     Accordion,
     Accordions,
     File,

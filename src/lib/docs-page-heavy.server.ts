@@ -1,0 +1,1639 @@
+import { getTableOfContents } from 'fumadocs-core/content/toc';
+import type { TOCItemType } from 'fumadocs-core/toc';
+import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import type React from 'react';
+import {
+  type DocsNavScopeResolution,
+  getNavScopeVersionLinks,
+  getNavScopeSidebarNodes,
+  getSharedNavScopeSidebarNodes,
+  getScopedNavScopeSidebarNodes,
+  resolveDocsNavScope,
+} from './docs-nav-scope';
+import { getSourceSlugs } from './docs-routing';
+import {
+  type DocsSidebarNode,
+  type DocsSidebarSectionNode,
+  filterSidebarNodes,
+  getFirstChildPageUrl,
+  getFirstTabPageUrl,
+  getPrevNextLinksFromNode,
+  getSidebarBreadcrumb,
+  getTabSummaries,
+} from './docs-tree';
+import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import {
+  getOpenApiEndpointUrl,
+  getOpenApiLanes,
+  getOpenApiOperationIds,
+  type OpenApiLane,
+  resolveOpenApiEndpointRoute,
+} from './openapi/lanes';
+import { getOpenApiOperationMethod } from './openapi/methods.server';
+import type { DynamicDocsPage } from './docs-source-dynamic.server';
+import type { OpenApiPage } from './openapi-page-source.server';
+import { getDocsIndex } from './docs-static/docs-index.server';
+import {
+  getDocsIndexCompatibleNodeMeta,
+  getDocsIndexPageBySourceSlugs,
+  getDocsIndexCompatiblePageTree,
+} from './docs-static/docs-index-page-tree';
+import {
+  getDocsIndexPageSource,
+  getDocsIndexPageSourceByContentPath,
+  getDocsIndexPageTocFromSource,
+} from './docs-static/docs-index-content.server';
+import {
+  isApiReferenceContentPath,
+  isDeferredOrdinaryApiReferenceContentPath,
+  isRtcAndroidApiReferenceContentPath,
+} from './docs-source-buckets';
+
+const OPENAPI_TAB = 'api-reference';
+const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
+const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
+const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
+const RECIPES_ROOT_SLUG = 'recipes';
+
+type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
+type PageWithSource = DynamicDocsPage | OpenApiPage;
+type DocsSourceLike = {
+  getNodeMeta: (node: unknown, locale?: string) => { data?: unknown } | undefined;
+  getPage: (slugs: string[], locale?: string) => PageWithSource | undefined;
+  getPages: (locale?: string) => PageWithSource[];
+  getPageTree: (locale?: string) => unknown;
+};
+type ResolvedMdxPageData = {
+  body?: React.ComponentType<{ components?: object }>;
+  structuredData?: {
+    contents: unknown[];
+    headings: unknown[];
+  };
+  toc?: TOCItemType[];
+};
+
+const openApiPageSourcePromise = import('./openapi-page-source.server').then(
+  (module) => module.openApiPageSource,
+);
+
+const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
+  string,
+  Partial<Record<AppLocale, string>>
+> = {
+  'audio-settings': {
+    'zh-CN': '/zh-CN/ai/best-practices/audio-settings',
+  },
+  'opt-latency': {
+    'zh-CN': '/zh-CN/ai/best-practices/optimize-latency',
+  },
+  geofencing: {
+    en: '/en/ai/best-practices/regional-restrictions',
+    'zh-CN': '/zh-CN/ai/best-practices/regional-restrictions',
+  },
+  'http-basic-auth': {
+    'zh-CN': '/zh-CN/api-reference/conversational-ai/rest-api/authentication',
+  },
+  'release-notes': {
+    'zh-CN': '/zh-CN/ai/release-notes',
+  },
+};
+
+export async function loadDocsTabIndexHeavy(locale: string, tab: string) {
+  const supportedLocale = toSupportedLocale(locale);
+  const ordinaryDocsAdapter = getOrdinaryDocsAdapter(supportedLocale, tab);
+
+  if (ordinaryDocsAdapter) {
+    const firstPageUrl = getFirstTabPageUrl(ordinaryDocsAdapter.pageTree, tab);
+
+    if (!firstPageUrl) {
+      return null;
+    }
+
+    return {
+      locale,
+      url: firstPageUrl,
+      tab,
+    };
+  }
+
+  const pageTree = (await getOpenApiPageSource()).getPageTree(locale);
+  const firstPageUrl = getFirstTabPageUrl(pageTree, tab);
+
+  if (!firstPageUrl) {
+    return null;
+  }
+
+  return {
+    locale,
+    url: firstPageUrl,
+    tab,
+  };
+}
+
+export async function loadDocsPageTocHeavy(contentPath: string) {
+  const locale = contentPath.split('/')[0];
+
+  if (!locale) {
+    return [];
+  }
+
+  const contentSource = getDocsIndexPageSourceByContentPath(contentPath);
+  if (contentSource) {
+    return getDocsIndexPageTocFromSource(contentSource.sourceText);
+  }
+
+  const { docsDynamicSource } = await import('./docs-source-dynamic.server');
+  const page = docsDynamicSource
+    .getPages(locale)
+    .find((item) => item.path === contentPath);
+
+  if (!page || isOpenApiPageWithClientProps(page)) {
+    return [];
+  }
+
+  const processedText = await readProcessedText(page);
+  return resolvePageToc(page, processedText);
+}
+
+export async function loadDocsPagePayloadHeavy(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+  includeSidebar = true,
+) {
+  const supportedLocale = toSupportedLocale(locale);
+  const apiReferenceRedirect = resolveApiReferenceRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (apiReferenceRedirect) {
+    return {
+      redirectUrl: apiReferenceRedirect,
+    };
+  }
+
+  const deviceKitRedirect = resolveDeviceKitRedirect(locale, tab, slugSegments);
+  if (deviceKitRedirect) {
+    return {
+      redirectUrl: deviceKitRedirect,
+    };
+  }
+
+  const aiRedirect = resolveAiDocsRedirect(locale, tab, slugSegments);
+  if (aiRedirect) {
+    return {
+      redirectUrl: aiRedirect,
+    };
+  }
+
+  const legacyRedirect = resolveLegacyBestPracticesRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+
+  if (legacyRedirect) {
+    return {
+      redirectUrl: legacyRedirect,
+    };
+  }
+
+  const ordinaryDocsAdapter = getOrdinaryDocsAdapter(supportedLocale, tab);
+  if (ordinaryDocsAdapter) {
+    const ordinaryPayload = await buildOrdinaryDocsPayload({
+      includeSidebar,
+      locale,
+      ordinaryDocsAdapter,
+      slugSegments,
+      tab,
+    });
+
+    if (ordinaryPayload) {
+      return ordinaryPayload;
+    }
+  }
+
+  const source: DocsSourceLike =
+    tab === OPENAPI_TAB
+      ? ((await getOpenApiPageSource()) as unknown as DocsSourceLike)
+      : ((await import('./docs-source-dynamic.server'))
+          .docsDynamicSource as unknown as DocsSourceLike);
+  const realtimeMediaRedirect = resolveRealtimeMediaRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (
+    realtimeMediaRedirect &&
+    hasDocsPageForUrl(source, realtimeMediaRedirect)
+  ) {
+    return {
+      redirectUrl: realtimeMediaRedirect,
+    };
+  }
+
+  const slug = slugSegments.at(-1) ?? 'index';
+  const page = source.getPage(
+    getSourceSlugs({
+      locale,
+      slug,
+      slugSegments,
+      tab,
+    }),
+    locale,
+  );
+
+  if (!page) {
+    const pageTree = ordinaryDocsAdapter?.pageTree ?? source.getPageTree(locale);
+    const fallbackUrl = getFirstChildPageUrl(pageTree, tab, slugSegments);
+
+    if (fallbackUrl) {
+      return {
+        redirectUrl: fallbackUrl,
+      };
+    }
+
+    return null;
+  }
+
+  const pageTree = ordinaryDocsAdapter?.pageTree ?? source.getPageTree(locale);
+  const isOpenApiPage = isOpenApiPageWithClientProps(page);
+  const openApiRoute =
+    isOpenApiPage && supportedLocale
+      ? resolveOpenApiEndpointRoute(supportedLocale, tab, slugSegments)
+      : null;
+  const processedText = isOpenApiPage ? '' : await readProcessedText(page);
+  const toc = isOpenApiPage
+    ? normalizeToc(await getPageToc(page))
+    : await resolvePageToc(page, processedText);
+  const shouldDeferToc = isDeferredPageTocPath(page.path);
+  const layoutMode = isOpenApiPage ? ('openapi' as const) : ('docs' as const);
+  const sidebar = includeSidebar
+      ? await getDocsSidebarNodes({
+        activePath: page.url,
+        locale: supportedLocale,
+        pageTree,
+        pageUrl: page.url,
+        source,
+        sourceAdapter: ordinaryDocsAdapter ?? undefined,
+        tab,
+      })
+    : [];
+  const title = page.data.title ?? page.slugs.at(-1) ?? page.url;
+  const navScope = getDocsNavScope({
+    activePath: page.url,
+    locale,
+    pageTree,
+    source,
+    sourceAdapter: ordinaryDocsAdapter ?? undefined,
+    tab,
+  });
+  const sidebarHeader = resolveDocsSidebarHeader({
+    activePath: page.url,
+    hidePlatformTabs:
+      'hidePlatformTabs' in page.data ? page.data.hidePlatformTabs : undefined,
+    locale,
+    navScope,
+    pageTree,
+    source,
+    sourceAdapter: ordinaryDocsAdapter ?? undefined,
+    tab,
+  });
+  const breadcrumb = includeSidebar ? getSidebarBreadcrumb(sidebar, page.url) : [];
+  return {
+    activePath: page.url,
+    activeTab: tab,
+    body: isOpenApiPage
+      ? {
+          kind: 'openapi' as const,
+          payloadAssetPath: page.data.openApiPayloadAssetPath,
+          payloadMeta: page.data.openApiPayloadMeta,
+        }
+      : await buildMdxBodyPayloadLazy(page),
+    breadcrumb:
+      breadcrumb.length > 0
+        ? breadcrumb
+        : [
+            {
+              title,
+              url: page.url,
+            },
+          ],
+    contentPath: page.path,
+    description: page.data.description,
+    layoutMode,
+    localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
+      const simpleTargetPage =
+        shouldUseOrdinaryDocsAdapter(tab) &&
+        getDocsIndexPageSource(targetLocale, page.slugs.slice(1))
+          ? getDocsIndexPageSource(targetLocale, page.slugs.slice(1))
+          : null;
+      const targetPage = simpleTargetPage
+        ? { url: simpleTargetPage.routePath }
+        : source.getPage(page.slugs.slice(1), targetLocale);
+      const targetTabEntry =
+        shouldUseOrdinaryDocsAdapter(tab)
+          ? getFirstTabPageUrl(
+              getDocsIndexCompatiblePageTree(getDocsIndex(), targetLocale),
+              tab,
+            )
+          : getFirstTabPageUrl(source.getPageTree(targetLocale), tab);
+      const targetUrl =
+        targetPage?.url ??
+        (targetTabEntry?.startsWith(`/${targetLocale}/`)
+          ? targetTabEntry
+          : undefined) ??
+        `/${targetLocale}/introduction`;
+
+      return {
+        href: targetUrl,
+        isActive: targetLocale === locale,
+        locale: targetLocale,
+      };
+    }),
+    navigation:
+      openApiRoute && supportedLocale
+        ? getOpenApiPrevNextLinks(
+            openApiRoute.lane,
+            supportedLocale,
+            openApiRoute.operationId,
+          )
+        : getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
+    sidebar,
+    sidebarHeader,
+    slug: page.slugs.at(-1),
+    tabs: getTabSummaries(pageTree),
+    title: page.data.title,
+    toc: shouldDeferToc ? [] : toc,
+  };
+}
+
+async function buildOrdinaryDocsPayload({
+  includeSidebar,
+  locale,
+  ordinaryDocsAdapter,
+  slugSegments,
+  tab,
+}: {
+  includeSidebar: boolean;
+  locale: string;
+  ordinaryDocsAdapter: OrdinaryDocsAdapter;
+  slugSegments: string[];
+  tab: string;
+}) {
+  const supportedLocale = toSupportedLocale(locale);
+
+  if (!supportedLocale) {
+    return null;
+  }
+
+  const docsIndex = getDocsIndex();
+  const sourceSlugs = [tab, ...slugSegments];
+  const page =
+    getDocsIndexPageBySourceSlugs(docsIndex, supportedLocale, sourceSlugs) ??
+    (slugSegments.length === 0
+      ? getDocsIndexPageBySourceSlugs(docsIndex, supportedLocale, [tab])
+      : null);
+
+  if (!page) {
+    const fallbackUrl = getFirstChildPageUrl(
+      ordinaryDocsAdapter.pageTree,
+      tab,
+      slugSegments,
+    );
+
+    if (fallbackUrl) {
+      return {
+        redirectUrl: fallbackUrl,
+      };
+    }
+
+    return null;
+  }
+
+  const pageSource = getDocsIndexPageSource(supportedLocale, page.sourceSlugs);
+  const toc = pageSource
+    ? getDocsIndexPageTocFromSource(pageSource.sourceText)
+    : [];
+  const fakeSource = {} as DocsSourceLike;
+  const sidebar = includeSidebar
+    ? await getDocsSidebarNodes({
+        activePath: page.routePath,
+        locale: supportedLocale,
+        pageTree: ordinaryDocsAdapter.pageTree,
+        pageUrl: page.routePath,
+        source: fakeSource,
+        sourceAdapter: ordinaryDocsAdapter,
+        tab,
+      })
+    : [];
+  const navScope = getDocsNavScope({
+    activePath: page.routePath,
+    locale,
+    pageTree: ordinaryDocsAdapter.pageTree,
+    source: fakeSource,
+    sourceAdapter: ordinaryDocsAdapter,
+    tab,
+  });
+  const sidebarHeader = resolveDocsSidebarHeader({
+    activePath: page.routePath,
+    locale,
+    navScope,
+    pageTree: ordinaryDocsAdapter.pageTree,
+    source: fakeSource,
+    sourceAdapter: ordinaryDocsAdapter,
+    tab,
+  });
+  const breadcrumb = includeSidebar
+    ? getSidebarBreadcrumb(sidebar, page.routePath)
+    : [];
+
+  return {
+    activePath: page.routePath,
+    activeTab: tab,
+    body: await buildStaticDocsIndexMdxBodyPayloadLazy(page.contentPath),
+    breadcrumb:
+      breadcrumb.length > 0
+        ? breadcrumb
+        : [
+            {
+              title: page.title,
+              url: page.routePath,
+            },
+          ],
+    contentPath: page.contentPath,
+    description: page.description,
+    layoutMode: 'docs' as const,
+    localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
+      const targetPage = getDocsIndexPageBySourceSlugs(docsIndex, targetLocale, sourceSlugs);
+      const targetTabEntry = getFirstTabPageUrl(
+        getDocsIndexCompatiblePageTree(docsIndex, targetLocale),
+        tab,
+      );
+      const targetUrl =
+        targetPage?.routePath ??
+        (targetTabEntry?.startsWith(`/${targetLocale}/`)
+          ? targetTabEntry
+          : undefined) ??
+        `/${targetLocale}/introduction`;
+
+      return {
+        href: targetUrl,
+        isActive: targetLocale === locale,
+        locale: targetLocale,
+      };
+    }),
+    navigation: getPrevNextLinksFromNode(
+      navScope?.sidebarRoot ?? ordinaryDocsAdapter.pageTree,
+      page.routePath,
+    ),
+    sidebar,
+    sidebarHeader,
+    slug: page.slugSegments.at(-1),
+    tabs: getTabSummaries(ordinaryDocsAdapter.pageTree),
+    title: page.title,
+    toc: isDeferredPageTocPath(page.contentPath) ? [] : toc,
+  };
+}
+
+async function buildMdxBodyPayloadLazy(page: PageWithSource) {
+  const { buildMdxBodyPayload } = await import('./docs-static-html.server');
+  return buildMdxBodyPayload(page);
+}
+
+async function buildStaticDocsIndexMdxBodyPayloadLazy(contentPath: string) {
+  const { buildStaticDocsIndexMdxBodyPayload } = await import(
+    './docs-static-html.server'
+  );
+  return buildStaticDocsIndexMdxBodyPayload(contentPath);
+}
+
+function resolveLegacyBestPracticesRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (tab !== 'best-practices') {
+    return null;
+  }
+
+  const supportedLocale = toSupportedLocale(locale);
+  if (!supportedLocale) {
+    return null;
+  }
+
+  const slug =
+    slugSegments.length === 0 ? 'index' : (slugSegments.at(-1) ?? 'index');
+  const redirect =
+    LEGACY_BEST_PRACTICES_REDIRECTS[slug]?.[supportedLocale] ?? null;
+
+  return redirect;
+}
+
+function resolveDeviceKitRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (tab !== 'ai') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+
+  if (normalizedPath === 'device-kit') {
+    return `/${locale}/ai/device-kit/start-here/quickstart`;
+  }
+
+  if (normalizedPath === `choose-your-path/${DEVICE_KIT_PATH_ENTRY_SLUG}`) {
+    return `/${locale}/ai/device-kit/start-here/quickstart`;
+  }
+
+  const redirects: Record<string, string> = {
+    'device-kit/get-started': `/${locale}/ai/device-kit/start-here/quickstart`,
+    'device-kit/get-started/quickstart': `/${locale}/ai/device-kit/start-here/quickstart`,
+    'device-kit/get-started/enable-services': `/${locale}/ai/device-kit/reference/enable-services`,
+    'device-kit/get-started/run-the-demo': `/${locale}/ai/device-kit/build/run-the-r1-demo`,
+    'device-kit/overview': `/${locale}/ai/device-kit/build/architecture-overview`,
+    'device-kit/overview/architecture': `/${locale}/ai/device-kit/build/architecture-overview`,
+    'device-kit/reference': `/${locale}/ai/device-kit/build/device-controls`,
+    'device-kit/reference/device-controls': `/${locale}/ai/device-kit/build/device-controls`,
+    'device-kit/overview/pricing': `/${locale}/ai/device-kit/reference/pricing`,
+    'device-kit/overview/release-notes': `/${locale}/ai/device-kit/reference/release-notes`,
+    'device-kit/start-here/enable-services': `/${locale}/ai/device-kit/reference/enable-services`,
+  };
+
+  return redirects[normalizedPath] ?? null;
+}
+
+async function getOpenApiPageSource() {
+  return openApiPageSourcePromise;
+}
+
+function resolveApiReferenceRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (tab !== OPENAPI_TAB) {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+
+  if (normalizedPath === RECIPES_PATH_ENTRY_SLUG) {
+    return `/${locale}/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`;
+  }
+
+  return null;
+}
+
+function resolveAiDocsRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (tab !== 'ai') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+
+  const redirects: Record<string, string> = {
+    'conversational-ai': `/${locale}/ai/get-started/quickstart`,
+    [`choose-your-path/${CONVERSATIONAL_AI_PATH_ENTRY_SLUG}`]: `/${locale}/ai/get-started/quickstart`,
+    'build/code-first-architecture': `/${locale}/ai/build/architecture`,
+    'build/event-types': `/${locale}/ai/reference/event-types`,
+    'reference/code-first-architecture': `/${locale}/ai/build/architecture`,
+    'reference/architecture': `/${locale}/ai/build/architecture`,
+    'best-practices/filler-words': `/${locale}/ai/build/filler-words`,
+  };
+
+  return redirects[normalizedPath] ?? null;
+}
+
+function resolveRealtimeMediaRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (tab !== 'realtime-media') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+
+  const redirects: Record<string, string> = {
+    'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
+    'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
+    'rtc/quick-start/build-from-scratch': `/${locale}/realtime-media/rtc/quick-start/android/build-from-scratch`,
+  };
+
+  return redirects[normalizedPath] ?? null;
+}
+
+function hasDocsPageForUrl(source: DocsSourceLike, url: string) {
+  const [locale, tab, ...slugSegments] = url.split('/').filter(Boolean);
+  const slug = slugSegments.at(-1) ?? 'index';
+
+  if (!locale || !tab) {
+    return false;
+  }
+
+  return Boolean(
+    source.getPage(
+      getSourceSlugs({
+        locale,
+        slug,
+        slugSegments,
+        tab,
+      }),
+      locale,
+    ),
+  );
+}
+
+export type DocsPagePayload = Exclude<
+  Awaited<ReturnType<typeof loadDocsPagePayload>>,
+  null | { redirectUrl: string }
+>;
+
+async function readProcessedText(page: PageWithSource) {
+  try {
+    if (!hasProcessedText(page)) {
+      return '';
+    }
+
+    return await page.data.getText('processed');
+  } catch {
+    return '';
+  }
+}
+
+async function resolvePageToc(page: PageWithSource, processedText: string) {
+  const directToc = normalizeToc(await getPageToc(page));
+
+  if (directToc.length > 0) {
+    return directToc;
+  }
+
+  try {
+    return normalizeToc(await getTableOfContents(processedText));
+  } catch {
+    return [];
+  }
+}
+
+function isRenderableMdxPage(
+  page: PageWithSource,
+): page is PageWithSource & {
+  data: PageWithSource['data'] & {
+    body: React.ComponentType<{ components?: object }>;
+  };
+} {
+  return 'body' in page.data && typeof page.data.body === 'function';
+}
+
+function hasLazyMdxPageData(
+  page: PageWithSource,
+): page is PageWithSource & {
+  data: {
+    load: () => Promise<ResolvedMdxPageData>;
+  };
+} {
+  return 'load' in page.data && typeof page.data.load === 'function';
+}
+
+function hasRenderableMdxBody(page: PageWithSource) {
+  return isRenderableMdxPage(page) || hasLazyMdxPageData(page);
+}
+
+function normalizeToc(toc: TOCItemType[] | undefined) {
+  return (toc ?? []).flatMap((item) => {
+    if (
+      typeof item.title !== 'string' ||
+      item.title.trim().length === 0 ||
+      typeof item.url !== 'string' ||
+      item.url.length === 0
+    ) {
+      return [];
+    }
+
+    return [
+      {
+        depth: item.depth,
+        title: item.title,
+        url: item.url,
+      },
+    ];
+  });
+}
+
+function hasProcessedText(page: PageWithSource): page is PageWithSource & {
+  data: { getText: (kind: 'processed') => Promise<string> };
+} {
+  return 'getText' in page.data && typeof page.data.getText === 'function';
+}
+
+function isOpenApiPageWithClientProps(
+  page: PageWithSource,
+): page is PageWithSource & {
+  data: {
+    openApiPayloadAssetPath: string;
+    openApiPayloadMeta: {
+      document: string;
+      operations: Array<{
+        method: string;
+        path: string;
+      }>;
+      showDescription: true;
+    };
+  };
+} {
+  return (
+    page.type === 'openapi' &&
+    'openApiPayloadAssetPath' in page.data &&
+    typeof page.data.openApiPayloadAssetPath === 'string' &&
+    'openApiPayloadMeta' in page.data &&
+    typeof page.data.openApiPayloadMeta === 'object'
+  );
+}
+
+async function getPageToc(page: PageWithSource) {
+  if ('toc' in page.data && Array.isArray(page.data.toc)) {
+    return page.data.toc;
+  }
+
+  const pageData = await resolveMdxPageData(page);
+  return Array.isArray(pageData?.toc) ? pageData.toc : undefined;
+}
+
+async function resolveMdxPageData(page: PageWithSource) {
+  if (isRenderableMdxPage(page)) {
+    return {
+      body: page.data.body,
+      structuredData:
+        'structuredData' in page.data &&
+        typeof page.data.structuredData !== 'function'
+          ? page.data.structuredData
+          : undefined,
+      toc: 'toc' in page.data && Array.isArray(page.data.toc) ? page.data.toc : undefined,
+    } satisfies ResolvedMdxPageData;
+  }
+
+  if (!hasLazyMdxPageData(page)) {
+    return null;
+  }
+
+  try {
+    return await page.data.load();
+  } catch {
+    return null;
+  }
+}
+
+function toSupportedLocale(locale: string): AppLocale | null {
+  return SUPPORTED_LOCALES.includes(locale as AppLocale)
+    ? (locale as AppLocale)
+    : null;
+}
+
+async function getDocsSidebarNodes({
+  activePath,
+  locale,
+  pageTree,
+  pageUrl,
+  source,
+  sourceAdapter,
+  tab,
+}: {
+  activePath?: string;
+  locale: AppLocale | null;
+  pageTree: ReturnType<DocsSourceLike['getPageTree']>;
+  pageUrl?: string;
+  source: DocsSourceLike;
+  sourceAdapter?: OrdinaryDocsAdapter;
+  tab: string;
+}) {
+  if (tab === 'ai') {
+    return buildAiProductSidebar(
+      getNavScopeSidebarNodes({
+        getNodeMeta: (node) =>
+          getDocsMetaData(resolveNodeMeta(source, locale, node, sourceAdapter)),
+        root: pageTree,
+        tab,
+      }),
+    );
+  }
+
+  if (
+    shouldUseSharedPlatformSidebar(
+      tab,
+      activePath ?? pageUrl,
+      locale,
+      pageTree,
+      source,
+      sourceAdapter,
+    )
+  ) {
+    return getSharedRtcSidebarNodes({
+      locale,
+      pageTree,
+      source,
+      sourceAdapter,
+      tab,
+      activePath,
+    });
+  }
+
+  const navScope = activePath
+    ? getDocsNavScope({
+        activePath,
+        locale,
+        pageTree,
+        source,
+        sourceAdapter,
+        tab,
+      })
+    : null;
+  const sidebar = navScope
+    ? getScopedSidebarNodes({
+        locale,
+        navScope,
+        source,
+        sourceAdapter,
+      })
+    : getNavScopeSidebarNodes({
+        getNodeMeta: (node) =>
+          getDocsMetaData(resolveNodeMeta(source, locale, node, sourceAdapter)),
+        root: pageTree,
+        tab,
+      });
+
+  if (tab !== OPENAPI_TAB || !locale) {
+    return sidebar;
+  }
+
+  const openApiSidebar = await addOpenApiEndpointSidebarItems(
+    sidebar,
+    locale,
+    tab,
+  );
+  const filteredOpenApiSidebar = filterSidebarNodes(openApiSidebar, (node) => {
+    if (node.type !== 'page') {
+      return true;
+    }
+
+    return !(
+      node.url === `/${locale}/${OPENAPI_TAB}/${RECIPES_PATH_ENTRY_SLUG}`
+    );
+  });
+
+  if (activePath?.startsWith('/en/api-reference/recipes') ||
+      activePath?.startsWith('/zh-CN/api-reference/recipes')) {
+    return restoreRecipesSidebarSections(filteredOpenApiSidebar);
+  }
+
+  return filteredOpenApiSidebar;
+}
+
+function restoreRecipesSidebarSections(
+  nodes: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  if (nodes.length === 0) {
+    return nodes;
+  }
+
+  const [indexNode, ...rest] = nodes;
+  const pageNodes = rest.filter(
+    (node): node is DocsSidebarPageNode => node.type === 'page',
+  );
+
+  if (pageNodes.length === 0) {
+    return nodes;
+  }
+
+  const quickstarts = pageNodes.filter((node) =>
+    ['Python Quickstart', 'Golang Quickstart', 'NextJS Quickstart'].includes(
+      node.title,
+    ),
+  );
+  const integrationPatterns = pageNodes.filter((node) =>
+    ['Custom LLM', 'Custom Modalities'].includes(node.title),
+  );
+  const useCases = pageNodes.filter((node) =>
+    ['Wellness Coach', 'Thymia Biomarkers'].includes(node.title),
+  );
+
+  if (
+    quickstarts.length + integrationPatterns.length + useCases.length !==
+    pageNodes.length
+  ) {
+    return nodes;
+  }
+
+  return [
+    indexNode,
+    {
+      children: quickstarts,
+      collapsible: false,
+      id: 'recipes-quickstarts',
+      title: 'Quickstarts',
+      type: 'section',
+    },
+    {
+      children: integrationPatterns,
+      collapsible: false,
+      id: 'recipes-integration-patterns',
+      title: 'Integration patterns',
+      type: 'section',
+    },
+    {
+      children: useCases,
+      collapsible: false,
+      id: 'recipes-use-cases',
+      title: 'Use cases',
+      type: 'section',
+    },
+  ];
+}
+
+function buildAiProductSidebar(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
+  const aiOverview =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai');
+  const conversationalAiQuickstart =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/get-started/quickstart') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/get-started/quickstart');
+  const buildSection = findTopLevelSidebarSection(nodes, ['Build', '构建']);
+  const bestPracticesSection = findTopLevelSidebarSection(nodes, [
+    'Best practices',
+    '最佳实践',
+  ]);
+  const modelsSection = findTopLevelSidebarSection(nodes, ['Models', '模型']);
+  const referenceSection = findTopLevelSidebarSection(nodes, [
+    'Reference',
+    '参考',
+  ]);
+  const deviceKitSection = findTopLevelSidebarSection(nodes, [
+    'Convo AI Device Kit',
+  ]);
+
+  if (
+    !aiOverview ||
+    !conversationalAiQuickstart ||
+    !buildSection ||
+    !bestPracticesSection ||
+    !modelsSection ||
+    !referenceSection ||
+    !deviceKitSection
+  ) {
+    return filterSidebarNodes(nodes, (node) => {
+      if (node.type !== 'page') {
+  return true;
+}
+
+function isDeferredPageTocPath(contentPath: string) {
+  return (
+    isDeferredOrdinaryApiReferenceContentPath(contentPath) ||
+    isRtcAndroidApiReferenceContentPath(contentPath) ||
+    contentPath.endsWith('/release-notes.mdx') ||
+    contentPath.endsWith('/release-notes.md')
+  );
+}
+
+      return !node.url.includes('/ai/choose-your-path/');
+    });
+  }
+
+  const mergedBuildSection: DocsSidebarSectionNode = {
+    ...stripSidebarSectionMeta(buildSection),
+    children: stripSidebarSectionMetaFromNodes([
+      ...buildSection.children,
+      {
+        ...stripSidebarSectionMeta(bestPracticesSection),
+        children: stripSidebarSectionMetaFromNodes(
+          bestPracticesSection.children,
+        ),
+        title:
+          buildSection.title === '构建' ? '优化与加固' : 'Harden and optimize',
+      },
+    ]),
+  };
+
+  const isZhCn = aiOverview.url.startsWith('/zh-CN/');
+
+  return [
+    {
+      ...aiOverview,
+      title: isZhCn ? '概览' : 'Overview',
+    },
+    {
+      children: stripSidebarSectionMetaFromNodes([
+        {
+          ...conversationalAiQuickstart,
+          title: isZhCn ? 'Quickstart' : 'Quickstart',
+        },
+        mergedBuildSection,
+        modelsSection,
+        stripSidebarSectionMetaFromNode(referenceSection),
+      ]),
+      icon: 'Bot',
+      id: 'ai-product-software-clients',
+      title: isZhCn ? 'Voice Agent in apps' : 'Voice agent in apps',
+      type: 'section',
+    },
+    {
+      ...stripSidebarSectionMeta(deviceKitSection),
+      children: stripSidebarSectionMetaFromNodes(
+        flattenDeviceKitSidebarChildren(deviceKitSection.children),
+      ),
+      icon: 'Cpu',
+      id: 'ai-product-dedicated-devices',
+      title: isZhCn
+        ? 'Voice Agent on dedicated devices'
+        : 'Voice agent on dedicated devices',
+      type: 'section',
+    },
+  ];
+}
+
+function flattenDeviceKitSidebarChildren(
+  children: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  const flattened: DocsSidebarNode[] = [];
+
+  for (const child of children) {
+    if (child.type === 'page') {
+      if (
+        child.url === '/en/ai/device-kit' ||
+        child.url === '/zh-CN/ai/device-kit'
+      ) {
+        continue;
+      }
+
+      flattened.push(child);
+      continue;
+    }
+
+    if (child.title === 'Start here' || child.title === '从这里开始') {
+      const quickstart =
+        findSidebarPageByExactUrl(
+          child,
+          '/en/ai/device-kit/start-here/quickstart',
+        ) ??
+        findSidebarPageByExactUrl(
+          child,
+          '/zh-CN/ai/device-kit/start-here/quickstart',
+        );
+
+      if (quickstart) {
+        flattened.push({
+          ...quickstart,
+          title: quickstart.url.startsWith('/zh-CN/') ? 'Quickstart' : 'Quickstart',
+        });
+      }
+      continue;
+    }
+
+    if (
+      child.title === 'Reference' ||
+      child.title === '参考' ||
+      child.title === 'Plan rollout'
+    ) {
+      flattened.push(
+        stripSidebarSectionMetaFromNode({
+          ...child,
+          children: child.children.filter(
+            (node) =>
+              !(
+                node.type === 'page' &&
+                (node.url === '/en/ai/device-kit/reference/enable-services' ||
+                  node.url === '/zh-CN/ai/device-kit/reference/enable-services')
+              ),
+          ),
+        }),
+      );
+      continue;
+    }
+
+    flattened.push(stripSidebarSectionMetaFromNode(child));
+  }
+
+  return flattened;
+}
+
+function findSidebarPageByExactUrlInNodes(
+  nodes: DocsSidebarNode[],
+  url: string,
+): DocsSidebarPageNode | null {
+  for (const node of nodes) {
+    const match = findSidebarPageByExactUrl(node, url);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
+function findSidebarPageByExactUrl(
+  node: DocsSidebarNode,
+  url: string,
+): DocsSidebarPageNode | null {
+  if (node.type === 'page') {
+    return node.url === url ? node : null;
+  }
+
+  for (const child of node.children) {
+    const match = findSidebarPageByExactUrl(child, url);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
+function findTopLevelSidebarSection(
+  nodes: DocsSidebarNode[],
+  titles: string[],
+): DocsSidebarSectionNode | null {
+  for (const node of nodes) {
+    if (node.type === 'section' && titles.includes(node.title)) {
+      return node;
+    }
+  }
+
+  return null;
+}
+
+function stripSidebarSectionMetaFromNodes(
+  nodes: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  return nodes.map((node) => stripSidebarSectionMetaFromNode(node));
+}
+
+function stripSidebarSectionMetaFromNode(
+  node: DocsSidebarNode,
+): DocsSidebarNode {
+  if (node.type === 'page') {
+    return node;
+  }
+
+  return {
+    ...stripSidebarSectionMeta(node),
+    children: stripSidebarSectionMetaFromNodes(node.children),
+  };
+}
+
+function stripSidebarSectionMeta(
+  node: DocsSidebarSectionNode,
+): DocsSidebarSectionNode {
+  const { icon: _icon, url: _url, ...rest } = node;
+
+  return rest;
+}
+
+function getDocsPages({
+  locale,
+  pages,
+  tab,
+}: {
+  locale: AppLocale | null;
+  pages: {
+    description?: string;
+    title: string;
+    url: string;
+  }[];
+  tab: string;
+}) {
+  if (tab !== OPENAPI_TAB || !locale) {
+    return pages;
+  }
+
+  const existingUrls = new Set(pages.map((page) => page.url));
+  const endpointPages = getOpenApiLanes()
+    .filter((lane) => lane.tab === tab)
+    .flatMap((lane) =>
+      getOpenApiOperationIds(lane).map((operationId) => ({
+        title: lane.operations[operationId].title[locale],
+        url: getOpenApiEndpointUrl(lane, locale, operationId),
+      })),
+    )
+    .filter((page) => !existingUrls.has(page.url));
+
+  return [...pages, ...endpointPages];
+}
+
+function resolveDocsSidebarHeader({
+  activePath,
+  hidePlatformTabs,
+  locale,
+  navScope,
+  pageTree,
+  source,
+  sourceAdapter,
+  tab,
+}: {
+  activePath: string;
+  hidePlatformTabs?: boolean;
+  locale: AppLocale | string | null;
+  navScope: DocsNavScopeResolution | null;
+  pageTree: ReturnType<DocsSourceLike['getPageTree']>;
+  source: DocsSourceLike;
+  sourceAdapter?: OrdinaryDocsAdapter;
+  tab: string;
+}) {
+  if (tab === 'ai') {
+    return undefined;
+  }
+
+  if (!navScope) {
+    return undefined;
+  }
+
+  if (hidePlatformTabs) {
+    return {
+      ...navScope.header,
+      versionSwitcher: undefined,
+    };
+  }
+
+  if (!shouldUseSharedPlatformSidebar(tab, activePath)) {
+    return navScope.header;
+  }
+
+  const versionLinks = getNavScopeVersionLinks({
+    activePath,
+    getNodeMeta: (node) =>
+      getDocsMetaData(resolveNodeMeta(source, locale, node, sourceAdapter)),
+    root: pageTree,
+    tab,
+  }).filter((link) => isSharedPlatformTabUrl(activePath, link.href));
+
+  if (
+    versionLinks.length === 0 ||
+    !versionLinks.some((link) => link.href === activePath)
+  ) {
+    return {
+      ...navScope.header,
+      versionSwitcher: undefined,
+    };
+  }
+
+    return {
+      ...navScope.header,
+      versionSwitcher: {
+        currentId:
+          versionLinks.find((item) => item.href === activePath)?.id ??
+          navScope.header.versionSwitcher?.currentId ??
+          versionLinks[0].id,
+        presentation: 'tabs' as const,
+        versions: versionLinks,
+      },
+    };
+  }
+
+function shouldUseSharedPlatformSidebar(
+  tab: string,
+  activePath: string | undefined,
+  locale?: AppLocale | null,
+  pageTree?: ReturnType<DocsSourceLike['getPageTree']>,
+  source?: DocsSourceLike,
+  sourceAdapter?: OrdinaryDocsAdapter,
+) {
+  if (
+    tab !== 'realtime-media' ||
+    typeof activePath !== 'string'
+  ) {
+    return false;
+  }
+
+  if (!pageTree || !source) {
+    return true;
+  }
+
+  const navScope = getDocsNavScope({
+    activePath,
+    locale: locale ?? null,
+    pageTree,
+    source,
+    sourceAdapter,
+    tab,
+  });
+
+  return Boolean(
+    navScope?.scope.meta.navScope?.sharedSidebar &&
+      navScope.scope.meta.navScope?.platformTabs &&
+      navScope.scope.meta.navScope?.versions?.length,
+  );
+}
+
+function getSharedRtcSidebarNodes({
+  activePath,
+  locale,
+  pageTree,
+  source,
+  sourceAdapter,
+  tab,
+}: {
+  activePath?: string;
+  locale: AppLocale | null;
+  pageTree: ReturnType<DocsSourceLike['getPageTree']>;
+  source: DocsSourceLike;
+  sourceAdapter?: OrdinaryDocsAdapter;
+  tab: string;
+}) {
+  if (!activePath) {
+    return getNavScopeSidebarNodes({
+      getNodeMeta: (node) =>
+        getDocsMetaData(resolveNodeMeta(source, locale, node, sourceAdapter)),
+      root: pageTree,
+      tab,
+    });
+  }
+
+  const navScope = getDocsNavScope({
+    activePath,
+    locale,
+    pageTree,
+    source,
+    sourceAdapter,
+    tab,
+  });
+
+  if (!navScope) {
+    return getNavScopeSidebarNodes({
+      getNodeMeta: (node) =>
+        getDocsMetaData(resolveNodeMeta(source, locale, node, sourceAdapter)),
+      root: pageTree,
+      tab,
+    });
+  }
+
+  return getSharedNavScopeSidebarNodes({
+    getNodeMeta: (node) =>
+      getDocsMetaData(resolveNodeMeta(source, locale, node, sourceAdapter)),
+    navScope,
+  });
+}
+
+function isSharedPlatformTabUrl(activePath: string, targetHref: string) {
+  if (!activePath.includes('/realtime-media/')) {
+    return true;
+  }
+
+  const activeSegments = activePath.split('/').filter(Boolean);
+  const targetSegments = targetHref.split('/').filter(Boolean);
+
+  const isActiveScopeIndex = activeSegments.length <= 4;
+  const isTargetScopeIndex = targetSegments.length <= 4;
+
+  if (isActiveScopeIndex || isTargetScopeIndex) {
+    if (isActiveScopeIndex && isTargetScopeIndex) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (activeSegments.length <= 4 || targetSegments.length <= 4) {
+    return true;
+  }
+
+  return (
+    activeSegments[4] !== targetSegments[4]
+      ? activeSegments.slice(5).join('/') === targetSegments.slice(5).join('/')
+      :
+    activeSegments.slice(4).join('/') === targetSegments.slice(4).join('/')
+  );
+}
+
+function getDocsNavScope({
+  activePath,
+  locale,
+  pageTree,
+  source,
+  sourceAdapter,
+  tab,
+}: {
+  activePath: string;
+  locale: AppLocale | string | null;
+  pageTree: ReturnType<DocsSourceLike['getPageTree']>;
+  source: DocsSourceLike;
+  sourceAdapter?: OrdinaryDocsAdapter;
+  tab: string;
+}) {
+  return resolveDocsNavScope({
+    activePath,
+    getNodeMeta: (node) =>
+      getDocsMetaData(resolveNodeMeta(source, locale, node, sourceAdapter)),
+    root: pageTree,
+    tab,
+  });
+}
+
+function getScopedSidebarNodes({
+  locale,
+  navScope,
+  source,
+  sourceAdapter,
+}: {
+  locale: AppLocale | null;
+  navScope: DocsNavScopeResolution;
+  source: DocsSourceLike;
+  sourceAdapter?: OrdinaryDocsAdapter;
+}) {
+  return getScopedNavScopeSidebarNodes({
+    getNodeMeta: (node) =>
+      getDocsMetaData(resolveNodeMeta(source, locale, node, sourceAdapter)),
+    navScope,
+  });
+}
+
+function getDocsMetaData(meta: ReturnType<DocsSourceLike['getNodeMeta']>) {
+  return meta?.data;
+}
+
+type OrdinaryDocsAdapter = {
+  pageTree: ReturnType<DocsSourceLike['getPageTree']>;
+  resolveNodeMeta: (
+    node: Parameters<typeof getDocsIndexCompatibleNodeMeta>[1],
+  ) => ReturnType<typeof getDocsIndexCompatibleNodeMeta>;
+};
+
+function getOrdinaryDocsAdapter(locale: AppLocale | null, tab: string) {
+  if (!locale || !shouldUseOrdinaryDocsAdapter(tab)) {
+    return null;
+  }
+
+  const index = getDocsIndex();
+
+  return {
+    pageTree: getDocsIndexCompatiblePageTree(index, locale),
+    resolveNodeMeta: (node) => getDocsIndexCompatibleNodeMeta(index, node),
+  } satisfies OrdinaryDocsAdapter;
+}
+
+function resolveNodeMeta(
+  source: DocsSourceLike,
+  locale: AppLocale | string | null,
+  node: Parameters<typeof getDocsIndexCompatibleNodeMeta>[1],
+  sourceAdapter?: OrdinaryDocsAdapter,
+) {
+  if (sourceAdapter) {
+    return sourceAdapter.resolveNodeMeta(node);
+  }
+
+  return source.getNodeMeta(node, locale ?? undefined);
+}
+
+function shouldUseOrdinaryDocsAdapter(tab: string) {
+  return (
+    tab === 'ai' ||
+    tab === 'introduction' ||
+    tab === 'overview' ||
+    tab === 'solutions' ||
+    tab === 'best-practices' ||
+    tab === OPENAPI_TAB
+  );
+}
+
+async function addOpenApiEndpointSidebarItems(
+  sidebar: DocsSidebarNode[],
+  locale: AppLocale,
+  tab: string,
+): Promise<DocsSidebarNode[]> {
+  return Promise.all(
+    sidebar.map((node) =>
+      appendEndpointPagesToOpenApiParent(node, locale, tab),
+    ),
+  );
+}
+
+async function appendEndpointPagesToOpenApiParent(
+  node: DocsSidebarNode,
+  locale: AppLocale,
+  tab: string,
+): Promise<DocsSidebarNode> {
+  if (node.type !== 'section') {
+    return decorateOpenApiEndpointSidebarPage(node, locale, tab);
+  }
+
+  const children = await Promise.all(
+    node.children.map((child) =>
+      appendEndpointPagesToOpenApiParent(child, locale, tab),
+    ),
+  );
+  const lane = getOpenApiLanes().find(
+    (item) =>
+      item.tab === tab &&
+      children.some(
+        (child) =>
+          child.type === 'page' && child.url === item.parentUrl[locale],
+      ),
+  );
+
+  if (lane) {
+    const existingUrls = new Set(
+      children.flatMap((child) => (child.type === 'page' ? [child.url] : [])),
+    );
+    const endpointPages: DocsSidebarNode[] = (
+      await Promise.all(
+        getOpenApiOperationIds(lane).map(async (operationId) => ({
+          id: getOpenApiEndpointUrl(lane, locale, operationId),
+          method: getOpenApiOperationMethod(lane, operationId, locale),
+          title: lane.operations[operationId].title[locale],
+          type: 'page' as const,
+          url: getOpenApiEndpointUrl(lane, locale, operationId),
+        })),
+      )
+    ).filter((item) => !existingUrls.has(item.url));
+
+    return {
+      ...node,
+      children: [...children, ...endpointPages],
+    };
+  }
+
+  return {
+    ...node,
+    children,
+  };
+}
+
+async function decorateOpenApiEndpointSidebarPage(
+  node: DocsSidebarNode,
+  locale: AppLocale,
+  tab: string,
+): Promise<DocsSidebarNode> {
+  if (node.type !== 'page') {
+    return node;
+  }
+
+  const slugSegments = node.url.split('/').filter(Boolean).slice(2);
+  const route = resolveOpenApiEndpointRoute(locale, tab, slugSegments);
+
+  if (!route) {
+    return node;
+  }
+
+  return {
+    ...node,
+    id: route.url,
+    method: getOpenApiOperationMethod(route.lane, route.operationId, locale),
+    title: route.lane.operations[route.operationId].title[locale],
+    url: route.url,
+  };
+}
+
+function getOpenApiPrevNextLinks(
+  lane: OpenApiLane,
+  locale: AppLocale,
+  operationId: string,
+) {
+  const operationIds = getOpenApiOperationIds(lane);
+  const currentIndex = operationIds.indexOf(operationId);
+
+  if (currentIndex < 0) {
+    return {};
+  }
+
+  return {
+    next: getOpenApiNavigationLink(
+      lane,
+      locale,
+      operationIds[currentIndex + 1],
+    ),
+    previous: getOpenApiNavigationLink(
+      lane,
+      locale,
+      operationIds[currentIndex - 1],
+    ),
+  };
+}
+
+function getOpenApiNavigationLink(
+  lane: OpenApiLane,
+  locale: AppLocale,
+  operationId: string | undefined,
+) {
+  if (!operationId) {
+    return undefined;
+  }
+
+  return {
+    title: lane.operations[operationId].title[locale],
+    url: getOpenApiEndpointUrl(lane, locale, operationId),
+  };
+}
+
+function isDeferredPageTocPath(contentPath: string) {
+  return (
+    isRtcAndroidApiReferenceContentPath(contentPath) ||
+    contentPath.endsWith('/release-notes.mdx') ||
+    contentPath.endsWith('/release-notes.md')
+  );
+}

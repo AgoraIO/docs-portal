@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const repoRoot = process.cwd();
 const sourceRoot = path.join(repoRoot, 'content', 'openapi');
@@ -16,6 +17,32 @@ copyOpenApiAssets(sourceRoot, publicRoot);
 
 for (const file of copied) {
   console.log(`copied ${file}`);
+}
+
+const manifestBuild = spawnSync(
+  process.execPath,
+  [path.join(repoRoot, 'scripts', 'build-openapi-operations-manifest.mjs')],
+  {
+    cwd: repoRoot,
+    stdio: 'inherit',
+  },
+);
+
+if (manifestBuild.status !== 0) {
+  process.exit(manifestBuild.status ?? 1);
+}
+
+const staticExportsBuild = spawnSync(
+  process.execPath,
+  [path.join(repoRoot, 'scripts', 'build-openapi-static-exports.mjs')],
+  {
+    cwd: repoRoot,
+    stdio: 'inherit',
+  },
+);
+
+if (staticExportsBuild.status !== 0) {
+  process.exit(staticExportsBuild.status ?? 1);
 }
 
 function copyOpenApiAssets(fromDir, toDir) {

@@ -71,9 +71,6 @@ describe('openapi lanes', () => {
       'get-history',
       'get-turns',
     ]);
-    expect(getOpenApiPrerenderPaths()).toContain(
-      '/en/api-reference/conversational-ai/rest-api/agent/join',
-    );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(20);
+    expect(getOpenApiPrerenderPaths()).toEqual([]);
   });
 });

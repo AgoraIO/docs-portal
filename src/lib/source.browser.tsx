@@ -1,21 +1,29 @@
-import browserCollections from 'collections/browser';
 import type { MDXComponents } from 'mdx/types';
-
-const docsClientLoader = browserCollections.docs.createClientLoader({
-  id: 'docs-content',
-  component: (doc, props?: { components?: MDXComponents }) => {
-    const Content = doc.default;
-    return <Content components={props?.components} />;
-  },
-});
+import { isApiReferenceContentPath } from './docs-source-buckets';
+import {
+  preloadApiReferenceContent,
+  useApiReferenceContent,
+} from './source.api-reference.browser';
+import {
+  preloadDocsSectionContent,
+  useDocsSectionContent,
+} from './source.docs.browser';
 
 export function preloadDocsContent(path: string) {
-  return docsClientLoader.preload(path);
+  if (isApiReferenceContentPath(path)) {
+    return preloadApiReferenceContent(path);
+  }
+
+  return preloadDocsSectionContent(path);
 }
 
 export function useDocsContent(
   path: string,
   props?: { components?: MDXComponents },
 ) {
-  return docsClientLoader.useContent(path, props);
+  if (isApiReferenceContentPath(path)) {
+    return useApiReferenceContent(path, props);
+  }
+
+  return useDocsSectionContent(path, props);
 }

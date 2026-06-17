@@ -8,7 +8,6 @@ import {
   ThumbsUpIcon,
 } from 'lucide-react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import {
@@ -16,6 +15,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { useTranslation } from '@/lib/i18n/react';
 import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsMainColumn({
@@ -40,26 +40,17 @@ export function DocsMainColumn({
       data-testid="docs-main-column"
     >
       <div
-        className="px-4 py-8 sm:px-6 lg:hidden lg:px-10"
-        data-testid="docs-main-mobile-flow"
-      >
-        <div className="min-w-0">{children}</div>
-        <DocsPageFooter
-          layoutMode={layoutMode}
-          locale={locale}
-          next={next}
-          previous={previous}
-        />
-      </div>
-      <div
         className={cn(
-          'docs-scrollbar hidden h-full min-h-0 overflow-y-auto lg:block',
+          'docs-scrollbar h-full min-h-0 overflow-visible lg:overflow-y-auto',
           isScrollbarVisible && 'docs-scrollbar-visible',
         )}
         data-testid="docs-main-desktop-scroll"
         ref={scrollContainerRef}
       >
-        <div className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10">
+        <div
+          className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10"
+          data-testid="docs-main-mobile-flow"
+        >
           <div className="min-w-0 flex-1">{children}</div>
           <DocsPageFooter
             layoutMode={layoutMode}

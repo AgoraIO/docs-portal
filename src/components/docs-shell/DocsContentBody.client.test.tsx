@@ -8,7 +8,7 @@ vi.mock('@/lib/source.browser', () => ({
   useDocsContent: (...args: unknown[]) => useDocsContentMock(...args),
 }));
 
-describe('DocsContentBodyClient', () => {
+describe('DocsContentBody', () => {
   beforeEach(() => {
     useDocsContentMock.mockReset();
   });
@@ -17,7 +17,7 @@ describe('DocsContentBodyClient', () => {
     useDocsContentMock.mockReturnValueOnce(<p>Install the Agora CLI.</p>);
 
     const { container } = render(
-      <DocsContentBody contentPath="en/ai/choose-your-path/quickstart-coding.mdx" />,
+      <DocsContentBody contentPath="en/introduction/about-agora.mdx" />,
     );
 
     expect(container.querySelector('.docs-body')).toContainElement(
@@ -35,23 +35,11 @@ describe('DocsContentBodyClient', () => {
     expect(options.components.OverviewSpotlightGrid).toBeDefined();
   });
 
-  it('injects page-specific recipe catalog widgets only for the recipes index', () => {
-    useDocsContentMock.mockReturnValueOnce(<p>Recipes</p>);
-
-    render(
-      <DocsContentBody contentPath="en/api-reference/recipes/index.mdx" />,
-    );
-
-    const [, options] = useDocsContentMock.mock.calls[0];
-    expect(options.components.RecipesCatalog).toBeDefined();
-    expect(options.components.FeatureCard).toBeDefined();
-  });
-
   it('makes shared docs widgets available to regular docs pages without path allowlists', () => {
     useDocsContentMock.mockReturnValueOnce(<p>Regular page</p>);
 
     render(
-      <DocsContentBody contentPath="en/ai/choose-your-path/quickstart-coding.mdx" />,
+      <DocsContentBody contentPath="en/realtime-media/rtc/android/reference/api-reference/index.md" />,
     );
 
     const [, options] = useDocsContentMock.mock.calls[0];

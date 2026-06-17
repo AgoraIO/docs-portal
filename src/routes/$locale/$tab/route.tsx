@@ -27,10 +27,10 @@ function DocsTabLayout() {
   const {
     activePath,
     activeTab,
+    contentPath,
     localeLinks,
     layoutMode,
     navigation,
-    pages,
     sidebar,
     sidebarHeader,
     tabs,
@@ -41,11 +41,11 @@ function DocsTabLayout() {
     <DocsShell
       activePath={activePath}
       activeTab={activeTab}
+      contentPath={contentPath}
       localeLinks={localeLinks}
       layoutMode={layoutMode}
       locale={params.locale}
       next={navigation.next}
-      pages={pages}
       previous={navigation.previous}
       sidebar={sidebar}
       sidebarHeader={sidebarHeader}

@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { OPENAPI_LANES } from './lanes';
-import { serializeOpenApiOperationMarkdown } from './markdown';
+import {
+  getOpenApiMarkdownByContentPath,
+  serializeOpenApiOperationMarkdown,
+} from './markdown';
 import { getOpenApiOperation } from './source.server';
 
 describe('openapi markdown serializer', () => {
@@ -26,5 +29,16 @@ describe('openapi markdown serializer', () => {
     expect(markdown).toContain('- Operation ID: start-agent');
     expect(markdown).toContain('- Method: POST');
     expect(markdown).toContain('- Path: /v2/projects/{appid}/join');
+  });
+
+  it('resolves published markdown content paths for OpenAPI endpoints', async () => {
+    const markdown = await getOpenApiMarkdownByContentPath(
+      'en/api-reference/conversational-ai/rest-api/agent/join.md',
+    );
+
+    expect(markdown).toContain(
+      '# Start a conversational AI agent (/en/api-reference/conversational-ai/rest-api/agent/join)',
+    );
+    expect(markdown).toContain('- Operation ID: start-agent');
   });
 });

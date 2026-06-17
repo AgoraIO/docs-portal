@@ -1,7 +1,7 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { getDocsPagePayload } from '@/lib/docs-page';
-import { preloadDocsPageContent } from '@/lib/docs-route-preload';
+import { isSidebarDeferredContentPath } from '@/lib/docs-source-buckets';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
 
 export const Route = createFileRoute('/$locale/$tab/$')({
@@ -14,6 +14,9 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
     const payload = await getDocsPagePayload({
       data: {
+        includeSidebar: !isSidebarDeferredContentPath(
+          `${params.locale}/${params.tab}/${slugSegments.join('/')}.mdx`,
+        ),
         locale: params.locale,
         slugSegments,
         tab: params.tab,
@@ -30,8 +33,6 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       });
     }
 
-    await preloadDocsPageContent(payload);
-
     return {
       ...payload,
     };
@@ -42,6 +43,7 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 function Page() {
   const params = Route.useParams();
   const {
+    activePath,
     body,
     breadcrumb,
     contentPath,
@@ -55,6 +57,7 @@ function Page() {
 
   return (
     <DocsContent
+      activePath={body?.kind === 'mdx' ? activePath : undefined}
       body={body}
       breadcrumb={breadcrumb}
       contentPath={contentPath}

@@ -5,8 +5,10 @@ import {
   createRouter,
   Outlet,
   RouterProvider,
+  useRouterState,
 } from '@tanstack/react-router';
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -15,10 +17,11 @@ import {
 } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
-import { DocsContent, DocsTableOfContents } from './DocsContent';
+import { DocsContent } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
+import { DocsTableOfContents } from './DocsTableOfContents';
 
 vi.mock('./DocsContentBody', () => ({
   DocsContentBody: ({ contentPath }: { contentPath: string }) => (
@@ -26,14 +29,62 @@ vi.mock('./DocsContentBody', () => ({
   ),
 }));
 
+vi.mock('./DocsApiReferenceContentBody', () => ({
+  DocsApiReferenceContentBody: ({ contentPath }: { contentPath: string }) => (
+    <div data-testid="docs-api-reference-content-body">{contentPath}</div>
+  ),
+}));
+
+vi.mock('./DocsAiContentBody', () => ({
+  DocsAiContentBody: ({ contentPath }: { contentPath: string }) => (
+    <div data-testid="docs-ai-content-body">{contentPath}</div>
+  ),
+}));
+
+vi.mock('./DocsContentBodyHydrated', () => ({
+  DocsContentBodyHydrated: ({ contentPath }: { contentPath: string }) => (
+    <div data-testid="docs-content-body-hydrated">{contentPath}</div>
+  ),
+}));
+
+vi.mock('./DocsApiReferenceContentBodyHydrated', () => ({
+  DocsApiReferenceContentBodyHydrated: ({
+    contentPath,
+  }: {
+    contentPath: string;
+  }) => (
+    <div data-testid="docs-api-reference-content-body-hydrated">
+      {contentPath}
+    </div>
+  ),
+}));
+
+vi.mock('./DocsAiContentBodyHydrated', () => ({
+  DocsAiContentBodyHydrated: ({ contentPath }: { contentPath: string }) => (
+    <div data-testid="docs-ai-content-body-hydrated">{contentPath}</div>
+  ),
+}));
+
+vi.mock('./DocsRtcAndroidApiReferenceContentBody', () => ({
+  DocsRtcAndroidApiReferenceContentBody: ({
+    contentPath,
+  }: {
+    contentPath: string;
+  }) => (
+    <div data-testid="docs-rtc-android-api-reference-content-body">
+      {contentPath}
+    </div>
+  ),
+}));
+
 vi.mock('../openapi/FumadocsOpenApiContent', () => ({
   FumadocsOpenApiContent: ({
-    pageProps,
+    payloadMeta,
   }: {
-    pageProps: { operations?: { path: string }[] };
+    payloadMeta: { operations?: { path: string }[] };
   }) => (
     <div data-testid="fumadocs-openapi-content">
-      {pageProps.operations?.[0]?.path}
+      {payloadMeta.operations?.[0]?.path}
     </div>
   ),
 }));
@@ -57,7 +108,185 @@ function renderWithRouter(children: ReactNode) {
   return render(<RouterProvider router={router} />);
 }
 
+function renderDocsContentRoute(initialEntry = '/en/introduction/about-agora') {
+  const rootRoute = createRootRoute({
+    component: () => <Outlet />,
+  });
+  const docsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab/$slug',
+    component: () => {
+      const pathname = useRouterState({
+        select: (state) => state.location.pathname,
+      });
+      const slug = pathname.split('/').at(-1) ?? 'about-agora';
+
+      return (
+        <AppProviders>
+          <DocsMainColumn>
+            <DocsContent
+              contentPath={`en/introduction/${slug}.md`}
+              slug={slug}
+              title={slug}
+              toc={[]}
+            />
+          </DocsMainColumn>
+        </AppProviders>
+      );
+    },
+  });
+  const router = createRouter({
+    routeTree: rootRoute.addChildren([docsRoute]),
+    history: createMemoryHistory({
+      initialEntries: [initialEntry],
+    }),
+  });
+
+  return {
+    router,
+    ...render(<RouterProvider router={router} />),
+  };
+}
+
 describe('DocsContent', () => {
+  beforeEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  it('renders ordinary docs pages from patched static HTML instead of the hydrated body on the client', async () => {
+    document.body.innerHTML = `
+      <article data-dr="/en/introduction/about-agora">
+        <div class="docs-body">
+          <div data-testid="patched-static-html">Static about agora body</div>
+        </div>
+      </article>
+    `;
+
+    renderWithRouter(
+      <DocsContent
+        activePath="/en/introduction/about-agora"
+        contentPath="en/introduction/about-agora.mdx"
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByTestId('patched-static-html'),
+    ).toHaveTextContent('Static about agora body');
+    expect(
+      screen.queryByTestId('docs-content-body-hydrated'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders AI docs pages from patched static HTML instead of the hydrated body on the client', async () => {
+    document.body.innerHTML = `
+      <article data-dr="/en/ai/build/custom-llm">
+        <div class="docs-body">
+          <div data-testid="patched-static-ai-html">Static AI body</div>
+        </div>
+      </article>
+    `;
+
+    renderWithRouter(
+      <DocsContent
+        activePath="/en/ai/build/custom-llm"
+        contentPath="en/ai/build/custom-llm.mdx"
+        slug="custom-llm"
+        title="Custom LLM"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByTestId('patched-static-ai-html'),
+    ).toHaveTextContent('Static AI body');
+    expect(
+      screen.queryByTestId('docs-ai-content-body-hydrated'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders payload-provided static html for api reference mdx pages instead of the hydrated body on the client', async () => {
+    renderWithRouter(
+      <DocsContent
+        body={{
+          contentPath: 'en/api-reference/conversational-ai/server-sdk.mdx',
+          html: '<div data-testid="payload-static-api-html">Static API reference body</div>',
+          kind: 'mdx',
+        }}
+        slug="server-sdk"
+        title="Server SDK"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByTestId('payload-static-api-html'),
+    ).toHaveTextContent('Static API reference body');
+    expect(
+      screen.queryByTestId('docs-api-reference-content-body-hydrated'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders patched static html for ordinary api reference mdx pages instead of the hydrated body on the client', async () => {
+    document.body.innerHTML = `
+      <article data-dr="/en/api-reference/conversational-ai/server-sdk">
+        <div class="docs-body">
+          <div data-testid="patched-static-api-html">Patched API reference body</div>
+        </div>
+      </article>
+    `;
+
+    renderWithRouter(
+      <DocsContent
+        activePath="/en/api-reference/conversational-ai/server-sdk"
+        contentPath="en/api-reference/conversational-ai/server-sdk/index.md"
+        slug="server-sdk"
+        title="Server SDK"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByTestId('patched-static-api-html'),
+    ).toHaveTextContent('Patched API reference body');
+    expect(
+      screen.queryByTestId('docs-api-reference-content-body-hydrated'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('resets the desktop docs scroll container when navigating to a different docs page', async () => {
+    const { router } = renderDocsContentRoute();
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const scrollTo = vi.fn();
+
+    Object.defineProperty(desktopScroll, 'scrollTop', {
+      configurable: true,
+      value: 180,
+      writable: true,
+    });
+    Object.defineProperty(desktopScroll, 'scrollTo', {
+      configurable: true,
+      value: scrollTo,
+    });
+
+    await act(async () => {
+      await router.navigate({
+        to: '/en/introduction/get-started' as never,
+      });
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/introduction/get-started',
+      );
+    });
+
+    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'auto', top: 0 });
+  });
+
   it('renders page breadcrumb, LLM markdown link, title, and description', async () => {
     renderWithRouter(
       <DocsContent
@@ -96,6 +325,22 @@ describe('DocsContent', () => {
     expect(within(breadcrumb).getByText('About Agora')).toBeInTheDocument();
   });
 
+  it('derives the markdown link from MDX contentPath when markdownUrl is omitted', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.mdx"
+        description="Learn the platform basics."
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('link', { name: 'View as Markdown' }),
+    ).toHaveAttribute('href', '/llms.mdx/docs/en/introduction/about-agora.md');
+  });
+
   it('renders MDX content in the server output without a skeleton', () => {
     const html = renderToString(
       <AppProviders>
@@ -113,27 +358,126 @@ describe('DocsContent', () => {
     expect(html).not.toContain('data-testid="docs-content-skeleton"');
   });
 
+  it('renders docs main column children only once in server output', () => {
+    const html = renderToString(
+      <AppProviders>
+        <DocsMainColumn>
+          <article>Unique SSR body marker</article>
+        </DocsMainColumn>
+      </AppProviders>,
+    );
+
+    expect(html.match(/Unique SSR body marker/g)).toHaveLength(1);
+  });
+
+  it('renders API reference MDX content through the dedicated API reference body', () => {
+    const html = renderToString(
+      <AppProviders>
+        <DocsContent
+          contentPath="en/api-reference/conversational-ai/rest-api/agent/history.mdx"
+          slug="history"
+          title="Agent history"
+          toc={[]}
+        />
+      </AppProviders>,
+    );
+
+    expect(html).toContain('data-testid="docs-api-reference-content-body"');
+    expect(html).not.toContain(
+      'data-testid="docs-api-reference-prerender-fallback"',
+    );
+  });
+
+  it('renders rtc android API reference MDX content through the dedicated rtc android body', () => {
+    const html = renderToString(
+      <AppProviders>
+        <DocsContent
+          contentPath="en/api-reference/rtc/android/overview/index.mdx"
+          slug="overview"
+          title="RTC Android Overview"
+          toc={[]}
+        />
+      </AppProviders>,
+    );
+
+    expect(html).toContain(
+      'data-testid="docs-rtc-android-api-reference-content-body"',
+    );
+    expect(html).not.toContain(
+      'data-testid="docs-api-reference-prerender-fallback"',
+    );
+  });
+
+  it('renders AI MDX content through the dedicated AI docs body', () => {
+    const html = renderToString(
+      <AppProviders>
+        <DocsContent
+          contentPath="en/ai/build/custom-llm.mdx"
+          slug="custom-llm"
+          title="Custom LLM"
+          toc={[]}
+        />
+      </AppProviders>,
+    );
+
+    expect(html).toContain('data-testid="docs-ai-content-body"');
+    expect(html).toContain('en/ai/build/custom-llm.mdx');
+  });
+
+  it('renders non-api-reference docs content through the standard docs body when a nested slug contains api-reference', () => {
+    const html = renderToString(
+      <AppProviders>
+        <DocsContent
+          contentPath="en/realtime-media/rtc/android/reference/api-reference/index.md"
+          slug="api-reference"
+          title="API Reference"
+          toc={[]}
+        />
+      </AppProviders>,
+    );
+
+    expect(html).toContain('data-testid="docs-content-body"');
+    expect(html).toContain(
+      'en/realtime-media/rtc/android/reference/api-reference/index.md',
+    );
+    expect(html).not.toContain('data-testid="docs-api-reference-content-body"');
+  });
+
+  it('keeps interactive MDX payloads on the hydrated docs body path', () => {
+    const html = renderToString(
+      <AppProviders>
+        <DocsContent
+          body={{
+            contentPath: 'en/ai/get-started/quickstart.mdx',
+            kind: 'mdx',
+          }}
+          slug="quickstart"
+          title="Quickstart"
+          toc={[]}
+        />
+      </AppProviders>,
+    );
+
+    expect(html).toContain('data-testid="docs-ai-content-body"');
+    expect(html).toContain('en/ai/get-started/quickstart.mdx');
+  });
+
   it('renders OpenAPI content through the Fumadocs content component', async () => {
     renderWithRouter(
       <DocsContent
         body={{
           kind: 'openapi',
-          pageProps: {
+          payloadAssetPath:
+            '/generated/openapi/page-payloads/en/convoai/start-agent.json',
+          payloadMeta: {
+            document: 'convoai-en',
             operations: [
               {
                 method: 'post',
                 path: '/v2/projects/{appid}/join',
               },
             ],
-            payload: {
-              bundled: {
-                info: {
-                  title: 'Conversational AI Agent API Overview',
-                },
-                openapi: '3.2.0',
-                paths: {},
-              },
-            },
+            showDescription: true,
           },
         }}
         slug="join"
@@ -145,6 +489,23 @@ describe('DocsContent', () => {
     expect(
       await screen.findByTestId('fumadocs-openapi-content'),
     ).toHaveTextContent('/v2/projects/{appid}/join');
+  });
+
+  it('keeps API reference MDX inline in test mode for component tests', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/api-reference/conversational-ai/rest-api/agent/history.mdx"
+        slug="history"
+        title="Agent history"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByTestId('docs-api-reference-content-body'),
+    ).toHaveTextContent(
+      'en/api-reference/conversational-ai/rest-api/agent/history.mdx',
+    );
   });
 
   it('renders scope tabs in the content header when the sidebar header requests tabs presentation', async () => {

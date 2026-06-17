@@ -6,12 +6,11 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { useTheme } from 'next-themes';
-import { useTranslation } from 'react-i18next';
 import { afterEach, describe, expect, it } from 'vitest';
-import { i18n } from '@/lib/i18n/i18n';
 import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
+import { useTranslation } from '@/lib/i18n/react';
 import { AppProviders } from './AppProviders';
 
 function ProviderProbe() {
@@ -30,10 +29,9 @@ function ProviderProbe() {
 }
 
 describe('AppProviders', () => {
-  afterEach(async () => {
+  afterEach(() => {
     window.localStorage.removeItem(LOCALE_STORAGE_KEY);
     document.documentElement.lang = 'en';
-    await i18n.changeLanguage('en');
   });
 
   it('mounts the shared i18n providers with the default locale', async () => {
@@ -124,6 +122,8 @@ describe('AppProviders', () => {
     const probe = await screen.findByTestId('provider-probe');
 
     expect(probe).toHaveAttribute('data-language', 'en');
-    expect(document.documentElement).toHaveAttribute('lang', 'en');
+    await waitFor(() => {
+      expect(document.documentElement).toHaveAttribute('lang', 'en');
+    });
   });
 });

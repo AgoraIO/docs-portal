@@ -53,6 +53,63 @@ export type DocsBreadcrumbItem = {
 
 const HIDDEN_TAB_IDS = new Set(['best-practices']);
 
+const DEFAULT_TAB_DEFINITIONS = {
+  en: [
+    {
+      icon: 'Zap',
+      id: 'ai',
+      title: 'Voice Agent',
+    },
+    {
+      icon: 'Wrench',
+      id: 'api-reference',
+      title: 'Reference',
+    },
+    {
+      icon: 'BookOpen',
+      id: 'introduction',
+      title: 'Introduction',
+    },
+    {
+      icon: 'Cpu',
+      id: 'realtime-media',
+      title: 'Realtime & Media',
+    },
+    {
+      icon: 'Layers',
+      id: 'solutions',
+      title: 'Solutions',
+    },
+  ],
+  'zh-CN': [
+    {
+      icon: 'Zap',
+      id: 'ai',
+      title: 'Voice Agent',
+    },
+    {
+      icon: 'Wrench',
+      id: 'api-reference',
+      title: 'API 参考',
+    },
+    {
+      icon: 'BookOpen',
+      id: 'introduction',
+      title: '介绍',
+    },
+    {
+      icon: 'Cpu',
+      id: 'realtime-media',
+      title: '实时与媒体',
+    },
+    {
+      icon: 'Layers',
+      id: 'solutions',
+      title: '解决方案',
+    },
+  ],
+} satisfies Record<string, Array<Omit<TabSummary, 'url'>>>;
+
 export function getTabSummaries(root: Root): TabSummary[] {
   return getTabNodes(root).flatMap((node) => {
     const item = getTabIndex(node);
@@ -86,6 +143,13 @@ export function getTabSummaries(root: Root): TabSummary[] {
 
     return [summary];
   });
+}
+
+export function getDefaultDocsTabs(locale: 'en' | 'zh-CN'): TabSummary[] {
+  return DEFAULT_TAB_DEFINITIONS[locale].map((tab) => ({
+    ...tab,
+    url: buildDocPath(locale, tab.id),
+  }));
 }
 
 export function getSidebarEntries(

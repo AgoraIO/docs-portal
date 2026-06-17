@@ -1,3 +1,4 @@
+import path from 'node:path';
 import tailwindcss from '@tailwindcss/vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import react from '@vitejs/plugin-react';
@@ -10,6 +11,8 @@ import { shouldPrerenderPage } from './src/lib/prerender-filter';
 import { createDocsPrerenderPaths } from './src/lib/prerender-pages';
 
 const isTest = process.env.VITEST === 'true';
+const shouldStubPrerenderBodies =
+  !isTest && process.env.DOCS_FORCE_PRERENDER_BODIES !== 'true';
 const docsPrerenderPaths = isTest
   ? []
   : createDocsPrerenderPaths({
@@ -58,6 +61,52 @@ export default defineConfig({
         ]),
   ],
   resolve: {
+    alias: [
+      ...(shouldStubPrerenderBodies
+        ? [
+            {
+              find: './DocsAiContentBody',
+              replacement: path.resolve(
+                './src/components/docs-shell/DocsPrerenderBodyStub.tsx',
+              ),
+            },
+            {
+              find: './DocsApiReferenceContentBody',
+              replacement: path.resolve(
+                './src/components/docs-shell/DocsPrerenderBodyStub.tsx',
+              ),
+            },
+            {
+              find: './DocsContentBody',
+              replacement: path.resolve(
+                './src/components/docs-shell/DocsPrerenderBodyStub.tsx',
+              ),
+            },
+            {
+              find: './DocsRtcAndroidApiReferenceContentBody',
+              replacement: path.resolve(
+                './src/components/docs-shell/DocsPrerenderBodyStub.tsx',
+              ),
+            },
+            {
+              find: '../openapi/FumadocsOpenApiContent',
+              replacement: path.resolve(
+                './src/components/openapi/FumadocsOpenApiContent.stub.tsx',
+              ),
+            },
+            {
+              find: './FumadocsOpenApiContent',
+              replacement: path.resolve(
+                './src/components/openapi/FumadocsOpenApiContent.stub.tsx',
+              ),
+            },
+          ]
+        : []),
+	      {
+	        find: /^shiki$/,
+	        replacement: path.resolve('./src/lib/shiki-lite.ts'),
+	      },
+    ],
     dedupe: ['react', 'react-dom'],
     tsconfigPaths: true,
   },

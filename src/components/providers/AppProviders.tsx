@@ -1,16 +1,14 @@
 import type { ReactNode } from 'react';
-import { I18nextProvider } from 'react-i18next';
-import { i18n } from '@/lib/i18n/i18n';
-import { I18nBootstrap } from './i18n-bootstrap';
+import { LocaleProvider, RouterLocaleSync } from '@/lib/i18n/react';
 import { ThemeProvider } from './ThemeProvider';
 
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
-    <I18nextProvider i18n={i18n}>
+    <LocaleProvider>
       <ThemeProvider>
-        <I18nBootstrap />
+        <RouterLocaleSync />
         {children}
       </ThemeProvider>
-    </I18nextProvider>
+    </LocaleProvider>
   );
 }

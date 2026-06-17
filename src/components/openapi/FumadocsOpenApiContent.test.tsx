@@ -4,9 +4,9 @@ import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
 describe('FumadocsOpenApiContent', () => {
   it('renders request schemas as an expanded inline tree with GFM descriptions', async () => {
-    render(
-      <FumadocsOpenApiContent
-        pageProps={{
+    globalThis.fetch = async () =>
+      new Response(
+        JSON.stringify({
           operations: [
             {
               method: 'post',
@@ -71,6 +71,22 @@ describe('FumadocsOpenApiContent', () => {
               },
             },
           },
+          showDescription: true,
+        }),
+      );
+
+    render(
+      <FumadocsOpenApiContent
+        payloadAssetPath="/generated/openapi/page-payloads/en/convoai/start-agent.json"
+        payloadMeta={{
+          document: 'convoai-en',
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          showDescription: true,
         }}
       />,
     );

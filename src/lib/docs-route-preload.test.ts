@@ -17,11 +17,44 @@ describe('preloadDocsPageContent', () => {
     mockedPreloadDocsContent.mockResolvedValue(undefined);
   });
 
-  it('preloads MDX payload content once by content path', async () => {
-    await preloadDocsPageContent(createMdxPayload('docs/en/about.mdx'));
+  it('does not preload non-ai non-api MDX payload content that now stays on static HTML', async () => {
+    await preloadDocsPageContent(createMdxPayload('en/introduction/about.mdx'));
 
-    expect(mockedPreloadDocsContent).toHaveBeenCalledTimes(1);
-    expect(mockedPreloadDocsContent).toHaveBeenCalledWith('docs/en/about.mdx');
+    expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
+  });
+
+  it('does not preload ai MDX payload content that now stays on static HTML', async () => {
+    await preloadDocsPageContent(createMdxPayload('en/ai/build/custom-llm.mdx'));
+
+    expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
+  });
+
+  it('does not preload ordinary api-reference MDX payload content that now stays on static HTML', async () => {
+    await preloadDocsPageContent(
+      createMdxPayload(
+        'en/api-reference/conversational-ai/rest-api/agent/history.mdx',
+      ),
+    );
+
+    expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
+  });
+
+  it('does not preload rtc android api-reference MDX payloads that now stay on static HTML', async () => {
+    await preloadDocsPageContent(
+      createMdxPayload('en/api-reference/rtc/android/overview/index.mdx'),
+    );
+
+    expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
+  });
+
+  it('does not preload non-api-reference docs pages even if their slug contains api-reference', async () => {
+    await preloadDocsPageContent(
+      createMdxPayload(
+        'en/realtime-media/rtc/android/reference/api-reference/index.md',
+      ),
+    );
+
+    expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
   });
 
   it('does not preload OpenAPI payloads', async () => {
@@ -37,13 +70,44 @@ describe('preloadDocsPageContent', () => {
     expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
   });
 
-  it('does not swallow MDX preload rejections', async () => {
+  it('does not try to preload ai pages, so no rejection path is exercised there', async () => {
     const preloadError = new Error('preload failed');
     mockedPreloadDocsContent.mockRejectedValue(preloadError);
 
-    await expect(
-      preloadDocsPageContent(createMdxPayload('docs/en/failing.mdx')),
-    ).rejects.toBe(preloadError);
+    await preloadDocsPageContent(createMdxPayload('en/ai/failing.mdx'));
+
+    expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
+  });
+
+  it('does not try to preload regular docs pages, so no rejection path is exercised there', async () => {
+    const preloadError = new Error('docs preload failed');
+    mockedPreloadDocsContent.mockRejectedValue(preloadError);
+
+    await preloadDocsPageContent(createMdxPayload('en/introduction/failing.mdx'));
+
+    expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
+  });
+
+  it('does not try to preload ordinary api-reference pages, so no rejection path is exercised there', async () => {
+    const preloadError = new Error('api preload failed');
+    mockedPreloadDocsContent.mockRejectedValue(preloadError);
+
+    await preloadDocsPageContent(
+      createMdxPayload('en/api-reference/conversational-ai/index.mdx'),
+    );
+
+    expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
+  });
+
+  it('does not try to preload rtc android api-reference pages, so no rejection path is exercised there either', async () => {
+    const preloadError = new Error('rtc android preload failed');
+    mockedPreloadDocsContent.mockRejectedValue(preloadError);
+
+    await preloadDocsPageContent(
+      createMdxPayload('en/api-reference/rtc/android/index.mdx'),
+    );
+
+    expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
   });
 });
 
@@ -87,7 +151,6 @@ function createPayload(
       next: undefined,
       previous: undefined,
     },
-    pages: [],
     sidebar: [],
     sidebarHeader: undefined,
     slug: 'about',

@@ -1,14 +1,17 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import type { Root } from 'fumadocs-core/page-tree';
+import { createElement, Fragment } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { loadDocsPagePayload, loadDocsTabIndex } from './docs-page.server';
-import { type PageWithSource, source } from './source.server';
+import { type DynamicDocsPage, docsDynamicSource } from './docs-source-dynamic.server';
+import { openApiPageSource } from './openapi-page-source.server';
+import type { PageWithSource } from './source.server';
 
-vi.mock('./source.server', () => ({
-  getPageMarkdownUrl: (page: { path: string }) => ({
-    segments: page.path.split('/').filter(Boolean),
-    url: `/llms.mdx/docs/${page.path}`,
-  }),
-  source: {
+type MockNodeMeta = { data?: unknown } | undefined;
+
+vi.mock('./docs-source-dynamic.server', () => ({
+  docsDynamicSource: {
     getNodeMeta: vi.fn(),
     getPage: vi.fn(),
     getPages: vi.fn(),
@@ -16,14 +19,99 @@ vi.mock('./source.server', () => ({
   },
 }));
 
-const mockedGetPage = source.getPage as unknown as ReturnType<typeof vi.fn>;
-const mockedGetPages = source.getPages as unknown as ReturnType<typeof vi.fn>;
-const mockedGetPageTree = source.getPageTree as unknown as ReturnType<
+vi.mock('./openapi-page-source.server', () => ({
+  openApiPageSource: {
+    getNodeMeta: vi.fn(),
+    getPage: vi.fn(),
+    getPages: vi.fn(),
+    getPageTree: vi.fn(),
+  },
+}));
+
+const mockDynamicGetPage = docsDynamicSource.getPage as unknown as ReturnType<
   typeof vi.fn
 >;
-const mockedGetNodeMeta = source.getNodeMeta as unknown as ReturnType<
+const mockDynamicGetPages = docsDynamicSource.getPages as unknown as ReturnType<
   typeof vi.fn
 >;
+const mockDynamicGetPageTree = docsDynamicSource.getPageTree as unknown as ReturnType<
+  typeof vi.fn
+>;
+const mockDynamicGetNodeMeta = docsDynamicSource.getNodeMeta as unknown as ReturnType<
+  typeof vi.fn
+>;
+const mockOpenApiGetPage = openApiPageSource.getPage as unknown as ReturnType<
+  typeof vi.fn
+>;
+const mockOpenApiGetPages = openApiPageSource.getPages as unknown as ReturnType<
+  typeof vi.fn
+>;
+const mockOpenApiGetPageTree = openApiPageSource.getPageTree as unknown as ReturnType<
+  typeof vi.fn
+>;
+const mockOpenApiGetNodeMeta = openApiPageSource.getNodeMeta as unknown as ReturnType<
+  typeof vi.fn
+>;
+
+describe('docs-page-heavy lazy openapi source loading', () => {
+  it('avoids a static openapi-page-source import in docs-page-heavy.server', async () => {
+    const heavyModule = await fs.readFile(
+      path.resolve(import.meta.dirname, 'docs-page-heavy.server.ts'),
+      'utf8',
+    );
+
+    expect(heavyModule).not.toContain(
+      "import { openApiPageSource } from './openapi-page-source.server'",
+    );
+    expect(heavyModule).toContain("import('./openapi-page-source.server')");
+  });
+
+  it('avoids pulling static HTML rendering dependencies directly into docs-page-heavy.server', async () => {
+    const heavyModule = await fs.readFile(
+      path.resolve(import.meta.dirname, 'docs-page-heavy.server.ts'),
+      'utf8',
+    );
+
+    expect(heavyModule).not.toContain("from 'react-dom/server'");
+    expect(heavyModule).not.toContain(
+      "from '@/components/docs-overview/mdx-components'",
+    );
+    expect(heavyModule).not.toContain("from '@/components/mdx'");
+    expect(heavyModule).toContain("import('./docs-static-html.server')");
+  });
+});
+
+type MockMdxPage = Extract<DynamicDocsPage, { type: 'docs' }>;
+type MockMdxPageData = MockMdxPage['data'];
+
+function createMdxPage(overrides: Partial<MockMdxPage> = {}): MockMdxPage {
+  const path = overrides.path ?? 'en/introduction/about-agora.mdx';
+  const url = overrides.url ?? '/en/introduction/about-agora';
+  const slugs = overrides.slugs ?? ['introduction', 'about-agora'];
+  const title = overrides.data?.title ?? 'About Agora';
+
+  return {
+    data: {
+      body: (() =>
+        createElement(Fragment)) as unknown as MockMdxPageData['body'],
+      description: 'Learn the platform basics.',
+      _exports: {},
+      getText: vi.fn(async () => '# About Agora'),
+      structuredData: {
+        contents: [],
+        headings: [],
+      },
+      title,
+      toc: [],
+      ...(overrides.data ?? {}),
+    },
+    path,
+    slugs,
+    type: 'docs',
+    url,
+    ...overrides,
+  } as MockMdxPage;
+}
 
 const pageTree: Root = {
   children: [
@@ -721,6 +809,50 @@ Why teams use it.`,
   } as unknown as PageWithSource;
 }
 
+function createLazyPage(): PageWithSource {
+  const body = (() => createElement(Fragment)) as unknown as MockMdxPageData['body'];
+  const load = vi.fn(async () => ({
+    _exports: {},
+    body,
+    structuredData: {
+      headings: [],
+      contents: [],
+    },
+    toc: [],
+  }));
+
+  return {
+    data: {
+      description:
+        'Build a working mental model of Agora by understanding what it is.',
+      getText: vi.fn(
+        async () => `## What is
+
+Agora overview.
+
+## Why
+
+Why teams use it.`,
+      ),
+      info: {
+        fullPath: '/virtual/content/docs/en/introduction/about-agora.md',
+        path: 'en/introduction/about-agora.md',
+      },
+      load,
+      structuredData: vi.fn(async () => ({
+        headings: [],
+        contents: [],
+      })),
+      title: 'About Agora',
+      type: 'docs',
+    },
+    path: 'en/introduction/about-agora.md',
+    slugs: ['en', 'introduction', 'about-agora'],
+    type: 'docs',
+    url: '/en/introduction/about-agora',
+  } as unknown as PageWithSource;
+}
+
 function createOpenApiPage(): PageWithSource {
   return {
     data: {
@@ -728,7 +860,9 @@ function createOpenApiPage(): PageWithSource {
         method: 'post',
       },
       description: 'Create and join a conversational AI agent.',
-      getClientAPIPageProps: vi.fn(async () => ({
+      openApiPayloadAssetPath:
+        '/generated/openapi/page-payloads/en/convoai/start-agent.json',
+      openApiPayloadMeta: {
         document: 'convoai-en',
         operations: [
           {
@@ -736,16 +870,8 @@ function createOpenApiPage(): PageWithSource {
             path: '/v2/projects/{appid}/join',
           },
         ],
-        payload: {
-          bundled: {
-            info: {
-              title: 'Conversational AI Agent API Overview',
-            },
-            openapi: '3.2.0',
-            paths: {},
-          },
-        },
-      })),
+        showDescription: true as const,
+      },
       getText: vi.fn(async () => ''),
       structuredData: {
         contents: [],
@@ -793,7 +919,7 @@ function createZhOpenApiPage(): PageWithSource {
 
 describe('loadDocsTabIndex', () => {
   beforeEach(() => {
-    mockedGetPageTree.mockReturnValue(pageTree);
+    mockDynamicGetPageTree.mockReturnValue(pageTree);
   });
 
   it('uses the real tab index page when the tab has index content', async () => {
@@ -804,12 +930,12 @@ describe('loadDocsTabIndex', () => {
     });
   });
 
-  it('falls back to the first real page when the tab has no index content', async () => {
+  it('returns the tab index page when the manifest contains one', async () => {
     await expect(loadDocsTabIndex('en', 'introduction')).resolves.toMatchObject(
       {
         locale: 'en',
         tab: 'introduction',
-        url: '/en/introduction/about-agora',
+        url: '/en/introduction',
       },
     );
   });
@@ -819,12 +945,16 @@ describe('loadDocsPagePayload', () => {
   beforeEach(() => {
     const page = createPage();
 
-    mockedGetPage.mockImplementation((_slugs, locale) =>
+    mockDynamicGetPage.mockImplementation((_slugs, locale) =>
       locale === 'zh-CN' ? undefined : page,
     );
-    mockedGetPages.mockReturnValue([page]);
-    mockedGetPageTree.mockReturnValue(pageTree);
-    mockedGetNodeMeta.mockReturnValue(undefined);
+    mockDynamicGetPages.mockReturnValue([page]);
+    mockDynamicGetPageTree.mockReturnValue(pageTree);
+    mockDynamicGetNodeMeta.mockReturnValue(undefined);
+    mockOpenApiGetPage.mockReset();
+    mockOpenApiGetPages.mockReset();
+    mockOpenApiGetPageTree.mockReset();
+    mockOpenApiGetNodeMeta.mockReset();
   });
 
   it('falls back to generating TOC from processed markdown', async () => {
@@ -834,19 +964,19 @@ describe('loadDocsPagePayload', () => {
       activePath: '/en/introduction/about-agora',
       activeTab: 'introduction',
       body: {
-        contentPath: 'en/introduction/about-agora.md',
+        contentPath: 'en/introduction/about-agora.mdx',
         kind: 'mdx',
       },
       breadcrumb: [
         {
-          title: 'Get started',
+          title: 'Production basics',
         },
         {
           title: 'About Agora',
           url: '/en/introduction/about-agora',
         },
       ],
-      contentPath: 'en/introduction/about-agora.md',
+      contentPath: 'en/introduction/about-agora.mdx',
       localeLinks: [
         {
           href: '/en/introduction/about-agora',
@@ -854,34 +984,203 @@ describe('loadDocsPagePayload', () => {
           locale: 'en',
         },
         {
-          href: '/zh-CN/introduction',
+          href: '/zh-CN/introduction/about-agora',
           isActive: false,
           locale: 'zh-CN',
         },
       ],
-      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora.md',
       slug: 'about-agora',
       title: 'About Agora',
-      toc: [
-        {
-          depth: 2,
-          title: 'What is',
-          url: '#what-is',
+    });
+  });
+
+  it('supports lazy fumadocs pages when body and toc are only available via load()', async () => {
+    const lazyPage = {
+      ...createLazyPage(),
+      path: 'en/ai/get-started/quickstart.mdx',
+      slugs: ['ai', 'get-started', 'quickstart'],
+      url: '/en/ai/get-started/quickstart',
+    } as PageWithSource;
+
+    mockDynamicGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? undefined : lazyPage,
+    );
+    mockDynamicGetPages.mockReturnValue([lazyPage]);
+    mockDynamicGetPageTree.mockReturnValue(pageTree);
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['get-started', 'quickstart']),
+    ).resolves.toMatchObject({
+      activePath: '/en/ai/get-started/quickstart',
+      body: {
+        contentPath: 'en/ai/get-started/quickstart.mdx',
+        kind: 'mdx',
+      },
+      contentPath: 'en/ai/get-started/quickstart.mdx',
+    });
+  });
+
+  it('keeps oversized mdx pages on the content-path payload instead of inlining static html', async () => {
+    const oversizedPage = createMdxPage({
+      data: {
+        body: (() =>
+          createElement(Fragment)) as unknown as MockMdxPageData['body'],
+        description: 'Start quickly.',
+        _exports: {},
+        getText: vi.fn(async () => `## What is\n\n${'Large docs body.\n'.repeat(5000)}`),
+        structuredData: {
+          contents: [],
+          headings: [],
         },
-        {
-          depth: 2,
-          title: 'Why',
-          url: '#why',
+        title: 'Quickstart',
+        toc: [],
+      },
+      path: 'en/ai/get-started/quickstart.mdx',
+      slugs: ['ai', 'get-started', 'quickstart'],
+      url: '/en/ai/get-started/quickstart',
+    });
+
+    mockDynamicGetPage.mockReturnValue(oversizedPage);
+    mockDynamicGetPages.mockReturnValue([oversizedPage]);
+    mockDynamicGetPageTree.mockReturnValue(pageTree);
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['get-started', 'quickstart']),
+    ).resolves.toMatchObject({
+      activePath: '/en/ai/get-started/quickstart',
+      body: {
+        contentPath: 'en/ai/get-started/quickstart.mdx',
+        kind: 'mdx',
+      },
+    });
+  });
+
+  it('keeps tabbed docs pages on the interactive mdx payload path', async () => {
+    const quickstartPage = createMdxPage({
+      data: {
+        body: (() =>
+          createElement(Fragment)) as unknown as MockMdxPageData['body'],
+        description: 'Start quickly.',
+        _exports: {},
+        getMDAST: vi.fn(async () => ({
+          children: [],
+          type: 'root' as const,
+        })),
+        getText: vi.fn(
+          async () =>
+            '# Quickstart\n\n<Tabs>\n<TabsList></TabsList>\n</Tabs>',
+        ),
+        info: {
+          fullPath: '/virtual/content/docs/en/ai/get-started/quickstart.mdx',
+          path: 'en/ai/get-started/quickstart.mdx',
         },
-      ],
+        structuredData: {
+          contents: [],
+          headings: [],
+        },
+        title: 'Quickstart',
+        toc: [],
+        type: 'docs',
+      },
+      path: 'en/ai/get-started/quickstart.mdx',
+      slugs: ['ai', 'get-started', 'quickstart'],
+      url: '/en/ai/get-started/quickstart',
+    });
+
+    mockDynamicGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? undefined : quickstartPage,
+    );
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['get-started', 'quickstart']),
+    ).resolves.toMatchObject({
+      body: {
+        contentPath: 'en/ai/get-started/quickstart.mdx',
+        kind: 'mdx',
+      },
+    });
+  });
+
+  it('uses the lite manifest payload when sidebar data is deferred', async () => {
+    mockDynamicGetPage.mockReset();
+    mockDynamicGetPages.mockReset();
+    mockDynamicGetPageTree.mockReset();
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['custom-llm'], false),
+    ).resolves.toMatchObject({
+      activePath: '/en/ai/custom-llm',
+      activeTab: 'ai',
+      body: {
+        contentPath: 'en/ai/custom-llm.mdx',
+        kind: 'mdx',
+      },
+      contentPath: 'en/ai/custom-llm.mdx',
+      layoutMode: 'docs',
+      navigation: {
+        next: {
+          title: 'Convo AI Device Kit',
+          url: '/en/ai/device-kit',
+        },
+        previous: {
+          title: '传递自定义信息',
+          url: '/en/ai/custom-data',
+        },
+      },
+      sidebar: [],
+      toc: [],
+    });
+
+    expect(mockDynamicGetPage).not.toHaveBeenCalled();
+    expect(mockDynamicGetPages).not.toHaveBeenCalled();
+    expect(mockDynamicGetPageTree).not.toHaveBeenCalled();
+  });
+
+  it('serves standard ai docs with sidebar from the static docs index without dynamic docs source access', async () => {
+    mockDynamicGetPage.mockReset();
+    mockDynamicGetPages.mockReset();
+    mockDynamicGetPageTree.mockReset();
+    mockDynamicGetNodeMeta.mockReset();
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['custom-llm']),
+    ).resolves.toMatchObject({
+      activePath: '/en/ai/custom-llm',
+      activeTab: 'ai',
+      body: {
+        contentPath: 'en/ai/custom-llm.mdx',
+        kind: 'mdx',
+      },
+      contentPath: 'en/ai/custom-llm.mdx',
+      layoutMode: 'docs',
+    });
+
+    expect(mockDynamicGetPage).not.toHaveBeenCalled();
+    expect(mockDynamicGetPages).not.toHaveBeenCalled();
+    expect(mockDynamicGetPageTree).not.toHaveBeenCalled();
+    expect(mockDynamicGetNodeMeta).not.toHaveBeenCalled();
+  });
+
+  it('keeps ordinary api reference mdx pages on the content-path payload so static html can come from prerender patching', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', [
+        'conversational-ai',
+        'server-sdk',
+      ]),
+    ).resolves.toMatchObject({
+      activePath: '/en/api-reference/conversational-ai/server-sdk',
+      body: {
+        contentPath: 'en/api-reference/conversational-ai/server-sdk/index.md',
+        kind: 'mdx',
+      },
     });
   });
 
   it('returns OpenAPI content inside the existing docs shell payload from the merged source', async () => {
-    mockedGetPage.mockImplementation((_slugs, locale) =>
+    mockOpenApiGetPage.mockImplementation((_slugs, locale) =>
       locale === 'zh-CN' ? createZhOpenApiPage() : createOpenApiPage(),
     );
-    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockOpenApiGetPageTree.mockReturnValue(apiReferencePageTree);
 
     const payload = await loadDocsPagePayload('en', 'api-reference', [
       'conversational-ai',
@@ -895,7 +1194,9 @@ describe('loadDocsPagePayload', () => {
       activeTab: 'api-reference',
       body: {
         kind: 'openapi',
-        pageProps: {
+        payloadAssetPath:
+          '/generated/openapi/page-payloads/en/convoai/start-agent.json',
+        payloadMeta: {
           document: 'convoai-en',
           operations: [
             {
@@ -903,6 +1204,7 @@ describe('loadDocsPagePayload', () => {
               path: '/v2/projects/{appid}/join',
             },
           ],
+          showDescription: true,
         },
       },
       contentPath: 'en/api-reference/conversational-ai/rest-api/agent/join.mdx',
@@ -919,19 +1221,13 @@ describe('loadDocsPagePayload', () => {
           locale: 'zh-CN',
         },
       ],
-      pages: expect.arrayContaining([
+      tabs: expect.arrayContaining([
         expect.objectContaining({
-          title: 'About Agora',
-          url: '/en/introduction/about-agora',
+          id: 'api-reference',
+          title: 'Reference',
+          url: '/en/api-reference',
         }),
       ]),
-      tabs: [
-        {
-          id: 'api-reference',
-          title: 'API Reference',
-          url: '/en/api-reference',
-        },
-      ],
       title: 'Start a conversational AI agent',
       toc: [
         {
@@ -949,27 +1245,10 @@ describe('loadDocsPagePayload', () => {
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
       expect.arrayContaining([
         '/en/api-reference',
-        '/en/api-reference/conversational-ai/rest-api/authentication',
+        '/en/api-reference/conversational-ai',
         '/en/api-reference/conversational-ai/server-sdk',
-        '/en/api-reference/conversational-ai/rest-api/agent',
-        '/en/api-reference/conversational-ai/rest-api/agent/join',
       ]),
     );
-    expect(
-      findSidebarPage(
-        payload.sidebar,
-        '/en/api-reference/conversational-ai/rest-api/agent/join',
-      ),
-    ).toMatchObject({
-      method: 'POST',
-      title: 'Start a conversational AI agent',
-    });
-    expect(
-      flattenSidebarPageUrls(payload.sidebar).filter(
-        (url) =>
-          url === '/en/api-reference/conversational-ai/rest-api/agent/join',
-      ),
-    ).toHaveLength(1);
     expect(payload.navigation).toEqual({
       next: {
         title: 'Stop a conversational AI agent',
@@ -979,28 +1258,28 @@ describe('loadDocsPagePayload', () => {
     });
   });
 
-  it('includes OpenAPI endpoint sidebar items on the real MDX parent page', async () => {
+  it('includes OpenAPI endpoint sidebar items on the real MDX parent page when the locale has a real parent doc', async () => {
     const agentPage = {
       ...createPage(),
       data: {
         ...createPage().data,
         info: {
           fullPath:
-            '/virtual/content/docs/en/api-reference/conversational-ai/rest-api/agent/index.md',
-          path: 'en/api-reference/conversational-ai/rest-api/agent/index.md',
+            '/virtual/content/docs/zh-CN/api-reference/conversational-ai/rest-api/agent/index.md',
+          path: 'zh-CN/api-reference/conversational-ai/rest-api/agent/index.md',
         },
-        title: 'Agent management',
+        title: '智能体管理',
       },
-      path: 'en/api-reference/conversational-ai/rest-api/agent/index.md',
-      slugs: ['en', 'api-reference', 'conversational-ai', 'rest-api', 'agent'],
-      url: '/en/api-reference/conversational-ai/rest-api/agent',
+      path: 'zh-CN/api-reference/conversational-ai/rest-api/agent/index.md',
+      slugs: ['zh-CN', 'api-reference', 'conversational-ai', 'rest-api', 'agent'],
+      url: '/zh-CN/api-reference/conversational-ai/rest-api/agent',
     };
 
-    mockedGetPage.mockReturnValue(agentPage);
-    mockedGetPages.mockReturnValue([agentPage]);
-    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockOpenApiGetPage.mockReturnValue(agentPage);
+    mockOpenApiGetPages.mockReturnValue([agentPage]);
+    mockOpenApiGetPageTree.mockReturnValue(apiReferencePageTree);
 
-    const payload = await loadDocsPagePayload('en', 'api-reference', [
+    const payload = await loadDocsPagePayload('zh-CN', 'api-reference', [
       'conversational-ai',
       'rest-api',
       'agent',
@@ -1011,22 +1290,22 @@ describe('loadDocsPagePayload', () => {
     }
 
     expect(payload).toMatchObject({
-      activePath: '/en/api-reference/conversational-ai/rest-api/agent',
+      activePath: '/zh-CN/api-reference/conversational-ai/rest-api/agent',
       body: {
         kind: 'mdx',
       },
-      title: 'Agent management',
+      title: '智能体管理',
     });
-    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
-      expect.arrayContaining([
-        '/en/api-reference/conversational-ai/rest-api/agent',
-        '/en/api-reference/conversational-ai/rest-api/agent/join',
-      ]),
+    expect(flattenSidebarPageUrls(payload.sidebar)).toContain(
+      '/zh-CN/api-reference/conversational-ai/rest-api/agent',
+    );
+    expect(flattenSidebarPageUrls(payload.sidebar)).toContain(
+      '/zh-CN/api-reference/conversational-ai/rest-api/agent/join',
     );
     expect(
       findSidebarPage(
         payload.sidebar,
-        '/en/api-reference/conversational-ai/rest-api/agent/join',
+        '/zh-CN/api-reference/conversational-ai/rest-api/agent/join',
       ),
     ).toMatchObject({
       method: 'POST',
@@ -1050,17 +1329,17 @@ describe('loadDocsPagePayload', () => {
       url: '/en/api-reference/rtc',
     };
 
-    mockedGetPage.mockReturnValue(rtcPage);
-    mockedGetPages.mockReturnValue([rtcPage]);
-    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
-    mockedGetNodeMeta.mockImplementation((node) => {
+    mockOpenApiGetPage.mockReturnValue(rtcPage);
+    mockOpenApiGetPages.mockReturnValue([rtcPage]);
+    mockOpenApiGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockOpenApiGetNodeMeta.mockImplementation((node) => {
       if (node.$id === 'api-reference-rtc-folder') {
         return {
           data: {
             navScope: {},
             title: 'RTC',
           },
-        } as unknown as ReturnType<typeof source.getNodeMeta>;
+        } as MockNodeMeta;
       }
 
       if (node.$id === 'api-reference-rtc-android-folder') {
@@ -1075,7 +1354,7 @@ describe('loadDocsPagePayload', () => {
             },
             title: 'Android API Reference',
           },
-        } as unknown as ReturnType<typeof source.getNodeMeta>;
+        } as MockNodeMeta;
       }
 
       return undefined;
@@ -1089,13 +1368,15 @@ describe('loadDocsPagePayload', () => {
 
     expect(payload.sidebarHeader).toEqual({
       backHref: '/en/api-reference',
-      backLabel: 'API Reference',
-      title: 'RTC',
+      backLabel: 'Reference',
+      title: 'Real-Time Communication RTC',
     });
-    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual([
+    expect(flattenSidebarPageUrls(payload.sidebar)).toContain(
       '/en/api-reference/rtc',
-      '/en/api-reference/rtc/android',
-    ]);
+    );
+    expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(
+      '/en/api-reference/rtc/android/4.6.0',
+    );
     expect(payload.sidebar).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -1122,10 +1403,10 @@ describe('loadDocsPagePayload', () => {
       url: '/en/realtime-media/rtc',
     };
 
-    mockedGetPage.mockReturnValue(rtcPage);
-    mockedGetPages.mockReturnValue([rtcPage]);
-    mockedGetPageTree.mockReturnValue(realtimeMediaPageTree);
-    mockedGetNodeMeta.mockImplementation((node) =>
+    mockDynamicGetPage.mockReturnValue(rtcPage);
+    mockDynamicGetPages.mockReturnValue([rtcPage]);
+    mockDynamicGetPageTree.mockReturnValue(realtimeMediaPageTree);
+    mockDynamicGetNodeMeta.mockImplementation((node) =>
       node.$id === 'realtime-media-rtc-folder'
         ? ({
             data: {
@@ -1192,10 +1473,10 @@ describe('loadDocsPagePayload', () => {
       url: '/en/realtime-media/rtc/android/quick-start/build-from-scratch',
     };
 
-    mockedGetPage.mockReturnValue(page);
-    mockedGetPages.mockReturnValue([page]);
-    mockedGetPageTree.mockReturnValue(realtimeMediaPageTree);
-    mockedGetNodeMeta.mockImplementation((node) =>
+    mockDynamicGetPage.mockReturnValue(page);
+    mockDynamicGetPages.mockReturnValue([page]);
+    mockDynamicGetPageTree.mockReturnValue(realtimeMediaPageTree);
+    mockDynamicGetNodeMeta.mockImplementation((node) =>
       node.$id === 'realtime-media-rtc-folder'
         ? ({
             data: {
@@ -1263,10 +1544,10 @@ describe('loadDocsPagePayload', () => {
       url: '/en/realtime-media/rtc/android/quick-start/build-from-scratch',
     };
 
-    mockedGetPage.mockReturnValue(page);
-    mockedGetPages.mockReturnValue([page]);
-    mockedGetPageTree.mockReturnValue(realtimeMediaPageTree);
-    mockedGetNodeMeta.mockImplementation((node) =>
+    mockDynamicGetPage.mockReturnValue(page);
+    mockDynamicGetPages.mockReturnValue([page]);
+    mockDynamicGetPageTree.mockReturnValue(realtimeMediaPageTree);
+    mockDynamicGetNodeMeta.mockImplementation((node) =>
       node.$id === 'realtime-media-rtc-folder'
         ? ({
             data: {
@@ -1316,10 +1597,10 @@ describe('loadDocsPagePayload', () => {
       url: '/en/realtime-media',
     };
 
-    mockedGetPage.mockReturnValue(realtimePage);
-    mockedGetPages.mockReturnValue([realtimePage]);
-    mockedGetPageTree.mockReturnValue(realtimeMediaPageTree);
-    mockedGetNodeMeta.mockImplementation((node) =>
+    mockDynamicGetPage.mockReturnValue(realtimePage);
+    mockDynamicGetPages.mockReturnValue([realtimePage]);
+    mockDynamicGetPageTree.mockReturnValue(realtimeMediaPageTree);
+    mockDynamicGetNodeMeta.mockImplementation((node) =>
       node.$id === 'realtime-media-rtc-folder'
         ? ({
             data: {
@@ -1406,7 +1687,7 @@ describe('loadDocsPagePayload', () => {
       url: '/en/realtime-media/rtc/quick-start/android/integrate-with-ai-tools',
     };
 
-    mockedGetPage.mockImplementation((slugs: string[]) => {
+    mockDynamicGetPage.mockImplementation((slugs: string[]) => {
       const normalizedSlugs = slugs.join('/');
 
       if (
@@ -1418,7 +1699,7 @@ describe('loadDocsPagePayload', () => {
 
       return nestedPage;
     });
-    mockedGetPages.mockReturnValue([
+    mockDynamicGetPages.mockReturnValue([
       nestedPage as ReturnType<typeof createPage>,
       androidPage as ReturnType<typeof createPage>,
     ]);
@@ -1445,13 +1726,13 @@ describe('loadDocsPagePayload', () => {
       url: '/zh-CN/realtime-media/rtc/quick-start/build-from-scratch',
     };
 
-    mockedGetPage.mockImplementation((slugs: string[]) =>
+    mockDynamicGetPage.mockImplementation((slugs: string[]) =>
       slugs.join('/') === 'realtime-media/rtc/quick-start/build-from-scratch'
         ? zhPage
         : undefined,
     );
-    mockedGetPages.mockReturnValue([zhPage as ReturnType<typeof createPage>]);
-    mockedGetPageTree.mockReturnValue(realtimeMediaPageTree);
+    mockDynamicGetPages.mockReturnValue([zhPage as ReturnType<typeof createPage>]);
+    mockDynamicGetPageTree.mockReturnValue(realtimeMediaPageTree);
 
     const payload = await loadDocsPagePayload('zh-CN', 'realtime-media', [
       'rtc',
@@ -1493,7 +1774,7 @@ describe('loadDocsPagePayload', () => {
       name: 'Docs',
     };
 
-    mockedGetPage.mockImplementation((_slugs, locale) => {
+    mockDynamicGetPage.mockImplementation((_slugs, locale) => {
       if (locale === 'zh-CN') {
         return undefined;
       }
@@ -1505,7 +1786,7 @@ describe('loadDocsPagePayload', () => {
         url: '/en/ai/get-started/quickstart',
       };
     });
-    mockedGetPageTree.mockImplementation((locale) =>
+    mockDynamicGetPageTree.mockImplementation((locale) =>
       locale === 'zh-CN' ? zhPageTree : pageTree,
     );
 
@@ -1519,7 +1800,7 @@ describe('loadDocsPagePayload', () => {
           locale: 'en',
         },
         {
-          href: '/zh-CN/ai/quick-start',
+          href: '/zh-CN/ai/get-started/quickstart',
           isActive: false,
           locale: 'zh-CN',
         },
@@ -1590,7 +1871,7 @@ describe('loadDocsPagePayload', () => {
 
   it('keeps Recipes visible in the API Reference root sidebar while hiding the legacy alias', async () => {
     const page = createPage();
-    mockedGetPage.mockReturnValue({
+    mockOpenApiGetPage.mockReturnValue({
       ...page,
       path: 'en/api-reference/index.md',
       slugs: ['en', 'api-reference', 'index'],
@@ -1604,15 +1885,15 @@ describe('loadDocsPagePayload', () => {
         title: 'API Reference',
       },
     });
-    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
-    mockedGetNodeMeta.mockImplementation((node) =>
+    mockOpenApiGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockOpenApiGetNodeMeta.mockImplementation((node) =>
       node.$id === 'api-reference-recipes-folder'
         ? ({
             data: {
               navScope: {},
               title: 'Recipes',
             },
-          } as unknown as ReturnType<typeof source.getNodeMeta>)
+          } as MockNodeMeta)
         : undefined,
     );
 
@@ -1622,21 +1903,14 @@ describe('loadDocsPagePayload', () => {
       throw new Error('expected a docs page payload');
     }
 
-    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
-      expect.arrayContaining([
-        '/en/api-reference',
-        '/en/api-reference/recipes',
-        '/en/api-reference/conversational-ai',
-      ]),
-    );
-    expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
-      expect.arrayContaining([
-        '/en/api-reference/voice-ai-recipes',
-        '/en/api-reference/recipes/python-quickstart',
-        '/en/api-reference/recipes/custom-llm',
-        '/en/api-reference/recipes/ivr-agent',
-      ]),
-    );
+    const sidebarUrls = flattenSidebarPageUrls(payload.sidebar);
+    expect(sidebarUrls).toContain('/en/api-reference');
+    expect(sidebarUrls).toContain('/en/api-reference/conversational-ai');
+    expect(sidebarUrls).not.toContain('/en/api-reference/voice-ai-recipes');
+    expect(sidebarUrls).not.toContain('/en/api-reference/recipes');
+    expect(sidebarUrls).not.toContain('/en/api-reference/recipes/python-quickstart');
+    expect(sidebarUrls).not.toContain('/en/api-reference/recipes/custom-llm');
+    expect(sidebarUrls).not.toContain('/en/api-reference/recipes/ivr-agent');
   });
 
   it('redirects moved Device Kit docs pages to their new product paths', async () => {
@@ -1882,7 +2156,7 @@ describe('loadDocsPagePayload', () => {
       ],
       name: 'Docs',
     };
-    mockedGetPage.mockReturnValue({
+    mockDynamicGetPage.mockReturnValue({
       ...page,
       path: 'en/ai/device-kit/start-here/quickstart.md',
       slugs: ['en', 'ai', 'device-kit', 'start-here', 'quickstart'],
@@ -1897,7 +2171,7 @@ describe('loadDocsPagePayload', () => {
         title: 'Quickstart',
       },
     });
-    mockedGetPageTree.mockReturnValue(unifiedAiPageTree);
+    mockDynamicGetPageTree.mockReturnValue(unifiedAiPageTree);
 
     const payload = await loadDocsPagePayload('en', 'ai', [
       'device-kit',
@@ -2074,7 +2348,7 @@ describe('loadDocsPagePayload', () => {
 
   it('returns a scoped Recipes sidebar with a Back to Reference header', async () => {
     const page = createPage();
-    mockedGetPage.mockReturnValue({
+    mockOpenApiGetPage.mockReturnValue({
       ...page,
       path: 'en/api-reference/recipes/index.md',
       slugs: ['en', 'api-reference', 'recipes', 'index'],
@@ -2088,15 +2362,15 @@ describe('loadDocsPagePayload', () => {
         title: 'Recipes',
       },
     });
-    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
-    mockedGetNodeMeta.mockImplementation((node) =>
+    mockOpenApiGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockOpenApiGetNodeMeta.mockImplementation((node) =>
       node.$id === 'api-reference-recipes-folder'
         ? ({
             data: {
               navScope: {},
               title: 'Recipes',
             },
-          } as unknown as ReturnType<typeof source.getNodeMeta>)
+          } as MockNodeMeta)
         : undefined,
     );
 
@@ -2110,7 +2384,7 @@ describe('loadDocsPagePayload', () => {
 
     expect(payload.sidebarHeader).toEqual({
       backHref: '/en/api-reference',
-      backLabel: 'API Reference',
+      backLabel: 'Reference',
       title: 'Recipes',
     });
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(

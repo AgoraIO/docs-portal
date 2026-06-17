@@ -3,14 +3,20 @@ import { createFileRoute } from '@tanstack/react-router';
 export const Route = createFileRoute('/llms-full.txt')({
   server: {
     handlers: {
-      GET: async () => {
-        const { getLLMText, source } = await import('@/lib/source');
-        const { getOpenApiMarkdownPages } = await import('@/lib/openapi/markdown');
-        const scan = source.getPages().map(getLLMText);
-        const scanned = await Promise.all(scan);
-        const openApiPages = await getOpenApiMarkdownPages();
+      GET: async ({ request }) => {
+        const { buildDocsLlmsFullText } = await import(
+          '@/lib/docs-static/docs-index-llms.server'
+        );
+        const { fetchStaticOpenApiJson } = await import(
+          '@/lib/openapi/static-asset.server'
+        );
+        const openApiPages = await fetchStaticOpenApiJson<
+          Array<{
+            markdown: string;
+          }>
+        >(request, '/generated/openapi/markdown-pages.json');
         return new Response(
-          [...scanned, ...openApiPages.map((page) => page.markdown)].join(
+          [buildDocsLlmsFullText(), ...openApiPages.map((page) => page.markdown)].join(
             '\n\n',
           ),
         );

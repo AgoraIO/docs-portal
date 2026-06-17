@@ -2,16 +2,10 @@
 
 import { Link } from '@tanstack/react-router';
 import { CheckIcon, ChevronDownIcon, ChevronLeftIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/cn';
+import { Button } from '@/components/ui/button';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+import { DocsCompactMenu } from './DocsCompactMenu';
 
 export function DocsSidebarHeaderBlock({
   className,
@@ -64,54 +58,49 @@ export function DocsSidebarHeaderBlock({
       {versionSwitcher &&
       currentVersion &&
       versionSwitcher.presentation !== 'tabs' ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+        <DocsCompactMenu
+          ariaLabel="Documentation versions"
+          className={cn(mode === 'desktop' ? 'mx-2 mt-2' : 'mt-2')}
+          panelClassName="w-48 p-1"
+          button={({ 'aria-controls': ariaControls, 'aria-expanded': ariaExpanded, onClick }) => (
             <Button
+              aria-controls={ariaControls}
+              aria-expanded={ariaExpanded}
               aria-label="Select documentation version"
               className={cn(
-                'mt-2 h-8 max-w-full justify-between gap-2 rounded-md px-2.5 text-[13px] data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
-                mode === 'desktop' ? 'mx-2 w-[calc(100%-1rem)]' : 'w-full',
+                'h-8 max-w-full justify-between gap-2 rounded-md px-2.5 text-[13px]',
+                mode === 'desktop' ? 'w-full' : 'w-full',
               )}
+              onClick={onClick}
               size="sm"
               variant="outline"
             >
               <span className="min-w-0 truncate">{currentVersion.label}</span>
               <ChevronDownIcon aria-hidden="true" className="opacity-60" />
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="start"
-            aria-label="Documentation versions"
-            className="w-48 rounded-lg p-1"
-          >
-            <DropdownMenuGroup>
-              {versionSwitcher.versions.map((version) => (
-                <DropdownMenuItem
-                  asChild
-                  className="min-h-8 cursor-pointer justify-between rounded-md px-2.5 text-[13px]"
-                  key={version.id}
-                >
-                  <Link
-                    aria-current={
-                      version.id === versionSwitcher.currentId
-                        ? 'page'
-                        : undefined
-                    }
-                    onClick={onSelectPath}
-                    params={{}}
-                    search={{}}
-                    to={version.href}
-                  >
-                    <span className="min-w-0 truncate">{version.label}</span>
-                    {version.id === versionSwitcher.currentId ? (
-                      <CheckIcon className="opacity-80" />
-                    ) : null}
-                  </Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          )}
+        >
+          <div className="flex flex-col">
+            {versionSwitcher.versions.map((version) => (
+              <Link
+                aria-current={
+                  version.id === versionSwitcher.currentId ? 'page' : undefined
+                }
+                className="flex min-h-8 items-center justify-between rounded-md px-2.5 text-[13px] hover:bg-accent hover:text-accent-foreground"
+                key={version.id}
+                onClick={onSelectPath}
+                params={{}}
+                search={{}}
+                to={version.href}
+              >
+                <span className="min-w-0 truncate">{version.label}</span>
+                {version.id === versionSwitcher.currentId ? (
+                  <CheckIcon className="opacity-80" />
+                ) : null}
+              </Link>
+            ))}
+          </div>
+        </DocsCompactMenu>
       ) : null}
     </div>
   );

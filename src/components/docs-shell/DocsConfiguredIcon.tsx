@@ -1,7 +1,21 @@
-import { icons } from 'lucide-react';
+import {
+  BookOpenIcon,
+  BotIcon,
+  CpuIcon,
+  ShieldCheckIcon,
+  ZapIcon,
+} from 'lucide-react';
+
+const configuredIcons = {
+  BookOpen: BookOpenIcon,
+  Bot: BotIcon,
+  Cpu: CpuIcon,
+  ShieldCheck: ShieldCheckIcon,
+  Zap: ZapIcon,
+} as const;
 
 export function hasConfiguredIcon(icon?: string) {
-  return Boolean(icon && icon in icons);
+  return Boolean(icon && icon in configuredIcons);
 }
 
 export function DocsConfiguredIcon({
@@ -15,7 +29,7 @@ export function DocsConfiguredIcon({
     return null;
   }
 
-  const Icon = icons[icon as keyof typeof icons];
+  const Icon = configuredIcons[icon as keyof typeof configuredIcons];
 
   return <Icon aria-hidden="true" className={className} />;
 }
