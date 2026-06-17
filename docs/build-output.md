@@ -2,6 +2,8 @@
 
 This repo does not currently use a plain `vite build` as its top-level production contract.
 
+For release checks, known risks, and the current tactical exception list, also read [docs/preflight-static-docs.md](/Users/czhen/Documents/GitHub/Shengwang-Community/docs-portal/docs/preflight-static-docs.md).
+
 ## Build entrypoints
 
 - `bun run build:raw`

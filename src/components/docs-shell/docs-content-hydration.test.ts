@@ -65,4 +65,25 @@ describe('docs-content-hydration', () => {
       ),
     ).toBe(true);
   });
+
+  it('hydrates known heavyweight docs pages instead of requiring patched static html', () => {
+    const heavyPages = [
+      'en/realtime-media/video/build/ai-noise-suppression.mdx',
+      'en/realtime-media/video/build/in-call-quality-monitoring.mdx',
+      'en/realtime-media/video/build/play-media.mdx',
+      'en/realtime-media/video/build/preload-channels.mdx',
+      'en/realtime-media/video/build/receive-notifications.mdx',
+      'en/realtime-media/video/build/screen-sharing.mdx',
+      'en/realtime-media/video/build/use-an-extension.mdx',
+      'en/realtime-media/video/build/voice-activity-detection.mdx',
+      'en/realtime-media/cloud-recording/reference/common-errors.md',
+      'en/realtime-media/im/agora-console/content-moderation-microsoft.md',
+    ];
+
+    for (const contentPath of heavyPages) {
+      expect(shouldHydrateDocsMdxContent(contentPath)).toBe(true);
+      expect(shouldPreloadDocsMdxContent(contentPath)).toBe(true);
+      expect(shouldUseStaticDocsHtmlBody(contentPath)).toBe(false);
+    }
+  });
 });

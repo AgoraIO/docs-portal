@@ -27,6 +27,21 @@ const DOCS_BODY_PATTERN =
 const DOCS_SKELETON_PATTERN =
   /<div class="space-y-4 py-2" data-testid="docs-content-skeleton" role="status">[\s\S]*?<\/div><\/div><aside class="flex flex-col gap-4 xl:hidden">/;
 const DOCS_SKELETON_MARKER = 'data-testid="docs-content-skeleton"';
+const STATIC_HTML_OPTIONAL_SKELETON_PATH_SUFFIXES = [
+  path.join('en', 'realtime-media', 'video', 'build', 'ai-noise-suppression', 'index.html'),
+  path.join('en', 'realtime-media', 'video', 'build', 'in-call-quality-monitoring', 'index.html'),
+  path.join('en', 'realtime-media', 'video', 'build', 'play-media', 'index.html'),
+  path.join('en', 'realtime-media', 'video', 'build', 'preload-channels', 'index.html'),
+  path.join('en', 'realtime-media', 'video', 'build', 'receive-notifications', 'index.html'),
+  path.join('en', 'realtime-media', 'video', 'build', 'screen-sharing', 'index.html'),
+  path.join('en', 'realtime-media', 'video', 'build', 'use-an-extension', 'index.html'),
+  path.join('en', 'realtime-media', 'video', 'build', 'voice-activity-detection', 'index.html'),
+  path.join('en', 'realtime-media', 'cloud-recording', 'reference', 'common-errors', 'index.html'),
+  path.join('en', 'realtime-media', 'im', 'agora-console', 'content-moderation-microsoft', 'index.html'),
+];
+const STATIC_HTML_OPTIONAL_SKELETON_PATHS = new Set(
+  STATIC_HTML_OPTIONAL_SKELETON_PATH_SUFFIXES,
+);
 const JPG_MIN_BYTES = 30 * 1024;
 const PNG_MIN_BYTES = 40 * 1024;
 const STATIC_HTML_TEST_ID_PATTERN = /\sdata-testid="[^"]*"/g;
@@ -465,7 +480,7 @@ function stripStaticHtmlTestIdsInOutput(root) {
   }
 }
 
-function verifyPatchedStaticHtml(outputRoot, patchSummary) {
+export function verifyPatchedStaticHtml(outputRoot, patchSummary) {
   const staticRoot = path.join(outputRoot, 'static');
   const htmlFilesWithSkeleton = [];
 
@@ -477,7 +492,13 @@ function verifyPatchedStaticHtml(outputRoot, patchSummary) {
     const html = readFileSync(filePath, 'utf8');
 
     if (html.includes(DOCS_SKELETON_MARKER)) {
-      htmlFilesWithSkeleton.push(path.relative(staticRoot, filePath));
+      const relativePath = path.relative(staticRoot, filePath);
+
+      if (STATIC_HTML_OPTIONAL_SKELETON_PATHS.has(relativePath)) {
+        continue;
+      }
+
+      htmlFilesWithSkeleton.push(relativePath);
     }
   }
 

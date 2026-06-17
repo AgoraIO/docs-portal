@@ -19,6 +19,7 @@ import {
   stripStaticHtmlModulePreloads,
   stripStaticHtmlDataPrecedenceAttrs,
   stripStaticHtmlTestIds,
+  verifyPatchedStaticHtml,
 } from './build-static-docs.mjs';
 
 const tempDirs: string[] = [];
@@ -53,6 +54,29 @@ describe('build-static-docs', () => {
 
     expect(patched).toContain('<div class="docs-body"><p>Static body</p></div>');
     expect(patched).not.toContain('window.__DOCS_STATIC_HTML__');
+  });
+
+  it('allows known heavyweight hydrated pages to retain docs skeleton markup in static html verification', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'docs-portal-static-verify-'));
+    tempDirs.push(root);
+    const htmlPath = path.join(
+      root,
+      'static/en/realtime-media/video/build/play-media/index.html',
+    );
+
+    mkdirSync(path.dirname(htmlPath), { recursive: true });
+    writeFileSync(
+      htmlPath,
+      '<div class="space-y-4 py-2" data-testid="docs-content-skeleton" role="status"></div>',
+    );
+
+    expect(() =>
+      verifyPatchedStaticHtml(root, {
+        patchedHtmlFiles: 1,
+        skippedWithoutBody: 0,
+        skippedWithoutSkeleton: 0,
+      }),
+    ).not.toThrow();
   });
 
   it('optimizes only large raster assets in the final static output when the encoded result is smaller', async () => {
