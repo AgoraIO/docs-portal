@@ -144,7 +144,7 @@ Ensure that the value is different from User Accounts of other users and players
 :::
 
 - `token`: (Optional) String. The authentication token used by the cloud player in the channel. If you do not enable the App Certificate in Agora Console, ignore this field. If you enable the App Certificate in Agora Console, you must pass a value in this field:
-  - For low-security requirements: Use the temporary token generated in Agora Console. For details, see [Generate a Video SDK temporary token](../get-started/manage-agora-account#generate-a-temporary-tokens).
+  - For low-security requirements: Use the temporary token generated in Agora Console. For details, see [Generate a Video SDK temporary token](../build/manage-agora-account#generate-a-temporary-tokens).
   - For high-security requirements: Use the token generated at your server. For details, see [Secure authentication with tokens](https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server).
 
 

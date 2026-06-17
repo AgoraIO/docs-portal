@@ -65,7 +65,7 @@ When the request is successful you receive an `agent_id` in the HTTP response bo
 
 **Request example**
 
-Following is a simple request example to start a Real-Time STT agent. Refer to [Encrypt captions](../develop/encrypt-captions), [Record captions](../develop/record-captions), and [Transcribe specified hosts](../develop/transcribe-individual-host) for more feature configurations.
+Following is a simple request example to start a Real-Time STT agent. Refer to [Encrypt captions](../build/encrypt-captions), [Record captions](../build/record-captions), and [Transcribe specified hosts](../build/transcribe-individual-host) for more feature configurations.
 
 ```shell
 curl --request post \
@@ -179,7 +179,7 @@ curl --request get \
 
 ### Update configuration
 
-See [Update configuration](../develop/update-service) for details.
+See [Update configuration](../build/update-service) for details.
 
 ### Stop the agent
 

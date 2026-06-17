@@ -17,7 +17,7 @@ Included in this release:
 
 - **Support for additional languages**
 
-  This version expands the supported language lists for real-time transcription and real-time translation. See [Supported languages](../develop/supported-languages) for the full list.
+  This version expands the supported language lists for real-time transcription and real-time translation. See [Supported languages](../build/supported-languages) for the full list.
 
 #### Upgrade notes
 
@@ -39,7 +39,7 @@ Included in this release:
 
 - **Support for caption storage**
 
-  This version adds support for writing recorded subtitles to standard S3-compatible object storage. You can configure parameters such as `endpoint`, `type`, and `provider` in the `captionConfig.extensionParams` of the transcription request to connect to S3-compatible storage services such as MinIO, as well as some self-hosted object storage. See [Record captions](../develop/record-captions) for details.
+  This version adds support for writing recorded subtitles to standard S3-compatible object storage. You can configure parameters such as `endpoint`, `type`, and `provider` in the `captionConfig.extensionParams` of the transcription request to connect to S3-compatible storage services such as MinIO, as well as some self-hosted object storage. See [Record captions](../build/record-captions) for details.
 
 - **Agent list API**
 

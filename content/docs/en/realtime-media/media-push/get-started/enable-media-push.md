@@ -25,4 +25,4 @@ You cannot disable the service once you enable it.
 
 The Media Push panel shows an **Active** label. You have now enabled Media Push.
 
-To process a media stream and push it to a CDN, you create a converter in the Agora channel. To create and manage converters, see [Use RESTful API](../develop/restful-api).
+To process a media stream and push it to a CDN, you create a converter in the Agora channel. To create and manage converters, see [Use RESTful API](../build/restful-api).
