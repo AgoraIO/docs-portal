@@ -59,16 +59,21 @@ describe('build-static-docs', () => {
   it('allows known heavyweight hydrated pages to retain docs skeleton markup in static html verification', () => {
     const root = mkdtempSync(path.join(tmpdir(), 'docs-portal-static-verify-'));
     tempDirs.push(root);
-    const htmlPath = path.join(
-      root,
-      'static/en/realtime-media/video/build/play-media/index.html',
-    );
+    const htmlPaths = [
+      'static/en/realtime-media/broadcast-streaming/build/play-media/index.html',
+      'static/en/realtime-media/cloud-recording/build/receive-notifications/index.html',
+      'static/en/realtime-media/im/client-api/chat-group/manage-group-member-attributes/index.html',
+      'static/en/realtime-media/im/client-api/chat-room/manage-chatroom-members/index.html',
+    ];
 
-    mkdirSync(path.dirname(htmlPath), { recursive: true });
-    writeFileSync(
-      htmlPath,
-      '<div class="space-y-4 py-2" data-testid="docs-content-skeleton" role="status"></div>',
-    );
+    for (const relativePath of htmlPaths) {
+      const htmlPath = path.join(root, relativePath);
+      mkdirSync(path.dirname(htmlPath), { recursive: true });
+      writeFileSync(
+        htmlPath,
+        '<div class="space-y-4 py-2" data-testid="docs-content-skeleton" role="status"></div>',
+      );
+    }
 
     expect(() =>
       verifyPatchedStaticHtml(root, {

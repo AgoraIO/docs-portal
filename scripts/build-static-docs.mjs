@@ -28,15 +28,17 @@ const DOCS_SKELETON_PATTERN =
   /<div class="space-y-4 py-2" data-testid="docs-content-skeleton" role="status">[\s\S]*?<\/div><\/div><aside class="flex flex-col gap-4 xl:hidden">/;
 const DOCS_SKELETON_MARKER = 'data-testid="docs-content-skeleton"';
 const STATIC_HTML_OPTIONAL_SKELETON_PATH_SUFFIXES = [
-  path.join('en', 'realtime-media', 'video', 'build', 'ai-noise-suppression', 'index.html'),
-  path.join('en', 'realtime-media', 'video', 'build', 'in-call-quality-monitoring', 'index.html'),
-  path.join('en', 'realtime-media', 'video', 'build', 'play-media', 'index.html'),
-  path.join('en', 'realtime-media', 'video', 'build', 'preload-channels', 'index.html'),
-  path.join('en', 'realtime-media', 'video', 'build', 'receive-notifications', 'index.html'),
-  path.join('en', 'realtime-media', 'video', 'build', 'screen-sharing', 'index.html'),
-  path.join('en', 'realtime-media', 'video', 'build', 'use-an-extension', 'index.html'),
-  path.join('en', 'realtime-media', 'video', 'build', 'voice-activity-detection', 'index.html'),
+  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'ai-noise-suppression', 'index.html'),
+  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'in-call-quality-monitoring', 'index.html'),
+  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'play-media', 'index.html'),
+  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'preload-channels', 'index.html'),
+  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'screen-sharing', 'index.html'),
+  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'use-an-extension', 'index.html'),
+  path.join('en', 'realtime-media', 'broadcast-streaming', 'build', 'voice-activity-detection', 'index.html'),
+  path.join('en', 'realtime-media', 'cloud-recording', 'build', 'receive-notifications', 'index.html'),
   path.join('en', 'realtime-media', 'cloud-recording', 'reference', 'common-errors', 'index.html'),
+  path.join('en', 'realtime-media', 'im', 'client-api', 'chat-group', 'manage-group-member-attributes', 'index.html'),
+  path.join('en', 'realtime-media', 'im', 'client-api', 'chat-room', 'manage-chatroom-members', 'index.html'),
   path.join('en', 'realtime-media', 'im', 'agora-console', 'content-moderation-microsoft', 'index.html'),
 ];
 const STATIC_HTML_OPTIONAL_SKELETON_PATHS = new Set(

@@ -68,15 +68,17 @@ describe('docs-content-hydration', () => {
 
   it('hydrates known heavyweight docs pages instead of requiring patched static html', () => {
     const heavyPages = [
-      'en/realtime-media/video/build/ai-noise-suppression.mdx',
-      'en/realtime-media/video/build/in-call-quality-monitoring.mdx',
-      'en/realtime-media/video/build/play-media.mdx',
-      'en/realtime-media/video/build/preload-channels.mdx',
-      'en/realtime-media/video/build/receive-notifications.mdx',
-      'en/realtime-media/video/build/screen-sharing.mdx',
-      'en/realtime-media/video/build/use-an-extension.mdx',
-      'en/realtime-media/video/build/voice-activity-detection.mdx',
+      'en/realtime-media/broadcast-streaming/build/ai-noise-suppression.mdx',
+      'en/realtime-media/broadcast-streaming/build/in-call-quality-monitoring.mdx',
+      'en/realtime-media/broadcast-streaming/build/play-media.mdx',
+      'en/realtime-media/broadcast-streaming/build/preload-channels.mdx',
+      'en/realtime-media/broadcast-streaming/build/screen-sharing.mdx',
+      'en/realtime-media/broadcast-streaming/build/use-an-extension.mdx',
+      'en/realtime-media/broadcast-streaming/build/voice-activity-detection.mdx',
+      'en/realtime-media/cloud-recording/build/receive-notifications.mdx',
       'en/realtime-media/cloud-recording/reference/common-errors.md',
+      'en/realtime-media/im/client-api/chat-group/manage-group-member-attributes.mdx',
+      'en/realtime-media/im/client-api/chat-room/manage-chatroom-members.mdx',
       'en/realtime-media/im/agora-console/content-moderation-microsoft.md',
     ];
 

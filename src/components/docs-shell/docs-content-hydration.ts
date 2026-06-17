@@ -3,6 +3,8 @@ import { isAiContentPath } from '@/lib/docs-source-buckets';
 const HYDRATED_DOCS_CONTENT_SUFFIXES = [
   '/build/ai-noise-suppression.mdx',
   '/build/in-call-quality-monitoring.mdx',
+  '/client-api/chat-group/manage-group-member-attributes.mdx',
+  '/client-api/chat-room/manage-chatroom-members.mdx',
   '/build/play-media.mdx',
   '/build/preload-channels.mdx',
   '/build/receive-notifications.mdx',
