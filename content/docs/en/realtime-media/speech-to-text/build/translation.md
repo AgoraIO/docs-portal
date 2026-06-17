@@ -108,4 +108,4 @@ To `query`, `update`, or `stop` the transcription task, refer to the [Rest quick
 ## Supported languages
 
 For a full list of supported translation languages and their parameter values, see
-[Supported languages](./supported-languages#real-time-translation).
+[Supported languages](../reference/supported-languages#real-time-translation).
