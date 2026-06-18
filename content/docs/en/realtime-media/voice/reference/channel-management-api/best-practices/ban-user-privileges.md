@@ -79,8 +79,9 @@ The following table summarizes the use-cases where this API should not be used a
 | Use the banning API for user microphone management | Ban the streaming privilege when the user is off the microphone, and restore it when the user is back on. | The real-time communication logic depends on the availability of the banning API. If the unbanning fails, the user cannot send streams.|
 |Use the banning API for user channel permission management | Ban the user's privilege to join the channel when the user leaves it, and restore it when they attempt to rejoin.| The real-time communication logic depends on the availability of the banning API. If the unbanning fails, the user cannot join the channel. It is recommended to use a one-time kick to ensure that the user leaves the channel.|
 
-> ℹ️ **Note**
-> To better manage microphone positions, Agora provides a channel status API and a Notifications service. You can use them to obtain the real-time status of a channel and design the subsequent business logic. For details, see [Receive notifications about channel events](../../../build/receive-notifications.mdx).
+:::note
+To better manage microphone positions, Agora provides a channel status API and a Notifications service. You can use them to obtain the real-time status of a channel and design the subsequent business logic. For details, see [Receive notifications about channel events](../../../build/receive-notifications.mdx).
+:::
 
 ## Best practices for handling call exceptions
 

@@ -68,8 +68,9 @@ Use npm to integrate the [agora-extension-video-watermark](https://www.npmjs.com
 
 Call `AgoraRTC.registerExtensions` and pass the created `VideoWatermarkExtension` instance to register the Watermark extension.
 
-> 📝 **Note**
-> Agora recommends creating only one `VideoWatermarkExtension` instance.
+:::note
+Agora recommends creating only one `VideoWatermarkExtension` instance.
+:::
 
 ```typescript
 import AgoraRTC from "agora-rtc-sdk-ng";
@@ -146,9 +147,10 @@ The Watermark extension supports two methods for creating watermark images:
     processor.addVideoWatermark(watermark);
   ```
 
-  > 📝 **Note**
-  > - When loading images from URLs, the operation may fail due to <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy">Cross-Origin Resource Policy (CORP)</a> restrictions. If image loading fails, the `ready` Promise is rejected with an error.
-  >   - To use the original image dimensions, set both `width` and `height` to `-1`.
+  :::note
+  - When loading images from URLs, the operation may fail due to <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy">Cross-Origin Resource Policy (CORP)</a> restrictions. If image loading fails, the `ready` Promise is rejected with an error.
+    - To use the original image dimensions, set both `width` and `height` to `-1`.
+  :::
 
 ### Enable the processor
 

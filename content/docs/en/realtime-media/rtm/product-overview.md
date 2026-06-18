@@ -10,7 +10,7 @@ Extend Agora's Signaling SDKs with advanced capabilities such as stream channels
 ## Start building with
 
 - [SDK quickstart](index.mdx) - Customize your experience from the start with our flexible Video SDK.
-- [Authentication](get-started/authentication-workflow.md)
+- [Authentication](build/authentication-workflow.md)
 - [API reference](https://docs.agora.io/en/signaling/reference/api)
 
 ## Product Features

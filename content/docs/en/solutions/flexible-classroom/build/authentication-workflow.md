@@ -27,8 +27,9 @@ An Agora token is a dynamic key generated on your app server that is valid for 2
 
 ## Prerequisites
 
-> ℹ️ **Note**
-> This page provides an example procedure using Go. You can use another language or platform for the same purpose.
+:::note
+This page provides an example procedure using Go. You can use another language or platform for the same purpose.
+:::
 
 In order to follow this example procedure, you must have the following:
 
@@ -38,8 +39,9 @@ In order to follow this example procedure, you must have the following:
 
 -   [Golang](https://golang.org/) 1.14+ with GO111MODULE set to on.
 
-    > ℹ️ **Note**
-    > If you are using Go 1.16+, GO111MODULE is on by default. See [this blog post](https://blog.golang.org/go116-module-changes) for details.
+    :::note
+    If you are using Go 1.16+, GO111MODULE is on by default. See [this blog post](https://blog.golang.org/go116-module-changes) for details.
+    :::
 
 -   [npm](https://www.npmjs.com/get-npm) and a [supported browser](../reference/supported-platforms.md).
 
@@ -75,8 +77,9 @@ Token generators create the tokens requested by your client app to enable secure
 
 In order to show the authentication workflow, this section shows how to build and run a token server written in Golang on your local machine.
 
-> ⚠️ **Note**
-> This sample server is for demonstration purposes only. Do not use it in a production environment.
+:::note
+This sample server is for demonstration purposes only. Do not use it in a production environment.
+:::
 
 1.  Create a file, `server.go`, with the following content. Then replace `YOUR_APP_ID` and `YOUR_APP_CERTIFICATE` with your app ID and app certificate.
 

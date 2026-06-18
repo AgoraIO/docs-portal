@@ -16,8 +16,9 @@ The following workflow shows how to use Call Inspector features:
 
 ![call-inspector](/images/analytics/call-inspector.svg)
 
-> ℹ️ **Enable Call Inspector**
-> To enable Call Inspector, subscribe to an Agora Analytics pricing plan. For details, see [Pricing](../reference/pricing.md).
+:::note[Enable Call Inspector]
+To enable Call Inspector, subscribe to an Agora Analytics pricing plan. For details, see [Pricing](../reference/pricing.md).
+:::
 
 ## Use Call Search
 

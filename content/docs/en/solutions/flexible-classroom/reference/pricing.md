@@ -23,8 +23,9 @@ The unit prices for audio and video usage are as follows. The prices are in USD 
 | Video 2K                   | From greater than 2,073,600 (1920 × 1080) to 3,686,400 (2560 × 1440) | 19.99                                            | 11.99                            |  
 | Video 2K+                  | From greater than 3,686,400 (2560 × 1440) to 8,847,360 (4096 × 2160) | 41.99                                            | 21.99                            |  
 
-> ℹ️ **Information**
-> The difference between interactive live streaming and broadcast streaming is visible in the live broadcast scene.
+:::note
+The difference between interactive live streaming and broadcast streaming is visible in the live broadcast scene.
+:::
 
 ## Cost calculation
 
@@ -56,8 +57,9 @@ The number of free minutes for each service and the billing strategy for the por
 | Flexible Classroom | Duration, minutes | Services include classroom functions and server-side functions: real-time audio and video interaction; interactive whiteboard; Signaling; Agora Chat; interactive teaching tools; Classroom server RESTful API | The first 10,000 minutes of Flexible Classroom services; the first 1,000 images of interactive whiteboard document conversion; Agora Chat: 10,000 monthly active users, 10,000 automatically generated thumbnails, 10 GB of file download traffic, 1 GB of file storage, and 5,000 peak concurrent users | [Flexible Classroom pricing](#flexible-classroom-pricing); [Interactive whiteboard pricing](https://docs.agora.io/en/interactive-whiteboard/overview/pricing); [Chat pricing](https://docs.agora.io/en/agora-chat/overview/pricing) |
 | Web page recording | Duration, minutes | Page recording used during class                                                                                                                                                                                                                                         | The first 10,000 minutes                                                                                                                                                                                                                                                                                                                                                                       | [Web page recording pricing](https://docs.agora.io/en/cloud-recording/overview/pricing-webpage-recording)                                                                                                              |
 
-> ℹ️ **Information**
-> The free quotas for Flexible Classroom services and recording services are calculated separately.
+:::note
+The free quotas for Flexible Classroom services and recording services are calculated separately.
+:::
 
 ### Usage-based volume discounts
 

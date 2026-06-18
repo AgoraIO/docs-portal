@@ -146,10 +146,11 @@ engine.setPlaybackAudioFrameParameters(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Const
 </CodeBlockTab>
 
 </CodeBlockTabs>
-> ⚠️ **Precaution**
-> Voice SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
->   - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
->   - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
+:::warning
+Voice SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+  - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
+  - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
+:::
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
@@ -252,10 +253,11 @@ class RawAudioDataMain: BaseViewController {
 }
 ```
 
-> ⚠️ **Precaution**
-> Voice SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
->   - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
->   - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
+:::warning
+Voice SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+  - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
+  - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
+:::
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
@@ -360,10 +362,11 @@ class RawAudioDataMain: BaseViewController
 }
 ```
 
-> ⚠️ **Precaution**
-> Voice SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
->   - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
->   - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
+:::warning
+Voice SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+  - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
+  - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
+:::
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
@@ -492,10 +495,11 @@ m_rtcEngine->setPlaybackAudioFrameBeforeMixingParameters(44100, 2);
 m_rtcEngine->setMixedAudioFrameParameters(44100, 2, 1024);
 ```
 
-> ⚠️ **Precaution**
-> Voice SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
->   - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
->   - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
+:::warning
+Voice SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+  - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
+  - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
+:::
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
@@ -635,10 +639,11 @@ internal class AudioFrameObserver : IAudioFrameObserver
 }
 ```
 
-> ⚠️ **Precaution**
-> Voice SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
->   - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
->   - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
+:::warning
+Voice SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+  - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
+  - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
+:::
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.

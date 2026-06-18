@@ -70,8 +70,9 @@ For a message channel, you need to add the following content to the firewall whi
     |------------------------------------------------|----------|---------|
     | 443; 9591; 9593; 27387 | TCP      | Allow   |
 
-    > ℹ️ **Info**
-    > If you are using Signaling 1.x, also add port 9601.
+    :::note
+    If you are using Signaling 1.x, also add port 9601.
+    :::
 
 #### Stream channel
 
@@ -119,5 +120,6 @@ For a stream channel, you need to add the following to your firewall whitelist:
     |------------------|----------|---------|
     | 4001 - 4150      | UDP      | Allow   |
 
-> ℹ️ **Info**
-> The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io).
+:::note
+The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io).
+:::

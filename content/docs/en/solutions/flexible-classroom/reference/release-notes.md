@@ -228,12 +228,13 @@ After the breakout session begins, the teacher and teaching assistants have the 
 
 v2.4.x duplicates the features of the teacher role on desktop experience for Web, macOS, and Windows on mobile clients (Android and iOS).
 
-> ℹ️ **Info**
-> Note that the following features are temporarily not available for the teacher role on mobile clients:
-> - Enabling screen sharing
-> - Starting pop-up quizzes
-> - Starting polls
-> - Starting the countdown timer
+:::note
+Note that the following features are temporarily not available for the teacher role on mobile clients:
+- Enabling screen sharing
+- Starting pop-up quizzes
+- Starting polls
+- Starting the countdown timer
+:::
 
 **Ability to turn the whiteboard on and off in the classroom**
 
@@ -321,12 +322,13 @@ As of v2.1.0, students can join a lecture hall in Flexible Classroom simply by c
 - Send messages to chat with other participants in the classroom.
 - Engage in class activities such as polling, answering, and viewing the teacher's count down clock.
 
-> ℹ️ **Info**
-> ℹ️ **Info**
-> Please note that the following features are not supported on HTML5:
-> - Students raising their hands to apply for speaking on the "stage".
-> - Students drawing on the whiteboard.
-> - Students testing or switching their local media devices.
+:::note
+ℹ️ **Info**
+Please note that the following features are not supported on HTML5:
+- Students raising their hands to apply for speaking on the "stage".
+- Students drawing on the whiteboard.
+- Students testing or switching their local media devices.
+:::
 
 #### Improvements
 
@@ -428,8 +430,9 @@ To ensure the security during real-time audio and video transmission, v1.1.0.1 a
 - `AES_128_GCM`: 128-bit AES encryption, GCM mode.
 - `AES_256_GCM`: 256-bit AES encryption, GCM mode.
 
-> ℹ️ **Info**
-> The teacher and students in a classroom must use the same encryption mode and key. If not, unexpected issues, such as a white or black screen and noise, may occur.
+:::note
+The teacher and students in a classroom must use the same encryption mode and key. If not, unexpected issues, such as a white or black screen and noise, may occur.
+:::
 
 #### Issues fixed
 

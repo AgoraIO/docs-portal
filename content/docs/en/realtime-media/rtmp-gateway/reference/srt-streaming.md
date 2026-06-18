@@ -35,8 +35,9 @@ You can use the Agora unified domain name or bind your own domain name.
 
 2. In the **Stream Key** field, enter the streaming key. To obtain a key, see [Media Gateway quickstart](../build/quickstart-best-practices.md).
 
-> ℹ️ **Info**
-> When using a custom domain name, you must add domain parameters to your stream key using the format `{streaming_code}?h={streaming_domain_name}` because the SRT protocol does not transmit domain name information to the server by default.
+:::note
+When using a custom domain name, you must add domain parameters to your stream key using the format `{streaming_code}?h={streaming_domain_name}` because the SRT protocol does not transmit domain name information to the server by default.
+:::
 
 ## Configure with FFmpeg
 

@@ -17,8 +17,9 @@ This document covers the following topics related to Flexible Classroom plugins:
 * Plugin for invoking classroom capabilities
 * Plugin for tracking synchronization and multilingual capabilities
 
-> ⚠️ **Note**
-> This document applies to Flexible Classroom version `2.7.0` or later.
+:::note
+This document applies to Flexible Classroom version `2.7.0` or later.
+:::
 
 ## Plugin lifecycle
 
@@ -64,10 +65,11 @@ Create a plugin in any of the following ways:
 
 - Method 1: Call `WidgetUIStore.createWidget` to create a Widget instance.
 
-  > ℹ️ **Notice**
-  > - Plugins created this way are only activated on the local client. For example, when you implement the calculator function, if you only need the plugin to appear on the teacher side, you do not need the student side to see it.
-  >
-  >   - To activate the plugin for remote clients, you also need to call `Widget.setActive` or `WidgetStore.setActive`. For example, when you implement a teaching prop, if you need all users in the classroom to see the prop.
+  :::note
+  - Plugins created this way are only activated on the local client. For example, when you implement the calculator function, if you only need the plugin to appear on the teacher side, you do not need the student side to see it.
+
+    - To activate the plugin for remote clients, you also need to call `Widget.setActive` or `WidgetStore.setActive`. For example, when you implement a teaching prop, if you need all users in the classroom to see the prop.
+  :::
 
 - Method 2: Call `WidgetStore.setActive` to create and activate a Widget. A plugin created in this way is activated on both the local client and the remote client, without the need for additional activation operations.
 

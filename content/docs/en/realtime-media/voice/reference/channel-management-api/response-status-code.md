@@ -31,8 +31,9 @@ The following table summarizes all response status codes, their meanings, and re
 | 429    | Too many requests.  | Wait and retry. |
 | 500    | Internal server error.  | Use a backoff strategy for query requests or contact [Agora technical support](mailto:support@agora.io) |
 
-> ℹ️ **Note**
-> If the problem is not solved after taking the recommended action, print out the `X-Request-ID` and `X-Resource-ID` response header values and contact [technical support](mailto:support@agora.io).
+:::note
+If the problem is not solved after taking the recommended action, print out the `X-Request-ID` and `X-Resource-ID` response header values and contact [technical support](mailto:support@agora.io).
+:::
 
 ### Troubleshooting example
 

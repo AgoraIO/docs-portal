@@ -11,7 +11,7 @@ Conceptually, a channel is a conduit that controls the flow of messages. Signali
 
 - **Message channel**
 
-    A message channel uses a communication method similar to the MQTT protocol. It follows the pub/sub (publish-subscriber) model to deliver messages. In message channels, instead of creating a channel in advance, you simply publish messages to a specified channel or subscribe to receive messages from a channel. Due to the flexibility of the model, you can easily implement different topologies such as one-to-one channels, group channels, broadcast channels, and unicast channels. Since the number of subscribers can be larger, this channel type does not guarantee sending delivery receipts from all subscribers after receipt of a message. See [Message channels](../build/channels/message-channel.md) for implementation details.
+    A message channel uses a communication method similar to the MQTT protocol. It follows the pub/sub (publish-subscriber) model to deliver messages. In message channels, instead of creating a channel in advance, you simply publish messages to a specified channel or subscribe to receive messages from a channel. Due to the flexibility of the model, you can easily implement different topologies such as one-to-one channels, group channels, broadcast channels, and unicast channels. Since the number of subscribers can be larger, this channel type does not guarantee sending delivery receipts from all subscribers after receipt of a message. See [Message channels](message-channel.md) for implementation details.
     
 - **User channel** 
 
@@ -19,7 +19,7 @@ Conceptually, a channel is a conduit that controls the flow of messages. Signali
 
 - **Stream channel**
 
-    This is a special type of channel based on the room concept that is similar to the observer pattern. In stream channels, users cannot send messages directly to a channel. You call the `joinTopic` method to register as a publisher of a topic before sending messages. To receive messages, users subscribe to the specified message publisher, identified by the `userId`, in the specified topic. In stream channels, client-side messages support delivery at higher QPS. This channel type is often recommended for use-cases such as Metaverse, parallel driving, and cloud gaming. See [Stream channels](../build/channels/stream-channel.md) for implementation details.
+    This is a special type of channel based on the room concept that is similar to the observer pattern. In stream channels, users cannot send messages directly to a channel. You call the `joinTopic` method to register as a publisher of a topic before sending messages. To receive messages, users subscribe to the specified message publisher, identified by the `userId`, in the specified topic. In stream channels, client-side messages support delivery at higher QPS. This channel type is often recommended for use-cases such as Metaverse, parallel driving, and cloud gaming. See [Stream channels](stream-channel.md) for implementation details.
 
 The channel types are distinguished in the API by `channelType`. Apart from differences in the message sending and receiving mechanism, the features and use of message channels and stream channels for other features and events such as `Presence`, `Storage`, and `Locks`, is the same. User channels do not support these features as they are simple message pass-through channels.
 
@@ -31,7 +31,7 @@ When using stream channels, although a channel is essentially ready-to-use, you 
 
 ## Channel usage restrictions
 
-Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../reference/limitations.md).
+Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../../reference/limitations.md).
 
 ## Channel naming
 
@@ -58,4 +58,4 @@ The use of `.`, `*`, `/`, `\`, `\0` and non-printable ASCII characters in channe
 
 ### Naming convention
 
-Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../reference/channel-naming.md).
+Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../../reference/channel-naming.md).

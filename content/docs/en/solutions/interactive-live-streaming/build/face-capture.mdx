@@ -63,8 +63,9 @@ func onCapture(_ videoFrame: AgoraOutputVideoFrame, sourceType: AgoraVideoSource
 }
 ```
 
-> ⚠️ **Important**
-> Currently, the facial capture function outputs data for only one face at a time. After the callback is triggered, you must allocate memory separately to store the facial data and process it in a separate thread. Otherwise, the raw data callback may lead to frame loss.
+:::warning[Important]
+Currently, the facial capture function outputs data for only one face at a time. After the callback is triggered, you must allocate memory separately to store the facial data and process it in a separate thread. Otherwise, the raw data callback may lead to frame loss.
+:::
 
 ### Use facial information to drive virtual humans
 

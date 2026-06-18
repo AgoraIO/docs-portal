@@ -223,8 +223,9 @@ To enable Notifications:
 
     * **Receiving Server URL Endpoint**: The `HTTPS` public address of your server that receives the notifications. For example, `https://1111-123-456-789-99.ap.ngrok.io/ncsNotify`.
 
-        > ℹ️ **Info**
-        > For enhanced security, Notifications no longer supports `HTTP` addresses.
+        :::note
+        For enhanced security, Notifications no longer supports `HTTP` addresses.
+        :::
 
         * To reduce the delay in notification delivery, best practice is to activate `HTTP` persistent connection (also called `HTTP` keep-alive) on your server with the following settings:
 
@@ -416,8 +417,9 @@ Each primary IP field shows an IP address of Notifications server. When you rece
 * Notifications does not guarantee that notification callbacks arrive at your server in the same order as events occur. Implement a strategy to handle messages arriving out of order.
 * For improved reliability of Notifications, your server may receive more than one notification callback for a single event. Your server must be able to handle repeated messages.
 
-  > ℹ️ **Tip**
-  > To implement a strategy to ensure that you log only one callback event and ignore duplicate events, use a combination of the `noticeId` and `notifyMs` fields in the response body.
+  :::tip
+  To implement a strategy to ensure that you log only one callback event and ignore duplicate events, use a combination of the `noticeId` and `notifyMs` fields in the response body.
+  :::
 
 ### FAQs
 

@@ -1183,8 +1183,9 @@ void InitAgoraEngine(FString APP_ID, FString TOKEN, FString CHANNEL_NAME)
 }
 ```
 
-> ℹ️ **Note**
-> The MediaEngine is not created directly. Instead, it's obtained as an interface from the initialized RtcEngine using the `queryInterface` method with `AGORA_IID_MEDIA_ENGINE`.
+:::note
+The MediaEngine is not created directly. Instead, it's obtained as an interface from the initialized RtcEngine using the `queryInterface` method with `AGORA_IID_MEDIA_ENGINE`.
+:::
 
 ### Custom video capture
 
@@ -1246,8 +1247,9 @@ Take the following steps to implement this workflow:
 
   Capture frames from Unreal Engine's rendering pipeline on the render thread, convert them to raw BGRA pixel format, and send them to the Agora SDK as external video frames.
 
-  > ℹ️ **Timestamp Sync**
-  > To synchronize audio and video streams, use system timestamp for the `timestamp` field in the `ExternalVideoFrame`.
+  :::note[Timestamp Sync]
+  To synchronize audio and video streams, use system timestamp for the `timestamp` field in the `ExternalVideoFrame`.
+  :::
 
   ```cpp
   void OnBackBufferReady_RenderThread(SWindow& window, const FTexture2DRHIRef& BackBuffer)

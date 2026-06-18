@@ -206,8 +206,9 @@ The Standard minutes calculator helps you estimate usage of Standard minutes bas
 
 <div style={{ height: '20px' }}></div>
 
-> ⚠️ **Disclaimer**
-> The Standard minutes estimated by this calculator are indicative and may not match actual usage billing. Accuracy in all cases is not guaranteed, and the calculations should be used as estimates only. Actual billing is based on Agora's official pricing policy and conversion ratios, which may vary. Please refer to Agora's [Pricing](pricing.md) policy for complete and up-to-date information on Standard minutes conversion and billing.
+:::warning[Disclaimer]
+The Standard minutes estimated by this calculator are indicative and may not match actual usage billing. Accuracy in all cases is not guaranteed, and the calculations should be used as estimates only. Actual billing is based on Agora's official pricing policy and conversion ratios, which may vary. Please refer to Agora's [Pricing](pricing.md) policy for complete and up-to-date information on Standard minutes conversion and billing.
+:::
 
 ### FAQs
 

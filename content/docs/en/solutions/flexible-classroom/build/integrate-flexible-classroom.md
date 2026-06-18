@@ -7,8 +7,9 @@ description: "Integrate the Classroom SDK or Proctor SDK into your app with the 
 
 This page introduces how to add Flexible Classroom into your app.
 
-> ⚠️ **Note**
-> The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](https://docs.agora.io/en/flexible-classroom/develop/integrate/integrate-flexible-classroom/integrate-flexible-classroom/integrate-flexible-classroom-fcr).
+:::note
+The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](https://docs.agora.io/en/flexible-classroom/develop/integrate/integrate-flexible-classroom/integrate-flexible-classroom/integrate-flexible-classroom-fcr).
+:::
 
 ## Understand the tech
 
@@ -83,8 +84,9 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
 
 3. To launch a classroom, call [AgoraEduSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) and [AgoraEduSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) in the JavaScript code of the project.
 
-   > 💡 **Tip**
-   > Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
+   :::tip
+   Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
+   :::
 
 #### Through CDN
 
@@ -166,15 +168,17 @@ The sample code requires passing in `rtmToken`. You can refer to [Generate a Sig
 
 For details on the values of other parameters, see [LaunchOption](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk).
 
-> ℹ️ **Note**
-> Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
+:::note
+Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
+:::
 
 ### Customize the classroom UI
 
 If you want to customize the classroom UI based on the default UI of Flexible Classroom, you need to integrate Flexible Classroom by downloading the source code on GitHub. Refer to the following steps:
 
-> ℹ️ **Info**
-> Make sure you have set up a development environment. See [Demo quickstart](../index.md).
+:::note
+Make sure you have set up a development environment. See [Demo quickstart](../index.md).
+:::
 
 1. Clone the Flexible-Classroom-Desktop repository:
 
@@ -224,8 +228,9 @@ If you want to customize the classroom UI based on the default UI of Flexible Cl
     yarn pack:classroom:plugin
     ```
 
-> ℹ️ **Info**
-> Find the output in `packages/agora-classroom-sdk/lib/edu_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/edu_widget.bundle.js` respectively.
+:::note
+Find the output in `packages/agora-classroom-sdk/lib/edu_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/edu_widget.bundle.js` respectively.
+:::
 
 ## Integrated proctoring scenario
 
@@ -252,8 +257,9 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
 
 3. To launch a classroom, call [AgoraProctorSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) and [AgoraProctorSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) in the JavaScript code of the project.
 
-   > 💡 **Tip**
-   > Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
+   :::tip
+   Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
+   :::
 
 #### Through CDN
 
@@ -319,8 +325,9 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
 </html>
 ```
 
-> ℹ️ **Note**
-> Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
+:::note
+Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
+:::
 
 When being proctored online, students need to use the primary and secondary devices to access the exam. For example, the main device is a Web client used to collect students' videos and share their screens when they answer questions; the secondary device is an Android or iOS device used to capture students' bodies when they answer questions. The proctor observes students answering questions through videos from several points to prevent cheating. You need to fill in the `userUuid` on different devices. For example, for student A, pass it in the `AgoraProctorSDK.launch` parameter on the Web side, and then on the Android or iOS side. Flexible Classroom will identify them as student A's primary and secondary devices, merge their video streams, and render the merged video images in the teacher's proctoring video window.
 
@@ -332,8 +339,9 @@ For details on the values of other parameters, see [LaunchOption](https://docs.a
 
 If you want to customize the classroom UI based on the default UI of Flexible Classroom, you need to integrate Flexible Classroom by downloading the source code on GitHub. Refer to the following steps:
 
-> ℹ️ **Info**
-> Make sure you have set up a development environment. See [Demo quickstart](../index.md).
+:::note
+Make sure you have set up a development environment. See [Demo quickstart](../index.md).
+:::
 
 1. Clone the Flexible-Classroom-Desktop repository:
 
@@ -383,8 +391,9 @@ If you want to customize the classroom UI based on the default UI of Flexible Cl
     yarn pack:proctor:plugin
     ```
 
-> ℹ️ **Info**
-> Find the output in `packages/agora-proctor-sdk/lib/proctor_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/proctor_widget.bundle.js` respectively.
+:::note
+Find the output in `packages/agora-proctor-sdk/lib/proctor_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/proctor_widget.bundle.js` respectively.
+:::
 
 ### Set exam link
 

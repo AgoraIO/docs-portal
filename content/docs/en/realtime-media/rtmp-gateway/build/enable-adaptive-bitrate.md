@@ -21,8 +21,9 @@ Following are the key ABR concepts:
 - **Layer ID**: A unique identifier for each layer stream, ranging from 1 to 7.
 - **Low stream**: A lower-quality stream option that was available before full ABR support. It is now implemented as Layer ID 7 to maintain compatibility with existing applications that expect this stream type.
 
-> ℹ️ **Info**
-> ABR layers are independent. Enabling ABR does not automatically create a low stream.
+:::note
+ABR layers are independent. Enabling ABR does not automatically create a low stream.
+:::
 
 ## ABR configuration
 

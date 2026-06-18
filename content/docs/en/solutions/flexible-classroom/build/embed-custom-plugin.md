@@ -9,8 +9,9 @@ In online classroom applications, some customization is often necessary to meet 
 
 Widgets are stand-alone plugins that contain interface and functionality. Developers can implement a widget based on customization of the base class, and then register the widget in the Agora Classroom SDK. Agora Classroom SDK supports registering multiple widgets. Widgets can communicate with other widgets, as well as with other plugins in the UI layer.
 
-> ⚠️ **Note**
-> This document applies to Flexible Classroom version `2.8.0` or later.
+:::note
+This document applies to Flexible Classroom version `2.8.0` or later.
+:::
 
 ## Understand the tech
 

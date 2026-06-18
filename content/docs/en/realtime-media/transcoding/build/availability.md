@@ -18,15 +18,17 @@ For scenarios with a large number of viewers or where ultra-high availability is
 * Start multiple transcoding tasks using different `uid`s in the output channel.
 * Periodically [check the transcoding task status](/en/api-reference/cloud-transcoding/restful) and use a backup `uid` to immediately initiate a new task if a failure is detected. This ensures uninterrupted delivery of critical streams.
 
-> ⚠️ **Caution**
-> The RESTful APIs support only HTTP 1.1 and HTTP 2.0. When using HTTPS, ensure that the connection is encrypted using TLS 1.0, 1.1, or 1.2. Other protocol versions may cause connection failures.
+:::warning
+The RESTful APIs support only HTTP 1.1 and HTTP 2.0. When using HTTPS, ensure that the connection is encrypted using TLS 1.0, 1.1, or 1.2. Other protocol versions may cause connection failures.
+:::
 
 ### Multi-task redundancy
 
 For a higher level of reliability than failover alone, implement a multi-task redundancy strategy. 
 
-> ℹ️ **Info**
-> Each cloud transcoding task is billed independently. For billing information, contact [technical support](mailto:support@agora.io).
+:::note
+Each cloud transcoding task is billed independently. For billing information, contact [technical support](mailto:support@agora.io).
+:::
 
 To implement multi-task redundancy:
  

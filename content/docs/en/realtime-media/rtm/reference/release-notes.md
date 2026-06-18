@@ -174,7 +174,7 @@ This release optimizes the implementation of the following features, which invol
 
 1. Private deployment capability
 
-    This release adds the `privateConfig` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set private deployment. See [Private deployment configuration](../get-started/client-configuration.md).
+    This release adds the `privateConfig` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set private deployment. See [Private deployment configuration](../build/client-configuration.md).
 
 1. Heartbeat interval configuration
 
@@ -182,7 +182,7 @@ This release optimizes the implementation of the following features, which invol
 
 1. Dual environment configuration
 
-    This release adds the `protocolType` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set the network transport protocol. See [Connection protocol](../get-started/client-configuration.md).
+    This release adds the `protocolType` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set the network transport protocol. See [Connection protocol](../build/client-configuration.md).
 
 1. User channel
 
