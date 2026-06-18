@@ -34,11 +34,11 @@ Out of scope unless explicitly added in a later task:
 Every migrated product must fit the target docs IA used by the current portal rather than recreating the legacy site structure verbatim.
 
 The default product sidebar contract is:
-- `Quickstart`
+- `Overview`
 - `Build`
 - `Reference`
 
-The product root `index.md` or `index.mdx` is the `Quickstart` landing page.
+The product root `index.md` or `index.mdx` is the `Product overview` landing page. The product `Quickstart` is a product-root sibling page beside the landing page, not the landing page itself.
 
 The migration must preserve this target sidebar contract while reclassifying legacy content into:
 - product-root sibling pages
@@ -66,12 +66,21 @@ This classification controls the target route and whether the content is migrate
 
 ## 5. Global Mapping Rules
 
-### 5.1 Product-root sibling pages
+### 5.1 Product overview landing page
 
-Use product-root sibling pages for conceptual content that should remain directly visible beside the `Quickstart` landing page.
+Use the product root `index.md` or `index.mdx` for the product overview landing page.
+
+Typical legacy source:
+- product overview
+
+The product overview page becomes the landing page for the product. When the legacy source has a dedicated product-overview page, that page maps to the product-root `index.md` or `index.mdx`.
+
+### 5.1.1 Product-root sibling pages
+
+Use product-root sibling pages for conceptual and onboarding content that should remain directly visible beside the `Product overview` landing page.
 
 Typical legacy sources:
-- product overview
+- quickstart
 - core concepts
 - beginner guide
 - conceptual introductions
@@ -80,11 +89,11 @@ These pages must live beside `index.md` or `index.mdx` under the product root in
 
 ### 5.2 Quickstart
 
-Use `index.md` or `index.mdx` for the primary onboarding or first-run path for the product.
+Use a product-root sibling page such as `quickstart.md` or `quickstart.mdx` for the primary onboarding or first-run path for the product.
 
 Allowed behaviors:
-- merge one or more legacy quickstart pages into the landing page when they form one coherent entry path
-- keep additional quickstart pages as product-root sibling pages when they deserve standalone routes
+- merge one or more legacy quickstart pages into a single quickstart sibling page when they form one coherent entry path
+- keep additional quickstart pages as separate product-root sibling pages when they deserve standalone routes
 
 Disallowed behaviors:
 - using the landing page as a dumping ground for all conceptual or onboarding content
@@ -966,14 +975,14 @@ Pilot in-scope source directories:
 - non-API support pages under `/Users/yejiayi/Documents/Doc-Source-Private/signaling/reference`
 
 Pilot target sidebar contract:
-- `Quickstart`
+- `Overview`
 - `Build`
 - `Reference`
 
 Pilot mapping rules:
-- `content/docs/en/realtime-media/rtm/index.md` or `index.mdx` is the `Quickstart` landing page
-- product-introduction and concept pages from `overview/*` remain as product-root sibling pages beside the landing page
-- `get-started/*` pages may be merged into the landing page or kept as product-root sibling pages when standalone routes are justified
+- `content/docs/en/realtime-media/rtm/index.md` or `index.mdx` is the `Product overview` landing page
+- product-introduction and concept pages from `overview/*` map to the product-root `index.md` or `index.mdx` landing page
+- `get-started/*` pages map to a `quickstart` product-root sibling page beside the landing page, or to additional product-root sibling pages when standalone routes are justified
 - `core-functionality/*` pages migrate into `build/**`
 - non-API support pages from `reference/*` migrate into `reference/**`
 - existing placeholders may be replaced or removed only when their real target pages are created in the same batch
