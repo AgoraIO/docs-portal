@@ -259,7 +259,7 @@ To enable Notifications:
 
 **Video walkthrough**
 
-<video src={videoURL} controls style={{ width: '100%', height: 'auto' }} loop>
+<video src="/images/video-sdk/enable-notifications.mp4" controls style={{ width: '100%', height: 'auto' }} loop>
     Your browser does not support the `video` element.
 </video>
 

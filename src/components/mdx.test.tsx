@@ -38,6 +38,10 @@ type AnchorComponent = ComponentType<{
   children: ReactNode;
   href: string;
 }>;
+type LegacyLinkComponent = ComponentType<{
+  children: ReactNode;
+  to: string;
+}>;
 type CardComponent = ComponentType<{
   description?: ReactNode;
   href?: string;
@@ -141,6 +145,20 @@ describe('common MDX registry', () => {
     expect(screen.getByRole('link', { name: 'External' })).toHaveAttribute(
       'href',
       'https://example.com/page.md',
+    );
+  });
+
+  it('supports legacy MDX Link components that pass destinations via to', () => {
+    const components = getMDXComponents(undefined, {
+      contentPath: 'en/realtime-media/broadcast-streaming/build/index.mdx',
+    });
+    const Link = components.Link as LegacyLinkComponent;
+
+    render(<Link to="../index.mdx">SDK quickstart</Link>);
+
+    expect(screen.getByRole('link', { name: 'SDK quickstart' })).toHaveAttribute(
+      'href',
+      '/en/realtime-media/broadcast-streaming',
     );
   });
 
