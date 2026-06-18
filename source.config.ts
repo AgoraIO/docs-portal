@@ -8,6 +8,9 @@ import { z } from 'zod';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
 import { remarkPlatformContent } from './src/lib/platforms/remark-platform-content';
 
+const useDynamicDocsRuntime =
+  process.env.FUMADOCS_STATIC_PAYLOAD_DYNAMIC === 'true';
+
 const rawDocSchema = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
@@ -20,6 +23,8 @@ const rawDocSchema = z.object({
 export const docs = defineDocs({
   dir: 'content/docs',
   docs: {
+    async: true,
+    dynamic: useDynamicDocsRuntime,
     schema: rawDocSchema,
     mdxOptions: applyMdxPreset({
       rehypeCodeOptions: {

@@ -1,8 +1,13 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { getDocsPagePayload } from '@/lib/docs-page';
+import type { DocsPagePayload } from '@/lib/docs-page.server';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
+import {
+  readStaticDocsPayload,
+  shouldUseStaticDocsPayload,
+} from '@/lib/docs-static-manifest';
 
 export const Route = createFileRoute('/$locale/$tab/$')({
   loader: async ({ params }) => {
@@ -12,13 +17,19 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
     const slugSegments = (params._splat ?? '').split('/').filter(Boolean);
 
-    const payload = await getDocsPagePayload({
-      data: {
-        locale: params.locale,
-        slugSegments,
-        tab: params.tab,
-      },
-    });
+    const payload = shouldUseStaticDocsPayload()
+      ? await readStaticDocsPayload<DocsPagePayload | { redirectUrl: string }>({
+          locale: params.locale,
+          slugSegments,
+          tab: params.tab,
+        })
+      : await getDocsPagePayload({
+          data: {
+            locale: params.locale,
+            slugSegments,
+            tab: params.tab,
+          },
+        });
 
     if (!payload) {
       throw notFound();

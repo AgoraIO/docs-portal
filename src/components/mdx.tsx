@@ -322,6 +322,21 @@ function createDocsAnchor(contentPath?: string) {
   return DocsAnchor;
 }
 
+function createLegacyDocsLink(contentPath?: string) {
+  const DocsAnchor = createDocsAnchor(contentPath);
+
+  function LegacyDocsLink({
+    to,
+    ...props
+  }: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {
+    to?: string;
+  }) {
+    return <DocsAnchor href={to} {...props} />;
+  }
+
+  return LegacyDocsLink;
+}
+
 function createDocsCard(contentPath?: string) {
   function DocsCard({ className, href, ...props }: DocsCardProps) {
     const normalizedHref =
@@ -348,6 +363,7 @@ export function getMDXComponents(
   return {
     ...defaultMdxComponents,
     a: createDocsAnchor(context?.contentPath),
+    Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),
     CommandBlock,
     Tabs,

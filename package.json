@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "bun run openapi:sync && vite build",
+    "build": "bun run openapi:sync && TSS_SPA_STATIC_EXPERIMENT=true VITE_TSS_SPA_STATIC_EXPERIMENT=true bun run docs:static-payload && TSS_SPA_STATIC_EXPERIMENT=true VITE_TSS_SPA_STATIC_EXPERIMENT=true vite build",
+    "docs:static-payload": "node scripts/generate-static-docs-payload.mjs",
     "start": "vite preview",
     "preview": "vite preview",
     "test": "vitest run",
