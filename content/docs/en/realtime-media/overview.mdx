@@ -1,52 +1,136 @@
 ---
 title: Overview
-description: See how Realtime & Media is grouped, what each layer covers, and where different technical topics live.
+description: Jump to any Realtime & Media product, grouped by what each capability layer does.
 ---
 
-Realtime & Media is the capability domain for teams building products where something needs to happen live, but who still need a clearer map of the technical building blocks involved.
+## Build live interaction
 
-Use this tab when your main question is not "what product am I building?" but "what realtime or media capability do I need to implement?" It is organized as a map of Agora's realtime stack, so you can see how the docs are grouped and how the different parts of the stack relate to one another.
+<SolutionCardGrid size="small">
+  <SolutionCard
+    title="Voice Calling"
+    href="/en/realtime-media/voice"
+    icon="voice-calling"
+    tone="blue"
+    size="small"
+    description="Voice calls, meetings, and co-hosting with media quality control."
+  />
+  <SolutionCard
+    title="Video Calling"
+    href="/en/realtime-media/video"
+    icon="video-calling"
+    tone="blue"
+    size="small"
+    description="Video calls, interactive live rooms, and broadcast-quality sessions."
+  />
+  <SolutionCard
+    title="Signaling"
+    href="/en/realtime-media/rtm"
+    icon="signaling"
+    tone="blue"
+    size="small"
+    description="Channel messaging, presence, and realtime state synchronization."
+  />
+  <SolutionCard
+    title="Chat"
+    href="/en/realtime-media/im"
+    icon="chat"
+    tone="blue"
+    size="small"
+    description="Persistent messaging beyond lightweight room coordination."
+  />
+  <SolutionCard
+    title="Whiteboard"
+    href="/en/realtime-media/whiteboard"
+    icon="whiteboard"
+    tone="blue"
+    size="small"
+    description="Shared visual collaboration inside live sessions."
+  />
+</SolutionCardGrid>
 
-The content in this tab is grouped by technical layer rather than by product scenario. As you move through it, you will see capabilities for live interaction, session processing, media interoperability, large-scale delivery, and device or backend participation. Use this overview to understand what each layer covers, how the sections relate, and where different kinds of technical topics live within the tab.
+## Process session content
 
-## Where different topics live
+<SolutionCardGrid size="small">
+  <SolutionCard
+    title="Transcription & Translation"
+    href="/en/realtime-media/speech-to-text"
+    icon="transcription"
+    tone="green"
+    size="small"
+    description="Captions, speech understanding, and multilingual live experiences."
+  />
+  <SolutionCard
+    title="Cloud Recording"
+    href="/en/realtime-media/cloud-recording"
+    icon="cloud-recording"
+    tone="green"
+    size="small"
+    description="Archive, replay, compliance, and post-session review workflows."
+  />
+  <SolutionCard
+    title="On-Premise Recording"
+    href="/en/realtime-media/on-premise-recording"
+    icon="on-premise-recording"
+    tone="green"
+    size="small"
+    description="Self-hosted recording for control and compliance needs."
+  />
+  <SolutionCard
+    title="Transcoding"
+    href="/en/realtime-media/transcoding"
+    icon="transcoding"
+    tone="green"
+    size="small"
+    description="Mixing, layout composition, and output transformation."
+  />
+</SolutionCardGrid>
 
-The groups below trace the main technical layers in this tab. Read them as a content map first, then go deeper into the related docs for architecture, APIs, and implementation details.
+## Connect external media
 
-### Build live interaction
+<SolutionCardGrid size="small">
+  <SolutionCard
+    title="Media Push"
+    href="/en/realtime-media/media-push"
+    icon="media-push"
+    tone="purple"
+    size="small"
+    description="Send RTC channel media to CDN pipelines or downstream systems."
+  />
+  <SolutionCard
+    title="Media Pull"
+    href="/en/realtime-media/media-pull"
+    icon="media-pull"
+    tone="purple"
+    size="small"
+    description="Bring online media streams into an interactive realtime session."
+  />
+  <SolutionCard
+    title="RTMP Gateway"
+    href="/en/realtime-media/rtmp-gateway"
+    icon="rtmp-gateway"
+    tone="purple"
+    size="small"
+    description="Connect RTMP-based devices and systems to Agora."
+  />
+  <SolutionCard
+    title="RTC Server SDK"
+    href="/en/realtime-media/rtc-server-sdk"
+    icon="server-sdk"
+    tone="purple"
+    size="small"
+    description="Backend participation in media send, receive, and control flows."
+  />
+</SolutionCardGrid>
 
-This group covers docs for sessions where users, participants, or services exchange media or state in real time.
+## Deliver to audiences
 
-- [Voice & Video](/en/realtime-media/rtc): calls, meetings, co-hosting, interactive live rooms, and media quality control
-- [Signaling](/en/realtime-media/rtm): channel messaging, presence, state sync, and realtime coordination
-- [Chat](/en/realtime-media/im): persistent messaging systems beyond lightweight room coordination
-- [Whiteboard](/en/realtime-media/whiteboard): shared visual collaboration inside live sessions
-
-### Process session content
-
-This group covers docs for turning session media into text, archives, composites, or downstream assets during or after the session.
-
-- [Transcription & Translation](/en/realtime-media/speech-to-text): captions, speech understanding, and multilingual live experiences
-- [Cloud Recording](/en/realtime-media/cloud-recording): archive, replay, compliance, QA, and post-session review workflows
-- [Transcoding](/en/realtime-media/transcoding): mixing, layout composition, and output transformation
-
-### Connect external media systems
-
-This group covers docs for connecting Agora sessions to external streaming infrastructure.
-
-- [Media Push](/en/realtime-media/media-push): send RTC channel media to CDN pipelines or downstream media systems
-- [Media Pull](/en/realtime-media/media-pull): bring online media streams into an interactive realtime session
-- [RTMP Gateway](/en/realtime-media/rtmp-gateway): connect RTMP-based devices and systems to Agora
-
-### Deliver to larger audiences
-
-This group covers docs for architectures where interactive participation and large-scale playback are handled separately.
-
-- [Fusion CDN](/en/realtime-media/fusion-cdn): multi-CDN distribution for live playback at audience scale
-
-### Run on devices and backend services
-
-This group covers docs for systems that include embedded devices, edge endpoints, operator consoles, or server-side workers.
-
-- [IoT & Edge](/en/realtime-media/rtsa): device and edge connectivity for cameras, terminals, and embedded endpoints
-- [RTC Server SDK](/en/realtime-media/rtc-server-sdk): backend participation in media send, receive, subscribe, and control flows
+<SolutionCardGrid size="small">
+  <SolutionCard
+    title="Broadcast Streaming"
+    href="/en/realtime-media/broadcast-streaming"
+    icon="broadcast"
+    tone="sand"
+    size="small"
+    description="Separate interactive participation from large-scale playback."
+  />
+</SolutionCardGrid>

@@ -1,15 +1,32 @@
 import {
   AppWindowIcon,
+  ArrowDownToLineIcon,
   ArrowRightIcon,
+  ArrowUpFromLineIcon,
   AudioLinesIcon,
+  BarChart3Icon,
   BlocksIcon,
   BotIcon,
+  CaptionsIcon,
+  CloudIcon,
   Code2Icon,
+  CpuIcon,
   CuboidIcon,
+  FilmIcon,
+  GraduationCapIcon,
+  HardDriveIcon,
+  MessagesSquareIcon,
   MonitorSmartphoneIcon,
+  NetworkIcon,
+  PhoneIcon,
+  PresentationIcon,
+  RadioIcon,
+  RadioTowerIcon,
   ServerCogIcon,
   SmartphoneChargingIcon,
   TerminalSquareIcon,
+  TvIcon,
+  VideoIcon,
   ZapIcon,
 } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
@@ -388,11 +405,29 @@ function SolutionCardGrid({
 
 type SolutionCardIconKind =
   | 'ai'
+  | 'analytics'
+  | 'broadcast'
+  | 'chat'
   | 'classroom'
+  | 'cloud-recording'
   | 'device'
+  | 'iot'
+  | 'live-streaming'
+  | 'media-pull'
+  | 'media-push'
   | 'meeting'
   | 'messaging'
-  | 'rtc';
+  | 'on-premise-recording'
+  | 'rtc'
+  | 'rtmp-gateway'
+  | 'server-sdk'
+  | 'signaling'
+  | 'tools'
+  | 'transcoding'
+  | 'transcription'
+  | 'video-calling'
+  | 'voice-calling'
+  | 'whiteboard';
 
 type SolutionCardTone = 'blue' | 'green' | 'pink' | 'purple' | 'sand';
 
@@ -704,48 +739,41 @@ function normalizeRecipeFilterValue(value: string) {
   return value.trim().toLowerCase();
 }
 
-function getSolutionToneClasses(tone: SolutionCardTone) {
-  if (tone === 'green') {
-    return 'bg-emerald-500/10 text-emerald-700';
-  }
-
-  if (tone === 'pink') {
-    return 'bg-rose-500/10 text-rose-700';
-  }
-
-  if (tone === 'purple') {
-    return 'bg-violet-500/10 text-violet-700';
-  }
-
-  if (tone === 'sand') {
-    return 'bg-amber-500/10 text-amber-700';
-  }
-
-  return 'bg-blue-500/10 text-blue-700';
+function getSolutionToneClasses(_tone: SolutionCardTone) {
+  // Icon chips use a single theme-driven neutral surface so cards stay visually
+  // consistent across the overview pages. Only the icon glyph varies by product.
+  return 'bg-muted text-foreground';
 }
 
 function SolutionCardIcon({ kind }: { kind: SolutionCardIconKind }) {
-  if (kind === 'ai') {
-    return <BotIcon className="size-5" />;
-  }
+  const iconMap: Record<SolutionCardIconKind, ReactNode> = {
+    ai: <BotIcon className="size-5" />,
+    analytics: <BarChart3Icon className="size-5" />,
+    broadcast: <TvIcon className="size-5" />,
+    chat: <MessagesSquareIcon className="size-5" />,
+    classroom: <GraduationCapIcon className="size-5" />,
+    'cloud-recording': <CloudIcon className="size-5" />,
+    device: <CuboidIcon className="size-5" />,
+    iot: <CpuIcon className="size-5" />,
+    'live-streaming': <RadioIcon className="size-5" />,
+    'media-pull': <ArrowDownToLineIcon className="size-5" />,
+    'media-push': <ArrowUpFromLineIcon className="size-5" />,
+    meeting: <AppWindowIcon className="size-5" />,
+    messaging: <BlocksIcon className="size-5" />,
+    'on-premise-recording': <HardDriveIcon className="size-5" />,
+    rtc: <AudioLinesIcon className="size-5" />,
+    'rtmp-gateway': <RadioTowerIcon className="size-5" />,
+    'server-sdk': <ServerCogIcon className="size-5" />,
+    signaling: <NetworkIcon className="size-5" />,
+    tools: <TerminalSquareIcon className="size-5" />,
+    transcoding: <FilmIcon className="size-5" />,
+    transcription: <CaptionsIcon className="size-5" />,
+    'video-calling': <VideoIcon className="size-5" />,
+    'voice-calling': <PhoneIcon className="size-5" />,
+    whiteboard: <PresentationIcon className="size-5" />,
+  };
 
-  if (kind === 'messaging') {
-    return <BlocksIcon className="size-5" />;
-  }
-
-  if (kind === 'meeting') {
-    return <AppWindowIcon className="size-5" />;
-  }
-
-  if (kind === 'classroom') {
-    return <MonitorSmartphoneIcon className="size-5" />;
-  }
-
-  if (kind === 'device') {
-    return <CuboidIcon className="size-5" />;
-  }
-
-  return <AudioLinesIcon className="size-5" />;
+  return iconMap[kind] ?? <AudioLinesIcon className="size-5" />;
 }
 
 type OverviewSpotlightSize = 'large' | 'small';
