@@ -44,7 +44,6 @@ jobs:
       (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'preview')
     runs-on: ubuntu-latest
     env:
-      NITRO_PRESET: vercel
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
@@ -139,13 +138,15 @@ jobs:
         if: steps.preview-context.outputs.should_deploy == 'true'
         run: |
           test -f .vercel/output/config.json
-          test -f .vercel/output/nitro.json
+          test -d .vercel/output/static
+          test -f .vercel/output/static/index.html
+          test ! -d .vercel/output/functions
 
       - name: Deploy prebuilt output
         if: steps.preview-context.outputs.should_deploy == 'true'
         id: vercel-deploy
         run: |
-          url="$(vercel deploy --prebuilt --yes --token="${{ secrets.VERCEL_TOKEN }}")"
+          url="$(vercel deploy --prebuilt --archive=tgz --yes --token="${{ secrets.VERCEL_TOKEN }}")"
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Write workflow summary
@@ -213,7 +214,6 @@ jobs:
       (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'production')
     runs-on: ubuntu-latest
     env:
-      NITRO_PRESET: vercel
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
@@ -245,12 +245,14 @@ jobs:
       - name: Verify Vercel output
         run: |
           test -f .vercel/output/config.json
-          test -f .vercel/output/nitro.json
+          test -d .vercel/output/static
+          test -f .vercel/output/static/index.html
+          test ! -d .vercel/output/functions
 
       - name: Deploy prebuilt output
         id: vercel-deploy
         run: |
-          url="$(vercel deploy --prebuilt --prod --yes --token="${{ secrets.VERCEL_TOKEN }}")"
+          url="$(vercel deploy --prebuilt --archive=tgz --prod --yes --token="${{ secrets.VERCEL_TOKEN }}")"
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Write workflow summary
