@@ -1,111 +1,79 @@
 ---
 title: Agora Documentation
-description: Understand the Agora docs path across Voice Agent, Realtime & Media, Solutions, and SDKs.
 ---
-Welcome to the Agora documentation hub. This page helps you quickly find the right documentation path for your project. Explore `Voice Agent` if you’re building real-time AI conversations, `Realtime & Media` if you need live communication or media infrastructure, and `Solutions` if you’re looking for common product patterns such as streaming, meetings, classrooms, or connected devices. 
 
-## Voice Agent
+## Build a voice agent
 
-Build speech-first AI experiences that listen, reason, and respond in real time. Voice Agent gives you the transport, session lifecycle, model integration, and runtime foundation needed to ship assistants in apps or on dedicated devices without assembling the stack yourself.
-
-<div className="not-prose my-6 mx-auto w-[80%] overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
-  <img
-    alt="Voice Agent hero visual"
-    className="block w-full"
-    loading="lazy"
-    src="/images/conversational-ai/voice-agent-hero.png"
-  />
-</div>
-
-<Cards>
-  <Card
-    description="Build and run a working voice agent in under 15 minutes."
-    href="/en/ai/choose-your-path/quickstart-coding"
+<SolutionCardGrid>
+  <SolutionCard
     title="Quickstart"
+    href="/en/ai/choose-your-path/quickstart-coding"
+    icon="ai"
+    tone="purple"
+    description="Build and run a working voice agent in under 15 minutes."
   />
-  <Card
-    description="Understand architecture, model choices, runtime structure, and where each Voice Agent path begins."
-    href="/en/ai"
+  <SolutionCard
     title="Voice Agent overview"
+    href="/en/ai"
+    icon="rtc"
+    tone="blue"
+    description="Architecture, model choices, and where each path begins."
   />
-</Cards>
+</SolutionCardGrid>
 
-## Realtime & Media
+## Build with our real-time SDKs
 
-Build any product that needs live media — voice, video, messaging, recording, or large-scale streaming, without stitching together multiple vendors. Start from the capability layer that matches the part of your architecture you need to design next.
-
-<OverviewImageCardGrid columns="two">
-  <OverviewImageCard
-    compact
-    description="Define how users exchange media, coordinate actions, and collaborate inside the same live session."
-    imageAlt="Realtime video calling interface"
-    imageSrc="/images/video-calling/video-calling-overview.png"
-    title="Build live interaction"
+<SolutionCardGrid>
+  <SolutionCard
+    title="Voice Calling"
+    href="/en/realtime-media/voice"
+    icon="voice-calling"
+    tone="blue"
+    description="High-quality voice calls, meetings, and co-hosting at any scale."
   />
-  <OverviewImageCard
-    compact
-    description="Turn session media into captions, searchable text, archives, mixed outputs, and downstream assets."
-    imageAlt="Cloud recording workflow overview"
-    imageSrc="/images/cloud-recording/cloud-recording-overview.png"
-    title="Process session content"
+  <SolutionCard
+    title="Video Calling"
+    href="/en/realtime-media/video"
+    icon="video-calling"
+    tone="purple"
+    description="Video calls, interactive live rooms, and broadcast-quality sessions."
   />
-  <OverviewImageCard
-    compact
-    description="Bridge Agora sessions with external streaming pipelines, broadcast systems, and RTMP-based infrastructure."
-    imageAlt="Media pull workflow overview"
-    imageSrc="/images/media-pull/media-pull-overview.png"
-    title="Connect external media"
+  <SolutionCard
+    title="Signaling"
+    href="/en/realtime-media/rtm"
+    icon="signaling"
+    tone="green"
+    description="Channel messaging, presence, and realtime state synchronization."
   />
-  <OverviewImageCard
-    compact
-    description="Separate interactive participation from large-scale playback when you need to reach broader audiences."
-    imageAlt="Broadcast streaming overview"
-    imageSrc="/images/broadcast-streaming/broadcast-streaming-overview.png"
-    title="Deliver to larger audiences"
-  />
-</OverviewImageCardGrid>
+</SolutionCardGrid>
 
 <OverviewLinkBanner
-  description="See the full capability map for live interaction, media processing, external media connectivity, audience delivery, and backend or device participation."
+  title="Explore all Realtime & Media"
   href="/en/realtime-media/overview"
-  title="Explore Realtime & Media"
+  description="See every real-time capability — recording, transcription, transcoding, external media, and audience delivery."
 />
 
+## Build with AI tools
+
+<SolutionCardGrid>
+  <SolutionCard
+    title="Start with AI tools"
+    href="/en/introduction/start-with-ai"
+    icon="tools"
+    tone="sand"
+    description="Let your coding agent build with Agora. Connect the CLI, MCP server, and Skills to your AI workflow."
+  />
+</SolutionCardGrid>
 
 ## Solutions
 
-Launch common product patterns. Start from the experience you want to ship, then move into the solution family that matches your users, workflow, and delivery model.
-
-<OverviewImageCardGrid>
-  <OverviewImageCard
-    description="Use this group for products built around shared realtime participation, from host-audience rooms to meetings and lightweight calling."
-    imageAlt="Interactive live streaming overview"
-    imageSrc="/images/interactive-live-streaming/interactive-live-streaming-overview.png"
-    title="Live interaction products"
-  />
-  <OverviewImageCard
-    description="Use this group for teaching-first experiences with classroom orchestration, teacher-student roles, and lesson-specific interaction patterns."
-    imageAlt="Flexible classroom overview"
-    imageSrc="/images/flexible-classroom/flexible-classroom-overview.png"
-    title="Online classrooms"
-  />
-  <OverviewImageCard
-    description="Use this group for device-attached workflows such as remote control, smart cameras, doorbells, and wearable calling."
-    imageAlt="IoT and device connectivity overview"
-    imageSrc="/images/iot/iot-overview.png"
-    title="Connected devices"
-  />
-</OverviewImageCardGrid>
-
 <OverviewLinkBanner
-  description="Browse the full Solutions map for business-pattern guides, grouped solution paths, and where each implementation track lives."
+  title="Browse solutions by scenario"
   href="/en/solutions"
-  title="Explore all Solutions"
+  description="Ready-made product patterns for live streaming, meetings, online classrooms, and connected devices."
 />
 
-## SDKs and tools
-
-Browse SDKs, APIs, and tools.
+## SDKs and APIs
 
 <OverviewToolkits>
   <ToolkitGroup title="Agent frameworks">
@@ -138,5 +106,14 @@ Browse SDKs, APIs, and tools.
     <ToolkitItem href="/en/api-reference/conversational-ai/server-sdk/python" icon="python" label="Python" />
     <ToolkitItem href="/en/api-reference/conversational-ai/server-sdk/typescript" icon="typescript" label="TypeScript" />
     <ToolkitItem href="/en/realtime-media/rtc-server-sdk" icon="server" label="Media processing" />
+  </ToolkitGroup>
+</OverviewToolkits>
+
+## Resources
+
+<OverviewToolkits>
+  <ToolkitGroup title="Get help">
+    <ToolkitItem href="/en/introduction/support" icon="rest" label="Support" />
+    <ToolkitItem href="/en/introduction/community-resources" icon="skills" label="Community resources" />
   </ToolkitGroup>
 </OverviewToolkits>

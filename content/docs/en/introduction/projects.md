@@ -45,6 +45,25 @@ On the project details page, confirm that you can:
 - access the App Certificate when your backend needs token generation
 - verify that the project is the one your current environment should use
 
+## Service access
+
+To access most Agora products you need:
+
+- An App ID.
+- An App Certificate if your backend generates tokens.
+- A project with the required service enabled.
+
+For production, use token-based authentication instead of App ID only.
+
+## What to verify before launch
+
+Before moving beyond a prototype, confirm:
+
+- the required service is enabled for the correct project
+- the authentication mode matches your intended production design
+- the billing unit makes sense for your usage pattern
+- the right people on your team can access billing and financial records
+
 ## Manage App Certificates
 
 Agora provides two certificate roles:
@@ -69,5 +88,5 @@ Deleting a certificate invalidates all tokens generated with that certificate.
 ## Where to go next
 
 - Open [Console setup](/en/introduction/console-setup) to understand the first-time console workflow around credentials and service activation.
-- Read [Pricing & Access](/en/introduction/pricing-access) to check service enablement and billing implications before launch.
+- Read [Billing](/en/introduction/billing) to understand free allowances, settlement, and package options before launch.
 - Read [Security and privacy](/en/introduction/security-privacy) before production rollout.
