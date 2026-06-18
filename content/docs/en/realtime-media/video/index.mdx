@@ -1170,8 +1170,9 @@ When the user launches the app, it joins the channel and starts Voice Calling. W
   AgoraRtcEngineKit.destroy()
   ```
 
-> ⚠️ **caution**
-> After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine. See [Initialize the engine](#initialize-the-engine) for details.
+:::warning
+After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine. See [Initialize the engine](#initialize-the-engine) for details.
+:::
 
 ### Complete sample code
 
@@ -1706,8 +1707,9 @@ When the user launches the app, it joins the channel and starts Voice Calling. W
   AgoraRtcEngineKit.destroy()
   ```
 
-> ⚠️ **caution**
-> After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine. See [Initialize the engine](#initialize-the-engine) for details.
+:::warning
+After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine. See [Initialize the engine](#initialize-the-engine) for details.
+:::
 
 ### Complete sample code
 
@@ -3056,8 +3058,9 @@ Add the Voice SDK to your project using `npm`:
     - `prebuilt` (Optional): Set to `true` by default to prevent compatibility issues between Electron, Node.js, and the SDK.
     - `arch` (Optional): Target architecture. Defaults to your system architecture.
 
-  > 📝 **Note**
-  > Different versions of Electron have different environment requirements. If you see errors due to a mismatched environment when running the project, refer to the official [Electron documentation](https://releases.electronjs.org/releases/stable) to choose the appropriate Electron and Node.js versions.
+  :::note
+  Different versions of Electron have different environment requirements. If you see errors due to a mismatched environment when running the project, refer to the official [Electron documentation](https://releases.electronjs.org/releases/stable) to choose the appropriate Electron and Node.js versions.
+  :::
 
 1. To install the dependencies, open a terminal in your project root directory and run the following commands::
 
@@ -3288,8 +3291,9 @@ When a user launches your app, start Voice Calling. When a user closes the app, 
   rtcEngine.release();
   ```
 
-  > ⚠️ **caution**
-  > After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine instance. See [Initialize the engine](#initialize-the-engine) for details.
+  :::warning
+  After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine instance. See [Initialize the engine](#initialize-the-engine) for details.
+  :::
 
 ### Complete sample code
 
@@ -3722,8 +3726,9 @@ Future<void> _cleanupAgoraEngine() async {
 }
 ```
 
-> ℹ️ **Warning**
-> After you call `release`, you no longer have access to the methods and callbacks of the SDK. To use Voice Calling features again, create a new engine instance.
+:::warning
+After you call `release`, you no longer have access to the methods and callbacks of the SDK. To use Voice Calling features again, create a new engine instance.
+:::
 
 ### Complete sample code
 
@@ -4033,8 +4038,9 @@ npm install -g yarn
 yarn add react-native-agora
 ```
 
-> ℹ️ **information**
-> React Native 0.60.0 and later support automatic linking of native modules. Manual linking is not recommended. See [Autolinking](https://github.com/react-native-community/cli/blob/master/docs/autolinking.md) for details
+:::note
+React Native 0.60.0 and later support automatic linking of native modules. Manual linking is not recommended. See [Autolinking](https://github.com/react-native-community/cli/blob/master/docs/autolinking.md) for details
+:::
 
 ## Implement Voice Calling
 
@@ -4603,9 +4609,10 @@ To start a Voice Calling session, implement the following steps in your app:
 
 ![Video calling workflow](/images/voice-sdk/get-started-sdk-voice.svg)
 
-> ℹ️ **React SDK and Web SDK relationship**
-> The React SDK is built on Web SDK 4.x and includes its APIs. For example, `useLocalMicrophoneTrack` calls the Web SDK `createMicrophoneAudioTrack` method.
-> Use the React SDK for basic real-time audio and video features. For advanced or complex scenarios, use the Web SDK. When a feature requires the Web SDK, the React SDK documentation links to the relevant Web SDK API pages.
+:::note[React SDK and Web SDK relationship]
+The React SDK is built on Web SDK 4.x and includes its APIs. For example, `useLocalMicrophoneTrack` calls the Web SDK `createMicrophoneAudioTrack` method.
+Use the React SDK for basic real-time audio and video features. For advanced or complex scenarios, use the Web SDK. When a feature requires the Web SDK, the React SDK documentation links to the relevant Web SDK API pages.
+:::
 
 ## Prerequisites
 
@@ -6469,8 +6476,9 @@ This section shows you how to set up your Python project and install the Agora V
   pip3 install agora-python-server-sdk
   ```
 
-  > ℹ️ **Note**
-  > The Python SDK is a server side SDK.
+  :::note
+  The Python SDK is a server side SDK.
+  :::
 
 ## Implement Voice Calling
 
@@ -6531,8 +6539,9 @@ class RtcEngine:
 
 To asynchronously join a channel, implement a `Channel` class. When you create an instance of the class, the initializer sets up the necessary components for joining a channel. It takes an instance of `RtcEngine`, a `channelId`, and a `uid` as parameters. During initialization, the code creates an event emitter, configures the connection for broadcasting, and registers an event observer for channel events. It also sets up the local user’s audio configuration to enable audio streaming.
 
-> ℹ️ **Note**
-> UIDs in the Python SDK are set using a string value. Agora recommends using only numerical values for UID strings to ensure compatibility with all Agora products and extensions.
+:::note
+UIDs in the Python SDK are set using a string value. Agora recommends using only numerical values for UID strings to ensure compatibility with all Agora products and extensions.
+:::
 
 ```python
 class Channel:

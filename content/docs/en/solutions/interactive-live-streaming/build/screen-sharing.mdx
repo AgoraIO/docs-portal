@@ -580,8 +580,9 @@ Call the `setAudioScenario` method and set the audio scenario to `AgoraAudioScen
     systemBroadcastPicker?.preferredExtension = "\(bundleId).Agora-ScreenShare-Extension"
     ```
 
-    > ⚠️ **caution**
-    > `RPSystemBroadcastPickerView` has some usage limitations and may become invalid in subsequent versions of iOS.
+    :::warning
+    `RPSystemBroadcastPickerView` has some usage limitations and may become invalid in subsequent versions of iOS.
+    :::
 
 ### Publish a screen sharing video stream in a channel
 
@@ -1010,10 +1011,11 @@ AgoraRTC.createScreenVideoTrack({
 }, "enable").then(([screenVideoTrack, screenAudioTrack])=> );
 ```
 
-> 📝 **Note**
-> - After you call the method, the end user must check **Share Audio** in the screen sharing popup box for the setting to take effect.
->  ![Chrome Screen Share](/images/video-sdk/tmp_screen-sharing-web-chrome.png)
-> - If you choose to share a single app window, the audio cannot be shared.
+:::note
+- After you call the method, the end user must check **Share Audio** in the screen sharing popup box for the setting to take effect.
+ ![Chrome Screen Share](/images/video-sdk/tmp_screen-sharing-web-chrome.png)
+- If you choose to share a single app window, the audio cannot be shared.
+:::
 
 ### Edge browser
 
@@ -1564,8 +1566,9 @@ After you call this method, the audio played by other processes in the system is
   });
   ```
 
-> ℹ️ **Note**
-> To share captured audio during screen sharing, call `enableLoopbackRecording` to enable the sound card capture function and merge the sound played by the sound card with the local audio stream.
+:::note
+To share captured audio during screen sharing, call `enableLoopbackRecording` to enable the sound card capture function and merge the sound played by the sound card with the local audio stream.
+:::
 
 - To publish both a screen sharing stream and the video stream captured by the local camera simultaneously, add the following code to your project:
 
@@ -2067,8 +2070,9 @@ Take the following steps to set up your screen sharing project:
 
   - Use Apple's new [RPSystemBroadcastPickerView](https://developer.apple.com/documentation/replaykit/rpsystembroadcastpickerview) in iOS 12.0 to make the **Enable Screen Sharing** button pop up on the app interface, prompting the user to click the button to start recording.
   
-    > 📝 **information**
-    > This is the default method for React Native SDK, but `RPSystemBroadcastPickerView` has some usage restrictions and may not work in later versions of iOS. If it fails, use the following method instead.
+    :::note
+    This is the default method for React Native SDK, but `RPSystemBroadcastPickerView` has some usage restrictions and may not work in later versions of iOS. If it fails, use the following method instead.
+    :::
   
   - Prompt the user to long click the **screen recording** button in the **Control Center** on iOS and choose to use the extension you created to start recording.
 

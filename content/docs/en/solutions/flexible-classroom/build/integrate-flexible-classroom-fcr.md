@@ -209,15 +209,17 @@ If you are satisfied with the default UI of Cloud Classroom and do not want to c
 
 The sample code requires passing in `rtmToken`. You can refer to [Secure authentication with tokens](authentication-workflow.md) to learn what a Signaling token is, how to get a temporary Signaling token for testing purposes, and how to generate a Signaling token from the server. The generated token passed in `userId` must be consistent with the `userUuid` parameters passed in the `launch` method; otherwise, the generated token will be invalid.
 
-> ℹ️ **Note**
-> Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
+:::note
+Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
+:::
 
 ### Customize the classroom UI
 
 If you want to customize the classroom UI based on the default UI of Cloud Classroom, you need to integrate  by downloading the source code on GitHub. Refer to the following steps:
 
-> ℹ️ **Info**
-> Make sure you have set up a development environment. See [Configure Flexible Classroom](enable-flexible-classroom.md).
+:::note
+Make sure you have set up a development environment. See [Configure Flexible Classroom](enable-flexible-classroom.md).
+:::
 
 1. Clone the Flexible-Classroom-Desktop repository:
 
@@ -268,5 +270,6 @@ If you want to customize the classroom UI based on the default UI of Cloud Class
     yarn pack:scene:plugin
     ```
 
-> ℹ️ **Info**
-> Find the output in `packages/fcr-ui-scene/lib/fcr-ui-scene_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/scene_widget.bundle.js` respectively.
+:::note
+Find the output in `packages/fcr-ui-scene/lib/fcr-ui-scene_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/scene_widget.bundle.js` respectively.
+:::

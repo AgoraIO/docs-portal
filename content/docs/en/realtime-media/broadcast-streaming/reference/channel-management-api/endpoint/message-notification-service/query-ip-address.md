@@ -10,8 +10,9 @@ description: "API reference for querying the Notifications IP addresses"
 
 Use this endpoint to retrieve the IP addresses of the Notifications server. If your server is behind a firewall, add these IP addresses to your allowlist to receive channel event notifications.
 
-> 💡 **Tip**
-> Agora occasionally adjusts the Notifications IP addresses. Call this endpoint at least every 24 hours and automatically update your firewall configuration with the latest addresses.
+:::tip
+Agora occasionally adjusts the Notifications IP addresses. Call this endpoint at least every 24 hours and automatically update your firewall configuration with the latest addresses.
+:::
 
 ## Request
 

@@ -58,8 +58,9 @@ Enable PVC or Super Quality when creating a stream configuration template.
 - When `video.bitrate` is `0`, output bitrate is calculated automatically based on resolution and frame rate
 - When `video.bitrate` is explicitly set, output bitrate matches the specified value and `saveBitrateRatio` has no effect
 
-> ℹ️ **Info**
-> Test different saving ratios with your actual content to determine optimal settings before deployment.
+:::note
+Test different saving ratios with your actual content to determine optimal settings before deployment.
+:::
 
 ## When to use PVC
 

@@ -24,8 +24,9 @@ If the video stream is not transcoded before streaming, only the audio and video
 - **Video transcoding and streaming**:
   *Video transcoding and streaming fees = video transcoding and streaming unit price x duration*
 
-> ℹ️ **Info**
-> The audio stream in the channel is transcoded and pushed by default. If a channel has both audio and video streams, the fee is calculated based on the video stream.
+:::note
+The audio stream in the channel is transcoded and pushed by default. If a channel has both audio and video streams, the fee is calculated based on the video stream.
+:::
 
 ### Unit price
 
@@ -39,8 +40,9 @@ If the video stream is not transcoded before streaming, only the audio and video
 
 For each streaming process, Agora monitors when you start and stop streaming. It calculates the duration in seconds from the moment streaming begins to when it ends and charges a streaming fee based on that time.
 
-> ℹ️ **Info**
-> The duration is displayed in seconds in Agora Console and in minutes on the billing invoice. If the duration is less than one second or one minute, it is rounded up to one second or one minute, respectively.
+:::note
+The duration is displayed in seconds in Agora Console and in minutes on the billing invoice. If the duration is less than one second or one minute, it is rounded up to one second or one minute, respectively.
+:::
 
 Depending on whether the video stream is pushed, the push duration is divided into:
 

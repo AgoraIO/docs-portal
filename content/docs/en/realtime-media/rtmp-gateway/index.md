@@ -50,13 +50,15 @@ Create and publish the streaming key by calling the following endpoint:
 
 For authentication details, see [RESTful authentication](./reference/restful-authentication.mdx).
 
-> ℹ️ **Info**
-> To explore the RESTful API parameters, obtain sample code in various client languages, or test Media Gateway requests, refer to the [Postman API reference](https://documenter.getpostman.com/view/6319646/SVSLr9AM#6aed9690-285e-45f0-a329-c995adbd0956).
+:::note
+To explore the RESTful API parameters, obtain sample code in various client languages, or test Media Gateway requests, refer to the [Postman API reference](https://documenter.getpostman.com/view/6319646/SVSLr9AM#6aed9690-285e-45f0-a329-c995adbd0956).
+:::
 
 ### Generate streaming key locally
 
-> ⚠️ **Note**
-> Before starting, make sure you have configured your domain name by contacting [technical support](mailto:support@agora.io).
+:::note
+Before starting, make sure you have configured your domain name by contacting [technical support](mailto:support@agora.io).
+:::
 
 To generate a stream key locally, you use the following information:
 
@@ -69,8 +71,9 @@ To generate a stream key locally, you use the following information:
 
 The following Node.js sample code demonstrates how to generate a stream key locally.
 
-> ℹ️ **Note**
-> The following example code relies on the `msgpack-lite` module. If you haven't installed it yet, execute `npm install msgpack-lite` and run `node app.js` in the project root directory.
+:::note
+The following example code relies on the `msgpack-lite` module. If you haven't installed it yet, execute `npm install msgpack-lite` and run `node app.js` in the project root directory.
+:::
 
 ```javascript
 const crypto = require('crypto');

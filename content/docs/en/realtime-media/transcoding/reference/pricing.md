@@ -9,8 +9,9 @@ description: Pricing for Agora Cloud Transcoding.
 
 This guide explains how pricing works for the Cloud Transcoding service.
 
-> ℹ️ **Info**
-> If you have a signed contract with Agora, your contract terms take precedence over the pricing information in this document.
+:::note
+If you have a signed contract with Agora, your contract terms take precedence over the pricing information in this document.
+:::
 
 ## Service workflow
 
@@ -45,8 +46,9 @@ When transcoding starts, the service joins channels as a virtual participant to 
 - Audio subscription fee = Audio unit price × Audio duration  
 - Video subscription fee = Video unit price × Video duration
 
-> ℹ️ **Info**
-> If dual-stream mode is used, Agora only subscribes to the main video stream for cost efficiency.
+:::note
+If dual-stream mode is used, Agora only subscribes to the main video stream for cost efficiency.
+:::
 
 ### Media processing fee
 

@@ -17,8 +17,9 @@ Follow these steps to verify that the transcoding service has started successful
 
 Ensure that you send a [`Create`](/en/api-reference/cloud-transcoding/restful) request within 2 seconds of each [`Acquire`](/en/api-reference/cloud-transcoding/restful) request. This ensures validity of the `builderToken`.
 
-> ℹ️ **Info**
-> If you acquire `builderToken`s in bulk and send `Create` requests in batches, the requests may fail.
+:::note
+If you acquire `builderToken`s in bulk and send `Create` requests in batches, the requests may fail.
+:::
 
 ### Check the `Create` request response
 
@@ -55,10 +56,11 @@ After receiving a `taskId` from a successful `Create` request, wait 5 seconds an
 * If the Query response shows status as `"STARTED"` or `"IN_PROGRESS"`, the transcoder has successfully started.
 * If the `status` is still not `"STARTED"` or `"IN_PROGRESS"` 90 seconds after receiving the `taskId`, consider the startup failed due to timeout.
 
-> ⚠️ **Caution**
-> When retrying:
-> - UIDs in the same channel must be unique. Prepare a backup UID for the transcoder in case you need to restart the task.
-> - Alternate between the primary and backup UIDs as needed.
+:::warning
+When retrying:
+- UIDs in the same channel must be unique. Prepare a backup UID for the transcoder in case you need to restart the task.
+- Alternate between the primary and backup UIDs as needed.
+:::
 
 ## Check service running status
 

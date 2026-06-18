@@ -10,11 +10,12 @@ Agora has updated IP whitelist configuration to enhance security and simplify ma
 * **Updated subnet masks**: Physical machines now use /28 instead of /26
 * **New access point IP list**: Introduced in SDK 3.4.0 for improved high availability
 
-> ℹ️ **Implementation notes**
-> * All IP addresses and network ranges have been technically verified.
-> * Update your firewall rules according to the specified timeline.
-> * Continue using your current configuration if you must configure before the new delivery dates.
-> * Test your configuration thoroughly using the [validation steps](cloud-proxy-allowed-ips.md).
+:::note[Implementation notes]
+* All IP addresses and network ranges have been technically verified.
+* Update your firewall rules according to the specified timeline.
+* Continue using your current configuration if you must configure before the new delivery dates.
+* Test your configuration thoroughly using the [validation steps](cloud-proxy-allowed-ips.md).
+:::
 
 ## Summary of changes
 Following are the key changes:

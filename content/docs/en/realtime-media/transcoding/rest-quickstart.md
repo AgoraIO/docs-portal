@@ -41,8 +41,9 @@ https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks?builderTok
   * `tasks`: The endpoint you’re calling.
   * `?builderToken=ACTUAL_TOKEN_VALUE`: Query parameter and its value
 
-    > ℹ️ **Info**
-    > Obtain the `builderToken` using the [Acquire API](/en/api-reference/cloud-transcoding/restful) before creating a task.
+    :::note
+    Obtain the `builderToken` using the [Acquire API](/en/api-reference/cloud-transcoding/restful) before creating a task.
+    :::
 
 Refer to the specific API documentation for the correct HTTP method (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`) and resource path.
 

@@ -23,8 +23,9 @@ This section introduces the main steps to upgrade the SDK from v2.x or 3.7.x to 
 
 This section introduces the main changes of v4.x compared to v3.7.x in the following categories. You need to update the code of your app according to your business use-case.
   
-  > ℹ️ **Notice**
-  > If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](https://docs-md.agora.io/en/3.x/video-calling/introduction/release-notes_ios.md) to obtain the changes between this version and v3.7.0.
+  :::note
+  If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](https://docs-md.agora.io/en/3.x/video-calling/introduction/release-notes_ios.md) to obtain the changes between this version and v3.7.0.
+  :::
 
 -  [Breaking changes](#breaking-changes): Introduces API compatibility changes that have a big impact. You need to spend significant time modifying the related implementation.
 
@@ -135,11 +136,12 @@ To facilitate locating and troubleshooting issues, v4.x reports problems and cau
 -  `remoteVideoStateChangedOfUid`: Reports the remote video state.
 
 As a consequence, v4.x removes the `didOccurError` and `didOccurWarning` callbacks.
-> ℹ️ **Notice**
-> In addition to the previously mentioned breaking changes relative to v3.7.0, v4.0.0 Beta introduces a few additional breaking changes for the final release of v4.0.0. Notable changes include:
-> - Replacing `publishAudioTrack` with `publishMicrophoneTrack` in `AgoraRtcChannelMediaOptions`.
-> - Replacing `publishScreenTrack` with `publishScreenCaptureVideo` in `AgoraRtcChannelMediaOptions` .
-> If you used this feature in v4.0.0 and wish to upgrade to v4.0.0, modify the implementation code of the feature after upgrading the SDK.
+:::note
+In addition to the previously mentioned breaking changes relative to v3.7.0, v4.0.0 Beta introduces a few additional breaking changes for the final release of v4.0.0. Notable changes include:
+- Replacing `publishAudioTrack` with `publishMicrophoneTrack` in `AgoraRtcChannelMediaOptions`.
+- Replacing `publishScreenTrack` with `publishScreenCaptureVideo` in `AgoraRtcChannelMediaOptions` .
+If you used this feature in v4.0.0 and wish to upgrade to v4.0.0, modify the implementation code of the feature after upgrading the SDK.
+:::
 ### Behavior changes
 
 This section introduces changes caused by reasonable optimization of the SDK default behavior and API behavior.

@@ -196,8 +196,9 @@ This version fixes the following issues:
 
 v4.5.2 was released on April 22, 2025.
 
-> ℹ️ **Note**
-> The `libaosl.so` library version in Video SDK v4.5.2 is 1.2.13.
+:::note
+The `libaosl.so` library version in Video SDK v4.5.2 is 1.2.13.
+:::
 
 #### Issues fixed
 
@@ -227,8 +228,9 @@ This release fixes the following issues:
 
 v4.5.1 was released on March 6, 2025.
 
-> ℹ️ **Note**
-> The `libaosl.so` library version in Video SDK v4.5.2 is 1.2.13.
+:::note
+The `libaosl.so` library version in Video SDK v4.5.2 is 1.2.13.
+:::
 
 #### New features
 
@@ -320,8 +322,9 @@ v4.4.0 was released on August 5, 2024.
 
 This version includes optimizations to some features, including changes to the SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
-> ℹ️ **Note**
-> Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API Sunset Notice](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/rtc_api_sunset.html).
+:::note
+Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API Sunset Notice](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/rtc_api_sunset.html).
+:::
 
 1. To distinguish context information in different extension callbacks, this version removes the original extension callbacks and adds new corresponding callbacks that contain context information (see table below). You can identify the extension name, the user ID, and the service provider name through `ExtensionContext` in each callback.
 
@@ -1314,8 +1317,9 @@ This version fixes the following issues:
 
 v4.5.2 was released on April 22, 2025.
 
-> ℹ️ **Note**
-> The `aosl.xcframework` library version in Voice SDK v4.5.2 is 1.2.13. You can check the version in the `Info.plist` file.
+:::note
+The `aosl.xcframework` library version in Voice SDK v4.5.2 is 1.2.13. You can check the version in the `Info.plist` file.
+:::
 
 #### Issues fixed
 
@@ -1337,8 +1341,9 @@ This release fixes the following issues:
 
 v4.5.1 was released on March 6, 2025.
 
-> ℹ️ **Note**
-> The `aosl.xcframework` library version in Video SDK v4.5.1 is 1.2.13. You can check the version in the `Info.plist` file.
+:::note
+The `aosl.xcframework` library version in Video SDK v4.5.1 is 1.2.13. You can check the version in the `Info.plist` file.
+:::
 
 #### New Features
 
@@ -1414,8 +1419,9 @@ v4.4.0 was released on August 5, 2024.
 
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
-> ℹ️ **Note**
-> Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API sunset notice](api-sunset.md).
+:::note
+Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API sunset notice](api-sunset.md).
+:::
 
 1. To distinguish context information in different extension callbacks, this version removes the original extension callbacks and adds new corresponding callbacks that contain context information (see table below). You can identify the extension name, the user ID, and the service provider name through `AgoraExtensionContext` in each callback.
 
@@ -1479,8 +1485,9 @@ v4.3.1 was released on April 29, 2024.
 
   To meet Apple's safety compliance requirements for app publication, the SDK now includes a privacy manifest file, `PrivacyInfo.xcprivacy`, detailing the SDK's API calls that access or use user data, along with a description of the types of data collected.
 
-  > ℹ️ **Note**
-  > If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project. For more details, see [How can I add a privacy manifest to my iOS app?](https://docs.agora.io/en/help/other-issues/ios_privacy_manifest).
+  :::note
+  If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project. For more details, see [How can I add a privacy manifest to my iOS app?](https://docs.agora.io/en/help/other-issues/ios_privacy_manifest).
+  :::
 
 1. **Data stream encryption**
 
@@ -1791,8 +1798,9 @@ v4.2.2 was released on july 27, 2023.
 
   This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Deploy a token server](https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server).
 
-  > ℹ️ **Note**
-  > All 4.x SDKs support using wildcard tokens.
+  :::note
+  All 4.x SDKs support using wildcard tokens.
+  :::
 
 2. **Preloading channels**
 
@@ -2238,8 +2246,9 @@ The list of known issues page is continuously updated as the systems evolve. Ago
 
     When the app path (including the App name) contains non-English characters (such as Chinese characters), the compiled `Metal shader library` may not contain any methods, causing the app to crash. See [this article](../../help/other-issues/macos_15_beta) for the workaround.
 
-> ⚠️ **Note**
-> As of v4.5.0, both Voice SDK and Signaling SDK (v2.2.0 and above) include the `aosl.xcframework` library. If you manually integrate Voice SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.xcframework` library to avoid conflicts.
+:::note
+As of v4.5.0, both Voice SDK and Signaling SDK (v2.2.0 and above) include the `aosl.xcframework` library. If you manually integrate Voice SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.xcframework` library to avoid conflicts.
+:::
 ### v4.6.2
 
 Released on January 19, 2026.
@@ -2276,8 +2285,9 @@ This release introduces the following compatibility changes:
 
 Released on August 26, 2025.
 
-> ℹ️ **Note**
-> The version of the aosl.xcframework library in the v4.6.0 SDK is 1.3.0. You can find the library version information in Info.plist.
+:::note
+The version of the aosl.xcframework library in the v4.6.0 SDK is 1.3.0. You can find the library version information in Info.plist.
+:::
 
 #### Compatibility changes
 
@@ -2370,8 +2380,9 @@ This version fixes the following issues:
 
 v4.5.2 was released on April 22, 2025.
 
-> ℹ️ **Note**
-> The `aosl.xcframework` library version in Voice SDK v4.5.2 is 1.2.13. You can check the version in the `Info.plist` file.
+:::note
+The `aosl.xcframework` library version in Voice SDK v4.5.2 is 1.2.13. You can check the version in the `Info.plist` file.
+:::
 
 #### Issues fixed
 
@@ -2391,8 +2402,9 @@ This release fixes the following issues:
 
 v4.5.1 was released on March 6, 2025.
 
-> ℹ️ **Note**
-> The `aosl.xcframework` library version in Video SDK v4.5.1 is 1.2.13. You can check the version in the `Info.plist` file.
+:::note
+The `aosl.xcframework` library version in Video SDK v4.5.1 is 1.2.13. You can check the version in the `Info.plist` file.
+:::
 
 #### New Features
 
@@ -2417,8 +2429,9 @@ v4.5.0 was released on November 27, 2024.
 
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
-> ⚠️ **Note**
-> As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `aosl.xcframework` library. If you manually integrate Video SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.xcframework` library to avoid conflicts. The `aosl.xcframework` library version in Video SDK v4.5.0 is 1.2.13. You can check the version in the `Info.plist` file.
+:::note
+As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `aosl.xcframework` library. If you manually integrate Video SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.xcframework` library to avoid conflicts. The `aosl.xcframework` library version in Video SDK v4.5.0 is 1.2.13. You can check the version in the `Info.plist` file.
+:::
 
 1. **Automatic installation of virtual sound card**
 
@@ -2466,8 +2479,9 @@ v4.4.0 was released on August 5, 2024.
 
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
-> ℹ️ **Note**
-> Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API sunset notice](../reference/api-sunset).
+:::note
+Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API sunset notice](../reference/api-sunset).
+:::
 
 1. To distinguish context information in different extension callbacks, this version removes the original extension callbacks and adds corresponding callbacks that contain context information (see table below). You can identify the extension name, the user ID, and the service provider name through `AgoraExtensionContext` in each callback.
 
@@ -2818,8 +2832,9 @@ v4.2.2 was released on july 27, 2023.
 
    This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Deploy a token server](/video-calling/token-authentication/deploy-token-server#generate-wildcard-tokens).
 
-   > ℹ️ **Note**
-> All 4.x SDKs support using wildcard tokens.
+   :::note
+   All 4.x SDKs support using wildcard tokens.
+   :::
 
 2. **Preloading channels**
 
@@ -2885,8 +2900,9 @@ If you use the features mentioned in this section, ensure that you modify the im
 
 As of v4.2.0, Agora supports third-party virtual sound cards. You can use a third-party virtual sound card as the audio input or output device for the SDK. You can use the `stateChanged` callback to see whether the current input or output device selected by the SDK is a virtual sound card.
 
-> ℹ️ **Note**
-> If you set AgoraALD or Soundflower as the default input or output device when joining a channel, you will not hear audio.
+:::note
+If you set AgoraALD or Soundflower as the default input or output device when joining a channel, you will not hear audio.
+:::
 
 **3. Miscellaneous**
 
@@ -2899,8 +2915,9 @@ As of v4.2.0, Agora supports third-party virtual sound cards. You can use a thir
 
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode as balance, aggressive, or low latency according to your use-case.
 
-> ℹ️ **Note**
-> Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::note
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::
 
 **2. Cross-device synchronization**
 
@@ -4043,8 +4060,9 @@ This release fixes the issue that an error occurred when using Webpack 4.x to bu
 
 v4.19.0 was released on September 25, 2023.
 
-> 💡 **Tip**
-> After integrating this version of the SDK into your app, you might encounter an error if you use Webpack 4.x to bundle your app. To resolve this issue: <ul><li> If you intend to use Webpack 4.x, upgrade the SDK to v4.19.1.</li><li> If you prefer to continue using v4.19.0, Agora recommends bundling your app with Webpack 5.x or other tools such as Vite.</li></ul>
+:::tip
+After integrating this version of the SDK into your app, you might encounter an error if you use Webpack 4.x to bundle your app. To resolve this issue: <ul><li> If you intend to use Webpack 4.x, upgrade the SDK to v4.19.1.</li><li> If you prefer to continue using v4.19.0, Agora recommends bundling your app with Webpack 5.x or other tools such as Vite.</li></ul>
+:::
 
 #### Compatibility changes
 
@@ -4258,14 +4276,15 @@ v4.18.0 also includes the following improvements:
  - `getListeners`
  - `removeAllListeners`
 
-> ℹ️ **Note**
-> These methods support the following event names as parameters:
->
-> - `"camera-changed"`
-> - `"microphone-changed"`
-> - `"playback-device-changed"`
-> - `"autoplay-failed"`
-> - `"security-policy-violation"`
+:::note
+These methods support the following event names as parameters:
+
+- `"camera-changed"`
+- `"microphone-changed"`
+- `"playback-device-changed"`
+- `"autoplay-failed"`
+- `"security-policy-violation"`
+:::
 
 #### Issues fixed
 
@@ -4466,8 +4485,9 @@ Video SDK for Web v4.15.0 adds support for the VP9 codec in the following browse
 | Android | <li>Chrome 68 or later</li><li>Wechat v8.0.6 or later </li><li>Other apps that use WKWebView: WebView v65.0.3325.109 or later</li> |
 | iOS   | Safari 16 or later |
 
-> ℹ️ **Note**
-> ① To ensure the best user experience, best practice is to use the latest version of the browsers listed above.
+:::note
+① To ensure the best user experience, best practice is to use the latest version of the browsers listed above.
+:::
 
 To start a call using the VP9 codec, apps you connect to built using for Android, iOS, Windows, or macOS must use Video SDK v4.0.1 or greater.
 
@@ -5488,8 +5508,9 @@ The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommen
 <PlatformStructured platform="windows">
 ### Known issues
 
-> ⚠️ **Note**
-> Starting from v4.5.0, both Voice SDK and Signaling SDK (v2.2.0 and above) include the `libaosl.dll` library. If you manually integrate Voice SDK via CDN and also use Signaling SDK, delete the earlier version of the `libaosl.dll` library to avoid conflicts. You can check the version by viewing the `libaosl.dll` file properties.
+:::note
+Starting from v4.5.0, both Voice SDK and Signaling SDK (v2.2.0 and above) include the `libaosl.dll` library. If you manually integrate Voice SDK via CDN and also use Signaling SDK, delete the earlier version of the `libaosl.dll` library to avoid conflicts. You can check the version by viewing the `libaosl.dll` file properties.
+:::
 ### v4.6.2
 
 Released on January 19, 2026.
@@ -5526,8 +5547,9 @@ This release introduces the following compatibility changes:
 
 Released on August 26, 2025.
 
-> ℹ️ **Note**
-> The version of the libaosl.dll library in the v4.6.0 SDK is 1.3.0. You can find the library version information by checking the properties of the libaosl.dll file.
+:::note
+The version of the libaosl.dll library in the v4.6.0 SDK is 1.3.0. You can find the library version information by checking the properties of the libaosl.dll file.
+:::
 
 #### Compatibility changes
 
@@ -5622,8 +5644,9 @@ This version fixes the following issues:
 
 v4.5.2 was released on April 22, 2025.
 
-> ℹ️ **Note**
-> The `aosl.dll` library version in Voice SDK v4.5.2 is 1.2.13.
+:::note
+The `aosl.dll` library version in Voice SDK v4.5.2 is 1.2.13.
+:::
 
 #### Issues fixed
 
@@ -5647,8 +5670,9 @@ This release fixes the following issues:
 
 v4.5.1 was released on March 6, 2025.
 
-> ⚠️ **Note**
-> As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `aosl.dll` library. If you manually integrate Video SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.dll` library to avoid conflicts. The `aosl.dll` library version in Video SDK v4.5.1 is 1.2.13. You can check the version by viewing the `aosl.dll` file properties.
+:::note
+As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `aosl.dll` library. If you manually integrate Video SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.dll` library to avoid conflicts. The `aosl.dll` library version in Video SDK v4.5.1 is 1.2.13. You can check the version by viewing the `aosl.dll` file properties.
+:::
 
 #### New Features
 
@@ -5675,8 +5699,9 @@ This version includes optimizations to some features, including changes to SDK b
 
 **Attention:**
 
-> ⚠️ **Note**
-> As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `aosl.dll` library. If you manually integrate Video SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.dll` library to avoid conflicts. The `aosl.dll` library version in Video SDK v4.5.0 is 1.2.13. You can check the version by viewing the `aosl.dll` file properties.
+:::note
+As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `aosl.dll` library. If you manually integrate Video SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.dll` library to avoid conflicts. The `aosl.dll` library version in Video SDK v4.5.0 is 1.2.13. You can check the version by viewing the `aosl.dll` file properties.
+:::
 
 1. **Member parameter type changes**
 
@@ -5735,8 +5760,9 @@ v4.4.0 was released on August 5, 2024.
 
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
-> ℹ️ **Note**
-> Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API Sunset Notice](https://api-ref.agora.io/en/voice-sdk/cpp/4.x/API/rtc_api_sunset.html).
+:::note
+Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API Sunset Notice](https://api-ref.agora.io/en/voice-sdk/cpp/4.x/API/rtc_api_sunset.html).
+:::
 
 1. To distinguish context information in different extension callbacks, this version removes the original extension callbacks and adds corresponding callbacks that contain context information (see table below). You can identify the extension name, the user ID, and the service provider name through `ExtensionContext` in each callback.
 
@@ -6115,8 +6141,9 @@ v4.2.2 was released on july 27, 2023.
 
    This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Deploy a token server](/video-calling/token-authentication/deploy-token-server#generate-wildcard-tokens).
 
-   > ℹ️ **Note**
-> All 4.x SDKs support using wildcard tokens.
+   :::note
+   All 4.x SDKs support using wildcard tokens.
+   :::
 
 2. **Preloading channels**
 
@@ -6189,8 +6216,9 @@ If you use the features mentioned in this section, ensure that you modify the im
 
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise reduction mode as balance, aggressive, or low latency according to your use-case.
 
-> ℹ️ **Note**
-> Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::note
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::
 
 **2. Cross-device synchronization**
 
@@ -6414,8 +6442,9 @@ This release introduces filtering audio streams based on volume. Once this funct
 
 Meanwhile, Agora supports publishers to choose whether or not the audio streams being published are to be filtered based on volume. Streams that are not filtered will bypass this filter mechanism and transported directly to the receivers. In use-cases where there are a number of publishers, enabling this function helps reducing the bandwidth and device system pressure for the receivers.
 
-> ℹ️ **Note**
-> To enable this function, contact [technical support](mailto:support@agora.io).
+:::note
+To enable this function, contact [technical support](mailto:support@agora.io).
+:::
 
 **4. Loopback device**
 
@@ -7216,8 +7245,9 @@ If you use the features mentioned in this section, ensure that you modify the im
 
 As of v4.2.0, Agora supports third-party virtual sound cards. You can use a third-party virtual sound card as the audio input or output device for the SDK. You can use the `stateChanged` callback to see whether the current input or output device selected by the SDK is a virtual sound card.
 
-> ℹ️ **Note**
-> If you set AgoraALD or Soundflower as the default input or output device when joining a channel, you will not hear audio.
+:::note
+If you set AgoraALD or Soundflower as the default input or output device when joining a channel, you will not hear audio.
+:::
 
 **3. Miscellaneous**
 
@@ -7233,8 +7263,9 @@ As of v4.2.0, Agora supports third-party virtual sound cards. You can use a thir
 
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise reduction mode as balance, aggressive, or low latency according to your use-case.
 
-> ℹ️ **Note**
-> Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::note
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::
 
 #### Improvements
 
@@ -8008,8 +8039,9 @@ v4.3.1 was released on May 9, 2024.
 
    To meet Apple's safety compliance requirements for app publication, the SDK now includes a privacy manifest file, `PrivacyInfo.xcprivacy`, detailing the SDK's API calls that access or use user data, along with a description of the types of data collected.
 
-   > ℹ️ **Note**
-> If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+   :::note
+   If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+   :::
 
 1. **Data stream encryption**
 
@@ -8365,8 +8397,9 @@ v6.2.2 was released on August 1, 2023.
 
    This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](/video-calling/token-authentication/deploy-token-server#generate-wildcard-tokens).
 
-   > ℹ️ **Note**
-> All 4.x SDKs support using wildcard tokens.
+   :::note
+   All 4.x SDKs support using wildcard tokens.
+   :::
 
 2. **Preloading channels**
 
@@ -8444,8 +8477,9 @@ If you use the features mentioned in this section, ensure that you modify the im
 
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise reduction mode as balance, aggressive, or low latency according to your use-case.
 
-> ℹ️ **Note**
-> Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::note
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::
 
 **2. Cross-device synchronization**
 
@@ -9151,8 +9185,9 @@ v4.3.1 was released on May 9, 2024.
 
    To meet Apple's safety compliance requirements for app publication, the SDK now includes a privacy manifest file, `PrivacyInfo.xcprivacy`, detailing the SDK's API calls that access or use user data, along with a description of the types of data collected.
 
-   > ℹ️ **Note**
-> If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+   :::note
+   If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+   :::
 
 1. **Data stream encryption**
 
@@ -9456,8 +9491,9 @@ v4.2.3 was released on October 20, 2023.
 
    This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user ID. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can prevent repeated application of tokens every time users join a new channel, which reduces the pressure on your token server.
 
-   > ℹ️ **Note**
-> All 4.x SDKs support using wildcard tokens.
+   :::note
+   All 4.x SDKs support using wildcard tokens.
+   :::
 
 2. **Preloading channels**
 
@@ -9548,8 +9584,9 @@ If you use the features mentioned in this section, ensure that you modify the im
 
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise reduction mode as balance, aggressive, or low latency according to your use-case.
 
-> ℹ️ **Note**
-> Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::note
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::
 
 #### Improvements
 
@@ -10322,8 +10359,9 @@ v4.3.1 was released on May 9, 2024.
 
    To meet Apple's safety compliance requirements for app publication, the SDK now includes a privacy manifest file, `PrivacyInfo.xcprivacy`, detailing the SDK's API calls that access or use user data, along with a description of the types of data collected.
 
-   > ℹ️ **Note**
-> If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+   :::note
+   If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+   :::
 
 1. **Data stream encryption**
 
@@ -10796,8 +10834,9 @@ As of v4.2.0, Agora supports third-party virtual sound cards. You can use a thir
 
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise reduction mode as balance, aggressive, or low latency according to your use-case.
 
-> ℹ️ **Note**
-> Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::note
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+:::
 
 **2. Cross-device synchronization**
 
@@ -11449,8 +11488,9 @@ v4.4.0 was released on August 29, 2024.
 
    To meet Apple's safety compliance requirements for app publication, the SDK now includes a privacy manifest file, `PrivacyInfo.xcprivacy`, detailing the SDK's API calls that access or use user data, along with a description of the types of data collected.
 
-    > ℹ️ **Note**
-> If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App Store, add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+    :::note
+    If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App Store, add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+    :::
 
 1. **Multi-camera capture (Android)**
 
@@ -11486,8 +11526,9 @@ v4.4.0 was released on August 29, 2024.
 
    This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user ID. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can prevent repeated application of tokens every time users join a new channel, which reduces the pressure on your token server. See [Generate wildcard tokens](../token-authentication/deploy-token-server#generate-wildcard-tokens).
 
-   > ℹ️ **Note**
-> All 4.x SDKs support using wildcard tokens.
+   :::note
+   All 4.x SDKs support using wildcard tokens.
+   :::
 
 1. **Preloading channels**
 
@@ -11504,8 +11545,9 @@ v4.4.0 was released on August 29, 2024.
    - `publishThirdScreenTrack`: Publishing the video stream captured from the third screen.
    - `publishFourthScreenTrack`: Publishing the video stream captured from the fourth screen.
 
-   > ℹ️ **Note**
-> For one `RtcConnection`, Agora supports publishing multiple audio streams and one video stream at the same time.
+   :::note
+   For one `RtcConnection`, Agora supports publishing multiple audio streams and one video stream at the same time.
+   :::
 
 #### Improvements
 
@@ -11738,8 +11780,9 @@ This version simplifies the way methods are called and callbacks are implemented
 
    To meet Apple's safety compliance requirements for app publication, the SDK now includes a privacy manifest file, `PrivacyInfo.xcprivacy`, detailing the SDK's API calls that access or use user data, along with a description of the types of data collected.
 
-    > ℹ️ **Note**
-> If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App Store, add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+    :::note
+    If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App Store, add the `PrivacyInfo.xcprivacy` file to your Xcode project.
+    :::
 
 1. **Multi-camera capture (Android)**
 
@@ -11775,8 +11818,9 @@ This version simplifies the way methods are called and callbacks are implemented
    involving multiple channels, such as switching between different channels, using a wildcard token can prevent
    repeated application of tokens every time users join a new channel, which reduces the pressure on your token server. See [Generate wildcard tokens](../token-authentication/deploy-token-server#generate-wildcard-tokens).
 
-   > ℹ️ **Note**
-> All 4.x SDKs support using wildcard tokens.
+   :::note
+   All 4.x SDKs support using wildcard tokens.
+   :::
 
 1. **Preloading channels**
 
@@ -11793,8 +11837,9 @@ This version simplifies the way methods are called and callbacks are implemented
    - `publishThirdScreenTrack`: Publishing the video stream captured from the third screen.
    - `publishFourthScreenTrack`: Publishing the video stream captured from the fourth screen.
 
-   > ℹ️ **Note**
-> For one `RtcConnection`, Agora supports publishing multiple audio streams and one video stream at the same time.
+   :::note
+   For one `RtcConnection`, Agora supports publishing multiple audio streams and one video stream at the same time.
+   :::
 
 #### Improvements
 

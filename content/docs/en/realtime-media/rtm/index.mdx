@@ -18,7 +18,7 @@ Use Signaling SDK to add low-latency, high-concurrency signaling and
 <TabsContent value="android">
 synchronization capabilities for real-time systems to your app. Signaling also helps you enhance the user experience in Video Calling, Voice Calling,  Interactive Live Streaming, and Broadcast Streaming applications.
 
-This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/stream-channel) guide.
+This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/channels/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel) guide.
 
 ## Understand the tech
 
@@ -43,8 +43,9 @@ To implement the code presented on this page you need to have:
 
 - Ensure that a firewall is not blocking your network communication.
 
-> ℹ️ **Note**
-> Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::note
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::
 
 ## Project setup
 
@@ -58,8 +59,9 @@ To implement the code presented on this page you need to have:
     1. Set the project name and storage path. 
     1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the project.
 
-    > ⚠️ **Note**
-    > After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+    :::note
+    After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+    :::
 
 1. **Add network permissions**
 
@@ -91,8 +93,9 @@ Use either of the following methods to integrate Signaling SDK into your project
        }
     ```
 
-    > ℹ️ **Info**
-    > If your Android project uses [`dependencyResolutionManagement`](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration), there may be differences in how you add Maven Central dependencies.
+    :::note
+    If your Android project uses [`dependencyResolutionManagement`](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration), there may be differences in how you add Maven Central dependencies.
+    :::
 
 2. Add the following to the `/Gradle Scripts/build.gradle(Module: <projectname>.app)` file under `dependencies` to integrate the SDK into your Android project:
 
@@ -138,8 +141,9 @@ Use either of the following methods to integrate Signaling SDK into your project
                 }
         ```
     
-        > ℹ️ **Info**
-        > Supporting all architectures increases the app size. Best practice is to only add essential architectures based on your targets. For most use-cases, `armeabi-v7a` and `arm64-v8a` architectures are sufficient when releasing the Android app.
+        :::note
+        Supporting all architectures increases the app size. Best practice is to only add essential architectures based on your targets. For most use-cases, `armeabi-v7a` and `arm64-v8a` architectures are sufficient when releasing the Android app.
+        :::
 
     1. Add a `sourceSets` node under the `android` node to include the jni libraries copied to the `libs` folder:
 
@@ -163,8 +167,9 @@ Use either of the following methods to integrate Signaling SDK into your project
                 }
         ```
 
-> ℹ️ **Info**
-> To integrate Signaling SDK version `2.2.0` or later alongside Video SDK version `4.3.0` or later, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+:::note
+To integrate Signaling SDK version `2.2.0` or later alongside Video SDK version `4.3.0` or later, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+:::
 
 ### Create a user interface
 
@@ -941,11 +946,13 @@ private fun login(token: String) {
 
 To confirm that login is successful, use the `login` return value, or listen to the `onLinkStateEvent` event notification which provides the error code and reason for the login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`. 
 
-> 📝 **Best practice**
-> To continuously monitor the network connection state of the client, best practice is to continue to listen for `onLinkStateEvent` notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::note[Best practice]
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `onLinkStateEvent` notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::
 
-> ⚠️ **Caution**
-> After a user successfully logs into Signaling, the application's PCU increases, which affects your billing data.
+:::warning
+After a user successfully logs into Signaling, the application's PCU increases, which affects your billing data.
+:::
 
 ### Publish a message
 
@@ -1006,8 +1013,9 @@ private fun publishMessage(channelName: String, message: String) {
 
 </CodeBlockTabs>
 
-> ℹ️ **Info**
-> Before calling `publish` to send a message, serialize the message payload as a string.
+:::note
+Before calling `publish` to send a message, serialize the message payload as a string.
+:::
 
 ### Subscribe and unsubscribe
 
@@ -1122,7 +1130,7 @@ private fun unsubscribe(channelName: String) {
 </CodeBlockTabs>
 
 
-For more information about subscribing and sending messages, see [Message channels](/en/realtime-media/rtm/build/message-channel) and [Stream channels](/en/realtime-media/rtm/build/stream-channel).
+For more information about subscribing and sending messages, see [Message channels](/en/realtime-media/rtm/build/channels/message-channel) and [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel).
 
 ### Log out of Signaling
 
@@ -1220,7 +1228,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./get-started/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/authentication-workflow.md). 
 
 
 ### Sample projects
@@ -1247,7 +1255,7 @@ Download the projects or view the source code for more detailed examples.
 <TabsContent value="ios">
 synchronization capabilities for real-time systems to your app. Signaling also helps you enhance the user experience in Video Calling, Voice Calling,  Interactive Live Streaming, and Broadcast Streaming applications.
 
-This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/stream-channel) guide.
+This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/channels/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel) guide.
 
 ## Understand the tech
 
@@ -1271,8 +1279,9 @@ To implement the code presented on this page you need to have:
 
 - Ensure that a firewall is not blocking your network communication.
 
-> ℹ️ **Note**
-> Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::note
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::
 
 ## Project setup
 
@@ -1315,8 +1324,9 @@ Use either of the following methods to integrate Signaling SDK into your project
 
     Replace `Your App` with your target name and `x.y.z` with the specific SDK version number, such as 2.2.0. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
   
-    > ⚠️ **Caution**
-    > If you are using an SDK version earlier than `2.2.0`, change the package name to `AgoraRtm_iOS`.
+    :::warning
+    If you are using an SDK version earlier than `2.2.0`, change the package name to `AgoraRtm_iOS`.
+    :::
 
 1. Run the `pod install` command in the terminal to install the Signaling SDK. You see the message "Pod installation complete!".
 
@@ -1329,8 +1339,9 @@ Use the following link to integrate the SDK using Swift Package Manager (SPM):
 {`https://github.com/AgoraIO/AgoraRtm_Apple.git`}
 ```
 
-> ℹ️ **Info**
-> To integrate Signaling SDK version 2.2.0 or above, and Video SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+:::note
+To integrate Signaling SDK version 2.2.0 or above, and Video SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+:::
 
 ### Create a user interface
 
@@ -2114,16 +2125,19 @@ func login() {
 
 Use the `login` return value, or listen to the `didReceiveLinkStateEvent` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `connecting`. After a successful login, the state is updated to `Connected`. 
 
-> 📝 **Best practice**
-> To continuously monitor the network connection state of the client, best practice is to continue to listen for `AgoraRtmLinkState` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::note[Best practice]
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `AgoraRtmLinkState` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::
 
 Use the `loginByToken` return value, or listen to the `connectionChangedToState` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `AgoraRtmClientConnectionStateConnecting`. After a successful login, the state is updated to `AgoraRtmClientConnectionStateConnected`. 
 
-> 📝 **Best practice**
-> To continuously monitor the network connection state of the client, best practice is to continue to listen for `connectionChangedToState` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::note[Best practice]
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `connectionChangedToState` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::
 
-> ⚠️ **Caution**
-> After a user successfully logs into Signaling, the application's Peak Connection Usage (PCU) increases, which affects your billing data.
+:::warning
+After a user successfully logs into Signaling, the application's Peak Connection Usage (PCU) increases, which affects your billing data.
+:::
 
 ### Send a message
 
@@ -2264,7 +2278,7 @@ func unsubscribe() {
 </CodeBlockTabs>
 
 
-For more information about sending and receiving messages see [Message channels](/en/realtime-media/rtm/build/message-channel) and [Stream channels](/en/realtime-media/rtm/build/stream-channel).
+For more information about sending and receiving messages see [Message channels](/en/realtime-media/rtm/build/channels/message-channel) and [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel).
 
 ### Log out of Signaling
 
@@ -2357,7 +2371,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./get-started/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/authentication-workflow.md). 
 
 
 ### Sample projects
@@ -2381,7 +2395,7 @@ Agora provides the following open source sample projects on GitHub for your refe
 <TabsContent value="web">
 synchronization capabilities for real-time systems to your app. Signaling also helps you enhance the user experience in Video Calling, Voice Calling,  Interactive Live Streaming, and Broadcast Streaming applications.
 
-This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/stream-channel) guide.
+This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/channels/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel) guide.
 
 ## Understand the tech
 
@@ -2406,8 +2420,9 @@ To implement the code presented on this page you need to have:
 
 - Ensure that a firewall is not blocking your network communication.
 
-> ℹ️ **Note**
-> Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::note
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::
 
 ## Project setup
 
@@ -2655,11 +2670,13 @@ try {
 
 Use the `login` return value, or listen to the `status` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`. 
 
-> 📝 **Best practice**
-> To continuously monitor the network connection state of the client, best practice is to continue to listen for `status` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::note[Best practice]
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `status` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::
 
-> ⚠️ **Caution**
-> After a user successfully logs into Signaling, the application's PCU increases, which affects your billing data.
+:::warning
+After a user successfully logs into Signaling, the application's PCU increases, which affects your billing data.
+:::
 
 ### Send a message
 
@@ -2681,8 +2698,9 @@ const publishMessage = async (message) => {
 }
 ```
 
-> ℹ️ **Info**
-> Before calling `publish` to send a message, serialize the message payload as a string.
+:::note
+Before calling `publish` to send a message, serialize the message payload as a string.
+:::
 
 ### Subscribe and unsubscribe
 
@@ -2711,7 +2729,7 @@ try {
 
 ```
 
-For more information about sending and receiving messages see [Message channels](/en/realtime-media/rtm/build/message-channel) and [Stream channels](/en/realtime-media/rtm/build/stream-channel).
+For more information about sending and receiving messages see [Message channels](/en/realtime-media/rtm/build/channels/message-channel) and [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel).
 
 ### Log out of Signaling
 
@@ -2757,7 +2775,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./get-started/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/authentication-workflow.md). 
 
 ### Sample project
 
@@ -2772,7 +2790,7 @@ Explore and experiment with the [Signaling Online demo](https://digitallysavvy.g
 <TabsContent value="flutter">
 synchronization capabilities for real-time systems to your app. Signaling also helps you enhance the user experience in Video Calling, Voice Calling,  Interactive Live Streaming, and Broadcast Streaming applications.
 
-This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/stream-channel) guide.
+This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/channels/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel) guide.
 
 ## Understand the tech
 
@@ -2808,8 +2826,9 @@ To implement the code presented on this page you need to have:
 
 - Ensure that a firewall is not blocking your network communication.
 
-> ℹ️ **Note**
-> Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::note
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::
 
 ## Project setup
 
@@ -2829,8 +2848,9 @@ To create a new Flutter project, follow these steps:
       agora_rtm: ^2.2.1
     ```
 
-    > ℹ️ **Info**
-    > To integrate Signaling SDK version 2.2.1 or above, and Video SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+    :::note
+    To integrate Signaling SDK version 2.2.1 or above, and Video SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+    :::
 
 1. To install the dependencies, open the terminal and execute the following command in the project path:
 
@@ -3126,7 +3146,7 @@ try {
 }
 ```
 
-For more information about subscribing and sending messages, see [Message channels](/en/realtime-media/rtm/build/message-channel) and [Stream channels](/en/realtime-media/rtm/build/stream-channel).
+For more information about subscribing and sending messages, see [Message channels](/en/realtime-media/rtm/build/channels/message-channel) and [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel).
 
 ### Log out of Signaling​
 
@@ -3195,7 +3215,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./get-started/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/authentication-workflow.md). 
 
 ### Sample project
 
@@ -3210,7 +3230,7 @@ Agora provides an open source [sample project](https://github.com/AgoraIO/RTM2/t
 <TabsContent value="linux-cpp">
 synchronization capabilities for real-time systems to your app. Signaling also helps you enhance the user experience in Video Calling, Voice Calling,  Interactive Live Streaming, and Broadcast Streaming applications.
 
-This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/stream-channel) guide.
+This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/channels/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel) guide.
 
 ## Understand the tech
 
@@ -3235,8 +3255,9 @@ To implement the code presented on this page you need to have:
 
 - Ensure that a firewall is not blocking your network communication.
 
-> ℹ️ **Note**
-> Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::note
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::
 
 ## Project setup
 
@@ -3257,8 +3278,9 @@ To integrate the Linux C++ Signaling SDK into your project:
 
 1. [Download](https://docs.agora.io/en/sdks?platform=linux) the latest version of the SDK and unzip it. 
 
-    > ℹ️ **Info**
-    > To integrate Signaling SDK 2.2.1 or later, and Video SDK 4.3.0 or later in the same project, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+    :::note
+    To integrate Signaling SDK 2.2.1 or later, and Video SDK 4.3.0 or later in the same project, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+    :::
 
 1. Copy the files in the SDK package to the project folder as follows:
 
@@ -3619,11 +3641,13 @@ After you call this method, the SDK triggers the `onLoginResult` callback and re
 
 Use the `login` return value, or listen to the `onConnectionStateChanged` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `RTM_CONNECTION_STATE_CONNECTING`. After a successful login, the state is updated to `RTM_CONNECTION_STATE_CONNECTED`. 
 
-> 📝 **Best practice**
-> To continuously monitor the network connection state of the client, best practice is to continue to listen for `onConnectionStateChanged` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::note[Best practice]
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `onConnectionStateChanged` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::
 
-> ⚠️ **Caution**
-> After a user successfully logs into Signaling, the application's PCU increases, which affects your billing data.
+:::warning
+After a user successfully logs into Signaling, the application's PCU increases, which affects your billing data.
+:::
 
 ### Send a message
 
@@ -3639,8 +3663,9 @@ void publishMessage(const std::string& channelName, const std::string& message) 
 }
 ```
 
-> ℹ️ **Info**
-> Before calling `publish` to send a message, serialize the message payload as a string.
+:::note
+Before calling `publish` to send a message, serialize the message payload as a string.
+:::
 
 ### Subscribe and unsubscribe
 
@@ -3664,7 +3689,7 @@ void unsubscribeChannel(const std::string& channelName) {
 }
 ```
 
-For more information about sending and receiving messages see [Message channels](/en/realtime-media/rtm/build/message-channel) and [Stream channels](/en/realtime-media/rtm/build/stream-channel).
+For more information about sending and receiving messages see [Message channels](/en/realtime-media/rtm/build/channels/message-channel) and [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel).
 
 ### Log out of Signaling
 
@@ -3722,7 +3747,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./get-started/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/authentication-workflow.md). 
 
 ### Sample project
 
@@ -3737,7 +3762,7 @@ Agora provides an open source [sample project](https://github.com/AgoraIO/RTM2/t
 <TabsContent value="unity">
 synchronization capabilities for real-time systems to your game. Signaling also helps you enhance the user experience in Video Calling, Voice Calling,  Interactive Live Streaming, and Broadcast Streaming applications.
 
-This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/stream-channel) guide.
+This page shows you how to use the Signaling SDK to rapidly build a simple application that sends and receives messages. It shows you how to integrate the Signaling SDK in your project and implement pub/sub messaging through [Message channels](/en/realtime-media/rtm/build/channels/message-channel). To get started with stream channels, follow this guide to create a basic Signaling app and then refer to the [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel) guide.
 
 ## Understand the tech
 
@@ -3769,8 +3794,9 @@ To implement the code presented on this page you need to have:
 
 - Ensure that a firewall is not blocking your network communication.
 
-> ℹ️ **Note**
-> Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::note
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+:::
 
 ## Project setup
 
@@ -4446,11 +4472,13 @@ else
 
 Use the `LoginAsync` return value, or listen to the `OnConnectionStateChanged` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`. 
 
-> 📝 **Best practice**
-> To continuously monitor the network connection state of the client, best practice is to continue to listen for `OnConnectionStateChanged` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::note[Best practice]
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `OnConnectionStateChanged` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+:::
 
-> ⚠️ **Caution**
-> After a user successfully logs into Signaling, the application's PCU increases, which affects your billing data.
+:::warning
+After a user successfully logs into Signaling, the application's PCU increases, which affects your billing data.
+:::
 
 ### Send a message
 
@@ -4480,8 +4508,9 @@ if (rtmClient != null)
 }
 ```
 
-> ℹ️ **Info**
-> Before calling `PublishAsync` to send a message, serialize the message payload as a string.
+:::note
+Before calling `PublishAsync` to send a message, serialize the message payload as a string.
+:::
 
 ### Subscribe and unsubscribe
 
@@ -4531,7 +4560,7 @@ if (rtmClient != null)
 }
 ```
 
-For more information about sending and receiving messages see [Message channels](/en/realtime-media/rtm/build/message-channel) and [Stream channels](/en/realtime-media/rtm/build/stream-channel).
+For more information about sending and receiving messages see [Message channels](/en/realtime-media/rtm/build/channels/message-channel) and [Stream channels](/en/realtime-media/rtm/build/channels/stream-channel).
 
 ### Log out of Signaling
 
@@ -4575,7 +4604,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./get-started/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/authentication-workflow.md). 
 
 ### API reference
 

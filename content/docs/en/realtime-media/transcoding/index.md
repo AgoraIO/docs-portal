@@ -106,9 +106,10 @@ const (
 )
 ```
 
-> ℹ️ **Info**
-> - In this example, the stream from the host of the `show` channel is used as the input stream for the transcoder. To simplify parameter configuration, the transcoder's output stream is also published to the same channel. The input and output streams share the same token.
-> - For Cloud Transcoding, multiple input streams must come from the same channel, while the output can be one or more streams and may be assigned to any channel.
+:::note
+- In this example, the stream from the host of the `show` channel is used as the input stream for the transcoder. To simplify parameter configuration, the transcoder's output stream is also published to the same channel. The input and output streams share the same token.
+- For Cloud Transcoding, multiple input streams must come from the same channel, while the output can be one or more streams and may be assigned to any channel.
+:::
 
 ### Create and initialize the client
 

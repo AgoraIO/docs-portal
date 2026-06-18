@@ -239,8 +239,9 @@ On the [Teams and members](https://console.agora.io/v2/teams-members) page, **Me
 
 -   Delete a member.
 
-    > ℹ️ **Information**
-    > Only the main account can delete a member account. Member accounts assigned to the Admin team cannot delete a member account.
+    :::note
+    Only the main account can delete a member account. Member accounts assigned to the Admin team cannot delete a member account.
+    :::
 
 ### Manage teams and permissions
 

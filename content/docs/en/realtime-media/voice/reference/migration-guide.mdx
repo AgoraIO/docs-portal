@@ -20,8 +20,9 @@ This section introduces the main steps to upgrade the SDK from v2.x or v3.7.x to
 
   After successfully integrating the SDK, you need to update the codes of imported classes from the `io.agora.rtc` prefix to the `io.agora.rtc2` prefix in the `/app/java/com.example.<projectname>/MainActivity` file of your project.
   
-  > ℹ️ **Notice**
-  > The location of `AgoraRtcChannelMediaOptions.java` in the 4.x SDK is also changed from `/models` to the root directory.
+  :::note
+  The location of `AgoraRtcChannelMediaOptions.java` in the 4.x SDK is also changed from `/models` to the root directory.
+  :::
 
 3. Update the Agora code in your app
 
@@ -393,8 +394,9 @@ This section introduces the main steps to upgrade the SDK from v2.x or 3.7.x to 
 
 This section introduces the main changes of v4.x compared to v3.7.x in the following categories. You need to update the code of your app according to your business use-case.
   
-  > ℹ️ **Notice**
-  > If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](https://docs.agora.io/en/3.x/video-calling/introduction/release-notes_ios.md) to obtain the changes between this version and v3.7.0.
+  :::note
+  If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](https://docs.agora.io/en/3.x/video-calling/introduction/release-notes_ios.md) to obtain the changes between this version and v3.7.0.
+  :::
 
 -  [Breaking changes](#breaking-changes): Introduces API compatibility changes that have a big impact. You need to spend significant time modifying the related implementation.
 
@@ -505,11 +507,12 @@ To facilitate locating and troubleshooting issues, v4.x reports problems and cau
 -  `remoteVideoStateChangedOfUid`: Reports the remote video state.
 
 As a consequence, v4.x removes the `didOccurError` and `didOccurWarning` callbacks.
-> ℹ️ **Notice**
-> In addition to the previously mentioned breaking changes relative to v3.7.0, v4.0.0 Beta introduces a few additional breaking changes for the final release of v4.0.0. Notable changes include:
-> - Replacing `publishAudioTrack` with `publishMicrophoneTrack` in `AgoraRtcChannelMediaOptions`.
-> - Replacing `publishScreenTrack` with `publishScreenCaptureVideo` in `AgoraRtcChannelMediaOptions` .
-> If you used this feature in v4.0.0 and wish to upgrade to v4.0.0, modify the implementation code of the feature after upgrading the SDK.
+:::note
+In addition to the previously mentioned breaking changes relative to v3.7.0, v4.0.0 Beta introduces a few additional breaking changes for the final release of v4.0.0. Notable changes include:
+- Replacing `publishAudioTrack` with `publishMicrophoneTrack` in `AgoraRtcChannelMediaOptions`.
+- Replacing `publishScreenTrack` with `publishScreenCaptureVideo` in `AgoraRtcChannelMediaOptions` .
+If you used this feature in v4.0.0 and wish to upgrade to v4.0.0, modify the implementation code of the feature after upgrading the SDK.
+:::
 ### Behavior changes
 
 This section introduces changes caused by reasonable optimization of the SDK default behavior and API behavior.
@@ -884,8 +887,9 @@ The v4.0.0 SDK has optimized or modified the implementation of some functions, r
 
 This section is based on v3.7.0 and introduces the main changes of v4.0.0 compared to v3.7.0 in the following categories. You need to update the code of your app according to your business use-case.
     
-  > ℹ️ **Notice**
-> If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](../../3.x/video-calling/introduction/release-notes) to obtain the changes between this version and v3.7.0.
+  :::note
+  If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](../../3.x/video-calling/introduction/release-notes) to obtain the changes between this version and v3.7.0.
+  :::
 
 - Breaking changes: Introduces API compatibility changes. You need to spend significant time modifying the related implementation.
 - Behavior changes: Introduces changes caused by reasonable optimization of the SDK default behavior and API behavior. Less time is required to modify the related implementation, if any.
@@ -962,11 +966,12 @@ To facilitate locating and troubleshooting issues, v4.0.0 reports problems and c
 
 As a consequence, v4.0.0 removes the `didOccurWarning` callbacks.
 
-> ℹ️ **Notice**
-> In addition to the previously mentioned breaking changes relative to v3.7.0, v4.0.0 Beta introduces a few additional breaking changes for the final release of v4.0.0. Notable changes include:
-> - Replacing `publishAudioTrack` with `publishMicrophoneTrack` in `AgoraRtcChannelMediaOptions`.
-> - Replacing `publishScreenTrack` with `publishScreenCaptureVideo` in `AgoraRtcChannelMediaOptions` .
-> If you used this feature in v4.0.0 and wish to upgrade to v4.0.0, modify the implementation code of the feature after upgrading the SDK.
+:::note
+In addition to the previously mentioned breaking changes relative to v3.7.0, v4.0.0 Beta introduces a few additional breaking changes for the final release of v4.0.0. Notable changes include:
+- Replacing `publishAudioTrack` with `publishMicrophoneTrack` in `AgoraRtcChannelMediaOptions`.
+- Replacing `publishScreenTrack` with `publishScreenCaptureVideo` in `AgoraRtcChannelMediaOptions` .
+If you used this feature in v4.0.0 and wish to upgrade to v4.0.0, modify the implementation code of the feature after upgrading the SDK.
+:::
 
 ### Behavior changes
 
@@ -1138,10 +1143,11 @@ Web SDK v4.x represents a complete overhaul of Web SDK v3.x, featuring optimized
 - Clear and comprehensive error code system to facilitate troubleshooting.
 
 This version provides a clearer and more concise overview of the improvements in Web SDK v4.x while maintaining focus on the key advantages for users.
-  > ℹ️ **Notice**
-  > - Agora has ceased support for Web SDK v3.x. To upgrade to version v4.x, refer to the provided documentation and migration guides.
-  >   - Note that Web SDK v4.x introduces major changes in API and product behavior, and is not backward compatible with version 3.x.
-  >   - In Web SDK v4.x, user role switching in live broadcast use-cases is decoupled from track release. Calling `publish` and `unpublish` will no longer automatically switch user roles. Refer to the [Migration steps](#migration-steps) for detailed instructions.
+  :::note
+  - Agora has ceased support for Web SDK v3.x. To upgrade to version v4.x, refer to the provided documentation and migration guides.
+    - Note that Web SDK v4.x introduces major changes in API and product behavior, and is not backward compatible with version 3.x.
+    - In Web SDK v4.x, user role switching in live broadcast use-cases is decoupled from track release. Calling `publish` and `unpublish` will no longer automatically switch user roles. Refer to the [Migration steps](#migration-steps) for detailed instructions.
+  :::
 
 This page tells you about:
 
@@ -1518,8 +1524,9 @@ The v4.0.0 SDK has optimized or modified the implementation of some functions, r
 ## What has changed
 
 This section is based on v3.7.0 and introduces the main changes of v4.0.0 compared to v3.7.0 in the following categories. You need to update the code of your app according to your business use-case.
-    > ℹ️ **Notice**
-> If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](../../3.x/video-calling/introduction/release-notes?platform=windows-cpp) to obtain the changes between this version and v3.7.0.
+    :::note
+    If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](../../3.x/video-calling/introduction/release-notes?platform=windows-cpp) to obtain the changes between this version and v3.7.0.
+    :::
 
 - Breaking changes: Introduces API compatibility changes. You need to spend significant time modifying the related implementation.
 - Behavior changes: Introduces changes caused by reasonable optimization of the SDK default behavior and API behavior. Less time is required to modify the related implementation, if any.

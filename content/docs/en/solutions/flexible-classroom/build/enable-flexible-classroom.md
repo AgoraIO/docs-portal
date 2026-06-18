@@ -79,8 +79,9 @@ To setup and configure storage and recording in for your classrooms:
           - `accessKey`: The Access Key provided by Amazon S3, which is used to identify visitors.
           - `secretKey`: The Secret Key provided by Amazon S3, which is used to authenticate signatures.
 
-       > ℹ️ **Info**
-       > For how to get these parameters, see the [Amazon S3 document](https://docs.aws.amazon.com/general/latest/gr/s3.html).
+       :::note
+       For how to get these parameters, see the [Amazon S3 document](https://docs.aws.amazon.com/general/latest/gr/s3.html).
+       :::
 
 1. **Configure your classroom**
 
@@ -88,8 +89,9 @@ To setup and configure storage and recording in for your classrooms:
 
         ![](https://web-cdn.agora.io/docs-files/1641368314262)
 
-        > ℹ️ **Information**
-        > The recording config can be set to default. Set the storage config to customized; otherwise, the recording cannot be stored in your OSS account.
+        :::note
+        The recording config can be set to default. Set the storage config to customized; otherwise, the recording cannot be stored in your OSS account.
+        :::
 
     1. Configure storage
 

@@ -37,8 +37,9 @@ Android supports self-developed and third-party WebView. Since WebView of differ
 
 iOS only supports system WebView, so support depends on the iOS version.
 
-> ⚠️ **Note**
-> H5 on iOS does not support direct use of WeChat for Business.
+:::note
+H5 on iOS does not support direct use of WeChat for Business.
+:::
 
 | Browser type | Receive (VP8) | Receive (H.264) | Publish (VP8) | Publish (H.264) |
 | --- | --- | --- | --- | --- |
