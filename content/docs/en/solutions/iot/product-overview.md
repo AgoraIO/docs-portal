@@ -20,9 +20,23 @@ Built on Agora’s Software-Defined Real-Time Network (SDRTN®), the IoT SDK ens
 
 ## Product Features
 
-- **Highly integrated** - IoT SDK integrates both real-time communication and signalling services, so you can easily develop features like live streaming and remote control at the same time.
-- **Lightweight design** - Designed for low-resource embedded systems, IoT SDK has a small package footprint as low as 400kB so you don’t have to worry about system resource usage.
-- **Low power consumption** - Based on low hardware requirements, IoT SDK works well with battery-powered devices like video doorbells.
-- **Cross-platform** - IoT SDK is compatible with Video SDK for Web, and developers can build apps across platforms like mobile, PC, web, and smart displays like Amazon Alexa, without plugins, while supporting a wide range of chipsets and operating systems.
-- **Excellent resistance to poor networks** - With end-to-end algorithmic network optimization, IoT SDK provides smooth live streaming even in weak network environments.
-- **Interoperable with the full Agora platform** - IoT SDK is interoperable with other Agora products so you can easily build up the companion apps on iOS, Android, or any other platform.
+<CardGrid>
+  <FeatureCard title="Highly integrated">
+    IoT SDK integrates both real-time communication and signalling services, so you can easily develop features like live streaming and remote control at the same time.
+  </FeatureCard>
+  <FeatureCard title="Lightweight design">
+    Designed for low-resource embedded systems, IoT SDK has a small package footprint as low as 400kB so you don’t have to worry about system resource usage.
+  </FeatureCard>
+  <FeatureCard title="Low power consumption">
+    Based on low hardware requirements, IoT SDK works well with battery-powered devices like video doorbells.
+  </FeatureCard>
+  <FeatureCard title="Cross-platform">
+    IoT SDK is compatible with Video SDK for Web, and developers can build apps across platforms like mobile, PC, web, and smart displays like Amazon Alexa, without plugins, while supporting a wide range of chipsets and operating systems.
+  </FeatureCard>
+  <FeatureCard title="Excellent resistance to poor networks">
+    With end-to-end algorithmic network optimization, IoT SDK provides smooth live streaming even in weak network environments.
+  </FeatureCard>
+  <FeatureCard title="Interoperable with the full Agora platform">
+    IoT SDK is interoperable with other Agora products so you can easily build up the companion apps on iOS, Android, or any other platform.
+  </FeatureCard>
+</CardGrid>

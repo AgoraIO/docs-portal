@@ -17,9 +17,23 @@ Scalable for one-on-one tutoring, group discussions, or large lecture halls, Fle
 
 ## Product Features
 
-- **Scalable ** - Easily support one-to-one, small groups, or very large, collaborative lecture halls based on your business requirements.
-- **Branding and design** - Deploy an online classroom solution that is custom-branded and designed.
-- **Flexible customization** - Tailor features and business logic to best suit your needs, whether on web, desktop, or mobile.
-- **Classroom management** - Easily manage classrooms and events, recordings, public resources, and user roles and permissions.
-- **Security and data privacy** - Agora is certified to the ISO and SOC 2 information security standards and meets privacy regulations like GDPR.
-- **Attendance and engagement tracking** - Track student attendance and monitor online participation like hand raise, live polling, pop-up quizzes, and whiteboard annotation.
+<CardGrid>
+  <FeatureCard title="Scalable">
+    Easily support one-to-one, small groups, or very large, collaborative lecture halls based on your business requirements.
+  </FeatureCard>
+  <FeatureCard title="Branding and design">
+    Deploy an online classroom solution that is custom-branded and designed.
+  </FeatureCard>
+  <FeatureCard title="Flexible customization">
+    Tailor features and business logic to best suit your needs, whether on web, desktop, or mobile.
+  </FeatureCard>
+  <FeatureCard title="Classroom management">
+    Easily manage classrooms and events, recordings, public resources, and user roles and permissions.
+  </FeatureCard>
+  <FeatureCard title="Security and data privacy">
+    Agora is certified to the ISO and SOC 2 information security standards and meets privacy regulations like GDPR.
+  </FeatureCard>
+  <FeatureCard title="Attendance and engagement tracking">
+    Track student attendance and monitor online participation like hand raise, live polling, pop-up quizzes, and whiteboard annotation.
+  </FeatureCard>
+</CardGrid>
