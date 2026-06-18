@@ -1,23 +1,44 @@
 ---
-title: "Whiteboard"
-description: "Build collaborative whiteboard experiences with Agora Interactive Whiteboard and Fastboard."
+title: "Product overview"
+description: "Enables developers to integrate real-time visual collaboration features into their applications."
 ---
-
-Whiteboard adds a shared visual workspace to realtime products so teams can draw, annotate, present files, and collaborate live.
 
 ![Interactive Whiteboard overview](/images/interactive-whiteboard/interactive-whiteboard-overview.png)
 
-## What you can build
+Agora's Interactive Whiteboard SDK enables real-time visual collaboration with features like drawing, annotation, and document sharing on a shared digital canvas. Fully customizable for diverse use cases, it integrates seamlessly with voice, video, and live streaming to enhance remote learning, brainstorming sessions, and collaborative meetings.
 
-- Real-time drawing, writing, annotation, and room collaboration tools
-- File conversion and presentation workflows for PPT, PPTX, Word, and PDF content
-- Custom whiteboard experiences with the low-level Whiteboard SDK
-- Faster integrations with the Fastboard SDK
-- Room, scene, screenshot, token, and file-conversion flows through REST APIs
+For fast integration, Agora Fastboard provides a prebuilt whiteboard experience with a default UI, enabling quick deployment and reducing development time.
 
-## Start here
+## Start building with
 
-- [Product overview](overview/)
-- [SDK quickstart](build/get-started-sdk/)
-- [Fastboard quickstart](build/get-started-uikit/)
-- [REST API overview](reference/rest-api/overview.md)
+- [SDK quickstart](./build/get-started-sdk.mdx)
+- [Fastboard quickstart](./build/get-started-uikit.mdx)
+- [Authentication](./build/authentication-workflow.md)
+- [API reference](/en/api-reference/whiteboard)
+- [Samples and demos](./reference/downloads.md)
+
+## Product features
+
+### Editing and room tools
+
+Includes standard tools for drawing, writing, notations, and erasing, as well as advanced tools for content sharing, multi-user editing, control, room management, and more.
+
+### File conversion
+
+Server-side file conversion transcodes files for presentation on the whiteboard, including support for converting PPT, PPTX, Word, and PDF files to images, and PPTX files to web pages.
+
+### Extensions
+
+Powerful extensions in netless-app help extend the functionality of your whiteboard experience and window-manager can be used to load and manage extensions on the whiteboard.
+
+### SDK options
+
+Choose from two SDKs: Interactive Whiteboard SDK allows experienced developers to provide substantial customization while Fastboard SDK provides a ready-to-use UI for a faster build.
+
+### RESTful APIs
+
+RESTful APIs provide token generation, room management, screenshot management, scene management, and file conversion features.
+
+### Stability and reliability
+
+Agora's globally distributed and clustered server system and backup and disaster recovery plans work together to guarantee high availability of the whiteboard service.

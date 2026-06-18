@@ -1,66 +1,25 @@
 ---
-title: "Integrate the SDK"
-description: "Shows how to integrate the Cloud Gateway SDK and run the sample project."
+title: "Product overview"
+description: "Transmit audio and video streams to apps developed with Agora’s Voice and Video SDKs."
 ---
 
-# Integrate the SDK
+# Server Gateway
 
-This article shows how to integrate the Server Gateway C++ SDK and run the sample project.
+Agora's Server Gateway service is a self-hosted solution that enables seamless transmission of audio and video streams between server-side applications and Agora’s Voice and Video SDKs using the Agora SDRTN®. It allows cloud applications to take full advantage of Agora’s global real-time network while maintaining control over their infrastructure.
 
-## Set up the development environment
+Designed for flexibility, Server Gateway supports a range of use-cases such as call centers, network testing, and AI-powered interactive classes. With multi-format support for YUV, PCM, and encoded media, configurable workflows for sending and receiving streams, and multi-channel capabilities, it offers exceptional flexibility for integrating media streams. Additional features include audio mixing, media encryption, and zone restrictions to ensure secure and localized media delivery.
 
-Make sure your server meets the following requirements.
+## Start building with
 
-### Hardware environment
+- [SDK quickstart](quickstart.md) - Customize your experience from the start with our flexible Video SDK.
+- [API reference](https://docs.agora.io/en/api-reference)
+- [Samples](https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.2.30-20240202_172130-292462.tgz)
 
-**Operating system**
+## Product Features
 
-- Ubuntu 14.04 or higher
-- CentOS: 7.0 or higher
-
-**CPU architecture**
-
-- arm64
-- x86-64
-
-If you need to run the SDK on other architectures, [submit a ticket](https://agora-ticket.agora.io/) to contact technical support.
-
-**Performance**
-
-- CPU：8-core, 1.8 GHz or higher.
-- 2 GB of RAM or higher. 4 GB or higher is recommended.
-
-**Network**
-
-- The server is connected to the internet and has an internet IP.
-- The server can access `*.agora.io` and `*.agoralab.co`.
-
-### Software environment
-
-- glibc 2.18 or later
-- gcc 4.8 or later
-
-If you are using Ubuntu, taking Ubuntu 20.04.3 LTS as an example, install the following dependencies in your server:
-
-```shell
-# Install aptitude
-sudo apt install aptitude
-# Install build-essential libx11-dev libxcomposite-dev libxext-dev libxfixes-dev libxdamage-dev cmake
-sudo aptitude install libx11-dev libxcomposite-dev libxext-dev libxfixes-dev libxdamage-dev cmake
-```
-
-If you are using CentOS, taking CentOS 7.9.2009 as an example, install the following dependencies in your server:
-
-```shell
-sudo yum groupinstall "Development Tools"
-sudo yum install wget
-sudo yum groupinstall X11
-```
-
-## Get an Agora App ID and a Video SDK temporary token
-
-See [Manage your Agora account](build/manage-agora-account.md) to learn how to get an **Agora App ID** and a **Video SDK temporary token**.
-
-## Get the SDK
-
-[Download](https://docs.agora.io/en/sdks) the latest x86-64 SDK package and decompress the file. If you need the SDK build for other architectures, [submit a ticket](https://agora-ticket.agora.io/) to technical support.
+- **Support for call centers, education, and testing ** - Support for use-cases like call centers, network testing, and AI-powered interactive classes with a single codebase for Application Platform as a Service (aPaaS)  applications.
+- **Multi-format sending and receiving** - Supports sending and receiving data in various formats, such as YUV, PCM and encoded video and audio formats which provides greater flexibility for customers using Agora’s global network.
+- **Configurable sending/receiving processes** - Send and receive media streams simultaneously or choose only to send or receive audio or video streams. Server Gateway also supports pushing media streams to a CDN directly.
+- **Multi-channel sending/receiving ** - Supports sending and/or receiving media streams to and from multiple channels simultaneously.
+- **Audio mixing and media encryption ** - Support for media encryption and mixing multiple audio streams.
+- **Restrict media zones ** - The Agora Voice and Video SDKs support restricting media zones, so that they only connect to Agora servers within the selected zone(s), regardless of where your app users are located.

@@ -9,7 +9,7 @@ Extend Agora's Voice SDK with capabilities such as recording, transcription, and
 
 ## Start building with
 
-- [SDK quickstart](index.mdx) - Customize your experience from the start with our flexible Video SDK.
+- [SDK quickstart](quickstart.mdx) - Customize your experience from the start with our flexible Video SDK.
 - [Authentication](build/use-tokens.mdx)
 - [API reference](../../api-reference/rtc/index.md)
 - [Samples](https://github.com/AgoraIO/API-Examples)
