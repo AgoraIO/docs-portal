@@ -16,9 +16,23 @@ Extend Agora Analytics with the Datadog integration to bring Agora Analytics dat
 
 ## Product Features
 
-- **Call Inspector ** - Identify, analyze, and respond to performance quality issues with advanced search, detailed visibility into call and user metrics, and diagnostics.
-- **Data Insights ** - Provides periodic call usage and quality statistics. It is designed to help customers understand the usage and quality of calls in apps.
-- **Real Time Monitoring ** - Visualized data for multiple call metrics in real time.
-- **Alert notifications ** - Sends alerts to you when abnormal metrics or events are detected in your Agora projects.
-- **RESTful APIs ** - Use RESTful APIs to retrieve call statistics and quality of experience metrics, use them in your own application or DataOps workflow.
-- **Embedding** - Easily embed Agora Analytics pages in internal web portals using a low-code approach.
+<CardGrid>
+  <FeatureCard title="Call Inspector">
+    Identify, analyze, and respond to performance quality issues with advanced search, detailed visibility into call and user metrics, and diagnostics.
+  </FeatureCard>
+  <FeatureCard title="Data Insights">
+    Provides periodic call usage and quality statistics. It is designed to help customers understand the usage and quality of calls in apps.
+  </FeatureCard>
+  <FeatureCard title="Real Time Monitoring">
+    Visualized data for multiple call metrics in real time.
+  </FeatureCard>
+  <FeatureCard title="Alert notifications">
+    Sends alerts to you when abnormal metrics or events are detected in your Agora projects.
+  </FeatureCard>
+  <FeatureCard title="RESTful APIs">
+    Use RESTful APIs to retrieve call statistics and quality of experience metrics, use them in your own application or DataOps workflow.
+  </FeatureCard>
+  <FeatureCard title="Embedding">
+    Easily embed Agora Analytics pages in internal web portals using a low-code approach.
+  </FeatureCard>
+</CardGrid>

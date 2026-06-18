@@ -1,0 +1,35 @@
+---
+title: Product overview
+description: Transcode real-time audio and video streams for audience subscription.
+---
+
+# Cloud Transcoding
+
+Designed specifically for real-time interactive live broadcast scenarios, Agora's Cloud Transcoding service enables you to obtain audio and video source streams from hosts in RTC channels on the server side and perform processing such as transcoding, audio mixing, and video compositing. The processed streams are then published to Agora RTC channels for audience subscription.
+
+The service supports subscriptions to audio and video streams with different picture quality levels, reducing downstream bandwidth pressure and client device performance consumption.
+
+## Start building with
+
+- [SDK quickstart](sdk-quickstart.md) - Customize your experience from the start with our flexible Video SDK.
+- [API reference](/en/api-reference/cloud-transcoding/restful)
+
+## Product Features
+
+<CardGrid>
+  <FeatureCard title="Low energy consumption for client devices">
+    Reduce terminal performance consumption by processing streams server-side before publishing to the RTC channel. This is especially beneficial for viewer devices with poor performance that cannot simultaneously process encoding, decoding, and rendering of multiple high-definition audio and video streams.
+  </FeatureCard>
+  <FeatureCard title="Low bitrate streaming for poor network conditions">
+    Improve video fluency and viewing experience under poor downlink network conditions. The service mixes audio, combines images, and transcodes them into low-bitrate streams, making it ideal for viewers subscribing to multiple host video streams or single HD streams.
+  </FeatureCard>
+  <FeatureCard title="Cross-platform compatibility">
+    Supports standard H.264 and VP8 encoding to enhance user experience across different platforms. The service converts host source streams from Native platforms to VP8 encoding for optimal Web viewer experience.
+  </FeatureCard>
+  <FeatureCard title="Automated stream processing workflow">
+    Automatically subscribe to specified user streams in RTC channels based on your UID configuration. The service performs transcoding, audio mixing, and video compositing according to your settings before publishing processed streams back to the channel.
+  </FeatureCard>
+  <FeatureCard title="Reduced bandwidth and simplified integration">
+    Eliminate the need for viewers to subscribe to multiple host streams individually, reducing downstream bandwidth pressure. Scenario-based solutions lower the development threshold by requiring fewer API calls and reducing cognitive burden.
+  </FeatureCard>
+</CardGrid>
