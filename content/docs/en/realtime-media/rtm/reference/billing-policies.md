@@ -3,8 +3,6 @@ title: "Policies"
 description: "Provides you with information on billing, fee deductions, free-of-charge policy, account settlement and any suspension to your account based on the account type."
 ---
 
-# Policies
-
 This page explains billing, account settlement, end-of-life policies, and any applicable free-of-charge policies for this product.
 
 ## Billing and account policies
@@ -55,7 +53,7 @@ On the sixth day of each month, Agora automatically deducts the fee for the prev
 - Your monthly usage does not exceed the free quota.
 - You do not use any other charged Agora services or products.
 
-If your account balance is negative after the deduction, Agora sends you an email, reminding you to [top up your account](pricing.md) at your earliest convenience and avoid account suspension.
+If your account balance is negative after the deduction, Agora sends you an email, reminding you to [top up your account](reference/pricing.md) at your earliest convenience and avoid account suspension.
 
 #### Account suspension
 
@@ -82,7 +80,7 @@ After account suspension, none of your projects can access Agora services. To 
 
 1. Add a credit card to your account or top up your balance using a bank account. This unfreezes your account and upgrades it to a paid account.
 
-2. Purchase a [pre-paid monthly package](subscription-packages.md) or [top-up package](subscription-packages.md). This option is highly recommended.
+2. Purchase a [pre-paid monthly package](reference/subscription-packages.md) or [top-up package](reference/subscription-packages.md). This option is highly recommended.
 
 ## Account settlement
 
@@ -187,6 +185,7 @@ If you need more time to transition to the latest version of a product or servic
 
 Agora is committed to providing support throughout the lifecycle of its products and services to ensure the best possible developer experience.
 
+<!-- PRODUCT-SPECIFIC TAIL START (Signaling): version retirement schedule below is Signaling-specific; everything above is generic Agora billing/EOL policy and is a candidate for cross-product globalization. -->
 ### Signaling version retirement schedule
 
 | Version | Release date | Retirement date |
@@ -226,3 +225,4 @@ Agora is committed to providing support throughout the lifecycle of its products
 | v0.9.2 | May 8, 2019 | September 19, 2020 |
 | v0.9.1 | April 4, 2019 | September 19, 2020 |
 | v0.9.0 | February 4, 2019 | September 19, 2020 |
+<!-- END product-specific tail (Signaling) -->

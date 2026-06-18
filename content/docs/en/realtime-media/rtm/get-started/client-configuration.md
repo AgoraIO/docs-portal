@@ -3,8 +3,6 @@ title: "Client configuration"
 description: "Configure connection protocol, proxy, and log settings."
 ---
 
-# Client configuration
-
 Client configuration enables you to customize the behavior of your Signaling client instance according to your app's requirements. 
 
 ## Understand the tech
@@ -25,7 +23,7 @@ When initializing a Signaling client instance, configure any or all of the follo
 
 ## Prerequisites
 
-Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](sdk-quickstart.mdx) page.
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../index.mdx) page.
 
 ## Configure the client instance
 
@@ -35,21 +33,33 @@ This section explains how to set up and customize various features when you init
 
 To specify a geographical area for Agora SDRTN® connections, refer to the following code:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
     .areaCode(EnumSet.of(RtmConstants.RtmAreaCode.AS, RtmConstants.RtmAreaCode.CN))
     .eventListener(eventListener)
     .build();
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val rtmConfig = RtmConfig.Builder("appid", "userId")
     .areaCode(EnumSet.of(RtmConstants.RtmAreaCode.AS, RtmConstants.RtmAreaCode.CN))
     .eventListener(eventListener)
     .build()
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 ### Private deployment configuration
 
@@ -57,7 +67,14 @@ Agora is committed to offering its customers flexible, secure, and customizable 
 
 Signaling provides `MESSAGE` and `STREAM` services. Choose one or both services based on your needs and budget. The following code shows you how to configure a private environment that deploys both services simultaneously:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 ArrayList<String> hosts = new ArrayList<>();
 hosts.add("x.x.x.x"); // your access point hosts list.
@@ -69,8 +86,10 @@ RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
     .privateConfig(privateConfig)
     .build();
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val hosts = arrayListOf("x.x.x.x") // your access point hosts list.
 val privateConfig = RtmPrivateConfig().apply {
@@ -82,6 +101,9 @@ val rtmConfig = RtmConfig.Builder("appid", "userId")
     .privateConfig(privateConfig)
     .build()
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 To deploy a private environment, you need to set up the backend service. For assistance, please contact [technical support](mailto:support@agora.io).
@@ -94,19 +116,31 @@ To ensure connection stability and continuous service availability, the RTM clie
 
 In some cases, users may find that their network does not support UDP port transmission, either temporarily or permanently. To ensure the dual-link design operates effectively, the SDK allows users to configure both links to use the TCP protocol. This can be done by setting the `protocolType` field in the `RtmConfig`. Below is a code example that configures both links to use the TCP protocol:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
     .protocolType(RtmProtocolType.TCP_ONLY)
     .build();
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val rtmConfig = RtmConfig.Builder("appid", "userId")
     .protocolType(RtmProtocolType.TCP_ONLY)
     .build()
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 The SDK does not support configuring both links to use the UDP protocol simultaneously.
@@ -117,7 +151,14 @@ The SDK does not support configuring both links to use the UDP protocol simultan
 
 In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable log output of the SDK and set the log information level by configuring `RtmLogLevel` when initializing the Signaling client instance. 
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 RtmLogConfig logConfig = new RtmLogConfig();
 // Set log file path
@@ -139,8 +180,10 @@ try {
     log(INFO, "create rtm client failed with exception: " + e.toString());
 }
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val logConfig = RtmLogConfig().apply {
     filePath = "./logfile/" // Set log file path
@@ -161,6 +204,9 @@ try {
     log(INFO, "create rtm client failed with exception: " + e.toString())
 }
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 Choose the log level from the following: 
 

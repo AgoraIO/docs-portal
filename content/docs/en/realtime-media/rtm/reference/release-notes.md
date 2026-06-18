@@ -3,9 +3,7 @@ title: "Release notes"
 description: "Information about changes in each release of Signaling."
 ---
 
-# Release notes
-
-The Agora Signaling SDK provides a streamlined and stable messaging mechanism for you to quickly implement real-time messaging for various use-cases. See [product overview](./product-overview.md) for more information.
+The Agora Signaling SDK provides a streamlined and stable messaging mechanism for you to quickly implement real-time messaging for various use-cases. See [product overview](../product-overview.md) for more information.
 
 This page contains information on the following releases:
 
@@ -176,15 +174,15 @@ This release optimizes the implementation of the following features, which invol
 
 1. Private deployment capability
 
-    This release adds the `privateConfig` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set private deployment. See [Private deployment configuration](../build/client-configuration.md).
+    This release adds the `privateConfig` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set private deployment. See [Private deployment configuration](../get-started/client-configuration.md).
 
 1. Heartbeat interval configuration
 
-    This release adds the `heartbeatInterval` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set the interval at which the SDK sends heartbeat packets to the server. See [Heartbeat interval and presence timeout parameters](../build/connection-management.md).
+    This release adds the `heartbeatInterval` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set the interval at which the SDK sends heartbeat packets to the server. See [Heartbeat interval and presence timeout parameters](../build/connection/connection-management.md).
 
 1. Dual environment configuration
 
-    This release adds the `protocolType` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set the network transport protocol. See [Connection protocol](../build/client-configuration.md).
+    This release adds the `protocolType` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set the network transport protocol. See [Connection protocol](../get-started/client-configuration.md).
 
 1. User channel
 
@@ -198,7 +196,7 @@ This release optimizes the implementation of the following features, which invol
 
 1. Connection state management
 
-    This release deprecates the `onConnectionStateChanged` callback and adds the [`onLinkStateEvent`](https://docs.agora.io/en/signaling/reference/api) callback instead. See [Connection management](../build/connection-management.md) for details.
+    This release deprecates the `onConnectionStateChanged` callback and adds the [`onLinkStateEvent`](https://docs.agora.io/en/signaling/reference/api) callback instead. See [Connection management](../build/connection/connection-management.md) for details.
 
 1. `REMOTE_STATE_CHANGED` event notification logic
 

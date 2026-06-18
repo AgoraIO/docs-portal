@@ -3,8 +3,6 @@ title: "Channel naming recommendations"
 description: "Channel naming recommendations."
 ---
 
-# Channel naming recommendations
-
 The flexibility of Signaling channels makes them suitable for a diverse range of interaction use-cases. The following are some commonly implemented use-cases:
 
 - **Private chat channel**: One-to-one chat.

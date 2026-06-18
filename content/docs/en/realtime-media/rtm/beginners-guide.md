@@ -3,8 +3,6 @@ title: "Beginner's guide"
 description: "An introduction to Signaling"
 ---
 
-# Beginner's guide
-
 ## What is Signaling?
 
 Signaling provides a comprehensive suite of low-latency, high-concurrency, scalable, and highly-reliable real-time messaging and status synchronization solutions. Agora manages the infrastructure required for the real-time communication layer of your game, guaranteeing an SLA uptime of 99.95%. To facilitate user development and innovation, Agora offers a plethora of demo apps and open third-party API extensions.
@@ -32,10 +30,10 @@ To learn more about specific use-cases, [contact](mailto:rtm-support@agora.io.md
 
 ## Getting started
 
-To create and set up a project for Signaling in Agora Console, see [Agora account management](../build/manage-agora-account.md). Browse the following documents to get started with Signaling:
+To create and set up a project for Signaling in Agora Console, see [Agora account management](./manage-agora-account.md). Browse the following documents to get started with Signaling:
 
-* [SDK quickstart](../build/sdk-quickstart.mdx)
-* [Message channels](../build/message-channel.md)
-* [Stream channels](../build/stream-channel.md)
+* [SDK quickstart](./index.mdx)
+* [Message channels](./build/channels/message-channel.md)
+* [Stream channels](./build/channels/stream-channel.md)
 * [API reference](https://docs.agora.io/en/signaling/reference/api)
-* [Pricing](pricing.md)
+* [Pricing](./reference/pricing.md)

@@ -3,8 +3,6 @@ title: "Migration guide"
 description: "Migrate from Signaling 1.x to Signaling 2.x"
 ---
 
-# Migration guide
-
 This migration guide helps you migrate from Signaling `1.x` to Signaling `2.x`.
 
 In December 2023, Agora released Signaling `2.x` in response to market and industry needs. Signaling `2.x` brings significant innovation to users in terms of:
@@ -29,7 +27,7 @@ To activate Signaling `2.x`, take the following steps:
 1. Copy the App ID for your project for use in your code.
 
 :::info
-Signaling version `2.x` differs from `1.x` in the support of naming character sets. For example, `2.x` does not support channel names, user names, or topic names that start with `_` or contain `.` characters. When upgrading from `1.x` to `2.x` or using both versions together, be aware of possible incompatibilities caused by character set differences. Best practice is to use the character set supported by `2.x` when migrating. See [Channel naming ](../build/channel-basics.md) for the character set supported by `2.x`.
+Signaling version `2.x` differs from `1.x` in the support of naming character sets. For example, `2.x` does not support channel names, user names, or topic names that start with `_` or contain `.` characters. When upgrading from `1.x` to `2.x` or using both versions together, be aware of possible incompatibilities caused by character set differences. Best practice is to use the character set supported by `2.x` when migrating. See [Channel naming ](../get-started/channel-basics.md) for the character set supported by `2.x`.
 
 :::
 
@@ -596,7 +594,7 @@ Signaling supports the restricted access area feature to comply with the laws an
 
 ## Call invitation
 
-Call Invitation is no longer available in Signaling `2.x`. Use [CallAPI](../build/connection-management.md) as an alternate approach.
+Call Invitation is no longer available in Signaling `2.x`. Use [CallAPI](../build/connection/connection-management.md) as an alternate approach.
 
 ## Other new features
 

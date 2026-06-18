@@ -3,15 +3,13 @@ title: "Connection basics"
 description: "Understand the basics of Signaling connections"
 ---
 
-# Connection basics
-
 A Signaling client must establish a connection with the server to access network resources. API calls, messages, and events in the channel are transmitted through network connections. While the Signaling SDK manages establishing and maintaining network connections, understanding its management mechanism helps you handle potential network errors in the app, and improves the end user experience.
 
 This page shows how to manage the connection between the Signaling SDK and the Signaling server. 
 
 ## Prerequisites
 
-Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](sdk-quickstart.mdx) page.
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
 
 ## Understand the tech
 
@@ -38,7 +36,14 @@ The `MESSAGE` service provides access to message channels, presence, storage, lo
 
 To establish a `MESSAGE` connection, refer to the following code:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 rtmClient.login(token, new ResultCallback<Void>() {
     @Override
@@ -52,8 +57,10 @@ rtmClient.login(token, new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 rtmClient.login(token, object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
@@ -65,6 +72,9 @@ rtmClient.login(token, object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 Establishing a `MESSAGE` connection increments the peak connections count.
@@ -79,7 +89,14 @@ The `STREAM` service provides users with all the capabilities of a stream channe
 
 Before establishing a `STREAM` connection, you establish a `MESSAGE` connection. To do this, call the `login` method to log in to the server. The life cycle of a `STREAM` connection starts when you call `join` to join a channel and ends when you actively call `leave` to leave the channel. To establish a `STREAM` connection, refer to the following code:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 JoinChannelOptions options = new JoinChannelOptions();
 options.setToken("yourToken");
@@ -99,8 +116,10 @@ streamChannel.join(options, new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val options = JoinChannelOptions().apply {
     token = "yourToken"
@@ -119,6 +138,9 @@ streamChannel.join(options, object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 Establishing a `STREAM` connection does not increase the peak connections count.
@@ -143,7 +165,14 @@ The detailed information provided by the event is valuable for handling business
 
 To receive `onLinkStateEvent` notifications, refer to the following code:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 RtmEventListener listener = new RtmEventListener() {
     @Override
@@ -153,8 +182,10 @@ RtmEventListener listener = new RtmEventListener() {
 
 rtmClient.addEventListener(listener);
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val listener = object : RtmEventListener {
     override fun onLinkStateEvent(event: LinkStateEvent) {
@@ -163,6 +194,9 @@ val listener = object : RtmEventListener {
 
 rtmClient.addEventListener(listener)
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 The following table describes the available event parameters:
 
@@ -196,19 +230,31 @@ While increasing `heartbeatInterval` saves battery, it delays detection of netwo
 
 To customize the heartbeat interval, refer to the following code:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
     .heartbeatInterval(30)
     .build();
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val rtmConfig = RtmConfig.Builder("appid", "userId")
     .heartbeatInterval(30)
     .build()
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 #### Stream connection
 
@@ -240,7 +286,14 @@ When a connection between the client and server is no longer required, call an a
 
 In a message channel, the connection status affects measurement of the peak number of connections. Best practice is to actively disconnect by calling the `logout` method to log out of Signaling.
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 rtmClient.logout(new ResultCallback<Void>() {
     @Override
@@ -252,8 +305,10 @@ rtmClient.logout(new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 rtmClient.logout(object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
@@ -263,6 +318,9 @@ rtmClient.logout(object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 When you call the `logout` method to disconnect, both `MESSAGE` and `STREAM` connections are terminated simultaneously. You exit all channels, and all cached data in the client is cleared.
@@ -273,7 +331,14 @@ When you call the `logout` method to disconnect, both `MESSAGE` and `STREAM` con
 
 When you no longer need a stream connection, call the `leave` method to exit the channel and disconnect the stream connection.
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 streamChannel.leave(new ResultCallback<Void>() {
     @Override
@@ -287,8 +352,10 @@ streamChannel.leave(new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 streamChannel.leave(object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
@@ -300,6 +367,9 @@ streamChannel.leave(object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 ## Reference
 

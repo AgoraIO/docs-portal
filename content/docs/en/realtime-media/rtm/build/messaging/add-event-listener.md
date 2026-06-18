@@ -3,13 +3,11 @@ title: "Event listeners"
 description: "Receive event notifications."
 ---
 
-# Event listeners
-
 To receive message and event notifications when you subscribe to or join channels, you add an event listener. An event listener is triggered by the SDK to inform the client about Signaling events and state changes. The listener enables you to respond to events like successful connection to Signaling, token expiration, received messages, and other presence, storage, and lock events.
 
 ## Prerequisites
 
-Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](sdk-quickstart.mdx) page.
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
     
 ## Implement event listeners
 
@@ -19,7 +17,14 @@ This section shows how to use the Signaling SDK to implement event listeners.
 
 Signaling uses an `RtmEventListener` instance to process messages and event notifications. Each message and event notification has a corresponding event handler, where you implement your own processing logic. Refer to the following code to create and use an instance of `RtmEventListener`:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 // Create an RtmEventListener instance
 RtmEventListener eventListener = new RtmEventListener() {
@@ -72,8 +77,10 @@ rtmConfig.eventListener = eventListener;
 // Create an RtmClient instance
 RtmClient mRtmClient = RtmClient.create(rtmConfig);
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 // Create an RtmEventListener instance
 val eventListener = object : RtmEventListener {
@@ -121,20 +128,35 @@ val rtmConfig = RtmConfig().apply {
 // Create an RtmClient instance
 val mRtmClient = RtmClient.create(rtmConfig)
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 ### Remove event listeners
 
 To avoid performance degradation caused by memory leaks, errors, and exceptions, best practice is to unregister an event handler when you no longer need to use it. 
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 mRtmClient.removeEventListener(eventListener);
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 mRtmClient.removeEventListener(eventListener)
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 The `RtmClient` automatically destroys event listeners when you call `release`.
 

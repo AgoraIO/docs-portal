@@ -3,8 +3,6 @@ title: "Pricing"
 description: "Provides you with information on billing, fee deductions, free-of-charge policy, and any suspension to your account based on the account type."
 ---
 
-# Pricing
-
 This page explains how Agora calculates your monthly bill for Signaling.
 
 ## How Signaling usage is measured
@@ -431,4 +429,4 @@ Depending on the features you enable for your project and your actual usage, Sig
 
 ### See also
 
-- [Billing policies and free-of-charge policy](billing-policies.md)
+- [Billing policies and free-of-charge policy](../billing-policies.md)

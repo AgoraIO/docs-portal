@@ -3,8 +3,6 @@ title: "Subscription packages"
 description: "Provides information\\[] on subscription packages."
 ---
 
-# Subscription packages
-
 A subscription package is a prepaid billing method. You can purchase a package in the [`Agora Console`](https://console.agora.io/subscriptions/signaling-plans) to cover Signaling usage for the current month.
 
 This page explains how to purchase, and manage subscription packages.

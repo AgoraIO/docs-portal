@@ -3,8 +3,6 @@ title: "Message history (Beta)"
 description: "Retrieve Signaling messages history."
 ---
 
-# Message history (Beta)
-
 The Signaling message history feature allows you to store messages when publishing them to a channel. For example, if a user joins a channel midway through a conversation, you can retrieve messages that were published before the user joined. You can configure the message retention period for each project, ranging from 1 day to permanent storage.
 
 When a message is published, it is stored using the channel name and the message timestamp. You can use this information to retrieve historical messages.
@@ -18,7 +16,7 @@ The historical message feature is currently available for User Channels and Mess
 
 Before implementing this feature, ensure that you have:
 
-* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](sdk-quickstart.mdx) page.
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
 * Enabled the message history feature by contacting [support@agora.io](mailto:support@agora.io). You can request a storage duration of 1, 7, 30, 90, or 365 days, or opt for permanent storage.
 
 :::info

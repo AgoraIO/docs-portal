@@ -3,8 +3,6 @@ title: "Supported platforms"
 description: "A list of platforms supported by Signaling SDK."
 ---
 
-# Supported platforms
-
 This section lists the platforms and products you use to develop apps that interact with Agora SDRTN®.
 
 | Target architecture       | Minimum version of the operating environment | Minimum operating system version |

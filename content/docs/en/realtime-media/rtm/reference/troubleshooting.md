@@ -3,8 +3,6 @@ title: "Troubleshooting"
 description: "Troubleshooting"
 ---
 
-# Troubleshooting
-
 To troubleshoot issues you encounter during development, take the following steps:
 
 ## Enable local logging

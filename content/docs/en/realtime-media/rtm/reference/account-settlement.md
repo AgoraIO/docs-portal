@@ -3,8 +3,6 @@ title: "Account settlement"
 description: "Agora's policy of account settlement."
 ---
 
-# Account settlement
-
 To ensure billing transparency and smooth service continuity, Agora implements real-time account balance reservation based on estimated usage across all Agora products for SSP customers. This does not apply to customers with a signed contract.
 
 :::info

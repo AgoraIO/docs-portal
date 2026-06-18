@@ -3,8 +3,6 @@ title: "Stream channels"
 description: "Stream messages to and from a room."
 ---
 
-# Stream channels
-
 Stream channels are based on the room model. In Signaling, communication through stream channels requires use of specific APIs. This page shows you how to join, leave, and send messages in stream channels.
 
 ## Understand the tech
@@ -17,13 +15,13 @@ To use stream channels, you first create a stream channel object instance. The c
 * Send messages
 * Destroy the channel instance
 
-After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics.md). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../reference/limitations.md).
+After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics.md). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations.md).
 
 ## Prerequisites
 
 Ensure that you have:
 
-* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](sdk-quickstart.mdx) page.
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
 
 * Activated the stream channel capability.
 
@@ -49,35 +47,59 @@ This section shows you how to use the Signaling SDK to implement stream channel 
 
 To use stream channel functionality, call `createStreamChannel` to create a `StreamChannel` object instance. 
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 // Create a StreamChannel instance
 StreamChannel mStreamChannel = mRtmClient.createStreamChannel("chat_room");
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 // Create a StreamChannel instance
 val mStreamChannel = mRtmClient.createStreamChannel("chat_room")
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 This method creates only one `StreamChannel` instance at a time. If you need to create multiple instances, call the method multiple times.
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 // Create the first instance
 StreamChannel mStreamChannel1 = mRtmClient.createStreamChannel("chat_room1");
 // Create the second instance
 StreamChannel mStreamChannel2 = mRtmClient.createStreamChannel("chat_room2");
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 // Create the first instance
 val mStreamChannel1 = mRtmClient.createStreamChannel("chat_room1")
 // Create the second instance
 val mStreamChannel2 = mRtmClient.createStreamChannel("chat_room2")
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 Signaling enables you to create unlimited stream channel instances in a single app. However, best practice is to create channels based on your actual requirements to maintain optimal client-side performance. For instance, if you hold multiple stream channel instances, destroy the ones that are no longer in use to prevent resource blocking, and recreate them when they are needed again.
@@ -88,7 +110,14 @@ Signaling enables you to create unlimited stream channel instances in a single a
 
 Call the `join` method on the `StreamChannel` instance with appropriate options as follows:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 JoinChannelOptions options = new JoinChannelOptions();
 options.setToken("your_token");
@@ -108,8 +137,10 @@ mStreamChannel.join(options, new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val options = JoinChannelOptions().apply {
     token = "your_token"
@@ -128,10 +159,20 @@ mStreamChannel.join(options, object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console. 
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 JoinChannelOptions options = new JoinChannelOptions("your_token", true, true, true);
 mStreamChannel.join(options, new ResultCallback<Void>() {
@@ -146,8 +187,10 @@ mStreamChannel.join(options, new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 val options = JoinChannelOptions("your_token", true, true, true)
 
@@ -161,6 +204,9 @@ mStreamChannel.join(options, object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics.md) for more information.
 
@@ -270,7 +316,14 @@ In Signaling, a user may register as a message publisher for up to 8 topics conc
 
 To leave a channel, call the `leave` method on the `StreamChannel` instance:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 mStreamChannel.leave(new ResultCallback<Void>() {
     @Override
@@ -284,8 +337,10 @@ mStreamChannel.leave(new ResultCallback<Void>() {
     }
 });
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 mStreamChannel.leave(object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
@@ -297,6 +352,9 @@ mStreamChannel.leave(object : ResultCallback<Void> {
     }
 })
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 To rejoin a stream channel, call the `join` method again. You can join and leave as long as the corresponding `StreamChannel` instance remains active and has not been destroyed.
 
@@ -304,15 +362,27 @@ To rejoin a stream channel, call the `join` method again. You can join and leave
 
 To destroy a stream channel instance, call `release`:
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
 ```java
 mStreamChannel.release();
 ```
+</CodeBlockTab>
 
-**Kotlin**
+<CodeBlockTab value="kotlin">
+
 ```kotlin
 mStreamChannel.release()
 ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 Destroying a stream channel removes the `StreamChannel` instance from your app. This action is local to your app and does not affect other users or the Signaling channel.

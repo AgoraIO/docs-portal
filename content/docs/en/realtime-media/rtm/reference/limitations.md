@@ -3,8 +3,6 @@ title: "API usage restrictions"
 description: "A brief overview of the restrictions of the Signaling SDK, including API call limit, string size, encoding, and more."
 ---
 
-# API usage restrictions
-
 This page provides a brief overview of the restrictions of the Agora Signaling SDK, including API call limit, string size, encoding, and more.
 
 ## API call limit

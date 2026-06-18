@@ -3,8 +3,6 @@ title: "Connection state transitions and recovery"
 description: "Understand Signaling network connection management mechanism."
 ---
 
-# Connection state transitions and recovery
-
 During communication between the Signaling SDK and the server, the connection goes through multiple states. You observe and respond to these state transitions by listening to state change event notifications.
 
 :::info

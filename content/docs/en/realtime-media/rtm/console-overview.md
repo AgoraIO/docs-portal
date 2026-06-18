@@ -3,8 +3,6 @@ title: "Agora console overview"
 description: "Configure, manage, and purchase Agora products and services."
 ---
 
-# Agora console overview
-
 [Agora Console](https://console.agora.io/v2) is the unified portal for you to configure, purchase, and manage Agora products and services. This page shows you how to use the new **beta** version of Agora Console to manage all aspects of your Agora account.
 
 ## Dashboard overview
@@ -117,7 +115,7 @@ For a project listed on the **Projects** page, you can do the following:
 
 -   View basic information, such as the last updated and created dates, name, and security status.
 
--   Copy the   [App ID](glossary.md)   of the project.
+-   Copy the   [App ID](reference/glossary.md)   of the project.
 
 -   Click the pencil icon to open the project details page, where you can configure **Project Name**, copy **App Certificate** and **App ID**, and generate a **Temporary Token**.
 
@@ -487,6 +485,8 @@ Follow these steps to delete your Agora account:
 
     If any prerequisite is not met, an error message appears after you click **Delete Account**. Check the [Prerequisites](#prerequisites) and try again.
 
+<!-- BEGIN Signaling-specific tail — product-specific; split out when globalizing this page across products -->
 ## Reference
 
 For information on using Agora REST authentication, see [RESTful authentication](https://docs.agora.io/en/signaling/reference/restful-authentication).
+<!-- END Signaling-specific tail -->
