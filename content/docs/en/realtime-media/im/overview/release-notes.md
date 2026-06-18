@@ -19,7 +19,7 @@ v1.3.2 was released on April 7, 2025.
 
 - Enhanced security by adding access checks for message attachments. For example, if you receive an image message in a group and forward it to others outside the group, they cannot download the image.
 - Streamlined APIs by sunsetting those deprecated before Agora Chat v1.1.0.
-- Included the `libaosl.so` library in the SDK. If you have integrated both Agora Chat SDK 1.3.2 and Signaling SDK 2.2.0 and above or Video SDK 4.3.0 and above, a compilation error may occur. For details, see [Integration issues](../get-started/get-started-sdk.mdx#integration-issues).
+- Included the `libaosl.so` library in the SDK. If you have integrated both Agora Chat SDK 1.3.2 and Signaling SDK 2.2.0 and above or Video SDK 4.3.0 and above, a compilation error may occur. For details, see [Integration issues](../get-started/get-started-sdk#integration-issues).
 
 #### Issues fixed
 
@@ -1259,11 +1259,11 @@ Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing
 Refer to the following documentations to enable Chat and use the Chat SDK to implement real-time chatting functionalities in your app:
 
 - [Enable and Configure Chat](../get-started/enable.md)
-- [Chat SDK quickstart](../get-started/get-started-sdk.mdx)
+- [Chat SDK quickstart](../get-started/get-started-sdk)
 - [Messages](../client-api/messages/message-overview.md)
 - [Chat Group](../client-api/chat-group/group-overview.md)
 - [Chat Room](../client-api/chat-room/chatroom-overview.md)
-- [API Reference](../api-ref.md)
+- [RESTful API overview](../restful-api/restful-overview.md)
 
 ### React Native
 
@@ -1650,11 +1650,11 @@ Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing
 Refer to the following documentations to enable Chat and use the Chat SDK to implement real-time chatting functionalities in your app:
 
 - [Enable and Configure Chat](../get-started/enable.md)
-- [Chat SDK quickstart](../get-started/get-started-sdk.mdx)
+- [Chat SDK quickstart](../get-started/get-started-sdk)
 - [Messages](../client-api/messages/message-overview.md)
 - [Chat Group](../client-api/chat-group/group-overview.md)
 - [Chat Room](../client-api/chat-room/chatroom-overview.md)
-- [API Reference](../api-ref.md)
+- [RESTful API overview](../restful-api/restful-overview.md)
 
 ### Windows
 
@@ -1955,7 +1955,7 @@ Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing
 Refer to the following documentations to enable Chat and use the Chat SDK to implement real-time chatting functionalities in your app:
 
 - [Enable and Configure Chat](../get-started/enable.md)
-- [Chat SDK quickstart](../get-started/get-started-sdk.mdx)
+- [Chat SDK quickstart](../get-started/get-started-sdk)
 - [Messages](../client-api/messages/message-overview.md)
 - [Chat Group](../client-api/chat-group/group-overview.md)
 - [Chat Room](../client-api/chat-room/chatroom-overview.md)
@@ -2331,11 +2331,11 @@ Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing
 Refer to the following documentations to enable Chat and use the Chat SDK to implement real-time chatting functionalities in your app:
 
 - [Enable and Configure Chat](../get-started/enable.md)
-- [Chat SDK quickstart](../get-started/get-started-sdk.mdx)
+- [Chat SDK quickstart](../get-started/get-started-sdk)
 - [Messages](../client-api/messages/message-overview.md)
 - [Chat Group](../client-api/chat-group/group-overview.md)
 - [Chat Room](../client-api/chat-room/chatroom-overview.md)
-- [API Reference](link)
+- [RESTful API overview](../restful-api/restful-overview.md)
 
 ## RESTful API
 ## v1.3.0

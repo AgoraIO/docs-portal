@@ -22,8 +22,8 @@ Follow this guide to integrate and test push notifications in your environment.
 ## Prerequisites
 
 Before proceeding, ensure that you meet the following requirements:
-- You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk.mdx).
-- You understand the call frequency limit of the Chat APIs supported by different pricing plans as described in [Limitations](../reference/limitations.md).
+- You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk).
+- You understand the call frequency limit of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations.md).
 
 ### Android
 

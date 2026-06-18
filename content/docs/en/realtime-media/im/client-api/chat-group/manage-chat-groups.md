@@ -90,7 +90,7 @@ The Chat SDK allows you to implement the following group management features:
 
 Before proceeding, ensure that you meet the following requirements:
 
-- You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk.mdx).
+- You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk).
 - You understand the call frequency limits of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations.md).
 - You understand the number of chat groups and chat group members supported by different pricing plans as described in [Pricing Plan Details](../../reference/pricing-plan-details.md).
 
@@ -1286,7 +1286,7 @@ SDKClient.Instance.GroupManager.DestroyGroup(groupId, new CallBack(
 
 ### Join a chat group
 
-The logic of joining a chat group varies according to the `GroupStyle` setting you choose when [creating the chat group](../../reference/group-overview.md#ceate-a-chat-group):
+The logic of joining a chat group varies according to the `GroupStyle` setting you choose when [creating the chat group](./group-overview.md#create-and-destroy-a-chat-group):
 
 - If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the inviter and admins. Once a user joins a chat group, all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback;
 - If the `GroupStyle` is set to `PublicJoinNeedApproval`, users can send join requests to the chat group. The inviter and chat group admins receive the `IGroupManagerDelegate#OnRequestToJoinReceivedFromGroup` callback and choose whether to approve the join request:
@@ -1658,7 +1658,7 @@ SDKClient.Instance.GroupManager.DestroyGroup(groupId, new CallBack(
 
 ### Join a chat group
 
-The logic of joining a chat group varies according to the `GroupStyle` setting you choose when [creating the chat group](../../reference/group-overview.md#create-a-chat-group):
+The logic of joining a chat group varies according to the `GroupStyle` setting you choose when [creating the chat group](./group-overview.md#create-and-destroy-a-chat-group):
 
 - If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the inviter and admins. Once a user joins a chat group, all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback;
 - If the `GroupStyle` is set to `PublicJoinNeedApproval`, users can send join requests to the chat group. The inviter and chat group admins receive the `IGroupManagerDelegate#OnRequestToJoinReceivedFromGroup` callback and choose whether to approve the join request:

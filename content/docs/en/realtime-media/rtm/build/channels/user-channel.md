@@ -30,7 +30,13 @@ Refer to the following sample code for sending messages:
 
 * String message
 
-    **Java**
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="java">
     ```java
     // Send string message
     PublishOptions options = new PublishOptions();
@@ -48,8 +54,9 @@ Refer to the following sample code for sending messages:
         }
     });
     ```
+    </CodeBlockTab>
 
-    **Kotlin**
+    <CodeBlockTab value="kotlin">
     ```kotlin
     // Send string message
     val options = PublishOptions()
@@ -65,6 +72,8 @@ Refer to the following sample code for sending messages:
         }
     })
     ```
+    </CodeBlockTab>
+    </CodeBlockTabs>
 
     **Swift**
     ```swift
@@ -154,7 +163,13 @@ Refer to the following sample code for sending messages:
 
 * Binary message
 
-    **Java**
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="java">
     ```java
     // Send binary message
     byte[] message = new byte[] {1, 2, 3, 4};
@@ -173,8 +188,9 @@ Refer to the following sample code for sending messages:
         }
     });
     ```
+    </CodeBlockTab>
 
-    **Kotlin**
+    <CodeBlockTab value="kotlin">
     ```kotlin
     // Send binary message
     val message = byteArrayOf(1, 2, 3, 4)
@@ -191,6 +207,8 @@ Refer to the following sample code for sending messages:
         }
     })
     ```
+    </CodeBlockTab>
+    </CodeBlockTabs>
 
     **Swift**
     ```swift
