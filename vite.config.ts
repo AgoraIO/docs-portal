@@ -10,12 +10,16 @@ import { shouldPrerenderPage } from './src/lib/prerender-filter';
 import { createDocsPrerenderPaths } from './src/lib/prerender-pages';
 
 const isTest = process.env.VITEST === 'true';
+const isSpaStaticExperiment = process.env.TSS_SPA_STATIC_EXPERIMENT === 'true';
 const docsPrerenderPaths = isTest
   ? []
   : createDocsPrerenderPaths({
       openApiPaths: getOpenApiPrerenderPaths(),
       pages: getContentDocsPrerenderPaths().map((url) => ({ url })),
     });
+const prerenderPages = docsPrerenderPaths.map((path) => ({
+  path,
+}));
 
 export default defineConfig({
   server: {
@@ -41,20 +45,37 @@ export default defineConfig({
       ? [react()]
       : [
           tanstackStart({
-            pages: docsPrerenderPaths.map((path) => ({
-              path,
-            })),
-            prerender: {
-              crawlLinks: false,
-              enabled: true,
-              filter: shouldPrerenderPage,
-            },
+            pages: isSpaStaticExperiment ? [] : prerenderPages,
+            ...(isSpaStaticExperiment
+              ? {}
+              : {
+                  prerender: {
+                    crawlLinks: false,
+                    enabled: true,
+                    filter: shouldPrerenderPage,
+                  },
+                }),
+            ...(isSpaStaticExperiment
+              ? {
+                  spa: {
+                    enabled: true,
+                    prerender: {
+                      crawlLinks: false,
+                      outputPath: '/index.html',
+                    },
+                  },
+                }
+              : {}),
           }),
           react(),
           // please see https://tanstack.com/start/latest/docs/framework/react/guide/hosting#nitro for guides on hosting
-          nitro({
-            preset: 'vercel',
-          }),
+          ...(isSpaStaticExperiment
+            ? []
+            : [
+                nitro({
+                  preset: 'vercel',
+                }),
+              ]),
         ]),
   ],
   resolve: {

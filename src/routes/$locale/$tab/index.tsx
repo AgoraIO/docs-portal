@@ -1,8 +1,13 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { getDocsPagePayload, getDocsTabIndex } from '@/lib/docs-page';
+import type { DocsPagePayload } from '@/lib/docs-page.server';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
+import {
+  readStaticDocsPayload,
+  shouldUseStaticDocsPayload,
+} from '@/lib/docs-static-manifest';
 
 export const Route = createFileRoute('/$locale/$tab/')({
   loader: async ({ params }) => {
@@ -10,30 +15,38 @@ export const Route = createFileRoute('/$locale/$tab/')({
       throw notFound();
     }
 
-    const page = await getDocsTabIndex({
-      data: {
-        locale: params.locale,
-        tab: params.tab,
-      },
-    });
+    const payload = shouldUseStaticDocsPayload()
+      ? await readStaticDocsPayload<DocsPagePayload | { redirectUrl: string }>({
+          locale: params.locale,
+          slugSegments: [],
+          tab: params.tab,
+        })
+      : await (async () => {
+          const page = await getDocsTabIndex({
+            data: {
+              locale: params.locale,
+              tab: params.tab,
+            },
+          });
 
-    if (!page) {
-      throw notFound();
-    }
+          if (!page) {
+            return null;
+          }
 
-    if (page.url !== `/${params.locale}/${params.tab}`) {
-      throw redirect({
-        href: page.url,
-      });
-    }
+          if (page.url !== `/${params.locale}/${params.tab}`) {
+            throw redirect({
+              href: page.url,
+            });
+          }
 
-    const payload = await getDocsPagePayload({
-      data: {
-        locale: params.locale,
-        slugSegments: [],
-        tab: params.tab,
-      },
-    });
+          return getDocsPagePayload({
+            data: {
+              locale: params.locale,
+              slugSegments: [],
+              tab: params.tab,
+            },
+          });
+        })();
 
     if (!payload) {
       throw notFound();
