@@ -1,0 +1,169 @@
+---
+title: "LiveData Conversation Intelligence"
+description: "Integrate and use the LiveData Conversation Intelligence extension in your Android or iOS app."
+---
+
+The LiveData Conversation Intelligence extension enables you to quickly add real-time speech transcription and translation features to your app.
+
+<PlatformStructured platform="android">
+This page shows you how to integrate and use the extension in your app.
+
+## Understand the tech
+
+The extension is an encapsulation of a cloud real-time speech recognition and translation API. You can integrate its capabilities by passing the specified `key` and `value` parameters to the `setExtensionProperty` method provided by the Video SDK.
+
+## Prerequisites
+
+- Android Studio 4.1 or later.
+- A physical device (not an emulator) running Android 5.0 or later.
+- Integrated the Video SDK and implemented basic video calling, see [SDK quickstart](../../video/quickstart.mdx).
+
+## Project setup
+
+The extension provides a sample project on GitHub:
+
+1. Clone the repository:
+
+   ```shell
+   git clone https://github.com/highras/rtvt-agora-marketplace.git
+   ```
+
+2. Open the sample project in Android Studio.
+3. Sync the project with Gradle files.
+4. Connect a real Android device and run the project.
+
+## Integrate the extension
+
+### Purchase and activate the extension
+
+Visit Extensions Marketplace and purchase the extension. Save the `appKey` and `appSecret` used to initialize it.
+
+### Add the extension package
+
+1. Download the extension package from Extensions Marketplace.
+2. Save all `.aar` files to `/app/libs`.
+3. Add the Gradle dependency:
+
+   ```groovy
+   implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+   ```
+
+### Enable the extension
+
+```java
+RtcEngineConfig config = new RtcEngineConfig();
+config.addExtension("agora-iLiveData-filter");
+engine = RtcEngine.create(config);
+engine.enableExtension("iLiveData", "RTVT", true);
+```
+
+### Start transcription and translation
+
+```java
+JSONObject jsonObject = new JSONObject();
+jsonObject.put("appKey", "80001000");
+jsonObject.put("appSecret", "qwerty");
+jsonObject.put("srclang", "zh");
+jsonObject.put("dstLang", "en");
+
+engine.setExtensionProperty(
+  EXTENSION_VENDOR_NAME,
+  EXTENSION_AUDIO_FILTER_VOLUME,
+  "startAudioTranslation",
+  jsonObject.toString()
+);
+```
+
+### Get transcription and translation results
+
+After successful initialization, the extension returns transcription and translation results through the `onEvent` callback.
+
+### Stop using the extension
+
+```java
+engine.setExtensionProperty(
+  EXTENSION_VENDOR_NAME,
+  EXTENSION_AUDIO_FILTER_VOLUME,
+  "closeAudioTranslation",
+  "end"
+);
+```
+
+## Reference
+
+- [RtcEngineConfig.addExtension](../../../api-reference/rtc/android/(current)/class-and-enum/classes/class-rtcengineconfig.mdx)
+- [enableExtension](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_enableextension)
+- [setExtensionProperty](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setextensionproperty)
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+This page shows you how to integrate and use the extension in your app.
+
+## Understand the tech
+
+The extension is an encapsulation of a cloud real-time speech recognition and translation API. You can integrate its capabilities by passing the specified `key` and `value` parameters to the `setExtensionPropertyWithVendor` method provided by the Video SDK.
+
+## Prerequisites
+
+- Xcode 9.0 or later.
+- A physical device (not an emulator) running iOS 9.0 or later.
+- Integrated the Video SDK and implemented basic video calling, see [SDK quickstart](../../video/quickstart.mdx).
+
+## Project setup
+
+1. Clone the sample repository:
+
+   ```shell
+   git clone https://github.com/highras/rtvt-agora-marketplace.git
+   ```
+
+2. Enter `iOS/SW_Test` and run:
+
+   ```shell
+   pod install
+   ```
+
+3. Open `SW_Test.xcworkspace` in Xcode.
+4. Connect a real iOS device and run the project.
+
+## Integrate the extension
+
+### Add the extension package
+
+1. Download the extension package from Extensions Marketplace.
+2. Save all `.framework` files to your project folder.
+3. Add the dynamic libraries in Xcode and make sure **Embed** is set to **Embed & Sign**.
+4. Add `-ObjC` to **Other Linker Flags**.
+
+![Add ObjC](/images/extensions-marketplace/livedata-ios-build-settings-add-objc.png)
+
+![Capitalize O and C](/images/extensions-marketplace/livedata-ios-build-settings-capitalize-o-and-c.png)
+
+### Enable the extension
+
+```objective-c
+AgoraRtcEngineConfig *config = [AgoraRtcEngineConfig new];
+config.eventDelegate = self;
+self.agoraKit = [AgoraRtcEngineKit sharedEngineWithConfig:config delegate:self];
+[self.kit enableExtensionWithVendor:[iLiveDataSimpleFilterManager companyName]
+                          extension:[iLiveDataSimpleFilterManager plugName]
+                            enabled:YES];
+```
+
+### Start transcription and translation
+
+Use `setExtensionPropertyWithVendor` with the `startAudioTranslation` key and a JSON string containing `appKey`, `appSecret`, `srcLanguage`, and `destLanguage`.
+
+### Get transcription and translation results
+
+After successful initialization, the extension returns transcription and translation results through the `onEvent` callback.
+
+### Stop using the extension
+
+Use `setExtensionPropertyWithVendor` with the `closeAudioTranslation` key.
+
+## Reference
+
+- [enableExtensionWithVendor](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableextension(withvendor:extension:enabled:))
+- [setExtensionPropertyWithVendor](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setextensionpropertywithvendor(_:extension:extensioninfo:key:value:))
+</PlatformStructured>
