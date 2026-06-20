@@ -1,0 +1,316 @@
+---
+title: "Dubbing and Voice Changer"
+description: "Dubbing AI Voice Changer extension is an encapsulation of the core API of real-time AI voice conversion."
+---
+
+Dubbing AI Voice Changer extension enables you to change the audio timbre.
+
+This page shows you how to integrate the Dubbing AI Voice Changer extension in your app.
+
+## Understand the tech
+
+<Tabs defaultValue="android" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+<TabsContent value="android">
+Using the [setExtensionProperty](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setextensionproperty) method provided in Agora SDK v4.x and passing in the specified `key` and `value` parameters, you can quickly integrate real-time AI voice conversion ability into your app.
+
+The `key` parameter you specify in the `setExtensionProperty` method corresponds to the name of the API, and the `value` parameter wraps some or all of the parameters of the API in JSON format. By passing in the specified `key` and `value` parameters, you can call the corresponding API to realize the functions related to real-time AI sound conversion.
+</TabsContent>
+<TabsContent value="ios">
+Using the [setExtensionPropertyWithVendor](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setextensionpropertywithvendor(_:extension:extensioninfo:key:value:)) method provided in Agora SDK v4.x and passing in the specified `key` and `value` parameters, you can quickly integrate real-time AI voice conversion ability into your app.
+
+The `key` parameter you specify in the `setExtensionPropertyWithVendor` method corresponds to the name of the API, and the `value` parameter wraps some or all of the parameters of the API in JSON format. By passing in the specified `key` and `value` parameters, you can call the corresponding API to realize the functions related to real-time AI sound conversion.
+</TabsContent>
+</Tabs>
+
+## Prerequisites
+
+Ensure that your development environment meets the following requirements:
+
+<Tabs defaultValue="android" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+<TabsContent value="android">
+- Android Studio 4.1 or later.
+- A physical device (not an emulator) running Android 5.0 or later.
+</TabsContent>
+<TabsContent value="ios">
+- Xcode 9.0 or later.
+- A physical device (not an emulator) running iOS 8.0 or later.
+</TabsContent>
+</Tabs>
+
+- Dubbing AI Voice Changer is used with Agora Voice SDK v4.x.
+
+    Refer to the [SDK quickstart](/voice-calling/get-started/get-started-sdk) to integrate Voice SDK v4.x and implement basic voice calling.
+
+## Integrate the extension
+
+This section shows you how to integrate the Dubbing AI Voice Changer extension, and call the core API to implement the voice changing function.
+
+<Tabs defaultValue="android" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+<TabsContent value="android">
+
+1. **Integrate the Dubbing AI Voice Changer extension**
+
+    To integrate the extension in your project:
+
+        1. Enter the [Extensions Marketplace](https://console.agora.io/v2/extensions-marketplace) and download the **Dubbing AI Voice Changer** extension package. After unzipping, save all `.aar` files to the project folder `/app/libs`.
+        1. Get the following resource files and save them in the same directory of the project folder. For example, a new `vc_model` directory:
+            - License file and tone files: Contact Agora to obtain these files. The suffix of the tone file is `.dat`, and the tone file is issued according to the license.
+            - Model file: Download the required resources.
+            ![Resource Files](/images/extensions-marketplace/resource-files.png)
+        1. Open the `app/build.gradle` file and add the following lines under `dependencies`:
+
+            ```java
+            implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+            ```
+
+1. **Enable the plugin**
+
+    After creating and initializing `RtcEngine`, call `enableExtension` to enable the plug-in, before you call other APIs such as `enableVideo` and `joinChannel`.
+
+        ```kotlin
+        // Declare parameters
+        private val EXTENSION_NAME = "dubbing_vc"
+        private val EXTENSION_VENDOR_NAME = "Dubbing"
+        private val EXTENSION_AUDIO_FILTER = "DubbingVC"
+
+        private val changeSpeaker_ = "changeSpeaker"
+        private val startRealTimeTranscribe_ = "startRealTimeTranscribe"
+        private val stopRealTimeTranscribe_ = "stopRealTimeTranscribe"
+        private val getSpeakersInfo_ = "getSpeakersInfo"
+
+        val config = RtcEngineConfig()
+        config.mContext = baseContext
+        config.mAppId = appId
+        config.mEventHandler = mRtcEventHandler
+        // Load plugin
+        config.addExtension(EXTENSION_NAME)
+        config.mExtensionObserver = extensionObserver
+        // Create and initialize RtcEngine
+        mRtcEngine = RtcEngine.create(config)
+        mRtcEngine.enableAudio()
+        // Enable plugin
+        mRtcEngine.enableExtension(EXTENSION_VENDOR_NAME, EXTENSION_AUDIO_FILTER, enable)
+        ```
+
+1. **Set the resource file path**
+
+    When you download and integrate the plug-in, the license, sound, and model files are saved to the specified directory. In this step, you specify the path where these resource files are located.
+
+        ```kotlin
+        val modelPath: String = "${context.filesDir}${File.separator}vc_model"
+        ```
+
+1. **Get the tone list**
+
+    After receiving the `onExtensionStarted` callback from Agora SDK, call `getExtensionProperty` passing in the `getSpeakersInfo` key to get the timbre list:
+
+        ```kotlin
+        val speakerList = mRtcEngine.getExtensionProperty(
+            EXTENSION_VENDOR_NAME,
+            EXTENSION_AUDIO_FILTER,
+            getSpeakersInfo_
+        )
+        // Convert JSON to array
+        val arr = JSONArray(speakerList)
+        ```
+
+    The timbre list is returned as JSON data that you parse yourself.
+
+1. **Start changing**
+
+    Call `setExtensionProperty` and pass in the corresponding `key` and `value`:
+
+        ```kotlin
+        mRtcEngine.setExtensionProperty(
+            EXTENSION_VENDOR_NAME,
+            EXTENSION_AUDIO_FILTER,
+            startRealTimeTranscribe_,
+            "true"
+        )
+        ```
+
+1. **Select timbre**
+
+    Pass in the timbre ID from the obtained timbre list to set the corresponding timbre:
+
+        ```kotlin
+        mRtcEngine.setExtensionProperty(
+            EXTENSION_VENDOR_NAME,
+            EXTENSION_AUDIO_FILTER,
+            changeSpeaker_,
+            id
+        )
+        ```
+
+1. **Stop changing**
+
+    Call the API to stop the voice changer:
+
+        ```kotlin
+        mRtcEngine.setExtensionProperty(
+            EXTENSION_VENDOR_NAME,
+            EXTENSION_AUDIO_FILTER,
+            stopRealTimeTranscribe_,
+            "true"
+        )
+        ```
+
+1. **Release resources**
+
+     Close the plug-in and release the resources used by the plug-in:
+
+        ```kotlin
+        mRtcEngine.enableExtension(EXTENSION_VENDOR_NAME, EXTENSION_AUDIO_FILTER, false)
+        ```
+
+</TabsContent>
+<TabsContent value="ios">
+
+1. **Integrate the Dubbing AI Voice Changer extension**
+
+    To integrate the extension in your project:
+
+        1. Enter the [Extensions Marketplace](https://console.agora.io/v2/extensions-marketplace) page and download the plug-in package for **Extensions** plug-in.
+        1. Unzip the folder, import all `.framework` files into the project, and modify `Embed` to `Embed & Sign`.
+        1. Get the following resource files and save them in the same directory of the project folder (For example, Resource path):
+            - License file and tone files: Contact Agora to obtain these files. The suffix of the tone file is named `.dat`, and the tone file is issued according to the license.
+            - Model file: Download the required resources.
+            ![Resource Files](/images/extensions-marketplace/resource-files.png)
+        1. Import the `libc++` system library and third-party dynamic libraries into the project `MJExtension`.
+
+1. **Enable the plugin**
+
+        After creating and initializing `RtcEngine`, call `enableExtensionWithVendor` to enable the plug-in, before you call other APIs such as `enableVideo`, and `joinChannelByToken`
+
+        ```objective-c
+        AgoraRtcEngineConfig *cfg = [[AgoraRtcEngineConfig alloc] init];
+        cfg.appId = appId;
+        cfg.eventDelegate = self;
+        cfg.channelProfile = AgoraChannelProfileLiveBroadcasting;
+        cfg.audioScenario = AgoraAudioScenarioGameStreaming;
+        self.agoraKit = [AgoraRtcEngineKit sharedEngineWithConfig:cfg delegate:self];
+        [self.agoraKit setClientRole:AgoraClientRoleBroadcaster];
+
+        [self.agoraKit enableExtensionWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" enabled:YES];
+        ```
+
+1. **Set the resource file path**
+
+    When you download and integrate the plug-in, the license, sound, and model files are saved to the specified directory. In this step, you specify the path where these resource files are located.
+
+        ```objective-c
+        NSString *sourcePath = [[NSBundle mainBundle] resourcePath];
+        [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"setResourcesFilePath" value:sourcePath];
+        ```
+
+1. **Get the tone list**
+
+    After receiving the `onExtensionStarted` callback from Agora SDK, call `getExtensionPropertyWithVendor` passing in the `getSpeakersInfo` key to get the timbre list:
+
+        ```objective-c
+        NSString *voices = [self.agoraKit getExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"getSpeakersInfo"];
+        // Convert JSON to array
+        NSData *nsData = [voices dataUsingEncoding:NSUTF8StringEncoding];
+        _speakerArray = [NSJSONSerialization JSONObjectWithData:nsData options:kNilOptions error:nil];
+        ```
+
+    The timbre list is returned as JSON data that you parse yourself.
+
+1. **Start changing**
+
+    Call `setExtensionPropertyWithVendor` and pass in the corresponding `key` and `value`:
+
+        ```objective-c
+        [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"startRealTimeTranscribe" value:@"startRealTimeTranscribe"];
+        ```
+
+1. **Select timbre**
+
+    Pass in the timbre ID from the obtained timbre list to set the corresponding timbre:
+
+        ```objective-c
+        [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"changeSpeaker" value:@“”];
+        ```
+
+1. **Stop changing**
+
+    Call the API to stop the voice changer:
+
+        ```objective-c
+        [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"stopRealTimeTranscribe" value:@"stopRealTimeTranscribe"];
+        ```
+
+1. **Release resources**
+
+    Close the plug-in and release the resources used by the plug-in:
+
+        ```objective-c
+        [self.agoraKit enableExtensionWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" enabled:NO];
+        ```
+
+</TabsContent>
+</Tabs>
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+<Tabs defaultValue="android" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+<TabsContent value="android">
+
+### Sample project
+
+The Dubbing AI Voice Changer extension provides a [GitHub sample project](https://github.com/Dubbing-AI-Voice-Changer/DubbingAgoraDemo/tree/main/Android) for testing. To clone and run the project:
+
+1. Clone the repository
+
+    ```sh
+    git clone https://github.com/Dubbing-AI-Voice-Changer/DubbingAgoraDemo.git
+    ```
+
+2. Refer to the `README.md` file in the repository to run the demo.
+
+### API reference
+
+- [addExtension](https://api-ref.agora.io/en/video-sdk/android/4.x/API/api_irtcengine_addextension.html) in the `RtcEngineConfig` class
+- [enableExtension](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_enableextension) in the `RtcEngine` class
+- [setExtensionProperty](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setextensionproperty) in the `RtcEngine` class
+
+</TabsContent>
+<TabsContent value="ios">
+
+### Sample project
+
+The Dubbing AI Voice Changer extension provides a [GitHub sample project](https://github.com/Dubbing-AI-Voice-Changer/DubbingAgoraDemo/tree/main/iOS) for testing. To clone and run the project:
+
+1. Clone the repository
+
+    ```sh
+    git clone https://github.com/Dubbing-AI-Voice-Changer/DubbingAgoraDemo.git
+    ```
+
+2. Refer to the `README.md` file in the repository to run the demo.
+
+### API reference
+
+- [enableExtensionWithVendor](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableextension(withvendor:extension:enabled:)) in the `AgoraRtcEngineKit` class
+- [setExtensionPropertyWithVendor](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setextensionpropertywithvendor(_:extension:extensioninfo:key:value:)) in the `AgoraRtcEngineKit` class
+
+</TabsContent>
+</Tabs>
