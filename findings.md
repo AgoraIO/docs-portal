@@ -20,3 +20,8 @@
   - keep `index.mdx` as the product overview
   - keep `product-overview.md` as a direct-link compatibility page
   - keep `quickstart.mdx` as the detailed setup guide
+- `content/docs/en/realtime-media/video/reference/migration-guide/` was still a directory-tabs container with three stub pages (`android`, `ios`, `web`) instead of a single in-page multi-platform doc like `content/docs/en/realtime-media/voice/build/custom-audio.mdx`.
+- The same directory-tabs migration-guide pattern also exists in:
+  - `content/docs/en/realtime-media/broadcast-streaming/reference/migration-guide/`
+  - `content/docs/en/solutions/interactive-live-streaming/reference/migration-guide/`
+- Similar directory-tabs grouping also exists for release notes, but those are much larger platform-specific docs and are not obvious one-page merge candidates from structure alone.

@@ -23,6 +23,11 @@ describe('openapi lanes', () => {
         },
         tab: 'api-reference',
       }),
+      expect.objectContaining({
+        id: 'signaling-rest',
+        routePrefix: 'realtime-media/rtm/rest-api',
+        tab: 'realtime-media',
+      }),
     ]);
   });
 
@@ -74,6 +79,24 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/conversational-ai/rest-api/agent/join',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(20);
+    expect(getOpenApiPrerenderPaths()).toContain(
+      '/en/realtime-media/rtm/rest-api/peer-to-peer-message',
+    );
+    expect(getOpenApiPrerenderPaths()).toHaveLength(30);
+  });
+
+  it('resolves signaling REST endpoint routes in the realtime-media tab', () => {
+    expect(
+      resolveOpenApiEndpointRoute('en', 'realtime-media', [
+        'rtm',
+        'rest-api',
+        'peer-to-peer-message',
+      ]),
+    ).toMatchObject({
+      lane: expect.objectContaining({ id: 'signaling-rest' }),
+      operationId: 'send-peer-message',
+      routeLeaf: 'peer-to-peer-message',
+      url: '/en/realtime-media/rtm/rest-api/peer-to-peer-message',
+    });
   });
 });

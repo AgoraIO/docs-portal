@@ -25,6 +25,7 @@ import {
   getOpenApiEndpointUrl,
   getOpenApiLanes,
   getOpenApiOperationIds,
+  isOpenApiTab,
   type OpenApiLane,
   resolveOpenApiEndpointRoute,
 } from './openapi/lanes';
@@ -592,7 +593,7 @@ async function getDocsSidebarNodes({
         tab,
       });
 
-  if (tab !== OPENAPI_TAB || !locale) {
+  if (!isOpenApiTab(tab) || !locale) {
     return sidebar;
   }
 
@@ -1053,7 +1054,7 @@ function getDocsPages({
   }[];
   tab: string;
 }) {
-  if (tab !== OPENAPI_TAB || !locale) {
+  if (!isOpenApiTab(tab) || !locale) {
     return pages;
   }
 
