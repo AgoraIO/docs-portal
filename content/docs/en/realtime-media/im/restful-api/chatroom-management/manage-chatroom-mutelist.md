@@ -5,7 +5,7 @@ description: "Shows how to perform chat room member mute management by calling t
 
 This page shows how to perform  member mute management by calling the Chat RESTful APIs, including muting and unmuting members in a , and retrieving the list of muted members.
 
-Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs described in [Limitations](../../reference/limitations.md#call-limit-of-server-sides).
+Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs described in [Limitations](../../reference/limitations#call-limit-of-server-sides).
 
 ## Common parameters
 
@@ -15,9 +15,9 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
 | :--------- | :----- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
 | `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
 Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.
 ::: | Yes |
@@ -274,7 +274,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'https:
 
 ## Muting all  members
 
-Mutes all  members. Once this method call succeeds, only the members on the  allow list can send messages. For details, see [Manage Chat Room Allow List](./manage-chatroom-mutelist.md).
+Mutes all  members. Once this method call succeeds, only the members on the  allow list can send messages. For details, see [Manage Chat Room Allow List](./manage-chatroom-mutelist).
 
 Muting all  members has no connection with the mute list. That is to say, calling this API will not add all  members to the  mute list.
 
@@ -403,4 +403,4 @@ curl -X DELETE -H 'Content-Type: application/json' -H 'Accept: application/json'
 
 ## Status codes 
 
-For details, see [HTTP Status Codes](../../reference/http-status-codes.md).
+For details, see [HTTP Status Codes](../../reference/http-status-codes).

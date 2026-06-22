@@ -6,15 +6,15 @@ The AI section is currently centered on **Conversational AI**. It is the primary
 
 ## Primary product
 
-- [Conversational AI](index.md)
+- [Conversational AI](index)
 
 ## Related products and paths
 
-- [Convo AI Device Kit](device-kit/index.md): smart-hardware oriented product built on Conversational AI and Agora IoT capabilities.
-- [OpenAI Realtime integration](integrations/openai-realtime/index.md): integration recipe for combining Agora realtime audio with OpenAI-based flows.
+- [Convo AI Device Kit](device-kit/index): smart-hardware oriented product built on Conversational AI and Agora IoT capabilities.
+- [OpenAI Realtime integration](integrations/openai-realtime/index): integration recipe for combining Agora realtime audio with OpenAI-based flows.
 
 ## Interface surfaces
 
-- [Conversational AI REST API](../api-reference/conversational-ai/rest-api/index.md)
-- [Conversational AI Server SDK](../api-reference/conversational-ai/server-sdk/index.md)
-- [Conversational AI Client toolkit](../api-reference/conversational-ai/client-toolkit/index.md)
+- [Conversational AI REST API](../api-reference/conversational-ai/rest-api/index)
+- [Conversational AI Server SDK](../api-reference/conversational-ai/server-sdk/index)
+- [Conversational AI Client toolkit](../api-reference/conversational-ai/client-toolkit/index)

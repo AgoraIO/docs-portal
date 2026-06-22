@@ -1,5 +1,6 @@
 ---
 title: Google Gemini Live (Vertex AI)
+description: Configure Gemini Live on Vertex AI as an MLLM provider for Voice Agent.
 ---
 Google Gemini Live provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components. This page covers integration using Vertex AI, authenticated with Google Cloud Application Default Credentials (ADC).
 
@@ -8,7 +9,7 @@ Google Gemini Live provides multimodal large language model capabilities with re
 
 ### Sample configuration
 
-The following example shows a starting `mllm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+The following example shows a starting `mllm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
 
 ```json
 "mllm": {
@@ -45,7 +46,7 @@ The following example shows a starting `mllm` parameter configuration you can us
 
 ### Turn detection
 
-For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../../../api-reference/conversational-ai/rest-api/agent/join.md#properties-mllm-turn-detection). The following examples show the supported configurations for Google Gemini Live (Vertex AI). To set up turn detection, add a `turn_detection` block inside the `mllm` object when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../../../api-reference/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection). The following examples show the supported configurations for Google Gemini Live (Vertex AI). To set up turn detection, add a `turn_detection` block inside the `mllm` object when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
 
 * **Server VAD**
 

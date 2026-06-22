@@ -6,7 +6,7 @@ This guide covers the configuration options available in the agent editor. The e
 
 ## Prerequisites
 
-Follow the [quickstart](../quickstart.md) to create your first Agent Studio agent.
+Follow the [quickstart](../quickstart) to create your first Agent Studio agent.
 
 ## Prompt
 
@@ -14,11 +14,11 @@ The Prompt tab contains the core instructions that define your agent's identity 
 
 ![](/images/conversational-ai/studio/agent-editor-prompt.png)
 
-- **System Prompt**: Defines how your agent behaves. For example: `You are a helpful customer support assistant.` See [Prompt design](prompt-design.md) for guidance on writing effective prompts.
+- **System Prompt**: Defines how your agent behaves. For example: `You are a helpful customer support assistant.` See [Prompt design](prompt-design) for guidance on writing effective prompts.
 - **Greeting Message**: The first thing your agent says when a session starts. For example: `Hello! How can I help you today?`
 - **Failure Message**: The message the agent speaks when the LLM fails to respond or returns an error. For example: `Please hold on a second.`
 
-See [Template variables](prompt-design.md#template-variables) to customize the system prompt, greeting message, and failure message for each user.
+See [Template variables](prompt-design#template-variables) to customize the system prompt, greeting message, and failure message for each user.
 
 ## Models
 
@@ -31,24 +31,24 @@ The Models tab is where you select the ASR, LLM, and TTS services your agent use
 - **Automatic Speech Recognition (ASR)**: Select a vendor-model from the dropdown.
 - **Language**: Select the primary language for agent interaction using the BCP-47 language tag.
 
-For advanced ASR settings, click the settings icon next to the ASR dropdown. For supported vendors, see [Supported ASR vendors](supported-vendors.md#asr-vendors).
+For advanced ASR settings, click the settings icon next to the ASR dropdown. For supported vendors, see [Supported ASR vendors](supported-vendors#asr-vendors).
 
 ### LLM
 
 - **Large Language Model (LLM)**: Select a vendor-model from the dropdown.
 
-For advanced LLM settings, click the settings icon next to the LLM dropdown. For supported vendors, see [Supported LLM vendors](supported-vendors.md#llm-vendors).
+For advanced LLM settings, click the settings icon next to the LLM dropdown. For supported vendors, see [Supported LLM vendors](supported-vendors#llm-vendors).
 
 ### TTS
 
 - **Text-to-Speech (TTS)**: Select a vendor-model from the dropdown.
 - **Voice**: Select a voice for the selected TTS vendor-model.
 
-For advanced TTS settings, click the settings icon next to the TTS dropdown. For supported vendors, see [Supported TTS vendors](supported-vendors.md#tts-vendors).
+For advanced TTS settings, click the settings icon next to the TTS dropdown. For supported vendors, see [Supported TTS vendors](supported-vendors#tts-vendors).
 
 ### Bring your own API key (BYOK)
 
-To use your own API key or to select a vendor or model not available under Agora Managed Key, click the settings icon next to the relevant dropdown. This opens a configuration panel where you can select any supported vendor and add your own API credentials. See [Manage integrations](integrations.md#credentials) for details on adding credentials.
+To use your own API key or to select a vendor or model not available under Agora Managed Key, click the settings icon next to the relevant dropdown. This opens a configuration panel where you can select any supported vendor and add your own API credentials. See [Manage integrations](integrations#credentials) for details on adding credentials.
 
 ![](/images/conversational-ai/studio/configure-llm.png)
 
@@ -141,14 +141,14 @@ The Actions tab is where you connect your agent to external data and services.
 
 ### Knowledge base
 
-A knowledge base provides your agent with additional context from reference documents. Click **+ Add Knowledge Base** to select or create a knowledge base. See [Add knowledge base](integrations.md#knowledge-bases).
+A knowledge base provides your agent with additional context from reference documents. Click **+ Add Knowledge Base** to select or create a knowledge base. See [Add knowledge base](integrations#knowledge-bases).
 
 ### MCP Server
 
-MCP servers enable your agent to call tools provided by external services. Click **+ Add MCP Server** to select or create an MCP server. See [Add MCP server](integrations.md#mcp-servers).
+MCP servers enable your agent to call tools provided by external services. Click **+ Add MCP Server** to select or create an MCP server. See [Add MCP server](integrations#mcp-servers).
 
 ## Next steps
 
-- [Manage integrations](integrations.md): Manage credentials, MCP servers, and knowledge bases for reuse across agents
-- [Test your agent](test-agent.md): Learn more about testing features and troubleshooting agent behavior
-- [Publish your agent](../deploy/deploy-agent.md): Publish your agent to production
+- [Manage integrations](integrations): Manage credentials, MCP servers, and knowledge bases for reuse across agents
+- [Test your agent](test-agent): Learn more about testing features and troubleshooting agent behavior
+- [Publish your agent](../deploy/deploy-agent): Publish your agent to production

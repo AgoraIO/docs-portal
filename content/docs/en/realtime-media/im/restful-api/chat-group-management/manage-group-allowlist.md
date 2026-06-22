@@ -3,9 +3,9 @@ title: "Manage chat group allow list"
 description: "Shows how to manage a chat group allow list using the Agora Chat RESTful APIs."
 ---
 
-A  allow list refers to a list of  members that can send group messages after the group owner or admins have muted all the group members using the [mute-all](./manage-group-mutelist.md#muting-all-chat-group-members) method. Chat provides a complete set of allow list management methods, including adding users to the allow list and removing them from it, as well as retrieving the members on the allow list.
+A  allow list refers to a list of  members that can send group messages after the group owner or admins have muted all the group members using the [mute-all](./manage-group-mutelist#muting-all-chat-group-members) method. Chat provides a complete set of allow list management methods, including adding users to the allow list and removing them from it, as well as retrieving the members on the allow list.
 
-This page shows how to manage a  allow list using the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../../reference/limitations.md#call-limit-of-server-sides).
+This page shows how to manage a  allow list using the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../../reference/limitations#call-limit-of-server-sides).
 
 ## Common parameters
 
@@ -15,9 +15,9 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
 | :--------- | :----- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
 | `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
 Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.
 ::: | Yes |
@@ -45,7 +45,7 @@ Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request
 Authorization: Bearer ${YourAppToken}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../../develop/authentication.md).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../../develop/authentication).
 
 ## Retrieving the group allow list
 
@@ -77,7 +77,7 @@ For other parameters and detailed descriptions, see [Common parameters](#param).
 
 If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body contains the user IDs on the group allow list. For other parameters and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes) for possible causes.
 
 ### Example
 
@@ -112,7 +112,7 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {Your app to
 
 ## Adding a member to the group allow list
 
-This method adds the specified user to the  allow list. Members in the group allow list can still send group messages after the group owner or admin has muted all the group members using the [mute-all](./manage-group-mutelist.md#muting-all-chat-group-members) method.
+This method adds the specified user to the  allow list. Members in the group allow list can still send group messages after the group owner or admin has muted all the group members using the [mute-all](./manage-group-mutelist#muting-all-chat-group-members) method.
 
 ### HTTP request
 
@@ -152,7 +152,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes) for possible causes.
 
 ### Example
 
@@ -226,7 +226,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes) for possible causes.
 
 ### Example
 
@@ -305,7 +305,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes) for possible causes.
 
 ### Example
 

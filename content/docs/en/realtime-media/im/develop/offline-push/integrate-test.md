@@ -23,7 +23,7 @@ Follow this guide to integrate and test push notifications in your environment.
 
 Before proceeding, ensure that you meet the following requirements:
 - You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk).
-- You understand the call frequency limit of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations.md).
+- You understand the call frequency limit of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations).
 
 ### Android
 
@@ -254,7 +254,7 @@ For more reliable testing, use a physical device.
 
 1. Log in to the app on your device and confirm that the device token is successfully bound.
 
-    You can check the log or call [RESTful API for getting user details](../../restful-api/user-system-registration.md#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
+    You can check the log or call [RESTful API for getting user details](../../restful-api/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
 
 1. Enable app notification bar permissions.
 
@@ -430,7 +430,7 @@ Make sure your test device is a non-jail-broken iOS device. For more reliable te
 
 1. Log in to the app on your device and confirm that the device token is successfully bound.
 
-    You can check the log or call [RESTful API for getting user details](../../restful-api/user-system-registration.md#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
+    You can check the log or call [RESTful API for getting user details](../../restful-api/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
 
 1. Enable app notification bar permissions.
 
@@ -623,7 +623,7 @@ For more reliable testing, use a physical device.
 
 1. Log in to the app on your device and confirm that the device token is successfully bound.
 
-    You can check the log or call [RESTful API for getting user details](../../restful-api/user-system-registration.md#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
+    You can check the log or call [RESTful API for getting user details](../../restful-api/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
 
 1. Enable app notification bar permissions.
 
@@ -874,7 +874,7 @@ For more reliable testing, use a physical device.
 
 1. Log in to the app on your device and confirm that the device token is successfully bound.
 
-    You can check the log or call [RESTful API for getting user details](../../restful-api/user-system-registration.md#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
+    You can check the log or call [RESTful API for getting user details](../../restful-api/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
 
 1. Enable app notification bar permissions.
 

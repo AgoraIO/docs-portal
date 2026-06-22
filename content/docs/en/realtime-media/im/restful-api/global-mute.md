@@ -7,7 +7,7 @@ With increasingly strict rules and regulations on app compliance, content superv
 
 This feature can be widely applied in apps that power real-time engagements. For example, if a user frequently sends illegitimate advertisements to multiple s, you can use global-mute to prevent this user from sending  messages for 15 days; if a user makes improper statements concerning politics, global-mute can permanently prevent this user from sending any messages in one-to-one chats, s, or s.
 
-Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../reference/limitations.md#call-limit-of-server-sides).
+Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../reference/limitations#call-limit-of-server-sides).
 
 ## Common parameters
 
@@ -17,9 +17,9 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Required |
 | :--------- | :----- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                      | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                             | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                      | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                             | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                | Yes |
 | `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
 Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
 ::: | Yes |
@@ -46,7 +46,7 @@ Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request
 Authorization: Bearer ${YourAppToken}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication.md).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication).
 
 ## Globally mute a specified user
 
@@ -90,7 +90,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -167,7 +167,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -245,7 +245,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -307,4 +307,4 @@ curl -L -X GET 'https://XXXX/XXXX/XXXX/mutes?pageNum=1&pageSize=10' \
 
 ## Status codes
 
-For details, see [HTTP Status Codes](../reference/http-status-codes.md).
+For details, see [HTTP Status Codes](../reference/http-status-codes).

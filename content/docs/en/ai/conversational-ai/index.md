@@ -9,9 +9,9 @@ Use this product space when you want a software-first path for web, mobile, desk
 
 ## Start here
 
-- [Quickstart](../get-started/quickstart.md)
-- [REST API reference](../../api-reference/conversational-ai/rest-api/index.md)
-- [Convo AI Device Kit](../device-kit/index.md)
+- [Quickstart](../get-started/quickstart)
+- [REST API reference](../../api-reference/conversational-ai/rest-api/index)
+- [Convo AI Device Kit](../device-kit/index)
 
 ## Product strengths
 

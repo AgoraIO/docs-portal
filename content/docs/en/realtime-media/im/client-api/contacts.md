@@ -109,8 +109,8 @@ The Chat SDK uses the Contact module to add, remove and manage contacts. Core me
 
 Before proceeding, ensure that you meet the following requirements:
 
-- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../get-started/get-started-sdk.mdx).
-- You understand the API call frequency limits as described in [Limitations](../reference/limitations.md).
+- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../get-started/get-started-sdk).
+- You understand the API call frequency limits as described in [Limitations](../reference/limitations).
 
 ## Implementation
 

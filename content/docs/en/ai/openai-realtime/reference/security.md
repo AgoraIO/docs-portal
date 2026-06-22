@@ -17,5 +17,5 @@ Security in this integration path depends on both sides of the system:
 
 ## Related resources
 
-- [Firewall requirements](firewall.md)
-- [Agora account management](../get-started/manage-agora-account.md)
+- [Firewall requirements](firewall)
+- [Agora account management](../get-started/manage-agora-account)

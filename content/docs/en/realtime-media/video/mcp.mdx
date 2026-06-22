@@ -1,0 +1,36 @@
+---
+title: "Agora MCP"
+description: "Use Agora MCP with AI coding assistants to build with Agora faster."
+---
+
+The Agora MCP server gives your AI assistant direct access to Agora documentation, so it can look up APIs, SDK methods, and platform details in real time.
+
+The server is available at:
+
+```text
+https://mcp.agora.io
+```
+
+## Installation
+
+Refer to the setup guide for your coding assistant.
+
+**Codex**
+
+```shell
+codex mcp add --url https://mcp.agora.io agora-docs
+```
+
+**Claude Code**
+
+```shell
+claude mcp add --transport http agora-docs https://mcp.agora.io
+```
+
+**Gemini CLI**
+
+```shell
+gemini mcp add --transport http agora-docs https://mcp.agora.io
+```
+
+For Cursor and other tools, add `https://mcp.agora.io` as a remote MCP server and use `http` or Streamable HTTP transport when prompted.

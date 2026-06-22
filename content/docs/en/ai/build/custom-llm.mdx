@@ -17,7 +17,7 @@ This approach enables you to implement additional custom functionalities, includ
 
 ## Prerequisites
 
-- Implemented the basic logic for interacting with a conversational AI agent by following the [REST Quickstart](../get-started/quickstart.md).
+- Implemented the basic logic for interacting with a conversational AI agent by following the [REST Quickstart](../get-started/quickstart).
 - Set up access to a custom LLM service.
 - Prepared a vector database or retrieval system if using Retrieval-Augmented Generation (RAG).
 
@@ -476,7 +476,7 @@ app.listen(PORT, () => {
 });
 ```
 
-When calling the POST method to [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), use the LLM configuration to point your agent to the custom service:
+When calling the POST method to [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), use the LLM configuration to point your agent to the custom service:
 
 ```json
 {
@@ -500,7 +500,7 @@ When calling the POST method to [Start a conversational AI agent](../../api-refe
 </Tabs>
 ### Configure Agora's Conversational AI Engine
 
-When you [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), use the `llm` configuration to point your agent to the custom service:
+When you [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), use the `llm` configuration to point your agent to the custom service:
 
 > **Info**
 > If accessing your custom LLM service requires identity verification, provide the authentication information in the `api_key` field.
@@ -906,7 +906,7 @@ app.post('/rag/chat/completions', async (req, res) => {
 });
 ```
 
-When calling the POST method to [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), simply point the LLM URL to your RAG interface:
+When calling the POST method to [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), simply point the LLM URL to your RAG interface:
 
 ```json
 {
@@ -930,7 +930,7 @@ When calling the POST method to [Start a conversational AI agent](../../api-refe
 </Tabs>
 ### Multimodal capabilities
 
-Conversational AI Engine supports LLMs in generating output in multimodal formats, including text and audio. You can create dedicated multimodal interfaces to meet personalized requirements. For more information about using audio output, see [Audio output mode](audio-output.md).
+Conversational AI Engine supports LLMs in generating output in multimodal formats, including text and audio. You can create dedicated multimodal interfaces to meet personalized requirements. For more information about using audio output, see [Audio output mode](audio-output).
 
 The following example demonstrates how to read text and audio files and send them to an LLM to generate an audio response.
 
@@ -1324,7 +1324,7 @@ app.post('/audio/chat/completions', async (req, res) => {
 });
 ```
 
-When calling the POST method to [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), use the following configuration to specify the `output_modalities`:
+When calling the POST method to [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), use the following configuration to specify the `output_modalities`:
 
 ```json
 {
@@ -1434,4 +1434,4 @@ Custom LLM services must be compatible with the OpenAI Chat Completions API inte
 For detailed interface standards, please refer to:
 
 - [OpenAI Chat Completions API documentation](https://platform.openai.com/docs/api-reference/chat)
-- [Conversational AI Engine API Documentation](../../api-reference/conversational-ai/rest-api/agent/join.md)
+- [Conversational AI Engine API Documentation](../../api-reference/conversational-ai/rest-api/agent/join)

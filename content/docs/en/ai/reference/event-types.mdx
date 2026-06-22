@@ -6,15 +6,15 @@ After enabling Agora message notifications, the Agora notification server sends 
 
 This page explains the types of events returned in channel event callbacks and their meanings.
 
-If you are starting from a product goal instead of an event number, begin with [Monitor agent status, errors, and performance](../build/monitor-agent-runtime.md).
+If you are starting from a product goal instead of an event number, begin with [Monitor agent status, errors, and performance](../build/monitor-agent-runtime).
 
 ## Choose event types by goal
 
 | Goal | Use these event types | What they help you answer |
 | --- | --- | --- |
 | Confirm that a session started or ended | [`101 agent joined`](#101-agent-joined), [`102 agent left`](#102-agent-left) | Did the agent enter the channel? How did the session end? |
-| Retrieve conversation history after a session | [`103 agent history`](#103-agent-history) | What was said during the session? See [Retrieve conversation history after a session ends](../build/retrieve-session-history.mdx). |
-| Investigate failures and alert on production issues | [`110 agent error`](#110-agent-error), [`102 agent left`](#102-agent-left) | Which module failed? Did the session terminate because of that failure? See [Debug agent failures with runtime events](../build/debug-agent-failures.mdx). |
+| Retrieve conversation history after a session | [`103 agent history`](#103-agent-history) | What was said during the session? See [Retrieve conversation history after a session ends](../build/retrieve-session-history). |
+| Investigate failures and alert on production issues | [`110 agent error`](#110-agent-error), [`102 agent left`](#102-agent-left) | Which module failed? Did the session terminate because of that failure? See [Debug agent failures with runtime events](../build/debug-agent-failures). |
 | Measure latency and runtime health | [`111 agent metrics`](#111-agent-metrics) | How long do LLM and TTS stages take? Are there regressions? |
 | Track telephony call progress | [`201 inbound call state`](#201-inbound-call-state), [`202 outbound call state`](#202-outbound-call-state) | Where is the SIP call in its lifecycle? |
 
@@ -95,7 +95,7 @@ An `eventType` of `101` indicates that an agent has joined a channel. The `paylo
     Unique identifier of the agent.
   
   
-    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md). Unique within a channel.
+    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join). Unique within a channel.
   
   
     Timestamp indicating when the agent was created.
@@ -130,7 +130,7 @@ An `eventType` of `102` indicates that an agent has left a channel. The `payload
     Unique identifier of the agent.
   
   
-    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md). Unique within a channel.
+    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join). Unique within a channel.
   
   
     Timestamp indicating when the agent was created.
@@ -251,7 +251,7 @@ An `eventType` of `103` notifies the history of a user and agent dialogue. The n
     Unique identifier of the agent.
   
   
-    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md). Unique within a channel.
+    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join). Unique within a channel.
   
   
     The name of the channel the agent was in.
@@ -311,7 +311,7 @@ An `eventType` of `110` indicates that an agent has encountered an error. The `p
     Unique identifier of the agent.
   
   
-    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md). Unique within a channel.
+    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join). Unique within a channel.
   
   
     Timestamp indicating when the agent was created.
@@ -320,7 +320,7 @@ An `eventType` of `110` indicates that an agent has encountered an error. The `p
     The name of the channel the agent was in.
     
   
-    Transcript conversation turn. For details, see [Live Transcript API Reference](transcripts.md#api-reference).
+    Transcript conversation turn. For details, see [Live Transcript API Reference](transcripts#api-reference).
     
   
     An array of error messages. Each object contains the following fields: 
@@ -393,7 +393,7 @@ An `eventType` of `111` notifies the performance metrics of an agent. The `paylo
     Unique identifier of the agent.
   
   
-    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md). Unique within a channel.
+    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join). Unique within a channel.
   
   
     Timestamp indicating when the agent was created and joined the channel.
@@ -473,7 +473,7 @@ An `eventType` of `201` notifies changes in the status of an incoming call. The 
     Unique identifier of the agent.
   
   
-    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md). Unique within a channel.
+    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join). Unique within a channel.
   
   
     The name of the channel where the agent is located.
@@ -516,7 +516,7 @@ An `eventType` of `202` notifies changes in the status of an outgoing call. The 
     Unique identifier of the agent.
   
   
-    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md). Unique within a channel.
+    The agent name provided when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join). Unique within a channel.
   
   
     The name of the channel where the agent is located.

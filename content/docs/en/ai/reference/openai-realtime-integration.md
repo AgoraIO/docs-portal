@@ -45,9 +45,9 @@ This is not the same as building on Agora's managed Conversational AI Engine. If
 
 ## Related pages
 
-- [Agora account management](../openai-realtime/get-started/manage-agora-account.md)
-- [OpenAI Realtime quickstart](../openai-realtime/get-started/quickstart.md)
-- [Core concepts](../openai-realtime/overview/core-concepts.md)
-- [Security](../openai-realtime/reference/security.md)
-- [Firewall requirements](../openai-realtime/reference/firewall.md)
-- [Glossary](../openai-realtime/reference/glossary.md)
+- [Agora account management](../openai-realtime/get-started/manage-agora-account)
+- [OpenAI Realtime quickstart](../openai-realtime/get-started/quickstart)
+- [Core concepts](../openai-realtime/overview/core-concepts)
+- [Security](../openai-realtime/reference/security)
+- [Firewall requirements](../openai-realtime/reference/firewall)
+- [Glossary](../openai-realtime/reference/glossary)

@@ -58,7 +58,7 @@ The following table summarizes the strategy of forcing other devices to log out 
 | Single-device login | The newly logged-in device will force the current device to log out. The logged-out device will receive the `onDisconnected` event.|
 | Multi-device login | If the number of logged-in devices on one end reaches the limit, the device that logged in the latest will force the device that logged in the earliest to log out. Agora Chat only supports forced logout for the devices on the same end. When multiple ends are logged in, the use of a fixed device ID affects the forced logout strategy. The SDK generates an ID as the unique device identifier. Previously, the SDK used a different random string as the device identifier for each opened tab. Starting from v1.3.1, the SDK has the `ConnectionParameters#isFixedDeviceId` parameter, which you can set to use a random device ID or a fixed device ID when initializing the SDK: - (Default) `true`: Use a fixed device ID. The device ID is stored in local storage. Even when multiple devices are logged in, only one tab can be opened in the same browser. If two are opened, the new tab will force the previous one offline. - `false`: Use a random device ID. Each tab uses a different device ID. When logging in with multiple devices, a user can open multiple tabs in the same browser. If the number of devices exceeds the set number, the newly opened tab will force the first opened tab offline. |
 
-The Agora server provides a RESTful interface to force a specified account to [log out from a single device](../restful-api/user-system-registration.md#forcing-a-user-offline).
+The Agora server provides a RESTful interface to force a specified account to [log out from a single device](../restful-api/user-system-registration#forcing-a-user-offline).
 
 ### Platforms
 
@@ -138,7 +138,7 @@ Chat SDK generates a new unique login ID every time a user logs in and sends the
 
 ## Prerequisites
 
-Before starting this procedure, initialize and connect the SDK to the server. See [SDK quickstart](../get-started/get-started-sdk.mdx) for details.
+Before starting this procedure, initialize and connect the SDK to the server. See [SDK quickstart](../get-started/get-started-sdk) for details.
 
 ## Implement multi-device login
 
@@ -623,7 +623,7 @@ chatClient.getSelfIdsOnOtherPlatform().then((res) => {
 
 Call `addEventHandler` to register listener events and listen to operations on other devices. After the server synchronizes information, the SDK will call back these events, and both the web end and other ends will receive notifications of friend and group-related operations.
 
-For these operations, multi-device events have the same name as the single-device events. The only difference is the `from` field in the event: It is the current user ID in multi-end multi-device events, and the operator ID in single-device events. See [Listen for chat group events​](../client-api/chat-group/manage-chat-groups.md#listen-for-chat-group-events) and [Listen for contact events](../client-api/contacts.md#listen-for-contact-events) for details.
+For these operations, multi-device events have the same name as the single-device events. The only difference is the `from` field in the event: It is the current user ID in multi-end multi-device events, and the operator ID in single-device events. See [Listen for chat group events​](../client-api/chat-group/manage-chat-groups#listen-for-chat-group-events) and [Listen for contact events](../client-api/contacts#listen-for-contact-events) for details.
 
 In addition to friend and group events, the following events will trigger the `onMultiDeviceEvent` event:
 

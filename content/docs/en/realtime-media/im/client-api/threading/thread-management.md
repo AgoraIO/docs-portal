@@ -77,11 +77,11 @@ The Chat SDK for Unity provides the `IChatThreadManager`, `ChatThread`, `ChatThr
 
 Before proceeding, ensure that you meet the following requirements:
 
-- You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk.mdx).
-- You understand the call frequency limit of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations.md).
+- You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk).
+- You understand the call frequency limit of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations).
 
 :::info
-The thread feature is supported by all types of [Pricing Plans](../../reference/pricing-plan-details.md) and is enabled by default once you have enabled Chat in [Agora Console](https://console.agora.io/v2).
+The thread feature is supported by all types of [Pricing Plans](../../reference/pricing-plan-details) and is enabled by default once you have enabled Chat in [Agora Console](https://console.agora.io/v2).
 :::
 
 ## Implementation

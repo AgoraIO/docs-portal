@@ -48,9 +48,9 @@ The Chat SDK provides the `GroupManager` and `Group` classes for chat group mana
 
 Before proceeding, ensure that you meet the following requirements:
 
-- You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk.mdx).
-- You understand the call frequency limits of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations.md).
-- You understand the number of chat groups and chat group members supported by different pricing plans as described in [Pricing Plan Details](../../reference/pricing-plan-details.md).
+- You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk).
+- You understand the call frequency limits of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations).
+- You understand the number of chat groups and chat group members supported by different pricing plans as described in [Pricing Plan Details](../../reference/pricing-plan-details).
 
 ## Implementation
 
@@ -200,7 +200,7 @@ public void fetchGroupWhiteList(final String groupId, final ValueCallBack> callB
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).
 
 ### iOS
 
@@ -366,13 +366,13 @@ Refer to the following sample code to manage the chat group allow list:
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).
 
 ### Flutter
 
 ### Add a user to a chat group
 
-The logic of adding a user to a chat group varies according to the `GroupStyle` and `inviteNeedConfirm` settings when creating the chat group. For details, see [Create a Chat Group](./manage-chat-groups.md#create-a-chat-group).
+The logic of adding a user to a chat group varies according to the `GroupStyle` and `inviteNeedConfirm` settings when creating the chat group. For details, see [Create a Chat Group](./manage-chat-groups#create-a-chat-group).
 
 The following code sample shows how to call `addMembers` to add a user to a chat group:
 
@@ -637,13 +637,13 @@ try {
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).
 
 ### React Native
 
 ### Add a user to a chat group
 
-The logic of adding a user to a chat group varies according to the `GroupStyle` and `inviteNeedConfirm` settings when creating the chat group. For details, see [Create a Chat Group](./manage-chat-groups.md#create-a-chat-group).
+The logic of adding a user to a chat group varies according to the `GroupStyle` and `inviteNeedConfirm` settings when creating the chat group. For details, see [Create a Chat Group](./manage-chat-groups#create-a-chat-group).
 
 The following code sample shows how to call `addMembers` to add a user to a chat group:
 
@@ -952,13 +952,13 @@ ChatClient.getInstance()
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).
 
 ### Windows
 
 ### Add a user to a chat group
 
-The logic of adding a user to a chat group varies according to the `GroupStyle` and `inviteNeedConfirm` settings when creating the chat group. For details, see [Create a Chat Group](./manage-chat-groups.md#create-a-chat-group).
+The logic of adding a user to a chat group varies according to the `GroupStyle` and `inviteNeedConfirm` settings when creating the chat group. For details, see [Create a Chat Group](./manage-chat-groups#create-a-chat-group).
 
 The following code sample shows how to call `AddGroupMembers` to add a user to a chat group:
 
@@ -1255,13 +1255,13 @@ SDKClient.Instance.GroupManager.GetGroupWhiteListFromServer(currentGroupId, call
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).
 
 ### Unity
 
 ### Add a user to a chat group
 
-The logic of adding a user to a chat group varies according to the `GroupStyle` and `inviteNeedConfirm` settings when creating the chat group. For details, see [Create a Chat Group](./manage-chat-groups.md#create-a-chat-group).
+The logic of adding a user to a chat group varies according to the `GroupStyle` and `inviteNeedConfirm` settings when creating the chat group. For details, see [Create a Chat Group](./manage-chat-groups#create-a-chat-group).
 
 The following code sample shows how to call `AddGroupMembers` to add a user to a chat group:
 
@@ -1558,7 +1558,7 @@ SDKClient.Instance.GroupManager.GetGroupWhiteListFromServer(currentGroupId, call
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).
 
 ### Web
 
@@ -1765,4 +1765,4 @@ chatClient.getGroupAllowlist(options).then((res) => console.log(res));
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).

@@ -176,7 +176,7 @@ Complete the following steps to enable your agent to make outbound calls through
 
 1. **Import the number in Agent Studio**
 
-    Once your SIP trunk trunk is configured, import the number into Studio. See [Import a phone number](import.md) for step-by-step instructions. Use your Termination URI as the SIP Domain and match the Transport protocol to your Secure Trunking setting.
+    Once your SIP trunk trunk is configured, import the number into Studio. See [Import a phone number](import) for step-by-step instructions. Use your Termination URI as the SIP Domain and match the Transport protocol to your Secure Trunking setting.
 
 ## Inbound calling setup
 
@@ -230,7 +230,7 @@ Complete the following steps to enable customers to call your agent through your
 
 1. **Import the number in Agent Studio**
 
-    Once SIP trunk origination and routing is configured, import the number in Agent Studio and associate it with an agent to answer inbound calls. See [Handle inbound calls](inbound.md) for step-by-step instructions.
+    Once SIP trunk origination and routing is configured, import the number in Agent Studio and associate it with an agent to answer inbound calls. See [Handle inbound calls](inbound) for step-by-step instructions.
 
 ## Configuration checklist
 
@@ -262,7 +262,7 @@ If you encounter issues with your SIP trunk setup, use the following table to id
 
 ## Next steps
 
-- [Import a phone number](import.md): Import your configured SIP trunk number into Studio
-- [Set up a campaign](campaign.md): Use your imported number to create an outbound calling campaign
-- [Handle inbound calls](inbound.md): Associate a number with an agent to answer inbound calls
-- [Publish your agent](deploy-agent.md): Publish an agent to use with your imported number
+- [Import a phone number](import): Import your configured SIP trunk number into Studio
+- [Set up a campaign](campaign): Use your imported number to create an outbound calling campaign
+- [Handle inbound calls](inbound): Associate a number with an agent to answer inbound calls
+- [Publish your agent](deploy-agent): Publish an agent to use with your imported number

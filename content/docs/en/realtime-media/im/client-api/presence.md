@@ -88,8 +88,8 @@ Presence workflow
 
 Before proceeding, ensure that your environment meets the following requirements:
 
-- You have initialized the Chat SDK. For details, see [SDK quickstart](../get-started/get-started-sdk.mdx).
-- You understand the API call frequency limit as described in [Limitations](../reference/limitations.md).
+- You have initialized the Chat SDK. For details, see [SDK quickstart](../get-started/get-started-sdk).
+- You understand the API call frequency limit as described in [Limitations](../reference/limitations).
 - You have activated the presence feature in [Agora Console](https://console.agora.io/v2).
 
 ## Implementation

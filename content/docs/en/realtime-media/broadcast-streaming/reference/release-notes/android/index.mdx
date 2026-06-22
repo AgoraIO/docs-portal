@@ -148,7 +148,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of direct CDN streaming APIs** 
 
-  Deprecates the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](../../api-reference/rtc/index.md) instead. 
+  Deprecates the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](../../api-reference/rtc/index) instead. 
 
   - `setDirectCdnStreamingAudioConfiguration`
   - `setDirectCdnStreamingVideoConfiguration`
@@ -320,7 +320,7 @@ The `libaosl.so` library version in Video SDK v4.5.1 is 1.2.13.
 
 **AI conversation scenario**
 
-This version introduces the `AUDIO_SCENARIO_AI_CLIENT` audio scenario option, specifically designed for interacting with conversational AI agents powered by the [Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview.md).
+This version introduces the `AUDIO_SCENARIO_AI_CLIENT` audio scenario option, specifically designed for interacting with conversational AI agents powered by the [Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview).
 
 This scenario optimizes audio transmission algorithms based on the characteristics of AI-generated voices, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. The optimization enhances conversation continuity and reliability across various network environments.
 
@@ -478,9 +478,9 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
   Starting from this version, Agora introduces Lite SDK, which includes only the basic audio and video capabilities and partially cuts advanced features, effectively reducing the app size after integrating the SDK.
 
   - Lite SDK supports manual integration or third-party repository integration.
-  - For information on dynamic libraries included in the Lite SDK, see [App size optimization](../../../build/app-size-optimization.mdx).
+  - For information on dynamic libraries included in the Lite SDK, see [App size optimization](../../../build/app-size-optimization).
   - For the list of APIs supported by Lite SDK, see [Lite SDK API](https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_lite_api.html).
-  - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](https://docs-md.agora.io/en/help/general-product-inquiry/audio_format.md)
+  - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](https://docs-md.agora.io/en/help/general-product-inquiry/audio_format)
 
 1. **Alpha transparency effects**
 
@@ -1024,7 +1024,7 @@ v4.2.2 was released on july 27, 2023.
 
 1. **Wildcard token**
 
-  This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](../../../build/use-tokens.mdx).
+  This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](../../../build/use-tokens).
 
 :::note
 All 4.x SDKs support using wildcard tokens.
@@ -1034,7 +1034,7 @@ All 4.x SDKs support using wildcard tokens.
 
   This release adds `preloadChannel[1/2]` and `preloadChannel[2/2]` methods, which allows a user whose role is set as audience to preload channels before joining one. Calling the method can help shortening the time of joining a channel, thus reducing the time it takes for audience members to hear and see the host.
 
-  When preloading more than one channels, Agora recommends that you use a wildcard token for preloading to avoid repeated application of tokens every time you joining a new channel, thus saving the time for switching between channels. See [Secure authentication with tokens](../../../build/use-tokens.mdx).
+  When preloading more than one channels, Agora recommends that you use a wildcard token for preloading to avoid repeated application of tokens every time you joining a new channel, thus saving the time for switching between channels. See [Secure authentication with tokens](../../../build/use-tokens).
 
 3. **Customized background color of video canvas**
 
@@ -1134,7 +1134,7 @@ The `onCaptureVideoFrame` and `onPreEncodeVideoFrame` callbacks are added with a
 
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode to balance, aggressive, or low latency according to your use-case.
 :::note
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](reference/pricing.md).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](reference/pricing).
 :::
 **2. Enhanced Virtual Background**
 
@@ -1143,7 +1143,7 @@ To increase the fun of real-time video calls and protect user privacy, this vers
 - Process the background as Alpha information without replacement, only separating the portrait and the background. This can be combined with the local video mixing feature to achieve a portrait-in-picture effect.
 - Replace the background with various formats of local videos.
 
-See [Virtual Background documentation](../../../build/virtual-background.mdx).
+See [Virtual Background documentation](../../../build/virtual-background).
 
 **3. Video scenario settings**
 
@@ -1692,8 +1692,8 @@ In order to enhance the real-time audio and video interactive activities based o
 
 - Easy to integrate: The integration of modular functions can be achieved simply by calling an API, and the integration efficiency is improved by nearly 95%.
 - Extensibility design: The modular and extensible SDK design style endows the Agora SDK with good extensibility, which enables developers to quickly build real-time interactive apps based on the Agora extensions marketplace ecosystem.
-- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../../../build/use-an-extension.mdx).
-- Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](https://docs-md.agora.io/en/extensions-marketplace/get-started/quickstart-implement.md).
+- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../../../build/use-an-extension).
+- Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](https://docs-md.agora.io/en/extensions-marketplace/get-started/quickstart-implement).
 
 **8. Enhanced channel management**
 
@@ -1796,14 +1796,14 @@ v2.1.0 was released on March 6, 2024.
 
 #### Improvements
 
-This update optimizes the performance of the MetaKit extension and adds support for two new `keys` in `setExtensionProperty`: [`requestTexture`](../../../build/metakit.mdx) and [`switchTextureAvatarMode`](../../../build/metakit.mdx). These replace the original `addSceneView` and `switchAvatarMode` functions, respectively. The new interface supports automatic generation and return of texture data, which is then directly rendered, previewed, encoded, and transmitted through the SDK. This enhancement improves rendering performance, reduces latency, and ensures more efficient operation and a better user experience.
+This update optimizes the performance of the MetaKit extension and adds support for two new `keys` in `setExtensionProperty`: [`requestTexture`](../../../build/metakit) and [`switchTextureAvatarMode`](../../../build/metakit). These replace the original `addSceneView` and `switchAvatarMode` functions, respectively. The new interface supports automatic generation and return of texture data, which is then directly rendered, previewed, encoded, and transmitted through the SDK. This enhancement improves rendering performance, reduces latency, and ensures more efficient operation and a better user experience.
 
 #### API changes
 
 **Added**
 
-- [`requestTexture`](../../../build/metakit.mdx)
-- [`switchTextureAvatarMode`](../../../build/metakit.mdx)
+- [`requestTexture`](../../../build/metakit)
+- [`switchTextureAvatarMode`](../../../build/metakit)
 
 ### v2.0.0
 

@@ -20,5 +20,5 @@ Firewall configuration depends on:
 
 ## Related resources
 
-- [Security](security.md)
-- [Agora account management](../get-started/manage-agora-account.md)
+- [Security](security)
+- [Agora account management](../get-started/manage-agora-account)

@@ -13,6 +13,6 @@ This page is a reference pointer for SDK- and integration-level errors you may e
 
 ## Related resources
 
-- [Firewall requirements](firewall.md)
-- [Security](security.md)
-- [Agora account management](../get-started/manage-agora-account.md)
+- [Firewall requirements](firewall)
+- [Security](security)
+- [Agora account management](../get-started/manage-agora-account)

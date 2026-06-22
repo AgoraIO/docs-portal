@@ -33,4 +33,4 @@ To view detailed information for specific calls:
 
 ## See also
 
-- [Analytics](analytics.md): View aggregated performance metrics across agents and campaigns
+- [Analytics](analytics): View aggregated performance metrics across agents and campaigns

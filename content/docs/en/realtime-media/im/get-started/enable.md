@@ -9,9 +9,9 @@ Before using Chat, you need to enable and configure it through [Agora Console](h
 
 To enable Chat, make sure that you have the following:
 
-- A valid [Agora account](../reference/manage-agora-account.md#create-an-agora-account).
-- An [Agora project](../reference/manage-agora-account.md#create-an-agora-project) that uses  **App ID** and **Token** for authentication.
-- A Chat pricing plan. For details on how to subscribe, see [Subscribe to the pricing plan](../overview/pricing.md#subscribe-to-the-pricing-plan).
+- A valid [Agora account](../reference/manage-agora-account#create-an-agora-account).
+- An [Agora project](../reference/manage-agora-account#create-an-agora-project) that uses  **App ID** and **Token** for authentication.
+- A Chat pricing plan. For details on how to subscribe, see [Subscribe to the pricing plan](../overview/pricing#subscribe-to-the-pricing-plan).
 
 ## Enable Chat
 
@@ -38,14 +38,14 @@ To enable Chat, make sure that you have the following:
     ![](/images/im/chat_feature_overview.png)
 
 For details about these advanced features, see the following:
-- [Message Callback](../develop/setup-webhooks.md)
-- [Message Recall](../client-api/messages/send-receive-messages.md#recall-a-message)
-- [Message Thread](../client-api/threading/thread-management.md)
-- [Reaction](../client-api/reaction.md)
-- [Offline Message Push (Advanced)](../develop/offline-push/overview.md)
-- [Presence](../client-api/presence.md)
-- [Translation](../client-api/messages/translate-messages.md)
-- [Moderation](../develop/moderation-mechanism.md)
+- [Message Callback](../develop/setup-webhooks)
+- [Message Recall](../client-api/messages/send-receive-messages#recall-a-message)
+- [Message Thread](../client-api/threading/thread-management)
+- [Reaction](../client-api/reaction)
+- [Offline Message Push (Advanced)](../develop/offline-push/overview)
+- [Presence](../client-api/presence)
+- [Translation](../client-api/messages/translate-messages)
+- [Moderation](../develop/moderation-mechanism)
 
 ## Get Chat project information
 
@@ -68,7 +68,7 @@ Follow these steps to get the project information:
 
 ## Manage users and generate tokens
 
-For development purposes, Agora enables you to manage users and generate Chat user authentication tokens using Agora Console. In a production environment, you use the [RESTful API](../restful-api/user-system-registration.md) to manage users and a token server to [generate user authentication tokens](../develop/authentication.md).
+For development purposes, Agora enables you to manage users and generate Chat user authentication tokens using Agora Console. In a production environment, you use the [RESTful API](../restful-api/user-system-registration) to manage users and a token server to [generate user authentication tokens](../develop/authentication).
 
 This section shows you how to register Chat users and generate temporary tokens using Agora Console.
 
@@ -164,4 +164,4 @@ Before unsubscribing Chat, disable all projects that have Chat enabled.
 
 ## Next steps
 
-After enabling and configuring Chat, the Chat-related features in Agora Analytics are enabled by default to help you keep track of usage trends and quality details. For more information, see [Data Insights](../agora-console/data-insights.md) and [Data Metrics](../agora-console/data-metrics.md).
+After enabling and configuring Chat, the Chat-related features in Agora Analytics are enabled by default to help you keep track of usage trends and quality details. For more information, see [Data Insights](../agora-console/data-insights) and [Data Metrics](../agora-console/data-metrics).

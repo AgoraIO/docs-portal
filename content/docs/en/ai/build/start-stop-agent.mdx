@@ -22,19 +22,19 @@ Agora’s Conversational AI technology enables real-time voice interactions betw
 
 ## Prerequisites
 
-- [Enabled Agora conversational AI](../reference/enable-conversational-ai.md#enable-conversational-ai) for your project.
+- [Enabled Agora conversational AI](../reference/enable-conversational-ai#enable-conversational-ai) for your project.
 - The following information from Agora Console:
-    - [App ID](../reference/enable-conversational-ai.md#get-the-app-id): The string identifier for your project used to call the Conversational AI Engine RESTful API.
-    - [Customer ID and Customer secret](../../api-reference/conversational-ai/rest-api/authentication.md#generate-customer-id-and-customer-secret): Used for HTTP authentication when calling the RESTful APIs.
-    - A [temporary token](../reference/enable-conversational-ai.md#generate-temporary-tokens): The token is used by the agent for authentication when joining an Agora channel. 
+    - [App ID](../reference/enable-conversational-ai#get-the-app-id): The string identifier for your project used to call the Conversational AI Engine RESTful API.
+    - [Customer ID and Customer secret](../../api-reference/conversational-ai/rest-api/authentication#generate-customer-id-and-customer-secret): Used for HTTP authentication when calling the RESTful APIs.
+    - A [temporary token](../reference/enable-conversational-ai#generate-temporary-tokens): The token is used by the agent for authentication when joining an Agora channel. 
 - Obtained API keys for:
   - A supported Large Language Model (LLM) provider such as [OpenAI](https://openai.com/index/openai-api/).
   - A supported text-to-speech (TTS) provider such as [Microsoft Azure](https://azure.microsoft.com/en-us/products/ai-services/ai-speech).
 
   > **Tip**
-> If you don't yet have API keys from a third-party LLM or TTS provider, [Use presets](presets.md) to start your first agent without ASR, LLM, and TTS credentials.
+> If you don't yet have API keys from a third-party LLM or TTS provider, [Use presets](presets) to start your first agent without ASR, LLM, and TTS credentials.
 
-- Implemented the [Voice Calling](../../introduction/realtime-audio-video.md) or [Video Calling](../../introduction/realtime-audio-video.md) quickstart.
+- Implemented the [Voice Calling](../../introduction/realtime-audio-video) or [Video Calling](../../introduction/realtime-audio-video) quickstart.
 
   > **Info**
 > For the best conversational experience, Agora recommends using Conversational AI Engine with specific Agora Video/Voice SDK versions. For details, [contact technical support](mailto:support@agora.io).
@@ -45,7 +45,7 @@ This section introduces the basic RESTful API requests you use to start and stop
 
 ### Start a conversational AI agent
 
-Call the `join` endpoint to create an agent instance that joins an Agora channel. Pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](../../api-reference/conversational-ai/rest-api/authentication.md).
+Call the `join` endpoint to create an agent instance that joins an Agora channel. Pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](../../api-reference/conversational-ai/rest-api/authentication).
 
 ```js tab="Node.js"
 const fetch = require('node-fetch');
@@ -200,7 +200,7 @@ response = requests.post(url, headers=headers, data=json.dumps(data))
 print(response.text)
 ```
 
-For complete information on all request parameters, see [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md).
+For complete information on all request parameters, see [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join).
 
 If the request is successful, you receive the following response:
 
@@ -213,7 +213,7 @@ If the request is successful, you receive the following response:
 }
 ```
 
-Store the `agent_id` for use in subsequent API calls to [query](../../api-reference/conversational-ai/rest-api/agent/query.md), [update](../../api-reference/conversational-ai/rest-api/agent/update.md), and [stop](../../api-reference/conversational-ai/rest-api/agent/leave.md) the AI agent.
+Store the `agent_id` for use in subsequent API calls to [query](../../api-reference/conversational-ai/rest-api/agent/query), [update](../../api-reference/conversational-ai/rest-api/agent/update), and [stop](../../api-reference/conversational-ai/rest-api/agent/leave) the AI agent.
 
 ### Stop the conversational AI agent
 
@@ -288,8 +288,8 @@ This section contains content that completes the information on this page, or po
 </Tabs>
 ### API reference
 
-- [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md)
-- [Stop a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/leave.md)
-- [Update agent configuration](../../api-reference/conversational-ai/rest-api/agent/update.md)
-- [Query agent status](../../api-reference/conversational-ai/rest-api/agent/query.md)
-- [Retrieve a list of agents](../../api-reference/conversational-ai/rest-api/agent/list.md)
+- [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join)
+- [Stop a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/leave)
+- [Update agent configuration](../../api-reference/conversational-ai/rest-api/agent/update)
+- [Query agent status](../../api-reference/conversational-ai/rest-api/agent/query)
+- [Retrieve a list of agents](../../api-reference/conversational-ai/rest-api/agent/list)

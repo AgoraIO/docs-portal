@@ -8,11 +8,11 @@ After configuring your Twilio SIP trunk for inbound calling, import your phone n
 
 - An active Agora account with Conversational AI enabled
 - A published agent in Studio
-- A Twilio phone number with Elastic SIP Trunk configured for inbound calling. See [Set up SIP trunk](sip-trunk.md#inbound-calling-setup).
+- A Twilio phone number with Elastic SIP Trunk configured for inbound calling. See [Set up SIP trunk](sip-trunk#inbound-calling-setup).
 
 ## Import the number in Studio
 
-Follow the steps in [Import a phone number](import.md) to add your Twilio number. After importing, Studio displays the Origination URI for your number. Copy this back to your Twilio SIP trunk. See [Set up SIP trunk](sip-trunk.md#inbound-calling-setup).
+Follow the steps in [Import a phone number](import) to add your Twilio number. After importing, Studio displays the Origination URI for your number. Copy this back to your Twilio SIP trunk. See [Set up SIP trunk](sip-trunk#inbound-calling-setup).
 
     
 ## Assign the number to an agent 
@@ -40,5 +40,5 @@ Follow these steps to associate the number with an agent and configure call hand
 
 ## Next steps
 
-- [Call history](../observe/call-history.md): Review transcripts and outcomes for inbound calls
-- [Analytics](../observe/analytics.md): Monitor inbound call performance
+- [Call history](../observe/call-history): Review transcripts and outcomes for inbound calls
+- [Analytics](../observe/analytics): Monitor inbound call performance

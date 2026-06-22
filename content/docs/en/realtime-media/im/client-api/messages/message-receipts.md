@@ -152,8 +152,8 @@ The Chat SDK uses `IChatManager` to provide message receipt. Followings are the 
 
 Before proceeding, ensure that you meet the following requirements:
 
-- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../get-started/get-started-sdk.mdx).
-- You understand the API call frequency limits as described in [Limitations](../../reference/limitations.md).
+- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../get-started/get-started-sdk).
+- You understand the API call frequency limits as described in [Limitations](../../reference/limitations).
 - Message read receipts for chat groups are not enabled by default. To use this feature, contact support@agora.io.
 
 ## Implementation
@@ -612,7 +612,7 @@ The one-to-one chats support both conversation read receipts and message read re
 
 ##### Message read receipts
 
-For one-to-one chats, message read receipts are stored as long as messages on the Chat server. Specifically, message read receipts can be sent whenever the messages are available on the Chat server. The message storage period on the Chat server depends on your product plan. For details, see the [pricing plan details](../../reference/pricing-plan-details.md#message).
+For one-to-one chats, message read receipts are stored as long as messages on the Chat server. Specifically, message read receipts can be sent whenever the messages are available on the Chat server. The message storage period on the Chat server depends on your product plan. For details, see the [pricing plan details](../../reference/pricing-plan-details#message).
 
 Refer to the following steps to implement message read receipt in one-to-one chats:
 

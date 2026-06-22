@@ -9,28 +9,28 @@ Note that if you have already signed a contract with Agora, the billing terms an
 
 ## Overview
 
-Each month, Agora calculates your bill for using Chat, [issues your bill, and deducts your fee](../reference/billing-policies.md). If you subscribe, cancel, or switch to another plan, your fee is prorated for the current month. If your account is [suspended](../reference/billing-policies.md), Agora stores your app data for six months. Agora suggests you top up your account in a timely fashion or export the data before it is deleted.
+Each month, Agora calculates your bill for using Chat, [issues your bill, and deducts your fee](../reference/billing-policies). If you subscribe, cancel, or switch to another plan, your fee is prorated for the current month. If your account is [suspended](../reference/billing-policies), Agora stores your app data for six months. Agora suggests you top up your account in a timely fashion or export the data before it is deleted.
 
 ## Composition
 
-When each month finishes, Agora calculates your usage of Chat in your [Agora account](../reference/manage-agora-account.md#create-an-agora-account). After deducting the usage included in your plan, Agora multiplies any excess usage by the corresponding unit price and adds this to the plan fee to get the total cost for that month. The formula is as follows:
+When each month finishes, Agora calculates your usage of Chat in your [Agora account](../reference/manage-agora-account#create-an-agora-account). After deducting the usage included in your plan, Agora multiplies any excess usage by the corresponding unit price and adds this to the plan fee to get the total cost for that month. The formula is as follows:
 
 **Total cost = Plan fee + Excess usage × Unit price of the excess usage + (Optional) Add-on fee**
 
 ### Plan fee
 
-Agora bills you based on the total number of MAUs (Monthly Active Users) in the [Agora account](../reference/manage-agora-account.md#create-an-agora-account).
+Agora bills you based on the total number of MAUs (Monthly Active Users) in the [Agora account](../reference/manage-agora-account#create-an-agora-account).
 
 - MAU is the number of unique end users who log in to Agora Chat, connect to Agora Chat servers, and establish a long-lived connection at any time across a calendar month.
 - If a unique end-user connects to Agora Chat multiple times across a calendar month, they are counted as 1 MAU.
-- The end user is considered logged in when you call the “open” function in step 6 during the user authentication process [here](../develop/authentication.md#use-tokens-for-user-authentication).
+- The end user is considered logged in when you call the “open” function in step 6 during the user authentication process [here](../develop/authentication#use-tokens-for-user-authentication).
 - Once logged in, that end user is counted towards the MAU, regardless of if they send or receive messages.
 
 :::info
 A best practice when managing your Agora Chat MAU is to authenticate your end users, create only one UID for each of them, and use UID persistently. Creating multiple UIDs for a unique end user will bloat your Agora Chat MAU.
 :::
 
-Chat offers four pricing plans: Free, Starter, Pro, and Enterprise. See [details of each pricing plan](../reference/pricing-plan-details.md) for their features and limitations. The following table outlines the base fee and included usage for each plan:
+Chat offers four pricing plans: Free, Starter, Pro, and Enterprise. See [details of each pricing plan](../reference/pricing-plan-details) for their features and limitations. The following table outlines the base fee and included usage for each plan:
 
 | Chat plan | Fee (US$)  | Included usage (MAU) |
 | :-------------- | :--------- | :------------------- |
@@ -84,7 +84,7 @@ Chat provides the translation and content moderation features to meet your busin
 Before using Chat, refer to the following steps to subscribe to a plan:
 
 1. Log in to [Agora Console](https://console.agora.io/v2), on the left navigation bar, click **Package** > **Chat** > **Subscribe** on the left navigation bar.
-2. Check [pricing plan details](../reference/pricing-plan-details.md), choose the plan you want to use, click **Subscribe**, and make the payment.
+2. Check [pricing plan details](../reference/pricing-plan-details), choose the plan you want to use, click **Subscribe**, and make the payment.
 
 Subscription takes effect immediately. After subscribing to a plan, you can click **Package** > **Chat** > **Manage**, and on this page you can click **Show More** to view your subscription details.
 
@@ -105,4 +105,4 @@ Switching to another plan takes effect immediately and the subscription base fee
 
 ## Reference
 
-For detailed information on our pricing plans, see [Pricing Plan Details](../reference/pricing-plan-details.md).
+For detailed information on our pricing plans, see [Pricing Plan Details](../reference/pricing-plan-details).

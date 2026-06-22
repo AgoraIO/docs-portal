@@ -8,22 +8,22 @@ Use this product space when you need a hardware-first developer workflow instead
 
 ## Start here
 
-- [Quickstart](start-here/quickstart.md)
+- [Quickstart](start-here/quickstart)
 
 ## Build
 
-- [Run the R1 demo](build/run-the-r1-demo.md)
-- [Run the demo server](build/run-the-demo-server.md)
-- [Configure device network](build/configure-device-network.md)
-- [Build and flash firmware](build/build-and-flash-firmware.md)
+- [Run the R1 demo](build/run-the-r1-demo)
+- [Run the demo server](build/run-the-demo-server)
+- [Configure device network](build/configure-device-network)
+- [Build and flash firmware](build/build-and-flash-firmware)
 
 ## Understand the system
 
-- [Architecture overview](build/architecture-overview.md)
-- [Specifications and compatibility](build/specifications-and-compatibility.md)
+- [Architecture overview](build/architecture-overview)
+- [Specifications and compatibility](build/specifications-and-compatibility)
 
 ## Plan rollout
 
-- [Enable services](reference/enable-services.md)
-- [Pricing](reference/pricing.md)
-- [Release notes](reference/release-notes.md)
+- [Enable services](reference/enable-services)
+- [Pricing](reference/pricing)
+- [Release notes](reference/release-notes)

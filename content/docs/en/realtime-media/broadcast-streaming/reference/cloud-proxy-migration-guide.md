@@ -14,7 +14,7 @@ Agora has updated IP whitelist configuration to enhance security and simplify ma
 * All IP addresses and network ranges have been technically verified.
 * Update your firewall rules according to the specified timeline.
 * Continue using your current configuration if you must configure before the new delivery dates.
-* Test your configuration thoroughly using the [validation steps](cloud-proxy-allowed-ips.md).
+* Test your configuration thoroughly using the [validation steps](cloud-proxy-allowed-ips).
 
 :::
 ## Summary of changes
@@ -39,7 +39,7 @@ The following tables provide the essential information needed to migrate your Cl
 Use these tables to identify the configurations applicable to your regions.
 :::note
 When adding IP addresses:
-- If you use cloud proxy with [Restricted media zones](../build/geofencing.mdx), add only the IP addresses dedicated to your specified region.
+- If you use cloud proxy with [Restricted media zones](../build/geofencing), add only the IP addresses dedicated to your specified region.
 - If you do not restrict media zones, add all IP addresses to ensure connectivity.
 :::
 ### Native RTC Force UDP mode

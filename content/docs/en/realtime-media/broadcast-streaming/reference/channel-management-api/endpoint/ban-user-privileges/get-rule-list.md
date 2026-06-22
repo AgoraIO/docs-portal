@@ -17,7 +17,7 @@ The request URL and request body is case-sensitive. All requests must use HTTPS.
 ### Request header
 
 - `Content-Type`: `application/json`
-- The request header must contain the `Authorization` field. For details, see [RESTful authentication](../../restful-authentication.md).
+- The request header must contain the `Authorization` field. For details, see [RESTful authentication](../../restful-authentication).
 
 ### Query parameters
 
@@ -25,7 +25,7 @@ The request URL and request body is case-sensitive. All requests must use HTTPS.
  <Parameter name="appid" type="string" required={true}>
   The App ID of the project. You can get it through one of the following methods:
   - Copy from the [Agora Console](https://console.agora.io)
-  - Call the [Get all projects](../../agora-console-rest-api.md) API, and read the value of the `vendor_key` field in the response body.
+  - Call the [Get all projects](../../agora-console-rest-api) API, and read the value of the `vendor_key` field in the response body.
  </Parameter>
 </ParameterList>
 
@@ -86,7 +86,7 @@ A `200` status code indicates success. The response body contains the following 
  </Parameter>
 </ParameterList>
 
-If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](../../response-status-code.md) for details.
+If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](../../response-status-code) for details.
 
 ## Reference
 
@@ -105,7 +105,7 @@ When you call POST to create a rule where `time` is not set to `0`, use the foll
 <RightColumn>
 
 <Section title="Authorization">
- This endpoint requires [Basic authentication](../../restful-authentication.md).
+ This endpoint requires [Basic authentication](../../restful-authentication).
 </Section>
 
 <Section title="Request example">

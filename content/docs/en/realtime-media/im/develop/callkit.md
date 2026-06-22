@@ -73,19 +73,19 @@ Before proceeding, ensure that your development environment meets the following 
 - `targetSdkVersion` 30.
 - `minSdkVersion` 21.
 - Gradle 4.6 or later.
-- a Chat project that has integrated the Chat SDK and implemented the [basic real-time chat functionalities](../get-started/get-started-sdk.mdx), including users logging in and out and sending and receiving messages.
+- a Chat project that has integrated the Chat SDK and implemented the [basic real-time chat functionalities](../get-started/get-started-sdk), including users logging in and out and sending and receiving messages.
 
 ### iOS
 
 - Xcode 9.0 or later.
 - A device running iOS 10.0 or later.
-- A Chat project that has integrated the Chat SDK and implemented the [basic real-time chat functionalities](../get-started/get-started-sdk.mdx), including users logging in and out and sending and receiving messages.
+- A Chat project that has integrated the Chat SDK and implemented the [basic real-time chat functionalities](../get-started/get-started-sdk), including users logging in and out and sending and receiving messages.
 
 ### Web
 
-- A valid [Agora account](../reference/manage-agora-account.md#create-an-agora-account).
-- An Agora project that has [enabled Chat](../get-started/enable.md).
-- A Chat project that has integrated the Chat SDK and implemented the [basic real-time chat functionalities](../get-started/get-started-sdk.mdx), including users logging in and out and sending and receiving messages.
+- A valid [Agora account](../reference/manage-agora-account#create-an-agora-account).
+- An Agora project that has [enabled Chat](../get-started/enable).
+- A Chat project that has integrated the Chat SDK and implemented the [basic real-time chat functionalities](../get-started/get-started-sdk), including users logging in and out and sending and receiving messages.
 
 ## Project setup
 
@@ -808,7 +808,7 @@ void onUserInfoUpdate(String userName){
 
 ### Authenticate users with the  token
 
-To enhance communication security, Agora recommends that you authenticate app users with the  token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](../reference/manage-agora-account.md#enable-the-primary-certificate), and `setEnableRTCToken` in the `AgoraChatCallKit` is set to `true`.
+To enhance communication security, Agora recommends that you authenticate app users with the  token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](../reference/manage-agora-account#enable-the-primary-certificate), and `setEnableRTCToken` in the `AgoraChatCallKit` is set to `true`.
 
 ```java
 EaseCallKitConfig callKitConfig = new EaseCallKitConfig();
@@ -824,7 +824,7 @@ Once you enable token authentication, the SDK triggers the `onGenerateRTCToken` 
 2. Trigger `onSetToken` to pass the token and UID to the callback object.
 3. `AgoraChatCallKit` uses the token and UID to join the channel.
 
-Tokens are generated on your app server using the token generator provided by Agora. For how to generate a token on the server, see [Secure authentication with tokens](./authentication.md).
+Tokens are generated on your app server using the token generator provided by Agora. For how to generate a token on the server, see [Secure authentication with tokens](./authentication).
 
 ```java
 /**
@@ -842,7 +842,7 @@ default void onGenerateRTCToken(String userId, String channelName, EaseCallKitTo
 
 ### Push notifications
 
-In use-cases where the app runs on the background or goes offline, use push notifications to ensure that the callee receives the call invitation. To enable push notifications, see [Set up push notifications](../develop/offline-push#set-up-push-notifications).
+In use-cases where the app runs on the background or goes offline, use push notifications to ensure that the callee receives the call invitation. To enable push notifications, see [Set up push notifications](./offline-push/configure-push-notifications).
 
 Once push notifications are enabled, when a call invitation arrives, a notification message pops out on the notification panel. Users can click the message to see the call invitation.
 
@@ -869,14 +869,14 @@ AgoraChatCallUser *user = [AgoraChatCallUser userWithNickName:info.nickname imag
 
 ### Authenticate users with the  token
 
-To enhance communication security, Agora recommends that you authenticate app users with the  token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](../reference/manage-agora-account.md#enable-the-primary-certificate), and `enableRTCTokenValidate` in the `AgoraChatCallKit` is set to `YES`.
+To enhance communication security, Agora recommends that you authenticate app users with the  token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](../reference/manage-agora-account#enable-the-primary-certificate), and `enableRTCTokenValidate` in the `AgoraChatCallKit` is set to `YES`.
 
 ```objc
 config.enableRTCTokenValidate = YES;  
 [AgoraChatCallManager.sharedManager initWithConfig:config delegate:self];
 ```
 
-Once you enable token authentication, ensure that you listen for the `callDidRequestRTCTokenForAppId` callback. When `callDidRequestRTCTokenForAppId` is triggered, you need to retrieve the token and call `setRTCToken` to pass the token to the CallKit. Tokens are generated on your app server using the token generator provided by Agora. For how to generate a token on the server and retrieve and renew the token on the client, see [Secure authentication with tokens](./authentication.md).
+Once you enable token authentication, ensure that you listen for the `callDidRequestRTCTokenForAppId` callback. When `callDidRequestRTCTokenForAppId` is triggered, you need to retrieve the token and call `setRTCToken` to pass the token to the CallKit. Tokens are generated on your app server using the token generator provided by Agora. For how to generate a token on the server and retrieve and renew the token on the client, see [Secure authentication with tokens](./authentication).
 
 ```objc
 - (void)callDidRequestRTCTokenForAppId:(NSString *)aAppId channelName:(NSString *)aChannelName account:(NSString *)aUserAccount uid:(NSInteger)aAgoraUid
@@ -889,9 +889,9 @@ Once you enable token authentication, ensure that you listen for the `callDidReq
 
 ### Authenticate users with the  token
 
-To enhance communication security, Agora recommends that you authenticate app users with the  token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](../reference/manage-agora-account.md#enable-the-primary-certificate).
+To enhance communication security, Agora recommends that you authenticate app users with the  token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](../reference/manage-agora-account#enable-the-primary-certificate).
 
-Tokens are generated on your app server using the token generator provided by Agora. After you retrieve the token, pass the token to the callkit when calling `startCall` and `answerCall`. For how to generate a token on the server and retrieve and renew the token on the client, see  [Secure authentication with tokens](./authentication.md).
+Tokens are generated on your app server using the token generator provided by Agora. After you retrieve the token, pass the token to the callkit when calling `startCall` and `answerCall`. For how to generate a token on the server and retrieve and renew the token on the client, see  [Secure authentication with tokens](./authentication).
 
 ## Reference
 

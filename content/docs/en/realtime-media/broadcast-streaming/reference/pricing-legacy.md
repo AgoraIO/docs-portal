@@ -5,7 +5,7 @@ description: "This page documents Agora's previous pricing model based on monthl
 
 This page documents Agora's previous pricing model based on monthly billing. It remains available for reference during the transition to the new prepaid packages.
 :::note
-You're viewing information about Agora's previous monthly billing model. For the latest prepaid packages, see [Pricing](reference/pricing.md).
+You're viewing information about Agora's previous monthly billing model. For the latest prepaid packages, see [Pricing](reference/pricing).
 :::
 If you have already signed a contract with Agora, the billing terms and conditions within that contract take precedence.
 
@@ -30,7 +30,7 @@ The unit prices for audio and video usage are as follows. Prices are in US$ per 
 
 Billing occurs monthly. At the end of each month, Agora calculates the total duration of the audio and video usage (in minutes) for that month in all projects under your [Agora account](https://console.agora.io/v2).
 
-Video usage is divided into four different types based on aggregate resolution and priced individually. After deducting the monthly [10,000 free-of-charge minutes](billing-policies.md) that Agora grants to every account, Agora multiplies any remaining usage by its corresponding unit price and adds up the costs to get the total cost for that month.
+Video usage is divided into four different types based on aggregate resolution and priced individually. After deducting the monthly [10,000 free-of-charge minutes](billing-policies) that Agora grants to every account, Agora multiplies any remaining usage by its corresponding unit price and adds up the costs to get the total cost for that month.
 
 The basic formula is shown here:
 
@@ -38,7 +38,7 @@ The basic formula is shown here:
 
 #### Usage
 
-In each Broadcast Streaming session, users communicate with each other in a Broadcast Streaming [channel](glossary.md). Agora measures the usage for each user from the moment they join a channel to the moment they leave it. If a user subscribes to video from other users in the channel, the usage is counted as video usage (of the applicable type); otherwise, the usage is counted as audio usage.
+In each Broadcast Streaming session, users communicate with each other in a Broadcast Streaming [channel](glossary). Agora measures the usage for each user from the moment they join a channel to the moment they leave it. If a user subscribes to video from other users in the channel, the usage is counted as video usage (of the applicable type); otherwise, the usage is counted as audio usage.
 
 Agora calculates usage based solely on a user’s subscriptions in the channels they join. Whether they publish streams does not matter.
 
@@ -87,7 +87,7 @@ other products.
 
 ### Cloud proxy pricing
 
-Typically, about 5% to 10% of the audio and video traffic may require [Cloud proxy](../build/cloud-proxy.mdx). For Cloud proxy, automatic mode is free of charge. Agora offers Force UDP and Force TCP cloud proxy modes with tiered capacity.
+Typically, about 5% to 10% of the audio and video traffic may require [Cloud proxy](../build/cloud-proxy). For Cloud proxy, automatic mode is free of charge. Agora offers Force UDP and Force TCP cloud proxy modes with tiered capacity.
 
 The minimum monthly base fee for each tier is:
 
@@ -121,7 +121,7 @@ Billing occurs at the end of each calendar month. For other tiers, contact [Agor
 
 ### AI Noise Suppression pricing
 
-[AI Noise Suppression](../build/ai-noise-suppression.mdx) helps reduce noise and voice distortion in virtual communication. Agora charges for voice sent to the channel by a host while AI Noise Suppression is enabled.
+[AI Noise Suppression](../build/ai-noise-suppression) helps reduce noise and voice distortion in virtual communication. Agora charges for voice sent to the channel by a host while AI Noise Suppression is enabled.
 
 AI Noise Suppression is free for up to 10,000 minutes each month. Additional usage is billed at the standard rate.
 
@@ -132,7 +132,7 @@ AI Noise Suppression is free for up to 10,000 minutes each month. Additional usa
 
 ### 3D Spatial Audio pricing
 
-[3D Spatial Audio](../build/spatial-audio.mdx) brings theater-like effects to virtual communication, making it seem as if the sound originates from all around the user.
+[3D Spatial Audio](../build/spatial-audio) brings theater-like effects to virtual communication, making it seem as if the sound originates from all around the user.
 
 The unit prices for this extension are as follows:
 
@@ -218,4 +218,4 @@ When calculating aggregate resolution, Agora counts the 640 × 352 (225,280) res
 
 ## See also
 
-[Billing policies and free-of-charge policy](billing-policies.md)
+[Billing policies and free-of-charge policy](billing-policies)

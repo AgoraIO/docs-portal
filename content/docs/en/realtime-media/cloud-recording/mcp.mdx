@@ -1,0 +1,98 @@
+---
+title: "Agora MCP"
+description: "Use Agora MCP with AI coding assistants to build with Agora faster."
+---
+
+The Agora MCP server gives your AI assistant direct access to Agora's documentation, so it can look up APIs, SDK methods, and platform-specific details in real time.
+The Agora MCP server is included when you install Agora Skills. If you prefer to install only the MCP server, it is available at:
+
+```text
+https://mcp.agora.io
+```
+
+### Installation
+
+Refer to the installation instructions for your coding assistant.
+
+**Cursor**
+Click the button below to install the MCP server in [Cursor](https://www.cursor.com/)
+
+<a href="https://cursor.com/en-US/install-mcp?name=agora-docs&config=eyJ1cmwiOiJodHRwczovL21jcC5hZ29yYS5pbyJ9" style={{ display: 'inline-block', margin: '0', padding: '0' }} onClick={(e) => e.stopPropagation()}>
+  <img
+    data-no-zoom
+    src="https://cursor.com/deeplink/mcp-install-dark.svg"
+    alt="Install Agora MCP Server in Cursor"
+    style={{
+      width: '140px',
+      height: 'auto',
+      border: '1px solid white',
+      display: 'block',
+      margin: '0',
+      padding: '0',
+      cursor: 'pointer',
+    }}
+  />
+</a>
+
+or add it manually with the following JSON:
+
+```json
+{
+  "mcpServers": {
+    "agora-docs": {
+      "url": "https://mcp.agora.io"
+    }
+  }
+}
+```
+
+**Claude**
+- **Claude Code**
+
+  Run the following command in your terminal to install the MCP server in [Claude Code](https://claude.com/product/claude-code):
+
+  ```shell
+  claude mcp add --transport http agora-docs https://mcp.agora.io
+  ```
+
+- **Claude Desktop**
+
+  In **Settings**, select **Connectors** and then choose **Add custom connector**. Enter the following values and click **Add**:
+
+  - **Name**: `agora-docs`
+  - **Remote MCP server URL**: `https://mcp.agora.io`
+
+**Codex**
+Run the following command in your terminal to install the server in [OpenAI Codex](https://openai.com/codex/):
+
+```shell
+codex mcp add --url https://mcp.agora.io agora-docs
+```
+
+**Gemini CLI**
+Run the following command in your terminal to install the server in [Gemini CLI](https://github.com/google-gemini/gemini-cli):
+
+```bash
+gemini mcp add --transport http agora-docs https://mcp.agora.io
+```
+
+**Manual installation**
+Add the server URL `https://mcp.agora.io` to your MCP client of choice. If prompted, set the transport to `http` or "Streamable HTTP".
+
+### Getting started
+
+Once installed, your coding assistant has access to Agora's documentation through the MCP server. The assistant will intelligently use this resource when relevant to your questions. For more targeted results, mention Agora along with your target product and platform, such as `Cloud Recording`, `Web`, and `REST API` in your prompts.
+
+## AGENTS.md
+
+To get the most out of Agora Skills and the MCP server, Agora recommends that you include an [AGENTS.md](https://agents.md) or similar file in your repository. This file ensures that your agent always consults Agora docs to produce reliable, working code.
+
+Add the following instructions to your own `AGENTS.md` file:
+
+```markdown
+## Agora Documentation
+
+Agora documentation is updated frequently. You should always refer to the latest documentation when working with Agora products. Agora offers an MCP server that you can use to browse and search its documentation. If the developer has not yet installed this server, recommend that they install it at https://mcp.agora.io.
+
+If the Agora Skills files are available in your context, use them for platform-specific API guidance and code examples.
+```

@@ -117,8 +117,8 @@ The Chat SDK uses `IChatManager` to retrieve historical messages from the server
 
 Before proceeding, ensure that you meet the following requirements:
 
-- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../get-started/get-started-sdk.mdx).
-- You understand the API call frequency limits as described in [Limitations](../../reference/limitations.md).
+- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../get-started/get-started-sdk).
+- You understand the API call frequency limits as described in [Limitations](../../reference/limitations).
 
 ## Implementation
 
@@ -172,7 +172,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview.md#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -541,7 +541,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview.md#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -662,7 +662,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview.md#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -947,7 +947,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview.md#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -1237,7 +1237,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview.md#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -1420,7 +1420,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview.md#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -1664,7 +1664,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview.md#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -1977,4 +1977,4 @@ List Marks = conv.Marks();
 
 After implementing retrieving messages, you can refer to the following documents to add more messaging functionalities to your app:
 
-- [Message receipts](./message-receipts.md)
+- [Message receipts](./message-receipts)

@@ -5,7 +5,7 @@ description: "If your app is running inside a restricted network, clear one of t
 
 This guide provides configuration details you need to set up Agora Cloud Proxy services across all supported regions. Cloud Proxy enables secure communication through firewalls by using designated IP addresses and ports.
 :::note
-If you configured cloud proxy settings using an older version of this guide, you may need to update your firewall rules. Refer to the [Cloud proxy migration guide](cloud-proxy-migration-guide.md).
+If you configured cloud proxy settings using an older version of this guide, you may need to update your firewall rules. Refer to the [Cloud proxy migration guide](cloud-proxy-migration-guide).
 :::
 ## Understand the tech
 
@@ -25,7 +25,7 @@ Follow these guidelines to configure cloud proxy settings.
 
 :::note
 When adding IP addresses:
-  - If you use cloud proxy with [Restricted media zones](../build/geofencing.mdx), add only the IP addresses dedicated to your specified region.
+  - If you use cloud proxy with [Restricted media zones](../build/geofencing), add only the IP addresses dedicated to your specified region.
   - If you do not restrict media zones, add all IP addresses to ensure connectivity.
 
 :::

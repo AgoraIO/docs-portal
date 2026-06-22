@@ -6,13 +6,13 @@ When interacting with conversational AI in real time, you can enable live transc
 
 ## Understand the tech
 
-Agora provides a flexible, scalable, and standardized conversational AI engine toolkit. The toolkit supports **iOS**, **Android**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate the capabilities of the [Agora Signaling SDK](../../realtime-media/rtm/index.md) and [Agora Video SDK](../../introduction/realtime-audio-video.md) to enable the following features:
+Agora provides a flexible, scalable, and standardized conversational AI engine toolkit. The toolkit supports **iOS**, **Android**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate the capabilities of the [Agora Signaling SDK](../../realtime-media/rtm/index) and [Agora Video SDK](../../introduction/realtime-audio-video) to enable the following features:
 
-- [Interrupt agents](interrupt-agent.md)
-- [Display live transcripts](transcripts.md)
-- [Receive event notifications](event-notifications.md)
-- [Set optimal audio parameters](../best-practices/audio-setup.md) for iOS and Android
-- [Send picture messages](send-multimodal-messages.md)
+- [Interrupt agents](interrupt-agent)
+- [Display live transcripts](transcripts)
+- [Receive event notifications](event-notifications)
+- [Set optimal audio parameters](../best-practices/audio-setup) for iOS and Android
+- [Send picture messages](send-multimodal-messages)
 
 The toolkit receives transcript content through the `onTranscriptUpdated` callback and supports monitoring the following transcript data types:
 
@@ -33,9 +33,9 @@ The following diagram outlines the step-by-step process to integrate live transc
 
 Before you begin, ensure the following:
 
-- You have implemented the Conversational AI Engine [REST quickstart](../get-started/quickstart.md).
-- Your app integrates Agora Video SDK v4.5.1 or later and includes the [audio and video quickstart](../../introduction/realtime-audio-video.md).
-- You have enabled Signaling in the Agora Console and completed the [Signaling quickstart](../../realtime-media/rtm/index.md) for basic messaging.
+- You have implemented the Conversational AI Engine [REST quickstart](../get-started/quickstart).
+- Your app integrates Agora Video SDK v4.5.1 or later and includes the [audio and video quickstart](../../introduction/realtime-audio-video).
+- You have enabled Signaling in the Agora Console and completed the [Signaling quickstart](../../realtime-media/rtm/index) for basic messaging.
 - You maintain active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
 
 ## Implementation
@@ -110,7 +110,7 @@ This section describes how to receive transcript content from the transcript pro
 
 6. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), configure the following parameters in your `POST` request:
+   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), configure the following parameters in your `POST` request:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -207,7 +207,7 @@ This section describes how to receive transcript content from the transcript pro
 
 6. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), configure the following parameters in your `POST` request:
+   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), configure the following parameters in your `POST` request:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -326,7 +326,7 @@ This section describes how to receive transcript content from the transcript pro
 
 6. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), configure the following parameters in your `POST` request:
+   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), configure the following parameters in your `POST` request:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -415,31 +415,31 @@ This section provides API reference entry points for the transcript module.
 
 <TabsContent value="android">
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/android.md#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android.md#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android.md#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/android.md#destroy)
-- [`onTranscriptUpdated`](../../api-reference/conversational-ai/client-toolkit/android.md#ontranscriptupdated)
+- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/android#addhandler)
+- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#subscribemessage)
+- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#unsubscribemessage)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/android#destroy)
+- [`onTranscriptUpdated`](../../api-reference/conversational-ai/client-toolkit/android#ontranscriptupdated)
 
 </TabsContent>
 
 <TabsContent value="ios">
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/ios.md#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios.md#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios.md#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios.md#destroy)
-- [`onTranscriptUpdated`](../../api-reference/conversational-ai/client-toolkit/ios.md#ontranscriptupdated)
+- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/ios#addhandler)
+- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#subscribemessage)
+- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#unsubscribemessage)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios#destroy)
+- [`onTranscriptUpdated`](../../api-reference/conversational-ai/client-toolkit/ios#ontranscriptupdated)
 
 </TabsContent>
 
 <TabsContent value="web">
 
-- [`IConversationalAIAPIEventHandlers interface`](../../api-reference/conversational-ai/client-toolkit/web.md#iconversationalaiapieventhandlers-interface)
-- [`EConversationalAIAPIEvents`](../../api-reference/conversational-ai/client-toolkit/web.md#econversationalaiapievents)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web.md#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web.md#unsubscribe)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/web.md#destroy)
+- [`IConversationalAIAPIEventHandlers interface`](../../api-reference/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
+- [`EConversationalAIAPIEvents`](../../api-reference/conversational-ai/client-toolkit/web#econversationalaiapievents)
+- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#subscribemessage)
+- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#unsubscribe)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/web#destroy)
 
 </TabsContent>
 </Tabs>

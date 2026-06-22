@@ -43,11 +43,11 @@ Agora Console provides access to the following:
 
 - Agora Analytics
 
-  Track and analyze the usage and quality data of real-time communication products through highly visualized reports in order to spot issues and find root causes. For more information, see the [Agora Analytics overview](https://docs-md.agora.io/en/agora-analytics/overview/product-overview.md).
+  Track and analyze the usage and quality data of real-time communication products through highly visualized reports in order to spot issues and find root causes. For more information, see the [Agora Analytics overview](https://docs-md.agora.io/en/agora-analytics/overview/product-overview).
 
 - Agora Extensions Marketplace
 
-  Gain access to extensions that rapidly add fun features to your app on top of Agora SDKs. For more information, see the [Extensions Marketplace overview](https://docs-md.agora.io/en/extensions-marketplace/overview/product-overview.md).
+  Gain access to extensions that rapidly add fun features to your app on top of Agora SDKs. For more information, see the [Extensions Marketplace overview](https://docs-md.agora.io/en/extensions-marketplace/overview/product-overview).
 
 ## Manage profile
 
@@ -488,4 +488,4 @@ Follow these steps to delete your Agora account:
 
 ## Reference
 
-For information on using Agora REST authentication, see [RESTful authentication](channel-management-api/restful-authentication.md).
+For information on using Agora REST authentication, see [RESTful authentication](channel-management-api/restful-authentication).

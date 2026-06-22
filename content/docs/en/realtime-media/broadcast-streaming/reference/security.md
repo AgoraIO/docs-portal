@@ -56,7 +56,7 @@ Agora provides customers with the Agora On-Premise Recording SDK and Agora Cloud
 
 ### Access authorization
 
-End users can access the Agora SDRTN® using a dynamic key, see [Secure authentication with tokens](../build/use-tokens.mdx).
+End users can access the Agora SDRTN® using a dynamic key, see [Secure authentication with tokens](../build/use-tokens).
 
 ### Electronic access controls
 
@@ -122,7 +122,7 @@ To better protect our system and customers, Agora also invites security research
 
 **How do I use an Agora SDK to protect my data security?**
 
-To ensure the security of the transmitted data, Agora services provide the encryption for audio and video data. Customers can use AES-128/AES-256 or other algorithms preset by Agora, or use customized encryption algorithms to achieve encryption, see [Channel Encryption](../build/media-stream-encryption.mdx). The encryption key is completely generated and distributed by the customer. Agora recommends that customers use separate keys for each channel to achieve the highest level of data security.
+To ensure the security of the transmitted data, Agora services provide the encryption for audio and video data. Customers can use AES-128/AES-256 or other algorithms preset by Agora, or use customized encryption algorithms to achieve encryption, see [Channel Encryption](../build/media-stream-encryption). The encryption key is completely generated and distributed by the customer. Agora recommends that customers use separate keys for each channel to achieve the highest level of data security.
 
 **Is Agora AES encryption mode secure?**
 
@@ -372,11 +372,11 @@ These SDKs support network geofencing in the following regions: global (default)
 
 Use this list to quickly check what measures you have or have not taken to best protect the security of you app and users:
 
-1. [Enable token-based authentication](../manage-agora-account.md) on [Agora Console](https://console.agora.io/v2).
+1. [Enable token-based authentication](../manage-agora-account) on [Agora Console](https://console.agora.io/v2).
 2. Disable *No certificate* in your project management page. Once it is done your app authenticates users with tokens only.
-3. [Deploy a token server](https://docs-md.agora.io/en/video-calling/token-authentication/deploy-token-server.md) in your backend services.
+3. [Deploy a token server](https://docs-md.agora.io/en/video-calling/token-authentication/deploy-token-server) in your backend services.
 4. Protect the token server and only allow the app backend server to connect to the token server.
-5. Set the token expiration date to a reasonable time. See [Deploy a token server](https://docs-md.agora.io/en/video-calling/token-authentication/deploy-token-server.md).
+5. Set the token expiration date to a reasonable time. See [Deploy a token server](https://docs-md.agora.io/en/video-calling/token-authentication/deploy-token-server).
 6. If needed, contact support@agora.io to enable token privilege and set token per role.
 7. For additional security if needed work with the Agora SA team to customize the token server and modify the token join privilege to a low time, like 5 min. This is more advance and recommended after app development is completed.
 8. Channel encryption key management – generate a random key (secret) per channel at the time of creating the channel, do not reuse encryption keys.

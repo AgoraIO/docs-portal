@@ -21,14 +21,14 @@ The request URL and request body is case-sensitive. All requests must use HTTPS.
 ### Request header
 
 - `Content-Type`: `application/json`
-- The request header must contain the `Authorization` field. For details, see [RESTful authentication](../../restful-authentication.md).
+- The request header must contain the `Authorization` field. For details, see [RESTful authentication](../../restful-authentication).
 
 ### Path parameters
 
 <PathParameter name="appid" type="string" required={true}>
  The App ID of the project. You can get it through one of the following methods:
  - Copy from the [Agora Console](https://console.agora.io)
- - Call the [Get all projects](../../agora-console-rest-api.md) API, and read the value of the `vendor_key` field in the response body.
+ - Call the [Get all projects](../../agora-console-rest-api) API, and read the value of the `vendor_key` field in the response body.
 </PathParameter>
 
 <PathParameter name="channelName" type="string" required={true}>
@@ -91,20 +91,20 @@ A `200` status code indicates success. The response body contains the following 
  </Parameter>
 </ParameterList>
 
-If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](../../response-status-code.md) for details.
+If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](../../response-status-code) for details.
 
 ## Reference
 
 ### Synchronizing channel online statistics
 
-To synchronize online channel statistics, you can use this endpoint or the [query user status](https://docs-md.agora.io/en/query-user-status.md) endpoint. This endpoint requires a lower call frequency and offers higher efficiency, so Agora recommends it for this purpose.
+To synchronize online channel statistics, you can use this endpoint or the [query user status](https://docs-md.agora.io/en/query-user-status) endpoint. This endpoint requires a lower call frequency and offers higher efficiency, so Agora recommends it for this purpose.
 
 </LeftColumn>
 
 <RightColumn>
 
 <Section title="Authorization">
- This endpoint requires [Basic authentication](../../restful-authentication.md).
+ This endpoint requires [Basic authentication](../../restful-authentication).
 </Section>
 
 <Section title="Request example">

@@ -54,8 +54,8 @@ Chat UI kit workflow
   - Chrome 54 or later
   - Safari 11 or later
 - A valid [Agora Account](https://console.agora.io/v2).
-- An Agora project that has [enabled the Chat service](./enable.md#enable-the-agora-chat-service).
-- An [App key](./enable.md#get-the-information-of-the-agora-chat-project) and [a user token generated on your app server](../develop/authentication.md).
+- An Agora project that has [enabled the Chat service](./enable#enable-the-agora-chat-service).
+- An [App key](./enable#get-the-information-of-the-agora-chat-project) and [a user token generated on your app server](../develop/authentication).
 
 ### Flutter
 
@@ -1252,7 +1252,7 @@ In your terminal, run the following command to launch the app:
 npm run start
 ```
 
-You can see the app launch in your browser. Before you can send a message, refer to [Add a contact](../client-api/user-attributes.md#manage-contacts) or [Join a chat group](../client-api/chat-group/manage-chat-groups.md#join-and-leave-a-chat-group) to add a contact or join a chat group.
+You can see the app launch in your browser. Before you can send a message, refer to [Add a contact](../client-api/user-attributes#manage-contacts) or [Join a chat group](../client-api/chat-group/manage-chat-groups#join-and-leave-a-chat-group) to add a contact or join a chat group.
 
 ### All except 'Flutter', 'React Native']}, {['Ios'
 
@@ -1260,7 +1260,7 @@ You can see the app launch in your browser. Before you can send a message, refer
 
 ### Android
 
-For demonstration purposes, Chat provides an app server that enables you to quickly retrieve a token using the App Key given in this guide. In a production context, the best practice is for you to deploy your own token server, use your own [App Key](./enable.md#get-the-information-of-the-agora-chat-project) to generate a token, and retrieve the token on the client side to log in to Agora. To see how to implement a server that generates and serves tokens on request, see [Authenticate your users with tokens](../develop/authentication.md).
+For demonstration purposes, Chat provides an app server that enables you to quickly retrieve a token using the App Key given in this guide. In a production context, the best practice is for you to deploy your own token server, use your own [App Key](./enable#get-the-information-of-the-agora-chat-project) to generate a token, and retrieve the token on the client side to log in to Agora. To see how to implement a server that generates and serves tokens on request, see [Authenticate your users with tokens](../develop/authentication).
 
 ### Web
 

@@ -18,7 +18,7 @@ This page provides detailed documentation for the Agora Channel Management RESTf
 
 The `Content-Type` field in all HTTP request headers is `application/json`. All requests and responses are in JSON format. All request URLs and request bodies are case-sensitive.
 
-The Agora Channel Management RESTful APIs only support HTTPS. Before sending HTTP requests, you must generate a Base64-encoded credential with the **Customer ID** and **Customer Secret** provided by Agora, and pass the credential to the `Authorization` field in the HTTP request header. See [RESTful authentication](restful-authentication.md) for details.
+The Agora Channel Management RESTful APIs only support HTTPS. Before sending HTTP requests, you must generate a Base64-encoded credential with the **Customer ID** and **Customer Secret** provided by Agora, and pass the credential to the `Authorization` field in the HTTP request header. See [RESTful authentication](restful-authentication) for details.
 
 ### Domain
 
@@ -134,12 +134,12 @@ func main() {
 }
 ```
 
-Use the channel management RESTful API along with the [Notifications](../../build/receive-notifications.mdx) service for reliable and effective channel management and status synchronization.
+Use the channel management RESTful API along with the [Notifications](../../build/receive-notifications) service for reliable and effective channel management and status synchronization.
 
 ### Call frequency limit
 
-For each Agora account (not each App ID), the maximum call frequency of every online channel statistics query API is 20 queries per second. The maximum call frequency of every other API is 10 queries per second. If you are frequency limited when calling the APIs, see [How can I avoid being frequency limited when calling Agora Server RESTful APIs](https://docs-md.agora.io/en/help/integration-issues/restful_api_call_frequency/.md) to optimize API call frequency.
+For each Agora account (not each App ID), the maximum call frequency of every online channel statistics query API is 20 queries per second. The maximum call frequency of every other API is 10 queries per second. If you are frequency limited when calling the APIs, see [How can I avoid being frequency limited when calling Agora Server RESTful APIs](https://docs-md.agora.io/en/help/integration-issues/restful_api_call_frequency/) to optimize API call frequency.
 
 ### Response status codes
 
-For a description of the response status codes, refer to [Response status codes](https://docs-md.agora.io/en/response-status-code.md).
+For a description of the response status codes, refer to [Response status codes](https://docs-md.agora.io/en/response-status-code).

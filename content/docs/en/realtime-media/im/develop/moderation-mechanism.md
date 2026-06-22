@@ -83,7 +83,7 @@ Image message `bodies` example:
 ## Custom messages
 
 :::info
-To use custom message moderation, [Enable the moderation feature](../agora-console/content-moderation-microsoft.md#enable-the-moderation-feature) in [Agora Console](https://console.agora.io/), then [contact technical support](mailto:support@agora.io) to enable custom message moderation.
+To use custom message moderation, [Enable the moderation feature](../agora-console/content-moderation-microsoft#enable-the-moderation-feature) in [Agora Console](https://console.agora.io/), then [contact technical support](mailto:support@agora.io) to enable custom message moderation.
 :::
 
 For custom messages submitted for moderation, the `customExts` parameter must include a `moderation` node, as shown in the following example:

@@ -106,4 +106,4 @@ details of your project in Agora Console.
 
 1. Copy the token and use it in your app.
 
-For more information on managing other aspects of your Agora account, see [Agora console overview](reference/console-overview.md).
+For more information on managing other aspects of your Agora account, see [Agora console overview](reference/console-overview).

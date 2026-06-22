@@ -185,10 +185,10 @@ v1.1.0 was released on April 28, 2023.
 #### New features
 
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](../restful-api/chatroom-management/manage-chatroom-attributes).
-- Adds the `ChatMessage#setPriority(ChatRoomMessagePriority)` method to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](../client-api/messages/send-receive-messages.md#set-message-priority).
-- Adds the pagination parameters `pageNum` and `pageSize` to the `ChatManager#asyncFetchConversationsFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages.md#retrieve-a-list-of-conversations-from-the-server).
-- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by  labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management.md).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages.md#delete-conversations-and-historical-messages).
+- Adds the `ChatMessage#setPriority(ChatRoomMessagePriority)` method to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](../client-api/messages/send-receive-messages#set-message-priority).
+- Adds the pagination parameters `pageNum` and `pageSize` to the `ChatManager#asyncFetchConversationsFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by  labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -524,10 +524,10 @@ v1.1.0 was released on April 28, 2023.
 #### New features
 
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](../restful-api/chatroom-management/manage-chatroom-attributes).
-- Adds the `AgoraChatMessage#priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. [Set message priority](../client-api/messages/send-receive-messages.md#set-message-priority).
-- Adds the pagination parameters `pageNum` and `pageSize` to the `IAgoraChatManager#getConversationsFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages.md#retrieve-a-list-of-conversations-from-the-server).
-- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management.md).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages.md#delete-conversations-and-historical-messages).
+- Adds the `AgoraChatMessage#priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. [Set message priority](../client-api/messages/send-receive-messages#set-message-priority).
+- Adds the pagination parameters `pageNum` and `pageSize` to the `IAgoraChatManager#getConversationsFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -726,7 +726,7 @@ v1.3.1 was released on December 20, 2024.
 #### Improvements
 
 - Added support for pinning messages in one-to-one conversations. Users can call `pinMessage` or `unpinMessage` to pin or unpin a one-to-one chat message.
-- Added the `ConnectionParameters#isFixedDeviceId` parameter (`true` by default) to specify whether to use a fixed device ID. Specifically, the SDK generates a device ID for a browser and saves it to the local storage. Then in the browser, all SDK instances use the same device. The setting of this parameter affects the strategy of forced logout in multi-device login use-cases. For details, see [Log in from multiple devices](../develop/multiple-device-login.md). In previous versions, a random device ID was used for connections of each SDK instance. In this case, each SDK instance uses a different device for connections.
+- Added the `ConnectionParameters#isFixedDeviceId` parameter (`true` by default) to specify whether to use a fixed device ID. Specifically, the SDK generates a device ID for a browser and saves it to the local storage. Then in the browser, all SDK instances use the same device. The setting of this parameter affects the strategy of forced logout in multi-device login use-cases. For details, see [Log in from multiple devices](../develop/multiple-device-login). In previous versions, a random device ID was used for connections of each SDK instance. In this case, each SDK instance uses a different device for connections.
 - Added the callback for DNS request failures.
 - Added the reason for requesting to join the group to the `requestToJoin` event that is received by the group owner and administrators that approved the join request.
 
@@ -821,10 +821,10 @@ v1.1.0 was released on April 28, 2023.
 #### New features
 
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](../restful-api/chatroom-management/manage-chatroom-attributes).
-- Adds the `priority` attribute to the message creation method `create` to implement the chat room message priority function. This ensures that high-priority messages are dealt with first. See [Set message priority](../client-api/messages/send-receive-messages.md#set-message-priority).
-- Adds the pagination parameters `pageNum` and `pageSize` in the `getConversationlist` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages.md#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `priority` attribute to the message creation method `create` to implement the chat room message priority function. This ensures that high-priority messages are dealt with first. See [Set message priority](../client-api/messages/send-receive-messages#set-message-priority).
+- Adds the pagination parameters `pageNum` and `pageSize` in the `getConversationlist` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
 - Adds the group creation event `create`, which occurs on other devices of the group owner after group creation.
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages.md#delete-conversations-and-historical-messages).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -1173,10 +1173,10 @@ Released on April 28, 2023.
 
 - Upgrades the iOS and Android native platforms that the Flutter platform depends on to v1.1.0.
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](../restful-api/chatroom-management/manage-chatroom-attributes).
-- Adds the `ChatManager#fetchConversationListFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages.md#retrieve-a-list-of-conversations-from-the-server).
-- Adds the `ChatMessage#chatroomMessagePriority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](../client-api/messages/send-receive-messages.md#set-message-priority).
-- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management.md).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages.md#delete-conversations-and-historical-messages).
+- Adds the `ChatManager#fetchConversationListFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `ChatMessage#chatroomMessagePriority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](../client-api/messages/send-receive-messages#set-message-priority).
+- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -1252,18 +1252,18 @@ This is the first release for the Chat Flutter SDK, which enables you to add rea
 - Managing chat groups and chat rooms.
 - Managing contact and blocklists.
 
-For the complete feature list, see [Product Overview](../index.md).
+For the complete feature list, see [Product Overview](../index).
 
-Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing for Chat](./pricing.md) and [Pricing Plan Details](../reference/pricing-plan-details.md).
+Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing for Chat](./pricing) and [Pricing Plan Details](../reference/pricing-plan-details).
 
 Refer to the following documentations to enable Chat and use the Chat SDK to implement real-time chatting functionalities in your app:
 
-- [Enable and Configure Chat](../get-started/enable.md)
+- [Enable and Configure Chat](../get-started/enable)
 - [Chat SDK quickstart](../get-started/get-started-sdk)
-- [Messages](../client-api/messages/message-overview.md)
-- [Chat Group](../client-api/chat-group/group-overview.md)
-- [Chat Room](../client-api/chat-room/chatroom-overview.md)
-- [RESTful API overview](../restful-api/restful-overview.md)
+- [Messages](../client-api/messages/message-overview)
+- [Chat Group](../client-api/chat-group/group-overview)
+- [Chat Room](../client-api/chat-room/chatroom-overview)
+- [RESTful API overview](../restful-api/restful-overview)
 
 ### React Native
 
@@ -1513,10 +1513,10 @@ Released on April 28, 2023.
 
 - Upgrades the iOS and Android native platforms that the React Native platform depends on to v1.1.0.
 - Adds the function of managing custom chat room attributes. See [Manage chat room attributes](../restful-api/chatroom-management/manage-chatroom-attributes).
-- Adds the `ChatManager#fetchConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages.md#retrieve-a-list-of-conversations-from-the-server).
-- Adds the `ChatMessage#messagePriority` method to implement the chat room message priority function. See [Set message priority](../client-api/messages/send-receive-messages.md#set-message-priority).
-- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management.md).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages.md#delete-conversations-and-historical-messages).
+- Adds the `ChatManager#fetchConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `ChatMessage#messagePriority` method to implement the chat room message priority function. See [Set message priority](../client-api/messages/send-receive-messages#set-message-priority).
+- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -1643,18 +1643,18 @@ This is the first release for the Chat C# SDK, which enables you to add real-tim
 - Managing chat groups and chatrooms.
 - Managing contact and blocklists.
 
-For the complete feature list, see [Product Overview](../index.md).
+For the complete feature list, see [Product Overview](../index).
 
-Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing for Chat](./pricing.md) and [Pricing Plan Details](../reference/pricing-plan-details.md).
+Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing for Chat](./pricing) and [Pricing Plan Details](../reference/pricing-plan-details).
 
 Refer to the following documentations to enable Chat and use the Chat SDK to implement real-time chatting functionalities in your app:
 
-- [Enable and Configure Chat](../get-started/enable.md)
+- [Enable and Configure Chat](../get-started/enable)
 - [Chat SDK quickstart](../get-started/get-started-sdk)
-- [Messages](../client-api/messages/message-overview.md)
-- [Chat Group](../client-api/chat-group/group-overview.md)
-- [Chat Room](../client-api/chat-room/chatroom-overview.md)
-- [RESTful API overview](../restful-api/restful-overview.md)
+- [Messages](../client-api/messages/message-overview)
+- [Chat Group](../client-api/chat-group/group-overview)
+- [Chat Room](../client-api/chat-room/chatroom-overview)
+- [RESTful API overview](../restful-api/restful-overview)
 
 ### Windows
 
@@ -1819,10 +1819,10 @@ v1.1.0 was released on April 28, 2023.
 #### New features
 
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](../restful-api/chatroom-management/manage-chatroom-attributes).
-- Adds the `ChatManager#GetConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages.md#retrieve-a-list-of-conversations-from-the-server).
-- Adds the `Message#Priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](../client-api/messages/send-receive-messages.md#set-message-priority).
-- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management.md).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages.md#delete-conversations-and-historical-messages).
+- Adds the `ChatManager#GetConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `Message#Priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](../client-api/messages/send-receive-messages#set-message-priority).
+- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -1948,17 +1948,17 @@ This is the first release for the Chat C# SDK, which enables you to add real-tim
 - Managing chat groups and chatrooms.
 - Managing contact and blocklists.
 
-For the complete feature list, see [Product Overview](../index.md).
+For the complete feature list, see [Product Overview](../index).
 
-Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing for Chat](./pricing.md) and [Pricing Plan Details](../reference/pricing-plan-details.md).
+Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing for Chat](./pricing) and [Pricing Plan Details](../reference/pricing-plan-details).
 
 Refer to the following documentations to enable Chat and use the Chat SDK to implement real-time chatting functionalities in your app:
 
-- [Enable and Configure Chat](../get-started/enable.md)
+- [Enable and Configure Chat](../get-started/enable)
 - [Chat SDK quickstart](../get-started/get-started-sdk)
-- [Messages](../client-api/messages/message-overview.md)
-- [Chat Group](../client-api/chat-group/group-overview.md)
-- [Chat Room](../client-api/chat-room/chatroom-overview.md)
+- [Messages](../client-api/messages/message-overview)
+- [Chat Group](../client-api/chat-group/group-overview)
+- [Chat Room](../client-api/chat-room/chatroom-overview)
 - API Reference
 
 ### Unity
@@ -2195,10 +2195,10 @@ v1.1.0 was released on April 28, 2023.
 
 - Upgrades the native platforms `iOS` and `Android` that the Unity platform depends on to v1.1.0.
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](../restful-api/chatroom-management/manage-chatroom-attributes).
-- Adds the `ChatManager#GetConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages.md#retrieve-a-list-of-conversations-from-the-server).
-- Adds the `Message#Priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](../client-api/messages/send-receive-messages.md#set-message-priority).
-- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management.md).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages.md#delete-conversations-and-historical-messages).
+- Adds the `ChatManager#GetConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](../client-api/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `Message#Priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](../client-api/messages/send-receive-messages#set-message-priority).
+- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](../restful-api/push-notification-management).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](../client-api/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -2324,18 +2324,18 @@ This is the first release for the Chat C# SDK, which enables you to add real-tim
 - Managing chat groups and chatrooms.
 - Managing contact and block lists.
 
-For the complete feature list, see [Product Overview](../index.md).
+For the complete feature list, see [Product Overview](../index).
 
-Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing for Chat](./pricing.md) and [Pricing Plan Details](../reference/pricing-plan-details.md).
+Chat is charged on a MAU (Monthly Active Users) basis. For details, see [Pricing for Chat](./pricing) and [Pricing Plan Details](../reference/pricing-plan-details).
 
 Refer to the following documentations to enable Chat and use the Chat SDK to implement real-time chatting functionalities in your app:
 
-- [Enable and Configure Chat](../get-started/enable.md)
+- [Enable and Configure Chat](../get-started/enable)
 - [Chat SDK quickstart](../get-started/get-started-sdk)
-- [Messages](../client-api/messages/message-overview.md)
-- [Chat Group](../client-api/chat-group/group-overview.md)
-- [Chat Room](../client-api/chat-room/chatroom-overview.md)
-- [RESTful API overview](../restful-api/restful-overview.md)
+- [Messages](../client-api/messages/message-overview)
+- [Chat Group](../client-api/chat-group/group-overview)
+- [Chat Room](../client-api/chat-room/chatroom-overview)
+- [RESTful API overview](../restful-api/restful-overview)
 
 ## RESTful API
 ## v1.3.0

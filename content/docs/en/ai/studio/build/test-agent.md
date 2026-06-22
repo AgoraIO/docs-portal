@@ -83,5 +83,5 @@ If the agent's voice sounds distorted or unnatural:
 
 ## Next steps
 
-- [Deploy your agent](../deploy/deploy-agent.md): Deploy your tested agent to production environments
-- [Connect your agent](../deploy/connect-agent.md): Integrate your deployed agent with applications using APIs and webhooks
+- [Deploy your agent](../deploy/deploy-agent): Deploy your tested agent to production environments
+- [Connect your agent](../deploy/connect-agent): Integrate your deployed agent with applications using APIs and webhooks

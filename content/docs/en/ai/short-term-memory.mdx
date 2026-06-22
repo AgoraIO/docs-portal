@@ -118,8 +118,8 @@ description: 短期记忆（Short-term Memory）是智能体在当前会话中�
 
 声网对话式 AI 引擎支持两种方式获取短期记忆：
 
-- 智能体运行期间，你可以调用 [GET 获取智能体短期记忆](../operations/get-history.md)接口获取短期记忆 JSON。该接口会得到智能体生命周期内储存的完整的短期记忆。
-- 智能体停止后，声网会通过消息通知服务将短期记忆回调至你的业务服务器，详见[消息通知事件类型](../webhook/ncs-events.md#103-agent-history)。
+- 智能体运行期间，你可以调用 [GET 获取智能体短期记忆](../operations/get-history)接口获取短期记忆 JSON。该接口会得到智能体生命周期内储存的完整的短期记忆。
+- 智能体停止后，声网会通过消息通知服务将短期记忆回调至你的业务服务器，详见[消息通知事件类型](../webhook/ncs-events#103-agent-history)。
 
 ## 短期记忆的应用
 
@@ -128,7 +128,7 @@ description: 短期记忆（Short-term Memory）是智能体在当前会话中�
 根据智能体创建时传入的 `llm.vendor` 字段，声网对话式 AI 引擎会采取不同的策略来传递记忆内容给大模型：
 
 - 当 `llm.vendor` 为 非`"custom"` 时，为保证兼容性，声网对话式 AI 引擎仅从短期记忆中传输 OpenAI 标准字段，即 `role` 和 `content`。
-- 当 `llm.vendor` 为 `"custom"` 时，声网对话式 AI 引擎会传输短期记忆中的所有字段。你可以参考[自定义大模型](./custom-llm.md)中的示例代码实现一个包装器 (wrapper) 以过滤或合并短期记忆中的某些拓展字段，按需选择、处理并传递这些信息给大模型。
+- 当 `llm.vendor` 为 `"custom"` 时，声网对话式 AI 引擎会传输短期记忆中的所有字段。你可以参考[自定义大模型](./custom-llm)中的示例代码实现一个包装器 (wrapper) 以过滤或合并短期记忆中的某些拓展字段，按需选择、处理并传递这些信息给大模型。
 
 ![image](/images/conversational-ai/convo-ai-notifications.svg)
 
@@ -169,7 +169,7 @@ description: 短期记忆（Short-term Memory）是智能体在当前会话中�
 
 #### custom 场景
 
-在 `custom` 场景下，智能体将完整的扩展字段传递给大模型，你可以参考[自定义大模型](./custom-llm.md) 中的示例代码实现一个包装器 (wrapper) 来实现字段的过滤和合并，例如：
+在 `custom` 场景下，智能体将完整的扩展字段传递给大模型，你可以参考[自定义大模型](./custom-llm) 中的示例代码实现一个包装器 (wrapper) 来实现字段的过滤和合并，例如：
 
 - 将时间戳放到 `content` 前面
 - 将用户信息放在 `content` 前面
@@ -266,4 +266,4 @@ description: 短期记忆（Short-term Memory）是智能体在当前会话中�
 ]
 ```
 
-此外，自 v1.4 起，支持在智能体运行时，调用 [POST 更新智能体配置](../operations/agent-update.md)更新 `system_messages` 字段, 从而实现记忆内容的更新。
+此外，自 v1.4 起，支持在智能体运行时，调用 [POST 更新智能体配置](../operations/agent-update)更新 `system_messages` 字段, 从而实现记忆内容的更新。

@@ -27,8 +27,8 @@ Data structure of an org
 
 Ensure that you meet the following requirements before calling the Chat RESTful APIs:
 
-- You have [enabled and configured Chat in the Console](../get-started/enable.md).
-- You have retrieved an app token from the app server. For details, see [Authentication with App Token](../develop/authentication.md).
+- You have [enabled and configured Chat in the Console](../get-started/enable).
+- You have retrieved an app token from the app server. For details, see [Authentication with App Token](../develop/authentication).
 
 ## Features
 
@@ -249,11 +249,11 @@ The Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP req
 Authorization: Bearer ${token}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. The Chat RESTful APIs only supports authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication.md).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. The Chat RESTful APIs only supports authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication).
 
 ### Server address
 
-Under the same project, all requests are sent to the same domain name. For how to get the domain name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).
+Under the same project, all requests are sent to the same domain name. For how to get the domain name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project).
 
 ### Protocol
 

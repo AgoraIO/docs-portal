@@ -12,10 +12,10 @@ The following message management tools are available:
 
 ## Prerequisites
 
-- You have created a valid [Agora developer account](../reference/manage-agora-account.md#create-an-agora-account).
-- Moderation is not enabled by default. To use this feature, subscribe to the **Pro** or **Enterprise** [pricing plan](../reference/pricing-plan-details.md) and enable it in [Agora Console](https://console.agora.io/v2).
+- You have created a valid [Agora developer account](../reference/manage-agora-account#create-an-agora-account).
+- Moderation is not enabled by default. To use this feature, subscribe to the **Pro** or **Enterprise** [pricing plan](../reference/pricing-plan-details) and enable it in [Agora Console](https://console.agora.io/v2).
   :::info
-Add-on fees are incurred if you use this feature. See [Pricing](../overview/pricing.md#optional-add-on-fee) for details.
+Add-on fees are incurred if you use this feature. See [Pricing](../overview/pricing#optional-add-on-fee) for details.
 :::
 
 ## Enable the moderation feature
@@ -27,7 +27,7 @@ Add-on fees are incurred if you use this feature. See [Pricing](../overview/pric
 	 ![enable_moderation_en](https://web-cdn.agora.io/docs-files/1656312916879)
 
 :::info
-After enabling the moderation feature, see [Message moderation mechanism](../develop/moderation-mechanism.md) to understand how message moderation works and how to configure your moderation strategy.
+After enabling the moderation feature, see [Message moderation mechanism](../develop/moderation-mechanism) to understand how message moderation works and how to configure your moderation strategy.
 :::
 
 ## Message management
@@ -186,7 +186,7 @@ After enabling the text and image moderation feature on Agora Console, you can s
 You can also impose a penalty on users who reach the violation limit within a time period. The moderation penalties include the following:
 
 - Penalties at the app level or in one-to-one chat:
-  - **Ban**: If the user is banned, he will be forced to go offline immediately and cannot log in to Agora Chat. The banned user cannot log in again until he or she is unbanned. For example, if a user sends inappropriate content 5 times within 1 minute, he or she will be banned. Once a user is banned, the user state is changed to `Blocked` on the **Users** page under **Operation Management**. You can click **Unblock** in the **Action** column or call the [RESTful API](../restful-api/user-system-registration.md#unbanning-a-user) to unblock the user.
+  - **Ban**: If the user is banned, he will be forced to go offline immediately and cannot log in to Agora Chat. The banned user cannot log in again until he or she is unbanned. For example, if a user sends inappropriate content 5 times within 1 minute, he or she will be banned. Once a user is banned, the user state is changed to `Blocked` on the **Users** page under **Operation Management**. You can click **Unblock** in the **Action** column or call the [RESTful API](../restful-api/user-system-registration#unbanning-a-user) to unblock the user.
   - **Force Offline**: The user is forced to go offline and needs to log in again to use Agora Chat normally.
   - **Delete**: The user is removed. If the user is the group owner or chat room owner, the system will delete the corresponding group and chat room at the same time.
 

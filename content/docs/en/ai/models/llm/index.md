@@ -7,11 +7,11 @@ Large language models (LLMs) generate the agent response from the conversation c
 
 ## Providers
 
-- [OpenAI](openai.md)
-- [Azure OpenAI](azure-openai.md)
-- [Groq](groq.md)
-- [Google Gemini](gemini.md)
-- [Google Vertex AI](google-vertex-ai.md)
-- [Claude](claude.md)
-- [Amazon Bedrock](amazon.md)
-- [Dify](dify.md)
+- [OpenAI](openai)
+- [Azure OpenAI](azure-openai)
+- [Groq](groq)
+- [Google Gemini](gemini)
+- [Google Vertex AI](google-vertex-ai)
+- [Claude](claude)
+- [Amazon Bedrock](amazon)
+- [Dify](dify)
