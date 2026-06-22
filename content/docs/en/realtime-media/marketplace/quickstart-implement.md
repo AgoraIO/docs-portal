@@ -39,23 +39,23 @@ The steps to develop, test and publish an extension to Extensions Marketplace:
 
     Once your application to become a partner is approved, develop your functionality as an audio or video extension using the following documentation:
 
-    - [Develop an audio extension](/en/realtime-media/marketplace/develop/create-extension/audio-filter)
-    - [Develop a video extension](/en/realtime-media/marketplace/develop/create-extension/video-filter)
+    - [Develop an audio extension](build/audio-filter.mdx)
+    - [Develop a video extension](build/video-filter.mdx)
 
     When you have developed and tested your extension, You also need to validate the user interface of your extension in a test environment. To test your extension, submit an application for testing. Agora processes your application in 7 working days and informs you through an email when it's done.
 
 1. **Help developers easily integrate your extension into their app**.
 
-    Write the [Implementation guide](/en/realtime-media/marketplace/develop/create-extension/implementation-guide) for your extension
+    Write the [Implementation guide](build/implementation-guide.md) for your extension
 
 1. **Share provisioning, usage, and billing information with Agora**
 
-    - [Provisioning API](/en/realtime-media/marketplace/develop/create-extension/provisioning)
-    - [Usage and billing API](/en/realtime-media/marketplace/develop/create-extension/usage)
+    - [Provisioning API](build/provisioning.md)
+    - [Usage and billing API](build/usage.md)
 
 1. **Publish your extension**
 
-    When your extension is thoroughly developed and tested, you need to submit it for Agora review and provide the finalized version of your extension listing assets. For details, see [Publish your extension](/en/realtime-media/marketplace/develop/create-extension/publish-extension).
+    When your extension is thoroughly developed and tested, you need to submit it for Agora review and provide the finalized version of your extension listing assets. For details, see [Publish your extension](build/publish-extension.md).
 
     Agora reviews your extension in 7 working days. If your extension passes the review, Agora updates the listing of your extension and informs you through an email. If your extension fails the review, Agora sends an email to report the issues you need to address.
 
