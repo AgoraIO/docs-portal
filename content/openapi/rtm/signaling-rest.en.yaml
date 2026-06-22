@@ -1,0 +1,557 @@
+openapi: 3.1.0
+info:
+  version: ""
+  title: Signaling RESTful API Overview
+  description: >-
+    The Signaling REST APIs provide server-side messaging capabilities that
+    complement the Signaling SDK. Send messages to users and channels, retrieve
+    conversation history, and track user events from your backend without
+    requiring recipients to be actively connected.
+
+
+    ## API basics
+
+
+    All requests are sent to the host `api.agora.io`.
+
+
+    - **Authentication**: All APIs require Basic Auth for authentication.
+
+    - **Request**: Refer to the respective API examples.
+
+    - **Response**: The response content is in JSON format.
+
+    - **Base URL**: `https://api.agora.io/dev/v2/project/<appid>`, where
+      `<appid>` is the Agora app ID for your project.
+
+
+    > - All the request URLs and request bodies are case-sensitive.
+
+    > - For each app ID, the maximum combined frequency of the peer-to-peer
+    >   message and channel message APIs is 500 calls per second.
+servers:
+  - url: https://api.agora.io/dev/v2/project
+    description: Base host for messaging and event APIs.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: All Signaling REST APIs require Basic Auth for authentication.
+  parameters:
+    appid:
+      name: appid
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The App ID of your Agora project.
+security:
+  - basicAuth: []
+paths:
+  /{appid}/rtm/users/{user_id}/peer_messages:
+    post:
+      summary: Send peer-to-peer message
+      description: >-
+        Sends a peer-to-peer message from the server. The user sending the
+        message does not have to log in to Signaling.
+
+
+        - You can send peer-to-peer or channel messages with any user ID when
+          using basic HTTP authentication.
+
+        - When you use token authentication, you may send peer-to-peer or
+          channel messages using only the user ID you used to generate the
+          Signaling token.
+      operationId: send-peer-message
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            Signaling user ID to send a peer-to-peer message. It must not exceed
+            64 characters in length or be an empty string. Since `user_id` is a
+            URL parameter, the first and last characters must not be a space.
+        - name: wait_for_ack
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+          description: >-
+            Whether the API returns the HTTP response after Signaling receives
+            the acknowledgement from the receiver.
+
+
+            - `true`: The API waits for the receiver to acknowledge receipt of
+              the message before returning the HTTP response.
+
+            - `false`: The API returns the HTTP response immediately after the
+              Agora RTM server receives the message, without waiting for
+              receiver acknowledgement.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - destination
+                - payload
+              properties:
+                destination:
+                  type: string
+                  description: >-
+                    Signaling user ID to receive a peer-to-peer message. It must
+                    not exceed 64 characters in length or be an empty string.
+                enable_offline_messaging:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Whether to enable offline messages.
+
+
+                    > The offline message feature is deprecated and will be
+                    removed in a future version. Agora recommends that you do
+                    not use it.
+
+
+                    - `true`: Enable offline messages. If the receiver is
+                      offline when you send a peer-to-peer message, Signaling
+                      saves the message (maximum 200 per receiver) and delivers
+                      it when the receiver is online.
+
+                    - `false`: Disable offline messages.
+                enable_historical_messaging:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Whether to save as a historical message.
+
+
+                    - `true`: Save as a historical message.
+
+                    - `false`: Do not save as a historical message.
+                payload:
+                  type: string
+                  description: >-
+                    Content of the peer-to-peer message. It must not be an empty
+                    string or exceed 32 KB in length.
+            example:
+              destination: userB
+              enable_offline_messaging: false
+              enable_historical_messaging: false
+              payload: Hello
+      responses:
+        "200":
+          description: >-
+            The request was successful. The response body contains the result of
+            the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: >-
+                      Request result. `success` if the request succeeds,
+                      `failed` if it fails.
+                  request_id:
+                    type: string
+                    description: Unique ID to identify this request.
+                  code:
+                    type: string
+                    description: >-
+                      Message status: `message_sent`, `message_delivered`, or
+                      `message_offline`.
+              example:
+                result: success
+                request_id: "123"
+                code: message_sent
+        default:
+          description: >-
+            The request failed. The response body includes the error code and
+            description.
+  /{appid}/rtm/users/{user_id}/channel_messages:
+    post:
+      summary: Send channel message
+      description: >-
+        Sends a channel message from the server. You can send a message to a
+        channel without joining it first.
+      operationId: send-channel-message
+      parameters:
+        - $ref: "#/components/parameters/appid"
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            Signaling user ID to send a channel message. It must not exceed 64
+            characters in length or be an empty string. Since `user_id` is a URL
+            parameter, the first and last characters must not be a space.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - channel_name
+                - payload
+              properties:
+                channel_name:
+                  type: string
+                  description: >-
+                    Signaling channel name to receive a channel message. It must
+                    not exceed 64 characters in length or be an empty string.
+                enable_historical_messaging:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Whether to save as a historical message.
+
+
+                    - `true`: Save as a historical message.
+
+                    - `false`: Do not save as a historical message.
+                payload:
+                  type: string
+                  description: >-
+                    Content of the channel message. It must not be an empty
+                    string or exceed 32 KB in length.
+            example:
+              channel_name: channelA
+              enable_historical_messaging: false
+              payload: Hello
+      responses:
+        "200":
+          description: >-
+            The request was successful. The response body contains the result of
+            the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: >-
+                      Request result. `success` if the request succeeds,
+                      `failed` if it fails.
+                  request_id:
+                    type: string
+                    description: Unique ID to identify this request.
+                  code:
+                    type: string
+                    description: "Message status: `message_sent`."
+              example:
+                result: success
+                request_id: "123"
+                code: message_sent
+        default:
+          description: >-
+            The request failed. The response body includes the error code and
+            description.
+  /{appid}/rtm/vendor/user_events:
+    get:
+      summary: Get user events
+      description: >-
+        Gets the user login and logout events from the address specified by the
+        Agora Signaling server. Events you acquire using this API are removed
+        from the server; you cannot retrieve the same event twice.
+
+
+        The Signaling backend stores a maximum of 2,000 events, with the latest
+        event replacing the oldest when this limit is exceeded. The backend
+        returns a maximum of 1,000 events per request, and the number of
+        requests for each app ID must not exceed 10 per second.
+
+
+        > Agora does not guarantee event time sequence across geographical
+        regions. Events pulled from different regions may contain duplicates
+        since synchronization only occurs within regions, not across them.
+      operationId: get-user-events
+      parameters:
+        - $ref: "#/components/parameters/appid"
+      responses:
+        "200":
+          description: >-
+            The request was successful. The response body contains the result of
+            the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: >-
+                      The result of this request. `success` if it succeeds,
+                      `failed` if it fails.
+                  request_id:
+                    type: string
+                    description: The unique ID of this request.
+                  events:
+                    type: array
+                    description: An array of login and logout events.
+                    items:
+                      type: object
+                      properties:
+                        user_id:
+                          type: string
+                          description: The corresponding user ID.
+                        type:
+                          type: string
+                          description: >-
+                            Event type: `Login` when the user logged in to
+                            Signaling, `Logout` when the user logged out.
+                        ms:
+                          type: integer
+                          description: >-
+                            Number of milliseconds since January 1, 1970 (UTC) to
+                            the UTC time when the server receives the message.
+              example:
+                result: success
+                request_id: "10116762670167749259"
+                events:
+                  - user_id: rtmtest_RTM_4852_4857w7%
+                    type: Login
+                    ms: 1578027420761
+        default:
+          description: >-
+            The request failed. The response body includes the error code and
+            description.
+  /{appid}/rtm/vendor/channel_events:
+    get:
+      summary: Get channel events
+      description: >-
+        Gets the channel join and leave events from the address specified by the
+        Agora Signaling server. Events you acquire using this API are removed
+        from the server; you cannot retrieve the same event twice.
+
+
+        The Signaling server stores a maximum of 2,000 events, with the latest
+        event replacing the oldest when this limit is exceeded. The backend
+        returns a maximum of 1,000 events per request, and the number of
+        requests for each app ID must not exceed 10 per second.
+
+
+        > Agora does not guarantee event time sequence across geographical
+        regions. Events pulled from different regions may contain duplicates
+        since synchronization only occurs within regions, not across them.
+      operationId: get-channel-events
+      parameters:
+        - $ref: "#/components/parameters/appid"
+      responses:
+        "200":
+          description: >-
+            The request was successful. The response body contains the result of
+            the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    description: >-
+                      The result of this request. `success` if it succeeds,
+                      `failed` if it fails.
+                  request_id:
+                    type: string
+                    description: The unique ID of this request.
+                  events:
+                    type: array
+                    description: An array of join and leave events.
+                    items:
+                      type: object
+                      properties:
+                        group_id:
+                          type: string
+                          description: The corresponding channel ID.
+                        user_id:
+                          type: string
+                          description: The corresponding user ID.
+                        type:
+                          type: string
+                          description: >-
+                            Event type: `Join` when a user has joined the
+                            channel, `Leave` when a user has left the channel.
+                        ms:
+                          type: integer
+                          description: >-
+                            Number of milliseconds since January 1, 1970 (UTC) to
+                            the UTC time when the server receives the message.
+              example:
+                result: success
+                request_id: "10116762670167749259"
+                events:
+                  - group_id: example_channel_id
+                    user_id: rtmtest_RTM_4852_4857w7%
+                    type: Join
+                    ms: 1578027418981
+        default:
+          description: >-
+            The request failed. The response body includes the error code and
+            description.
+  /rtm/v2/history/{appId}/userId/{userId}/channelType/{channelType}/channel/{channelName}:
+    servers:
+      - url: https://api.sd-rtn.com
+        description: Host for the message history API.
+    get:
+      summary: Get message history
+      description: Retrieves historical messages from the specified channel.
+      operationId: get-message-history
+      parameters:
+        - name: appId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The App ID of your Agora project.
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            The user ID for the operation. Character length must be between 1
+            and 64.
+        - name: channelType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - message
+              - user
+          description: >-
+            The type of channel to retrieve messages from. `message` for a
+            message channel, `user` for a user channel.
+        - name: channelName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            The name of the channel. Character length must be between 1 and 64.
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 0
+          description: >-
+            The start timestamp of the historical message query. Defaults to `0`
+            if not specified.
+        - name: end
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 0
+          description: >-
+            The end timestamp of the historical message query. Defaults to `0`
+            if not specified.
+        - name: messageCount
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 100
+          description: >-
+            The maximum number of messages to return in a single query. The
+            value must be in the range `(0, 100]`. Defaults to `100`.
+      responses:
+        "200":
+          description: >-
+            The request was successful. The response body contains the result of
+            the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                    description: The status code of the request. `200` indicates success.
+                  error:
+                    type: boolean
+                    description: >-
+                      Indicates whether the request failed. `false` if it
+                      succeeded, `true` if it failed.
+                  requestId:
+                    type: string
+                    description: The unique ID associated with the request.
+                  operation:
+                    type: string
+                    description: The specific operation performed by the request.
+                  reason:
+                    type: string
+                    description: A short explanation of the reason for the error.
+                  timestamp:
+                    type: integer
+                    description: >-
+                      The time the request was sent, as a Unix timestamp in
+                      milliseconds.
+                  data:
+                    type: object
+                    description: The response payload.
+                    properties:
+                      messageList:
+                        type: array
+                        description: An array of message objects.
+                        items:
+                          type: object
+                          properties:
+                            messageType:
+                              type: string
+                              description: >-
+                                The type of message content. `STRING` uses the
+                                `message` field directly; `BINARY` is
+                                base64-encoded in the `message` field.
+                            message:
+                              type: string
+                              description: The content of the message.
+                            customType:
+                              type: string
+                              description: The custom message type.
+                            publisher:
+                              type: string
+                              description: The user ID of the message sender.
+                            timestamp:
+                              type: integer
+                              description: The time the message was sent, as a Unix timestamp.
+                      count:
+                        type: integer
+                        description: The total number of messages retrieved.
+                      newStart:
+                        type: integer
+                        description: The start timestamp for the next batch of messages.
+              example:
+                errorCode: 200
+                error: false
+                requestId: "1121_1234231"
+                operation: getMessage
+                reason: ""
+                timestamp: 1234567
+                data:
+                  messageList:
+                    - messageType: STRING
+                      message: Hello, how are you?
+                      customType: text
+                      publisher: Tony
+                      timestamp: 1234567890
+                  count: 1
+                  newStart: 1234567892
+        default:
+          description: >-
+            The request failed. The response body includes the error code and
+            description.

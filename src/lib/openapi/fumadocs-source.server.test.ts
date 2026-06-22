@@ -18,7 +18,10 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'zh-CN/api-reference/conversational-ai/rest-api/agent/join.mdx',
     );
-    expect(pagePaths).toHaveLength(20);
+    expect(pagePaths).toContain(
+      'en/realtime-media/rtm/rest-api/peer-to-peer-message.mdx',
+    );
+    expect(pagePaths).toHaveLength(30);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {

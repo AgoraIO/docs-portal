@@ -522,7 +522,7 @@ Released on July 31, 2025.
     Create visual avatar representations for your conversational agents using third-party avatar providers. AI avatars provide a visual presence during voice interactions, making conversations feel more natural and engaging. Enable AI avatars by setting `avatar.enable` to `true` and configuring the `avatar.vendor` and `avatar.params` fields when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) to create your agent.
 
     > **Info**
-> AI avatars require video streaming and incur additional charges. See [video calling pricing](../../introduction/pricing-access) for details.
+> AI avatars require video streaming and incur additional charges. See [video calling pricing](../../realtime-media/video/reference/pricing) for details.
 
 * **Selective attention locking** (Beta)
 

@@ -106,6 +106,60 @@ export const OPENAPI_LANES = [
       },
     },
   },
+  {
+    id: 'signaling-rest',
+    parentUrl: {
+      en: '/en/realtime-media/rtm/rest-api',
+      'zh-CN': '/zh-CN/realtime-media/rtm/rest-api',
+    },
+    publicSourceUrl: {
+      en: '/openapi/rtm/signaling-rest.en.yaml',
+      'zh-CN': '/openapi/rtm/signaling-rest.en.yaml',
+    },
+    routePrefix: 'realtime-media/rtm/rest-api',
+    sourcePath: {
+      en: 'content/openapi/rtm/signaling-rest.en.yaml',
+      'zh-CN': 'content/openapi/rtm/signaling-rest.en.yaml',
+    },
+    tab: 'realtime-media',
+    operations: {
+      'send-peer-message': {
+        routeLeaf: 'peer-to-peer-message',
+        title: {
+          en: 'Send peer-to-peer message',
+          'zh-CN': 'Send peer-to-peer message',
+        },
+      },
+      'send-channel-message': {
+        routeLeaf: 'channel-message',
+        title: {
+          en: 'Send channel message',
+          'zh-CN': 'Send channel message',
+        },
+      },
+      'get-message-history': {
+        routeLeaf: 'message-history',
+        title: {
+          en: 'Get message history',
+          'zh-CN': 'Get message history',
+        },
+      },
+      'get-user-events': {
+        routeLeaf: 'user-events',
+        title: {
+          en: 'Get user events',
+          'zh-CN': 'Get user events',
+        },
+      },
+      'get-channel-events': {
+        routeLeaf: 'channel-events',
+        title: {
+          en: 'Get channel events',
+          'zh-CN': 'Get channel events',
+        },
+      },
+    },
+  },
 ] as const satisfies OpenApiLane[];
 
 export type OpenApiLaneId = (typeof OPENAPI_LANES)[number]['id'];
@@ -189,4 +243,8 @@ export function findOpenApiLaneBySourcePath(sourcePath: string) {
   return getOpenApiLanes().find((lane) =>
     Object.values(lane.sourcePath).includes(sourcePath),
   );
+}
+
+export function isOpenApiTab(tab: string) {
+  return getOpenApiLanes().some((lane) => lane.tab === tab);
 }
