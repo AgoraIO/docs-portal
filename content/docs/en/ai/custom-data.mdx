@@ -17,15 +17,15 @@ description: 与智能体对话时，你可能需要从端侧获取用户的说�
 
 开始前，请确保你已经：
 
-- 已参考[实现对话式智能体](../get-started/quick-start.md)实现了与 AI 智能体对话互动的基本逻辑。
+- 已参考[实现对话式智能体](../get-started/quick-start)实现了与 AI 智能体对话互动的基本逻辑。
 - 已参考[实现收发消息](https://doc.shengwang.cn/doc/rtm2/android/get-started/quick-start)为你的 App 集成 RTM SDK，并实现基本的收发消息功能。
-- 已参考[自定义大模型](./custom-llm.md)对你的大模型进行适配，使其能够处理 `context.presence` 字段中的临时状态信息。
+- 已参考[自定义大模型](./custom-llm)对你的大模型进行适配，使其能够处理 `context.presence` 字段中的临时状态信息。
 
 ## 实现方式
 
 ### 打开 RTM 开关
 
-调用 [POST 创建对话式智能体](../operations/start-agent.md)时，将 `advanced_features.enable_rtm` 配置设置为 `true` 即可启用 RTM，并设置 `llm.vendor` 为 `"custom"` 以启用自定义大模型。以下为请求示例：
+调用 [POST 创建对话式智能体](../operations/start-agent)时，将 `advanced_features.enable_rtm` 配置设置为 `true` 即可启用 RTM，并设置 `llm.vendor` 为 `"custom"` 以启用自定义大模型。以下为请求示例：
 
 > 信息
 > - 声网推荐启动 RTM 时开启 String UID（`enable_string_uid` 配置为 `true`），并参考 [FAQ](https://doc.shengwang.cn/faq/integration-issues/generate-token) 生成同时具备 RTC 和 RTM 权限的 Token，之后传入 `agent_rtc_uid` 字段即可。

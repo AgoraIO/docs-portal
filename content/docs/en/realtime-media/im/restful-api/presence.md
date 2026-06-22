@@ -6,16 +6,16 @@ description: "Introduces how to use the Agora Chat RESTful API to implement pres
 The presence feature enables users to publicly display their online presence status and quickly determine the status of others. Users can customize their presence status; using more specific terms such as "busy", "away", or "in a call" can add fun and diversity to real-time chatting.
 
 This page shows how to use the Chat RESTful APIs to implement presence in your project. Before calling the following methods, ensure that you meet the following:
-- You understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../reference/limitations.md#call-limit-of-server-sides).
+- You understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../reference/limitations#call-limit-of-server-sides).
 - You have activated the presence feature in [Agora Console](https://console.agora.io/v2).
 
 ## Common parameters 
 
 | Parameter | Type | Description | Required |
 | :--------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
 | `uid`      | String | The unique login account of the user.         |
 
 ## Authorization
@@ -26,7 +26,7 @@ Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request
 Authorization: Bearer ${YourAppToken}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication.md).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication).
 
 ## Set the presence status of a user
 
@@ -374,4 +374,4 @@ curl -X GET 'http://XXXX/XXXX/XXXX/users/wzy/presence/sublist?pageNum=1&pageSize
 
 ## Status codes
 
-For details, see [HTTP Status Codes](../reference/http-status-codes.md).
+For details, see [HTTP Status Codes](../reference/http-status-codes).

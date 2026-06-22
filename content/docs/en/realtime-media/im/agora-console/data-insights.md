@@ -5,7 +5,7 @@ description: "Introduces Agora Analytics for Agora Chat."
 
 ## Introduction
 
-[Agora Analytics](/en/api-reference/analytics/overview/product-overview) provides periodic analysis of usage and quality data for [Chat](../index.md), helping you keep track of the usage trends and quality details.
+[Agora Analytics](/en/api-reference/analytics/overview/product-overview) provides periodic analysis of usage and quality data for [Chat](../index), helping you keep track of the usage trends and quality details.
 
 ### Feature overview
 
@@ -17,7 +17,7 @@ Agora Analytics offers the following features for Chat:
 
 ### Enable Chat-related features
 
-After [enabling and configuring Chat Service](../get-started/enable.md), the Chat-related features in Agora Analytics are enabled by default and are free to use. No additional operation is required. 
+After [enabling and configuring Chat Service](../get-started/enable), the Chat-related features in Agora Analytics are enabled by default and are free to use. No additional operation is required. 
 
 ## Usage Insights
 
@@ -34,7 +34,7 @@ The Scale Statistics page shows the scale of users, s, and s on the current day 
 || Description | Notes |
 | :----------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
 | Today's Overview | Values of key usage metrics as of today. For a detailed description of each metric, see [Scale Metrics](https://docs.agora.io/en/agora-analytics/data-metrics).
- [Scale Metrics](./data-metrics.md).
+ [Scale Metrics](./data-metrics).
   | N/A |
 | Historical Data | Line charts and bar charts showing how the metric values change in a certain time range. | The maximum time range to query is the past 30 days.Each metric in this section is calculated at an interval of a day, and the data has a one-minute delay (except for Daily  PCU, which has a delay of 10 minutes). |
 
@@ -57,10 +57,10 @@ The Message Statistics page shows the historical numbers of messages and distrib
 || Description | Notes |
 | :----------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
 | Message Count Trends | Line charts showing how the total numbers of messages change within a certain time range. For a detailed description of each metric, see [Message metrics](https://docs.agora.io/en/agora-analytics/data-metrics).
- [Message metrics](./data-metrics.md).
+ [Message metrics](./data-metrics).
  | The maximum time range to query is the past 6 months.Each metric in this section is calculated at an interval of a day, and the data has a one minute delay. |
 | Message Type Trends | Line charts showing the number of messages by type in a certain time range, and pie charts showing the message type breakdown (the percentage of each type of messages). For a detailed description of each metric, see [Message metrics](https://docs.agora.io/en/agora-analytics/data-metrics).
- [Message metrics](./data-metrics.md).
+ [Message metrics](./data-metrics).
  | See Message Count Trends |
 
 ![](https://web-cdn.agora.io/docs-files/1656491965158)
@@ -91,7 +91,7 @@ You can query any data within the last 7 days. If you view the data by hour, the
 ### End-user Data
 
 The End-user Data section shows the number of request attempts, request success rate, and average request delay of client-side APIs. For details on the metric types and definitions, see [End-user API metrics](https://docs.agora.io/en/agora-analytics/data-metrics).
- [End-user API metrics](./data-metrics.md).
+ [End-user API metrics](./data-metrics).
 
 To present the data more intuitively, different metrics use different charts:
 
@@ -110,7 +110,7 @@ When entering the page for the first time, the chart shows the aggregated metric
 ### Server API Data
 
 The Server API Data section shows the number of request attempts, request success rate, and average request delay of server-side RESTful APIs. For details on the metric types and definitions, see [Server API metrics](https://docs.agora.io/en/agora-analytics/data-metrics).
- [Server API metrics](./data-metrics.md).
+ [Server API metrics](./data-metrics).
 
 :::info
 Server API data includes the RESTful API calls made by client SDKs. For example,  operations on the client SDK is implemented by calling the RESTful API, so it is counted in the Server API data.

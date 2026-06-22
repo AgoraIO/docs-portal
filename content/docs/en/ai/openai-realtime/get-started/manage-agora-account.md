@@ -20,5 +20,5 @@ This page shows you how to prepare an Agora account and project before working w
 
 ## Related resources
 
-- [OpenAI Realtime quickstart](quickstart.md)
+- [OpenAI Realtime quickstart](quickstart)
 - [Agora Console](https://console.agora.io)

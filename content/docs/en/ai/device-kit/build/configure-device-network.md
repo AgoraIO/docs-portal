@@ -70,5 +70,5 @@ If you encounter issues during network configuration, try the following solution
 
 ## Related pages
 
-- [Device controls](device-controls.md)
-- [Build and flash firmware](build-and-flash-firmware.md)
+- [Device controls](device-controls)
+- [Build and flash firmware](build-and-flash-firmware)

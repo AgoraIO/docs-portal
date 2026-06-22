@@ -14,7 +14,7 @@ Studio currently supports Elastic SIP Trunk integration with Twilio. Support for
 
 ## Prerequisites
 
-- An active Twilio account with Elastic SIP Trunk configured. See [Set up SIP trunk](sip-trunk.md).
+- An active Twilio account with Elastic SIP Trunk configured. See [Set up SIP trunk](sip-trunk).
 - A deployed agent in Agent Studio
 - A phone number configured in your Twilio SIP trunk
 - SIP domain and credentials from your Twilio account
@@ -74,6 +74,6 @@ To remove an imported phone number:
 
 ## Next steps
 
-- [Create a campaign](campaign.md): Use your imported phone numbers to create outbound calling campaigns
-- [Deploy your agent](deploy-agent.md): Deploy agents to use in your campaigns
-- [Handle inbound calls](inbound.md): Associate your number with an agent to answer inbound calls
+- [Create a campaign](campaign): Use your imported phone numbers to create outbound calling campaigns
+- [Deploy your agent](deploy-agent): Deploy agents to use in your campaigns
+- [Handle inbound calls](inbound): Associate your number with an agent to answer inbound calls

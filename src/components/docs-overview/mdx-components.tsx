@@ -431,10 +431,22 @@ type SolutionCardIconKind =
 
 type SolutionCardTone = 'blue' | 'green' | 'pink' | 'purple' | 'sand';
 
+type RecipeCatalogItemLink = {
+  href: string;
+  label: string;
+};
+
+type RecipeCatalogGroupMeta = {
+  description?: string;
+  icon?: SolutionCardIconKind;
+  title?: string;
+};
+
 type RecipeCatalogItem = {
   category: string;
   description: string;
-  href: string;
+  href?: string;
+  links?: RecipeCatalogItemLink[];
   product: string;
   stack?: string;
   tags?: string[];
@@ -443,30 +455,33 @@ type RecipeCatalogItem = {
 };
 
 function SolutionCard({
+  actions = [],
   description,
   href,
   icon,
   size = 'large',
+  showDescription = true,
   tags = [],
   title,
   tone = 'blue',
 }: {
+  actions?: RecipeCatalogItemLink[];
   description: string;
-  href: string;
+  href?: string;
   icon?: SolutionCardIconKind;
   size?: 'large' | 'small';
+  showDescription?: boolean;
   tags?: string[];
   title: string;
   tone?: SolutionCardTone;
 }) {
-  return (
-    <a
-      className={cn(
-        'group flex min-h-40 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
-        size === 'small' && 'min-h-32 p-4',
-      )}
-      href={href}
-    >
+  const cardClasses = cn(
+    'group flex min-h-40 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+    size === 'small' && 'min-h-32 p-4',
+  );
+
+  const content = (
+    <>
       <div className="flex items-start justify-between gap-3">
         {icon ? (
           <span
@@ -481,14 +496,36 @@ function SolutionCard({
         ) : (
           <span />
         )}
-        <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+        {href ? (
+          <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+        ) : null}
       </div>
       <div className="mt-4 flex-1">
         <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          {description}
-        </p>
+        {showDescription && description ? (
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            {description}
+          </p>
+        ) : null}
       </div>
+      {actions.length > 0 ? (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {actions.map((action) => (
+            <a
+              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              href={action.href}
+              key={action.href}
+              rel={
+                action.href.startsWith('http') ? 'noreferrer noopener' : undefined
+              }
+              target={action.href.startsWith('http') ? '_blank' : undefined}
+            >
+              <span>{action.label}</span>
+              <ArrowRightIcon className="size-3.5" />
+            </a>
+          ))}
+        </div>
+      ) : null}
       {tags.length > 0 ? (
         <div className="mt-4 flex flex-wrap gap-1.5">
           {tags.map((tag) => (
@@ -501,6 +538,16 @@ function SolutionCard({
           ))}
         </div>
       ) : null}
+    </>
+  );
+
+  if (!href || actions.length > 0) {
+    return <section className={cardClasses}>{content}</section>;
+  }
+
+  return (
+    <a className={cardClasses} href={href}>
+      {content}
     </a>
   );
 }
@@ -512,9 +559,14 @@ function RecipesCatalog({
   categoryFilterLabel,
   clearFiltersLabel,
   emptyMessage,
+  groupByProduct = false,
   items,
+  productGroups,
   productFilterLabel,
   searchPlaceholder,
+  showCategoryFilter = true,
+  showDescription = true,
+  showTags = true,
   stackFilterLabel,
 }: {
   allCategoriesLabel: string;
@@ -523,9 +575,14 @@ function RecipesCatalog({
   categoryFilterLabel: string;
   clearFiltersLabel: string;
   emptyMessage: string;
+  groupByProduct?: boolean;
   items: RecipeCatalogItem[];
+  productGroups?: Record<string, RecipeCatalogGroupMeta>;
   productFilterLabel: string;
   searchPlaceholder: string;
+  showCategoryFilter?: boolean;
+  showDescription?: boolean;
+  showTags?: boolean;
   stackFilterLabel: string;
 }) {
   const [query, setQuery] = useState('');
@@ -593,6 +650,7 @@ function RecipesCatalog({
           item.category,
           item.stack,
           ...(item.tags ?? []),
+          ...(item.links?.map((link) => link.label) ?? []),
         ]
           .filter(Boolean)
           .join(' '),
@@ -615,6 +673,24 @@ function RecipesCatalog({
     activeProduct !== allProductsLabel ||
     activeCategory !== allCategoriesLabel ||
     activeStack !== allStacksLabel;
+  const groupedItems = useMemo(() => {
+    const groups = new Map<string, RecipeCatalogItem[]>();
+
+    for (const item of filteredItems) {
+      const entries = groups.get(item.product);
+
+      if (entries) {
+        entries.push(item);
+      } else {
+        groups.set(item.product, [item]);
+      }
+    }
+
+    return [...groups.entries()].map(([product, items]) => ({
+      items,
+      product,
+    }));
+  }, [filteredItems]);
 
   return (
     <section className="not-prose my-8">
@@ -651,12 +727,14 @@ function RecipesCatalog({
           onSelect={setActiveProduct}
           values={products}
         />
-        <RecipesCatalogFilterGroup
-          activeValue={activeCategory}
-          label={categoryFilterLabel}
-          onSelect={setActiveCategory}
-          values={categories}
-        />
+        {showCategoryFilter ? (
+          <RecipesCatalogFilterGroup
+            activeValue={activeCategory}
+            label={categoryFilterLabel}
+            onSelect={setActiveCategory}
+            values={categories}
+          />
+        ) : null}
         <RecipesCatalogFilterGroup
           activeValue={activeStack}
           label={stackFilterLabel}
@@ -665,24 +743,84 @@ function RecipesCatalog({
         />
       </div>
       {filteredItems.length > 0 ? (
-        <SolutionCardGrid size="small">
-          {filteredItems.map((item) => (
-            <SolutionCard
-              description={item.description}
-              href={item.href}
-              key={item.href}
-              size="small"
-              tags={[
-                item.product,
-                item.category,
-                ...(item.stack ? [item.stack] : []),
-                ...(item.tags ?? []),
-              ]}
-              title={item.title}
-              tone={item.tone ?? 'blue'}
-            />
-          ))}
-        </SolutionCardGrid>
+        groupByProduct ? (
+          <div className="mt-8 space-y-8">
+            {groupedItems.map((group) => (
+              <section className="space-y-4" key={group.product}>
+                <div className="flex items-start gap-3">
+                  {productGroups?.[group.product]?.icon ? (
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-foreground">
+                      <SolutionCardIcon kind={productGroups[group.product].icon!} />
+                    </span>
+                  ) : null}
+                  <div className="min-w-0">
+                    <h3 className="m-0 text-lg font-semibold text-foreground">
+                      {productGroups?.[group.product]?.title ?? group.product}
+                    </h3>
+                    {productGroups?.[group.product]?.description ? (
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {productGroups[group.product].description}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                  {group.items.map((item) => (
+                    <SolutionCard
+                      actions={item.links}
+                      description={item.description}
+                      href={item.href}
+                      key={
+                        item.href ?? `${item.product}-${item.stack ?? item.title}`
+                      }
+                      size="small"
+                      showDescription={showDescription}
+                      tags={
+                        showTags
+                          ? [
+                              item.product,
+                              item.category,
+                              ...(item.stack ? [item.stack] : []),
+                              ...(item.tags ?? []),
+                              ...(item.links?.map((link) => link.label) ?? []),
+                            ]
+                          : []
+                      }
+                      title={item.title}
+                      tone={item.tone ?? 'blue'}
+                    />
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        ) : (
+          <SolutionCardGrid size="small">
+            {filteredItems.map((item) => (
+              <SolutionCard
+                actions={item.links}
+                description={item.description}
+                href={item.href}
+                key={item.href ?? `${item.product}-${item.stack ?? item.title}`}
+                size="small"
+                showDescription={showDescription}
+                tags={
+                  showTags
+                    ? [
+                        item.product,
+                        item.category,
+                        ...(item.stack ? [item.stack] : []),
+                        ...(item.tags ?? []),
+                        ...(item.links?.map((link) => link.label) ?? []),
+                      ]
+                    : []
+                }
+                title={item.title}
+                tone={item.tone ?? 'blue'}
+              />
+            ))}
+          </SolutionCardGrid>
+        )
       ) : (
         <div className="mt-6 rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center text-sm text-muted-foreground">
           {emptyMessage}

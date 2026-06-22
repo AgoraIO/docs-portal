@@ -73,9 +73,9 @@ The Chat SDK provides the `GroupManager` and `Group` classes for chat group mana
 
 Before proceeding, ensure that you meet the following requirements:
 
-- You have initialized the Chat SDK. For details, [SDK quickstart](../../get-started/get-started-sdk.mdx).
-- You understand the call frequency limits of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations.md).
-- You understand the number of chat groups and chat group members supported by different pricing plans as described in [Pricing Plan Details](../../reference/pricing-plan-details.md).
+- You have initialized the Chat SDK. For details, [SDK quickstart](../../get-started/get-started-sdk).
+- You understand the call frequency limits of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations).
+- You understand the number of chat groups and chat group members supported by different pricing plans as described in [Pricing Plan Details](../../reference/pricing-plan-details).
 
 ## Implementation
 
@@ -134,7 +134,7 @@ ChatClient.getInstance().groupManager().fetchGroupSharedFileList(groupId, pageNu
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).
 
 ### iOS
 
@@ -207,7 +207,7 @@ Refer to the following sample code to manage chat group shared files:
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events)
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events)
 
 ### Flutter
 
@@ -370,7 +370,7 @@ try {
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).
 
 ### React Native
 
@@ -533,7 +533,7 @@ ChatClient.getInstance()
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).
 
 ### Windows
 
@@ -678,7 +678,7 @@ SDKClient.Instance.GroupManager.UpdateGroupExt(currentGroupId, extension, new Ca
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).
 
 ### Unity
 
@@ -823,7 +823,7 @@ SDKClient.Instance.GroupManager.UpdateGroupExt(currentGroupId, extension, new Ca
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).
 
 ### Web
 
@@ -910,4 +910,4 @@ chatClient.getGroupSharedFilelist(options).then((res) => console.log(res));
 
 ### Listen for chat group events
 
-For details, see [Chat Group Events](./manage-chat-groups.md#listen-for-chat-group-events).
+For details, see [Chat Group Events](./manage-chat-groups#listen-for-chat-group-events).

@@ -4,7 +4,7 @@ description: "Shows how to manage chat room members by calling the Agora Chat RE
 ---
 
 This page shows how to manage  members by calling the Chat RESTful APIs, including adding, retrieving, and deleting  members and revoking administrative privileges of  administrators.
-Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs described in [Limitations](../../reference/limitations.md#call-limit-of-server-sides).
+Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs described in [Limitations](../../reference/limitations#call-limit-of-server-sides).
 
 ## Description of  member roles
 
@@ -22,9 +22,9 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
 | :--------- | :----- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
 | `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
 Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.
 ::: | Yes |
@@ -646,4 +646,4 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 
 ## Status codes
 
-For details, see [HTTP Status Codes](../../reference/http-status-codes.md).
+For details, see [HTTP Status Codes](../../reference/http-status-codes).

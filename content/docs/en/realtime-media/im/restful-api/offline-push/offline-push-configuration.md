@@ -12,7 +12,7 @@ Push notifications are not available for Web.
 This page shows how to call Chat RESTful APIs to set the display name, display style, push notification mode, and do-not-disturb (DND) mode.
 
 Before calling the following methods, ensure that you meet the following:
-- You understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../reference/limitations.md#call-limit-of-server-sides).
+- You understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../../reference/limitations#call-limit-of-server-sides).
 
 - You have activated the advanced features for push in [Agora Console](https://console.agora.io/v2). Advanced features allow you to set the push notification mode, do-not-disturb mode, and custom push template.
 
@@ -28,9 +28,9 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter | Type | Description | Required |
 | :--------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](../../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
 | `username` | String | The unique login account of the user.  | Yes |
 
 ### Response parameters 
@@ -56,7 +56,7 @@ Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request
 Authorization: Bearer ${YourAppToken}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../../develop/authentication.md).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../../develop/authentication).
 
 ## Set the display name in push notifications
 
@@ -91,7 +91,7 @@ For the descriptions of other path parameters, see [Common Parameters](#param).
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Required |
 | :----- | :----- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| -------- |
 | `nickname` | String | The nickname that is displayed in the push notification bar of the recipient's client when a message from the user is pushed. The length of the nickname cannot exceed 100 characters, and the following character sets are supported:26 lowercase English letters (a-z)26 uppercase English letters (A-Z)10 numbers (0-9)Chinese charactersSpecial characters  If no nickname is set, when a message from this user is pushed, the user ID of the message sender, instead of the nickname, is indicated in the notification details (`notification_display_style` is set to 1). :::info
-The nickname can be different from the nickname in user attributes. However, Agora recommends that you use the same nickname for both. Therefore, if either nickname is updated, the other should be changed at the same time. To update the nickname in user attributes, see [User attributes management](../user-attributes-management.md).
+The nickname can be different from the nickname in user attributes. However, Agora recommends that you use the same nickname for both. Therefore, if either nickname is updated, the other should be changed at the same time. To update the nickname in user attributes, see [User attributes management](../user-attributes-management).
 ::: | No  |
 
 ### HTTP response
@@ -107,7 +107,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | `created`  | Number | The Unix timestamp (ms) when the user account is registered.  |
 | `modified`  | Number | The Unix timestamp (ms) when the user information is last modified.  |
 | `username`  | String | The ID of the user. |
-| `activated`  | Bool | Whether the user account is active:`true`: The user account is active.`false`: The user account is deactivated. To unban a deactivated user account, refer to [Unbanning a user](../user-system-registration.md#unban). |
+| `activated`  | Bool | Whether the user account is active:`true`: The user account is active.`false`: The user account is deactivated. To unban a deactivated user account, refer to [Unbanning a user](../user-system-registration#unban). |
 |  `nickname`  | String | The nickname displayed in push notifications.  |
 
 For other fields and detailed descriptions, see [Common parameters](#response).
@@ -189,7 +189,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | `created`  | Number | The Unix timestamp (ms) when the user account is registered.  |
 | `modified`  | Number | The Unix timestamp (ms) when the user information is last modified.  |
 | `username`  | String | The ID of the user. |
-| `activated`  | Bool | Whether the user account is active:`true`: The user account is active.`false`: The user account is deactivated. To unban a deactivated user account, refer to [Unbanning a user](../user-system-registration.md#unban). |
+| `activated`  | Bool | Whether the user account is active:`true`: The user account is active.`false`: The user account is deactivated. To unban a deactivated user account, refer to [Unbanning a user](../user-system-registration#unban). |
 | `notification_display_style`  |  Int  | The display style of push notifications. This parameter is returned only if you specify it when sending the request. |
 | `nickname`  | String | The nickname displayed in push notifications. |
 | `notifier_name` | String  | The name of the push certificate. |
@@ -774,4 +774,4 @@ curl -X DELETE 'https://XXXX/XXXX/XXXX/notification/template' \
 
 ## Status codes
 
-For details, see [HTTP Status Codes](../../reference/http-status-codes.md).
+For details, see [HTTP Status Codes](../../reference/http-status-codes).

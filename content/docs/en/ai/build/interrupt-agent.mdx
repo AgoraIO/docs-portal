@@ -13,9 +13,9 @@ This page describes how to implement agent interruption in your app.
 
 Conversational AI Engine supports an intelligent interruption feature that allows a user's voice input to automatically interrupt the speaking agent. This enables quicker response times and more natural, fluid interactions.
 
-To customize interruption behavior, configure the `turn_detection` parameters when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md).
+To customize interruption behavior, configure the `turn_detection` parameters when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join).
 
-To enable AIVAD-based interruption, set [`turn_detection.config.end_of_speech.mode`](../../api-reference/conversational-ai/rest-api/agent/join.md#properties-turn-detection-config-end-of-speech-mode) to `"semantic"`.
+To enable AIVAD-based interruption, set [`turn_detection.config.end_of_speech.mode`](../../api-reference/conversational-ai/rest-api/agent/join#properties-turn-detection-config-end-of-speech-mode) to `"semantic"`.
 
 The following example shows how to configure `turn_detection`:
 
@@ -96,7 +96,7 @@ Conversational AI Engine supports actively triggering an interruption by calling
 
 ### Call the RESTful API
 
-Use the [Interrupt agent](../../api-reference/conversational-ai/rest-api/agent/interrupt.md) API to manually initiate an interruption request.
+Use the [Interrupt agent](../../api-reference/conversational-ai/rest-api/agent/interrupt) API to manually initiate an interruption request.
 
 ```bash
 curl --request post \
@@ -126,8 +126,8 @@ Agora provides a set of flexible, scalable and standardized client components fo
 
 Before you begin, make sure you:
 
-- Integrate VSDK v4.5.1 or later and follow the [Quickstart](../../introduction/realtime-audio-video.md) guide to implement basic real-time audio and video features.
-- Enable the SIG service for your project in the Agora Console and follow the [SIG Quickstart](../../realtime-media/rtm/index.md) to implement real-time messaging.
+- Integrate VSDK v4.5.1 or later and follow the [Quickstart](../../introduction/realtime-audio-video) guide to implement basic real-time audio and video features.
+- Enable the SIG service for your project in the Agora Console and follow the [SIG Quickstart](../../realtime-media/rtm/index) to implement real-time messaging.
 - Implement the basic logic to communicate with a conversational AI agent.
 - Ensure that the RTC engine instance is initialized and SIG is logged in. The toolkit does not handle initialization, lifecycle management, authentication, or login for VSDK or SIG.
 
@@ -218,7 +218,7 @@ const conversationalAIAPI = ConversationalAIAPI.getInstance()
 
 #### Configure the conversational AI agent
 
-Call [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md) using the following parameter settings:
+Call [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) using the following parameter settings:
 
 - `advanced_features.enable_rtm: true`: Start the SIG service (Required)
 - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
@@ -346,8 +346,8 @@ subRender/
 
 #### RESTful API
 
-- [Start a conversational AI Agent](../../api-reference/conversational-ai/rest-api/agent/join.md)
-- [Interrupt the Agent](../../api-reference/conversational-ai/rest-api/agent/interrupt.md)
+- [Start a conversational AI Agent](../../api-reference/conversational-ai/rest-api/agent/join)
+- [Interrupt the Agent](../../api-reference/conversational-ai/rest-api/agent/interrupt)
 
 #### Toolkit
 
@@ -360,22 +360,22 @@ subRender/
 
 <TabsContent value="android">
 
-- [`interrupt`](../../api-reference/conversational-ai/client-toolkit/android.md#interrupt)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/android.md#destroy)
+- [`interrupt`](../../api-reference/conversational-ai/client-toolkit/android#interrupt)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/android#destroy)
 
 </TabsContent>
 
 <TabsContent value="ios">
 
-- [`interrupt`](../../api-reference/conversational-ai/client-toolkit/ios.md#interrupt)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios.md#destroy)
+- [`interrupt`](../../api-reference/conversational-ai/client-toolkit/ios#interrupt)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios#destroy)
 
 </TabsContent>
 
 <TabsContent value="web">
 
-- [`interrupt`](../../api-reference/conversational-ai/client-toolkit/web.md#interrupt)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/web.md#destroy)
+- [`interrupt`](../../api-reference/conversational-ai/client-toolkit/web#interrupt)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/web#destroy)
 
 </TabsContent>
 </Tabs>

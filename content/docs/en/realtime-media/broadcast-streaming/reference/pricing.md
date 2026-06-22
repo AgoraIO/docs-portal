@@ -6,7 +6,7 @@ description: "Provides you with information on billing, fee deductions, free-of-
 This page explains the updated pricing for Agora Broadcast Streaming and guides you through the new pricing model.
 :::note
 - Starting August 29, 2025, all new Agora customers are automatically subscribed to the RTC Free package when creating a new project in the Agora Console. This ensures you can start using our service immediately. If auto-subscription fails, you can subscribe manually. For assistance, contact [`support@agora.io`](mailto:support@agora.io).
-- If you are an existing Agora customer before August 29, 2025, your projects continue under the legacy billing model. For details, see [Legacy Pricing](pricing-legacy.md). You may also manually subscribe or upgrade in the Agora Console to switch to the new RTC pricing model.
+- If you are an existing Agora customer before August 29, 2025, your projects continue under the legacy billing model. For details, see [Legacy Pricing](pricing-legacy). You may also manually subscribe or upgrade in the Agora Console to switch to the new RTC pricing model.
 - If you have signed a sales contract with Agora, your billing follows the terms in your contract.
 :::
 Billing for Broadcast Streaming includes charges for the following service categories:
@@ -66,7 +66,7 @@ Agora deducts Standard minutes from the balance in your subscribed package. If y
 - When you purchase a paid package, the free minutes are reflected in the package price through discounts. The 10,000 free minutes per month no longer apply.
 - Different packages support different value-added features. Purchase a package that fits your business needs.
 :::
-For subscription, upgrade, downgrade and other package details, see [Subscription packages](subscription-packages.md)
+For subscription, upgrade, downgrade and other package details, see [Subscription packages](subscription-packages)
 
 #### Additional usage
 
@@ -124,12 +124,12 @@ User A purchases the Premium Package on August 15.
 
 Use of Video SDK value-added services may incur costs in addition to basic service charges. For billing details, refer to the corresponding pricing page:
 
-* [Cloud Recording](https://docs-md.agora.io/en/cloud-recording/overview/pricing.md)
-* [Cloud Transcoding](https://docs-md.agora.io/en/cloud-transcoding/overview/pricing.md)
-* [Local screenshot upload](https://docs-md.agora.io/en/video-calling/advanced-features/screenshot-upload_ios.md)
-* [Media Push](https://docs-md.agora.io/en/media-push/overview/pricing.md)
-* [Media Pull](https://docs-md.agora.io/en/media-pull/overview/pricing.md)
-* [RTC associated features](pricing-legacy.md)
+* [Cloud Recording](https://docs-md.agora.io/en/cloud-recording/overview/pricing)
+* [Cloud Transcoding](https://docs-md.agora.io/en/cloud-transcoding/overview/pricing)
+* [Local screenshot upload](https://docs-md.agora.io/en/video-calling/advanced-features/screenshot-upload_ios)
+* [Media Push](https://docs-md.agora.io/en/media-push/overview/pricing)
+* [Media Pull](https://docs-md.agora.io/en/media-pull/overview/pricing)
+* [RTC associated features](pricing-legacy)
 
 ## Reference
 
@@ -207,7 +207,7 @@ The Standard minutes calculator helps you estimate usage of Standard minutes bas
 <div style={{ height: '20px' }}></div>
 
 :::info
-The Standard minutes estimated by this calculator are indicative and may not match actual usage billing. Accuracy in all cases is not guaranteed, and the calculations should be used as estimates only. Actual billing is based on Agora's official pricing policy and conversion ratios, which may vary. Please refer to Agora's [Pricing](pricing.md) policy for complete and up-to-date information on Standard minutes conversion and billing.
+The Standard minutes estimated by this calculator are indicative and may not match actual usage billing. Accuracy in all cases is not guaranteed, and the calculations should be used as estimates only. Actual billing is based on Agora's official pricing policy and conversion ratios, which may vary. Please refer to Agora's [Pricing](pricing) policy for complete and up-to-date information on Standard minutes conversion and billing.
 
 :::
 ### FAQs
@@ -312,8 +312,8 @@ If your account is frozen, recharge it promptly. Once your balance meets or exce
 
 To avoid service interruptions, Agora recommends monitoring deduction emails, recharge reminders, and account freeze warnings.
 
-For further details, see [What are Agora's policies on billing, fee deductions, and account suspension?](https://docs-md.agora.io/en/help/account-and-billing/billing_account.md)
+For further details, see [What are Agora's policies on billing, fee deductions, and account suspension?](https://docs-md.agora.io/en/help/account-and-billing/billing_account)
 
 ### See also
 
-- [Billing policies and free-of-charge policy](billing-policies.md)
+- [Billing policies and free-of-charge policy](billing-policies)

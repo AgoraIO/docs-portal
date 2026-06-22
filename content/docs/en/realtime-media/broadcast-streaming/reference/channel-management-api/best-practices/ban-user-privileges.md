@@ -5,7 +5,7 @@ description: "How to ban user privileges correctly"
 
 This page illustrates the usage of the privilege banning API, including usage principles, applicable use-cases, inapplicable use-cases, and best practices for the exception handling.
 
-For the API reference, see [Create rule](../endpoint/ban-user-privileges/create-rules.md).
+For the API reference, see [Create rule](../endpoint/ban-user-privileges/create-rules).
 
 ## Usage principles
 
@@ -80,7 +80,7 @@ The following table summarizes the use-cases where this API should not be used a
 |Use the banning API for user channel permission management | Ban the user's privilege to join the channel when the user leaves it, and restore it when they attempt to rejoin.| The real-time communication logic depends on the availability of the banning API. If the unbanning fails, the user cannot join the channel. It is recommended to use a one-time kick to ensure that the user leaves the channel.|
 
 :::info
-To better manage microphone positions, Agora provides a channel status API and a Notifications service. You can use them to obtain the real-time status of a channel and design the subsequent business logic. For details, see [Receive notifications about channel events](../../../build/receive-notifications.mdx).
+To better manage microphone positions, Agora provides a channel status API and a Notifications service. You can use them to obtain the real-time status of a channel and design the subsequent business logic. For details, see [Receive notifications about channel events](../../../build/receive-notifications).
 
 :::
 ## Best practices for handling call exceptions

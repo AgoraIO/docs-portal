@@ -16,14 +16,14 @@ Released on May 20, 2026.
 Included in this release:
 
 - **New MLLM provider**
-  - [xAI Grok](../models/mllm/xai.mdx)
+  - [xAI Grok](../models/mllm/xai)
 
 - **New Avatar providers**
-  - [Generic avatar (Beta)](../models/avatar/generic.mdx)
+  - [Generic avatar (Beta)](../models/avatar/generic)
 
 - **Greeting interruption control**
 
-  The `properties.llm.greeting_configs` object in the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md) API now supports an `interruptable` parameter, which controls whether user speech can interrupt a greeting during playback.
+  The `properties.llm.greeting_configs` object in the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API now supports an `interruptable` parameter, which controls whether user speech can interrupt a greeting during playback.
 
 #### Improvements
 
@@ -31,13 +31,13 @@ These changes may affect your existing integration. Review each change and updat
 
 - **Response status codes updated**
 
-  This release adjusts the HTTP response status codes and `reason` values returned by the REST API. New status codes `401`, `429`, and `500` are added. New `reason` values `ServiceNotEnabled`, `AccountSuspended`, and `ResourceAllocationFailed` are introduced. The existing `InvalidRequest` reason is replaced by `InvalidRequestBody`, `MissingRequiredField`, and `InvalidFieldValue`. For details, see [Status codes and error messages](../../api-reference/conversational-ai/rest-api/status-codes.mdx).
+  This release adjusts the HTTP response status codes and `reason` values returned by the REST API. New status codes `401`, `429`, and `500` are added. New `reason` values `ServiceNotEnabled`, `AccountSuspended`, and `ResourceAllocationFailed` are introduced. The existing `InvalidRequest` reason is replaced by `InvalidRequestBody`, `MissingRequiredField`, and `InvalidFieldValue`. For details, see [Status codes and error messages](../../api-reference/conversational-ai/rest-api/status-codes).
 
   If your integration relies on `reason` values for error handling, retry logic, or alerting, update your logic to handle the new values accordingly.
 
 - **Query conversation turns API now returns paginated results**
 
-  The [Query conversation turn information](../../api-reference/conversational-ai/rest-api/agent/turns.md) API no longer returns all turns in a single response. Results are now paginated, defaulting to page 1 with up to 50 turns per page.
+  The [Query conversation turn information](../../api-reference/conversational-ai/rest-api/agent/turns) API no longer returns all turns in a single response. Results are now paginated, defaulting to page 1 with up to 50 turns per page.
 
   This affects sessions with more than 50 conversation turns. Update your integration to handle the new `total_turn_count` and `pagination` fields in the response, and retrieve subsequent pages as needed.
 
@@ -45,27 +45,27 @@ These changes may affect your existing integration. Review each change and updat
 
 - **`on_listening_action` default behavior change**
 
-  The default value of `on_listening_action` in the [Send a custom instruction](../../api-reference/conversational-ai/rest-api/agent/think.md) API has changed from `inject` to `interrupt`. When set to `interrupt`, the API immediately interrupts the current flow and initiates a new round of dialogue. If you rely on the previous default behavior, explicitly set `on_listening_action` to `inject` in your requests.
+  The default value of `on_listening_action` in the [Send a custom instruction](../../api-reference/conversational-ai/rest-api/agent/think) API has changed from `inject` to `interrupt`. When set to `interrupt`, the API immediately interrupts the current flow and initiates a new round of dialogue. If you rely on the previous default behavior, explicitly set `on_listening_action` to `inject` in your requests.
 
 #### API changes
 
 This release introduces the following changes to the REST API.
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join.md)
+- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
   - **New parameters**
     - `properties.llm.greeting_configs.interruptable`: Controls whether user speech can interrupt a greeting during playback.
 
-- Changes to [**Query conversation turn information**](../../api-reference/conversational-ai/rest-api/agent/turns.md)
+- Changes to [**Query conversation turn information**](../../api-reference/conversational-ai/rest-api/agent/turns)
   - **New query parameters**
     - Adds `page_index` and `page_size`.
   - **New response parameters**
     - Adds `agent_id`, `name`, `channel`, `total_turn_count`, and `pagination`.
 
-- Changes to [**Send a custom instruction**](../../api-reference/conversational-ai/rest-api/agent/think.md)
+- Changes to [**Send a custom instruction**](../../api-reference/conversational-ai/rest-api/agent/think)
   - **Behavior changes**
     - `on_listening_action` now defaults to `interrupt`.
 
-- Changes to [**Notification event types**](event-types.mdx)
+- Changes to [**Notification event types**](event-types)
   - **New events**
     - `112 turns finished`
 
@@ -78,11 +78,11 @@ Released on April 22, 2026.
 Included in this release:
 
 - **New TTS provider**
-  - [Deepgram](../models/tts/deepgram.mdx)
+  - [Deepgram](../models/tts/deepgram)
 
 - **New endpoint: Send a custom instruction**
 
-  Adds a new endpoint to inject a custom text instruction into the agent's current conversation pipeline. The instruction is processed as user input, enabling scenarios such as implicit instruction injection, client-side event triggering, and voice and text collaboration. For details, see [Send a custom instruction](../../api-reference/conversational-ai/rest-api/agent/think.md).
+  Adds a new endpoint to inject a custom text instruction into the agent's current conversation pipeline. The instruction is processed as user input, enabling scenarios such as implicit instruction injection, client-side event triggering, and voice and text collaboration. For details, see [Send a custom instruction](../../api-reference/conversational-ai/rest-api/agent/think).
 
 - **MLLM turn detection refactoring**
 
@@ -108,9 +108,9 @@ Included in this release:
 #### API changes
 
 - **New endpoint**
-  - [Send a custom instruction](../../api-reference/conversational-ai/rest-api/agent/think.md)
+  - [Send a custom instruction](../../api-reference/conversational-ai/rest-api/agent/think)
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join.md)
+- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
   - **New parameters**
     - `interruption`
     - `greeting_configs.delay_ms`
@@ -130,7 +130,7 @@ Included in this release:
     - `mllm.create_response`
     - `mllm.interrupt_response` for OpenAI Realtime API
 
-- Changes to [**Notification event types**](event-types.mdx)
+- Changes to [**Notification event types**](event-types)
   - **New fields**
     - `name`
 
@@ -144,7 +144,7 @@ Included in this release:
 
 - **Preset model configurations**
 
-  Adds a `preset` parameter to the Join API. Pass a comma-separated list of preset names to apply predefined configurations for ASR, LLM, and TTS providers. When you use a preset, the corresponding provider is supplied through Agora-managed accounts. For details, see [Pricing](pricing.mdx).
+  Adds a `preset` parameter to the Join API. Pass a comma-separated list of preset names to apply predefined configurations for ASR, LLM, and TTS providers. When you use a preset, the corresponding provider is supplied through Agora-managed accounts. For details, see [Pricing](pricing).
 
   Available presets:
 
@@ -165,23 +165,23 @@ Included in this release:
   Adds support for updating TTS parameters during a conversation in custom LLM scenarios.
 
 - **New TTS provider**
-  - [Murf (Beta)](../models/tts/murf.mdx)
+  - [Murf (Beta)](../models/tts/murf)
 
 - **New Avatar provider**
-  - [Anam (Beta)](../models/avatar/anam.mdx)
+  - [Anam (Beta)](../models/avatar/anam)
 
 #### Improvements
 
 - **Migration from HeyGen API to LiveAvatar (Beta) API**
 
-  Updates the HeyGen avatar configuration to use the [LiveAvatar (Beta)](../models/avatar/heygen.mdx) API.
+  Updates the HeyGen avatar configuration to use the [LiveAvatar (Beta)](../models/avatar/heygen) API.
 
 #### API changes
 
 - **New endpoint: Query conversation turns**
-  - [Query conversation turn information](../../api-reference/conversational-ai/rest-api/agent/turns.md)
+  - [Query conversation turn information](../../api-reference/conversational-ai/rest-api/agent/turns)
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join.md)
+- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
   - **New parameters**
     - `preset`
     - `pause_state_enabled`

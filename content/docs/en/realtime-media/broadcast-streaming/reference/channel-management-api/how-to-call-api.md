@@ -55,7 +55,7 @@ curl --location --request POST 'https://api.agora.io/dev/v1/kicking-rule' \
 The request header contains the following information needed to process the request:
 
 - `Accept`: Tells the server what types of responses the client can handle, such as `application/json`.
-- `Authorization`: The Agora RESTful API requires HTTP authentication. Every time you send an HTTP request, fill in the `Authorization` field in the request header. See [RESTful authentication](restful-authentication.md) for details.
+- `Authorization`: The Agora RESTful API requires HTTP authentication. Every time you send an HTTP request, fill in the `Authorization` field in the request header. See [RESTful authentication](restful-authentication) for details.
 - `Content-Type`: Specifies the type of the request body, such as `application/json`.
 
 ### Request body (optional)
@@ -71,7 +71,7 @@ After you send the request, the Agora server sends a response that includes a re
 The HTTP response status code can be one of the following:
 
 - `200`: The request is successful.
-- Other than `200`: Refer to [Response status codes](https://docs-md.agora.io/en/response-status-code.md) to troubleshoot the problem.
+- Other than `200`: Refer to [Response status codes](https://docs-md.agora.io/en/response-status-code) to troubleshoot the problem.
 
 ### Response body
 

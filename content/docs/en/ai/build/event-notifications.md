@@ -4,18 +4,18 @@ description: Use toolkit callbacks to update the UI and react to agent events du
 ---
 Real-time Conversational AI applications require responsive user interfaces that react to agent events. This page explains how to implement agent event handling with the Conversational AI Engine toolkit.
 
-For the combined entry point that compares client toolkit and webhook delivery, see [Get runtime events](get-runtime-events.mdx).
+For the combined entry point that compares client toolkit and webhook delivery, see [Get runtime events](get-runtime-events).
 
-Use this page when you need in-session signals in a mobile or web client. If you need backend monitoring, alerting, or post-session analysis, use [Receive agent runtime events on your server](webhooks.md) instead.
+Use this page when you need in-session signals in a mobile or web client. If you need backend monitoring, alerting, or post-session analysis, use [Receive agent runtime events on your server](webhooks) instead.
 
 ## Understand the tech
 
 Agora provides a flexible, scalable, and standardized conversational AI engine toolkit. The toolkit supports **iOS**, **Android**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate the capabilities of the Agora Signaling SDK and Video SDK to enable the following features:
 
-- [Interrupt agents](interrupt-agent.md)
-- [Display live transcripts](transcripts.md)
-- [Monitor agent status, errors, and performance](monitor-agent-runtime.md)
-- [Set optimal audio parameters](../best-practices/audio-setup.md) for iOS and Android
+- [Interrupt agents](interrupt-agent)
+- [Display live transcripts](transcripts)
+- [Monitor agent status, errors, and performance](monitor-agent-runtime)
+- [Set optimal audio parameters](../best-practices/audio-setup) for iOS and Android
 
 The toolkit exposes callback methods that let you listen for various agent-related events and system information:
 
@@ -29,9 +29,9 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 ## Prerequisites
 
-- Implemented the Conversational AI Engine [REST quickstart](../get-started/quickstart.md).
-- Your app integrates Agora Video SDK v4.5.1 or later and includes the [audio and video quickstart](../../introduction/realtime-audio-video.md).
-- Enabled Signaling in the Agora Console and completed the [Signaling quickstart](../../realtime-media/rtm/index.md) for basic messaging.
+- Implemented the Conversational AI Engine [REST quickstart](../get-started/quickstart).
+- Your app integrates Agora Video SDK v4.5.1 or later and includes the [audio and video quickstart](../../introduction/realtime-audio-video).
+- Enabled Signaling in the Agora Console and completed the [Signaling quickstart](../../realtime-media/rtm/index) for basic messaging.
 - You maintain active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
 
 ## Implementation
@@ -99,7 +99,7 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), configure:
+   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), configure:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -185,7 +185,7 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), configure:
+   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), configure:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -241,7 +241,7 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), configure:
+   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), configure:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -265,8 +265,8 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 ### Related guides
 
-- [Monitor agent status, errors, and performance](monitor-agent-runtime.md)
-- [Receive agent runtime events on your server](webhooks.md)
+- [Monitor agent status, errors, and performance](monitor-agent-runtime)
+- [Receive agent runtime events on your server](webhooks)
 
 ### Folder structure
 
@@ -299,36 +299,36 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 #### Android
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/android.md#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android.md#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android.md#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/android.md#destroy)
-- [`onAgentStateChanged`](../../api-reference/conversational-ai/client-toolkit/android.md#onagentstatechanged)
-- [`onAgentListeningChanged`](../../api-reference/conversational-ai/client-toolkit/android.md#onagentlisteningchanged)
-- [`onAgentThinkingChanged`](../../api-reference/conversational-ai/client-toolkit/android.md#onagentthinkingchanged)
-- [`onAgentSpeakingChanged`](../../api-reference/conversational-ai/client-toolkit/android.md#onagentspeakingchanged)
-- [`onAgentInterrupted`](../../api-reference/conversational-ai/client-toolkit/android.md#onagentinterrupted)
-- [`onAgentMetrics`](../../api-reference/conversational-ai/client-toolkit/android.md#onagentmetrics)
-- [`onAgentError`](../../api-reference/conversational-ai/client-toolkit/android.md#onagenterror)
+- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/android#addhandler)
+- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#subscribemessage)
+- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#unsubscribemessage)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/android#destroy)
+- [`onAgentStateChanged`](../../api-reference/conversational-ai/client-toolkit/android#onagentstatechanged)
+- [`onAgentListeningChanged`](../../api-reference/conversational-ai/client-toolkit/android#onagentlisteningchanged)
+- [`onAgentThinkingChanged`](../../api-reference/conversational-ai/client-toolkit/android#onagentthinkingchanged)
+- [`onAgentSpeakingChanged`](../../api-reference/conversational-ai/client-toolkit/android#onagentspeakingchanged)
+- [`onAgentInterrupted`](../../api-reference/conversational-ai/client-toolkit/android#onagentinterrupted)
+- [`onAgentMetrics`](../../api-reference/conversational-ai/client-toolkit/android#onagentmetrics)
+- [`onAgentError`](../../api-reference/conversational-ai/client-toolkit/android#onagenterror)
 
 #### iOS
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/ios.md#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios.md#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios.md#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios.md#destroy)
-- [`onAgentStateChanged`](../../api-reference/conversational-ai/client-toolkit/ios.md#onagentstatechanged)
-- [`onAgentListeningChanged`](../../api-reference/conversational-ai/client-toolkit/ios.md#onagentlisteningchanged)
-- [`onAgentThinkingChanged`](../../api-reference/conversational-ai/client-toolkit/ios.md#onagentthinkingchanged)
-- [`onAgentSpeakingChanged`](../../api-reference/conversational-ai/client-toolkit/ios.md#onagentspeakingchanged)
-- [`onAgentInterrupted`](../../api-reference/conversational-ai/client-toolkit/ios.md#onagentinterrupted)
-- [`onAgentMetrics`](../../api-reference/conversational-ai/client-toolkit/ios.md#onagentmetrics)
-- [`onAgentError`](../../api-reference/conversational-ai/client-toolkit/ios.md#onagenterror)
+- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/ios#addhandler)
+- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#subscribemessage)
+- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#unsubscribemessage)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios#destroy)
+- [`onAgentStateChanged`](../../api-reference/conversational-ai/client-toolkit/ios#onagentstatechanged)
+- [`onAgentListeningChanged`](../../api-reference/conversational-ai/client-toolkit/ios#onagentlisteningchanged)
+- [`onAgentThinkingChanged`](../../api-reference/conversational-ai/client-toolkit/ios#onagentthinkingchanged)
+- [`onAgentSpeakingChanged`](../../api-reference/conversational-ai/client-toolkit/ios#onagentspeakingchanged)
+- [`onAgentInterrupted`](../../api-reference/conversational-ai/client-toolkit/ios#onagentinterrupted)
+- [`onAgentMetrics`](../../api-reference/conversational-ai/client-toolkit/ios#onagentmetrics)
+- [`onAgentError`](../../api-reference/conversational-ai/client-toolkit/ios#onagenterror)
 
 #### Web
 
-- [`IConversationalAIAPIEventHandler`](../../api-reference/conversational-ai/client-toolkit/web.md#iconversationalaiapieventhandlers-interface)
-- [`EConversationalAIAPIEvents`](../../api-reference/conversational-ai/client-toolkit/web.md#econversationalaiapievents)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web.md#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web.md#unsubscribe)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/web.md#destroy)
+- [`IConversationalAIAPIEventHandler`](../../api-reference/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
+- [`EConversationalAIAPIEvents`](../../api-reference/conversational-ai/client-toolkit/web#econversationalaiapievents)
+- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#subscribemessage)
+- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#unsubscribe)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/web#destroy)

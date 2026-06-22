@@ -7,7 +7,7 @@ description: Learn about notification service events.
 
 # Notification events
 
-When you set up a server to [receive webhook, notifications](../build/receive-ncs-events.md), Agora notifies your server of the following Cloud Transcoding events:
+When you set up a server to [receive webhook, notifications](../build/receive-ncs-events), Agora notifies your server of the following Cloud Transcoding events:
 
 | Event Type | Event Name | Description |
 |------------|------------|-------------|

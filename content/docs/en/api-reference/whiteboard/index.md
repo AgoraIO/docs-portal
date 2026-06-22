@@ -1,13 +1,17 @@
 ---
 title: Whiteboard
-description: API reference entry points for Whiteboard.
+description: SDK and REST entry points for the Whiteboard API reference.
 ---
 
 Use this page to choose the Whiteboard API reference surface.
 
-## Reference surfaces
+## SDK surfaces
 
 - [Android](/en/api-reference/whiteboard/android)
-- [IOS](/en/api-reference/whiteboard/ios)
-- [WEB](/en/api-reference/whiteboard/web)
-- [Restful](/en/api-reference/whiteboard/restful)
+- [iOS](/en/api-reference/whiteboard/ios)
+- [Web](/en/api-reference/whiteboard/web)
+
+## REST surfaces
+
+- [RESTful APIs](/en/api-reference/whiteboard/restful)
+- [Whiteboard REST API overview](/en/realtime-media/whiteboard/reference/rest-api/overview)

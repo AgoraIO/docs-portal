@@ -13,6 +13,6 @@ Convo AI Device Kit depends on Conversational AI and Agora IoT capabilities. Bef
 
 ## Related pages
 
-- [Convo AI Device Kit overview](../index.md)
-- [Quickstart](../start-here/quickstart.md)
-- [Architecture overview](../build/architecture-overview.md)
+- [Convo AI Device Kit overview](../index)
+- [Quickstart](../start-here/quickstart)
+- [Architecture overview](../build/architecture-overview)

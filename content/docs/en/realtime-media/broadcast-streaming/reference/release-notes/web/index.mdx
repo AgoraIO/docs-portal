@@ -23,7 +23,7 @@ Broadcast Streaming 4.x is a JavaScript and TypeScript library loaded by an HTML
 
 ### Compatibility
 
-See [Supported platforms](../../supported-platforms.md).
+See [Supported platforms](../../supported-platforms).
 
 ### Known issues
 
@@ -108,7 +108,7 @@ The list of known issues page is continuously updated as the systems evolve. Ago
   - The `setOptimizationMode` method and the `optimizationMode` parameter in `CameraVideoTrackInitConfig`, `ScreenVideoTrackInitConfig`, and `CustomVideoTrackInitConfig` are only supported on Chrome.
   
   - Calling `createScreenVideoTrack` to enable screen sharing has the following restrictions:
-    - The Web SDK supports screen sharing on Chrome 58 or later. If the Chrome version is earlier than 72, you need to add the [Google Chrome Extension for Screen Sharing](../../../build/screen-sharing.mdx) provided by Agora, get the `extensionId`, and set the `extensionId` parameter when you create a video track for screen sharing. If the Chrome version is 72 or later, simply call `createScreenVideoTrack`.
+    - The Web SDK supports screen sharing on Chrome 58 or later. If the Chrome version is earlier than 72, you need to add the [Google Chrome Extension for Screen Sharing](../../../build/screen-sharing) provided by Agora, get the `extensionId`, and set the `extensionId` parameter when you create a video track for screen sharing. If the Chrome version is 72 or later, simply call `createScreenVideoTrack`.
     - The Web SDK supports screen sharing on Firefox 56 or later. Firefox on Windows does not support the `application` mode.
     - The Web SDK supports screen sharing on Edge 80 or later on Windows 10+.
     - The Web SDK supports screen sharing on macOS Safari 13 or later. The end-user can only share the whole screen on Safari.
@@ -437,7 +437,7 @@ Released on November 26, 2025.
 - **Watermark extension (BETA)**
  This version adds the Watermark extension [`agora-extension-video-watermark`](https://www.npmjs.com/package/agora-extension-video-watermark) v1.0.0, which enables you to add image watermarks to real-time interactive video streams through an extension.
 
- The Watermark extension supports customizing the watermark's position, size, opacity, and other properties. It can be applied to both local and remote video tracks. For integration and usage steps, refer to Using the [Watermark extension guide](https://docs-md.agora.io/en/video-calling/advanced-features/watermark.md).
+ The Watermark extension supports customizing the watermark's position, size, opacity, and other properties. It can be applied to both local and remote video tracks. For integration and usage steps, refer to Using the [Watermark extension guide](https://docs-md.agora.io/en/video-calling/advanced-features/watermark).
 
 - **Other New Features**
  
@@ -530,7 +530,7 @@ Released on March 4, 2025.
 
 This release includes the following improvements:
 
-- Internal optimizations to support [Agora Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview.md). 
+- Internal optimizations to support [Agora Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview). 
   - Enable audio metadata transmission
   - Get presentation timestamp from the audio stream
 
@@ -574,7 +574,7 @@ This release modified the calculation of [`freezeRate`](https://api-ref.agora.io
 
 1. **Reduced package size**
 
-  To further reduce the package size, this release separates the Plan-B feature, which is compatible with WebRTC, from the ESM-bundle package into an independent service module. Users can integrate them manually based on actual needs. For details, see [Use tree shaking](../../../build/app-size-optimization.mdx).
+  To further reduce the package size, this release separates the Plan-B feature, which is compatible with WebRTC, from the ESM-bundle package into an independent service module. Users can integrate them manually based on actual needs. For details, see [Use tree shaking](../../../build/app-size-optimization).
 
 1. **Other improvements**
 
@@ -634,13 +634,13 @@ v4.22.0 was released on 16 August, 2024.
 
 #### Compatibility changes
 
-To further reduce the package size, this version splits the Channel Media Relay Service and the Live Streaming Service from the ESM-bundle format package into independent service modules. You can manually import these modules for integration based on your actual needs. See [Use tree shaking](../../../build/app-size-optimization.mdx) for details on how to integrate.
+To further reduce the package size, this version splits the Channel Media Relay Service and the Live Streaming Service from the ESM-bundle format package into independent service modules. You can manually import these modules for integration based on your actual needs. See [Use tree shaking](../../../build/app-size-optimization) for details on how to integrate.
 
 #### New features
 
 **Optimize channel preload**
 
-When using the channel preload feature, Agora recommends sending the host's media stream immediately when calling the method to join the channel. This reduces the first frame rendering time. For details, see [Preload channels](../../../build/preload-channels.mdx). With this setting, users will start pulling streams as soon as they join the channel, which will generate charges. For details on how Agora charges for the services, see [Pricing](reference/pricing.md).
+When using the channel preload feature, Agora recommends sending the host's media stream immediately when calling the method to join the channel. This reduces the first frame rendering time. For details, see [Preload channels](../../../build/preload-channels). With this setting, users will start pulling streams as soon as they join the channel, which will generate charges. For details on how Agora charges for the services, see [Pricing](reference/pricing).
 
 **Support for AV1 encoding (Beta)**
 
@@ -726,7 +726,7 @@ This release adds the following new features:
     **Note:**
 
     - This functionality is only supported on Chrome 87 or later, as well as Safari 15.4 or later.
-    - Due to the conflicts in certain browser core components, this feature is not available when [end-to-end media encryption (Beta)](../../../build/media-stream-encryption.mdx) is enabled.
+    - Due to the conflicts in certain browser core components, this feature is not available when [end-to-end media encryption (Beta)](../../../build/media-stream-encryption) is enabled.
 
 **Monitor the video states of receivers**
 
@@ -853,7 +853,7 @@ As of this release, you can call `setLowStreamParameter` after `publish` to dyna
 
 **Tree shaking support**
 
-As of this release, the SDK supports [tree shaking](https://webpack.js.org/guides/tree-shaking/), which removes unused code during the build process, reducing your app's size after integrating the SDK. To use this feature, see [App size optimization](../../../sdks.md).
+As of this release, the SDK supports [tree shaking](https://webpack.js.org/guides/tree-shaking/), which removes unused code during the build process, reducing your app's size after integrating the SDK. To use this feature, see [App size optimization](../../../sdks).
 
 **Dual display of video stream**
 
@@ -1059,7 +1059,7 @@ v4.18.0 also includes the following improvements:
 
 v4.18.0 fixes the following issues:
 
-- Mobile devices experienced delays in receiving notifications for the [broadcaster leave channel event](../../../build/receive-notifications.mdx).
+- Mobile devices experienced delays in receiving notifications for the [broadcaster leave channel event](../../../build/receive-notifications).
 - Users experienced a black screen while watching video streams encoded with H.264 in older browser versions.
 - Memory usage increased when using the SDK with the Virtual Background or Image Enhancer extension.
 - The SDK continued to use the expired token during reconnection attempts after generating a new token using the `renewToken` method.
@@ -1094,9 +1094,9 @@ For detailed explanations of these properties, see [ScreenVideoTrackInitConfig](
 This release improves the flexibility in setting video profiles for different types of video tracks:
 
 - You can now specify the resolution and the frame rate when calling `createCustomVideoTrack` to create a custom video track, by passing in values for the `width`, `height`, and `frameRate` parameters.
-- After creating a screen track or a custom video track, you can dynamically adjust the video profile using `LocalVideoTrack.setEncoderConfiguration`. Please note that there is a known issue with calling this method on a screen track in certain versions of macOS Safari. [See issue details](https://docs-md.agora.io/en/known-issues.md).
+- After creating a screen track or a custom video track, you can dynamically adjust the video profile using `LocalVideoTrack.setEncoderConfiguration`. Please note that there is a known issue with calling this method on a screen track in certain versions of macOS Safari. [See issue details](https://docs-md.agora.io/en/known-issues).
 
-For details, see more about [Configure video encoding](../../../build/configure-video-encoding.mdx).
+For details, see more about [Configure video encoding](../../../build/configure-video-encoding).
 
 **Other improvements**
 
@@ -1152,7 +1152,7 @@ which prevents a black screen during the reconnection process. This optimization
 
 This release also includes the following improvements:
 
-- The accuracy of SDK-related quality metrics on [Analytics](https://docs-md.agora.io/en/agora-analytics/overview/product-overview.md) is improved.
+- The accuracy of SDK-related quality metrics on [Analytics](https://docs-md.agora.io/en/agora-analytics/overview/product-overview) is improved.
 - The time required to join a channel is reduced. This optimization is not available on Firefox due to Firefox's limitations.
 
 #### API changes
@@ -1277,7 +1277,7 @@ The SDK has the following improvements:
 
 #### Compatibility changes
 
-Cloud Proxy default mode has changed. In Video SDK for Web v4.15.0, the `mode` parameter in `startProxyServer` defaults to `3`. This represents the Force UDP cloud proxy mode. In this mode, Video SDK always transmits data over UDP. For details, see [Restricted network connection with Cloud Proxy](../../../build/cloud-proxy.mdx).
+Cloud Proxy default mode has changed. In Video SDK for Web v4.15.0, the `mode` parameter in `startProxyServer` defaults to `3`. This represents the Force UDP cloud proxy mode. In this mode, Video SDK always transmits data over UDP. For details, see [Restricted network connection with Cloud Proxy](../../../build/cloud-proxy).
 
 ### v4.14.2
 
@@ -1384,9 +1384,9 @@ v4.12.0 was released on June 15, 2022.
 
 Media processing extensions have the following changes:
 
-- The [Image Enhancement Extension (Beta)](https://www.npmjs.com/package/agora-extension-beauty-effect) is released. This extension incorporates and upgrades the built-in image enhancement feature (enabled by [setBeautyEffect](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalvideotrack.html#setbeautyeffect))) of the Agora Web SDK 4.x. You can adjust parameters including the contrast, brightness, and smoothness levels, in order to touch up the image for effects such as skin lightening and skin smoothing. For details, see [Use the Image Enhancement Extension](../../../build/beauty-effect.mdx).
+- The [Image Enhancement Extension (Beta)](https://www.npmjs.com/package/agora-extension-beauty-effect) is released. This extension incorporates and upgrades the built-in image enhancement feature (enabled by [setBeautyEffect](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalvideotrack.html#setbeautyeffect))) of the Agora Web SDK 4.x. You can adjust parameters including the contrast, brightness, and smoothness levels, in order to touch up the image for effects such as skin lightening and skin smoothing. For details, see [Use the Image Enhancement Extension](../../../build/beauty-effect).
 
-- The [Virtual Background Extension (Beta)](https://www.npmjs.com/package/agora-extension-virtual-background) supports animated virtual backgrounds as of v1.0.0-beta-3. You can set a user's background as a short video. For details, see [Use the Virtual Background Extension](../../../build/virtual-background.mdx).
+- The [Virtual Background Extension (Beta)](https://www.npmjs.com/package/agora-extension-virtual-background) supports animated virtual backgrounds as of v1.0.0-beta-3. You can set a user's background as a short video. For details, see [Use the Virtual Background Extension](../../../build/virtual-background).
 
 #### Issues fixed
 
@@ -1446,8 +1446,8 @@ v4.10.0 supports using media processing extensions in the Broadcast Streaming. T
 
 | Extension              | Description                                                    | Documentation                                  |
 |-------------------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| Virtual Background Extension (Beta) | Enables users to replace their actual background with a solid color or custom image, or to blur their background. | [Use the Virtual Background Extension (Beta)](../../../build/virtual-background.mdx) |
-| AI Noise Suppression Extension (Beta)    | Reduces many types of sudden noise and reduces vocal distortion when multiple people speak at the same time.   | [AI Noise Suppression](../../../build/ai-noise-suppression.mdx) |
+| Virtual Background Extension (Beta) | Enables users to replace their actual background with a solid color or custom image, or to blur their background. | [Use the Virtual Background Extension (Beta)](../../../build/virtual-background) |
+| AI Noise Suppression Extension (Beta)    | Reduces many types of sudden noise and reduces vocal distortion when multiple people speak at the same time.   | [AI Noise Suppression](../../../build/ai-noise-suppression) |
 
 #### API changes
 
@@ -1650,7 +1650,7 @@ As of v4.6.0, the Broadcast Streaming supports Interactive Live Streaming Standa
 
 -  Interactive Live Streaming Standard: Low latency (1500 ms to 2000 ms) from the host’s client to an audience member’s client.
 
-The charges for Standard and Premium are different. For details, see the [product overview](../../../product-overview.md) and [pricing](../../pricing.md) of Interactive Live Streaming Standard.
+The charges for Standard and Premium are different. For details, see the [product overview](../../../product-overview) and [pricing](../../pricing) of Interactive Live Streaming Standard.
 
 You can set the latency level of the audience role in the following two ways:
 
@@ -1714,11 +1714,11 @@ In a use-case where multiple users play a media file at the same time, such as w
 
 **Channel encryption**
 
-To strengthen the security of the key, v4.5.0 adds two encryption modes, `"aes-128-gcm2"` and `"aes-256-gcm2"`, which use the PBKDF2 (Password-Based Key Derivation Function 2). When calling `setEncryptionConfig` and setting the encryption mode as `"aes-128-gcm2"` or `"aes-256-gcm2"`, you need to set `secret` and `salt`. For how to generate and set `secret` and `salt`, see [Secure channel encryption](../../../build/media-stream-encryption.mdx).
+To strengthen the security of the key, v4.5.0 adds two encryption modes, `"aes-128-gcm2"` and `"aes-256-gcm2"`, which use the PBKDF2 (Password-Based Key Derivation Function 2). When calling `setEncryptionConfig` and setting the encryption mode as `"aes-128-gcm2"` or `"aes-256-gcm2"`, you need to set `secret` and `salt`. For how to generate and set `secret` and `salt`, see [Secure channel encryption](../../../build/media-stream-encryption).
 
 **Restrict media zones**
 
-As of v4.5.0, when calling `setArea` to specify the media zone for connection, you can use the `areaCode` parameter to specify a large zone and use the `excludedArea` parameter to specify a small zone. The region for connection is the large zone excluding the small zone. You can only specify the large zone as `"GLOBAL"`. For details, see [Restrict media zones](https://docs-md.agora.io/en/video-calling/advanced-features/geofencing.md).
+As of v4.5.0, when calling `setArea` to specify the media zone for connection, you can use the `areaCode` parameter to specify a large zone and use the `excludedArea` parameter to specify a small zone. The region for connection is the large zone excluding the small zone. You can only specify the large zone as `"GLOBAL"`. For details, see [Restrict media zones](https://docs-md.agora.io/en/video-calling/advanced-features/geofencing).
 
 **The preset video encoder configurations for screen sharing**
 
@@ -1791,7 +1791,7 @@ Once you enable the built-in encryption, all users in the same channel must use 
 
 **Cloud proxy**
 
-v4.4.0 adds the `client.on("is-using-cloud-proxy")` event. The SDK triggers this event after the local client successfully publishes a media stream to indicate whether the media stream is forwarded by the [Cloud proxy service](../../../build/cloud-proxy.mdx).
+v4.4.0 adds the `client.on("is-using-cloud-proxy")` event. The SDK triggers this event after the local client successfully publishes a media stream to indicate whether the media stream is forwarded by the [Cloud proxy service](../../../build/cloud-proxy).
 
 **Error code**
 
@@ -1825,7 +1825,7 @@ v4.3.0 was released on January 26, 2021.
 
 This release optimizes the Agora cloud proxy architecture and enhances the connectivity of the Broadcast Streaming in environments with restricted network access. The optimized Agora cloud proxy service also supports regional connection.
 
-You can contact (mailto:support@agora.io) to apply for using the optimized Agora cloud proxy service and set the `mode` parameter as `3` when calling `startProxyServer`. For details, see [Cloud proxy service](../../../build/cloud-proxy.mdx).
+You can contact (mailto:support@agora.io) to apply for using the optimized Agora cloud proxy service and set the `mode` parameter as `3` when calling `startProxyServer`. For details, see [Cloud proxy service](../../../build/cloud-proxy).
 
 ### v4.2.1
 
@@ -2107,7 +2107,7 @@ v4.0.0 fixed the following issues:
 
 ## AI Noise Suppression
 :::note
-Agora charges additionally for this extension. See [Pricing](https://docs-md.agora.io/en/video-calling/overview/pricing.md).
+Agora charges additionally for this extension. See [Pricing](https://docs-md.agora.io/en/video-calling/overview/pricing).
 :::
 ### v2.0.1
 
@@ -2149,14 +2149,14 @@ This release adds the following APIs and parameters:
 - **Parameters**:
   - `elapsedTime` in `onoverload`: Reports the time in ms that the extension needs to process one audio frame.
 
-For API details, see [AI Noise Suppression](https://docs-md.agora.io/en/video-calling/advanced-features/ai-noise-suppression.md).
+For API details, see [AI Noise Suppression](https://docs-md.agora.io/en/video-calling/advanced-features/ai-noise-suppression).
 
 #### Compatibility changes
 
 This release brings the following changes:
 
 - AI Noise Suppression supports Agora Video SDK for Web v4.15.0 or later.
-- The extension has Wasm dependencies only. Because JS dependencies are removed, you need to publish the Wasm files located in the `node_modules/agora-extension-ai-denoiser/external` directory again. If you have enabled the Content Security Policy (CSP), you need to modify the CSP configuration. See [AI Noise Suppression](https://docs-md.agora.io/en/interactive-live-streaming/advanced/ai-noise-suppression.md) for details.
+- The extension has Wasm dependencies only. Because JS dependencies are removed, you need to publish the Wasm files located in the `node_modules/agora-extension-ai-denoiser/external` directory again. If you have enabled the Content Security Policy (CSP), you need to modify the CSP configuration. See [AI Noise Suppression](https://docs-md.agora.io/en/interactive-live-streaming/advanced/ai-noise-suppression) for details.
 - The audio data is dumped in PCM format instead of WAV format.
 - To adjust the intensity of noise suppression, best practice is to call `setLevel`.
 
@@ -2168,7 +2168,7 @@ First release.
 
 ### v1.0.0-beta2
 
-[`agora-conversational-ai-denoiser`](https://www.npmjs.com/package/agora-conversational-ai-denoiser) v1.0.0-beta2 was released on March 5, 2025, to enhance the user experience in applications powered by [Agora Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview.md).
+[`agora-conversational-ai-denoiser`](https://www.npmjs.com/package/agora-conversational-ai-denoiser) v1.0.0-beta2 was released on March 5, 2025, to enhance the user experience in applications powered by [Agora Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview).
 :::warning
 
 The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommend using it only for AI-related use cases.
@@ -2288,7 +2288,7 @@ This release fixes the occasional issue of jagged background images on Chrome fo
 
 #### New features
 
-You can now specify the `fit` property when calling `setOptions`. This sets how the background is resized to fit the container. For API details, see [Virtual background](https://docs-md.agora.io/en/interactive-live-streaming/advanced/virtual-background.md).
+You can now specify the `fit` property when calling `setOptions`. This sets how the background is resized to fit the container. For API details, see [Virtual background](https://docs-md.agora.io/en/interactive-live-streaming/advanced/virtual-background).
 
 #### Compatibility changes
 
@@ -2298,7 +2298,7 @@ Virtual Background supports Agora Video SDK for Web v4.15.0 or later.
 
 #### New features
 
-You can now call `checkCompatibility` and test if AI Noise Suppression extension is supported on the current browser. For API details, see [Virtual background](https://docs-md.agora.io/en/interactive-live-streaming/advanced/virtual-background.md).
+You can now call `checkCompatibility` and test if AI Noise Suppression extension is supported on the current browser. For API details, see [Virtual background](https://docs-md.agora.io/en/interactive-live-streaming/advanced/virtual-background).
 
 #### Fixed issues
 
@@ -2316,7 +2316,7 @@ First release.
 
 ## Super clarity extension
 
-This extension leverages Agora's AI quality enhancement algorithm to intelligently improves video quality without altering the resolution, thereby optimizing the viewing experience at the receiving end. For detailed integration steps, refer to the [Super Clarity integration guide](https://docs-md.agora.io/en/video-calling/advanced-features/super-clarity_web.md).
+This extension leverages Agora's AI quality enhancement algorithm to intelligently improves video quality without altering the resolution, thereby optimizing the viewing experience at the receiving end. For detailed integration steps, refer to the [Super Clarity integration guide](https://docs-md.agora.io/en/video-calling/advanced-features/super-clarity_web).
 
 ### v2.0.1
 
@@ -2356,7 +2356,7 @@ This extension enables local users to seamlessly merge multiple video streams an
 
 Released on October 25, 2022. 
 
-This is the first version of `agora-extension-videp-compositor`. For detailed integration steps, refer to [Video Compositor](https://docs-md.agora.io/en/advanced-features/video-compositor_web.md).
+This is the first version of `agora-extension-videp-compositor`. For detailed integration steps, refer to [Video Compositor](https://docs-md.agora.io/en/advanced-features/video-compositor_web).
 
 ## Beauty Effect extension
 
@@ -2365,7 +2365,7 @@ This extension enables your users to apply beauty effects to their videos. They 
 ### v1.0.2-beta
 Released on November 26, 2022.
 
-This is the first version of `agora-extension-beauty-effect`. For detailed integration steps, refer to [Beauty Effect](https://docs-md.agora.io/en/video-calling/advanced-features/beauty-effect.md).
+This is the first version of `agora-extension-beauty-effect`. For detailed integration steps, refer to [Beauty Effect](https://docs-md.agora.io/en/video-calling/advanced-features/beauty-effect).
 
 ## Notifications
 

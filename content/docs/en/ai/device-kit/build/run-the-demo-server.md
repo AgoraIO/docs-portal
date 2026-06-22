@@ -16,7 +16,7 @@ pip install requests flask pyjwt
 
 The `/server/aiot_server_demo_example/config.json` file contains the server configuration parameters. Update this file with your project credentials and service settings.
 
-For detailed parameter descriptions, see [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join.md).
+For detailed parameter descriptions, see [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
 
 **Configuration file structure:**
 
@@ -69,5 +69,5 @@ The server runs on port `5001` by default at `http://localhost:5001`. To use a d
 
 ## Related pages
 
-- [Demo server APIs](demo-server-apis.md)
-- [Build and flash firmware](build-and-flash-firmware.md)
+- [Demo server APIs](demo-server-apis)
+- [Build and flash firmware](build-and-flash-firmware)

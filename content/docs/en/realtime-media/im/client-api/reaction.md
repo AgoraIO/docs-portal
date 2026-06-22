@@ -85,11 +85,11 @@ The SDK provides the following APIs to implement reaction functionalities:
 
 Before proceeding, ensure that your environment meets the following requirements:
 
-- The project integrates a version of the Chat SDK later than v1.0.3 and has implemented the [basic real-time chat functionalities](../get-started/get-started-sdk.mdx).
-- You understand the API call frequency limit as described in [Limitations](../reference/limitations.md).
+- The project integrates a version of the Chat SDK later than v1.0.3 and has implemented the [basic real-time chat functionalities](../get-started/get-started-sdk).
+- You understand the API call frequency limit as described in [Limitations](../reference/limitations).
 
 :::info
-The reaction feature is supported by all types of [Pricing Plans](../reference/pricing-plan-details.md) and is enabled by default once you have enabled Chat in [Agora Console](https://console.agora.io/v2).
+The reaction feature is supported by all types of [Pricing Plans](../reference/pricing-plan-details) and is enabled by default once you have enabled Chat in [Agora Console](https://console.agora.io/v2).
 :::
 
 ## Implementation
@@ -784,4 +784,4 @@ onError: (code, desc) =>
 
 ## Next steps
 
-Reactions are also supported in the [Chat ](../get-started/get-started-uikit.md), which contains a wider range of emojis. You can also use the  to implement reactions in your project.
+Reactions are also supported in the [Chat ](../get-started/get-started-uikit), which contains a wider range of emojis. You can also use the  to implement reactions in your project.

@@ -20,7 +20,7 @@ Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request
 Authorization: Bearer ${YourAppToken}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication.md).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication).
 
 ## Send push notifications
 
@@ -32,9 +32,9 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter      | Type | Description    | Required |
 | :--------- | :----- |:------------- | :------- |
-| `host`     | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes   |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the organization name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes     |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes    |
+| `host`     | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes   |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the organization name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes     |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes    |
 | `username` | String | The unique login account of the user.    | Yes     |
 
 #### Response parameters
@@ -258,7 +258,7 @@ Sends a push notification to all users under one label, or the intersection of u
 
 A push task is automatically created per request, and the ID of the push task is returned for data statistics. A maximum of three push tasks can be executed at the same time.
 
-See [Set push labels](./push-notification-management.md) for configuring labels.
+See [Set push labels](./push-notification-management) for configuring labels.
 
 #### HTTP request
 
@@ -410,7 +410,7 @@ curl -X POST "http://XXXX/XXXX/XXXX/push/task" -H "Content-Type: application/jso
 
 ### Status codes
 
-For details, see [HTTP Status Codes](../reference/http-status-codes.md).
+For details, see [HTTP Status Codes](../reference/http-status-codes).
 
 ## Configure push notifications
 
@@ -607,7 +607,7 @@ The push service allows you to group targeting users by configuring labels. Each
 You can manage the labels through RESTful API. The relationship between users and labels is many to many, that is, one user can have multiple labels and one label can also have multiple users. You can update the labels without any delay and change user labels by
 first removing users from their current label and then adding them to a new one.
 
-Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../reference/limitations.md#call-limit-of-server-sides).
+Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../reference/limitations#call-limit-of-server-sides).
 
 ### Common parameters
 
@@ -617,9 +617,9 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter      | Type | Description    | Required |
 | :--------- | :----- |:------------- | :------- |
-| `host`     | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes   |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the organization name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes     |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project). | Yes    |
+| `host`     | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes   |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the organization name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes     |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes    |
 | `username` | String | The unique login account of the user.    | Yes     |
 
 #### Response parameters
@@ -1195,4 +1195,4 @@ curl -L -X DELETE 'http://XXXX/XXXX/XXXX/push/label/post-90s/user' \
 
 ### Status codes
 
-For details, see [HTTP Status Codes](../reference/http-status-codes.md).
+For details, see [HTTP Status Codes](../reference/http-status-codes).

@@ -58,11 +58,11 @@ As shown in the figure, the workflow of peer-to-peer messaging is as follows:
 
 Before proceeding, ensure that you meet the following requirements:
 
-- You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk.mdx).
-- You understand the call frequency limit of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations.md).
+- You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started/get-started-sdk).
+- You understand the call frequency limit of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations).
 
 :::info
-The thread feature is supported by all types of [Pricing Plans](../../reference/pricing-plan-details.md) and is enabled by default once you have enabled Chat in [Agora Console](https://console.agora.io/v2).
+The thread feature is supported by all types of [Pricing Plans](../../reference/pricing-plan-details) and is enabled by default once you have enabled Chat in [Agora Console](https://console.agora.io/v2).
 :::
 
 ## Implementation
@@ -102,7 +102,7 @@ message.setMessageStatusCallback(new CallBack() {
 ChatClient.getInstance().chatManager().sendMessage(message);
 ```
 
-For more information about sending a message, see [Send Messages](../messages/send-receive-messages.md#send-a-text-message).
+For more information about sending a message, see [Send Messages](../messages/send-receive-messages#send-a-text-message).
 
 ### Receive a thread message
 
@@ -128,11 +128,11 @@ ChatClient.getInstance().chatManager().addMessageListener(msgListener);
 ChatClient.getInstance().chatManager().removeMessageListener(msgListener);
 ```
 
-For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages.md#receive-a-message).
+For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages#receive-a-message).
 
 ### Recall a thread message
 
-For details about how to recall a message, refer to [Recall Messages](../messages/send-receive-messages.md#recall-a-message).
+For details about how to recall a message, refer to [Recall Messages](../messages/send-receive-messages#recall-a-message).
 
 Once a message is recalled in a thread, all chat group members receive the `ChatThreadChangeListener#onChatThreadUpdated` callback. Thread members can also listen for the `MessageListener#onMessageRecalled` callback, as shown in the following code sample:
 
@@ -185,7 +185,7 @@ ChatClient.getInstance().chatManager().asyncFetchHistoryMessage(chatThreadId, ty
 
 #### Retrieve messages of a thread locally
 
-By calling [`loadAllConversations`](../messages/manage-messages.md#retrieve-conversations), you can only retrieve local one-to-one chat conversations and group conversations. To retrieve messages of a thread locally, refer to the following code sample:
+By calling [`loadAllConversations`](../messages/manage-messages#retrieve-conversations), you can only retrieve local one-to-one chat conversations and group conversations. To retrieve messages of a thread locally, refer to the following code sample:
 
 ```java
 // Sets the conversation type to group chat as a thread belongs to a chat group.
@@ -222,7 +222,7 @@ message.isChatThreadMessage = self.isChatThread;
 }];
 ```
 
-For more information about sending a message, see [Send Messages](../messages/send-receive-messages.md#send-a-text-message).
+For more information about sending a message, see [Send Messages](../messages/send-receive-messages#send-a-text-message).
 
 ### Receive a thread message
 
@@ -241,11 +241,11 @@ Once a thread has a new message, all chat group members receive the `AgoraChatTh
 [[AgoraChatClient sharedClient].chatManager removeDelegate:self];
 ```
 
-For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages.md#receive-a-message).
+For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages#receive-a-message).
 
 ### Recall a thread message
 
-For details about how to recall a message, refer to [Recall Messages](../messages/send-receive-messages.md#recall-a-message).
+For details about how to recall a message, refer to [Recall Messages](../messages/send-receive-messages#recall-a-message).
 
 Once a message is recalled in a thread, all chat group members receive the `AgoraChatThreadManagerDelegate#onChatThreadUpdated` callback. Thread members can also listen for the `AgoraChatManagerDelegate#messagesInfoDidRecall` callback, as shown in the following code sample:
 
@@ -273,7 +273,7 @@ You can call `asyncFetchHistoryMessagesFromServer` to retrieve messages of a thr
 ```
 #### Retrieve messages of a thread locally
 
-By calling [`getAllConversations`](../messages/manage-messages.md#retrieve-conversations), you can only retrieve local one-to-one chat conversations and group conversations. To retrieve messages of a thread locally, refer to the following code sample:
+By calling [`getAllConversations`](../messages/manage-messages#retrieve-conversations), you can only retrieve local one-to-one chat conversations and group conversations. To retrieve messages of a thread locally, refer to the following code sample:
 ```objc
 AgoraChatConversation *conversation = [AgoraChatClient.sharedClient.chatManager getConversation:@"threadId" type:AgoraChatConversationTypeGroupChat createIfNotExist:NO isThread:YES];
 [conversation loadMessagesStartFromId:msgId count:50 searchDirection:AgoraChatMessageSearchDirectionUp completion:^(NSArray *aMessages, AgoraChatError *aError) {
@@ -306,7 +306,7 @@ function sendTextMessage() {
 };
 ```
 
-For more information about sending a message, see [Send Messages](../messages/send-receive-messages.md#send-a-text-message).
+For more information about sending a message, see [Send Messages](../messages/send-receive-messages#send-a-text-message).
 
 ### Receive a thread message
 
@@ -325,7 +325,7 @@ connection.addEventHandler('THREADMESSAGE',{
 });
 ```
 
-For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages.md#receive-a-message).
+For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages#receive-a-message).
 
 ### Recall a thread message
 
@@ -354,7 +354,7 @@ conn.addEventHandler('MESSAGES',{
 })
 ```
 
-For more information about recalling a message, see [Recall Messages](../messages/send-receive-messages.md#recall-a-message).
+For more information about recalling a message, see [Recall Messages](../messages/send-receive-messages#recall-a-message).
 
 ### Retrieve messages of a thread from the server
 
@@ -404,7 +404,7 @@ msg.isChatThreadMessage = true;
 ChatClient.getInstance.chatManager.sendMessage(msg);
 ```
 
-For more information about sending a message, see [Send Messages](../messages/send-receive-messages.md#send-a-text-message).
+For more information about sending a message, see [Send Messages](../messages/send-receive-messages#send-a-text-message).
 
 ### Receive a thread message
 
@@ -432,11 +432,11 @@ Once a thread has a new message, all chat group members receive the `ChatThreadE
   ChatClient.getInstance.chatThreadManager.removeEventHandler("UNIQUE_HANDLER_ID");
 ```
 
-For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages.md#receive-a-message).
+For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages#receive-a-message).
 
 ### Recall a thread message
 
-For details about how to recall a message, refer to [Recall Messages](../messages/send-receive-messages.md#recall-a-message).
+For details about how to recall a message, refer to [Recall Messages](../messages/send-receive-messages#recall-a-message).
 
 Once a message is recalled in a thread, all chat group members receive the `ChatThreadEventHandler#onChatThreadUpdated` callback. Thread members can also listen for the `ChatEventHandler#onMessagesRecalled` callback, as shown in the following code sample:
 
@@ -494,7 +494,7 @@ try {
 
 ### Retrieve messages of a thread locally
 
-By calling [`loadAllConversations`](../messages/manage-messages.md#retrieve-conversations), you can only retrieve local one-to-one chat conversations and group conversations. To retrieve messages of a thread locally, refer to the following code sample:
+By calling [`loadAllConversations`](../messages/manage-messages#retrieve-conversations), you can only retrieve local one-to-one chat conversations and group conversations. To retrieve messages of a thread locally, refer to the following code sample:
 
 ```dart
 try {
@@ -542,7 +542,7 @@ ChatClient.getInstance()
   });
 ```
 
-For more information about sending a message, see [Send Messages](../messages/send-receive-messages.md#send-a-text-message).
+For more information about sending a message, see [Send Messages](../messages/send-receive-messages#send-a-text-message).
 
 ### Receive a thread message
 
@@ -569,11 +569,11 @@ ChatClient.getInstance().chatManager.removeMessageListener(listener);
 ChatClient.getInstance().chatManager.removeAllMessageListener();
 ```
 
-For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages.md#receive-a-message).
+For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages#receive-a-message).
 
 ### Recall a thread message
 
-For details about how to recall a message, refer to [Recall Messages](../messages/send-receive-messages.md#recall-a-message).
+For details about how to recall a message, refer to [Recall Messages](../messages/send-receive-messages#recall-a-message).
 
 Once a message is recalled in a thread, all chat group members receive the `ChatMessageEventListener#onChatMessageThreadUpdated` callback. Thread members can also listen for the `ChatMessageEventListener#onMessagesRecalled` callback, as shown in the following code sample:
 
@@ -628,7 +628,7 @@ ChatClient.getInstance()
 
 #### Retrieve messages of a thread locally
 
-By calling [`getAllConversations`](../messages/manage-messages.md#retrieve-conversations), you can only retrieve local one-to-one chat conversations and group conversations. To retrieve messages of a thread locally, refer to the following code sample:
+By calling [`getAllConversations`](../messages/manage-messages#retrieve-conversations), you can only retrieve local one-to-one chat conversations and group conversations. To retrieve messages of a thread locally, refer to the following code sample:
 
 ```typescript
 // Gets a thread conversation.
@@ -683,7 +683,7 @@ SDKClient.Instance.ChatManager.SendMessage(ref msg, new CallBack(
 ));
 ```
 
-For more information about sending a message, see [Send Messages](../messages/send-receive-messages.md#send-a-text-message).
+For more information about sending a message, see [Send Messages](../messages/send-receive-messages#send-a-text-message).
 
 ### Receive a thread message
 
@@ -705,7 +705,7 @@ SDKClient.Instance.ChatManager.AddChatManagerDelegate(adelegate);
 SDKClient.Instance.ChatManager.RemoveChatManagerDelegate(adelegate);
 ```
 
-For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages.md#receive-a-message).
+For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages#receive-a-message).
 
 ### Recall a thread message
 
@@ -729,7 +729,7 @@ SDKClient.Instance.ChatManager.AddChatManagerDelegate(adelegate);
 SDKClient.Instance.ChatManager.RemoveChatManagerDelegate(adelegate);
 ```
 
-For more information about recalling a message, see [Recall Messages](../messages/send-receive-messages.md#recall-a-message).
+For more information about recalling a message, see [Recall Messages](../messages/send-receive-messages#recall-a-message).
 
 ### Retrieve thread messages
 
@@ -805,7 +805,7 @@ SDKClient.Instance.ChatManager.SendMessage(ref msg, new CallBack(
 ));
 ```
 
-For more information about sending a message, see [Send Messages](../messages/send-receive-messages.md#send-a-text-message).
+For more information about sending a message, see [Send Messages](../messages/send-receive-messages#send-a-text-message).
 
 ### Receive a thread message
 
@@ -827,7 +827,7 @@ SDKClient.Instance.ChatManager.AddChatManagerDelegate(adelegate);
 SDKClient.Instance.ChatManager.RemoveChatManagerDelegate(adelegate);
 ```
 
-For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages.md#receive-a-message).
+For more information about receiving a message, see [Receive Messages](../messages/send-receive-messages#receive-a-message).
 
 ### Recall a thread message
 
@@ -851,7 +851,7 @@ SDKClient.Instance.ChatManager.AddChatManagerDelegate(adelegate);
 SDKClient.Instance.ChatManager.RemoveChatManagerDelegate(adelegate);
 ```
 
-For more information about recalling a message, see [Recall Messages](../messages/send-receive-messages.md#recall-a-message).
+For more information about recalling a message, see [Recall Messages](../messages/send-receive-messages#recall-a-message).
 
 ### Retrieve thread messages
 

@@ -5,7 +5,7 @@ description: "Shows how to manage the mute list by calling Agora Chat RESTful AP
 
 Muting means to prevent group users from sending messages in the group. Chat provides multiple mute management APIs, including those for getting the mute list, adding a user to the mute list, and removing a user from the mute list.
 
-This page shows how to manage the mute list by calling Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../../reference/limitations.md#call-limit-of-server-sides).
+This page shows how to manage the mute list by calling Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../../reference/limitations#call-limit-of-server-sides).
 
 ## Common parameters
 
@@ -15,9 +15,9 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
 | :--------- | :----- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
 | `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)"\_", "-", ".":::info
 Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.
 ::: | Yes |
@@ -45,7 +45,7 @@ Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request
 Authorization: Bearer ${YourAppToken}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../../develop/authentication.md).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../../develop/authentication).
 
 ## Muting a  member
 
@@ -94,7 +94,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 For other fields and descriptions, see [Common parameter](#param).
 
-If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes) for possible causes.
 
 ### Example
 
@@ -163,7 +163,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 For other fields and descriptions, see [Common parameter](#param).
 
-If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes) for possible causes.
 
 ### Example
 
@@ -230,7 +230,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 For other fields and descriptions, see [Common parameter](#param).
 
-If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes) for possible causes.
 
 ### Example
 
@@ -261,7 +261,7 @@ curl -X GET -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/1013
 
 ## Muting all  members
 
-This method mutes all the  members. If this method call succeeds, none of the  members can send messages in the  or in any threads within the , except those in the group [allow list](./manage-group-allowlist.md). As the mute does not expire in a certain period, you need to call the API of unmuting all  members to stop muting them.
+This method mutes all the  members. If this method call succeeds, none of the  members can send messages in the  or in any threads within the , except those in the group [allow list](./manage-group-allowlist). As the mute does not expire in a certain period, you need to call the API of unmuting all  members to stop muting them.
 
 ### HTTP request
 
@@ -296,7 +296,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 For other fields and descriptions, see [Common parameter](#param).
 
-If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes) for possible causes.
 
 ### Example
 
@@ -361,7 +361,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 For other fields and descriptions, see [Common parameter](#param).
 
-If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status code](../../reference/http-status-codes) for possible causes.
 
 ### Example
 

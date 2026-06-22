@@ -4,7 +4,7 @@ description: "Introduces how to retrieve tokens from your app server to authenti
 ---
 
 Agora uses digital tokens to authenticate users and their privileges before they access Agora Chat. For test purposes, you can generate temporary tokens in Agora Console.
-See [Manage users and generate tokens](../get-started/enable.md#manage-users-and-generate-tokens) for details.
+See [Manage users and generate tokens](../get-started/enable#manage-users-and-generate-tokens) for details.
 
 In a development environment, you deploy your own app server to generate authentication tokens. This page introduces how to set up a token server, retrieve tokens from your server, and  authenticate your users.
 
@@ -29,9 +29,9 @@ Agora Chat employs two types of tokens for authentication:
 
 In order to follow this procedure, you must have the following:
 
-- A valid [Agora account](../reference/manage-agora-account.md#sign-up-and-log-in).
-- An [Agora project](../reference/manage-agora-account.md#create-and-manage-projects) with the [App Certificate](../reference/manage-agora-account.md#manage-app-certificates) and [Agora Chat](../get-started/enable.md) enabled.
-- App ID, OrgName, and AppName of your Agora project. See [Enable and Configure Agora Chat Service](../get-started/enable.md).
+- A valid [Agora account](../reference/manage-agora-account#sign-up-and-log-in).
+- An [Agora project](../reference/manage-agora-account#create-and-manage-projects) with the [App Certificate](../reference/manage-agora-account#manage-app-certificates) and [Agora Chat](../get-started/enable) enabled.
+- App ID, OrgName, and AppName of your Agora project. See [Enable and Configure Agora Chat Service](../get-started/enable).
 
 If you have a firewall implemented in your network environment, Agora provides a firewall whitelist solution for you to access Agora Chat in environments with restricted network access. If you want to use the firewall whitelist solution, [submit a ticket](https://agora-ticket.agora.io/) and our technical support will provide the target domain and corresponding IP.
 
@@ -122,4 +122,4 @@ For more examples and source code in other development languages, explore the [A
 
 ### Tokens for Agora RTC products
 
-If you use Agora Chat together with the [Agora RTC SDK](https://docs.agora.io/cn/Agora%20Platform/term_agora_rtc_sdk), Agora recommends upgrading to [AccessToken 2](../reference/access-token-2.md).
+If you use Agora Chat together with the [Agora RTC SDK](https://docs.agora.io/cn/Agora%20Platform/term_agora_rtc_sdk), Agora recommends upgrading to [AccessToken 2](../reference/access-token-2).

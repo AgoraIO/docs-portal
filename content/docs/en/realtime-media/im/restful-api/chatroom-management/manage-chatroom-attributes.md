@@ -5,7 +5,7 @@ description: "Explains how to manage chat room attributes via the Agora Chat RES
 
 This page shows how to manage custom attributes by calling Agora Chat RESTful APIs, including adding, removing, modifying, and retrieving attributes that are stored as key-value maps.
 
-Before calling the following methods, ensure that you understand the call frequency limit of Agora Chat RESTful API calls described in [Limitations](../../reference/limitations.md#call-limit-of-server-sides).
+Before calling the following methods, ensure that you understand the call frequency limit of Agora Chat RESTful API calls described in [Limitations](../../reference/limitations#call-limit-of-server-sides).
 
 ## Common parameters
 
@@ -15,9 +15,9 @@ The following table lists common request and response parameters of the Agora Ch
 
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Required |
 | :--------- | :----- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
-| `host` | String | The domain name assigned by the Agora Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                 | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Agora Chat service.  For how to get the org name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                     | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Agora Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                         | Yes |
+| `host` | String | The domain name assigned by the Agora Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                 | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Agora Chat service.  For how to get the org name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                     | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Agora Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                         | Yes |
 | `username` | String | The unique login account of the user. The username must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
 Do not use any of the 26 uppercase English letters (A-Z).Ensure that each username under the same app is unique.
 ::: | Yes |
@@ -44,7 +44,7 @@ Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request
 Authorization: Bearer ${YourAppToken}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../../develop/authentication.md).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../../develop/authentication).
 
 ## Set custom attributes
 
@@ -387,4 +387,4 @@ curl  -X DELETE -H 'Content-Type: application/json' -H 'Accept: application/json
 
 ## Status codes
 
-For details, see [HTTP Status Codes](../../reference/http-status-codes.md).
+For details, see [HTTP Status Codes](../../reference/http-status-codes).

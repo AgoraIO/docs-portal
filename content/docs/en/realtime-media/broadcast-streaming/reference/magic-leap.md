@@ -23,11 +23,11 @@ To start a session, implement the following steps in your app:
 In order to follow this procedure, you must have:
 
 To test the code used in this page you need to have:
-* An Agora [account](../manage-agora-account.md) and [project](../manage-agora-account.md).
+* An Agora [account](../manage-agora-account) and [project](../manage-agora-account).
 * A computer with Internet access.
   Ensure that no firewall is blocking your network communication.
 
-* Implemented the [SDK quickstart](../index.mdx)
+* Implemented the [SDK quickstart](../index)
 
 - [Unity Hub](https://unity.com/download)
 - [Unity Editor 2017.X LTS or higher](https://unity.com/releases/editor/archive)
@@ -66,7 +66,7 @@ When a user opens the app, you initialize Agora Engine. When the user taps a but
 This section shows how to integrate the Video SDK to implement the Broadcast Streaming demo into your Magic
  Leap project.
 
-1. [Download](../../../sdks.md) the latest version of Video SDK for Magic Leap to a local folder.
+1. [Download](../../../sdks) the latest version of Video SDK for Magic Leap to a local folder.
 
 1. Double-click the download package.
 
@@ -84,7 +84,7 @@ Agora recommends you run this project on a physical mobile device, as some simul
 
 1. Obtain an App ID with token enabled.
 
-1. [Generate a temporary token](../manage-agora-account.md) in Agora Console.
+1. [Generate a temporary token](../manage-agora-account) in Agora Console.
 
 1. In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update `App ID`, `Channel`, and `Token` with the values for your temporary token, then click **Join**.
 
@@ -113,9 +113,9 @@ Now you have tested the demo, best practice is to customize the demo source incl
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
-- [Manual install](../../../sdks.md) shows you how to install Video SDK manually.
+- [Manual install](../../../sdks) shows you how to install Video SDK manually.
 
-- To ensure communication security in a test or production environment, best practice is to use a token server to ensure communication security, see [Secure authentication with tokens](../build/use-tokens.mdx).
+- To ensure communication security in a test or production environment, best practice is to use a token server to ensure communication security, see [Secure authentication with tokens](../build/use-tokens).
 
 ### API reference
 

@@ -24,7 +24,7 @@ Even with these solutions, autoplay restrictions require users to interact with 
 :::
 ## Prerequisites
 
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index) in your project. 
 
 ## Implementation
 

@@ -6,6 +6,6 @@ This integration track explains how to combine Agora's realtime audio transport 
 
 ## Start here
 
-- [Core concepts](overview/core-concepts.md)
-- [Quickstart](get-started/quickstart.md)
-- [Security reference](reference/security.md)
+- [Core concepts](overview/core-concepts)
+- [Quickstart](get-started/quickstart)
+- [Security reference](reference/security)

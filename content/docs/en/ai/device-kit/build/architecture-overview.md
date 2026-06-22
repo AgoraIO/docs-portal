@@ -52,4 +52,4 @@ The software package provides a complete development framework for building conv
 
 ## Related pages
 
-- [Specifications and compatibility](specifications-and-compatibility.md)
+- [Specifications and compatibility](specifications-and-compatibility)

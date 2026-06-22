@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import type { ComponentType, ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { getOverviewMDXComponents } from './mdx-components';
@@ -90,17 +90,33 @@ type RecipesCatalogComponent = ComponentType<{
   categoryFilterLabel: string;
   clearFiltersLabel: string;
   emptyMessage: string;
+  groupByProduct?: boolean;
   items: Array<{
     category: string;
     description: string;
-    href: string;
+    href?: string;
+    links?: Array<{
+      href: string;
+      label: string;
+    }>;
     product: string;
     stack?: string;
     title: string;
     tone?: 'blue' | 'green' | 'pink' | 'purple' | 'sand';
   }>;
+  productGroups?: Record<
+    string,
+    {
+      description?: string;
+      icon?: string;
+      title?: string;
+    }
+  >;
   productFilterLabel: string;
   searchPlaceholder: string;
+  showCategoryFilter?: boolean;
+  showDescription?: boolean;
+  showTags?: boolean;
   stackFilterLabel: string;
 }>;
 
@@ -368,5 +384,195 @@ describe('overview MDX components', () => {
     expect(
       screen.getByText('No recipes match the current filters.'),
     ).toBeVisible();
+  });
+
+  it('renders multiple version links inside a recipe catalog card', () => {
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    render(
+      <RecipesCatalog
+        allCategoriesLabel="All reference types"
+        allProductsLabel="All products"
+        allStacksLabel="All platforms"
+        categoryFilterLabel="Reference type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No references match the current filters."
+        groupByProduct={true}
+        productGroups={{
+          'Voice SDK': {
+            description: 'This product uses the Voice SDK.',
+            icon: 'voice-calling',
+            title: 'Voice Calling',
+          },
+        }}
+        items={[
+          {
+            category: 'Hosted SDK reference',
+            description: 'Voice SDK for Android API reference with current and previous major-version coverage.',
+            links: [
+              {
+                href: 'https://api-ref.agora.io/en/voice-sdk/android/4.x/API/rtc_api_overview.html',
+                label: '4.6.3 (Latest)',
+              },
+              {
+                href: 'https://api-ref.agora.io/en/voice-sdk/android/3.x/index.html',
+                label: '3.7.2.1',
+              },
+            ],
+            product: 'Voice SDK',
+            stack: 'Android',
+            title: 'Android',
+            tone: 'blue',
+          },
+          {
+            category: 'Hosted SDK reference',
+            description: 'Voice SDK for iOS API reference with current and previous major-version coverage.',
+            links: [
+              {
+                href: 'https://api-ref.agora.io/en/voice-sdk/ios/4.x/API/rtc_api_overview_ng.html',
+                label: '4.6.2 (Latest)',
+              },
+            ],
+            product: 'Voice SDK',
+            stack: 'iOS',
+            title: 'iOS',
+            tone: 'blue',
+          },
+        ]}
+        productFilterLabel="Product"
+        searchPlaceholder="Search references"
+        stackFilterLabel="Platform"
+      />,
+    );
+
+    expect(screen.getByText('Voice Calling')).toBeVisible();
+    expect(screen.getByText('This product uses the Voice SDK.')).toBeVisible();
+    const productSection = screen
+      .getAllByRole('heading', { level: 3, name: 'Voice Calling' })[0]
+      ?.closest('section');
+    expect(productSection).not.toBeNull();
+    expect(
+      within(productSection as HTMLElement).getAllByRole('heading', {
+        level: 3,
+        name: 'Android',
+      })[0],
+    ).toBeVisible();
+    expect(
+      within(productSection as HTMLElement).getAllByRole('heading', {
+        level: 3,
+        name: 'iOS',
+      })[0],
+    ).toBeVisible();
+    expect(
+      screen.getByRole('link', { name: /4\.6\.3 \(Latest\)/i }),
+    ).toHaveAttribute(
+      'href',
+      'https://api-ref.agora.io/en/voice-sdk/android/4.x/API/rtc_api_overview.html',
+    );
+    expect(screen.getByRole('link', { name: /3\.7\.2\.1/i })).toHaveAttribute(
+      'href',
+      'https://api-ref.agora.io/en/voice-sdk/android/3.x/index.html',
+    );
+  });
+
+  it('can hide recipe catalog tags without affecting action links', () => {
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    render(
+      <RecipesCatalog
+        allCategoriesLabel="All reference types"
+        allProductsLabel="All products"
+        allStacksLabel="All platforms"
+        categoryFilterLabel="Reference type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No references match the current filters."
+        groupByProduct={true}
+        productGroups={{
+          'Video SDK': {
+            description: 'This product uses the Video SDK.',
+            icon: 'video-calling',
+            title: 'Video Calling',
+          },
+        }}
+        items={[
+          {
+            category: 'Hosted SDK reference',
+            description: 'Video SDK for Web API reference.',
+            links: [
+              {
+                href: 'https://api-ref.agora.io/en/video-sdk/web/4.x/index.html',
+                label: '4.24.3 (Latest)',
+              },
+            ],
+            product: 'Video SDK',
+            stack: 'Web',
+            title: 'Web',
+            tone: 'sand',
+          },
+        ]}
+        productFilterLabel="Product"
+        searchPlaceholder="Search references"
+        showDescription={false}
+        showTags={false}
+        stackFilterLabel="Platform"
+      />,
+    );
+
+    expect(
+      screen.getByRole('link', { name: /4\.24\.3 \(Latest\)/i }),
+    ).toBeVisible();
+    expect(screen.getByText('Video Calling')).toBeVisible();
+    expect(screen.getByText('This product uses the Video SDK.')).toBeVisible();
+    const productSection = screen
+      .getAllByRole('heading', { level: 3, name: 'Video Calling' })[0]
+      ?.closest('section');
+    expect(productSection).not.toBeNull();
+    const card = within(productSection as HTMLElement).getByText('Web').closest('section');
+    expect(card).not.toBeNull();
+    expect(
+      within(card as HTMLElement).queryByText('Video SDK for Web API reference.'),
+    ).toBeNull();
+    expect(within(card as HTMLElement).queryByText('Video SDK')).toBeNull();
+    expect(within(card as HTMLElement).queryByText('Hosted SDK reference')).toBeNull();
+    expect(
+      within(card as HTMLElement).getByRole('heading', { level: 3, name: 'Web' }),
+    ).toBeVisible();
+  });
+
+  it('can hide the category filter group', () => {
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    render(
+      <RecipesCatalog
+        allCategoriesLabel="All reference types"
+        allProductsLabel="All products"
+        allStacksLabel="All platforms"
+        categoryFilterLabel="Reference type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No references match the current filters."
+        items={[
+          {
+            category: 'In-portal',
+            description: 'Signaling SDK API reference.',
+            href: '/en/api-reference/api-ref/signaling',
+            product: 'Signaling',
+            stack: 'Multi-platform',
+            title: 'Multi-platform',
+            tone: 'blue',
+          },
+        ]}
+        productFilterLabel="Product"
+        searchPlaceholder="Search references"
+        showCategoryFilter={false}
+        stackFilterLabel="Platform"
+      />,
+    );
+
+    expect(screen.getByText('Product')).toBeVisible();
+    expect(screen.getByText('Platform')).toBeVisible();
+    expect(screen.queryByText('Reference type')).toBeNull();
   });
 });

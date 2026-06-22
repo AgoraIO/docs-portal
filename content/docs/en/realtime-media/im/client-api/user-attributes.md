@@ -64,8 +64,8 @@ The Chat SDK uses `UserInfoManager` to retrieve, set, and modify user attributes
 
 Before proceeding, ensure that you meet the following requirements:
 
-- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../get-started/get-started-sdk.mdx).
-- Have a thorough understanding of the API call frequency limit, the maximum size of all the attributes of a specified user, and the maximum size of all user attributes in an app. For details, see [Known limitations](../reference/limitations.md).
+- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../get-started/get-started-sdk).
+- Have a thorough understanding of the API call frequency limit, the maximum size of all the attributes of a specified user, and the maximum size of all user attributes in an app. For details, see [Known limitations](../reference/limitations).
 
 ## Implementation
 
@@ -115,7 +115,7 @@ ChatClient.getInstance().userInfoManager().updateOwnInfoByAttribute(UserInfoType
    });
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management.md#setting-user-attributes) or [delete](../restful-api/user-attributes-management.md#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management#setting-user-attributes) or [delete](../restful-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -187,7 +187,7 @@ NSString *url = @"https://download-sdk.oss-cn-beijing.aliyuncs.com/downloads/IMD
     }];
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management.md#setting-user-attributes) or [delete](../restful-api/user-attributes-management.md#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management#setting-user-attributes) or [delete](../restful-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -235,7 +235,7 @@ try {
 }
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management.md#setting-user-attributes) or [delete](../restful-api/user-attributes-management.md#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management#setting-user-attributes) or [delete](../restful-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -306,7 +306,7 @@ ChatClient.getInstance()
   });
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management.md#setting-user-attributes) or [delete](../restful-api/user-attributes-management.md#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management#setting-user-attributes) or [delete](../restful-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -379,7 +379,7 @@ SDKClient.Instance.UserInfoManager.UpdateOwnInfo(userInfo, new CallBack(
 ));
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management.md#setting-user-attributes) or [delete](../restful-api/user-attributes-management.md#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management#setting-user-attributes) or [delete](../restful-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -438,7 +438,7 @@ SDKClient.Instance.UserInfoManager.UpdateOwnInfo(userInfo, new CallBack(
 ));
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management.md#setting-user-attributes) or [delete](../restful-api/user-attributes-management.md#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management#setting-user-attributes) or [delete](../restful-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -506,7 +506,7 @@ chatClient.updateUserInfo("nickname", "Your nickname").then((res) => {
 });
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management.md#setting-user-attributes) or [delete](../restful-api/user-attributes-management.md#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](../restful-api/user-attributes-management#setting-user-attributes) or [delete](../restful-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field       | Type   | Description                                                                                                                           |
 | :---------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------ |

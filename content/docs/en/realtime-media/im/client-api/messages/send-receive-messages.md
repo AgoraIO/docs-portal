@@ -97,11 +97,11 @@ The process of sending and receiving a message is as follows:
 ## Prerequisites
 
 Before proceeding, ensure that you meet the following requirements:
-- You have integrated the Chat SDK, initialized the SDK, and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../get-started/get-started-sdk.mdx). 
+- You have integrated the Chat SDK, initialized the SDK, and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../get-started/get-started-sdk). 
 
     Use Chat SDK 1.2 or higher if you intend to enable users to forward multiple messages, or to modify sent messages.
 
-- You understand the API call frequency limits as described in [Limitations](../../reference/limitations.md).
+- You understand the API call frequency limits as described in [Limitations](../../reference/limitations).
 
 ## Implementation
 
@@ -630,7 +630,7 @@ To modify a sent message, refer to the following code:
     ChatClient.getInstance().chatManager().removeMessageListener(messageListener);
     ```
 
-For further details see [Sent message modification limitations](../../reference/limitations.md#sent-message-modification-limitations).
+For further details see [Sent message modification limitations](../../reference/limitations#sent-message-modification-limitations).
 
 ### iOS
 
@@ -1113,7 +1113,7 @@ To modify a sent message, refer to the following code:
     }
     ```
 
-For further details see [Sent message modification limitations](../../reference/limitations.md#sent-message-modification-limitations).
+For further details see [Sent message modification limitations](../../reference/limitations#sent-message-modification-limitations).
 
 ### Web
 
@@ -1777,7 +1777,7 @@ To forward and receive combined messages, refer to the following code:
      });
    ```
 
-For further details see [Multiple messages forwarding limitations](../../reference/limitations.md#multiple-messages-forwarding-limitations).
+For further details see [Multiple messages forwarding limitations](../../reference/limitations#multiple-messages-forwarding-limitations).
 
 ### Modify sent messages
 
@@ -1823,7 +1823,7 @@ For the edited message, except the message body, other information included in t
    });
    ```
 
-For further details see [Sent message modification limitations](../../reference/limitations.md#sent-message-modification-limitations).
+For further details see [Sent message modification limitations](../../reference/limitations#sent-message-modification-limitations).
 
 ### Flutter
 
@@ -2209,7 +2209,7 @@ To forward and receive combined messages, refer to the following code:
     );
     ```
 
-For further details see [Multiple messages forwarding limitations](../../reference/limitations.md#multiple-messages-forwarding-limitations).
+For further details see [Multiple messages forwarding limitations](../../reference/limitations#multiple-messages-forwarding-limitations).
 
 ### Modify sent messages
 
@@ -2245,7 +2245,7 @@ To modify a sent message, refer to the following code:
     )
     ```
 
-For further details see [Sent message modification limitations](../../reference/limitations.md#sent-message-modification-limitations).
+For further details see [Sent message modification limitations](../../reference/limitations#sent-message-modification-limitations).
 
 ### React Native
 
@@ -2578,7 +2578,7 @@ To forward and receive combined messages, refer to the following code:
       });
     ```
 
-For further details see [Multiple messages forwarding limitations](../../reference/limitations.md#multiple-messages-forwarding-limitations).
+For further details see [Multiple messages forwarding limitations](../../reference/limitations#multiple-messages-forwarding-limitations).
 
 ### Modify sent messages
 
@@ -2624,7 +2624,7 @@ To modify a sent message, refer to the following code:
     } as ChatMessageEventListener);
     ```
 
-For further details see [Sent message modification limitations](../../reference/limitations.md#sent-message-modification-limitations).
+For further details see [Sent message modification limitations](../../reference/limitations#sent-message-modification-limitations).
 
 ### Windows
 
@@ -3142,7 +3142,7 @@ To forward and receive combined messages, refer to the following code:
     ));
     ```
 
-For further details see [Multiple messages forwarding limitations](../../reference/limitations.md#multiple-messages-forwarding-limitations).
+For further details see [Multiple messages forwarding limitations](../../reference/limitations#multiple-messages-forwarding-limitations).
 
 ### Modify sent messages
 
@@ -3198,7 +3198,7 @@ To modify a sent message, refer to the following code:
     SDKClient.Instance.ChatManager.RemoveChatManagerDelegate(adelegate);
     ```
 
-For further details see [Sent message modification limitations](../../reference/limitations.md#sent-message-modification-limitations).
+For further details see [Sent message modification limitations](../../reference/limitations#sent-message-modification-limitations).
 
 ### Unity
 
@@ -3716,7 +3716,7 @@ To forward and receive combined messages, refer to the following code:
     ));
     ```
 
-For further details see [Multiple messages forwarding limitations](../../reference/limitations.md#multiple-messages-forwarding-limitations).
+For further details see [Multiple messages forwarding limitations](../../reference/limitations#multiple-messages-forwarding-limitations).
 
 ### Modify sent messages
 
@@ -3772,7 +3772,7 @@ To modify a sent message, refer to the following code:
     SDKClient.Instance.ChatManager.RemoveChatManagerDelegate(adelegate);
     ```
 
-For further details see [Sent message modification limitations](../../reference/limitations.md#sent-message-modification-limitations).
+For further details see [Sent message modification limitations](../../reference/limitations#sent-message-modification-limitations).
 
 ## Next steps
 
@@ -3780,7 +3780,7 @@ After implementing sending and receiving messages, you can refer to the followin
 
 ### All except Web
 
-- [Manage local messages](./manage-messages.md)
+- [Manage local messages](./manage-messages)
 
-- [Retrieve conversations and messages from the server](./retrieve-messages.md)
-- [Message receipts](./message-receipts.md)
+- [Retrieve conversations and messages from the server](./retrieve-messages)
+- [Message receipts](./message-receipts)

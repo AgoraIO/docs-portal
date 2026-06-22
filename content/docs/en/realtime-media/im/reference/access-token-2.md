@@ -8,7 +8,7 @@ If you integrate the Chat SDK and Agora  at the same time, Agora recommends you 
 This document uses the JAVA server and the Web client as examples to guide you how to build and update the token-based authentication mechanism step-by-step. 
 
 ## Prerequisites 
-- You have built a token server based on Spring Framework and a Web client using Chat according to [Authenticate Your Users with Tokens](../develop/authentication.md).
+- You have built a token server based on Spring Framework and a Web client using Chat according to [Authenticate Your Users with Tokens](../develop/authentication).
 
 - You have added the  Token service based on [AccessToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/src/AccessToken.h) to the token server of Chat. To do this, in `AgoraChatTokenController.java` file, import the `RtcTokenBuilder` with `import com.agora.chat.token.io.agora.media.RtcTokenBuilder;` and add the following method: 
 

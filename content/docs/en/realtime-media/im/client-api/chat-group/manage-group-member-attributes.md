@@ -69,9 +69,9 @@ The Chat SDK provides the `Group`, `IGroupManager`, and `IGroupManagerDelegate` 
 
 Before proceeding, ensure that you meet the following requirements:
 
-- You have initialized the Chat SDK. For details, [SDK quickstart](../../get-started/get-started-sdk.mdx).
-- You understand the call frequency limits of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations.md).
-- You understand the number of chat groups and chat group members supported by different pricing plans as described in [Pricing Plan Details](../../reference/pricing-plan-details.md).
+- You have initialized the Chat SDK. For details, [SDK quickstart](../../get-started/get-started-sdk).
+- You understand the call frequency limits of the Chat APIs supported by different pricing plans as described in [Limitations](../../reference/limitations).
+- You understand the number of chat groups and chat group members supported by different pricing plans as described in [Pricing Plan Details](../../reference/pricing-plan-details).
 
 ## Implementation
 

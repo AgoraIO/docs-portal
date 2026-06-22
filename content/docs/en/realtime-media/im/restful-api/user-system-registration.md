@@ -5,7 +5,7 @@ description: "Shows how to call Agora Chat RESTful APIs to create and manage the
 
 This page shows how to call Chat RESTful APIs to create and manage the user system, including how to register, modify, delete, ban, and unban a user, get user information, and force a user to log out.
 
-Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../reference/limitations.md#call-limit-of-server-sides).
+Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../reference/limitations#call-limit-of-server-sides).
 
 ## Common parameters
 
@@ -15,9 +15,9 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter | Type    | Description      | Required |
 | :-------- | :------ |:-----------------| :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).              | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).    | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).        | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable#get-the-information-of-the-agora-chat-project).              | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project).    | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project).        | Yes |
 | `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
 Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
 ::: | Yes |
@@ -50,7 +50,7 @@ Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request
 Authorization: Bearer ${YourAppToken}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication.md).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication).
 
 ## Registering a user
 
@@ -89,7 +89,7 @@ The request body is a JSON object, which contains the following fields:
 
 If the returned HTTP status code is `200`, the request succeeds. For fields and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -171,7 +171,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -318,7 +318,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -396,7 +396,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -525,7 +525,7 @@ For the parameters and detailed descriptions, see [Common parameters](#param).
 
 If the returned HTTP status code is `200`, the request succeeds. For fields and descriptions of the response body, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -690,7 +690,7 @@ For other fields and detailed descriptions, see [Common parameters](#param).
 
 If the returned HTTP status code is `200`, the request succeeds. For fields and descriptions of the response body, see [Common parametes](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -743,7 +743,7 @@ If the returned HTTP status code is `200`, the request is succeeds and the respo
 
 For fields and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -808,7 +808,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 For fields and detailed descriptions, see [Common parameters](#param).
 
 For other fields and detailed descriptions, see [Common parameters](#param).
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -866,7 +866,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -929,7 +929,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | `data` | JSON | The online state of a user, in the format of `"username": "online state"`. For example, if user1 is online, returns `"user1": "online"`; otherwise, returns `"user1": "offline"`. |
 For the parameters and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -994,7 +994,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | Parameter     |  Type | Description                                             |
 | :------- | :-----| :----------------------------------------------------------- |
 | `data` | JSON | The online state of a user, in the format of `"username": "online state"`. For example, if user1 is online, returns `"user1": "online"`; otherwise, returns `"user1": "offline"`.|
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -1062,7 +1062,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | :------- | :-----| :----------------------------------------------------------- |
 | `data` | JSON | The number of offline messages a user has, regardless of the delivery state, in the format of `"username": "number of offline messages"`. For example, if user1 does not have offline messages, returns `"user1": "0"`. |
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -1127,7 +1127,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | :----- | :-----| :----------------------------------------------------------- |
 | `data` | JSON | The delivery state of an offline message, in the format of `"message id": "delivery state"`. The delivery state:  `delivered`: The offline message has been delivered to the user.  `undelivered`: The offline message is temporarily stored at the server and has not been pulled from the server and delivered to the user. |
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -1156,4 +1156,4 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToke
 
 ## Status codes
 
-For details, see [HTTP Status Codes](../reference/http-status-codes.md).
+For details, see [HTTP Status Codes](../reference/http-status-codes).

@@ -41,7 +41,7 @@ From the Agents page, you can:
 - Edit or Delete an agent
 - Rename an agent
 - Duplicate an agent
-- [Embed an agent](connect-agent.md)
+- [Embed an agent](connect-agent)
 
 > **Caution**
 > Pausing or deleting an agent immediately stops it from serving requests in the associated projects. Ensure no active integrations or services depend on this agent.
@@ -61,5 +61,5 @@ The updated configuration replaces the existing deployment in the selected proje
 
 After deploying your agent:
 
-- [Connect your agent](connect-agent.md): Integrate your agent with your app
-- [Set up a campaign](campaign.md): Set up an outbound calling campaign using your agent
+- [Connect your agent](connect-agent): Integrate your agent with your app
+- [Set up a campaign](campaign): Set up an outbound calling campaign using your agent

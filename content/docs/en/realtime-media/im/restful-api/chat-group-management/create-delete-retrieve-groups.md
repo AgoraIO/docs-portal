@@ -5,7 +5,7 @@ description: "Shows how to create, retrieve, modify, and delete a group by calli
 
 Upon login to the Chat, you can create, modify, or delete a .
 
-This page shows how to create, retrieve, modify, and delete a group by calling Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../../reference/limitations.md#call-limit-of-server-sides).
+This page shows how to create, retrieve, modify, and delete a group by calling Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../../reference/limitations#call-limit-of-server-sides).
 
 ## Common parameters
 
@@ -15,9 +15,9 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Required |
 | :--------- | :----- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                            | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
 | `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
 Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.
 ::: | Yes |
@@ -45,7 +45,7 @@ Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request
 Authorization: Bearer ${YourAppToken}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../../develop/authentication.md).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../../develop/authentication).
 
 ## Creating a group
 
@@ -457,7 +457,7 @@ For other parameters and detailed descriptions, see [Common parameters](#param).
 | `groupname` | String | The group name. It cannot exceed 128 characters. The group name cannot contain "/" or spaces. You can use "+" to represent the space. | Yes |
 | `avatar` | String | The group avatar URL. It cannot exceed 1024 characters. | No |
 | `description` | String | The group description. It cannot exceed 512 characters. The group name cannot contain "/" or spaces. You can use "+" to represent the space. | Yes |
-| `maxusers` | String | The maximum number of  members (including the group owner). The default value is 200 and the maximum value is 2000.  The upper limit varies with your price plans. For details, see [Pricing Plan Details](../../reference/pricing-plan-details.md#group). | No |
+| `maxusers` | String | The maximum number of  members (including the group owner). The default value is 200 and the maximum value is 2000.  The upper limit varies with your price plans. For details, see [Pricing Plan Details](../../reference/pricing-plan-details#group). | No |
 | `allowinvites` | Boolean | Whether a regular  member can invite other users to join the group.`true`: Yes.`false`: No. Only the group owner or admin can invite other users to join the group.  | No |
 | `membersonly` | Boolean | Whether the user requesting to join the public group requires approval from the group owner or admin:`true`: Yes.`false`: (Default) No. | No |
 | `custom` | String | The extension information of the . The extension information cannot exceed 1024 characters. | No |
@@ -782,4 +782,4 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer  ' 'http://X
 
 ## Status codes
 
-For details, see [HTTP Status Code](../../reference/http-status-codes.md).
+For details, see [HTTP Status Code](../../reference/http-status-codes).

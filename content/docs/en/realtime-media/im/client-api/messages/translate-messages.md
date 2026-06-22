@@ -14,13 +14,13 @@ The SDK supports translation in the following use cases:
 
 Before proceeding, ensure that your development environment meets the following requirements:
 
-- Your project integrates a version of the Chat SDK later than v1.0.3 and has implemented the basic [real-time chat functionalities](../../get-started/get-started-sdk.mdx).
-- You understand the API call frequency limit as described in [Limitations](../../reference/limitations.md).
+- Your project integrates a version of the Chat SDK later than v1.0.3 and has implemented the basic [real-time chat functionalities](../../get-started/get-started-sdk).
+- You understand the API call frequency limit as described in [Limitations](../../reference/limitations).
 - Because this feature is enabled by the Microsoft Azure Translation API, ensure that you understand the supported target languages as described in [Language support](https://learn.microsoft.com/en-us/azure/ai-services/translator/language-support).
-- Translation is not enabled by default. To use this feature, you need to subscribe to the **Pro** or **Enterprise** [pricing plan](../../reference/pricing-plan-details.md) and enable it in [Agora Console](https://console.agora.io/v2).
+- Translation is not enabled by default. To use this feature, you need to subscribe to the **Pro** or **Enterprise** [pricing plan](../../reference/pricing-plan-details) and enable it in [Agora Console](https://console.agora.io/v2).
 
 :::info
-Add-on fees are incurred if you use this feature. See [Pricing](../../overview/pricing.md#optional-add-on-fee) for details.
+Add-on fees are incurred if you use this feature. See [Pricing](../../overview/pricing#optional-add-on-fee) for details.
 :::
 ## Understand the tech
 

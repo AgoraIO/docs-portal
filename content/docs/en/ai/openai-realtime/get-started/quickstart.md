@@ -19,7 +19,7 @@ This quickstart helps you connect Agora's realtime audio transport with OpenAI R
 
 ## Related resources
 
-- [Agora account management](manage-agora-account.md)
-- [Core concepts](../overview/core-concepts.md)
-- [Agora skills](skills.md)
-- [Agora MCP](mcp.md)
+- [Agora account management](manage-agora-account)
+- [Core concepts](../overview/core-concepts)
+- [Agora skills](skills)
+- [Agora MCP](mcp)

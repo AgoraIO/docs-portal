@@ -22,4 +22,4 @@ To view analytics:
 
 ## Next steps
 
-- [Call History](call-history.md): Review individual call transcripts and outcomes
+- [Call History](call-history): Review individual call transcripts and outcomes

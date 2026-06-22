@@ -1,0 +1,54 @@
+---
+title: "Authenticate REST calls"
+description: "Learn how to authenticate Cloud Recording REST API calls."
+---
+
+Agora Cloud Recording uses Basic HTTP authentication for REST API requests. Generate a Base64-encoded credential from your Customer ID and Customer Secret, then send it in the `Authorization` header of every HTTPS request.
+
+## Prerequisites
+
+Before you call the Cloud Recording REST API, collect the following values from [Agora Console](https://console.agora.io/v2):
+
+- **Customer ID**
+- **Customer Secret**
+- **App ID**
+
+If you have not enabled Cloud Recording for your project yet, see [REST quickstart](/en/realtime-media/cloud-recording/index).
+
+## Generate the Authorization header
+
+Use the following format:
+
+```text
+Authorization: Basic <base64(customerId:customerSecret)>
+```
+
+For example, if the raw credential string is:
+
+```text
+customerId:customerSecret
+```
+
+Base64-encode that full string and prepend `Basic `.
+
+## Example
+
+```bash
+curl --location --request POST 'https://api.agora.io/v1/apps/<appid>/cloud_recording/acquire' \
+  --header 'Authorization: Basic <base64(customerId:customerSecret)>' \
+  --header 'Content-Type: application/json;charset=utf-8' \
+  --data-raw '{
+    "cname": "<channelName>",
+    "uid": "<recordingUid>",
+    "clientRequest": {}
+  }'
+```
+
+## Best practices
+
+- Send requests only over HTTPS.
+- Do not expose the Customer ID or Customer Secret in client-side code.
+- Generate credentials on your application server.
+- Reuse the same authentication method across `acquire`, `start`, `query`, `update`, `updateLayout`, and `stop`.
+
+For endpoint details, see [Cloud Recording RESTful API](/en/realtime-media/cloud-recording/reference/restful-api).

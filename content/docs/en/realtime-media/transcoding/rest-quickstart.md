@@ -11,7 +11,7 @@ This page explains how to call Agora Cloud Transcoding RESTful APIs to implement
 
 ## Prerequisites
 
-Before you start, ensure that you have followed the [Enable Cloud Transcoding](manage-agora-account.md) guide to:
+Before you start, ensure that you have followed the [Enable Cloud Transcoding](manage-agora-account) guide to:
   - Set up your Agora account and activate the Cloud Transcoding service
   - Obtain your App ID from Agora Console
   - Obtain your Customer ID and Customer Secret for REST API authentication
@@ -173,7 +173,7 @@ After sending a request, the server responds with:
 | Code  | Meaning | Action                                  |
 | ----- | ------- | --------------------------------------- |
 | 200   | Success | Proceed as normal.                      |
-| Non-200 | Error   | See [HTTP status codes](../reference/status-codes.md). |
+| Non-200 | Error   | See [HTTP status codes](../reference/status-codes). |
 
 #### Response headers (Optional)
 
@@ -209,6 +209,6 @@ If a request fails:
 2. **Validate parameters**: Ensure all required fields are included and properly formatted
 3. **Check rate limits**: Ensure you're not exceeding 10 requests per second
 4. **Inspect the response**: Use developer tools to examine the full error response
-5. **Check status codes**: Refer to [HTTP status codes](../reference/status-codes.md) for specific error meanings
+5. **Check status codes**: Refer to [HTTP status codes](../reference/status-codes) for specific error meanings
 
 For persistent issues, contact [technical support](mailto:support@agora.io) with your `X-Request-ID`.

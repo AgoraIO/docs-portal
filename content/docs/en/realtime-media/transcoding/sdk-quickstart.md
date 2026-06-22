@@ -30,7 +30,7 @@ The following sections show you how to implement this workflow.
 Before you start, ensure that you have:
 
 - [Go](https://go.dev/dl/) 1.18 or higher
-- Followed the [Enable Cloud Transcoding](./build/manage-agora-account.md) guide to:
+- Followed the [Enable Cloud Transcoding](./build/manage-agora-account) guide to:
   - Set up your Agora account and activate the Cloud Transcoding service
   - Obtain your App ID from Agora Console
   - Obtain your Customer ID and Customer Secret for REST API authentication
@@ -416,7 +416,7 @@ If you see error messages, check that your App ID, tokens, and credentials are c
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
 - Refer to the [API documentation](/en/api-reference/cloud-transcoding/restful) for complete parameter details.
-- If you encounter any problems, refer to [Status and error codes](./reference/status-codes.md).
+- If you encounter any problems, refer to [Status and error codes](./reference/status-codes).
 
 ### Sample project
 

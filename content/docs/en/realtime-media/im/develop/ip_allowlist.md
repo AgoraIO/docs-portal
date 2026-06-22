@@ -7,7 +7,7 @@ For the communication between end users behind enterprise firewalls, Agora Chat 
 
 ### Add IP addresses and ports of data centers of Agora Chat to the firewall allowlist
 
-1. Prepare the development environment. See [SDK quickstart](../get-started/get-started-sdk.mdx) for your platform.
+1. Prepare the development environment. See [SDK quickstart](../get-started/get-started-sdk) for your platform.
 
 1. Add the IP addresses and ports of Agora Chat access points to the firewall allowlist.
 

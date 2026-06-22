@@ -6,13 +6,13 @@ When interacting with an agent, you may need to upload images or send image mess
 
 ## Understand the tech
 
-Agora provides a flexible, scalable, and standardized conversational AI engine toolkit. The toolkit supports **iOS**, **Android**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate the capabilities of the [Agora Signaling SDK](../../realtime-media/rtm/index.md) and [Agora Video SDK](../../introduction/realtime-audio-video.md) to enable the following features:
+Agora provides a flexible, scalable, and standardized conversational AI engine toolkit. The toolkit supports **iOS**, **Android**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate the capabilities of the [Agora Signaling SDK](../../realtime-media/rtm/index) and [Agora Video SDK](../../introduction/realtime-audio-video) to enable the following features:
 
-- [Interrupt agents](interrupt-agent.md)
-- [Display live transcripts](transcripts.md)
-- [Receive event notifications](event-notifications.md)
-- [Set optimal audio parameters](../best-practices/audio-setup.md) for iOS and Android
-- [Send picture messages](send-multimodal-messages.md)
+- [Interrupt agents](interrupt-agent)
+- [Display live transcripts](transcripts)
+- [Receive event notifications](event-notifications)
+- [Set optimal audio parameters](../best-practices/audio-setup) for iOS and Android
+- [Send picture messages](send-multimodal-messages)
 
 Call the toolkit's `chat` API to send a picture message, and listen to `onMessageReceiptUpdated` to receive the picture message receipt.
 
@@ -20,9 +20,9 @@ Call the toolkit's `chat` API to send a picture message, and listen to `onMessag
 
 Before you begin, ensure the following:
 
-- You have implemented the Conversational AI Engine [REST quickstart](../get-started/quickstart.md).
-- Your app integrates Agora Video SDK v4.5.1 or later and includes the [audio and video quickstart](../../introduction/realtime-audio-video.md).
-- You have enabled Signaling in the Agora Console and completed the [Signaling quickstart](../../realtime-media/rtm/index.md) for basic messaging.
+- You have implemented the Conversational AI Engine [REST quickstart](../get-started/quickstart).
+- Your app integrates Agora Video SDK v4.5.1 or later and includes the [audio and video quickstart](../../introduction/realtime-audio-video).
+- You have enabled Signaling in the Agora Console and completed the [Signaling quickstart](../../realtime-media/rtm/index) for basic messaging.
 - You maintain active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
 
 > **Info**
@@ -76,7 +76,7 @@ Before you begin, ensure the following:
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), configure the following parameters in your `POST` request:
+   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), configure the following parameters in your `POST` request:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -205,7 +205,7 @@ Before you begin, ensure the following:
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), configure the following parameters in your `POST` request:
+   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), configure the following parameters in your `POST` request:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -340,7 +340,7 @@ Before you begin, ensure the following:
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join.md), configure the following parameters in your `POST` request:
+   To [start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), configure the following parameters in your `POST` request:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -469,36 +469,36 @@ Before you begin, ensure the following:
 
 <TabsContent value="android">
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/android.md#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android.md#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android.md#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/android.md#destroy)
-- [`onMessageReceiptUpdated`](../../api-reference/conversational-ai/client-toolkit/android.md#onmessagereceiptupdated)
-- [`onMessageError`](../../api-reference/conversational-ai/client-toolkit/android.md#onmessageerror)
-- [`chat`](../../api-reference/conversational-ai/client-toolkit/android.md#chat)
+- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/android#addhandler)
+- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#subscribemessage)
+- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#unsubscribemessage)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/android#destroy)
+- [`onMessageReceiptUpdated`](../../api-reference/conversational-ai/client-toolkit/android#onmessagereceiptupdated)
+- [`onMessageError`](../../api-reference/conversational-ai/client-toolkit/android#onmessageerror)
+- [`chat`](../../api-reference/conversational-ai/client-toolkit/android#chat)
 
 </TabsContent>
 
 <TabsContent value="ios">
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/ios.md#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios.md#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios.md#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios.md#destroy)
-- [`onMessageReceiptUpdated`](../../api-reference/conversational-ai/client-toolkit/ios.md#onmessagereceiptupdated)
-- [`onMessageError`](../../api-reference/conversational-ai/client-toolkit/ios.md#onmessageerror)
-- [`chat`](../../api-reference/conversational-ai/client-toolkit/ios.md#chat)
+- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/ios#addhandler)
+- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#subscribemessage)
+- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#unsubscribemessage)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios#destroy)
+- [`onMessageReceiptUpdated`](../../api-reference/conversational-ai/client-toolkit/ios#onmessagereceiptupdated)
+- [`onMessageError`](../../api-reference/conversational-ai/client-toolkit/ios#onmessageerror)
+- [`chat`](../../api-reference/conversational-ai/client-toolkit/ios#chat)
 
 </TabsContent>
 
 <TabsContent value="web">
 
-- [`IConversationalAIAPIEventHandler`](../../api-reference/conversational-ai/client-toolkit/web.md#iconversationalaiapieventhandlers-interface)
-- [`EConversationalAIAPIEvents`](../../api-reference/conversational-ai/client-toolkit/web.md#econversationalaiapievents)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web.md#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web.md#unsubscribe)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/web.md#destroy)
-- [`chat`](../../api-reference/conversational-ai/client-toolkit/web.md#chat)
+- [`IConversationalAIAPIEventHandler`](../../api-reference/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
+- [`EConversationalAIAPIEvents`](../../api-reference/conversational-ai/client-toolkit/web#econversationalaiapievents)
+- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#subscribemessage)
+- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#unsubscribe)
+- [`destroy`](../../api-reference/conversational-ai/client-toolkit/web#destroy)
+- [`chat`](../../api-reference/conversational-ai/client-toolkit/web#chat)
 
 </TabsContent>
 </Tabs>

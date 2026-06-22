@@ -132,8 +132,8 @@ SQLCipher is used to encrypt the database that stores local messages. The Chat S
 
 Before proceeding, ensure that you meet the following requirements:
 
-- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../get-started/get-started-sdk.mdx).
-- You understand the API call frequency limits as described in [Limitations](../../reference/limitations.md).
+- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../get-started/get-started-sdk).
+- You understand the API call frequency limits as described in [Limitations](../../reference/limitations).
 
 ### Web
 
@@ -1665,5 +1665,5 @@ miniCore.open({
 
 After implementing managing messages, you can refer to the following documents to add more messaging functionalities to your app:
 
-- [Retrieve conversations and messages from the server](./retrieve-messages.md)
-- [Message receipts](./message-receipts.md)
+- [Retrieve conversations and messages from the server](./retrieve-messages)
+- [Message receipts](./message-receipts)

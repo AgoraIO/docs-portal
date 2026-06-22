@@ -5,7 +5,7 @@ description: "Shows how to call Agora Chat RESTful APIs to send different types 
 
 This page shows how to call Chat RESTful APIs to send different types of messages, upload and download files, and retrieve historical messages.
 
-Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../reference/limitations.md#call-limit-of-server-sides).
+Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../reference/limitations#call-limit-of-server-sides).
 
 ## Common parameters
 
@@ -15,9 +15,9 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Required |
 | :--------- | :----- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                                | Yes |
-| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                 | Yes |
-| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable.md#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                                    | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                                | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                 | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                                    | Yes |
 | `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
 Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
 ::: | Yes |
@@ -44,7 +44,7 @@ Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request
 Authorization: Bearer ${YourAppToken}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication.md).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](../develop/authentication).
 
 ## Send a message
 
@@ -183,7 +183,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For the other parameters and descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible causes.
 
 #### Example
 
@@ -453,7 +453,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For the other parameters and descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible causes.
 
 #### Example
 
@@ -766,7 +766,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For the other parameters and descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible causes.
 
 #### Example
 
@@ -1041,7 +1041,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For the other parameters and descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible causes.
+If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible causes.
 
 #### Example
 
@@ -1316,7 +1316,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -1383,7 +1383,7 @@ For the other parameters and detailed descriptions, see [Common parameters](#par
 
 If the returned HTTP status code is `200`, the request succeeds. You can refer to [Common parameters](#param) for the parameters and detailed description.
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -1435,7 +1435,7 @@ For the other parameters and detailed descriptions, see [Common parameters](#par
 
 If the returned HTTP status code is `200`, the request succeeds. You can refer to [Common parameters](#param) for the parameters and detailed description.
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -1460,7 +1460,7 @@ This method retrieves historical messages sent and received by the user.
 
 - For each request, you can retrieve all the historical messages sent and received within one hour from the specified time.
 - Messages cannot be retrieved in real time. For example, at 9 a.m., you can retrieve messages that are sent or received at 8 a.m.
-- The default storage time of historical messages differs by plan version. For details, see [package details](../reference/pricing-plan-details.md).
+- The default storage time of historical messages differs by plan version. For details, see [package details](../reference/pricing-plan-details).
 
 For each App Key, the call frequency limit of this method is 10 per minute.
 
@@ -1497,7 +1497,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -1960,7 +1960,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the request fails, refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the request fails, refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -2066,7 +2066,7 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 | :------- | :---------------------------------------------------- |
 | `result` | Returns `ok` if the request is successful. |
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -2164,7 +2164,7 @@ If the returned HTTP status code is not `200`, the request fails. Common errors 
 | `MessageUnavailableException`  | 404  | The message is unavailable or has expired.   | The message to be modified does not exist or has been removed due to expiration.   |
 | `RewriteMessageInternalErrorException` | 500  | An unknown error occurred while processing the request.   | The message modification fails due to an internal error.    |
 
-For other exceptions, you can refer to [Status codes](../reference/http-status-codes.md) for possible causes.
+For other exceptions, you can refer to [Status codes](../reference/http-status-codes) for possible causes.
 
 ### Example
 
@@ -2269,7 +2269,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the request fails, refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the request fails, refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -2379,7 +2379,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
-If the request fails, refer to [Status codes](../reference/http-status-codes.md) for possible reasons.
+If the request fails, refer to [Status codes](../reference/http-status-codes) for possible reasons.
 
 ### Example
 
@@ -2450,4 +2450,4 @@ If the request fails, refer to [Status codes](../reference/http-status-codes.md)
 
 ## Status codes
 
-For details, see [HTTP Status Codes](../reference/http-status-codes.md).
+For details, see [HTTP Status Codes](../reference/http-status-codes).

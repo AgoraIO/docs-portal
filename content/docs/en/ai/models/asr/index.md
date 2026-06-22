@@ -7,12 +7,12 @@ Automatic speech recognition (ASR) converts user speech into text before the age
 
 ## Providers
 
-- [ARES](ares.md)
-- [OpenAI](openai.md)
-- [Deepgram](deepgram.md)
-- [AssemblyAI](assembly-ai.md)
-- [Google](google.md)
-- [Microsoft Azure](microsoft.md)
-- [Amazon Transcribe](amazon.md)
-- [Sarvam](sarvam.md)
-- [Speechmatics](speechmatics.md)
+- [ARES](ares)
+- [OpenAI](openai)
+- [Deepgram](deepgram)
+- [AssemblyAI](assembly-ai)
+- [Google](google)
+- [Microsoft Azure](microsoft)
+- [Amazon Transcribe](amazon)
+- [Sarvam](sarvam)
+- [Speechmatics](speechmatics)

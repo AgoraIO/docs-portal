@@ -22,7 +22,7 @@ description: 在 AI 对话互动场景下，你可能需要使用自定义的大
 
 开始前，请确保你已经：
 
-- 参考[实现对话式智能体](../get-started/quick-start.md)实现了与 AI 智能体对话互动的基本逻辑
+- 参考[实现对话式智能体](../get-started/quick-start)实现了与 AI 智能体对话互动的基本逻辑
 - 拥有可访问的自定义大语言模型服务
 - 如需使用检索增强生成（RAG）功能，已准备好向量数据库或检索系统
 
@@ -373,7 +373,7 @@ func main() {
 </Tabs>
 ### 配置声网对话式 AI 引擎
 
-在调用 [POST 创建对话式智能体](../operations/start-agent.md)时，将 LLM 配置指向你的自定义服务：
+在调用 [POST 创建对话式智能体](../operations/start-agent)时，将 LLM 配置指向你的自定义服务：
 
 > 信息
 > 如果访问你的自定义大模型服务需要校验身份，请在 `api_key` 字段中传入你的认证信息。
@@ -643,7 +643,7 @@ func (s *Server) refactMessages(context string, messages []Message) []Message {
 }
 ```
 
-在调用 [POST 创建对话式智能体](../operations/start-agent.md)时，只需将 LLM URL 指向你的 RAG 接口：
+在调用 [POST 创建对话式智能体](../operations/start-agent)时，只需将 LLM URL 指向你的 RAG 接口：
 
 > 信息
 > 如果访问你的自定义大模型服务需要校验身份，请在 `api_key` 字段中传入你的认证信息。
@@ -670,7 +670,7 @@ func (s *Server) refactMessages(context string, messages []Message) []Message {
 声网对话式 AI 引擎支持大模型以多模态形式（文本和音频）输出，你可以创建专用的多模态接口以实现更多个性化需求。
 
 > 信息
-> 如果你想了解更多关于使用音频模态输出的信息，你可以阅读[使用音频模态输出](./audio-modality.md)。
+> 如果你想了解更多关于使用音频模态输出的信息，你可以阅读[使用音频模态输出](./audio-modality)。
 
 以下示例代码展示了通过读取文本和音频文件，并发送给大模型生成音频回复的流程：
 
@@ -928,7 +928,7 @@ func (s *Server) readTextFile(filePath string) (string, error) {
 }
 ```
 
-调用 [POST 创建对话式智能体](../operations/start-agent.md)时，参考如下配置：
+调用 [POST 创建对话式智能体](../operations/start-agent)时，参考如下配置：
 
 ```json
 {
@@ -1043,4 +1043,4 @@ func (s *Server) readTextFile(filePath string) (string, error) {
 
 详细接口标准可参考：
 - [OpenAI Chat Completions API 文档](https://platform.openai.com/docs/api-reference/chat)
-- [声网对话式 AI 引擎 API 文档](../operations/start-agent.md)
+- [声网对话式 AI 引擎 API 文档](../operations/start-agent)

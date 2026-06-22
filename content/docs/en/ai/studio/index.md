@@ -10,11 +10,11 @@ Studio abstracts the underlying AI stack. You configure your ASR, LLM, and TTS p
 
 Studio is structured around three areas that map to the agent lifecycle:
 
-**Build:** Create and configure agents. Start from a use-case template or a blank template, then define the system prompt, greeting, voice, and behavior. Connect credentials, knowledge bases, and MCP servers through the **Integration** interface. Studio stores these resources centrally so they can be reused across multiple agents. See [Customize your agent](build/customize-agent.md) and [Manage integrations](build/integrations.md).
+**Build:** Create and configure agents. Start from a use-case template or a blank template, then define the system prompt, greeting, voice, and behavior. Connect credentials, knowledge bases, and MCP servers through the **Integration** interface. Studio stores these resources centrally so they can be reused across multiple agents. See [Customize your agent](build/customize-agent) and [Manage integrations](build/integrations).
 
-**Deploy:** Connect agents to telephony. Assign phone numbers using Elastic SIP Trunk and configure inbound routing or outbound campaigns. Studio supports providers such as Twilio, Exotel, and Telnyx. See [Publish your agent](deploy/deploy-agent.md), [Phone Numbers](deploy/import.md), [Handle inbound calls](deploy/inbound.md), and [Campaigns](deploy/campaign.md).
+**Deploy:** Connect agents to telephony. Assign phone numbers using Elastic SIP Trunk and configure inbound routing or outbound campaigns. Studio supports providers such as Twilio, Exotel, and Telnyx. See [Publish your agent](deploy/deploy-agent), [Phone Numbers](deploy/import), [Handle inbound calls](deploy/inbound), and [Campaigns](deploy/campaign).
 
-**Observe:** Monitor production usage. Review call history, transcripts, and analytics to understand agent performance and debug issues. See [Analytics](observe/analytics.md) and [Call History](observe/call-history.md).
+**Observe:** Monitor production usage. Review call history, transcripts, and analytics to understand agent performance and debug issues. See [Analytics](observe/analytics) and [Call History](observe/call-history).
 
 ## How it works
 
@@ -41,12 +41,12 @@ The **Integration** section provides a centralized resource library for your Stu
 Import phone numbers from your SIP trunk provider and assign them to agents for inbound calls or use them as caller IDs for outbound campaigns.
 
 ### Campaigns
-For outbound use cases, create campaigns with contact lists and scheduling. See [Set up a campaign](deploy/campaign.md).
+For outbound use cases, create campaigns with contact lists and scheduling. See [Set up a campaign](deploy/campaign).
 
 ## Who should use Studio
 
-Studio is designed for developers and technical users who want to build and operate voice agents without managing the underlying AI infrastructure. If you need capabilities beyond what Studio exposes, such as advanced API parameters or custom orchestration logic, you can use the [Conversational AI REST API](../../api-reference/conversational-ai/rest-api/index.md) for full programmatic control.
+Studio is designed for developers and technical users who want to build and operate voice agents without managing the underlying AI infrastructure. If you need capabilities beyond what Studio exposes, such as advanced API parameters or custom orchestration logic, you can use the [Conversational AI REST API](../../api-reference/conversational-ai/rest-api/index) for full programmatic control.
 
 ## Get started
 
-To get started, follow the [Quickstart](quickstart.md), which walks you through creating and testing your first agent in about 10 minutes using a pre-built template.
+To get started, follow the [Quickstart](quickstart), which walks you through creating and testing your first agent in about 10 minutes using a pre-built template.

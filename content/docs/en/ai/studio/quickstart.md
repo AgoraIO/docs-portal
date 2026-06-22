@@ -9,7 +9,7 @@ This page guides you through creating and testing your first AI voice agent usin
 Make sure you have the following:
 
 - An active Agora account and project
-- [Enabled Conversational AI](../reference/enable-conversational-ai.md) for your Agora project
+- [Enabled Conversational AI](../reference/enable-conversational-ai) for your Agora project
 
 ## Create an agent
 
@@ -48,7 +48,7 @@ Models determine which ASR, LLM, and TTS services your agent uses to process spe
     ![](/images/conversational-ai/studio/agent-editor-models.png)
 1. Review the pre-selected models for **Automatic Speech Recognition (ASR)**, **Large Language Model (LLM)**, and **Text-to-Speech (TTS)**. You can use the defaults or select a different vendor-model from the dropdowns.
 
-The dropdowns list vendor-model combinations that support Agora Managed Key. When you use a managed key, Agora provides the API credentials for your selected vendor. You do not need to obtain an API key directly from the vendor. See [Pricing](../overview/pricing.md) for details. To use your own API key or use a vendor that does not support a managed key, see [Customize your agent](build/customize-agent.md).
+The dropdowns list vendor-model combinations that support Agora Managed Key. When you use a managed key, Agora provides the API credentials for your selected vendor. You do not need to obtain an API key directly from the vendor. See [Pricing](../overview/pricing) for details. To use your own API key or use a vendor that does not support a managed key, see [Customize your agent](build/customize-agent).
 
 ## Test the agent
 
@@ -56,11 +56,11 @@ The dropdowns list vendor-model combinations that support Agora Managed Key. Whe
 1. Allow microphone access when prompted.
 1. Speak to the agent to verify it responds correctly.
 
-For guidance on what to test and how to troubleshoot issues, see [Test your agent](build/test-agent.md).
+For guidance on what to test and how to troubleshoot issues, see [Test your agent](build/test-agent).
 
 ## Next steps
 
 You now have a working voice agent. From here you can:
 
-- [Customize your agent](build/customize-agent.md): Fully configure models, prompts, and advanced settings for your use case
-- [Manage integrations](build/integrations.md): Manage API credentials, knowledge bases, and MCP servers for reuse across agents
+- [Customize your agent](build/customize-agent): Fully configure models, prompts, and advanced settings for your use case
+- [Manage integrations](build/integrations): Manage API credentials, knowledge bases, and MCP servers for reuse across agents

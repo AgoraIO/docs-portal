@@ -94,7 +94,7 @@ This feature has the following limitations:
 
 ### RESTful API Call limit of server-side
 
-The RESTful API call frequency limit of each method varies. For details about each method, see [**Chat RESTful API Reference**](../restful-api/restful-overview.md).
+The RESTful API call frequency limit of each method varies. For details about each method, see [**Chat RESTful API Reference**](../restful-api/restful-overview).
 
 If the provided call frequency limit cannot meet your business requirements, contact [support@agora.io](mailto:support@agora.io).
 

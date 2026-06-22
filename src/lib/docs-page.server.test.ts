@@ -1649,14 +1649,14 @@ Web body
     const page = createPage();
     mockedGetPage.mockReturnValue({
       ...page,
-      path: 'en/api-reference/index.md',
+      path: 'en/api-reference/index.mdx',
       slugs: ['en', 'api-reference', 'index'],
       url: '/en/api-reference',
       data: {
         ...page.data,
         info: {
-          fullPath: '/virtual/content/docs/en/api-reference/index.md',
-          path: 'en/api-reference/index.md',
+          fullPath: '/virtual/content/docs/en/api-reference/index.mdx',
+          path: 'en/api-reference/index.mdx',
         },
         title: 'API Reference',
       },

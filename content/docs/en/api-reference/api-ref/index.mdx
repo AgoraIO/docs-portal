@@ -3,8 +3,6 @@ title: API reference
 description: API references across Agora products and platforms — migrated SDK references and links to the hosted SDK API documentation.
 ---
 
-Browse API references across Agora products. Cards marked **In-portal** open references hosted in this documentation site. The remaining cards link to the SDK API reference sites hosted at api-ref.agora.io.
-
 <RecipesCatalog
   allCategoriesLabel="All reference types"
   allProductsLabel="All products"
@@ -12,24 +10,737 @@ Browse API references across Agora products. Cards marked **In-portal** open ref
   categoryFilterLabel="Reference type"
   clearFiltersLabel="Clear filters"
   emptyMessage="No references match the current filters."
+  groupByProduct={true}
+  productGroups={{
+    "Conversational AI": {
+      title: "Conversational AI",
+      description: "Manage your Conversational AI agents with RESTful APIs.",
+      icon: "ai",
+    },
+    "Voice Calling": {
+      title: "Voice Calling",
+      description: "This product uses the Voice SDK.",
+      icon: "voice-calling",
+    },
+    "Video Calling": {
+      title: "Video Calling",
+      description: "This product uses the Video SDK.",
+      icon: "video-calling",
+    },
+    "Signaling": {
+      title: "Signaling",
+      description: "This product uses the Signaling SDK.",
+      icon: "signaling",
+    },
+    "On-Premise Recording": {
+      title: "On-Premise Recording",
+      description: "This product uses the On-Premise Recording SDK.",
+      icon: "on-premise-recording",
+    },
+    "Server Gateway": {
+      title: "Server Gateway",
+      description: "This product uses the Server Gateway SDK.",
+      icon: "server-sdk",
+    },
+    "Interactive Live Streaming": {
+      title: "Interactive Live Streaming",
+      description: "This product uses the Video SDK.",
+      icon: "live-streaming",
+    },
+    "Broadcast Streaming": {
+      title: "Broadcast Streaming",
+      description: "This product uses the Video SDK.",
+      icon: "broadcast",
+    },
+    "IoT SDK": {
+      title: "IoT SDK",
+      description: "",
+      icon: "iot",
+    },
+    "Interactive Whiteboard": {
+      title: "Interactive Whiteboard",
+      description: "This product uses the Interactive Whiteboard SDK.",
+      icon: "whiteboard",
+    },
+    "Flexible Classroom": {
+      title: "Flexible Classroom",
+      description: "This product uses the Flexible Classroom SDK.",
+      icon: "classroom",
+    },
+    "Chat": {
+      title: "Chat",
+      description: "This product uses the Chat SDK.",
+      icon: "chat",
+    },
+    "Media Gateway": {
+      title: "Media Gateway",
+      description: "This product provides RESTful APIs.",
+      icon: "rtmp-gateway",
+    },
+    "Analytics": {
+      title: "Analytics",
+      description: "This product provides RESTful APIs.",
+      icon: "analytics",
+    },
+    "Cloud Recording": {
+      title: "Cloud Recording",
+      description: "This product provides RESTful APIs.",
+      icon: "cloud-recording",
+    },
+    "Cloud Transcoding": {
+      title: "Cloud Transcoding",
+      description: "Create, update, and manage your cloud transcoding tasks with RESTful APIs.",
+      icon: "transcoding",
+    },
+    "Real-Time Speech-To-Text": {
+      title: "Real-Time Speech-To-Text",
+      description: "This product provides RESTful APIs.",
+      icon: "transcription",
+    },
+    "Media Pull": {
+      title: "Media Pull",
+      description: "This product provides RESTful APIs.",
+      icon: "media-pull",
+    },
+    "Media Push": {
+      title: "Media Push",
+      description: "This product provides RESTful APIs.",
+      icon: "media-push",
+    },
+    "Extensions Marketplace": {
+      title: "Extensions Marketplace",
+      description: "This product provides RESTful APIs.",
+      icon: "tools",
+    },
+    "Media Player Kit": {
+      title: "Media Player Kit",
+      description: "This product uses the Media Player Kit SDK.",
+      icon: "tools",
+    },
+  }}
   items={[
+    {
+      category: "In-portal",
+      description: "Conversational AI REST API reference.",
+      product: "Conversational AI",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/api-reference/conversational-ai/rest-api",
+          label: "Conversational AI",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for Android API reference with current and previous major-version coverage.",
+      product: "Voice Calling",
+      stack: "Android",
+      title: "Android",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/android/4.x/API/rtc_api_overview.html",
+          label: "4.6.3 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/android/3.x/index.html",
+          label: "3.7.2.1",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for iOS API reference with current and previous major-version coverage.",
+      product: "Voice Calling",
+      stack: "iOS",
+      title: "iOS",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/ios/4.x/API/rtc_api_overview_ng.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/ios/3.x/docs/headers/Agora-Objective-C-API-Overview.html",
+          label: "3.7.2",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for Web API reference.",
+      product: "Voice Calling",
+      stack: "Web",
+      title: "Web",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/web/4.x/index.html",
+          label: "4.24.3 (Latest)",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for Windows C++ API reference with current and previous major-version coverage.",
+      product: "Voice Calling",
+      stack: "Windows C++",
+      title: "Windows C++",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/cpp/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/cpp/3.x/index.html",
+          label: "3.7.2",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for Unity API reference with current and previous major-version coverage.",
+      product: "Voice Calling",
+      stack: "Unity",
+      title: "Unity",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/unity/3.x/index.html",
+          label: "3.7.1",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for Electron API reference with current and previous major-version coverage.",
+      product: "Voice Calling",
+      stack: "Electron",
+      title: "Electron",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/electron/3.x/index.html",
+          label: "3.7.0",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for Flutter API reference with current and previous major-version coverage.",
+      product: "Voice Calling",
+      stack: "Flutter",
+      title: "Flutter",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/rtc_api_overview.html",
+          label: "6.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/flutter/5.x/API/rtc_api_overview.html",
+          label: "5.3.1",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for macOS API reference with current and previous major-version coverage.",
+      product: "Voice Calling",
+      stack: "macOS",
+      title: "macOS",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/macos/4.x/API/rtc_api_overview_ng.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/macos/3.x/docs/headers/Agora-Objective-C-API-Overview.html",
+          label: "3.7.2",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for React Native API reference with current and previous major-version coverage.",
+      product: "Voice Calling",
+      stack: "React Native",
+      title: "React Native",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/react-native/3.x/index.html",
+          label: "3.7.0",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for Windows C# API reference.",
+      product: "Voice Calling",
+      stack: "Windows C#",
+      title: "Windows C#",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/windows-csharp/3.x/API/rtc_api_overview.html",
+          label: "3.6.2 (Latest)",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for Unreal Engine API reference.",
+      product: "Voice Calling",
+      stack: "Unreal Engine",
+      title: "Unreal Engine",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/unreal-engine/4.x/API/rtc_api_overview.html",
+          label: "4.5.1 (Latest)",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Voice SDK for Blueprint API reference.",
+      product: "Voice Calling",
+      stack: "Blueprint",
+      title: "Blueprint",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/voice-sdk/blueprint/4.x/API/rtc_api_overview.html",
+          label: "4.5.1 (Latest)",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "In-portal",
+      description: "Video SDK for ReactJS API reference: components, hooks, and data types.",
+      product: "Video Calling",
+      stack: "ReactJS",
+      title: "ReactJS",
+      links: [
+        {
+          href: "/en/api-reference/api-ref/video-sdk",
+          label: "2.5.1 (Latest)",
+        },
+      ],
+      tone: "pink",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for Android API reference, including Lite SDK and previous major-version coverage.",
+      product: "Video Calling",
+      stack: "Android",
+      title: "Android",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_api_overview.html",
+          label: "4.6.3 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_lite_api.html",
+          label: "4.6.3 Lite SDK (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/android/3.x/index.html",
+          label: "3.7.2",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for iOS API reference, including Lite SDK and previous major-version coverage.",
+      product: "Video Calling",
+      stack: "iOS",
+      title: "iOS",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/ios/4.x/API/rtc_api_overview_ng.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/lite-sdk/ios/4.x/documentation/agorartckit",
+          label: "4.6.2 Lite SDK (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/ios/3.x/docs/headers/Agora-Objective-C-API-Overview.html",
+          label: "3.7.2",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for macOS API reference with current and previous major-version coverage.",
+      product: "Video Calling",
+      stack: "macOS",
+      title: "macOS",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/macos/4.x/API/rtc_api_overview_ng.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/macos/3.x/docs/headers/Agora-Objective-C-API-Overview.html",
+          label: "3.7.2",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for Web API reference.",
+      product: "Video Calling",
+      stack: "Web",
+      title: "Web",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/web/4.x/index.html",
+          label: "4.24.3 (Latest)",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for Unity API reference with current and previous major-version coverage.",
+      product: "Video Calling",
+      stack: "Unity",
+      title: "Unity",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/unity/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/unity/3.x/index.html",
+          label: "3.7.1",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for Electron API reference with current and previous major-version coverage.",
+      product: "Video Calling",
+      stack: "Electron",
+      title: "Electron",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/electron/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/electron/3.x/index.html",
+          label: "3.7.0",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for Flutter API reference with current and previous major-version coverage.",
+      product: "Video Calling",
+      stack: "Flutter",
+      title: "Flutter",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/rtc_api_overview.html",
+          label: "6.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/flutter/5.x/API/rtc_api_overview.html",
+          label: "5.3.1",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for React Native API reference with current and previous major-version coverage.",
+      product: "Video Calling",
+      stack: "React Native",
+      title: "React Native",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/react-native/3.x/index.html",
+          label: "3.7.0",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for Windows C++ API reference with current and previous major-version coverage.",
+      product: "Video Calling",
+      stack: "Windows C++",
+      title: "Windows C++",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/cpp/3.x/index.html",
+          label: "3.7.2",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for Windows C# API reference.",
+      product: "Video Calling",
+      stack: "Windows C#",
+      title: "Windows C#",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/windows-csharp/3.x/API/rtc_api_overview.html",
+          label: "3.6.2 (Latest)",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for Blueprint API reference.",
+      product: "Video Calling",
+      stack: "Blueprint",
+      title: "Blueprint",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/rtc_api_overview.html",
+          label: "4.5.1 (Latest)",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Video SDK for Unreal Engine API reference.",
+      product: "Video Calling",
+      stack: "Unreal Engine",
+      title: "Unreal Engine",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/rtc_api_overview.html",
+          label: "4.5.1 (Latest)",
+        },
+      ],
+      tone: "sand",
+    },
     {
       category: "In-portal",
       description: "Signaling (RTM) SDK API reference: client configuration, channels, topics, messages, presence, storage, and locks.",
       href: "/en/api-reference/api-ref/signaling",
       product: "Signaling",
       stack: "Multi-platform",
-      title: "Signaling SDK",
+      title: "Multi-platform",
       tone: "blue",
     },
     {
       category: "In-portal",
-      description: "Server Gateway SDK API reference for server-side media processing in Python and Go.",
-      href: "/en/api-reference/api-ref/server-gateway",
-      product: "Server Gateway",
-      stack: "Python / Go",
-      title: "Server Gateway SDK",
-      tone: "green",
+      description: "Signaling Android API reference.",
+      product: "Signaling",
+      stack: "Android",
+      title: "Android",
+      links: [
+        {
+          href: "/en/api-reference/rtm/android",
+          label: "2.2.8 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/signaling-sdk/android/1.x/index.html",
+          label: "1.5.0",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "In-portal",
+      description: "Signaling iOS API reference.",
+      product: "Signaling",
+      stack: "iOS",
+      title: "iOS",
+      links: [
+        {
+          href: "/en/api-reference/rtm/ios",
+          label: "2.2.8 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/signaling-sdk/ios/1.x/docs/headers/API-Overview.html",
+          label: "1.5.0",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Signaling macOS API reference.",
+      product: "Signaling",
+      stack: "macOS",
+      title: "macOS",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/signaling-sdk/macos/1.x/docs/headers/API-Overview.html",
+          label: "1.5.0 (Latest)",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "In-portal",
+      description: "Signaling Web API reference.",
+      product: "Signaling",
+      stack: "Web",
+      title: "Web",
+      links: [
+        {
+          href: "/en/api-reference/rtm/javascript",
+          label: "2.2.4 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/signaling-sdk/web/1.x/index.html",
+          label: "1.5.1",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "In-portal",
+      description: "Signaling Flutter API reference.",
+      product: "Signaling",
+      stack: "Flutter",
+      title: "Flutter",
+      links: [
+        {
+          href: "/en/api-reference/rtm/flutter",
+          label: "2.2.5 (Latest)",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "In-portal",
+      description: "Signaling Unity API reference.",
+      product: "Signaling",
+      stack: "Unity",
+      title: "Unity",
+      links: [
+        {
+          href: "/en/api-reference/rtm/unity",
+          label: "2.1.9 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/signaling-sdk/unity/1.x/index.html",
+          label: "1.4.8",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "In-portal",
+      description: "Signaling React Native API reference.",
+      product: "Signaling",
+      stack: "React Native",
+      title: "React Native",
+      links: [
+        {
+          href: "/en/signaling/reference/api?platform=react-native",
+          label: "2.2.4 (Latest)",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "In-portal",
+      description: "Signaling Windows C++ API reference.",
+      product: "Signaling",
+      stack: "Windows C++",
+      title: "Windows C++",
+      links: [
+        {
+          href: "/en/signaling/reference/api?platform=windows",
+          label: "2.2.8 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/signaling-sdk/windows-cpp/1.x/index.html",
+          label: "1.5.0",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "In-portal",
+      description: "Signaling Linux C++ API reference.",
+      product: "Signaling",
+      stack: "Linux C++",
+      title: "Linux C++",
+      links: [
+        {
+          href: "/en/signaling/reference/api?platform=linux-cpp",
+          label: "2.2.8 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/signaling-sdk/linux-cpp/1.x/index.html",
+          label: "1.5.0",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Signaling Linux Java API reference.",
+      product: "Signaling",
+      stack: "Linux Java",
+      title: "Linux Java",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/signaling-sdk/linux-java/1.x/index.html",
+          label: "1.5.0 (Latest)",
+        },
+      ],
+      tone: "blue",
+    },
+    {
+      category: "In-portal",
+      description: "Signaling RESTful API reference.",
+      product: "Signaling",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/signaling/rest-api/overview",
+          label: "Messaging and Events",
+        },
+      ],
+      tone: "blue",
     },
     {
       category: "In-portal",
@@ -37,137 +748,881 @@ Browse API references across Agora products. Cards marked **In-portal** open ref
       href: "/en/api-reference/api-ref/on-premise-recording",
       product: "On-Premise Recording",
       stack: "C++ / Java",
-      title: "On-Premise Recording SDK",
+      title: "C++ / Java",
       tone: "purple",
     },
     {
       category: "In-portal",
-      description: "Video SDK for ReactJS API reference: components, hooks, and data types.",
-      href: "/en/api-reference/api-ref/video-sdk",
-      product: "Video SDK",
-      stack: "ReactJS",
-      title: "Video SDK for ReactJS",
-      tone: "pink",
+      description: "On-Premise Recording Linux C++ API reference.",
+      product: "On-Premise Recording",
+      stack: "Linux C++",
+      title: "Linux C++",
+      links: [
+        {
+          href: "/en/realtime-media/on-premise-recording/reference/api-reference",
+          label: "4.4.151 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/index.html",
+          label: "3.0.6",
+        },
+      ],
+      tone: "purple",
+    },
+    {
+      category: "In-portal",
+      description: "On-Premise Recording Linux Java API reference.",
+      product: "On-Premise Recording",
+      stack: "Linux Java",
+      title: "Linux Java",
+      links: [
+        {
+          href: "/en/realtime-media/on-premise-recording/reference/api-reference",
+          label: "4.4.151 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/on-premise-recording-sdk/linux-java/3.x/index.html",
+          label: "3.0.6",
+        },
+      ],
+      tone: "purple",
+    },
+    {
+      category: "In-portal",
+      description: "Server Gateway SDK API reference for server-side media processing in Python and Go.",
+      href: "/en/api-reference/api-ref/server-gateway",
+      product: "Server Gateway",
+      stack: "Python / Go",
+      title: "Python / Go",
+      tone: "green",
     },
     {
       category: "Hosted SDK reference",
-      description: "Video SDK for Android API reference.",
-      href: "https://api-ref.agora.io/en/video-sdk/android/4.x/API",
-      product: "Video SDK",
+      description: "Server Gateway Linux C++ API reference.",
+      product: "Server Gateway",
+      stack: "Linux C++",
+      title: "Linux C++",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/index.html",
+          label: "4.4.32 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/3.x/index.html",
+          label: "3.8.202.20",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Server Gateway Linux Java API reference.",
+      product: "Server Gateway",
+      stack: "Linux Java",
+      title: "Linux Java",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/server-gateway-sdk/linux-java/4.x/index.html",
+          label: "4.4.30 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/server-gateway-sdk/linux-java/3.x/index.html",
+          label: "3.7.200.21",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "In-portal",
+      description: "Server Gateway Python API reference.",
+      product: "Server Gateway",
+      stack: "Python",
+      title: "Python",
+      links: [
+        {
+          href: "/en/api-reference/api-ref/server-gateway",
+          label: "2.1.0 (Latest)",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "In-portal",
+      description: "Server Gateway Go API reference.",
+      product: "Server Gateway",
+      stack: "Go",
+      title: "Go",
+      links: [
+        {
+          href: "/en/api-reference/api-ref/server-gateway",
+          label: "2.1.0 (Latest)",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Interactive Live Streaming Android API reference.",
+      product: "Interactive Live Streaming",
       stack: "Android",
-      title: "Video SDK for Android",
+      title: "Android",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_api_overview.html",
+          label: "4.6.3 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_lite_api.html",
+          label: "4.6.3 Lite SDK (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/android/3.x/index.html",
+          label: "3.7.2",
+        },
+      ],
       tone: "sand",
     },
     {
       category: "Hosted SDK reference",
-      description: "Video SDK for iOS API reference.",
-      href: "https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit",
-      product: "Video SDK",
+      description: "Interactive Live Streaming iOS API reference.",
+      product: "Interactive Live Streaming",
       stack: "iOS",
-      title: "Video SDK for iOS",
+      title: "iOS",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/ios/4.x/API/rtc_api_overview_ng.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/lite-sdk/ios/4.x/documentation/agorartckit",
+          label: "4.6.2 Lite SDK (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/ios/3.x/docs/headers/Agora-Objective-C-API-Overview.html",
+          label: "3.7.2",
+        },
+      ],
       tone: "sand",
     },
     {
       category: "Hosted SDK reference",
-      description: "Video SDK for macOS API reference.",
-      href: "https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit",
-      product: "Video SDK",
-      stack: "macOS",
-      title: "Video SDK for macOS",
-      tone: "sand",
-    },
-    {
-      category: "Hosted SDK reference",
-      description: "Video SDK for Web API reference.",
-      href: "https://api-ref.agora.io/en/video-sdk/web/4.x",
-      product: "Video SDK",
+      description: "Interactive Live Streaming Web API reference.",
+      product: "Interactive Live Streaming",
       stack: "Web",
-      title: "Video SDK for Web",
+      title: "Web",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/web/4.x/index.html",
+          label: "4.24.3 (Latest)",
+        },
+      ],
       tone: "sand",
     },
     {
       category: "Hosted SDK reference",
-      description: "Video SDK for Flutter API reference.",
-      href: "https://api-ref.agora.io/en/video-sdk/flutter/6.x/API",
-      product: "Video SDK",
-      stack: "Flutter",
-      title: "Video SDK for Flutter",
-      tone: "sand",
-    },
-    {
-      category: "Hosted SDK reference",
-      description: "Video SDK for Unity API reference.",
-      href: "https://api-ref.agora.io/en/video-sdk/unity/4.x/API",
-      product: "Video SDK",
+      description: "Interactive Live Streaming Unity API reference.",
+      product: "Interactive Live Streaming",
       stack: "Unity",
-      title: "Video SDK for Unity",
+      title: "Unity",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/unity/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/unity/3.x/index.html",
+          label: "3.7.1",
+        },
+      ],
       tone: "sand",
     },
     {
       category: "Hosted SDK reference",
-      description: "Video SDK for React Native API reference.",
-      href: "https://api-ref.agora.io/en/video-sdk/react-native/4.x/API",
-      product: "Video SDK",
-      stack: "React Native",
-      title: "Video SDK for React Native",
-      tone: "sand",
-    },
-    {
-      category: "Hosted SDK reference",
-      description: "Video SDK for Electron API reference.",
-      href: "https://api-ref.agora.io/en/video-sdk/electron/4.x/API",
-      product: "Video SDK",
+      description: "Interactive Live Streaming Electron API reference.",
+      product: "Interactive Live Streaming",
       stack: "Electron",
-      title: "Video SDK for Electron",
+      title: "Electron",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/electron/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/electron/3.x/index.html",
+          label: "3.7.0",
+        },
+      ],
       tone: "sand",
     },
     {
       category: "Hosted SDK reference",
-      description: "Voice SDK for Android API reference.",
-      href: "https://api-ref.agora.io/en/voice-sdk/android/4.x/API",
-      product: "Voice SDK",
-      stack: "Android",
-      title: "Voice SDK for Android",
-      tone: "blue",
-    },
-    {
-      category: "Hosted SDK reference",
-      description: "Voice SDK for iOS API reference.",
-      href: "https://api-ref.agora.io/en/voice-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit",
-      product: "Voice SDK",
-      stack: "iOS",
-      title: "Voice SDK for iOS",
-      tone: "blue",
-    },
-    {
-      category: "Hosted SDK reference",
-      description: "Voice SDK for Web API reference.",
-      href: "https://api-ref.agora.io/en/voice-sdk/web/4.x",
-      product: "Voice SDK",
-      stack: "Web",
-      title: "Voice SDK for Web",
-      tone: "blue",
-    },
-    {
-      category: "Hosted SDK reference",
-      description: "Voice SDK for Flutter API reference.",
-      href: "https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API",
-      product: "Voice SDK",
+      description: "Interactive Live Streaming Flutter API reference.",
+      product: "Interactive Live Streaming",
       stack: "Flutter",
-      title: "Voice SDK for Flutter",
-      tone: "blue",
+      title: "Flutter",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/rtc_api_overview.html",
+          label: "6.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/flutter/5.x/API/rtc_api_overview.html",
+          label: "5.3.1",
+        },
+      ],
+      tone: "sand",
     },
     {
       category: "Hosted SDK reference",
-      description: "Voice SDK for Unity API reference.",
-      href: "https://api-ref.agora.io/en/voice-sdk/unity/4.x/API",
-      product: "Voice SDK",
+      description: "Interactive Live Streaming React Native API reference.",
+      product: "Interactive Live Streaming",
+      stack: "React Native",
+      title: "React Native",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/react-native/3.x/index.html",
+          label: "3.7.0",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Interactive Live Streaming RESTful API reference.",
+      product: "Interactive Live Streaming",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/solutions/interactive-live-streaming/reference/console-overview",
+          label: "Console",
+        },
+        {
+          href: "/en/realtime-media/video/reference/channel-management-api/overview",
+          label: "Channel Management",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Broadcast Streaming Android API reference.",
+      product: "Broadcast Streaming",
+      stack: "Android",
+      title: "Android",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_api_overview.html",
+          label: "4.6.3 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_lite_api.html",
+          label: "4.6.3 Lite SDK (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/android/3.x/index.html",
+          label: "3.7.2",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Broadcast Streaming iOS API reference.",
+      product: "Broadcast Streaming",
+      stack: "iOS",
+      title: "iOS",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/ios/4.x/API/rtc_api_overview_ng.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/lite-sdk/ios/4.x/documentation/agorartckit",
+          label: "4.6.2 Lite SDK (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/ios/3.x/docs/headers/Agora-Objective-C-API-Overview.html",
+          label: "3.7.2",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Broadcast Streaming Web API reference.",
+      product: "Broadcast Streaming",
+      stack: "Web",
+      title: "Web",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/web/4.x/index.html",
+          label: "4.24.3 (Latest)",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Broadcast Streaming Unity API reference.",
+      product: "Broadcast Streaming",
       stack: "Unity",
-      title: "Voice SDK for Unity",
-      tone: "blue",
+      title: "Unity",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/unity/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/unity/3.x/index.html",
+          label: "3.7.1",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Broadcast Streaming Electron API reference.",
+      product: "Broadcast Streaming",
+      stack: "Electron",
+      title: "Electron",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/electron/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/electron/3.x/index.html",
+          label: "3.7.0",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Broadcast Streaming Flutter API reference.",
+      product: "Broadcast Streaming",
+      stack: "Flutter",
+      title: "Flutter",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/rtc_api_overview.html",
+          label: "6.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/flutter/5.x/API/rtc_api_overview.html",
+          label: "5.3.1",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Broadcast Streaming React Native API reference.",
+      product: "Broadcast Streaming",
+      stack: "React Native",
+      title: "React Native",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/rtc_api_overview.html",
+          label: "4.6.2 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/video-sdk/react-native/3.x/index.html",
+          label: "3.7.0",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Broadcast Streaming RESTful API reference.",
+      product: "Broadcast Streaming",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/realtime-media/broadcast-streaming/reference/channel-management-api/agora-console-rest-api",
+          label: "Console",
+        },
+        {
+          href: "/en/realtime-media/broadcast-streaming/reference/channel-management-api/overview",
+          label: "Channel Management",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "IoT SDK Android API reference.",
+      product: "IoT SDK",
+      stack: "Android",
+      title: "Android",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/iot-sdk/android/1.x/index.html",
+          label: "1.8 (Latest)",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "IoT SDK Linux C API reference.",
+      product: "IoT SDK",
+      stack: "Linux C",
+      title: "Linux C",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/iot-sdk/linux/1.x/index.html",
+          label: "1.8 (Latest)",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "In-portal",
+      description: "Interactive Whiteboard Android API reference.",
+      product: "Interactive Whiteboard",
+      stack: "Android",
+      title: "Android",
+      links: [
+        {
+          href: "/en/api-reference/whiteboard/android",
+          label: "Whiteboard SDK",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "In-portal",
+      description: "Interactive Whiteboard iOS API reference.",
+      product: "Interactive Whiteboard",
+      stack: "iOS",
+      title: "iOS",
+      links: [
+        {
+          href: "/en/api-reference/whiteboard/ios",
+          label: "Whiteboard SDK",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "In-portal",
+      description: "Interactive Whiteboard Web API reference.",
+      product: "Interactive Whiteboard",
+      stack: "Web",
+      title: "Web",
+      links: [
+        {
+          href: "/en/api-reference/whiteboard/web",
+          label: "Whiteboard SDK",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "In-portal",
+      description: "Interactive Whiteboard RESTful API reference.",
+      product: "Interactive Whiteboard",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/realtime-media/whiteboard/reference/rest-api/overview",
+          label: "Latest",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Flexible Classroom Android API reference.",
+      product: "Flexible Classroom",
+      stack: "Android",
+      title: "Android",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/flexible-classroom-sdk/android/2.x/API/edu_context_api_overview.html",
+          label: "Edu Context",
+        },
+        {
+          href: "/en/solutions/flexible-classroom/reference/technical-architecture",
+          label: "Classroom Client",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Flexible Classroom iOS API reference.",
+      product: "Flexible Classroom",
+      stack: "iOS",
+      title: "iOS",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/flexible-classroom-sdk/ios/2.x/API/edu_context_api_overview.html",
+          label: "Edu Context",
+        },
+        {
+          href: "/en/solutions/flexible-classroom/reference/technical-architecture",
+          label: "Classroom Client",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Flexible Classroom Web API reference.",
+      product: "Flexible Classroom",
+      stack: "Web",
+      title: "Web",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/flexible-classroom-sdk/web/2.x/index.html",
+          label: "Edu Store",
+        },
+        {
+          href: "/en/solutions/flexible-classroom/reference/technical-architecture",
+          label: "Classroom Client",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Flexible Classroom Electron API reference.",
+      product: "Flexible Classroom",
+      stack: "Electron",
+      title: "Electron",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/flexible-classroom-sdk/electron/2.x/index.html",
+          label: "Edu Store",
+        },
+        {
+          href: "/en/solutions/flexible-classroom/reference/technical-architecture",
+          label: "Classroom Client",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Flexible Classroom RESTful API reference.",
+      product: "Flexible Classroom",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/solutions/flexible-classroom/reference/technical-architecture",
+          label: "Latest",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "In-portal",
+      description: "Chat Android API reference.",
+      product: "Chat",
+      stack: "Android",
+      title: "Android",
+      links: [
+        {
+          href: "/en/api-reference/im/android",
+          label: "Chat SDK",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "In-portal",
+      description: "Chat iOS API reference.",
+      product: "Chat",
+      stack: "iOS",
+      title: "iOS",
+      links: [
+        {
+          href: "/en/api-reference/im/ios",
+          label: "Chat SDK",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "In-portal",
+      description: "Chat Web API reference.",
+      product: "Chat",
+      stack: "Web",
+      title: "Web",
+      links: [
+        {
+          href: "/en/api-reference/im/web",
+          label: "Chat SDK",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Chat Windows C# API reference.",
+      product: "Chat",
+      stack: "Windows C#",
+      title: "Windows C#",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/chat-sdk/windows/1.x/annotated.html",
+          label: "1.3.1 (Latest)",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Chat Unity API reference.",
+      product: "Chat",
+      stack: "Unity",
+      title: "Unity",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/chat-sdk/unity/1.x/annotated.html",
+          label: "1.3.1 (Latest)",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Chat React Native API reference.",
+      product: "Chat",
+      stack: "React Native",
+      title: "React Native",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/chat-sdk/react-native/1.x/index.html",
+          label: "1.3.6 (Latest)",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Chat Flutter API reference.",
+      product: "Chat",
+      stack: "Flutter",
+      title: "Flutter",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/chat-sdk/flutter/1.x/agora_chat_sdk/index.html",
+          label: "1.3.3 (Latest)",
+        },
+        {
+          href: "https://api-ref.agora.io/en/chat-sdk/flutter/1.3.2/agora_chat_sdk/index.html",
+          label: "1.3.2",
+        },
+        {
+          href: "https://api-ref.agora.io/en/chat-sdk/flutter/1.3.1/agora_chat_sdk/agora_chat_sdk-library.html",
+          label: "1.3.1",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "In-portal",
+      description: "Chat RESTful API overview.",
+      product: "Chat",
+      stack: "RESTful APIs",
+      title: "Chat RESTful APIs overview",
+      links: [
+        {
+          href: "/en/realtime-media/im/restful-api",
+          label: "Chat",
+        },
+      ],
+      tone: "green",
+    },
+    {
+      category: "In-portal",
+      description: "Media Gateway RESTful API reference.",
+      product: "Media Gateway",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/realtime-media/rtmp-gateway/reference/media-gateway-features",
+          label: "Media Gateway",
+        },
+      ],
+      tone: "purple",
+    },
+    {
+      category: "In-portal",
+      description: "Analytics RESTful API reference.",
+      product: "Analytics",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/solutions/agora-analytics/reference/api",
+          label: "Analytics",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "In-portal",
+      description: "Cloud Recording RESTful API reference.",
+      product: "Cloud Recording",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/realtime-media/cloud-recording/reference/restful-api",
+          label: "Cloud Recording",
+        },
+      ],
+      tone: "purple",
+    },
+    {
+      category: "In-portal",
+      description: "Cloud Transcoding RESTful API reference.",
+      product: "Cloud Transcoding",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/realtime-media/transcoding/rest-quickstart",
+          label: "Cloud Transcoding",
+        },
+      ],
+      tone: "purple",
+    },
+    {
+      category: "In-portal",
+      description: "Real-Time Speech-To-Text RESTful API reference.",
+      product: "Real-Time Speech-To-Text",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/realtime-media/speech-to-text/reference/rest-api",
+          label: "7.x (Latest)",
+        },
+      ],
+      tone: "purple",
+    },
+    {
+      category: "In-portal",
+      description: "Media Pull RESTful API reference.",
+      product: "Media Pull",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/api-reference/media-pull/restful",
+          label: "Media Pull",
+        },
+      ],
+      tone: "purple",
+    },
+    {
+      category: "In-portal",
+      description: "Media Push RESTful API reference.",
+      product: "Media Push",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/api-reference/media-push/restful",
+          label: "Media Push",
+        },
+      ],
+      tone: "purple",
+    },
+    {
+      category: "In-portal",
+      description: "Extensions Marketplace RESTful API reference.",
+      product: "Extensions Marketplace",
+      stack: "RESTful APIs",
+      title: "RESTful APIs",
+      links: [
+        {
+          href: "/en/extensions-marketplace/develop/implement/provisioning",
+          label: "Provisioning API",
+        },
+        {
+          href: "/en/extensions-marketplace/develop/implement/usage",
+          label: "Usage API",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Media Player Kit for Android API reference.",
+      product: "Media Player Kit",
+      stack: "Android",
+      title: "Android",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/mediaplayer-kit/android/1.x/index.html",
+          label: "1.3.0 (Latest)",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Media Player Kit for iOS API reference.",
+      product: "Media Player Kit",
+      stack: "iOS",
+      title: "iOS",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/mediaplayer-kit/ios/1.x/docs/headers/MediaPlayer-Kit-Objective-C-API-Overview.html",
+          label: "1.3.0 (Latest)",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Media Player Kit for macOS API reference.",
+      product: "Media Player Kit",
+      stack: "macOS",
+      title: "macOS",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/mediaplayer-kit/macos/1.x/docs/headers/MediaPlayer-Kit-Objective-C-API-Overview.html",
+          label: "1.3.0 (Latest)",
+        },
+      ],
+      tone: "sand",
+    },
+    {
+      category: "Hosted SDK reference",
+      description: "Media Player Kit for Windows C++ API reference.",
+      product: "Media Player Kit",
+      stack: "Windows C++",
+      title: "Windows C++",
+      links: [
+        {
+          href: "https://api-ref.agora.io/en/mediaplayer-kit/windows/1.x/index.html",
+          label: "1.3.0 (Latest)",
+        },
+      ],
+      tone: "sand",
     },
   ]}
   productFilterLabel="Product"
   searchPlaceholder="Search references by product, platform, or type"
+  showCategoryFilter={false}
+  showDescription={false}
+  showTags={false}
   stackFilterLabel="Platform"
 />
