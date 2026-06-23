@@ -5,11 +5,13 @@ import {
 import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import remarkDirective from 'remark-directive';
 import { z } from 'zod';
+import { createScopedDocsFiles } from './src/lib/docs-dev-scope';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
 import { remarkPlatformContent } from './src/lib/platforms/remark-platform-content';
 
 const useDynamicDocsRuntime =
   process.env.FUMADOCS_STATIC_PAYLOAD_DYNAMIC === 'true';
+const scopedDocsFiles = createScopedDocsFiles(process.env.DOCS_DEV_SCOPE ?? '');
 
 const rawDocSchema = z.object({
   title: z.string().optional(),
@@ -25,6 +27,7 @@ export const docs = defineDocs({
   docs: {
     async: true,
     dynamic: useDynamicDocsRuntime,
+    files: scopedDocsFiles?.docs,
     schema: rawDocSchema,
     mdxOptions: applyMdxPreset({
       rehypeCodeOptions: {
@@ -100,7 +103,7 @@ export const docs = defineDocs({
     },
   },
   meta: {
-    files: ['**/meta.{json,yaml}'],
+    files: scopedDocsFiles?.meta ?? ['**/meta.{json,yaml}'],
     schema: docsMetaSchema,
   },
 });

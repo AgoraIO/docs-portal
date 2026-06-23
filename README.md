@@ -37,6 +37,12 @@ Start the local dev server:
 bun run dev
 ```
 
+For focused content work, scope the Fumadocs collection to one subtree:
+
+```bash
+DOCS_DEV_SCOPE=en/ai/openai-realtime bun run dev:scope
+```
+
 Run verification:
 
 ```bash
@@ -44,3 +50,6 @@ bun run test
 bun run types:check
 bun run build
 ```
+
+See [docs/development.md](docs/development.md) for script semantics, scoped dev
+rules, and verification guidance.
