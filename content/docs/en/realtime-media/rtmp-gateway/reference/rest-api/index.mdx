@@ -1,0 +1,46 @@
+---
+title: Overview
+description: Manage Media Gateway ingress streams, templates, and notification IPs using RESTful APIs.
+---
+
+The Media Gateway RESTful APIs provide server-side control over ingress
+streaming keys, online stream sessions, flow configuration templates, and
+notification service IP ranges.
+
+## API basics
+
+All requests are sent to the host `api.agora.io`.
+
+- **Authentication**: Media Gateway REST APIs require
+  [RESTful authentication](authentication) for authentication.
+- **Request**: Refer to the respective API examples.
+- **Response**: The response content is in JSON format.
+- **Base URL**: `https://api.agora.io/{region}/v1/projects/{appId}`
+
+:::info
+- All request URLs and request bodies are case-sensitive.
+- Keep Media Gateway REST calls on the server side.
+:::
+
+## REST APIs
+
+**Streaming key APIs**
+
+- [Create streaming key](create-streaming-key): Create a new streaming key for a channel and host UID.
+- [Query streaming key](query-streaming-key): Get metadata for a streaming key.
+- [Delete streaming key](delete-streaming-key): Revoke a streaming key.
+
+**Online stream APIs**
+
+- [Query streaming list](query-streaming-list): List current ingress streams.
+- [Query streaming information](query-streaming-information): Query a stream by SID.
+- [Force disconnect](force-disconnection): Disconnect an online stream by SID.
+- [Mute or unmute streaming](mute-streaming): Toggle audio or video mute state.
+
+**Template and notification APIs**
+
+- [Create or reset template](create-reset-template): Create or reset a flow configuration template.
+- [Update template](update-template): Update a flow configuration template.
+- [Delete template](delete-template): Delete a flow configuration template.
+- [Set global template](set-global-template): Set the default template for an app ID.
+- [Query notification service IP address](query-ip-address): Retrieve callback IP ranges.

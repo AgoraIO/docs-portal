@@ -7,4 +7,4 @@ Use this page to choose the RTMP Gateway API reference surface.
 
 ## Reference surfaces
 
-- [Restful](/en/api-reference/rtmp-gateway/restful)
+- [Restful](/en/api-reference/api-ref/rtmp-gateway/restful)

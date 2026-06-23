@@ -107,21 +107,124 @@ export const OPENAPI_LANES = [
     },
   },
   {
+    id: 'media-gateway-rest',
+    parentUrl: {
+      en: '/en/realtime-media/rtmp-gateway/reference/rest-api',
+      'zh-CN': '/zh-CN/realtime-media/rtmp-gateway/reference/rest-api',
+    },
+    publicSourceUrl: {
+      en: '/openapi/media-gateway/media-gateway-rest.en.yaml',
+      'zh-CN': '/openapi/media-gateway/media-gateway-rest.en.yaml',
+    },
+    routePrefix: 'realtime-media/rtmp-gateway/reference/rest-api',
+    sourcePath: {
+      en: 'content/openapi/media-gateway/media-gateway-rest.en.yaml',
+      'zh-CN': 'content/openapi/media-gateway/media-gateway-rest.en.yaml',
+    },
+    tab: 'realtime-media',
+    operations: {
+      'create-streaming-key': {
+        routeLeaf: 'create-streaming-key',
+        title: {
+          en: 'Create streaming key',
+          'zh-CN': 'Create streaming key',
+        },
+      },
+      'query-streaming-key': {
+        routeLeaf: 'query-streaming-key',
+        title: {
+          en: 'Query streaming key',
+          'zh-CN': 'Query streaming key',
+        },
+      },
+      'delete-streaming-key': {
+        routeLeaf: 'delete-streaming-key',
+        title: {
+          en: 'Delete streaming key',
+          'zh-CN': 'Delete streaming key',
+        },
+      },
+      'query-streaming-list': {
+        routeLeaf: 'query-streaming-list',
+        title: {
+          en: 'Query streaming list',
+          'zh-CN': 'Query streaming list',
+        },
+      },
+      'query-streaming-information': {
+        routeLeaf: 'query-streaming-information',
+        title: {
+          en: 'Query streaming information',
+          'zh-CN': 'Query streaming information',
+        },
+      },
+      'force-disconnection': {
+        routeLeaf: 'force-disconnection',
+        title: {
+          en: 'Force disconnect',
+          'zh-CN': 'Force disconnect',
+        },
+      },
+      'create-reset-template': {
+        routeLeaf: 'create-reset-template',
+        title: {
+          en: 'Create or reset template',
+          'zh-CN': 'Create or reset template',
+        },
+      },
+      'update-template': {
+        routeLeaf: 'update-template',
+        title: {
+          en: 'Update template',
+          'zh-CN': 'Update template',
+        },
+      },
+      'delete-template': {
+        routeLeaf: 'delete-template',
+        title: {
+          en: 'Delete template',
+          'zh-CN': 'Delete template',
+        },
+      },
+      'set-global-template': {
+        routeLeaf: 'set-global-template',
+        title: {
+          en: 'Set global template',
+          'zh-CN': 'Set global template',
+        },
+      },
+      'query-ip-address': {
+        routeLeaf: 'query-ip-address',
+        title: {
+          en: 'Query notification service IP address',
+          'zh-CN': 'Query notification service IP address',
+        },
+      },
+      'mute-streaming': {
+        routeLeaf: 'mute-streaming',
+        title: {
+          en: 'Mute or unmute streaming',
+          'zh-CN': 'Mute or unmute streaming',
+        },
+      },
+    },
+  },
+  {
     id: 'signaling-rest',
     parentUrl: {
-      en: '/en/realtime-media/rtm/rest-api',
-      'zh-CN': '/zh-CN/realtime-media/rtm/rest-api',
+      en: '/en/api-reference/api-ref/signaling',
+      'zh-CN': '/zh-CN/api-reference/api-ref/signaling',
     },
     publicSourceUrl: {
       en: '/openapi/rtm/signaling-rest.en.yaml',
       'zh-CN': '/openapi/rtm/signaling-rest.en.yaml',
     },
-    routePrefix: 'realtime-media/rtm/rest-api',
+    routePrefix: 'api-reference/api-ref/signaling',
     sourcePath: {
       en: 'content/openapi/rtm/signaling-rest.en.yaml',
       'zh-CN': 'content/openapi/rtm/signaling-rest.en.yaml',
     },
-    tab: 'realtime-media',
+    tab: 'api-reference',
     operations: {
       'send-peer-message': {
         routeLeaf: 'peer-to-peer-message',
