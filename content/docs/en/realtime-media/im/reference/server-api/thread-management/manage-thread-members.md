@@ -1,0 +1,264 @@
+---
+title: "Manage thread members"
+description: "Shows how to manage thread members by calling the Agora Chat RESTful APIs."
+---
+
+This page shows how to manage thread members by calling the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).
+
+## Common parameters
+
+The following table lists common request and response parameters of the Chat RESTful APIs:
+
+### Request parameters 
+
+| Parameter | Type | Description | Required |
+| :--------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](../../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+
+### Response parameters 
+
+| Parameter | Type | Description |
+| :---------------- | :----- | :---------------------------------------------------------------- |
+| `action` | String | The request method. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service. This is the same as `app_name`. |
+| `data` | JSON | The details of the response. |
+| `timestamp` | Number | The Unix timestamp (ms) of the HTTP response. |
+| `duration` | Number | The duration (ms) from when the HTTP request is sent to the time the response is received. |
+| `uri` | String | The request URI. |
+| `path` | String | The request path, which is part of the request URI. You can safely ignore this parameter. |
+| `entities ` | JSON | The response entity. |
+| `properties` | String | The request property. |
+
+## Authorization 
+
+Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request is sent, the following `Authorization` field must be filled in the request header:
+
+```html
+Authorization: Bearer ${YourAppToken}
+```
+
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/authentication).
+
+## Retrieving thread members
+
+Retrieves all the members in the specified thread.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```html
+GET https://{host}/{org_name}/{app_name}/thread/{thread_id}/users?limit={N}&cursor={cursor}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+|:------------|:-------|:-----|:-----------|
+| `thread_id` | String | The ID of the thread. | Yes |
+
+For the descriptions of the other path parameters, see [Common Parameters](#request).
+
+#### Query parameter
+
+| Parameter | Type | Description | Required |
+|:------------|:-------|:-----|:-----------|
+| `limit` | String | The maximum number of threads to retrieve per page. The range is [1, 50]. The default value is 50. | No |
+| `cursor` | String | The page from which to start retrieving threads. Pass in `null` or an empty string at the first query. | No |
+
+#### Request header
+
+For the descriptions of the request headers, see [Authorization](#auth).
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the data field in the response body contains the following parameters:
+
+| Parameter      | Type           | Description |
+| :------- |:-------------|:-------------|
+| `affiliations` | List | The user IDs of users to add to the thread. You can pass in up to 10 user IDs. |
+| `properties.cursor` | String | The cursor that indicates the starting position of the next query. |
+
+For other fields and descriptions, see [Common parameters](#response).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#Status-codes) for possible causes.
+
+### Example
+
+#### Request example
+
+```json
+curl -X GET http://XXXX.com/XXXX/testapp/thread/177916702949377/users -H 'Authorization: Bearer '
+```
+
+#### Response example
+
+```json
+{
+    "action": "get",
+    "data": {
+        "affiliations": [
+            "test4"
+        ]
+    },
+    "duration": 4,
+    "properties": {
+        "cursor": "ZGNiMjRmNGY1YjczYjlhYTNkYjk1MDY2YmEyNzFmODQ6aW06dGhyZWFkOmVhc2Vtb2ItZGVtbyN0ZXN0eToyMA"
+    },
+    "timestamp": 1650872048366,
+    "uri": "http://XXXX.com/XXXX/testy/thread/179786360094768/users"
+}
+```
+
+## Adding multiple users to a thread
+
+Adds multiple users to the specified thread. You can add a maximum of 10 users to a thread at each call.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```html
+POST https://{host}/{org_name}/{app_name}/thread/{thread_id}/users
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+|:------------|:-------|:-----|:-----------|
+| `thread_id` | String | The ID of the thread. | Yes |
+
+For the descriptions of the other path parameters, see [Common Parameters](#request).
+
+#### Request header
+
+For the descriptions of the request headers, see [Authorization](#auth).
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+|:------------|:-------|:-----|:-----------|
+| `usernames` | List | The usernames of the members in the thread. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds; otherwise, the request fails, and you can refer to [Status codes](#Status-codes) for possible causes.
+
+For other fields and descriptions, see [Common parameters](#response).
+
+### Example
+
+#### Request example
+
+```shell
+curl -X POST http://XXXX.com/XXXX/testapp/thread/177916702949377/users -H 'Authorization: Bearer '-d '{
+"usernames": [
+"test2",
+"test3"
+]
+}'
+```
+
+#### Response example
+
+```json
+{
+    "action": "post",
+    "applicationName": "testapp",
+    "data": {
+        "status": "ok"
+    },
+    "duration": 1069,
+    "organization": "XXXX",
+    "timestamp": 1650872649160,
+    "uri": "http://XXXX.com/XXXX/testy/thread/179786360094768/joined_thread"
+}
+```
+
+## Removing multiple thread members
+
+Removes multiple users from the specified thread. You can remove a maximum of 10 users from a thread at each call.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```html
+DELETE https://{host}/{org_name}/{app_name}/thread/{thread_id}/users
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+|:------------|:-------|:-----|:-----------|
+| `thread_id` | String | The ID of the thread. | Yes |
+
+For the descriptions of the other path parameters, see [Common Parameters](#request).
+
+#### Request header
+
+For the descriptions of the request headers, see [Authorization](#auth).
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+|:------------|:-------|:-----|:-----------|
+| `usernames` | List | The user IDs of members to remove from the thread. You can pass in up to 10 user IDs. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the data field in the response body contains the following parameters:
+
+| Parameter      | Type           | Description |
+| :------- |:-------------|:-------------|
+| `result` | Boolean | Whether the specified thread member is removed from the thread:`true`: Yes.`false`: No.| 
+| `user` | String | The username of the removed member in the thread. | 
+
+For other fields and descriptions, see [Common parameters](#response).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#Status-codes) for possible causes.
+
+### Example
+
+#### Request example
+
+```json
+curl -X DELETE http://XXXX.com/XXXX/testapp/thread/177916702949377/users -H 'Authorization: Bearer '
+```
+
+#### Response example
+
+```json
+{
+    "action": "delete",
+    "applicationName": "testy",
+    "duration": 12412,
+    "entities": [
+        {
+            "result": false,
+            "user": "test2"
+        },
+        {
+            "result": false,
+            "user": "test6"
+        }
+    ],
+    "organization": "XXXX",
+    "timestamp": 1650874050419,
+    "uri": "http://XXXX.com/XXXX/testy/thread/179786360094768/users"
+}
+```
+
+## Status codes
+
+For details, see [HTTP Status Codes](../http-status-codes).

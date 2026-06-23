@@ -1,0 +1,98 @@
+---
+title: "Chat room overview"
+description: "Gives an overview of chat room functionalities provided by Agora Chat SDK."
+---
+
+Chat rooms enable real-time messaging among multiple users and are widely applied in live broadcast use cases as stream chat in Twitch. Chat rooms do not have a strict membership, and members do not retain any permanent relationship with each other. Once going offline, chat room members cannot receive any messages from the chat room and automatically leave the chat room after 2 minutes (members on the chat room allow list remain in the chat room even if they stay offline for 2 minutes or more). If you want to adjust the time, contact [support@agora.io](mailto:support@agora.io).
+
+## Chat room roles and privileges
+
+Chat rooms have the following roles and privileges:
+
+- Chat room members: Regular members that can send and receive chat room messages. 
+- Chat room admins: They are specified by the chat group owner. Apart from sending and receiving chat room messages, they have some administrative privileges. You can add up to 99 admins for each chat room.
+- Chat room owner: The creator of the chat room. Chat room owners have the highest privileges, including specifying the chat room admin, disbanding the chat room, modifying the chat room attributes, and managing other chat room members.
+
+## Differences between chat group and chat room
+
+Both chat group and chat room support instant messaging among multiple users. The major difference lies in whether mmebers have a stable relationship. Chat group members tend to remain for a long time, whereas chat room members join and leave freely.
+
+The following table shows the feature comparisons between a chat group and a chat room:
+
+| Feature    | Chat group   | Chat room     |
+| --- | --- | --- |
+| Use cases  | Group chat use-cases in Signal and Skype, where all members have a stable relationship. | Stream chat use-cases in Twitch, where viewers have no relationship with each other. Once a member quits the stream chat channel, this member leaves the chat room.  |
+| Maximum number of members | 5,000 | 20,000 and more  |
+| Message push support | Members receive push messages when they go offline. | Members do not receive push messages when they go offline. |
+| Offline message storage   | This feature is supported. Agora Chat servers store messages sent to offline group members and sends to them once they go back online. A maximum number of 200 messages across chat groups can be stored per end user.  | Chat room does not store messages sent to offline chat room members and this feature is not supported in chat rooms. |
+| Message history  | Agora Chat servers store message history, subject to the [data retention period of your package selection](../pricing-plan-details#message). The history can be retrieved by your app server via [this RESTful API](..//en/realtime-media/im/reference/server-api/message-management#retrieve-historical-messages), in the format of JSON files. You can call [this Client API](../messages/retrieve-messages#retrieve-historical-messages-of-the-specified-conversation) to allow the SDK to retrieve message history of a chat group. This allows end users to synchronize messages history across multiple end devices.  | Agora Chat servers store message history, subject to the [data retention period of your package selection](../pricing-plan-details#message). The history can be retrieved by your app server via [this RESTful API](..//en/realtime-media/im/reference/server-api/message-management#retrieve-historical-messages), in the format of JSON files. Agora Chat currently does not support SDK retrieving message history of a chatroom via client APIs. However, when a user joins a chat room, Agora Chat servers send 10 most recent messages to the client side via the message receiving callback. The number of historical messages sent to the new chat room member can be increased up to 200, without additional charges.|
+| Message reliability | Each member receives all the messages in the chat group. | Members might not see all messages. The SDK discards messages if the chat room message threshold is exceeded. The default threshold is delivering 20 messages per second. You can adjust this threshold according to your needs. |
+
+## Chat room features
+
+The Chat SDK supports creating and managing chat rooms, managing chat room members, and modifying chat room attributes.
+
+You can implement the following features with the chat room APIs:
+
+### Create a chat room
+
+Only the [chat room super admin](..//en/realtime-media/im/reference/server-api/chatroom-management/manage-chatroom-admins#adding-a-chat-room-super-admin) can create a chat room, and the user that creates the chat room becomes the chat room owner. The maximum number of chat room member supported vary according to the pricing plan. For details, see [Limitations of chat room](#limitations).
+
+### Join and leave a chat room
+
+All the chat users can join and leave the chat rooms freely.
+
+### Disband a chat room
+
+Only the chat room owner can disband the chat room. 
+
+### Retrieve the chat room list
+
+All the chat users can retrieve the chat room list from the server with pagination.
+
+### Retrieve the chat room attributes
+
+All the chat room members can retrieve the chat room attributes including the chat room name and descriptions.
+
+### Modify the chat room name
+
+Only the chat room owner has the privilege to modify the chat room name.
+
+### Modify the chat room announcement
+
+Only the chat room owner has the privilege to edit and delete the chat room announcement. Once the notification is updated, all the chat room members are informed of this update by callback events.
+
+### Transfer the chat room ownership
+
+The chat room owner can transfer the ownership to the specified chat room member.
+
+### Add and remove the chat room admin
+
+The chat room owner can add and remove the chat room admin.
+
+### Mute the specified chat room member
+
+The chat room owner or admin can mute the specified chat room member.
+
+### Mute all the chat room members
+
+The chat room owner or admin can mute all the chat room members. By default, the chat room owner and admin are excluded from the chat room mute list.
+
+### Manage the chat room allow list
+
+The chat room owner or admin can add the specified members to the chat room allow list, and remove them from the list. Once added to the chat room allow list, the members can send messages to the chat room even when the chat room owner or admin has muted all the chat room members.
+
+### Manage the chat room blocklist
+
+The chat room owner or admin can add the specified members to the chat room blocklist, and remove them from the list. Once added to the chat room blocklist, the members cannot send or receive chat group messages, nor can they join the chat room again.
+
+## Limitations of chat room
+
+The maximum number of chat room members, the total number of chat rooms you can create, and the maximum number of chat rooms a user can join vary according to your pricing plan.
+
+| Pricing plan   | Number of chat room members   | Number of chat rooms you can create | Number of chat rooms a user can join |
+| :--------- | :------------- | :----------- | ------------------ |
+| **Free**       | 100            | 100          | 100                |
+| **Starter**    | 2,000          | 10,000       | 1,000              |
+| **Pro**        | 10,000         | 50,000       | 2,000              |
+| **Enterprise** | Custom (20,000 by default) | Custom (100,000 by default)      | Custom (10,000 by default)             |

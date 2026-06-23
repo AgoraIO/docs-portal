@@ -725,7 +725,9 @@ export function isCollapsibleSectionTitle(title: string) {
     title === 'Extensions' ||
     title === '扩展能力' ||
     title === 'Media Infrastructure' ||
-    title === '媒体基础设施'
+    title === '媒体基础设施' ||
+    title === 'Server APIs' ||
+    title === 'Console and analytics'
   );
 }
 

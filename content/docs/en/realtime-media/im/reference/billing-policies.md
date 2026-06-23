@@ -54,7 +54,7 @@ On the sixth day of each month, Agora automatically deducts the fee for the prev
 - Your monthly usage does not exceed the free quota.
 - You do not use any other charged Agora services or products.
 
-If your account balance is negative after the deduction, Agora sends you an email, reminding you to [top up your account](../overview/pricing#top-up-packages) at your earliest convenience and avoid account suspension.
+If your account balance is negative after the deduction, Agora sends you an email, reminding you to [top up your account](/en/realtime-media/im/reference/pricing#top-up-packages) at your earliest convenience and avoid account suspension.
 
 #### Account suspension
 
@@ -83,7 +83,7 @@ After account suspension, none of your projects can access Agora services. To 
 
 1. Add a credit card to your account or top up your balance using a bank account. This unfreezes your account and upgrades it to a paid account.
 
-2. Purchase a [pre-paid monthly package](../overview/subscription-packages) or [top-up package](../overview/subscription-packages#top-up-package). This option is highly recommended.
+2. Purchase a [pre-paid monthly package](/en/realtime-media/im/reference/pricing#subscription-packages) or [top-up package](/en/realtime-media/im/reference/pricing#top-up-packages). This option is highly recommended.
 
 ## Free-of-charge policy
 
@@ -172,7 +172,7 @@ The difference between the two approaches increases as more users join the chann
 
 ### Agora's calculation method
 
-Agora calculates service minutes **by the number of users**. Service minutes are also calculated based on aggregate video resolution. For details, see [Calculate aggregate video resolution](../overview/pricing#aggregate-resolution).
+Agora calculates service minutes **by the number of users**. Service minutes are also calculated based on aggregate video resolution. For details, see [Calculate aggregate video resolution](/en/realtime-media/im/reference/pricing#aggregate-resolution).
 
 ## Account settlement
 
