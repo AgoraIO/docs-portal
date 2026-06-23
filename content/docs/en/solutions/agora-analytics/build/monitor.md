@@ -3,8 +3,6 @@ title: "Real-time monitoring"
 description: "Provides visualized data for multiple call metrics in real time, so that you can track the status of your Agora Video SDK projects and discover when a problem occurs."
 ---
 
-# Real-time monitoring
-
 Real-time Monitoring provides the following features:
 
 -   Automatic collection, processing, and storage of metrics data, which refreshes every 20 seconds.

@@ -3,8 +3,6 @@ title: "Data Insights"
 description: "Introduces Agora Analytics for Agora Chat."
 ---
 
-# Data Insights
-
 ## Introduction
 
 [Agora Analytics](https://docs.agora.io/en/agora-analytics/overview/product-overview) provides periodic analysis of usage and quality data for [Chat](https://docs.agora.io/en/agora-chat/overview/product-overview), helping you keep track of usage trends and quality details.

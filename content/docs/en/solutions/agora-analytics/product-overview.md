@@ -3,8 +3,6 @@ title: "Product overview"
 description: "Tracks and interprets the usage, quality, and performance of real-time voice and video."
 ---
 
-# Analytics
-
 Agora Analytics tracks and analyzes the usage, quality, and performance of real-time voice and video live streams and other Agora products. Designed as a companion to Agora's Voice Calling, Video Calling, Broadcast Streaming, Interactive Live Streaming, and Chat it helps locate quality issues, identify root causes, and resolve problems to enhance the end-user experience. Monitor sessions in real-time with Call Inspector or use RESTful APIs to analyze usage trends and performance.
 
 Extend Agora Analytics with the Datadog integration to bring Agora Analytics data into your Datadog account. Visualize and monitor metrics, set up custom alerts, and manage Agora data alongside other system metrics for a unified view of performance and quality.

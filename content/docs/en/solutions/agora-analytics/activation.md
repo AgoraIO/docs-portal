@@ -3,8 +3,6 @@ title: "Service activation"
 description: "How to activate Agora Analytics for your account."
 ---
 
-# Service activation
-
 To activate Agora Analytics, follow these steps:
 
 1. Contact your account executive, solutions architect, or email support@agora.io to learn about the available Agora Analytics plans.
@@ -13,3 +11,4 @@ To activate Agora Analytics, follow these steps:
 
 :::info
 > Activation typically takes up to 2 business days.
+:::

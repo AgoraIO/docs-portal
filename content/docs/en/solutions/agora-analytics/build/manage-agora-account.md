@@ -3,8 +3,6 @@ title: "Agora account management"
 description: "Create, manage and update your Agora account."
 ---
 
-# Agora account management
-
 This page shows you how to sign up for an Agora account, create a new project, and get the app ID and app certificate to generate a temporary token. 
 
 ## Get started with Agora

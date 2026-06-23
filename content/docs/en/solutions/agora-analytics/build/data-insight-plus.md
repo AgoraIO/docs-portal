@@ -3,8 +3,6 @@ title: "Data Insights Plus"
 description: "Periodic analysis of call usage and quality data."
 ---
 
-# Data Insights Plus
-
 Data insights in Agora Analytics offer periodic analysis of call usage and quality data. It helps you understand overall usage and quality trends, map distribution across different dimensions, and provide detailed data for each day, hour, and minute.
 
 The regular version of Data Studio currently supports query analysis of time series graphs and one-dimensional

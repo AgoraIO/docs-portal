@@ -3,8 +3,6 @@ title: "Chat glossary"
 description: "Explains Chat-related metrics."
 ---
 
-# Chat glossary
-
 This page explains Chat-related metrics.
 
 ## Scale metrics
