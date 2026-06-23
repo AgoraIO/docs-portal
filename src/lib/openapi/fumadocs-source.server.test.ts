@@ -19,12 +19,9 @@ describe('fumadocs openapi source', () => {
       'zh-CN/api-reference/conversational-ai/rest-api/agent/join.mdx',
     );
     expect(pagePaths).toContain(
-      'en/realtime-media/rtm/rest-api/peer-to-peer-message.mdx',
+      'en/api-reference/api-ref/signaling/peer-to-peer-message.mdx',
     );
-    expect(pagePaths).toContain(
-      'en/realtime-media/rtmp-gateway/reference/rest-api/create-streaming-key.mdx',
-    );
-    expect(pagePaths).toHaveLength(54);
+    expect(pagePaths).toHaveLength(30);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {

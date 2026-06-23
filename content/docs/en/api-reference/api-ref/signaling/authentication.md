@@ -14,6 +14,6 @@ The Signaling REST APIs use Basic HTTP authentication. Each request must include
 
 ## Related pages
 
-- [Overview](index.md)
+- [Overview](index)
 - [Send peer-to-peer message](peer-to-peer-message)
 - [Send channel message](channel-message)
