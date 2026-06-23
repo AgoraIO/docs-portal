@@ -1,0 +1,1198 @@
+---
+title: "Notification management"
+description: "Shows how to use Chat RESTful APIs to broadcast push notifications."
+---
+
+### Web
+
+Push notifications are not available for Web.
+
+### All except Web
+
+Push notifications allow you to broadcast app-wide announcements to all or selected users.
+This page explains how to use Chat RESTful APIs to send and configure push notifications.
+
+## Authorization
+
+Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request is sent, the following `Authorization` field must be filled in the request header:
+
+```html
+Authorization: Bearer ${YourAppToken}
+```
+
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/authentication).
+
+## Send push notifications
+
+### Common parameters
+
+The following table lists common request and response parameters of the Chat RESTful APIs:
+
+#### Request parameters
+
+| Parameter      | Type | Description    | Required |
+| :--------- | :----- |:------------- | :------- |
+| `host`     | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes   |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the organization name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes     |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes    |
+| `username` | String | The unique login account of the user.    | Yes     |
+
+#### Response parameters
+
+| Parameter        | Type   | Description          |
+| :----------| :----------- | :----------------- |
+| `timestamp` | Number      | The Unix timestamp (ms) of the HTTP response.  |
+| `duration`  | Number      | The duration (ms) from when the HTTP request is sent to the time the response is received. |
+
+### Send a push notification in a synchronous way
+
+Sends a push notification to a user in a synchronous way. After sending a push notification, Agora server returns the push status in the HTTP response. If a third-party push service is used, the third-party push server will send the push result to the Agora server which will determine the push status based on the received push result.
+
+For each App Key, the total call frequency limit of this method is 1 per second.
+
+### HTTP request
+
+```html
+POST https://{host}/{org_name}/{app_name}/push/sync/{target}
+```
+
+#### Path parameters
+
+| Parameter           | Type | Description     | Required |
+| :------- | :----- | :---------------------- | :------- |
+| `target` | String | The user ID of the push notification recipient. You can pass in only one user ID. | Yes       |
+
+For the descriptions of other path parameters, see [Common parameters](#param).
+
+#### Request header
+
+| Parameter           | Type | Description     | Required |
+| :-------------- | :----- | :----------- | :------- |
+| `Content-Type`  | String | The content type. Set it as application/json.    | Yes       |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of Bearer `${YourAppToken}`, where Bearer is a fixed character, followed by an English space, and then the obtained token value. | Yes  |
+
+#### Request body
+
+| Parameter           | Type | Description     | Required |
+| :------------ | :--- | :--------------- | :------- |
+| `strategy`    | Number | The push strategy: `0`: Use the third-party push service first. If the push attempt fails, use the Agora push service instead.`1`: Use Agora push service only. If the target user is online, Agora server sends the push message. If the user is offline, Agora retains the push message for a certain period (depending on the Chat package to which you subscribe) and will send it to the user as soon as he or she gets online. If the user remains offline until the retention period expires, the push message is dropped and the push attempt fails.`2`: (Default) Use the third-party push service only. If the target user is offline, whether to retain the push message and how long the message can be retained depend on the setting of the third-party service. If the push attempt fails, the message is discarded.`3`: Use the Agora push service first. If the user is online, Agora server sends the notification. If the user is offline, the notification is delivered via a third-party push service. If the offline push attempt fails, the notification is sent via Agora server once the user gets online.  `4` Only use online push via Agora server. Push notifications are sent only via Agora server for the online user. If the user is offline, the push notifications are discarded. | No  |
+| `pushMessage` | JSON | The push notification. For details, see [Configure push notifications](#configure-push-notifications). | Yes   |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter     | Type  | Description  |
+| :---------------- | :----- | :- |
+| `data`| Object | The push result. The server determines the push status based on the push result. |
+| `data.pushStatus` | String | The push status:  - `SUCCESS`: The push succeeds. - `FAIL`: The push fails due to an error that is not caused by the server, like `bad device token`, indicating that the mobile device delivers an incorrect device token to the server and the server does not accept it. - `ERROR`: The push exception occurs due to a server error, for example, connection timeout or read or write timeout.|
+| `data.data`       | Object | The push result data returned by the push service used by the push notification recipient. |
+| `data.desc`       | String | The description for the push failure.      |
+
+For other fields and detailed descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+### Example
+
+#### Request example
+
+```shell
+# Replace {YourAppToken} with the app token generated in your server.
+curl -X POST 'http://XXXX/XXXX/XXXX/push/sync/test1' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+-d '{
+    "strategy": 3,
+    "pushMessage": {
+        "title": "Agora push",
+        "content": "Hello and welcome",
+        "sub_title": "Agora"
+      }
+}'
+```
+
+#### Response example
+
+1. The push succeeds:
+
+```json
+{
+    "timestamp": 1689154498019,
+    "data": [
+       {
+"pushStatus": "SUCCESS",
+"data": {
+    "code": 200,
+    "data": {
+        "expireTokens": [],
+        "sendResult": true,
+        "requestId": "104410638-fd96648b6bb4344bc4f5e29b158fdb07",
+        "failTokens": [],
+        "msgCode": 200
+   },
+    "message": "Success"
+           }
+       }
+   ],
+    "duration": 2
+}
+```
+
+2. When a third-party push service is used, the push fails because the push-related information (like the push token or certificate) is not bound with the device:
+
+```json
+{
+    "timestamp": 1689154624797,
+    "data": [
+       {
+"pushStatus": "FAIL",
+"desc": "no push binding"
+       }
+   ],
+    "duration": 0
+}
+```
+
+3. When a third-party push service is used, the push fails because the user ID of the push notification recipient does not exist:
+```json
+{
+    "timestamp": 1689154534352,
+    "data": [
+       {
+"pushStatus": "FAIL",
+"desc": "appUser not exists"
+       }
+   ],
+    "duration": 0
+}
+```
+
+## Send a push notification to users in an asynchronous way
+
+Sends a push notification to one or more users in an asynchronous way.
+
+#### HTTP request
+
+```html
+POST https://{host}/{org_name}/{app_name}/push/single
+```
+
+##### Path parameters
+
+For the descriptions of path parameters, see [Common parameters](#param).
+
+##### Request header
+
+| Parameter           | Type | Description     | Required |
+| :-------------- | :----- | :------- | :---------- |
+| `Content-Type`  | String | The content type. Set it as `application/json`.  | Yes   |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value.  | Yes    |
+
+##### Request body
+
+| Parameter           | Type | Description | Required |
+| :-------------- | :----- | :------- | :----------- |
+| `targets`     | List    | The user IDs of push notification recipients. You can pass in up to 100 user IDs each time.   | Yes     |
+| `strategy`    | Number | The push strategy: `0`: Use the third-party push service first. If the push attempt fails, use the Agora push service instead.`1`: Use Agora push service only. If the target user is online, Agora server sends the push message. If the user is offline, Agora retains the push message for a certain period (depending on the Chat package to which you subscribe) and will send it to the user as soon as he or she gets online. If the user remains offline until the retention period expires, the push message is dropped and the push attempt fails.`2`: (Default) Use the third-party push service only. If the target user is offline, whether to retain the push message and how long the message can be retained depend on the setting of the third-party service. If the push attempt fails, the message is discarded.`3`: Use the Agora push service first. If the user is online, Agora server sends the notification. If the user is offline, the notification is delivered via a third-party push service. If the offline push attempt fails, the notification is sent via Agora server once the user gets online.  `4` Only use online push via Agora server. Push notifications are sent only via Agora server for the online user. If the user is offline, the push notifications are discarded. | No  |
+| `pushMessage` | JSON   | The push message. See [Configure push notifications](#configure-push-notifications) for details. | Yes   |
+
+#### HTTP response
+
+##### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter      | Type | Description    |
+| :-------- | :----- | :-------- |
+| `data`       | JSON   | The push result. |
+| `id`         | String | The user IDs of push notification recipients.|
+| `pushStatus` | String | The push status:`SUCCESS`: The push succeeds.`FAIL`: The push fails due to non-server errors. For example, an invalid token is passed.`ERROR`: The push fails due to server errors. For example, the request times out.`ASYNC_SUCCESS`: The asynchronous push succeeds. |
+| `desc`       | String | The result description.   |
+
+For other fields and detailed descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+#### Example
+
+##### Request example
+
+```shell
+curl -X POST "http://XXXX/XXXX/XXXX/push/single" -H "Authorization: Bearer " -H "Content-Type: application/json" --data-raw "{
+    "targets": [
+        "test2"
+    ],
+    "pushMessage": {
+        "title": "Hello",
+        "subTitle": "Hello",
+        "content": "Hello",
+        "vivo": {
+
+        }
+    }
+}"
+```
+
+##### Response example
+
+```json
+{
+    "timestamp": 1619506344007,
+    "data": [
+        {
+"id": "test2",
+"pushStatus": "ASYNC_SUCCESS",
+"desc": "async success."
+        }
+    ],
+    "duration": 14
+}
+```
+
+### Send a push notification by label
+
+Sends a push notification to all users under one label, or the intersection of users under multiple labels.
+
+A push task is automatically created per request, and the ID of the push task is returned for data statistics. A maximum of three push tasks can be executed at the same time.
+
+See [Set push labels](./push-notification-management) for configuring labels.
+
+#### HTTP request
+
+```html
+POST https://{host}/{org_name}/{app_name}/push/list/label
+```
+
+##### Path parameter
+
+For the descriptions of path parameters, see [Common parameters](#param).
+
+##### Request header
+
+| Parameter           | Type | Description     | Required |
+| :-------------- | :----- | :------- | :---------- |
+| `Content-Type`  | String | The content type. Set it as `application/json`.  | Yes   |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value.  | Yes    |
+
+##### Request body
+
+| Parameter           | Type | Description         | Required |
+| :-------------- | :----- |:---| :----------- |
+| `targets`     | List    | The targeting label names. You can either pass one label to send the push notification to all users under the label, or pass a maximum of five labels to send the push notification to the intersection of users under these labels.    | Yes     |
+| `startDate` | String | The start date of the push task. The date format is yyyy-MM-dd HH:mm:ss, for example, 2024-01-01 12:00:00.:::info
+The scheduled time must be one hour later than the curren time or 30 days from the current time. By default, the scheduled time is in the time zone where the server resides. If you want to use a time in a different time zone, you must calculate that time according to your time zone.
+::: | No |
+| `strategy`    | Number | The push strategy: `0`: Use the third-party push service first. If the push attempt fails, use the Agora push service instead.`1`: Use Agora push service only. If the target user is online, Agora server sends the push message. If the user is offline, Agora retains the push message for a certain period (depending on the Chat package to which you subscribe) and will send it to the user as soon as he or she gets online. If the user remains offline until the retention period expires, the push message is dropped and the push attempt fails.`2`: (Default) Use the third-party push service only. If the target user is offline, whether to retain the push message and how long the message can be retained depend on the setting of the third-party service. If the push attempt fails, the message is discarded.`3`: Use the Agora push service first. If the user is online, Agora server sends the notification. If the user is offline, the notification is delivered via a third-party push service. If the offline push attempt fails, the notification is sent via Agora server once the user gets online.  `4` Only use online push via Agora server. Push notifications are sent only via Agora server for the online user. If the user is offline, the push notifications are discarded. | No  |
+| `pushMessage` | JSON   | The push messages. See [Configure push notifications](#configure-push-notifications) for details.           | Yes   |
+
+#### HTTP response
+
+##### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter      | Type | Description    |
+| :-------- | :----- | :-------- |
+| `data` | JSON | The detailed information of the push task. |
+| `taskId` | Number | The ID of the push task. |
+
+For other fields and detailed descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+#### Example
+
+##### Request example
+
+```shell
+curl -L -X POST 'http://XXXX/XXXX/XXXX/push/list/label' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "targets": [
+        "post-90s"
+    ],
+    "strategy": 2,
+    "pushMessage": {
+        "title": "Agora PUSH",
+        "content": "Welcome to Agora Push Service",
+        "sub_title": "Agora"
+    }
+}'
+```
+
+##### Response example
+
+```json
+{
+    "timestamp": 1650859482843,
+    "data": {
+        "taskId": 968120369184112182
+    },
+    "duration": 0
+}
+```
+
+### Send a push notification to all users under the app
+
+Sends a push notification to all users under the app.
+
+A push task is automatically created per request, and the ID of the push task is returned for data statistics. A maximum of three push tasks can be executed at the same time.
+
+#### HTTP request
+
+```html
+POST https://{host}/{org_name}/{app_name}/push/task
+```
+
+##### Path parameter
+
+For the descriptions of path parameters, see [Common parameters](#param).
+
+##### Request header
+
+| Parameter           | Type | Description     | Required |
+| :-------------- | :----- | :------- | :---------- |
+| `Content-Type`  | String | The content type. Set it as `application/json`.  | Yes   |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value.  | Yes    |
+
+##### Request body
+
+| Parameter           | Type | Description         | Required |
+| :-------------- | :----- |:---| :----------- |
+| `startDate` | String | The start date of the push task. The date format is yyyy-MM-dd HH:mm:ss, for example, 2024-01-01 12:00:00.:::info
+1. The scheduled time must be one hour later than the curren time or 30 days from the current time. 2. By default, the scheduled time is in the time zone where the server resides. If you want to use a time in a different time zone, you must calculate that time according to your time zone.
+::: | No |
+| `strategy`    | Number | The push strategy: `0`: Use the third-party push service first. If the push attempt fails, use the Agora push service instead.`1`: Use Agora push service only. If the target user is online, Agora server sends the push message. If the user is offline, Agora retains the push message for a certain period (depending on the Chat package to which you subscribe) and will send it to the user as soon as he or she gets online. If the user remains offline until the retention period expires, the push message is dropped and the push attempt fails.`2`: (Default) Use the third-party push service only. If the target user is offline, whether to retain the push message and how long the message can be retained depend on the setting of the third-party service. If the push attempt fails, the message is discarded.`3`: Use the Agora push service first. If the user is online, Agora server sends the notification. If the user is offline, the notification is delivered via a third-party push service. If the offline push attempt fails, the notification is sent via Agora server once the user gets online.  `4` Only use online push via Agora server. Push notifications are sent only via Agora server for the online user. If the user is offline, the push notifications are discarded. | No  |
+| `pushMessage` | JSON   | The push messages. See [Configure push notifications](#configure-push-notifications) for details.           | Yes   |
+
+#### HTTP response
+
+##### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter      | Type | Description    |
+| :-------- | :----- | :-------- |
+| `data` | Number | The ID of the push task.  |
+
+For other fields and detailed descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+#### Example
+
+##### Request example
+
+```shell
+curl -X POST "http://XXXX/XXXX/XXXX/push/task" -H "Content-Type: application/json" --data-raw "{
+    "pushMessage": {
+        "title": "Hello1234",
+        "subTitle": "Hello",
+        "content": "Hello",
+        "vivo": {}
+    }
+}"
+```
+
+##### Response example
+
+```json
+{
+    "timestamp": 1618817591755,
+    "data": 968120369184112182,
+    "duration": 1
+}
+```
+
+### Status codes
+
+For details, see [HTTP Status Codes](./http-status-codes).
+
+## Configure push notifications
+
+Chat not only provides basic configurations that are adaptive to all, but also supports advanced configurations varied by service providers.
+You can choose the service provider and configure the notification fields based on your business requirements.
+
+A push notification example is as follows:
+
+```json
+{
+  // Basic configurations available to all
+  "title": "You have a message",
+  "subTitle": "",
+  "content": "Check the message",
+  "ext": {},
+  "config": {
+    "clickAction": {
+      "url":"",
+      "action":"",
+      "activity":""
+    },
+    "badge": {
+      "addNum": 0,
+      "setNum": 0
+      }
+  },
+
+  // Advanced configurations varied by service providers
+  "agora":{},
+  "apns": {},
+  "fcm": {}
+}
+```
+
+### Basic configurations
+
+The following table lists basic configuration fields available to all:
+
+| Field   | Type | Description  | Supported platforms  | Required |
+| :--------- | :-----| :--------- | :------- | :--------- |
+| `title`    | String   | The title of the notification. The value of this field is "You have a message" by default. The length of this field cannot exceed 32 characters. | Android & iOS | Yes   |
+| `subTitle` | String   | The subtitle of the notification that provides additional information. The length of this field cannot exceed 10 characters.  | iOS    | No    |
+| `content`  | String   | The body text of the notification. The value of this field is "Check the message" by default. The length of this field cannot exceed 100 characters.  | Android & iOS  | Yes  |
+| `ext`      | JSON   | The custom extension of the notification stored in key-value pairs. The number of key-value pairs can be a maximum of 10, and the total length of key-value pairs can be 1024 characters at most.      | Android & iOS   | No |
+| `config`   | JSON   | The configuration of click action and badge value in the notifications center. | Android & iOS   | No |
+| `config.clickAction` | JSON   | The action triggered by a user click on the notification, which contains the following fields:`url`: Direct to a URL. Specify a custom URL; otherwise, the user click on notifications cannot work as expected.`action`: Open a specific page in the app. Specify the address of an in-app page.Open a package or an Activity component. Specify a package name or component path.| Android  | No       |
+| `config.badge`       | JSON    | The value of the badge displayed on the app’s icon, which contains the following fields (Int):`addNum`: The new notification adds on the badge number.`setNum`: The new notification resets the badge number. | iOS & Android |
+
+### Advanced configurations
+
+If the basic configuration fields stated above cannot meet your business requirements, Chat allows you to implement advanced configurations provided by the following push services. All messages can be pushed via the three channels, regardless of whether users are online or offline. For how to choose to use the three push services, see the `strategy` parameter in [Send push notifications](send-push-notifications#request-body).
+
+| Field      |  Type  | Description    | Required |
+| :--------- | :----- | :------------- | :--------- |
+| `agora`    | JSON   | The Agora push service. |  No     |
+| `apns`     | JSON   | Apple Push Notification service (APNs). | No      |
+| `fcm`      | JSON   | Firebase Cloud Messaging (FCM). | No     |
+
+> Advanced configurations overwrite the basic ones by default.
+
+#### Agora push service
+
+An Agora push notification example is as follows:
+
+```json
+{
+    "title": "The title of the notification",
+    "content": "The body text of the notification",
+    "subTitle": "The subtitle of the notification",
+    "iconUrl": "https://web-cdn.agora.io/docs-files/1676966850073",
+    "needNotification": true,
+    "badge": {
+        "setNum": 0,
+        "addNum": 1,
+        "activity": "com.hyphenate.chat.section.me.activity.AboutHxActivity"
+    },
+    "operation": {
+        "type": "2",
+        "openUrl": "https://www.baidu.com/",
+        "openAction": "com.hyphenate.chat.section.me.activity.OfflinePushSettingsActivity"
+    },
+    "channelId": "chat",
+    "channelName": "message",
+    "channelLevel": 3,
+    "autoCancel": 1,
+    "expiresTime": 3600000,
+    "sound": 0,
+    "vibrate": 0,
+    "style": 2,
+    "bigTxt": "Big text content",
+    "bigPicture": "https://web-cdn.agora.io/docs-files/1676966850073",
+    "id": 056734579
+}
+```
+
+The following table lists advanced configuration fields provided by Agora:
+
+| Field  | Type    | Description   | Supported platforms    |
+| :----------------- | :------ | : | :--------------------- |
+| `title`| String  | The title of the notification.        | iOS & Android |
+| `content`          | String  | The body text of the notification.    | iOS & Android |
+| `subTitle`         | String  | The subtitle of the notification that provides additional information.     | iOS           |
+| `iconUrl`          | String  | The URL of the app icon.      | iOS & Android |
+| `needNotification` | Boolean | Wether a notification pops out:`true`: (Default) Yes.`false`: No. | iOS & Android |
+| `badge`| JSON    | The value of the badge displayed on the app’s icon, which contains the following fields:`addNum`: The new notification adds on the badge number.`setNum`: The new notification resets the badge number. | iOS & Android |
+| `operation`        | JSON    | The action triggered by a user click on the notification. | iOS & Android |
+| `operation.type`  | Number   | The type of the action.`0`: (Default) Launch the app.`1`: Direct to a URL. Set `operation.openUrl` to a custom URL; otherwise, the user click on notifications cannot work as expected.`2`: Open a specific page in the app. Set `operation.openAction` to the address of the in-app page, and set `operation.openActivity` to the package name or component path; otherwise, the user click on notifications cannot work as expected.   | iOS & Android |
+| `channelId`        | String  | The channel ID of the notification. The default value is `chat`. If this parameter is not specified or does not exist, a channel ID is automatically created using `channelName` and `channelLevel`. | Android  |
+| `channelName`      | String  | The name of the channel. The default value is `message`. This parameter is used to generate the channel ID.         | Android     |
+| `channelLevel`     | Number | The level of the channel.`0`: Low.`3`: (Default) Medium.`4`: High.This parameter is used to generate the channel ID. |  Android     |
+| `autoCancel`       | Number | Whether the notification center is automatically closed after the user click on notifications.`0`: No`1`: (Default) Yes |  Android     |
+| `expiresTime`      | Number | The Unix timestamp (ms) when the notification expires and disappears from the notification center. For example, `1650859482843` indicates 2022-04-25 12:04:42. The timestamp is the current timestamp plus how long the notification stays open.        | iOS & Android |
+| `sound`| Number | Whether a sound plays when the device receives notifications.`0`: (Default) No`1`: Yes           | iOS & Android |
+| `vibrate`          | Number | Whether a vibration occurs when the device receive notifications.`0`: (Default) No`1`: Yes | iOS & Android |
+| `style`| Number | The style of the notification.`0`: (Default) Normal style. `1`: Big test style.`2`: Big image style.| iOS & Android |
+| `bigTxt`           | String  | The text content. This field is required when `style` is set to `1`.      | iOS & Android |
+| `bigPicture`       | String  | The image URL. This field is required when `style` is set to `2`.      | Android     |
+| `id`   | Number   | The ID of the notification. A random number assigned by the Chat service. Chat automatically assigns a random number for each notification by default. If you manually specify this parameter to a value same as a previous ID, the previous notification is overwritten by the new one.  | iOS & Android |
+
+#### APNs
+
+The mapping of field names between Chat and APNs is as follows:
+
+| Chat   | APNs|
+| :----------------- | :-------------- |
+| `invalidationTime` | `apns-expiration`     |
+| `priority`         | `apns-priority`  |
+| `pushType`         | `apns-push-type`  |
+| `collapseId`       | `apns-collapse-id`  |
+| `apnsId`           | `apns-id`    |
+| `badge`| `badge` |
+| `sound`| `sound` |
+| `mutableContent`   | `mutable-content`    |
+| `contentAvailable` | `content-available`    |
+| `categoryName`     | `category`  |
+| `threadId`         | `thread-id`  |
+| `title`| `title`  |
+| `subTitle`         | `subtitle`  |
+| `content`          | `body`       |
+| `titleLocKey`      | `title-loc-key`  |
+| `titleLocArgs`     | `title-loc-args`    |
+| `subTitleLocKey`   | `subtitle-loc-key`  |
+| `subTitleLocArgs`  | `subtitle-loc-args`    |
+| `bodyLocKey`       | `localizedAlertKey`  |
+| `bodyLocArgs`      | `loc-key`    |
+| `ext`  | `loc-args`  |
+| `launchImage`      | `launch-image`  |
+| `interruptionLevel`|  `interruption-level`   |
+| `liveActivityEvent` |  `event`           |
+| `timestamp`         |  `timestamp`          |
+| `dismissalDate`     |   `dismissal-date`     |
+| `staleDate`         |  `stale-date`     |
+| `attributesType`    |  `attributes-type`   |
+| `attributes`        |   `attributes `      |
+| `contentState`      |  `content-state`     |
+
+For descriptions of these fields, see APNs official documentation below:
+
+- [Generating a remote notification](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification)
+- [Sending Notification Requests to APNs](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/sending_notification_requests_to_apns)
+
+#### FCM
+
+The mapping of field names between Chat and FCM is as follows:
+
+| Chat        | FCM       |
+| :---------------------- | :-------------------- |
+| `condition` | `condition`           |
+| `collapseKey`           | `collapse_key`        |
+| `priority`  | `priority`|
+| `timeToLive`| `time_to_live`        |
+| `dryRun`    | `dry_run` |
+| `restrictedPackageName` | `restricted_package_name` |
+| `data`      | `data`        |
+| `notification`          | `notification`|
+| `notification.title`| `notification.title`  |
+| `notification.body` | `notification.body`   |
+| `notification.androidChannelId` | `notification.android_channel_id` |
+| `notification.sound`| `notification.sound`  |
+| `notification.tag`  | `notification.tag`    |
+| `notification.color`| `notification.color`  |
+| `notification.clickAction`      | `notification.click_action`       |
+| `notification.titleLocKey`      | `notification.title_loc_key`      |
+| `notification.titleLocArgs`     | `notification.title_loc_args`     |
+| `notification.bodyLocKey`       | `notification.body_loc_key`       |
+| `notification.bodyLocArgs`      | `notification.body_loc_args`      |
+
+For descriptions of these fields, see FCM official documentation: [Firebase Cloud Messaging HTTP protocol](https://firebase.google.com/docs/cloud-messaging/http-server-ref).
+
+## Set push labels
+
+The push service allows you to group targeting users by configuring labels. Each label marks a user group that has similar habits, hobbies, or characteristics. When sending notifications, you can implement a bespoke push by specifying relevant labels, and the messages can then be sent to the users under the labels. For example, you can label a group of users as *fashion trendsetters*, and push related information about domestic and foreign trend brands to that user group on a regular basis.
+
+You can manage the labels through RESTful API. The relationship between users and labels is many to many, that is, one user can have multiple labels and one label can also have multiple users. You can update the labels without any delay and change user labels by
+first removing users from their current label and then adding them to a new one.
+
+Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](./limitations#call-limit-of-server-sides).
+
+### Common parameters
+
+The following table lists common request and response parameters of the Chat RESTful APIs:
+
+#### Request parameters
+
+| Parameter      | Type | Description    | Required |
+| :--------- | :----- |:------------- | :------- |
+| `host`     | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes   |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the organization name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes     |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](../get-started/enable#get-the-information-of-the-agora-chat-project). | Yes    |
+| `username` | String | The unique login account of the user.    | Yes     |
+
+#### Response parameters
+
+| Parameter        | Type   | Description          |
+| :----------| :----------- | :----------------- |
+| `timestamp` | Number      | The Unix timestamp (ms) of the HTTP response.  |
+| `duration`  | Number      | The duration (ms) from when the HTTP request is sent to the time the response is received. |
+
+### Create a push label
+
+Creates a push label.
+
+:::info
+You can create a maximum of 100 push labels. To lift the upper limit, contact [support@agora.io](mailto:support@agora.io).
+:::
+
+#### HTTP request
+
+```html
+POST https://{host}/{org_name}/{app_name}/push/label
+```
+##### Path parameter
+
+For the descriptions of path parameters, see [Common parameters](#param).
+
+##### Request header
+
+| Parameter           | Type | Description     | Required |
+| :-------------- | :----- | :------- | :---------- |
+| `Content-Type`  | String | The content type. Set it as `application/json`.  | Yes   |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value.  | Yes    |
+
+##### Request body
+
+| Parameter         | Type | Description         | Required |
+| :------------ | :------- |:---------------| :--------------- |
+| `name`        | String | The name of the push label. The length of each label name cannot exceed 64 characters, and the following character sets are supported:26 lowercase English letters (a-z)26 uppercase English letters (A-Z)10 numbers (0-9)"\_", "-", ".":::info
+The label name is case insensitive, so "Aa" and "aa" are the same label.Ensure that each label name under the same app is unique.
+::: | Yes     |
+| `description` | String | The description of the push label. The length of the label description cannot exceed 255 characters.        | No     |
+
+#### HTTP response
+
+##### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter      | Type | Description    |
+| :-------- | :----- | :-------- |
+| `data` | JSON | The detailed information of the push label. |
+| `name` | String | The label name. |
+| `description` | String | The label description. |
+| `createdAt` | Number | The Unix timestamp (ms) when the push label was created. |
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+#### Example
+
+##### Request example
+
+```shell
+curl -L -X POST 'http://XXXX/XXXX/XXXX/push/label' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "name":"post-90s",
+    "description":"hah"
+}'
+```
+
+##### Response example
+
+```json
+{
+    "timestamp": 1648720341157,
+    "data": {
+        "name": "post-90s",
+        "description": "hah",
+        "createdAt": 1648720341118
+    },
+    "duration": 13
+}
+```
+
+### Query the detailed information of a push label
+
+Retrieves the detailed information of the specified push label.
+
+#### HTTP request
+
+```html
+GET https://{host}/{org_name}/{app_name}/push/label/{labelname}
+```
+
+##### Path parameter
+
+| Parameter       | Type | Description      | Required |
+| :---------- | :------- | :----- | :------------- |
+| `labelname` | String | The name of the push label. | Yes     |
+
+For the descriptions of other path parameters, see [Common parameters](#param).
+
+##### Request header
+
+| Parameter           | Type | Description     | Required |
+| :-------------- | :----- | :------- | :----------- |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes    |
+
+#### HTTP response
+
+##### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter      | Type | Description    |
+| :-------- | :----- | :-------- |
+| `data` | JSON | The detailed information of the push label. |
+| `name` | String | The label name. |
+| `description` | String | The label description. |
+| `count` | Number | The number of the users added to the push label. |
+| `createdAt` | Number | The Unix timestamp (ms) when the push label was created. |
+
+For other fields and detailed descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+#### Example
+
+##### Request example
+
+```shell
+curl -L -X GET 'http://XXXX/XXXX/XXXX/push/label/90' \
+-H 'Authorization: Bearer '
+```
+
+##### Response example
+
+```json
+{
+    "timestamp": 1648720562644,
+    "data": {
+        "name": "90",
+        "description": "hah",
+        "count": 0,
+        "createdAt": 1648720341118
+    },
+    "duration": 0
+}
+```
+
+### Query the detailed information of push labels by page
+
+Retrieves the detailed information of multiple push labels by page.
+
+#### HTTP request
+
+```html
+GET https://{host}/{org_name}/{app_name}/push/label
+```
+
+##### Path parameter
+
+For the descriptions of the other path parameters, see [Common parameters](#param).
+
+##### Query parameters
+
+| Parameter    | Type | Description  | Required |
+| :------- | :------- | :----- | :----------------------- |
+| `limit`  | Number | The number of push labels displayed per page. The range is [1,100]. The default value is `100`.  | No   |
+| `cursor` | String | The start position for the next query.  | No  |
+
+##### Request header
+
+| Parameter           | Type | Description     | Required |
+| :-------------- | :----- | :------- | :----------- |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes     |
+
+#### HTTP response
+
+##### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter      | Type | Description    |
+| :-------- | :----- | :-------- |
+| `data` | JSON Array | The detailed information of the push label. |
+| `name` | String | The label name. |
+| `description` | String | The label description. |
+| `count` | Number | The number of the users added to the push label. |
+| `createdAt` | Number | The Unix timestamp (ms) when the push label was created. |
+
+For other fields and detailed descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+#### Example
+
+##### Request example
+
+```shell
+curl -L -X GET 'localhost/hx/hxdemo/push/label' \
+-H 'Authorization: Bearer YWMt5lyAUJnNEeyHUS2MdMYkPAAAAAAAAAAAAAAAAAAAAAEHMpqy501HZr2ms92z-Hz9AQMAAAF_SGRs1QBPGgBOIAaoCYWXntKF-h0vuvlyUCNB-IXTM4eEpSVqIdei9A'
+```
+
+##### Response example
+
+```json
+{
+    "timestamp": 1648720425599,
+    "data": [
+        {
+"name": "post-90s",
+"description": "hah",
+"count": 0,
+"createdAt": 1648720341118
+        },
+        {
+"name": "post-80s",
+"description": "post-80s generation",
+"count": 0,
+"createdAt": 1647512525642
+        }
+    ],
+    "duration": 1
+}
+```
+
+### Delete a push label
+
+Deletes the specified push label. You can delete one push label at each call.
+
+#### HTTP request
+
+```html
+DELETE https://{host}/{org_name}/{app_name}/push/label/{labelname}
+```
+
+##### Path parameter
+
+| Parameter       | Type | Description      | Required |
+| :---------- | :------- | :----- | :------------- |
+| `labelname` | String | The name of the push label. | Yes     |
+
+For the descriptions of the other path parameters, see [Common parameters](#param).
+
+##### Request header
+
+| Parameter           | Type | Description  | Required |
+| :------------- | :----- | :------- | :--------------- |
+| `Authorization` | String |The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes     |
+
+#### HTTP response
+
+##### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter      | Type | Description    |
+| :-------- | :----- | :-------- |
+| `data` | String | The request result. `success` indicates that the delete operation proceeds properly. |
+
+For other fields and detailed descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+#### Example
+
+##### Request example
+
+```shell
+curl -L -X DELETE 'http://XXXX/XXXX/XXXX/push/label/post-90s' \
+-H 'Authorization: Bearer '
+```
+
+##### Response example
+
+```json
+{
+    "timestamp": 1648721097405,
+    "data": "success",
+    "duration": 0
+}
+```
+
+### Add users to a push label
+
+Adds one or more users to the specified push label. A maximum of 20,000 users can be added to a push label. To lift the upper limit, contact [support@agora.io](mailto:support@agora.io).
+
+You can add a maximum of 100 users at each call.
+
+#### HTTP request
+
+```html
+POST https://{host}/{org_name}/{app_name}/push/label/{labelname}/user
+```
+
+##### Path parameter
+
+| Parameter       | Type | Description      | Required |
+| :---------- | :------- | :----- | :------------- |
+| `labelname` | String | The name of the push label. | Yes     |
+
+For the descriptions of the other path parameters, see [Common parameters](#param).
+
+##### Request header
+
+| Parameter           | Type | Description  | Required |
+| :------------- | :----- | :------- | :--------------- |
+| `Content-Type`  | String | The content type. Set it as `application/json`.        | Yes     |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes     |
+
+##### Request body
+
+| Parameter       |Type| Description| Required |
+| :---------- | :------- | :--- | :---- |
+| `usernames` | List | The IDs of the users to be added to the push label. You can pass in a maximum of 100 user IDs each time. | Yes     |
+
+#### HTTP response
+
+##### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter      | Type | Description    |
+| :-------- | :----- | :-------- |
+| `data` | JSON | The request result. |
+| `success` | List | The user IDs properly added to the push label. |
+| `fail` | JSON | If add operations fail, the user IDs failed to be added and the corresponding failure reasons are returned in key-value pairs. |
+
+For other fields and detailed descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+#### Example
+
+##### Request example
+
+```shell
+curl -L -X POST 'http://XXXX/XXXX/XXXX/push/label/post-90s/user' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "usernames":["hx1","hx2"]
+}'
+```
+
+##### Response example
+
+```json
+{
+    "timestamp": 1648721496345,
+    "data": {
+        "success": [
+"hx1",
+"hx2"
+        ],
+        "fail": {}
+    },
+    "duration": 18
+}
+```
+
+### Query the specified user under the specified push label
+
+Retrieves the detailed information of the specified user under the specified push label.
+
+#### HTTP request
+
+```html
+GET https://{host}/{org_name}/{app_name}/push/label/{labelname}/user/{member}
+```
+
+##### Path parameter
+
+| Parameter       | Type | Description      | Required |
+| :---------- | :------- | :----- | :------------- |
+| `labelname` | String | The name of the push label. | Yes     |
+| `member`    | String | The ID of the user. | Yes     |
+
+For the descriptions of the other path parameters, see [Common parameters](#param).
+
+##### Request header
+
+| Parameter           | Type | Description  | Required |
+| :------------- | :----- | :------- | :--------------- |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes     |
+
+#### HTTP response
+
+##### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter      | Type | Description    |
+| :-------- | :----- | :-------- |
+| `data` | JSON | The detailed information of the user. |
+| `username` | String | The user ID. |
+| `created` | Number | The Unix timestamp (ms) when the user was added to the push label. |
+
+For other fields and detailed descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+#### Example
+
+##### Request example
+
+```shell
+curl -L -X GET 'http://XXXX/XXXX/XXXX/push/label/post-90s/user/hx1' \
+-H 'Authorization: Bearer '
+```
+
+##### Response example
+
+```json
+{
+    "timestamp": 1648721589676,
+    "data": {
+        "username": "hx1",
+        "created": 1648721496324
+    },
+    "duration": 1
+}
+```
+
+### Query the detailed information of users under the specified push label by page
+
+Retrieves the detailed information of one or more users under the specified push label by page.
+
+#### HTTP request
+
+```html
+GET https://{host}/{org_name}/{app_name}/push/label/{labelname}/user
+```
+
+##### Path parameter
+
+| Parameter       | Type | Description      | Required |
+| :---------- | :------- | :----- | :------------- |
+| `labelname` | String | The name of the push label. | Yes     |
+
+For the descriptions of the other path parameters, see [Common parameters](#param).
+
+##### Query parameters
+
+| Parameter    | Type | Description          | Required |
+| :------- | :------- | :----- | :----------------------- |
+| `limit`  | String | The number of the users displayed per page. The range is [1,100]. The default value is `100`. | No   |
+| `cursor` | String | The start position for the next query.        | No   |
+
+##### Request header
+
+| Parameter           | Type | Description      | Required |
+| :-------------- | :----- | :------- | :----------- |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes     |
+
+#### HTTP response
+
+##### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter      | Type | Description    |
+| :-------- | :----- | :-------- |
+| `cursor` | String | The start position for the next query. |
+| `data` | JSON Array | The detailed information of the users. |
+| `username` | String | The user ID. |
+| `created` | Number | The Unix timestamp (ms) when the user was added to the push label. |
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+#### Example
+
+##### Request example
+
+```shell
+curl -L -X GET 'http://XXXX/XXXX/XXXX/push/label/post-90s/user?limit=1' \
+-H 'Authorization: Bearer '
+```
+
+##### Response example
+
+```json
+{
+    "timestamp": 1648721736670,
+    "cursor": "ZWFzZW1vYjpwdXNoOmxhYmVsOmN1cnNvcjo5NTkxNTMwMDM4ODQxMzgwMjc",
+    "data": [
+        {
+"username": "hx1",
+"created": 1648721496324
+        }
+    ],
+    "duration": 1
+}
+```
+
+### Remove users from a push label
+
+Removes one or more users from the specified push label. You can remove a maximum of 100 users at each call.
+
+#### HTTP request
+
+```html
+DELETE https://{host}/{org_name}/{app_name}/push/label/{labelname}/user
+```
+
+##### Path parameter
+
+| Parameter       | Type | Description         | Required |
+| :---------- | :------- | :----- | :------------- |
+| `labelname` | String | The name of the push label. | Yes     |
+
+For the descriptions of the other path parameters, see [Common parameters](#param).
+
+##### Request header
+
+| Parameter           | Type | Description | Required |
+| :-------------- | :----- | :------- | :----------- |
+| `Content-Type`  | String | The content type. Set it as `application/json`.        | Yes     |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes     |
+
+##### Request body
+
+| Parameter           | Type | Description | Required |
+| :-------------- | :----- | :------- | :----------- |
+| `usernames` | List | The IDs of the users to be removed from the push label. You can pass a maximum of 100 users for each request. | Yes     |
+
+#### HTTP response
+
+##### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+| Parameter      | Type | Description    |
+| :-------- | :----- | :-------- |
+| `data` | JSON | The request result. |
+| `success` | List | The user IDs properly removed from the push label. |
+| `fail` | JSON | If remove operations fail, the user IDs failed to be removed and the corresponding failure reasons are returned in key-value pairs. |
+
+For other fields and detailed descriptions, see [Common parameters](#param).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+#### Example
+
+##### Request example
+
+```shell
+curl -L -X DELETE 'http://XXXX/XXXX/XXXX/push/label/post-90s/user' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "usernames":["hx1","hx2"]
+}'
+```
+
+##### Response example
+
+```json
+{
+    "timestamp": 1648722018636,
+    "data": {
+        "success": [
+"hx1",
+"hx2"
+        ],
+        "fail": {}
+    },
+    "duration": 1
+}
+```
+
+### Status codes
+
+For details, see [HTTP Status Codes](./http-status-codes).

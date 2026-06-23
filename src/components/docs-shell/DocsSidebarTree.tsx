@@ -27,6 +27,9 @@ type RenderableSidebarSectionNode = SidebarSectionNode & {
 const sidebarToggleClassName =
   'min-h-[34px] h-auto items-start justify-between rounded-[7px] px-3 py-1.5 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
 
+const sidebarSectionTitleClassName =
+  'block min-w-0 flex-1 break-words leading-5 whitespace-normal';
+
 const sidebarSubButtonClassName =
   'min-h-[32px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1.5 text-[12.75px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
@@ -150,7 +153,7 @@ function SidebarSection({
         <SidebarGroupLabel className="mt-5 mb-2.5 h-auto gap-2 px-2 py-1 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
           <SidebarConfiguredIcon icon={node.icon} />
           <span
-            className="block break-words leading-5 whitespace-normal"
+            className="block min-w-0 flex-1 break-words leading-5 whitespace-normal"
             title={node.title}
           >
             {node.title.replaceAll('-', ' ')}
@@ -200,13 +203,13 @@ function SidebarSection({
     <SidebarMenuItem>
       <SidebarMenuButton
         aria-expanded={isOpen}
-        className={sidebarToggleClassName}
+        className={cn(sidebarToggleClassName, 'overflow-visible')}
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
         <span className="flex min-w-0 items-center gap-2">
           <SidebarConfiguredIcon icon={node.icon} />
-          <span className="block whitespace-normal">{node.title}</span>
+          <span className={sidebarSectionTitleClassName}>{node.title}</span>
         </span>
         <ChevronDownIcon
           className={cn(
@@ -283,13 +286,13 @@ function SidebarLinkedSection({
       <SidebarMenuItem>
         <SidebarMenuButton
           asChild
-          className={sidebarToggleClassName}
+          className={cn(sidebarToggleClassName, 'overflow-visible')}
           isActive={url === activePath}
         >
           <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
             <span className="flex min-w-0 items-center gap-2">
               <SidebarConfiguredIcon icon={icon} />
-              <span className="block whitespace-normal">{title}</span>
+              <span className={sidebarSectionTitleClassName}>{title}</span>
             </span>
             <ChevronDownIcon className="size-4 shrink-0 -rotate-90" />
           </Link>
@@ -303,13 +306,16 @@ function SidebarLinkedSection({
       <div className="flex items-stretch gap-1">
         <SidebarMenuButton
           asChild
-          className={cn(sidebarToggleClassName, 'min-w-0 flex-1 justify-start')}
+          className={cn(
+            sidebarToggleClassName,
+            'min-w-0 flex-1 justify-start overflow-visible',
+          )}
           isActive={url === activePath}
         >
           <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
             <span className="flex min-w-0 items-center gap-2">
               <SidebarConfiguredIcon icon={icon} />
-              <span className="block whitespace-normal">{title}</span>
+              <span className={sidebarSectionTitleClassName}>{title}</span>
             </span>
           </Link>
         </SidebarMenuButton>
@@ -397,13 +403,13 @@ function SidebarQuickstartGroup({
     <SidebarMenuItem>
       <SidebarMenuButton
         aria-expanded={isOpen}
-        className={sidebarToggleClassName}
+        className={cn(sidebarToggleClassName, 'overflow-visible')}
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
         <span className="flex min-w-0 items-center gap-2">
           <SidebarConfiguredIcon icon={icon} />
-          <span className="block whitespace-normal">{title}</span>
+          <span className={sidebarSectionTitleClassName}>{title}</span>
         </span>
         <ChevronDownIcon
           className={cn(
@@ -461,13 +467,16 @@ function SidebarNestedSection({
     <div className="w-full">
       <button
         aria-expanded={isOpen}
-        className={cn('flex w-full text-left', sidebarToggleClassName)}
+        className={cn(
+          'flex w-full overflow-visible text-left',
+          sidebarToggleClassName,
+        )}
         onClick={() => setIsOpen((value) => !value)}
         type="button"
       >
         <span className="flex min-w-0 items-center gap-2">
           <SidebarConfiguredIcon icon={node.icon} />
-          <span className="block whitespace-normal">{node.title}</span>
+          <span className={sidebarSectionTitleClassName}>{node.title}</span>
         </span>
         <ChevronDownIcon
           className={cn(
