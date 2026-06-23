@@ -1,21 +1,16 @@
 'use client';
 
 import { Link } from '@tanstack/react-router';
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ThumbsDownIcon,
-  ThumbsUpIcon,
-} from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { DocsPageFeedback } from './DocsPageFeedback';
 import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsMainColumn({
@@ -64,6 +59,7 @@ export function DocsMainColumn({
       >
         <div className="min-w-0">{children}</div>
         <DocsPageFooter
+          includeFeedback
           layoutMode={layoutMode}
           locale={locale}
           next={next}
@@ -93,11 +89,13 @@ export function DocsMainColumn({
 }
 
 function DocsPageFooter({
+  includeFeedback = false,
   layoutMode = 'docs',
   locale,
   next,
   previous,
 }: {
+  includeFeedback?: boolean;
   layoutMode?: 'docs' | 'openapi';
   locale: AppLocale | string;
   next?: { title: string; url: string };
@@ -105,7 +103,6 @@ function DocsPageFooter({
 }) {
   const { i18n } = useTranslation('common');
   const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
-  const [feedback, setFeedback] = useState<'yes' | 'no' | null>(null);
 
   return (
     <footer
@@ -115,36 +112,7 @@ function DocsPageFooter({
       )}
       data-testid="docs-page-footer"
     >
-      <div
-        className="flex flex-col gap-3 rounded-lg border border-[color:var(--line-soft)] bg-card px-4 py-3 shadow-[var(--docs-shadow-sm)] sm:flex-row sm:items-center sm:justify-between"
-        data-testid="docs-feedback"
-      >
-        <p className="text-sm font-medium text-[color:var(--ink-2)]">
-          {t('docs.feedback')}
-        </p>
-        <div className="flex items-center gap-2">
-          <Button
-            aria-pressed={feedback === 'yes'}
-            className="h-8 rounded-md px-3 text-xs"
-            onClick={() => setFeedback('yes')}
-            size="sm"
-            variant={feedback === 'yes' ? 'secondary' : 'outline'}
-          >
-            <ThumbsUpIcon data-icon="inline-start" />
-            {t('docs.feedbackYes')}
-          </Button>
-          <Button
-            aria-pressed={feedback === 'no'}
-            className="h-8 rounded-md px-3 text-xs"
-            onClick={() => setFeedback('no')}
-            size="sm"
-            variant={feedback === 'no' ? 'secondary' : 'outline'}
-          >
-            <ThumbsDownIcon data-icon="inline-start" />
-            {t('docs.feedbackNo')}
-          </Button>
-        </div>
-      </div>
+      {includeFeedback ? <DocsPageFeedback locale={locale} /> : null}
       {previous || next ? (
         <div
           className="grid grid-cols-1 gap-3 sm:grid-cols-2"

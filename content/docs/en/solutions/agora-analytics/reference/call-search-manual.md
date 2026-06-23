@@ -3,8 +3,6 @@ title: "Call Inspector troubleshooting"
 description: "How to troubleshoot common call-quality issues."
 ---
 
-# Call Inspector troubleshooting
-
 ## Prerequisites
 
 Before you start troubleshooting, you should be familiar with [Call Details Breakdown](../build/call-search.md).

@@ -2,7 +2,7 @@
 title: Agora Documentation
 ---
 
-## Build a voice agent
+## Build an Agent
 
 <SolutionCardGrid>
   <SolutionCard
@@ -21,7 +21,7 @@ title: Agora Documentation
   />
 </SolutionCardGrid>
 
-## Build with our real-time SDKs
+## Build Real-Time Applications
 
 <SolutionCardGrid>
   <SolutionCard
@@ -53,7 +53,7 @@ title: Agora Documentation
   description="See every real-time capability — recording, transcription, transcoding, external media, and audience delivery."
 />
 
-## Build with AI tools
+## Start with AI Tools
 
 <SolutionCardGrid>
   <SolutionCard
@@ -68,52 +68,110 @@ title: Agora Documentation
 ## Solutions
 
 <OverviewLinkBanner
-  title="Browse solutions by scenario"
+  title="Browse solutions by use case"
   href="/en/solutions"
   description="Ready-made product patterns for live streaming, meetings, online classrooms, and connected devices."
 />
 
 ## SDKs and APIs
 
-<OverviewToolkits>
-  <ToolkitGroup title="Agent frameworks">
-    <ToolkitItem href="/en/ai/choose-your-path/quickstart-coding" icon="python" label="Python" />
-    <ToolkitItem href="/en/ai/build/build-server-client" icon="typescript" label="TypeScript" />
-  </ToolkitGroup>
-
-  <ToolkitGroup title="Tools">
-    <ToolkitItem href="/en/introduction/start-with-ai" icon="cli" label="CLI" />
-    <ToolkitItem href="/en/ai/studio" icon="studio" label="Agent Studio" />
-    <ToolkitItem href="/en/ai/get-started/mcp-integrate" icon="mcp" label="MCP" />
-    <ToolkitItem href="/en/ai/get-started/skills-integrate" icon="skills" label="Skills" />
-  </ToolkitGroup>
-
-  <ToolkitGroup title="Component libraries">
+<div className="not-prose my-8 grid gap-4 lg:grid-cols-3">
+  <ToolkitGroup title="Client-Side SDKs">
     <ToolkitItem href="/en/api-reference/conversational-ai/client-toolkit/web" icon="web" label="Web" />
     <ToolkitItem href="/en/api-reference/conversational-ai/client-toolkit/android" icon="android" label="Android" />
     <ToolkitItem href="/en/api-reference/conversational-ai/client-toolkit/ios" icon="ios" label="iOS" />
   </ToolkitGroup>
 
-  <ToolkitGroup title="SDKs and APIs">
+  <ToolkitGroup title="APIs">
+    <ToolkitItem href="/en/api-reference/conversational-ai/rest-api" icon="rest" label="REST API" />
     <ToolkitItem href="/en/realtime-media/rtc" icon="rtc" label="RTC" />
     <ToolkitItem href="/en/realtime-media/rtm" icon="messaging" label="RTM" />
     <ToolkitItem href="/en/realtime-media/speech-to-text" icon="stt" label="Speech to Text" />
-    <ToolkitItem href="/en/api-reference/conversational-ai/rest-api" icon="rest" label="REST API" />
   </ToolkitGroup>
 
-  <ToolkitGroup title="Server SDKs">
-    <ToolkitItem href="/en/api-reference/conversational-ai/server-sdk/go" icon="go" label="Go" />
-    <ToolkitItem href="/en/api-reference/conversational-ai/server-sdk/python" icon="python" label="Python" />
-    <ToolkitItem href="/en/api-reference/conversational-ai/server-sdk/typescript" icon="typescript" label="TypeScript" />
+  <ToolkitGroup title="Server-Side SDKs">
+    <ToolkitItem href="/en/api-reference/recipes/python-quickstart" icon="python" label="Python" />
+    <ToolkitItem href="/en/ai/build/build-server-client" icon="typescript" label="TypeScript" />
+    <ToolkitItem href="/en/api-reference/recipes/golang-quickstart" icon="go" label="Go" />
     <ToolkitItem href="/en/realtime-media/rtc-server-sdk" icon="server" label="Media processing" />
   </ToolkitGroup>
-</OverviewToolkits>
+</div>
 
-## Resources
+## Get Help
 
-<OverviewToolkits>
-  <ToolkitGroup title="Get help">
-    <ToolkitItem href="/en/introduction/support" icon="rest" label="Support" />
-    <ToolkitItem href="/en/introduction/community-resources" icon="skills" label="Community resources" />
-  </ToolkitGroup>
-</OverviewToolkits>
+<HelpHub
+  cards={[
+    {
+      title: "Support tickets",
+      description: "Log in to submit a ticket through the Console.",
+      cta: "Create a ticket",
+      href: "https://agoraio.zendesk.com/hc/en-us",
+      icon: "ticket",
+    },
+    {
+      title: "Stack Overflow",
+      description: "Our team monitors Stack Overflow for quick answers.",
+      cta: "Go to Stack Overflow",
+      href: "https://stackoverflow.com/search?q=agora.io",
+      icon: "stack-overflow",
+    },
+    {
+      title: "Discord",
+      description: "Ask questions and share what you’re building with the community.",
+      cta: "Join Discord",
+      href: "https://discord.gg/agoradocs",
+      icon: "discord",
+    },
+    {
+      title: "Status page",
+      description: "Stay informed about service health and maintenance updates.",
+      cta: "View status",
+      href: "https://status.agora.io/",
+      icon: "status",
+    },
+  ]}
+  knowledgeBase={[
+    {
+      label: "How to implement basic HTTP authentication?",
+      href: "https://docs.agora.io/en/help/integration-issues/restful_authentication",
+    },
+    {
+      label: "Why can’t I answer calls with Bluetooth on iOS/Android?",
+      href: "https://docs.agora.io/en/help/quality-issues/bluetooth",
+    },
+    {
+      label: "How can I fix black screen issues?",
+      href: "https://docs.agora.io/en/help/quality-issues/video_blank",
+    },
+    {
+      label: "In-call volume vs media volume — what’s the difference?",
+      href: "https://docs.agora.io/en/help/integration-issues/system_volume",
+    },
+    {
+      label: "Free-of-charge policy for the first 10,000 minutes",
+      href: "https://docs.agora.io/en/help/account-and-billing/billing_free",
+    },
+  ]}
+  topics={[
+    {
+      label: "Integration issues",
+      href: "https://docs.agora.io/en/help/integration-issues",
+    },
+    {
+      label: "Quality issues",
+      href: "https://docs.agora.io/en/help/quality-issues",
+    },
+    {
+      label: "General product inquiry",
+      href: "https://docs.agora.io/en/help/general-product-inquiry",
+    },
+    {
+      label: "Account and billing",
+      href: "https://docs.agora.io/en/help/account-and-billing",
+    },
+    {
+      label: "Other issues",
+      href: "https://docs.agora.io/en/help/other-issues",
+    },
+  ]}
+/>

@@ -713,7 +713,7 @@ describe('DocsTableOfContents', () => {
 });
 
 describe('DocsMainColumn', () => {
-  it('renders helpfulness feedback and reference-style pager cards', async () => {
+  it('renders reference-style pager cards in the footer', async () => {
     renderWithRouter(
       <DocsMainColumn
         next={{ title: 'Next Page', url: '/en/introduction/next-page' }}
@@ -728,18 +728,6 @@ describe('DocsMainColumn', () => {
 
     const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
     const footer = within(desktopScroll).getByTestId('docs-page-footer');
-
-    expect(
-      within(footer).getByText('Was this page helpful?'),
-    ).toBeInTheDocument();
-
-    const yesButton = within(footer).getByRole('button', { name: 'Yes' });
-    const noButton = within(footer).getByRole('button', { name: 'No' });
-
-    fireEvent.click(yesButton);
-
-    expect(yesButton).toHaveAttribute('aria-pressed', 'true');
-    expect(noButton).toHaveAttribute('aria-pressed', 'false');
     expect(
       within(footer).getByRole('link', { name: /Previous Previous Page/i }),
     ).toHaveAttribute('href', '/en/introduction/previous-page');
@@ -768,5 +756,46 @@ describe('DocsMainColumn', () => {
 
     expect(feedback).toHaveClass('flex-col', 'sm:flex-row');
     expect(pager).toHaveClass('grid-cols-1', 'sm:grid-cols-2');
+  });
+});
+
+describe('DocsTableOfContents', () => {
+  it('renders helpfulness feedback below the desktop toc actions', async () => {
+    renderWithRouter(
+      <DocsTableOfContents
+        locale="en"
+        toc={[{ depth: 2, title: 'First heading', url: '#first-heading' }]}
+      />,
+    );
+
+    expect(await screen.findByText('On this page')).toBeInTheDocument();
+    expect(screen.getByTestId('docs-feedback')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Yes' }),
+    ).toBeInTheDocument();
+  });
+});
+
+describe('DocsPageFeedback placement', () => {
+  it('shows helpfulness feedback in the mobile footer only', async () => {
+    renderWithRouter(
+      <DocsMainColumn
+        next={{ title: 'Next Page', url: '/en/introduction/next-page' }}
+        previous={{
+          title: 'Previous Page',
+          url: '/en/introduction/previous-page',
+        }}
+      >
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const desktopFooter = within(desktopScroll).getByTestId('docs-page-footer');
+    expect(within(desktopFooter).queryByTestId('docs-feedback')).toBeNull();
+
+    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const mobileFooter = within(mobileFlow).getByTestId('docs-page-footer');
+    expect(within(mobileFooter).getByTestId('docs-feedback')).toBeInTheDocument();
   });
 });

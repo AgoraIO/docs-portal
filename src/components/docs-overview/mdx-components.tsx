@@ -1,6 +1,8 @@
 import {
+  ActivityIcon,
   AppWindowIcon,
   ArrowDownToLineIcon,
+  ArrowUpRightIcon,
   ArrowRightIcon,
   ArrowUpFromLineIcon,
   AudioLinesIcon,
@@ -24,6 +26,7 @@ import {
   RadioTowerIcon,
   ServerCogIcon,
   SmartphoneChargingIcon,
+  TicketIcon,
   TerminalSquareIcon,
   TvIcon,
   VideoIcon,
@@ -40,6 +43,7 @@ export function getOverviewMDXComponents(): MDXComponents {
     CapabilityGroupCard,
     CapabilityGroupGrid,
     CapabilityMatrix,
+    HelpHub,
     OverviewImageCard,
     OverviewImageCardGrid,
     OverviewLinkBanner,
@@ -112,6 +116,142 @@ function CapabilityGroupCard({
       </div>
     </section>
   );
+}
+
+type HelpHubCard = {
+  cta: string;
+  description: string;
+  href: string;
+  icon: 'discord' | 'stack-overflow' | 'status' | 'ticket';
+  title: string;
+};
+
+type HelpHubLink = {
+  href: string;
+  label: string;
+};
+
+function HelpHub({
+  cards,
+  knowledgeBase,
+  topics,
+}: {
+  cards: HelpHubCard[];
+  knowledgeBase: HelpHubLink[];
+  topics: HelpHubLink[];
+}) {
+  return (
+    <section className="not-prose my-8 space-y-5">
+      <div className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+        <div className="max-w-2xl">
+          <p className="text-sm leading-6 text-muted-foreground">
+            Choose the fastest path for product questions, service health, and
+            community support.
+          </p>
+        </div>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {cards.map((card) => (
+            <a
+              className="group flex min-h-[11.5rem] flex-col rounded-[22px] border border-border bg-background px-4 py-4 transition-colors hover:border-primary/35 hover:bg-accent/35"
+              href={card.href}
+              key={card.title}
+              rel={isExternalHref(card.href) ? 'noreferrer noopener' : undefined}
+              target={isExternalHref(card.href) ? '_blank' : undefined}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <span className="flex size-7 items-center justify-center rounded-md bg-muted text-foreground">
+                  <HelpHubIcon kind={card.icon} />
+                </span>
+                <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
+              </div>
+              <h4 className="mt-4 text-base font-semibold tracking-[-0.02em] text-foreground">
+                {card.title}
+              </h4>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                {card.description}
+              </p>
+              <span className="mt-auto pt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">
+                {card.cta}
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.12fr)_minmax(18rem,0.88fr)]">
+        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+          <div className="flex items-center justify-between gap-3">
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Popular Knowledge Base
+            </h4>
+            <span className="hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">
+              Quick answers
+            </span>
+          </div>
+          <ul className="mt-4 space-y-2">
+            {knowledgeBase.map((item) => (
+              <li key={item.label}>
+                <a
+                  className="group flex items-center justify-between gap-4 rounded-[16px] px-3 py-3 text-sm text-foreground transition-colors hover:bg-accent/45 hover:text-primary"
+                  href={item.href}
+                  rel={isExternalHref(item.href) ? 'noreferrer noopener' : undefined}
+                  target={isExternalHref(item.href) ? '_blank' : undefined}
+                >
+                  <span className="leading-6">{item.label}</span>
+                  <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-all group-hover:text-foreground group-hover:opacity-100" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Browse By Topic
+          </h4>
+          <div className="mt-4 space-y-2">
+            {topics.map((item) => (
+              <a
+                className="group flex items-center justify-between gap-4 rounded-[16px] border border-border bg-background px-4 py-3.5 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-accent/35 hover:text-primary"
+                href={item.href}
+                key={item.label}
+                rel={isExternalHref(item.href) ? 'noreferrer noopener' : undefined}
+                target={isExternalHref(item.href) ? '_blank' : undefined}
+              >
+                <span>{item.label}</span>
+                <ArrowRightIcon className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+              </a>
+            ))}
+          </div>
+        </section>
+      </div>
+    </section>
+  );
+}
+
+function HelpHubIcon({
+  kind,
+}: {
+  kind: HelpHubCard['icon'];
+}) {
+  if (kind === 'ticket') {
+    return <TicketIcon className="size-4" />;
+  }
+
+  if (kind === 'stack-overflow') {
+    return <Code2Icon className="size-4" />;
+  }
+
+  if (kind === 'discord') {
+    return <MessagesSquareIcon className="size-4" />;
+  }
+
+  return <ActivityIcon className="size-4" />;
+}
+
+function isExternalHref(href: string) {
+  return href.startsWith('http://') || href.startsWith('https://');
 }
 
 type CapabilityMatrixRow = {

@@ -28,6 +28,11 @@ describe('openapi lanes', () => {
         routePrefix: 'api-reference/api-ref/signaling',
         tab: 'api-reference',
       }),
+      expect.objectContaining({
+        id: 'speech-to-text-rest',
+        routePrefix: 'api-reference/api-ref/speech-to-text',
+        tab: 'api-reference',
+      }),
     ]);
   });
 
@@ -82,7 +87,10 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/signaling/peer-to-peer-message',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(30);
+    expect(getOpenApiPrerenderPaths()).toContain(
+      '/en/api-reference/api-ref/speech-to-text/join',
+    );
+    expect(getOpenApiPrerenderPaths()).toHaveLength(40);
   });
 
   it('resolves signaling REST endpoint routes in the api-reference tab', () => {

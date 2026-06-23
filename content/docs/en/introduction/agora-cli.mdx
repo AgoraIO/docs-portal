@@ -3,11 +3,11 @@ title: Agora CLI
 description: Install the Agora CLI to log in, initialize official starters, write environment files, and run diagnostics for local Agora workflows.
 ---
 
-Agora CLI is Agora's command-line tool for local setup. If your first goal is to get an Agora demo running, this is the first tool to install. It takes you from account login to a working starter app, then helps with project switching, credential export, and diagnosis when something fails.
+Install the Agora CLI when you want the shortest path to a working Agora starter. Use it to log in, initialize an official starter, write environment values, switch projects, and diagnose setup problems from the terminal.
+
+If you want to get a demo running before you fine-tune prompts or architecture, start here. After the starter works, add [Agora MCP](/en/introduction/agora-mcp) or [Agora Skills](/en/introduction/agora-skills) if you want your assistant to stay grounded in current docs and Agora-specific workflows.
 
 ## Install the Agora CLI
-
-The CLI is distributed as a native Go binary.
 
 <Tabs>
 <TabsList>
@@ -22,8 +22,6 @@ curl -fsSL https://raw.githubusercontent.com/AgoraIO/cli/main/install.sh | sh -s
 agora --help
 ```
 
-If `agora` is not available after installation, run the installer again with `--add-to-path` or add the install directory to your shell profile manually.
-
 </TabsContent>
 
 <TabsContent value="windows-powershell">
@@ -33,18 +31,12 @@ irm https://raw.githubusercontent.com/AgoraIO/cli/main/install.ps1 | iex
 agora --help
 ```
 
-If your execution policy blocks inline scripts, download `install.ps1` and run:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\install.ps1
-```
-
 </TabsContent>
 </Tabs>
 
-## Fastest use
+## Quick start
 
-For the shortest local setup path, initialize an official starter and run it locally.
+Follow this path if you want to get an official starter running as quickly as possible.
 
 <Tabs>
 <TabsList>
@@ -90,54 +82,58 @@ make dev
 </TabsContent>
 </Tabs>
 
-If that works, you can move on to application-specific work. If not, use the commands below to inspect project state and credentials.
+### What happens in this flow
 
-## What the CLI handles
+1. `agora login` authenticates your machine.
+2. `agora init` clones an official starter, binds it to your Agora project, and writes the environment you need locally.
+3. The runtime-specific install and dev commands start the application.
 
-Most work with the CLI falls into a small set of repeatable tasks. It is easier to think of them as a short command flow rather than as a reference table.
+If the starter runs, move on to application-specific work. If not, troubleshoot in the same order you experienced the setup below.
 
-### Sign in
+## If something fails
 
-Use this first when a machine has not been authenticated yet.
+### The `agora` command is not available
+
+If `agora --help` does not work after installation, rerun the installer first. On macOS and Linux, make sure you used the install command with `--add-to-path`.
+
+If PowerShell blocks the Windows install script, download `install.ps1` and run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+### Login or starter setup fails
+
+Run the setup path again in order:
 
 ```bash
 agora login
-```
-
-### Bootstrap a starter
-
-Use `agora init` when you want the CLI to clone an official starter, bind it to a project, and write the right environment file in one step.
-
-```bash
 agora init my-demo --template nextjs
 ```
 
-### Create or switch projects
+This covers the two most common first-run failures: the machine is not authenticated, or the starter was not initialized correctly.
 
-Use these commands when you are building from scratch or need to change which Agora project later commands should target.
+### The starter runs incorrectly
 
-```bash
-agora project create my-project --feature rtc --feature convoai
-agora project use my-project
-```
-
-### Export credentials
-
-Use this when you need project credentials in a shell-friendly format for local setup or debugging.
-
-```bash
-agora project env --shell
-```
-
-### Diagnose setup problems
-
-Use this when the starter runs incorrectly and you want the CLI to check readiness, credentials, and feature enablement.
+Use the CLI to check readiness, credentials, and feature enablement:
 
 ```bash
 agora project doctor
 ```
 
-For build-from-scratch paths, you usually create or switch projects first, then export credentials into the local environment.
+### Project settings or credentials look wrong
+
+Inspect the current environment values that the CLI exported for your active project:
+
+```bash
+agora project env --shell
+```
+
+This is the right check when the local app starts but the agent does not join, transcripts do not appear, or the active project looks wrong.
+
+## Build from scratch instead
+
+If you are not using an official starter, create or switch projects first, then export credentials into the local environment.
 
 <Tabs>
 <TabsList>
@@ -180,11 +176,20 @@ agora project env --shell
 </TabsContent>
 </Tabs>
 
-Coding agents benefit from the CLI because it gives them reproducible local steps they can execute and verify, especially during starter bootstrapping, project binding, environment generation, and first-line diagnosis.
+You can also switch the active project later or create a new one explicitly:
 
-## Next steps
+```bash
+agora project create my-project --feature rtc --feature convoai
+agora project use my-project
+```
+
+The CLI gives your assistant reproducible local steps it can execute and verify, especially during starter bootstrapping, project binding, environment generation, and first-line diagnosis.
+
+## Next step
+
+- [Agora MCP](/en/introduction/agora-mcp)
+
+## References
 
 - [Agora CLI GitHub](https://github.com/AgoraIO/cli)
 - [Agora CLI developer documentation](https://agoraio.github.io/cli/)
-- [Agora Skills](/en/introduction/agora-skills)
-- [Start with AI](/en/introduction/start-with-ai)

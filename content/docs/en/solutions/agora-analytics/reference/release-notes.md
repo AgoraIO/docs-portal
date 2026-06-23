@@ -3,8 +3,6 @@ title: "Release notes"
 description: "Information about changes in each release of Agora Analytics."
 ---
 
-# Release notes
-
 Agora Analytics is a tool that tracks and analyzes the usage and quality of calls. You can use this tool to locate quality issues, find root causes, and fix the issues to improve the final user experience.
 
 ## 2023.08
@@ -36,14 +34,14 @@ This release upgrades some RESTful APIs under the real-time audio and video (RTC
   - Adds a new query interface to obtain aggregated quality metrics under a specified dimension for a specified time range.
   - Adds a new query interface to obtain aggregated usage metrics under a specified dimension for a specified time range.
 
-See [API reference](https://docs.agora.io/en/agora-analytics/reference/api).
+See [API reference](api.md).
 
 - Real-time Monitoring RESTful APIs
   - Adds `dimension` and `dimensionValues` parameters to the query real-time scale and query real-time quality interfaces, which can be used to specify the query dimension.
   - Adds a new query interface for top 20 real-time scale metrics groups, which can be used to obtain the top 20 groups of real-time call volumes under a specified dimension.
   - Adds a new query interface for top 20 real-time quality metrics groups, which can be used to obtain the top 20 groups of quality-related metrics under a specified dimension.
 
-See [API reference](https://docs.agora.io/en/agora-analytics/reference/api).
+See [API reference](api.md).
 
 ## 2022.09
 
@@ -81,7 +79,7 @@ This release retires the Realtime (Beta) and Real-time Alarm (Beta) features on 
 
 -   Alert Notifications: Sends alerts to you through e-mails or API callbacks when abnormal metrics or events are detected in your Agora Video SDK projects.
 
-This release also adds the [Real-time Monitoring RESTful APIs](https://docs.agora.io/en/agora-analytics/reference/api) to query the real-time scale and quality metrics.
+This release also adds the [Real-time Monitoring RESTful APIs](api.md) to query the real-time scale and quality metrics.
 
 ## 2021.07
 
@@ -89,13 +87,13 @@ This release includes changes to the Data Insights function as follows:
 - Optimizes the usage and quality metrics and adds options for data granularity.
 - Improves the Data Insights RESTful APIs:
 - Updates the /beta/insight/usage/by\_time endpoint.
-- Adds the /beta/insight/quality/by\_time ([Query quality metrics](https://docs.agora.io/en/agora-analytics/reference/api)) endpoint.
+- Adds the /beta/insight/quality/by\_time ([Query quality metrics](api.md)) endpoint.
 
 ## 2021.05
 
 This release includes changes to the Call Inspector RESTful APIs as follows:
 - Updates the /beta/analytics/call/lists endpoint.
-- Replaces the /beta/analytics/call/details endpoint with /beta/analytics/call/sessions ([Get session details](https://docs.agora.io/en/agora-analytics/reference/api)) and /beta/analytics/call/metrics ([Get quality metrics](https://docs.agora.io/en/agora-analytics/reference/api)).
+- Replaces the /beta/analytics/call/details endpoint with /beta/analytics/call/sessions ([Get session details](api.md)) and /beta/analytics/call/metrics ([Get quality metrics](api.md)).
 
 ## 2020.09
 

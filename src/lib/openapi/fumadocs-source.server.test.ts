@@ -21,7 +21,10 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/signaling/peer-to-peer-message.mdx',
     );
-    expect(pagePaths).toHaveLength(30);
+    expect(pagePaths).toContain(
+      'en/api-reference/api-ref/speech-to-text/join.mdx',
+    );
+    expect(pagePaths).toHaveLength(40);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {

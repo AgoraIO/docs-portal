@@ -3,8 +3,6 @@ title: "Pricing"
 description: "Provides you with information on billing, fee deductions, free-of-charge policy, and any suspension to your account based on the account type."
 ---
 
-# Pricing
-
 Agora Analytics manages analytics features and API access through pricing plans. To use a feature or an API, you
 subscribe to the plan that provides access to that feature or API.
 
@@ -24,7 +22,7 @@ The available features for Call Inspector are:
 | Call Inspector RESTful API           | ✘       | Standard-level | Premium-level | Enterprise-level |
 | Support for embedding in web portals | ✘       | ✔              | ✔             | ✔                |
 
-For details about the Standard, Premium, and Enterprise-level Call Inspector RESTful APIs, see [RESTful API](https://docs.agora.io/en/agora-analytics/reference/api).
+For details about the Standard, Premium, and Enterprise-level Call Inspector RESTful APIs, see [RESTful API](api.md).
 
 ### Data Insights and Data Insights Plus
 
@@ -132,7 +130,7 @@ The available features for Data Insights and Data Insights Plus are:
     </tbody>
 </table>
 
-For details about the Standard, Premium, and Enterprise-level Data Insights RESTful APIs, see [RESTful API](https://docs.agora.io/en/agora-analytics/reference/api).
+For details about the Standard, Premium, and Enterprise-level Data Insights RESTful APIs, see [RESTful API](api.md).
 
 Data Insights Plus is only available with the Premium or Enterprise subscription plans.
 
@@ -147,7 +145,7 @@ The available features for Real-time Monitoring are:
 | Data sampling                        | ✘       | ✔        | ✔             | ✔                |
 | Support for embedding in web portals | ✘       | ✔        | ✔             | ✔                |
 
-For details about the Standard, Premium, and Enterprise-level Real-time Monitoring RESTful APIs, see [RESTful API](https://docs.agora.io/en/agora-analytics/reference/api).
+For details about the Standard, Premium, and Enterprise-level Real-time Monitoring RESTful APIs, see [RESTful API](api.md).
 
 ### Alert Notifications
 

@@ -160,6 +160,60 @@ export const OPENAPI_LANES = [
       },
     },
   },
+  {
+    id: 'speech-to-text-rest',
+    parentUrl: {
+      en: '/en/api-reference/api-ref/speech-to-text',
+      'zh-CN': '/zh-CN/api-reference/api-ref/speech-to-text',
+    },
+    publicSourceUrl: {
+      en: '/openapi/speech-to-text/v7.en.yaml',
+      'zh-CN': '/openapi/speech-to-text/v7.zh-CN.yaml',
+    },
+    routePrefix: 'api-reference/api-ref/speech-to-text',
+    sourcePath: {
+      en: 'content/openapi/speech-to-text/v7.en.yaml',
+      'zh-CN': 'content/openapi/speech-to-text/v7.zh-CN.yaml',
+    },
+    tab: 'api-reference',
+    operations: {
+      join: {
+        routeLeaf: 'join',
+        title: {
+          en: 'Start a Real-time STT agent',
+          'zh-CN': '加入频道开始实时转录翻译',
+        },
+      },
+      query: {
+        routeLeaf: 'query',
+        title: {
+          en: 'Query the task status',
+          'zh-CN': '获取实时转录翻译任务的状态',
+        },
+      },
+      leave: {
+        routeLeaf: 'leave',
+        title: {
+          en: 'Stop a Real-time STT agent',
+          'zh-CN': '停止实时转录翻译',
+        },
+      },
+      update: {
+        routeLeaf: 'update',
+        title: {
+          en: 'Update task configuration',
+          'zh-CN': '更新实时转录翻译任务',
+        },
+      },
+      list: {
+        routeLeaf: 'list',
+        title: {
+          en: 'List Real-time STT agents',
+          'zh-CN': '获取任务列表',
+        },
+      },
+    },
+  },
 ] as const satisfies OpenApiLane[];
 
 export type OpenApiLaneId = (typeof OPENAPI_LANES)[number]['id'];

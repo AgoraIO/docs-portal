@@ -3,8 +3,6 @@ title: "Firewall requirements"
 description: "use Agora products in environments with restricted network access"
 ---
 
-# Firewall requirements
-
 To allow you to use Agora products in environments with restricted network access, Agora provides the following solutions: the firewall whitelist and the Agora cloud proxy.
 
 The following table lists the support of Agora products for the two solutions:

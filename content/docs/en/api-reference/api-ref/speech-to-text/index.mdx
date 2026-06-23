@@ -1,0 +1,23 @@
+---
+title: Overview
+description: Real-time transcription, translation, and caption recording using the Speech-to-Text REST API.
+---
+
+The Speech-to-Text REST API provides server-side access to real-time transcription, translation, and caption recording. Start and manage transcription agents that join your RTC channels and output captions from your backend.
+
+## API basics
+
+All requests are sent to the host `api.agora.io`.
+
+- **Authentication**: All APIs require [Basic Auth](authentication) for authentication.
+- **Request**: Refer to the respective API examples.
+- **Response**: The response content is in JSON format.
+- **Base URL**: `https://api.agora.io/api/speech-to-text/v1/projects/<appid>` where `<appid>` is the Agora app ID for your project.
+
+## REST APIs
+
+- [Start a Real-time STT agent](join): Creates and starts a transcription task that joins the specified RTC channel.
+- [Query the task status](query): Retrieves the status of a transcription task.
+- [Stop a Real-time STT agent](leave): Stops a running transcription task.
+- [Update task configuration](update): Updates the configuration of a running transcription task.
+- [List Real-time STT agents](list): Retrieves the list of transcription tasks for the project.

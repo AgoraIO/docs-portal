@@ -76,6 +76,23 @@ type OverviewImageCardComponent = ComponentType<{
   imageSrc: string;
   title: string;
 }>;
+type HelpHubComponent = ComponentType<{
+  cards: Array<{
+    cta: string;
+    description: string;
+    href: string;
+    icon: 'discord' | 'stack-overflow' | 'status' | 'ticket';
+    title: string;
+  }>;
+  knowledgeBase: Array<{
+    href: string;
+    label: string;
+  }>;
+  topics: Array<{
+    href: string;
+    label: string;
+  }>;
+}>;
 type OverviewSpotlightCardComponent = ComponentType<{
   description?: string;
   href: string;
@@ -170,6 +187,52 @@ describe('overview MDX components', () => {
     expect(screen.getByRole('link', { name: /Python/i })).toHaveAttribute(
       'href',
       '/en/ai/get-started/quickstart',
+    );
+  });
+
+  it('renders the help hub layout for introduction resources', () => {
+    const components = getOverviewMDXComponents();
+    const HelpHub = components.HelpHub as HelpHubComponent;
+
+    render(
+      <HelpHub
+        cards={[
+          {
+            cta: 'Create a ticket',
+            description: 'Log in to submit a ticket through the Console.',
+            href: 'https://agoraio.zendesk.com/hc/en-us',
+            icon: 'ticket',
+            title: 'Support tickets',
+          },
+        ]}
+        knowledgeBase={[
+          {
+            href: 'https://docs.agora.io/en/help/integration-issues/restful_authentication',
+            label: 'How to implement basic HTTP authentication?',
+          },
+        ]}
+        topics={[
+          {
+            href: 'https://docs.agora.io/en/help/integration-issues',
+            label: 'Integration issues',
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByText('How can we help?')).toBeVisible();
+    expect(screen.getByRole('link', { name: /Support tickets/i })).toHaveAttribute(
+      'href',
+      'https://agoraio.zendesk.com/hc/en-us',
+    );
+    expect(screen.getByText('Popular Knowledge Base')).toBeVisible();
+    expect(screen.getByRole('link', { name: /How to implement basic HTTP authentication/i })).toHaveAttribute(
+      'href',
+      'https://docs.agora.io/en/help/integration-issues/restful_authentication',
+    );
+    expect(screen.getByRole('link', { name: /Integration issues/i })).toHaveAttribute(
+      'href',
+      'https://docs.agora.io/en/help/integration-issues',
     );
   });
 
