@@ -1,0 +1,373 @@
+openapi: 3.1.0
+info:
+  version: ""
+  title: Ban user privileges
+  description: >-
+    Manage banning rules for the Agora Channel Management RESTful API. Create,
+    query, update, and delete rules that remove specified users from channels or
+    prevent them from publishing audio and video streams.
+
+
+    All requests are sent to the host `api.agora.io`.
+
+
+    - **Authentication**: All APIs require Basic Auth for authentication.
+
+    - **Request and response**: The content is in JSON format.
+
+    - All request URLs and request bodies are case-sensitive. All requests must
+      use HTTPS.
+servers:
+  - url: https://api.agora.io
+    description: Base host for the channel management APIs.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: All channel management REST APIs require Basic Auth for authentication.
+security:
+  - basicAuth: []
+paths:
+  /dev/v1/kicking-rule:
+    post:
+      summary: Create a banning rule
+      description: Use this endpoint to create a rule for banning specified user privileges.
+      operationId: cma-create-ban-rule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - appid
+                - privileges
+              properties:
+                appid:
+                  type: string
+                  description: >-
+                    The App ID of the project. You can get it through one of the
+                    following methods:
+
+                    - Copy from the [Agora Console](https://console.agora.io)
+
+                    - Call the Get all projects API, and read the value of the
+                      `vendor_key` field in the response body.
+                cname:
+                  type: string
+                  description: The channel name.
+                uid:
+                  type: number
+                  description: The user ID. Do not set it to `0`.
+                ip:
+                  type: string
+                  description: The IP address of the user. Do not set it to `0`.
+                time:
+                  type: number
+                  description: >-
+                    The time duration (in minutes) to ban the user. Values
+                    outside the range [1,1440] are clamped to the nearest bound.
+                    Setting this to `0` disables the rule: users are set offline
+                    but can rejoin immediately.
+                time_in_seconds:
+                  type: number
+                  description: >-
+                    The time duration (in seconds) to ban the user. Values
+                    outside the range [10,86430] are clamped to the nearest
+                    bound. Setting this to `0` disables the rule: users are set
+                    offline but can rejoin immediately.
+
+
+                    > Use either `time` or `time_in_seconds`, not both. If both
+                    are set, `time_in_seconds` takes effect. If neither is set,
+                    the default ban duration is 60 minutes (3600 seconds).
+                privileges:
+                  type: array
+                  items:
+                    type: string
+                  description: >-
+                    The user privileges you want to block. Possible values:
+
+                    - `join_channel`: Bans a user from joining a channel or
+                      kicks a user out of a channel.
+
+                    - `publish_audio`: Bans a user from publishing audio.
+
+                    - `publish_video`: Bans a user from publishing video.
+
+
+                    To ban a user from both publishing audio and video, specify
+                    both `publish_audio` and `publish_video`.
+            example:
+              appid: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
+              cname: channel1
+              uid: 589517928
+              ip: ""
+              time: 60
+              privileges:
+                - join_channel
+      responses:
+        "200":
+          description: >-
+            A `200` status code indicates success. The response body contains
+            the result of the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of this request. `success` means the request
+                      succeeds.
+                  id:
+                    type: number
+                    description: >-
+                      The rule ID. Save the rule ID to update or delete this
+                      rule later.
+              example:
+                status: success
+                id: 1953
+        default:
+          description: >-
+            The request failed. See the `message` field in the response body for
+            the reason. Refer to Response status codes for details.
+    delete:
+      summary: Delete a banning rule
+      description: Use this endpoint to delete a specified banning rule.
+      operationId: cma-delete-ban-rule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - appid
+                - id
+              properties:
+                appid:
+                  type: string
+                  description: >-
+                    The App ID of the project. You can get it through one of the
+                    following methods:
+
+                    - Copy from the [Agora Console](https://console.agora.io)
+
+                    - Call the Get all projects API, and read the value of the
+                      `vendor_key` field in the response body.
+                id:
+                  type: number
+                  description: The ID of the rule to delete.
+            example:
+              appid: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
+              id: 1953
+      responses:
+        "200":
+          description: >-
+            A `200` status code indicates success. The response body contains
+            the result of the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of this request. `success` means the request
+                      succeeds.
+                  id:
+                    type: number
+                    description: The ID of the deleted rule.
+              example:
+                status: success
+                id: 1953
+        default:
+          description: >-
+            The request failed. See the `message` field in the response body for
+            the reason. Refer to Response status codes for details.
+    get:
+      summary: Get the banning rule list
+      description: Use this endpoint to get the list of all banning rules.
+      operationId: cma-get-ban-rule-list
+      parameters:
+        - name: appid
+          in: query
+          required: true
+          schema:
+            type: string
+          description: >-
+            The App ID of the project. You can get it through one of the
+            following methods:
+
+            - Copy from the [Agora Console](https://console.agora.io)
+
+            - Call the Get all projects API, and read the value of the
+              `vendor_key` field in the response body.
+      responses:
+        "200":
+          description: >-
+            A `200` status code indicates success. The response body contains
+            the result of the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of this request. `success` means the request
+                      succeeds.
+                  rules:
+                    type: array
+                    description: >-
+                      The list of banning rules. Each object in the array
+                      represents one banning rule.
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          description: >-
+                            The rule ID. Required to update or delete the rule.
+                        appid:
+                          type: string
+                          description: The App ID of the project.
+                        uid:
+                          type: number
+                          description: The user ID.
+                        opid:
+                          type: number
+                          description: >-
+                            The operation ID, which can be used to track
+                            operation records when troubleshooting.
+                        cname:
+                          type: string
+                          description: The channel name.
+                        ip:
+                          type: string
+                          description: The IP address of the user.
+                        ts:
+                          type: string
+                          description: The UTC time when this rule expires.
+                        privileges:
+                          type: array
+                          items:
+                            type: string
+                          description: >-
+                            The banned user privileges. Possible values:
+                            `join_channel`, `publish_audio`, `publish_video`.
+                        createAt:
+                          type: string
+                          description: The UTC time when this rule was created.
+                        updateAt:
+                          type: string
+                          description: The UTC time when this rule was last updated.
+              example:
+                status: success
+                rules:
+                  - id: 1953
+                    appid: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
+                    uid: 589517928
+                    opid: 1406
+                    cname: "11"
+                    ip: 192.168.0.1
+                    ts: 2026-01-09T07:23:06.000Z
+                    privileges:
+                      - join_channel
+                    createAt: 2026-01-09T06:23:06.000Z
+                    updateAt: 2026-01-09T14:23:06.000Z
+        default:
+          description: >-
+            The request failed. See the `message` field in the response body for
+            the reason. Refer to Response status codes for details.
+    put:
+      summary: Update the expiration time of a banning rule
+      description: >-
+        Use this endpoint to update the expiration time of a specified banning
+        rule.
+      operationId: cma-update-ban-expiration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - appid
+                - id
+              properties:
+                appid:
+                  type: string
+                  description: >-
+                    The App ID of the project. You can get it through one of the
+                    following methods:
+
+                    - Copy from the [Agora Console](https://console.agora.io)
+
+                    - Call the Get all projects API, and read the value of the
+                      `vendor_key` field in the response body.
+                id:
+                  type: number
+                  description: The ID of the rule to update.
+                time:
+                  type: number
+                  description: >-
+                    The time duration (in minutes) to ban the user. Values
+                    outside the range [1,1440] are clamped to the nearest bound.
+                    Setting this to `0` disables the rule: users are set offline
+                    but can rejoin immediately.
+
+
+                    > Use either `time` or `time_in_seconds`, not both. If both
+                    are set, `time_in_seconds` takes effect. If neither is set,
+                    the default ban duration is 60 minutes (3600 seconds).
+                time_in_seconds:
+                  type: number
+                  description: >-
+                    The time duration (in seconds) to ban the user. Values
+                    outside the range [10,86430] are clamped to the nearest
+                    bound. Setting this to `0` disables the rule: users are set
+                    offline but can rejoin immediately.
+            example:
+              appid: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
+              id: 1953
+              time: 60
+      responses:
+        "200":
+          description: >-
+            A `200` status code indicates success. The response body contains
+            the result of the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: >-
+                      The status of this request. `success` means the request
+                      succeeds.
+                  result:
+                    type: object
+                    description: The result of the update.
+                    properties:
+                      id:
+                        type: number
+                        description: The rule ID.
+                      ts:
+                        type: string
+                        description: The UTC time when the rule expires.
+              example:
+                status: success
+                result:
+                  id: 1953
+                  ts: 2026-01-09T08:45:54.545Z
+        default:
+          description: >-
+            The request failed. See the `message` field in the response body for
+            the reason. Refer to Response status codes for details.

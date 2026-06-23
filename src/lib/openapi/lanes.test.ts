@@ -25,8 +25,8 @@ describe('openapi lanes', () => {
       }),
       expect.objectContaining({
         id: 'signaling-rest',
-        routePrefix: 'realtime-media/rtm/rest-api',
-        tab: 'realtime-media',
+        routePrefix: 'api-reference/api-ref/signaling',
+        tab: 'api-reference',
       }),
     ]);
   });
@@ -80,23 +80,24 @@ describe('openapi lanes', () => {
       '/en/api-reference/conversational-ai/rest-api/agent/join',
     );
     expect(getOpenApiPrerenderPaths()).toContain(
-      '/en/realtime-media/rtm/rest-api/peer-to-peer-message',
+      '/en/api-reference/api-ref/signaling/peer-to-peer-message',
     );
     expect(getOpenApiPrerenderPaths()).toHaveLength(30);
   });
 
-  it('resolves signaling REST endpoint routes in the realtime-media tab', () => {
+  it('resolves signaling REST endpoint routes in the api-reference tab', () => {
     expect(
-      resolveOpenApiEndpointRoute('en', 'realtime-media', [
-        'rtm',
-        'rest-api',
+      resolveOpenApiEndpointRoute('en', 'api-reference', [
+        'api-ref',
+        'signaling',
         'peer-to-peer-message',
       ]),
     ).toMatchObject({
       lane: expect.objectContaining({ id: 'signaling-rest' }),
       operationId: 'send-peer-message',
       routeLeaf: 'peer-to-peer-message',
-      url: '/en/realtime-media/rtm/rest-api/peer-to-peer-message',
+      url: '/en/api-reference/api-ref/signaling/peer-to-peer-message',
     });
   });
+
 });

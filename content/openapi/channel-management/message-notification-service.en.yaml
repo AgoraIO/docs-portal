@@ -1,0 +1,84 @@
+openapi: 3.1.0
+info:
+  version: ""
+  title: Message notification service
+  description: >-
+    Retrieve the IP addresses of the Agora Notifications service (NCS) using the
+    Agora Channel Management RESTful API. If your server is behind a firewall,
+    add these IP addresses to your allowlist to receive channel event
+    notifications.
+
+
+    All requests are sent to the host `api.agora.io`.
+
+
+    - **Authentication**: All APIs require Basic Auth for authentication.
+
+    - **Request and response**: The content is in JSON format.
+
+    - All request URLs and request bodies are case-sensitive. All requests must
+      use HTTPS.
+servers:
+  - url: https://api.agora.io
+    description: Base host for the channel management APIs.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: All channel management REST APIs require Basic Auth for authentication.
+security:
+  - basicAuth: []
+paths:
+  /v2/ncs/ip:
+    get:
+      summary: Query the IP address
+      description: >-
+        Use this endpoint to retrieve the IP addresses of the Agora
+        Notifications service (NCS) server. If your server is behind a firewall,
+        add these IP addresses to your allowlist to receive channel event
+        notifications.
+
+
+        > Agora occasionally adjusts the NCS IP addresses. Call this endpoint at
+        least every 24 hours and automatically update your firewall
+        configuration with the latest addresses.
+      operationId: cma-query-ip-address
+      responses:
+        "200":
+          description: >-
+            A `200` status code indicates success. The response body contains
+            the result of the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      service:
+                        type: object
+                        properties:
+                          hosts:
+                            type: array
+                            description: A list of NCS server host objects.
+                            items:
+                              type: object
+                              properties:
+                                primaryIP:
+                                  type: string
+                                  description: >-
+                                    The IP address of the NCS server. Add all IP
+                                    addresses returned in this field to your
+                                    firewall allowlist.
+              example:
+                data:
+                  service:
+                    hosts:
+                      - primaryIP: xxx.xxx.xxx.xxx
+                      - primaryIP: xxx.xxx.xxx.xxx
+        default:
+          description: >-
+            The request failed. See the `message` field in the response body for
+            the reason. Refer to Response status codes for details.

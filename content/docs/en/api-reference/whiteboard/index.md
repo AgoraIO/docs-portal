@@ -13,5 +13,5 @@ Use this page to choose the Whiteboard API reference surface.
 
 ## REST surfaces
 
-- [RESTful APIs](/en/api-reference/whiteboard/restful)
-- [Whiteboard REST API overview](/en/realtime-media/whiteboard/reference/rest-api/overview)
+- [RESTful APIs](/en/api-reference/api-ref/whiteboard/restful)
+- [Whiteboard REST API overview](/en/api-reference/api-ref/whiteboard/restful)

@@ -109,19 +109,19 @@ export const OPENAPI_LANES = [
   {
     id: 'signaling-rest',
     parentUrl: {
-      en: '/en/realtime-media/rtm/rest-api',
-      'zh-CN': '/zh-CN/realtime-media/rtm/rest-api',
+      en: '/en/api-reference/api-ref/signaling',
+      'zh-CN': '/zh-CN/api-reference/api-ref/signaling',
     },
     publicSourceUrl: {
       en: '/openapi/rtm/signaling-rest.en.yaml',
       'zh-CN': '/openapi/rtm/signaling-rest.en.yaml',
     },
-    routePrefix: 'realtime-media/rtm/rest-api',
+    routePrefix: 'api-reference/api-ref/signaling',
     sourcePath: {
       en: 'content/openapi/rtm/signaling-rest.en.yaml',
       'zh-CN': 'content/openapi/rtm/signaling-rest.en.yaml',
     },
-    tab: 'realtime-media',
+    tab: 'api-reference',
     operations: {
       'send-peer-message': {
         routeLeaf: 'peer-to-peer-message',
