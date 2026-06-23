@@ -8,9 +8,11 @@ This page explains billing, account settlement, end-of-life policies, and any ap
 ## Billing and account policies
 
 Agora Console provides billing information, fee deduction details, and account suspension notices based on your account type.
+
 :::note
 If you have signed a contract with Agora, the contract terms override all billing, deduction, and suspension details described on this page.
 :::
+
 ### Paid accounts
 
 Your account is a paid account if you have registered with Agora and completed any of the following:

@@ -3,8 +3,6 @@ title: "Embed in a secure portal"
 description: "Easily embed Agora Analytics pages in internal web portals using a low-code approach."
 ---
 
-# Embed in a secure portal
-
 This page explains how to embed Agora Analytics pages in your portal using the **Embed Settings**.
 
 ## Prerequisites

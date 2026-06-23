@@ -3,8 +3,6 @@ title: "Data Insights"
 description: "Provides periodic call-usage and call-quality statistics."
 ---
 
-# Data Insights
-
 **Data Insights** are designed to help you understand the usage and quality of calls in your app. You can view their distribution in multiple dimensions with daily and hourly data breakdown.
 
 ## Getting started

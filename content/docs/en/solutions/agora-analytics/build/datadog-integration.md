@@ -3,8 +3,6 @@ title: "Integrate Analytics with Datadog"
 description: "Configure Agora Analytics to push data directly to your Datadog dashboard."
 ---
 
-# Integrate Analytics with Datadog
-
 [Datadog](https://docs.datadoghq.com/) is an observability service for cloud-scale applications, that provides monitoring of servers, databases, tools, and services, through a SaaS-based data analytics platform. It enables you to visualize and monitor metrics, setup custom alerts, and create dashboards. To analyze Agora products data with your other integrations, you can push Agora Analytics usage, quality, and performance statistics directly to your Datadog account.
 
 This page shows you how to setup DataDog integration with Agora Analytics.

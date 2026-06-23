@@ -3,8 +3,6 @@ title: "Call Inspector"
 description: "See the quality of your calls in diagrams displaying data during the call process."
 ---
 
-# Call Inspector
-
 The Agora Analytics Call Inspector enables you to:
 
 - Find a call or a group of calls. 

@@ -11,6 +11,7 @@ Agora Console provides billing information, fee deduction details, and account s
 
 :::info
 > If you have signed a contract with Agora, the contract terms override all billing, deduction, and suspension details described on this page.
+:::
 
 ### Paid accounts
 
