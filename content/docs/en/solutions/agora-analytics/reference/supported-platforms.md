@@ -3,8 +3,6 @@ title: "Supported platforms"
 description: "A list of platforms supported by Agora Analytics."
 ---
 
-# Supported platforms
-
 - *Android*:
     | Browser or application | Receiving streams | Sending streams |
     |:-----------------|:-------|:-----|

@@ -3,8 +3,6 @@ title: "Security"
 description: "How Agora handles security."
 ---
 
-# Security
-
 ## Information security policy
 
 This section provides information security policy for Agora services.

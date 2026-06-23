@@ -3,29 +3,11 @@ title: Start with AI
 description: Get an Agora starter running first, then add the AI tooling that makes your coding agent accurate and productive.
 ---
 
-This page introduces the developer tools that Agora provides to support AI-assisted development, along with the fastest way to get started with Agora CLI. It begins with the practical setup path: install the required tools, run an official starter, and verify that the baseline works before customizing your workflow.
+Start with the Agora CLI so you can run an official starter first. Then add Agora MCP when you want your assistant to check the latest docs, and add Agora Skills when you want help choosing the right Agora workflow, starter, and setup path.
 
-## Developer tools
+If you are not sure what to install first, follow the steps on this page in order. The goal is simple: get a working baseline first, then make your assistant more useful.
 
-<Cards>
-  <Card
-      title="Agora Skills"
-      href="/en/introduction/agora-skills"
-      description="Teach your coding agent how to choose the right Agora workflow, starter, and build path."
-  />
-  <Card
-    title="Agora CLI"
-    href="/en/introduction/agora-cli"
-    description="Install, log in, initialize official starters, export env values, and run setup diagnostics."
-  />
-  <Card
-    title="Agora MCP"
-    href="/en/introduction/agora-mcp"
-    description="Give your coding agent live access to the latest official Agora docs while it builds or debugs."
-  />
-</Cards>
-
-## Run this now
+## Quick start
 
 ### 1. Install the Agora CLI
 <Tabs>
@@ -59,11 +41,11 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 </TabsContent>
 </Tabs>
 
-### 2. Give your coding agent the docs and workflow
+### 2. Add the tools your assistant needs
 
-Choose one of these:
+At this point, decide how much guidance you want your assistant to have:
 
-- Install [Agora MCP](/en/introduction/agora-mcp) if you want the agent to read the latest official docs before generating code.
+- Install [Agora MCP](/en/introduction/agora-mcp) if you want your assistant to check the latest official docs before it writes or changes code.
 <Tabs>
 <TabsList>
   <TabsTrigger value="codex">Codex</TabsTrigger>
@@ -130,9 +112,9 @@ Use `skills/agora/` as the directory entry point, or load `SKILL.md` directly if
 
 </TabsContent>
 </Tabs>
-If you are unsure, install both.
+If you want both fresh docs and workflow guidance, install both.
 
-### 3. Log in and start the official web starter
+### 3. Log in and run an official starter
 <Tabs>
 <TabsList>
   <TabsTrigger value="typescript">TypeScript</TabsTrigger>
@@ -183,6 +165,8 @@ This clones the official starter, binds it to your Agora project, and writes the
 
 Open `http://localhost:3000` and start a conversation.
 
+Once the app opens, run the quick smoke test below before you customize anything.
+
 ## Verify it worked
 
 Use a quick smoke test instead of reading deeper docs immediately. If these signals line up, you have a working baseline and can move on to customization.
@@ -194,7 +178,7 @@ Use a quick smoke test instead of reading deeper docs immediately. If these sign
 | Agent join | The agent joins successfully after startup. |
 | Output path | Speech or transcript output appears as expected in the app. |
 
-At that point, you have a working baseline. Only then should you start customizing prompts, runtime behavior, or architecture. This is also the right moment to make your coding agent more specific: tell it the product, platform, language, and goal instead of asking for a generic Agora integration.
+At that point, you have a working baseline. Only then should you start customizing prompts, runtime behavior, or architecture. This is also the right moment to make your assistant more specific: name the product, platform, language, and goal instead of asking for a generic Agora integration.
 
 ## Common failures
 
@@ -207,4 +191,12 @@ Most early failures are not architectural problems. They are install, path, or p
 | Agent does not join or transcripts do not appear | Whether the project is enabled and credentials are valid | Run `agora project doctor`. |
 | Project setup looks wrong | Whether the active project and env values match what you expect | Run `agora project env --shell` and inspect the exported credentials. |
 
-When debugging, keep the agent grounded in evidence. Give it logs, reproduction steps, and version details so it can reason from concrete failures instead of guessing. Keep MCP enabled whenever it is looking up APIs, auth flows, parameters, or platform differences, and use Skills when it needs help choosing the right Agora workflow rather than only reading docs.
+When debugging, keep your assistant grounded in evidence. Give it logs, reproduction steps, and version details so it can reason from concrete failures instead of guessing. Keep MCP enabled whenever it is looking up APIs, auth flows, parameters, or platform differences, and use Skills when it needs help choosing the right Agora workflow instead of only reading docs.
+
+## Choose your next tool
+
+Now that you have the overall setup path, pick the next page based on what you want your assistant to do:
+
+- Open [Agora CLI](/en/introduction/agora-cli) if you want the shortest path to running and troubleshooting an official starter.
+- Open [Agora MCP](/en/introduction/agora-mcp) if you want your assistant to check the latest Agora docs before it writes or changes code.
+- Open [Agora Skills](/en/introduction/agora-skills) if you want your assistant to choose the right Agora workflow, starter, and setup path.

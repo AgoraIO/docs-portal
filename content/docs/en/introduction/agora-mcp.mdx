@@ -3,7 +3,9 @@ title: Agora MCP
 description: Connect your AI coding assistant to Agora MCP so it can search the latest official documentation while building or debugging an Agora project.
 ---
 
-Agora MCP is an MCP server for live Agora documentation access inside your coding tool. It lets an assistant search current docs while generating code, checking APIs, or troubleshooting. If your agent is about to implement against Agora APIs or compare product paths, this is usually the next tool to install after the CLI.
+Install Agora MCP when you want your assistant to check the latest Agora docs before it writes or changes code. Use it to confirm current SDK methods, parameters, quickstarts, and product or platform differences while you build or debug.
+
+This is most useful when documentation freshness is the risky part of the task. If you also want help choosing the right Agora workflow or starter, add [Agora Skills](/en/introduction/agora-skills).
 
 ## Install the MCP server
 
@@ -69,29 +71,23 @@ Add `https://mcp.agora.io` to your MCP client and use `http` or `Streamable HTTP
 </TabsContent>
 </Tabs>
 
-## Fastest use
+## Start with a prompt
 
-Install the server in your coding tool, then ask the agent to search Agora docs before writing code.
+Install the server in your coding tool, then ask your assistant to search Agora docs before it writes code. Include the Agora product, the target platform, and the task type in the same prompt.
 
 ```text
 Use Agora MCP to find the current web quickstart for Conversational AI and explain the minimum setup for a browser voice demo.
 ```
 
-## When MCP helps
+## Make docs lookup part of the workflow
 
-MCP is most useful when the risky part of the task is documentation freshness. That usually means the agent needs to confirm the latest SDK methods, parameters, and error-handling guidance, compare product or platform paths before implementation, or read the official quickstart before generating code. In debugging, it is especially useful because it replaces stale assumptions with current product documentation.
+If your repository includes `AGENTS.md` or similar instructions, tell your assistant to prefer Agora MCP for product-specific lookups. That turns docs checks into a normal part of the workflow instead of an optional extra step.
 
-You will usually get better results if your prompt names three things clearly: the Agora product, the target platform, and the task type. A request like “use Agora MCP to check the current Web quickstart for Conversational AI” works better than a generic request because it narrows both the search space and the expected output.
-
-If your repository includes `AGENTS.md` or similar instructions, tell the coding agent to prefer Agora MCP for product-specific lookups. This makes the docs check part of the normal workflow instead of an optional extra step.
-
-When an MCP client is not available, these fallback resources still help:
+If your MCP client is not available, these fallback resources still help:
 
 - `https://docs.agora.io/llms.txt`
 - `https://docs-md.agora.io/...` for Markdown page versions
 
-## Next steps
+## References
 
 - [Agora MCP server](https://mcp.agora.io)
-- [Agora Skills](/en/introduction/agora-skills)
-- [Start with AI](/en/introduction/start-with-ai)

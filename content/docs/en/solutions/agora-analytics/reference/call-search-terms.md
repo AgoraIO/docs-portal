@@ -3,8 +3,6 @@ title: "Call Inspector glossary"
 description: "Unless otherwise specified, the term explanations on this page refer to Agora Analytics for all platforms and frameworks."
 ---
 
-# Call Inspector glossary
-
 Unless otherwise specified, the term explanations on this page refer to Agora Analytics for all platforms and frameworks.
 
 ## General concepts
