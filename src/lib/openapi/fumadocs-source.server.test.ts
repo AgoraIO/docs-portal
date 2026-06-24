@@ -34,9 +34,15 @@ describe('fumadocs openapi source', () => {
       'en/api-reference/api-ref/cloud-transcoding/acquire.mdx',
     );
     expect(pagePaths).toContain(
+      'en/realtime-media/rtmp-gateway/reference/rest-api/create-streaming-key.mdx',
+    );
+    expect(pagePaths).not.toContain(
+      'zh-CN/realtime-media/rtmp-gateway/reference/rest-api/create-streaming-key.mdx',
+    );
+    expect(pagePaths).toContain(
       'en/api-reference/api-ref/speech-to-text/join.mdx',
     );
-    expect(pagePaths).toHaveLength(79);
+    expect(pagePaths).toHaveLength(91);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {

@@ -53,6 +53,20 @@ describe('openapi lanes', () => {
         tab: 'api-reference',
       }),
       expect.objectContaining({
+        id: 'media-gateway-rest',
+        locales: ['en'],
+        publicSourceUrl: {
+          en: '/openapi/media-gateway/media-gateway.en.yaml',
+          'zh-CN': '/openapi/media-gateway/media-gateway.en.yaml',
+        },
+        routePrefix: 'realtime-media/rtmp-gateway/reference/rest-api',
+        sourcePath: {
+          en: 'content/openapi/media-gateway/media-gateway.en.yaml',
+          'zh-CN': 'content/openapi/media-gateway/media-gateway.en.yaml',
+        },
+        tab: 'realtime-media',
+      }),
+      expect.objectContaining({
         id: 'speech-to-text-rest',
         routePrefix: 'api-reference/api-ref/speech-to-text',
         tab: 'api-reference',
@@ -120,9 +134,12 @@ describe('openapi lanes', () => {
       '/en/api-reference/api-ref/cloud-transcoding/acquire',
     );
     expect(getOpenApiPrerenderPaths()).toContain(
+      '/en/realtime-media/rtmp-gateway/reference/rest-api/create-streaming-key',
+    );
+    expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/speech-to-text/join',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(79);
+    expect(getOpenApiPrerenderPaths()).toHaveLength(91);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {
@@ -182,6 +199,22 @@ describe('openapi lanes', () => {
       operationId: 'acquire-cloud-transcoding-builder-token',
       routeLeaf: 'acquire',
       url: '/en/api-reference/api-ref/cloud-transcoding/acquire',
+    });
+  });
+
+  it('resolves Media Gateway REST endpoint routes in the realtime-media tab', () => {
+    expect(
+      resolveOpenApiEndpointRoute('en', 'realtime-media', [
+        'rtmp-gateway',
+        'reference',
+        'rest-api',
+        'create-streaming-key',
+      ]),
+    ).toMatchObject({
+      lane: expect.objectContaining({ id: 'media-gateway-rest' }),
+      operationId: 'create-media-gateway-streaming-key',
+      routeLeaf: 'create-streaming-key',
+      url: '/en/realtime-media/rtmp-gateway/reference/rest-api/create-streaming-key',
     });
   });
 });

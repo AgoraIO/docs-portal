@@ -530,7 +530,13 @@ A complete code sample demonstrating the basic process of real-time interaction 
 
 **Complete sample code for real-time Voice Calling**
 
-**Java**
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
 
 ```java
 package com.example.<projectname>;
@@ -676,7 +682,9 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-**Kotlin**
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
 
 ```kotlin
 package com.example.<projectname>
@@ -814,6 +822,10 @@ class MainActivity : AppCompatActivity() {
   }
 }
 ```
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
 :::note
 For the `myAppId` and `token` variables, replace the placeholders with the values you obtained from Agora Console. Ensure you enter the same `channelName` you used when generating the temporary token.
 :::
@@ -3990,19 +4002,34 @@ To start a Voice Calling session, implement the following steps in your app:
 
 - React Native 0.60 or later. For more information, see [Get Started with React Native](https://reactnative.dev/docs/environment-setup).
 - Node 16 or later
-- The following, depending on your target platform:
-  **Android**
-  - A machine running macOS, Windows, or Linux
-  - [Java Development Kit (JDK) 11](https://openjdk.org/projects/jdk/11/) or later
-  - Latest version of Android Studio
-  - A physical or virtual mobile device running Android 5.0 or later
+For your target platform, prepare the following:
 
-  **iOS**
-  - A machine running macOS
-  - Xcode 10 or later
-  - CocoaPods
-  - A physical or virtual mobile device running iOS 9.0 or later. 
-    If you use React Native 0.63 or later, ensure your iOS version is 10.0 or later.
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
+
+- A machine running macOS, Windows, or Linux
+- [Java Development Kit (JDK) 11](https://openjdk.org/projects/jdk/11/) or later
+- Latest version of Android Studio
+- A physical or virtual mobile device running Android 5.0 or later
+
+</CodeBlockTab>
+
+<CodeBlockTab value="ios">
+
+- A machine running macOS
+- Xcode 10 or later
+- CocoaPods
+- A physical or virtual mobile device running iOS 9.0 or later.
+  If you use React Native 0.63 or later, ensure your iOS version is 10.0 or later.
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 - A microphone
 
@@ -4155,10 +4182,18 @@ const setupEventHandler = () => {
 :::note
 To ensure that you receive all Voice SDK events, register the event handler before joining a channel.
 :::
+
 ### Handle permissions
 To access the microphone, ensure that the user grants the necessary permissions when the app starts.
 
-**Android**
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
+
 On Android devices, pop up a prompt box to obtain permission to use the microphone.
 
 ```tsx
@@ -4174,7 +4209,10 @@ const getPermission = async () => {
 };
 ```
 
-**iOS**
+</CodeBlockTab>
+
+<CodeBlockTab value="ios">
+
 In Xcode, open the `info.plist` file and add the following content to the list on the right to obtain the corresponding device permissions:
 
 <tr>
@@ -4187,6 +4225,11 @@ In Xcode, open the `info.plist` file and add the following content to the list o
     <td>String</td>
     <td>The purpose of using the microphone, for example, for a call or live interactive streaming.</td>
   </tr>
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
 ### Leave the channel
 To exit a Voice Calling channel, call `leaveChannel`.
 
@@ -4527,30 +4570,45 @@ Take the following steps to test the sample code:
   > Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
 
 :::
-  **Android**
-  To run the app on an Android device:
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-    1. Turn on the developer options of the Android device and connect the Android device to the computer through a USB cable.
+<CodeBlockTab value="android">
 
-    1. In the project root directory, execute `npx react-native run-android`.
+To run the app on an Android device:
 
-  **iOS**
-  To run on the app on an iOS device:
+1. Turn on the developer options of the Android device and connect the Android device to the computer through a USB cable.
 
-    1. Open the `ProjectName/ios/ProjectName.xcworkspace` folder using Xcode.
+1. In the project root directory, execute `npx react-native run-android`.
 
-    1. Connect the iOS device to your computer through a USB cable.
+</CodeBlockTab>
 
-    1. In Xcode, click the **Build and Run** button.
+<CodeBlockTab value="ios">
+
+To run on the app on an iOS device:
+
+1. Open the `ProjectName/ios/ProjectName.xcworkspace` folder using Xcode.
+
+1. Connect the iOS device to your computer through a USB cable.
+
+1. In Xcode, click the **Build and Run** button.
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::note
   > For detailed steps on running the app on a real Android or iOS device, please refer to [Running On Device](https://reactnative.dev/docs/running-on-device).
+
+:::
 
 1. Launch the app and click the **Join channel** button to join a channel.
 
 4. Invite a friend to install and run the app on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel. Once your friend joins the channel, you can talk to each other.
 
-:::
 ## Reference
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.

@@ -47,7 +47,18 @@ The Chat SDK provides a message reporting API, which allows end-users to report 
 
 To use the reporting feature, refer to the following code sample to call the reporting API:
 
-### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="react-native">React Native</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="unity">Unity</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="windows">Windows</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 ```java
     // msgid: The ID of the message to report.
@@ -69,7 +80,9 @@ AgoraChatClient.getInstance().chatManager().asyncReportMessage(msgid, label, rea
     });
 ```
 
-### iOS
+</CodeBlockTab>
+
+<CodeBlockTab value="ios">
 
 ```objc
 // msgId: The ID of the message to report.
@@ -81,7 +94,9 @@ AgoraChatClient.getInstance().chatManager().asyncReportMessage(msgid, label, rea
                                                 completion:nil];
 ```
 
-### Web
+</CodeBlockTab>
+
+<CodeBlockTab value="web">
 
 ```javascript
 // reportType: The label of the illegal message. You need to add custom labels, like, pornography or advertising. It corresponds to the `Label` field on the `Message Report` page on the Agora Console.
@@ -94,7 +109,9 @@ chatClient.reportMessage({
 });
 ```
 
-### Flutter
+</CodeBlockTab>
+
+<CodeBlockTab value="flutter">
 
 ```typescript
 // messageId: The ID of the message to report.
@@ -110,7 +127,9 @@ try {
 }
 ```
 
-### React Native
+</CodeBlockTab>
+
+<CodeBlockTab value="react-native">
 
 ```typescript
 // msgId: The ID of the message to report.
@@ -126,7 +145,9 @@ ChatClient.getInstance()
   });
 ```
 
-### Unity
+</CodeBlockTab>
+
+<CodeBlockTab value="unity">
 
 ```csharp
 // msgId: The ID of the message to report.
@@ -144,7 +165,9 @@ SDKClient.Instance.ChatManager.ReportMessage(msgId, tag, reason, new CallBack(
 ));
 ```
 
-### Windows
+</CodeBlockTab>
+
+<CodeBlockTab value="windows">
 
 ```csharp
 // msgId: The ID of the message to report.
@@ -161,6 +184,10 @@ SDKClient.Instance.ChatManager.ReportMessage(msgId, tag, reason, new CallBack(
     }
 ));
 ```
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 After a user reports a message from the application, moderators can check and deal with the report on Agora Console:
 

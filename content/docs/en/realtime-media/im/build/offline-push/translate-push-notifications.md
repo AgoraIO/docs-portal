@@ -13,7 +13,14 @@ A recipient can set the preferred language for push notifications. If the langua
 
 The following sample code shows how to set and get the preferred language for push notifications:
 
-### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 ```java
 // Set the preferred language for offline push.
@@ -23,7 +30,9 @@ ChatClient.getInstance().pushManager().setPreferredNotificationLanguage("en", ne
 ChatClient.getInstance().pushManager().getPreferredNotificationLanguage(new ValueCallBack(){});
 ```
 
-### iOS
+</CodeBlockTab>
+
+<CodeBlockTab value="ios">
 
 ```objective-c
 // Set the preferred language for offline push.
@@ -40,9 +49,9 @@ ChatClient.getInstance().pushManager().getPreferredNotificationLanguage(new Valu
 }];
 ```
 
-### Web
+</CodeBlockTab>
 
-### Set push translation
+<CodeBlockTab value="web">
 
 Push notifications work with the translation feature. If a user enables the automatic translation feature and sends a message, the SDK will send both the original message and the translated message.
 
@@ -61,7 +70,17 @@ chatClient.setPushPerformLanguage(params);
 chatClient.getPushPerformLanguage();
 ```
 
-### Flutter
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
+<CodeBlockTabs defaultValue="flutter">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="react-native">React Native</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="flutter">
 
 ```dart
 // Set the preferred language for offline push.
@@ -74,7 +93,9 @@ try {
 } on ChatError catch (e) {}
 ```
 
-### React Native
+</CodeBlockTab>
+
+<CodeBlockTab value="react-native">
 
 ```typescript
 ChatClient.getInstance()
@@ -86,6 +107,10 @@ ChatClient.getInstance()
     console.log("Failed to set the preferred notification language.", reason);
   });
 ```
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 ### Windows, Unity
 

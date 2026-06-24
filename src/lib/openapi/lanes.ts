@@ -388,6 +388,110 @@ export const OPENAPI_LANES = [
     },
   },
   {
+    id: 'media-gateway-rest',
+    locales: ['en'],
+    parentUrl: {
+      en: '/en/realtime-media/rtmp-gateway/reference/rest-api',
+      'zh-CN': '/zh-CN/realtime-media/rtmp-gateway/reference/rest-api',
+    },
+    publicSourceUrl: {
+      en: '/openapi/media-gateway/media-gateway.en.yaml',
+      'zh-CN': '/openapi/media-gateway/media-gateway.en.yaml',
+    },
+    routePrefix: 'realtime-media/rtmp-gateway/reference/rest-api',
+    sourcePath: {
+      en: 'content/openapi/media-gateway/media-gateway.en.yaml',
+      'zh-CN': 'content/openapi/media-gateway/media-gateway.en.yaml',
+    },
+    tab: 'realtime-media',
+    operations: {
+      'create-media-gateway-streaming-key': {
+        routeLeaf: 'create-streaming-key',
+        title: {
+          en: 'Create streaming key',
+          'zh-CN': 'Create streaming key',
+        },
+      },
+      'query-media-gateway-streaming-key': {
+        routeLeaf: 'query-streaming-key',
+        title: {
+          en: 'Query streaming key',
+          'zh-CN': 'Query streaming key',
+        },
+      },
+      'delete-media-gateway-streaming-key': {
+        routeLeaf: 'delete-streaming-key',
+        title: {
+          en: 'Delete streaming key',
+          'zh-CN': 'Delete streaming key',
+        },
+      },
+      'query-media-gateway-streaming-list': {
+        routeLeaf: 'query-streaming-list',
+        title: {
+          en: 'Query streaming list',
+          'zh-CN': 'Query streaming list',
+        },
+      },
+      'query-media-gateway-streaming-information': {
+        routeLeaf: 'query-streaming-information',
+        title: {
+          en: 'Query streaming information',
+          'zh-CN': 'Query streaming information',
+        },
+      },
+      'force-disconnect-media-gateway-stream': {
+        routeLeaf: 'force-disconnection',
+        title: {
+          en: 'Force disconnect',
+          'zh-CN': 'Force disconnect',
+        },
+      },
+      'mute-media-gateway-stream': {
+        routeLeaf: 'mute-streaming',
+        title: {
+          en: 'Mute or unmute streaming',
+          'zh-CN': 'Mute or unmute streaming',
+        },
+      },
+      'create-or-reset-media-gateway-template': {
+        routeLeaf: 'create-reset-template',
+        title: {
+          en: 'Create or reset template',
+          'zh-CN': 'Create or reset template',
+        },
+      },
+      'update-media-gateway-template': {
+        routeLeaf: 'update-template',
+        title: {
+          en: 'Update template',
+          'zh-CN': 'Update template',
+        },
+      },
+      'delete-media-gateway-template': {
+        routeLeaf: 'delete-template',
+        title: {
+          en: 'Delete template',
+          'zh-CN': 'Delete template',
+        },
+      },
+      'set-media-gateway-global-template': {
+        routeLeaf: 'set-global-template',
+        title: {
+          en: 'Set global template',
+          'zh-CN': 'Set global template',
+        },
+      },
+      'query-media-gateway-ncs-ip': {
+        routeLeaf: 'query-ip-address',
+        title: {
+          en: 'Query notification service IP address',
+          'zh-CN': 'Query notification service IP address',
+        },
+      },
+    },
+  },
+  {
     id: 'speech-to-text-rest',
     parentUrl: {
       en: '/en/api-reference/api-ref/speech-to-text',

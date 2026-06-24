@@ -1,0 +1,139 @@
+---
+title: Acquire a builder token
+description: Acquire a builder token before you start a speech-to-text transcription.
+---
+
+
+:::caution
+Real-Time STT API versions v5.x and v6.x are deprecated since June 2025 and will reach end-of-life on June 11, 2026. Use the v7 REST API for new projects.
+:::
+
+## Endpoint
+
+- Method: `POST`
+
+- Endpoint: `https://api.agora.io/v1/projects/{appId}/rtsc/speech-to-text/builderTokens`
+
+:::info
+Real-Time STT API versions v5.x and v6.x are deprecated since June 2025 and will reach end-of-life on June 11, 2026. This affects your projects as follows:
+
+- **New projects**: Projects you create starting June 2025 must use v7.0.
+- **Existing projects**: If you're using v5.x or v6.x, migrate to v7.0 before June 11, 2026 to avoid service interruption.
+:::
+
+Before starting Real-Time STT conversion, call this endpoint to obtain a `builderToken`. The validity period of a `builderToken` is 5 minutes. After acquiring a token, call the [`start`](start) method within the token validity period to start a Real-Time STT task.
+
+## Request
+
+### Path parameters
+
+**`appId`** Type: `string` Required
+
+The App ID of the project
+
+
+### Request body
+
+`APPLICATION/JSON`
+
+#### BODY
+
+**`instanceId`** Type: `string` Required
+
+User-defined string identifier. Must be no more than 64 characters and can include:
+
+    - All lowercase English letters (a-z)
+    - All capital letters (A-Z)
+    - Numbers 0-9
+    - `-`, `_`
+
+    You can generate multiple builder tokens using an `instanceId`,  but only one token can be used to initiate a task.
+
+
+## Response
+
+- If the returned status code is `200`, the request was successful. The response body contains the result of the request.
+
+  #### OK
+
+**`tokenName`** Type: `string`
+
+The value of the builder token you use to call other methods.
+
+    
+    **`createTs`** Type: `integer`
+
+Unix timestamp (seconds) when the builder token was generated.
+
+
+    **`instanceId`** Type: `string`
+
+The `instanceId` you specified in the request.
+
+  - If the returned status code is not `200`, the request failed.  Refer to `message` and `code` fields to understand the possible reasons for failure.
+
+  #### Non-200
+
+**`message`** Type: `string`
+
+The reason why the request failed.
+
+    **`code`** Type: `integer`
+
+The error code.
+    
+  ## Authorization
+
+This endpoint requires [Basic Auth](../restful-authentication).
+## Request example
+
+### curl
+
+```bash
+      curl --request POST \
+        --url https://api.agora.io/v1/projects/:appId/rtsc/speech-to-text/builderTokens \
+        --header 'Authorization: Basic <credentials>'     
+      ```
+    ### Python
+
+```python
+    import requests
+
+    url = "https://api.agora.io/v1/projects/:appId/rtsc/speech-to-text/builderTokens"
+
+    headers = {"Authorization": "Basic <credentials>"}
+
+    response = requests.request("POST", url, headers=headers)
+
+    print(response.text)
+    ```
+    ### Node.js
+
+```js
+    const url = 'https://api.agora.io/v1/projects/:appId/rtsc/speech-to-text/builderTokens';
+    const options = {method: 'POST', headers: {Authorization: 'Basic <credentials>'}};
+
+    fetch(url, options)
+      .then(res => res.json())
+      .then(json => console.log(json))
+      .catch(err => console.error(err)); 
+    ```
+    ## Response example
+
+### 200
+
+```json
+    {
+      "tokenName": "The value of the builder token you use to call other methods.",
+      "createTs": null,
+      "instanceId": "The `instanceId` you specified in the request."
+    }
+    ```
+  ### Non-200
+
+```json
+    {
+      "message": "The reason why the request failed.",
+      "code": null
+    }
+    ```

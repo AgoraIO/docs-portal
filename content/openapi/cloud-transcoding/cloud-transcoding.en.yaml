@@ -35,6 +35,42 @@ paths:
         endpoint to retrieve a builder token. An `instanceId` can generate
         multiple builder tokens, but only one token can be used to initiate a
         request in a task.
+
+
+        ## Reference
+
+
+        Note the following guidelines when using a `builderToken`:
+
+
+        - After calling this endpoint successfully, you receive a `builderToken`
+        in the response body. You can use a `builderToken` for a single Cloud
+        Transcoding task.
+
+        - The validity period of a `builderToken` for creating Cloud
+        Transcoding is 5 minutes. To ensure successful Cloud Transcoding, best
+        practice is to initiate the corresponding `Create` request within 2
+        seconds after each `Acquire` response is received.
+
+        - Making batch `Create` requests after batch `builderToken` requests may
+        cause the request to fail.
+
+
+        **Output destination constraints**
+
+
+        - A single transcoding task cannot push to both a CDN address and an RTC
+        channel simultaneously. To push to both destinations, create two
+        separate tasks.
+
+        - If the audio or video configurations differ between the two
+        destinations, create two separate tasks.
+
+        - To push to multiple CDN addresses, include all destination addresses
+        within a single `outputs` object.
+
+        - Each transcoding task can push to only one RTC channel. To push to two
+        different RTC channels, create two separate tasks.
       operationId: acquire-cloud-transcoding-builder-token
       parameters:
         - $ref: "#/components/parameters/Content-Type"
@@ -109,6 +145,42 @@ paths:
         Creates a Cloud Transcoding task. When the task starts, Agora
         transcodes the specified input streams and outputs the result to the
         specified Agora RTC channel.
+
+
+        ## Reference
+
+
+        Note the following guidelines when using a `builderToken`:
+
+
+        - After calling the `Acquire a builder token` endpoint successfully, you
+        receive a `builderToken` in the response body. You can use a
+        `builderToken` for a single Cloud Transcoding task.
+
+        - The validity period of a `builderToken` for creating Cloud
+        Transcoding is 5 minutes. To ensure successful Cloud Transcoding, best
+        practice is to initiate the corresponding `Create` request within 2
+        seconds after each `Acquire` response is received.
+
+        - Making batch `Create` requests after batch `builderToken` requests may
+        cause the request to fail.
+
+
+        **Output destination constraints**
+
+
+        - A single transcoding task cannot push to both a CDN address and an RTC
+        channel simultaneously. To push to both destinations, create two
+        separate tasks.
+
+        - If the audio or video configurations differ between the two
+        destinations, create two separate tasks.
+
+        - To push to multiple CDN addresses, include all destination addresses
+        within a single `outputs` object.
+
+        - Each transcoding task can push to only one RTC channel. To push to two
+        different RTC channels, create two separate tasks.
       operationId: create-cloud-transcoding-task
       parameters:
         - $ref: "#/components/parameters/Content-Type"
@@ -197,7 +269,17 @@ paths:
   /v1/projects/{appId}/rtsc/cloud-transcoder/tasks/{taskId}:
     get:
       summary: Query the status of a task
-      description: Queries the status of a Cloud Transcoding task.
+      description: >-
+        Queries the status of a Cloud Transcoding task.
+
+
+        ## Reference
+
+
+        To understand the difference between query methods and message
+        notification service, see [What's the difference between query methods
+        and message notification
+        service?](/help/general-product-inquiry/query_vs_notifications).
       operationId: query-cloud-transcoding-task
       parameters:
         - $ref: "#/components/parameters/Content-Type"
@@ -240,6 +322,22 @@ paths:
         Updates an existing Cloud Transcoding task. The request body must
         contain all fields from the `Create` request body. For fields that you
         do not need to update, use the original values.
+
+
+        ## Reference
+
+
+        The `Update` request supports modifying the following fields only:
+
+
+        - Add or delete `rtc` members in `audioInputs[]` and `videoInputs[]` to
+        subscribe or unsubscribe from the host's audio and video streams.
+
+        - Modify the `region` field in `videoInputs[]` to update the host's
+        combined picture layout.
+
+        - Modify the `audioOption` and `videoOption` fields in `outputs[]` to
+        update the transcoding output audio and video configurations.
       operationId: update-cloud-transcoding-task
       parameters:
         - $ref: "#/components/parameters/Content-Type"
