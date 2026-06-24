@@ -20,18 +20,18 @@ Included in this release:
 
 * **New endpoint: Send a custom instruction**
 
-    Adds a new endpoint to inject a custom text instruction into the agent's current conversation pipeline. The instruction is processed as user input, enabling scenarios such as implicit instruction injection, client-side event triggering, and voice and text collaboration. For details, see [Send a custom instruction](../../api-reference/conversational-ai/rest-api/agent/think).
+    Adds a new endpoint to inject a custom text instruction into the agent's current conversation pipeline. The instruction is processed as user input, enabling scenarios such as implicit instruction injection, client-side event triggering, and voice and text collaboration. For details, see [Send a custom instruction](/en/api-reference/api-ref/conversational-ai/think).
 
 * **MLLM turn detection refactoring**
 
-    Introduces a new [`mllm.turn_detection`](../../api-reference/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection) object for configuring turn detection when using MLLM. When defined, this overrides the top-level `turn_detection` object. Supported modes vary by vendor:
+    Introduces a new [`mllm.turn_detection`](/en/api-reference/api-ref/conversational-ai/join#properties-mllm-turn-detection) object for configuring turn detection when using MLLM. When defined, this overrides the top-level `turn_detection` object. Supported modes vary by vendor:
 
     - OpenAI Realtime API: `agora_vad`, `server_vad`, `semantic_vad`
     - Google Gemini Live: `agora_vad`, `server_vad`
 
 * **Interruption control**
 
-    Adds a new top-level [`interruption`](../../api-reference/conversational-ai/rest-api/agent/join#properties-interruption) object for unified management of agent interruption behavior. Supports `start_of_speech` and `keywords` trigger modes, and configurable handling strategies when interruption is disabled.
+    Adds a new top-level [`interruption`](/en/api-reference/api-ref/conversational-ai/join#properties-interruption) object for unified management of agent interruption behavior. Supports `start_of_speech` and `keywords` trigger modes, and configurable handling strategies when interruption is disabled.
 
 #### Improvements
 
@@ -57,19 +57,19 @@ This release introduces the following changes to the RESTful API.
 
 * **New endpoint**
 
-    - [Send a custom instruction](../../api-reference/conversational-ai/rest-api/agent/think): `POST /v2/projects/{appid}/agents/{agentId}/think`
+    - [Send a custom instruction](/en/api-reference/api-ref/conversational-ai/think): `POST /v2/projects/{appid}/agents/{agentId}/think`
 
-* Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
+* Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
 
     * **New parameters**
 
-        - [`interruption`](../../api-reference/conversational-ai/rest-api/agent/join#properties-interruption): Unified interruption control configuration. Supports `start_of_speech` and `keywords` trigger modes, and configurable handling strategies when interruption is disabled.
-        - [`greeting_configs.delay_ms`](../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-greeting-configs-delay-ms): Specifies the delay in milliseconds before the agent plays the greeting message after the user joins the channel.
-        - [`llm.headers`](../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-headers): Allows you to pass custom headers in LLM requests, such as business-specific fields or tenant identifiers.
-        - [`mllm.enable`](../../api-reference/conversational-ai/rest-api/agent/join#properties-mllm-enable): Enables the MLLM module. Replaces the deprecated `advanced_features.enable_mllm`.
-        - [`mllm.turn_detection`](../../api-reference/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection): Turn detection configuration for the MLLM module. When defined, overrides the top-level `turn_detection` object.
-        - [`mllm.turn_detection.server_vad_config.idle_timeout_ms`](../../api-reference/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection-server-vad-config-idle-timeout-ms): Idle timeout in milliseconds for server VAD mode. Applicable to OpenAI Realtime API only.
-        - [`mllm.vendor`](../../api-reference/conversational-ai/rest-api/agent/join#properties-mllm-vendor) value `gemini`: Enables Google Gemini Live integration using the Gemini Developer API.
+        - [`interruption`](/en/api-reference/api-ref/conversational-ai/join#properties-interruption): Unified interruption control configuration. Supports `start_of_speech` and `keywords` trigger modes, and configurable handling strategies when interruption is disabled.
+        - [`greeting_configs.delay_ms`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-greeting-configs-delay-ms): Specifies the delay in milliseconds before the agent plays the greeting message after the user joins the channel.
+        - [`llm.headers`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-headers): Allows you to pass custom headers in LLM requests, such as business-specific fields or tenant identifiers.
+        - [`mllm.enable`](/en/api-reference/api-ref/conversational-ai/join#properties-mllm-enable): Enables the MLLM module. Replaces the deprecated `advanced_features.enable_mllm`.
+        - [`mllm.turn_detection`](/en/api-reference/api-ref/conversational-ai/join#properties-mllm-turn-detection): Turn detection configuration for the MLLM module. When defined, overrides the top-level `turn_detection` object.
+        - [`mllm.turn_detection.server_vad_config.idle_timeout_ms`](/en/api-reference/api-ref/conversational-ai/join#properties-mllm-turn-detection-server-vad-config-idle-timeout-ms): Idle timeout in milliseconds for server VAD mode. Applicable to OpenAI Realtime API only.
+        - [`mllm.vendor`](/en/api-reference/api-ref/conversational-ai/join#properties-mllm-vendor) value `gemini`: Enables Google Gemini Live integration using the Gemini Developer API.
 
     * **Behavior changes**
 
@@ -104,7 +104,7 @@ Included in this release:
 
 * **Preset model configurations**
 
-    Adds a [`preset`](../../api-reference/conversational-ai/rest-api/agent/join#preset) parameter to the Join API. Pass a comma-separated list of preset names to apply predefined configurations for ASR, LLM, and TTS providers. When you use a preset, you do not need to provide the endpoint URL, API key, or model for the preset provider. Use the `asr`, `llm`, and `tts` fields to configure additional settings. When you use a preset, the corresponding ASR, LLM, or TTS service is provided through Agora-managed accounts. For details, see the [pricing](pricing) page.
+    Adds a [`preset`](/en/api-reference/api-ref/conversational-ai/join#preset) parameter to the Join API. Pass a comma-separated list of preset names to apply predefined configurations for ASR, LLM, and TTS providers. When you use a preset, you do not need to provide the endpoint URL, API key, or model for the preset provider. Use the `asr`, `llm`, and `tts` fields to configure additional settings. When you use a preset, the corresponding ASR, LLM, or TTS service is provided through Agora-managed accounts. For details, see the [pricing](pricing) page.
 
     Available presets:
 
@@ -114,11 +114,11 @@ Included in this release:
 
 * **Pause state detection**
 
-    When enabled, the agent uses semantic understanding to detect when a user intends to pause the conversation. For example, if the user says "hold on" or "just a moment", the agent waits for further input instead of forwarding the utterance to the LLM. Controlled by the new [`pause_state_enabled`](../../api-reference/conversational-ai/rest-api/agent/join#properties-turn-detection-config-end-of-speech--mode-config-pause-state-enabled) parameter.
+    When enabled, the agent uses semantic understanding to detect when a user intends to pause the conversation. For example, if the user says "hold on" or "just a moment", the agent waits for further input instead of forwarding the utterance to the LLM. Controlled by the new [`pause_state_enabled`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech--mode-config-pause-state-enabled) parameter.
 
 - **Conversation turn insights**
 
-    You can now query per-turn start, end, and latency metrics for completed agent sessions. See [Query conversation turn information](../../api-reference/conversational-ai/rest-api/agent/turns).
+    You can now query per-turn start, end, and latency metrics for completed agent sessions. See [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns).
 
 - **Real-time TTS parameter updates with custom LLM**
 
@@ -151,14 +151,14 @@ This release introduces the following changes to the RESTful API.
 
 - **New endpoint: Query conversation turns**
 
-    Adds a new GET endpoint to query conversation turn information for an agent session. After a conversation ends, use this endpoint to retrieve the start event, end event, and latency metrics for each turn within the session. For details, see [Query conversation turn information](../../api-reference/conversational-ai/rest-api/agent/turns).
+    Adds a new GET endpoint to query conversation turn information for an agent session. After a conversation ends, use this endpoint to retrieve the start event, end event, and latency metrics for each turn within the session. For details, see [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns).
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
 
     * **New parameters added**
 
-        - [`preset`](../../api-reference/conversational-ai/rest-api/agent/join#preset)
-        - [`pause_state_enabled`](../../api-reference/conversational-ai/rest-api/agent/join#properties-turn-detection-config-end-of-speech--mode-config-pause-state-enabled)
+        - [`preset`](/en/api-reference/api-ref/conversational-ai/join#preset)
+        - [`pause_state_enabled`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech--mode-config-pause-state-enabled)
         
     * **Deprecated fields deleted**
 
@@ -178,11 +178,11 @@ Included in this release:
 
 * **MCP integration**
 
-    Adds a [`llm.mcp_servers`](../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-mcp-servers) field to the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API to connect the LLM to an MCP (Model Context Protocol) server. Set [`advanced_features.enable_tools`](../../api-reference/conversational-ai/rest-api/agent/join#properties-advanced-features-enable-tools) to `true`to enable tool calls. This allows the agent to call tools provided by external services to extend functionality.
+    Adds a [`llm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-mcp-servers) field to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API to connect the LLM to an MCP (Model Context Protocol) server. Set [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#properties-advanced-features-enable-tools) to `true`to enable tool calls. This allows the agent to call tools provided by external services to extend functionality.
 
 * **Filler phrases**
 
-    Adds a [`properties.filler_words`](../../api-reference/conversational-ai/rest-api/agent/join#properties-filler-words) field to insert pre-set or LLM-generated filler phrases during conversations to fill periods of silence while waiting for LLM output. This feature smooths dialogue flow, reduces user anxiety, and makes agent speech sound more natural.
+    Adds a [`properties.filler_words`](/en/api-reference/api-ref/conversational-ai/join#properties-filler-words) field to insert pre-set or LLM-generated filler phrases during conversations to fill periods of silence while waiting for LLM output. This feature smooths dialogue flow, reduces user anxiety, and makes agent speech sound more natural.
 
 #### Improvements
 
@@ -200,7 +200,7 @@ This release includes the following enhancements:
 
     Detects when the user begins speaking. When SoS is detected while the agent is speaking, an interruption occurs.
 
-    The [`config.start_of_speech`](../../api-reference/conversational-ai/rest-api/agent/join#properties-turn-detection-config-start-of-speech) parameter supports three detection modes:
+    The [`config.start_of_speech`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-start-of-speech) parameter supports three detection modes:
     - **VAD mode** (`vad`): Triggered by voice activity detection. Supports configuration of interruption threshold, prefix padding, and ignore word list.
     - **Keyword mode (Beta)** (`keywords`): Based on keyword triggering. The agent begins conversation after detecting a specified keyword.
     - **Disabled mode** (`disabled`): Disables interruption. Supports append or ignore strategies.
@@ -209,7 +209,7 @@ This release includes the following enhancements:
 
     Detects when the user finishes speaking. When EoS is detected, the agent generates a response.
 
-    The [`config.end_of_speech`](../../api-reference/conversational-ai/rest-api/agent/join#properties-turn-detection-config-end-of-speech) parameter supports two detection modes:
+    The [`config.end_of_speech`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech) parameter supports two detection modes:
     - **VAD mode** (`vad`): Determines conversation end based on silence duration.
     - **Semantic mode** (`semantic`): Determines conversation end based on semantic understanding. Supports configurable maximum wait time.    
 
@@ -217,9 +217,9 @@ This release includes the following enhancements:
 
 This release introduces the following changes to the RESTful API.
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
 
-    * **[`turn_detection`](../../api-reference/conversational-ai/rest-api/agent/join#properties-turn-detection) has a revamped structure**
+    * **[`turn_detection`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection) has a revamped structure**
 
         All previous fields under `turn_detection` have been deprecated and replaced with a new data structure. 
 
@@ -234,15 +234,15 @@ This release introduces the following changes to the RESTful API.
 
     * **AIVAD activation**
 
-        The `advanced_features.enable_aivad` field is now deprecated; To configure AIVAD activation use [`turn_detection.config.end_of_speech.mode= "sematic"`](../../api-reference/conversational-ai/rest-api/agent/join#properties-turn-detection-config-end-of-speech-mode).
+        The `advanced_features.enable_aivad` field is now deprecated; To configure AIVAD activation use [`turn_detection.config.end_of_speech.mode= "sematic"`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech-mode).
 
     * **New parameters added**
 
-        - [`advanced_features.enable_tools`](../../api-reference/conversational-ai/rest-api/agent/join#properties-advanced-features-enable-tools)
-        - [`llm.mcp_servers`](../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-mcp-servers)
-        - [`properties.filler_words`](../../api-reference/conversational-ai/rest-api/agent/join#properties-filler-words)
-        - [`turn_detection.mode`](../../api-reference/conversational-ai/rest-api/agent/join#properties-turn-detection-mode)
-        - [`turn_detection.config`](../../api-reference/conversational-ai/rest-api/agent/join#properties-turn-detection-config)
+        - [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#properties-advanced-features-enable-tools)
+        - [`llm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#properties-llm-mcp-servers)
+        - [`properties.filler_words`](/en/api-reference/api-ref/conversational-ai/join#properties-filler-words)
+        - [`turn_detection.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-mode)
+        - [`turn_detection.config`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config)
 
 ### v2.3
 
@@ -258,7 +258,7 @@ Included in this release:
 
 * **RTC media content encryption**
 
-    Adds an `rtc` parameter to the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API for configuring RTC encryption.
+    Adds an `rtc` parameter to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API for configuring RTC encryption.
 
 * **New ASR provider**
 
@@ -282,9 +282,9 @@ This release introduces the following changes to the RESTful API.
 
 - **Stop agent API is now asynchronous**
 
-    The [Stop a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/leave) API now responds immediately after request parameters are validated. The request is processed asynchronously after the API returns.
+    The [Stop a conversational AI agent](/en/api-reference/api-ref/conversational-ai/leave) API now responds immediately after request parameters are validated. The request is processed asynchronously after the API returns.
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
     - **New parameters added**
         - `properties.rtc`
 
@@ -298,11 +298,11 @@ Included in this release:
 
 * **Geofencing**
 
-    Use `geofence` configuration when you [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) to limit which Agora servers the Conversational AI Engine can access based on geographic regions. See [Restrict agent zones](../best-practices/regional-restrictions) for details.
+    Use `geofence` configuration when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) to limit which Agora servers the Conversational AI Engine can access based on geographic regions. See [Restrict agent zones](../best-practices/regional-restrictions) for details.
 
 * **Agent greeting mode**
 
-    Adds a field `llm.greeting_configs.mode` to the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) request to set the agent's greeting broadcast mode. The following modes are supported:
+    Adds a field `llm.greeting_configs.mode` to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to set the agent's greeting broadcast mode. The following modes are supported:
 
     - `single_every` (Default): The agent broadcasts a greeting every time a user joins a channel where there are no other users.
     - `single_first`: The agent broadcasts a greeting only when the first user joins a channel.
@@ -323,7 +323,7 @@ This release includes the following enhancements:
 
 This release introduces the following changes to the RESTful API.
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
     - **New parameters added**
         - `properties.geofence`
         - `llm.greeting_configs.mode`
@@ -338,11 +338,11 @@ Included in this release:
 
 * **Template variables**
 
-    This version adds the `llm.template_variables` field to the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API, used to insert variables into the agent's `system_messages`, `greeting_message`, `failure_message`, and `parameters.silence_config.content` text. By configuring these variables, the Conversational AI engine automatically replaces them with the corresponding values defined in `llm.template_variables`. Template variables, combined with prompt customization and SIP outbound calling functionality, enable you to dynamically inject content to automate processes such as automatic hang-up, voicemail recognition, automatic message leaving, and call transfer.
+    This version adds the `llm.template_variables` field to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API, used to insert variables into the agent's `system_messages`, `greeting_message`, `failure_message`, and `parameters.silence_config.content` text. By configuring these variables, the Conversational AI engine automatically replaces them with the corresponding values defined in `llm.template_variables`. Template variables, combined with prompt customization and SIP outbound calling functionality, enable you to dynamically inject content to automate processes such as automatic hang-up, voicemail recognition, automatic message leaving, and call transfer.
 
 * **Custom labels**
 
-    This version adds a `labels` field to the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API, enabling agents to carry custom labels. These labels are bound to the agent and returned in the `payload` field of all message notification callbacks from the Conversational AI engine, allowing you to implement custom business logic, such as tagging activity IDs, customer groups, and business scenarios.
+    This version adds a `labels` field to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API, enabling agents to carry custom labels. These labels are bound to the agent and returned in the `payload` field of all message notification callbacks from the Conversational AI engine, allowing you to implement custom business logic, such as tagging activity IDs, customer groups, and business scenarios.
 
     In SIP outbound call scenarios, you can pass a custom label in the `properties.labels` field when calling the outbound call interface to mark the call.
 
@@ -350,7 +350,7 @@ Included in this release:
 
 This release introduces the following changes to the RESTful API.
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
     - **New parameters added**
         - `properties.labels`
         - `llm.template_variables`
@@ -378,17 +378,17 @@ Included in this release:
     
 * **Graceful exit**
 
-    This version adds a new `farewell_config` field to [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API to configure the graceful exit feature. When enabled, calling the [Stop a Conversational Agent](../../api-reference/conversational-ai/rest-api/agent/leave) API causes the agent to enter an `IDLE` state before leaving the channel.
+    This version adds a new `farewell_config` field to [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API to configure the graceful exit feature. When enabled, calling the [Stop a Conversational Agent](/en/api-reference/api-ref/conversational-ai/leave) API causes the agent to enter an `IDLE` state before leaving the channel.
 
 * **Keyword interruption mode**
 
-    This release adds a new option to the `turn_detection.interrupt_mode` field in the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API. Set this field to `"keyword"` to enable keyword interruption mode.
+    This release adds a new option to the `turn_detection.interrupt_mode` field in the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API. Set this field to `"keyword"` to enable keyword interruption mode.
 
     When this mode is enabled, the agent stops its current behavior after detecting any of the keywords specified in the `turn_detection.interrupt_keywords` field.
 
 * **Adaptive interruption mode**
 
-    This release adds a new option to the `turn_detection.interrupt_mode` field in the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API. Set this field to `"adaptive"` to enable adaptive interruption mode.
+    This release adds a new option to the `turn_detection.interrupt_mode` field in the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API. Set this field to `"adaptive"` to enable adaptive interruption mode.
 
     When this mode is enabled, the agent dynamically increases the voice continuity threshold while speaking to reduce accidental interruptions.
 
@@ -439,7 +439,7 @@ This release includes the following enhancements:
 
 This release introduces the following changes to the RESTful API.
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
     - **New parameters added**
         - `properties.parameters.farewell_config`
         - `properties.advanced_features.enable_sal`
@@ -519,7 +519,7 @@ Released on July 31, 2025.
 
 * **AI avatars**
 
-    Create visual avatar representations for your conversational agents using third-party avatar providers. AI avatars provide a visual presence during voice interactions, making conversations feel more natural and engaging. Enable AI avatars by setting `avatar.enable` to `true` and configuring the `avatar.vendor` and `avatar.params` fields when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) to create your agent.
+    Create visual avatar representations for your conversational agents using third-party avatar providers. AI avatars provide a visual presence during voice interactions, making conversations feel more natural and engaging. Enable AI avatars by setting `avatar.enable` to `true` and configuring the `avatar.vendor` and `avatar.params` fields when calling [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) to create your agent.
 
     > **Info**
 > AI avatars require video streaming and incur additional charges. See [video calling pricing](../../realtime-media/video/reference/pricing) for details.
@@ -540,7 +540,7 @@ Released on July 31, 2025.
 
 This release introduces the following modifications to the RESTful API.
 
-- [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join)
+- [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join)
     - **New parameters added**
         - `avatar.enable`
         - `avatar.vendor`
@@ -587,7 +587,7 @@ Released on July 15, 2025.
 
 * **Custom ASR provider support**
 
-    To improve flexibility in configuring conversational agents, this release allows you to select a custom automatic speech recognition (ASR) provider. The [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API now includes the following new parameters:
+    To improve flexibility in configuring conversational agents, this release allows you to select a custom automatic speech recognition (ASR) provider. The [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API now includes the following new parameters:
 
     - `asr.vendor`: Specify the ASR provider
     - `asr.params`: Configure ASR parameters
@@ -629,7 +629,7 @@ Released on July 15, 2025.
 
 This release introduces several important modifications to the RESTful API.
 
-- [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join)
+- [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join)
     - **New parameters added**
         - `asr.vendor`  
         - `asr.params`  
@@ -661,7 +661,7 @@ Released on Jun 9, 2025.
 
 * **Voice interruption mode**
 
-    This release adds the `turn_detection.interrupt_mode` parameter to the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API, allowing you to control how the agent handles human voice interruptions. The following modes are supported:
+    This release adds the `turn_detection.interrupt_mode` parameter to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API, allowing you to control how the agent handles human voice interruptions. The following modes are supported:
 
     * **`interrupt`**: (Default) The human voice immediately interrupts the agent. The agent terminates the current interaction and processes the new human voice input.
 
@@ -671,13 +671,13 @@ Released on Jun 9, 2025.
     
 * **TTS filtering**
 
-    This release adds the `tts.skip_patterns` parameter to the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API. This parameter controls whether the TTS module skips bracketed content when reading LLM response text. This prevents the agent from vocalizing structural prompt information like tone indicators, action descriptions, and system prompts, creating a more natural and immersive listening experience.
+    This release adds the `tts.skip_patterns` parameter to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API. This parameter controls whether the TTS module skips bracketed content when reading LLM response text. This prevents the agent from vocalizing structural prompt information like tone indicators, action descriptions, and system prompts, creating a more natural and immersive listening experience.
 
 #### API changes
 
 This release introduces several important modifications to the RESTful API.
 
-- [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join)
+- [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join)
     - **New parameters added**
         - `turn_detection.interrupt_mode`
         - `parameters.silence_config`
@@ -691,17 +691,17 @@ Released on May 29, 2025.
 
 * **Metadata support for LLM requests**
 
-    This release adds the `llm.vendor` parameter to the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API. When set to `"custom"`, the agent includes additional metadata when calling the LLM, such as `turn_id` and `timestamp`.
+    This release adds the `llm.vendor` parameter to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API. When set to `"custom"`, the agent includes additional metadata when calling the LLM, such as `turn_id` and `timestamp`.
 
 * **Support for Anthropic**
 
-    Conversational AI Engine now supports `anthropic` as a request style for chat completion. Refer to the `llm.style` parameter in [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join).
+    Conversational AI Engine now supports `anthropic` as a request style for chat completion. Refer to the `llm.style` parameter in [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
 
 #### Improvements
 
 This release includes the following enhancements:
 
-* **Advanced LLM configuration**: The [Update agent configuration](../../api-reference/conversational-ai/rest-api/agent/update) API now supports:
+* **Advanced LLM configuration**: The [Update agent configuration](/en/api-reference/api-ref/conversational-ai/update) API now supports:
     * `llm.system_messages` for updating system prompts
     * `llm.params` for modifying configuration parameters used when calling the large language model
 
@@ -709,14 +709,14 @@ This release includes the following enhancements:
 
 This release introduces several important modifications to the RESTful API.
 
-- [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join)
+- [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join)
     - **New parameters added**
         - `llm.vendor`
         
     - **Removed parameters:**
         - `agent_rtm_uid`
 
-- [Update agent configuration](../../api-reference/conversational-ai/rest-api/agent/update)
+- [Update agent configuration](/en/api-reference/api-ref/conversational-ai/update)
     - **New parameters added**
         - `llm.system_messages`
         - `llm.params`
@@ -729,13 +729,13 @@ Released on April 16, 2025.
 
 - **Agent conversation history**: This version adds two methods to retrieve an agent’s history. The history includes messages exchanged between the user and the agent and timestamps of agent creation and exit.
 
-    - Call the RESTful API `history` endpoint to [Retrieve agent history](../../api-reference/conversational-ai/rest-api/agent/history).
+    - Call the RESTful API `history` endpoint to [Retrieve agent history](/en/api-reference/api-ref/conversational-ai/history).
 
     - Subscribe to the [agent history event](reference/event-types#103-agent-history) through the [Agora message notification service](build/handle-runtime-events/event-notifications). When the agent stops, Agora automatically sends the agent's history to your business server through a Webhook callback.
 
 #### Improvements
 
-- **Customize the priority of broadcast information**: This version upgrades the [Broadcast a message using TTS](../../api-reference/conversational-ai/rest-api/agent/speak) interface and adds two new configuration parameters related to broadcast interruption logic:
+- **Customize the priority of broadcast information**: This version upgrades the [Broadcast a message using TTS](/en/api-reference/api-ref/conversational-ai/speak) interface and adds two new configuration parameters related to broadcast interruption logic:
 
     - `priority`: Sets the priority of the message broadcast. Supports setting the following priorities: 
         - `INTERRUPT` High priority
@@ -746,8 +746,8 @@ Released on April 16, 2025.
 
 #### API changes
 
-- Adds the [Retrieve agent history](../../api-reference/conversational-ai/rest-api/agent/history) method.
-- Adds `priority` and `interruptable` parameters to the [Broadcast a message using TTS](../../api-reference/conversational-ai/rest-api/agent/speak) method.
+- Adds the [Retrieve agent history](/en/api-reference/api-ref/conversational-ai/history) method.
+- Adds `priority` and `interruptable` parameters to the [Broadcast a message using TTS](/en/api-reference/api-ref/conversational-ai/speak) method.
 
 ### v1.2
 
@@ -762,8 +762,8 @@ Released on April 10, 2025.
 #### API changes
 
 This version adds the following APIs:
-- [Broadcast a message using TTS](../../api-reference/conversational-ai/rest-api/agent/speak)
-- [Interrupt the agent](../../api-reference/conversational-ai/rest-api/agent/interrupt)
+- [Broadcast a message using TTS](/en/api-reference/api-ref/conversational-ai/speak)
+- [Interrupt the agent](/en/api-reference/api-ref/conversational-ai/interrupt)
 
 ### v1.1
 
@@ -771,7 +771,7 @@ Released on March 27, 2025.
 
 #### New features
 
-The [Start a conversational agent](../../api-reference/conversational-ai/rest-api/agent/join) API adds the `enable_rtm`and `agent_rtm_uid` parameters to enable Signaling integration with conversational AI agent. When this feature is enabled, the agent can leverage the Signaling SDK to obtain a users's custom context information such as speaking status, selected text, signature, and score, and pass this data to the agent to generate more relevant content. For details, see [Transmit custom information](../build/shape-the-conversation/custom-information).
+The [Start a conversational agent](/en/api-reference/api-ref/conversational-ai/join) API adds the `enable_rtm`and `agent_rtm_uid` parameters to enable Signaling integration with conversational AI agent. When this feature is enabled, the agent can leverage the Signaling SDK to obtain a users's custom context information such as speaking status, selected text, signature, and score, and pass this data to the agent to generate more relevant content. For details, see [Transmit custom information](../build/shape-the-conversation/custom-information).
 
 #### Improvements
 
@@ -779,7 +779,7 @@ To help you quickly integrate a custom large language model (LLM), this version 
 
 #### API changes
 
-The `POST` method to [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) now includes the `enable_rtm` and `agent_rtm_uid` parameters.
+The `POST` method to [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) now includes the `enable_rtm` and `agent_rtm_uid` parameters.
 
 ### v1.0 (Public Beta)
 

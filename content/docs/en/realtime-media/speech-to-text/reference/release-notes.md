@@ -41,7 +41,7 @@ Included in this release:
 
 - **Agent list API**
 
-  This version adds a [List Real-time STT agents](../../../api-reference/speech-to-text/restful/list) API. Use it to retrieve real-time transcription and translation tasks that meet specified criteria by channel, time range, and task status.
+  This version adds a [List Real-time STT agents](/en/api-reference/api-ref/speech-to-text/list) API. Use it to retrieve real-time transcription and translation tasks that meet specified criteria by channel, time range, and task status.
 
 ### v7.2
 

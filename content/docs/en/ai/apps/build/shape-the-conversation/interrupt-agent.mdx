@@ -13,9 +13,9 @@ This page describes how to implement agent interruption in your app.
 
 Conversational AI Engine supports an intelligent interruption feature that allows a user's voice input to automatically interrupt the speaking agent. This enables quicker response times and more natural, fluid interactions.
 
-To customize interruption behavior, configure the `turn_detection` parameters when calling [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+To customize interruption behavior, configure the `turn_detection` parameters when calling [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
 
-To enable AIVAD-based interruption, set [`turn_detection.config.end_of_speech.mode`](../../../api-reference/conversational-ai/rest-api/agent/join#properties-turn-detection-config-end-of-speech-mode) to `"semantic"`.
+To enable AIVAD-based interruption, set [`turn_detection.config.end_of_speech.mode`](/en/api-reference/api-ref/conversational-ai/join#properties-turn-detection-config-end-of-speech-mode) to `"semantic"`.
 
 The following example shows how to configure `turn_detection`:
 
@@ -96,7 +96,7 @@ Conversational AI Engine supports actively triggering an interruption by calling
 
 ### Call the RESTful API
 
-Use the [Interrupt agent](../../../api-reference/conversational-ai/rest-api/agent/interrupt) API to manually initiate an interruption request.
+Use the [Interrupt agent](/en/api-reference/api-ref/conversational-ai/interrupt) API to manually initiate an interruption request.
 
 ```bash
 curl --request post \
@@ -218,7 +218,7 @@ const conversationalAIAPI = ConversationalAIAPI.getInstance()
 
 #### Configure the conversational AI agent
 
-Call [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join) using the following parameter settings:
+Call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) using the following parameter settings:
 
 - `advanced_features.enable_rtm: true`: Start the SIG service (Required)
 - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
@@ -346,8 +346,8 @@ subRender/
 
 #### RESTful API
 
-- [Start a conversational AI Agent](../../../api-reference/conversational-ai/rest-api/agent/join)
-- [Interrupt the Agent](../../../api-reference/conversational-ai/rest-api/agent/interrupt)
+- [Start a conversational AI Agent](/en/api-reference/api-ref/conversational-ai/join)
+- [Interrupt the Agent](/en/api-reference/api-ref/conversational-ai/interrupt)
 
 #### Toolkit
 

@@ -23,7 +23,7 @@ Included in this release:
 
 - **Greeting interruption control**
 
-  The `properties.llm.greeting_configs` object in the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API now supports an `interruptable` parameter, which controls whether user speech can interrupt a greeting during playback.
+  The `properties.llm.greeting_configs` object in the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API now supports an `interruptable` parameter, which controls whether user speech can interrupt a greeting during playback.
 
 #### Improvements
 
@@ -31,13 +31,13 @@ These changes may affect your existing integration. Review each change and updat
 
 - **Response status codes updated**
 
-  This release adjusts the HTTP response status codes and `reason` values returned by the REST API. New status codes `401`, `429`, and `500` are added. New `reason` values `ServiceNotEnabled`, `AccountSuspended`, and `ResourceAllocationFailed` are introduced. The existing `InvalidRequest` reason is replaced by `InvalidRequestBody`, `MissingRequiredField`, and `InvalidFieldValue`. For details, see [Status codes and error messages](../../api-reference/conversational-ai/rest-api/status-codes).
+  This release adjusts the HTTP response status codes and `reason` values returned by the REST API. New status codes `401`, `429`, and `500` are added. New `reason` values `ServiceNotEnabled`, `AccountSuspended`, and `ResourceAllocationFailed` are introduced. The existing `InvalidRequest` reason is replaced by `InvalidRequestBody`, `MissingRequiredField`, and `InvalidFieldValue`. For details, see [Status codes and error messages](/en/api-reference/api-ref/conversational-ai/status-codes).
 
   If your integration relies on `reason` values for error handling, retry logic, or alerting, update your logic to handle the new values accordingly.
 
 - **Query conversation turns API now returns paginated results**
 
-  The [Query conversation turn information](../../api-reference/conversational-ai/rest-api/agent/turns) API no longer returns all turns in a single response. Results are now paginated, defaulting to page 1 with up to 50 turns per page.
+  The [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns) API no longer returns all turns in a single response. Results are now paginated, defaulting to page 1 with up to 50 turns per page.
 
   This affects sessions with more than 50 conversation turns. Update your integration to handle the new `total_turn_count` and `pagination` fields in the response, and retrieve subsequent pages as needed.
 
@@ -45,23 +45,23 @@ These changes may affect your existing integration. Review each change and updat
 
 - **`on_listening_action` default behavior change**
 
-  The default value of `on_listening_action` in the [Send a custom instruction](../../api-reference/conversational-ai/rest-api/agent/think) API has changed from `inject` to `interrupt`. When set to `interrupt`, the API immediately interrupts the current flow and initiates a new round of dialogue. If you rely on the previous default behavior, explicitly set `on_listening_action` to `inject` in your requests.
+  The default value of `on_listening_action` in the [Send a custom instruction](/en/api-reference/api-ref/conversational-ai/think) API has changed from `inject` to `interrupt`. When set to `interrupt`, the API immediately interrupts the current flow and initiates a new round of dialogue. If you rely on the previous default behavior, explicitly set `on_listening_action` to `inject` in your requests.
 
 #### API changes
 
 This release introduces the following changes to the REST API.
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
   - **New parameters**
     - `properties.llm.greeting_configs.interruptable`: Controls whether user speech can interrupt a greeting during playback.
 
-- Changes to [**Query conversation turn information**](../../api-reference/conversational-ai/rest-api/agent/turns)
+- Changes to [**Query conversation turn information**](/en/api-reference/api-ref/conversational-ai/turns)
   - **New query parameters**
     - Adds `page_index` and `page_size`.
   - **New response parameters**
     - Adds `agent_id`, `name`, `channel`, `total_turn_count`, and `pagination`.
 
-- Changes to [**Send a custom instruction**](../../api-reference/conversational-ai/rest-api/agent/think)
+- Changes to [**Send a custom instruction**](/en/api-reference/api-ref/conversational-ai/think)
   - **Behavior changes**
     - `on_listening_action` now defaults to `interrupt`.
 
@@ -82,7 +82,7 @@ Included in this release:
 
 - **New endpoint: Send a custom instruction**
 
-  Adds a new endpoint to inject a custom text instruction into the agent's current conversation pipeline. The instruction is processed as user input, enabling scenarios such as implicit instruction injection, client-side event triggering, and voice and text collaboration. For details, see [Send a custom instruction](../../api-reference/conversational-ai/rest-api/agent/think).
+  Adds a new endpoint to inject a custom text instruction into the agent's current conversation pipeline. The instruction is processed as user input, enabling scenarios such as implicit instruction injection, client-side event triggering, and voice and text collaboration. For details, see [Send a custom instruction](/en/api-reference/api-ref/conversational-ai/think).
 
 - **MLLM turn detection refactoring**
 
@@ -108,9 +108,9 @@ Included in this release:
 #### API changes
 
 - **New endpoint**
-  - [Send a custom instruction](../../api-reference/conversational-ai/rest-api/agent/think)
+  - [Send a custom instruction](/en/api-reference/api-ref/conversational-ai/think)
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
   - **New parameters**
     - `interruption`
     - `greeting_configs.delay_ms`
@@ -179,9 +179,9 @@ Included in this release:
 #### API changes
 
 - **New endpoint: Query conversation turns**
-  - [Query conversation turn information](../../api-reference/conversational-ai/rest-api/agent/turns)
+  - [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns)
 
-- Changes to [**Start a conversational AI agent**](../../api-reference/conversational-ai/rest-api/agent/join)
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
   - **New parameters**
     - `preset`
     - `pause_state_enabled`

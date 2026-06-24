@@ -16,7 +16,7 @@ pip install requests flask pyjwt
 
 The `/server/aiot_server_demo_example/config.json` file contains the server configuration parameters. Update this file with your project credentials and service settings.
 
-For detailed parameter descriptions, see [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+For detailed parameter descriptions, see [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
 
 **Configuration file structure:**
 

@@ -76,7 +76,7 @@ Before you begin, ensure the following:
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join), configure the following parameters in your `POST` request:
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure the following parameters in your `POST` request:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -205,7 +205,7 @@ Before you begin, ensure the following:
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join), configure the following parameters in your `POST` request:
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure the following parameters in your `POST` request:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -340,7 +340,7 @@ Before you begin, ensure the following:
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join), configure the following parameters in your `POST` request:
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure the following parameters in your `POST` request:
 
    | Parameter | Description | Required |
    | --- | --- | --- |

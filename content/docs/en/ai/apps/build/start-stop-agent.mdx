@@ -25,7 +25,7 @@ Agora’s Conversational AI technology enables real-time voice interactions betw
 - [Enabled Agora conversational AI](../../reference/enable-conversational-ai#enable-conversational-ai) for your project.
 - The following information from Agora Console:
     - [App ID](../../reference/enable-conversational-ai#get-the-app-id): The string identifier for your project used to call the Conversational AI Engine RESTful API.
-    - [Customer ID and Customer secret](../../../api-reference/conversational-ai/rest-api/authentication#generate-customer-id-and-customer-secret): Used for HTTP authentication when calling the RESTful APIs.
+    - [Customer ID and Customer secret](/en/api-reference/api-ref/conversational-ai/authentication#generate-customer-id-and-customer-secret): Used for HTTP authentication when calling the RESTful APIs.
     - A [temporary token](../../reference/enable-conversational-ai#generate-temporary-tokens): The token is used by the agent for authentication when joining an Agora channel. 
 - Obtained API keys for:
   - A supported Large Language Model (LLM) provider such as [OpenAI](https://openai.com/index/openai-api/).
@@ -45,7 +45,7 @@ This section introduces the basic RESTful API requests you use to start and stop
 
 ### Start a conversational AI agent
 
-Call the `join` endpoint to create an agent instance that joins an Agora channel. Pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](../../../api-reference/conversational-ai/rest-api/authentication).
+Call the `join` endpoint to create an agent instance that joins an Agora channel. Pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](/en/api-reference/api-ref/conversational-ai/authentication).
 
 ```js tab="Node.js"
 const fetch = require('node-fetch');
@@ -200,7 +200,7 @@ response = requests.post(url, headers=headers, data=json.dumps(data))
 print(response.text)
 ```
 
-For complete information on all request parameters, see [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+For complete information on all request parameters, see [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
 
 If the request is successful, you receive the following response:
 
@@ -213,7 +213,7 @@ If the request is successful, you receive the following response:
 }
 ```
 
-Store the `agent_id` for use in subsequent API calls to [query](../../../api-reference/conversational-ai/rest-api/agent/query), [update](../../../api-reference/conversational-ai/rest-api/agent/update), and [stop](../../../api-reference/conversational-ai/rest-api/agent/leave) the AI agent.
+Store the `agent_id` for use in subsequent API calls to [query](/en/api-reference/api-ref/conversational-ai/query), [update](/en/api-reference/api-ref/conversational-ai/update), and [stop](/en/api-reference/api-ref/conversational-ai/leave) the AI agent.
 
 ### Stop the conversational AI agent
 
@@ -288,8 +288,8 @@ This section contains content that completes the information on this page, or po
 </Tabs>
 ### API reference
 
-- [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join)
-- [Stop a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/leave)
-- [Update agent configuration](../../../api-reference/conversational-ai/rest-api/agent/update)
-- [Query agent status](../../../api-reference/conversational-ai/rest-api/agent/query)
-- [Retrieve a list of agents](../../../api-reference/conversational-ai/rest-api/agent/list)
+- [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join)
+- [Stop a conversational AI agent](/en/api-reference/api-ref/conversational-ai/leave)
+- [Update agent configuration](/en/api-reference/api-ref/conversational-ai/update)
+- [Query agent status](/en/api-reference/api-ref/conversational-ai/query)
+- [Retrieve a list of agents](/en/api-reference/api-ref/conversational-ai/list)

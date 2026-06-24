@@ -106,7 +106,7 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join), configure:
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -194,7 +194,7 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join), configure:
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -252,7 +252,7 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join), configure:
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
