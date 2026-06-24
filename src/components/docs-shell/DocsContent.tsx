@@ -255,9 +255,13 @@ export function DocsTableOfContents({
 }) {
   const { i18n } = useTranslation('common');
   const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
+  const [derivedItems, setDerivedItems] = useState<TOCItemType[]>([]);
   const items = useMemo(
-    () => toc.filter((item) => typeof item.title === 'string'),
-    [toc],
+    () =>
+      (toc.length > 0 ? toc : derivedItems).filter(
+        (item) => typeof item.title === 'string',
+      ),
+    [derivedItems, toc],
   );
   const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
     () => items[0]?.url ?? '',
@@ -275,6 +279,41 @@ export function DocsTableOfContents({
     });
     scrollDocsHashTarget(url);
   }, []);
+
+  useEffect(() => {
+    if (toc.length > 0) {
+      setDerivedItems([]);
+      return;
+    }
+
+    let frame = 0;
+    const updateDerivedItems = () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+
+      frame = window.requestAnimationFrame(() => {
+        setDerivedItems(getVisibleArticleHeadingItems());
+      });
+    };
+    const observer = new MutationObserver(updateDerivedItems);
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['hidden', 'aria-hidden', 'inert'],
+      childList: true,
+      subtree: true,
+    });
+    updateDerivedItems();
+
+    return () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+
+      observer.disconnect();
+    };
+  }, [toc]);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -415,6 +454,41 @@ export function DocsTableOfContents({
       </div>
     </aside>
   );
+}
+
+function getVisibleArticleHeadingItems(): TOCItemType[] {
+  const article = document.querySelector('article');
+
+  if (!article) {
+    return [];
+  }
+
+  return Array.from(article.querySelectorAll<HTMLHeadingElement>('h2, h3, h4'))
+    .filter((heading) => heading.id && !isHiddenFromToc(heading))
+    .map((heading) => ({
+      depth: Number(heading.tagName.slice(1)),
+      title: heading.textContent?.trim() ?? '',
+      url: `#${heading.id}`,
+    }))
+    .filter((item) => item.title.length > 0);
+}
+
+function isHiddenFromToc(element: HTMLElement) {
+  for (
+    let current: HTMLElement | null = element;
+    current;
+    current = current.parentElement
+  ) {
+    if (
+      current.hidden ||
+      current.getAttribute('aria-hidden') === 'true' ||
+      current.hasAttribute('inert')
+    ) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function getActiveDocsScrollContainer() {
