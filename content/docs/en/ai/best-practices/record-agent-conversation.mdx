@@ -1,0 +1,121 @@
+---
+title: Record agent conversations
+description: Configure Cloud Recording to capture Voice Agent conversations without breaking the audio experience.
+---
+
+This guide explains how to configure Agora [Cloud Recording](/en/api-reference/cloud-recording) for Voice Agent conversations and avoid audio-scene conflicts when recording starts.
+
+## Why this needs special handling
+
+When you run a Voice Agent and Cloud Recording in the same channel, recording startup can briefly interrupt audio. The issue is usually caused by the agent audio scene falling back to a default mode when Cloud Recording joins the channel.
+
+To keep audio stable, set the agent `audio_scenario` to `"chorus"` when you start the agent.
+
+## Configure the agent
+
+Add or update the `audio_scenario` field in the agent startup payload:
+
+```json
+{
+  "properties": {
+    "parameters": {
+      "audio_scenario": "chorus"
+    }
+  }
+}
+```
+
+## Complete example
+
+The following example shows an agent launch request with the recommended recording-safe configuration:
+
+```json
+{
+  "name": "TestConvoAgent",
+  "properties": {
+    "channel": "{{AccessChannel}}",
+    "token": "{{token}}",
+    "agent_rtc_uid": "0",
+    "remote_rtc_uids": [
+      "*"
+    ],
+    "idle_timeout": 30,
+    "advanced_features": {
+      "enable_bhvs": true
+    },
+    "llm": {
+      "url": "https://api.openai.com/v1/chat/completions",
+      "api_key": "<your_llm_api_key>",
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "You are a helpful chatbot."
+        }
+      ],
+      "greeting_message": "Hello, how can I help you?",
+      "failure_message": "Sorry, I don't know how to answer this question.",
+      "max_history": 10,
+      "params": {
+        "model": "gpt-4o-mini"
+      }
+    },
+    "tts": {
+      "vendor": "microsoft",
+      "params": {
+        "key": "<your_tts_api_key>",
+        "region": "eastus",
+        "voice_name": "en-US-AndrewMultilingualNeural"
+      }
+    },
+    "turn_detection": {
+      "silence_duration_ms": 640
+    },
+    "parameters": {
+      "enable_dump": true,
+      "enable_error_message": true,
+      "audio_scenario": "chorus",
+      "enable_delay": true
+    }
+  }
+}
+```
+
+## Start recording
+
+After the agent is running, call the [Start Cloud Recording API](/en/api-reference/cloud-recording/restful#start) to begin recording.
+
+Example Cloud Recording request body:
+
+```json
+{
+  "cname": "{{AccessChannel}}",
+  "uid": "{{RecordingUID}}",
+  "clientRequest": {
+    "token": "{{token}}",
+    "recordingConfig": {
+      "maxIdleTime": 120,
+      "streamTypes": 0,
+      "audioProfile": 1,
+      "channelType": 1
+    },
+    "recordingFileConfig": {
+      "avFileType": [
+        "hls",
+        "mp4"
+      ]
+    },
+    "storageConfig": {
+      "vendor": "{{Vendor}}",
+      "region": "{{Region}}",
+      "bucket": "{{Bucket}}",
+      "accessKey": "{{AccessKey}}",
+      "secretKey": "{{SecretKey}}"
+    }
+  }
+}
+```
+
+## Related pages
+
+- [Start and stop an agent](start-stop-agent)
+- [Cloud Recording API reference](/en/api-reference/cloud-recording/restful)

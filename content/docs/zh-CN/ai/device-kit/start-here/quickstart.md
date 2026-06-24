@@ -66,4 +66,4 @@ description: 在几分钟内启动 Agora Convo AI Device Kit。
 ## 下一步
 
 - [开通所需服务](../reference/enable-services.md)
-- [运行 R1 开发基线](../build/baseline-bring-up/run-the-r1-demo.mdx)
+- [运行 R1 开发基线](../build/run-the-r1-demo.mdx)

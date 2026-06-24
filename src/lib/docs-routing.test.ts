@@ -12,8 +12,8 @@ import {
 describe('docs routing helpers', () => {
   it('builds canonical locale-tab paths', () => {
     expect(buildDocPath('en', 'introduction')).toBe('/en/introduction');
-    expect(buildDocPath('en', 'ai', ['apps', 'get-started', 'quickstart'])).toBe(
-      '/en/ai/apps/get-started/quickstart',
+    expect(buildDocPath('en', 'ai', ['get-started', 'quickstart'])).toBe(
+      '/en/ai/get-started/quickstart',
     );
     expect(buildDocPath('en', 'realtime-media', ['rtc', 'quick-start'])).toBe(
       '/en/realtime-media/rtc/quick-start',
@@ -28,9 +28,9 @@ describe('docs routing helpers', () => {
       getSourceSlugs({
         locale: 'zh-CN',
         tab: 'ai',
-        slugSegments: ['apps', 'get-started', 'quickstart'],
+        slugSegments: ['get-started', 'quickstart'],
       }),
-    ).toEqual(['ai', 'apps', 'get-started', 'quickstart']);
+    ).toEqual(['ai', 'get-started', 'quickstart']);
     expect(
       getSourceSlugs({
         locale: 'en',
@@ -69,8 +69,8 @@ describe('docs routing helpers', () => {
     ]);
 
     expect(
-      getSourceSlugsFromContentPath('en/ai/apps/get-started/quickstart.md'),
-    ).toEqual(['ai', 'apps', 'get-started', 'quickstart']);
+      getSourceSlugsFromContentPath('en/ai/get-started/quickstart.md'),
+    ).toEqual(['ai', 'get-started', 'quickstart']);
 
     expect(
       getSourceSlugsFromContentPath('en/realtime-media/rtc/quick-start.md'),
@@ -82,8 +82,8 @@ describe('docs routing helpers', () => {
   });
 
   it('replaces the locale in canonical doc paths', () => {
-    expect(replaceDocLocale('/en/ai/apps/get-started/quickstart', 'zh-CN')).toBe(
-      '/zh-CN/ai/apps/get-started/quickstart',
+    expect(replaceDocLocale('/en/ai/get-started/quickstart', 'zh-CN')).toBe(
+      '/zh-CN/ai/get-started/quickstart',
     );
     expect(replaceDocLocale('/zh-CN/introduction', 'en')).toBe(
       '/en/introduction',

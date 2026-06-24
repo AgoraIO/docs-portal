@@ -1,0 +1,154 @@
+---
+title: Monitor agent status
+description: Choose the right runtime events to update the UI, debug failures, and monitor agent health.
+---
+When building a voice agent on software clients, runtime event handling usually serves one of these goals:
+
+- show the agent's current state in the app UI
+- capture errors and debug signals during a live session
+- collect lifecycle and latency data on your server
+
+This page helps you choose the right event source for each goal, then links you to the detailed setup guides.
+
+## Choose the right event source
+
+| Goal | Best source | Use these events |
+| --- | --- | --- |
+| Update the in-call UI with the agent's current state | Toolkit callbacks in the client | `onAgentStateChanged`, `onAgentListeningChanged`, `onAgentThinkingChanged`, `onAgentSpeakingChanged` |
+| Handle interruptions during a live session | Toolkit callbacks in the client | `onAgentInterrupted` |
+| Show immediate failures in the app | Toolkit callbacks in the client | `onAgentError`, `onDebugLog` (Android), `DEBUG_LOG` (Web) |
+| Alert on agent failures from your backend | Webhooks | [`110 agent error`](../reference/event-types#110-agent-error), [`102 agent left`](../reference/event-types#102-agent-left) |
+| Monitor latency and runtime health | Toolkit for live UX, webhooks for aggregation | `onAgentMetrics`, [`111 agent metrics`](../reference/event-types#111-agent-metrics) |
+| Track when sessions start and stop | Webhooks | [`101 agent joined`](../reference/event-types#101-agent-joined), [`102 agent left`](../reference/event-types#102-agent-left) |
+| Retrieve conversation history after a session | Webhooks or REST API | [`103 agent history`](../reference/event-types#103-agent-history), `history`, `turns` |
+
+## Use client callbacks for live state and local debugging
+
+Use the toolkit when the signal must arrive during the current session:
+
+- `onAgentStateChanged` is the main UI state callback for `silent`, `listening`, `thinking`, and `speaking`.
+- `onAgentListeningChanged`, `onAgentThinkingChanged`, and `onAgentSpeakingChanged` are better when you need separate loading, waveform, or avatar behaviors.
+- `onAgentInterrupted` is useful for turn-level UX, for example when you need to stop playback or show that a user barged in.
+- `onAgentError` is the primary callback for module failures such as LLM or TTS errors.
+- `onDebugLog` on Android and `DEBUG_LOG` on Web are useful when you want extra client-side diagnostics while reproducing issues.
+
+To receive these events, start the agent with RTM enabled and subscribe to channel messages before the session starts:
+
+```json
+{
+  "advanced_features": {
+    "enable_rtm": true
+  },
+  "properties": {
+    "channel": "voice-demo"
+  },
+  "parameters": {
+    "data_channel": "rtm",
+    "enable_metrics": true,
+    "enable_error_message": true
+  }
+}
+```
+
+For the first-step setup of both client and server paths, see [Get runtime events](get-runtime-events). For the full client integration flow, see [Listen to agent runtime events on software clients](event-notifications).
+
+## Use webhooks for durable monitoring and alerting
+
+Use webhook events when the data must leave the device and be available for dashboards, alerts, and post-session analysis:
+
+- `101 agent joined` confirms that the agent started successfully.
+- `102 agent left` tells you how the session ended, including failed or idle-timeout exits.
+- `110 agent error` captures structured module errors with vendor-specific codes and messages.
+- `111 agent metrics` reports latency and other runtime metrics that are better suited to backend aggregation.
+
+If you need to answer questions such as "why did this session fail", "which customers are seeing LLM errors", or "how long does TTS take in production", webhook events are the better primary source.
+
+For the first-step setup of both client and server paths, see [Get runtime events](get-runtime-events). For the full server integration flow, see [Receive agent runtime events on your server](webhooks).
+
+## Choose the right path for shared goals
+
+Some runtime goals are available through both client and server paths. Use the tabs below to choose the implementation that matches your use case.
+
+### Errors
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="client-errors">Client toolkit</TabsTrigger>
+  <TabsTrigger value="server-errors">Webhook</TabsTrigger>
+</TabsList>
+
+<TabsContent value="client-errors">
+
+Use client events when you need to react during the current session:
+
+- `onAgentError` for immediate module failures such as LLM or TTS errors
+- `onDebugLog` on Android and `DEBUG_LOG` on Web for local diagnostics during reproduction
+- UI updates, retries, graceful degradation, and session-local logging
+
+This path is best when the user is still in the call and the app needs to respond immediately.
+
+</TabsContent>
+
+<TabsContent value="server-errors">
+
+Use webhook events when you need durable backend observability:
+
+- [`110 agent error`](../reference/event-types#110-agent-error) for structured module failures
+- [`102 agent left`](../reference/event-types#102-agent-left) to understand whether the session terminated abnormally
+- alerting, dashboards, incident review, and cross-session aggregation
+
+This path is best when the problem must be visible outside the current device or session.
+
+</TabsContent>
+</Tabs>
+
+### Performance
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="client-performance">Client toolkit</TabsTrigger>
+  <TabsTrigger value="server-performance">Webhook</TabsTrigger>
+</TabsList>
+
+<TabsContent value="client-performance">
+
+Use `onAgentMetrics` when performance must shape the live experience:
+
+- show current latency or quality indicators in the UI
+- react to degraded experience during the session
+- compare what the user feels with what the client observes
+
+</TabsContent>
+
+<TabsContent value="server-performance">
+
+Use [`111 agent metrics`](../reference/event-types#111-agent-metrics) when performance must be monitored over time:
+
+- store metrics for dashboards and alerts
+- compare cohorts by `labels`
+- analyze regression patterns across sessions and environments
+
+</TabsContent>
+</Tabs>
+
+## Recommended monitoring pattern
+
+For most production apps, use both channels together:
+
+1. Use toolkit callbacks to update the local UI and react during the live session.
+2. Use webhooks to store durable records for alerts, analytics, and debugging.
+3. Correlate both streams with shared fields such as `agent_id`, `name`, `channel`, `turn_id`, and `labels`.
+
+`labels` are especially useful when you want to group runtime data by customer segment, campaign, environment, or experiment.
+
+## Detailed references
+
+- [Debug agent failures with runtime events](debug-agent-failures)
+- [Retrieve conversation history after a session ends](retrieve-session-history)
+- [Get runtime events](get-runtime-events)
+- [Listen to agent runtime events on software clients](event-notifications)
+- [Receive agent runtime events on your server](webhooks)
+- [Notification event types](../reference/event-types)
+- [Android toolkit API](../../api-reference/conversational-ai/client-toolkit/android)
+- [iOS toolkit API](../../api-reference/conversational-ai/client-toolkit/ios)
+- [Web toolkit API](../../api-reference/conversational-ai/client-toolkit/web)
