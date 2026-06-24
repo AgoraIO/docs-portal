@@ -1,4 +1,5 @@
 import { Tabs, TabsList, TabsTrigger } from 'fumadocs-ui/components/tabs';
+import { ChevronDownIcon } from 'lucide-react';
 import {
   Children,
   cloneElement,
@@ -8,6 +9,7 @@ import {
   type ReactNode,
   useContext,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
@@ -41,6 +43,21 @@ const ControlledTabs = Tabs as React.ComponentType<ControlledTabsProps>;
 const PlatformTabsPlacementContext = createContext<'header' | 'inline'>(
   'inline',
 );
+const HEADER_PRIMARY_PLATFORMS: PlatformKey[] = [
+  'android',
+  'ios',
+  'macos',
+  'web',
+  'windows',
+];
+const HEADER_OVERFLOW_PLATFORMS: PlatformKey[] = [
+  'flutter',
+  'react-native',
+  'unity',
+  'unreal',
+  'javascript',
+  'electron',
+];
 
 export function PlatformTabsPlacementProvider({
   children,
@@ -142,7 +159,7 @@ export function PlatformHeaderTabs({
 
   return (
     <div className={cn('not-prose max-w-full', className)}>
-      <PlatformTabs
+      <PlatformHeaderTabsList
         activePlatform={activePlatform}
         locale={locale}
         onValueChange={handlePlatformChange}
@@ -150,6 +167,158 @@ export function PlatformHeaderTabs({
       />
     </div>
   );
+}
+
+function PlatformHeaderTabsList({
+  activePlatform,
+  locale,
+  onValueChange,
+  platforms,
+}: {
+  activePlatform: PlatformKey;
+  locale: AppLocale;
+  onValueChange: (value: string) => void;
+  platforms: PlatformKey[];
+}) {
+  const primaryPlatforms = HEADER_PRIMARY_PLATFORMS.filter((platform) =>
+    platforms.includes(platform),
+  );
+  const unorderedOverflowPlatforms = platforms.filter(
+    (platform) => !primaryPlatforms.includes(platform),
+  );
+  const overflowPlatforms = sortHeaderOverflowPlatforms(
+    unorderedOverflowPlatforms,
+  );
+  const moreActive = overflowPlatforms.includes(activePlatform);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const menuId = useId();
+  const overflowMenuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!isMoreOpen) {
+      return;
+    }
+
+    function handlePointerDown(event: PointerEvent) {
+      if (
+        event.target instanceof Node &&
+        overflowMenuRef.current?.contains(event.target)
+      ) {
+        return;
+      }
+
+      setIsMoreOpen(false);
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsMoreOpen(false);
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMoreOpen]);
+
+  return (
+    <div
+      className="flex min-w-0 items-stretch"
+      data-platform-header-tabs="true"
+    >
+      <div
+        aria-label="Platform"
+        className="flex min-w-0 flex-1 items-stretch gap-6 overflow-hidden"
+        role="tablist"
+      >
+        {primaryPlatforms.map((platform) => (
+          <button
+            aria-selected={activePlatform === platform}
+            className={cn(
+              'relative flex h-12 shrink-0 items-center px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)]',
+              'after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity',
+              activePlatform === platform &&
+                'text-[color:var(--ink-1)] after:opacity-100',
+            )}
+            key={platform}
+            onClick={() => onValueChange(platform)}
+            role="tab"
+            type="button"
+          >
+            {getPlatformLabel(platform, locale)}
+          </button>
+        ))}
+      </div>
+      {overflowPlatforms.length > 0 ? (
+        <div className="relative ml-6 shrink-0" ref={overflowMenuRef}>
+          <button
+            aria-controls={isMoreOpen ? menuId : undefined}
+            aria-expanded={isMoreOpen}
+            aria-haspopup="menu"
+            aria-label="More platforms"
+            className={cn(
+              'relative flex h-12 items-center gap-2 border-l border-[color:var(--line-soft)] pl-6 pr-1 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)]',
+              'after:absolute after:right-1 after:bottom-[-1px] after:left-6 after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity',
+              moreActive && 'text-[color:var(--ink-1)] after:opacity-100',
+            )}
+            data-state={moreActive ? 'active' : 'inactive'}
+            onClick={() => setIsMoreOpen((isOpen) => !isOpen)}
+            type="button"
+          >
+            More
+            <ChevronDownIcon
+              aria-hidden="true"
+              className={cn(
+                'size-4 transition-transform',
+                isMoreOpen && 'rotate-180',
+              )}
+            />
+          </button>
+          {isMoreOpen ? (
+            <div
+              className="absolute top-full right-0 z-30 mt-2 min-w-52 rounded-lg border border-[color:var(--line-soft)] bg-card p-2 shadow-xl"
+              id={menuId}
+              role="menu"
+            >
+              {overflowPlatforms.map((platform) => (
+                <button
+                  className={cn(
+                    'flex w-full items-center rounded-md px-3 py-2 text-left text-[15px] text-[color:var(--ink-2)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]',
+                    activePlatform === platform &&
+                      'bg-[color:var(--docs-soft-fill)] text-[color:var(--ink-1)]',
+                  )}
+                  key={platform}
+                  onClick={() => {
+                    onValueChange(platform);
+                    setIsMoreOpen(false);
+                  }}
+                  role="menuitem"
+                  type="button"
+                >
+                  {getPlatformLabel(platform, locale)}
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function sortHeaderOverflowPlatforms(platforms: PlatformKey[]) {
+  const preferred = HEADER_OVERFLOW_PLATFORMS.filter((platform) =>
+    platforms.includes(platform),
+  );
+  const remaining = platforms.filter(
+    (platform) => !preferred.includes(platform),
+  );
+
+  return [...preferred, ...remaining];
 }
 
 function PlatformTabs({

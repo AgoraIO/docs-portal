@@ -5,6 +5,7 @@ import type { ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { getMDXComponents } from './mdx';
+import { PlatformHeaderTabs } from './mdx/PlatformTabsGroup';
 
 type TabsComponent = ComponentType<{
   children: ReactNode;
@@ -358,6 +359,69 @@ describe('common MDX registry', () => {
     expect(
       screen.getByText('Web instructions').closest('section'),
     ).not.toBeVisible();
+  });
+
+  it('keeps common header platforms visible and moves the rest into More', async () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <>
+        <PlatformHeaderTabs
+          canonicalPlatform="web"
+          platforms='["android","ios","macos","web","windows","flutter","react-native","unity"]'
+        />
+        <Group
+          canonicalPlatform="web"
+          groupMode="structured"
+          platforms='["android","ios","macos","web","windows","flutter","react-native","unity"]'
+          tabsPlacement="header"
+        >
+          <Panel platform="web">Web instructions</Panel>
+          <Panel platform="flutter">Flutter instructions</Panel>
+        </Group>
+      </>,
+    );
+
+    expect(screen.getByRole('tab', { name: 'Android' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'iOS' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'macOS' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'Web' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'Windows' })).toBeInTheDocument();
+    expect(screen.queryByRole('tab', { name: 'Flutter' })).toBeNull();
+
+    fireEvent.click(screen.getByRole('button', { name: 'More platforms' }));
+
+    const flutterItem = await screen.findByRole('menuitem', {
+      name: 'Flutter',
+    });
+
+    expect(screen.getByRole('menu')).toBeVisible();
+    expect(
+      screen.getByRole('menuitem', { name: 'React Native' }),
+    ).toBeVisible();
+    expect(
+      screen.getByText('Web instructions').closest('section'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('Flutter instructions').closest('section'),
+    ).not.toBeVisible();
+    expect(
+      screen.getByRole('button', { name: 'More platforms' }),
+    ).toHaveAttribute('data-state', 'inactive');
+
+    fireEvent.click(flutterItem);
+
+    expect(
+      screen.getByText('Flutter instructions').closest('section'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('Web instructions').closest('section'),
+    ).not.toBeVisible();
+    expect(
+      screen.getByRole('button', { name: 'More platforms' }),
+    ).toHaveAttribute('data-state', 'active');
   });
 
   it('shares platform preference updates across multiple rendered groups', () => {

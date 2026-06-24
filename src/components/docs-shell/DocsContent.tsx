@@ -89,11 +89,17 @@ export function DocsContent({
   return (
     <article
       className={cn(
-        'flex min-w-0 flex-col gap-9',
+        'flex min-w-0 flex-col',
+        platformTabs ? 'gap-6' : 'gap-9',
         isOpenApiBody ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
-      <header className="flex flex-col gap-4 border-b border-[color:var(--line-soft)] pb-7">
+      <header
+        className={cn(
+          'flex flex-col gap-4 border-b border-[color:var(--line-soft)]',
+          platformTabs ? 'pb-0' : 'pb-7',
+        )}
+      >
         {breadcrumb.length > 0 ? (
           <nav aria-label="Breadcrumb" className="min-w-0">
             <ol className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[13px] leading-5 text-[color:var(--ink-4)]">
@@ -167,7 +173,7 @@ export function DocsContent({
         {platformTabs ? (
           <PlatformHeaderTabs
             canonicalPlatform={platformTabs.canonicalPlatform}
-            className="pt-3"
+            className="pt-1"
             locale={currentLocale}
             platforms={platformTabs.platforms}
           />
