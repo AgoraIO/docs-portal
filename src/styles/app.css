@@ -624,6 +624,27 @@
   }
 
   .prose
+    :where([data-param-table] .param-table-description > :first-child):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+    margin-top: 0;
+  }
+
+  .prose
+    :where([data-param-table] .param-table-description > :last-child):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+    margin-bottom: 0;
+  }
+
+  .prose
+    :where([data-param-table] .param-table-description > ul):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+    margin-block: 0.55rem 0.75rem;
+  }
+
+  .prose
     :where(tbody tr:nth-child(even)):not(:where(.not-prose, .not-prose *)) {
     background: color-mix(in srgb, var(--bg-sunken) 45%, transparent);
   }

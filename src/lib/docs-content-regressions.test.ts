@@ -63,4 +63,29 @@ describe('docs content regressions', () => {
       'Default value includes all users.<br />An empty array excludes all audio streams.',
     );
   });
+
+  it('keeps parameter table lists and callouts in the media push type definition page', async () => {
+    const { source } = await import('./source.server');
+    const page = source.getPage(
+      ['realtime-media', 'media-push', 'reference', 'restful-type-definition'],
+      'en',
+    );
+
+    expect(page).toBeDefined();
+    expect(page?.type).toBe('docs');
+
+    if (!page || !('getText' in page.data)) {
+      throw new Error(
+        'Expected media push type definition page to expose processed markdown.',
+      );
+    }
+
+    const processed = await page.data.getText('processed');
+
+    expect(processed).toContain('`LC-AAC` (Default): MPEG-4 AAC LC');
+    expect(processed).toContain('<CalloutContainer type="info">');
+    expect(processed).toContain(
+      '`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array',
+    );
+  });
 });

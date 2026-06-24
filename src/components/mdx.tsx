@@ -27,6 +27,7 @@ import {
 } from 'react';
 import { cn } from '@/lib/cn';
 import { normalizeDocsHref } from '@/lib/docs-link-normalize';
+import { ParamTable } from './mdx/ParamTable';
 import {
   PlatformInline,
   PlatformProcessedMarker,
@@ -385,6 +386,7 @@ export function getMDXComponents(
     PlatformInline,
     _PlatformProcessedMarker: PlatformProcessedMarker,
     PlatformStructured,
+    ParamTable,
     _PlatformTabsGroup: PlatformTabsGroup,
     _PlatformPanel: PlatformPanel,
     ...components,
