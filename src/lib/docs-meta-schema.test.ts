@@ -16,6 +16,51 @@ describe('docsMetaSchema', () => {
     });
   });
 
+  it('normalizes external sidebar page entries to Fumadocs link syntax', () => {
+    expect(
+      docsMetaSchema.parse({
+        pages: [
+          'index',
+          {
+            external: true,
+            href: 'https://example.com/resources',
+            title: 'External Resource',
+          },
+        ],
+      }).pages,
+    ).toEqual([
+      'index',
+      'external:[External Resource](https://example.com/resources)',
+    ]);
+  });
+
+  it('treats sidebar page objects as external links by default', () => {
+    expect(
+      docsMetaSchema.parse({
+        pages: [
+          {
+            href: 'https://example.com/resources',
+            title: 'External Resource',
+          },
+        ],
+      }).pages,
+    ).toEqual(['external:[External Resource](https://example.com/resources)']);
+  });
+
+  it('rejects non-external sidebar page objects', () => {
+    expect(() =>
+      docsMetaSchema.parse({
+        pages: [
+          {
+            external: false,
+            href: '/en/introduction',
+            title: 'Introduction',
+          },
+        ],
+      }),
+    ).toThrow();
+  });
+
   it('accepts a versioned nav scope', () => {
     expect(
       docsMetaSchema.parse({

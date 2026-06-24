@@ -2,7 +2,13 @@
 
 import { Link } from '@tanstack/react-router';
 import { ChevronDownIcon } from 'lucide-react';
-import { useState } from 'react';
+import {
+  type AnchorHTMLAttributes,
+  forwardRef,
+  type MouseEvent,
+  type ReactNode,
+  useState,
+} from 'react';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -86,6 +92,8 @@ function SidebarNodeRenderer({
   return (
     <SidebarPageLink
       activePath={activePath}
+      external={node.external}
+      href={node.href}
       linked={node.linked}
       method={node.method}
       onSelectPath={onSelectPath}
@@ -114,9 +122,9 @@ function SidebarSection({
     return (
       <SidebarLinkedSection
         activePath={activePath}
-        children={node.children}
         collapsible={node.collapsible}
         icon={node.icon}
+        items={node.children}
         onSelectPath={onSelectPath}
         title={node.title}
         url={node.url}
@@ -206,17 +214,17 @@ function SidebarSection({
                   isActive={child.url === activePath}
                   size="md"
                 >
-                  <Link
-                    onClick={onSelectPath}
-                    params={{}}
-                    search={{}}
-                    to={child.url}
+                  <SidebarPageAnchor
+                    external={child.external}
+                    href={child.href}
+                    onSelectPath={onSelectPath}
+                    url={child.url}
                   >
                     <SidebarPageLabel
                       method={child.method}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
-                  </Link>
+                  </SidebarPageAnchor>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
             ),
@@ -229,28 +237,28 @@ function SidebarSection({
 
 function SidebarLinkedSection({
   activePath,
-  children,
   collapsible,
   icon,
+  items,
   onSelectPath,
   title,
   url,
 }: {
   activePath: string;
-  children: DocsSidebarNode[];
   collapsible?: boolean;
   icon?: string;
+  items: DocsSidebarNode[];
   onSelectPath: () => void;
   title: string;
   url: string;
 }) {
   const defaultOpen =
     !collapsible ||
-    children.some((child) => isNodeActive(child, activePath)) ||
+    items.some((child) => isNodeActive(child, activePath)) ||
     url === activePath;
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
-  if (children.length === 0) {
+  if (items.length === 0) {
     return (
       <SidebarMenuItem>
         <SidebarMenuButton
@@ -307,7 +315,7 @@ function SidebarLinkedSection({
       </div>
       {isOpen ? (
         <SidebarMenuSub>
-          {children.map((child) =>
+          {items.map((child) =>
             child.type === 'section' ? (
               <SidebarMenuSubItem key={child.id}>
                 <SidebarNestedSection
@@ -324,17 +332,17 @@ function SidebarLinkedSection({
                   isActive={child.url === activePath}
                   size="md"
                 >
-                  <Link
-                    onClick={onSelectPath}
-                    params={{}}
-                    search={{}}
-                    to={child.url}
+                  <SidebarPageAnchor
+                    external={child.external}
+                    href={child.href}
+                    onSelectPath={onSelectPath}
+                    url={child.url}
                   >
                     <SidebarPageLabel
                       method={child.method}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
-                  </Link>
+                  </SidebarPageAnchor>
                 </SidebarMenuSubButton>
               </SidebarMenuSubItem>
             ),
@@ -361,6 +369,12 @@ function SidebarNestedSection({
   node: SidebarSectionNode;
   onSelectPath: () => void;
 }) {
+  const defaultOpen =
+    !node.collapsible ||
+    node.children.some((child) => isNodeActive(child, activePath)) ||
+    shouldDefaultOpenSection(node.title, activePath);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
   if (node.url && node.children.length === 0) {
     return (
       <SidebarMenuSubButton
@@ -370,17 +384,13 @@ function SidebarNestedSection({
         size="md"
       >
         <Link onClick={onSelectPath} params={{}} search={{}} to={node.url}>
-          <SidebarPageLabel title={getSidebarDisplayTitle(node.title, node.url)} />
+          <SidebarPageLabel
+            title={getSidebarDisplayTitle(node.title, node.url)}
+          />
         </Link>
       </SidebarMenuSubButton>
     );
   }
-
-  const defaultOpen =
-    !node.collapsible ||
-    node.children.some((child) => isNodeActive(child, activePath)) ||
-    shouldDefaultOpenSection(node.title, activePath);
-  const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
     <div className="w-full">
@@ -422,17 +432,17 @@ function SidebarNestedSection({
                 key={child.id}
                 size="md"
               >
-                <Link
-                  onClick={onSelectPath}
-                  params={{}}
-                  search={{}}
-                  to={child.url}
+                <SidebarPageAnchor
+                  external={child.external}
+                  href={child.href}
+                  onSelectPath={onSelectPath}
+                  url={child.url}
                 >
                   <SidebarPageLabel
                     method={child.method}
                     title={getSidebarDisplayTitle(child.title, child.url)}
                   />
-                </Link>
+                </SidebarPageAnchor>
               </SidebarMenuSubButton>
             ),
           )}
@@ -452,6 +462,8 @@ function isNodeActive(node: DocsSidebarNode, activePath: string): boolean {
 
 function SidebarPageLink({
   activePath,
+  external,
+  href,
   linked,
   method,
   onSelectPath,
@@ -459,6 +471,8 @@ function SidebarPageLink({
   url,
 }: {
   activePath: string;
+  external?: boolean;
+  href?: string;
   linked?: boolean;
   method?: string;
   onSelectPath: () => void;
@@ -475,17 +489,85 @@ function SidebarPageLink({
         )}
         isActive={url === activePath}
       >
-        <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
+        <SidebarPageAnchor
+          external={external}
+          href={href}
+          onSelectPath={onSelectPath}
+          url={url}
+        >
           <SidebarPageLabel
             linked={linked}
             method={method}
             title={getSidebarDisplayTitle(title, url)}
           />
-        </Link>
+        </SidebarPageAnchor>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
 }
+
+type SidebarPageAnchorProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+  children: ReactNode;
+  external?: boolean;
+  href?: string;
+  onSelectPath: () => void;
+  url: string;
+};
+
+const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
+  (
+    {
+      children,
+      external,
+      href,
+      onClick,
+      onSelectPath,
+      rel,
+      target,
+      url,
+      ...props
+    },
+    ref,
+  ) => {
+    function handleClick(event: MouseEvent<HTMLAnchorElement>) {
+      onClick?.(event);
+
+      if (!event.defaultPrevented) {
+        onSelectPath();
+      }
+    }
+
+    if (external) {
+      return (
+        <a
+          {...props}
+          href={href ?? url}
+          onClick={handleClick}
+          ref={ref}
+          rel={rel ?? 'noreferrer noopener'}
+          target={target ?? '_blank'}
+        >
+          {children}
+        </a>
+      );
+    }
+
+    return (
+      <Link
+        {...props}
+        onClick={handleClick}
+        params={{}}
+        ref={ref}
+        search={{}}
+        to={url}
+      >
+        {children}
+      </Link>
+    );
+  },
+);
+
+SidebarPageAnchor.displayName = 'SidebarPageAnchor';
 
 function sidebarEndpointButtonClassName(method?: string) {
   return cn(sidebarSubButtonClassName, method && openApiSidebarButtonClassName);

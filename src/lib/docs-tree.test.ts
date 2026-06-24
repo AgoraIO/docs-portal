@@ -256,6 +256,59 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('preserves external page tree links in sidebar nodes', () => {
+    const tree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'intro-folder',
+              children: [
+                {
+                  $id: 'intro-external-resource',
+                  external: true,
+                  name: 'External Resource',
+                  type: 'page',
+                  url: 'https://example.com/resources',
+                },
+              ],
+              index: {
+                $id: 'intro-index',
+                name: 'Overview',
+                type: 'page',
+                url: '/en/introduction',
+              },
+              name: 'Introduction',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(getSidebarNodes(tree, 'introduction')).toEqual([
+      {
+        id: '/en/introduction',
+        title: 'Overview',
+        type: 'page',
+        url: '/en/introduction',
+      },
+      {
+        external: true,
+        href: 'https://example.com/resources',
+        id: 'https://example.com/resources',
+        title: 'External Resource',
+        type: 'page',
+        url: 'https://example.com/resources',
+      },
+    ]);
+  });
+
   it('builds sidebar entries from the active nested root folder', () => {
     expect(getSidebarEntries(nestedRootTree, 'introduction')).toEqual([
       {
@@ -601,6 +654,30 @@ describe('docs tree helpers', () => {
         id: 'get-started',
         title: 'Get Started',
         type: 'section',
+      },
+    ]);
+  });
+
+  it('maps external sidebar entries into page nodes', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          external: true,
+          href: 'https://example.com/resources',
+          id: 'https://example.com/resources',
+          title: 'External Resource',
+          type: 'page',
+          url: 'https://example.com/resources',
+        },
+      ]),
+    ).toEqual([
+      {
+        external: true,
+        href: 'https://example.com/resources',
+        id: 'https://example.com/resources',
+        title: 'External Resource',
+        type: 'page',
+        url: 'https://example.com/resources',
       },
     ]);
   });

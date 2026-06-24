@@ -13,6 +13,8 @@ export type TabSummary = {
 
 export type SidebarEntry =
   | {
+      external?: boolean;
+      href?: string;
       id: string;
       title: string;
       type: 'page';
@@ -27,6 +29,8 @@ export type SidebarEntry =
     };
 
 export type DocsSidebarPageNode = {
+  external?: boolean;
+  href?: string;
   id: string;
   linked?: boolean;
   method?: string;
@@ -100,14 +104,7 @@ export function getSidebarEntries(
   }
 
   if (tabNode.type === 'page') {
-    return [
-      {
-        id: tabNode.url,
-        title: normalizeLabel(tabNode.name, activeTab),
-        type: 'page',
-        url: tabNode.url,
-      },
-    ];
+    return [pageTreeItemToSidebarEntry(tabNode, activeTab)];
   }
 
   if (tabNode.type !== 'folder') {
@@ -119,12 +116,7 @@ export function getSidebarEntries(
   const indexUrl = indexItem?.url;
 
   if (indexItem) {
-    entries.push({
-      id: indexItem.url,
-      title: normalizeLabel(indexItem.name, activeTab),
-      type: 'page',
-      url: indexItem.url,
-    });
+    entries.push(pageTreeItemToSidebarEntry(indexItem, activeTab));
   }
 
   for (const node of tabNode.children) {
@@ -149,14 +141,7 @@ export function getSidebarNodes(
   }
 
   if (tabNode.type === 'page') {
-    return [
-      {
-        id: tabNode.url,
-        title: normalizeLabel(tabNode.name, activeTab),
-        type: 'page',
-        url: tabNode.url,
-      },
-    ];
+    return [pageTreeItemToSidebarPageNode(tabNode, activeTab)];
   }
 
   if (tabNode.type !== 'folder') {
@@ -167,12 +152,7 @@ export function getSidebarNodes(
   const indexItem = tabNode.index;
   const indexUrl = indexItem?.url;
   let pendingIndexNode: DocsSidebarPageNode | null = indexItem
-    ? {
-        id: indexItem.url,
-        title: normalizeLabel(indexItem.name, activeTab),
-        type: 'page',
-        url: indexItem.url,
-      }
+    ? pageTreeItemToSidebarPageNode(indexItem, activeTab)
     : null;
   if (pendingIndexNode) {
     nodes.push(pendingIndexNode);
@@ -279,6 +259,8 @@ export function mapSidebarEntriesToTree(
     }
 
     const pageNode: DocsSidebarPageNode = {
+      ...(entry.external ? { external: true } : {}),
+      ...(entry.href ? { href: entry.href } : {}),
       id: entry.id,
       title: entry.title,
       type: 'page',
@@ -316,14 +298,7 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
   }
 
   if (node.type === 'page') {
-    return [
-      {
-        id: node.url,
-        title: normalizeLabel(node.name, node.url),
-        type: 'page',
-        url: node.url,
-      },
-    ];
+    return [pageTreeItemToSidebarPageNode(node)];
   }
 
   if (node.type !== 'folder') {
@@ -334,12 +309,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
   let pendingIndexNode: DocsSidebarPageNode | null =
     node.index &&
     !shouldHideFolderIndexInSidebar(node.index, node.name, node.children)
-      ? {
-          id: node.index.url,
+      ? pageTreeItemToSidebarPageNode(node.index, undefined, {
           title: getFolderIndexTitle(node.index, node.name),
-          type: 'page',
-          url: node.index.url,
-        }
+        })
       : null;
   let currentSection: DocsSidebarSectionNode | null = null;
 
@@ -575,14 +547,7 @@ function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
   }
 
   if (node.type === 'page') {
-    return [
-      {
-        id: node.url,
-        title: normalizeLabel(node.name, node.url),
-        type: 'page',
-        url: node.url,
-      },
-    ];
+    return [pageTreeItemToSidebarEntry(node)];
   }
 
   if (node.type !== 'folder') {
@@ -613,12 +578,11 @@ function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
   ];
 
   if (node.index) {
-    entries.push({
-      id: node.index.url,
-      title: getFolderIndexTitle(node.index, node.name),
-      type: 'page',
-      url: node.index.url,
-    });
+    entries.push(
+      pageTreeItemToSidebarEntry(node.index, undefined, {
+        title: getFolderIndexTitle(node.index, node.name),
+      }),
+    );
   }
 
   entries.push(...childEntries);
@@ -629,6 +593,36 @@ function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
 function mapPageLink(item: Item) {
   return {
     title: normalizeLabel(item.name, item.url),
+    url: item.url,
+  };
+}
+
+function pageTreeItemToSidebarEntry(
+  item: Item,
+  fallback?: string,
+  overrides: { title?: string } = {},
+): Extract<SidebarEntry, { type: 'page' }> {
+  return {
+    ...(item.external ? { external: true } : {}),
+    ...(item.external ? { href: item.url } : {}),
+    id: item.url,
+    title: overrides.title ?? normalizeLabel(item.name, fallback ?? item.url),
+    type: 'page',
+    url: item.url,
+  };
+}
+
+function pageTreeItemToSidebarPageNode(
+  item: Item,
+  fallback?: string,
+  overrides: { title?: string } = {},
+): DocsSidebarPageNode {
+  return {
+    ...(item.external ? { external: true } : {}),
+    ...(item.external ? { href: item.url } : {}),
+    id: item.url,
+    title: overrides.title ?? normalizeLabel(item.name, fallback ?? item.url),
+    type: 'page',
     url: item.url,
   };
 }
