@@ -3,7 +3,16 @@ title: "Parse push fields"
 description: "Parse push notifications fields."
 ---
 
-### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="react-native">React Native</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 After receiving a push notification, you need to parse the data.
 
@@ -74,7 +83,9 @@ The data structure of the extension in the `RemoteMessage` object is as follows:
 }
 ```
 
-### iOS
+</CodeBlockTab>
+
+<CodeBlockTab value="ios">
 
 When the device receives a push notification and a user clicks it, the system will pass the custom push content (JSON) to the app. This allows you to customize the behavior triggered by clicking the push notification according to the push content, such as page routing. When a push notification is received and clicked, the app obtains the push content as follows:
 
@@ -125,7 +136,9 @@ The data structure of the user-defined `userInfo` is as follows:
 |  `g`      | The group ID. This field exists only for group messages. |
 |  `m` |      The message ID.                |
 
-### Flutter
+</CodeBlockTab>
+
+<CodeBlockTab value="flutter">
 
 After receiving a push notification, you need to parse the data.
 
@@ -177,7 +190,9 @@ The data structure of the extension in the `RemoteMessage.data` object is as fol
 }
 ```
 
-### React Native
+</CodeBlockTab>
+
+<CodeBlockTab value="react-native">
 
 After receiving a push notification, you need to parse the data.
 
@@ -227,9 +242,15 @@ The data structure of the extension in the `RemoteMessage` object is as follows:
 }
 ```
 
-### Web
+</CodeBlockTab>
+
+<CodeBlockTab value="web">
 
 **This feature guide is not available yet.**
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 ### Windows, Unity
 

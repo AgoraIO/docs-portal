@@ -155,6 +155,15 @@ paths:
 
         - `LIVE_BROADCASTING` profile: Returns the list of all hosts and
           audience members in the channel.
+
+
+        ## Reference
+
+
+        To synchronize online channel statistics, you can use this endpoint or
+        the `Query the user status` endpoint. This endpoint requires a lower
+        call frequency and offers higher efficiency, so Agora recommends it for
+        this purpose.
       operationId: cma-query-user-list
       parameters:
         - $ref: '#/components/parameters/appidPath'
@@ -394,7 +403,105 @@ paths:
       tags:
         - Ban user privileges
       summary: Create a banning rule
-      description: Use this endpoint to create a rule for banning specified user privileges.
+      description: >-
+        Use this endpoint to create a rule for banning specified user
+        privileges.
+
+
+        ## Reference
+
+
+        ### Banning rule behavior
+
+
+        The banning rule behavior depends on which combination of `cname`,
+        `uid`, and `ip` fields you set.
+
+
+        When `privileges` is `join_channel`:
+
+
+        | `ip` | `cname` | `uid` | Rule |
+        | --- | --- | --- | --- |
+        | Set | Not set | Not set | All users with this `ip` cannot join any channel in the app. Using `ip` as a filter field may incorrectly block users who should not be blocked, for example, when multiple users share an IP address. |
+        | Not set | Set | Not set | No one can join the channel specified by the `cname` field. Using `cname` as a filter field directly blocks the named channel. |
+        | Not set | Not set | Set | The user with the `uid` cannot join any channel in the app. |
+        | Not set | Set | Set | The user with the `uid` cannot join the channel specified by the `cname` field. |
+
+
+        When `privileges` is `publish_audio` or `publish_video`:
+
+
+        | `ip` | `cname` | `uid` | Rule |
+        | --- | --- | --- | --- |
+        | Set | Not set | Not set | Users with this `ip` cannot publish audio or video in any channel of the app. |
+        | Not set | Set | Not set | No one can publish audio or video in the channel specified by the `cname` field. |
+        | Not set | Not set | Set | The user with the `uid` cannot publish audio or video in any channel of the app. |
+        | Not set | Set | Set | The user with the `uid` cannot publish audio or video in the channel specified by the `cname` field. |
+
+
+        ### Client callbacks for `join_channel` bans
+
+
+        A user who is kicked out of a channel when `privileges` is set to
+        `join_channel` receives one of the following callbacks based on their
+        platform:
+
+
+        - Android: The `onConnectionStateChanged` callback reports
+        `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
+
+        - iOS/macOS: The `connectionChangedToState` callback reports
+        `AgoraConnectionChangedBannedByServer(3)`.
+
+        - Web 3.x: The `Client.on("client-banned")` callback.
+
+        - Web 4.x: The `Client.on("connection-state-change")` callback.
+
+        - Windows: The `onConnectionStateChanged` callback reports
+        `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
+
+        - Electron: The `AgoraRtcEngine.on("connectionStateChanged")` callback
+        reports `3`.
+
+        - Unity: The `OnConnectionStateChangedHandler` callback reports
+        `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
+
+        - React Native: The `ConnectionStateChanged` callback reports
+        `BannedByServer(3)`.
+
+        - Flutter: The `ConnectionStateChanged` callback reports
+        `BannedByServer(3)`.
+
+        - Cocos Creator: The `onConnectionStateChanged` callback reports
+        `CONNECTION_CHANGED_BANNED_BY_SERVER(3)`.
+
+        - Applets: `on(event: "client-banned")`.
+
+
+        ### Best practices for rule management
+
+
+        To maximize the success rate of create, update, and delete operations,
+        query requests are assigned a lower priority. Under poor network
+        conditions, the success rate and accuracy of GET requests may degrade
+        and some request records may be missing from the results.
+
+
+        When you call POST to create a rule where `time` is not set to `0`, use
+        the following best practices to update or delete it later:
+
+
+        - Save the rule ID returned in the POST request on your server, and rely
+        on this ID for subsequent update and delete operations.
+
+        - To ensure that you can still obtain the rule ID under poor network
+        conditions, set the timeout for the POST request to 20 seconds or higher.
+        Make sure that the timeout is set to no less than 5 seconds.
+
+        - If the POST request times out or returns a `504` error, use the
+        response of the GET method to obtain the rule ID. If the rule exists, the
+        POST request was successful, and you can save the rule ID on your server.
       operationId: cma-create-ban-rule
       requestBody:
         required: true
@@ -550,7 +657,33 @@ paths:
       tags:
         - Ban user privileges
       summary: Get the banning rule list
-      description: Use this endpoint to get the list of all banning rules.
+      description: >-
+        Use this endpoint to get the list of all banning rules.
+
+
+        ## Reference
+
+
+        To maximize the success rate of create, update, and delete operations,
+        query requests are assigned a lower priority. Under poor network
+        conditions, the success rate and accuracy of GET requests may degrade
+        and some request records may be missing from the results.
+
+
+        When you call POST to create a rule where `time` is not set to `0`, use
+        the following best practices to update or delete it later:
+
+
+        - Save the rule ID returned in the POST request on your server, and rely
+        on this ID for subsequent update and delete operations.
+
+        - To ensure that you can still obtain the rule ID under poor network
+        conditions, set the timeout for the POST request to 20 seconds or higher.
+        Make sure that the timeout is set to no less than 5 seconds.
+
+        - If the POST request times out or returns a `504` error, use the
+        response of the GET method to obtain the rule ID. If the rule exists, the
+        POST request was successful, and you can save the rule ID on your server.
       operationId: cma-get-ban-rule-list
       parameters:
         - name: appid

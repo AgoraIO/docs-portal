@@ -36,7 +36,14 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 ## Implementation
 
-### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 1. **Integrate the toolkit**
 
@@ -120,7 +127,9 @@ The toolkit exposes callback methods that let you listen for various agent-relat
    api.destroy()
    ```
 
-### iOS
+</CodeBlockTab>
+
+<CodeBlockTab value="ios">
 
 1. **Integrate the toolkit**
 
@@ -208,7 +217,9 @@ The toolkit exposes callback methods that let you listen for various agent-relat
    convoAIAPI.destroy()
    ```
 
-### Web
+</CodeBlockTab>
+
+<CodeBlockTab value="web">
 
 1. **Integrate the toolkit**
 
@@ -257,6 +268,10 @@ The toolkit exposes callback methods that let you listen for various agent-relat
    conversationalAIAPI.destroy()
    ```
 
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
 ## Reference
 
 ### Sample project
@@ -270,7 +285,14 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 ### Folder structure
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 - `IConversationalAIAPI.kt`: API interface, data structures, and enumerations
 - `ConversationalAIAPIImpl.kt`: main implementation logic
@@ -279,14 +301,18 @@ The toolkit exposes callback methods that let you listen for various agent-relat
   - `TranscriptionController.kt`: transcript rendering and synchronization
   - `MessageParser.kt`: transcription and message parsing
 
-#### iOS
+</CodeBlockTab>
+
+<CodeBlockTab value="ios">
 
 - `ConversationalAIAPI.swift`: API interface, data structures, and enumerations
 - `ConversationalAIAPIImpl.swift`: main implementation logic
 - `Transcription/`
   - `TranscriptionController.swift`: transcript rendering and control
 
-#### Web
+</CodeBlockTab>
+
+<CodeBlockTab value="web">
 
 - `index.ts`: main API class
 - `type.ts`: API interfaces, data structures, and enumerations
@@ -295,9 +321,19 @@ The toolkit exposes callback methods that let you listen for various agent-relat
   - `events.ts`: event management class
   - `sub-render.ts`: transcript rendering module
 
+</CodeBlockTab>
+</CodeBlockTabs>
+
 ### API reference
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 - [`addHandler`](../../api-reference/conversational-ai/client-toolkit/android#addhandler)
 - [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#subscribemessage)
@@ -311,7 +347,9 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 - [`onAgentMetrics`](../../api-reference/conversational-ai/client-toolkit/android#onagentmetrics)
 - [`onAgentError`](../../api-reference/conversational-ai/client-toolkit/android#onagenterror)
 
-#### iOS
+</CodeBlockTab>
+
+<CodeBlockTab value="ios">
 
 - [`addHandler`](../../api-reference/conversational-ai/client-toolkit/ios#addhandler)
 - [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#subscribemessage)
@@ -325,10 +363,15 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 - [`onAgentMetrics`](../../api-reference/conversational-ai/client-toolkit/ios#onagentmetrics)
 - [`onAgentError`](../../api-reference/conversational-ai/client-toolkit/ios#onagenterror)
 
-#### Web
+</CodeBlockTab>
+
+<CodeBlockTab value="web">
 
 - [`IConversationalAIAPIEventHandler`](../../api-reference/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
 - [`EConversationalAIAPIEvents`](../../api-reference/conversational-ai/client-toolkit/web#econversationalaiapievents)
 - [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#subscribemessage)
 - [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#unsubscribe)
 - [`destroy`](../../api-reference/conversational-ai/client-toolkit/web#destroy)
+
+</CodeBlockTab>
+</CodeBlockTabs>

@@ -1,0 +1,178 @@
+---
+title: Update task configuration
+description: Initiate a request to update the transcription task configuration.
+---
+
+
+:::caution
+Real-Time STT API versions v5.x and v6.x are deprecated since June 2025 and will reach end-of-life on June 11, 2026. Use the v7 REST API for new projects.
+:::
+
+## Endpoint
+
+- Method: `PATCH`
+
+- Endpoint: `https://api.agora.io/v1/projects/{appId}/rtsc/speech-to-text/tasks/{taskId}`
+
+Use this endpoint to update the configuration of a Real-Time STT task.
+
+## Request
+
+### Path parameters
+
+**`appId`** Type: `string` Required
+
+The App ID of the project
+
+**`taskId`** Type: `string` Required
+
+The unique identifier of the Real-Time STT task you received in the response body of the [start](start) method.
+
+
+### Query parameters
+
+**`builderToken`** Type: `string` Required
+
+The `tokenName` value you obtained in the response body of the [`acquire`](acquire) method.
+
+
+**`sequenceId`** Type: `integer` Required
+
+The sequence number of `update` requests. The integer value must be greater than or equal to 0. Ensure that the `sequenceId` of the next `update` request is greater than the value you specified for the previous request. The parameter ensures that Agora updates the transcription task according to the latest configuration you specified.
+
+
+**`updateMask`** Type: `string` Required
+
+The specified update configuration item. To update multiple fields, use a comma separator. For example: `updateMask=languages,rtcConfig.subscribeAudioUids,translateConfig.enable,translateConfig.languages`.
+
+
+### Request body
+
+`APPLICATION/JSON`
+
+#### BODY
+
+**`languages`** Type: `array[string]` Optional
+
+The transcription languages to recognize. You can specify a maximum of 2 languages. Refer to [Supported Languages](/en/realtime-media/speech-to-text/reference/supported-languages) for details.
+
+
+  **`rtcConfig`** Type: `object` Optional
+
+**`subscribeAudioUids`** Type: `array[string]` Optional
+
+The user IDs of the audio streams you want to subscribe to. Specify this parameter only if you need to subscribe to specific users. To subscribe to audio streams of all users, use `["all"]`. Maximum array length: 3.
+
+  **`translateConfig`** Type: `object` Optional
+
+**`enable`** Type: `boolean` Optional
+
+Whether to translate the transcribed text:
+      - `true`: Translate.
+      - `false`: Do not translate.  
+      If you enabled translation when calling `start`, you can turn it off by setting `enable` to `false`. If you did not enable translation, you can turn it on by setting `enable` to `true` and specifying `languages`.
+    
+    **`languages`** Type: `array` Optional
+
+The translation languages array. You can specify a maximum of 2 different source languages. The source language and target language must be different, otherwise an error is reported.      
+      Each array item is an object with:
+      **`source`** Type: `string` Required
+
+The source language for translation. Refer to [Supported Languages](/en/realtime-media/speech-to-text/reference/supported-languages) for details.
+      
+      **`target`** Type: `array[string]` Required
+
+The target languages for translation. You can specify a maximum of 5 target languages for each source language. Refer to [Supported Languages](/en/realtime-media/speech-to-text/reference/supported-languages) for details.
+    
+## Response
+
+- If the returned status code is `200`, the request was successful. The response body contains the result of the request.
+
+  #### OK
+
+**`taskId`** Type: `string` Required
+
+The unique identifier of this transcription task.
+
+
+    **`createTs`** Type: `integer` Required
+
+The Unix timestamp (in seconds) when the transcription task was created.
+
+
+    **`status`** Type: `string` Required
+
+The current status of the transcription task:      
+      - `IDLE`: Task not initialized
+      - `PREPARING`: Task has received an initialization request
+      - `PREPARED`: Task initialization completed
+      - `STARTING`: Task is beginning to start
+      - `CREATED`: Task startup partially completed
+      - `STARTED`: Task startup fully completed
+      - `IN_PROGRESS`: Task is currently running
+      - `STOPPING`: Task is in the process of being paused
+      - `STOPPED`: Task has been terminated
+      - `FAILURE_STOP`: Task termination failed
+  
+  - If the returned status code is not `200`, the request failed.  Refer to `message` field to understand the possible reasons for failure.
+
+  #### Non-200
+
+**`message`** Type: `string`
+
+The reason why the request failed.
+
+  ## Authorization
+
+This endpoint requires [Basic Auth](../restful-authentication).
+## Request example
+
+### curl
+
+```bash
+      curl --request PATCH \
+        --url 'https://api.agora.io/v1/projects/:appId/rtsc/speech-to-text/tasks/:taskId?builderToken=your_builder_token&sequenceId=your_sequence_id&updateMask=your_update_mask' \
+        --header 'Authorization: Basic <credentials>'
+      ```
+    ### Python
+
+```python
+    import requests
+
+    url = "https://api.agora.io/v1/projects/:appId/rtsc/speech-to-text/tasks/:taskId?builderToken=your_builder_token&sequenceId=your_sequence_id&updateMask=your_update_mask"
+
+    headers = {"Authorization": "Basic <credentials>"}
+
+    response = requests.request("PATCH", url, headers=headers)
+
+    print(response.text)
+    ```
+    ### Node.js
+
+```js
+    const url = 'https://api.agora.io/v1/projects/:appId/rtsc/speech-to-text/tasks/:taskId?builderToken=your_builder_token&sequenceId=your_sequence_id&updateMask=your_update_mask';
+    const options = {method: 'PATCH', headers: {Authorization: 'Basic <credentials>'}};
+
+    fetch(url, options)
+      .then(res => res.json())
+      .then(json => console.log(json))
+      .catch(err => console.error(err));
+    ```
+    ## Response example
+
+### 200
+
+```json
+    {
+      "tokenName": "The value of the builder token you use to call other methods.",
+      "createTs": null,
+      "instanceId": "The `instanceId` you specified in the request."
+    }
+    ```
+  ### Non-200
+
+```json
+    {
+      "message": "The reason why the request failed.",
+    }
+    ```

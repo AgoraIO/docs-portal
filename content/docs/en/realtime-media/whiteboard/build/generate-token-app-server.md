@@ -17,7 +17,14 @@ To enhance security, do not save or send the AK and SK to your app clients. You 
 
 Ensure that you have enabled Interactive Whiteboard for your Agora Console project.
 
-## JavaScript
+<CodeBlockTabs defaultValue="javascript">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="javascript">JavaScript</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="typescript">TypeScript</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="javascript">
 
 In the `netless-token-master/Node/JavaScript` folder, you can find:
 
@@ -130,7 +137,9 @@ console.log(netlessTaskToken)
 node tasktoken.js
 ```
 
-## TypeScript
+</CodeBlockTab>
+
+<CodeBlockTab value="typescript">
 
 In the `netless-token-master/Node/TypeScript` folder, you can find:
 
@@ -255,7 +264,9 @@ tsc tasktoken.ts
 node tasktoken.js
 ```
 
-## Java
+</CodeBlockTab>
+
+<CodeBlockTab value="java">
 
 In the `netless-token-master/Java` folder, you can find:
 
@@ -375,6 +386,10 @@ javac Token.java
 ```java
 java Token
 ```
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 ## Golang
 

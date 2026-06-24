@@ -1,0 +1,86 @@
+---
+title: Stop a Real-time STT task
+description: Use this method to leave the channel and stop transcription.
+---
+
+
+:::caution
+Real-Time STT API versions v5.x and v6.x are deprecated since June 2025 and will reach end-of-life on June 11, 2026. Use the v7 REST API for new projects.
+:::
+
+## Endpoint
+
+- Method: `DELETE`
+
+- Endpoint: `https://api.agora.io/v1/projects/{appId}/rtsc/speech-to-text/tasks/{taskId}`
+
+Use this method to leave the channel and stop Real-Time STT. To restart transcription, [`acquire`](acquire) a new one `buildToken` and call [`start`](start) again.
+
+## Request
+
+### Path parameters
+
+**`appId`** Type: `string` Required
+
+The App ID of the project
+
+**`taskId`** Type: `string` Required
+
+The unique identifier of the Real-Time STT task you received in the response body of the [`start`](start) method.
+
+
+### Query parameters
+
+**`builderToken`** Type: `string` Required
+
+The `tokenName` value you obtained in the response body of the [`acquire`](acquire) method. To stop a task, use the same `builderToken` you used to start the task.
+
+
+## Response
+
+- If the returned status code is `200`, the request was successful. 
+- If the returned status code is not `200`, the request failed.  
+
+## Authorization
+
+This endpoint requires [Basic Auth](../restful-authentication).
+## Request example
+
+### curl
+
+```bash
+      curl --request DELETE \
+        --url https://api.agora.io/v1/projects/:appId/rtsc/speech-to-text/tasks/:taskId?builderToken=your_builder_token \
+        --header 'Authorization: Basic <credentials>' \
+        --header 'Content-Type: <string>'
+      ```
+    ### Python
+
+```python
+    import requests
+
+    url = "https://api.agora.io/v1/projects/:appId/rtsc/speech-to-text/tasks/:taskId?builderToken=your_builder_token"
+
+    headers = {
+        "Authorization": "Basic <credentials>",
+        "Content-Type": "<string>"
+    }
+
+    response = requests.request("DELETE", url, headers=headers)
+
+    print(response.text)
+    ```
+    ### Node.js
+
+```js
+    const url = 'https://api.agora.io/v1/projects/:appId/rtsc/speech-to-text/tasks/:taskId?builderToken=your_builder_token';
+    const options = {
+      method: 'DELETE',
+      headers: {Authorization: 'Basic <credentials>', 'Content-Type': '<string>'}
+    };
+
+    fetch(url, options)
+      .then(res => res.json())
+      .then(json => console.log(json))
+      .catch(err => console.error(err));
+    ```
