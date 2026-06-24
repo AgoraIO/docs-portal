@@ -1,5 +1,10 @@
 import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
+import {
+  type CodeBlockProps,
+  CodeBlock as FumadocsCodeBlock,
+  Pre as FumadocsCodeBlockPre,
+} from 'fumadocs-ui/components/codeblock';
 import { File, Files, Folder } from 'fumadocs-ui/components/files';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import {
@@ -39,7 +44,6 @@ type MDXContext = {
   contentPath?: string;
 };
 
-const FumadocsPre = defaultMdxComponents.pre;
 const FumadocsAnchor = defaultMdxComponents.a;
 const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
 const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
@@ -59,7 +63,7 @@ type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   onValueChange?: (value: string) => void;
   value?: string;
 };
-type PreProps = ComponentProps<typeof FumadocsPre>;
+type PreProps = CodeBlockProps;
 type TabValueElement = ReactElement<{
   children?: ReactNode;
   value?: unknown;
@@ -217,10 +221,22 @@ function CodeBlockTabs({
 
 function Pre({ className, ...props }: PreProps) {
   return (
-    <FumadocsPre
-      className={cn('bg-fd-card shadow-none', className)}
+    <FumadocsCodeBlock
       {...props}
-    />
+      data-line-numbers
+      className={cn('bg-fd-card shadow-none', className)}
+      viewportProps={{
+        ...props.viewportProps,
+        className: cn(
+          'overflow-x-hidden overflow-y-auto',
+          props.viewportProps?.className,
+        ),
+      }}
+    >
+      <FumadocsCodeBlockPre className="w-full max-w-full min-w-0 whitespace-pre-wrap [overflow-wrap:anywhere] break-words">
+        {props.children}
+      </FumadocsCodeBlockPre>
+    </FumadocsCodeBlock>
   );
 }
 
