@@ -20,6 +20,7 @@ import { AppProviders } from '@/components/providers/AppProviders';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsTocRail } from './DocsTocRail';
+import { DocsCopyMenu } from './docs-copy-menu';
 
 const clipboardWriteText = vi.fn();
 
@@ -102,16 +103,23 @@ describe('DocsContent', () => {
       />,
     );
 
-    expect(
-      await screen.findByRole('heading', { name: 'About Agora' }),
-    ).toBeInTheDocument();
+    const title = await screen.findByRole('heading', { name: 'About Agora' });
+    const copyButton = screen.getByRole('button', { name: 'Copy Page' });
+    const copyMenuButton = screen.getByRole('button', {
+      name: 'Copy Page more actions',
+    });
+
+    expect(title).toBeInTheDocument();
     expect(screen.getByText('Learn the platform basics.')).toBeInTheDocument();
+    expect(copyButton).toBeInTheDocument();
+    expect(copyMenuButton).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: 'Copy Page' })).toHaveLength(
+      1,
+    );
     expect(
-      screen.getByRole('button', { name: 'Copy Page' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: 'Copy Page more actions' }),
-    ).toBeInTheDocument();
+      title.compareDocumentPosition(copyButton) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     expect(screen.queryByText(/Reading time/)).not.toBeInTheDocument();
 
     const breadcrumb = screen.getByLabelText('Breadcrumb');
@@ -236,10 +244,10 @@ describe('DocsContent', () => {
       />,
     );
 
+    const androidTab = await screen.findByRole('tab', { name: 'Android' });
     const copyMenuButton = await screen.findByRole('button', {
       name: 'Copy Page more actions',
     });
-    const androidTab = await screen.findByRole('tab', { name: 'Android' });
 
     expect(androidTab).toHaveAttribute(
       'href',
@@ -287,14 +295,11 @@ describe('DocsContent', () => {
   });
   it('renders copy page menu actions for AI tools, MCP, and markdown', async () => {
     renderWithRouter(
-      <DocsContent
-        contentPath="en/introduction/about-agora.md"
-        description="Learn the platform basics."
+      <DocsCopyMenu
         locale="en"
         markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
         slug="introduction/about-agora"
         title="About Agora"
-        toc={[]}
       />,
     );
 
@@ -332,13 +337,11 @@ describe('DocsContent', () => {
     clipboardWriteText.mockResolvedValue(undefined);
 
     renderWithRouter(
-      <DocsContent
-        contentPath="en/introduction/about-agora.md"
+      <DocsCopyMenu
         locale="en"
         markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
         slug="introduction/about-agora"
         title="About Agora"
-        toc={[]}
       />,
     );
 
@@ -379,13 +382,11 @@ describe('DocsContent', () => {
     clipboardWriteText.mockResolvedValue(undefined);
 
     renderWithRouter(
-      <DocsContent
-        contentPath="en/introduction/about-agora.md"
+      <DocsCopyMenu
         locale="en"
         markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
         slug="introduction/about-agora"
         title="About Agora"
-        toc={[]}
       />,
     );
 

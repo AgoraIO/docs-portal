@@ -137,31 +137,38 @@ export function DocsContent({
             </ol>
           </nav>
         ) : null}
-        <div className="flex flex-col gap-3">
-          <h1 className="max-w-4xl text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
-            {displayTitle}
-          </h1>
-          {description ? (
-            <p className="max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
-              {description}
-            </p>
-          ) : null}
-        </div>
-        {markdownUrl ? (
-          <div className="flex flex-col items-start gap-3">
+        <div
+          className={cn(
+            'flex flex-col gap-3',
+            markdownUrl &&
+              !isOpenApiBody &&
+              'xl:flex-row xl:items-start xl:gap-6',
+          )}
+        >
+          <div className="min-w-0 flex-1">
+            <h1 className="max-w-4xl text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
+              {displayTitle}
+            </h1>
+            {description ? (
+              <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
+                {description}
+              </p>
+            ) : null}
+          </div>
+          {markdownUrl ? (
             <DocsCopyMenu
+              className={cn(
+                'self-start',
+                !isOpenApiBody && 'xl:ml-auto xl:shrink-0 xl:translate-y-1',
+              )}
               locale={currentLocale}
               markdownUrl={markdownUrl}
               slug={slug ?? ''}
               title={displayTitle ?? ''}
             />
-            {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
-              <DocsHeaderScopeTabs header={sidebarHeader} />
-            ) : null}
-          </div>
-        ) : null}
-        {!markdownUrl &&
-        sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
+          ) : null}
+        </div>
+        {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
           <DocsHeaderScopeTabs header={sidebarHeader} />
         ) : null}
         {platformTabs ? (

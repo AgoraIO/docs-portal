@@ -355,11 +355,21 @@ describe('DocsShell', () => {
       previous: { title: 'Previous Page', url: '/en/introduction/prev-page' },
     });
 
-    expect(await screen.findByTestId('docs-body-shell')).toBeInTheDocument();
+    const docsBodyShell = await screen.findByTestId('docs-body-shell');
+
+    expect(docsBodyShell).toBeInTheDocument();
+    expect(docsBodyShell).toHaveClass(
+      'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
+    );
     expect(screen.getByTestId('docs-sidebar')).toBeInTheDocument();
     expect(screen.getByTestId('docs-main-column')).toBeInTheDocument();
-    expect(screen.getByTestId('docs-toc-rail')).toBeInTheDocument();
+    const tocRail = screen.getByTestId('docs-toc-rail');
+    expect(tocRail).toBeInTheDocument();
+    expect(screen.queryByTestId('docs-page-actions')).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-shell-footer')).not.toBeInTheDocument();
+    expect(
+      within(tocRail).queryByRole('button', { name: 'Copy Page' }),
+    ).not.toBeInTheDocument();
 
     const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
     expect(
@@ -379,6 +389,7 @@ describe('DocsShell', () => {
 
     expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('docs-page-actions')).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-side-rail')).not.toBeInTheDocument();
     for (const footer of screen.getAllByTestId('docs-page-footer')) {
       expect(footer).toHaveClass('max-w-none');
