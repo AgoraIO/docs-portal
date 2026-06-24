@@ -7,7 +7,7 @@ describe('openapi search documents', () => {
     const startAgent = documents.find((doc) => doc.id.includes('start-agent'));
 
     expect(startAgent).toMatchObject({
-      url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+      url: '/en/api-reference/api-ref/conversational-ai/join',
     });
     expect(startAgent?.content).toContain('start-agent');
     expect(startAgent?.content).toContain('/v2/projects/{appid}/join');

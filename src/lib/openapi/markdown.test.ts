@@ -17,14 +17,14 @@ describe('openapi markdown serializer', () => {
       operation,
       publicSourceUrl: OPENAPI_LANES[0].publicSourceUrl.en,
       title: 'Start a conversational AI agent',
-      url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+      url: '/en/api-reference/api-ref/conversational-ai/join',
     });
 
     expect(markdown).toContain(
-      '# Start a conversational AI agent (/en/api-reference/conversational-ai/rest-api/agent/join)',
+      '# Start a conversational AI agent (/en/api-reference/api-ref/conversational-ai/join)',
     );
     expect(markdown).toContain(
-      '- OpenAPI: /openapi/conversational-ai/convoai.en.yaml',
+      '- OpenAPI: /openapi/conversational-ai/rest-api.en.yaml',
     );
     expect(markdown).toContain('- Operation ID: start-agent');
     expect(markdown).toContain('- Method: POST');
@@ -33,11 +33,11 @@ describe('openapi markdown serializer', () => {
 
   it('resolves published openapi markdown content paths that end in .md', async () => {
     const markdown = await getOpenApiMarkdownByContentPath(
-      'en/api-reference/conversational-ai/rest-api/agent/join.md',
+      'en/api-reference/api-ref/conversational-ai/join.md',
     );
 
     expect(markdown).toContain(
-      '# Start a conversational AI agent (/en/api-reference/conversational-ai/rest-api/agent/join)',
+      '# Start a conversational AI agent (/en/api-reference/api-ref/conversational-ai/join)',
     );
   });
 });

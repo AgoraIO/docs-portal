@@ -167,18 +167,15 @@ describe('DocsSidebarTree', () => {
   it('renders HTTP method badges for OpenAPI endpoint pages', async () => {
     const tree: DocsSidebarNode[] = [
       {
-        id: '/en/api-reference/conversational-ai/rest-api/agent/join',
+        id: '/en/api-reference/api-ref/conversational-ai/join',
         method: 'POST',
         title: 'Start a conversational AI agent',
         type: 'page',
-        url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+        url: '/en/api-reference/api-ref/conversational-ai/join',
       },
     ];
 
-    renderSidebarTree(
-      tree,
-      '/en/api-reference/conversational-ai/rest-api/agent/join',
-    );
+    renderSidebarTree(tree, '/en/api-reference/api-ref/conversational-ai/join');
 
     const link = await screen.findByRole('link', {
       name: /Start a conversational AI agent POST/i,
@@ -193,18 +190,15 @@ describe('DocsSidebarTree', () => {
       'Start a conversational AI agent with a very long visible endpoint label';
     const tree: DocsSidebarNode[] = [
       {
-        id: '/en/api-reference/conversational-ai/rest-api/agent/join',
+        id: '/en/api-reference/api-ref/conversational-ai/join',
         method: 'POST',
         title: longTitle,
         type: 'page',
-        url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+        url: '/en/api-reference/api-ref/conversational-ai/join',
       },
     ];
 
-    renderSidebarTree(
-      tree,
-      '/en/api-reference/conversational-ai/rest-api/agent/join',
-    );
+    renderSidebarTree(tree, '/en/api-reference/api-ref/conversational-ai/join');
 
     const label = await screen.findByTitle(longTitle);
     const link = screen.getByRole('link', {

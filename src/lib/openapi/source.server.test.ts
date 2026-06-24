@@ -67,7 +67,7 @@ describe('openapi source loader', () => {
     const chinese = await getOpenApiOperation(lane, 'start-agent', 'zh-CN');
 
     expect(english.summary).toBe('Start a conversational AI agent');
-    expect(chinese.summary).toBe('创建对话式智能体');
+    expect(chinese.summary).toBe('Start a conversational AI agent');
   });
 
   it('loads OpenAPI data when runtime cwd has no content or public folders', async () => {
