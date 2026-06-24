@@ -24,7 +24,11 @@ import { cn } from '@/lib/cn';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
 import { DocsConfiguredIcon, hasConfiguredIcon } from './DocsConfiguredIcon';
 
+type SidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type SidebarSectionNode = Extract<DocsSidebarNode, { type: 'section' }>;
+type RenderableSidebarSectionNode = SidebarSectionNode & {
+  nestedQuickstartGroup?: SidebarSectionNode;
+};
 
 const sidebarToggleClassName =
   'min-h-[34px] h-auto items-start justify-between rounded-[7px] px-3 py-1.5 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
@@ -52,11 +56,19 @@ export function DocsSidebarTree({
   nodes: DocsSidebarNode[];
   onSelectPath: () => void;
 }) {
+  const renderableNodes = normalizeRootSections(
+    normalizeBuildNestedSections(
+      mergeBestPracticesIntoBuild(
+        mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
+      ),
+    ),
+  );
+
   return (
     <SidebarGroup>
       <SidebarGroupContent>
         <SidebarMenu>
-          {nodes.map((node) => (
+          {renderableNodes.map((node) => (
             <SidebarNodeRenderer
               activePath={activePath}
               key={node.id}
@@ -76,7 +88,7 @@ function SidebarNodeRenderer({
   onSelectPath,
 }: {
   activePath: string;
-  node: DocsSidebarNode;
+  node: DocsSidebarNode | RenderableSidebarSectionNode;
   onSelectPath: () => void;
 }) {
   if (node.type === 'section') {
@@ -109,7 +121,7 @@ function SidebarSection({
   onSelectPath,
 }: {
   activePath: string;
-  node: SidebarSectionNode;
+  node: RenderableSidebarSectionNode;
   onSelectPath: () => void;
 }) {
   const defaultOpen =
@@ -117,6 +129,17 @@ function SidebarSection({
     node.children.some((child) => isNodeActive(child, activePath)) ||
     shouldDefaultOpenSection(node.title, activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
+  const splitIndex = node.nestedQuickstartGroup
+    ? Math.max(
+        0,
+        node.children.findIndex(
+          (child) =>
+            child.type === 'page' && child.url.endsWith('/enable-service'),
+        ) + 1,
+      )
+    : node.children.length;
+  const leadingChildren = node.children.slice(0, splitIndex);
+  const trailingChildren = node.children.slice(splitIndex);
 
   if (node.url) {
     return (
@@ -128,17 +151,6 @@ function SidebarSection({
         onSelectPath={onSelectPath}
         title={node.title}
         url={node.url}
-      />
-    );
-  }
-
-  if (node.children.length === 0) {
-    return (
-      <SidebarPageLink
-        activePath={activePath}
-        onSelectPath={onSelectPath}
-        title={node.title}
-        url={node.url ?? node.id}
       />
     );
   }
@@ -155,7 +167,26 @@ function SidebarSection({
             {node.title.replaceAll('-', ' ')}
           </span>
         </SidebarGroupLabel>
-        {node.children.map((child) =>
+        {leadingChildren.map((child) => (
+          <SidebarNodeRenderer
+            activePath={activePath}
+            key={child.id}
+            node={child}
+            onSelectPath={onSelectPath}
+          />
+        ))}
+        {node.nestedQuickstartGroup ? (
+          <SidebarQuickstartGroup
+            activePath={activePath}
+            onSelectPath={onSelectPath}
+            pages={node.nestedQuickstartGroup.children.filter(
+              (child): child is SidebarPageNode => child.type === 'page',
+            )}
+            icon={node.nestedQuickstartGroup.icon}
+            title={node.nestedQuickstartGroup.title}
+          />
+        ) : null}
+        {trailingChildren.map((child) =>
           child.type === 'section' ? (
             <SidebarNestedSection
               activePath={activePath}
@@ -360,6 +391,71 @@ function shouldDefaultOpenSection(title: string, activePath: string) {
   );
 }
 
+function SidebarQuickstartGroup({
+  activePath,
+  icon,
+  onSelectPath,
+  pages,
+  title,
+}: {
+  activePath: string;
+  icon?: string;
+  onSelectPath: () => void;
+  pages: SidebarPageNode[];
+  title: string;
+}) {
+  const defaultOpen = pages.some((child) => child.url === activePath);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        aria-expanded={isOpen}
+        className={cn(sidebarToggleClassName, 'overflow-visible')}
+        onClick={() => setIsOpen((value) => !value)}
+        type="button"
+      >
+        <span className="flex min-w-0 items-center gap-2">
+          <SidebarConfiguredIcon icon={icon} />
+          <span className={sidebarSectionTitleClassName}>{title}</span>
+        </span>
+        <ChevronDownIcon
+          className={cn(
+            'size-4 shrink-0 transition-transform',
+            isOpen ? 'rotate-0' : '-rotate-90',
+          )}
+        />
+      </SidebarMenuButton>
+      {isOpen ? (
+        <SidebarMenuSub>
+          {pages.map((child) => (
+            <SidebarMenuSubItem key={child.id}>
+              <SidebarMenuSubButton
+                asChild
+                className={sidebarEndpointButtonClassName(child.method)}
+                isActive={child.url === activePath}
+                size="md"
+              >
+                <Link
+                  onClick={onSelectPath}
+                  params={{}}
+                  search={{}}
+                  to={child.url}
+                >
+                  <SidebarPageLabel
+                    method={child.method}
+                    title={getSidebarDisplayTitle(child.title, child.url)}
+                  />
+                </Link>
+              </SidebarMenuSubButton>
+            </SidebarMenuSubItem>
+          ))}
+        </SidebarMenuSub>
+      ) : null}
+    </SidebarMenuItem>
+  );
+}
+
 function SidebarNestedSection({
   activePath,
   node,
@@ -374,24 +470,6 @@ function SidebarNestedSection({
     node.children.some((child) => isNodeActive(child, activePath)) ||
     shouldDefaultOpenSection(node.title, activePath);
   const [isOpen, setIsOpen] = useState(defaultOpen);
-
-  if (node.url && node.children.length === 0) {
-    return (
-      <SidebarMenuSubButton
-        asChild
-        className={sidebarEndpointButtonClassName()}
-        isActive={node.url === activePath}
-        size="md"
-      >
-        <Link onClick={onSelectPath} params={{}} search={{}} to={node.url}>
-          <SidebarPageLabel
-            title={getSidebarDisplayTitle(node.title, node.url)}
-          />
-        </Link>
-      </SidebarMenuSubButton>
-    );
-  }
-
   return (
     <div className="w-full">
       <button
@@ -458,6 +536,161 @@ function isNodeActive(node: DocsSidebarNode, activePath: string): boolean {
   }
 
   return node.children.some((child) => isNodeActive(child, activePath));
+}
+
+function mergeSdkQuickstartSection(nodes: DocsSidebarNode[]) {
+  const merged: Array<DocsSidebarNode | RenderableSidebarSectionNode> = [];
+
+  for (let index = 0; index < nodes.length; index += 1) {
+    const node = nodes[index];
+    const nextNode = nodes[index + 1];
+
+    if (
+      node?.type === 'section' &&
+      node.children.every((child) => child.type === 'page') &&
+      (node.title === 'Getting Started' || node.title === '开始使用') &&
+      nextNode?.type === 'section' &&
+      nextNode.children.every((child) => child.type === 'page') &&
+      (nextNode.title === 'SDK Quickstarts' ||
+        nextNode.title === 'SDK 快速开始')
+    ) {
+      merged.push({
+        ...node,
+        nestedQuickstartGroup: nextNode,
+      });
+      index += 1;
+      continue;
+    }
+
+    merged.push(node);
+  }
+
+  return merged;
+}
+
+function mergeBuildIntoGettingStarted(
+  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
+) {
+  const merged: Array<DocsSidebarNode | RenderableSidebarSectionNode> = [];
+
+  for (let index = 0; index < nodes.length; index += 1) {
+    const node = nodes[index];
+    const nextNode = nodes[index + 1];
+
+    if (
+      node?.type === 'section' &&
+      node.children.every((child) => child.type === 'page') &&
+      (node.title === 'Get started' || node.title === '开始使用') &&
+      nextNode?.type === 'section' &&
+      nextNode.children.every((child) => child.type === 'page') &&
+      nextNode.title === 'Build'
+    ) {
+      merged.push({
+        ...node,
+        children: [
+          ...node.children,
+          {
+            ...nextNode,
+            collapsible: true,
+          },
+        ],
+      });
+      index += 1;
+      continue;
+    }
+
+    merged.push(node);
+  }
+
+  return merged;
+}
+
+function mergeBestPracticesIntoBuild(
+  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
+) {
+  const merged: Array<DocsSidebarNode | RenderableSidebarSectionNode> = [];
+
+  for (let index = 0; index < nodes.length; index += 1) {
+    const node = nodes[index];
+    const nextNode = nodes[index + 1];
+
+    if (
+      node?.type === 'section' &&
+      node.title === 'Build' &&
+      nextNode?.type === 'section' &&
+      nextNode.title === 'Best practices'
+    ) {
+      merged.push({
+        ...node,
+        children: [
+          ...node.children,
+          {
+            ...nextNode,
+            collapsible: true,
+            icon: 'ShieldCheck',
+            title: 'Harden and optimize',
+          },
+        ],
+      });
+      index += 1;
+      continue;
+    }
+
+    merged.push(node);
+  }
+
+  return merged;
+}
+
+function normalizeBuildNestedSections(
+  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
+) {
+  return nodes.map((node) => normalizeBuildNestedSectionNode(node));
+}
+
+function normalizeBuildNestedSectionNode(
+  node: DocsSidebarNode | RenderableSidebarSectionNode,
+): DocsSidebarNode | RenderableSidebarSectionNode {
+  if (node.type !== 'section') {
+    return node;
+  }
+
+  const normalizedChildren = node.children.map((child) =>
+    normalizeBuildNestedSectionNode(child),
+  );
+
+  if (node.title !== 'Build') {
+    return {
+      ...node,
+      children: normalizedChildren,
+    };
+  }
+
+  return {
+    ...node,
+    children: normalizedChildren.map((child) =>
+      child.type === 'section'
+        ? {
+            ...child,
+            collapsible: true,
+            icon: undefined,
+          }
+        : child,
+    ),
+  };
+}
+
+function normalizeRootSections(
+  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
+) {
+  return nodes.map((node) =>
+    node.type === 'section'
+      ? {
+          ...node,
+          collapsible: false,
+        }
+      : node,
+  );
 }
 
 function SidebarPageLink({

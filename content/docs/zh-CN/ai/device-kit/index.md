@@ -13,15 +13,15 @@ Convo AI Device Kit R1 是一个面向设备场景的产品，构建在声网 Io
 
 ## 构建
 
-- [运行 R1 Demo](build/baseline-bring-up/run-the-r1-demo.mdx)
-- [运行 Demo Server](build/baseline-bring-up/run-the-demo-server.md)
-- [配置设备网络](build/device-setup/configure-device-network.md)
-- [构建并烧录固件](build/firmware-integration/build-and-flash-firmware.md)
+- [运行 R1 Demo](build/run-the-r1-demo.mdx)
+- [运行 Demo Server](build/run-the-demo-server.md)
+- [配置设备网络](build/configure-device-network.md)
+- [构建并烧录固件](build/build-and-flash-firmware.md)
 
 ## 理解系统
 
-- [架构概览](build/system-architecture/architecture-overview.md)
-- [规格与兼容性](build/system-architecture/specifications-and-compatibility.md)
+- [架构概览](build/architecture-overview.md)
+- [规格与兼容性](build/specifications-and-compatibility.md)
 
 ## 规划上线
 
