@@ -2,9 +2,6 @@
 title: "Technical architecture"
 description: "Overview of the components in Flexible Classroom."
 ---
-
-# Technical architecture
-
 The following figure shows the overall technical architecture of Flexible Classroom:
 
 ![](https://web-cdn.agora.io/docs-files/1653557375318)

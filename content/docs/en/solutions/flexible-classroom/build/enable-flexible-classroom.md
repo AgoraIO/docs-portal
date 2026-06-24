@@ -2,9 +2,6 @@
 title: "Configure Flexible Classroom"
 description: "Enable the Flexible Classroom service and configure storage and recording in Agora Console."
 ---
-
-# Configure Flexible Classroom
-
 This page introduces how to enable and configure Flexible Classroom in Agora Console.
 
 ## Prerequisites

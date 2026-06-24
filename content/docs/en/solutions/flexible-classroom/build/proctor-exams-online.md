@@ -2,9 +2,6 @@
 title: "Proctor exams online"
 description: "Proctor exams in real time"
 ---
-
-# Proctor exams online
-
 Online proctoring refers to supervision of examinees through their web cameras, microphones, and by
 sharing their screens during online exams. This can be useful in the following cases:
 

@@ -2,9 +2,6 @@
 title: "Enable adaptive bitrate"
 description: "Configure ABR layers for Media Gateway video transcoding."
 ---
-
-# Enable adaptive bitrate
-
 Adaptive Bitrate (ABR) streaming delivers multiple video quality levels from a single source, allowing viewers to automatically switch between different bitrates based on their network conditions and device capabilities. This ensures optimal viewing experience by reducing buffering and maintaining the highest possible quality for each viewer's situation.
 
 This guide explains how to configure Adaptive Bitrate (ABR) encoding for video transcoding in Media Gateway.

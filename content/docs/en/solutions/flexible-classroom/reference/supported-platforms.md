@@ -2,9 +2,6 @@
 title: "Platform support"
 description: "Supported platforms for Flexible Classroom"
 ---
-
-# Platform support
-
 This page introduces the platforms supported by Flexible Classroom, as well as the compatibility requirements and recommended devices for each platform.
 
 ## Browser compatibility

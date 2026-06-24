@@ -1,0 +1,89 @@
+---
+title: How to call RESTful APIs
+description: Understand request URLs, request headers, request bodies, responses, and error handling for RTC REST APIs.
+---
+
+This page explains the structure of RTC REST API requests and how to call them correctly.
+
+## Prerequisites
+
+Before calling an API, make sure you have:
+
+- An Agora App ID
+- A customer ID
+- A customer secret
+
+## Request URL
+
+The following is a sample request URL:
+
+```text
+https://api.agora.io/dev/v1/kicking-rule
+```
+
+- `https`: Agora uses HTTPS.
+- `api.agora.io`: The Agora REST API host.
+- `dev/v1/kicking-rule`: The resource path, including the API version and resource name.
+
+The example is for reference only. Use the method and request URL documented on each endpoint page. Request URLs are case-sensitive.
+
+## Request structure
+
+A request consists of a request header and, when required, a request body.
+
+The following example creates a banning rule by sending a `POST` request with the App ID, channel name, user ID, IP address, ban duration, and privilege list:
+
+```bash
+curl --location --request POST 'https://api.agora.io/dev/v1/kicking-rule' \
+  --header 'Content-Type: application/json' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: <http_basic_auth>' \
+  --data '{
+    "appid": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+    "cname": "channel1",
+    "uid": 589517928,
+    "ip": "123",
+    "time": 60,
+    "privileges": [
+      "join_channel"
+    ]
+  }'
+```
+
+### Request header
+
+The request header contains the following information:
+
+- `Accept`: The response type the client can handle, such as `application/json`.
+- `Authorization`: The Agora REST API requires HTTP authentication. Every request must include the `Authorization` field. See [RESTful authentication](authentication).
+- `Content-Type`: The request body type, such as `application/json`.
+
+### Request body
+
+The request body contains the information sent to the server. For example, to create a banning rule, include the App ID, channel name, user ID, user IP, ban duration, and banned privileges. Request bodies are case-sensitive.
+
+## Response
+
+After you send the request, Agora returns a response status code and a response body. The Channel Management REST APIs do not define response headers.
+
+### Response status code
+
+The HTTP response status code can be one of the following:
+
+- `200`: The request is successful.
+- Other status codes: See [Response status codes](response-status-codes) to troubleshoot the problem.
+
+### Response body
+
+The response body contains the information returned by the server. For example, the response body for creating a banning rule includes the request status and rule ID:
+
+```json
+{
+  "status": "success",
+  "id": 1953
+}
+```
+
+## Error handling
+
+If a request fails, inspect the request and response with developer tools and troubleshoot based on the response status code. If the problem persists, contact [Agora technical support](mailto:support@agora.io).

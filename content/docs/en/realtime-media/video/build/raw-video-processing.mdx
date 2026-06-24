@@ -3,23 +3,11 @@ title: "Raw video processing"
 description: "Pre and post-process captured video and audio data to achieve the desired playback effect."
 ---
 
+**Supported platforms:** Android, iOS, macOS, Windows, Unity, and Unreal Engine.
+
 In certain use-cases, it is necessary to process raw video captured through the camera to achieve desired functionality or enhance the user experience. Video SDK provides the capability to pre-process and post-process the captured video data, allowing you to implement custom playback effects.
 
-<Tabs defaultValue="android" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="electron">Electron</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="unreal">Unreal Engine</TabsTrigger>
-  <TabsTrigger value="blueprint">Unreal Blueprint</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 ## Understand the tech
 
 Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
@@ -241,9 +229,9 @@ Agora provides an open source sample project [ProcessRawData](https://github.com
 - [`onRenderVideoFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_onrendervideoframe)
 - [`getVideoFrameProcessMode`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_getvideoframeprocessmode)
 - [`onEncodedVideoFrameReceived`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ivideoencodedframeobserver.html#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 ## Understand the tech
 
 Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
@@ -327,9 +315,9 @@ Agora provides an open source sample project [RawVideoData](https://github.com/A
 - [`setVideoFrameDelegate(_:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setvideoframedelegate(_:))
 - [`onRenderVideoFrame(_:uid:channelId:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoravideoframedelegate/onrendervideoframe(_:uid:channelid:))
 - [`onCapture(_:sourceType:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoravideoframedelegate/oncapture(_:sourcetype:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="macos">
+<PlatformStructured platform="macos">
 ## Understand the tech
 
 Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
@@ -413,9 +401,9 @@ Agora provides an open source sample project [RawVideoData](https://github.com/A
 - [`setVideoFrameDelegate(_:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setvideoframedelegate(_:))
 - [`onRenderVideoFrame(_:uid:channelId:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoravideoframedelegate/onrendervideoframe(_:uid:channelid:))
 - [`onCapture(_:sourceType:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoravideoframedelegate/oncapture(_:sourcetype:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 ## Understand the tech
 
 Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
@@ -557,21 +545,9 @@ Agora provides an open source sample project [OriginalVideo](https://github.com/
 - [`onRenderVideoFrame`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_onrendervideoframe)
 - [`getVideoFrameProcessMode`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_getvideoframeprocessmode)
 - [`onEncodedVideoFrameReceived`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_ivideoencodedframeobserver.html#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="electron">
-**This feature guide is not available yet.**
-</TabsContent>
-
-<TabsContent value="flutter">
-**This feature guide is not available yet.**
-</TabsContent>
-
-<TabsContent value="react-native">
-**This feature guide is not available yet.**
-</TabsContent>
-
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 ## Understand the tech
 
 Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
@@ -659,9 +635,9 @@ Agora provides an open source sample project [ProcessRawData](https://github.com
 - [`RegisterVideoEncodedFrameObserver`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_imediaengine_registervideoencodedframeobserver)
 - [`OnCaptureVideoFrame`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_oncapturevideoframe)
 - [`OnRenderVideoFrame`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_onrendervideoframe)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unreal">
+<PlatformStructured platform="unreal">
 ## Understand the tech
 
 Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
@@ -913,10 +889,5 @@ Agora provides an open source sample project [ProcessVideoRawData](https://githu
 - [`onRenderVideoFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_onrendervideoframe)
 - [`getVideoFrameProcessMode`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_getvideoframeprocessmode)
 - [`onEncodedVideoFrameReceived`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_ivideoencodedframeobserver.html#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="blueprint">
-**This feature guide is not available yet.**
-</TabsContent>
-
-</Tabs>

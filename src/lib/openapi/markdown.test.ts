@@ -40,4 +40,19 @@ describe('openapi markdown serializer', () => {
       '# Start a conversational AI agent (/en/api-reference/api-ref/conversational-ai/join)',
     );
   });
+
+  it('does not publish RTC REST markdown for zh-CN', async () => {
+    await expect(
+      getOpenApiMarkdownByContentPath(
+        'en/api-reference/api-ref/rtc/query-channel-list.md',
+      ),
+    ).resolves.toContain(
+      '# Query the channel list (/en/api-reference/api-ref/rtc/query-channel-list)',
+    );
+    await expect(
+      getOpenApiMarkdownByContentPath(
+        'zh-CN/api-reference/api-ref/rtc/query-channel-list.md',
+      ),
+    ).resolves.toBeNull();
+  });
 });

@@ -3,34 +3,13 @@ title: "Voice Activity Detection (Beta)"
 description: "Integrate the Voice Activity Detection (VAD) extension to detect the probability of human voice and background music in audio."
 ---
 
+:::note
+This feature is supported only on Web.
+:::
+
 The Voice Activity Detection (VAD) plugin analyzes audio streams in real-time to detect the probability of human voice and background music. This enables you to implement features like automatic muting during silence, smart audio recording, noise suppression, and adaptive audio processing. The extension is compatible with Web SDK v4.15.0 and above.
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="electron">Electron</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
-The extension is not available for this platform.
-</TabsContent>
-
-<TabsContent value="ios">
-The extension is not available for this platform.
-</TabsContent>
-
-<TabsContent value="macos">
-The extension is not available for this platform.
-</TabsContent>
-
-<TabsContent value="web">
+<PlatformStructured platform="web">
 ## Understand the tech
 
 The Agora Web SDK processes media through the following pipeline: 
@@ -306,26 +285,5 @@ export interface VADExtensionOptions {
 - `assetsPath`: The URL path of the Wasm files that the VAD plugin depends on. Don't end the path with a slash, for example `"./external"`.
 
 The plugin assembles the full path to the Wasm files from the `assetsPath`. If the path is incorrect and the Wasm files fail to load, you receive an `onloaderror` callback.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
-The extension is not available for this platform.
-</TabsContent>
-
-<TabsContent value="electron">
-The extension is not available for this platform.
-</TabsContent>
-
-<TabsContent value="flutter">
-The extension is not available for this platform.
-</TabsContent>
-
-<TabsContent value="react-native">
-The extension is not available for this platform.
-</TabsContent>
-
-<TabsContent value="unity">
-The extension is not available for this platform.
-</TabsContent>
-
-</Tabs>

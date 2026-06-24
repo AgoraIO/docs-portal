@@ -24,6 +24,20 @@ describe('openapi lanes', () => {
         tab: 'api-reference',
       }),
       expect.objectContaining({
+        id: 'rtc-rest',
+        locales: ['en'],
+        publicSourceUrl: {
+          en: '/openapi/rtc/channel-management.en.yaml',
+          'zh-CN': '/openapi/rtc/channel-management.en.yaml',
+        },
+        routePrefix: 'api-reference/api-ref/rtc',
+        sourcePath: {
+          en: 'content/openapi/rtc/channel-management.en.yaml',
+          'zh-CN': 'content/openapi/rtc/channel-management.en.yaml',
+        },
+        tab: 'api-reference',
+      }),
+      expect.objectContaining({
         id: 'signaling-rest',
         routePrefix: 'api-reference/api-ref/signaling',
         tab: 'api-reference',
@@ -94,6 +108,9 @@ describe('openapi lanes', () => {
       '/en/api-reference/api-ref/conversational-ai/join',
     );
     expect(getOpenApiPrerenderPaths()).toContain(
+      '/en/api-reference/api-ref/rtc/query-channel-list',
+    );
+    expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/signaling/peer-to-peer-message',
     );
     expect(getOpenApiPrerenderPaths()).toContain(
@@ -105,7 +122,22 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/speech-to-text/join',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(70);
+    expect(getOpenApiPrerenderPaths()).toHaveLength(79);
+  });
+
+  it('resolves RTC REST endpoint routes in the api-reference tab', () => {
+    expect(
+      resolveOpenApiEndpointRoute('en', 'api-reference', [
+        'api-ref',
+        'rtc',
+        'query-channel-list',
+      ]),
+    ).toMatchObject({
+      lane: expect.objectContaining({ id: 'rtc-rest' }),
+      operationId: 'cma-query-channel-list',
+      routeLeaf: 'query-channel-list',
+      url: '/en/api-reference/api-ref/rtc/query-channel-list',
+    });
   });
 
   it('resolves signaling REST endpoint routes in the api-reference tab', () => {

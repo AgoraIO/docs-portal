@@ -3,34 +3,11 @@ title: "Watermark (Beta)"
 description: "Integrate the Watermark extension to display image watermarks on local and remote audio tracks."
 ---
 
+**Supported platform:** Web.
+
 The Watermark extension works with Web SDK v4.24.0 or later to add image watermarks to video streams. The extension supports customizable watermark properties such as position, size, and transparency, and can be applied to both local and remote video tracks.
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="electron">Electron</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
-**This page is only available for the Web platform.**
-</TabsContent>
-
-<TabsContent value="ios">
-**This page is only available for the Web platform.**
-</TabsContent>
-
-<TabsContent value="macos">
-**This page is only available for the Web platform.**
-</TabsContent>
-
-<TabsContent value="web">
+<PlatformStructured platform="web">
 ## Understand the tech
 
 The Watermark extension integrates into the Web SDK's video processing pipeline to overlay images onto video streams in real-time. When enabled, the extension processes each video frame by compositing the watermark image at the specified position with the configured transparency level. 
@@ -370,26 +347,5 @@ export class AgoraWatermarkImage {
 - `width`: The desired width (in pixels) of the watermark image. Default is `-1`, which uses the original width after the image loads.
 - `height`: The desired height (in pixels) of the watermark image. Default is `-1`, which uses the original height after the image loads.
 - `alpha`: The image opacity, from `0.0` (completely transparent) to `1.0` (completely opaque). Default is `1.0`.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
-**This page is only available for the Web platform.**
-</TabsContent>
-
-<TabsContent value="electron">
-**This page is only available for the Web platform.**
-</TabsContent>
-
-<TabsContent value="flutter">
-**This page is only available for the Web platform.**
-</TabsContent>
-
-<TabsContent value="react-native">
-**This page is only available for the Web platform.**
-</TabsContent>
-
-<TabsContent value="unity">
-**This page is only available for the Web platform.**
-</TabsContent>
-
-</Tabs>

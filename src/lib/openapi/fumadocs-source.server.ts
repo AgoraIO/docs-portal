@@ -6,8 +6,12 @@ import {
   openapiPlugin,
 } from 'fumadocs-openapi/server';
 import yaml from 'js-yaml';
-import { type AppLocale, SUPPORTED_LOCALES } from '../i18n/i18n-config';
-import { getOpenApiLanes, type OpenApiLane } from './lanes';
+import { type AppLocale } from '../i18n/i18n-config';
+import {
+  getOpenApiLaneLocales,
+  getOpenApiLanes,
+  type OpenApiLane,
+} from './lanes';
 import { getOpenApiSourceText } from './source-text.server';
 
 type OpenApiStaticSource = Source<{
@@ -21,7 +25,9 @@ type OpenApiStaticSource = Source<{
 export async function createLocalizedOpenApiSource(): Promise<OpenApiStaticSource> {
   const sources = await Promise.all(
     getOpenApiLanes().flatMap((lane) =>
-      SUPPORTED_LOCALES.map((locale) => createLaneSource(lane, locale)),
+      getOpenApiLaneLocales(lane).map((locale) =>
+        createLaneSource(lane, locale),
+      ),
     ),
   );
 

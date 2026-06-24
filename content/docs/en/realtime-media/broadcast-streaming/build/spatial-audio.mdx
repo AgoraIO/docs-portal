@@ -3,6 +3,8 @@ title: "3D Spatial Audio"
 description: "Play sounds that have an audible location."
 ---
 
+**Supported platforms:** Android, iOS, macOS, Windows, Electron, React Native, and Unity.
+
 3D Spatial Audio brings the real-world sound experience to the virtual world, providing an immersive audio experience for users. Agora's spatial audio technology enables you to simulate the propagation characteristics of sound in a physical environment within a virtual interactive scene.
 
 ![Spatial audio comparison](/images/video-sdk/spatial-audio-comparison.png)
@@ -36,19 +38,7 @@ Compared to traditional stereo, which relies on left and right channels, spatial
 | Spatial Perception   | Adjust the volume of the left and right channels to create a spatial sound| Utilizes advanced spatial audio algorithms to create a realistic soundscape by manipulating parameters like distance, direction, and orientation |
 | User Experience  | Flat   | Immersive, three-dimensional, and natural, delivering a realistic auditory experience   |
 
-<Tabs defaultValue="android" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="electron">Electron</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 This page shows you how to implement 3D Spatial Audio in your app.
 
 ## Understand the tech
@@ -600,9 +590,9 @@ Agora provides the [SpatialSound](https://github.com/AgoraIO/API-Examples/blob/m
   - [`setHeadphoneEQParameters`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setheadphoneeqparameters)
   - [`setHeadphoneEQPreset`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setheadphoneeqpreset)
   - [`setRemoteUserSpatialAudioParams`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setremoteuserspatialaudioparams)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 This page shows you how to implement 3D Spatial Audio in your app.
 
 ## Understand the tech
@@ -925,9 +915,9 @@ Agora provides the [SpatialSound](https://github.com/AgoraIO/API-Examples/tree/m
   - [`setHeadphoneEQParameters`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setheadphoneeqparameters(_:highgain:))
   - [`setHeadphoneEQPreset`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setheadphoneeqpreset(_:))
   - [`setRemoteUserSpatialAudioParams`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setremoteuserspatialaudioparams(_:params:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="macos">
+<PlatformStructured platform="macos">
 This page shows you how to implement 3D Spatial Audio in your app.
 
 ## Understand the tech
@@ -1250,9 +1240,9 @@ Agora provides the [SpatialSound](https://github.com/AgoraIO/API-Examples/tree/m
   - [`setHeadphoneEQParameters`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setheadphoneeqparameters(_:highgain:))
   - [`setHeadphoneEQPreset`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setheadphoneeqpreset(_:))
   - [`setRemoteUserSpatialAudioParams`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setremoteuserspatialaudioparams(_:params:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 This page shows you how to implement 3D Spatial Audio in your app.
 
 ## Understand the tech
@@ -1596,9 +1586,9 @@ Agora provides the [SpatialSound](https://github.com/AgoraIO/API-Examples/tree/m
   - [`setHeadphoneEQParameters`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setheadphoneeqparameters)
   - [`setHeadphoneEQPreset`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setheadphoneeqpreset)
   - [`setRemoteUserSpatialAudioParams`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setremoteuserspatialaudioparams)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="electron">
+<PlatformStructured platform="electron">
 This page shows you how to implement 3D Spatial Audio in your app.
 
 ## Understand the tech
@@ -1943,107 +1933,9 @@ Use `SpatialAudio.tsx` and `LocalSpatialAudioEngine.tsx` in the sample project t
   - [`setHeadphoneEQParameters`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setheadphoneeqparameters)
   - [`setHeadphoneEQPreset`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setheadphoneeqpreset)
   - [`setRemoteUserSpatialAudioParams`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setremoteuserspatialaudioparams)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
-This page shows you how to implement 3D Spatial Audio in your app.
-
-## Understand the tech
-
-Agora provides a local Cartesian coordinate system calculation scheme for setting up 3D Spatial Audio positions for users and the media player.
-
-#### 3D Spatial Audio for users
-
-Use an instance of `ILocalSpatialAudioEngine` to implement 3D Spatial Audio. Call `updateSelfPosition` and `updateRemotePosition` to specify the spatial coordinates of local and remote users in the channel. Video SDK calculates the relative positions of local and remote users. This enables local users to experience the 3D Spatial Audio of remote users.
-
-![SpatialAudio](/images/video-sdk/spatial-audio-effect-user.svg)
-
-#### 3D Spatial Audio for media player
-
-Call `updateSelfPosition` and `updatePlayerPositionInfo` methods of the `ILocalSpatialAudioEngine` class to update the spatial coordinates of local users and the media player. The SDK calculates the relative positions of local users and the media player. This enables local users to experience the 3D Spatial Audio effect of the media player.
-
-![SpatialAudio](/images/video-sdk/spatial-audio-effect-player.svg)
-
-## Prerequisites
-
-Ensure that you have implemented the [SDK quickstart](../index) in your project. 
-
-## Implement 3D Spatial Audio
-The following figure shows the workflow you implement to provide 3D Spatial Audio for users and the media player:
-
-**Spatial audio steps**
-
-![Spatial audio steps](/images/video-sdk/spatial-audio-steps.svg)
-
-The Flutter implementation of this feature is not yet available. Please refer to the [API Reference](../../api-reference/rtc/index).
-
-## Reference
-This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
-
-### Application use-cases
-
-#### Social Chat
-
-In the Voice Chat Room app, user avatars are arranged in a grid, each assigned specific coordinates and a direction. During interaction, the volume and direction of each user's voice correspond to their location. As you drag your avatar across the screen, the volume of another user decreases as you move away and disappears when you exceed a certain distance, simulating real-world sound propagation.
-
-<div style={{ width: '33%' , height : '33%' }}>
- ![Social Chat](/images/video-sdk/voice-chatroom-social-spatial.png)
-</div>
-
-#### Games & Metaverse
-
-In 3D environments like games and the Metaverse, spatial audio technology can enhance experiences in the following ways:
-
-<tr>
-  <td><strong>Audio Blurring</strong></td>
-  <td>
-   Enable audio blurring for specific users or media. 
-   
-   For example, in a coffee shop, use this to create a "whispering" effect where other users hear muffled conversations.
-  </td>
- </tr>
- <tr>
-  <td><strong>Range Audio</strong></td>
-  <td>
-   Set audio reception range based on the scene. The farther the sound travels, the fainter it becomes. Adjust the attenuation factor for different effects:
-   <ul>
-    <li><strong>Jungle scene:</strong> Set to 0.9 for fast sound decay.</li>
-    <li><strong>Plain scene:</strong> Set to 0.1 for slower sound decay over a longer distance.</li>
-   </ul>
-  </td>
- </tr>
- <tr>
-  <td><strong>Ultra-Realistic Space</strong></td>
-  <td>
-   Assign virtual characters 3D coordinates for a realistic spatial experience, including:
-   <ul>
-    <li>Avatar coordinates (x, y, z). The coordinates of the avatar in 3D space.</li>
-    <li>Virtual character face orientation coordinates (x, y, z): The face orientation coordinates of the virtual character in the scene.</li>
-    <li>Virtual character head top orientation coordinates (x, y, z): Coordinates of the virtual character's head top orientation, which can be combined with the face orientation coordinates to determine the virtual character's actions and postures. For example, when the virtual character lies flat, the face is facing the sky and the top of the head is facing forward.</li>
-    <li>Coordinate system (left or right-handed). Whether the rectangular coordinate system uses a left-handed coordinate system or a right-handed coordinate system. Only one coordinate system can be used in a scene.</li>
-   </ul>
-  </td>
- </tr>
- <tr>
-  <td><strong>Sound Insulation Area</strong></td>
-  <td>
-   Create sound-insulated zones with customized sound attenuation. When a receiver outside the area listens to the sound source in the area, they experience the attenuation effect of the sound in the real environment on encountering the building partition.
-   
-   For example, in a KTV scene, sounds from inside a box can be faintly heard from outside. Opening the door instantly amplifies the sound.
-  </td>
- </tr>
-![Games & Metaverse](/images/video-sdk/gmes-scenario-spatial.png)
-
-#### Online Meetings
-
-In virtual meetings, spatial audio can arrange users around the host, with each microphone having directional sound. This setup mimics a real-world conference room, providing a more immersive and less tiring experience compared to traditional online meetings.
-
-![Online Meetings](/images/video-sdk/online-spatial-scenario.png)
-
-**This feature guide is not available yet.**
-</TabsContent>
-
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 This page shows you how to implement 3D Spatial Audio in your app.
 
 ## Understand the tech
@@ -2389,9 +2281,9 @@ Use `SpatialAudio.tsx` and `LocalSpatialAudioEngine.tsx` in the sample project t
   - [`setHeadphoneEQParameters`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setheadphoneeqparameters)
   - [`setHeadphoneEQPreset`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setheadphoneeqpreset)
   - [`setRemoteUserSpatialAudioParams`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setremoteuserspatialaudioparams)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 This page shows you how to implement 3D Spatial Audio in your game.
 
 ## Understand the tech
@@ -2715,6 +2607,5 @@ Agora provides the [SpatialAudioWithMediaPlayer](https://github.com/AgoraIO-Exte
   - [`SetHeadphoneEQParameters`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setheadphoneeqparameters)
   - [`SetHeadphoneEQPreset`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setheadphoneeqpreset)
   - [`SetRemoteUserSpatialAudioParams`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setremoteuserspatialaudioparams)
-</TabsContent>
+</PlatformStructured>
 
-</Tabs>

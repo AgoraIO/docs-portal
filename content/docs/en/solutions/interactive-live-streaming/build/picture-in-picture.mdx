@@ -3,6 +3,10 @@ title: "Picture-in-Picture"
 description: "Keep video visible in a floating overlay when your app moves to the background or the user switches to another app."
 ---
 
+:::note
+This feature is supported only on React Native.
+:::
+
 When your application moves to the background or the user switches to another app, the Picture-in-Picture (PiP) feature in Video SDK keeps the current video visible as a floating overlay window on screen. This lets users multitask without interrupting an ongoing call or viewing session, improving the multitasking experience and user retention.
 
 PiP is useful in the following scenarios:
@@ -14,27 +18,7 @@ PiP is useful in the following scenarios:
 | Interactive live streaming | Lets viewers browse products, chat, or use other apps while the stream continues in the background. Useful for e-commerce and content live streaming. |
 | Screen sharing | Keeps shared content visible when the user switches apps during remote collaboration or a presentation. Useful for remote work, technical support, and product demos. |
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
-This feature guide is not yet available for Android.
-</TabsContent>
-
-<TabsContent value="ios">
-This feature guide is not yet available for iOS.
-</TabsContent>
-
-<TabsContent value="web">
-This feature guide is not yet available for Web.
-</TabsContent>
-
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 ## Prerequisites
 
 Before implementing Picture-in-Picture, make sure you have the following:
@@ -313,6 +297,5 @@ This section includes links to related API reference and additional resources.
 ### Sample project
 
 Agora provides a [sample project](https://github.com/AgoraIO-Extensions/react-native-agora/tree/main/examples/expo/app/examples/advanced/PictureInPicture) demonstrating Picture-in-Picture. Download or view the source code.
-</TabsContent>
+</PlatformStructured>
 
-</Tabs>

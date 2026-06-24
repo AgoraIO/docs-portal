@@ -3,8 +3,6 @@ title: "Product overview"
 description: "Quickly implement real-time audio and video transmission and intercommunication for IoT use cases."
 ---
 
-# IoT SDK
-
 Agora's IoT SDK brings real-time audio and video engagement to smart devices with a lightweight design optimized for low-resource and battery-powered systems. Compatible with WebRTC and a wide range of chipsets, it supports seamless cross-platform development across mobile, PC, web, and smart displays. With robust performance in weak network conditions and integration with Agora’s real-time platform, it’s ideal for live streaming, remote control, and interactive IoT applications.
 
 Use the IoT SDK to build lightweight, cross-platform apps for smart devices, from video doorbells to smart displays. Designed for low power consumption and exceptional network performance, it offers full compatibility with Agora’s RTC and signaling platforms, simplifying development for interactive and reliable IoT solutions.

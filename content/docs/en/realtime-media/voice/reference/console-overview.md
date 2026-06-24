@@ -488,4 +488,4 @@ Follow these steps to delete your Agora account:
 
 ## Reference
 
-For information on using Agora REST authentication, see [RESTful authentication](channel-management-api/restful-authentication.md).
+For information on using Agora REST authentication, see the [RTC REST API reference](/en/api-reference/api-ref/rtc).

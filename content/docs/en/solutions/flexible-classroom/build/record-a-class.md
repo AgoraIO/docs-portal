@@ -2,9 +2,6 @@
 title: "Record a class"
 description: "Best practice to implement the recording feature in Flexible Classroom"
 ---
-
-# Record a class
-
 This page introduces some best practices that you need to keep in mind when you implement the recording feature in Flexible Classroom. These best practices can help to ensure the reliability of the recording and improve the quality of the recorded files.
 
 ## The process of implementing the recording feature

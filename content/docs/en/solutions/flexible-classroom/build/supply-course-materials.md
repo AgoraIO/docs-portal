@@ -2,9 +2,6 @@
 title: "Upload course materials"
 description: "Supply learning materials for a course."
 ---
-
-# Upload course materials
-
 In many online teaching use-cases, teachers use a variety of interactive courseware to deliver an informative learning experience. Flexible Classroom enables teachers to display such courseware during classes. The supported formats are PPT, PPTX, DOC, DOCX, PDF, MP3, MP4, PNG, JPG, and GIF. 
 
 Courseware in flexible classrooms can be divided into two categories:

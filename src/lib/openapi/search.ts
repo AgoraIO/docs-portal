@@ -1,6 +1,7 @@
 import type { SortedResult } from 'fumadocs-core/search';
 import {
   getOpenApiEndpointUrl,
+  getOpenApiLaneLocales,
   getOpenApiLanes,
   getOpenApiOperationIds,
 } from './lanes';
@@ -14,7 +15,7 @@ export async function getOpenApiSearchDocuments(): Promise<
 > {
   const pages = await Promise.all(
     getOpenApiLanes().flatMap((lane) =>
-      (['en', 'zh-CN'] as const).map(async (locale) => {
+      getOpenApiLaneLocales(lane).map(async (locale) => {
         const operations = await getOpenApiOperations(lane, locale);
 
         return { lane, locale, operations };

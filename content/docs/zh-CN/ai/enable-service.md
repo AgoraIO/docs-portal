@@ -2,9 +2,6 @@
 title: 开通服务
 description: 体验声网对话式 AI 引擎前，你需要先在[声网控制台](https://console.shengwang.cn/)创建项目并开通对话式 AI 引擎服务，获取 App ID、客户 ID 和客户密钥等调用 RESTful API 时所需...
 ---
-
-# 开通服务
-
 体验声网对话式 AI 引擎前，你需要先在[声网控制台](https://console.shengwang.cn/)创建项目并开通对话式 AI 引擎服务，获取 App ID、客户 ID 和客户密钥等调用 RESTful API 时所需的参数。
 
 ## 登录声网控制台

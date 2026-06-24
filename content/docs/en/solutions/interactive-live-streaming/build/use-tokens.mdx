@@ -7,26 +7,7 @@ To protect your business, it is best practice to authenticate every client that 
 
 ## Understand the tech
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="electron">Electron</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="react-js">React</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="unreal">Unreal Engine</TabsTrigger>
-  <TabsTrigger value="blueprint">Unreal Blueprint</TabsTrigger>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="linux-cpp">Linux C++</TabsTrigger>
-  <TabsTrigger value="linux-c">Linux C</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -542,9 +523,9 @@ This section contains content that completes the information on this page, or po
 - [`renewToken`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken)
 
 - [`onTokenPrivilegeWillExpire`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -818,9 +799,9 @@ This section contains content that completes the information on this page, or po
 - [`renewToken`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/renewtoken(_:))
 
 - [`rtcEngine(_:tokenPrivilegeWillExpire:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:tokenprivilegewillexpire:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="macos">
+<PlatformStructured platform="macos">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -1094,9 +1075,9 @@ This section contains content that completes the information on this page, or po
 - [`renewToken`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/renewtoken(_:))
 
 - [`rtcEngine(_:tokenPrivilegeWillExpire:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:tokenprivilegewillexpire:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="web">
+<PlatformStructured platform="web">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -1332,9 +1313,9 @@ The user ID and channel name used to join a channel must be consistent with the 
 ## Reference
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -1425,9 +1406,9 @@ This section contains content that completes the information on this page, or po
 - [renewToken](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken)
 
 - [onTokenPrivilegeWillExpire](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="electron">
+<PlatformStructured platform="electron">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -1622,9 +1603,9 @@ This section contains content that completes the information on this page, or po
 -  [renewToken]({{global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengine.html#api_irtcengine_renewtoken)
 -  [onTokenPrivilegeWillExpire]({{global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
 -  [onRequestToken]({{global.API_REF_ELECTRON_ROOT_VOICE_SDK}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrequesttoken)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -1887,9 +1868,9 @@ This section contains content that completes the information on this page, or po
 - [onTokenPrivilegeWillExpire](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
 
 - [onConnectionStateChanged](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -2208,9 +2189,9 @@ This section contains content that completes the information on this page, or po
 -  [renewToken]({{global.API_REF_RN_ROOT}}/class_irtcengine.html#api_irtcengine_renewtoken)
 -  [onTokenPrivilegeWillExpire]({{global.API_REF_RN_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
 -  [onRequestToken]({{global.API_REF_RN_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrequesttoken)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="react-js">
+<PlatformStructured platform="react-js">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -2295,9 +2276,9 @@ The user ID and channel name used to join a channel must be consistent with the 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
 - [Reference app](https://github.com/AgoraIO/video-sdk-samples-reactjs/tree/main#samples)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 When a user attempts to connect to an Agora channel, your game retrieves a token from the token server in your security infrastructure. Your game then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -2672,9 +2653,9 @@ The user ID and channel name used to join a channel must be consistent with the 
 ## Reference
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unreal">
+<PlatformStructured platform="unreal">
 When a user attempts to connect to an Agora channel, your game retrieves a token from the token server in your security infrastructure. Your game then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -2763,9 +2744,9 @@ This section contains content that completes the information on this page, or po
 - [renewToken]({{Global.API_REF_UE_ROOT}}/class_irtcengine.html#api_irtcengine_renewtoken)
 
 - [onTokenPrivilegeWillExpire]({{global.API_REF_UE_ROOT}}/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="blueprint">
+<PlatformStructured platform="blueprint">
 When a user attempts to connect to an Agora channel, your game retrieves a token from the token server in your security infrastructure. Your game then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -2848,9 +2829,9 @@ The user ID and channel name used to join a channel must be consistent with the 
 ## Reference
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="python">
+<PlatformStructured platform="python">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -2879,9 +2860,9 @@ The user ID and channel name used to join a channel must be consistent with the 
 ## Reference
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="linux-cpp">
+<PlatformStructured platform="linux-cpp">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -2910,9 +2891,9 @@ The user ID and channel name used to join a channel must be consistent with the 
 ## Reference
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="linux-c">
+<PlatformStructured platform="linux-c">
 When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
@@ -2947,6 +2928,5 @@ This section contains content that completes the information on this page, or po
 - [agora_rtc_renew_token](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a87c94a2d518278926807e24592b41336)
 
 - [on_token_privilege_will_expire](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html#aef1aa16dd5b32baa1aa03887f40f6ee9)
-</TabsContent>
+</PlatformStructured>
 
-</Tabs>

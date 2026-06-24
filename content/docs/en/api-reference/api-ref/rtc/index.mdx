@@ -1,0 +1,58 @@
+---
+title: Overview
+description: Manage RTC channel information, user privileges, and notification service IPs using REST APIs.
+---
+
+In addition to the SDK that you integrate into the app client, Agora provides server-side RESTful APIs to manage real-time audio and video channels.
+
+This RTC REST API reference is the authoritative source for Channel Management REST APIs shared by Voice Calling, Video Calling, Broadcast Streaming, and Interactive Live Streaming. Product pages provide entry points and usage context; endpoint definitions live here.
+
+## Key features and use cases
+
+| Key feature | Description | Typical use cases |
+| --- | --- | --- |
+| Manage user privileges | Remove specified users from channels and prevent users from sending audio and video streams. | Unauthorized users appear in a live broadcast, users disrupt a room, signaling messages are hijacked, or abnormal offline states interfere with user list updates. |
+| Query channel information | Query online channels, users in a channel, hosts in a channel, and the status of a specified user. | Sync channel status when the number of concurrent channels is limited, or query user lists and user status when real-time sync performance is not required. |
+| Query notification service IPs | Retrieve Agora Notifications service IP addresses. | Maintain firewall allowlists for message notification callbacks. |
+
+## API basics
+
+All requests are sent to the host `api.agora.io`.
+
+- **Authentication**: All APIs require [Basic Auth](authentication).
+- **Request**: Request bodies use JSON.
+- **Response**: Response bodies use JSON.
+- **Base URL**: `https://api.agora.io`
+
+:::info
+All request URLs and request bodies are case-sensitive. Use HTTPS for every request.
+:::
+
+## REST APIs
+
+**Channel information**
+
+- [Query the channel list](query-channel-list): Get the list of all channels under a specified project.
+- [Query the user list](query-user-list): Get the users in a specified channel.
+- [Query the host list](query-host-list): Get the hosts in a live-broadcasting channel.
+- [Query the user status](query-user-status): Check whether a specified user is in a channel.
+
+**User privilege banning**
+
+- [Create a banning rule](create-ban-rule): Ban a user from joining a channel or publishing audio and video.
+- [Delete a banning rule](delete-ban-rule): Delete a specified banning rule.
+- [Get the banning rule list](get-ban-rule-list): Get all banning rules for a project.
+- [Update the banning rule expiration](update-ban-expiration): Update the expiration time of a banning rule.
+
+**Message notification service**
+
+- [Query the IP address](query-ip-address): Retrieve the IP addresses of the Agora Notifications service.
+
+## Supporting topics
+
+- [How to call RESTful APIs](how-to-call-api)
+- [RESTful authentication](authentication)
+- [Response status codes](response-status-codes)
+- [Channel event types](channel-event-types)
+- [Ban user privileges best practices](ban-user-privileges-best-practices)
+- [Ensure service reliability](ensure-service-reliability)

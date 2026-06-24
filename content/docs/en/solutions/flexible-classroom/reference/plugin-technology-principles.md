@@ -2,9 +2,6 @@
 title: "Plugin technology principles"
 description: "This page provides a description of the plugin technology"
 ---
-
-# Plugin technology principles
-
 Flexible Classroom provides a plugin mechanism to help developers expand classroom capabilities under various use-cases. This mechanism also reduces the degree of code coupling between the custom application and the classroom, thereby reducing the difficulty of subsequent upgrading of the integrated source code.
 
 This document covers the following topics related to Flexible Classroom plugins:

@@ -3,21 +3,11 @@ title: "Alpha transparency effect"
 description: "Procedures to prevent and respond to housebreaking."
 ---
 
+**Supported platforms:** Android, iOS, macOS, Windows, React Native, and Unity.
+
 In various real-time video interaction use-cases, segmenting the host's background and applying transparent special effects can make the interaction more engaging, enhance immersion, and improve the overall interactive experience.
 
-<Tabs defaultValue="android" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="electron">Electron</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 Consider the following sample use-cases:
 
 * **Broadcaster background replacement**: The audience sees the broadcaster's background in the video replaced with a virtual scene, such as a gaming environment, a conference, or a tourist attractions.
@@ -461,9 +451,9 @@ This section contains content that completes the information on this page, or po
 - [`onCaptureVideoFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_oncapturevideoframe)
 - [`onPreEncodeVideoFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_onpreencodevideoframe)
 - [`onRenderVideoFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_onrendervideoframe)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 Consider the following sample use-cases:
 
 * **Broadcaster background replacement**: The audience sees the broadcaster's background in the video replaced with a virtual scene, such as a gaming environment, a conference, or a tourist attractions.
@@ -487,9 +477,9 @@ Sample code is currently available for the Android, Unity, and React Native plat
 
 - For iOS, set `opaque` to `false` in the view's `layer` property when setting up the view.
 - For macOS, You don't need to additionally set the transparency properties of the window. Follow the settings described for iOS.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="macos">
+<PlatformStructured platform="macos">
 Consider the following sample use-cases:
 
 * **Broadcaster background replacement**: The audience sees the broadcaster's background in the video replaced with a virtual scene, such as a gaming environment, a conference, or a tourist attractions.
@@ -513,9 +503,9 @@ Sample code is currently available for the Android, Unity, and React Native plat
 
 - For iOS, set `opaque` to `false` in the view's `layer` property when setting up the view.
 - For macOS, You don't need to additionally set the transparency properties of the window. Follow the settings described for iOS.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 Consider the following sample use-cases:
 
 * **Broadcaster background replacement**: The audience sees the broadcaster's background in the video replaced with a virtual scene, such as a gaming environment, a conference, or a tourist attractions.
@@ -538,17 +528,9 @@ Sample code is currently available for the Android, Unity, and React Native plat
 - Implement the transparency properties of the app window yourself and handle the transparency relationship when multiple windows are stacked on top of each other (achieved by adjusting the `zOrder` of the window). 
 
 - For Windows, create a separate window using `CreateWindowEx` when creating the project and set the `High Transparency` property. If the target window is a child window, you need to additionally specify the `WS_POPUP` property.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="electron">
-**This feature guide is not available yet.**
-</TabsContent>
-
-<TabsContent value="flutter">
-**This feature guide is not available yet.**
-</TabsContent>
-
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 Consider the following sample use-cases:
 
 * **Broadcaster background replacement**: The audience sees the broadcaster's background in the video replaced with a virtual scene, such as a gaming environment, a conference, or a tourist attractions.
@@ -611,9 +593,9 @@ rtcEngine.setVideoEncoderConfiguration({advanceOptions: {encodeAlpha: true}});
   style={styles.videoView} 
 />
 ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 Consider the following sample use-cases:
 
 * **Broadcaster background replacement**: The audience sees the broadcaster's background in the video replaced with a virtual scene, such as a gaming environment, a conference, or a tourist attractions.
@@ -935,6 +917,4 @@ private VideoSurface MakeImageSurface(string goName)
   return videoSurface;
 }
 ```
-</TabsContent>
-
-</Tabs>
+</PlatformStructured>

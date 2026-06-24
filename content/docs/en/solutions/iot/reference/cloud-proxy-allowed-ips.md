@@ -2,9 +2,6 @@
 title: "IP addresses for Cloud Proxy"
 description: "If your app is running inside a restricted network, clear one of the following IP addresses for Cloud Proxy to work effectively."
 ---
-
-# IP addresses for Cloud Proxy
-
 This guide provides configuration details you need to set up IoT SDK Cloud Proxy services across all supported regions. Cloud Proxy enables secure communication through firewalls by using designated IP addresses and ports.
 
 :::info

@@ -1,6 +1,7 @@
 import type { AppLocale } from '@/lib/i18n/i18n-config';
 import {
   getOpenApiEndpointUrl,
+  getOpenApiLaneLocales,
   getOpenApiLanes,
   getOpenApiOperationIds,
   resolveOpenApiEndpointRoute,
@@ -82,7 +83,7 @@ export function serializeOpenApiOperationMarkdown({
 export async function getOpenApiMarkdownPages() {
   const pages = await Promise.all(
     getOpenApiLanes().flatMap((lane) =>
-      (['en', 'zh-CN'] as const).map(async (locale) => {
+      getOpenApiLaneLocales(lane).map(async (locale) => {
         const operations = await getOpenApiOperations(lane, locale);
 
         return { lane, locale, operations };

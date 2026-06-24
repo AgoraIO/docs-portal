@@ -2,9 +2,6 @@
 title: "Core concepts"
 description: "Ideas that are central to developing with Agora."
 ---
-
-# Core concepts
-
 RTC (Real-Time Communication) refers to real-time communication technology, that allows almost instant exchange of audio, video, and other data between the sender and the receiver.
 
 Agora SDKs provide real-time audio and video interaction services, with multi-platform and multi-device support. This includes high-definition video calls, voice-only calls, interactive live streaming, as well as one-on-one and multi-group chats.

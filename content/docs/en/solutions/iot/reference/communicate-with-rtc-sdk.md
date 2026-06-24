@@ -2,9 +2,6 @@
 title: "Communicate with Video SDK"
 description: "Stream audio and video to and from Video SDK."
 ---
-
-# Communicate with Video SDK
-
 If your business requires not only high-quality audio and video transmission, but also easy integration, low memory usage, and low power consumption, for applications such as smart cameras and smart doorbells, Agora recommends that you use the Video SDK with the IoT SDK.
 
 The following table shows the data formats supported when the IoT SDK communicates with the Video SDK (v4.x):

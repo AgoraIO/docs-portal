@@ -2,9 +2,6 @@
 title: "Secure channel encryption"
 description: "Add Agora built-in media stream encryption to your app."
 ---
-
-# Secure channel encryption
-
 Media stream encryption ensures that only authorized users in a channel see and hear each other. Encryption prevents potential eavesdroppers from accessing sensitive and private information shared in a channel. IoT SDK provides built-in encryption methods that you can use to guarantee data confidentiality during transmission, when required.
 
 This page shows you how to integrate media stream encryption into your app using IoT SDK.

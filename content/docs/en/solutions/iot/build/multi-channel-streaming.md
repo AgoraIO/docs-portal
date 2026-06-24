@@ -2,9 +2,6 @@
 title: "Multi-streaming"
 description: "Stream to multiple channels or push multiple streams to a single channel."
 ---
-
-# Multi-streaming
-
 Some special use-cases require live streaming over two or more separate channels. For example, consider the case of a real-time monitoring system, where camera feed is shared over two channels for two types of users. There are also certain applications where you want to send multiple streams over the same channel. Consider the case of a monitoring system where feeds from multiple cameras are shared on the same channel.
 
 Agora IoT SDK multi-streaming allows you to join multiple channels at the same time or send multiple streams over a single channel. This page shows you how to implement two different multi-streaming methods into your app using IoT SDK. Choose the method that best fits your particular use-case.

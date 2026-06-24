@@ -12,4 +12,15 @@ describe('openapi search documents', () => {
     expect(startAgent?.content).toContain('start-agent');
     expect(startAgent?.content).toContain('/v2/projects/{appid}/join');
   });
+
+  it('indexes RTC REST endpoints for English only', async () => {
+    const documents = await getOpenApiSearchDocuments();
+
+    expect(
+      documents.find((doc) => doc.url === '/en/api-reference/api-ref/rtc/query-channel-list'),
+    ).toBeDefined();
+    expect(
+      documents.find((doc) => doc.url === '/zh-CN/api-reference/api-ref/rtc/query-channel-list'),
+    ).toBeUndefined();
+  });
 });

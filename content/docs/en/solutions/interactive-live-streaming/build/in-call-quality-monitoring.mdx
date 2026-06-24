@@ -3,24 +3,11 @@ title: "In-call quality monitoring"
 description: ""
 ---
 
+**Supported platforms:** Android, iOS, macOS, Web, Windows, Electron, Flutter, React Native, Unity, and Unreal Engine.
+
 During a call, Video SDK triggers callbacks related to the video calling quality. These callbacks enable you to monitor your users' experience, troubleshoot issues, and optimize their overall experience
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="electron">Electron</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="unreal">Unreal Engine</TabsTrigger>
-  <TabsTrigger value="blueprint">Unreal Blueprint</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 ## Understand the tech
 
 After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
@@ -246,9 +233,9 @@ private val iRtcEngineEventHandler = object : IRtcEngineEventHandler() {
 - [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
 
 - [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 ## Understand the tech
 
 After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
@@ -378,9 +365,9 @@ extension JoinChannelVideoMain: AgoraRtcEngineDelegate {
 - [`rtcEngine(_:localVideoStateChangedOf:reason:sourceType:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostatechangedof:reason:sourcetype:))
 - [`rtcEngine(_:remoteVideoStats:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remotevideostats:))
 - [`rtcEngine(_:remoteVideoStateChangedOfUid:state:reason:elapsed:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remotevideostatechangedofuid:state:reason:elapsed:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="macos">
+<PlatformStructured platform="macos">
 ## Understand the tech
 
 After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
@@ -510,9 +497,9 @@ extension JoinChannelVideoMain: AgoraRtcEngineDelegate {
 - [`rtcEngine(_:localVideoStateChangedOf:reason:sourceType:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostatechangedof:error:sourcetype:))
 - [`rtcEngine(_:remoteVideoStats:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remotevideostats:))
 - [`rtcEngine(_:remoteVideoStateChangedOfUid:state:reason:elapsed:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:remotevideostatechangedofuid:state:reason:elapsed:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="web">
+<PlatformStructured platform="web">
 Try out the [online demo](https://webdemo-global.agora.io/index.html) for displaying [In-call Statistics](https://webdemo-global.agora.io/example/advanced/displayCallStats/index.html).
 
 ## Understand the tech
@@ -642,9 +629,9 @@ Each abnormal event has a corresponding recovery event, as described in the foll
 - [`getLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#getlocalvideostats)
 
 - [`getRemoteVideoStats`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#getremotevideostats)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 ## Understand the tech
 
 After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
@@ -836,9 +823,9 @@ class FUserRtcEventHandler : public agora::rtc::IRtcEngineEventHandler
 - [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
 
 - [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="electron">
+<PlatformStructured platform="electron">
 ## Understand the tech
 
 After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
@@ -987,9 +974,9 @@ rtcEngine.registerEventHandler(EventHandler);
 - [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
 
 - [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
 ## Understand the tech
 
 After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
@@ -1191,9 +1178,9 @@ RtcEngineEventHandler getEventHandler() {
 - [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
 
 - [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 ## Understand the tech
 
 After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
@@ -1342,9 +1329,9 @@ rtcEngine.registerEventHandler(EventHandler);
 - [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
 
 - [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 ## Understand the tech
 
 After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
@@ -1494,9 +1481,9 @@ internal class EventHandler : IRtcEngineEventHandler
 - [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
 
 - [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unreal">
+<PlatformStructured platform="unreal">
 ## Understand the tech
 
 After a user joins a channel, Video SDK triggers a series of callbacks every 2 seconds, reporting information such as uplink and downlink network quality, real-time interaction statistics, and statistics of local and remote audio and video streams.
@@ -1651,10 +1638,5 @@ class MyRtcEngineEventHandler : public IRtcEngineEventHandler
 - [`onLocalVideoStats`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostats)
 
 - [`onRtcStats`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="blueprint">
-**This feature guide is not available yet.**
-</TabsContent>
-
-</Tabs>

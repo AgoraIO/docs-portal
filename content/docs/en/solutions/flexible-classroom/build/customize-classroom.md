@@ -2,9 +2,6 @@
 title: "Classroom and Proctor SDK"
 description: "Easily update the look and feel of your classrooms."
 ---
-
-# Classroom and Proctor SDK
-
 This page explains the way UI components work in Classroom and Proctor SDK.
 
     ## Introduction to UI components

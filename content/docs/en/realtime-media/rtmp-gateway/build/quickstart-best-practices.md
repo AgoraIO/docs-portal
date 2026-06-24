@@ -2,9 +2,6 @@
 title: "Media Gateway quickstart"
 description: "Obtain the server domain name and streaming key required to push RTMP or SRT streams into Agora channels."
 ---
-
-# Media Gateway quickstart
-
 To push online media streams as live video source streams into Agora channels using Media Gateway, you need to obtain a server domain name and streaming key. Taking the OBS streaming software as an example, you configure the server's domain name and streaming key in the following way:
 
 ![Server settings](/images/media-gateway/obs-server-setting.png)

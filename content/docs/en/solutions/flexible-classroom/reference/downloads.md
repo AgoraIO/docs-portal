@@ -2,9 +2,6 @@
 title: "Samples"
 description: "Links to the manual downloads for this product, and explanations on how to install them."
 ---
-
-# Samples
-
 Download the demo apps for Agora Flexible Classroom to experience online learning use cases for 1-to-1 and small interactive classes, or lecture hall classrooms. Flexible Classroom demo apps include real-time audio, video, messaging, interactive whiteboard, and many other features.
 
 To demo the mobile experience of students only, download and try the Android or iOS apps.

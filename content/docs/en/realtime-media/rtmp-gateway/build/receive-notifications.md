@@ -2,9 +2,6 @@
 title: "Receive notifications about channel events"
 description: "Subscribe to Media Gateway events and receive webhook notifications in real time."
 ---
-
-# Receive notifications about channel events
-
 A webhook is a user-defined callback over HTTPS that allows your app or back-end system to receive notifications when certain events occur. Agora calls your webhook endpoint from its servers to send notifications about Media Gateway events. With Notifications, you can subscribe to Media Gateway events and receive notifications in real time.
 
 ## Understand the tech

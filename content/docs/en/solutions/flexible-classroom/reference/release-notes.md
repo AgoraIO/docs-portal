@@ -2,9 +2,6 @@
 title: "Release notes"
 description: "Information about changes in each release of Flexible Classroom."
 ---
-
-# Release notes
-
 This page provides the release notes for Flexible Classroom.
 
 ## v2.9.40

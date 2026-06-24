@@ -2,9 +2,6 @@
 title: "Enable Media Gateway"
 description: "Enable Media Gateway for your Agora project in Agora Console."
 ---
-
-# Enable Media Gateway
-
 To use Media Gateway, you first need to activate and configure it. This page explains how to do this in Agora Console.
 
 ## Prerequisites

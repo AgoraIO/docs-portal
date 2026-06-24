@@ -51,13 +51,7 @@ To follow this procedure, you must have:
 
 - Integrated the v4.2.x or v4.3.x of the Video SDK and implemented basic real-time audio and video functions in your app. See [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md).
 
-<Tabs defaultValue="android" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
   :::note
   > <ul><li>When integrating through Maven Central, specify `io.agora.rtc:full-sdk:x.y.z` and replace `x.y.z` with the specific SDK version number.</li><li>The MetaKit extension uses the Face Capture extension ( `libagora_face_capture_extension.so`) and the Virtual Background extension (`libagora_segmentation_extension.so`). You can delete unnecessary extensions as needed to reduce the size of the app.</li></ul>
 
@@ -2304,9 +2298,9 @@ The complete JSON for the replacement is as follows:
   ]
 }
 ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
   :::note
   > <ul><li>When integrating through CocoaPods, specify pod `AgoraRtcEngine_Special_iOS` and replace `x.y.z` with the specific SDK version number.</li><li>The MetaKit extension uses the Face Capture extension ( `AgoraFaceCaptureExtension.xcframework`) and the Virtual Background extension (`AgoraVideoSegmentationExtension.xcframework`). You can delete unnecessary extensions as needed to reduce the size of the app.</li></ul>
 
@@ -3603,6 +3597,5 @@ The complete JSON for the replacement is as follows:
   ]
 }
 ```
-</TabsContent>
+</PlatformStructured>
 
-</Tabs>
