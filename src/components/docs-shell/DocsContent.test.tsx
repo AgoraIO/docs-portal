@@ -172,6 +172,37 @@ describe('DocsContent', () => {
     ).toHaveTextContent('/v2/projects/{appid}/join');
   });
 
+  it('derives TOC items from rendered headings when the payload TOC is empty', async () => {
+    renderWithRouter(
+      <AppProviders>
+        <article>
+          <section hidden>
+            <h2 id="android-only">Android only</h2>
+          </section>
+          <section>
+            <h2 id="web-only">Web only</h2>
+            <h3 id="web-details">Web details</h3>
+          </section>
+          <DocsTableOfContents toc={[]} />
+        </article>
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('link', { name: 'Web only' }),
+    ).toHaveAttribute('href', '#web-only');
+    expect(screen.getByRole('link', { name: 'Web details' })).toHaveAttribute(
+      'href',
+      '#web-details',
+    );
+    expect(
+      screen.queryByRole('link', { name: 'Android only' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('No headings on this page.'),
+    ).not.toBeInTheDocument();
+  });
+
   it('renders scope tabs in the content header when the sidebar header requests tabs presentation', async () => {
     renderWithRouter(
       <DocsContent

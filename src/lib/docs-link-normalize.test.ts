@@ -25,7 +25,7 @@ describe('normalizeDocsHref', () => {
         { contentPath: 'en/ai/index.md' },
       ),
     ).toEqual({
-      href: '/en/api-reference/conversational-ai/rest-api?view=all#start',
+      href: '/en/api-reference/api-ref/conversational-ai?view=all#start',
       kind: 'internal-doc',
     });
   });
@@ -102,12 +102,12 @@ describe('normalizeDocsHref', () => {
     expect(
       normalizeDocsHref('/zh-CN/operations/start-agent#llm-max_history'),
     ).toEqual({
-      href: '/zh-CN/api-reference/conversational-ai/rest-api/agent/join#llm-max_history',
+      href: '/zh-CN/api-reference/api-ref/conversational-ai/join#llm-max_history',
       kind: 'root',
     });
 
     expect(normalizeDocsHref('/en/operations/stop-agent')).toEqual({
-      href: '/en/api-reference/conversational-ai/rest-api/agent/leave',
+      href: '/en/api-reference/api-ref/conversational-ai/leave',
       kind: 'root',
     });
 
@@ -139,7 +139,28 @@ describe('normalizeDocsHref', () => {
         contentPath: 'en/api-reference/ncs-events.mdx',
       }),
     ).toEqual({
-      href: '/en/api-reference/conversational-ai/rest-api/agent/join#llm-max_history',
+      href: '/en/api-reference/api-ref/conversational-ai/join#llm-max_history',
+      kind: 'internal-doc',
+    });
+  });
+
+  it('normalizes legacy Conversational AI REST API links', () => {
+    expect(
+      normalizeDocsHref(
+        '/en/api-reference/conversational-ai/rest-api/agent/join#properties-llm',
+      ),
+    ).toEqual({
+      href: '/en/api-reference/api-ref/conversational-ai/join#properties-llm',
+      kind: 'root',
+    });
+
+    expect(
+      normalizeDocsHref(
+        '../../api-reference/conversational-ai/rest-api/agent/turns.md?page=2',
+        { contentPath: 'en/ai/build/start-stop-agent.mdx' },
+      ),
+    ).toEqual({
+      href: '/en/api-reference/api-ref/conversational-ai/turns?page=2',
       kind: 'internal-doc',
     });
   });

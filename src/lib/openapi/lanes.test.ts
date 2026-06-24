@@ -13,19 +13,24 @@ describe('openapi lanes', () => {
       expect.objectContaining({
         id: 'convoai',
         publicSourceUrl: {
-          en: '/openapi/conversational-ai/convoai.en.yaml',
-          'zh-CN': '/openapi/conversational-ai/convoai.zh-CN.yaml',
+          en: '/openapi/conversational-ai/rest-api.en.yaml',
+          'zh-CN': '/openapi/conversational-ai/rest-api.en.yaml',
         },
-        routePrefix: 'api-reference/conversational-ai/rest-api/agent',
+        routePrefix: 'api-reference/api-ref/conversational-ai',
         sourcePath: {
-          en: 'content/openapi/conversational-ai/convoai.en.yaml',
-          'zh-CN': 'content/openapi/conversational-ai/convoai.zh-CN.yaml',
+          en: 'content/openapi/conversational-ai/rest-api.en.yaml',
+          'zh-CN': 'content/openapi/conversational-ai/rest-api.en.yaml',
         },
         tab: 'api-reference',
       }),
       expect.objectContaining({
         id: 'signaling-rest',
         routePrefix: 'api-reference/api-ref/signaling',
+        tab: 'api-reference',
+      }),
+      expect.objectContaining({
+        id: 'cloud-recording-rest',
+        routePrefix: 'api-reference/api-ref/cloud-recording',
         tab: 'api-reference',
       }),
       expect.objectContaining({
@@ -40,29 +45,28 @@ describe('openapi lanes', () => {
     const [lane] = getOpenApiLanes();
 
     expect(lane.parentUrl.en).toBe(
-      '/en/api-reference/conversational-ai/rest-api/agent',
+      '/en/api-reference/api-ref/conversational-ai',
     );
     expect(getOpenApiEndpointUrl(lane, 'en', 'start-agent')).toBe(
-      '/en/api-reference/conversational-ai/rest-api/agent/join',
+      '/en/api-reference/api-ref/conversational-ai/join',
     );
     expect(getOpenApiEndpointUrl(lane, 'zh-CN', 'start-agent')).toBe(
-      '/zh-CN/api-reference/conversational-ai/rest-api/agent/join',
+      '/zh-CN/api-reference/api-ref/conversational-ai/join',
     );
   });
 
   it('resolves endpoint routes without product-specific loader logic', () => {
     expect(
       resolveOpenApiEndpointRoute('en', 'api-reference', [
+        'api-ref',
         'conversational-ai',
-        'rest-api',
-        'agent',
         'join',
       ]),
     ).toMatchObject({
       lane: expect.objectContaining({ id: 'convoai' }),
       operationId: 'start-agent',
       routeLeaf: 'join',
-      url: '/en/api-reference/conversational-ai/rest-api/agent/join',
+      url: '/en/api-reference/api-ref/conversational-ai/join',
     });
   });
 
@@ -82,15 +86,18 @@ describe('openapi lanes', () => {
       'get-turns',
     ]);
     expect(getOpenApiPrerenderPaths()).toContain(
-      '/en/api-reference/conversational-ai/rest-api/agent/join',
+      '/en/api-reference/api-ref/conversational-ai/join',
     );
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/signaling/peer-to-peer-message',
     );
     expect(getOpenApiPrerenderPaths()).toContain(
+      '/en/api-reference/api-ref/cloud-recording/acquire',
+    );
+    expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/speech-to-text/join',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(40);
+    expect(getOpenApiPrerenderPaths()).toHaveLength(54);
   });
 
   it('resolves signaling REST endpoint routes in the api-reference tab', () => {
@@ -108,4 +115,18 @@ describe('openapi lanes', () => {
     });
   });
 
+  it('resolves Cloud Recording REST endpoint routes in the api-reference tab', () => {
+    expect(
+      resolveOpenApiEndpointRoute('en', 'api-reference', [
+        'api-ref',
+        'cloud-recording',
+        'acquire',
+      ]),
+    ).toMatchObject({
+      lane: expect.objectContaining({ id: 'cloud-recording-rest' }),
+      operationId: 'acquire-cloud-recording-resource',
+      routeLeaf: 'acquire',
+      url: '/en/api-reference/api-ref/cloud-recording/acquire',
+    });
+  });
 });

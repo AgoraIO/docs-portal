@@ -1,27 +1,21 @@
 # Findings
 
-## 2026-06-22
+## 2026-06-23
 
-- User asked to fill placeholder docs under `content/docs/en/introduction`.
-- Candidate targets identified:
-  - `content/docs/en/introduction/security-privacy.mdx`
-  - `content/docs/en/introduction/account.md`
-  - `content/docs/en/introduction/console-setup.mdx`
-  - `content/docs/en/introduction/glossary.md`
-  - `content/docs/en/introduction/firewall.md`
-  - `content/docs/en/introduction/billing/*`
-- Repo has many unrelated modified files; avoid changing anything outside this migration set unless required.
-- `content/docs/en/realtime-media/cloud-recording/meta.json` had unresolved Git conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`), which caused the `invalid data` parse error.
-- Valid cloud-recording top-level pages currently present on disk include `index`, `rest-quickstart`, `middleware-quickstart`, `manage-agora-account`, `pricing-webpage-recording`, `build`, and `reference`.
-- `content/docs/en/realtime-media/broadcast-streaming/index.mdx` conflict mixed two incompatible structures:
-  - one side converted `index.mdx` into a short product overview page
-  - the other side kept the old giant platform quickstart
-- The current tree already has a separate `quickstart.mdx`, so the consistent resolution is:
-  - keep `index.mdx` as the product overview
-  - keep `product-overview.md` as a direct-link compatibility page
-  - keep `quickstart.mdx` as the detailed setup guide
-- `content/docs/en/realtime-media/video/reference/migration-guide/` was still a directory-tabs container with three stub pages (`android`, `ios`, `web`) instead of a single in-page multi-platform doc like `content/docs/en/realtime-media/voice/build/custom-audio.mdx`.
-- The same directory-tabs migration-guide pattern also exists in:
-  - `content/docs/en/realtime-media/broadcast-streaming/reference/migration-guide/`
-  - `content/docs/en/solutions/interactive-live-streaming/reference/migration-guide/`
-- Similar directory-tabs grouping also exists for release notes, but those are much larger platform-specific docs and are not obvious one-page merge candidates from structure alone.
+- User asked to migrate Cloud Recording RESTful API docs from source MDX into the `docs-portal` OpenAPI rendering pipeline.
+- Located candidate `$PORTAL`: `/Users/yangyixuan/Documents/GitHub/docs-portal`, confirmed by `content/openapi/` and `src/lib/openapi/lanes.ts`.
+- Located candidate `$SOURCE`: `/Users/yangyixuan/Documents/GitHub/Doc-Source-Private`.
+- `docs-portal` has `bun.lock`, so targeted commands should use `bun`/`bunx` unless a script explicitly runs `node`.
+- The source Cloud Recording REST API is a single endpoint reference file at `cloud-recording/reference/restful-api.mdx`, not a `cloud-recording/rest-api/` directory.
+- Cloud Recording source also has authored reference pages: `cloud-recording/reference/rest-api-overview.md` and `cloud-recording/reference/restful-authentication.mdx`.
+- Identified 7 Cloud Recording REST endpoints: `acquire`, `start`, `update`, `updateLayout`, `query`, `stop`, and `get-ncs-ip`.
+- Target landing level should match Signaling under `api-reference/api-ref`, so use `api-reference/api-ref/cloud-recording`.
+- Existing `src/lib/docs-page.server.ts` already uses `isOpenApiTab(tab)` for OpenAPI endpoint handling.
+- Cloud Recording lane uses one English YAML for both locales:
+  - sourcePath: `content/openapi/cloud-recording/cloud-recording.en.yaml`
+  - publicSourceUrl: `/openapi/cloud-recording/cloud-recording.en.yaml`
+- Required verification passed:
+  - `node -e "require('@apidevtools/swagger-parser').validate('content/openapi/cloud-recording/cloud-recording.en.yaml')..."`
+  - `node scripts/sync-openapi-assets.mjs`
+  - `bunx vitest run src/lib/openapi`
+- Consistency check passed: YAML `operationId` values match lane operation keys; lane `routeLeaf` values match Cloud Recording meta endpoint leaves.

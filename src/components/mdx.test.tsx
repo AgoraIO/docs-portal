@@ -3,6 +3,7 @@ import * as fumadocsTabs from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { getMDXComponents } from './mdx';
 
 type TabsComponent = ComponentType<{
@@ -358,6 +359,99 @@ describe('common MDX registry', () => {
       screen.getByText('Group 2 Android').closest('section'),
     ).toBeVisible();
     expect(document.documentElement.dataset.docsPlatform).toBe('android');
+  });
+
+  it('switches structured platform panels on normal click interaction', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <Group
+        canonicalPlatform="web"
+        groupMode="structured"
+        platforms='["android","web"]'
+      >
+        <Panel platform="android">Android instructions</Panel>
+        <Panel platform="web">Web instructions</Panel>
+      </Group>,
+    );
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Android' }));
+
+    expect(
+      screen.getByText('Android instructions').closest('section'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('Web instructions').closest('section'),
+    ).not.toBeVisible();
+  });
+
+  it('persists platform once during a complete mouse click sequence', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+    const preferenceEvents: string[] = [];
+
+    const handlePreferenceChange = (event: Event) => {
+      if (event instanceof CustomEvent) {
+        preferenceEvents.push(event.detail);
+      }
+    };
+
+    window.addEventListener(PLATFORM_PREFERENCE_EVENT, handlePreferenceChange);
+
+    try {
+      render(
+        <Group
+          canonicalPlatform="web"
+          groupMode="structured"
+          platforms='["android","web"]'
+        >
+          <Panel platform="android">Android instructions</Panel>
+          <Panel platform="web">Web instructions</Panel>
+        </Group>,
+      );
+
+      const androidTab = screen.getByRole('tab', { name: 'Android' });
+
+      fireEvent.mouseDown(androidTab, {
+        button: 0,
+        ctrlKey: false,
+      });
+      fireEvent.click(androidTab);
+
+      expect(preferenceEvents).toEqual(['android']);
+      expect(window.localStorage.getItem('docs-portal:platform:v1')).toBe(
+        'android',
+      );
+    } finally {
+      window.removeEventListener(
+        PLATFORM_PREFERENCE_EVENT,
+        handlePreferenceChange,
+      );
+    }
+  });
+
+  it('persists the current platform when clicking the already active trigger', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <Group
+        canonicalPlatform="web"
+        groupMode="structured"
+        platforms='["android","web"]'
+      >
+        <Panel platform="android">Android instructions</Panel>
+        <Panel platform="web">Web instructions</Panel>
+      </Group>,
+    );
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Web' }));
+
+    expect(window.localStorage.getItem('docs-portal:platform:v1')).toBe('web');
   });
 
   it('renders Fumadocs normal tab triggers', () => {

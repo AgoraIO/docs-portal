@@ -1,0 +1,31 @@
+---
+title: Overview
+description: Manage Conversational AI agents and troubleshoot REST API requests.
+---
+
+The Conversational AI REST API lets you create, stop, update, query, interrupt, and inspect agent sessions from your server.
+
+## API basics
+
+All requests are sent to the host `api.agora.io`.
+
+- **Authentication**: Use [RESTful authentication](authentication) for every request.
+- **Request**: Request and response bodies use JSON.
+- **Base URL**: `https://api.agora.io/api/conversational-ai-agent/v2/projects/<appid>`, where `<appid>` is the Agora App ID for your project.
+
+:::info
+Request URLs and request bodies are case-sensitive.
+:::
+
+## REST APIs
+
+- [Start a conversational AI agent](join): Create and start a Conversational AI agent instance.
+- [Stop a conversational AI agent](leave): Stop the specified agent instance.
+- [Update agent configuration](update): Adjust agent parameters at runtime.
+- [Query agent status](query): Get the current status of the specified agent instance.
+- [Retrieve a list of agents](list): Retrieve agents that match specified conditions.
+- [Broadcast a message using TTS](speak): Broadcast a custom message through the TTS module.
+- [Interrupt the agent](interrupt): Interrupt an agent while it is speaking or thinking.
+- [Send a custom instruction](think): Send text instructions into the current conversation pipeline.
+- [Retrieve agent history](history): Retrieve short-term conversation history.
+- [Query conversation turn information](turns): Query turn-level conversation details and metrics.

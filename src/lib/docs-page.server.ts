@@ -48,6 +48,19 @@ const RECIPES_ROOT_SLUG = 'recipes';
 
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 
+const LEGACY_CONVERSATIONAL_AI_AGENT_ROUTE_LEAVES: Record<string, string> = {
+  history: 'history',
+  interrupt: 'interrupt',
+  join: 'join',
+  leave: 'leave',
+  list: 'list',
+  query: 'query',
+  speak: 'speak',
+  think: 'think',
+  turns: 'turns',
+  update: 'update',
+};
+
 const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
   string,
   Partial<Record<AppLocale, string>>
@@ -375,12 +388,55 @@ function resolveApiReferenceRedirect(
   }
 
   const normalizedPath = slugSegments.join('/');
+  const legacyConversationalAiRestRedirect =
+    resolveLegacyConversationalAiRestRedirect(locale, normalizedPath);
+  if (legacyConversationalAiRestRedirect) {
+    return legacyConversationalAiRestRedirect;
+  }
 
   if (normalizedPath === RECIPES_PATH_ENTRY_SLUG) {
     return `/${locale}/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`;
   }
 
   return null;
+}
+
+function resolveLegacyConversationalAiRestRedirect(
+  locale: string,
+  normalizedPath: string,
+) {
+  const prefix = 'conversational-ai/rest-api';
+
+  if (normalizedPath === prefix) {
+    return locale === 'en'
+      ? `/${locale}/api-reference/api-ref/conversational-ai`
+      : null;
+  }
+
+  if (normalizedPath === `${prefix}/authentication`) {
+    return locale === 'en'
+      ? `/${locale}/api-reference/api-ref/conversational-ai/authentication`
+      : null;
+  }
+
+  if (normalizedPath === `${prefix}/status-codes`) {
+    return locale === 'en'
+      ? `/${locale}/api-reference/api-ref/conversational-ai/status-codes`
+      : null;
+  }
+
+  if (!normalizedPath.startsWith(`${prefix}/agent/`)) {
+    return null;
+  }
+
+  const routeLeaf =
+    LEGACY_CONVERSATIONAL_AI_AGENT_ROUTE_LEAVES[
+      normalizedPath.slice(`${prefix}/agent/`.length)
+    ];
+
+  return routeLeaf
+    ? `/${locale}/api-reference/api-ref/conversational-ai/${routeLeaf}`
+    : null;
 }
 
 function resolveAiDocsRedirect(
@@ -747,13 +803,16 @@ function buildAiProductSidebar(
 
   const isZhCn = aiOverview.url.startsWith('/zh-CN/');
   const aiLocalePrefix = isZhCn ? '/zh-CN' : '/en';
+  const restApiUrl = isZhCn
+    ? `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`
+    : `${aiLocalePrefix}/api-reference/api-ref/conversational-ai/authentication`;
 
   const restApiPage = {
-    id: `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`,
+    id: restApiUrl,
     linked: true,
     title: isZhCn ? 'REST API' : 'RESTful API',
     type: 'page',
-    url: `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`,
+    url: restApiUrl,
   } satisfies DocsSidebarPageNode;
 
   const manualServerSdkSection = {

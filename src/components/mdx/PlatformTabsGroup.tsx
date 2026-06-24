@@ -9,6 +9,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
@@ -169,7 +170,11 @@ function PlatformTabs({
     <ControlledTabs onValueChange={onValueChange} value={activePlatform}>
       <TabsList>
         {platforms.map((platform) => (
-          <TabsTrigger key={platform} value={platform}>
+          <TabsTrigger
+            key={platform}
+            onClick={() => onValueChange(platform)}
+            value={platform}
+          >
             {getPlatformLabel(platform, locale)}
           </TabsTrigger>
         ))}
@@ -192,10 +197,20 @@ function usePlatformSelection({
   canonicalPlatform: PlatformKey;
   parsedPlatforms: PlatformKey[];
 }) {
-  const [activePlatform, setActivePlatform] = useState<PlatformKey>(() => {
-    const stored = getStoredPlatformPreference();
+  const storedPlatformPreferenceRef = useRef<PlatformKey | null | undefined>(
+    undefined,
+  );
 
-    if (stored && isKnownPlatform(stored) && parsedPlatforms.includes(stored)) {
+  if (storedPlatformPreferenceRef.current === undefined) {
+    const stored = getStoredPlatformPreference();
+    storedPlatformPreferenceRef.current =
+      stored && isKnownPlatform(stored) ? stored : null;
+  }
+
+  const [activePlatform, setActivePlatform] = useState<PlatformKey>(() => {
+    const stored = storedPlatformPreferenceRef.current;
+
+    if (stored && parsedPlatforms.includes(stored)) {
       return stored;
     }
 
@@ -203,6 +218,7 @@ function usePlatformSelection({
       ? canonicalPlatform
       : (parsedPlatforms[0] ?? canonicalPlatform);
   });
+  const activePlatformRef = useRef(activePlatform);
 
   useEffect(() => {
     const stored = getStoredPlatformPreference();
@@ -213,16 +229,19 @@ function usePlatformSelection({
       parsedPlatforms.includes(stored) &&
       stored !== activePlatform
     ) {
+      activePlatformRef.current = stored;
       setActivePlatform(stored);
       return;
     }
 
     if (!parsedPlatforms.includes(activePlatform)) {
+      activePlatformRef.current = canonicalPlatform;
       setActivePlatform(canonicalPlatform);
     }
   }, [activePlatform, canonicalPlatform, parsedPlatforms]);
 
   useEffect(() => {
+    activePlatformRef.current = activePlatform;
     syncPlatformDataset(activePlatform);
   }, [activePlatform]);
 
@@ -233,12 +252,13 @@ function usePlatformSelection({
           ? event.detail
           : getStoredPlatformPreference();
 
-      if (
-        typeof nextPlatform === 'string' &&
-        isKnownPlatform(nextPlatform) &&
-        parsedPlatforms.includes(nextPlatform)
-      ) {
-        setActivePlatform(nextPlatform);
+      if (typeof nextPlatform === 'string' && isKnownPlatform(nextPlatform)) {
+        storedPlatformPreferenceRef.current = nextPlatform;
+
+        if (parsedPlatforms.includes(nextPlatform)) {
+          activePlatformRef.current = nextPlatform;
+          setActivePlatform(nextPlatform);
+        }
       }
     }
 
@@ -249,10 +269,14 @@ function usePlatformSelection({
 
       if (
         typeof event.newValue === 'string' &&
-        isKnownPlatform(event.newValue) &&
-        parsedPlatforms.includes(event.newValue)
+        isKnownPlatform(event.newValue)
       ) {
-        setActivePlatform(event.newValue);
+        storedPlatformPreferenceRef.current = event.newValue;
+
+        if (parsedPlatforms.includes(event.newValue)) {
+          activePlatformRef.current = event.newValue;
+          setActivePlatform(event.newValue);
+        }
       }
     }
 
@@ -273,8 +297,15 @@ function usePlatformSelection({
       return;
     }
 
-    setActivePlatform(value);
-    setStoredPlatformPreference(value);
+    if (activePlatformRef.current !== value) {
+      activePlatformRef.current = value;
+      setActivePlatform(value);
+    }
+
+    if (storedPlatformPreferenceRef.current !== value) {
+      storedPlatformPreferenceRef.current = value;
+      setStoredPlatformPreference(value);
+    }
   }
 
   return {

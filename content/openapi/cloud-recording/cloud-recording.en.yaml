@@ -1,0 +1,1227 @@
+openapi: 3.1.0
+info:
+  version: ""
+  title: Cloud Recording RESTful API
+  description: >-
+    Agora Cloud Recording records and saves voice calls, video calls, and
+    interactive streaming sessions. Send HTTPS requests from your business
+    server to Agora to acquire recording resources, start recording, query
+    recording status, update recording settings, update composite layouts, stop
+    recording, and query message notification server IP addresses.
+
+
+    ## Base URL
+
+
+    All requests are sent to `https://api.sd-rtn.com`.
+
+
+    ## Data format
+
+
+    Use `Content-Type: application/json` for requests with bodies. Request and
+    response bodies are JSON.
+servers:
+  - url: https://api.sd-rtn.com
+    description: Cloud Recording REST API host.
+security:
+  - basicAuth: []
+paths:
+  /v1/apps/{appid}/cloud_recording/acquire:
+    post:
+      summary: Acquire a cloud recording resource
+      description: >-
+        Gets a cloud recording resource ID. Before starting cloud recording,
+        call `acquire` to get a resource ID. One resource ID can be used for
+        only one recording session.
+
+
+        To improve the success rate, call `acquire` and `start` in pairs and
+        call `start` within two seconds after receiving the resource ID. The
+        resource ID is valid for five minutes and should be used as soon as
+        possible.
+      operationId: acquire-cloud-recording-resource
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/acquire-request"
+            example:
+              cname: httpClient463224
+              uid: "527841"
+              clientRequest:
+                scene: 0
+                resourceExpiredHour: 24
+      responses:
+        "200":
+          description: >-
+            The request succeeded. If you set `startParameter` in the request
+            body and its value is invalid, the `acquire` request can still
+            succeed, but the following `start` request returns an error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/acquire-response"
+              example:
+                cname: string
+                uid: string
+                resourceId: string
+        default:
+          $ref: "#/components/responses/not-200"
+  /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start:
+    post:
+      summary: Start cloud recording
+      description: >-
+        Starts cloud recording by using a resource ID returned from `acquire`.
+        After calling `start`, check that the recording service has started
+        successfully before relying on the recording output.
+      operationId: start-cloud-recording
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/resourceid"
+        - $ref: "#/components/parameters/mode"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/start-request"
+            example:
+              cname: httpClient463224
+              uid: "527841"
+              clientRequest:
+                recordingConfig:
+                  channelType: 1
+                  streamTypes: 2
+                  streamMode: default
+                  videoStreamType: 0
+                  maxIdleTime: 30
+                  subscribeAudioUids:
+                    - "123"
+                    - "456"
+                  subscribeVideoUids:
+                    - "123"
+                    - "456"
+                  subscribeUidGroup: 0
+                recordingFileConfig:
+                  avFileType:
+                    - hls
+                storageConfig:
+                  vendor: 2
+                  region: 3
+                  bucket: xxxxx
+                  accessKey: xxxxx
+                  secretKey: xxxxx
+                  fileNamePrefix:
+                    - directory1
+                    - directory2
+      responses:
+        "200":
+          description: >-
+            The request succeeded. To confirm that the recording service started
+            successfully, follow the integration best practices.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/start-response"
+              example:
+                cname: string
+                uid: string
+                resourceId: string
+                sid: string
+        default:
+          $ref: "#/components/responses/not-200"
+  /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/update:
+    post:
+      summary: Update cloud recording settings
+      description: >-
+        Updates cloud recording settings during an active recording session. For
+        individual and composite recordings, use this endpoint to update
+        subscription lists. For web page recording, use it to pause or resume
+        recording or to update the CDN streaming address.
+
+
+        The request is valid only within a recording session. If you call
+        `update` successively, send the next request only after receiving the
+        previous response.
+      operationId: update-cloud-recording
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/resourceid"
+        - $ref: "#/components/parameters/sid"
+        - $ref: "#/components/parameters/mode"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/update-request"
+            example:
+              cname: httpClient463224
+              uid: "527841"
+              clientRequest:
+                streamSubscribe:
+                  audioUidList:
+                    subscribeAudioUids:
+                      - "#allstream#"
+                  videoUidList:
+                    unsubscribeVideoUids:
+                      - "444"
+                      - "555"
+                      - "666"
+      responses:
+        "200":
+          description: The request succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/session-response"
+              example:
+                cname: string
+                uid: string
+                resourceId: string
+                sid: string
+        default:
+          $ref: "#/components/responses/not-200"
+  /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/updateLayout:
+    post:
+      summary: Update the cloud recording layout
+      description: >-
+        Updates the mixed video layout for composite recording. Each call
+        overrides the original layout settings. If you omit a field that was
+        previously set, the service uses that field's default value.
+
+
+        The request is valid only within a recording session. If you call
+        `updateLayout` successively, send the next request only after receiving
+        the previous response.
+      operationId: update-cloud-recording-layout
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/resourceid"
+        - $ref: "#/components/parameters/sid"
+        - name: mode
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - mix
+          description: The recording mode. Only `mix` is supported.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateLayout-request"
+            example:
+              cname: httpClient463224
+              uid: "527841"
+              clientRequest:
+                mixedVideoLayout: 3
+                backgroundColor: "#FF0000"
+                layoutConfig:
+                  - uid: "1"
+                    x_axis: 0.1
+                    y_axis: 0.1
+                    width: 0.1
+                    height: 0.1
+                    alpha: 1
+                    render_mode: 1
+                  - uid: "2"
+                    x_axis: 0.2
+                    y_axis: 0.2
+                    width: 0.1
+                    height: 0.1
+                    alpha: 1
+                    render_mode: 1
+      responses:
+        "200":
+          description: The request succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/session-response"
+              example:
+                cname: string
+                uid: string
+                resourceId: string
+                sid: string
+        default:
+          $ref: "#/components/responses/not-200"
+  /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/query:
+    get:
+      summary: Query cloud recording status
+      description: >-
+        Queries the status of a cloud recording session. The request is valid
+        only within a recording session. If the recording was started
+        incorrectly or has ended, the request returns `404`.
+      operationId: query-cloud-recording
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/resourceid"
+        - $ref: "#/components/parameters/sid"
+        - $ref: "#/components/parameters/mode"
+      responses:
+        "200":
+          description: The request succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/query-response"
+              example:
+                resourceId: string
+                sid: string
+                serverResponse:
+                  status: 0
+                  extensionServiceState:
+                    - payload:
+                        fileList:
+                          - filename: string
+                            sliceStartTime: 0
+                        onhold: true
+                        state: string
+                      serviceName: string
+                cname: string
+                uid: string
+        default:
+          $ref: "#/components/responses/not-200"
+  /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/stop:
+    post:
+      summary: Stop cloud recording
+      description: >-
+        Stops a cloud recording session and makes the recording service leave
+        the channel. To start recording again after the recording stops, call
+        `acquire` again to request a new resource ID.
+
+
+        The request is valid only within a recording session. In non-web page
+        recording modes, if the channel is idle for longer than the configured
+        duration, Cloud Recording automatically leaves the channel and stops
+        recording.
+      operationId: stop-cloud-recording
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appid"
+        - $ref: "#/components/parameters/resourceid"
+        - $ref: "#/components/parameters/sid"
+        - $ref: "#/components/parameters/mode"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/stop-request"
+            example:
+              cname: httpClient463224
+              uid: "527841"
+              clientRequest:
+                async_stop: false
+      responses:
+        "200":
+          description: The request succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/stop-response"
+              example:
+                resourceId: string
+                sid: string
+                serverResponse:
+                  extensionServiceState:
+                    - playload:
+                        uploadingStatus: string
+                      serviceName: string
+                cname: string
+                uid: string
+        default:
+          $ref: "#/components/responses/not-200"
+  /v1/ncs/ip:
+    get:
+      summary: Query message notification server IP addresses
+      description: >-
+        Queries the IP address or IP address list of the message notification
+        server. After you enable the message notification service, Agora can
+        notify your server of cloud recording events through HTTPS requests.
+        Agora dynamically adjusts notification server IP addresses every 24
+        hours. Query this endpoint at least once every 24 hours and update your
+        firewall whitelist.
+      operationId: get-ncs-ip
+      responses:
+        "200":
+          $ref: "#/components/responses/ncs-ip"
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: >-
+        Cloud Recording REST APIs use Basic HTTP authentication. Generate a
+        Base64-encoded credential from your customer ID and customer secret, and
+        send it in the `Authorization` header.
+  parameters:
+    Content-Type:
+      name: Content-Type
+      in: header
+      required: false
+      schema:
+        type: string
+        default: application/json
+      description: "`application/json`."
+    appid:
+      name: appid
+      in: path
+      required: true
+      schema:
+        type: string
+      description: >-
+        The App ID for your project. For web page recording mode, use the App ID
+        for which Cloud Recording is enabled. For individual and composite
+        recording modes, use the same App ID as the channel to be recorded.
+    resourceid:
+      name: resourceid
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The resource ID obtained by calling `acquire`.
+    sid:
+      name: sid
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The recording ID obtained by calling `start`.
+    mode:
+      name: mode
+      in: path
+      required: true
+      schema:
+        type: string
+        enum:
+          - individual
+          - mix
+          - web
+      description: >-
+        Recording mode: `individual` for individual recording, `mix` for
+        composite recording, or `web` for web page recording.
+  responses:
+    not-200:
+      description: >-
+        The request failed. If the HTTP status code is not `200`, see the Cloud
+        Recording response status codes for troubleshooting.
+    ncs-ip:
+      description: >-
+        The request succeeded. You only need to use the `primaryIP` field in the
+        response body.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ncs-ip-response"
+          example:
+            data:
+              service:
+                hosts:
+                  - primaryIP: xxx.xxx.xxx.xxx
+                  - primaryIP: xxx.xxx.xxx.xxx
+  schemas:
+    acquire-request:
+      type: object
+      required:
+        - cname
+        - uid
+        - clientRequest
+      properties:
+        cname:
+          $ref: "#/components/schemas/cname"
+        uid:
+          $ref: "#/components/schemas/uid"
+        clientRequest:
+          type: object
+          properties:
+            scene:
+              type: integer
+              default: 0
+              description: >-
+                Cloud Recording resource use case. `0` is real-time audio and
+                video recording. `1` is web page recording.
+            resourceExpiredHour:
+              type: number
+              default: 72
+              minimum: 1
+              maximum: 720
+              description: >-
+                The validity period, in hours, for calling Cloud Recording REST
+                APIs after the service starts and returns a recording ID.
+            startParameter:
+              $ref: "#/components/schemas/client-request"
+              description: >-
+                Optional start parameters that improve availability and load
+                balancing. Values must be valid and consistent with the
+                following `start` request.
+            excludeResourceIds:
+              type: array
+              description: >-
+                Resource IDs of other recording tasks to exclude so that a new
+                task can use resources from a new region.
+              items:
+                type: string
+            region:
+              type: string
+              description: >-
+                Region that the recording service can access. Supported values
+                include `CN`, `AP`, `EU`, and `NA`.
+    client-request:
+      type: object
+      required:
+        - storageConfig
+      properties:
+        token:
+          type: string
+          description: >-
+            Dynamic key for channel authentication. If your project has App
+            Certificate enabled, pass the token in this field for individual and
+            composite recording modes.
+        storageConfig:
+          $ref: "#/components/schemas/storageConfig"
+        recordingConfig:
+          $ref: "#/components/schemas/recordingConfig"
+        recordingFileConfig:
+          $ref: "#/components/schemas/recordingFileConfig"
+        snapshotConfig:
+          $ref: "#/components/schemas/snapshotConfig"
+        extensionServiceConfig:
+          $ref: "#/components/schemas/extensionServiceConfig"
+    storageConfig:
+      type: object
+      description: Configuration for third-party cloud storage.
+      required:
+        - vendor
+        - region
+        - bucket
+        - accessKey
+        - secretKey
+      properties:
+        vendor:
+          type: integer
+          description: >-
+            Third-party cloud storage vendor. `1`: Amazon S3. `2`: Alibaba
+            Cloud. `3`: Tencent Cloud. `5`: Microsoft Azure. `6`: Google Cloud.
+            `7`: Huawei Cloud. `8`: Baidu Intelligent Cloud. `11`: S3
+            compatible storage.
+        region:
+          type: integer
+          description: >-
+            Region of the third-party cloud storage. To improve upload success
+            rate and real-time performance, use a storage region that matches
+            the application server region where you initiate the request.
+        bucket:
+          type: string
+          description: Third-party cloud storage bucket.
+        accessKey:
+          type: string
+          description: Access key for third-party cloud storage.
+        secretKey:
+          type: string
+          description: Secret key for third-party cloud storage.
+        stsToken:
+          type: string
+          description: Temporary security token for third-party cloud storage.
+        stsExpiration:
+          type: integer
+          description: Expiration timestamp of `stsToken`, in Unix seconds.
+        fileNamePrefix:
+          type: array
+          description: >-
+            Prefix path for recorded files in third-party cloud storage. For
+            example, `["directory1","directory2"]` stores files under
+            `directory1/directory2/`.
+          items:
+            type: string
+        extensionParams:
+          $ref: "#/components/schemas/extensionParams"
+    extensionParams:
+      type: object
+      description: Encryption and tagging settings for uploaded recording files.
+      properties:
+        sse:
+          type: string
+          description: >-
+            Encryption mode for Amazon S3. Supported values include `kms` and
+            `aes256`.
+        tag:
+          type: string
+          description: Tag content for Alibaba Cloud and Amazon S3.
+        endpoint:
+          type: string
+          description: S3-compatible storage endpoint when `vendor` is `11`.
+    recordingConfig:
+      type: object
+      description: >-
+        Configuration for recorded audio and video streams. Set this object in
+        individual and composite recording modes.
+      required:
+        - channelType
+      properties:
+        channelType:
+          type: integer
+          default: 0
+          description: >-
+            Channel profile. `0`: Communication. `1`: Live streaming. The
+            channel profile must match the RTC SDK setting.
+        decryptionMode:
+          type: integer
+          default: 0
+          description: >-
+            Decryption mode. Use the same decryption mode as the SDK client if
+            the channel is encrypted. `0` means not encrypted.
+        secret:
+          type: string
+          description: Encryption secret. Set this field when `decryptionMode` is not `0`.
+        salt:
+          type: string
+          description: >-
+            Base64-encoded 32-byte salt. Set this field when `decryptionMode` is
+            `7` or `8`.
+        maxIdleTime:
+          type: integer
+          default: 30
+          minimum: 5
+          maximum: 2592000
+          description: >-
+            Maximum channel idle time, in seconds. The recording service exits
+            after the channel is idle for longer than this value.
+        streamTypes:
+          type: integer
+          default: 2
+          description: "`0`: audio only. `1`: video only. `2`: audio and video."
+        videoStreamType:
+          type: integer
+          default: 0
+          description: "`0`: high-quality video stream. `1`: low-quality video stream."
+        subscribeAudioUids:
+          $ref: "#/components/schemas/uid-list"
+          description: >-
+            Audio UIDs to subscribe to. Use `["#allstream#"]` to subscribe to
+            all audio streams. Do not set together with `unsubscribeAudioUids`.
+        unsubscribeAudioUids:
+          $ref: "#/components/schemas/uid-list"
+          description: >-
+            Audio UIDs not to subscribe to. Do not set together with
+            `subscribeAudioUids`.
+        subscribeVideoUids:
+          $ref: "#/components/schemas/uid-list"
+          description: >-
+            Video UIDs to subscribe to. Use `["#allstream#"]` to subscribe to
+            all video streams. Do not set together with `unsubscribeVideoUids`.
+        unsubscribeVideoUids:
+          $ref: "#/components/schemas/uid-list"
+          description: >-
+            Video UIDs not to subscribe to. Do not set together with
+            `subscribeVideoUids`.
+        subscribeUidGroup:
+          type: integer
+          description: >-
+            Estimated peak number of subscribers. Required in individual
+            recording mode.
+        streamMode:
+          type: string
+          default: default
+          description: >-
+            Media stream output mode. Supported values include `default`,
+            `standard`, and `original`.
+        audioProfile:
+          type: integer
+          default: 0
+          description: >-
+            Output audio profile for composite recording. `0`, `1`, and `2`
+            map to different sample rates, bitrates, encoding modes, and
+            channel counts.
+        transcodingConfig:
+          $ref: "#/components/schemas/transcodingConfig"
+    transcodingConfig:
+      type: object
+      description: Transcoded video output configuration for composite recording.
+      properties:
+        width:
+          type: integer
+          default: 360
+          description: Video width in pixels. `width` x `height` cannot exceed 1920 x 1080.
+        height:
+          type: integer
+          default: 640
+          description: Video height in pixels. `width` x `height` cannot exceed 1920 x 1080.
+        fps:
+          type: integer
+          default: 15
+          description: Video frame rate in fps.
+        bitrate:
+          type: integer
+          default: 500
+          description: Video bitrate in Kbps.
+        maxResolutionUid:
+          type: string
+          description: UID of the large video window in vertical layout.
+        mixedVideoLayout:
+          $ref: "#/components/schemas/mixedVideoLayout"
+        backgroundColor:
+          $ref: "#/components/schemas/backgroundColor"
+        backgroundImage:
+          type: string
+          description: URL of the background image of the video canvas.
+        defaultUserBackgroundImage:
+          type: string
+          description: URL of the default user screen background image.
+        layoutConfig:
+          $ref: "#/components/schemas/layoutConfig"
+        backgroundConfig:
+          $ref: "#/components/schemas/backgroundConfig"
+    mixedVideoLayout:
+      type: integer
+      default: 0
+      description: >-
+        Composite video layout. `0`: floating layout. `1`: adaptive layout.
+        `2`: vertical layout. `3`: customized layout.
+    backgroundColor:
+      type: string
+      default: "#000000"
+      description: RGB background color of the video canvas, for example `#000000`.
+    layoutConfig:
+      type: array
+      description: >-
+        Custom mixed video layout settings for each user. Supports up to 17
+        users.
+      items:
+        type: object
+        required:
+          - x_axis
+          - y_axis
+          - width
+          - height
+        properties:
+          uid:
+            type: string
+            description: UID of the user to be displayed in this area.
+          x_axis:
+            type: number
+            minimum: 0
+            maximum: 1
+            description: Relative horizontal coordinate of the upper-left corner.
+          y_axis:
+            type: number
+            minimum: 0
+            maximum: 1
+            description: Relative vertical coordinate of the upper-left corner.
+          width:
+            type: number
+            minimum: 0
+            maximum: 1
+            description: Relative width of the video window.
+          height:
+            type: number
+            minimum: 0
+            maximum: 1
+            description: Relative height of the video window.
+          alpha:
+            type: number
+            default: 1
+            minimum: 0
+            maximum: 1
+            description: Transparency of the user's video window.
+          render_mode:
+            type: integer
+            default: 0
+            description: "`0`: cropped mode. `1`: fit mode."
+    backgroundConfig:
+      type: array
+      description: User background image configuration.
+      items:
+        type: object
+        required:
+          - uid
+          - image_url
+        properties:
+          uid:
+            type: string
+            description: UID of the user.
+          image_url:
+            type: string
+            description: HTTPS URL of the user's background image.
+          render_mode:
+            type: integer
+            default: 0
+            description: "`0`: cropped mode. `1`: fit mode."
+    recordingFileConfig:
+      type: object
+      properties:
+        avFileType:
+          type: array
+          description: >-
+            Generated recording file types. `hls` generates M3U8 and TS files.
+            To generate MP4 files in composite or web page recording modes, use
+            `["hls","mp4"]`.
+          items:
+            type: string
+            enum:
+              - hls
+              - mp4
+    snapshotConfig:
+      type: object
+      properties:
+        captureInterval:
+          type: integer
+          default: 10
+          minimum: 5
+          maximum: 3600
+          description: Screenshot interval in seconds.
+        fileType:
+          type: array
+          description: Screenshot file format. Currently only `jpg` is supported.
+          items:
+            type: string
+            enum:
+              - jpg
+    extensionServiceConfig:
+      type: object
+      description: Extended service configuration for web page recording.
+      properties:
+        errorHandlePolicy:
+          type: string
+          default: error_abort
+          description: Error handling policy. The only supported value is `error_abort`.
+        extensionServices:
+          type: array
+          items:
+            type: object
+            required:
+              - serviceName
+              - serviceParam
+            properties:
+              serviceName:
+                type: string
+                description: >-
+                  `web_recorder_service` for web page recording or
+                  `rtmp_publish_service` for pushing web page recording to CDN.
+              errorHandlePolicy:
+                type: string
+                description: Error handling policy for the extension service.
+              serviceParam:
+                $ref: "#/components/schemas/serviceParam"
+    serviceParam:
+      type: object
+      description: Specific configuration for extension services.
+      properties:
+        url:
+          type: string
+          description: Page URL to record.
+        audioProfile:
+          type: integer
+          description: Audio output profile.
+        videoWidth:
+          type: integer
+          description: Output video width in pixels.
+        videoHeight:
+          type: integer
+          description: Output video height in pixels.
+        maxRecordingHour:
+          type: integer
+          minimum: 1
+          maximum: 720
+          description: Maximum web page recording duration, in hours.
+        videoBitrate:
+          type: integer
+          description: Output video bitrate in Kbps.
+        videoFps:
+          type: integer
+          default: 15
+          minimum: 5
+          maximum: 60
+          description: Output video frame rate in fps.
+        mobile:
+          type: boolean
+          default: false
+          description: Whether to enable mobile web mode.
+        maxVideoDuration:
+          type: integer
+          default: 120
+          minimum: 30
+          maximum: 240
+          description: Maximum length of each MP4 slice, in minutes.
+        onhold:
+          type: boolean
+          default: false
+          description: Whether to pause web page recording when the task starts.
+        readyTimeout:
+          type: integer
+          default: 0
+          minimum: 0
+          maximum: 60
+          description: Page load timeout in seconds.
+        outputs:
+          type: array
+          description: CDN output settings for web page recording push.
+          items:
+            type: object
+            properties:
+              rtmpUrl:
+                type: string
+                description: CDN address to which the stream is pushed.
+        container:
+          type: object
+          properties:
+            format:
+              type: string
+              description: Container format, such as `mp4`, `mp3`, `m4a`, or `aac`.
+            sampleRate:
+              type: string
+              description: Audio sampling rate in Hz.
+            bitrate:
+              type: string
+              description: Audio bitrate in Kbps.
+            channels:
+              type: string
+              description: Number of audio channels.
+    start-request:
+      type: object
+      required:
+        - cname
+        - uid
+        - clientRequest
+      properties:
+        cname:
+          $ref: "#/components/schemas/cname"
+        uid:
+          $ref: "#/components/schemas/uid"
+        clientRequest:
+          $ref: "#/components/schemas/client-request"
+    update-request:
+      type: object
+      required:
+        - cname
+        - uid
+        - clientRequest
+      properties:
+        cname:
+          $ref: "#/components/schemas/cname"
+        uid:
+          $ref: "#/components/schemas/uid"
+        clientRequest:
+          $ref: "#/components/schemas/update-clientRequest"
+    update-clientRequest:
+      type: object
+      properties:
+        streamSubscribe:
+          $ref: "#/components/schemas/streamSubscribe"
+        webRecordingConfig:
+          $ref: "#/components/schemas/webRecordingConfig"
+        rtmpPublishConfig:
+          $ref: "#/components/schemas/rtmpPublishConfig"
+        storageConfig:
+          $ref: "#/components/schemas/storageConfig"
+    streamSubscribe:
+      type: object
+      description: Subscription list update settings.
+      properties:
+        audioUidList:
+          $ref: "#/components/schemas/audioUidList"
+        videoUidList:
+          $ref: "#/components/schemas/videoUidList"
+    audioUidList:
+      type: object
+      properties:
+        subscribeAudioUids:
+          $ref: "#/components/schemas/uid-list"
+        unsubscribeAudioUids:
+          $ref: "#/components/schemas/uid-list"
+    videoUidList:
+      type: object
+      properties:
+        subscribeVideoUids:
+          $ref: "#/components/schemas/uid-list"
+        unsubscribeVideoUids:
+          $ref: "#/components/schemas/uid-list"
+    webRecordingConfig:
+      type: object
+      properties:
+        onhold:
+          type: boolean
+          default: false
+          description: >-
+            Whether to pause web page recording. `true` pauses recording and
+            file generation. `false` resumes recording.
+    rtmpPublishConfig:
+      type: object
+      properties:
+        outputs:
+          type: array
+          items:
+            type: object
+            properties:
+              rtmpUrl:
+                type: string
+                description: CDN URL. Only RTMP and RTMPS URLs are supported.
+    updateLayout-request:
+      type: object
+      required:
+        - cname
+        - uid
+        - clientRequest
+      properties:
+        cname:
+          $ref: "#/components/schemas/cname"
+        uid:
+          $ref: "#/components/schemas/uid"
+        clientRequest:
+          $ref: "#/components/schemas/updateLayout-clientRequest"
+    updateLayout-clientRequest:
+      type: object
+      properties:
+        maxResolutionUid:
+          type: string
+          description: UID of the large video window in vertical layout.
+        mixedVideoLayout:
+          $ref: "#/components/schemas/mixedVideoLayout"
+        backgroundColor:
+          $ref: "#/components/schemas/backgroundColor"
+        backgroundImage:
+          type: string
+          description: URL of the background image of the video canvas.
+        defaultUserBackgroundImage:
+          type: string
+          description: URL of the default user screen background image.
+        layoutConfig:
+          $ref: "#/components/schemas/layoutConfig"
+        backgroundConfig:
+          $ref: "#/components/schemas/backgroundConfig"
+    stop-request:
+      type: object
+      required:
+        - cname
+        - uid
+        - clientRequest
+      properties:
+        cname:
+          $ref: "#/components/schemas/cname"
+        uid:
+          $ref: "#/components/schemas/uid"
+        clientRequest:
+          type: object
+          properties:
+            async_stop:
+              type: boolean
+              default: false
+              description: >-
+                Response mode for `stop`. `true`: asynchronous response.
+                `false`: synchronous response after all recording files are
+                uploaded to third-party cloud storage.
+    acquire-response:
+      allOf:
+        - $ref: "#/components/schemas/base-session"
+        - type: object
+          properties:
+            resourceId:
+              type: string
+              description: Cloud recording resource ID.
+    start-response:
+      allOf:
+        - $ref: "#/components/schemas/session-response"
+    session-response:
+      allOf:
+        - $ref: "#/components/schemas/base-session"
+        - type: object
+          properties:
+            resourceId:
+              type: string
+              description: Cloud recording resource ID.
+            sid:
+              type: string
+              description: Recording ID.
+    query-response:
+      allOf:
+        - $ref: "#/components/schemas/session-response"
+        - type: object
+          properties:
+            serverResponse:
+              $ref: "#/components/schemas/query-serverResponse"
+    query-serverResponse:
+      type: object
+      description: Cloud recording status response.
+      properties:
+        status:
+          type: integer
+          description: Current status of the cloud recording service.
+        extensionServiceState:
+          $ref: "#/components/schemas/extensionServiceState"
+        sliceStartTime:
+          type: integer
+          description: Recording start time as a Unix timestamp in milliseconds.
+        fileListMode:
+          type: string
+          description: "Format of `fileList`: `string` or `json`."
+        fileList:
+          oneOf:
+            - $ref: "#/components/schemas/fileList-string"
+            - $ref: "#/components/schemas/fileList-json"
+    extensionServiceState:
+      type: array
+      items:
+        type: object
+        properties:
+          payload:
+            $ref: "#/components/schemas/payload"
+          serviceName:
+            type: string
+            description: >-
+              Extended service name, such as `web_recorder_service` or
+              `rtmp_publish_service`.
+    payload:
+      type: object
+      properties:
+        fileList:
+          type: array
+          items:
+            type: object
+            properties:
+              filename:
+                type: string
+                description: Name of the generated M3U8 or MP4 file.
+              sliceStartTime:
+                type: integer
+                description: File recording start time as a Unix timestamp.
+        onhold:
+          type: boolean
+          description: Whether page recording is paused.
+        state:
+          type: string
+          description: Service state, such as `init`, `inProgress`, or `exit`.
+        outputs:
+          type: array
+          items:
+            type: object
+            properties:
+              rtmpUrl:
+                type: string
+              status:
+                type: string
+                description: CDN stream pushing status.
+    fileList-string:
+      type: string
+      description: M3U8 filename generated by recording.
+    fileList-json:
+      type: array
+      description: Array of generated recording file information.
+      items:
+        type: object
+        properties:
+          fileName:
+            type: string
+            description: Name of the generated M3U8 or MP4 file.
+          trackType:
+            type: string
+            description: Recording file type, such as `audio`, `video`, or `audio_and_video`.
+          uid:
+            type: string
+            description: UID whose audio or video stream is recorded.
+          mixedAllUser:
+            type: boolean
+            description: Whether all users are recorded in one file.
+          isPlayable:
+            type: boolean
+            description: Whether the file can be played online.
+          sliceStartTime:
+            type: integer
+            description: File recording start time as a Unix timestamp.
+    stop-response:
+      allOf:
+        - $ref: "#/components/schemas/session-response"
+        - type: object
+          properties:
+            serverResponse:
+              $ref: "#/components/schemas/stop-serverResponse"
+    stop-serverResponse:
+      type: object
+      properties:
+        extensionServiceState:
+          type: array
+          items:
+            type: object
+            properties:
+              playload:
+                $ref: "#/components/schemas/stop-playload"
+              serviceName:
+                type: string
+                description: Service type, such as `upload_service` or `web_recorder_service`.
+        uploadingStatus:
+          type: string
+          description: Current upload status of the recording file.
+        fileListMode:
+          type: string
+          description: "Format of `fileList`: `string` or `json`."
+        fileList:
+          oneOf:
+            - $ref: "#/components/schemas/fileList-string"
+            - $ref: "#/components/schemas/fileList-json"
+    stop-playload:
+      type: object
+      properties:
+        uploadingStatus:
+          type: string
+          description: Current upload status of the recording file.
+        fileList:
+          type: array
+          items:
+            type: object
+            properties:
+              filename:
+                type: string
+              sliceStartTime:
+                type: integer
+        onhold:
+          type: boolean
+        state:
+          type: string
+    ncs-ip-response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            service:
+              type: object
+              properties:
+                hosts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      primaryIP:
+                        type: string
+                        description: IP address of the Agora message notification server.
+    base-session:
+      type: object
+      properties:
+        cname:
+          $ref: "#/components/schemas/cname"
+        uid:
+          $ref: "#/components/schemas/uid"
+    cname:
+      type: string
+      description: Channel name to be recorded.
+    uid:
+      type: string
+      description: >-
+        UID used by the Cloud Recording service in the RTC channel. The value
+        must be an integer UID string from 1 to 2^32 - 1 and must be unique in
+        the channel.
+    uid-list:
+      type: array
+      items:
+        type: string

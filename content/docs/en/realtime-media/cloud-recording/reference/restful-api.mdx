@@ -1,47 +1,9 @@
 ---
 title: "Cloud Recording RESTful API"
-description: "Use the Cloud Recording REST API to acquire resources, start recordings, query status, update settings, and stop recordings."
+description: "Open the Cloud Recording RESTful API reference."
 ---
 
-Agora Cloud Recording is managed from your business server through HTTPS requests to Agora's REST API.
+The Cloud Recording RESTful API reference is maintained in the API Reference section.
 
-## Base URL
-
-```text
-https://api.sd-rtn.com
-```
-
-:::warning
-The Cloud Recording REST API supports HTTPS only. Do not send these requests from client-side applications.
-:::
-
-## Authentication
-
-Every request must include Basic HTTP authentication. For details, see [Authenticate REST calls](./restful-authentication).
-
-## Core workflow
-
-Cloud Recording uses the following request flow:
-
-1. Call [`acquire`](/en/api-reference/cloud-recording/restful#acquire) to get a resource ID.
-1. Call [`start`](/en/api-reference/cloud-recording/restful#start) within the resource validity window to start recording.
-1. Call [`query`](/en/api-reference/cloud-recording/restful#query) during the session to check status.
-1. Call [`update`](/en/api-reference/cloud-recording/restful#update) or [`updateLayout`](/en/api-reference/cloud-recording/restful#updatelayout) when you need to adjust the recording.
-1. Call [`stop`](/en/api-reference/cloud-recording/restful#stop) to end the session.
-
-## Related guides
-
-- [REST quickstart](/en/realtime-media/cloud-recording/index)
-- [Composite recording](/en/realtime-media/cloud-recording/build/composite-mode)
-- [Individual recording](/en/realtime-media/cloud-recording/build/individual-mode)
-- [Web page recording](/en/realtime-media/cloud-recording/build/webpage-mode)
-- [Receive notifications](/en/realtime-media/cloud-recording/build/receive-notifications)
-- [Common errors](./common-errors)
-
-## API reference
-
-The endpoint reference lives under the API Reference section:
-
-- [Cloud Recording API reference](/en/api-reference/cloud-recording/restful)
-
-Use that page as the source of truth for request and response schemas. This product-side page exists to preserve the legacy route and connect workflow docs to the generated API reference.
+- [Cloud Recording RESTful API](/en/api-reference/api-ref/cloud-recording)
+- [RESTful authentication](/en/api-reference/api-ref/cloud-recording/authentication)
