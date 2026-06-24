@@ -31,7 +31,10 @@ import {
   resolveOpenApiEndpointRoute,
 } from './openapi/lanes';
 import { getOpenApiOperation } from './openapi/source.server';
-import { buildCanonicalPlatformTocText } from './platforms/processed-text';
+import {
+  buildCanonicalPlatformTocText,
+  extractStructuredPlatformTabs,
+} from './platforms/processed-text';
 import {
   type source as docsSource,
   getPageMarkdownUrl,
@@ -197,6 +200,7 @@ export async function loadDocsPagePayload(
       ? resolveOpenApiEndpointRoute(supportedLocale, tab, slugSegments)
       : null;
   const processedText = isOpenApiPage ? '' : await readProcessedText(page);
+  const structuredPlatformTabs = extractStructuredPlatformTabs(processedText);
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText);
@@ -237,6 +241,19 @@ export async function loadDocsPagePayload(
     })),
     tab,
   });
+  const mdxBody = {
+    contentPath: page.path,
+    kind: 'mdx' as const,
+    ...(structuredPlatformTabs
+      ? {
+          platformTabs: {
+            canonicalPlatform: structuredPlatformTabs.canonicalPlatform,
+            platforms: JSON.stringify(structuredPlatformTabs.platforms),
+          },
+        }
+      : {}),
+  };
+
   return {
     activePath: page.url,
     activeTab: tab,
@@ -245,10 +262,7 @@ export async function loadDocsPagePayload(
           kind: 'openapi' as const,
           pageProps: await page.data.getClientAPIPageProps(),
         }
-      : {
-          contentPath: page.path,
-          kind: 'mdx' as const,
-        },
+      : mdxBody,
     breadcrumb:
       navScope?.scope.meta.sidebarIndexTitle &&
       page.url === navScope.scope.node.index?.url

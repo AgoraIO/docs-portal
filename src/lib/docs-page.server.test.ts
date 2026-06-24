@@ -733,13 +733,7 @@ function createZhOpenApiPage(): PageWithSource {
   return {
     ...createOpenApiPage(),
     path: 'zh-CN/api-reference/api-ref/conversational-ai/join.mdx',
-    slugs: [
-      'zh-CN',
-      'api-reference',
-      'api-ref',
-      'conversational-ai',
-      'join',
-    ],
+    slugs: ['zh-CN', 'api-reference', 'api-ref', 'conversational-ai', 'join'],
     url: '/zh-CN/api-reference/api-ref/conversational-ai/join',
   } as unknown as PageWithSource;
 }
@@ -860,6 +854,13 @@ Web body
     await expect(
       loadDocsPagePayload('en', 'introduction', ['about-agora']),
     ).resolves.toMatchObject({
+      body: {
+        kind: 'mdx',
+        platformTabs: {
+          canonicalPlatform: 'web',
+          platforms: '["android","web"]',
+        },
+      },
       toc: [
         {
           depth: 2,

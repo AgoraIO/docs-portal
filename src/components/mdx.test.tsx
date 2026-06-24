@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import * as fumadocsTabs from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { ComponentType, ReactNode } from 'react';
@@ -23,6 +23,7 @@ type PlatformGroupComponent = ComponentType<{
   children: ReactNode;
   groupMode: 'inline' | 'structured';
   platforms: string;
+  tabsPlacement?: 'inline' | 'header';
 }>;
 type PlatformPanelComponent = ComponentType<{
   children: ReactNode;
@@ -284,6 +285,79 @@ describe('common MDX registry', () => {
 
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(screen.getByText('Web Only')).toBeVisible();
+  });
+
+  it('keeps structured platform tabs out of prose without excluding panel Markdown', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <div className="prose">
+        <Group
+          canonicalPlatform="web"
+          groupMode="structured"
+          platforms='["web","android"]'
+        >
+          <Panel platform="web">
+            <h2>Install Web SDK</h2>
+            <p>
+              Use <strong>npm</strong> to install the SDK.
+            </p>
+          </Panel>
+          <Panel platform="android">
+            <h2>Install Android SDK</h2>
+          </Panel>
+        </Group>
+      </div>,
+    );
+
+    const heading = screen.getByRole('heading', { name: 'Install Web SDK' });
+    const group = heading.closest('[data-platform-group="structured"]');
+    const tablist = screen.getByRole('tablist');
+
+    expect(group).toBeInTheDocument();
+    expect(heading.closest('.not-prose')).toBeNull();
+    expect(tablist.closest('.not-prose')).toBeInTheDocument();
+  });
+
+  it('omits the inline platform tab shell when tabs are rendered in the header', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <Group
+        canonicalPlatform="web"
+        groupMode="structured"
+        platforms='["web","android"]'
+        tabsPlacement="header"
+      >
+        <Panel platform="web">Web instructions</Panel>
+        <Panel platform="android">Android instructions</Panel>
+      </Group>,
+    );
+
+    expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+    expect(
+      screen.getByText('Web instructions').closest('section'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('Android instructions').closest('section'),
+    ).not.toBeVisible();
+
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent(PLATFORM_PREFERENCE_EVENT, { detail: 'android' }),
+      );
+    });
+
+    expect(
+      screen.getByText('Android instructions').closest('section'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('Web instructions').closest('section'),
+    ).not.toBeVisible();
   });
 
   it('shares platform preference updates across multiple rendered groups', () => {

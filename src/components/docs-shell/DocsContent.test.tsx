@@ -19,6 +19,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
+import { DocsTocRail } from './DocsTocRail';
 
 const clipboardWriteText = vi.fn();
 
@@ -27,6 +28,18 @@ vi.mock('./DocsContentBody', () => ({
     <div data-testid="docs-content-body">{contentPath}</div>
   ),
 }));
+
+vi.mock('@/components/mdx/PlatformTabsGroup', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('@/components/mdx/PlatformTabsGroup')>();
+
+  return {
+    ...actual,
+    PlatformHeaderTabs: ({ platforms }: { platforms?: string }) => (
+      <div data-testid="platform-header-tabs">{platforms}</div>
+    ),
+  };
+});
 
 vi.mock('../openapi/FumadocsOpenApiContent', () => ({
   FumadocsOpenApiContent: ({
@@ -239,6 +252,37 @@ describe('DocsContent', () => {
     expect(
       copyMenuButton.compareDocumentPosition(androidTab) &
         Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it('renders page-level platform tabs in the content header before MDX body content', async () => {
+    renderWithRouter(
+      <DocsContent
+        body={{
+          contentPath: 'en/realtime-media/voice/quickstart.mdx',
+          kind: 'mdx',
+          platformTabs: {
+            canonicalPlatform: 'web',
+            platforms: '["web","android"]',
+          },
+        }}
+        description="Build a voice calling app."
+        slug="quickstart"
+        title="Quickstart"
+        toc={[]}
+      />,
+    );
+
+    const title = await screen.findByRole('heading', { name: 'Quickstart' });
+    const tabs = await screen.findByTestId('platform-header-tabs');
+    const body = await screen.findByTestId('docs-content-body');
+
+    expect(tabs).toHaveTextContent('["web","android"]');
+    expect(
+      title.compareDocumentPosition(tabs) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      tabs.compareDocumentPosition(body) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
   });
   it('renders copy page menu actions for AI tools, MCP, and markdown', async () => {
@@ -790,10 +834,10 @@ describe('DocsMainColumn', () => {
   });
 });
 
-describe('DocsTableOfContents', () => {
+describe('DocsTocRail', () => {
   it('renders helpfulness feedback below the desktop toc actions', async () => {
     renderWithRouter(
-      <DocsTableOfContents
+      <DocsTocRail
         locale="en"
         toc={[{ depth: 2, title: 'First heading', url: '#first-heading' }]}
       />,
