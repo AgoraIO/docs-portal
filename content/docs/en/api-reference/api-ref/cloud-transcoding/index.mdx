@@ -1,0 +1,28 @@
+---
+title: Overview
+description: Create and manage Cloud Transcoding tasks using RESTful APIs.
+---
+
+Agora Cloud Transcoding transcodes media streams on Agora servers and outputs the result to an RTC channel. Send HTTPS requests from your business server to manage transcoding tasks and templates.
+
+## API basics
+
+- **Authentication**: All APIs require [Basic Auth](authentication).
+- **Request**: Request bodies use JSON.
+- **Response**: Response bodies use JSON.
+- **Base URL**: `https://api.sd-rtn.com`
+
+:::info
+The Cloud Transcoding REST API supports HTTPS only. Requests over plain HTTP are not supported.
+:::
+
+## REST APIs
+
+- [Acquire a builder token](acquire): Retrieve a builder token before creating a task.
+- [Create a cloud transcoding task](create): Start transcoding by creating a task.
+- [Query the status of a task](query): Check the status of a Cloud Transcoding task.
+- [Update a cloud transcoding task](update): Update an existing task.
+- [Destroy a cloud transcoding task](destroy): Destroy a Cloud Transcoding task.
+- [Create or update a transcoding template](template-create): Create or update a transcoding template.
+- [Query transcoding templates](template-query): Query all transcoding template configurations under an App ID.
+- [Query message notification server IP](ncs-query-ip): Get message notification server IP addresses for firewall whitelisting.

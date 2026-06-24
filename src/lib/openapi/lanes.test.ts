@@ -34,6 +34,11 @@ describe('openapi lanes', () => {
         tab: 'api-reference',
       }),
       expect.objectContaining({
+        id: 'cloud-transcoding-rest',
+        routePrefix: 'api-reference/api-ref/cloud-transcoding',
+        tab: 'api-reference',
+      }),
+      expect.objectContaining({
         id: 'speech-to-text-rest',
         routePrefix: 'api-reference/api-ref/speech-to-text',
         tab: 'api-reference',
@@ -95,9 +100,12 @@ describe('openapi lanes', () => {
       '/en/api-reference/api-ref/cloud-recording/acquire',
     );
     expect(getOpenApiPrerenderPaths()).toContain(
+      '/en/api-reference/api-ref/cloud-transcoding/acquire',
+    );
+    expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/speech-to-text/join',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(54);
+    expect(getOpenApiPrerenderPaths()).toHaveLength(70);
   });
 
   it('resolves signaling REST endpoint routes in the api-reference tab', () => {
@@ -127,6 +135,21 @@ describe('openapi lanes', () => {
       operationId: 'acquire-cloud-recording-resource',
       routeLeaf: 'acquire',
       url: '/en/api-reference/api-ref/cloud-recording/acquire',
+    });
+  });
+
+  it('resolves Cloud Transcoding REST endpoint routes in the api-reference tab', () => {
+    expect(
+      resolveOpenApiEndpointRoute('en', 'api-reference', [
+        'api-ref',
+        'cloud-transcoding',
+        'acquire',
+      ]),
+    ).toMatchObject({
+      lane: expect.objectContaining({ id: 'cloud-transcoding-rest' }),
+      operationId: 'acquire-cloud-transcoding-builder-token',
+      routeLeaf: 'acquire',
+      url: '/en/api-reference/api-ref/cloud-transcoding/acquire',
     });
   });
 });

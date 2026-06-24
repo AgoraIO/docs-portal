@@ -3,8 +3,6 @@ title: "Release notes"
 description: "Past releases and notable updates for Media Gateway."
 ---
 
-# Release notes
-
 This page provides the release notes for Media Gateway.
 
 ## 2025.5.28

@@ -3,8 +3,6 @@ title: "Release notes"
 description: "New features, improvements and resolved issues for Real-time STT."
 ---
 
-This document tracks important changes and improvements to the Real-Time STT.
-
 ## Releases
 
 ### v7.2.2

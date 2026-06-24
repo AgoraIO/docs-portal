@@ -3,8 +3,6 @@ title: "Send and receive media streams"
 description: "How to use Server Gateway to send media streams to Video SDK clients and receive media streams from clients."
 ---
 
-# Send and receive media streams
-
 This page introduces how to use Server Gateway to send media streams to the client and receive media streams from the client.
 
 ## Understand the tech

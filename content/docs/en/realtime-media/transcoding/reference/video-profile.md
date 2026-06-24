@@ -4,9 +4,6 @@ description: Set video resolution, frame rate, and bitrate.
 ---
 
 
-
-# Video profile settings
-
 When configuring the transcoded output media stream using the `videoOption`,  Agora recommends using the default values. However, if you need custom settings, refer to the following table for guidance.
 
 :::note

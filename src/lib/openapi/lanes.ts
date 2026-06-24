@@ -229,6 +229,81 @@ export const OPENAPI_LANES = [
     },
   },
   {
+    id: 'cloud-transcoding-rest',
+    parentUrl: {
+      en: '/en/api-reference/api-ref/cloud-transcoding',
+      'zh-CN': '/zh-CN/api-reference/api-ref/cloud-transcoding',
+    },
+    publicSourceUrl: {
+      en: '/openapi/cloud-transcoding/cloud-transcoding.en.yaml',
+      'zh-CN': '/openapi/cloud-transcoding/cloud-transcoding.en.yaml',
+    },
+    routePrefix: 'api-reference/api-ref/cloud-transcoding',
+    sourcePath: {
+      en: 'content/openapi/cloud-transcoding/cloud-transcoding.en.yaml',
+      'zh-CN': 'content/openapi/cloud-transcoding/cloud-transcoding.en.yaml',
+    },
+    tab: 'api-reference',
+    operations: {
+      'acquire-cloud-transcoding-builder-token': {
+        routeLeaf: 'acquire',
+        title: {
+          en: 'Acquire a builder token',
+          'zh-CN': 'Acquire a builder token',
+        },
+      },
+      'create-cloud-transcoding-task': {
+        routeLeaf: 'create',
+        title: {
+          en: 'Create a cloud transcoding task',
+          'zh-CN': 'Create a cloud transcoding task',
+        },
+      },
+      'query-cloud-transcoding-task': {
+        routeLeaf: 'query',
+        title: {
+          en: 'Query the status of a task',
+          'zh-CN': 'Query the status of a task',
+        },
+      },
+      'update-cloud-transcoding-task': {
+        routeLeaf: 'update',
+        title: {
+          en: 'Update a cloud transcoding task',
+          'zh-CN': 'Update a cloud transcoding task',
+        },
+      },
+      'destroy-cloud-transcoding-task': {
+        routeLeaf: 'destroy',
+        title: {
+          en: 'Destroy a cloud transcoding task',
+          'zh-CN': 'Destroy a cloud transcoding task',
+        },
+      },
+      'create-or-update-transcoding-template': {
+        routeLeaf: 'template-create',
+        title: {
+          en: 'Create or update a transcoding template',
+          'zh-CN': 'Create or update a transcoding template',
+        },
+      },
+      'query-transcoding-templates': {
+        routeLeaf: 'template-query',
+        title: {
+          en: 'Query transcoding templates',
+          'zh-CN': 'Query transcoding templates',
+        },
+      },
+      'query-cloud-transcoding-ncs-ip': {
+        routeLeaf: 'ncs-query-ip',
+        title: {
+          en: 'Query message notification server IP',
+          'zh-CN': 'Query message notification server IP',
+        },
+      },
+    },
+  },
+  {
     id: 'speech-to-text-rest',
     parentUrl: {
       en: '/en/api-reference/api-ref/speech-to-text',

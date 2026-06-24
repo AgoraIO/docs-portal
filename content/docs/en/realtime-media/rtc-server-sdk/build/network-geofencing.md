@@ -3,8 +3,6 @@ title: "Restrict media zones"
 description: "Restrict access to Agora servers in the specified region"
 ---
 
-# Restrict media zones
-
 To meet the laws and regulations of different countries or regions, the Agora Video SDK supports geofencing. After enabling geofencing, the SDK only connects to Agora servers within the specified region, regardless of where your app users are located.
 
 For example, if you specify North America as the region for connection, when two users attempt to connect to Agora servers from different locations, the result is as follows:

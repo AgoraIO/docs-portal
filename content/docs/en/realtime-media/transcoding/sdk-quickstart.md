@@ -4,9 +4,6 @@ description: Start cloud transcoding using the Go SDK.
 ---
 
 
-
-# SDK Quickstart
-
 This article explains how to use the Agora Go SDK to start cloud transcoding. The Go SDK helps developers integrate Agora's RESTful API more easily. It offers the following features:
 
 - **Simplified communication**: The SDK encapsulates RESTful API requests and responses to simplify communication.

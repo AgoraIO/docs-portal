@@ -4,9 +4,6 @@ description: New features, improvements and resolved issues for Cloud Transcodin
 ---
 
 
-
-# Release notes
-
 This document tracks important changes and improvements to the Cloud Transcoding. 
 
 ## Releases

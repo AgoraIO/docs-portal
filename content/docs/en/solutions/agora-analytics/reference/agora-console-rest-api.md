@@ -1,0 +1,640 @@
+---
+title: "Agora Console REST API"
+description: "Interact with Agora Console using the REST API."
+---
+
+When you need to [create and manage Agora projects](#create-a-project) or [check usage](#get-project-usage), besides using the graphic user interface at Agora Console, you can also call the Agora Console RESTful API.
+
+This page provides detailed help for the Agora Console RESTful APIs.
+
+## Basic information
+
+This section provides basic information about the Agora Console RESTful APIs.
+
+#### Domain
+
+All requests are sent to the host `api.agora.io`. See [Ensure service reliability](#ensure-service-reliability) for alternate domain names.
+
+#### Data format
+
+The `Content-Type` field in all HTTP request headers is `application/json`. All requests and responses are in JSON format. All request URLs and request bodies are case-sensitive.
+
+#### Authentication
+
+The Agora Console RESTful APIs only support HTTPS. Before sending HTTP requests, you must generate a Base64-encoded credential with the **Customer ID** and **Customer Secret** provided by Agora, and pass the credential to the `Authorization` field in the HTTP request header.
+
+#### Call frequency limit
+
+For each Agora account (not each App ID), the call frequency of each API on this page is no more than 10 queries per second.
+
+## Create a project
+
+Creates an Agora project.
+
+#### Prototype
+
+-   Method: `POST`
+
+-   Endpoint: `https://api.agora.io/dev/v1/project`
+
+#### Request parameters
+
+**Request body parameters**
+
+Pass in the following parameters in the request body:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`name` |String |(Required) The project name, which is between 1 to 255 characters in length.|
+|`enable_sign_key` |Boolean|(Required) Whether to enable the primary app certificate: <ul><li>true: Enable the primary app certificate.</li><li>false: (Default) Do not enable the primary app certificate.</li></ul><br />**Note**: After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey` to enable or disable the primary app certificate, or send a request to `https://api.agora.io/dev/v1/reset_signkey` to reset the primary app certificate.|
+
+#### Request example
+
+**Request body**
+
+```json
+{
+  "name": "project1",
+  "enable_sign_key": true
+}
+```
+
+#### Response parameters
+
+For details about possible response status codes, see the [Response status codes](#response-status-codes) table.
+
+If the status code is not `201`, the request fails. See the `message` field in the response body for the reason for this failure.
+
+If the status code is `201`, the request succeeds, and the response body includes the following parameters:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`project`|Object|The information on the project, including the following fields:<ul><li>`id`: String. The project ID </li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary app certificate of the project.</li><li>`recording_server`: String. The IP address of the recording server.</li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project:</li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created.</li></ul>|
+
+
+#### Response example
+
+The following is a response example for a successful request:
+
+```json
+{
+  "project": {
+    "id": "xxxx",
+    "name": "project1",
+    "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+    "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+    "recording_server": null,
+    "status": 1,
+    "created": 1464165672
+  }
+}
+```
+
+## Get a specified project
+
+Gets the information on a specified project.
+
+#### Prototype
+
+-   Method: `GET`
+
+-   Endpoint: `https://api.agora.io/dev/v1/project`
+
+#### Request Parameters
+
+**Query parameters**
+
+Pass in the following query parameters in the request URL:
+
+| Parameter | Type   | Description                                                                                                   |
+|-----------|--------|---------------------------------------------------------------------------------------------------------------|
+| `id`      | String | (Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API. |
+| `name`    | String | (Required) The project name.                                                                                  |
+
+#### Request example
+
+**Request URL**
+
+    `https://api.agora.io/dev/v1/project?id=7sdnf3xRH&name=project1`
+
+#### Response parameters
+
+For details about possible response status codes, see the [Response status codes](#response-status-codes) table.
+
+If the status code is not `201`, the request fails. See the `message` field in the response body for the reason for this failure.
+
+If the status code is `201`, the request succeeds, and the response body includes the following parameters:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`projects` |Array|The information on the projects. This Array consists of multiple Objects. Each Object shows the information on one project and includes the following fields: <ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary App Certificate of the project. </li><li>`recording_server`: String. The IP of the recording server. </li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul>|
+
+#### Response example
+
+The following is a response example for a successful request:
+
+```json
+{
+  "projects": [
+    {
+      "id": "xxxx",
+      "name": "project1",
+      "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+      "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+      "recording_server": null,
+      "status": 1,
+      "created": 1464165672
+    }
+  ]
+}
+```
+
+## Get all projects
+
+Gets the information on all your Agora projects.
+
+#### Prototype
+
+-   Method: `GET`
+
+-   Endpoint: `https://api.agora.io/dev/v1/projects`
+
+#### Request example
+
+**Request URL**
+
+    `https://api.agora.io/dev/v1/projects`
+
+#### Response parameters
+
+For details about possible response status codes, see the [Response status codes](#response-status-codes) table.
+
+If the status code is not `201`, the request fails. See the `message` field in the response body for the reason for this failure.
+
+If the status code is `201`, the request succeeds, and the response body includes the following parameters:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`projects`|Array|The information on the projects. This Array consists of multiple Objects. Each Object shows the information on one project and includes the following fields:<ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary App Certificate of the project. </li><li>`recording_server`: String. The IP of the recording server. </li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul></ul>|
+
+#### Response example
+
+The following is a response example for a successful request:
+
+```json
+{
+  "projects": [
+    {
+      "id": "xxxx",
+      "name": "project1",
+      "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+      "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+      "recording_server": null,
+      "status": 1,
+      "created": 1464165672
+    },
+    {
+      "id": "xxxx",
+      "name": "project1",
+      "sign_key": "2c01da6d6f6741df88ec47005f08572b",
+      "vendor_key": "eb00cd2b222a4eeaa24fc6046d90b227",
+      "recording_server": null,
+      "status": 1,
+      "created": 1637153755
+    }
+  ]
+}
+```
+
+## Disable or enable a project
+
+Disables or enables a specified Agora project.
+
+#### Prototype
+
+-   Method: `POST`
+
+-   Endpoint: `https://api.agora.io/dev/v1/project_status`
+
+#### Request parameters
+
+**Request body parameters**
+
+Pass in the following parameters in the request body:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`id` |String |(Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API.
+|`status`|Number|(Required) Whether to enable or disable the project:<ul><li>`0`: Disable the project. </li><li>`1`: Enable the project.</li></ul>|
+
+#### Request example
+
+**Request body**
+
+```json
+{
+  "id": "xxxx",
+  "status": 0
+}
+```
+
+#### Response parameters
+
+For details about possible response status codes, see the [Response status codes](#response-status-codes) table.
+
+If the status code is not `201`, the request fails. See the `message` field in the response body for the reason for this failure.
+
+If the status code is `201`, the request succeeds, and the response body includes the following parameters:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`project` |Object|The information on the project, including the following fields: <ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary app certificate of the project.</li><li>`recording_server`: String. The IP address of the recording server. </li> <ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul>|
+
+#### Response example
+
+The following is a response example for a successful request:
+
+```json
+{
+  "project": {
+    "id": "xxxx",
+    "name": "project1",
+    "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+    "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+    "recording_server": null,
+    "status": 1,
+    "created": 1464165672
+  }
+}
+```
+
+## Set the IP address of the recording server
+
+Sets the IP of the recording server for a specified project.
+
+#### Prototype
+
+-   Method: `POST`
+
+-   Endpoint: `https://api.agora.io/dev/v1/recording_config`
+
+#### Request parameters
+
+**Request body parameters**
+
+Pass in the following parameters in the request body:
+
+| Parameter          | Type   | Description                                                                                                                                                |
+|--------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `id`               | String | (Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API.                                              |
+| `recording_server` | String | (Required) The IP address of the recording server. This field takes effect only when you use v1.9.0 or earlier versions of Agora On-Premise Recording SDK. |
+
+#### Request example
+
+**Request body**
+
+```json
+{
+  "id": "xxxx",
+  "recording_server": "10.12.1.5:8080"
+}
+```
+
+#### Response parameters
+
+For details about possible response status codes, see the [Response status codes](#response-status-codes) table.
+
+If the status code is not `201`, the request fails. See the `message` field in the response body for the reason for this failure.
+
+If the status code is `201`, the request succeeds, and the response body includes the following parameters:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`project` |Object|The information on the project, including the following fields:<ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary app certificate of the project.</li><li>`recording_server`: String. The IP address of the recording server. </li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul>|
+
+#### Response example
+
+The following is a response example for a successful request:
+
+```json
+{
+  "project": {
+    "id": "xxxx",
+    "name": "project1",
+    "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+    "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+    "recording_server": null,
+    "status": 1,
+    "created": 1464165672
+  }
+}
+```
+
+## Enable or disable the primary app certificate
+
+Enables or disables the primary app certificate for a specified project.
+
+#### Prototype
+
+-   Method: `POST`
+
+-   Endpoint: `https://api.agora.io/dev/v1/signkey`
+
+#### Request parameters
+
+**Request body parameters**
+
+The following parameters are required in the request body:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`id` |String |(Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API.|
+|`enable` |Boolean|(Required) Whether to enable or disable the primary app certificate for the project:<ul><li>true: (Default) Enable the primary app certificate. </li><li> false: Do not enable the primary app certificate.</li></ul>|
+
+#### Request example
+
+**Request body**
+
+```json
+{
+  "id": "xxxx",
+  "enable": true
+}
+```
+
+#### Response parameters
+
+For details about possible response status codes, see the [Response status codes](#response-status-codes) table.
+
+If the status code is not `201`, the request fails. See the `message` field in the response body for the reason for this failure.
+
+If the status code is `201`, the request succeeds, and the response body includes the following parameters:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`project` |Object |The information on the project, including the following fields:<ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary app certificate of the project.</li><li>`recording_server`: String. The IP address of the recording server. </li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul>|
+
+#### Response example
+
+The following is a response example for a successful request:
+
+```json
+{
+  "project": {
+    "id": "xxxx",
+    "name": "project1",
+    "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+    "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+    "recording_server": null,
+    "status": 1,
+    "created": 1464165672
+  }
+}
+```
+
+## Reset the primary app certificate
+
+Resets the primary app certificate for a specified project.
+
+#### Prototype
+
+-   Method: `POST`
+
+-   Endpoint: `https://api.agora.io/dev/v1/reset_signkey`
+
+#### Request parameter
+
+**Request body parameter**
+
+Pass in the following parameter in the request body:
+
+| Parameter | Type   | Description                                                                                                   |
+|-----------|--------|---------------------------------------------------------------------------------------------------------------|
+| `id`      | String | (Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API. |
+
+#### Request example
+
+**Request body**
+
+```json
+{
+  "id": "xxxx"
+}
+```
+
+#### Response parameters
+
+For details about possible response status codes, see the [Response status codes](#response-status-codes) table.
+
+If the status code is not `201`, the request fails. See the `message` field in the response body for the reason for this failure.
+
+If the status code is `201`, the request succeeds, and the response body includes the following parameters:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`project` |Object |The information on the project, including the following fields:<ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary app certificate of the project.</li><li>`recording_server`: String. The IP address of the recording server. </li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul>|
+
+#### Response example
+
+The following is a response example for a successful request:
+
+```json
+{
+  "project": {
+    "id": "xxxx",
+    "name": "project1",
+    "vendor_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+    "sign_key": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+    "recording_server": null,
+    "status": 1,
+    "created": 1464165672
+  }
+}
+```
+
+## Get project usage
+
+Gets the usage data of a specified project.
+
+#### Prototype
+
+-   Method: `GET`
+
+-   Endpoint: `https://api.agora.io/dev/v3/usage`
+
+#### Request parameters
+
+**Query parameters**
+
+Pass the following query parameters in the request path:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`project_id` |String |(Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API.|
+|`from_date` |String |(Required) The start date of the query, UTC time. For example, 2020-01-01.|
+|`to_date` |String |(Required) The end date of the query, UTC time. For example, 2020-01-31.|
+|`business` |String|(Required) The business type. You can choose one of the following values:<ul><li>`default`: Audio and video. The usage on Miniapp is not included.</li><li>`transcodeDuration`: Transcoding. </li><li>`recording`: On-premise recording.</li><li>`cloudRecording`: Cloud recording.</li><li>`miniapp`: Miniapp.</li></ul>|
+
+#### Request example
+
+**Request path**
+
+    `https://api.agora.io/dev/v3/usage?project_id=rxxxxxxj5u&from_date=2021-10-12&to_date=2021-12-14&business=default`
+
+#### Response parameters
+
+For details about possible response status codes, see the [Response status codes](#response-status-codes) table.
+
+If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure.
+
+If the status code is `200`, the request succeeds, and the response body includes the following parameters:
+
+|Parameter |Type |Description|
+|---|---|---|
+|`meta` |Object |Metadata, which describes the meaning of `durationAudioAll`, `durationVideo1080P`, `durationVideo2K`, `durationVideo4K`, `durationVideoHd` and `durationVideoHdp` in the `usage` parameter. <ul><li> `durationAudioAll`: Object. Total audio duration. </li><ul><li> `en`: String . `durationAudioAll` in English, that is, "Total Audio Duration". </li><li> `unit`: String. The unit of audio duration, in seconds. </li></ul><li> `durationVideo1080P`: Object. Total Full HD video duration. </li><ul><li> `en`: String . `durationVideo1080P` in English, that is, "Full HD Video Duration (including Recording)".</li><li> `unit`: String . The unit of Full HD video duration, in seconds. </li></ul><li> `durationVideo2K`: Object. Total duration of 2K video. </li><ul><li> `en`: String. `durationVideo2K` in English, that is, "2K Video Duration(including Recording)". </li><li> `unit`: String . The unit of 2K video duration, in seconds.</li></ul><li> `durationVideo4K`: Object. Total duration of 2K+ video. </li><ul><li> `en`: String. `durationVideo4K` in English, that is, "2K+ Video Duration(including Recording)".</li><li> `unit`: String. The unit of 2K+ video duration, in seconds. </li></ul><li> `durationVideoHd`: Total duration of HD video. </li><ul><li> `en`: String. `durationVideoHd` in English, that is, "HD Video Duration (including On premise Recording)".</li><li> `unit`: String. The unit of HD video duration, in seconds.</li></ul><li> `durationVideoHdp`: Total duration of Hdp video. </li><ul><li> `en`: String. `durationVideoHdp` in English, that is, "HDP Video Duration(including Recording)". </li><li> `unit`: String. The unit of HDP video duration, in seconds. </li></ul></ul>|
+|`usages` |Array |Usage of the specified project. This array consists of multiple objects. Each object shows the usage of a specific day and includes the following fields:<ul><li> `date`: Number. The query date, using UTC time and Unix timestamp.</li><li>`usage`: Object. The usage of the query date. </li><li> `durationAudioAll`: Number. Total duration of the audio, in seconds.</li><li> `durationVideo1080P`: Number. Total duration of Full HD video, in seconds.</li><li> `durationVideo2K`: Number. Total duration of 2K video, in seconds. </li><li> `durationVideo4K`: Number. Total duration of 2K+ video, in seconds. </li><li> `durationVideoHd`: Number. Total duration of HD video, in seconds. </li><li>`durationVideoHdp`: Number. Total duration of HDP video, in seconds. </li></ul>|
+
+#### Response example
+
+The following is a response example for a successful request:
+
+```json
+{
+  "meta": {
+    "durationAudioAll": {
+      "en": "Total Audio Duration",
+      "unit": "second"
+    },
+    "durationVideo1080P": {
+      "en": "Full HD Video Duration(including Recording)",
+      "unit": "second"
+    },
+    "durationVideo2K": {
+      "en": "2K Video Duration(including Recording)",
+      "unit": "second"
+    },
+    "durationVideo4K": {
+      "en": "4K Video Duration(including Recording)",
+      "unit": "second"
+    },
+    "durationVideoHd": {
+      "en": "HD Video Duration(including Recording)",
+      "unit": "second"
+    },
+    "durationVideoHdp": {
+      "en": "HDP Video Duration(including Recording)",
+      "unit": "second"
+    }
+  },
+  "usages": [
+    {
+      "date": "2021-10-12T00:00:00.000Z",
+      "usage": {
+        "durationAudioAll": 0,
+        "durationVideo1080P": 0,
+        "durationVideo2K": 0,
+        "durationVideo4K": 0,
+        "durationVideoHd": 0,
+        "durationVideoHdp": 0
+      }
+    },
+    {
+      "date": "2021-10-13T00:00:00.000Z",
+      "usage": {
+        "durationAudioAll": 779,
+        "durationVideo1080P": 0,
+        "durationVideo2K": 0,
+        "durationVideo4K": 0,
+        "durationVideoHd": 60,
+        "durationVideoHdp": 0
+      }
+    },
+    {
+      "date": "2021-10-14T00:00:00.000Z",
+      "usage": {
+        "durationAudioAll": 0,
+        "durationVideo1080P": 0,
+        "durationVideo2K": 0,
+        "durationVideo4K": 0,
+        "durationVideoHd": 0,
+        "durationVideoHdp": 0
+      }
+    }
+  ]
+}
+```
+
+## Response status codes
+
+The following table shows the possible response status codes.
+
+-   If the status code is `200` or `201`, the request succeeds.
+
+-   If the status code is neither `200` nor `201`, the request fails. See the `message` field in the response body for the reason for this failure.
+
+|Response status code |Description|
+|---|---|
+|200 |The request is successful.|
+|201 |The request has been fulfilled, resulting in the creation of a new resource.|
+|400 |Bad request. Possible reasons:<ul><li>Duplicate project name.</li><li>Vendor is blocked.</li><li>The number of projects exceeds the maximum limit.</li></ul>|
+|401 |Unauthorized (incorrect App ID/Customer Certificate).|
+|403 |Forbidden.|
+|404 |The requested resource could not be found.|
+|415 |Unsupported media type. Make sure that you set `Content-Type` in `Headers` as `application/json`.|
+|429 |Too many requests.|
+|500 |Internal error of the Agora RESTful API service.|
+
+## Ensure service reliability
+
+This section presents the overall strategy you use to ensure high availability of REST services.
+
+### Switch the domain name
+
+To ensure high availability of REST services, Agora enables you to switch domain names when you experience service outage due to regional network failures. Take the following steps to set up and switch your domain name:
+
+1. Set the primary domain name based on the location of your service server:
+    - If the DNS address of the service server is located in a country or region other than mainland China, set the primary domain name to `api.agora.io`.
+    - If the DNS address of the service server is in mainland China, set the primary domain name to `api.sd-rtn.com`.
+
+2. If your attempt to initiate a RESTful API request using the primary domain fails, set up your retry strategy as follows:
+
+    1. **Primary domain retry**: Retry using the same primary domain name.
+
+    2. **Alternate domain retry**:
+        - If the current primary domain name is `api.sd-rtn.com`, use `api.agora.io` as the alternate domain name.
+        - If the current primary domain name is `api.agora.io`, use `api.sd-rtn.com` as the alternate domain name.
+
+    3. **Adjacent domain retry**: If alternate domain retry fails, retry using the domain name adjacent to the current region.
+
+        For example, suppose your business server is located in Europe. You set the primary domain name to `api.agora.io`, and the business server resolves the primary domain name to Germany. Germany is located in central Europe (`api-eu-central-1.agora.io`). The [domain name table](#domain-name-table) shows that the adjacent area is West Europe. Use the `api-eu-west-1.agora.io` or `api-eu-west-1.sd-rtn.com` domain name to retry.
+
+#### Precautions
+
+Take the following precautions when setting up your retry strategy:
+
+- To avoid exceeding the QPS limit with retry requests, best practice is to use a back-off strategy. For example, wait 1 second before you retry for the first time, wait 3 seconds before retrying the second time, and wait 6 seconds before retrying a third time.
+- If the request fails because of a network problem rather than a DNS domain name resolution problem, skip alternate domain retry and proceed to adjacent domain retry.
+- Before switching to the region domain name, ensure that the REST services you wish to use, for example, cloud recording or channel management, are deployed in that region.
+
+### Domain name table
+
+The following table shows the primary and region domain names for various regions.
+
+| Primary domain name | Region domain name | Region |
+| :--- | :--- | :--- |
+| `api.sd-rtn.com` | `api-us-west-1.sd-rtn.com` | Western United States |
+|  | `api-us-east-1.sd-rtn.com` | Eastern United States |
+|  | `api-ap-southeast-1.sd-rtn.com` | Southeast Asia Pacific |
+|  | `api-ap-northeast-1.sd-rtn.com` | Northeast Asia Pacific |
+|  | `api-eu-west-1.sd-rtn.com` | Western Europe |
+|  | `api-eu-central-1.sd-rtn.com` | Central Europe |
+|  | `api-cn-east-1.sd-rtn.com` | East China |
+|  | `api-cn-north-1.sd-rtn.com` | North China |
+| `api.agora.io` | `api-us-west-1.agora.io` | Western United States |
+|  | `api-us-east-1.agora.io` | Eastern United States |
+|  | `api-ap-southeast-1.agora.io` | Southeast Asia Pacific |
+|  | `api-ap-northeast-1.agora.io` | Northeast Asia Pacific |
+|  | `api-eu-west-1.agora.io` | Western Europe |
+|  | `api-eu-central-1.agora.io` | Central Europe |
+|  | `api-cn-east-1.agora.io` | East China |
+|  | `api-cn-north-1.agora.io` | North China |

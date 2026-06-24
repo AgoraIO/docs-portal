@@ -3,8 +3,6 @@ title: "Use a string user ID"
 description: "How to use string user IDs in Server Gateway."
 ---
 
-# Use a string user ID
-
 The Agora Server Gateway supports both integer and string user IDs. This page shows you how to use string user IDs.
 
 ## Implementation

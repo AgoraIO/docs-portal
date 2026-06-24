@@ -3,8 +3,6 @@ title: "Video mixing"
 description: "Combine video tracks from multiple remote or local users."
 ---
 
-# Video mixing
-
 Server Gateway supports video mixing, enabling you to combine video tracks from multiple remote or local users and output the video in a customized format. This feature can be used to add watermarks, create picture-in-picture layouts or produce split-screen and multi-view displays.
 
 ## Implementation
