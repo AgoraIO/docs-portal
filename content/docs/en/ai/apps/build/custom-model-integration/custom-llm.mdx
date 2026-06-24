@@ -493,8 +493,9 @@ When calling the POST method to [Start a conversational AI agent](../../../api-r
 }
 ```
 
-> **Info**
-> If accessing your custom LLM service requires identity verification, provide the authentication information in the `api_key` field.
+:::info[Info]
+If accessing your custom LLM service requires identity verification, provide the authentication information in the `api_key` field.
+:::
 
 </TabsContent>
 </Tabs>
@@ -502,8 +503,9 @@ When calling the POST method to [Start a conversational AI agent](../../../api-r
 
 When you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join), use the `llm` configuration to point your agent to the custom service:
 
-> **Info**
-> If accessing your custom LLM service requires identity verification, provide the authentication information in the `api_key` field.
+:::info[Info]
+If accessing your custom LLM service requires identity verification, provide the authentication information in the `api_key` field.
+:::
 
 ```json
 {
@@ -923,8 +925,9 @@ When calling the POST method to [Start a conversational AI agent](../../../api-r
 }
 ```
 
-> **Info**
-> If accessing your custom LLM service requires identity verification, provide the authentication information in the `api_key` field.
+:::info[Info]
+If accessing your custom LLM service requires identity verification, provide the authentication information in the `api_key` field.
+:::
 
 </TabsContent>
 </Tabs>
@@ -1377,8 +1380,9 @@ In your custom LLM service, output a first-chunk response with the following str
 
 The `interruptable` field configures whether the TTS broadcast of this LLM response can be interrupted by user speech. Set it to `false` to prevent interruption, `true` to allow it, or omit it to leave the current interruption mode unchanged.
 
-> **Caution**
-> The Conversational AI Engine only processes the first chunk response where `object` is `chat.completion.custom_metadata` and ignores the content in `choices`. Subsequent responses are treated as normal responses and do not support metadata configuration. Ensure that the content requiring TTS broadcast is generated in the second and subsequent responses.
+:::caution[Caution]
+The Conversational AI Engine only processes the first chunk response where `object` is `chat.completion.custom_metadata` and ignores the content in `choices`. Subsequent responses are treated as normal responses and do not support metadata configuration. Ensure that the content requiring TTS broadcast is generated in the second and subsequent responses.
+:::
 
 **ASR behavior during non-interruptible responses**
 

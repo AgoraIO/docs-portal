@@ -1,11 +1,14 @@
 ---
-title: Akool (Beta)
+title: Akool
 description: Configure Akool as an avatar provider for Voice Agent.
 ---
 Akool provides AI-powered avatars with realistic facial expressions and lip-sync capabilities, enabling natural video conversations with your AI agents. Their platform offers a variety of pre-built avatars and supports custom avatar creation.
 
-> **Info**
-> Akool avatars only support audio with a sample rate of 16,000 Hz. Using a TTS model configured with a different sample rate will result in an error. Ensure your TTS configuration matches this requirement.
+:::info[INFO]
+- This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+- Akool avatars only support audio with a sample rate of 16,000 Hz. Using a TTS model configured with a different sample rate will result in an error. Ensure your TTS configuration matches this requirement.
+:::
 
 ### Sample configuration
 
@@ -29,8 +32,9 @@ The following example shows a starting `avatar` parameter configuration you can 
    
  The API key used for authentication with Akool's services. 
  
- > **Info**
-> To purchase an Akool API key, contact [Agora sales](mailto:sales@agora.io).
+ :::info[Info]
+ To purchase an Akool API key, contact [Agora sales](mailto:sales@agora.io).
+ :::
  
  
  The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.

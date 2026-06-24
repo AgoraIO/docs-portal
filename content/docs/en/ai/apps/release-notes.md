@@ -521,8 +521,9 @@ Released on July 31, 2025.
 
     Create visual avatar representations for your conversational agents using third-party avatar providers. AI avatars provide a visual presence during voice interactions, making conversations feel more natural and engaging. Enable AI avatars by setting `avatar.enable` to `true` and configuring the `avatar.vendor` and `avatar.params` fields when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) to create your agent.
 
-    > **Info**
-> AI avatars require video streaming and incur additional charges. See [video calling pricing](../../realtime-media/video/reference/pricing) for details.
+    :::info[Info]
+    AI avatars require video streaming and incur additional charges. See [video calling pricing](../../realtime-media/video/reference/pricing) for details.
+    :::
 
 * **Selective attention locking** (Beta)
 
@@ -532,9 +533,10 @@ Released on July 31, 2025.
 
     The toolkit now includes an API for [sending picture messages](../build/send-multimodal-messages). You can send image URLs to the main model, which automatically references the image in future interactions to generate more relevant responses. A new callback is available to receive image message receipt details after successful transmission.
 
-    > **Info**
-> - The picture messaging feature is currently in Beta and free for a limited time.
->     - Image processing depends on the capabilities of the integrated LLM. Ensure the LLM you connect to the Conversational AI Engine supports image input.
+    :::info[Info]
+    - The picture messaging feature is currently in Beta and free for a limited time.
+    - Image processing depends on the capabilities of the integrated LLM. Ensure the LLM you connect to the Conversational AI Engine supports image input.
+    :::
     
 #### API changes
 

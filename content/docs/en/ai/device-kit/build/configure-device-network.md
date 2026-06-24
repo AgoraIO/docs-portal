@@ -6,14 +6,15 @@ The R1 kit includes an Android app in the `app` folder for configuring device ne
 
 This app is built using Agora's Bluetooth configuration library.
 
-> **Info**
-> Before configuring network access, ensure the following:
->
-> - Bluetooth and location services are enabled on your Android device.
-> - The R1 device is in discoverable mode.
-> - Your Android device is within 5 meters of the R1 device.
-> - Your Android device is connected to a 2.4 GHz Wi-Fi network with internet access. Network configuration fails without internet connectivity.
-> - For Android 12 and later, you have granted `BLUETOOTH_SCAN` and `BLUETOOTH_CONNECT` permissions to the app.
+:::info[Info]
+Before configuring network access, ensure the following:
+
+- Bluetooth and location services are enabled on your Android device.
+- The R1 device is in discoverable mode.
+- Your Android device is within 5 meters of the R1 device.
+- Your Android device is connected to a 2.4 GHz Wi-Fi network with internet access. Network configuration fails without internet connectivity.
+- For Android 12 and later, you have granted `BLUETOOTH_SCAN` and `BLUETOOTH_CONNECT` permissions to the app.
+:::
 
 ## Connect your device to Wi-Fi
 

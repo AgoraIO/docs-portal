@@ -25,9 +25,10 @@ Before you begin, ensure the following:
 - You have enabled Signaling in the Agora Console and completed the [Signaling quickstart](../../../realtime-media/rtm/index) for basic messaging.
 - You maintain active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
 
-> **Info**
-> - Picture messaging is currently in beta and free for a limited time.
-> - Image processing depends on the capabilities of the integrated LLM. Make sure the LLM you connect to Conversational AI Engine supports image input.
+:::info[Info]
+- Picture messaging is currently in beta and free for a limited time.
+- Image processing depends on the capabilities of the integrated LLM. Make sure the LLM you connect to Conversational AI Engine supports image input.
+:::
 
 ## Implementation
 
@@ -102,8 +103,9 @@ Before you begin, ensure the following:
    }
    ```
 
-   > **Info**
-   > The `chat` completion callback only indicates whether the sending request is successful, and does not reflect the actual processing status of the message.
+   :::info[Info]
+   The `chat` completion callback only indicates whether the sending request is successful, and does not reflect the actual processing status of the message.
+   :::
 
 7. **Handle image sending status**
 
@@ -229,8 +231,9 @@ Before you begin, ensure the following:
    }
    ```
 
-   > **Info**
-   > The `chat` completion callback only indicates whether the sending request is successful, and does not reflect the actual processing status of the message.
+   :::info[Info]
+   The `chat` completion callback only indicates whether the sending request is successful, and does not reflect the actual processing status of the message.
+   :::
 
 7. **Receive image sending response**
 
@@ -361,8 +364,9 @@ Before you begin, ensure the following:
    })
    ```
 
-   > **Info**
-   > The `chat` completion callback only indicates whether the sending request is successful, and does not reflect the actual processing status of the message.
+   :::info[Info]
+   The `chat` completion callback only indicates whether the sending request is successful, and does not reflect the actual processing status of the message.
+   :::
 
 7. **Receive image sending response**
 

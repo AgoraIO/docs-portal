@@ -1,8 +1,12 @@
 ---
-title: OpenAI (Beta)
+title: OpenAI
 description: Configure OpenAI as an ASR provider for Voice Agent.
 ---
 OpenAI provides real-time speech-to-text with low latency and reliable performance, making it ideal for conversational AI applications.
+
+:::info[INFO]
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
 
 ### Sample configuration
 
@@ -22,8 +26,9 @@ The following example shows a starting `asr` parameter configuration you can use
 }
 ```
 
-> **Caution**
-> The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [OpenAI documentation](https://platform.openai.com/docs/guides/speech-to-text).
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [OpenAI documentation](https://platform.openai.com/docs/guides/speech-to-text).
+:::
 
 ### Key parameters
 
