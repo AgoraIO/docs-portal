@@ -2,9 +2,11 @@ import { Tabs, TabsList, TabsTrigger } from 'fumadocs-ui/components/tabs';
 import {
   Children,
   cloneElement,
+  createContext,
   isValidElement,
   type ReactElement,
   type ReactNode,
+  useContext,
   useEffect,
   useMemo,
   useState,
@@ -35,6 +37,23 @@ type PlatformPanelProps = {
 };
 
 const ControlledTabs = Tabs as React.ComponentType<ControlledTabsProps>;
+const PlatformTabsPlacementContext = createContext<'header' | 'inline'>(
+  'inline',
+);
+
+export function PlatformTabsPlacementProvider({
+  children,
+  value,
+}: {
+  children?: ReactNode;
+  value: 'header' | 'inline';
+}) {
+  return (
+    <PlatformTabsPlacementContext value={value}>
+      {children}
+    </PlatformTabsPlacementContext>
+  );
+}
 
 export function PlatformTabsGroup({
   canonicalPlatform,
@@ -43,6 +62,7 @@ export function PlatformTabsGroup({
   locale = DEFAULT_LOCALE,
   platforms,
   showTabs = 'true',
+  tabsPlacement,
 }: {
   canonicalPlatform: PlatformKey;
   children?: ReactNode;
@@ -50,12 +70,128 @@ export function PlatformTabsGroup({
   locale?: AppLocale;
   platforms: string;
   showTabs?: string;
+  tabsPlacement?: 'header' | 'inline';
 }) {
-  const parsedPlatforms = useMemo(() => {
+  const parsedPlatforms = usePlatformList(platforms);
+  const contextTabsPlacement = useContext(PlatformTabsPlacementContext);
+  const resolvedTabsPlacement = tabsPlacement ?? contextTabsPlacement;
+  const shouldShowTabs = showTabs !== 'false' && parsedPlatforms.length > 1;
+  const { activePlatform, handlePlatformChange } = usePlatformSelection({
+    canonicalPlatform,
+    parsedPlatforms,
+  });
+
+  const panelChildren = Children.map(children, (child) => {
+    if (!isValidElement<PlatformPanelProps>(child)) {
+      return child;
+    }
+
+    return cloneElement(child as ReactElement<PlatformPanelProps>, {
+      activePlatform,
+    });
+  });
+
+  return (
+    <div
+      className={cn(
+        groupMode === 'structured'
+          ? 'flex flex-col gap-4'
+          : 'flex flex-col gap-3',
+      )}
+      data-platform-group={groupMode}
+      data-platforms={parsedPlatforms.join(' ')}
+    >
+      {shouldShowTabs && resolvedTabsPlacement === 'inline' ? (
+        <div className={cn(groupMode === 'structured' && 'not-prose')}>
+          <PlatformTabs
+            activePlatform={activePlatform}
+            locale={locale}
+            onValueChange={handlePlatformChange}
+            platforms={parsedPlatforms}
+          />
+        </div>
+      ) : (
+        <ControlledTabs
+          onValueChange={handlePlatformChange}
+          value={activePlatform}
+        />
+      )}
+      {panelChildren}
+    </div>
+  );
+}
+
+export function PlatformHeaderTabs({
+  canonicalPlatform,
+  className,
+  locale = DEFAULT_LOCALE,
+  platforms,
+}: {
+  canonicalPlatform: PlatformKey;
+  className?: string;
+  locale?: AppLocale;
+  platforms: string;
+}) {
+  const parsedPlatforms = usePlatformList(platforms);
+  const { activePlatform, handlePlatformChange } = usePlatformSelection({
+    canonicalPlatform,
+    parsedPlatforms,
+  });
+
+  if (parsedPlatforms.length <= 1) {
+    return null;
+  }
+
+  return (
+    <div className={cn('not-prose max-w-full', className)}>
+      <PlatformTabs
+        activePlatform={activePlatform}
+        locale={locale}
+        onValueChange={handlePlatformChange}
+        platforms={parsedPlatforms}
+      />
+    </div>
+  );
+}
+
+function PlatformTabs({
+  activePlatform,
+  locale,
+  onValueChange,
+  platforms,
+}: {
+  activePlatform: PlatformKey;
+  locale: AppLocale;
+  onValueChange: (value: string) => void;
+  platforms: PlatformKey[];
+}) {
+  return (
+    <ControlledTabs onValueChange={onValueChange} value={activePlatform}>
+      <TabsList>
+        {platforms.map((platform) => (
+          <TabsTrigger key={platform} value={platform}>
+            {getPlatformLabel(platform, locale)}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+    </ControlledTabs>
+  );
+}
+
+function usePlatformList(platforms: string) {
+  return useMemo(() => {
     const parsed = JSON.parse(platforms) as string[];
     return parsed.filter(isKnownPlatform);
   }, [platforms]);
-  const shouldShowTabs = showTabs !== 'false' && parsedPlatforms.length > 1;
+}
+
+function usePlatformSelection({
+  canonicalPlatform,
+  parsedPlatforms,
+}: {
+  canonicalPlatform: PlatformKey;
+  parsedPlatforms: PlatformKey[];
+}) {
   const [activePlatform, setActivePlatform] = useState<PlatformKey>(() => {
     const stored = getStoredPlatformPreference();
 
@@ -132,44 +268,6 @@ export function PlatformTabsGroup({
     };
   }, [parsedPlatforms]);
 
-  const panelChildren = Children.map(children, (child) => {
-    if (!isValidElement<PlatformPanelProps>(child)) {
-      return child;
-    }
-
-    return cloneElement(child as ReactElement<PlatformPanelProps>, {
-      activePlatform,
-    });
-  });
-
-  return (
-    <div
-      className={cn(
-        groupMode === 'structured'
-          ? 'not-prose flex flex-col gap-4'
-          : 'flex flex-col gap-3',
-      )}
-      data-platform-group={groupMode}
-      data-platforms={parsedPlatforms.join(' ')}
-    >
-      <ControlledTabs
-        onValueChange={handlePlatformChange}
-        value={activePlatform}
-      >
-        {shouldShowTabs ? (
-          <TabsList>
-            {parsedPlatforms.map((platform) => (
-              <TabsTrigger key={platform} value={platform}>
-                {getPlatformLabel(platform, locale)}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        ) : null}
-      </ControlledTabs>
-      {panelChildren}
-    </div>
-  );
-
   function handlePlatformChange(value: string) {
     if (!isKnownPlatform(value) || !parsedPlatforms.includes(value)) {
       return;
@@ -178,6 +276,11 @@ export function PlatformTabsGroup({
     setActivePlatform(value);
     setStoredPlatformPreference(value);
   }
+
+  return {
+    activePlatform,
+    handlePlatformChange,
+  };
 }
 
 export function PlatformPanel({

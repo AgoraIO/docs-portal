@@ -18,6 +18,11 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import type { PlatformKey } from '@/lib/platforms/registry';
+import {
+  PlatformHeaderTabs,
+  PlatformTabsPlacementProvider,
+} from '../mdx/PlatformTabsGroup';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
 import { DocsCopyMenu } from './docs-copy-menu';
@@ -60,6 +65,8 @@ export function DocsContent({
         } satisfies DocsContentBodyPayload)
       : undefined);
   const isOpenApiBody = resolvedBody?.kind === 'openapi';
+  const platformTabs =
+    resolvedBody?.kind === 'mdx' ? resolvedBody.platformTabs : undefined;
 
   useEffect(() => {
     if (resolvedBody?.kind !== 'mdx') {
@@ -157,6 +164,14 @@ export function DocsContent({
         sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
           <DocsHeaderScopeTabs header={sidebarHeader} />
         ) : null}
+        {platformTabs ? (
+          <PlatformHeaderTabs
+            canonicalPlatform={platformTabs.canonicalPlatform}
+            className="border-t border-[color:var(--line-soft)] pt-4"
+            locale={currentLocale}
+            platforms={platformTabs.platforms}
+          />
+        ) : null}
       </header>
       {isOpenApiBody ? (
         <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
@@ -164,7 +179,11 @@ export function DocsContent({
         <div className="prose prose-neutral dark:prose-invert max-w-none">
           {resolvedBody?.kind === 'mdx' ? (
             <Suspense fallback={<DocsContentSkeleton />}>
-              <DocsContentBody contentPath={resolvedBody.contentPath} />
+              <PlatformTabsPlacementProvider
+                value={platformTabs ? 'header' : 'inline'}
+              >
+                <DocsContentBody contentPath={resolvedBody.contentPath} />
+              </PlatformTabsPlacementProvider>
             </Suspense>
           ) : null}
         </div>
@@ -211,7 +230,14 @@ function DocsHeaderScopeTabs({ header }: { header: DocsSidebarHeader }) {
 }
 
 export type DocsContentBodyPayload =
-  | { contentPath: string; kind: 'mdx' }
+  | {
+      contentPath: string;
+      kind: 'mdx';
+      platformTabs?: {
+        canonicalPlatform: PlatformKey;
+        platforms: string;
+      };
+    }
   | { kind: 'openapi'; pageProps: ClientApiPageProps };
 
 function DocsContentSkeleton() {

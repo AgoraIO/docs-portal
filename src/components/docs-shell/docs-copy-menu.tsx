@@ -22,7 +22,12 @@ import {
 const AGORA_DOCS_BASE_URL = 'https://docs.agora.io';
 const AGORA_DOCS_MCP_URL = 'https://mcp.agora.io';
 const AGORA_DOCS_MCP_NAME = 'agora-docs';
-const AGORA_MCP_DOC_URL = '/en/introduction/agora-mcp';
+const AGORA_MCP_DOC_ROUTE = '/$locale/$tab/$';
+const AGORA_MCP_DOC_PARAMS = {
+  _splat: 'agora-mcp',
+  locale: 'en',
+  tab: 'introduction',
+};
 const CHATGPT_BASE_URL = 'https://chatgpt.com/';
 const CLAUDE_BASE_URL = 'https://claude.ai/new';
 const COPY_STATE_MS = 1500;
@@ -178,13 +183,13 @@ export function DocsCopyMenu({
         <DropdownMenuLabel>{t('docs.copyMenuMcp')}</DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link params={{}} search={{}} to={AGORA_MCP_DOC_URL}>
+            <Link params={AGORA_MCP_DOC_PARAMS} to={AGORA_MCP_DOC_ROUTE}>
               {t('docs.connectToCursor')}
               <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link params={{}} search={{}} to={AGORA_MCP_DOC_URL}>
+            <Link params={AGORA_MCP_DOC_PARAMS} to={AGORA_MCP_DOC_ROUTE}>
               {t('docs.connectToVsCode')}
               <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
             </Link>

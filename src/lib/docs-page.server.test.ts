@@ -912,6 +912,13 @@ Web body
     await expect(
       loadDocsPagePayload('en', 'introduction', ['about-agora']),
     ).resolves.toMatchObject({
+      body: {
+        kind: 'mdx',
+        platformTabs: {
+          canonicalPlatform: 'web',
+          platforms: '["android","web"]',
+        },
+      },
       toc: [
         {
           depth: 2,

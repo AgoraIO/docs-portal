@@ -22,6 +22,7 @@ type PlatformGroupComponent = ComponentType<{
   children: ReactNode;
   groupMode: 'inline' | 'structured';
   platforms: string;
+  tabsPlacement?: 'inline' | 'header';
 }>;
 type PlatformPanelComponent = ComponentType<{
   children: ReactNode;
@@ -156,10 +157,9 @@ describe('common MDX registry', () => {
 
     render(<Link to="../index.mdx">SDK quickstart</Link>);
 
-    expect(screen.getByRole('link', { name: 'SDK quickstart' })).toHaveAttribute(
-      'href',
-      '/en/realtime-media/broadcast-streaming',
-    );
+    expect(
+      screen.getByRole('link', { name: 'SDK quickstart' }),
+    ).toHaveAttribute('href', '/en/realtime-media/broadcast-streaming');
   });
 
   it('adds jump affordance and normalizes docs card links', () => {
@@ -284,6 +284,40 @@ describe('common MDX registry', () => {
 
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(screen.getByText('Web Only')).toBeVisible();
+  });
+
+  it('keeps structured platform tabs out of prose without excluding panel Markdown', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <div className="prose">
+        <Group
+          canonicalPlatform="web"
+          groupMode="structured"
+          platforms='["web","android"]'
+        >
+          <Panel platform="web">
+            <h2>Install Web SDK</h2>
+            <p>
+              Use <strong>npm</strong> to install the SDK.
+            </p>
+          </Panel>
+          <Panel platform="android">
+            <h2>Install Android SDK</h2>
+          </Panel>
+        </Group>
+      </div>,
+    );
+
+    const heading = screen.getByRole('heading', { name: 'Install Web SDK' });
+    const group = heading.closest('[data-platform-group="structured"]');
+    const tablist = screen.getByRole('tablist');
+
+    expect(group).toBeInTheDocument();
+    expect(heading.closest('.not-prose')).toBeNull();
+    expect(tablist.closest('.not-prose')).toBeInTheDocument();
   });
 
   it('shares platform preference updates across multiple rendered groups', () => {
