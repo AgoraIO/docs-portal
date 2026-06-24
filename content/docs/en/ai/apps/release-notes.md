@@ -16,7 +16,7 @@ Included in this release:
 
 * **New TTS provider**
 
-    - [Deepgram](../models/tts/deepgram)
+    - [Deepgram](models/tts/deepgram)
 
 * **New endpoint: Send a custom instruction**
 
@@ -274,7 +274,7 @@ This release includes the following enhancements:
 
 * **Latency optimization best practices**    
 
-    Adds a guide to [Optimize conversation latency](../best-practices/optimize-latency).
+    Adds a guide to [Optimize conversation latency](/en/ai/apps/build/harden-and-optimize/optimize-latency).
 
 #### API changes
 
@@ -298,7 +298,7 @@ Included in this release:
 
 * **Geofencing**
 
-    Use `geofence` configuration when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) to limit which Agora servers the Conversational AI Engine can access based on geographic regions. See [Restrict agent zones](../best-practices/regional-restrictions) for details.
+    Use `geofence` configuration when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) to limit which Agora servers the Conversational AI Engine can access based on geographic regions. See [Restrict agent zones](/en/ai/apps/build/harden-and-optimize/regional-restrictions) for details.
 
 * **Agent greeting mode**
 
@@ -617,10 +617,10 @@ Released on July 15, 2025.
     - [**Interrupt the agent**](../build/shape-the-conversation/interrupt-agent)
     Stop the agent from speaking or thinking mid-conversation.
 
-    - [**Receive event notifications**](../build/handle-runtime-events/event-notifications)
+    - [**Receive event notifications**](/en/ai/apps/build/handle-runtime-events/event-notifications)
     Track changes in conversation state, performance metrics, and error events.
 
-    - [**Optimize audio settings**](../best-practices/audio-setup)
+    - [**Optimize audio settings**](/en/ai/apps/build/harden-and-optimize/audio-setup)
     Quickly apply best-practice audio configurations to improve agent responsiveness and clarity.
 
 #### API changes
@@ -771,7 +771,7 @@ Released on March 27, 2025.
 
 #### New features
 
-The [Start a conversational agent](/en/api-reference/api-ref/conversational-ai/join) API adds the `enable_rtm`and `agent_rtm_uid` parameters to enable Signaling integration with conversational AI agent. When this feature is enabled, the agent can leverage the Signaling SDK to obtain a users's custom context information such as speaking status, selected text, signature, and score, and pass this data to the agent to generate more relevant content. For details, see [Transmit custom information](../build/shape-the-conversation/custom-information).
+The [Start a conversational agent](/en/api-reference/api-ref/conversational-ai/join) API adds the `enable_rtm`and `agent_rtm_uid` parameters to enable Signaling integration with conversational AI agent. When this feature is enabled, the agent can leverage the Signaling SDK to obtain a users's custom context information such as speaking status, selected text, signature, and score, and pass this data to the agent to generate more relevant content. For details, see [Transmit custom information](/en/ai/apps/build/shape-the-conversation/custom-information).
 
 #### Improvements
 
@@ -796,7 +796,7 @@ To achieve the best conversation experience, use Agora Conversational AI Engine 
 
 - **Live transcripts**: Supports real-time text output of conversations between users and the AI agent for transcript display in your app's UI. Agora provides an open-source transcript processing module. Simply integrate the module and call its API to implement live transcript. For details, see [Display live transcripts](../build/transcripts).
 
-- **Message Notification Service**: Introduces a new Conversational AI Engine message notification service. Configure it in the Agora console and subscribe to agent creation, stop, and error events. When a subscribed event occurs, Agora sends the details to your specified callback address. See [Receive event notifications](../build/handle-runtime-events/event-notifications).
+- **Message Notification Service**: Introduces a new Conversational AI Engine message notification service. Configure it in the Agora console and subscribe to agent creation, stop, and error events. When a subscribed event occurs, Agora sends the details to your specified callback address. See [Receive event notifications](/en/ai/apps/build/handle-runtime-events/event-notifications).
 
 - **Keywords**: Enhances recognition accuracy of Conversational AI Engine for proprietary words by adding keywords. This feature is currently in Beta stage. For details, [contact technical support](https://agoraio.zendesk.com/hc/en-us).
 

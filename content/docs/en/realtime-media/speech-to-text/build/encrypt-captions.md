@@ -25,7 +25,7 @@ server. For details, see [Agora account management](https://docs.agora.io/en/voi
 
 ## Implementation
 
-To encrypt the captions, follow the API call sequence from the [REST Quickstart](../get-started/quickstart) and modify the `start` request to include encryption parameters as follows:
+To encrypt the captions, follow the API call sequence from the [REST Quickstart](/en/ai/apps/get-started/quickstart) and modify the `start` request to include encryption parameters as follows:
 
 ```shell
 curl --location --request POST 'https://api.agora.io/api/speech-to-text/v1/projects/{appId}/join' \

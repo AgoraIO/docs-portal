@@ -5,7 +5,7 @@ description: "Transcribe the speech of specific channel hosts only"
 
 Real-Time STT supports 2 transcription modes:
 
-- Channel-based transcription for all active hosts in a channel. To enable it, see [REST Quickstart](../get-started/quickstart).
+- Channel-based transcription for all active hosts in a channel. To enable it, see [REST Quickstart](/en/ai/apps/get-started/quickstart).
 - Transcription of the specified hosts audio only and ignoring all other hosts.
 
 This page explains how to implement transcription of specified hosts only.
@@ -26,7 +26,7 @@ server. For details, see [Agora account management](https://docs.agora.io/en/voi
 
 ## Implementation
 
-To transcribe a specific host, follow the API call sequence from the [REST Quickstart](../get-started/quickstart) and modify the `start` request to add the `subscribeAudioUids` parameter as follows:
+To transcribe a specific host, follow the API call sequence from the [REST Quickstart](/en/ai/apps/get-started/quickstart) and modify the `start` request to add the `subscribeAudioUids` parameter as follows:
 
 ```shell
 curl --location --request POST 'https://api.agora.io/api/speech-to-text/v1/projects/{appId}/join' \

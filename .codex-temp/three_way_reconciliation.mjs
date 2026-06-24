@@ -287,14 +287,33 @@ function expectedRoutes(sourceRel) {
 
   if (product === 'conversational-ai') {
     if (rest[0] === 'overview') {
-      if (leaf === 'product-overview') add('ai/conversational-ai');
-      else if (leaf === 'pricing') add('ai/pricing');
-      else if (leaf === 'release-notes') add('ai/release-notes');
-      else add(`ai/reference/${leaf}`);
+      if (leaf === 'product-overview') add('ai/apps');
+      else if (leaf === 'pricing') add('ai/apps/pricing');
+      else if (leaf === 'release-notes') add('ai/apps/release-notes');
+      else add(`ai/apps/reference/${leaf}`);
     } else if (rest[0] === 'develop') {
-      if (leaf === 'event-types') add('ai/reference/event-types');
-      else if (leaf === 'filler-words') add('ai/build/filler-words');
-      else add(`ai/build/${leaf}`);
+      const developMap = {
+        'audio-output': 'ai/apps/build/custom-model-integration/audio-output',
+        'build-server-client': 'ai/apps/build/custom-model-integration/build-server-client',
+        'custom-information': 'ai/apps/build/shape-the-conversation/custom-information',
+        'custom-llm': 'ai/apps/build/custom-model-integration/custom-llm',
+        'debug-agent-failures': 'ai/apps/build/handle-runtime-events/debug-agent-failures',
+        'event-notifications': 'ai/apps/build/handle-runtime-events/event-notifications',
+        'event-types': 'ai/apps/reference/event-types',
+        'filler-words': 'ai/apps/build/shape-the-conversation/filler-words',
+        'get-runtime-events': 'ai/apps/build/handle-runtime-events/get-runtime-events',
+        'interrupt-agent': 'ai/apps/build/shape-the-conversation/interrupt-agent',
+        'monitor-agent-runtime': 'ai/apps/build/handle-runtime-events/monitor-agent-runtime',
+        presets: 'ai/apps/build/custom-model-integration/presets',
+        'retrieve-session-history': 'ai/apps/build/handle-runtime-events/retrieve-session-history',
+        'send-multimodal-messages': 'ai/apps/build/send-multimodal-messages',
+        'short-term-memory': 'ai/apps/build/shape-the-conversation/short-term-memory',
+        'start-stop-agent': 'ai/apps/build/start-stop-agent',
+        transcripts: 'ai/apps/build/transcripts',
+        webhooks: 'ai/apps/build/handle-runtime-events/webhooks',
+      };
+      if (developMap[leaf]) add(developMap[leaf]);
+      else add(`ai/apps/build/${leaf}`);
     } else if (rest[0] === 'studio') {
       if (leaf === 'overview') add('ai/studio');
       else add(`ai/studio/${rest.slice(1).join('/')}`);
@@ -303,24 +322,28 @@ function expectedRoutes(sourceRel) {
       else if (leaf === 'reference') add('api-reference/api-ref/conversational-ai');
       else add(`api-reference/api-ref/conversational-ai/${leaf}`);
     } else if (rest[0] === 'get-started') {
-      add(`ai/get-started/${leaf}`);
+      add(`ai/apps/get-started/${leaf}`);
     } else if (rest[0] === 'best-practices') {
-      if (leaf === 'cloud-recording') add('ai/best-practices/record-agent-conversation');
-      else if (leaf === 'filler-words') add('ai/build/filler-words');
-      else add(`ai/best-practices/${leaf}`);
+      if (leaf === 'cloud-recording') add('ai/apps/build/record-agent-conversation');
+      else if (leaf === 'filler-words') add('ai/apps/build/shape-the-conversation/filler-words');
+      else if (leaf === 'audio-setup') add('ai/apps/build/harden-and-optimize/audio-setup');
+      else if (leaf === 'optimize-latency') add('ai/apps/build/harden-and-optimize/optimize-latency');
+      else if (leaf === 'regional-restrictions') add('ai/apps/build/harden-and-optimize/regional-restrictions');
+      else add(`ai/apps/build/harden-and-optimize/${leaf}`);
     } else if (rest[0] === 'reference') {
-      if (rest[1] === 'toolkot') add(`ai/build/${leaf}`);
+      if (leaf === 'enable-conversational-ai') add('ai/apps/reference/enable-conversational-ai');
+      else if (rest[1] === 'toolkot') add(`ai/apps/build/${leaf}`);
       else if (rest[1] === 'sdk') {
         if (leaf === 'go') add('api-reference/recipes/golang-quickstart');
         else if (leaf === 'python') add('api-reference/recipes/python-quickstart');
         else if (leaf === 'typescript') add('api-reference/recipes/nextjs-quickstart');
         else add(`api-reference/recipes/${leaf}`);
       }
-      else add(`ai/reference/${leaf}`);
+      else add(`ai/apps/reference/${leaf}`);
     } else if (rest[0] === 'models') {
       const category = rest[1];
-      if (leaf === 'overview') add(`ai/models/${category}`);
-      else add(`ai/models/${category}/${leaf}`);
+      if (leaf === 'overview') add(`ai/apps/models/${category}`);
+      else add(`ai/apps/models/${category}/${leaf}`);
     }
   } else if (product === 'open-ai-integration') {
     if (rest[0] === 'overview') {
@@ -584,7 +607,8 @@ function linkScore(target, targetIndex) {
     if (/\.(png|jpe?g|gif|svg|webp|zip|pdf)$/i.test(parsed.pathname)) {
       continue;
     }
-    const baseRoute = path.posix.dirname(target.route);
+    const targetPath = target.rel.replace(/\.(md|mdx)$/i, '');
+    const baseRoute = path.posix.dirname(targetPath);
     const route = path.posix
       .normalize(path.posix.join(baseRoute, parsed.pathname))
       .replace(/\.(md|mdx)$/i, '')

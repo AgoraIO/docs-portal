@@ -14,13 +14,13 @@ Conversational AI Engine provides different retrieval paths depending on whether
 
 | Goal | Best source | Use this |
 | --- | --- | --- |
-| Receive history automatically when the session ends | Webhook event | [`103 agent history`](../../reference/event-types#103-agent-history) |
+| Receive history automatically when the session ends | Webhook event | [`103 agent history`](/en/ai/apps/reference/event-types#103-agent-history) |
 | Pull the agent's stored memory from your backend workflow | REST API | [`Retrieve agent history`](/en/api-reference/api-ref/conversational-ai/history) |
 | Analyze start, end, and latency for each turn | REST API | [`Query conversation turn information`](/en/api-reference/api-ref/conversational-ai/turns) |
 
 ## Use `103 agent history` for automatic delivery
 
-[`103 agent history`](../../reference/event-types#103-agent-history) is the best fit when you want the platform to push session history to your server after the agent stops.
+[`103 agent history`](/en/ai/apps/reference/event-types#103-agent-history) is the best fit when you want the platform to push session history to your server after the agent stops.
 
 This event includes:
 
@@ -58,7 +58,7 @@ If you need both transcript content and timing analysis, store `103 agent histor
 
 ## Configure enough history before the session starts
 
-The number of stored history items in [`103 agent history`](../../reference/event-types#103-agent-history) depends on `llm.max_history` when you start the agent. The default is `32`.
+The number of stored history items in [`103 agent history`](/en/ai/apps/reference/event-types#103-agent-history) depends on `llm.max_history` when you start the agent. The default is `32`.
 
 If your sessions are longer, increase that value when creating the agent:
 
@@ -93,7 +93,7 @@ When your server receives history after the session ends:
 - [Monitor agent status, errors, and performance](monitor-agent-runtime)
 - [Get runtime events](get-runtime-events)
 - [Receive agent runtime events on your server](webhooks)
-- [Notification event types](../../reference/event-types#103-agent-history)
+- [Notification event types](/en/ai/apps/reference/event-types#103-agent-history)
 - [Keep conversation context across turns](short-term-memory)
 - [Retrieve agent history](/en/api-reference/api-ref/conversational-ai/history)
 - [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns)

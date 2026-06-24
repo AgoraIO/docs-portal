@@ -31,7 +31,7 @@ This page shows you how to set up translation of the transcribed content when st
 
 ## Prerequisites
 
-To follow this guide, first implement basic speech-to-text transcription by following the [Rest quickstart](../get-started/quickstart).
+To follow this guide, first implement basic speech-to-text transcription by following the [Rest quickstart](/en/ai/apps/get-started/quickstart).
 
 ## Implementation
 
@@ -103,7 +103,7 @@ curl --location --request POST 'https://api.agora.io/api/speech-to-text/v1/proje
 | `create_ts`     | Integer | The Unix timestamp (seconds) when the agent was created. |
 | `status`       | String   | Agent Status:<br/><ul><li>`IDLE`: The agent is not initialized.</li><li>`STARTING`: The agent is starting.</li><li>`RUNNING`: The agent is running.</li><li>`STOPPING`: The agent is exiting.</li><li>`STOPPED`: The agent exited successfully.</li><li>`RECOVERING`: The agent is recovering.</li><li>`FAILED`: Agent exit failed.</li></ul> |
 
-To `query`, `update`, or `stop` the transcription task, refer to the [Rest quickstart](../get-started/quickstart).
+To `query`, `update`, or `stop` the transcription task, refer to the [Rest quickstart](/en/ai/apps/get-started/quickstart).
 
 ## Supported languages
 

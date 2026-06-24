@@ -14,9 +14,9 @@ This page shows which signals to check first and how to correlate them.
 
 | Symptom | Check first | Then check |
 | --- | --- | --- |
-| The agent stopped unexpectedly | [`102 agent left`](../../reference/event-types#102-agent-left) | [`110 agent error`](../../reference/event-types#110-agent-error), [`101 agent joined`](../../reference/event-types#101-agent-joined) |
-| The agent reported a module failure during a live session | `onAgentError` | [`110 agent error`](../../reference/event-types#110-agent-error), `onDebugLog` or `DEBUG_LOG` |
-| The response was slow or degraded before failure | [`111 agent metrics`](../../reference/event-types#111-agent-metrics) | [`Query conversation turn information`](/en/api-reference/api-ref/conversational-ai/turns) |
+| The agent stopped unexpectedly | [`102 agent left`](/en/ai/apps/reference/event-types#102-agent-left) | [`110 agent error`](/en/ai/apps/reference/event-types#110-agent-error), [`101 agent joined`](/en/ai/apps/reference/event-types#101-agent-joined) |
+| The agent reported a module failure during a live session | `onAgentError` | [`110 agent error`](/en/ai/apps/reference/event-types#110-agent-error), `onDebugLog` or `DEBUG_LOG` |
+| The response was slow or degraded before failure | [`111 agent metrics`](/en/ai/apps/reference/event-types#111-agent-metrics) | [`Query conversation turn information`](/en/api-reference/api-ref/conversational-ai/turns) |
 | A specific turn failed | `turn_id` from `onAgentError` or `110` | [`Query conversation turn information`](/en/api-reference/api-ref/conversational-ai/turns) |
 | The UI looked wrong but the session did not fail | `onAgentStateChanged` and fine-grained state callbacks | `onDebugLog` or `DEBUG_LOG` |
 
@@ -43,9 +43,9 @@ Use the client path when you are reproducing the issue live:
 
 Use the server path when the issue must be visible after the session:
 
-- start with [`102 agent left`](../../reference/event-types#102-agent-left)
-- inspect [`110 agent error`](../../reference/event-types#110-agent-error)
-- review [`111 agent metrics`](../../reference/event-types#111-agent-metrics)
+- start with [`102 agent left`](/en/ai/apps/reference/event-types#102-agent-left)
+- inspect [`110 agent error`](/en/ai/apps/reference/event-types#110-agent-error)
+- review [`111 agent metrics`](/en/ai/apps/reference/event-types#111-agent-metrics)
 - query [`turns`](/en/api-reference/api-ref/conversational-ai/turns) when you need turn-level timing and completion data
 
 </TabsContent>
@@ -79,10 +79,10 @@ For backend debugging, configure [webhooks](webhooks) and subscribe to these eve
 
 For production debugging, this order usually gives the fastest explanation:
 
-1. Confirm the session existed with [`101 agent joined`](../../reference/event-types#101-agent-joined).
-2. Check how it ended with [`102 agent left`](../../reference/event-types#102-agent-left).
-3. Look for module failures in [`110 agent error`](../../reference/event-types#110-agent-error).
-4. Inspect latency and degradation in [`111 agent metrics`](../../reference/event-types#111-agent-metrics).
+1. Confirm the session existed with [`101 agent joined`](/en/ai/apps/reference/event-types#101-agent-joined).
+2. Check how it ended with [`102 agent left`](/en/ai/apps/reference/event-types#102-agent-left).
+3. Look for module failures in [`110 agent error`](/en/ai/apps/reference/event-types#110-agent-error).
+4. Inspect latency and degradation in [`111 agent metrics`](/en/ai/apps/reference/event-types#111-agent-metrics).
 5. If the problem happened on a specific turn, query [`turns`](/en/api-reference/api-ref/conversational-ai/turns).
 
 This sequence helps separate "the agent ended badly" from "the agent was slow first and then failed".
@@ -114,7 +114,7 @@ Use this event to answer whether the session degraded before failure:
 - compare healthy and failed sessions by `labels`
 - isolate whether the problem is model-side, telephony-side, or client-perceived only
 
-For performance-focused analysis, also see [Optimize conversation latency](../../best-practices/optimize-latency).
+For performance-focused analysis, also see [Optimize conversation latency](/en/ai/apps/build/harden-and-optimize/optimize-latency).
 
 ## Correlate client and server records
 
@@ -142,5 +142,5 @@ When you combine local reproduction with backend evidence, match records by:
 - [Get runtime events](get-runtime-events)
 - [Listen to agent runtime events on software clients](event-notifications)
 - [Receive agent runtime events on your server](webhooks)
-- [Notification event types](../../reference/event-types)
+- [Notification event types](/en/ai/apps/reference/event-types)
 - [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns)

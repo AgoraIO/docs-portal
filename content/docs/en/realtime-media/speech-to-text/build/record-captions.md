@@ -66,7 +66,7 @@ Follow these steps to record captions and synchronize them with the correspondin
 
 ### Record the captions
 
-To record the captions, follow the API call sequence from the [REST Quickstart](../get-started/quickstart) and modify the `start` request to include caption recording parameters as follows:
+To record the captions, follow the API call sequence from the [REST Quickstart](/en/ai/apps/get-started/quickstart) and modify the `start` request to include caption recording parameters as follows:
 
 ```shell
 curl --location --request POST 'https://api.agora.io/api/speech-to-text/v1/projects/{appId}/join' \

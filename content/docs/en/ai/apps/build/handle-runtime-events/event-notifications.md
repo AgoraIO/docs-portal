@@ -15,7 +15,7 @@ Agora provides a flexible, scalable, and standardized conversational AI engine t
 - [Interrupt agents](interrupt-agent)
 - [Display live transcripts](transcripts)
 - [Monitor agent status, errors, and performance](monitor-agent-runtime)
-- [Set optimal audio parameters](../../best-practices/audio-setup) for iOS and Android
+- [Set optimal audio parameters](/en/ai/apps/build/harden-and-optimize/audio-setup) for iOS and Android
 
 The toolkit exposes callback methods that let you listen for various agent-related events and system information:
 
@@ -29,9 +29,9 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 ## Prerequisites
 
-- Implemented the Conversational AI Engine [REST quickstart](../../get-started/quickstart).
-- Your app integrates Agora Video SDK v4.5.1 or later and includes the [audio and video quickstart](../../../introduction/realtime-audio-video).
-- Enabled Signaling in the Agora Console and completed the [Signaling quickstart](../../../realtime-media/rtm/index) for basic messaging.
+- Implemented the Conversational AI Engine [REST quickstart](/en/ai/apps/get-started/quickstart).
+- Your app integrates Agora Video SDK v4.5.1 or later and includes the [audio and video quickstart](/en/introduction/realtime-audio-video).
+- Enabled Signaling in the Agora Console and completed the [Signaling quickstart](/en/realtime-media/rtm) for basic messaging.
 - You maintain active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
 
 ## Implementation

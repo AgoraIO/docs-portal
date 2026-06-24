@@ -27,7 +27,7 @@ server. For details, see [Agora account management](https://docs.agora.io/en/voi
 
 ## Implementation
 
-Follow the API call sequence from the [REST Quickstart](../get-started/quickstart).
+Follow the API call sequence from the [REST Quickstart](/en/ai/apps/get-started/quickstart).
 
 ### Request examples
 
