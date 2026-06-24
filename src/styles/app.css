@@ -549,6 +549,9 @@
   .prose :where(pre .line):not(:where(.not-prose, .not-prose *)) {
     display: block;
     min-height: 1.45em;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .prose :where(pre code):not(:where(.not-prose, .not-prose *)) {
@@ -556,6 +559,12 @@
     background: transparent;
     padding: 0;
     color: inherit;
+  }
+
+  figure.shiki.not-prose .line {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .prose :where(pre.shiki):not(:where(.not-prose, .not-prose *)) {

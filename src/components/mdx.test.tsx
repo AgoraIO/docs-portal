@@ -772,6 +772,7 @@ describe('common MDX registry', () => {
     expect(codeBlock).toBeInTheDocument();
     expect(codeBlock).toHaveClass('bg-fd-card');
     expect(codeBlock).toHaveClass('shadow-none');
+    expect(codeBlock).toHaveAttribute('data-line-numbers', 'true');
     expect(within(codeBlock).getByText('Install')).toBeInTheDocument();
     expect(
       within(codeBlock).getByRole('button', { name: 'Copy Text' }),
