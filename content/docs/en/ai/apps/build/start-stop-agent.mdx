@@ -1,0 +1,295 @@
+---
+title: Start and stop an agent
+description: Set up real-time interaction with a Conversational AI agent.
+---
+This page describes how to call the Conversational AI Engine RESTful APIs to start and stop an AI agent.
+
+## Understand the tech
+
+Agora’s Conversational AI technology enables real-time voice interactions between users and an AI-driven agent within an Agora channel. The basic process is as follows:
+
+1. **User joins a Agora channel**:  A user joins an Agora channel.
+1. **Start an AI agent**: The user sends a request to your business server, which then makes an API call to the Conversational AI engine to start an agent. The agent joins the same channel as the user.
+1. **Real-time interaction**: The user communicates with the AI agent through voice, leveraging the specified LLM, a text-to-speech service, and Agora's low-latency backend.
+1. **Stop the AI agent**: When the user ends the conversation, the business server sends a request to stop the AI agent. The agent then leaves the Agora channel.
+1. **User leaves the Agora channel**: The user disconnects from the session.
+
+<details>
+<summary>Conversational AI Engine workflow</summary>
+
+![](/images/conversational-ai/ai-agent-tech.svg)
+</details>
+
+## Prerequisites
+
+- [Enabled Agora conversational AI](../../reference/enable-conversational-ai#enable-conversational-ai) for your project.
+- The following information from Agora Console:
+    - [App ID](../../reference/enable-conversational-ai#get-the-app-id): The string identifier for your project used to call the Conversational AI Engine RESTful API.
+    - [Customer ID and Customer secret](../../../api-reference/conversational-ai/rest-api/authentication#generate-customer-id-and-customer-secret): Used for HTTP authentication when calling the RESTful APIs.
+    - A [temporary token](../../reference/enable-conversational-ai#generate-temporary-tokens): The token is used by the agent for authentication when joining an Agora channel. 
+- Obtained API keys for:
+  - A supported Large Language Model (LLM) provider such as [OpenAI](https://openai.com/index/openai-api/).
+  - A supported text-to-speech (TTS) provider such as [Microsoft Azure](https://azure.microsoft.com/en-us/products/ai-services/ai-speech).
+
+  > **Tip**
+> If you don't yet have API keys from a third-party LLM or TTS provider, [Use presets](presets) to start your first agent without ASR, LLM, and TTS credentials.
+
+- Implemented the [Voice Calling](../../../introduction/realtime-audio-video) or [Video Calling](../../../introduction/realtime-audio-video) quickstart.
+
+  > **Info**
+> For the best conversational experience, Agora recommends using Conversational AI Engine with specific Agora Video/Voice SDK versions. For details, [contact technical support](mailto:support@agora.io).
+
+## Implementation
+
+This section introduces the basic RESTful API requests you use to start and stop a conversational AI agent. In a production environment, implement these requests on your business server.
+
+### Start a conversational AI agent
+
+Call the `join` endpoint to create an agent instance that joins an Agora channel. Pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](../../../api-reference/conversational-ai/rest-api/authentication).
+
+```js tab="Node.js"
+const fetch = require('node-fetch');
+const url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join";
+const headers = {
+  "Authorization": "Basic <your_base64_encoded_credentials>",
+  "Content-Type": "application/json"
+};
+const data = {
+  "name": "unique_name",
+  "properties": {
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "agent_rtc_uid": "0",
+    "remote_rtc_uids": ["1002"],
+    "enable_string_uid": false,
+    "idle_timeout": 120,
+    "llm": {
+      "url": "https://api.openai.com/v1/chat/completions",
+      "api_key": "<your_llm_api_key>",
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "You are a helpful chatbot."
+        }
+      ],
+      "greeting_message": "Hello, how can I help you?",
+      "failure_message": "Sorry, I don't know how to answer this question.",
+      "max_history": 10,
+      "params": {
+        "model": "gpt-4o-mini"
+      }
+    },
+    "asr": {
+      "language": "en-US"
+    },
+    "tts": {
+      "vendor": "microsoft",
+      "params": {
+          "key": "<your_tts_api_key>",
+          "region": "eastus",
+          "voice_name": "en-US-AndrewMultilingualNeural"
+      }
+    }
+  }
+};
+fetch(url, {
+  method: "POST",
+  headers: headers,
+  body: JSON.stringify(data)
+})
+  .then(response => response.json())
+  .then(json => console.log(json))
+  .catch(error => console.error("Error:", error));
+```
+
+
+```bash tab="Curl"
+curl --request POST \
+  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join \\
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \\
+  --header 'Content-Type: application/json' \\
+  --data '
+{
+  "name": "unique_name",
+  "properties": {
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "agent_rtc_uid": "0",
+    "remote_rtc_uids": ["1002"],
+    "enable_string_uid": false,
+    "idle_timeout": 120,
+    "llm": {
+      "url": "https://api.openai.com/v1/chat/completions",
+      "api_key": "<your_llm_api_key>",
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "You are a helpful chatbot."
+        }
+      ],
+      "greeting_message": "Hello, how can I help you?",
+      "failure_message": "Sorry, I don't know how to answer this question.",
+      "max_history": 10,
+      "params": {
+        "model": "gpt-4o-mini"
+      }
+    },
+    "asr": {
+      "language": "en-US"
+    },
+    "tts": {
+      "vendor": "microsoft",
+      "params": {
+          "key": "<your_tts_api_key>",
+          "region": "eastus",
+          "voice_name": "en-US-AndrewMultilingualNeural"
+      }
+    }
+  }
+}'
+```
+
+```python tab="Python"
+import json
+import requests
+
+url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join"
+headers = {
+    "Authorization": "Basic <your_base64_encoded_credentials>",
+    "Content-Type": "application/json"
+}
+data = {
+    "name": "unique_name",
+    "properties": {
+        "channel": "<your_channel_name>",
+        "token": "<your_rtc_token>",
+        "agent_rtc_uid": "0",
+        "remote_rtc_uids": ["1002"],
+        "enable_string_uid": False,
+        "idle_timeout": 120,
+        "llm": {
+            "url": "https://api.openai.com/v1/chat/completions",
+            "api_key": "<your_llm_api_key>",
+            "system_messages": [
+                {
+                    "role": "system",
+                    "content": "You are a helpful chatbot."
+                }
+            ],
+            "greeting_message": "Hello, how can I help you?",
+            "failure_message": "Sorry, I don't know how to answer this question.",
+            "max_history": 10,
+            "params": {
+                "model": "gpt-4o-mini"
+            }
+        },
+        "asr": {
+            "language": "en-US"
+        },
+        "tts": {
+            "vendor": "microsoft",
+            "params": {
+                "key": "<your_tts_api_key>",
+                "region": "eastus",
+                "voice_name": "en-US-AndrewMultilingualNeural"
+            }
+        }
+    }
+}
+response = requests.post(url, headers=headers, data=json.dumps(data))
+print(response.text)
+```
+
+For complete information on all request parameters, see [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+
+If the request is successful, you receive the following response:
+
+```json
+// 200 OK
+{
+  "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+  "create_ts": 1737111452,
+  "status": "RUNNING"
+}
+```
+
+Store the `agent_id` for use in subsequent API calls to [query](../../../api-reference/conversational-ai/rest-api/agent/query), [update](../../../api-reference/conversational-ai/rest-api/agent/update), and [stop](../../../api-reference/conversational-ai/rest-api/agent/leave) the AI agent.
+
+### Stop the conversational AI agent
+
+To end the conversation with the AI agent, call the `leave` endpoint. This causes the agent to leave the Agora channel.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="nodejs">Node.js</TabsTrigger>
+  <TabsTrigger value="curl">Curl</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+</TabsList>
+
+<TabsContent value="nodejs">
+
+```js
+const url = 'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave';
+const options = {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Basic <your_base64_encoded_credentials>',
+    'Content-Type': 'application/json'
+  }
+};
+fetch(url, options)
+  .then(res => res.json())
+  .then(json => console.log(json))
+  .catch(err => console.error(err));
+```
+
+</TabsContent>
+
+<TabsContent value="curl">
+
+```bash
+curl --request post \
+  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave \\
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+import requests
+
+url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave"
+headers = {
+    "Authorization": "Basic <your_base64_encoded_credentials>",
+    "Content-Type": "application/json"
+}
+response = requests.post(url, headers=headers)
+print(response.text)
+```
+
+If the request is successful, the server responds with a `200 OK` status and an empty JSON object.
+
+```json
+// 200 OK
+{}
+```
+
+> **Info**
+> { /* - Currently, only English is supported for interacting with the conversational AI agent. For other language requirements, please [contact technical support](mailto:support@agora.io). */ }
+> The number of Peak Concurrent Users (PCU) allowed to call the server API under a single App ID is limited to 20. If you need to increase this limit, please [contact technical support](mailto:support@agora.io).
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+</TabsContent>
+</Tabs>
+### API reference
+
+- [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join)
+- [Stop a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/leave)
+- [Update agent configuration](../../../api-reference/conversational-ai/rest-api/agent/update)
+- [Query agent status](../../../api-reference/conversational-ai/rest-api/agent/query)
+- [Retrieve a list of agents](../../../api-reference/conversational-ai/rest-api/agent/list)

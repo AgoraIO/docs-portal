@@ -1,4 +1,3 @@
-import { Link } from '@tanstack/react-router';
 import {
   BotIcon,
   CheckIcon,
@@ -178,16 +177,16 @@ export function DocsCopyMenu({
         <DropdownMenuLabel>{t('docs.copyMenuMcp')}</DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link params={{}} search={{}} to={AGORA_MCP_DOC_URL}>
+            <a href={AGORA_MCP_DOC_URL}>
               {t('docs.connectToCursor')}
               <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
-            </Link>
+            </a>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link params={{}} search={{}} to={AGORA_MCP_DOC_URL}>
+            <a href={AGORA_MCP_DOC_URL}>
               {t('docs.connectToVsCode')}
               <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
-            </Link>
+            </a>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => void copy('config', getCursorMcpConfig())}

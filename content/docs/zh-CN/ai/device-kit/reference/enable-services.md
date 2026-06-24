@@ -16,4 +16,4 @@ Convo AI Device Kit 依赖对话式 AI 和 Agora IoT 相关能力。在运行设
 
 - [Convo AI Device Kit 概览](../index.md)
 - [快速开始](../start-here/quickstart.md)
-- [架构概览](../build/architecture-overview.md)
+- [架构概览](../build/system-architecture/architecture-overview.md)
