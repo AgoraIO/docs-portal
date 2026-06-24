@@ -4,13 +4,13 @@ import { source } from './source.server';
 describe('fumadocs source loader', () => {
   it('resolves localized OpenAPI operation pages from the merged source', () => {
     const page = source.getPage(
-      ['api-reference', 'conversational-ai', 'rest-api', 'agent', 'join'],
+      ['api-reference', 'api-ref', 'conversational-ai', 'join'],
       'en',
     );
 
     expect(page?.type).toBe('openapi');
     expect(page?.url).toBe(
-      '/en/api-reference/conversational-ai/rest-api/agent/join',
+      '/en/api-reference/api-ref/conversational-ai/join',
     );
     expect(page?.data._openapi?.method).toBe('post');
   });

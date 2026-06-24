@@ -104,6 +104,12 @@ function normalizeLegacyRootDocsHref(href: string) {
   const segments = parsed.path.split('/').filter(Boolean);
   const [locale, group, leaf] = segments;
 
+  const mappedConversationalAiPath =
+    getLegacyConversationalAiRestPath(segments);
+  if (mappedConversationalAiPath) {
+    return `${mappedConversationalAiPath}${parsed.search}${parsed.hash}`;
+  }
+
   if ((locale === 'en' || locale === 'zh-CN') && group && leaf) {
     const mappedPath = getLegacyLocalePath(locale, group, leaf);
 
@@ -121,12 +127,47 @@ function normalizeLegacyRootDocsHref(href: string) {
   return href;
 }
 
+function getLegacyConversationalAiRestPath(segments: string[]) {
+  const [locale, tab, product, restApi, group, leaf] = segments;
+
+  if (
+    (locale !== 'en' && locale !== 'zh-CN') ||
+    tab !== 'api-reference' ||
+    product !== 'conversational-ai' ||
+    restApi !== 'rest-api'
+  ) {
+    return null;
+  }
+
+  if (!group) {
+    return locale === 'en'
+      ? `/${locale}/api-reference/api-ref/conversational-ai`
+      : null;
+  }
+
+  if (group === 'authentication' || group === 'status-codes') {
+    return locale === 'en'
+      ? `/${locale}/api-reference/api-ref/conversational-ai/${group}`
+      : null;
+  }
+
+  if (group !== 'agent' || !leaf) {
+    return null;
+  }
+
+  const routeLeaf = LEGACY_CONVERSATIONAL_AI_AGENT_ROUTE_LEAVES[leaf];
+
+  return routeLeaf
+    ? `/${locale}/api-reference/api-ref/conversational-ai/${routeLeaf}`
+    : null;
+}
+
 function getLegacyLocalePath(locale: string, group: string, leaf: string) {
   if (group === 'operations') {
     const routeLeaf = LEGACY_OPERATION_ROUTE_LEAVES[leaf];
 
     if (routeLeaf) {
-      return `/${locale}/api-reference/conversational-ai/rest-api/agent/${routeLeaf}`;
+      return `/${locale}/api-reference/api-ref/conversational-ai/${routeLeaf}`;
     }
   }
 
@@ -156,6 +197,19 @@ const LEGACY_OPERATION_ROUTE_LEAVES: Record<string, string> = {
   'query-agent-status': 'query',
   'start-agent': 'join',
   'stop-agent': 'leave',
+};
+
+const LEGACY_CONVERSATIONAL_AI_AGENT_ROUTE_LEAVES: Record<string, string> = {
+  history: 'history',
+  interrupt: 'interrupt',
+  join: 'join',
+  leave: 'leave',
+  list: 'list',
+  query: 'query',
+  speak: 'speak',
+  think: 'think',
+  turns: 'turns',
+  update: 'update',
 };
 
 const LEGACY_USER_GUIDE_PATHS: Record<string, (locale: string) => string> = {

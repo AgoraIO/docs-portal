@@ -13,18 +13,21 @@ describe('fumadocs openapi source', () => {
       .sort();
 
     expect(pagePaths).toContain(
-      'en/api-reference/conversational-ai/rest-api/agent/join.mdx',
+      'en/api-reference/api-ref/conversational-ai/join.mdx',
     );
     expect(pagePaths).toContain(
-      'zh-CN/api-reference/conversational-ai/rest-api/agent/join.mdx',
+      'zh-CN/api-reference/api-ref/conversational-ai/join.mdx',
     );
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/signaling/peer-to-peer-message.mdx',
     );
     expect(pagePaths).toContain(
+      'en/api-reference/api-ref/cloud-recording/acquire.mdx',
+    );
+    expect(pagePaths).toContain(
       'en/api-reference/api-ref/speech-to-text/join.mdx',
     );
-    expect(pagePaths).toHaveLength(40);
+    expect(pagePaths).toHaveLength(54);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {
@@ -32,8 +35,7 @@ describe('fumadocs openapi source', () => {
     const englishJoin = source.files.find(
       (file) =>
         file.type === 'page' &&
-        file.path ===
-          'en/api-reference/conversational-ai/rest-api/agent/join.mdx',
+        file.path === 'en/api-reference/api-ref/conversational-ai/join.mdx',
     );
 
     expect(englishJoin?.type).toBe('page');
@@ -50,7 +52,7 @@ describe('fumadocs openapi source', () => {
       },
     ]);
     expect(props.payload.bundled.info?.title).toBe(
-      'Conversational AI Agent API Overview',
+      'Conversational AI RESTful API',
     );
   });
 

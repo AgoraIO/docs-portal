@@ -20,17 +20,17 @@ export const OPENAPI_LANES = [
   {
     id: 'convoai',
     parentUrl: {
-      en: '/en/api-reference/conversational-ai/rest-api/agent',
-      'zh-CN': '/zh-CN/api-reference/conversational-ai/rest-api/agent',
+      en: '/en/api-reference/api-ref/conversational-ai',
+      'zh-CN': '/zh-CN/api-reference/api-ref/conversational-ai',
     },
     publicSourceUrl: {
-      en: '/openapi/conversational-ai/convoai.en.yaml',
-      'zh-CN': '/openapi/conversational-ai/convoai.zh-CN.yaml',
+      en: '/openapi/conversational-ai/rest-api.en.yaml',
+      'zh-CN': '/openapi/conversational-ai/rest-api.en.yaml',
     },
-    routePrefix: 'api-reference/conversational-ai/rest-api/agent',
+    routePrefix: 'api-reference/api-ref/conversational-ai',
     sourcePath: {
-      en: 'content/openapi/conversational-ai/convoai.en.yaml',
-      'zh-CN': 'content/openapi/conversational-ai/convoai.zh-CN.yaml',
+      en: 'content/openapi/conversational-ai/rest-api.en.yaml',
+      'zh-CN': 'content/openapi/conversational-ai/rest-api.en.yaml',
     },
     tab: 'api-reference',
     operations: {
@@ -156,6 +156,74 @@ export const OPENAPI_LANES = [
         title: {
           en: 'Get channel events',
           'zh-CN': 'Get channel events',
+        },
+      },
+    },
+  },
+  {
+    id: 'cloud-recording-rest',
+    parentUrl: {
+      en: '/en/api-reference/api-ref/cloud-recording',
+      'zh-CN': '/zh-CN/api-reference/api-ref/cloud-recording',
+    },
+    publicSourceUrl: {
+      en: '/openapi/cloud-recording/cloud-recording.en.yaml',
+      'zh-CN': '/openapi/cloud-recording/cloud-recording.en.yaml',
+    },
+    routePrefix: 'api-reference/api-ref/cloud-recording',
+    sourcePath: {
+      en: 'content/openapi/cloud-recording/cloud-recording.en.yaml',
+      'zh-CN': 'content/openapi/cloud-recording/cloud-recording.en.yaml',
+    },
+    tab: 'api-reference',
+    operations: {
+      'acquire-cloud-recording-resource': {
+        routeLeaf: 'acquire',
+        title: {
+          en: 'Acquire a cloud recording resource',
+          'zh-CN': 'Acquire a cloud recording resource',
+        },
+      },
+      'start-cloud-recording': {
+        routeLeaf: 'start',
+        title: {
+          en: 'Start cloud recording',
+          'zh-CN': 'Start cloud recording',
+        },
+      },
+      'update-cloud-recording': {
+        routeLeaf: 'update',
+        title: {
+          en: 'Update cloud recording settings',
+          'zh-CN': 'Update cloud recording settings',
+        },
+      },
+      'update-cloud-recording-layout': {
+        routeLeaf: 'update-layout',
+        title: {
+          en: 'Update the cloud recording layout',
+          'zh-CN': 'Update the cloud recording layout',
+        },
+      },
+      'query-cloud-recording': {
+        routeLeaf: 'query',
+        title: {
+          en: 'Query cloud recording status',
+          'zh-CN': 'Query cloud recording status',
+        },
+      },
+      'stop-cloud-recording': {
+        routeLeaf: 'stop',
+        title: {
+          en: 'Stop cloud recording',
+          'zh-CN': 'Stop cloud recording',
+        },
+      },
+      'get-ncs-ip': {
+        routeLeaf: 'get-ncs-ip',
+        title: {
+          en: 'Query message notification server IP addresses',
+          'zh-CN': 'Query message notification server IP addresses',
         },
       },
     },

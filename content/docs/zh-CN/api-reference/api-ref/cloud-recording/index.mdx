@@ -1,0 +1,29 @@
+---
+title: Overview
+description: Manage Cloud Recording sessions using the RESTful API.
+---
+
+Agora Cloud Recording records and saves voice calls, video calls, and interactive streaming. Send HTTPS requests from your business server to Agora to manage recording tasks on the server side.
+
+To monitor recording status, enable the message notification service and receive Cloud Recording events through a webhook. Because Agora dynamically adjusts message notification server IP addresses, regularly query the IP addresses and update your firewall whitelist.
+
+## API basics
+
+- **Authentication**: All APIs require [Basic Auth](authentication).
+- **Request**: Request bodies use JSON.
+- **Response**: Response bodies use JSON.
+- **Base URL**: `https://api.sd-rtn.com`
+
+:::info
+The Cloud Recording REST API supports HTTPS only. Requests over plain HTTP are not supported.
+:::
+
+## REST APIs
+
+- [Acquire a cloud recording resource](acquire): Request a resource ID for cloud recording.
+- [Start cloud recording](start): Start cloud recording with a resource ID. Call this method shortly after `acquire`.
+- [Update cloud recording settings](update): Update subscription, web page recording, CDN push, or storage settings.
+- [Update the cloud recording layout](update-layout): Update the composite recording layout.
+- [Query cloud recording status](query): Check the status of a cloud recording session.
+- [Stop cloud recording](stop): Leave the channel and stop recording.
+- [Query message notification server IP addresses](get-ncs-ip): Get message notification server IP addresses for firewall whitelisting.
