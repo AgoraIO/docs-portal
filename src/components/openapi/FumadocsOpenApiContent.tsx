@@ -1,3 +1,5 @@
+import type { MethodInformation } from 'fumadocs-openapi';
+import type { InlineCodeUsageGenerator } from 'fumadocs-openapi/requests/generators';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import { createClientAPIPage } from 'fumadocs-openapi/ui/create-client';
 import type { ReactNode } from 'react';
@@ -10,8 +12,22 @@ import {
 const LEGACY_DOC_ORIGIN = 'https://doc.shengwang.cn';
 const LEGACY_DOC_PATH_PATTERN =
   /(]\()(\/(?:api-center|basics|codebox|doc|faq)(?:[^)]*))(\))/g;
+const GENERATED_CODE_SAMPLE_IDS = [
+  'curl',
+  'js',
+  'go',
+  'python',
+  'java',
+  'csharp',
+] as const;
+const removeGeneratedCodeSamples = GENERATED_CODE_SAMPLE_IDS.map((id) => ({
+  id,
+  lang: id,
+  source: false,
+})) satisfies InlineCodeUsageGenerator[];
 
 const ClientAPIPage = createClientAPIPage({
+  generateCodeSamples: getGeneratedCodeSampleOverrides,
   playground: {
     enabled: false,
   },
@@ -26,6 +42,10 @@ const ClientAPIPage = createClientAPIPage({
     ),
   },
 });
+
+function getGeneratedCodeSampleOverrides(method: MethodInformation) {
+  return method['x-codeSamples']?.length ? removeGeneratedCodeSamples : [];
+}
 
 export function FumadocsOpenApiContent({
   className,
