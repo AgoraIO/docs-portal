@@ -54,6 +54,15 @@ type HeadingComponent = ComponentType<{
   children: ReactNode;
   id?: string;
 }>;
+type ParamTableComponent = ComponentType<{
+  children: ReactNode;
+}> & {
+  Row: ComponentType<{
+    children: ReactNode;
+    field: ReactNode;
+    type?: ReactNode;
+  }>;
+};
 
 function createStorageMock(): Storage {
   const values = new Map<string, string>();
@@ -223,8 +232,56 @@ describe('common MDX registry', () => {
 
     expect(components.PlatformInline).toBeDefined();
     expect(components.PlatformStructured).toBeDefined();
+    expect(components.ParamTable).toBeDefined();
     expect(components._PlatformTabsGroup).toBeDefined();
     expect(components._PlatformPanel).toBeDefined();
+  });
+
+  it('renders parameter table description cells with block MDX content', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const ParamTable = components.ParamTable as ParamTableComponent;
+    const CalloutContainer = components.CalloutContainer as ComponentType<{
+      children: ReactNode;
+      type: string;
+    }>;
+    const CalloutDescription = components.CalloutDescription as ComponentType<{
+      children: ReactNode;
+    }>;
+
+    render(
+      <div className="prose">
+        <ParamTable>
+          <ParamTable.Row field="volumes.rtcStreamUid" type="Number">
+            <p>The user IDs of the mixing users to set the volume.</p>
+            <ul>
+              <li>Keep the value in rtcStreamUids.</li>
+              <li>Use a numeric UID.</li>
+            </ul>
+            <CalloutContainer type="info">
+              <CalloutDescription>
+                <p>
+                  <code>volumes.rtcStreamUid</code> needs to exist in the{' '}
+                  <code>rtcStreamUids</code> array.
+                </p>
+              </CalloutDescription>
+            </CalloutContainer>
+          </ParamTable.Row>
+        </ParamTable>
+      </div>,
+    );
+
+    const table = screen.getByRole('table');
+    const row = screen.getByRole('row', {
+      name: /volumes\.rtcStreamUid Number The user IDs/i,
+    });
+
+    expect(table).toHaveAttribute('data-param-table');
+    expect(within(row).getAllByText('volumes.rtcStreamUid')).toHaveLength(2);
+    expect(within(row).getByRole('list')).toBeInTheDocument();
+    expect(
+      within(row).getByText('Keep the value in rtcStreamUids.'),
+    ).toBeInTheDocument();
+    expect(within(row).getByText(/needs to exist in the/i)).toBeInTheDocument();
   });
 
   it('renders transformed platform groups with persisted preference fallback and hidden inactive panels', () => {
