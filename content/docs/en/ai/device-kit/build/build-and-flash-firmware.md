@@ -50,5 +50,5 @@ After the firmware builds successfully, flash it to your R1 device. For detailed
 
 ## Related pages
 
-- [Run the demo server](run-the-demo-server)
-- [Run the R1 demo](run-the-r1-demo)
+- [Run the demo server](../baseline-bring-up/run-the-demo-server)
+- [Run the R1 demo](../baseline-bring-up/run-the-r1-demo)

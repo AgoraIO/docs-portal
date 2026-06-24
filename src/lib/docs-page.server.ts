@@ -73,7 +73,7 @@ const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
     'zh-CN': '/zh-CN/ai/best-practices/optimize-latency',
   },
   geofencing: {
-    en: '/en/ai/best-practices/regional-restrictions',
+    en: '/en/ai/apps/best-practices/regional-restrictions',
     'zh-CN': '/zh-CN/ai/best-practices/regional-restrictions',
   },
   'http-basic-auth': {
@@ -362,21 +362,30 @@ function resolveDeviceKitRedirect(
     return `/${locale}/ai/device-kit/start-here/quickstart`;
   }
 
-  const redirects: Record<string, string> = {
-    'device-kit/get-started': `/${locale}/ai/device-kit/start-here/quickstart`,
-    'device-kit/get-started/quickstart': `/${locale}/ai/device-kit/start-here/quickstart`,
-    'device-kit/get-started/enable-services': `/${locale}/ai/device-kit/reference/enable-services`,
-    'device-kit/get-started/run-the-demo': `/${locale}/ai/device-kit/build/run-the-r1-demo`,
-    'device-kit/overview': `/${locale}/ai/device-kit/build/architecture-overview`,
-    'device-kit/overview/architecture': `/${locale}/ai/device-kit/build/architecture-overview`,
-    'device-kit/reference': `/${locale}/ai/device-kit/build/device-controls`,
-    'device-kit/reference/device-controls': `/${locale}/ai/device-kit/build/device-controls`,
-    'device-kit/overview/pricing': `/${locale}/ai/device-kit/reference/pricing`,
-    'device-kit/overview/release-notes': `/${locale}/ai/device-kit/reference/release-notes`,
-    'device-kit/start-here/enable-services': `/${locale}/ai/device-kit/reference/enable-services`,
+  const buildRedirects: Record<string, string> = {
+    'device-kit/build/run-the-r1-demo':
+      `/${locale}/ai/device-kit/build/baseline-bring-up/run-the-r1-demo`,
+    'device-kit/build/run-the-demo-server':
+      `/${locale}/ai/device-kit/build/baseline-bring-up/run-the-demo-server`,
+    'device-kit/build/demo-server-apis':
+      `/${locale}/ai/device-kit/build/baseline-bring-up/demo-server-apis`,
+    'device-kit/build/configure-device-network':
+      `/${locale}/ai/device-kit/build/device-setup/configure-device-network`,
+    'device-kit/build/device-controls':
+      `/${locale}/ai/device-kit/build/device-setup/device-controls`,
+    'device-kit/build/build-and-flash-firmware':
+      `/${locale}/ai/device-kit/build/firmware-integration/build-and-flash-firmware`,
+    'device-kit/build/architecture-overview':
+      `/${locale}/ai/device-kit/build/system-architecture/architecture-overview`,
+    'device-kit/build/specifications-and-compatibility':
+      `/${locale}/ai/device-kit/build/system-architecture/specifications-and-compatibility`,
   };
 
-  return redirects[normalizedPath] ?? null;
+  if (buildRedirects[normalizedPath]) {
+    return buildRedirects[normalizedPath];
+  }
+
+  return null;
 }
 
 function resolveApiReferenceRedirect(
@@ -454,11 +463,7 @@ function resolveAiDocsRedirect(
   const redirects: Record<string, string> = {
     'conversational-ai': `/${locale}/ai/get-started/quickstart`,
     [`choose-your-path/${CONVERSATIONAL_AI_PATH_ENTRY_SLUG}`]: `/${locale}/ai/get-started/quickstart`,
-    'build/code-first-architecture': `/${locale}/ai/build/architecture`,
     'build/event-types': `/${locale}/ai/reference/event-types`,
-    'reference/code-first-architecture': `/${locale}/ai/build/architecture`,
-    'reference/architecture': `/${locale}/ai/build/architecture`,
-    'best-practices/filler-words': `/${locale}/ai/build/filler-words`,
   };
 
   return redirects[normalizedPath] ?? null;
@@ -604,26 +609,6 @@ async function getDocsSidebarNodes({
   source: typeof docsSource;
   tab: string;
 }) {
-  if (tab === 'ai') {
-    const aiNodes = getNavScopeSidebarNodes({
-      getNodeMeta: (node) =>
-        getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
-      root: pageTree,
-      tab,
-    });
-    const apiReferenceNodes =
-      locale === null
-        ? []
-        : getNavScopeSidebarNodes({
-            getNodeMeta: (node) =>
-              getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
-            root: pageTree,
-            tab: OPENAPI_TAB,
-          });
-
-    return buildAiProductSidebar(aiNodes, apiReferenceNodes);
-  }
-
   if (
     shouldUseSharedPlatformSidebar(
       tab,
@@ -743,376 +728,6 @@ function restoreRecipesSidebarSections(
       type: 'section',
     },
   ];
-}
-
-function buildAiProductSidebar(
-  nodes: DocsSidebarNode[],
-  apiReferenceNodes: DocsSidebarNode[] = [],
-): DocsSidebarNode[] {
-  const aiOverview =
-    findSidebarPageByExactUrlInNodes(nodes, '/en/ai') ??
-    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai');
-  const conversationalAiQuickstart =
-    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/get-started/quickstart') ??
-    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/get-started/quickstart');
-  const buildSection = findTopLevelSidebarSection(nodes, ['Build', '构建']);
-  const bestPracticesSection = findTopLevelSidebarSection(nodes, [
-    'Best practices',
-    '最佳实践',
-  ]);
-  const modelsSection = findTopLevelSidebarSection(nodes, ['Models', '模型']);
-  const referenceSection = findTopLevelSidebarSection(nodes, [
-    'Reference',
-    '参考',
-  ]);
-  const deviceKitSection = findTopLevelSidebarSection(nodes, [
-    'Convo AI Device Kit',
-  ]);
-
-  if (
-    !aiOverview ||
-    !conversationalAiQuickstart ||
-    !buildSection ||
-    !bestPracticesSection ||
-    !modelsSection ||
-    !referenceSection ||
-    !deviceKitSection
-  ) {
-    return filterSidebarNodes(nodes, (node) => {
-      if (node.type !== 'page') {
-        return true;
-      }
-
-      return !node.url.includes('/ai/choose-your-path/');
-    });
-  }
-
-  const conversationalAiApiReferenceSection = findTopLevelSidebarSection(
-    apiReferenceNodes,
-    ['Conversational AI'],
-  );
-  const _conversationalAiRestApiSection = conversationalAiApiReferenceSection
-    ? (findNestedSidebarSectionByExactUrl(
-        conversationalAiApiReferenceSection,
-        '/en/api-reference/conversational-ai/rest-api',
-      ) ??
-      findNestedSidebarSectionByExactUrl(
-        conversationalAiApiReferenceSection,
-        '/zh-CN/api-reference/conversational-ai/rest-api',
-      ))
-    : null;
-
-  const isZhCn = aiOverview.url.startsWith('/zh-CN/');
-  const aiLocalePrefix = isZhCn ? '/zh-CN' : '/en';
-  const restApiUrl = isZhCn
-    ? `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`
-    : `${aiLocalePrefix}/api-reference/api-ref/conversational-ai/authentication`;
-
-  const restApiPage = {
-    id: restApiUrl,
-    linked: true,
-    title: isZhCn ? 'REST API' : 'RESTful API',
-    type: 'page',
-    url: restApiUrl,
-  } satisfies DocsSidebarPageNode;
-
-  const manualServerSdkSection = {
-    children: [
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`,
-        title: 'TypeScript',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`,
-      },
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/go`,
-        title: 'Go',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/go`,
-      },
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/python`,
-        title: 'Python',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/python`,
-      },
-    ],
-    collapsible: true,
-    id: `ai-reference-server-sdk-${isZhCn ? 'zh-CN' : 'en'}`,
-    title: 'Server SDK',
-    type: 'section',
-    url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk`,
-  } satisfies DocsSidebarSectionNode;
-
-  const manualClientToolkitSection = {
-    children: [
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/android`,
-        title: 'Android',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/android`,
-      },
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/ios`,
-        title: 'iOS',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/ios`,
-      },
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/web`,
-        title: 'Web',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/web`,
-      },
-    ],
-    collapsible: true,
-    id: `ai-reference-client-toolkit-${isZhCn ? 'zh-CN' : 'en'}`,
-    title: isZhCn ? 'Client Toolkit' : 'Client toolkit',
-    type: 'section',
-    url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit`,
-  } satisfies DocsSidebarSectionNode;
-
-  const referenceLeadingChildren = referenceSection.children.filter(
-    (child) =>
-      child.type === 'page' &&
-      (child.url === '/en/ai/reference/event-types' ||
-        child.url === '/zh-CN/ai/reference/event-types'),
-  );
-  const referenceTrailingChildren = referenceSection.children.filter(
-    (child) =>
-      !(
-        child.type === 'page' &&
-        (child.url === '/en/ai/reference/event-types' ||
-          child.url === '/zh-CN/ai/reference/event-types' ||
-          child.url === '/en/ai/reference/restful-api' ||
-          child.url === '/zh-CN/ai/reference/restful-api' ||
-          child.url === '/en/ai/reference/server-sdk' ||
-          child.url === '/en/ai/reference/client-toolkit' ||
-          child.url === '/zh-CN/ai/reference/server-sdk' ||
-          child.url === '/zh-CN/ai/reference/client-toolkit')
-      ),
-  );
-
-  const mergedReferenceSection: DocsSidebarSectionNode = {
-    ...stripSidebarSectionMeta(referenceSection),
-    children: [
-      restApiPage,
-      manualServerSdkSection,
-      manualClientToolkitSection,
-      ...referenceLeadingChildren,
-      ...stripSidebarSectionMetaFromNodes(referenceTrailingChildren),
-    ],
-  };
-
-  const mergedBuildSection: DocsSidebarSectionNode = {
-    ...stripSidebarSectionMeta(buildSection),
-    children: stripSidebarSectionMetaFromNodes([
-      ...buildSection.children,
-      {
-        ...stripSidebarSectionMeta(bestPracticesSection),
-        children: stripSidebarSectionMetaFromNodes(
-          bestPracticesSection.children,
-        ),
-        title:
-          buildSection.title === '构建' ? '优化与加固' : 'Harden and optimize',
-      },
-    ]),
-  };
-
-  return [
-    {
-      ...aiOverview,
-      title: isZhCn ? '概览' : 'Overview',
-    },
-    {
-      children: stripSidebarSectionMetaFromNodes([
-        {
-          ...conversationalAiQuickstart,
-          title: isZhCn ? 'Quickstart' : 'Quickstart',
-        },
-        mergedBuildSection,
-        modelsSection,
-        mergedReferenceSection,
-      ]),
-      icon: 'Bot',
-      id: 'ai-product-software-clients',
-      title: isZhCn ? 'Voice Agent in apps' : 'Voice agent in apps',
-      type: 'section',
-    },
-    {
-      ...stripSidebarSectionMeta(deviceKitSection),
-      children: stripSidebarSectionMetaFromNodes(
-        flattenDeviceKitSidebarChildren(deviceKitSection.children),
-      ),
-      icon: 'Cpu',
-      id: 'ai-product-dedicated-devices',
-      title: isZhCn
-        ? 'Voice Agent on dedicated devices'
-        : 'Voice agent on dedicated devices',
-      type: 'section',
-    },
-  ];
-}
-
-function flattenDeviceKitSidebarChildren(
-  children: DocsSidebarNode[],
-): DocsSidebarNode[] {
-  const flattened: DocsSidebarNode[] = [];
-
-  for (const child of children) {
-    if (child.type === 'page') {
-      if (
-        child.url === '/en/ai/device-kit' ||
-        child.url === '/zh-CN/ai/device-kit'
-      ) {
-        continue;
-      }
-
-      flattened.push(child);
-      continue;
-    }
-
-    if (child.title === 'Start here' || child.title === '从这里开始') {
-      const quickstart =
-        findSidebarPageByExactUrl(
-          child,
-          '/en/ai/device-kit/start-here/quickstart',
-        ) ??
-        findSidebarPageByExactUrl(
-          child,
-          '/zh-CN/ai/device-kit/start-here/quickstart',
-        );
-
-      if (quickstart) {
-        flattened.push({
-          ...quickstart,
-          title: quickstart.url.startsWith('/zh-CN/')
-            ? 'Quickstart'
-            : 'Quickstart',
-        });
-      }
-      continue;
-    }
-
-    if (
-      child.title === 'Reference' ||
-      child.title === '参考' ||
-      child.title === 'Plan rollout'
-    ) {
-      flattened.push(
-        stripSidebarSectionMetaFromNode({
-          ...child,
-          children: child.children.filter(
-            (node) =>
-              !(
-                node.type === 'page' &&
-                (node.url === '/en/ai/device-kit/reference/enable-services' ||
-                  node.url === '/zh-CN/ai/device-kit/reference/enable-services')
-              ),
-          ),
-        }),
-      );
-      continue;
-    }
-
-    flattened.push(stripSidebarSectionMetaFromNode(child));
-  }
-
-  return flattened;
-}
-
-function findSidebarPageByExactUrlInNodes(
-  nodes: DocsSidebarNode[],
-  url: string,
-): DocsSidebarPageNode | null {
-  for (const node of nodes) {
-    const match = findSidebarPageByExactUrl(node, url);
-    if (match) {
-      return match;
-    }
-  }
-
-  return null;
-}
-
-function findSidebarPageByExactUrl(
-  node: DocsSidebarNode,
-  url: string,
-): DocsSidebarPageNode | null {
-  if (node.type === 'page') {
-    return node.url === url ? node : null;
-  }
-
-  for (const child of node.children) {
-    const match = findSidebarPageByExactUrl(child, url);
-    if (match) {
-      return match;
-    }
-  }
-
-  return null;
-}
-
-function findNestedSidebarSectionByExactUrl(
-  node: DocsSidebarNode,
-  url: string,
-): DocsSidebarSectionNode | null {
-  if (node.type === 'page') {
-    return null;
-  }
-
-  if (node.url === url) {
-    return node;
-  }
-
-  for (const child of node.children) {
-    const match = findNestedSidebarSectionByExactUrl(child, url);
-    if (match) {
-      return match;
-    }
-  }
-
-  return null;
-}
-
-function findTopLevelSidebarSection(
-  nodes: DocsSidebarNode[],
-  titles: string[],
-): DocsSidebarSectionNode | null {
-  for (const node of nodes) {
-    if (node.type === 'section' && titles.includes(node.title)) {
-      return node;
-    }
-  }
-
-  return null;
-}
-
-function stripSidebarSectionMetaFromNodes(
-  nodes: DocsSidebarNode[],
-): DocsSidebarNode[] {
-  return nodes.map((node) => stripSidebarSectionMetaFromNode(node));
-}
-
-function stripSidebarSectionMetaFromNode(
-  node: DocsSidebarNode,
-): DocsSidebarNode {
-  if (node.type === 'page') {
-    return node;
-  }
-
-  return {
-    ...stripSidebarSectionMeta(node),
-    children: stripSidebarSectionMetaFromNodes(node.children),
-  };
-}
-
-function stripSidebarSectionMeta(
-  node: DocsSidebarSectionNode,
-): DocsSidebarSectionNode {
-  const { icon: _icon, url: _url, ...rest } = node;
-
-  return rest;
 }
 
 function getDocsPages({
