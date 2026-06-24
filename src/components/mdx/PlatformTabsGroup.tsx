@@ -77,6 +77,8 @@ export function PlatformTabsGroup({
   const contextTabsPlacement = useContext(PlatformTabsPlacementContext);
   const resolvedTabsPlacement = tabsPlacement ?? contextTabsPlacement;
   const shouldShowTabs = showTabs !== 'false' && parsedPlatforms.length > 1;
+  const shouldRenderInlineTabs =
+    shouldShowTabs && resolvedTabsPlacement === 'inline';
   const { activePlatform, handlePlatformChange } = usePlatformSelection({
     canonicalPlatform,
     parsedPlatforms,
@@ -102,7 +104,7 @@ export function PlatformTabsGroup({
       data-platform-group={groupMode}
       data-platforms={parsedPlatforms.join(' ')}
     >
-      {shouldShowTabs && resolvedTabsPlacement === 'inline' ? (
+      {shouldRenderInlineTabs ? (
         <div className={cn(groupMode === 'structured' && 'not-prose')}>
           <PlatformTabs
             activePlatform={activePlatform}
@@ -111,12 +113,7 @@ export function PlatformTabsGroup({
             platforms={parsedPlatforms}
           />
         </div>
-      ) : (
-        <ControlledTabs
-          onValueChange={handlePlatformChange}
-          value={activePlatform}
-        />
-      )}
+      ) : null}
       {panelChildren}
     </div>
   );

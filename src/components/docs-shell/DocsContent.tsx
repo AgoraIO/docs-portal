@@ -167,7 +167,7 @@ export function DocsContent({
         {platformTabs ? (
           <PlatformHeaderTabs
             canonicalPlatform={platformTabs.canonicalPlatform}
-            className="border-t border-[color:var(--line-soft)] pt-4"
+            className="pt-3"
             locale={currentLocale}
             platforms={platformTabs.platforms}
           />
@@ -176,7 +176,10 @@ export function DocsContent({
       {isOpenApiBody ? (
         <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
       ) : (
-        <div className="prose prose-neutral dark:prose-invert max-w-none">
+        <div
+          className="prose prose-neutral dark:prose-invert max-w-none"
+          data-platform-header-tabs={platformTabs ? 'true' : undefined}
+        >
           {resolvedBody?.kind === 'mdx' ? (
             <Suspense fallback={<DocsContentSkeleton />}>
               <PlatformTabsPlacementProvider
