@@ -36,8 +36,9 @@ The following table shows typical latency ranges for each component based on act
 
 \* Algorithm preprocessing latency is based on `silence_duration_ms` set to 640 ms. Adjusting this parameter affects preprocessing latency.
 
-> **Info**
-> Test data shows that LLM typically contributes the most to overall latency. Optimizing LLM selection and configuration is key to reducing end-to-end latency.
+:::info[Info]
+Test data shows that LLM typically contributes the most to overall latency. Optimizing LLM selection and configuration is key to reducing end-to-end latency.
+:::
 
 ### Real-world latency example
 
@@ -80,9 +81,10 @@ End-to-end latency = RTC latency
 
 You can obtain the `mllm_ttfb` metric by listening to the `111 agent metrics` event. This metric represents the response latency from when the MLLM request starts to when the first byte is received.
 
-> **Info**
-> * MLLM architecture typically achieves lower end-to-end latency by reducing data conversion and transmission between components.
-> * When MLLM is enabled, the graceful interruption (AIVAD) feature is disabled, which reduces algorithm preprocessing latency. */}
+:::info[Info]
+* MLLM architecture typically achieves lower end-to-end latency by reducing data conversion and transmission between components.
+* When MLLM is enabled, the graceful interruption (AIVAD) feature is disabled, which reduces algorithm preprocessing latency. */}
+:::
 
 ## Monitor latency metrics
 
@@ -406,8 +408,9 @@ When optimizing latency, find a balance between response speed and conversation 
 | Regional access restrictions | ✅ Moderately reduces | No impact | Users concentrated in a specific region |
 | Optimize RTC settings | ✅ Moderately reduces | No impact | All scenarios |
 
-> **Tip**
-> Monitor latency metrics to identify bottlenecks, then optimize the highest-contributing component rather than pursuing minimal latency across all components.
+:::tip[Tip]
+Monitor latency metrics to identify bottlenecks, then optimize the highest-contributing component rather than pursuing minimal latency across all components.
+:::
 
 ## References
 

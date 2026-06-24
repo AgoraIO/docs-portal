@@ -4,8 +4,9 @@ description: Configure Gemini Live on Vertex AI as an MLLM provider for Voice Ag
 ---
 Google Gemini Live provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components. This page covers integration using Vertex AI, authenticated with Google Cloud Application Default Credentials (ADC).
 
-> **Info**
-> Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
+:::info[Info]
+Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
+:::
 
 ### Sample configuration
 
@@ -120,8 +121,9 @@ For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../.
   
     Turn detection configuration for the MLLM module.
 
-    > **Info**
-> When `mllm.turn_detection` is defined, the top-level `turn_detection` object has no effect.
+    :::info[Info]
+    When `mllm.turn_detection` is defined, the top-level `turn_detection` object has no effect.
+    :::
 
     
       - `agora_vad`: Agora VAD-based detection. 

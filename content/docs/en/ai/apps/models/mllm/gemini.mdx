@@ -4,8 +4,9 @@ description: Configure Google Gemini Live as an MLLM provider for Voice Agent.
 ---
 Google Gemini Live provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components. This page covers integration using the Gemini Developer API, authenticated with a Gemini API key obtained from Google AI Studio.
 
-> **Info**
-> Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
+:::info[Info]
+Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
+:::
 
 ### Sample configuration
 
@@ -132,8 +133,9 @@ For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../.
   
     Turn detection configuration for the MLLM module.
 
-    > **Info**
-> When `mllm.turn_detection` is defined, the top-level `turn_detection` object has no effect.
+    :::info[Info]
+    When `mllm.turn_detection` is defined, the top-level `turn_detection` object has no effect.
+    :::
 
     
       - `agora_vad`: Agora VAD-based detection. 

@@ -22,8 +22,9 @@ Follow these steps to set up the R1 device firmware with the example project.
    cp -r ./projects <bk_aidk_path>/projects
    ```
 
-   > **Info**
-   > To avoid conflicts, delete the original `projects` directory before copying.
+   :::info[Info]
+   To avoid conflicts, delete the original `projects` directory before copying.
+   :::
 
 3. Update the server URL in `projects/common_components/network_transfer/agora_rtc/agora_config.h` to point to your deployed server:
 
