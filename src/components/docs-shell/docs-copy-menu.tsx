@@ -18,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/cn';
 
 const AGORA_DOCS_BASE_URL = 'https://docs.agora.io';
 const AGORA_DOCS_MCP_URL = 'https://mcp.agora.io';
@@ -31,6 +32,12 @@ const AGORA_MCP_DOC_PARAMS = {
 const CHATGPT_BASE_URL = 'https://chatgpt.com/';
 const CLAUDE_BASE_URL = 'https://claude.ai/new';
 const COPY_STATE_MS = 1500;
+
+export type DocsCopyPageAction = {
+  markdownUrl: string;
+  slug: string;
+  title: string;
+};
 
 function buildCanonicalPageUrl(locale: string, slug: string) {
   return `${AGORA_DOCS_BASE_URL}/${locale}/${slug}`;
@@ -87,15 +94,14 @@ function getVsCodeMcpCommand() {
 }
 
 export function DocsCopyMenu({
+  className,
   locale,
   markdownUrl,
   slug,
   title,
-}: {
+}: DocsCopyPageAction & {
+  className?: string;
   locale: string;
-  markdownUrl: string;
-  slug: string;
-  title: string;
 }) {
   const { t } = useTranslation('common');
   const [copiedAction, setCopiedAction] = useState<'config' | 'command' | null>(
@@ -113,7 +119,12 @@ export function DocsCopyMenu({
 
   return (
     <DropdownMenu>
-      <div className="inline-flex items-stretch rounded-md border border-[color:var(--line-soft)] bg-card">
+      <div
+        className={cn(
+          'inline-flex items-stretch rounded-md border border-[color:var(--line-soft)] bg-card',
+          className,
+        )}
+      >
         <Button
           aria-label={t('docs.copyPage')}
           className="h-7 gap-1.5 rounded-r-none border-0 px-2.5 text-xs font-medium text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)]"
