@@ -2,9 +2,6 @@
 title: "Enable and disable the whiteboard"
 description: "Turn the Flexible Classroom whiteboard module on or off and understand the related APIs."
 ---
-
-# Enable and disable the whiteboard
-
 The whiteboard module in Flexible Classroom is implemented based on `AgoraWidget`. You can turn the whiteboard module on or off in the classroom by setting the widget state as active or inactive.
 
 After disabling the whiteboard module, drawing tools including pencil, text box, shape, and eraser will no longer be available and users cannot upload, delete, or display class files on the whiteboard. Other features that do not rely on the whiteboard, such as uploading or deleting class files, pop-up quiz, count-down timer, and screen sharing will not be affected.

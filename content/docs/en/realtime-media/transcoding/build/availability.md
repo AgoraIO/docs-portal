@@ -3,10 +3,6 @@ title: Ensure high availability
 description: Guidelines to ensure high availability of transcoding service.
 ---
 
-
-
-# Ensure high availability
-
 To ensure the high availability of cloud transcoding services and reduce the impact of network failures, Agora offers solutions such as failover migration, multi-task redundancy, and domain name fallback.
 
 ### Failover migration

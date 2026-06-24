@@ -3,8 +3,6 @@ title: "Secure channel encryption"
 description: "Agora Server Gateway supports built-in encryption methods."
 ---
 
-# Secure channel encryption
-
 During real-time audio and video interactions, encrypting media streams ensures user data security. The Server Gateway offers a built-in encryption solution to safeguard your media streams effectively.
 
 ## Implementation

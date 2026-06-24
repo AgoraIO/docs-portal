@@ -2,9 +2,6 @@
 title: "Billing policies and free-of-charge"
 description: "Provides you with information on billing, fee deductions, free-of-charge policy and any suspension to your account based on the account type."
 ---
-
-# Billing policies and free-of-charge
-
 This page explains billing, account settlement, end-of-life policies, and any applicable free-of-charge policies for this product.
 
 ## Billing and account policies

@@ -7,19 +7,7 @@ When using the custom recording and custom screenshot functions, you configure t
 
 This page lists the `region` values you can use to configure storage for different vendors.
 
-<Tabs defaultValue="amazon" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="amazon">Amazon S3</TabsTrigger>
-  <TabsTrigger value="alibaba">Alibaba Cloud</TabsTrigger>
-  <TabsTrigger value="tencent">Tencent Cloud</TabsTrigger>
-  <TabsTrigger value="azure">Microsoft Azure</TabsTrigger>
-  <TabsTrigger value="google">Google Cloud</TabsTrigger>
-  <TabsTrigger value="huawei">Huawei Cloud</TabsTrigger>
-  <TabsTrigger value="baidu">Baidu Smart Cloud</TabsTrigger>
-  <TabsTrigger value="self">S3 compatible storage</TabsTrigger>
-</TabsList>
-
-<TabsContent value="amazon">
+<PlatformStructured platform="amazon">
 - `vendor`= 1
 - **`region` values**:
   - `0`: US_EAST_1
@@ -46,9 +34,9 @@ This page lists the `region` values you can use to configure storage for differe
   - `22`: ME_SOUTH_1
   - `24`: AP_SOUTHEAST_3
   - `25`: EU_SOUTH_1
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="alibaba">
+<PlatformStructured platform="alibaba">
 - `vendor`= 2
 - **`region` values**:
   - `0`: CN_Hangzhou
@@ -79,9 +67,9 @@ This page lists the `region` values you can use to configure storage for differe
   - `25`: CN_Wulanchabu
   - `26`: CN_Northeast_2
   - `27`: CN_Southeast_7
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="tencent">
+<PlatformStructured platform="tencent">
 - `vendor`= 3
 - **`region` values**:
   - `0`: AP_Beijing_1
@@ -104,19 +92,19 @@ This page lists the `region` values you can use to configure storage for differe
   - `17`: NA_Toronto
   - `18`: EU_Frankfurt
   - `19`: EU_Moscow
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="azure">
+<PlatformStructured platform="azure">
 - `vendor`= 5
 - `region` = 0
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="google">
+<PlatformStructured platform="google">
 - `vendor`= 6
 - `region` = 0
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="huawei">
+<PlatformStructured platform="huawei">
 - `vendor`= 7
 - **`region` values**:
   - `0`: CN_North_1
@@ -135,9 +123,9 @@ This page lists the `region` values you can use to configure storage for differe
   - `13`: SA_Brazil_1
   - `14`: LA_South_2
   - `15`: SA_Chile_1
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="baidu">
+<PlatformStructured platform="baidu">
 - `vendor`= 8
 - **`region` values**:
   - `1`: Baoding
@@ -147,9 +135,9 @@ This page lists the `region` values you can use to configure storage for differe
   - `5`: Singapore
   - `6`: Wuhan
   - `7`: Shanghai
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="self">
+<PlatformStructured platform="self">
 - `vendor`= 11
 - `region` = 0
 
@@ -175,5 +163,4 @@ Specify the domain name of the self-built cloud storage in the `extensionParams.
   }
 }
 ```
-</TabsContent>
-</Tabs>
+</PlatformStructured>

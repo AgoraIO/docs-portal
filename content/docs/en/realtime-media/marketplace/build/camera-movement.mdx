@@ -44,12 +44,7 @@ The effects of some functions are as follows:
 
 To follow this procedure, you must have integrated v4.2.x or v4.3.x of the Video SDK and implemented basic real-time audio and video functions in your app. See [SDK quickstart](/en/realtime-media/video/quickstart).
 
-<Tabs defaultValue="android" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-</TabsList>
-<TabsContent value="android">
+<PlatformStructured platform="android">
 
 <Callout type="info">
 - When integrating through Maven Central, specify `io.agora.rtc:full-sdk:x.y.z` and replace `x.y.z` with the specific SDK version number.
@@ -60,8 +55,8 @@ To follow this procedure, you must have integrated v4.2.x or v4.3.x of the Video
 - Android API level 16 or above.
 - An Android device running Android 4.1 or above with a functional front-facing camera and microphone.
 
-</TabsContent>
-<TabsContent value="ios">
+</PlatformStructured>
+<PlatformStructured platform="ios">
 
 <Callout type="info">
 - When integrating through CocoaPods, specify pod `AgoraRtcEngine_Special_iOS` and replace `x.y.z` with the specific SDK version number.
@@ -73,19 +68,13 @@ To follow this procedure, you must have integrated v4.2.x or v4.3.x of the Video
 - An Apple developer account.
 - Installed CocoaPods. See [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started).
 
-</TabsContent>
-</Tabs>
+</PlatformStructured>
 
 ## Project setup
 
 Before you start, download the Camera Movement extension and add it to the Video SDK.
 
-<Tabs defaultValue="android" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-</TabsList>
-<TabsContent value="android">
+<PlatformStructured platform="android">
 
 ### Download the extension
 
@@ -99,8 +88,8 @@ Before you start, download the Camera Movement extension and add it to the Video
 
 According to your target development architecture, copy `libagora_portrait_rhythm_extension.so` to the dynamic library directory of the Video SDK located at `/rtc/sdk/<target architecture>`.
 
-</TabsContent>
-<TabsContent value="ios">
+</PlatformStructured>
+<PlatformStructured platform="ios">
 
 ### Download the extension
 
@@ -116,19 +105,13 @@ According to your target development architecture, copy `AgoraPortraitRhythmExte
 
 ![Plugins](/images/extensions-marketplace/camera-motion-plugin-step2.png)
 
-</TabsContent>
-</Tabs>
+</PlatformStructured>
 
 ## Implement the logic
 
 This section explains how to integrate the Camera Movement extension into your project.
 
-<Tabs defaultValue="android" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-</TabsList>
-<TabsContent value="android">
+<PlatformStructured platform="android">
 
 ### Register the extension
 
@@ -215,8 +198,8 @@ mRtcEngine.setExtensionProperty("agora_video_filters_portrait_rhythm", "portrait
 </TabsContent>
 </Tabs>
 
-</TabsContent>
-<TabsContent value="ios">
+</PlatformStructured>
+<PlatformStructured platform="ios">
 
 ### Register the extension
 
@@ -264,8 +247,7 @@ agoraEngine.setExtensionPropertyWithVendor(
 )
 ```
 
-</TabsContent>
-</Tabs>
+</PlatformStructured>
 
 ## Reference
 

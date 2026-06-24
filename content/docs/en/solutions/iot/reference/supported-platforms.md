@@ -2,9 +2,6 @@
 title: "Supported platforms"
 description: "The platforms supported by this product."
 ---
-
-# Supported platforms
-
 This section lists the platforms and products you use to develop apps that interact with Agora SDRTN®.
 
 - *Platforms*:

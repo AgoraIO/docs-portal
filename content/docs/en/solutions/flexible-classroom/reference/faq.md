@@ -2,9 +2,6 @@
 title: "FAQs"
 description: "Most frequently asked questions about Flexible Classroom"
 ---
-
-# FAQs
-
 Find answers to the most frequently asked questions by following the links below:
 
 - [Why can't I upload courseware?](https://docs.agora.io/en/help/integration-issues/cant_upload_courseware)

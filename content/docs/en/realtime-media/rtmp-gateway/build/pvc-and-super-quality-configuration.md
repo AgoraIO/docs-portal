@@ -2,9 +2,6 @@
 title: "PVC and Super Quality configuration"
 description: "Enable PVC and Super Quality options for Media Gateway video transcoding."
 ---
-
-# PVC and Super Quality configuration
-
 This guide explains how to enable low-bitrate high-definition features (PVC) for video transcoding on Media Gateway.
 
 ## Understand the tech

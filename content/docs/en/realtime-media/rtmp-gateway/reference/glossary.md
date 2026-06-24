@@ -2,9 +2,6 @@
 title: "Glossary"
 description: "A list of common Agora terms referenced in Media Gateway documentation."
 ---
-
-# Glossary
-
 ## A
 
 ### Agora Console

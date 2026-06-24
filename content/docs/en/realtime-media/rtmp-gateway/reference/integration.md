@@ -3,8 +3,6 @@ title: "Integration"
 description: "Best practices for integrating Media Gateway reliably in production."
 ---
 
-# Integration
-
 This document presents best practices for reliably integrating Media Gateway in your app. Before reading this document, follow the [Media Gateway quickstart](../build/quickstart-best-practices.md) to understand the basic process of using Media Gateway.
 
 ## API call limits

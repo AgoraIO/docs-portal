@@ -32,33 +32,22 @@ In order to follow the procedure on this page, you must have:
 
 	Ensure that no firewall is blocking your network communication.
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 
 - An Android emulator or a physical Android device.
 - Android Studio 3.6 or higher.
 - Java Development Kit (JDK). You can refer to the [Android User Guide](https://developer.android.com/studio/write/java8-support) for applicable versions.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 
 - Xcode. This page uses Xcode 13.0 as an example.
 - A device running iOS 10 or later.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="web">
+<PlatformStructured platform="web">
 
 - A Windows or macOS computer that meets the following requirements:
   - A browser supported by the Agora Chat SDK: 
@@ -69,9 +58,9 @@ In order to follow the procedure on this page, you must have:
   - Access to the Internet. If your network has a firewall, follow the instructions in [Firewall Requirements](https://docs.agora.io/en/Agora%20Platform/firewall) to access Agora services.
 - [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
 
 - Flutter 2.10 or higher.
 - Dart 2.16 or higher.
@@ -87,9 +76,9 @@ In order to follow the procedure on this page, you must have:
     - Android Studio 4.0 or higher with JDK 1.8 or higher
     - An Android emulator or a physical Android device running Android SDK API 21 or higher
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 
 If your target platform is iOS:
 
@@ -116,38 +105,26 @@ If your target platform is Android:
 
 For more information, see [Setting up the environment](https://reactnative.dev/docs/environment-setup).
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 
 In order to follow the procedure in this page, you must have the following:
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 
 - A device running Windows 7 or higher.
 - Visual Studio IDE 2019 or later
 - .Net Framework 4.5.2 or later
 
-</TabsContent>
+</PlatformStructured>
 
-</Tabs>
 
 ## Project setup
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 
 To integrate Chat into your app, do the following:
 
@@ -218,9 +195,9 @@ To integrate Chat into your app, do the following:
 This method is applicable when you integrate the SDK manually but not when you integrate the SDK with Maven Central.You can specify the path of `.so` files with the path parameter in the `ChatOptions#setNativeLibBasePath` method. The path must be a valid and private directory of the app.If you set this parameter, the SDK will use `System.load` to load the `.so` library from the directory you specify, so that the app dynamically loads the required `.so` files when it runs, thereby reducing the package size.If you do not set this parameter or set it to `null`, the SDK will use `system.load` to load the `.so` library from the default path, when compiling the app, thus increasing the package size compared to the previous method.Since March 6, 2024, using this method to reduce the app size no longer meets the requirements of Google Play. For details, refer to the [Developer Program Policies](https://support.google.com/googleplay/android-developer/answer/14906471?hl=en&visit_id=638555962315571301-1274648059&rd=1) issued by Google. If your app needs to be listed on Google Play, please try other ways to reduce the app size. For details, see [App size optimization](/en/realtime-media/rtc/best-practices/app-size-optimization#dynamically-load-so-files).
 :::
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 
 To integrate Chat into your app, do the following:
 
@@ -256,9 +233,9 @@ To integrate Chat into your app, do the following:
 The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/AgoraChat_PrivacyInfo.xcprivacy) file that you can include in your project. If you are using Chat SDK 1.2 or earlier, refer to [Add a privacy manifest file](#add-a-privacy-manifest-file) for details.
 :::
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="web">
+<PlatformStructured platform="web">
 
 To create the environment necessary to add peer-to-peer messaging into your app, do the following:
 
@@ -296,9 +273,9 @@ To create the environment necessary to add peer-to-peer messaging into your app,
     }
    ```
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
 
 To integrate Chat into your app, do the following:
 
@@ -375,9 +352,9 @@ To integrate Chat into your app, do the following:
 
         Open the `/ios/Runner.xcodeproj` file in **Xcode**, and select **TARGETS** > **Runner** in the left sidebar. In the **General** > **Deployment Info** section, set the minimum iOS version to `iOS 10.0`.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 
 Follow these steps to create a React Native project and add Agora Chat into your app.
 
@@ -415,9 +392,9 @@ You can use npm or other tools.
    cd ios && pod install && cd ..
    ```
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 
 1. **Create a Unity project**:
 
@@ -437,9 +414,9 @@ You can use npm or other tools.
 
     1. In **Import Unity Package**, click **Import**.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 
 This section shows how to integrate Chat SDK into your project.
 
@@ -472,37 +449,25 @@ This section shows how to integrate Chat SDK into your project.
 
 You have installed Chat SDK.
 
-</TabsContent>
+</PlatformStructured>
 
-</Tabs>
 
 ## Implement peer-to-peer messaging
 This section shows how to use the Chat SDK to implement peer-to-peer messaging in your app, step by step.
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 
 _No platform-specific content._
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 
 _No platform-specific content._
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="web">
+<PlatformStructured platform="web">
 
 Copy the following code to the `App.jsx` file to implement the UI:
 
@@ -659,52 +624,40 @@ function App() {
 export default App;
 ```
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
 
 _No platform-specific content._
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 
 ## Implementation
 
 This section introduces the codes you need to add to your project to start one-to-one messaging.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
-
-_No platform-specific content._
-
-</TabsContent>
-
-<TabsContent value="windows">
+<PlatformStructured platform="unity">
 
 _No platform-specific content._
 
-</TabsContent>
+</PlatformStructured>
 
-</Tabs>
+<PlatformStructured platform="windows">
+
+_No platform-specific content._
+
+</PlatformStructured>
+
 
 ## Test your implementation
 
 To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 
 1. Create an app instance for the first user:
 
@@ -734,9 +687,9 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
 1. Press **Leave** to log out of  Chat.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 
 1. Create an app instance for the first user:
 
@@ -766,9 +719,9 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
 1. Press **Leave** to log out of the Chat.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="web">
+<PlatformStructured platform="web">
 
 Use vite to build the project. You can run below commands to run the project.
 
@@ -805,9 +758,9 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 
    ![Receive a message](/images/im/receive-message-web.png)
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
 
 1. Create an app instance for the first user:
 
@@ -837,9 +790,9 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 
 1. Press **Leave** to log out of  Chat.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 
 :::info
 You can log in to the app by either modifying the fields in the `App.js` file as stated below, or entering the required fields in the user interface.
@@ -864,9 +817,9 @@ b. Run the app on another device or simulator with the receiver account and rece
 
 You can also read from the logs on the UI to see whether you have successfully signed in, signed out, and sent and received a text message.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 
 1. [Register a user](./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable#generate-a-user-token).
 
@@ -892,9 +845,9 @@ You can also read from the logs on the UI to see whether you have successfully s
     
     You see a message in the scroll view that you sent earlier.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 
 1. Create an app instance for the first user:
 
@@ -924,39 +877,27 @@ You can also read from the logs on the UI to see whether you have successfully s
 
 1. Press **Leave** to log out from Agora Chat.
 
-</TabsContent>
+</PlatformStructured>
 
-</Tabs>
 
 ## Reference
 This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
 * For more code samples, see [Samples and demos](./downloads).
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 
 * [Manual install](./manual-sdk-install) shows you how to integrate Chat SDK into your project manually.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 
 _No platform-specific content._
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="web">
+<PlatformStructured platform="web">
 
 For details:
 
@@ -967,31 +908,30 @@ For details:
 
 * Install the [demo  app](./downloads).
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
 
 _No platform-specific content._
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 
 For details, see the [sample code](https://github.com/AgoraIO/Agora-Chat-API-Examples/tree/main/Chat-RN/quick_start_demo) for getting started with Chat.
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 
 _No platform-specific content._
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 
 * Avoid blocked callbacks  
   Each callback of a Chat client instance is triggered from internal threads. To avoid blocking internal threads, Agora recommends that you execute your operations in other threads when callbacks are triggered.
 
-</TabsContent>
+</PlatformStructured>
 
-</Tabs>

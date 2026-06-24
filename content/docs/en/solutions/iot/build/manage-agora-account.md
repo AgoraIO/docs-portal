@@ -12,8 +12,6 @@ exported_file: manage-agora-account.md
 
 [HTML Version](https://docs.agora.io/en/iot/get-started/manage-agora-account?platform=android)
 
-# Agora account management
-
 This page shows you how to sign up for an Agora account, create a new project, and get the app ID and app certificate to generate a temporary token. 
 
 ## Get started with Agora

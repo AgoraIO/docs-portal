@@ -2,9 +2,6 @@
 title: "Release notes"
 description: "Information about changes in each release of IoT SDK."
 ---
-
-# Release notes
-
 This page provides the release notes for IoT SDK.
 
 ## 1.8.0

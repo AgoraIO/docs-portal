@@ -2,9 +2,6 @@
 title: 音色 ID 表
 description: 本表为调用对话式智能体 RESTful API 时可能需要传入或响应中可能存在的音色 ID (`voice_id`) 的可选值。
 ---
-
-# 音色 ID 表
-
 本表为调用对话式智能体 RESTful API 时可能需要传入或响应中可能存在的音色 ID (`voice_id`) 的可选值。
 
 | 音色 | 音色 ID |

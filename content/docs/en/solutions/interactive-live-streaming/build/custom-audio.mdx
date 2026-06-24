@@ -3,21 +3,9 @@ title: "Custom audio source"
 description: "Integrate a custom video or audio capture into your client"
 ---
 
-<Tabs defaultValue="android" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="electron">Electron</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="unreal">Unreal Engine</TabsTrigger>
-  <TabsTrigger value="blueprint">Unreal Blueprint</TabsTrigger>
-</TabsList>
+**Supported platforms:** Android, iOS, macOS, Windows, and Unreal Engine.
 
-<TabsContent value="android">
+<PlatformStructured platform="android">
 The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
 
 Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
@@ -349,9 +337,9 @@ Agora provides the following open-source sample projects for audio self-capture 
 * [`pullPlaybackAudioFrame` [1/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_imediaengine_pullaudioframe)
 
 * [`pullPlaybackAudioFrame` [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_pullaudioframe2)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
 
 Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
@@ -496,9 +484,9 @@ Agora provides the following open-source sample projects for audio self-capture 
 - [`pushExternalAudioFrameRawData`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:))
 - [`enableExternalAudioSink`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableexternalaudiosink(_:samplerate:channels:))
 - [`pullPlaybackAudioFrameRawData`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/pullplaybackaudioframerawdata(_:lengthinbyte:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="macos">
+<PlatformStructured platform="macos">
 The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
 
 Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
@@ -643,9 +631,9 @@ Agora provides the following open-source sample projects for audio self-capture 
 - [`pushExternalAudioFrameRawData`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:))
 - [`enableExternalAudioSink`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/enableexternalaudiosink(_:samplerate:channels:))
 - [`pullPlaybackAudioFrameRawData`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/pullplaybackaudioframerawdata(_:lengthinbyte:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
 
 Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
@@ -805,57 +793,9 @@ Agora provides an open-source [CustomAudioCapture](https://github.com/AgoraIO/AP
 * [`setExternalAudioSink`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_imediaengine_setexternalaudiosink)
 
 * [`pullAudioFrame`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_imediaengine.html#api_imediaengine_pullaudioframe)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="electron">
-The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
-
-Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
-
-* Your app has its own audio module.
-* You need to process the captured audio with a pre-processing library for audio enhancement.
-* You need flexible device resource allocation to avoid conflicts with other services.
-
-**This feature guide is not available yet.**
-</TabsContent>
-
-<TabsContent value="flutter">
-The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
-
-Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
-
-* Your app has its own audio module.
-* You need to process the captured audio with a pre-processing library for audio enhancement.
-* You need flexible device resource allocation to avoid conflicts with other services.
-
-**This feature guide is not available yet.**
-</TabsContent>
-
-<TabsContent value="react-native">
-The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
-
-Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
-
-* Your app has its own audio module.
-* You need to process the captured audio with a pre-processing library for audio enhancement.
-* You need flexible device resource allocation to avoid conflicts with other services.
-
-**This feature guide is not available yet.**
-</TabsContent>
-
-<TabsContent value="unity">
-The default audio module of Video SDK meets the need of using basic audio functions in your game. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
-
-Video SDK uses the basic audio module on the device your game runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your game, such as:
-
-* Your game has its own audio module.
-* You need to process the captured audio with a pre-processing library for audio enhancement.
-* You need flexible device resource allocation to avoid conflicts with other services.
-
-**This feature guide is not available yet.**
-</TabsContent>
-
-<TabsContent value="unreal">
+<PlatformStructured platform="unreal">
 The default audio module of Video SDK meets the need of using basic audio functions in your game. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
 
 Video SDK uses the basic audio module on the device your game runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your game, such as:
@@ -1185,18 +1125,5 @@ Agora provides the following open-source sample projects for audio self-capture 
 * [`createCustomAudioTrack`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_imediaengine.html#api_imediaengine_createcustomaudiotrack)
 
 * [`destroyCustomAudioTrack`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_imediaengine.html#api_imediaengine_destroycustomaudiotrack)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="blueprint">
-The default audio module of Video SDK meets the need of using basic audio functions in your game. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
-
-Video SDK uses the basic audio module on the device your game runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your game, such as:
-
-* Your game has its own audio module.
-* You need to process the captured audio with a pre-processing library for audio enhancement.
-* You need flexible device resource allocation to avoid conflicts with other services.
-
-**This feature guide is not available yet.**
-</TabsContent>
-
-</Tabs>

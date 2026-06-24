@@ -2,9 +2,6 @@
 title: "Integrate user system and course scheduling system"
 description: "Best practices to integrate user system and course scheduling system in Flexible Classroom"
 ---
-
-# Integrate user system and course scheduling system
-
 Flexible Classroom provides a real-time interactive experience in the classroom out of the box. This document shows you how to integrate a custom user system and a custom course scheduling system with Flexible Classroom.
 
 ## Understand the tech

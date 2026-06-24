@@ -3,8 +3,6 @@ title: "Integrate the SDK"
 description: "Shows how to integrate the Cloud Gateway SDK and run the sample project."
 ---
 
-# Integrate the SDK
-
 This article shows how to integrate the Server Gateway C++ SDK and run the sample project.
 
 ## Set up the development environment

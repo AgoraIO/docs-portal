@@ -2,9 +2,6 @@
 title: "Secure your classrooms"
 description: "Protect your classrooms against attacks."
 ---
-
-# Secure your classrooms
-
 Security and compliance are essential for real-time engagements through technology. In order to provide safe and reliable cloud services, Agora adheres to the compliance requirements of different countries, regions, and industries.
 
 Agora Flexible Classroom is designed and built with multiple protection measures against attacks commonly seen in the real-time engagement industry. This page describes some of the security best practices that Agora Flexible Classroom has adopted, as well as security tools it provides for developers, as follows:

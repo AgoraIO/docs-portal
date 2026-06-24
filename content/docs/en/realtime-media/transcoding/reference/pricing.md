@@ -3,10 +3,6 @@ title: Pricing
 description: Pricing for Agora Cloud Transcoding.
 ---
 
-
-
-# Pricing
-
 This guide explains how pricing works for the Cloud Transcoding service.
 
 :::note

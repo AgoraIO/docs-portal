@@ -3,8 +3,6 @@ title: "Security"
 description: "How Agora approaches security, encryption, access control, and compliance for realtime services."
 ---
 
-# Security
-
 ## Information security policy
 
 This section provides information security policy for Agora services.

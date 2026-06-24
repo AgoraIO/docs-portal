@@ -8,6 +8,7 @@ export type OpenApiLaneOperation = {
 
 export type OpenApiLane = {
   id: string;
+  locales?: readonly AppLocale[];
   parentUrl: Record<AppLocale, string>;
   publicSourceUrl: Record<AppLocale, string>;
   routePrefix: string;
@@ -102,6 +103,89 @@ export const OPENAPI_LANES = [
         title: {
           en: 'Query conversation turn information',
           'zh-CN': '查询对话轮次信息',
+        },
+      },
+    },
+  },
+  {
+    id: 'rtc-rest',
+    locales: ['en'],
+    parentUrl: {
+      en: '/en/api-reference/api-ref/rtc',
+      'zh-CN': '/zh-CN/api-reference/api-ref/rtc',
+    },
+    publicSourceUrl: {
+      en: '/openapi/rtc/channel-management.en.yaml',
+      'zh-CN': '/openapi/rtc/channel-management.en.yaml',
+    },
+    routePrefix: 'api-reference/api-ref/rtc',
+    sourcePath: {
+      en: 'content/openapi/rtc/channel-management.en.yaml',
+      'zh-CN': 'content/openapi/rtc/channel-management.en.yaml',
+    },
+    tab: 'api-reference',
+    operations: {
+      'cma-query-channel-list': {
+        routeLeaf: 'query-channel-list',
+        title: {
+          en: 'Query the channel list',
+          'zh-CN': 'Query the channel list',
+        },
+      },
+      'cma-query-user-list': {
+        routeLeaf: 'query-user-list',
+        title: {
+          en: 'Query the user list',
+          'zh-CN': 'Query the user list',
+        },
+      },
+      'cma-query-host-list': {
+        routeLeaf: 'query-host-list',
+        title: {
+          en: 'Query the host list',
+          'zh-CN': 'Query the host list',
+        },
+      },
+      'cma-query-user-status': {
+        routeLeaf: 'query-user-status',
+        title: {
+          en: 'Query the user status',
+          'zh-CN': 'Query the user status',
+        },
+      },
+      'cma-create-ban-rule': {
+        routeLeaf: 'create-ban-rule',
+        title: {
+          en: 'Create a banning rule',
+          'zh-CN': 'Create a banning rule',
+        },
+      },
+      'cma-delete-ban-rule': {
+        routeLeaf: 'delete-ban-rule',
+        title: {
+          en: 'Delete a banning rule',
+          'zh-CN': 'Delete a banning rule',
+        },
+      },
+      'cma-get-ban-rule-list': {
+        routeLeaf: 'get-ban-rule-list',
+        title: {
+          en: 'Get the banning rule list',
+          'zh-CN': 'Get the banning rule list',
+        },
+      },
+      'cma-update-ban-expiration': {
+        routeLeaf: 'update-ban-expiration',
+        title: {
+          en: 'Update the banning rule expiration',
+          'zh-CN': 'Update the banning rule expiration',
+        },
+      },
+      'cma-query-ip-address': {
+        routeLeaf: 'query-ip-address',
+        title: {
+          en: 'Query the IP address',
+          'zh-CN': 'Query the IP address',
         },
       },
     },
@@ -229,6 +313,81 @@ export const OPENAPI_LANES = [
     },
   },
   {
+    id: 'cloud-transcoding-rest',
+    parentUrl: {
+      en: '/en/api-reference/api-ref/cloud-transcoding',
+      'zh-CN': '/zh-CN/api-reference/api-ref/cloud-transcoding',
+    },
+    publicSourceUrl: {
+      en: '/openapi/cloud-transcoding/cloud-transcoding.en.yaml',
+      'zh-CN': '/openapi/cloud-transcoding/cloud-transcoding.en.yaml',
+    },
+    routePrefix: 'api-reference/api-ref/cloud-transcoding',
+    sourcePath: {
+      en: 'content/openapi/cloud-transcoding/cloud-transcoding.en.yaml',
+      'zh-CN': 'content/openapi/cloud-transcoding/cloud-transcoding.en.yaml',
+    },
+    tab: 'api-reference',
+    operations: {
+      'acquire-cloud-transcoding-builder-token': {
+        routeLeaf: 'acquire',
+        title: {
+          en: 'Acquire a builder token',
+          'zh-CN': 'Acquire a builder token',
+        },
+      },
+      'create-cloud-transcoding-task': {
+        routeLeaf: 'create',
+        title: {
+          en: 'Create a cloud transcoding task',
+          'zh-CN': 'Create a cloud transcoding task',
+        },
+      },
+      'query-cloud-transcoding-task': {
+        routeLeaf: 'query',
+        title: {
+          en: 'Query the status of a task',
+          'zh-CN': 'Query the status of a task',
+        },
+      },
+      'update-cloud-transcoding-task': {
+        routeLeaf: 'update',
+        title: {
+          en: 'Update a cloud transcoding task',
+          'zh-CN': 'Update a cloud transcoding task',
+        },
+      },
+      'destroy-cloud-transcoding-task': {
+        routeLeaf: 'destroy',
+        title: {
+          en: 'Destroy a cloud transcoding task',
+          'zh-CN': 'Destroy a cloud transcoding task',
+        },
+      },
+      'create-or-update-transcoding-template': {
+        routeLeaf: 'template-create',
+        title: {
+          en: 'Create or update a transcoding template',
+          'zh-CN': 'Create or update a transcoding template',
+        },
+      },
+      'query-transcoding-templates': {
+        routeLeaf: 'template-query',
+        title: {
+          en: 'Query transcoding templates',
+          'zh-CN': 'Query transcoding templates',
+        },
+      },
+      'query-cloud-transcoding-ncs-ip': {
+        routeLeaf: 'ncs-query-ip',
+        title: {
+          en: 'Query message notification server IP',
+          'zh-CN': 'Query message notification server IP',
+        },
+      },
+    },
+  },
+  {
     id: 'speech-to-text-rest',
     parentUrl: {
       en: '/en/api-reference/api-ref/speech-to-text',
@@ -290,6 +449,10 @@ export function getOpenApiLanes(): readonly OpenApiLane[] {
   return OPENAPI_LANES;
 }
 
+export function getOpenApiLaneLocales(lane: OpenApiLane) {
+  return lane.locales ?? SUPPORTED_LOCALES;
+}
+
 export function getOpenApiOperationIds(lane: OpenApiLane) {
   return Object.keys(lane.operations);
 }
@@ -311,7 +474,7 @@ export function getOpenApiEndpointUrl(
 
 export function getOpenApiPrerenderPaths() {
   return getOpenApiLanes().flatMap((lane) =>
-    SUPPORTED_LOCALES.flatMap((locale) =>
+    getOpenApiLaneLocales(lane).flatMap((locale) =>
       getOpenApiOperationIds(lane).map((operationId) =>
         getOpenApiEndpointUrl(lane, locale, operationId),
       ),
@@ -325,7 +488,7 @@ export function resolveOpenApiEndpointRoute(
   slugSegments: string[],
 ) {
   for (const lane of getOpenApiLanes()) {
-    if (lane.tab !== tab) {
+    if (lane.tab !== tab || !getOpenApiLaneLocales(lane).includes(locale)) {
       continue;
     }
 

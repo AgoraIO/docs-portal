@@ -2,9 +2,6 @@
 title: "SDK quickstart"
 description: "Rapidly develop and easily enhance IoT solutions with audio communication and face-to-face interaction."
 ---
-
-# SDK quickstart
-
 The Internet of things (IoT) connects physical objects with sensors, processors, and software to enable data exchange with other devices. In related applications, such as apps for smart door bells and remote monitoring, IoT devices send or receive audio and video streams to perform their function. Agora IoT SDK gives you the ability to enable live voice and video streams on IoT devices on a variety of platforms and for many use cases, while also offering a compact SDK size, low memory usage, and low power consumption. Some typical application use-cases for IoT SDK include:
 
 * **Real-time monitoring**:  Integration into smart cameras and smart doorbells enables mobile device users to receive video feed from one or more cameras.

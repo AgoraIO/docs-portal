@@ -3,22 +3,9 @@ title: "Achieve high audio quality"
 description: "Best practices for optimal audio quality."
 ---
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="electron">Electron</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="unreal">Unreal Engine</TabsTrigger>
-  <TabsTrigger value="blueprint">Unreal Blueprint</TabsTrigger>
-</TabsList>
+**Supported platforms:** Android, iOS, macOS, Web, Windows, Electron, Flutter, React Native, and Unity.
 
-<TabsContent value="android">
+<PlatformStructured platform="android">
 Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
 
 ## General settings
@@ -143,9 +130,9 @@ m_lpAgoraEngine.setAdvancedAudioOptions(options)
 </CodeBlockTab>
 
 </CodeBlockTabs>
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
 
 ## General settings
@@ -189,9 +176,9 @@ Call [`setAdvancedAudioOptions`](https://api-ref.agora.io/en/video-sdk/ios/4.x/d
 ```objc
 (int) setAdvancedAudioOptions : (AgoraAdvancedAudioOptions * _Nonnull) options;
 ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="macos">
+<PlatformStructured platform="macos">
 Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
 
 ## General settings
@@ -235,9 +222,9 @@ Call [setAdvancedAudioOptions](https://api-ref.agora.io/en/video-sdk/macos/4.x/d
 ```objc
 (int) setAdvancedAudioOptions : (AgoraAdvancedAudioOptions * _Nonnull) options;
 ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="web">
+<PlatformStructured platform="web">
 Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
 
 ## General settings
@@ -283,9 +270,9 @@ AgoraRTC.createMicrophoneAudioTrack({
  ANS: false, // Turn off noise reduction
 }).then(/**...**/);
 ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
 
 ## General settings
@@ -331,9 +318,9 @@ Call this method before calling `joinChannel`, `enableAudio`, and `enableLocalAu
 ```cpp
 virtual int setAdvancedAudioOptions(media::base::AdvancedAudioOptions &options) = 0;
 ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="electron">
+<PlatformStructured platform="electron">
 Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
 
 ## General settings
@@ -380,9 +367,9 @@ Call [`setAdvancedAudioOptions`](https://api-ref.agora.io/en/video-sdk/electron/
 ```typescript
 abstract setAdvancedAudioOptions(options: AdvancedAudioOptions): number;
 ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
 Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
 
 ## General settings
@@ -430,9 +417,9 @@ Call this method before calling `joinChannel`, `enableAudio`, and `enableLocalAu
 ```dart
 Future<void> setAdvancedAudioOptions(AdvancedAudioOptions options);
 ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
 
 ## General settings
@@ -479,9 +466,9 @@ Call [`setAdvancedAudioOptions`](https://api-ref.agora.io/en/video-sdk/react-nat
 ```typescript
 abstract setAdvancedAudioOptions(options: AdvancedAudioOptions): number;
 ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your game.
 
 ## General settings
@@ -525,18 +512,5 @@ Call [`SetAdvancedAudioOptions`](https://api-ref.agora.io/en/video-sdk/unity/4.x
 ```c#
 public abstract int SetAdvancedAudioOptions(AdvancedAudioOptions options);
 ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unreal">
-Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your game.
-
-**This feature guide is not available yet.**
-</TabsContent>
-
-<TabsContent value="blueprint">
-Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your game.
-
-**This feature guide is not available yet.**
-</TabsContent>
-
-</Tabs>

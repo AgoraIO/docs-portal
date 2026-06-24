@@ -2,9 +2,6 @@
 title: "Channel quality"
 description: "Adjust audio and video settings to optimize channel quality"
 ---
-
-# Channel quality
-
 Customer satisfaction for your IoT SDK integrated app depends on the quality of video and audio it provides. Quality of audiovisual communication through your app is affected by the following factors:
 
 * **Bandwidth of network connection**: Bandwidth is the volume of information that an Internet connection can handle per unit of time. When the available bandwidth is not sufficient to transmit the amount of data necessary to provide the desired video quality, your users see jerky or frozen video along with audio that cuts in and out.

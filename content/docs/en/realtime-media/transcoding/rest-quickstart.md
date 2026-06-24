@@ -3,10 +3,6 @@ title: REST quickstart
 description: Get started with calling Cloud Transcoding RESTful APIs.
 ---
 
-
-
-# REST quickstart
-
 This page explains how to call Agora Cloud Transcoding RESTful APIs to implement cloud transcoding in your app.
 
 ## Prerequisites

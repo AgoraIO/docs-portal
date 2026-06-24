@@ -3,7 +3,6 @@ title: "Media Gateway features"
 description: "Key capabilities and common use cases for Media Gateway."
 ---
 
-# Media Gateway features
 
 Media Gateway enables users to push content to Agora SDRTN(R) using standard streaming protocols such as RTMP and SRT. The channel host automatically publishes this streamed content to the correct channel. With Media Gateway, you can employ advanced transcoding capabilities on media streams for enhanced distribution.
 

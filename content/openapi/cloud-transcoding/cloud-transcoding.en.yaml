@@ -1,0 +1,1006 @@
+openapi: 3.1.0
+info:
+  version: ""
+  title: Cloud Transcoding RESTful API
+  description: >-
+    Agora Cloud Transcoding transcodes media streams on Agora servers and
+    outputs the result to an RTC channel. Send HTTPS requests from your business
+    server to acquire builder tokens, create, query, update, and destroy cloud
+    transcoding tasks, manage transcoding templates, and query message
+    notification server IP addresses.
+
+
+    ## Base URL
+
+
+    All requests are sent to `https://api.sd-rtn.com`.
+
+
+    ## Data format
+
+
+    Use `Content-Type: application/json` for requests with bodies. Request and
+    response bodies are JSON.
+servers:
+  - url: https://api.sd-rtn.com
+    description: Cloud Transcoding REST API host.
+security:
+  - basicAuth: []
+paths:
+  /v1/projects/{appId}/rtsc/cloud-transcoder/builderTokens:
+    post:
+      summary: Acquire a builder token
+      description: >-
+        Before you create a Cloud Transcoding task, call the `builderTokens`
+        endpoint to retrieve a builder token. An `instanceId` can generate
+        multiple builder tokens, but only one token can be used to initiate a
+        request in a task.
+      operationId: acquire-cloud-transcoding-builder-token
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/acquire-builder-token-request"
+            example:
+              instanceId: abc13328
+              services:
+                cloudTranscoder:
+                  serviceType: cloudTranscoderV2
+                  config:
+                    transcoder:
+                      idleTimeout: 300
+                      audioInputs:
+                        - rtc:
+                            rtcChannel: test01
+                            rtcUid: 123
+                            rtcToken: <your_rtc_token>
+                      canvas:
+                        width: 960
+                        height: 480
+                        color: 0
+                      videoInputs:
+                        - rtc:
+                            rtcChannel: test01
+                            rtcUid: 123
+                            rtcToken: <your_rtc_token>
+                          region:
+                            x: 0
+                            y: 0
+                            width: 320
+                            height: 360
+                            zOrder: 2
+                      outputs:
+                        - rtc:
+                            rtcChannel: test02
+                            rtcUid: 1000
+                            rtcToken: <your_rtc_token>
+                          audioOption:
+                            profileType: AUDIO_PROFILE_MUSIC_STANDARD
+                          videoOption:
+                            fps: 30
+                            codec: H264
+                            bitrate: 800
+                            width: 960
+                            height: 480
+      responses:
+        "200":
+          description: The request succeeded and returned a builder token.
+          headers:
+            X-Request-ID:
+              $ref: "#/components/headers/X-Request-ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/acquire-builder-token-response"
+              example:
+                createTs: 1661324606
+                instanceId: abc13328
+                tokenName: xUwUbQf9ZxxxxxtLslGnDg0lk8RYaUE0***
+        default:
+          $ref: "#/components/responses/not-200"
+  /v1/projects/{appId}/rtsc/cloud-transcoder/tasks:
+    post:
+      summary: Create a cloud transcoding task
+      description: >-
+        Creates a Cloud Transcoding task. When the task starts, Agora
+        transcodes the specified input streams and outputs the result to the
+        specified Agora RTC channel.
+      operationId: create-cloud-transcoding-task
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appId"
+        - $ref: "#/components/parameters/builderToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/cloud-transcoder-request"
+            example:
+              services:
+                cloudTranscoder:
+                  serviceType: cloudTranscoderV2
+                  config:
+                    transcoder:
+                      idleTimeout: 300
+                      audioInputs:
+                        - rtc:
+                            rtcChannel: test01
+                            rtcUid: 123
+                            rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                      canvas:
+                        width: 960
+                        height: 480
+                        color: 0
+                        backgroundImage: https://example.jpg
+                        fillMode: FIT
+                      videoInputs:
+                        - rtc:
+                            rtcChannel: test01
+                            rtcUid: 123
+                            rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                          placeholderImageUrl: https://example.jpg
+                          region:
+                            x: 0
+                            y: 0
+                            width: 320
+                            height: 360
+                            zOrder: 2
+                      outputs:
+                        - rtc:
+                            rtcChannel: test
+                            rtcUid: 1000
+                            rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                          audioOption:
+                            profileType: AUDIO_PROFILE_MUSIC_STANDARD
+                          videoOption:
+                            fps: 30
+                            codec: H264
+                            bitrate: 800
+                            width: 960
+                            height: 480
+      responses:
+        "200":
+          description: The request succeeded and returned task information.
+          headers:
+            X-Request-ID:
+              $ref: "#/components/headers/X-Request-ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cloud-transcoder-task"
+              example:
+                createTs: 1661324613
+                eventHandlers: {}
+                execution:
+                  workflows: {}
+                properties: {}
+                sequenceId: "0"
+                services:
+                  cloudTranscoder:
+                    config: {}
+                    createTs: 1661324614
+                    details: {}
+                    message: ""
+                    serviceType: cloudTranscoderV2
+                    status: serviceReady
+                status: STARTED
+                taskId: 609f28f2644f1ae1ceb041b7047e3***
+                variables: {}
+                workflows: {}
+        default:
+          $ref: "#/components/responses/not-200"
+  /v1/projects/{appId}/rtsc/cloud-transcoder/tasks/{taskId}:
+    get:
+      summary: Query the status of a task
+      description: Queries the status of a Cloud Transcoding task.
+      operationId: query-cloud-transcoding-task
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appId"
+        - $ref: "#/components/parameters/taskId"
+        - $ref: "#/components/parameters/builderToken"
+      responses:
+        "200":
+          description: The request succeeded and returned task status.
+          headers:
+            X-Request-ID:
+              $ref: "#/components/headers/X-Request-ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cloud-transcoder-task"
+              example:
+                createTs: 1661420011
+                eventHandlers: {}
+                execution:
+                  workflows: {}
+                properties: {}
+                sequenceId: "0"
+                services:
+                  cloudTranscoder:
+                    config: {}
+                    createTs: 1661420011
+                    message: OnSlaveServiceQueryUpdated
+                    serviceType: cloudTranscoderV2
+                    status: serviceInProgress
+                status: IN_PROGRESS
+                taskId: c0077139e34d0949c719189a393aa***
+                variables: {}
+                workflows: {}
+        default:
+          $ref: "#/components/responses/not-200"
+    patch:
+      summary: Update a cloud transcoding task
+      description: >-
+        Updates an existing Cloud Transcoding task. The request body must
+        contain all fields from the `Create` request body. For fields that you
+        do not need to update, use the original values.
+      operationId: update-cloud-transcoding-task
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appId"
+        - $ref: "#/components/parameters/taskId"
+        - $ref: "#/components/parameters/builderToken"
+        - name: sequenceId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: >-
+            The sequence number of the `Update` request. Each subsequent
+            `Update` request must use a value greater than the previous one.
+        - name: updateMask
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - services.cloudTranscoder.config
+          description: >-
+            Specifies the configuration item to update. Set it to
+            `services.cloudTranscoder.config` to indicate a full update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/cloud-transcoder-request"
+            example:
+              services:
+                cloudTranscoder:
+                  serviceType: cloudTranscoderV2
+                  config:
+                    transcoder:
+                      idleTimeout: 300
+                      audioInputs:
+                        - rtc:
+                            rtcChannel: test01
+                            rtcUid: 123
+                            rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                      canvas:
+                        width: 960
+                        height: 480
+                        color: 0
+                        backgroundImage: https://example.jpg
+                        fillMode: FIT
+                      videoInputs:
+                        - rtc:
+                            rtcChannel: test01
+                            rtcUid: 123
+                            rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                          placeholderImageUrl: https://example.jpg
+                          region:
+                            x: 0
+                            y: 0
+                            width: 320
+                            height: 360
+                            zOrder: 2
+                      outputs:
+                        - rtc:
+                            rtcChannel: test
+                            rtcUid: 1000
+                            rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                          audioOption:
+                            profileType: AUDIO_PROFILE_MUSIC_STANDARD
+                          videoOption:
+                            fps: 30
+                            codec: H264
+                            bitrate: 800
+                            width: 960
+                            height: 480
+                            lowBitrateHighQuality: false
+      responses:
+        "200":
+          description: The request succeeded and the response body is empty.
+          headers:
+            X-Request-ID:
+              $ref: "#/components/headers/X-Request-ID"
+        default:
+          $ref: "#/components/responses/not-200"
+    delete:
+      summary: Destroy a cloud transcoding task
+      description: Destroys a Cloud Transcoding task.
+      operationId: destroy-cloud-transcoding-task
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appId"
+        - $ref: "#/components/parameters/taskId"
+        - $ref: "#/components/parameters/builderToken"
+      responses:
+        "200":
+          description: The request succeeded and returned task information.
+          headers:
+            X-Request-ID:
+              $ref: "#/components/headers/X-Request-ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cloud-transcoder-task"
+              example:
+                createTs: 1661324613
+                eventHandlers: {}
+                execution:
+                  workflows: {}
+                properties: {}
+                sequenceId: "0"
+                services:
+                  cloudTranscoder:
+                    config: {}
+                    createTs: 1661324614
+                    details: {}
+                    message: OnSlaveServiceStopped
+                    serviceType: cloudTranscoderV2
+                    status: serviceCompleted
+                status: STOPPED
+                taskId: 609f28f2644f1ae1ceb041b7047e3***
+                variables: {}
+                workflows: {}
+        default:
+          $ref: "#/components/responses/not-200"
+  /v1/projects/{appId}/rtls/abr/config/codecs/{codecId}:
+    post:
+      summary: Create or update a transcoding template
+      description: Creates or updates a transcoding template.
+      operationId: create-or-update-transcoding-template
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appId"
+        - name: codecId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the transcoding template.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/transcoding-template"
+            example:
+              enabled: true
+              video:
+                width: 1280
+                height: 720
+                fps: 15
+      responses:
+        "200":
+          description: The request succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/template-status-response"
+              example:
+                status: "success"
+        default:
+          $ref: "#/components/responses/template-not-200"
+  /v1/projects/{appId}/rtls/abr/config/codecs:
+    get:
+      summary: Query transcoding templates
+      description: >-
+        Queries all transcoding template configurations under the specified App
+        ID.
+      operationId: query-transcoding-templates
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/appId"
+      responses:
+        "200":
+          description: The request succeeded and returned template data.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/query-templates-response"
+              example:
+                status: success
+                data:
+                  enabled: true
+                  codecs:
+                    - id: The ID of the transcoding template.
+                      enabled: true
+                      video:
+                        width: 0
+                        height: 0
+                        fps: 0
+        default:
+          $ref: "#/components/responses/template-not-200"
+  /v1/ncs/ip:
+    get:
+      summary: Query message notification server IP
+      description: >-
+        Gets the message notification server IP address list. Add the IP
+        addresses to your firewall whitelist. Agora dynamically adjusts message
+        notification server IP addresses in a 24-hour cycle and recommends that
+        you query at least once every 24 hours.
+      operationId: query-cloud-transcoding-ncs-ip
+      responses:
+        "200":
+          description: The request succeeded and returned message notification server IP addresses.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ncs-ip-response"
+              example:
+                data:
+                  service:
+                    hosts:
+                      - primaryIP: xxx.xxx.xxx.xxx
+                      - primaryIP: xxx.xxx.xxx.xxx
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Basic HTTP authentication using your Agora customer ID and customer secret.
+  headers:
+    X-Request-ID:
+      description: >-
+        The unique request ID. If the request fails, use this value in the log
+        to troubleshoot the problem.
+      schema:
+        type: string
+  parameters:
+    Content-Type:
+      name: Content-Type
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+          - application/json
+      description: The request content type. Use `application/json`.
+    appId:
+      name: appId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The App ID of your project from Agora Console.
+    taskId:
+      name: taskId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The transcoding task UUID used to identify the cloud transcoder.
+    builderToken:
+      name: builderToken
+      in: query
+      required: true
+      schema:
+        type: string
+      description: >-
+        The `tokenName` you obtained in the response body of the `Acquire a
+        builder token` API.
+  responses:
+    not-200:
+      description: The request failed.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/error-response"
+          example:
+            message: Describes why the request failed.
+    template-not-200:
+      description: The request failed.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/template-error-response"
+          example:
+            status: error
+            message: Description of the reason for the request failure.
+  schemas:
+    acquire-builder-token-request:
+      type: object
+      required:
+        - instanceId
+        - services
+      properties:
+        instanceId:
+          type: string
+          maxLength: 64
+          pattern: "^[A-Za-z0-9_-]+$"
+          description: >-
+            User-specified instance ID. The length must be within 64 characters.
+            Supported characters are lowercase letters, uppercase letters,
+            numbers, hyphens, and underscores.
+        services:
+          $ref: "#/components/schemas/cloud-transcoder-services"
+    acquire-builder-token-response:
+      type: object
+      properties:
+        createTs:
+          type: number
+          description: The Unix timestamp when the token was created.
+        instanceId:
+          type: string
+          description: The user-specified instance ID.
+        tokenName:
+          type: string
+          description: The builder token used to initiate a task request.
+    cloud-transcoder-request:
+      type: object
+      required:
+        - services
+      properties:
+        services:
+          $ref: "#/components/schemas/cloud-transcoder-services"
+    cloud-transcoder-services:
+      type: object
+      required:
+        - cloudTranscoder
+      properties:
+        cloudTranscoder:
+          type: object
+          required:
+            - serviceType
+            - config
+          properties:
+            serviceType:
+              type: string
+              enum:
+                - cloudTranscoderV2
+              description: The service type. Use `cloudTranscoderV2`.
+            config:
+              type: object
+              required:
+                - transcoder
+              properties:
+                transcoder:
+                  $ref: "#/components/schemas/transcoder-config"
+    transcoder-config:
+      type: object
+      required:
+        - canvas
+        - outputs
+      properties:
+        idleTimeout:
+          type: number
+          default: 300
+          minimum: 1
+          maximum: 86400
+          description: >-
+            The maximum period, in seconds, that Cloud Transcoder can be idle.
+            If the idle state exceeds this value, Cloud Transcoder is
+            automatically destroyed.
+        streamProcessMode:
+          type: string
+          default: mix
+          enum:
+            - mix
+            - heterogeneous-single
+            - single
+          description: >-
+            The working mode of Cloud Transcoder. If this parameter is omitted,
+            Cloud Transcoder works in merge mode.
+        audioInputs:
+          type: array
+          description: >-
+            Audio input source list. Supports RTC audio streams and CDN audio
+            streams. If you specify multiple input audio sources, the streams
+            are mixed.
+          items:
+            $ref: "#/components/schemas/audio-input"
+        videoInputs:
+          type: array
+          description: >-
+            Video input source list. Supports RTC video streams and CDN video
+            streams. If you specify multiple input video sources, the streams
+            are merged.
+          items:
+            $ref: "#/components/schemas/video-input"
+        canvas:
+          $ref: "#/components/schemas/canvas"
+        waterMarks:
+          type: array
+          description: Watermark list.
+          items:
+            $ref: "#/components/schemas/watermark"
+        outputs:
+          type: array
+          description: Output stream list.
+          items:
+            $ref: "#/components/schemas/transcoder-output"
+    audio-input:
+      type: object
+      properties:
+        streamUrl:
+          type: string
+          description: The URL of the audio source stream. Required when the audio input source is CDN.
+        volume:
+          type: number
+          default: 100
+          minimum: 0
+          maximum: 200
+          description: The volume of the CDN audio source stream.
+        repeat:
+          type: number
+          default: 1
+          description: >-
+            The number of times to play the media stream. `1` means play once,
+            `-1` means loop, and any positive integer specifies a playback
+            count.
+        rtc:
+          $ref: "#/components/schemas/rtc-source"
+    video-input:
+      type: object
+      required:
+        - region
+      properties:
+        streamUrl:
+          type: string
+          description: The URL of the video source stream. Required when the video input source is CDN.
+        repeat:
+          type: number
+          default: 1
+          description: >-
+            The number of times to play the media stream. `1` means play once,
+            `-1` means loop, and any positive integer specifies a playback
+            count.
+        rtc:
+          $ref: "#/components/schemas/rtc-source"
+        placeholderImageUrl:
+          type: string
+          description: >-
+            The URL of the placeholder image displayed when the user is offline.
+            It must be a valid image URL and contain the `jpg` or `png` suffix.
+        region:
+          $ref: "#/components/schemas/region"
+    rtc-source:
+      type: object
+      required:
+        - rtcChannel
+        - rtcUid
+        - rtcToken
+      properties:
+        rtcChannel:
+          type: string
+          description: The RTC channel name.
+        rtcUid:
+          type: number
+          description: The UID corresponding to the source or output stream.
+        rtcToken:
+          type: string
+          description: >-
+            The token that Cloud Transcoder uses to join the RTC channel for
+            transcoding.
+    canvas:
+      type: object
+      required:
+        - width
+        - height
+        - color
+      properties:
+        width:
+          type: number
+          minimum: 120
+          maximum: 3840
+          description: The width of the canvas in pixels.
+        height:
+          type: number
+          minimum: 120
+          maximum: 3840
+          description: The height of the canvas in pixels.
+        color:
+          type: number
+          minimum: 0
+          maximum: 16777215
+          description: The background color of the canvas as a decimal RGB value.
+        backgroundImage:
+          type: string
+          description: Canvas background image URL.
+        fillMode:
+          type: string
+          default: FILL
+          enum:
+            - FILL
+            - FIT
+          description: Fill mode for the canvas background image.
+    watermark:
+      type: object
+      required:
+        - imageUrl
+        - region
+      properties:
+        imageUrl:
+          type: string
+          description: The URL of the watermark image.
+        region:
+          $ref: "#/components/schemas/watermark-region"
+        fillMode:
+          type: string
+          default: FILL
+          enum:
+            - FILL
+            - FIT
+          description: Fill mode for the watermark image.
+    region:
+      type: object
+      required:
+        - x
+        - y
+        - width
+        - height
+        - zOrder
+      properties:
+        x:
+          type: number
+          minimum: 0
+          maximum: 3840
+          description: The x coordinate of the image on the canvas in pixels.
+        y:
+          type: number
+          minimum: 0
+          maximum: 3840
+          description: The y coordinate of the image on the canvas in pixels.
+        width:
+          type: number
+          minimum: 120
+          maximum: 3840
+          description: The width of the image in pixels.
+        height:
+          type: number
+          minimum: 120
+          maximum: 3840
+          description: The height of the image in pixels.
+        zOrder:
+          type: number
+          minimum: 2
+          maximum: 100
+          description: The layer order of the host screen.
+    watermark-region:
+      allOf:
+        - $ref: "#/components/schemas/region"
+        - type: object
+          properties:
+            zOrder:
+              type: number
+              minimum: 0
+              maximum: 100
+              description: The layer order of the watermark.
+    transcoder-output:
+      type: object
+      properties:
+        streamUrl:
+          type: string
+          description: The CDN output stream URL.
+        rtc:
+          $ref: "#/components/schemas/rtc-source"
+        audioOption:
+          $ref: "#/components/schemas/audio-option"
+        videoOption:
+          $ref: "#/components/schemas/video-option"
+    audio-option:
+      type: object
+      properties:
+        profileType:
+          type: string
+          default: AUDIO_PROFILE_DEFAULT
+          enum:
+            - AUDIO_PROFILE_DEFAULT
+            - AUDIO_PROFILE_SPEECH_STANDARD
+            - AUDIO_PROFILE_MUSIC_STANDARD
+            - AUDIO_PROFILE_MUSIC_STANDARD_STEREO
+            - AUDIO_PROFILE_MUSIC_HIGH_QUALITY
+            - AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO
+          description: The audio profile of the output stream.
+    video-option:
+      type: object
+      required:
+        - width
+        - height
+        - bitrate
+        - codec
+      properties:
+        width:
+          type: number
+          minimum: 120
+          maximum: 3840
+          description: The width of the output video in pixels.
+        height:
+          type: number
+          minimum: 120
+          maximum: 3840
+          description: The height of the output video in pixels.
+        bitrate:
+          type: number
+          minimum: 1
+          maximum: 10000
+          description: The output video bitrate.
+        codec:
+          type: string
+          enum:
+            - H264
+            - H265
+          description: The output video codec.
+        fps:
+          type: number
+          default: 15
+          minimum: 1
+          maximum: 30
+          description: The output video frame rate.
+        mode:
+          type: string
+          description: The output video mode.
+        lowBitrateHighQuality:
+          type: boolean
+          description: Whether to enable low-bitrate high-quality mode.
+    cloud-transcoder-task:
+      type: object
+      properties:
+        taskId:
+          type: string
+          description: The task ID.
+        createTs:
+          type: number
+          description: The Unix timestamp when the task was created.
+        status:
+          type: string
+          description: The task status.
+        sequenceId:
+          type: string
+          description: The sequence ID.
+        services:
+          type: object
+          properties:
+            cloudTranscoder:
+              type: object
+              properties:
+                config:
+                  type: object
+                  additionalProperties: true
+                createTs:
+                  type: number
+                details:
+                  type: object
+                  additionalProperties: true
+                message:
+                  type: string
+                serviceType:
+                  type: string
+                status:
+                  type: string
+        eventHandlers:
+          type: object
+          additionalProperties: true
+        execution:
+          type: object
+          additionalProperties: true
+        properties:
+          type: object
+          additionalProperties: true
+        variables:
+          type: object
+          additionalProperties: true
+        workflows:
+          type: object
+          additionalProperties: true
+    transcoding-template:
+      type: object
+      required:
+        - enabled
+        - video
+      properties:
+        enabled:
+          type: boolean
+          description: Whether to enable the transcoding template.
+        video:
+          type: object
+          required:
+            - width
+            - height
+            - fps
+          properties:
+            width:
+              type: number
+              description: The width of the transcoded output video in pixels.
+            height:
+              type: number
+              description: The height of the transcoded output video in pixels.
+            fps:
+              type: number
+              description: The frame rate of the transcoded output video.
+    template-status-response:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - error
+          description: The status of the request.
+    query-templates-response:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - error
+          description: The status of the request.
+        data:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              description: Whether to enable the multi-bitrate function on the viewer side.
+            codecs:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the transcoding template.
+                  enabled:
+                    type: boolean
+                    description: Whether to enable this transcoding template.
+                  video:
+                    type: object
+                    properties:
+                      width:
+                        type: number
+                        description: The width of the transcoded output video in pixels.
+                      height:
+                        type: number
+                        description: The height of the transcoded output video in pixels.
+                      fps:
+                        type: number
+                        description: The frame rate of the transcoded output video.
+    ncs-ip-response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            service:
+              type: object
+              properties:
+                hosts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      primaryIP:
+                        type: string
+                        description: The IP address of the Agora message notification server.
+    error-response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Describes why the request failed.
+    template-error-response:
+      allOf:
+        - $ref: "#/components/schemas/template-status-response"
+        - type: object
+          properties:
+            message:
+              type: string
+              description: Description of the reason for the request failure.

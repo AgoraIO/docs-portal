@@ -2,9 +2,6 @@
 title: "Pricing"
 description: "Provides you with information on Flexible Classroom pricing"
 ---
-
-# Pricing
-
 This page explains how Agora calculates your monthly bill for Flexible Classroom.  
 
 If you have already signed a contract with Agora, the billing terms and conditions within that contract take precedence.

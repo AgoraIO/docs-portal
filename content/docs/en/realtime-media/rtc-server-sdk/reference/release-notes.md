@@ -3,8 +3,6 @@ title: "Release notes"
 description: "Shows Server Gateway's past releases."
 ---
 
-# Release notes
-
 This document tracks important changes and improvements to the Server Gateway.
 
 ### v4.4.32

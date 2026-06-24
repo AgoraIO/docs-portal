@@ -1,0 +1,39 @@
+---
+title: Response status codes
+description: Troubleshoot RTC REST API requests by response status code.
+---
+
+This page describes the response status codes returned by the RTC REST APIs.
+
+If the status code is `200`, the request is successful. If not, troubleshoot the problem based on the `message` and `reason` fields that may appear in the response body.
+
+For example, when a request fails, you might receive the following response:
+
+```json
+{
+  "message": "invalid appid"
+}
+```
+
+## Status codes
+
+| Response status code | Description | Recommended action |
+| --- | --- | --- |
+| `200` | The operation is successful. | No troubleshooting required. |
+| `400` | Bad request. | Troubleshoot based on the `message` field in the response body. |
+| `401` | Unauthorized. | Check that the authentication information is correct. Possible causes include an App ID that does not exist, or a customer ID and secret that do not match. |
+| `403` | Access is forbidden. | The authorization information is incorrect. Contact [Agora technical support](mailto:support@agora.io). |
+| `404` | The requested resource could not be found. | Confirm that the requested URL and resource are correct. |
+| `415` | Unsupported media type. | Make sure the `Content-Type` request header is set to `application/json`. |
+| `429` | Too many requests. | Wait and retry. |
+| `500` | Internal server error. | Use a backoff strategy for query requests, or contact [Agora technical support](mailto:support@agora.io). |
+
+:::info
+If the problem is not solved after taking the recommended action, print the `X-Request-ID` and `X-Resource-ID` response header values and contact [Agora technical support](mailto:support@agora.io).
+:::
+
+## Troubleshooting example
+
+A call to create a privilege banning rule returns `400 Bad Request`, and the `message` field is `invalid appid`.
+
+This means that the App ID is invalid and rule creation failed. Get the App ID in [Agora Console](https://console.agora.io) and call the API again.

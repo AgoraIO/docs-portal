@@ -4,9 +4,6 @@ description: Learn the limits of Cloud Transcoder.
 ---
 
 
-
-# Concurrency limits
-
 This article describes the quota limits for Cloud Transcoding.
 
 ### Peak concurrent workload

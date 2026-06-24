@@ -2,9 +2,6 @@
 title: "Flexible classroom features"
 description: "Product architecture, basic and advanced features."
 ---
-
-# Flexible classroom features
-
 ## Overall product architecture
 
 The following figure shows the overall product architecture of Flexible Classroom:

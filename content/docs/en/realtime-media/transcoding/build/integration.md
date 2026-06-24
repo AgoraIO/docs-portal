@@ -4,9 +4,6 @@ description: Check cloud transcoder startup and running status.
 ---
 
 
-
-# Check service status
-
 This page explains how to verify that your cloud transcoding service starts successfully and continues running properly.
 
 ## Check startup status

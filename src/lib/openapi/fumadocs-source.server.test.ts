@@ -19,15 +19,24 @@ describe('fumadocs openapi source', () => {
       'zh-CN/api-reference/api-ref/conversational-ai/join.mdx',
     );
     expect(pagePaths).toContain(
+      'en/api-reference/api-ref/rtc/query-channel-list.mdx',
+    );
+    expect(pagePaths).not.toContain(
+      'zh-CN/api-reference/api-ref/rtc/query-channel-list.mdx',
+    );
+    expect(pagePaths).toContain(
       'en/api-reference/api-ref/signaling/peer-to-peer-message.mdx',
     );
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/cloud-recording/acquire.mdx',
     );
     expect(pagePaths).toContain(
+      'en/api-reference/api-ref/cloud-transcoding/acquire.mdx',
+    );
+    expect(pagePaths).toContain(
       'en/api-reference/api-ref/speech-to-text/join.mdx',
     );
-    expect(pagePaths).toHaveLength(54);
+    expect(pagePaths).toHaveLength(79);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {

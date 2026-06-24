@@ -3,7 +3,6 @@ title: "Compile and run the sample project"
 description: "Set up, compile, and run the sample Server Gateway project provided by Agora."
 ---
 
-# Compile and run the sample project
 
 Agora provides a runnable sample project with the Server Gateway SDK. This page shows you how to run the sample project to send and receive media streams.
 

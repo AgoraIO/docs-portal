@@ -3,22 +3,7 @@ title: "Connection status management"
 description: "Test network quality and adjust audio and video settings to optimize channel quality"
 ---
 
-<Tabs defaultValue="web" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="electron">Electron</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="unreal">Unreal Engine</TabsTrigger>
-  <TabsTrigger value="blueprint">Unreal Blueprint</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 In real-time audio and video implementations, the connection state between the app and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
 
 This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
@@ -129,9 +114,9 @@ The following table maps the relationships between different connection states a
 
 - [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
 - [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 In real-time audio and video implementations, the connection state between the app and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
 
 This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
@@ -223,9 +208,9 @@ The following table maps the relationships between different connection states a
 
 - [`rtcEngine(_:connectionChangedTo:reason:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:connectionchangedto:reason:))
 - [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/getconnectionstate())
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="macos">
+<PlatformStructured platform="macos">
 In real-time audio and video implementations, the connection state between the app and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
 
 This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
@@ -317,9 +302,9 @@ The following table maps the relationships between different connection states a
 
 - [`rtcEngine(_:connectionChangedTo:reason:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:connectionchangedto:reason:))
 - [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/getconnectionstate())
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="web">
+<PlatformStructured platform="web">
 In real-time audio and video implementations, the connection state between the app and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
 
 This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
@@ -392,9 +377,9 @@ The app may have the following connection states before joining, during a sessio
 - [`AgoraRTCClient.on("user-published")`]({{global.API_REF_WEB_ROOT}}/interfaces/iagorartcclient.html#event_user_published)
 
 - [`AgoraRTCClient.on("user-unpublished")`]({{global.API_REF_WEB_ROOT}}/interfaces/iagorartcclient.html#event_user_unpublished)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 In real-time audio and video implementations, the connection state between the app and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
 
 This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
@@ -480,9 +465,9 @@ The following table maps the relationships between different connection states a
 - [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 - [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="electron">
+<PlatformStructured platform="electron">
 In real-time audio and video implementations, the connection state between the app and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
 
 This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
@@ -567,9 +552,9 @@ The following table maps the relationships between different connection states a
 
 - [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/callback_irtcengineeventhandler_onconnectionstatechanged.html)
 - [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
 In real-time audio and video implementations, the connection state between the app and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
 
 This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
@@ -654,9 +639,9 @@ The following table maps the relationships between different connection states a
 
 - [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
 - [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 In real-time audio and video implementations, the connection state between the app and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
 
 This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
@@ -741,9 +726,9 @@ The following table maps the relationships between different connection states a
 
 - [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/callback_irtcengineeventhandler_onconnectionstatechanged.html)
 - [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 In real-time audio and video implementations, the connection state between the game and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
 
 This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
@@ -841,9 +826,9 @@ The following table maps the relationships between different connection states a
 
 - [`OnConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
 - [`GetConnectionState`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unreal">
+<PlatformStructured platform="unreal">
 In real-time audio and video implementations, the connection state between the game and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
 
 This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
@@ -928,9 +913,9 @@ The following table maps the relationships between different connection states a
 
 - [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
 - [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="blueprint">
+<PlatformStructured platform="blueprint">
 In real-time audio and video implementations, the connection state between the game and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
 
 This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
@@ -1028,6 +1013,5 @@ The following table maps the relationships between different connection states a
 
 - [`FOnConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
 - [`GetConnectionState`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
-</TabsContent>
+</PlatformStructured>
 
-</Tabs>

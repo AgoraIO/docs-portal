@@ -22,6 +22,7 @@ import {
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import {
+  getOpenApiLaneLocales,
   getOpenApiEndpointUrl,
   getOpenApiLanes,
   getOpenApiOperationIds,
@@ -1119,7 +1120,11 @@ function getDocsPages({
 
   const existingUrls = new Set(pages.map((page) => page.url));
   const endpointPages = getOpenApiLanes()
-    .filter((lane) => lane.tab === tab)
+    .filter(
+      (lane) =>
+        lane.tab === tab &&
+        getOpenApiLaneLocales(lane).includes(locale as AppLocale),
+    )
     .flatMap((lane) =>
       getOpenApiOperationIds(lane).map((operationId) => ({
         title: lane.operations[operationId].title[locale],
@@ -1373,6 +1378,7 @@ async function appendEndpointPagesToOpenApiParent(
   const lane = getOpenApiLanes().find(
     (item) =>
       item.tab === tab &&
+      getOpenApiLaneLocales(item).includes(locale) &&
       children.some(
         (child) =>
           child.type === 'page' && child.url === item.parentUrl[locale],

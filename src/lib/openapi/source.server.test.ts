@@ -52,15 +52,18 @@ describe('openapi source loader', () => {
     });
   });
 
-  it('keeps registry operation IDs in sync with YAML', async () => {
-    const operations = await getOpenApiOperations(lane);
-    const fromYaml = operations
-      .map((operation) => operation.operationId)
-      .sort();
-    const fromRegistry = getOpenApiOperationIds(lane).sort();
+  it.each(OPENAPI_LANES)(
+    'keeps registry operation IDs in sync with YAML for $id',
+    async (openApiLane) => {
+      const operations = await getOpenApiOperations(openApiLane);
+      const fromYaml = operations
+        .map((operation) => operation.operationId)
+        .sort();
+      const fromRegistry = getOpenApiOperationIds(openApiLane).sort();
 
-    expect(fromRegistry).toEqual(fromYaml);
-  });
+      expect(fromRegistry).toEqual(fromYaml);
+    },
+  );
 
   it('loads localized operation summaries from locale-specific YAML', async () => {
     const english = await getOpenApiOperation(lane, 'start-agent', 'en');

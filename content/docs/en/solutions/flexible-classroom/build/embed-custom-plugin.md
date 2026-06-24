@@ -2,9 +2,6 @@
 title: "Embed a custom plugin"
 description: "Develop a custom plugin, such as a countdown plugin or a dice, and embed the plugin in the flexible classroom"
 ---
-
-# Embed a custom plugin
-
 In online classroom applications, some customization is often necessary to meet the needs of a particular use-case. Agora provides Widgets to help users develop plug-ins according to their specific needs and embed them into Flexible Classroom.
 
 Widgets are stand-alone plugins that contain interface and functionality. Developers can implement a widget based on customization of the base class, and then register the widget in the Agora Classroom SDK. Agora Classroom SDK supports registering multiple widgets. Widgets can communicate with other widgets, as well as with other plugins in the UI layer.

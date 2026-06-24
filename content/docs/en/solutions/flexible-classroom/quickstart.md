@@ -2,9 +2,6 @@
 title: "Demo quickstart"
 description: "Quickly launch a flexible classroom and experience the features."
 ---
-
-# Demo quickstart
-
 Compelling content like animated presentations with embedded media helps actively engage students for longer in online classrooms. Agora Flexible Classroom helps you personalize distance learning using interactive video, shared whiteboards and other collaboration tools. With Flexible Classroom, you can quickly deploy effective online tutoring software that is customized with the features and branding your organization needs.
 
 This page shows you how to quickly set up and launch a Flexible Classroom.

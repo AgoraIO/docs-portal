@@ -27,19 +27,7 @@ When audio-strength stream selection is enabled, all audio streams in the channe
 
 To exclude a user from audio-strength stream selection and ensure that their stream is transmitted to the receiving end regardless of its volume, use one of the following methods:
 
-<Tabs defaultValue="android" groupId="platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="electron">Electron</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-  <TabsTrigger value="react-native">React Native</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+<PlatformStructured platform="android">
 - When calling `joinChannel` or `joinChannelWithUserAccount` to join a channel, set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
 
 - After joining a channel, call `updateChannelMediaOptions` and set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
@@ -65,9 +53,9 @@ This section contains content that completes the information on this page, or po
 - [`joinChannelWithUserAccount`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannelwithuseraccount)
 - [`updateChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_updatechannelmediaoptions)
 - [`setParameters`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setparameters)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
 - When calling `joinChannel`, set `isAudioFilterable` to `false` in `AgoraRtcChannelMediaOptions` and pass the object in the `mediaOptions` parameter.
 
 - After joining a channel, call `updateChannel` and set `isAudioFilterable` to `false` in `AgoraRtcChannelMediaOptions` and pass the object in the `mediaOptions` parameter.
@@ -91,9 +79,9 @@ This section contains content that completes the information on this page, or po
 
 - [`updateChannel`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/updatechannel(with:))
 - [`joinChannel`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:useraccount:mediaoptions:joinsuccess:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="macos">
+<PlatformStructured platform="macos">
 - When calling `joinChannelByToken` or `joinChannelWithUserAccount` to join a channel, set `isAudioFilterable` to `false` in `AgoraRtcChannelMediaOptions` and pass the object in the `mediaOptions` parameter.
 
 - After joining a channel, call `updateChannelWithMediaOptions` and set `isAudioFilterable` to `false` in the `AgoraRtcChannelMediaOptions` and pass the object in the `mediaOptions` parameter.
@@ -117,9 +105,9 @@ This section contains content that completes the information on this page, or po
 
 - [`updateChannel`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/updatechannel(with:))
 - [`joinChannel`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:useraccount:mediaoptions:joinsuccess:))
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 - When calling `joinChannel` or `joinChannelWithUserAccount` to join a channel, set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
 
 - After joining a channel, call `updateChannelMediaOptions` and set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
@@ -145,9 +133,9 @@ This section contains content that completes the information on this page, or po
 - [`joinChannelWithUserAccount`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_joinchannelwithuseraccount)
 - [`updateChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_updatechannelmediaoptions)
 - [`setParameters`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setparameters)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="electron">
+<PlatformStructured platform="electron">
 - When calling `joinChannel` or `joinChannelWithUserAccount` to join a channel, set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
 
 - After joining a channel, call `updateChannelMediaOptions` and set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
@@ -173,9 +161,9 @@ This section contains content that completes the information on this page, or po
 - [`joinChannelWithUserAccount`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_joinchannelwithuseraccount2)
 - [`updateChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_updatechannelmediaoptions)
 - [`setParameters`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setparameters)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
 - When calling `joinChannel` or `joinChannelWithUserAccount` to join a channel, set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
 
 - After joining a channel, call `updateChannelMediaOptions` and set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
@@ -201,9 +189,9 @@ This section contains content that completes the information on this page, or po
 - [`joinChannelWithUserAccount`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_joinchannelwithuseraccount2)
 - [`updateChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_updatechannelmediaoptions)
 - [`setParameters`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setparameters)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="react-native">
+<PlatformStructured platform="react-native">
 - When calling `joinChannel` or `joinChannelWithUserAccount` to join a channel, set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
 
 - After joining a channel, call `updateChannelMediaOptions` and set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
@@ -229,9 +217,9 @@ This section contains content that completes the information on this page, or po
 - [`joinChannelWithUserAccount`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_joinchannelwithuseraccount2)
 - [`updateChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_updatechannelmediaoptions)
 - [`setParameters`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setparameters)
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 - When calling `JoinChannel` or `JoinChannelWithUserAccount` to join a channel, set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
 
 - After joining a channel, call `UpdateChannelMediaOptions` and set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
@@ -257,6 +245,5 @@ This section contains content that completes the information on this page, or po
 - [`JoinChannelWithUserAccount`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_joinchannelwithuseraccount)
 - [`UpdateChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_updatechannelmediaoptions)
 - [`SetParameters`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setparameters)
-</TabsContent>
+</PlatformStructured>
 
-</Tabs>

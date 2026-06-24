@@ -4,9 +4,6 @@ description: Troubleshoot common cloud transcoding issues.
 ---
 
 
-
-# Status and error codes
-
 This document lists the response status codes for Cloud Transcoding and Multi-bitrate streaming, along with their descriptions and recommended actions.
 
 ## Cloud Transcoding

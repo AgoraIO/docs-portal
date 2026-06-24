@@ -2,9 +2,6 @@
 title: "Implement licensing"
 description: "Acquire and use licenses for your IoT devices."
 ---
-
-# Implement licensing
-
 Agora utilizes a licensing system as a payment method for IoT SDK. Agora grants a device-specific license to bill for its services, with each device having its own unique license. During the licensed period, Agora does not charge for the duration of the call. Typically, IoT SDK device manufacturers predict the sales volume and usage of their devices, buy and activate licenses from Agora, and then embed the license into each device in the form of a single code.
 
 ## Understand the tech

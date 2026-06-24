@@ -2,9 +2,6 @@
 title: "FcrUIScene SDK"
 description: "Easily update the look and feel of your classrooms."
 ---
-
-# FcrUIScene SDK
-
 ## Introduction to UI components
 
 The UI components in Flexible Classroom can be divided into three types: function components, business components, and scenario components.

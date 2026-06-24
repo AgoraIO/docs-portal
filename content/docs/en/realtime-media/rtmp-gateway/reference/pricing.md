@@ -3,8 +3,6 @@ title: "Pricing"
 description: "Unit pricing and billing model for Media Gateway streaming and transcoding."
 ---
 
-# Pricing
-
 This page explains how Agora calculates your monthly bill for use of Media Gateway. If you have signed a contract with Agora, the billing terms and conditions within that contract take precedence.
 
 ## Cost structure

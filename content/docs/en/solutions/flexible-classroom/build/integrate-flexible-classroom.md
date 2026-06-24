@@ -2,9 +2,6 @@
 title: "Classroom SDK & Proctor SDK"
 description: "Integrate the Classroom SDK or Proctor SDK into your app with the default UI or a customized UI."
 ---
-
-# Classroom SDK & Proctor SDK
-
 This page introduces how to add Flexible Classroom into your app.
 
 :::note

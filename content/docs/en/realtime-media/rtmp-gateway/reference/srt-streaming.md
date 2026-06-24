@@ -3,7 +3,6 @@ title: "SRT streaming"
 description: "Use the SRT protocol to push streams into Media Gateway."
 ---
 
-# SRT streaming
 
 This guide explains how to push streams to Media Gateway using the SRT protocol.
 

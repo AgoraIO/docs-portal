@@ -2,9 +2,6 @@
 title: "Secure authentication with tokens"
 description: "Create a token server and use a token for authentication"
 ---
-
-# Secure authentication with tokens
-
 Authentication is the act of validating the identity of each user before they access your system. Agora uses digital tokens to authenticate users and their privileges before they access an Agora service, for example, join a classroom.
 
 In order to provide a better authentication experience and security guarantee, on August 18, 2022, Agora launched a new version of the token, AccessToken2. We recommend using AccessToken2, which is compatible with AccessToken.

@@ -2,9 +2,6 @@
 title: "FcrUIScene SDK"
 description: "Integrate FcrUIScene into your app with the default UI or by customizing the scene UI."
 ---
-
-# FcrUIScene SDK
-
 This page introduces how to add Flexible Classroom into your app.
 
 ## Understand the tech

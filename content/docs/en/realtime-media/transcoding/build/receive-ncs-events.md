@@ -3,10 +3,6 @@ title: Receive notifications
 description: Receive notification of channel events in real time.
 ---
 
-
-
-# Receive notifications
-
 A webhook is a user-defined callback over HTTPS that allows your app or back-end system to receive notifications when certain events occur. Agora calls your webhook endpoint from its servers to send notifications about Cloud Transcoding events. With Notifications, you can subscribe to Cloud Transcoding events and receive notifications in real time.
 
 ## Understand the tech

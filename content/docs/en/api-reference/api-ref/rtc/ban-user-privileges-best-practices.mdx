@@ -1,0 +1,82 @@
+---
+title: Ban user privileges best practices
+description: Use the privilege banning API safely and reliably.
+---
+
+This page describes how to use the privilege banning APIs, including usage principles, applicable use cases, inapplicable use cases, and exception handling best practices.
+
+For endpoint details, see [Create a banning rule](create-ban-rule).
+
+## Usage principles
+
+Follow these principles when using privilege banning APIs:
+
+- Do not make core business flows depend heavily on the privilege banning APIs.
+- Do not let a REST API call failure affect core business flows.
+
+## Applicable use cases
+
+### Ban violating users
+
+Revoke a user's right to join channels based on UID. Set `privileges` to `join_channel`, fill in `uid`, leave `cname` and `ip` empty, and set `time` to a value other than `0`.
+
+For example, when you cannot completely ban a violating user through your business signaling, you can ban the user by UID.
+
+The banning API can be used as a fallback for your business signaling system, but consider whether unbanning is required. Unbanning users is usually not integrated into the main service process, to prevent possible call failures from affecting service operation.
+
+- Correct usage: A user files a complaint and their account is manually unbanned.
+- Incorrect usage: A user is automatically unbanned the next time they join the channel. If the API call fails, the user might be unable to join.
+
+### Ban user audio and video privileges
+
+Ban a user's audio or video publishing privilege based on UID. Set `privileges` to `publish_audio` or `publish_video`, fill in `uid`, leave `cname` and `ip` empty, and set `time` to a value other than `0`.
+
+For example, you can prevent a microphone from being used after it is left unattended by the streaming user.
+
+Banning publishing privileges through this API is a sensitive operation. Use it as a backup measure after the user has been notified of a failure to disconnect. Consider the impact that a delayed or failed unban might have on the user's ability to use the microphone again, and set the ban time as short as possible.
+
+### Kick a user out of a channel
+
+Kick a user out of a channel based on channel name and UID. This takes the user offline, after which they can log in again. Set `privileges` to `join_channel`, fill in `cname` and `uid`, leave `ip` empty, and set `time` to `0`.
+
+For example, if a host logs in from two devices simultaneously, both devices stream with the same `uid`, causing an exception. You can use this API to kick both devices offline, after which one device can reconnect.
+
+A one-time kick with `time` set to `0` is a safer way to use this API. When the kick request reaches the edge node, if the SDK is disconnected from the edge node, the one-time kick fails. If the SDK reconnects to the edge node after you kick the user, call this API again.
+
+### Disband a channel
+
+When streaming ends, kick all users out of the channel by channel name. Set `privileges` to `join_channel`, fill in `cname`, leave `uid` and `ip` empty, and set `time` to `0`.
+
+:::caution
+Using `cname` for a banning rule is equivalent to destroying a channel. Make sure this behavior meets your business requirements.
+:::
+
+In this use case, use your own signaling to notify SDK clients to leave the channel after streaming ends. If business signaling cannot meet your needs, forced disbanding can be used as a fallback.
+
+If the channel will not be reused, you can set a longer ban duration. If the channel will be reused after a certain period, make sure the channel ban ends before the next channel creation time. If the channel reuse time is unknown, kick users from the channel or set the ban time to 1 minute.
+
+It is not recommended to set a long ban and call the unban API when the channel starts. If unbanning fails, users cannot join the channel.
+
+### Ban illegal IPs
+
+Prevent users from joining channels based on IP address. Set `privileges` to `join_channel`, fill in `ip`, leave `cname` and `uid` empty, and set `time` to a value other than `0`.
+
+For example, when a service is attacked and you identify the source IP, you can use the `ip` field to ban it.
+
+Using an IP address as a banning rule can affect other users accidentally, such as when multiple users share the same IP address.
+
+## Inapplicable use cases
+
+| Use case | Details | Reason |
+| --- | --- | --- |
+| Use the banning API for user microphone management | Ban streaming privilege when the user is off the microphone, then restore it when the user is back on. | Real-time communication logic depends on the banning API. If unbanning fails, the user cannot send streams. |
+| Use the banning API for user channel permission management | Ban the user's privilege to join when the user leaves, then restore it when they rejoin. | Real-time communication logic depends on the banning API. If unbanning fails, the user cannot join. Use a one-time kick to ensure the user leaves the channel. |
+
+:::info
+To better manage microphone seats and channel state, use RTC REST APIs together with Notifications. See [Channel event types](channel-event-types).
+:::
+
+## Best practices for call exceptions
+
+- **Timeout settings**: Set the client request timeout to more than 20 seconds. The minimum recommended timeout is 5 seconds. When retrying a timed-out request, increase the timeout to improve the success rate.
+- **Retry the request**: Decide whether to retry after failure and determine the number of retries based on your business logic. When a request returns an error code greater than or equal to `500`, or the request times out, retry with gradually increasing wait intervals.
