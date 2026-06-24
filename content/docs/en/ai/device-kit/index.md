@@ -12,15 +12,15 @@ Use this product space when you need a hardware-first developer workflow instead
 
 ## Build
 
-- [Run the R1 demo](build/run-the-r1-demo)
-- [Run the demo server](build/run-the-demo-server)
-- [Configure device network](build/configure-device-network)
-- [Build and flash firmware](build/build-and-flash-firmware)
+- [Run the R1 demo](build/baseline-bring-up/run-the-r1-demo)
+- [Run the demo server](build/baseline-bring-up/run-the-demo-server)
+- [Configure device network](build/device-setup/configure-device-network)
+- [Build and flash firmware](build/firmware-integration/build-and-flash-firmware)
 
 ## Understand the system
 
-- [Architecture overview](build/architecture-overview)
-- [Specifications and compatibility](build/specifications-and-compatibility)
+- [Architecture overview](build/system-architecture/architecture-overview)
+- [Specifications and compatibility](build/system-architecture/specifications-and-compatibility)
 
 ## Plan rollout
 

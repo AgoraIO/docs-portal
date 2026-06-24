@@ -180,7 +180,7 @@ function getLegacyLocalePath(locale: string, group: string, leaf: string) {
   }
 
   if (group === 'ai' && leaf === 'openai-realtime') {
-    return `/${locale}/ai/reference/openai-realtime-integration`;
+    return `/${locale}/ai/apps/reference/openai-realtime-integration`;
   }
 
   return null;

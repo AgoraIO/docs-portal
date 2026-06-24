@@ -75,4 +75,4 @@ To manually disconnect:
 Now that your device is set up:
 
 - [Enable the required services](../reference/enable-services)
-- [Run the R1 development baseline](../build/run-the-r1-demo)
+- [Run the R1 development baseline](../build/baseline-bring-up/run-the-r1-demo)

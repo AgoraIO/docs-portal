@@ -1,0 +1,64 @@
+---
+title: 运行 R1 Demo
+description: 跑通官方 R1 开发基线，并验证设备端到端工作流。
+---
+
+当你想先验证官方 R1 开发基线是否能跑通，再开始定制设备、服务端或固件时，请从本页开始。
+
+## 你将完成什么
+
+这条基线 bring-up 路径会覆盖：
+
+- 示例仓库和开发资源
+- 设备工作流使用的 Demo Server
+- 设备联网和基础操作流程
+- 固件构建、烧录和端到端验证
+
+## 推荐顺序
+
+1. [运行 Demo Server](run-the-demo-server.md)
+2. [配置设备网络](../device-setup/configure-device-network.md)
+3. [构建并烧录固件](../firmware-integration/build-and-flash-firmware.md)
+4. 完成端到端验证
+
+## 前提条件
+
+- Python 3.7 或更高版本
+- R1 开发板
+- 一台用于安装 App 的 Android 设备
+- 你选择的 LLM 和 TTS 服务凭据
+- 已开通对话式 AI 的 Agora 项目
+
+项目准备方式见[开通服务](../../reference/enable-services.md)。
+
+## 获取示例工程
+
+1. 克隆 `Conversational-AI-IOT-Sample` 仓库：
+
+```shell
+git clone https://github.com/AgoraIO-Community/Conversational-AI-IOT-Sample.git
+```
+
+2. 切换到 `bk7258/v2.0.1` 分支：
+
+```shell
+cd Conversational-AI-IOT-Sample
+git checkout bk7258/v2.0.1
+```
+
+## 验证设备 Demo
+
+完成服务端、网络和固件配置后：
+
+1. 使用 Type-C 线把 R1 开发板接到电脑的 `USB TO UART` 接口。
+2. 如果是首次配置，长按 **S1** 5 秒进入配网模式，并通过 Android App 完成 Wi-Fi 配置。
+3. 短按**中间按钮**开始和 AI 智能体对话。
+4. 再次短按**中间按钮**结束对话。
+5. 如果设备因 3 分钟无操作进入深度休眠，可按 **RST** 重启。
+
+## 相关页面
+
+- [运行 Demo Server](run-the-demo-server.md)
+- [配置设备网络](../device-setup/configure-device-network.md)
+- [构建并烧录固件](../firmware-integration/build-and-flash-firmware.md)
+- [Demo Server API](demo-server-apis.md)
