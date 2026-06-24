@@ -1,15 +1,15 @@
 ---
 title: Start with AI
-description: Get an Agora starter running first, then add the AI tooling that makes your coding agent accurate and productive.
+description: Install the Agora CLI, add Agora Skills, then give your assistant a precise prompt so it can choose the right starter and setup path.
 ---
 
-Start with the Agora CLI so you can run an official starter first. Then add Agora MCP when you want your assistant to check the latest docs, and add Agora Skills when you want help choosing the right Agora workflow, starter, and setup path.
+Use this page when you want your coding assistant to help you get started without guessing. The steps are simple: install the CLI, add the Agora skill, then give the assistant a prompt with the product, platform, language, and goal.
 
-If you are not sure what to install first, follow the steps on this page in order. The goal is simple: get a working baseline first, then make your assistant more useful.
+If you also want live docs lookup while the assistant works, pair [Agora Skills](/en/introduction/agora-skills) with [Agora MCP](/en/introduction/agora-mcp). Skills handles workflow guidance, and MCP handles current documentation.
 
 ## Quick start
 
-### 1. Install the Agora CLI
+### 1. Install CLI
 <Tabs>
 <TabsList>
   <TabsTrigger value="mac-linux">macOS and Linux</TabsTrigger>
@@ -41,51 +41,12 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 </TabsContent>
 </Tabs>
 
-### 2. Add the tools your assistant needs
+After installation, confirm `agora --help` works in the same shell.
 
-At this point, decide how much guidance you want your assistant to have:
+### 2. Add skill
 
-- Install [Agora MCP](/en/introduction/agora-mcp) if you want your assistant to check the latest official docs before it writes or changes code.
-<Tabs>
-<TabsList>
-  <TabsTrigger value="codex">Codex</TabsTrigger>
-  <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
-  <TabsTrigger value="cursor">Cursor</TabsTrigger>
-</TabsList>
+Install [Agora Skills](/en/introduction/agora-skills) so your assistant can choose the right Agora workflow, starter, and setup sequence before it edits code.
 
-<TabsContent value="codex">
-
-```bash
-codex mcp add --url https://mcp.agora.io agora-docs
-```
-
-</TabsContent>
-
-<TabsContent value="claude-code">
-
-```bash
-claude mcp add --transport http agora-docs https://mcp.agora.io
-```
-
-</TabsContent>
-
-<TabsContent value="cursor">
-
-Add this to your MCP configuration:
-
-```json
-{
-  "mcpServers": {
-    "agora-docs": {
-      "url": "https://mcp.agora.io"
-    }
-  }
-}
-```
-
-</TabsContent>
-</Tabs>
-- Install [Agora Skills](/en/introduction/agora-skills) if you also want product-aware routing, starter selection, and Agora-specific workflow guidance.
 <Tabs>
 <TabsList>
   <TabsTrigger value="skills-cli">Skills CLI</TabsTrigger>
@@ -95,7 +56,7 @@ Add this to your MCP configuration:
 <TabsContent value="skills-cli">
 
 ```bash
-npx skills add github:AgoraIO/skills
+npx skills add AgoraIO/skills
 ```
 
 </TabsContent>
@@ -112,91 +73,33 @@ Use `skills/agora/` as the directory entry point, or load `SKILL.md` directly if
 
 </TabsContent>
 </Tabs>
-If you want both fresh docs and workflow guidance, install both.
 
-### 3. Log in and run an official starter
-<Tabs>
-<TabsList>
-  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="go">Go</TabsTrigger>
-</TabsList>
+If your tool prefers local instruction files, point it at `skills/agora/` or the top-level `SKILL.md`.
 
-<TabsContent value="typescript">
+If you only want docs lookup and not workflow guidance, install [Agora MCP](/en/introduction/agora-mcp) instead. Many teams use both.
 
-```bash
-agora login
-agora init my-nextjs-demo --template nextjs
-cd my-nextjs-demo
-pnpm install
-pnpm dev
+### 3. Prompt
+
+Now tell the assistant what you want it to build and how to approach the setup. A strong prompt includes the Agora product, the target platform, the language or starter preference, and the end goal.
+
+```text
+Use Agora Skills to help me build a web-based conversational AI demo.
+Check the official Agora docs first.
+Use the Agora CLI to choose the right official starter and explain the setup steps.
+Target platform: web.
+Language: TypeScript.
+Goal: browser voice conversation with minimal UI.
 ```
 
-</TabsContent>
+From there, let the assistant choose the starter, run `agora login`, initialize the project, and explain any environment values it writes locally.
 
-<TabsContent value="python">
+## What success looks like
 
-```bash
-agora login
-agora init my-python-demo --template python
-cd my-python-demo
-bun install
-bun run dev
-```
+You are on the right path when the assistant can:
 
-</TabsContent>
+- choose an official starter instead of inventing one
+- explain why that starter matches your product and platform
+- use the Agora CLI for setup instead of ad hoc manual steps
+- stay grounded in current Agora docs when platform details matter
 
-<TabsContent value="go">
 
-```bash
-agora login
-agora init my-go-demo --template go
-cd my-go-demo
-make setup
-make dev
-```
-
-</TabsContent>
-</Tabs>
-
-This clones the official starter, binds it to your Agora project, and writes the environment you need locally.
-
-### 4. Open the app
-
-Open `http://localhost:3000` and start a conversation.
-
-Once the app opens, run the quick smoke test below before you customize anything.
-
-## Verify it worked
-
-Use a quick smoke test instead of reading deeper docs immediately. If these signals line up, you have a working baseline and can move on to customization.
-
-| Check | What success looks like |
-| --- | --- |
-| App startup | The local app opens without missing credentials or setup errors. |
-| First interaction | You can start a conversation from the UI without manual patching. |
-| Agent join | The agent joins successfully after startup. |
-| Output path | Speech or transcript output appears as expected in the app. |
-
-At that point, you have a working baseline. Only then should you start customizing prompts, runtime behavior, or architecture. This is also the right moment to make your assistant more specific: name the product, platform, language, and goal instead of asking for a generic Agora integration.
-
-## Common failures
-
-Most early failures are not architectural problems. They are install, path, or project-binding problems. Check the symptom first, then apply the smallest fix.
-
-| Symptom | Check first | What to do |
-| --- | --- | --- |
-| `agora` command not found | Whether the installer added the binary to your shell path | Rerun the installer with `--add-to-path`, or add the install directory to your shell profile manually. |
-| Starter initializes but does not run | Whether the runtime dependencies installed successfully for that starter | Reinstall dependencies for the selected starter runtime and rerun the local dev command. |
-| Agent does not join or transcripts do not appear | Whether the project is enabled and credentials are valid | Run `agora project doctor`. |
-| Project setup looks wrong | Whether the active project and env values match what you expect | Run `agora project env --shell` and inspect the exported credentials. |
-
-When debugging, keep your assistant grounded in evidence. Give it logs, reproduction steps, and version details so it can reason from concrete failures instead of guessing. Keep MCP enabled whenever it is looking up APIs, auth flows, parameters, or platform differences, and use Skills when it needs help choosing the right Agora workflow instead of only reading docs.
-
-## Choose your next tool
-
-Now that you have the overall setup path, pick the next page based on what you want your assistant to do:
-
-- Open [Agora CLI](/en/introduction/agora-cli) if you want the shortest path to running and troubleshooting an official starter.
-- Open [Agora MCP](/en/introduction/agora-mcp) if you want your assistant to check the latest Agora docs before it writes or changes code.
-- Open [Agora Skills](/en/introduction/agora-skills) if you want your assistant to choose the right Agora workflow, starter, and setup path.
