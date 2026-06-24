@@ -164,6 +164,29 @@ describe('DocsSidebarTree', () => {
     expect(link.className).toContain('overflow-visible');
   });
 
+  it('renders external page links with a native anchor', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        external: true,
+        href: 'https://example.com/resources',
+        id: 'https://example.com/resources',
+        title: 'External Resource',
+        type: 'page',
+        url: 'https://example.com/resources',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/introduction');
+
+    const link = await screen.findByRole('link', {
+      name: 'External Resource',
+    });
+
+    expect(link).toHaveAttribute('href', 'https://example.com/resources');
+    expect(link).toHaveAttribute('rel', 'noreferrer noopener');
+    expect(link).toHaveAttribute('target', '_blank');
+  });
+
   it('renders HTTP method badges for OpenAPI endpoint pages', async () => {
     const tree: DocsSidebarNode[] = [
       {
@@ -630,7 +653,9 @@ describe('DocsSidebarTree', () => {
     await screen.findByTitle('Build');
 
     expect(
-      await screen.findByRole('button', { name: /Create and connect an agent/i }),
+      await screen.findByRole('button', {
+        name: /Create and connect an agent/i,
+      }),
     ).toHaveAttribute('aria-expanded', 'false');
     expect(
       screen.getByRole('button', { name: /Shape the conversation/i }),
