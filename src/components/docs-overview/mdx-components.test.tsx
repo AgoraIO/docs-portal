@@ -745,7 +745,7 @@ describe('overview MDX components', () => {
       within(voiceRow as HTMLElement).getByRole('combobox', {
         name: 'Voice SDK version',
       }),
-    ).toHaveValue('4.6.3-voice-sdk-android');
+    ).toHaveValue('0');
     expect(
       within(voiceRow as HTMLElement).getByRole('option', {
         name: 'v4.6.2',
@@ -795,5 +795,8 @@ describe('overview MDX components', () => {
     expect(
       screen.getByRole('heading', { level: 3, name: 'Server Gateway SDK' }),
     ).toBeVisible();
+    expect(
+      screen.getByRole('combobox', { name: 'Server Gateway SDK version' }),
+    ).toHaveValue('0');
   });
 });
