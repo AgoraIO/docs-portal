@@ -32,37 +32,60 @@ To start a Voice Calling session, implement the following steps in your app:
 
 This section shows you how to set up your Android project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new">
+
 1. Create a [new project](https://developer.android.com/studio/projects/create-project).
 
-  1. Open Android Studio and select **File > New > New Project...**.
-  1. Select **Phone and Tablet** > **Empty Activity** and click **Next**.
-  1. Set the project name and storage path. 
-  1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
-  
-:::note
-  > After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+   1. Open Android Studio and select **File > New > New Project...**.
+   1. Select **Phone and Tablet** > **Empty Activity** and click **Next**.
+   1. Set the project name and storage path.
+   1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
 
-:::
-**Add to an existing project**
+    :::note
+    After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+    :::
+
+2. Add a layout file for your activity.
+
+   Set up a basic layout for your activity. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
+
+</TabsContent>
+
+<TabsContent value="existing">
+
 1. Add a new activity to your project.
 
-  1. Open your project in Android Studio.
-  1. Right-click on the `app/src/main/java/<your.package.name>` folder.
-  1. Select **New → Activity → Empty Activity**.
-  1. Enter an activity name and click **Finish**. 
-    This guide uses `MainActivity` as the activity name in the sample code. Replace it with your activity name where required.
+   1. Open your project in Android Studio.
+   1. Right-click on the `app/src/main/java/<your.package.name>` folder.
+   1. Select **New → Activity → Empty Activity**.
+   1. Enter an activity name and click **Finish**.
+      This guide uses `MainActivity` as the activity name in the sample code. Replace it with your activity name where required.
 
-2. Add a layout file for your activity. 
+2. Add a layout file for your activity.
 
-  Set up a basic layout for your activity. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
+   Set up a basic layout for your activity. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
 
-:::
+</TabsContent>
+</Tabs>
+
 ### Install the SDK
 
 Use either of the following methods to add Voice SDK to your project.
 
-**Maven Central**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="maven">Maven Central</TabsTrigger>
+  <TabsTrigger value="manual">Manual integration</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven">
+
 1. Open the `settings.gradle` file in the project's root directory and add the Maven Central dependency, if it doesn't already exist:
 
   ```groovy
@@ -70,8 +93,10 @@ Use either of the following methods to add Voice SDK to your project.
     mavenCentral()
   }
   ```
+
 :::note
-  > If your Android project uses <a href="https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration">dependencyResolutionManagement</a>, the method of adding the Maven Central dependency may differ.
+If your Android project uses <a href="https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration">dependencyResolutionManagement</a>, the method of adding the Maven Central dependency may differ.
+:::
 
 1. To integrate the Voice SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
 
@@ -85,12 +110,13 @@ Use either of the following methods to add Voice SDK to your project.
 
     ```kotlin
     implementation("io.agora.rtc:voice-sdk:x.y.z")
-    ```    
+    ```
 
   Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
 
 :::note
-  > To get the latest version number, check the [Release notes](reference/release-notes.mdx). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
+To get the latest version number, check the [Release notes](reference/release-notes.mdx). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
+:::
 
 1. Prevent code obfuscation
 
@@ -101,21 +127,22 @@ Use either of the following methods to add Voice SDK to your project.
     -dontwarn io.agora.**
   ```
 
-:::
-**Manual integration**
+</TabsContent>
+
+<TabsContent value="manual">
+
 1. Download the latest version of Voice SDK from the the [SDKs](../../../sdks.md) page and unzip it.
 
 1. Open the unzipped file and copy the following files or subfolders to your project path.
 
-:::
-  | File or folder        | Project path    |
-  | :---------------------------- | :----------------------- |
-  | `agora-rtc-sdk.jar` file   | `/app/libs/`       |
-  | `arm64-v8a` folder      | `/app/src/main/jniLibs/` |
-  | `armeabi-v7a` folder     | `/app/src/main/jniLibs/` |
-  | `x86` folder         | `/app/src/main/jniLibs/` |
-  | `x86_64` folder        | `/app/src/main/jniLibs/` |
-  | `high_level_api` in `include` folder | `/app/src/main/jniLibs/` |
+    | File or folder        | Project path    |
+    | :---------------------------- | :----------------------- |
+    | `agora-rtc-sdk.jar` file   | `/app/libs/`       |
+    | `arm64-v8a` folder      | `/app/src/main/jniLibs/` |
+    | `armeabi-v7a` folder     | `/app/src/main/jniLibs/` |
+    | `x86` folder         | `/app/src/main/jniLibs/` |
+    | `x86_64` folder        | `/app/src/main/jniLibs/` |
+    | `high_level_api` in `include` folder | `/app/src/main/jniLibs/` |
 
 1. Select the file `/app/libs/agora-rtc-sdk.jar` in the left navigation bar of Android Studio project files, right-click, and select **add as a library** from the drop-down menu.
 
@@ -127,6 +154,9 @@ Use either of the following methods to add Voice SDK to your project.
   -keep class io.agora.** { *; }
     -dontwarn io.agora.**
   ```
+
+</TabsContent>
+</Tabs>
 
 ## Implement Voice Calling
 
@@ -822,13 +852,14 @@ class MainActivity : AppCompatActivity() {
   }
 }
 ```
-
 </CodeBlockTab>
 
 </CodeBlockTabs>
+
 :::note
 For the `myAppId` and `token` variables, replace the placeholders with the values you obtained from Agora Console. Ensure you enter the same `channelName` you used when generating the temporary token.
 :::
+
 ### Create a user interface
 
 Use the following code to generate a basic user interface. Paste the code into the `/app/src/main/res/layout/activity_main.xml` file, replacing the existing content. 
@@ -862,16 +893,16 @@ Take the following steps to test the sample code:
 
 1. Enable developer options on your Android test device. Turn on USB debugging, connect the Android device to your development machine through a USB cable, and check that your device appears in the Android device options.
 
-1. In Android Studio, click ![image](/images/video-sdk/icon_android_gradle_sync.png) **Sync Project with Gradle Files** to resolve project dependencies and update the configuration.
+1. In Android Studio, click **Sync Project with Gradle Files** to resolve project dependencies and update the configuration.
 
-1. After synchronization is successful, click ![image](/images/video-sdk/icon_android_run.png) **Run app**. Android Studio starts compilation. After a few moments, the app is installed on your Android device.
+1. After synchronization is successful, click **Run app**. Android Studio starts compilation. After a few moments, the app is installed on your Android device.
 
 5. Launch the App, grant the recording permission.
 
 6. On a second Android device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
-  * If users on both devices join the channel as hosts, they can hear each other.
-  * If one user joins as host and the other as audience, the audience can hear the host.
+    * If users on both devices join the channel as hosts, they can hear each other.
+    * If one user joins as host and the other as audience, the audience can hear the host.
 
 ## Reference
 
