@@ -27,7 +27,7 @@ Ensure that you have:
 
 * Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
 
-* Implemented the functionality to create and join a stream channel. See [Stream channels](stream-channel.md)
+* Implemented the functionality to create and join a stream channel. See [Stream channels](stream-channel.mdx)
 
 ## Implement topics in stream channels
 
