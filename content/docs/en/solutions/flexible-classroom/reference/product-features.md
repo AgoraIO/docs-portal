@@ -6,7 +6,7 @@ description: "Product architecture, basic and advanced features."
 
 The following figure shows the overall product architecture of Flexible Classroom:
 
-![Product Architecture](https://web-cdn.agora.io/docs-files/1658392957746)
+![Product Architecture](/images/flexible-classroom/product-architecture.png)
 
 ## Basic features
 
