@@ -71,12 +71,17 @@ describe('DocsSidebarTree', () => {
     const activeButton = activeLink.closest('[data-sidebar="menu-button"]');
 
     expect(activeButton).toBeInstanceOf(HTMLElement);
-    expect(activeButton?.className).not.toContain('font-semibold');
     expect(activeButton).toHaveClass(
       'min-h-[30px]',
       'h-auto',
       'items-start',
       'py-1',
+    );
+    expect(activeButton?.className).toContain(
+      'data-[active=true]:font-semibold',
+    );
+    expect(activeButton?.className).toContain(
+      'data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)]',
     );
     expect(activeButton?.className).toContain(
       'data-[active=true]:before:bg-[color:var(--accent-brand)]',
@@ -309,6 +314,10 @@ describe('DocsSidebarTree', () => {
     const expandedChildren = link.closest('[data-sidebar="menu-sub"]');
 
     expect(link).toBeInTheDocument();
+    expect(link.closest('[data-sidebar="menu-sub-button"]')).toHaveClass(
+      'data-[active=true]:font-semibold',
+      'data-[active=true]:before:bg-[color:var(--accent-brand)]',
+    );
     expect(expandedChildren).toHaveClass(
       'border-l',
       'border-[color:var(--line-strong)]',
