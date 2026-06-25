@@ -1,7 +1,11 @@
 import type { Folder, Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import type { DocsMeta } from './docs-meta-schema';
-import { getNavScopeSidebarNodes, resolveDocsNavScope } from './docs-nav-scope';
+import {
+  getNavScopeSidebarNodes,
+  getScopedNavScopeSidebarNodes,
+  resolveDocsNavScope,
+} from './docs-nav-scope';
 
 const apiReferenceTree: Root = {
   children: [
@@ -423,6 +427,136 @@ describe('docs nav scope', () => {
         collapsible: false,
         id: 'separator-Build Live Interaction',
         title: 'Build Live Interaction',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('preserves separators inside a scoped nav scope sidebar', () => {
+    const recipesTree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'api-reference-folder',
+              children: [
+                {
+                  $id: 'recipes-folder',
+                  children: [
+                    {
+                      $id: 'recipes-quickstarts-separator',
+                      name: 'Content Quickstarts',
+                      type: 'separator',
+                    },
+                    {
+                      $id: 'recipes-python-quickstart',
+                      name: 'Python Quickstart',
+                      type: 'page',
+                      url: '/en/api-reference/recipes/python-quickstart',
+                    },
+                    {
+                      $id: 'recipes-integration-separator',
+                      name: 'Content Integration Patterns',
+                      type: 'separator',
+                    },
+                    {
+                      $id: 'recipes-custom-llm',
+                      name: 'Custom LLM',
+                      type: 'page',
+                      url: '/en/api-reference/recipes/custom-llm',
+                    },
+                  ],
+                  index: {
+                    $id: 'recipes-index',
+                    name: 'Recipes',
+                    type: 'page',
+                    url: '/en/api-reference/recipes',
+                  },
+                  name: 'Recipes',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'api-reference-index',
+                name: 'Reference',
+                type: 'page',
+                url: '/en/api-reference',
+              },
+              name: 'Reference',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+    const getRecipesMeta = (node: Folder | Root): DocsMeta | undefined =>
+      node.$id === 'recipes-folder'
+        ? {
+            navScope: {},
+            pages: [
+              'index',
+              '---Content Quickstarts---',
+              'python-quickstart',
+              '---Content Integration Patterns---',
+              'custom-llm',
+            ],
+            title: 'Recipes',
+          }
+        : undefined;
+    const scope = resolveDocsNavScope({
+      activePath: '/en/api-reference/recipes',
+      getNodeMeta: getRecipesMeta,
+      root: recipesTree,
+      tab: 'api-reference',
+    });
+
+    if (!scope) {
+      throw new Error('expected recipes nav scope');
+    }
+
+    expect(
+      getScopedNavScopeSidebarNodes({
+        getNodeMeta: getRecipesMeta,
+        navScope: scope,
+      }),
+    ).toEqual([
+      {
+        id: '/en/api-reference/recipes',
+        title: 'Recipes',
+        type: 'page',
+        url: '/en/api-reference/recipes',
+      },
+      {
+        children: [
+          {
+            id: '/en/api-reference/recipes/python-quickstart',
+            title: 'Python Quickstart',
+            type: 'page',
+            url: '/en/api-reference/recipes/python-quickstart',
+          },
+        ],
+        collapsible: false,
+        id: 'separator-Content Quickstarts',
+        title: 'Content Quickstarts',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            id: '/en/api-reference/recipes/custom-llm',
+            title: 'Custom LLM',
+            type: 'page',
+            url: '/en/api-reference/recipes/custom-llm',
+          },
+        ],
+        collapsible: false,
+        id: 'separator-Content Integration Patterns',
+        title: 'Content Integration Patterns',
         type: 'section',
       },
     ]);
