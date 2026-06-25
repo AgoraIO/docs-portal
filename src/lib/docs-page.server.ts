@@ -252,15 +252,6 @@ export async function loadDocsPagePayload(
     tab,
   });
   const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
-  const pages = getDocsPages({
-    locale: supportedLocale,
-    pages: source.getPages(locale).map((item) => ({
-      description: item.data.description,
-      title: item.data.title ?? item.slugs.at(-1) ?? item.url,
-      url: item.url,
-    })),
-    tab,
-  });
   const mdxBody = {
     contentPath: page.path,
     kind: 'mdx' as const,
@@ -331,7 +322,6 @@ export async function loadDocsPagePayload(
             openApiRoute.operationId,
           )
         : getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
-    pages,
     sidebar,
     sidebarHeader,
     slug: page.slugs.at(-1),
@@ -339,6 +329,26 @@ export async function loadDocsPagePayload(
     title: page.data.title,
     toc,
   };
+}
+
+export async function loadDocsSearchIndex(locale: string) {
+  const supportedLocale = toSupportedLocale(locale);
+
+  if (!supportedLocale) {
+    return [];
+  }
+
+  const { source } = await import('./source.server');
+  const pages = source.getPages(locale).map((item) => ({
+    description: item.data.description,
+    title: item.data.title ?? item.slugs.at(-1) ?? item.url,
+    url: item.url,
+  }));
+
+  return getDocsPages({
+    locale: supportedLocale,
+    pages,
+  });
 }
 
 function resolveLegacyBestPracticesRedirect(
@@ -1620,7 +1630,6 @@ function stripSidebarSectionMeta(
 function getDocsPages({
   locale,
   pages,
-  tab,
 }: {
   locale: AppLocale | null;
   pages: {
@@ -1628,9 +1637,8 @@ function getDocsPages({
     title: string;
     url: string;
   }[];
-  tab: string;
 }) {
-  if (!isOpenApiTab(tab) || !locale) {
+  if (!locale) {
     return pages;
   }
 
@@ -1638,7 +1646,7 @@ function getDocsPages({
   const endpointPages = getOpenApiLanes()
     .filter(
       (lane) =>
-        lane.tab === tab &&
+        isOpenApiTab(lane.tab) &&
         getOpenApiLaneLocales(lane).includes(locale as AppLocale),
     )
     .flatMap((lane) =>

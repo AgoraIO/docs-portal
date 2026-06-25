@@ -1,15 +1,28 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import { loadDocsPagePayload } from '../src/lib/docs-page.server.ts';
+import {
+  loadDocsPagePayload,
+  loadDocsSearchIndex,
+} from '../src/lib/docs-page.server.ts';
 import { SUPPORTED_LOCALES } from '../src/lib/i18n/i18n-config.ts';
 import { getOpenApiPrerenderPaths } from '../src/lib/openapi/lanes.ts';
 import { getContentDocsPrerenderPaths } from '../src/lib/prerender-content-routes.ts';
 
 const repoRoot = process.cwd();
 const outputRoot = path.join(repoRoot, 'public', '__static', 'docs');
+const searchOutputRoot = path.join(
+  repoRoot,
+  'public',
+  '__static',
+  'docs-search',
+);
 
 export async function generateStaticDocsPayload() {
   await fs.rm(outputRoot, {
+    force: true,
+    recursive: true,
+  });
+  await fs.rm(searchOutputRoot, {
     force: true,
     recursive: true,
   });
@@ -22,6 +35,11 @@ export async function generateStaticDocsPayload() {
   let generated = 0;
 
   for (const locale of SUPPORTED_LOCALES) {
+    await writeSearchIndex(searchOutputRoot, {
+      locale,
+      pages: await loadDocsSearchIndex(locale),
+    });
+
     const tabs = new Set();
 
     for (const route of allRoutes) {
@@ -99,4 +117,13 @@ async function writePayload(root, { locale, payload, slugSegments, tab }) {
     recursive: true,
   });
   await fs.writeFile(targetFile, `${JSON.stringify(payload)}\n`);
+}
+
+async function writeSearchIndex(root, { locale, pages }) {
+  const targetFile = path.join(root, `${locale}.json`);
+
+  await fs.mkdir(path.dirname(targetFile), {
+    recursive: true,
+  });
+  await fs.writeFile(targetFile, `${JSON.stringify(pages)}\n`);
 }

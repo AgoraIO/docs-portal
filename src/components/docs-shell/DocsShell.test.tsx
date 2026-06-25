@@ -63,6 +63,13 @@ const sidebar: DocsSidebarNode[] = [
 
 type DocsShellProps = ComponentProps<typeof DocsShell>;
 
+const loadSearchPages = async () => [
+  {
+    title: 'Quick Start',
+    url: '/en/introduction/quick-start',
+  },
+];
+
 function renderDocsShell(
   overrides: Partial<DocsShellProps> = {},
   initialEntry = '/en/introduction/about-agora',
@@ -71,6 +78,7 @@ function renderDocsShell(
     activePath: '/en/introduction',
     activeTab: 'introduction',
     children: <article>Body</article>,
+    loadPages: loadSearchPages,
     localeLinks: [
       {
         href: '/en/introduction',
@@ -85,12 +93,6 @@ function renderDocsShell(
     ],
     locale: 'en',
     next: undefined,
-    pages: [
-      {
-        title: 'Quick Start',
-        url: '/en/introduction/quick-start',
-      },
-    ],
     previous: undefined,
     sidebar,
     tabs,
@@ -333,7 +335,7 @@ describe('DocsShell', () => {
             locale: 'zh-CN',
           },
         ],
-        pages: [],
+        loadPages: async () => [],
         sidebar,
         tabs,
         toc: [],
@@ -524,12 +526,7 @@ describe('DocsShell', () => {
               },
             ]}
             locale="en"
-            pages={[
-              {
-                title: 'Quick Start',
-                url: '/en/introduction/quick-start',
-              },
-            ]}
+            loadPages={loadSearchPages}
             sidebar={
               activeTab === 'introduction'
                 ? sidebar
@@ -595,12 +592,7 @@ describe('DocsShell', () => {
               },
             ]}
             locale="en"
-            pages={[
-              {
-                title: 'Quick Start',
-                url: '/en/introduction/quick-start',
-              },
-            ]}
+            loadPages={loadSearchPages}
             sidebar={sidebar}
             tabs={tabs}
             toc={[]}
@@ -659,7 +651,7 @@ describe('DocsShell', () => {
               },
             ]}
             locale="en"
-            pages={[]}
+            loadPages={async () => []}
             sidebar={[]}
             tabs={tabs}
             toc={[]}
@@ -776,12 +768,7 @@ describe('DocsShell', () => {
               },
             ]}
             locale="en"
-            pages={[
-              {
-                title: 'Quick Start',
-                url: '/en/introduction/quick-start',
-              },
-            ]}
+            loadPages={loadSearchPages}
             sidebar={sidebar}
             tabs={tabs}
             toc={[]}

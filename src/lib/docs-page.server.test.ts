@@ -1,6 +1,10 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { loadDocsPagePayload, loadDocsTabIndex } from './docs-page.server';
+import {
+  loadDocsPagePayload,
+  loadDocsSearchIndex,
+  loadDocsTabIndex,
+} from './docs-page.server';
 import { type PageWithSource, source } from './source.server';
 
 vi.mock('./source.server', () => ({
@@ -996,6 +1000,33 @@ describe('loadDocsTabIndex', () => {
   });
 });
 
+describe('loadDocsSearchIndex', () => {
+  beforeEach(() => {
+    mockedGetPages.mockReturnValue([createPage()]);
+  });
+
+  it('returns locale page entries and generated OpenAPI endpoints for the static docs search index', async () => {
+    await expect(loadDocsSearchIndex('en')).resolves.toEqual(
+      expect.arrayContaining([
+        {
+          description:
+            'Build a working mental model of Agora by understanding what it is.',
+          title: 'About Agora',
+          url: '/en/introduction/about-agora',
+        },
+        {
+          title: 'Start a conversational AI agent',
+          url: '/en/api-reference/api-ref/conversational-ai/join',
+        },
+      ]),
+    );
+  });
+
+  it('returns an empty index for unsupported locales', async () => {
+    await expect(loadDocsSearchIndex('fr')).resolves.toEqual([]);
+  });
+});
+
 describe('loadDocsPagePayload', () => {
   beforeEach(() => {
     const page = createPage();
@@ -1156,12 +1187,6 @@ Web body
           locale: 'zh-CN',
         },
       ],
-      pages: expect.arrayContaining([
-        expect.objectContaining({
-          title: 'About Agora',
-          url: '/en/introduction/about-agora',
-        }),
-      ]),
       markdownUrl:
         '/llms.mdx/docs/en/api-reference/api-ref/conversational-ai/join.md',
       tabs: [

@@ -36,6 +36,7 @@ import { cn } from '@/lib/cn';
 import { type DocsLayoutMode, isWideDocsLayout } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import { replaceDocLocale } from '@/lib/docs-routing';
+import type { SearchEntry } from '@/lib/docs-search';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import {
   type AppLocale,
@@ -46,7 +47,7 @@ import {
 import { useLocale } from '@/lib/i18n/use-locale';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
-import { DocsSearchDialog, type SearchEntry } from './DocsSearchDialog';
+import { DocsSearchDialog } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsTocRail } from './DocsTocRail';
@@ -77,9 +78,9 @@ export function DocsShell({
   activePath,
   activeTab,
   children,
+  loadPages,
   localeLinks,
   locale,
-  pages,
   previous,
   next,
   sidebar,
@@ -91,10 +92,10 @@ export function DocsShell({
   activePath: string;
   activeTab: string;
   children: React.ReactNode;
+  loadPages: () => Promise<SearchEntry[]>;
   layoutMode?: DocsLayoutMode;
   localeLinks: LocaleLink[];
   locale: string;
-  pages: SearchEntry[];
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
   sidebar: DocsSidebarNode[];
@@ -244,9 +245,9 @@ export function DocsShell({
                 data-testid="docs-mobile-header-actions"
               >
                 <DocsSearchDialog
+                  loadPages={loadPages}
                   locale={currentLocale}
                   mode="mobile"
-                  pages={pages}
                   tabs={tabs}
                 />
               </div>
@@ -256,9 +257,9 @@ export function DocsShell({
               >
                 <div className="w-80">
                   <DocsSearchDialog
+                    loadPages={loadPages}
                     locale={currentLocale}
                     mode="desktop"
-                    pages={pages}
                     tabs={tabs}
                   />
                 </div>

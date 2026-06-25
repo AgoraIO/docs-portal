@@ -58,6 +58,7 @@ await build({
   define: {
     'process.env.FUMADOCS_STATIC_PAYLOAD_DYNAMIC': JSON.stringify('true'),
   },
+  publicDir: false,
   resolve: {
     alias: {
       '@': path.join(repoRoot, 'src'),
@@ -94,6 +95,9 @@ await build({
   },
   plugins: [mdx(sourceConfig, { updateViteConfig: false })],
   logLevel: 'warn',
+  // This temporary SSR bundle only executes the payload generator. Copying
+  // public/ duplicates hundreds of MB of previously generated docs payload.
+  publicDir: false,
   resolve: {
     alias: {
       '@': path.join(repoRoot, 'src'),
