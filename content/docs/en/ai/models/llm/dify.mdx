@@ -37,10 +37,88 @@ To integrate Dify with Agora Conversational AI, install the plugin, configure yo
    2. Note down this **Endpoint URL** and **API Key** for use in the `llm` configuration.
 
     ![](/images/conversational-ai/dify-endpoint.png)
-    
+
 ### Sample configuration
 
-The following example shows a starting `llm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure Dify LLM when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, Dify
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(Dify(
+        api_key='your-dify-api-key',
+        url='https://xxxxxx.ai-plugin.io/convoai/dify-completion',
+        model='default',
+        system_messages=[{'role': 'system', 'content': 'You are a helpful voice assistant.'}],
+        greeting_message='Hello, how can I assist you today?',
+        failure_message='Hold on a moment.',
+        max_history=32,
+    ))
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, Dify } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(new Dify({
+    apiKey: 'your-dify-api-key',
+    url: 'https://xxxxxx.ai-plugin.io/convoai/dify-completion',
+    model: 'default',
+    systemMessages: [{ role: 'system', content: 'You are a helpful voice assistant.' }],
+    greetingMessage: 'Hello, how can I assist you today?',
+    failureMessage: 'Hold on a moment.',
+    maxHistory: 32,
+  }))
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(
+    vendors.NewDify(vendors.DifyOptions{
+        APIKey: "your-dify-api-key",
+        URL:    "https://xxxxxx.ai-plugin.io/convoai/dify-completion",
+        Model:  "default",
+        SystemMessages: []map[string]interface{}{
+            {"role": "system", "content": "You are a helpful voice assistant."},
+        },
+        GreetingMessage: "Hello, how can I assist you today?",
+        FailureMessage:  "Hold on a moment.",
+        MaxHistory:      agora.Int(32),
+    }),
+).WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `llm` configuration in your request:
 
 ```json
 "llm": {
@@ -61,6 +139,9 @@ The following example shows a starting `llm` parameter configuration you can use
    "style": "dify"
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ### Key parameters
 

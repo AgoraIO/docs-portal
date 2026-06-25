@@ -8,7 +8,73 @@ This integration is fully supported for use with Conversational AI Engine. While
 
 ### Sample configuration
 
-The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure Rime TTS when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import RimeTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(RimeTTS(
+        key='your-rime-key',
+        speaker='cove',
+        model_id='mistv2',
+    ))
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, RimeTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new RimeTTS({
+    key: 'your-rime-key',
+    speaker: 'cove',
+    modelId: 'mistv2',
+  }));
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewRimeTTS(vendors.RimeTTSOptions{
+        Key:     "your-rime-key",
+        Speaker: "cove",
+        ModelID: "mistv2",
+    }),
+)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request:
 
 ```json
 "tts": {
@@ -17,24 +83,24 @@ The following example shows a starting `tts` parameter configuration you can use
     "api_key": "<rime_key>",
     "speaker": "cove",
     "modelId": "mistv2",
-    "base_url": "wss://users.rime.ai/ws2",
+    "base_url": "wss://users.rime.ai/ws2"
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 :::caution[Caution]
 The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the Rime documentation for [Arcana](https://docs.rime.ai/api-reference/arcana/streaming-pcm) and [Mist v2](https://docs.rime.ai/api-reference/endpoint/streaming-pcm).
 :::
 
- 
-   
-    The Rime API key used to authenticate requests. You must provide a valid key for the service to function. 
-   
-   
-    The speaker voice to use for TTS output. For example, `cove`. 
-   
-   
-    The Rime TTS model to use. For example, `mistv2`. Different models provide different voice qualities and capabilities. 
-   
-    
-    The WebSocket URL for the Rime streaming API. For example, `wss://users.rime.ai/ws2`.
+### Key parameters
+
+The Rime API key used to authenticate requests. You must provide a valid key for the service to function.
+
+The speaker voice to use for TTS output. For example, `cove`.
+
+The Rime TTS model to use. For example, `mistv2`. Different models provide different voice qualities and capabilities.
+
+The WebSocket URL for the Rime streaming API. For example, `wss://users.rime.ai/ws2`.

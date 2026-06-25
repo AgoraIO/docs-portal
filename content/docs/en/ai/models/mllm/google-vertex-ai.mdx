@@ -10,7 +10,82 @@ Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles en
 
 ### Sample configuration
 
-The following example shows a starting `mllm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure Google Gemini Live (Vertex AI) MLLM when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import VertexAI
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_mllm(VertexAI(
+        model='gemini-live-2.5-flash-native-audio',
+        project_id='<GOOGLE_CLOUD_PROJECT_ID>',
+        location='<GOOGLE_CLOUD_REGION>',
+        adc_credentials_string='<GOOGLE_APPLICATION_CREDENTIALS_STRING>',
+        voice='Aoede',
+        instructions='You are a friendly assistant.',
+        transcribe_agent=True,
+        transcribe_user=True,
+    ))
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, VertexAI } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withMllm(new VertexAI({
+    model: 'gemini-live-2.5-flash-native-audio',
+    projectId: '<GOOGLE_CLOUD_PROJECT_ID>',
+    location: '<GOOGLE_CLOUD_REGION>',
+    adcCredentialsString: '<GOOGLE_APPLICATION_CREDENTIALS_STRING>',
+    voice: 'Aoede',
+    instructions: 'You are a friendly assistant.',
+    transcribeAgent: true,
+    transcribeUser: true,
+  }));
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithMllm(
+    vendors.NewVertexAI(vendors.VertexAIOptions{
+        Model:               "gemini-live-2.5-flash-native-audio",
+        ProjectID:           "<GOOGLE_CLOUD_PROJECT_ID>",
+        Location:            "<GOOGLE_CLOUD_REGION>",
+        ADCredentialsString: "<GOOGLE_APPLICATION_CREDENTIALS_STRING>",
+        Voice:               "Aoede",
+        Instructions:        "You are a friendly assistant.",
+        TranscribeAgent:     agora.Bool(true),
+        TranscribeUser:      agora.Bool(true),
+    }),
+)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `mllm` configuration in your request:
 
 ```json
 "mllm": {
@@ -44,6 +119,9 @@ The following example shows a starting `mllm` parameter configuration you can us
   "vendor": "vertexai"
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ### Turn detection
 

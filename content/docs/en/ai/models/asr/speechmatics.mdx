@@ -6,7 +6,71 @@ Speechmatics provides real-time automatic speech recognition (ASR) with flexible
 
 ### Sample configuration
 
-The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following example shows how to configure Speechmatics ASR when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, SpeechmaticsSTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(SpeechmaticsSTT(
+        api_key='your-speechmatics-key',
+        language='en',
+        uri='wss://eu2.rt.speechmatics.com/v2',
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, SpeechmaticsSTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new SpeechmaticsSTT({
+    apiKey: 'your-speechmatics-key',
+    language: 'en',
+    uri: 'wss://eu2.rt.speechmatics.com/v2',
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewSpeechmaticsSTT(vendors.SpeechmaticsSTTOptions{
+        APIKey:   "your-speechmatics-key",
+        Language: "en",
+        URI:      "wss://eu2.rt.speechmatics.com/v2",
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `asr` configuration in your request:
 
 ```json
 "asr": {
@@ -18,6 +82,9 @@ The following example shows a starting `asr` parameter configuration you can use
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 :::caution[Caution]
 The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Speechmatics documentation](https://docs.speechmatics.com/api-ref/realtime-transcription-websocket).

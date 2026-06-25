@@ -13,7 +13,66 @@ To keep audio stable, set the agent `audio_scenario` to `"chorus"` when you star
 
 ## Configure the agent
 
-Add or update the `audio_scenario` field in the agent startup payload:
+Set the agent's RTC audio scenario to `chorus` when you configure the agent:
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+    .with_audio_scenario('chorus')
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */)
+  .withAudioScenario('chorus');
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+
+// client is your configured *agentkit.AgoraClient
+agent := agentkit.NewAgent(client).
+    WithStt(/* configure your STT vendor */).
+    WithLlm(/* configure your LLM vendor */).
+    WithTts(/* configure your TTS vendor */).
+    WithAudioScenario(agentkit.AudioScenarioChorus)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Add or modify the `audio_scenario` field in the agent startup parameters:
 
 ```json
 {
@@ -24,6 +83,9 @@ Add or update the `audio_scenario` field in the agent startup payload:
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ## Complete example
 

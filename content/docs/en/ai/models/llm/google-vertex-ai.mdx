@@ -6,7 +6,88 @@ Google Vertex AI provides enterprise-grade access to Google's generative AI mode
 
 ### Sample configuration
 
-The following example shows a starting `llm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure Google Vertex AI LLM when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, VertexAILLM
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(VertexAILLM(
+        api_key='your-gcp-access-token',
+        project_id='your-gcp-project-id',
+        location='us-central1',
+        model='gemini-2.0-flash-001',
+        system_messages=[{'parts': [{'text': 'You are a helpful chatbot.'}], 'role': 'user'}],
+        greeting_message='Good to see you!',
+        failure_message='Hold on a second.',
+        max_history=32,
+    ))
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, VertexAILLM } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(new VertexAILLM({
+    apiKey: 'your-gcp-access-token',
+    projectId: 'your-gcp-project-id',
+    location: 'us-central1',
+    model: 'gemini-2.0-flash-001',
+    systemMessages: [{ parts: [{ text: 'You are a helpful chatbot.' }], role: 'user' }],
+    greetingMessage: 'Good to see you!',
+    failureMessage: 'Hold on a second.',
+    maxHistory: 32,
+  }))
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(
+    vendors.NewVertexAILLM(vendors.VertexAILLMOptions{
+        APIKey:    "your-gcp-access-token",
+        ProjectID: "your-gcp-project-id",
+        Location:  "us-central1",
+        Model:     "gemini-2.0-flash-001",
+        SystemMessages: []map[string]interface{}{
+            {"parts": []map[string]interface{}{{"text": "You are a helpful chatbot."}}, "role": "user"},
+        },
+        GreetingMessage: "Good to see you!",
+        FailureMessage:  "Hold on a second.",
+        MaxHistory:      agora.Int(32),
+    }),
+).WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `llm` configuration in your request:
 
 ```json
 "llm": {
@@ -28,24 +109,19 @@ The following example shows a starting `llm` parameter configuration you can use
 }
 ```
 
+</TabsContent>
+</Tabs>
+
 ### Key parameters
 
-    
-  Refer to Google Cloud [REST authentication](https://cloud.google.com/docs/authentication/rest) to get your GCP credentials.
-  
-    
-  Use the Vertex AI endpoint with your Google Cloud project ID and region in the URL path. Refer to [Google Vertex AI API documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/locations) for details.
-  
-    
-  Use `parts` array with `text` objects instead of simple `content` string.
-  
-    
-  Set to `gemini` to use Gemini's message format.
-  
-    
-      
-    Refer to [Vertex AI models](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models) for available models.
-    
-  
+Refer to Google Cloud [REST authentication](https://cloud.google.com/docs/authentication/rest) to get your GCP credentials.
+
+Use the Vertex AI endpoint with your Google Cloud project ID and region in the URL path. Refer to the [Google Vertex AI API documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/locations) for details.
+
+Use a `parts` array with `text` objects instead of a simple `content` string.
+
+Set to `gemini` to use Gemini's message format.
+
+Refer to [Vertex AI models](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models) for available models.
 
 For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Google Vertex AI API documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/system-instructions).

@@ -5,9 +5,81 @@ description: Integrate a custom avatar provider into Voice Agent through the gen
 
 The `generic` avatar vendor lets you connect a custom avatar provider to Voice Agent when a built-in vendor integration does not fit your use case.
 
-## Sample configuration
+### Sample configuration
 
-The following example shows a starting `avatar` configuration you can use when you [start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure a generic avatar provider when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import GenericAvatar
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+    .with_avatar(GenericAvatar(
+        api_key='<AVATAR_API_KEY>',
+        api_base_url='<AVATAR_API_BASE_URL>',
+        avatar_id='<AVATAR_ID>',
+        agora_uid='<AGORA_UID>',
+    ))
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, GenericAvatar } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */)
+  .withAvatar(new GenericAvatar({
+    apiKey: '<AVATAR_API_KEY>',
+    apiBaseUrl: '<AVATAR_API_BASE_URL>',
+    avatarId: '<AVATAR_ID>',
+    agoraUid: '<AGORA_UID>',
+  }));
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */).
+  WithAvatar(
+    vendors.NewGenericAvatar(vendors.GenericAvatarOptions{
+        APIKey:     "<AVATAR_API_KEY>",
+        APIBaseURL: "<AVATAR_API_BASE_URL>",
+        AvatarID:   "<AVATAR_ID>",
+        AgoraUID:   "<AGORA_UID>",
+    }),
+)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `avatar` configuration in your request:
 
 ```json
 "avatar": {
@@ -21,6 +93,9 @@ The following example shows a starting `avatar` configuration you can use when y
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ## Key parameters
 
