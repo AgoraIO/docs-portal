@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import type { ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DocsContentBody } from './DocsContentBody';
 
@@ -57,5 +58,40 @@ describe('DocsContentBodyClient', () => {
     const [, options] = useDocsContentMock.mock.calls[0];
     expect(options.components.SolutionCard).toBeDefined();
     expect(options.components.FeatureCard).toBeDefined();
+  });
+
+  it('shares accordion state across hydrated MDX content', () => {
+    useDocsContentMock.mockImplementationOnce((_, options) => {
+      const Accordions = options.components.Accordions as ComponentType<{
+        children: ReactNode;
+      }>;
+      const Accordion = options.components.Accordion as ComponentType<{
+        children: ReactNode;
+        title: ReactNode;
+      }>;
+
+      return (
+        <>
+          <Accordions>
+            <Accordion title="First dropdown">First body</Accordion>
+          </Accordions>
+          <Accordions>
+            <Accordion title="Second dropdown">Second body</Accordion>
+          </Accordions>
+        </>
+      );
+    });
+
+    render(
+      <DocsContentBody contentPath="en/realtime-media/video/reference/security.mdx" />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'First dropdown' }));
+    expect(screen.getByText('First body')).toBeVisible();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Second dropdown' }));
+
+    expect(screen.queryByText('First body')).not.toBeInTheDocument();
+    expect(screen.getByText('Second body')).toBeVisible();
   });
 });

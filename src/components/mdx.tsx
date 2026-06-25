@@ -1,4 +1,7 @@
-import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+import {
+  Accordion,
+  Accordions as FumadocsAccordions,
+} from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
 import {
   type CodeBlockProps,
@@ -22,12 +25,18 @@ import {
   type ComponentProps,
   type ComponentType,
   createContext,
+  type Dispatch,
   isValidElement,
   type ReactElement,
   type ReactNode,
+  type Ref,
+  type SetStateAction,
+  useCallback,
   useContext,
   useEffect,
+  useId,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
@@ -57,6 +66,16 @@ type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
   value?: string;
 };
 type DocsCardProps = ComponentProps<typeof FumadocsCard>;
+type AccordionsRootProps = Omit<
+  ComponentProps<typeof FumadocsAccordions>,
+  'defaultValue' | 'onValueChange' | 'type' | 'value'
+> & {
+  children?: ReactNode;
+  defaultValue?: string | string[];
+  onValueChange?: (value: string | string[]) => void;
+  type?: 'single' | 'multiple';
+  value?: string | string[];
+};
 type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   children?: ReactNode;
   defaultValue?: string;
@@ -70,6 +89,36 @@ type TabValueElement = ReactElement<{
 }>;
 
 const ControlledFumadocsTabs = FumadocsTabs as ComponentType<TabsRootProps>;
+const ControlledFumadocsAccordions =
+  FumadocsAccordions as ComponentType<AccordionsRootProps>;
+
+type ActiveAccordion = {
+  rootId: string;
+  value: string;
+};
+
+type AccordionPageState = {
+  activeAccordion?: ActiveAccordion;
+  setActiveAccordion: Dispatch<SetStateAction<ActiveAccordion | undefined>>;
+};
+
+const AccordionPageStateContext = createContext<AccordionPageState | undefined>(
+  undefined,
+);
+
+export function MDXAccordionProvider({ children }: { children: ReactNode }) {
+  const [activeAccordion, setActiveAccordion] = useState<ActiveAccordion>();
+  const value = useMemo(
+    () => ({ activeAccordion, setActiveAccordion }),
+    [activeAccordion],
+  );
+
+  return (
+    <AccordionPageStateContext value={value}>
+      {children}
+    </AccordionPageStateContext>
+  );
+}
 
 function escapeTabValue(value: string) {
   return value.toLowerCase().replace(/\s/, '-');
@@ -186,6 +235,146 @@ function Tabs({
     >
       {children}
     </ControlledFumadocsTabs>
+  );
+}
+
+function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
+  if (typeof ref === 'function') {
+    ref(value);
+    return;
+  }
+
+  if (ref) {
+    (ref as { current: T | null }).current = value;
+  }
+}
+
+function Accordions({
+  defaultValue,
+  onValueChange,
+  ref,
+  type = 'single',
+  value,
+  ...props
+}: AccordionsRootProps) {
+  const rootId = useId();
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const appliedDefaultValueRef = useRef(false);
+  const appliedHashRef = useRef(false);
+  const pageState = useContext(AccordionPageStateContext);
+  const defaultSingleValue =
+    typeof defaultValue === 'string' ? defaultValue : undefined;
+  const controlledSingleValue = typeof value === 'string' ? value : undefined;
+  const [localValue, setLocalValue] = useState(defaultSingleValue ?? '');
+  const setRootRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      rootRef.current = element;
+      assignRef(ref as Ref<HTMLDivElement> | undefined, element);
+    },
+    [ref],
+  );
+
+  const pageControlledValue =
+    pageState?.activeAccordion?.rootId === rootId
+      ? pageState.activeAccordion.value
+      : '';
+  const selectedValue =
+    controlledSingleValue ?? (pageState ? pageControlledValue : localValue);
+
+  useEffect(() => {
+    if (
+      !(
+        type === 'single' &&
+        pageState &&
+        defaultSingleValue &&
+        !appliedDefaultValueRef.current &&
+        value === undefined
+      )
+    ) {
+      return;
+    }
+
+    appliedDefaultValueRef.current = true;
+    pageState.setActiveAccordion(
+      (current) => current ?? { rootId, value: defaultSingleValue },
+    );
+  }, [defaultSingleValue, pageState, rootId, type, value]);
+
+  useEffect(() => {
+    if (type !== 'single' || appliedHashRef.current) {
+      return;
+    }
+
+    appliedHashRef.current = true;
+
+    const id = window.location.hash.substring(1);
+    const element = rootRef.current;
+
+    if (!element || id.length === 0) {
+      return;
+    }
+
+    const selected = document.getElementById(id);
+
+    if (!selected || !element.contains(selected)) {
+      return;
+    }
+
+    const hashValue = selected.getAttribute('data-accordion-value');
+
+    if (!hashValue) {
+      return;
+    }
+
+    if (value === undefined) {
+      if (pageState) {
+        pageState.setActiveAccordion({ rootId, value: hashValue });
+      } else {
+        setLocalValue(hashValue);
+      }
+    }
+
+    onValueChange?.(hashValue);
+  }, [onValueChange, pageState, rootId, type, value]);
+
+  function handleValueChange(nextValue: string | string[]) {
+    const nextSingleValue = typeof nextValue === 'string' ? nextValue : '';
+
+    if (value === undefined) {
+      if (pageState) {
+        pageState.setActiveAccordion(
+          nextSingleValue ? { rootId, value: nextSingleValue } : undefined,
+        );
+      } else {
+        setLocalValue(nextSingleValue);
+      }
+    }
+
+    onValueChange?.(nextSingleValue);
+  }
+
+  if (type === 'multiple') {
+    return (
+      <ControlledFumadocsAccordions
+        {...props}
+        defaultValue={defaultValue}
+        onValueChange={onValueChange}
+        ref={setRootRef}
+        type={type}
+        value={value}
+      />
+    );
+  }
+
+  return (
+    <ControlledFumadocsAccordions
+      {...props}
+      defaultValue={defaultSingleValue}
+      onValueChange={handleValueChange}
+      ref={setRootRef}
+      type={type}
+      value={selectedValue}
+    />
   );
 }
 

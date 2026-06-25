@@ -4,7 +4,7 @@ import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
-import { getMDXComponents } from './mdx';
+import { getMDXComponents, MDXAccordionProvider } from './mdx';
 import { PlatformHeaderTabs } from './mdx/PlatformTabsGroup';
 
 type TabsComponent = ComponentType<{
@@ -49,6 +49,15 @@ type CardComponent = ComponentType<{
   description?: ReactNode;
   href?: string;
   title: ReactNode;
+}>;
+type AccordionsComponent = ComponentType<{
+  children: ReactNode;
+  defaultValue?: string;
+}>;
+type AccordionComponent = ComponentType<{
+  children: ReactNode;
+  title: ReactNode;
+  value?: string;
 }>;
 type HeadingComponent = ComponentType<{
   children: ReactNode;
@@ -116,6 +125,8 @@ describe('common MDX registry', () => {
     expect(components.CommandBlock).toBeDefined();
     expect(components.CommandBlock).not.toBe(defaults.CommandBlock);
 
+    expect(components.Accordion).toBeDefined();
+    expect(components.Accordions).not.toBe(defaults.Accordions);
     expect(components.pre).not.toBe(defaults.pre);
     expect(components.CodeBlockTabs).not.toBe(defaults.CodeBlockTabs);
     expect(components.CodeBlockTabsList).not.toBe(defaults.CodeBlockTabsList);
@@ -194,6 +205,53 @@ describe('common MDX registry', () => {
       '/en/ai/choose-your-path/quickstart-coding',
     );
     expect(card).toHaveClass('docs-card-link');
+  });
+
+  it('keeps only one MDX accordion open across separate roots', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions>
+          <Accordion title="First dropdown">First body</Accordion>
+        </Accordions>
+        <Accordions>
+          <Accordion title="Second dropdown">Second body</Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'First dropdown' }));
+    expect(screen.getByText('First body')).toBeVisible();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Second dropdown' }));
+
+    expect(screen.queryByText('First body')).not.toBeInTheDocument();
+    expect(screen.getByText('Second body')).toBeVisible();
+  });
+
+  it('keeps default-open MDX accordions collapsible in shared page state', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="default-open">
+          <Accordion title="Default open" value="default-open">
+            Default body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    expect(screen.getByText('Default body')).toBeVisible();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Default open' }));
+
+    expect(screen.queryByText('Default body')).not.toBeInTheDocument();
   });
 
   it('renders headings with Fumadocs copy-anchor chrome', () => {
