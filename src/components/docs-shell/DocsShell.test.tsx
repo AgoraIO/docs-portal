@@ -163,6 +163,7 @@ describe('DocsShell', () => {
 
     const mainHeaderRow = screen.getByTestId('docs-main-header-row');
     const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
+    const docsTabsRow = docsTabsStrip.firstElementChild;
     const docsBodyShell = screen.getByTestId('docs-body-shell');
     const docsSidebar = screen.getByTestId('docs-sidebar');
     const desktopSearch = within(mainHeaderRow)
@@ -207,8 +208,17 @@ describe('DocsShell', () => {
     expect(docsTabsStrip).toContainElement(tabsAiLink);
     expect(mainHeaderRow).not.toContainElement(docsTabsStrip);
     expect(docsTabsStrip).toHaveClass('hidden', 'md:block');
+    expect(mainHeaderRow).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsTabsRow).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
     expect(docsBodyShell).toHaveClass('grid');
     expect(docsBodyShell).toHaveClass('lg:grid-cols-[256px_minmax(0,1fr)]');
+    expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
     expect(docsBodyShell).toHaveClass(
       'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
@@ -362,6 +372,9 @@ describe('DocsShell', () => {
 
     expect(docsBodyShell).toBeInTheDocument();
     expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).toHaveClass(
       'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
     expect(screen.getByTestId('docs-sidebar')).toBeInTheDocument();
@@ -389,7 +402,12 @@ describe('DocsShell', () => {
     });
 
     const docsBodyShell = await screen.findByTestId('docs-body-shell');
+    const mainHeaderRow = screen.getByTestId('docs-main-header-row');
+    const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
 
+    expect(mainHeaderRow).toHaveClass('max-w-[1440px]');
+    expect(docsTabsStrip.firstElementChild).toHaveClass('max-w-[1440px]');
+    expect(docsBodyShell).toHaveClass('max-w-[1440px]');
     expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-page-actions')).not.toBeInTheDocument();
@@ -408,6 +426,7 @@ describe('DocsShell', () => {
 
     const docsBodyShell = await screen.findByTestId('docs-body-shell');
 
+    expect(docsBodyShell).toHaveClass('max-w-[1440px]');
     expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
     for (const footer of screen.getAllByTestId('docs-page-footer')) {

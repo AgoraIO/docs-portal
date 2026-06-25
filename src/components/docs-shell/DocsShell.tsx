@@ -147,6 +147,9 @@ export function DocsShell({
     '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
   const isWideLayout = isWideDocsLayout(layoutMode);
+  const docsShellMaxWidthClassName = isWideLayout
+    ? 'max-w-[1440px]'
+    : 'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
 
   return (
     <SidebarProvider
@@ -171,7 +174,10 @@ export function DocsShell({
             ))}
           </nav>
           <div
-            className="mx-auto flex h-[52px] w-full max-w-[1440px] items-center gap-3 px-4 sm:px-7"
+            className={cn(
+              'mx-auto flex h-[52px] w-full items-center gap-3 px-4 sm:px-7',
+              docsShellMaxWidthClassName,
+            )}
             data-testid="docs-main-header-row"
           >
             <div className="flex min-w-0 items-center gap-3">
@@ -302,7 +308,12 @@ export function DocsShell({
             className="hidden border-b border-border bg-background/80 backdrop-blur-xl md:block"
             data-testid="docs-tabs-strip"
           >
-            <div className="mx-auto flex h-10 w-full max-w-[1440px] justify-start px-4 sm:px-6">
+            <div
+              className={cn(
+                'mx-auto flex h-10 w-full justify-start px-4 sm:px-6',
+                docsShellMaxWidthClassName,
+              )}
+            >
               <Tabs className="w-auto max-w-full" value={activeTab}>
                 <TabsList
                   className="max-w-full justify-start gap-0 overflow-visible px-0"
@@ -335,7 +346,8 @@ export function DocsShell({
         </header>
         <div
           className={cn(
-            'mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden',
+            'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden',
+            docsShellMaxWidthClassName,
             isWideLayout
               ? 'xl:grid-cols-[256px_minmax(0,1fr)]'
               : 'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
