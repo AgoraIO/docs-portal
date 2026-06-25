@@ -631,7 +631,7 @@
     text-align: left;
     vertical-align: top;
     word-break: normal;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
   }
 
   .prose :where(th):not(:where(.not-prose, .not-prose *)) {
@@ -639,7 +639,7 @@
     font-size: 0.92rem;
     font-weight: 600;
     line-height: 1.45;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .prose :where(td):not(:where(.not-prose, .not-prose *)) {
@@ -652,9 +652,8 @@
     :where(th:first-child, td:first-child):not(
       :where(.not-prose, .not-prose *)
     ) {
-    width: 1%;
     min-width: 5.5rem;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .prose :where(tbody tr:last-child td):not(:where(.not-prose, .not-prose *)) {

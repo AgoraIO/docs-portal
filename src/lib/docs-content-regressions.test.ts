@@ -103,6 +103,32 @@ describe('docs content regressions', () => {
     );
   });
 
+  it('keeps IoT SDK compatibility table cells readable without raw HTML lists', async () => {
+    const { source } = await import('./source.server');
+    const page = source.getPage(
+      ['solutions', 'iot', 'reference', 'communicate-with-rtc-sdk'],
+      'en',
+    );
+
+    expect(page).toBeDefined();
+    expect(page?.type).toBe('docs');
+
+    if (!page || !('getText' in page.data)) {
+      throw new Error('Expected IoT SDK page to expose processed markdown.');
+    }
+
+    const processed = await page.data.getText('processed');
+
+    expect(processed).not.toContain('<ul>');
+    expect(processed).not.toContain('<li>');
+    expect(processed).toContain(
+      'Native/third-party frameworks: Android, iOS/macOS, Windows, Electron, Unity, Flutter, React Native',
+    );
+    expect(processed).toContain(
+      'Audio: G722, G711, Opus, AAC; Video: H.264, JPEG',
+    );
+  });
+
   it('keeps parameter table lists and callouts in the media push type definition page', async () => {
     const { source } = await import('./source.server');
     const page = source.getPage(
