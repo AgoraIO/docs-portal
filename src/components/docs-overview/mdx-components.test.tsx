@@ -224,16 +224,21 @@ describe('overview MDX components', () => {
     );
 
     expect(screen.getByText('How can we help?')).toBeVisible();
-    expect(screen.getByRole('link', { name: /Support tickets/i })).toHaveAttribute(
-      'href',
-      'https://agoraio.zendesk.com/hc/en-us',
-    );
+    expect(
+      screen.getByRole('link', { name: /Support tickets/i }),
+    ).toHaveAttribute('href', 'https://agoraio.zendesk.com/hc/en-us');
     expect(screen.getByText('Popular Knowledge Base')).toBeVisible();
-    expect(screen.getByRole('link', { name: /How to implement basic HTTP authentication/i })).toHaveAttribute(
+    expect(
+      screen.getByRole('link', {
+        name: /How to implement basic HTTP authentication/i,
+      }),
+    ).toHaveAttribute(
       'href',
       'https://docs.agora.io/en/help/integration-issues/restful_authentication',
     );
-    expect(screen.getByRole('link', { name: /Integration issues/i })).toHaveAttribute(
+    expect(
+      screen.getByRole('link', { name: /Integration issues/i }),
+    ).toHaveAttribute(
       'href',
       'https://docs.agora.io/en/help/integration-issues',
     );
@@ -475,7 +480,8 @@ describe('overview MDX components', () => {
         items={[
           {
             category: 'Hosted SDK reference',
-            description: 'Voice SDK for Android API reference with current and previous major-version coverage.',
+            description:
+              'Voice SDK for Android API reference with current and previous major-version coverage.',
             links: [
               {
                 href: 'https://api-ref.agora.io/en/voice-sdk/android/4.x/API/rtc_api_overview.html',
@@ -493,7 +499,8 @@ describe('overview MDX components', () => {
           },
           {
             category: 'Hosted SDK reference',
-            description: 'Voice SDK for iOS API reference with current and previous major-version coverage.',
+            description:
+              'Voice SDK for iOS API reference with current and previous major-version coverage.',
             links: [
               {
                 href: 'https://api-ref.agora.io/en/voice-sdk/ios/4.x/API/rtc_api_overview_ng.html',
@@ -595,15 +602,24 @@ describe('overview MDX components', () => {
       .getAllByRole('heading', { level: 3, name: 'Video Calling' })[0]
       ?.closest('section');
     expect(productSection).not.toBeNull();
-    const card = within(productSection as HTMLElement).getByText('Web').closest('section');
+    const card = within(productSection as HTMLElement)
+      .getByText('Web')
+      .closest('section');
     expect(card).not.toBeNull();
     expect(
-      within(card as HTMLElement).queryByText('Video SDK for Web API reference.'),
+      within(card as HTMLElement).queryByText(
+        'Video SDK for Web API reference.',
+      ),
     ).toBeNull();
     expect(within(card as HTMLElement).queryByText('Video SDK')).toBeNull();
-    expect(within(card as HTMLElement).queryByText('Hosted SDK reference')).toBeNull();
     expect(
-      within(card as HTMLElement).getByRole('heading', { level: 3, name: 'Web' }),
+      within(card as HTMLElement).queryByText('Hosted SDK reference'),
+    ).toBeNull();
+    expect(
+      within(card as HTMLElement).getByRole('heading', {
+        level: 3,
+        name: 'Web',
+      }),
     ).toBeVisible();
   });
 
@@ -643,7 +659,11 @@ describe('overview MDX components', () => {
   });
 
   it('uses the platform query parameter as the initial SDK stack filter', () => {
-    window.history.pushState(null, '', '/en/api-reference/sdks?platform=android');
+    window.history.pushState(
+      null,
+      '',
+      '/en/api-reference/sdks?platform=android',
+    );
 
     const components = getOverviewMDXComponents();
     const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
@@ -696,7 +716,11 @@ describe('overview MDX components', () => {
   });
 
   it('renders SDK downloads as product rows with version lists', () => {
-    window.history.pushState(null, '', '/en/api-reference/sdks?platform=android');
+    window.history.pushState(
+      null,
+      '',
+      '/en/api-reference/sdks?platform=android',
+    );
 
     render(<SdksCatalog />);
 
@@ -705,7 +729,9 @@ describe('overview MDX components', () => {
       'aria-pressed',
       'true',
     );
-    expect(screen.getByRole('heading', { name: 'Core Products' })).toBeVisible();
+    expect(
+      screen.getByRole('heading', { name: 'Core Products' }),
+    ).toBeVisible();
 
     const voiceHeadings = screen.getAllByRole('heading', {
       level: 3,
@@ -763,7 +789,9 @@ describe('overview MDX components', () => {
       'aria-pressed',
       'true',
     );
-    expect(screen.getByRole('heading', { name: 'Product Add-ons' })).toBeVisible();
+    expect(
+      screen.getByRole('heading', { name: 'Product Add-ons' }),
+    ).toBeVisible();
     expect(
       screen.getByRole('heading', { level: 3, name: 'Server Gateway SDK' }),
     ).toBeVisible();

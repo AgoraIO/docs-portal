@@ -169,7 +169,9 @@ function HelpHub({
               className="group flex min-h-[11.5rem] flex-col rounded-[22px] border border-border bg-background px-4 py-4 transition-colors hover:border-primary/35 hover:bg-accent/35"
               href={card.href}
               key={card.title}
-              rel={isExternalHref(card.href) ? 'noreferrer noopener' : undefined}
+              rel={
+                isExternalHref(card.href) ? 'noreferrer noopener' : undefined
+              }
               target={isExternalHref(card.href) ? '_blank' : undefined}
             >
               <div className="flex items-start justify-between gap-3">
@@ -208,7 +210,11 @@ function HelpHub({
                 <a
                   className="group flex items-center justify-between gap-4 rounded-[16px] px-3 py-3 text-sm text-foreground transition-colors hover:bg-accent/45 hover:text-primary"
                   href={item.href}
-                  rel={isExternalHref(item.href) ? 'noreferrer noopener' : undefined}
+                  rel={
+                    isExternalHref(item.href)
+                      ? 'noreferrer noopener'
+                      : undefined
+                  }
                   target={isExternalHref(item.href) ? '_blank' : undefined}
                 >
                   <span className="leading-6">{item.label}</span>
@@ -229,7 +235,9 @@ function HelpHub({
                 className="group flex items-center justify-between gap-4 rounded-[16px] border border-border bg-background px-4 py-3.5 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-accent/35 hover:text-primary"
                 href={item.href}
                 key={item.label}
-                rel={isExternalHref(item.href) ? 'noreferrer noopener' : undefined}
+                rel={
+                  isExternalHref(item.href) ? 'noreferrer noopener' : undefined
+                }
                 target={isExternalHref(item.href) ? '_blank' : undefined}
               >
                 <span>{item.label}</span>
@@ -243,11 +251,7 @@ function HelpHub({
   );
 }
 
-function HelpHubIcon({
-  kind,
-}: {
-  kind: HelpHubCard['icon'];
-}) {
+function HelpHubIcon({ kind }: { kind: HelpHubCard['icon'] }) {
   if (kind === 'ticket') {
     return <TicketIcon className="size-4" />;
   }
@@ -669,7 +673,9 @@ function SolutionCard({
               href={action.href}
               key={action.href}
               rel={
-                action.href.startsWith('http') ? 'noreferrer noopener' : undefined
+                action.href.startsWith('http')
+                  ? 'noreferrer noopener'
+                  : undefined
               }
               target={action.href.startsWith('http') ? '_blank' : undefined}
             >
@@ -907,11 +913,15 @@ export function RecipesCatalog({
             {groupedItems.map((group) => (
               <section className="space-y-4" key={group.product}>
                 <div className="flex items-start gap-3">
-                  {productGroups?.[group.product]?.icon ? (
-                    <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-foreground">
-                      <SolutionCardIcon kind={productGroups[group.product].icon!} />
-                    </span>
-                  ) : null}
+                  {(() => {
+                    const productGroup = productGroups?.[group.product];
+
+                    return productGroup?.icon ? (
+                      <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-foreground">
+                        <SolutionCardIcon kind={productGroup.icon} />
+                      </span>
+                    ) : null;
+                  })()}
                   <div className="min-w-0">
                     <h3 className="m-0 text-lg font-semibold text-foreground">
                       {productGroups?.[group.product]?.title ?? group.product}
@@ -930,7 +940,8 @@ export function RecipesCatalog({
                       description={item.description}
                       href={item.href}
                       key={
-                        item.href ?? `${item.product}-${item.stack ?? item.title}`
+                        item.href ??
+                        `${item.product}-${item.stack ?? item.title}`
                       }
                       size="small"
                       showDescription={showDescription}
@@ -1041,7 +1052,9 @@ function getInitialRecipeStack(
     return fallback;
   }
 
-  const queryValue = new URLSearchParams(window.location.search).get(queryParam);
+  const queryValue = new URLSearchParams(window.location.search).get(
+    queryParam,
+  );
 
   if (!queryValue) {
     return fallback;

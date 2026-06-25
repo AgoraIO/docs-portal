@@ -121,12 +121,9 @@ function SdkProductRow({
   platformId: string;
   product: SdkDownloadProduct;
 }) {
-  const [activeVersionId, setActiveVersionId] = useState(
-    product.versions[0]?.id ?? '',
-  );
+  const [activeVersionIndex, setActiveVersionIndex] = useState('0');
   const activeVersion =
-    product.versions.find((version) => version.id === activeVersionId) ??
-    product.versions[0];
+    product.versions[Number(activeVersionIndex)] ?? product.versions[0];
 
   return (
     <article className="grid gap-4 rounded-lg bg-muted/35 p-4 sm:grid-cols-[auto_minmax(0,1fr)] lg:grid-cols-[auto_minmax(12rem,1fr)_minmax(14rem,18rem)_auto] lg:items-center lg:p-6">
@@ -147,11 +144,14 @@ function SdkProductRow({
         <span className="sr-only">{`${product.label} version`}</span>
         <select
           className="h-11 w-full rounded-md border border-transparent bg-background px-3 text-sm font-medium text-foreground shadow-xs outline-none transition-colors hover:border-border focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-          onChange={(event) => setActiveVersionId(event.target.value)}
-          value={activeVersion?.id ?? ''}
+          onChange={(event) => setActiveVersionIndex(event.target.value)}
+          value={activeVersionIndex}
         >
-          {product.versions.map((version) => (
-            <option key={`${platformId}-${product.id}-${version.id}`} value={version.id}>
+          {product.versions.map((version, index) => (
+            <option
+              key={`${platformId}-${product.id}-${version.id}-${index}`}
+              value={String(index)}
+            >
               {formatVersionLabel(version.label)}
             </option>
           ))}
@@ -161,10 +161,16 @@ function SdkProductRow({
       {activeVersion ? (
         <div className="flex flex-wrap gap-2 lg:justify-end">
           {activeVersion.packageManager ? (
-            <SdkDownloadButton href={activeVersion.packageManager} type="package" />
+            <SdkDownloadButton
+              href={activeVersion.packageManager}
+              type="package"
+            />
           ) : null}
           {activeVersion.downloadLink ? (
-            <SdkDownloadButton href={activeVersion.downloadLink} type="download" />
+            <SdkDownloadButton
+              href={activeVersion.downloadLink}
+              type="download"
+            />
           ) : null}
         </div>
       ) : null}
@@ -216,7 +222,10 @@ function SdkProductIcon({
     icon = <RadioTowerIcon className={iconClassName} />;
   } else if (normalized.includes('iot')) {
     icon = <SmartphoneIcon className={iconClassName} />;
-  } else if (normalized.includes('recording') || normalized.includes('gateway')) {
+  } else if (
+    normalized.includes('recording') ||
+    normalized.includes('gateway')
+  ) {
     icon = <ServerCogIcon className={iconClassName} />;
   } else if (normalized.includes('media')) {
     icon = <MonitorPlayIcon className={iconClassName} />;
@@ -232,7 +241,9 @@ function getInitialPlatformId() {
     return sdkDownloadPlatforms[0]?.id ?? 'android';
   }
 
-  const queryValue = new URLSearchParams(window.location.search).get('platform');
+  const queryValue = new URLSearchParams(window.location.search).get(
+    'platform',
+  );
 
   if (!queryValue) {
     return sdkDownloadPlatforms[0]?.id ?? 'android';
