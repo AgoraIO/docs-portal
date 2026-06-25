@@ -101,4 +101,47 @@ describe('docs journeys', () => {
       ]),
     );
   });
+
+  it('defines build subfolder metadata for english voice agent docs', () => {
+    const shapeMeta = JSON.parse(
+      readDoc('en/ai/build/shape-the-conversation/meta.json'),
+    );
+    expect(shapeMeta).toEqual({
+      title: 'Shape the conversation',
+      pages: [
+        'interrupt-agent',
+        'short-term-memory',
+        'custom-information',
+        'filler-words',
+      ],
+    });
+
+    const customModelMeta = JSON.parse(
+      readDoc('en/ai/build/custom-model-integration/meta.json'),
+    );
+    expect(customModelMeta).toEqual({
+      title: 'Custom model integration',
+      pages: [
+        'custom-llm',
+        'audio-output',
+        'build-server-client',
+        'presets',
+      ],
+    });
+
+    const runtimeMeta = JSON.parse(
+      readDoc('en/ai/build/handle-runtime-events/meta.json'),
+    );
+    expect(runtimeMeta).toEqual({
+      title: 'Handle runtime events',
+      pages: [
+        'get-runtime-events',
+        'monitor-agent-runtime',
+        'debug-agent-failures',
+        'retrieve-session-history',
+        'event-notifications',
+        'webhooks',
+      ],
+    });
+  });
 });
