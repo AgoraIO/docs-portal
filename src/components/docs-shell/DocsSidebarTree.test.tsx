@@ -73,10 +73,10 @@ describe('DocsSidebarTree', () => {
     expect(activeButton).toBeInstanceOf(HTMLElement);
     expect(activeButton?.className).not.toContain('font-semibold');
     expect(activeButton).toHaveClass(
-      'min-h-[34px]',
+      'min-h-[30px]',
       'h-auto',
       'items-start',
-      'py-1.5',
+      'py-1',
     );
     expect(activeButton?.className).toContain(
       'data-[active=true]:before:bg-[color:var(--accent-brand)]',
@@ -233,11 +233,39 @@ describe('DocsSidebarTree', () => {
     expect(label).not.toHaveClass('[-webkit-line-clamp:2]');
     const linkClasses = link.className.split(/\s+/);
     expect(link.className).toContain('overflow-visible');
-    expect(link.className).toContain('min-h-[30px]');
+    expect(link.className).toContain('min-h-[28px]');
     expect(link.className).toContain('h-auto');
     expect(link.className).toContain('items-start');
     expect(linkClasses).not.toContain('overflow-hidden');
     expect(linkClasses).not.toContain('h-[30px]');
+  });
+
+  it('uses compact vertical spacing for sidebar entries and section labels', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/introduction/about-agora',
+            title: 'About Agora',
+            type: 'page',
+            url: '/en/introduction/about-agora',
+          },
+        ],
+        id: 'get-started',
+        title: 'Get Started',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/introduction/about-agora');
+
+    const sectionLabel = await screen.findByText('Get Started');
+    const labelWrapper = sectionLabel.closest('[data-sidebar="group-label"]');
+    const activeLink = screen.getByRole('link', { name: 'About Agora' });
+    const activeButton = activeLink.closest('[data-sidebar="menu-button"]');
+
+    expect(labelWrapper).toHaveClass('mt-3.5', 'mb-1.5', 'py-0.5');
+    expect(activeButton).toHaveClass('min-h-[30px]', 'py-1');
   });
 
   it('supports collapsible sections', async () => {
