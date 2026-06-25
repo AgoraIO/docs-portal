@@ -391,19 +391,19 @@ export const OPENAPI_LANES = [
     id: 'media-gateway-rest',
     locales: ['en'],
     parentUrl: {
-      en: '/en/realtime-media/rtmp-gateway/reference/rest-api',
-      'zh-CN': '/zh-CN/realtime-media/rtmp-gateway/reference/rest-api',
+      en: '/en/api-reference/api-ref/rtmp-gateway',
+      'zh-CN': '/zh-CN/api-reference/api-ref/rtmp-gateway',
     },
     publicSourceUrl: {
       en: '/openapi/media-gateway/media-gateway.en.yaml',
       'zh-CN': '/openapi/media-gateway/media-gateway.en.yaml',
     },
-    routePrefix: 'realtime-media/rtmp-gateway/reference/rest-api',
+    routePrefix: 'api-reference/api-ref/rtmp-gateway',
     sourcePath: {
       en: 'content/openapi/media-gateway/media-gateway.en.yaml',
       'zh-CN': 'content/openapi/media-gateway/media-gateway.en.yaml',
     },
-    tab: 'realtime-media',
+    tab: 'api-reference',
     operations: {
       'create-media-gateway-streaming-key': {
         routeLeaf: 'create-streaming-key',

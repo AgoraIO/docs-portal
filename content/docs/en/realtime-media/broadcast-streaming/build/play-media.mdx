@@ -6,7 +6,7 @@ description: "Play local or online media files locally or to remote users in an 
 **Supported platforms:** Android, iOS, macOS, Windows, Electron, React Native, and Unity.
 
 <PlatformStructured platform="android">
-Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app. 
+Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app.
 
 This page shows you how to use media player-related APIs to play local or online media resources with remote users in Broadcast Streaming channels.
 
@@ -18,7 +18,7 @@ To play a media file in a channel, you open the file using a media player instan
 
 ![Media player](/images/video-sdk/play-media.svg)
 
-## Prerequisites 
+## Prerequisites
 
 Ensure that you have implemented the [SDK quickstart](../index) in your project.
 
@@ -36,7 +36,7 @@ To implement a media player in your app, follow these steps:
 <CodeBlockTab value="java">
   ```java
   mRtcEngine = RtcEngine.create(config);
-  
+
    // Create a media player object
    mediaPlayer = mRtcEngine.createMediaPlayer();
    // Register a player observer
@@ -47,7 +47,7 @@ To implement a media player in your app, follow these steps:
 <CodeBlockTab value="kotlin">
   ```kotlin
   mRtcEngine = RtcEngine.create(config)
-  
+
    // Create a media player object
    mediaPlayer = mRtcEngine.createMediaPlayer()
    // Register a player observer
@@ -77,7 +77,7 @@ To implement a media player in your app, follow these steps:
         setMediaPlayerViewEnable(false);
       }
     }
-  
+
     @Override
     // Observe the current playback progress
     public void onPositionChanged(long position) {
@@ -92,7 +92,7 @@ To implement a media player in your app, follow these steps:
         });
       }
     }
-  
+
     @Override
     // Observe player events
     public void onPlayerEvent(io.agora.mediaplayer.Constants.MediaPlayerEvent mediaPlayerEvent) {
@@ -110,17 +110,17 @@ To implement a media player in your app, follow these steps:
     ) {
       Log.e(TAG, "onPlayerStateChanged mediaPlayerState $mediaPlayerState")
       Log.e(TAG, "onPlayerStateChanged mediaPlayerError $mediaPlayerError")
-  
+
       when (mediaPlayerState) {
         PLAYER_STATE_OPEN_COMPLETED -> setMediaPlayerViewEnable(true)
         PLAYER_STATE_IDLE, PLAYER_STATE_PLAYBACK_COMPLETED -> setMediaPlayerViewEnable(false)
       }
     }
-  
+
     // Observe the current playback progress
     override fun onPositionChanged(position: Long) {
       Log.e(TAG, "onPositionChanged position $position")
-  
+
       if (playerDuration > 0) {
         val result = (position.toFloat() / playerDuration.toFloat() * 100).toInt()
         handler.post {
@@ -128,7 +128,7 @@ To implement a media player in your app, follow these steps:
         }
       }
     }
-  
+
     // Observe player events
     override fun onPlayerEvent(mediaPlayerEvent: io.agora.mediaplayer.Constants.MediaPlayerEvent) {
       Log.e(TAG, "onPlayerEvent mediaPlayerEvent $mediaPlayerEvent")
@@ -163,7 +163,7 @@ To implement a media player in your app, follow these steps:
      mediaPlayer.mediaPlayerId,
      0
    )
-  
+
    mRtcEngine.setupLocalVideo(videoCanvas)
   ```
 </CodeBlockTab>
@@ -180,12 +180,12 @@ To implement a media player in your app, follow these steps:
 <CodeBlockTab value="java">
   ```java
   private ChannelMediaOptions options = new ChannelMediaOptions();
-  
+
     // Set up options
     options.publishMediaPlayerId = mediaPlayer.getMediaPlayerId();
     options.publishMediaPlayerAudioTrack = true;
     options.publishMediaPlayerVideoTrack = true;
-  
+
     // Join the channel
     int res = mRtcEngine.joinChannel(accessToken, channelId, 0, options);
   ```
@@ -194,12 +194,12 @@ To implement a media player in your app, follow these steps:
 <CodeBlockTab value="kotlin">
   ```kotlin
   val options = ChannelMediaOptions()
-   
+
    // Set up options
    options.publishMediaPlayerId = mediaPlayer.mediaPlayerId
    options.publishMediaPlayerAudioTrack = true
    options.publishMediaPlayerVideoTrack = true
-   
+
    // Join the channel
    val res = mRtcEngine.joinChannel(accessToken, channelId, 0, options)
   ```
@@ -321,7 +321,7 @@ Agora provides an open source sample project [MediaPlayer](https://github.com/Ag
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
-Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app. 
+Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app.
 
 This page shows you how to use media player-related APIs to play local or online media resources with remote users in Broadcast Streaming channels.
 
@@ -333,7 +333,7 @@ To play a media file in a channel, you open the file using a media player instan
 
 ![Media player](/images/video-sdk/play-media.svg)
 
-## Prerequisites 
+## Prerequisites
 
 Ensure that you have implemented the [SDK quickstart](../index) in your project.
 
@@ -413,9 +413,9 @@ To implement a media player in your app, follow these steps:
 
   ```swift
   let option1 = AgoraRtcChannelMediaOptions()
-  
+
   // ...
-  
+
   option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
 
   ```
@@ -431,7 +431,7 @@ To implement a media player in your app, follow these steps:
   ```swift
   mediaPlayerKit.play()
   ```
-  
+
 :::warning
 
 Call the `play` method to play the media file only after receiving the `didChangedToState` callback reporting the player state as `AgoraMediaPlayerStateOpenCompleted`.
@@ -483,7 +483,7 @@ Agora provides an open source sample project [MediaPlayer](https://github.com/Ag
 </PlatformStructured>
 
 <PlatformStructured platform="macos">
-Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app. 
+Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app.
 
 This page shows you how to use media player-related APIs to play local or online media resources with remote users in Broadcast Streaming channels.
 
@@ -495,7 +495,7 @@ To play a media file in a channel, you open the file using a media player instan
 
 ![Media player](/images/video-sdk/play-media.svg)
 
-## Prerequisites 
+## Prerequisites
 
 Ensure that you have implemented the [SDK quickstart](../index) in your project.
 
@@ -575,9 +575,9 @@ To implement a media player in your app, follow these steps:
 
   ```swift
   let option1 = AgoraRtcChannelMediaOptions()
-  
+
   // ...
-  
+
   option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
 
   ```
@@ -593,7 +593,7 @@ To implement a media player in your app, follow these steps:
   ```swift
   mediaPlayerKit.play()
   ```
-  
+
 :::warning
 
 Call the `play` method to play the media file only after receiving the `didChangedToState` callback reporting the player state as `AgoraMediaPlayerStateOpenCompleted`.
@@ -645,7 +645,7 @@ Agora provides an open source sample project [MediaPlayer](https://github.com/Ag
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
-Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app. 
+Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app.
 
 This page shows you how to use media player-related APIs to play local or online media resources with remote users in Broadcast Streaming channels.
 
@@ -657,7 +657,7 @@ To play a media file in a channel, you open the file using a media player instan
 
 ![Media player](/images/video-sdk/play-media.svg)
 
-## Prerequisites 
+## Prerequisites
 
 Ensure that you have implemented the [SDK quickstart](../index) in your project.
 
@@ -691,20 +691,20 @@ To implement a media player in your app, follow these steps:
 	  // ...
 	  // Register the player observer
 	  ret = m_mediaPlayer->registerPlayerSourceObserver(&m_mediaPlayerEvent);
-	  m_lstInfo.InsertString(m_lstInfo.GetCount(), 
+	  m_lstInfo.InsertString(m_lstInfo.GetCount(),
               _T("registerPlayerSourceObserver"));
 
-	  if (0 == 
+	  if (0 ==
       m_rtcEngine->joinChannel(APP_TOKEN, szChannelId.c_str(), 0, options)) {
-		  strInfo.Format(_T("Join channel %s, use ChannelMediaOptions"), 
+		  strInfo.Format(_T("Join channel %s, use ChannelMediaOptions"),
             getCurrentTime());
 	  }
 	  else {
 		  // Unregister the player observer
 		  ret = m_mediaPlayer->unregisterPlayerSourceObserver(&m_mediaPlayerEvent);
-		  m_lstInfo.InsertString(m_lstInfo.GetCount(), 
+		  m_lstInfo.InsertString(m_lstInfo.GetCount(),
                 _T("unregisterPlayerSourceObserver"));
-		
+
 		  // Leave the channel in the engine.
 		  if (0 == m_rtcEngine->leaveChannel()) {
 			  strInfo.Format(_T("Leave channel %s"), getCurrentTime());
@@ -716,10 +716,10 @@ To implement a media player in your app, follow these steps:
   ```
 
 1. Implement callbacks for the observer.
-  
+
   ```cpp
   // Observe player state changes
-  LRESULT CAgoraMediaPlayer::OnmediaPlayerStateChanged(WPARAM wParam, 
+  LRESULT CAgoraMediaPlayer::OnmediaPlayerStateChanged(WPARAM wParam,
                              LPARAM lParam) {
 	  CString strState;
 	  CString strError;
@@ -748,7 +748,7 @@ To implement a media player in your app, follow these steps:
   }
 
   // Observe current playback progress
-  LRESULT CAgoraMediaPlayer::OnmediaPlayerPositionChanged(WPARAM wParam, 
+  LRESULT CAgoraMediaPlayer::OnmediaPlayerPositionChanged(WPARAM wParam,
                               LPARAM lParam) {
 	  int64_t *p = (int64_t *)wParam;
 	  m_sldVideo.SetPos((int)*p);
@@ -807,7 +807,7 @@ To implement a media player in your app, follow these steps:
         m_mediaPlayer->open(tmp.c_str(), 0);
         break;
       default:
-        m_lstInfo.InsertString(m_lstInfo.GetCount(), 
+        m_lstInfo.InsertString(m_lstInfo.GetCount(),
                   _T("can not open player."));
 		    break;
     }
@@ -840,7 +840,7 @@ To implement a media player in your app, follow these steps:
     }
   }
   ```
-  
+
 :::warning
 
 Call the `play` method to play the media file only after receiving the `onPlayerSourceStateChanged` callback reporting the player state as `PLAYER_STATE_OPEN_COMPLETED`.
@@ -908,7 +908,7 @@ Agora provides an open source [MediaPlayer](https://github.com/AgoraIO/API-Examp
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
-Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app. 
+Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app.
 
 This page shows you how to use media player-related APIs to play local or online media resources with remote users in Broadcast Streaming channels.
 
@@ -920,7 +920,7 @@ To play a media file in a channel, you open the file using a media player instan
 
 ![Media player](/images/video-sdk/play-media.svg)
 
-## Prerequisites 
+## Prerequisites
 
 Ensure that you have implemented the [SDK quickstart](../index) in your project.
 
@@ -948,43 +948,43 @@ To implement a media player in your app, follow these steps:
 
 1. Register media player observer callbacks based on your needs:
 
-  - `onPlayerSourceStateChanged`: Reports player state changes.
-  - `onPositionChanged`: Reports playback progress.
-  - `onPlayerEvent`: Reports player events.
+   - `onPlayerSourceStateChanged`: Reports player state changes.
+   - `onPositionChanged`: Reports playback progress.
+   - `onPlayerEvent`: Reports player events.
 
-  ```js
-  const EventHandles = {
-    // Report player state change
-    onPlayerSourceStateChanged: (state, ec) => {
-      console.log(`state: ${state}, ec: ${ec}`);
-    },
+   ```js
+   const EventHandles = {
+     // Report player state change
+     onPlayerSourceStateChanged: (state, ec) => {
+       console.log(`state: ${state}, ec: ${ec}`);
+     },
 
-    // Report current media file playback progress
-    onPositionChanged: (position) => {
-      console.log(`position: ${position}`);
-    },
+     // Report current media file playback progress
+     onPositionChanged: (position) => {
+       console.log(`position: ${position}`);
+     },
 
-    // Report player event
-    onPlayerEvent: (eventCode, elapsedTime, message) => {
-      console.log(
-        `eventCode: ${eventCode}, elapsedTime: ${elapsedTime}, message: ${message}`
-      );
-    }
-  };
+     // Report player event
+     onPlayerEvent: (eventCode, elapsedTime, message) => {
+       console.log(
+         `eventCode: ${eventCode}, elapsedTime: ${elapsedTime}, message: ${message}`
+       );
+     }
+   };
 
-  // Register main callback events
-  rtcEngine.registerEventHandler(EventHandles);
-  ```
+   // Register main callback events
+   rtcEngine.registerEventHandler(EventHandles);
+   ```
 
 1. Open a media file:
 
   ```javascript
   open = () => {
     const url = 'https://example/video.mov';
-    
+
     if (!url) {
       this.error("url is invalid");
-      return; 
+      return;
     }
 
     mediaPlayer.open(url, 0);
@@ -1048,7 +1048,7 @@ Agora provides an open source [MediaPlayer](https://github.com/AgoraIO-Extension
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
-Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app. 
+Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app.
 
 This page shows you how to use media player-related APIs to play local or online media resources with remote users in Broadcast Streaming channels.
 
@@ -1060,7 +1060,7 @@ To play a media file in a channel, you open the file using a media player instan
 
 ![Media player](/images/video-sdk/play-media.svg)
 
-## Prerequisites 
+## Prerequisites
 
 Ensure that you have implemented the [SDK quickstart](../index) in your project.
 
@@ -1088,43 +1088,43 @@ To implement a media player in your app, follow these steps:
 
 1. Register media player observer callbacks based on your needs:
 
-  - `onPlayerSourceStateChanged`: Reports player state changes.
-  - `onPositionChanged`: Reports playback progress.
-  - `onPlayerEvent`: Reports player events.
+   - `onPlayerSourceStateChanged`: Reports player state changes.
+   - `onPositionChanged`: Reports playback progress.
+   - `onPlayerEvent`: Reports player events.
 
-  ```js
-  const EventHandles = {
-    // Report player state change
-    onPlayerSourceStateChanged: (state, ec) => {
-      console.log(`state: ${state}, ec: ${ec}`);
-    },
+   ```js
+   const EventHandles = {
+     // Report player state change
+     onPlayerSourceStateChanged: (state, ec) => {
+       console.log(`state: ${state}, ec: ${ec}`);
+     },
 
-    // Report current media file playback progress
-    onPositionChanged: (position) => {
-      console.log(`position: ${position}`);
-    },
+     // Report current media file playback progress
+     onPositionChanged: (position) => {
+       console.log(`position: ${position}`);
+     },
 
-    // Report player event
-    onPlayerEvent: (eventCode, elapsedTime, message) => {
-      console.log(
-        `eventCode: ${eventCode}, elapsedTime: ${elapsedTime}, message: ${message}`
-      );
-    }
-  };
+     // Report player event
+     onPlayerEvent: (eventCode, elapsedTime, message) => {
+       console.log(
+         `eventCode: ${eventCode}, elapsedTime: ${elapsedTime}, message: ${message}`
+       );
+     }
+   };
 
-  // Register main callback events
-  rtcEngine.registerEventHandler(EventHandles);
-  ```
+   // Register main callback events
+   rtcEngine.registerEventHandler(EventHandles);
+   ```
 
 1. Open a media file:
 
   ```typescript
   open = () => {
     const url = 'https://example/video.mov';
-    
+
     if (!url) {
       this.error("url is invalid");
-      return; 
+      return;
     }
 
     mediaPlayer.open(url, 0);
@@ -1188,7 +1188,7 @@ Agora provides an open source [MediaPlayer](https://github.com/AgoraIO-Extension
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
-Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your game. 
+Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your game.
 
 This page shows you how to use media player-related APIs to play local or online media resources with remote users in Broadcast Streaming channels.
 
@@ -1200,7 +1200,7 @@ To play a media file in a channel, you open the file using a media player instan
 
 ![Media player](/images/video-sdk/play-media.svg)
 
-## Prerequisites 
+## Prerequisites
 
 Ensure that you have implemented the [SDK quickstart](../index) in your project.
 
@@ -1371,7 +1371,7 @@ public void OnOpenButtonPress()
 Alternatively, use `OpenWithMediaSource` to open media resources and configure playback settings, like automatic playback and real-time caching.
 
 ### Publish the audio and video streams
-  
+
 When joining a channel, set the `ChannelMediaOptions` as follows:
 
 ```csharp

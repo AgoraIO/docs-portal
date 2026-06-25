@@ -1,7 +1,11 @@
 import type { Folder, Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import type { DocsMeta } from './docs-meta-schema';
-import { getNavScopeSidebarNodes, resolveDocsNavScope } from './docs-nav-scope';
+import {
+  getNavScopeSidebarNodes,
+  getScopedNavScopeSidebarNodes,
+  resolveDocsNavScope,
+} from './docs-nav-scope';
 
 const apiReferenceTree: Root = {
   children: [
@@ -21,14 +25,14 @@ const apiReferenceTree: Root = {
                       $id: 'convoai-rest-api-authentication',
                       name: 'Authentication',
                       type: 'page',
-                      url: '/en/api-reference/conversational-ai/rest-api/authentication',
+                      url: '/en/api-reference/api-ref/conversational-ai/rest-api/authentication',
                     },
                   ],
                   index: {
                     $id: 'convoai-rest-api-index',
                     name: 'REST API',
                     type: 'page',
-                    url: '/en/api-reference/conversational-ai/rest-api',
+                    url: '/en/api-reference/api-ref/conversational-ai/rest-api',
                   },
                   name: 'REST API',
                   type: 'folder',
@@ -37,14 +41,14 @@ const apiReferenceTree: Root = {
                   $id: 'convoai-go-page',
                   name: 'Go',
                   type: 'page',
-                  url: '/en/api-reference/conversational-ai/go',
+                  url: '/en/api-reference/api-ref/conversational-ai/go',
                 },
               ],
               index: {
                 $id: 'convoai-index',
                 name: 'Conversational AI',
                 type: 'page',
-                url: '/en/api-reference/conversational-ai',
+                url: '/en/api-reference/api-ref/conversational-ai',
               },
               name: 'Conversational AI',
               type: 'folder',
@@ -56,7 +60,7 @@ const apiReferenceTree: Root = {
                   $id: 'rtc-index',
                   name: 'RTC',
                   type: 'page',
-                  url: '/en/api-reference/rtc',
+                  url: '/en/api-reference/api-ref/rtc',
                 },
                 {
                   $id: 'android-folder',
@@ -133,7 +137,7 @@ const apiReferenceTree: Root = {
                 $id: 'rtc-index',
                 name: 'RTC',
                 type: 'page',
-                url: '/en/api-reference/rtc',
+                url: '/en/api-reference/api-ref/rtc',
               },
               name: 'RTC',
               type: 'folder',
@@ -201,7 +205,7 @@ describe('docs nav scope', () => {
     expect(scope?.activeVersion?.id).toBe('current');
     expect(scope?.sidebarRoot.$id).toBe('android-current-folder');
     expect(scope?.header).toEqual({
-      backHref: '/en/api-reference/rtc',
+      backHref: '/en/api-reference/api-ref/rtc',
       backLabel: 'RTC',
       title: 'Android API Reference',
       versionSwitcher: {
@@ -294,13 +298,13 @@ describe('docs nav scope', () => {
             id: 'folder-convoai-rest-api-folder',
             title: 'RESTful',
             type: 'section',
-            url: '/en/api-reference/conversational-ai/rest-api',
+            url: '/en/api-reference/api-ref/conversational-ai/rest-api',
           },
           {
-            id: '/en/api-reference/conversational-ai/go',
+            id: '/en/api-reference/api-ref/conversational-ai/go',
             title: 'Go',
             type: 'page',
-            url: '/en/api-reference/conversational-ai/go',
+            url: '/en/api-reference/api-ref/conversational-ai/go',
           },
         ],
         collapsible: false,
@@ -314,7 +318,7 @@ describe('docs nav scope', () => {
         id: 'folder-rtc-folder',
         title: 'RTC',
         type: 'section',
-        url: '/en/api-reference/rtc',
+        url: '/en/api-reference/api-ref/rtc',
       },
     ]);
   });
@@ -423,6 +427,136 @@ describe('docs nav scope', () => {
         collapsible: false,
         id: 'separator-Build Live Interaction',
         title: 'Build Live Interaction',
+        type: 'section',
+      },
+    ]);
+  });
+
+  it('preserves separators inside a scoped nav scope sidebar', () => {
+    const recipesTree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'api-reference-folder',
+              children: [
+                {
+                  $id: 'recipes-folder',
+                  children: [
+                    {
+                      $id: 'recipes-quickstarts-separator',
+                      name: 'Content Quickstarts',
+                      type: 'separator',
+                    },
+                    {
+                      $id: 'recipes-python-quickstart',
+                      name: 'Python Quickstart',
+                      type: 'page',
+                      url: '/en/api-reference/recipes/python-quickstart',
+                    },
+                    {
+                      $id: 'recipes-integration-separator',
+                      name: 'Content Integration Patterns',
+                      type: 'separator',
+                    },
+                    {
+                      $id: 'recipes-custom-llm',
+                      name: 'Custom LLM',
+                      type: 'page',
+                      url: '/en/api-reference/recipes/custom-llm',
+                    },
+                  ],
+                  index: {
+                    $id: 'recipes-index',
+                    name: 'Recipes',
+                    type: 'page',
+                    url: '/en/api-reference/recipes',
+                  },
+                  name: 'Recipes',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'api-reference-index',
+                name: 'Reference',
+                type: 'page',
+                url: '/en/api-reference',
+              },
+              name: 'Reference',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+    const getRecipesMeta = (node: Folder | Root): DocsMeta | undefined =>
+      node.$id === 'recipes-folder'
+        ? {
+            navScope: {},
+            pages: [
+              'index',
+              '---Content Quickstarts---',
+              'python-quickstart',
+              '---Content Integration Patterns---',
+              'custom-llm',
+            ],
+            title: 'Recipes',
+          }
+        : undefined;
+    const scope = resolveDocsNavScope({
+      activePath: '/en/api-reference/recipes',
+      getNodeMeta: getRecipesMeta,
+      root: recipesTree,
+      tab: 'api-reference',
+    });
+
+    if (!scope) {
+      throw new Error('expected recipes nav scope');
+    }
+
+    expect(
+      getScopedNavScopeSidebarNodes({
+        getNodeMeta: getRecipesMeta,
+        navScope: scope,
+      }),
+    ).toEqual([
+      {
+        id: '/en/api-reference/recipes',
+        title: 'Recipes',
+        type: 'page',
+        url: '/en/api-reference/recipes',
+      },
+      {
+        children: [
+          {
+            id: '/en/api-reference/recipes/python-quickstart',
+            title: 'Python Quickstart',
+            type: 'page',
+            url: '/en/api-reference/recipes/python-quickstart',
+          },
+        ],
+        collapsible: false,
+        id: 'separator-Content Quickstarts',
+        title: 'Content Quickstarts',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            id: '/en/api-reference/recipes/custom-llm',
+            title: 'Custom LLM',
+            type: 'page',
+            url: '/en/api-reference/recipes/custom-llm',
+          },
+        ],
+        collapsible: false,
+        id: 'separator-Content Integration Patterns',
+        title: 'Content Integration Patterns',
         type: 'section',
       },
     ]);

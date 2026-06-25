@@ -57,13 +57,13 @@ engine.registerAudioFrameObserver(new IAudioFrameObserver() {
 
     return false;
   }
-    
+
   // Implement the onPlaybackAudioFrame callback
   @Override
   public boolean onPlaybackAudioFrame(byte[] samples, int numOfSamples, int bytesPerSample, int channels, int samplesPerSec) {
     return false;
   }
-    
+
   // Implement the onPlaybackAudioFrameBeforeMixing callback
   @Override
   public boolean onPlaybackAudioFrameBeforeMixing(byte[] samples, int numOfSamples, int bytesPerSample, int channels, int samplesPerSec, int uid) {
@@ -91,10 +91,10 @@ engine.registerAudioFrameObserver(object : IAudioFrameObserver {
 
   // Implement the onRecordAudioFrame callback
   override fun onRecordAudioFrame(
-    samples: ByteArray, 
-    numOfSamples: Int, 
-    bytesPerSample: Int, 
-    channels: Int, 
+    samples: ByteArray,
+    numOfSamples: Int,
+    bytesPerSample: Int,
+    channels: Int,
     samplesPerSec: Int
   ): Boolean {
     if (isEnableLoopBack) {
@@ -105,10 +105,10 @@ engine.registerAudioFrameObserver(object : IAudioFrameObserver {
 
   // Implement the onPlaybackAudioFrame callback
   override fun onPlaybackAudioFrame(
-    samples: ByteArray, 
-    numOfSamples: Int, 
-    bytesPerSample: Int, 
-    channels: Int, 
+    samples: ByteArray,
+    numOfSamples: Int,
+    bytesPerSample: Int,
+    channels: Int,
     samplesPerSec: Int
   ): Boolean {
     return false
@@ -116,11 +116,11 @@ engine.registerAudioFrameObserver(object : IAudioFrameObserver {
 
   // Implement the onPlaybackAudioFrameBeforeMixing callback
   override fun onPlaybackAudioFrameBeforeMixing(
-    samples: ByteArray, 
-    numOfSamples: Int, 
-    bytesPerSample: Int, 
-    channels: Int, 
-    samplesPerSec: Int, 
+    samples: ByteArray,
+    numOfSamples: Int,
+    bytesPerSample: Int,
+    channels: Int,
+    samplesPerSec: Int,
     uid: Int
   ): Boolean {
     return false
@@ -128,10 +128,10 @@ engine.registerAudioFrameObserver(object : IAudioFrameObserver {
 
   // Implement the onMixedAudioFrame callback
   override fun onMixedAudioFrame(
-    samples: ByteArray, 
-    numOfSamples: Int, 
-    bytesPerSample: Int, 
-    channels: Int, 
+    samples: ByteArray,
+    numOfSamples: Int,
+    bytesPerSample: Int,
+    channels: Int,
     samplesPerSec: Int
   ): Boolean {
     return false
@@ -219,8 +219,8 @@ class RawAudioDataMain: BaseViewController {
   // Initialize agoraKit and register the corresponding callbacks
   agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
 
-  // Set the audio frame delegate. 
-  // You need to implement the AgoraAudioFrameDelegate protocol in this method  
+  // Set the audio frame delegate.
+  // You need to implement the AgoraAudioFrameDelegate protocol in this method
   agoraKit.setAudioFrameDelegate(self)
 
   // Configure the audio frames captured by each callback
@@ -315,7 +315,7 @@ Refer to the following sample code to implement this logic:
 
 ```swift
 
-class RawAudioDataMain: BaseViewController 
+class RawAudioDataMain: BaseViewController
 {
   var localVideo = Bundle.loadVideoView(type: .local, audioOnly: true)
   var remoteVideo = Bundle.loadVideoView(type: .remote, audioOnly: true)
@@ -328,7 +328,7 @@ class RawAudioDataMain: BaseViewController
   // Initialize agoraKit and register the corresponding callbacks
   agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
 
-  // Set the audio frame delegate. 
+  // Set the audio frame delegate.
   // You need to implement the AgoraAudioFrameDelegate protocol in this method
   agoraKit.setAudioFrameDelegate(self)
 
@@ -425,16 +425,16 @@ Refer to the following sample code to implement this logic:
 ```cpp
 BOOL CAgoraOriginalAudioDlg::RegisterAudioFrameObserver(
   BOOL bEnable, IAudioFrameObserver *audioFrameObserver) {
-  
+
   agora::util::AutoPtr<agora::media::IMediaEngine> mediaEngine;
   // Query AGORA_IID_MEDIA_ENGINE interface
   mediaEngine.queryInterface(m_rtcEngine, agora::rtc::AGORA_IID_MEDIA_ENGINE);
   int nRet = 0;
-  
+
   if (mediaEngine.get() == NULL) return FALSE;
-  
+
   if (bEnable) {
-    // Register the audio observer 
+    // Register the audio observer
     nRet = mediaEngine->registerAudioFrameObserver(audioFrameObserver);
   } else {
     // Unregister the audio observer
@@ -445,13 +445,13 @@ BOOL CAgoraOriginalAudioDlg::RegisterAudioFrameObserver(
 }
 
 // Implement the onRecordAudioFrame callback
-bool COriginalAudioProcFrameObserver::onRecordAudioFrame(const char* channelId, 
+bool COriginalAudioProcFrameObserver::onRecordAudioFrame(const char* channelId,
                              AudioFrame& audioFrame) {
   SIZE_T nSize = audioFrame.channels * audioFrame.samplesPerChannel * 2;
   unsigned int readByte = 0;
   int timestamp = GetTickCount();
   short *pBuffer = (short *)audioFrame.buffer;
-  
+
   for (SIZE_T i = 0; i < nSize / 2; i++) {
     if (pBuffer[i] * 2 > 32767) {
       pBuffer[i] = 32767;
@@ -461,14 +461,14 @@ bool COriginalAudioProcFrameObserver::onRecordAudioFrame(const char* channelId,
       pBuffer[i] *= 2;
     }
   }
-  
+
 #ifdef _DEBUG
   CString strInfo;
   strInfo.Format(_T("audio Frame buffer size:%d, timestamp:%d \n"), nSize, timestamp);
   OutputDebugString(strInfo);
   audioFrame.renderTimeMs = timestamp;
 #endif
-  
+
   return true;
 }
 
@@ -566,10 +566,10 @@ Follow these steps to implement raw audio data processing functionality in your 
 1. Call `SetRecordingAudioFrameParameters`, `SetPlaybackAudioFrameParameters`, and `SetMixedAudioFrameParameters` to configure the desired audio frame format.
 1. Implement the following callbacks to collect and process audio frames:
 
-  - `OnRecordAudioFrame`
-  - `OnPlaybackAudioFrame`
-  - `OnPlaybackAudioFrameBeforeMixing`
-  - `OnMixedAudioFrame`
+   - `OnRecordAudioFrame`
+   - `OnPlaybackAudioFrame`
+   - `OnPlaybackAudioFrameBeforeMixing`
+   - `OnMixedAudioFrame`
 
 Refer to the following sample code to implement this logic:
 

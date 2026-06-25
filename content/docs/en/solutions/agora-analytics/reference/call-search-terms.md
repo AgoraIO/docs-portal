@@ -81,39 +81,11 @@ Bitrate is the amount of data (bits) sent or received per second.
 
 A higher audio/video bitrate means higher audio/video quality. A low bitrate does not necessarily cause quality issues, but a very low bitrate often means poor audio/video quality.
 
-<table>
-<colgroup>
-<col/>
-<col/>
-<col/>
-</colgroup>
-<thead>
-<tr>
-<th>Sender-side metric</th>
-<th>Receiver-side metric</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p>Audio sending bitrate</p></td>
-<td><p>Audio receiving bitrate</p></td>
-<td><p>N/A</p></td>
-</tr>
-<tr class="even">
-<td><p>High-quality video stream sending bitrate</p></td>
-<td><p>Native: High-quality video stream receiving bitrate</p>
-<p>Web: Video receiving bitrate</p></td>
-<td><p>Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving bitrate. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor.</p></td>
-</tr>
-<tr class="odd">
-<td><p>Low-quality video stream sending bitrate</p></td>
-<td><p>Native: Low-quality video stream receiving bitrate</p>
-<p>Web: Video receiving bitrate</p></td>
-<td><p>See High-quality video stream sending bitrate</p></td>
-</tr>
-</tbody>
-</table>
+| Sender-side metric | Receiver-side metric | Description |
+| --- | --- | --- |
+| Audio sending bitrate | Audio receiving bitrate | N/A |
+| High-quality video stream sending bitrate | Native: High-quality video stream receiving bitrate<br>Web: Video receiving bitrate | Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving bitrate. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor. |
+| Low-quality video stream sending bitrate | Native: Low-quality video stream receiving bitrate<br>Web: Video receiving bitrate | See High-quality video stream sending bitrate |
 
 ### Packet loss (rate)
 
@@ -132,29 +104,10 @@ Slight packet loss usually does not affect user experience. High packet loss (ov
 
 Freeze time is any significant pause in audio or video reception.
 
-<table>
-<colgroup>
-<col/>
-<col/>
-</colgroup>
-<thead>
-<tr>
-<th>Receiver-side metric</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p>Audio rendering freeze time (Native only)</p></td>
-<td><p>Audio rendering freezing occurs if it pauses for over 200 ms. A longer audio rendering freeze time means more significant audio freezing for the user.</p></td>
-</tr>
-<tr class="even">
-<td><p>Video rendering freeze time</p></td>
-<td><p>Native: Video rendering freezing occurs if it pauses for over 600 ms when the sending frame rate exceeds 5 fps.</p>
-<p>Web: Video rendering freezing occurs if it pauses for over 500 ms when the sending frame rate exceeds 2 fps. A longer video rendering freeze time means more significant video freezing for the user.</p></td>
-</tr>
-</tbody>
-</table>
+| Receiver-side metric | Description |
+| --- | --- |
+| Audio rendering freeze time (Native only) | Audio rendering freezing occurs if it pauses for over 200 ms. A longer audio rendering freeze time means more significant audio freezing for the user. |
+| Video rendering freeze time | Native: Video rendering freezing occurs if it pauses for over 600 ms when the sending frame rate exceeds 5 fps.<br>Web: Video rendering freezing occurs if it pauses for over 500 ms when the sending frame rate exceeds 2 fps. A longer video rendering freeze time means more significant video freezing for the user. |
 
 ### Frame rate
 
@@ -162,39 +115,11 @@ Frame rate is the rate at which consecutive images (frames) appear on a display.
 
 A higher frame rate means smoother video but uses more bandwidth and CPU resources. A low frame rate might cause video freeze.
 
-<table>
-<colgroup>
-<col/>
-<col/>
-<col/>
-</colgroup>
-<thead>
-<tr>
-<th>Sender-side metric</th>
-<th>Receiver-side metric</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p>Video capture frame rate</p></td>
-<td><p>N/A</p></td>
-<td><p>N/A</p></td>
-</tr>
-<tr class="even">
-<td><p>High-quality video stream sending frame rate</p></td>
-<td><p>Native: High-quality video stream receiving frame rate</p>
-<p>Web: Video receiving frame rate</p></td>
-<td><p>Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving frame rate. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor.</p></td>
-</tr>
-<tr class="odd">
-<td><p>Low-quality video stream sending frame rate</p></td>
-<td><p>Native: Low-quality video stream receiving frame rate</p>
-<p>Web: Video receiving frame rate</p></td>
-<td><p>See High-quality video stream sending frame rate</p></td>
-</tr>
-</tbody>
-</table>
+| Sender-side metric | Receiver-side metric | Description |
+| --- | --- | --- |
+| Video capture frame rate | N/A | N/A |
+| High-quality video stream sending frame rate | Native: High-quality video stream receiving frame rate<br>Web: Video receiving frame rate | Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving frame rate. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor. |
+| Low-quality video stream sending frame rate | Native: Low-quality video stream receiving frame rate<br>Web: Video receiving frame rate | See High-quality video stream sending frame rate |
 
 ### Resolution
 
@@ -202,34 +127,10 @@ Resolution is the number of pixels in the width and height of an image.
 
 A higher resolution (higher number of pixels) means clearer video.
 
-<table>
-<colgroup>
-<col/>
-<col/>
-<col/>
-</colgroup>
-<thead>
-<tr>
-<th>Sender-side metric</th>
-<th>Receiver-side metric</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p>High-quality video stream sending resolution</p></td>
-<td><p>Native: High-quality video stream receiving resolution</p>
-<p>Web: Video receiving resolution</p></td>
-<td><p>Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving resolution. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor.</p></td>
-</tr>
-<tr class="even">
-<td><p>Low-quality video stream receiving resolution (Web only)</p></td>
-<td><p>Native: High-quality video stream receiving resolution</p>
-<p>Web: Video receiving resolution</p></td>
-<td><p>See High-quality video stream sending resolution</p></td>
-</tr>
-</tbody>
-</table>
+| Sender-side metric | Receiver-side metric | Description |
+| --- | --- | --- |
+| High-quality video stream sending resolution | Native: High-quality video stream receiving resolution<br>Web: Video receiving resolution | Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving resolution. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor. |
+| Low-quality video stream receiving resolution (Web only) | Native: High-quality video stream receiving resolution<br>Web: Video receiving resolution | See High-quality video stream sending resolution |
 
 ### Audio signal strength
 

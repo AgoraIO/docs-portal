@@ -24,16 +24,16 @@ Follow these guidelines to configure cloud proxy settings.
 * **Configure regional IPs**: Add the correct IP addresses for your target regions.
 
 :::note
-  > When adding IP addresses:
-  >   - If you use cloud proxy with [Restricted media zones](../build/geofencing.mdx), add only the IP addresses dedicated to your specified region.
-  >   - If you do not restrict media zones, add all IP addresses to ensure connectivity.
+  When adding IP addresses:
+    - If you use cloud proxy with [Restricted media zones](../build/geofencing.mdx), add only the IP addresses dedicated to your specified region.
+    - If you do not restrict media zones, add all IP addresses to ensure connectivity.
+:::
 
 * **Open required ports**: Make sure all necessary firewall ports are accessible.
 * **Test connectivity**: Validate your configuration before deploying to production.
 
-To use Agora Cloud Proxy, your end users must first configure their firewall to trust the following IP address and port ranges. 
+To use Agora Cloud Proxy, your end users must first configure their firewall to trust the following IP address and port ranges.
 
-:::
 ### Native RTC Force UDP mode
 
 #### North America
@@ -210,24 +210,24 @@ To use Agora Cloud Proxy, your end users must first configure their firewall to 
 | Signaling and AP Service | `52.80.192.229`, `47.96.234.219` | UDP/TCP | `443` |
 | Cloud Proxy | `14.29.38.144/28`, `27.45.161.144/28`, `183.232.200.144/28`, `115.238.206.0/28`, `106.3.209.0/28`, `112.13.216.0/28`, `219.153.111.128/28`, `221.178.42.0/28`, `113.207.12.0/28` | UDP/TCP | `443` |
 
-## Best practices 
+## Best practices
 
 ### Regional deployment
 
 - **Global deployments**:
   - Open network segments for all overseas regions to ensure service availability
   - Especially important for deployments without specific region requirements
- 
+
 ### Domain vs IP whitelisting
 
-- **AP and Signaling**: 
+- **AP and Signaling**:
   Consider the following options
   - Enable domain name whitelisting (eliminates need for HTTPS/WSS IP whitelists)
   - Configure IP whitelisting
- 
+
 - **Media**:
  - Can only use IP whitelisting. Domain whitelisting is not available.
- 
+
 - **DNS requirements**:
  - Open DNS resolution port `53` in addition to port `443`
  - Verify connectivity by pinging the provided domain names
@@ -237,7 +237,7 @@ To use Agora Cloud Proxy, your end users must first configure their firewall to 
 - **TCP/UDP requirements**:
   - TCP port `443`: Required for all configurations
   - UDP port `443`: Required for Proxy3 only (proxy4/5 only need TCP `443`)
- 
+
 - **Regional considerations**:
   - If your region is uncertain, configure all whitelists
   - For region-specific deployments like Japan, consider opening the entire region, such as Asia
@@ -266,8 +266,8 @@ To test your configuration:
   Configure the Cloud Proxy UDP mode and enable the lastmile test to check connectivity.
 
 3. **Monitor performance**:
-  - Track latency, packet loss, and jitter
-  - Test across all targeted regions
+   - Track latency, packet loss, and jitter
+   - Test across all targeted regions
 
 ### Get support
 

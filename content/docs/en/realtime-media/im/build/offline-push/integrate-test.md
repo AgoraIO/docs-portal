@@ -160,11 +160,11 @@ Take the following steps to integrate FCM on the client.
     ```
 
     ```xml
-    
-        
-            
-        
-    
+
+
+
+
+
     ```
 
 1. Initialize the Chat SDK and enable FCM:
@@ -254,7 +254,7 @@ For more reliable testing, use a physical device.
 
 1. Log in to the app on your device and confirm that the device token is successfully bound.
 
-    You can check the log or call [RESTful API for getting user details](..//en/realtime-media/im/reference/server-api/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
+    You can check the log or call [RESTful API for getting user details](..//en/api-reference/api-ref/im/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
 
 1. Enable app notification bar permissions.
 
@@ -336,10 +336,10 @@ Create certificates for development and production environments, respectively:
 1. On the **Register a New Provisioning Profile** page, select **iOS App Development** for **Development**, select **Ad Hoc** for **Distribution**, and click **Continue**.
     For the official version on the App Store, select **App Store** for **Distribution**.
 1. On the **Generate a Provisioning Profile** page, configure the following fields:
- -  **App ID**: Enter the App ID created in step 2.
- -  **Select Certificates**: Select the `.p12` file generated in step 4.
- -  **Select Devices**: Select the device to be developed.
- -  **Provisioning Profile Name**: Enter the Provisioning Profile file name.
+   -  **App ID**: Enter the App ID created in step 2.
+   -  **Select Certificates**: Select the `.p12` file generated in step 4.
+   -  **Select Devices**: Select the device to be developed.
+   -  **Provisioning Profile Name**: Enter the Provisioning Profile file name.
 1. Confirm the information and click **Download** to generate the Provisioning Profile file.
 
 ### 6. Upload the APNs certificate in the [Agora Console](https://console.agora.io/v2)
@@ -377,7 +377,7 @@ If you use FCM push, select the **Google** tab and configure the FCM push parame
 1. Pass the certificate name to the SDK:
 
 ```objective-c
-#import 
+#import
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Apply for notification permission
@@ -430,7 +430,7 @@ Make sure your test device is a non-jail-broken iOS device. For more reliable te
 
 1. Log in to the app on your device and confirm that the device token is successfully bound.
 
-    You can check the log or call [RESTful API for getting user details](..//en/realtime-media/im/reference/server-api/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
+    You can check the log or call [RESTful API for getting user details](..//en/api-reference/api-ref/im/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
 
 1. Enable app notification bar permissions.
 
@@ -623,7 +623,7 @@ For more reliable testing, use a physical device.
 
 1. Log in to the app on your device and confirm that the device token is successfully bound.
 
-    You can check the log or call [RESTful API for getting user details](..//en/realtime-media/im/reference/server-api/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
+    You can check the log or call [RESTful API for getting user details](..//en/api-reference/api-ref/im/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
 
 1. Enable app notification bar permissions.
 
@@ -776,7 +776,7 @@ Take the following steps to integrate FCM on the client:
     1. At the top of the file, import the Firebase SDK after **#import "AppDelegate.h"**.
 
         ```objective-c
-        #import 
+        #import
         ```
 
     1. In the `didFinishLaunchingWithOptions` method, add the following code at the top:
@@ -874,7 +874,7 @@ For more reliable testing, use a physical device.
 
 1. Log in to the app on your device and confirm that the device token is successfully bound.
 
-    You can check the log or call [RESTful API for getting user details](..//en/realtime-media/im/reference/server-api/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
+    You can check the log or call [RESTful API for getting user details](..//en/api-reference/api-ref/im/user-system-registration#querying-a-user) to confirm whether the device token is successfully bound. If successful, there will be a `pushInfo` field under the `entities` field, and `pushInfo` will have relevant information such as `device_Id`, `device_token`, `notifier_name`, and others.
 
 1. Enable app notification bar permissions.
 

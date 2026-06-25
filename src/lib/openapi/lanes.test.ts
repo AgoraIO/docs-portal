@@ -59,12 +59,12 @@ describe('openapi lanes', () => {
           en: '/openapi/media-gateway/media-gateway.en.yaml',
           'zh-CN': '/openapi/media-gateway/media-gateway.en.yaml',
         },
-        routePrefix: 'realtime-media/rtmp-gateway/reference/rest-api',
+        routePrefix: 'api-reference/api-ref/rtmp-gateway',
         sourcePath: {
           en: 'content/openapi/media-gateway/media-gateway.en.yaml',
           'zh-CN': 'content/openapi/media-gateway/media-gateway.en.yaml',
         },
-        tab: 'realtime-media',
+        tab: 'api-reference',
       }),
       expect.objectContaining({
         id: 'speech-to-text-rest',
@@ -134,7 +134,7 @@ describe('openapi lanes', () => {
       '/en/api-reference/api-ref/cloud-transcoding/acquire',
     );
     expect(getOpenApiPrerenderPaths()).toContain(
-      '/en/realtime-media/rtmp-gateway/reference/rest-api/create-streaming-key',
+      '/en/api-reference/api-ref/rtmp-gateway/create-streaming-key',
     );
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/speech-to-text/join',
@@ -202,19 +202,18 @@ describe('openapi lanes', () => {
     });
   });
 
-  it('resolves Media Gateway REST endpoint routes in the realtime-media tab', () => {
+  it('resolves Media Gateway REST endpoint routes in the api-reference tab', () => {
     expect(
-      resolveOpenApiEndpointRoute('en', 'realtime-media', [
+      resolveOpenApiEndpointRoute('en', 'api-reference', [
+        'api-ref',
         'rtmp-gateway',
-        'reference',
-        'rest-api',
         'create-streaming-key',
       ]),
     ).toMatchObject({
       lane: expect.objectContaining({ id: 'media-gateway-rest' }),
       operationId: 'create-media-gateway-streaming-key',
       routeLeaf: 'create-streaming-key',
-      url: '/en/realtime-media/rtmp-gateway/reference/rest-api/create-streaming-key',
+      url: '/en/api-reference/api-ref/rtmp-gateway/create-streaming-key',
     });
   });
 });

@@ -135,13 +135,13 @@ The version of the `libaosl.so` library in the v4.6.0 SDK is 1.3.0.
 :::
 #### Compatibility changes
 
-This version includes SDK behavior changes, API deprecations, and deletions. To ensure your app functions correctly, update your code after upgrading to this version. 
+This version includes SDK behavior changes, API deprecations, and deletions. To ensure your app functions correctly, update your code after upgrading to this version.
 
 For details on deprecated and deleted APIs in each version, see the [API Sunset Notice](https://api-ref.agora.io/video-sdk/android/4.x/API/rtc_api_sunset.html).
 
-- **Deprecation of direct CDN streaming APIs** 
+- **Deprecation of direct CDN streaming APIs**
 
-  Deprecates the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](../../api-reference/rtc/index.md) instead. 
+  Deprecates the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](../../api-reference/rtc/index.md) instead.
 
   - `setDirectCdnStreamingAudioConfiguration`
   - `setDirectCdnStreamingVideoConfiguration`
@@ -153,24 +153,24 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
   - `DirectCdnStreamingState`
   - `DirectCdnStreamingReason`
 
-- **Deprecation of virtual metronome APIs** 
+- **Deprecation of virtual metronome APIs**
 
-  Deprecates the APIs for the virtual metronome feature, which will be removed in a future release. 
+  Deprecates the APIs for the virtual metronome feature, which will be removed in a future release.
 
   - `startRhythmPlayer`
   - `configRhythmPlayer`
   - `onRhythmPlayerStateChanged`
 
-- **Deprecation of watermark APIs** 
+- **Deprecation of watermark APIs**
 
-  Deprecates the old watermark APIs. Agora recommends using the new watermark APIs introduced in this version. 
+  Deprecates the old watermark APIs. Agora recommends using the new watermark APIs introduced in this version.
 
   - `addVideoWatermark [2/2]`
   - `addVideoWatermarkEx`
 
-- **Deletion of redundant APIs** 
+- **Deletion of redundant APIs**
 
-  Removed the following redundant APIs and parameters: 
+  Removed the following redundant APIs and parameters:
 
   - `setLocalPublishFallbackOption`
   - `onLocalPublishFallbackToAudioOnly`
@@ -180,9 +180,9 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
   - `onWlAccMessage`
   - `enableWirelessAccelerate`
 
-- **Changes to int UID and string UID mapping** 
+- **Changes to int UID and string UID mapping**
 
-  - Before v4.6.0: If you used `registerLocalUserAccount` to register a string UID (for example, `"aa"`) and obtain an int UID (for example, `123`), joining a channel with this int UID automatically mapped it to the original string UID (`"aa"`). 
+  - Before v4.6.0: If you used `registerLocalUserAccount` to register a string UID (for example, `"aa"`) and obtain an int UID (for example, `123`), joining a channel with this int UID automatically mapped it to the original string UID (`"aa"`).
   - From v4.6.0: The SDK no longer automatically maps an int UID to the original string UID. If you need to join the channel with the original string UID, call the join method directly with the string UID. After upgrading, review and update your app logic to ensure users join the channel with the expected identity.
 
 - **Added domain whitelist**
@@ -194,62 +194,62 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 #### New features
 
-- **Simulcasting multi-bitrate video streams (Beta)** 
+- **Simulcasting multi-bitrate video streams (Beta)**
 
   Added support for sending multiple video streams of different resolutions from a single video source, including in multi-channel scenarios. You can now configure up to four layers: one high-resolution stream and up to three lower-resolution streams. Use configuration options to define resolution, bitrate, and whether to automatically reduce the number of streams when network or device performance drops. Subscribers can choose which stream to receive based on their network conditions. This feature helps developers deliver smooth experiences in scenarios such as conferences, large classes, and interactive live streaming, even when network conditions are poor.
 
-- **Multipath network transmission** 
+- **Multipath network transmission**
 
- Introduced multipath transmission for devices with multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature improves stability in challenging network environments, including in-vehicle systems, IoT, trains, and highways. Enable it by setting `enableMultipath` in `ChannelMediaOptions` to `true`. 
+ Introduced multipath transmission for devices with multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature improves stability in challenging network environments, including in-vehicle systems, IoT, trains, and highways. Enable it by setting `enableMultipath` in `ChannelMediaOptions` to `true`.
 
- - *Dynamic mode*: Dynamically selects the optimal path based on network conditions. Suitable for scenarios sensitive to data consumption but requiring high experience quality, such as meetings and educational settings. You can optionally set `preferMultipathType` to prioritize a path type; if not set, all paths have the same default weight. 
- - *Duplicate mode*: Sends data simultaneously over all available paths (such as LAN, Wi-Fi, and cellular) to eliminate the impact of poor network conditions. Suitable for scenarios not sensitive to data consumption but with extreme stability requirements, such as outdoor broadcasting and parallel control. This mode incurs additional costs. 
+ - *Dynamic mode*: Dynamically selects the optimal path based on network conditions. Suitable for scenarios sensitive to data consumption but requiring high experience quality, such as meetings and educational settings. You can optionally set `preferMultipathType` to prioritize a path type; if not set, all paths have the same default weight.
+ - *Duplicate mode*: Sends data simultaneously over all available paths (such as LAN, Wi-Fi, and cellular) to eliminate the impact of poor network conditions. Suitable for scenarios not sensitive to data consumption but with extreme stability requirements, such as outdoor broadcasting and parallel control. This mode incurs additional costs.
 
  Configure uplink and downlink modes separately with `uplinkMultipathMode` and `downlinkMultipathMode`. Monitor performance with the `onMultipathStats` callback, which reports per-path statistics including data consumption.
 
-- **Video quality scoring** 
+- **Video quality scoring**
 
  Added the `mosValue` member to `RemoteVideoStats` to report a score from 1 (extremely poor video quality with severe blurring) to 5 (excellent video quality with a clear image and no artifacts) for received video quality. This enables real-time monitoring of the subjective quality of remote video streams and helps dynamically adjust video parameters for quality monitoring and alerting. Contact support@agora.io to enable this feature.
 
-- **Support for adding multiple watermarks** 
+- **Support for adding multiple watermarks**
 
  Deprecates the old `addVideoWatermark [2/2]` and `addVideoWatermarkEx` methods and introduced new versions of these methods that support multiple watermarks with IDs and layering order. Use `removeVideoWatermark` to remove a specific watermark.
 
-- **Asynchronous engine destruction** 
+- **Asynchronous engine destruction**
 
  Added the `destroy [2/2]` method with an option for asynchronous destruction, triggering the `onEngineReleased` callback.
 
-- **Token renewal result callback** 
+- **Token renewal result callback**
 
  Added the `onRenewTokenResult` callback and `RENEW_TOKEN_ERROR_CODE` for handling the result of `renewToken`.
 
-- **Advanced beauty (Beta)** 
+- **Advanced beauty (Beta)**
 
  Introduced a brand-new advanced beauty feature, delivering a powerful yet easy-to-use beautification solution.
 
-  - **Precision beauty effects** 
-   - *Face shaping*: Supports independent fine-tuning of 29 facial areas (for example, slimming face, enlarging eyes, narrowing nose) or one-click natural effects via presets. 
-   - *Style makeup*: Offers rich effects including eyeshadow, colored contacts, eyeliner, eyebrow shaping, lipstick, blush, under-eye highlights, and facial contouring. 
-   - *Skin enhancement*: Includes professional skin optimizations such as teeth whitening, nasolabial fold removal, dark circle reduction, and eye brightening. 
+  - **Precision beauty effects**
+   - *Face shaping*: Supports independent fine-tuning of 29 facial areas (for example, slimming face, enlarging eyes, narrowing nose) or one-click natural effects via presets.
+   - *Style makeup*: Offers rich effects including eyeshadow, colored contacts, eyeliner, eyebrow shaping, lipstick, blush, under-eye highlights, and facial contouring.
+   - *Skin enhancement*: Includes professional skin optimizations such as teeth whitening, nasolabial fold removal, dark circle reduction, and eye brightening.
 
-  - **Unified and simple API** 
+  - **Unified and simple API**
    Manage all beauty, makeup, and filter functions through three core nodes — `BEAUTY`, `STYLE_MAKEUP`, and `FILTER` — using `IVideoEffectObject` for unified parameter setup and lifecycle control.
 
-  - **Ready-to-use presets** 
+  - **Ready-to-use presets**
    Integrates multiple out-of-the-box style templates (for example, "Natural Beauty," "Senior Makeup," "Cool White Filter") for instant polished results.
 
-  - **Dynamic parameter control** 
+  - **Dynamic parameter control**
    Enables real-time reading and modification of granular parameters (for example, smoothing strength, lipstick type) via key-value pairs, with support for saving custom configurations and resetting defaults.
 
-  - **Local resource guarantee** 
+  - **Local resource guarantee**
    All beauty resources (effects, filters, makeup) are packaged as local bundle files, ensuring stability and reliability.
 
-- **Other new features** 
+- **Other new features**
 
- - Added `setPlaybackAudioFrameBeforeMixingParameters` to configure the format of raw audio frames returned in `onPlaybackAudioFrameBeforeMixing`, including sample rate, number of channels, and the number of samples per callback. 
- - Added `preloadEffectEx [1/2]` for preloading audio effects in a specific channel. Supports both local and online files, enabling faster playback later and suitable for multi-channel scenarios. 
- - Added `playEffectEx [1/2]` for playing audio effects in a specific channel with advanced controls such as loop count, pitch, spatial position, volume, whether to publish to the channel, and starting playback position. 
- - Added the `position` member in `ContentInspectModule` to choose the capture point for screenshot uploads, allowing capture from raw video data or before/after effects processing. 
+ - Added `setPlaybackAudioFrameBeforeMixingParameters` to configure the format of raw audio frames returned in `onPlaybackAudioFrameBeforeMixing`, including sample rate, number of channels, and the number of samples per callback.
+ - Added `preloadEffectEx [1/2]` for preloading audio effects in a specific channel. Supports both local and online files, enabling faster playback later and suitable for multi-channel scenarios.
+ - Added `playEffectEx [1/2]` for playing audio effects in a specific channel with advanced controls such as loop count, pitch, spatial position, volume, whether to publish to the channel, and starting playback position.
+ - Added the `position` member in `ContentInspectModule` to choose the capture point for screenshot uploads, allowing capture from raw video data or before/after effects processing.
  - Added the `screenColorType` member to `SegmentationProperty` for specifying or detecting background screen color (green, blue, or auto-detected) to improve virtual background segmentation accuracy.
 
 #### Improvements
@@ -262,11 +262,11 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 This version fixes the following issues:
 
-- Online audio effect playback restarted from the beginning when `seek` was called to change playback position. 
-- Occasional echoes in media volume mode when a broadcaster published a microphone audio stream while playing an audio effect with `playEffect [2/2]` and music with `startAudioMixing [2/2]`. 
-- Missing media metadata observer callback when `registerMediaMetadataObserver` was called after `setExternalVideoSource` (Android, iOS). 
-- Occasional crashes (Android, iOS). 
-- Incorrect relay state (`RELAY_STATE_FAILURE`) and error (`RELAY_ERROR_SERVER_ERROR_RESPONSE`) reported after a specific join/relay sequence using `joinChannelEx`. 
+- Online audio effect playback restarted from the beginning when `seek` was called to change playback position.
+- Occasional echoes in media volume mode when a broadcaster published a microphone audio stream while playing an audio effect with `playEffect [2/2]` and music with `startAudioMixing [2/2]`.
+- Missing media metadata observer callback when `registerMediaMetadataObserver` was called after `setExternalVideoSource` (Android, iOS).
+- Occasional crashes (Android, iOS).
+- Incorrect relay state (`RELAY_STATE_FAILURE`) and error (`RELAY_ERROR_SERVER_ERROR_RESPONSE`) reported after a specific join/relay sequence using `joinChannelEx`.
 - Occasional audio noise when using Bluetooth or wired headphones after setting `AUDIO_SCENARIO_CHATROOM` (Android).
 
 ### v4.5.2
@@ -417,10 +417,10 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `l
 
 1. **Other improvements**
 
-  - In use-cases where Alpha transparency effects are achieved by stitching video frames and Alpha data, the rendering performance on the receiving end has been improved, effectively reducing stuttering and latency.
-  - This version optimizes the logic for calling `queryDeviceScore` to obtain device score levels, improving the accuracy of the score results.
-  - When calling `switchSrc` to switch between live streams or on-demand streams of different resolutions, smooth and seamless switching can be achieved. An automatic retry mechanism has been added in case of switching failures. The SDK will automatically retry 3 times after a failure. If it still fails, the `onPlayerEvent` callback will report the `PLAYER_EVENT_SWITCH_ERROR` event, indicating that an error has occurred during media resource switching.
-  - When calling `setPlaybackSpeed` to set the playback speed of an audio file, the minimum supported speed is 0.3x.
+   - In use-cases where Alpha transparency effects are achieved by stitching video frames and Alpha data, the rendering performance on the receiving end has been improved, effectively reducing stuttering and latency.
+   - This version optimizes the logic for calling `queryDeviceScore` to obtain device score levels, improving the accuracy of the score results.
+   - When calling `switchSrc` to switch between live streams or on-demand streams of different resolutions, smooth and seamless switching can be achieved. An automatic retry mechanism has been added in case of switching failures. The SDK will automatically retry 3 times after a failure. If it still fails, the `onPlayerEvent` callback will report the `PLAYER_EVENT_SWITCH_ERROR` event, indicating that an error has occurred during media resource switching.
+   - When calling `setPlaybackSpeed` to set the playback speed of an audio file, the minimum supported speed is 0.3x.
 
 #### Bug fixes
 
@@ -558,11 +558,11 @@ To ensure parameter naming consistency, this version renames `channelName` to `c
   This release introduces additional functionalities for Android camera capture:
 
   1. Support for capturing and publishing video streams from the third and fourth cameras:
-   - New enumerators `VIDEO_SOURCE_CAMERA_THIRD`(11) and `VIDEO_SOURCE_CAMERA_FOURTH`(12) are added to [VideoSourceType](https://api-ref.agora.io/en/video-sdk/android/4.x/API/enum_videosourcetype.html), specifically for the third and fourth camera sources. This change allows you to specify up to four camera streams when initiating camera capture by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/android/4.x/API/api_irtcengine_startcameracapture.html).
-   - New parameters `publishThirdCameraTrack` and `publishFourthCameraTrack` are added to [ChannelMediaOptions](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_channelmediaoptions.html). Set these parameters to `true` when joining a channel with [joinChannel [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2) to publish video streams captured from the third and fourth cameras.
+     - New enumerators `VIDEO_SOURCE_CAMERA_THIRD`(11) and `VIDEO_SOURCE_CAMERA_FOURTH`(12) are added to [VideoSourceType](https://api-ref.agora.io/en/video-sdk/android/4.x/API/enum_videosourcetype.html), specifically for the third and fourth camera sources. This change allows you to specify up to four camera streams when initiating camera capture by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/android/4.x/API/api_irtcengine_startcameracapture.html).
+     - New parameters `publishThirdCameraTrack` and `publishFourthCameraTrack` are added to [ChannelMediaOptions](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_channelmediaoptions.html). Set these parameters to `true` when joining a channel with [joinChannel [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2) to publish video streams captured from the third and fourth cameras.
   1. Support for specifying cameras by camera ID:
-   - A new parameter `cameraId` is added to [CameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_cameracapturerconfiguration.html). For devices with multiple cameras, where `cameraDirection` cannot identify or access all available cameras, you can obtain the camera ID through Android's native system APIs and specify the desired camera by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/android/4.x/API/api_irtcengine_startcameracapture.html) with the specific `cameraId`.
-   - A new method [switchCamera [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_switchcamera2) supports switching cameras by `cameraId`, allowing apps to dynamically adjust camera usage during runtime based on available cameras.
+     - A new parameter `cameraId` is added to [CameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_cameracapturerconfiguration.html). For devices with multiple cameras, where `cameraDirection` cannot identify or access all available cameras, you can obtain the camera ID through Android's native system APIs and specify the desired camera by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/android/4.x/API/api_irtcengine_startcameracapture.html) with the specific `cameraId`.
+     - A new method [switchCamera [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_switchcamera2) supports switching cameras by `cameraId`, allowing apps to dynamically adjust camera usage during runtime based on available cameras.
 
 1. **Data stream encryption**
 
@@ -584,13 +584,13 @@ To ensure parameter naming consistency, this version renames `channelName` to `c
 
 1. **Other features**
 
-  - A new method [enableEncryptionEx](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineex.html#api_irtcengineex_enableencryptionex) is added for enabling media stream or data stream encryption in multi-channel use-cases.
-  - A new method [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed) is introduced for setting the playback speed of audio files.
-  - A new method [getCallIdEx](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineex.html#api_irtcengineex_getcallidex) is introduced for retrieving call IDs in multi-channel use-cases.
+   - A new method [enableEncryptionEx](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineex.html#api_irtcengineex_enableencryptionex) is added for enabling media stream or data stream encryption in multi-channel use-cases.
+   - A new method [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed) is introduced for setting the playback speed of audio files.
+   - A new method [getCallIdEx](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineex.html#api_irtcengineex_getcallidex) is introduced for retrieving call IDs in multi-channel use-cases.
 
 1. **Beta features**
 
-  - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+   - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
 
 #### Improvements
 
@@ -804,8 +804,8 @@ This release has optimized the implementation of some functions, which involved 
 
 1. **Spatial audio effects usability improvement**
 
-  - This release optimizes the design of the [setZones](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ibasespatialaudioengine.html#api_ibasespatialaudioengine_setzones) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
-  - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling the [ILocalSpatialAudioEngine](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ilocalspatialaudioengine.html#class_ilocalspatialaudioengine) method.
+   - This release optimizes the design of the [setZones](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ibasespatialaudioengine.html#api_ibasespatialaudioengine_setzones) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
+   - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling the [ILocalSpatialAudioEngine](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ilocalspatialaudioengine.html#class_ilocalspatialaudioengine) method.
 
 1. **Optimization of video pre-processing methods**
 
@@ -1020,7 +1020,8 @@ v4.2.2 was released on july 27, 2023.
   This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](../../realtime-media/video/build/use-tokens.mdx).
 
   :::note
-  > All 4.x SDKs support using wildcard tokens.
+  All 4.x SDKs support using wildcard tokens.
+:::
 
 2. **Preloading channels**
 
@@ -1032,7 +1033,6 @@ v4.2.2 was released on july 27, 2023.
 
   In this release, the `backgroundColor` member has been added to `VideoCanvas`, which allows you to customize the background color of the video canvas when setting the properties of local or remote video display.
 
-  :::
 #### Improvements
 
 1. **Improved camera capture effect**
@@ -1877,7 +1877,7 @@ Included in this release:
 * **Support for getting audio buffer delay**
 
   To address the issue where the main vocal and background accompaniment may be out of sync in karaoke scenarios, this release adds the `getAudioBufferDelay` method to the Media Player module to get the millisecond-level audio buffer delay when playing media files.
-  
+
 #### Improvements
 
 This release includes the following enhancements:
@@ -1947,7 +1947,7 @@ This version includes SDK behavior changes, API deprecations, and deletions. To 
 
 For details on deprecated and deleted APIs in each version, see the [API Sunset Notice](../../api-sunset.md).
 
-- **Deprecation of direct CDN streaming APIs** 
+- **Deprecation of direct CDN streaming APIs**
 
   Deprecates the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](https://docs-md.agora.io/en/media-push/product-overview.md) instead.
 
@@ -1961,7 +1961,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
   - `AgoraDirectCdnStreamingState`
   - `AgoraDirectCdnStreamingReason`
 
-- **Deprecation of virtual metronome APIs** 
+- **Deprecation of virtual metronome APIs**
 
   Deprecates the APIs for the virtual metronome feature, which will be removed in a future release.
 
@@ -1969,14 +1969,14 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
   - `configRhythmPlayer:`
   - `rtcEngine:didRhythmPlayerStateChanged:reason:`
 
-- **Deprecation of watermark APIs** 
+- **Deprecation of watermark APIs**
 
   Deprecates the old watermark APIs. Agora recommends using the new watermark APIs introduced in this version.
 
   - `addVideoWatermark:options:`
   - `addVideoWatermarkEx:options:connection:`
 
-- **Deletion of redundant APIs** 
+- **Deletion of redundant APIs**
 
   Removed the following redundant APIs and parameters:
 
@@ -1991,9 +1991,9 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
   - `enableWirelessAccelerate`
   - `receivedFrameRate` (removed from `AgoraRtcRemoteVideoStats`)
 
-- **Changes to int UID and string UID mapping** 
+- **Changes to int UID and string UID mapping**
 
-  - Before v4.6.0: If you used `registerLocalUserAccountWithAppID:userAccount:` to register a string UID (for example, `"aa"`) and obtain an int UID (for example, `123`), joining a channel with this int UID automatically mapped it to the original string UID (`"aa"`). 
+  - Before v4.6.0: If you used `registerLocalUserAccountWithAppID:userAccount:` to register a string UID (for example, `"aa"`) and obtain an int UID (for example, `123`), joining a channel with this int UID automatically mapped it to the original string UID (`"aa"`).
   - From v4.6.0: The SDK no longer automatically maps an int UID to the original string UID. If you need to join the channel with the original string UID, call `joinChannelByUserAccount:token:channelId:joinSuccess:` directly with the string UID. After upgrading, review and update your app logic to ensure users join the channel with the expected identity.
 
 - **Added domain whitelist**
@@ -2009,77 +2009,77 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 #### New features
 
-- **Simulcasting multi-bitrate video streams (Beta)** 
+- **Simulcasting multi-bitrate video streams (Beta)**
 
   Added support for sending multiple video streams of different resolutions from a single video source, including in multi-channel scenarios. You can now configure up to four layers: one high-resolution stream and up to three lower-resolution streams. Use configuration options to define resolution, bitrate, and whether to automatically reduce the number of streams when network or device performance drops. Subscribers can choose which stream to receive based on their network conditions. This feature helps developers deliver smooth experiences in scenarios such as conferences, large classes, and interactive live streaming, even when network conditions are poor.
 
-- **Multipath network transmission** 
+- **Multipath network transmission**
 
  Introduced multipath transmission for devices with multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature improves stability in challenging network environments and is suitable for scenarios such as in-vehicle systems, IoT, trains, and highways. Enable it by setting `enableMultipath` in `AgoraRtcChannelMediaOptions` to `YES`.
 
- - *Dynamic mode*: Dynamically selects the optimal path based on network conditions. Suitable for scenarios sensitive to data consumption but requiring high quality, such as meetings and educational settings. Optionally set `preferMultipathType` to prioritize a path type. 
+ - *Dynamic mode*: Dynamically selects the optimal path based on network conditions. Suitable for scenarios sensitive to data consumption but requiring high quality, such as meetings and educational settings. Optionally set `preferMultipathType` to prioritize a path type.
  - *Duplicate mode*: Sends data simultaneously over all available paths for maximum stability. This mode eliminates the impact of poor network conditions and is suitable for scenarios with extreme quality requirements, such as outdoor broadcasting and parallel control.
 
  Configure uplink and downlink modes separately with `uplinkMultipathMode` and `downlinkMultipathMode`. Monitor performance with the `rtcEngine:didMultipathStatsChanged:` callback, which reports data usage and other statistics for each path.
 
-- **Video quality scoring** 
+- **Video quality scoring**
 
  Added the `mosValue` member to `AgoraRtcRemoteVideoStats` to report a score from 1 (poor) to 5 (excellent) for received video quality. This enables real-time monitoring and parameter adjustment. Contact support@agora.io to enable this feature.
 
-- **Support for adding multiple watermarks** 
+- **Support for adding multiple watermarks**
 
  Added `addVideoWatermarkWithImageUrl:options:` and `addVideoWatermarkWithImageUrlEx:options:connection:` methods that support multiple watermarks with IDs and layering order. Use `removeVideoWatermark:` to remove a specific watermark.
 
-- **Asynchronous engine destruction** 
+- **Asynchronous engine destruction**
 
  Added the `destroy:` method with an option for asynchronous destruction, triggering the `engineReleasedBlock` callback.
 
-- **Token renewal result callback** 
+- **Token renewal result callback**
 
  Added the `rtcEngine:didRenewTokenResult:` callback and `RENEW_TOKEN_ERROR_CODE` for handling the result of `renewToken:`.
 
-- **Advanced beauty (Beta)** 
+- **Advanced beauty (Beta)**
 
  Introduced a brand-new advanced beauty feature, delivering a powerful yet easy-to-use beautification solution.
 
-  - **Precision beauty effects** 
-   - *Face shaping*: Supports independent fine-tuning of 29 facial areas (for example, slimming face, enlarging eyes, narrowing nose) or one-click natural effects via presets. 
-   - *Style makeup*: Offers rich effects including eyeshadow, colored contacts, eyeliner, eyebrow shaping, lipstick, blush, under-eye highlights, and facial contouring. 
-   - *Skin enhancement*: Includes professional skin optimizations such as teeth whitening, nasolabial fold removal, dark circle reduction, and eye brightening. 
+  - **Precision beauty effects**
+   - *Face shaping*: Supports independent fine-tuning of 29 facial areas (for example, slimming face, enlarging eyes, narrowing nose) or one-click natural effects via presets.
+   - *Style makeup*: Offers rich effects including eyeshadow, colored contacts, eyeliner, eyebrow shaping, lipstick, blush, under-eye highlights, and facial contouring.
+   - *Skin enhancement*: Includes professional skin optimizations such as teeth whitening, nasolabial fold removal, dark circle reduction, and eye brightening.
 
-  - **Unified and simple API** 
+  - **Unified and simple API**
    Manage all beauty, makeup, and filter functions through three core nodes — `BEAUTY`, `STYLE_MAKEUP`, and `FILTER` — using `IVideoEffectObject` for unified parameter setup and lifecycle control.
 
-  - **Ready-to-use presets** 
+  - **Ready-to-use presets**
    Integrates multiple out-of-the-box style templates (for example, "Natural Beauty," "Senior Makeup," "Cool White Filter") for instant polished results.
 
-  - **Dynamic parameter control** 
+  - **Dynamic parameter control**
    Enables real-time reading and modification of granular parameters (for example, smoothing strength, lipstick type) via key-value pairs, with support for saving custom configurations and resetting defaults.
 
-  - **Local resource guarantee** 
+  - **Local resource guarantee**
    All beauty resources (effects, filters, makeup) are packaged as local bundle files, ensuring stability and reliability.
 
-- **Other new features** 
+- **Other new features**
 
- - Added `setPlaybackAudioFrameBeforeMixingParameters:` to configure the format of raw audio frames returned in `onPlaybackAudioFrameBeforeMixing:channelId:uid:`. 
- - Added `preloadEffectEx:soundId:` for preloading audio effects in a specific channel, supporting both local and online files. 
- - Added `playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:publish:startPos:` for playing audio effects in a specific channel with advanced controls. 
- - Added the `position` member in `AgoraContentInspectModule` to choose the capture point for screenshot uploads. 
+ - Added `setPlaybackAudioFrameBeforeMixingParameters:` to configure the format of raw audio frames returned in `onPlaybackAudioFrameBeforeMixing:channelId:uid:`.
+ - Added `preloadEffectEx:soundId:` for preloading audio effects in a specific channel, supporting both local and online files.
+ - Added `playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:publish:startPos:` for playing audio effects in a specific channel with advanced controls.
+ - Added the `position` member in `AgoraContentInspectModule` to choose the capture point for screenshot uploads.
  - Added the `screenColorType` member to `AgoraSegmentationProperty` for specifying or detecting background screen color.
 
 #### Improvements
 
-- Added support for G.711 and G.722 audio codecs when inter-operating with the Web SDK for better cross-platform audio compatibility. 
+- Added support for G.711 and G.722 audio codecs when inter-operating with the Web SDK for better cross-platform audio compatibility.
 - Improved video clarity in screen sharing scenarios involving documents.
 
 #### Issues fixed
 
 This version fixes the following issues:
 
-- Online audio effect playback restarted from the beginning when `seekToPosition:` was called. 
-- Occasional echoes in media volume mode when a broadcaster published a microphone audio stream while playing an audio effect with `playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:` and music with `startAudioMixing:loopback:cycle:startPos:`. 
-- Missing media metadata observer callback when `setMediaMetadataDelegate:withType:` was called after `setExternalVideoSource:useTexture:sourceType:` (Android, iOS). 
-- Occasional crashes (Android, iOS). 
+- Online audio effect playback restarted from the beginning when `seekToPosition:` was called.
+- Occasional echoes in media volume mode when a broadcaster published a microphone audio stream while playing an audio effect with `playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:` and music with `startAudioMixing:loopback:cycle:startPos:`.
+- Missing media metadata observer callback when `setMediaMetadataDelegate:withType:` was called after `setExternalVideoSource:useTexture:sourceType:` (Android, iOS).
+- Occasional crashes (Android, iOS).
 - Media relay occasionally reported `AgoraChannelMediaRelayStateFailure` and `AgoraChannelMediaRelayErrorServerErrorResponse` after the following sequence: join, relay, unpublish, leave, rejoin, and start relay again.
 
 ### v4.5.2
@@ -2116,7 +2116,7 @@ The `aosl.xcframework` library version in Video SDK v4.5.1 is 1.2.13. You can ch
 
 #### New Features
 
-1. **AI Conversation Scenario** 
+1. **AI Conversation Scenario**
 
   This version introduces the `AgoraAudioScenarioAiClient` audio scenario, specifically designed for interacting with the conversational AI agent created by [Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview.md). This scenario optimizes the audio transmission algorithm based on the characteristics of AI-generated voices, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. The optimization enhances conversation continuity and reliability, adapting to various challenging network environments.
 
@@ -2206,11 +2206,11 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
 
 1. **Other improvements**
 
-  - In use-cases where Alpha transparency effects are achieved by stitching video frames and Alpha data, the rendering performance on the receiving end has been improved, effectively reducing stuttering and latency.
-  - This version optimizes the logic for calling `queryDeviceScore` to obtain device score levels, improving the accuracy of the score results.
-  - After calling `enableLocalAudio:` to disable local audio capture within the channel, the mute side button on the phone can be used to mute the background sound effects played by the app.
-  - When calling `switchSrc:syncPts:` to switch between live streams or on-demand streams of different resolutions, smooth and seamless switching can be achieved. An automatic retry mechanism has been added in case of switching failures. The SDK will automatically retry 3 times after a failure. If it still fails, the `AgoraRtcMediaPlayer:didOccurEvent:elapsedTime:message:` callback will report the `AgoraMediaPlayerEventSwitchError` event, indicating that an error has occurred during media resource switching.
-  - When calling `setPlaybackSpeed:` to set the playback speed of an audio file, the minimum supported speed is 0.3x.
+   - In use-cases where Alpha transparency effects are achieved by stitching video frames and Alpha data, the rendering performance on the receiving end has been improved, effectively reducing stuttering and latency.
+   - This version optimizes the logic for calling `queryDeviceScore` to obtain device score levels, improving the accuracy of the score results.
+   - After calling `enableLocalAudio:` to disable local audio capture within the channel, the mute side button on the phone can be used to mute the background sound effects played by the app.
+   - When calling `switchSrc:syncPts:` to switch between live streams or on-demand streams of different resolutions, smooth and seamless switching can be achieved. An automatic retry mechanism has been added in case of switching failures. The SDK will automatically retry 3 times after a failure. If it still fails, the `AgoraRtcMediaPlayer:didOccurEvent:elapsedTime:message:` callback will report the `AgoraMediaPlayerEventSwitchError` event, indicating that an error has occurred during media resource switching.
+   - When calling `setPlaybackSpeed:` to set the playback speed of an audio file, the minimum supported speed is 0.3x.
 
 #### Bug fixes
 
@@ -2245,7 +2245,7 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
   | `onExtensionStopped` | `onExtensionStoppedWithContext` |
   | `onExtensionError`  | `onExtensionErrorWithContext`  |
 
-1. Prior to v4.4.0, when a user was set to the audience role and `setAudioScenario` was called with `AgoraAudioScenarioChatRoom`, the system displayed the microphone-in-use indicator. 
+1. Prior to v4.4.0, when a user was set to the audience role and `setAudioScenario` was called with `AgoraAudioScenarioChatRoom`, the system displayed the microphone-in-use indicator.
 Starting with v4.4.0, the SDK uses native iOS APIs to manage the microphone. As a result, audience users in a chatroom scenario no longer see the indicator.
 
 1. This version renames the `receiveMetadata` callback to `didMetadataReceived` and removes the `data` and `timeStamp` parameters. You can get metadata-related information, including `timeStamp` (timestamp of the sent data), `uid` (user ID), and `channelId` (channel name) through the newly-added `metadata` parameter.
@@ -2367,13 +2367,13 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Other features**
 
-  - A new method [enableEncryptionEx](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableencryptionex(_:encryptionconfig:connection:)) is added for enabling media stream or data stream encryption in multi-channel use-cases.
-  - A new method [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudiomixingplaybackspeed(_:)) is introduced for setting the playback speed of audio files.
-  - A new method [getCallIdEx](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/getcallidex(_:)) is introduced for retrieving call IDs in multi-channel use-cases.
+   - A new method [enableEncryptionEx](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableencryptionex(_:encryptionconfig:connection:)) is added for enabling media stream or data stream encryption in multi-channel use-cases.
+   - A new method [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudiomixingplaybackspeed(_:)) is introduced for setting the playback speed of audio files.
+   - A new method [getCallIdEx](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/getcallidex(_:)) is introduced for retrieving call IDs in multi-channel use-cases.
 
 1. **Beta features**
 
-  - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+   - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
 
 #### Improvements
 
@@ -2567,9 +2567,9 @@ This release has optimized the implementation of some functions, involving renam
 
 3. **Spatial audio effects usability improvement**
 
-  - This release optimizes the design of the [setZones](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraspatialaudiokitbase/setzones(_:)) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
-  - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling methods in [AgoraLocalSpatialAudioKit](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoralocalspatialaudiokit).
-  - This release introduces the [updateSelfTransform](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraspatialaudiokitbase/updateselftransform(_:)) method, designed to pass position vectors for direct rendering in iOS native frameworks such as SceneKit or RealityKit.
+   - This release optimizes the design of the [setZones](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraspatialaudiokitbase/setzones(_:)) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
+   - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling methods in [AgoraLocalSpatialAudioKit](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoralocalspatialaudiokit).
+   - This release introduces the [updateSelfTransform](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraspatialaudiokitbase/updateselftransform(_:)) method, designed to pass position vectors for direct rendering in iOS native frameworks such as SceneKit or RealityKit.
 
 4. **Local audio state changed callback optimization**
 
@@ -4000,7 +4000,7 @@ The list of known issues page is continuously updated as the systems evolve. Ago
 <a name="chrome"></a>
 
   - On Windows, when Chrome 122 and above uses the Web SDK for window screen sharing, if you switch to the full-screen slide show mode, the screen sharing image remains in a non-full-screen state on the receiving end, and the full-screen slide show page cannot be displayed. **Solution**: Re-share the entire screen instead of a specific window.
-  
+
   - Starting from Chrome 117, the `getStats()` method is no longer supported in the SDK v4.9.3 and earlier versions. Calling this method will return all values as `0`. This is caused by the fact that the old version of the `getStats()` WebRTC API will be removed from Chrome 117, as stated in the [Chrome official documentation](https://developer.chrome.com/blog/getstats-migration).
   **Solution:** Upgrade to a higher version of the SDK.
   - On all AMD-based and some Intel-based devices with the Windows operating system, if Chrome uses the H.264 codec, the video transmission bitrate may be lower than the set value.
@@ -4023,10 +4023,10 @@ The list of known issues page is continuously updated as the systems evolve. Ago
 
   - On Safari 17.2, the SDK cannot switch to the small stream properly.
   - On Safari browsers of some Mac devices with Intel chips, calling `enableDualStream` to enable H.264-encoded dual-stream mode may result in system lag when the ratio of the small stream to the large stream resolution is below 1/4.
-  
+
   - On Safari 17, when invoking `getDisplayMedia`, the constraints for screen sharing video streams do not take effect, resulting in a blurry video.
   - On Mac OS Ventura, when sharing the screen using Safari, the video resolution set by the SDK may be different from the actual captured resolution. If the browser does not support the resolution set by the user, the billing system uses the actual captured resolution. As a result, the captured resolution may be larger or smaller than the set resolution due to browser restriction.
-  
+
   - On Safari 15.4, if you set the sample rate of the local audio track as 32,000 Hz, the local audio track ends (triggering the `AgoraRTCClient.on('track-ended'` event).
   - If you use H.264 on Safari 15.1, setting [MediaStreamTrack.enabled](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/enabled) as `false` crashes the web tab.
   - On Safari 14.0.1, the audio can experience stuttering.
@@ -4037,22 +4037,22 @@ The list of known issues page is continuously updated as the systems evolve. Ago
   - On Safari, when calling APIs to get quality statistics, the values of some properties are 0. For example, when calling `getLocalAudioStats` to get the quality statistics of the local audio track, the value of `sendPacketsLost` is 0.
   - If **Auto-Play** is not enabled on Safari (as the following figure shows), the stream playback has no audio. You have to call the `navigator.mediaDevices.getUserMedia` method to get the device permissions before playing a stream.
     ![img](/images/video-sdk/safari-auto-play.png)
-  
+
   - After creating a screen sharing video track using `createScreenVideoTrack` on Safari 16.2 and 16.3 on macOS Ventura, there may be an issue of a green screen when calling `setEncoderConfiguration` to modify the video resolution of that track. This issue is caused by a fallback in WebKit, as explained in [Bug 254652](https://bugs.webkit.org/show_bug.cgi?id=254652). The solution is to upgrade to macOS Ventura 13.3 and Safari 16.4.
 
   ****Firefox****
 
 <a name="firefox"></a>
   **Firefox**
-    
+
   - Black screen issue on the receiver's side with Firefox version 138
 
-    **Issue description**: When users interact using real-time audio and video on Firefox version 138, the receiver may see a black screen instead of video. 
+    **Issue description**: When users interact using real-time audio and video on Firefox version 138, the receiver may see a black screen instead of video.
 
     **Root cause**: This issue is caused by a rollback in the Firefox browser. Version 138 introduced a temporary change that causes video stream decoding to fail. This is a compatibility issue introduced by the browser vendor. For details, see [Bugzilla 1965831](https://bugzilla.mozilla.org/show_bug.cgi?id=1965831).
 
     **Workaround**: Agora has implemented a temporary fix through configuration delivery. In incognito or private browsing mode, this configuration may not take effect, and integration changes may be required. Contact [technical support](mailto:support@agora.io) for assistance.
-    
+
   - The default setting for the minimum video bitrate in Web SDK does not take effect on Firefox.
   - Sending SEI data in H.264 video streams is not supported on Firefox.
   - On Firefox 98, when sending H.264 video from Windows devices, the keyframes cannot be received immediately after the video is subscribed, thus slowing down the rendering of the first video frame.
@@ -4070,7 +4070,7 @@ The list of known issues page is continuously updated as the systems evolve. Ago
   - On Chrome 81 or later, Safari, and Firefox, device IDs are only available after the user has granted permission to use the media device. This restriction affects the `getMicrophones`, `getCameras`, and `getPlaybackDevices` methods.
   - The `setPlaybackDevice` method is only supported on Chrome. Calling this method on other browsers throws the `NOT_SUPPORTED` error.
   - The `setOptimizationMode` method and the `optimizationMode` parameter in `CameraVideoTrackInitConfig`, `ScreenVideoTrackInitConfig`, and `CustomVideoTrackInitConfig` are only supported on Chrome.
-  
+
   - Calling `createScreenVideoTrack` to enable screen sharing has the following restrictions:
     - The Web SDK supports screen sharing on Chrome 58 or later. If the Chrome version is earlier than 72, you need to add the [Google Chrome Extension for Screen Sharing](https://docs-md.agora.io/en/interactive-live-streaming/basic-features/screensharing.md) provided by Agora, get the `extensionId`, and set the `extensionId` parameter when you create a video track for screen sharing. If the Chrome version is 72 or later, simply call `createScreenVideoTrack`.
     - The Web SDK supports screen sharing on Firefox 56 or later. Firefox on Windows does not support the `application` mode.
@@ -4089,7 +4089,7 @@ The list of known issues page is continuously updated as the systems evolve. Ago
 
 **iOS known issues**
 
-  
+
   iOS 16.0: The video is stretched after the screen changes to a certain orientation
 
   **Impact**: All browsers and apps that use WKWebView on iOS 16.0, such as Safari and Chrome.
@@ -4169,19 +4169,19 @@ The list of known issues page is continuously updated as the systems evolve. Ago
 
   **Backgrounding the browser or app causes the audio streaming to be cut off.**
 
-<p>
+
 
   **Impact**:
   - Safari on iOS 15.x.
   - Browsers and apps that use WKWebView (such as Chrome) on iOS 14.4 to iOS 15.x.
-  </p>
-  <p>
+
+
 
   **Reason**:
   - For Safari: This happens primarily due to this WebKit [bug](https://bugs.webkit.org/show_bug.cgi?id=231105). After the browser switches to the background, the `AudioContext` of `WebAudio` stops processing audio.
   - For browsers and apps using WKWebView: This happens because iOS `WKWebView` prohibits microphone usage while in the background. For details, see [Microphone gets muted in background](https://developer.apple.com/forums/thread/689182).
-  </p>
-  <p>
+
+
 
   **Workaround**: Currently there is no workaround for browsers and apps using WKWebView. For Safari on iOS 15.x, you can follow these steps to avoid this issue:
   1. Upgrade to the Web SDK v4.7.3 or later versions.
@@ -4192,7 +4192,7 @@ The list of known issues page is continuously updated as the systems evolve. Ago
     ```
 
     > Note that this workaround has a side effect. After applying this workaround, the audio mixing function (`MixingAudioTrack`) in the SDK fails.
-  </p>
+
 
   **iOS 15.x: Audio and video playback might not resume automatically after being interrupted by a system phone call, another real-time interaction app, Siri, or an alarm.**
 
@@ -4253,13 +4253,13 @@ Reason: iOS `AVCaptureSession` prohibits camera usage while in the background. F
   **Calling `RemoteAudioTrack.setVolume` has no effect on the playback volume of the remote audio**
 
 Reason: iOS and iOS WebView do not support setting the volume of a media object through the `HTMLMediaElement.volume` property.
-  
+
 
   ****Android****
 
 **Android known issues**
 
-  
+
   Android 12: Video distortion on Chrome when hardware acceleration is enabled
 
   **Impact**: The Chrome browser or Chromium kernel browser 97 or earlier on certain devices with Android 12, such as Pixel 3 and Pixel 4.
@@ -4339,7 +4339,7 @@ Reason: The `mediaDevices.getDisplayMedia` method is not implemented on mobile b
   **The `setBeautyEffect` method is not supported**
 
 Reason: The image enhancement algorithm can reduce the system performance of mobile devices below acceptable levels.
-  
+
 
 ### v4.24.3
 
@@ -4384,11 +4384,11 @@ Released on November 26, 2025.
 #### New Features
 
 - **Pre-call network test**
- 
+
  Conducting a pre-call network test helps local users assess and predict the quality of their uplink network before starting a call. This version adds the [`startLastmileProbeTest`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#startlastmileprobetest) API, which returns information about packet loss, jitter, and round-trip time for both uplink and downlink before the call begins.
 
 - **Dual-stream mode**
- 
+
  This version introduces the [`setDualStreamMode`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#setdualstreammode) method, which improves how you subscribe to dual video streams. By setting the `mode` parameter to `AUTO_SIMULCAST_MODE`, you enable adaptive low-stream mode on the sender side (low-stream is not sent by default). To send low streams, follow these steps:
 
  - The host on the receiving side calls `setRemoteVideoStreamType` to initiate a low-stream request.
@@ -4404,7 +4404,7 @@ Released on November 26, 2025.
  The Watermark extension supports customizing the watermark's position, size, opacity, and other properties. It can be applied to both local and remote video tracks. For integration and usage steps, refer to Using the [Watermark extension guide](https://docs-md.agora.io/en/video-calling/advanced-features/watermark.md).
 
 - **Other New Features**
- 
+
  Adds support for H.265 decoding. Refer to the [API Reference](https://api-ref.agora.io/en/video-sdk/web/4.x/globals.html#sdk_codec) for supported browser versions and usage restrictions.
 
 #### Improvements
@@ -4413,13 +4413,13 @@ Released on November 26, 2025.
  This version further expands screen sharing capabilities. In the `createScreenVideoTrack` API, the following parameters are added to support audio sharing during screen sharing:
 
  - `windowAudio` and `monitorTypeSurfaces` are added to [`ScreenVideoTrackInitConfig`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/screenvideotrackinitconfig.html) to control whether to allow sharing window audio and sharing the entire screen, respectively.
- 
+
  - `suppressLocalAudioPlayback` and `restrictOwnAudio` are added to `ScreenAudioTrackInitConfig` to control whether local audio playback and capture are allowed.
 
  In screen sharing scenarios with co-hosting, Agora does not recommend sharing system or window audio, as it may cause echo. You can disable audio sharing by setting both `windowAudio` and `systemAudio` in `ScreenVideoTrackInitConfig` to `"exclude"`.
 
 - **New release of the Super Clarity extension**
- 
+
  This version upgrades the algorithm of [`agora-extension-super-clarity`](https://www.npmjs.com/package/agora-extension-super-clarity), with improvements in reducing plugin size, enhancing video experience, and expanding browser compatibility. The new version of the plugin requires a browser that supports SIMD to run properly. For detailed changes and improvements, refer to the [Extension release notes](#super-clarity-extension).
 
 #### Bug Fixes
@@ -4439,9 +4439,9 @@ Released on August 6, 2025
  In real-time interactive scenarios such as one-on-one or one-to-many calls, this feature reduces the time to render the first frame and improves the overall interactive experience.
 
  :::note
- > When automatic subscription to the host’s media stream is enabled, Agora delivers the media stream and starts billing for usage as soon as the user joins the channel.
+ When automatic subscription to the host’s media stream is enabled, Agora delivers the media stream and starts billing for usage as soon as the user joins the channel.
+:::
 
- :::
 #### Improvements
 
 - **Transmission optimization in poor network conditions**
@@ -4474,27 +4474,27 @@ This version fixes the following issues:
 - Occasional black screen in scenarios using Plan-B.
 
 ### v4.23.4
- 
+
 Released on June 5, 2025.
 
 This release includes internal improvements. It fixes an issue where calling `setMute` or `setEnable` under certain conditions could result in no sound. If you are using SDK version 4.23.0 or later, upgrade to this release for a better user experience.
 
 ### v4.23.3
- 
+
 Released on April 29, 2025.
 
 This release updates the virtual background extension to [v2.1.0](https://www.npmjs.com/package/agora-extension-virtual-background), with the following changes:
 
 - Optimizes memory and CPU usage.
 - Fixes black screen issues at specific resolutions.
- 
+
 ### v4.23.2
 
-Released on March 4, 2025. 
+Released on March 4, 2025.
 
 This release includes the following improvements:
 
-- Internal optimizations to support [Agora Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview.md). 
+- Internal optimizations to support [Agora Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview.md).
   - Enable audio metadata transmission
   - Get presentation timestamp from the audio stream
 
@@ -4504,7 +4504,7 @@ This release includes the following improvements:
 
 ### v4.23.1
 
-Released on January 17, 2025. 
+Released on January 17, 2025.
 
 This release includes several internal improvements.
 
@@ -4542,13 +4542,13 @@ This release modified the calculation of [`freezeRate`](https://api-ref.agora.io
 
 1. **Other improvements**
 
-  - Optimized login duration under complex network conditions.
-  - Optimized layer switching algorithm of VP9, which can reduce latency and improve video smoothness.
+   - Optimized login duration under complex network conditions.
+   - Optimized layer switching algorithm of VP9, which can reduce latency and improve video smoothness.
 
-   :::note
-   > Safari does not support VP9 SVC.
+    :::note
+    Safari does not support VP9 SVC.
+:::
 
-   :::
 #### Bug fixes
 
 This release fixes the following issues:
@@ -5275,7 +5275,7 @@ This release fixes the following issues:
 
 ### v4.14.0
 
-v4.14.0 was released on August 31, 2022. 
+v4.14.0 was released on August 31, 2022.
 
 #### Compatibility changes
 
@@ -6145,13 +6145,13 @@ The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommen
 
 ## Virtual background
 
-### Key Features 
+### Key Features
 
 - Seamless Integration.
   - Integrate directly through an HTML `<script>` tag or through npm using:
 
     ```js
-    import `VirtualBackgroundExtension` from "agora-extension-virtual-background" 
+    import `VirtualBackgroundExtension` from "agora-extension-virtual-background"
     ```
   - Works within Agora WebRTC video processing pipelines.
 
@@ -6160,7 +6160,7 @@ The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommen
   - **Image Background**: Allows replacing the background with an image (`HTMLImageElement`).
   - **Video Background**: Supports setting a video as the virtual background.
   - **Solid Color Background**: Allows setting a solid color as the background.
- 
+
 ### Browser Support & Limitations
 
 - **Safari & Firefox – Limited Support**
@@ -6172,7 +6172,7 @@ The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommen
   The virtual background feature requires significant CPU and GPU processing power, which exceeds the capabilities of most mobile devices. Due to these hardware-intensive requirements, performance on mobile browsers is inconsistent and varies across devices.
 
 ### v2.1.0
- 
+
  v2.1.0 was released on April 29, 2025, with the following changes:
 
  - Optimizes memory and CPU usage.
@@ -6204,7 +6204,7 @@ Version 2.0.0 is suitable for users who prioritize quality over frame rate espec
 
 It is recommended for high-end devices such as:
 
-- Apple M1/M2 
+- Apple M1/M2
 - Latest iPhones (A13 Bionic and newer)
 - Premium Android devices (Snapdragon 865 or equivalent)
 
@@ -6217,7 +6217,7 @@ Version 1.3.0 is suitable for mid-range devices and is recommended for users who
 **Implementation Guidelines**:
 
 - For premium applications, implement device detection. Use 2.0.0 for capable devices and default to 1.3.0 for others.
- 
+
 - For General applications, default to 1.3.0. Optionally, allow users to upgrade to 2.0.0 with a performance warning.
 
 ### v1.2.0
@@ -6308,7 +6308,7 @@ Released on November 10, 2024, this is the first version of `agora-extension-sup
 ## Watermark extension
 
 ### v1.0.0
-Released on November 18, 2025. 
+Released on November 18, 2025.
 
 This is the first version of `agora-extension-video-watermark`. For detailed integration steps, refer to Video Watermark.
 
@@ -6318,7 +6318,7 @@ This extension enables local users to seamlessly merge multiple video streams an
 
 ### v1.0.0-beta
 
-Released on October 25, 2022. 
+Released on October 25, 2022.
 
 This is the first version of `agora-extension-videp-compositor`. For detailed integration steps, refer to [Video Compositor](https://docs-md.agora.io/en/advanced-features/video-compositor_web.md).
 

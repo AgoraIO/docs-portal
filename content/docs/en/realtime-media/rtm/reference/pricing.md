@@ -133,80 +133,15 @@ Peak connection usage (PCU) is the maximum number of clients simultaneously conn
 
 Signaling 2.x is an enhanced version of 1.x with a wide range of new features and a new pricing structure. Choose from the following packages:
 
-<table>
-  <thead>
-    <tr>
-      <th align="left"></th>
-      <th align="center">Free</th>
-      <th align="center">Lite</th>
-      <th align="center">Starter</th>
-      <th align="center">Pro</th>
-      <th align="center">Business</th>
-      <th align="center">Enterprise</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="left">**Message volume**<br/>(Millions per month)</td>
-      <td align="center">1</td>
-      <td align="center">18</td>
-      <td align="center">30</td>
-      <td align="center">150</td>
-      <td align="center">500</td>
-      <td rowspan="7" align="center" valign="middle">
-        Pay-as-you-go. <a href="https://www.agora.io/en/talk-to-us/">Contact Sales</a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left">**Peak concurrent users** (Maximum)</td>
-      <td align="center">20</td>
-      <td align="center">300</td>
-      <td align="center">500</td>
-      <td align="center">2,500</td>
-      <td align="center">5,000</td>
-    </tr>
-    <tr>
-      <td align="left">**Storage** (GB)</td>
-      <td align="center">1</td>
-      <td align="center">1.5</td>
-      <td align="center">2</td>
-      <td align="center">10</td>
-      <td align="center">20</td>
-    </tr>
-    <tr>
-      <td align="left">**List Price/month**</td>
-      <td align="center"><s><em>-</em></s></td>
-      <td align="center"><s><em>$42.75</em></s></td>
-      <td align="center"><s><em>$67.50</em></s></td>
-      <td align="center"><s><em>$337.50</em></s></td>
-      <td align="center"><s><em>$975.00</em></s></td>
-    </tr>
-    <tr>
-      <td align="left">**Package Price/month**</td>
-      <td align="center"><strong><em>FREE</em></strong></td>
-      <td align="center"><strong><em>$39.00</em></strong></td>
-      <td align="center"><strong><em>$59.00</em></strong></td>
-      <td align="center"><strong><em>$279.00</em></strong></td>
-      <td align="center"><strong><em>$749.00</em></strong></td>
-    </tr>
-    <tr>
-      <td align="left">**You save**</td>
-      <td align="center">-</td>
-      <td align="center">9%</td>
-      <td align="center">13%</td>
-      <td align="center">18%</td>
-      <td align="center">23%</td>
-    </tr>        
-    <tr>
-      <td align="left">**Additional usage policy**</td>
-      <td align="center">Service suspension</td>
-      <td align="center">Additional charges apply after package limit</td>
-      <td align="center">Additional charges apply after package limit</td>
-      <td align="center">Additional charges apply after package limit</td>
-      <td align="center">Additional charges apply after package limit</td>
-    </tr>
-  </tbody>
-</table>
+| Metric | Free | Lite | Starter | Pro | Business | Enterprise |
+| --- | --- | --- | --- | --- | --- | --- |
+| Message volume (Millions per month) | 1 | 18 | 30 | 150 | 500 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
+| Peak concurrent users (Maximum) | 20 | 300 | 500 | 2,500 | 5,000 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
+| Storage (GB) | 1 | 1.5 | 2 | 10 | 20 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
+| List Price/month | - | $42.75 | $67.50 | $337.50 | $975.00 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
+| Package Price/month | FREE | $39.00 | $59.00 | $279.00 | $749.00 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
+| You save | - | 9% | 13% | 18% | 23% | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
+| Additional usage policy | Service suspension | Additional charges apply after package limit | Additional charges apply after package limit | Additional charges apply after package limit | Additional charges apply after package limit | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
 
 Additional usage cost over and above the fixed package limits:
 

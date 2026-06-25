@@ -52,7 +52,7 @@ export function DocsSidebar({
         data-testid="docs-sidebar-scroll"
         ref={scrollContainerRef}
       >
-        <div className="py-6 pr-3 pb-12">
+        <div className="py-4 pr-3 pb-8">
           {header ? (
             <DocsSidebarHeaderBlock
               header={header}

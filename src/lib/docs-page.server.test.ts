@@ -397,7 +397,7 @@ const apiReferencePageTree: Root = {
                 $id: 'api-reference-rtc-index',
                 name: 'RTC API Reference',
                 type: 'page',
-                url: '/en/api-reference/rtc',
+                url: '/en/api-reference/api-ref/rtc',
               },
               name: 'RTC',
               type: 'folder',
@@ -642,6 +642,240 @@ const realtimeMediaPageTree: Root = {
   ],
   name: 'Docs',
 };
+
+function createRealtimeMediaApiReferenceJumpPageTree(): Root {
+  return {
+    children: [
+      {
+        $id: 'en-root',
+        children: [
+          {
+            $id: 'realtime-media-folder',
+            children: [
+              {
+                $id: 'realtime-media-broadcast-streaming-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-broadcast-streaming-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-broadcast-streaming-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-broadcast-streaming-pricing',
+                        name: 'Pricing',
+                        type: 'page',
+                        url: '/en/realtime-media/broadcast-streaming/reference/pricing',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-broadcast-streaming-index',
+                  name: 'Broadcast Streaming',
+                  type: 'page',
+                  url: '/en/realtime-media/broadcast-streaming',
+                },
+                name: 'Broadcast Streaming',
+                type: 'folder',
+              },
+              {
+                $id: 'realtime-media-video-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-video-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-video-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-video-release-notes',
+                        name: 'Release Notes',
+                        type: 'page',
+                        url: '/en/realtime-media/video/reference/release-notes',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-video-index',
+                  name: 'Video Calling',
+                  type: 'page',
+                  url: '/en/realtime-media/video',
+                },
+                name: 'Video Calling',
+                type: 'folder',
+              },
+            ],
+            index: {
+              $id: 'realtime-media-index',
+              name: 'Overview',
+              type: 'page',
+              url: '/en/realtime-media',
+            },
+            name: 'Realtime & Media',
+            root: true,
+            type: 'folder',
+          },
+        ],
+        name: 'English',
+        type: 'folder',
+      },
+    ],
+    name: 'Docs',
+  };
+}
+
+function createApiReferenceOverviewPageTree(): Root {
+  const productFolders = [
+    [
+      'api-reference-api-ref-conversational-ai-folder',
+      'Conversational AI',
+      '/en/api-reference/api-ref/conversational-ai',
+    ],
+    [
+      'api-reference-api-ref-rtc-folder',
+      'RTC',
+      '/en/api-reference/api-ref/rtc',
+    ],
+    [
+      'api-reference-api-ref-video-folder',
+      'Video Calling',
+      '/en/api-reference/api-ref/video',
+    ],
+    [
+      'api-reference-api-ref-voice-folder',
+      'Voice Calling',
+      '/en/api-reference/api-ref/voice',
+    ],
+    [
+      'api-reference-api-ref-broadcast-streaming-folder',
+      'Broadcast Streaming',
+      '/en/api-reference/api-ref/broadcast-streaming',
+    ],
+    ['api-reference-api-ref-im-folder', 'Chat', '/en/api-reference/api-ref/im'],
+    [
+      'api-reference-api-ref-signaling-folder',
+      'Signaling',
+      '/en/api-reference/api-ref/signaling',
+    ],
+    [
+      'api-reference-api-ref-cloud-recording-folder',
+      'Cloud Recording',
+      '/en/api-reference/api-ref/cloud-recording',
+    ],
+    [
+      'api-reference-api-ref-cloud-transcoding-folder',
+      'Cloud Transcoding',
+      '/en/api-reference/api-ref/cloud-transcoding',
+    ],
+    [
+      'api-reference-api-ref-speech-to-text-folder',
+      'Speech-to-Text',
+      '/en/api-reference/api-ref/speech-to-text',
+    ],
+    [
+      'api-reference-api-ref-rtmp-gateway-folder',
+      'Media Gateway',
+      '/en/api-reference/api-ref/rtmp-gateway',
+    ],
+    [
+      'api-reference-api-ref-whiteboard-folder',
+      'Interactive Whiteboard REST API',
+      '/en/api-reference/api-ref/whiteboard',
+    ],
+    [
+      'api-reference-api-ref-uikit-sdk-folder',
+      'Fastboard API',
+      '/en/api-reference/api-ref/uikit-sdk',
+    ],
+    [
+      'api-reference-api-ref-media-pull-folder',
+      'Media Pull',
+      '/en/api-reference/api-ref/media-pull',
+    ],
+    [
+      'api-reference-api-ref-media-push-folder',
+      'Media Push',
+      '/en/api-reference/api-ref/media-push',
+    ],
+    [
+      'api-reference-api-ref-on-premise-recording-folder',
+      'On-Premise Recording',
+      '/en/api-reference/api-ref/on-premise-recording',
+    ],
+  ].map(([id, name, url]) => ({
+    $id: id,
+    children: [],
+    index: {
+      $id: `${id}-index`,
+      name,
+      type: 'page' as const,
+      url,
+    },
+    name,
+    type: 'folder' as const,
+  }));
+
+  return {
+    children: [
+      {
+        $id: 'en-root',
+        children: [
+          {
+            $id: 'api-reference-folder',
+            children: [
+              {
+                $id: 'api-reference-recipes-folder',
+                children: [],
+                index: {
+                  $id: 'api-reference-recipes-index',
+                  name: 'Recipes',
+                  type: 'page',
+                  url: '/en/api-reference/recipes',
+                },
+                name: 'Recipes',
+                type: 'folder',
+              },
+              {
+                $id: 'api-reference-api-ref-folder',
+                children: productFolders,
+                index: {
+                  $id: 'api-reference-api-ref-index',
+                  name: 'API reference',
+                  type: 'page',
+                  url: '/en/api-reference/api-ref',
+                },
+                name: 'API Reference',
+                type: 'folder',
+              },
+            ],
+            index: {
+              $id: 'api-reference-index',
+              name: 'API Reference',
+              type: 'page',
+              url: '/en/api-reference',
+            },
+            name: 'API Reference',
+            root: true,
+            type: 'folder',
+          },
+        ],
+        name: 'English',
+        type: 'folder',
+      },
+    ],
+    name: 'Docs',
+  };
+}
 
 function createPage(): PageWithSource {
   return {
@@ -1055,14 +1289,15 @@ Web body
       data: {
         ...page.data,
         info: {
-          fullPath: '/virtual/content/docs/en/api-reference/rtc/index.md',
-          path: 'en/api-reference/rtc/index.md',
+          fullPath:
+            '/virtual/content/docs/en/api-reference/api-ref/rtc/index.md',
+          path: 'en/api-reference/api-ref/rtc/index.md',
         },
         title: 'RTC API Reference',
       },
-      path: 'en/api-reference/rtc/index.md',
-      slugs: ['en', 'api-reference', 'rtc', 'index'],
-      url: '/en/api-reference/rtc',
+      path: 'en/api-reference/api-ref/rtc/index.md',
+      slugs: ['en', 'api-reference', 'api-ref', 'rtc', 'index'],
+      url: '/en/api-reference/api-ref/rtc',
     };
 
     mockedGetPage.mockReturnValue(rtcPage);
@@ -1096,7 +1331,10 @@ Web body
       return undefined;
     });
 
-    const payload = await loadDocsPagePayload('en', 'api-reference', ['rtc']);
+    const payload = await loadDocsPagePayload('en', 'api-reference', [
+      'api-ref',
+      'rtc',
+    ]);
 
     if (!payload || 'redirectUrl' in payload) {
       throw new Error('expected a docs page payload');
@@ -1108,7 +1346,7 @@ Web body
       title: 'RTC',
     });
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual([
-      '/en/api-reference/rtc',
+      '/en/api-reference/api-ref/rtc',
       '/en/api-reference/rtc/android',
     ]);
     expect(payload.sidebar).not.toEqual(
@@ -1654,6 +1892,462 @@ Web body
     );
   });
 
+  it('groups API reference products under a RESTful API heading on the overview page', async () => {
+    const page = createPage();
+    mockedGetPage.mockReturnValue({
+      ...page,
+      path: 'en/api-reference/api-ref/index.mdx',
+      slugs: ['en', 'api-reference', 'api-ref', 'index'],
+      url: '/en/api-reference/api-ref',
+      data: {
+        ...page.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/api-reference/api-ref/index.mdx',
+          path: 'en/api-reference/api-ref/index.mdx',
+        },
+        title: 'API reference',
+      },
+    });
+    mockedGetPageTree.mockReturnValue(createApiReferenceOverviewPageTree());
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'api-reference-api-ref-folder'
+        ? ({
+            data: {
+              navScope: {},
+              sidebarIndexTitle: 'Overview',
+              title: 'API Reference',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = await loadDocsPagePayload('en', 'api-reference', [
+      'api-ref',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(payload.sidebar).toEqual([
+      {
+        id: '/en/api-reference/api-ref',
+        title: 'Overview',
+        type: 'page',
+        url: '/en/api-reference/api-ref',
+      },
+      {
+        children: [
+          {
+            id: '/en/api-reference/api-ref/conversational-ai',
+            title: 'Conversational AI',
+            type: 'page',
+            url: '/en/api-reference/api-ref/conversational-ai',
+          },
+          {
+            id: '/en/api-reference/api-ref/rtc',
+            title: 'Voice & Video Calling',
+            type: 'page',
+            url: '/en/api-reference/api-ref/rtc',
+          },
+          {
+            id: '/en/api-reference/api-ref/broadcast-streaming',
+            title: 'Broadcast Streaming',
+            type: 'page',
+            url: '/en/api-reference/api-ref/broadcast-streaming',
+          },
+          {
+            id: '/en/api-reference/api-ref/im',
+            title: 'Chat',
+            type: 'page',
+            url: '/en/api-reference/api-ref/im',
+          },
+          {
+            id: '/en/api-reference/api-ref/signaling',
+            title: 'Signaling',
+            type: 'page',
+            url: '/en/api-reference/api-ref/signaling',
+          },
+          {
+            id: '/en/api-reference/api-ref/cloud-recording',
+            title: 'Cloud Recording',
+            type: 'page',
+            url: '/en/api-reference/api-ref/cloud-recording',
+          },
+          {
+            id: '/en/api-reference/api-ref/cloud-transcoding',
+            title: 'Cloud Transcoding',
+            type: 'page',
+            url: '/en/api-reference/api-ref/cloud-transcoding',
+          },
+          {
+            id: '/en/api-reference/api-ref/speech-to-text',
+            title: 'Speech-to-Text',
+            type: 'page',
+            url: '/en/api-reference/api-ref/speech-to-text',
+          },
+          {
+            id: '/en/api-reference/api-ref/rtmp-gateway',
+            title: 'Media Gateway',
+            type: 'page',
+            url: '/en/api-reference/api-ref/rtmp-gateway',
+          },
+          {
+            id: '/en/api-reference/api-ref/whiteboard',
+            title: 'Interactive Whiteboard REST API',
+            type: 'page',
+            url: '/en/api-reference/api-ref/whiteboard',
+          },
+          {
+            id: '/en/api-reference/api-ref/uikit-sdk',
+            title: 'Fastboard API',
+            type: 'page',
+            url: '/en/api-reference/api-ref/uikit-sdk',
+          },
+          {
+            id: '/en/api-reference/api-ref/media-pull',
+            title: 'Media Pull',
+            type: 'page',
+            url: '/en/api-reference/api-ref/media-pull',
+          },
+          {
+            id: '/en/api-reference/api-ref/media-push',
+            title: 'Media Push',
+            type: 'page',
+            url: '/en/api-reference/api-ref/media-push',
+          },
+          {
+            id: '/en/api-reference/api-ref/on-premise-recording',
+            title: 'On-Premise Recording',
+            type: 'page',
+            url: '/en/api-reference/api-ref/on-premise-recording',
+          },
+        ],
+        collapsible: false,
+        id: 'api-reference-restful-api',
+        title: 'RESTful API',
+        type: 'section',
+      },
+    ]);
+    const restfulApiSection = payload.sidebar[1];
+    if (restfulApiSection?.type !== 'section') {
+      throw new Error('expected RESTful API sidebar section');
+    }
+    expect(
+      restfulApiSection.children.every((node) => node.type === 'page'),
+    ).toBe(true);
+    expect(restfulApiSection.children.map((node) => node.id)).toEqual([
+      '/en/api-reference/api-ref/conversational-ai',
+      '/en/api-reference/api-ref/rtc',
+      '/en/api-reference/api-ref/broadcast-streaming',
+      '/en/api-reference/api-ref/im',
+      '/en/api-reference/api-ref/signaling',
+      '/en/api-reference/api-ref/cloud-recording',
+      '/en/api-reference/api-ref/cloud-transcoding',
+      '/en/api-reference/api-ref/speech-to-text',
+      '/en/api-reference/api-ref/rtmp-gateway',
+      '/en/api-reference/api-ref/whiteboard',
+      '/en/api-reference/api-ref/uikit-sdk',
+      '/en/api-reference/api-ref/media-pull',
+      '/en/api-reference/api-ref/media-push',
+      '/en/api-reference/api-ref/on-premise-recording',
+    ]);
+    expect(
+      restfulApiSection.children.findIndex(
+        (node) => node.id === '/en/api-reference/api-ref/uikit-sdk',
+      ),
+    ).toBe(
+      restfulApiSection.children.findIndex(
+        (node) => node.id === '/en/api-reference/api-ref/whiteboard',
+      ) + 1,
+    );
+    expect(payload.sidebar).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ title: 'Video Calling' }),
+        expect.objectContaining({ title: 'Voice Calling' }),
+      ]),
+    );
+    expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
+      expect.arrayContaining([
+        '/en/api-reference/api-ref/video',
+        '/en/api-reference/api-ref/voice',
+      ]),
+    );
+  });
+
+  it('redirects moved Realtime Media API reference pages to the API Reference tab', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', ['api-ref', 'video']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/rtc',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', [
+        'api-ref',
+        'broadcast-streaming',
+        'agora-console-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', [
+        'api-ref',
+        'video',
+        'agora-console-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', [
+        'api-ref',
+        'voice',
+        'agora-console-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'broadcast-streaming',
+        'reference',
+        'agora-console-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'video',
+        'reference',
+        'agora-console-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'voice',
+        'reference',
+        'agora-console-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'broadcast-streaming',
+        'reference',
+        'restful-api',
+        'stream-management',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/api-reference/api-ref/broadcast-streaming/stream-management',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'video',
+        'reference',
+        'api-sunset',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/rtc',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'im',
+        'reference',
+        'server-api',
+        'chatroom-management',
+        'manage-chatrooms',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/api-reference/api-ref/im/chatroom-management/manage-chatrooms',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'whiteboard',
+        'reference',
+        'uikit-sdk',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/uikit-sdk',
+    });
+  });
+
+  it('redirects moved Solutions API reference pages to the API reference', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'solutions', [
+        'agora-analytics',
+        'reference',
+        'api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/analytics-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'solutions', [
+        'interactive-live-streaming',
+        'reference',
+        'agora-console-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'solutions', [
+        'flexible-classroom',
+        'reference',
+        'classroom-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/classroom-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'solutions', [
+        'iot',
+        'reference',
+        'channel-management-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/iot-channel-management-rest-api',
+    });
+  });
+
+  it('adds a linked API Reference entry to Realtime Media product sidebars', async () => {
+    const page = createPage();
+    const broadcastPage = {
+      ...page,
+      data: {
+        ...page.data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/realtime-media/broadcast-streaming/index.mdx',
+          path: 'en/realtime-media/broadcast-streaming/index.mdx',
+        },
+        title: 'Broadcast Streaming',
+      },
+      path: 'en/realtime-media/broadcast-streaming/index.mdx',
+      slugs: ['en', 'realtime-media', 'broadcast-streaming', 'index'],
+      url: '/en/realtime-media/broadcast-streaming',
+    };
+
+    mockedGetPage.mockReturnValue(broadcastPage);
+    mockedGetPages.mockReturnValue([broadcastPage]);
+    mockedGetPageTree.mockReturnValue(
+      createRealtimeMediaApiReferenceJumpPageTree(),
+    );
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'realtime-media-broadcast-streaming-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Broadcast Streaming',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = await loadDocsPagePayload('en', 'realtime-media', [
+      'broadcast-streaming',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(payload.sidebar).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          children: expect.arrayContaining([
+            {
+              id: '/en/api-reference/api-ref/broadcast-streaming',
+              linked: true,
+              title: 'RESTful API',
+              type: 'page',
+              url: '/en/api-reference/api-ref/broadcast-streaming',
+            },
+          ]),
+          title: 'Reference',
+          type: 'section',
+        }),
+      ]),
+    );
+
+    const videoPage = {
+      ...page,
+      data: {
+        ...page.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/realtime-media/video/index.mdx',
+          path: 'en/realtime-media/video/index.mdx',
+        },
+        title: 'Video Calling',
+      },
+      path: 'en/realtime-media/video/index.mdx',
+      slugs: ['en', 'realtime-media', 'video', 'index'],
+      url: '/en/realtime-media/video',
+    };
+
+    mockedGetPage.mockReturnValue(videoPage);
+    mockedGetPages.mockReturnValue([videoPage]);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'realtime-media-video-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Video Calling',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const videoPayload = await loadDocsPagePayload('en', 'realtime-media', [
+      'video',
+    ]);
+
+    if (!videoPayload || 'redirectUrl' in videoPayload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    expect(videoPayload.sidebar).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          children: expect.arrayContaining([
+            {
+              id: '/en/api-reference/api-ref/rtc',
+              linked: true,
+              title: 'RESTful API',
+              type: 'page',
+              url: '/en/api-reference/api-ref/rtc',
+            },
+          ]),
+          title: 'Reference',
+          type: 'section',
+        }),
+      ]),
+    );
+    expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
+      '/en/api-reference/api-ref/video',
+    );
+  });
+
   it('redirects moved Device Kit docs pages to their new product paths', async () => {
     await expect(
       loadDocsPagePayload('en', 'ai', [
@@ -2087,6 +2781,68 @@ Web body
 
   it('returns a scoped Recipes sidebar with a Back to Reference header', async () => {
     const page = createPage();
+    const recipesPageTree: Root = {
+      ...apiReferencePageTree,
+      children: apiReferencePageTree.children.map((localeNode) =>
+        localeNode.type === 'folder' && localeNode.$id === 'en-root'
+          ? {
+              ...localeNode,
+              children: localeNode.children.map((tabNode) =>
+                tabNode.type === 'folder' &&
+                tabNode.$id === 'api-reference-folder'
+                  ? {
+                      ...tabNode,
+                      children: tabNode.children.map((node) =>
+                        node.$id === 'api-reference-recipes-folder' &&
+                        node.type === 'folder'
+                          ? {
+                              ...node,
+                              children: node.children.map((child) => {
+                                if (
+                                  child.$id ===
+                                    'api-reference-recipes-quickstarts-separator' &&
+                                  child.type === 'separator'
+                                ) {
+                                  return {
+                                    ...child,
+                                    name: 'Content Quickstarts',
+                                  };
+                                }
+
+                                if (
+                                  child.$id ===
+                                    'api-reference-recipes-integration-separator' &&
+                                  child.type === 'separator'
+                                ) {
+                                  return {
+                                    ...child,
+                                    name: 'Content Integration Patterns',
+                                  };
+                                }
+
+                                if (
+                                  child.$id ===
+                                    'api-reference-recipes-use-cases-separator' &&
+                                  child.type === 'separator'
+                                ) {
+                                  return {
+                                    ...child,
+                                    name: 'Content Use Cases',
+                                  };
+                                }
+
+                                return child;
+                              }),
+                            }
+                          : node,
+                      ),
+                    }
+                  : tabNode,
+              ),
+            }
+          : localeNode,
+      ),
+    };
     mockedGetPage.mockReturnValue({
       ...page,
       path: 'en/api-reference/recipes/index.md',
@@ -2102,7 +2858,7 @@ Web body
         title: 'Recipes',
       },
     });
-    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockedGetPageTree.mockReturnValue(recipesPageTree);
     mockedGetNodeMeta.mockImplementation((node) =>
       node.$id === 'api-reference-recipes-folder'
         ? ({
@@ -2143,21 +2899,29 @@ Web body
     expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
       expect.arrayContaining([
         '/en/api-reference/voice-ai-recipes',
-        '/en/api-reference/conversational-ai',
+        '/en/api-reference/api-ref/conversational-ai',
       ]),
     );
     expect(payload.sidebar).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
+          title: 'Content Quickstarts',
+          type: 'section',
+        }),
+        expect.objectContaining({
+          title: 'Content Integration Patterns',
+          type: 'section',
+        }),
+        expect.objectContaining({
+          title: 'Content Use Cases',
+          type: 'section',
+        }),
+      ]),
+    );
+    expect(payload.sidebar).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
           title: 'Quickstarts',
-          type: 'section',
-        }),
-        expect.objectContaining({
-          title: 'Integration patterns',
-          type: 'section',
-        }),
-        expect.objectContaining({
-          title: 'Use cases',
           type: 'section',
         }),
       ]),

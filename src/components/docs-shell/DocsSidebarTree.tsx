@@ -31,19 +31,19 @@ type RenderableSidebarSectionNode = SidebarSectionNode & {
 };
 
 const sidebarToggleClassName =
-  'min-h-[34px] h-auto items-start justify-between rounded-[7px] px-3 py-1.5 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
+  'min-h-[30px] h-auto items-start justify-between rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
 
 const sidebarSectionTitleClassName =
   'block min-w-0 flex-1 break-words leading-5 whitespace-normal';
 
 const sidebarSubButtonClassName =
-  'min-h-[32px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1.5 text-[12.75px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
+  'min-h-[28px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1 text-[12.75px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const sidebarPageButtonClassName =
-  'relative min-h-[34px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1.5 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
+  'relative min-h-[30px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const openApiSidebarButtonClassName =
-  'h-auto min-h-[30px] items-start overflow-visible py-1.5';
+  'h-auto min-h-[28px] items-start overflow-visible py-1';
 
 const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [];
 
@@ -158,7 +158,7 @@ function SidebarSection({
   if (!node.collapsible) {
     return (
       <div>
-        <SidebarGroupLabel className="mt-5 mb-2.5 h-auto gap-2 px-2 py-1 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
+        <SidebarGroupLabel className="mt-3.5 mb-1.5 h-auto gap-2 px-2 py-0.5 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
           <SidebarConfiguredIcon icon={node.icon} />
           <span
             className="block min-w-0 flex-1 break-words leading-5 whitespace-normal"
@@ -493,7 +493,7 @@ function SidebarNestedSection({
         />
       </button>
       {isOpen ? (
-        <div className="mt-1.5 flex flex-col gap-1.5 pl-3.5">
+        <div className="mt-1 flex flex-col gap-1 pl-3.5">
           {node.children.map((child) =>
             child.type === 'section' ? (
               <SidebarNestedSection

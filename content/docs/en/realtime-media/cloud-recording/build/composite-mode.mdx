@@ -14,7 +14,7 @@ For example, if a channel has two users, and you choose to record both audio and
 
 ![](/images/cloud-recording/composite-mode.svg)
 
-The recording service generates one M3U8 file and multiple TS files. If you set `avFileType` as `["hls","mp4"]` when calling the [`start`](/en/api-reference/cloud-recording/restful#start) method, the recording service also generates MP4 files, which include the audio and video of all users in the channel.
+The recording service generates one M3U8 file and multiple TS files. If you set `avFileType` as `["hls","mp4"]` when calling the [`start`](/en/api-reference/api-ref/cloud-recording#start) method, the recording service also generates MP4 files, which include the audio and video of all users in the channel.
 
 This guide explains how to implement composite recording using Cloud Recording REST API.
 
@@ -22,7 +22,7 @@ This guide explains how to implement composite recording using Cloud Recording R
 
 ### Get a resource ID
 
-Before recording, call the [`acquire`](/en/api-reference/cloud-recording/restful#acquire) method to apply for a resource ID.
+Before recording, call the [`acquire`](/en/api-reference/api-ref/cloud-recording#acquire) method to apply for a resource ID.
 
 #### Example `acquire` request over HTTPS
 
@@ -47,7 +47,7 @@ https://api.agora.io/v1/apps/<yourappid>/cloud_recording/acquire
 
 ### Start recording
 
-To enable composite recording mode, set `mode` to `mix` when calling  [`start`](/en/api-reference/cloud-recording/restful#start). Use `recordingConfig` to configure composite recording, and use `storageConfig` to configure your third-party cloud storage.
+To enable composite recording mode, set `mode` to `mix` when calling  [`start`](/en/api-reference/api-ref/cloud-recording#start). Use `recordingConfig` to configure composite recording, and use `storageConfig` to configure your third-party cloud storage.
 
 You cannot switch to a different recording mode once you start recording.
 
@@ -56,9 +56,9 @@ In composite recording mode, you can configure the following parameters in `clie
 | Parameter             | Description                                                  | Note                                 |
 | :-------------------- | :----------------------------------------------------------- | :----------------------------------- |
 | [`token`](../reference/glossary#token)               | The dynamic key used for the channel to record. | Required if the channel uses a token |
-| [`recordingConfig`](/en/api-reference/cloud-recording/restful#recordingconfig)     | Configures stream subscription, transcoding, and the profile of the output audio and video. | Required                             |
-| [`recordingFileConfig`](/en/api-reference/cloud-recording/restful#recordingfileconfig) | Configures the recorded files.                               | Optional                             |
-|  [`storageConfig`](/en/api-reference/cloud-recording/restful#storageconfig)       | Configures the third-party cloud storage.                    | Required                             |
+| [`recordingConfig`](/en/api-reference/api-ref/cloud-recording#recordingconfig)     | Configures stream subscription, transcoding, and the profile of the output audio and video. | Required                             |
+| [`recordingFileConfig`](/en/api-reference/api-ref/cloud-recording#recordingfileconfig) | Configures the recorded files.                               | Optional                             |
+|  [`storageConfig`](/en/api-reference/api-ref/cloud-recording#storageconfig)       | Configures the third-party cloud storage.                    | Required                             |
 
 #### Example `start` request over HTTPS
 
@@ -117,7 +117,7 @@ https://api.agora.io/v1/apps/<yourappid>/cloud_recording/resourceid/<resourceid>
 
 ### Stop recording
 
-When a recording finishes, call [`stop`](/en/api-reference/cloud-recording/restful#stop) to leave the channel and stop recording. To use Agora Cloud Recording again, you need to call the [`acquire`](/en/api-reference/cloud-recording/restful#acquire) method for a new resource ID.
+When a recording finishes, call [`stop`](/en/api-reference/api-ref/cloud-recording#stop) to leave the channel and stop recording. To use Agora Cloud Recording again, you need to call the [`acquire`](/en/api-reference/api-ref/cloud-recording#acquire) method for a new resource ID.
 
 #### Example `stop` request over HTTPS
 
@@ -145,9 +145,9 @@ The content of the recorded files varies according to the setting of `streamType
 
 | Recorded content | Settings                           | Recorded files                                               |
 | :--------------- | :--------------------------------- | :----------------------------------------------------------- |
-| Audio only       | Set [`streamTypes`](/en/api-reference/cloud-recording/restful#recordingconfig) as `0`           | One M3U8 file, several TS files, and one or more MP4 files if you set avFileType as `["hls","mp4"]`. The TS files and MP4 files store the audio. |
-| Video only       | Set [`streamTypes`](/en/api-reference/cloud-recording/restful#recordingconfig) as `1`           | One M3U8 file, several TS files, and one or more MP4 files if you set avFileType as `["hls","mp4"]`. The TS files and MP4 files store the video. |
-| Audio and video  | Set [`streamTypes`](/en/api-reference/cloud-recording/restful#recordingconfig) as `2` (default) | One M3U8 file, several TS files, and one or more MP4 files if you set avFileType as `["hls","mp4"]`. The TS files and MP4 files store the audio and video. |
+| Audio only       | Set [`streamTypes`](/en/api-reference/api-ref/cloud-recording#recordingconfig) as `0`           | One M3U8 file, several TS files, and one or more MP4 files if you set avFileType as `["hls","mp4"]`. The TS files and MP4 files store the audio. |
+| Video only       | Set [`streamTypes`](/en/api-reference/api-ref/cloud-recording#recordingconfig) as `1`           | One M3U8 file, several TS files, and one or more MP4 files if you set avFileType as `["hls","mp4"]`. The TS files and MP4 files store the video. |
+| Audio and video  | Set [`streamTypes`](/en/api-reference/api-ref/cloud-recording#recordingconfig) as `2` (default) | One M3U8 file, several TS files, and one or more MP4 files if you set avFileType as `["hls","mp4"]`. The TS files and MP4 files store the audio and video. |
 
 For detailed information about the naming conventions of the recorded files, see [Manage Recorded Files](/en/realtime-media/cloud-recording/build/manage-files).
 

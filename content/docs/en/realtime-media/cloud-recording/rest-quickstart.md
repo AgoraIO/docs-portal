@@ -31,7 +31,7 @@ The basic process of implementing Cloud Recording is as follows:
 
 5. Upload the recording file
 
-    After the recording ends, the cloud recording service uploads the recording file to the [third-party cloud storage](/en/api-reference/cloud-recording/restful#storageconfig) you specify.
+    After the recording ends, the cloud recording service uploads the recording file to the [third-party cloud storage](/en/api-reference/api-ref/cloud-recording#storageconfig) you specify.
 
 ## Prerequisites
 
@@ -86,8 +86,8 @@ The following figure shows the API call sequence to start and manage cloud recor
 The following APIs are optional and can be called multiple times. However, they must be called during a recording session, that is, after recording starts and before it ends:
 
 - [`query`](#query): Query the recording status
-- [`update`](/en/api-reference/cloud-recording/restful#update): Update the subscription list
-- [`updateLayout`](/en/api-reference/cloud-recording/restful#updatelayout): Update the video layout
+- [`update`](/en/api-reference/api-ref/cloud-recording#update): Update the subscription list
+- [`updateLayout`](/en/api-reference/api-ref/cloud-recording#updatelayout): Update the video layout
 
 ### Use basic HTTP authentication
 
@@ -95,7 +95,7 @@ The Cloud Recording RESTful APIs require basic HTTP authentication. You need to 
 
 ### Get a resource ID {#acquire}
 
-Call the [`acquire`](/en/api-reference/cloud-recording/restful#acquire) method to request a resource ID for Cloud Recording.
+Call the [`acquire`](/en/api-reference/api-ref/cloud-recording#acquire) method to request a resource ID for Cloud Recording.
 
 After calling this method successfully, you receive a resource ID in the response body. The resource ID is valid for five minutes. Start recording with this resource ID within the validity period. One resource ID can only be used for a single recording session.
 
@@ -123,7 +123,7 @@ curl --location --request POST 'https://api.agora.io/v1/apps/<appid>/cloud_recor
 
 ### Start recording {#start}
 
-Call the [`start`](/en/api-reference/cloud-recording/restful#start) method within five minutes of getting a resource ID to join a channel and start recording. You can choose either [individual recording](/en/realtime-media/cloud-recording/build/individual-mode) or [composite recording](/en/realtime-media/cloud-recording/build/composite-mode) as the recording mode.
+Call the [`start`](/en/api-reference/api-ref/cloud-recording#start) method within five minutes of getting a resource ID to join a channel and start recording. You can choose either [individual recording](/en/realtime-media/cloud-recording/build/individual-mode) or [composite recording](/en/realtime-media/cloud-recording/build/composite-mode) as the recording mode.
 
 If this method call succeeds, you receive a recording ID (sid) in the HTTP response body. This ID identifies the current recording.
 
@@ -169,7 +169,7 @@ curl --location --request POST  'https://api.agora.io/v1/apps/<appid>/cloud_reco
 
 ### Query recording status {#query}
 
-During a recording session, can call the [`query`](/en/api-reference/cloud-recording/restful#query) method to query the recording status. You can call this API multiple times.
+During a recording session, can call the [`query`](/en/api-reference/api-ref/cloud-recording#query) method to query the recording status. You can call this API multiple times.
 
 When you call this method successfully, you receive the current recording status and related information about the recording file in the response body. See [Best Practices in Integrating Cloud Recording](/en/realtime-media/cloud-recording/build/integration-best-practices) for details about how to [Monitor service status during a recording](../best-practices/integration-best-practices#monitor-service-status-during-a-recording) and[ Obtain the M3U8 file name](../best-practices/integration-best-practices#obtain-the-m3u8-file-name).
 
@@ -189,7 +189,7 @@ curl --location --request GET 'https://api.agora.io/v1/apps/<appid>/cloud_record
 
 ### Stop recording {#stop}
 
-Call the [`stop`](/en/api-reference/cloud-recording/restful#stop) API to end the recording session.
+Call the [`stop`](/en/api-reference/api-ref/cloud-recording#stop) API to end the recording session.
 
 When you call this method successfully, you receive the status of the recording file upload and information about the recording file in the response body.
 
@@ -239,9 +239,9 @@ You can also use Postman to generate code snippets written in various programmin
 - To streamline the use of Agora RESTful APIs within your infrastructure, see
 [Quickstart using middleware](/en/realtime-media/cloud-recording/middleware-quickstart). The community middleware project provides RESTful APIs for tasks such as token generation and cloud recording management.
 
-- To update the subscription lists during the recording, call [`update`](/en/api-reference/cloud-recording/restful#update). You can call this method multiple times. See [Set up subscription lists](/en/realtime-media/cloud-recording/build/subscription) for details.
+- To update the subscription lists during the recording, call [`update`](/en/api-reference/api-ref/cloud-recording#update). You can call this method multiple times. See [Set up subscription lists](/en/realtime-media/cloud-recording/build/subscription) for details.
 
-- To set or update the video layout during the recording, call the [`updateLayout`](/en/api-reference/cloud-recording/restful#updatelayout) method. See [Set Video Layout](/en/realtime-media/cloud-recording/build/layout) for details.
+- To set or update the video layout during the recording, call the [`updateLayout`](/en/api-reference/api-ref/cloud-recording#updatelayout) method. See [Set Video Layout](/en/realtime-media/cloud-recording/build/layout) for details.
 
 - [Common errors in cloud recording](/en/realtime-media/cloud-recording/reference/common-errors) lists common error codes and error messages in the response body.
 
