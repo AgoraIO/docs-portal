@@ -85,6 +85,23 @@ describe('docs content regressions', () => {
     }
   });
 
+  it('uses the local Flexible Classroom product architecture image asset', () => {
+    const source = readFileSync(
+      resolve(
+        docsRoot,
+        'solutions/flexible-classroom/reference/product-features.md',
+      ),
+      'utf8',
+    );
+
+    expect(source).toContain(
+      '![Product Architecture](/images/flexible-classroom/product-architecture.png)',
+    );
+    expect(source).not.toContain(
+      'https://web-cdn.agora.io/docs-files/1658392957746',
+    );
+  });
+
   it('preserves explicit table cell line breaks in processed markdown', async () => {
     const { source } = await import('./source.server');
     const page = source.getPage(['ai', 'get-started', 'test-mdx-comps'], 'en');
