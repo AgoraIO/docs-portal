@@ -38,54 +38,189 @@ To configure region access restrictions, set `properties.geofence` when you [Sta
 
 ### Configuration examples
 
-Refer to the following examples to understand `geofence` configuration:
+Refer to the following examples to understand `geofence` configuration.
 
-- Restrict access to North America only
+#### Restrict access to North America only
 
-    ```json
-    {
-      "name": "customer_service",
-      "properties": {
-        "channel": "test_channel",
-        "token": "your_rtc_token",
-        "agent_rtc_uid": "123",
-        "remote_rtc_uids": ["456"],
-        "geofence": {
-          "area": "NORTH_AMERICA"
-        },
-        "llm": {
-          // ... LLM configuration
-        },
-        "tts": {
-          // ... TTS configuration
-        }
-      }
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit import GeofenceConfig
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+    .with_geofence(GeofenceConfig(
+        area='NORTH_AMERICA',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */)
+  .withGeofence({
+    area: 'NORTH_AMERICA',
+  });
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+
+// client is your configured *agentkit.AgoraClient
+agent := agentkit.NewAgent(client).
+    WithLlm(/* configure your LLM vendor */).
+    WithTts(/* configure your TTS vendor */).
+    WithGeofence(&agentkit.GeofenceConfig{
+        Area: agentkit.GeofenceAreaNorthAmerica,
+    })
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following request body when you [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join):
+
+```json
+{
+  "name": "customer_service",
+  "properties": {
+    "channel": "test_channel",
+    "token": "your_rtc_token",
+    "agent_rtc_uid": "123",
+    "remote_rtc_uids": ["456"],
+    "geofence": {
+      "area": "NORTH_AMERICA"
+    },
+    "llm": {
+      // ... LLM configuration
+    },
+    "tts": {
+      // ... TTS configuration
     }
-    ```
+  }
+}
+```
 
-- Global access but excluding India
+</TabsContent>
+</Tabs>
 
-    ```json
-    {
-      "name": "customer_service",
-      "properties": {
-        "channel": "test_channel",
-        "token": "your_rtc_token",
-        "agent_rtc_uid": "123",
-        "remote_rtc_uids": ["456"],
-        "geofence": {
-          "area": "GLOBAL",
-          "exclude_area": "INDIA"
-        },
-        "llm": {
-          // ... LLM configuration
-        },
-        "tts": {
-          // ... TTS configuration
-        }
-      }
+#### Allow global access but exclude India
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit import GeofenceConfig
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+    .with_geofence(GeofenceConfig(
+        area='GLOBAL',
+        exclude_area='INDIA',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */)
+  .withGeofence({
+    area: 'GLOBAL',
+    exclude_area: 'INDIA',
+  });
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+
+// client is your configured *agentkit.AgoraClient
+agent := agentkit.NewAgent(client).
+    WithLlm(/* configure your LLM vendor */).
+    WithTts(/* configure your TTS vendor */).
+    WithGeofence(&agentkit.GeofenceConfig{
+        Area:        agentkit.GeofenceAreaGlobal,
+        ExcludeArea: agentkit.GeofenceExcludeAreaIndia.Ptr(),
+    })
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following request body when you [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join):
+
+```json
+{
+  "name": "customer_service",
+  "properties": {
+    "channel": "test_channel",
+    "token": "your_rtc_token",
+    "agent_rtc_uid": "123",
+    "remote_rtc_uids": ["456"],
+    "geofence": {
+      "area": "GLOBAL",
+      "exclude_area": "INDIA"
+    },
+    "llm": {
+      // ... LLM configuration
+    },
+    "tts": {
+      // ... TTS configuration
     }
-    ```
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
 
 ### Configure RTC regional access 
 

@@ -4,67 +4,141 @@ description: Configure MiniMax as a TTS provider for Voice Agent.
 ---
 MiniMax provides text-to-speech (TTS) with multiple voice styles and low-latency streaming output.
 
-### Use a preset
-
-To use MiniMax TTS with an Agora managed key, specify one of the following presets in the [`preset`](../../../api-reference/conversational-ai/rest-api/agent/join#preset) field when starting an agent:
-
-- `minimax_speech_2_6_turbo`
-- `minimax_speech_2_8_turbo`
-
-When using a preset, you do not need to provide the API key, group ID, model, or endpoint URL. You can still use the `tts` field to configure additional settings such as `voice_setting`. To use a model not listed above, or to provide your own API key, see [Sample configuration](#sample-configuration).
-
 ### Sample configuration
 
-The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure MiniMax TTS when starting a conversational AI agent.
 
-### Use a preset model
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
 
-```json
-"preset": "minimax_speech_2_8_turbo",
-"properties": {
-  //...
-  "tts": {
-    "params": {
-      "voice_setting": {
-        "voice_id": "English_captivating_female1"
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import MiniMaxTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(MiniMaxTTS(
+        key='your-minimax-key',  # omit key, group_id, voice_id, and url to use Agora-managed mode with a preset model
+        group_id='your-minimax-group-id',
+        model='speech-2.8-turbo',
+        voice_id='English_captivating_female1',
+        url='wss://api-uw.minimax.io/ws/v1/t2a_v2',
+    ))
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, MiniMaxTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new MiniMaxTTS({
+    key: 'your-minimax-key',  // omit key, groupId, voiceId, and url to use Agora-managed mode with a preset model
+    groupId: 'your-minimax-group-id',
+    model: 'speech-2.8-turbo',
+    voiceId: 'English_captivating_female1',
+    url: 'wss://api-uw.minimax.io/ws/v1/t2a_v2',
+  }));
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewMiniMaxTTS(vendors.MiniMaxTTSOptions{
+        Key:     "your-minimax-key", // omit Key, GroupID, VoiceID, and URL to use Agora-managed mode with a preset model
+        GroupID: "your-minimax-group-id",
+        Model:   "speech-2.8-turbo",
+        VoiceID: "English_captivating_female1",
+        URL:     "wss://api-uw.minimax.io/ws/v1/t2a_v2",
+    }),
+)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+- **Managed mode**
+
+  To use MiniMax TTS with an Agora-managed key, specify one of the following presets in the [`preset`](/conversational-ai/rest-api/agent/join#preset) field when starting an agent:
+
+  - `minimax_speech_2_6_turbo`
+  - `minimax_speech_2_8_turbo`
+
+  When using a preset, you do not need to provide the API key, group ID, model, or endpoint URL. You can still use the `tts` field to configure additional settings such as `voice_setting`.
+
+  ```json
+  "preset": "minimax_speech_2_8_turbo",
+  "properties": {
+    "tts": {
+      "params": {
+        "voice_setting": {
+          "voice_id": "English_captivating_female1",
+          "speed": 1.0
+        },
+        "audio_setting": {
+          "sample_rate": 44100
+        }
       }
     }
   }
-}
-```
+  ```
 
-### Use your own API key (BYOK)
+- **BYOK**
 
-```json
-"tts": {
-  "vendor": "minimax",
-  "params": {
-    "key": "<minimax_key>",
-    "group_id": "<minimax_group_id>",
-    "model": "speech-02-turbo",
-    "voice_setting": {
-      "voice_id": "English_captivating_female1"
-    },
-    "url": "wss://api-uw.minimax.io/ws/v1/t2a_v2"
+  ```json
+  "tts": {
+    "vendor": "minimax",
+    "params": {
+      "key": "<minimax_key>",
+      "group_id": "<minimax_group_id>",
+      "model": "speech-2.8-turbo",
+      "url": "wss://api-uw.minimax.io/ws/v1/t2a_v2",
+      "voice_setting": {
+        "voice_id": "English_captivating_female1",
+        "speed": 1.0
+      }
+    }
   }
-}
-```
+  ```
+
+</TabsContent>
+</Tabs>
 
 :::caution[Caution]
 The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [MiniMax documentation](https://www.minimax.io/platform/document/t2a_http).
 :::
 
-  
-    The MiniMax API key used to authenticate requests. You must provide a valid key for the service to function.
-  
-  
-    The MiniMax group identifier. This is required for your account’s configuration.
-  
-  
-    The TTS model to use. For example, `speech-02-turbo`.
-  
-  
-    The voice style identifier to use. For example, `English_captivating_female1`.
-  
-  
-    The WebSocket endpoint for streaming TTS output. For example, `wss://api-uw.minimax.io/ws/v1/t2a_v2`.
+### Key parameters
+
+The following parameters are required when using your own API key (BYOK). They are not required when using a preset.
+
+The MiniMax API key used to authenticate requests. Required when using your own API key (BYOK).
+
+The MiniMax group identifier. Required when using your own API key (BYOK).
+
+The TTS model to use. Required when using your own API key (BYOK). For example, `speech-02-turbo`.
+
+The voice style identifier to use. For example, `English_captivating_female1`.
+
+The WebSocket endpoint for streaming TTS output. Required when using your own API key (BYOK). For example, `wss://api-uw.minimax.io/ws/v1/t2a_v2`.

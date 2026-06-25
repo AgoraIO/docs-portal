@@ -10,7 +10,65 @@ Using Ares ASR incurs charges under the "ARES ASR Task" pricing category. See th
 
 ### Sample configuration
 
-The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following example shows how to configure ARES ASR when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, AresSTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(AresSTT(
+        language='en-US',
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AresSTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new AresSTT({
+    language: 'en-US',
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewAresSTT(vendors.AresSTTOptions{
+        Language: "en-US",
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `asr` configuration in your request:
 
 ```json
 "asr": {
@@ -18,6 +76,9 @@ The following example shows a starting `asr` parameter configuration you can use
   "language": "en-US"
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ### Key parameters
 

@@ -8,9 +8,76 @@ This integration is fully supported for use with Conversational AI Engine. While
 :::info[INFO]
 Akool avatars only support audio with a sample rate of 16,000 Hz. Using a TTS model configured with a different sample rate will result in an error. Ensure your TTS configuration matches this requirement.
 :::
+
 ### Sample configuration
 
-The following example shows a starting `avatar` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure an Akool avatar when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import AkoolAvatar
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure a TTS vendor at 16000 Hz
+    .with_avatar(AkoolAvatar(
+        api_key='your-akool-key',
+        avatar_id='<akool_avatar_id>',
+    ))
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AkoolAvatar } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure a TTS vendor at 16000 Hz */)
+  .withAvatar(new AkoolAvatar({
+    apiKey: 'your-akool-key',
+    avatarId: '<akool_avatar_id>',
+  }));
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure a TTS vendor at 16000 Hz */).
+  WithAvatar(
+    vendors.NewAkoolAvatar(vendors.AkoolAvatarOptions{
+        APIKey:   "your-akool-key",
+        AvatarID: "<akool_avatar_id>",
+    }),
+)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `avatar` configuration in your request:
 
 ```json
 "avatar": {
@@ -24,6 +91,9 @@ The following example shows a starting `avatar` parameter configuration you can 
     }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ### Key parameters
 

@@ -73,7 +73,136 @@ Selection rules:
 
 ### Sample configuration
 
-Add the following `filler_words` object to `properties` in your [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) request body. This example plays a random filler phrase if the LLM takes longer than 1.5 seconds to respond:
+The following example configures filler words that play a random phrase when the LLM takes longer than 1.5 seconds to respond.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit import (
+    FillerWordsConfig,
+    FillerWordsTrigger,
+    FillerWordsTriggerFixedTimeConfig,
+    FillerWordsContent,
+    FillerWordsContentStaticConfig,
+)
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+    .with_filler_words(FillerWordsConfig(
+        enable=True,
+        trigger=FillerWordsTrigger(
+            mode='fixed_time',
+            fixed_time_config=FillerWordsTriggerFixedTimeConfig(
+                response_wait_ms=1500,
+            ),
+        ),
+        content=FillerWordsContent(
+            mode='static',
+            static_config=FillerWordsContentStaticConfig(
+                phrases=[
+                    'Let me look into that.',
+                    'One moment, please.',
+                    'Sure, give me a second.',
+                    'Hmmm, let me check.',
+                ],
+                selection_rule='shuffle',
+            ),
+        ),
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */)
+  .withFillerWords({
+    enable: true,
+    trigger: {
+      mode: 'fixed_time',
+      fixed_time_config: {
+        response_wait_ms: 1500,
+      },
+    },
+    content: {
+      mode: 'static',
+      static_config: {
+        phrases: [
+          'Let me look into that.',
+          'One moment, please.',
+          'Sure, give me a second.',
+          'Hmmm, let me check.',
+        ],
+        selection_rule: 'shuffle',
+      },
+    },
+  });
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+)
+
+// client is your configured *agentkit.AgoraClient
+agent := agentkit.NewAgent(client).
+    WithStt(/* configure your STT vendor */).
+    WithLlm(/* configure your LLM vendor */).
+    WithTts(/* configure your TTS vendor */).
+    WithFillerWords(&agentkit.FillerWordsConfig{
+        Enable: Agora.Bool(true),
+        Trigger: &agentkit.FillerWordsTrigger{
+            Mode: Agora.String("fixed_time"),
+            FixedTimeConfig: &agentkit.FillerWordsTriggerFixedTimeConfig{
+                ResponseWaitMs: Agora.Int(1500),
+            },
+        },
+        Content: &agentkit.FillerWordsContent{
+            Mode: Agora.String("static"),
+            StaticConfig: &agentkit.FillerWordsContentStaticConfig{
+                Phrases: []string{
+                    "Let me look into that.",
+                    "One moment, please.",
+                    "Sure, give me a second.",
+                    "Hmmm, let me check.",
+                },
+                SelectionRule: agentkit.FillerWordsSelectionRuleShuffle.Ptr(),
+            },
+        },
+    })
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Add the following `filler_words` object to `properties` in your [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) request body:
 
 ```json
 "filler_words": {
@@ -98,6 +227,9 @@ Add the following `filler_words` object to `properties` in your [Start a convers
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ## Best practices
 

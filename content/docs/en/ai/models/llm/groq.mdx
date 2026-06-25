@@ -6,26 +6,97 @@ Groq provides state-of-the-art language models optimized for different use cases
 
 ### Sample configuration
 
-The following example shows a starting `llm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join). 
+The following example shows how to configure Groq LLM when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, Groq
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(Groq(
+        api_key='your-groq-key',
+        base_url='https://api.groq.com/openai/v1/chat/completions',
+        model='llama-3.3-70b-versatile',
+        system_messages=[{'role': 'system', 'content': 'You are a helpful chatbot.'}],
+        greeting_message='Hello, how can I assist you?',
+        failure_message='Please hold on a second.',
+        max_history=32,
+    ))
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, Groq } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(new Groq({
+    apiKey: 'your-groq-key',
+    url: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'llama-3.3-70b-versatile',
+    systemMessages: [{ role: 'system', content: 'You are a helpful chatbot.' }],
+    greetingMessage: 'Hello, how can I assist you?',
+    failureMessage: 'Please hold on a second.',
+    maxHistory: 32,
+  }))
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(
+    vendors.NewGroq(vendors.GroqOptions{
+        APIKey:  "your-groq-key",
+        BaseURL: "https://api.groq.com/openai/v1/chat/completions",
+        Model:   "llama-3.3-70b-versatile",
+        SystemMessages: []map[string]interface{}{
+            {"role": "system", "content": "You are a helpful chatbot."},
+        },
+        GreetingMessage: "Hello, how can I assist you?",
+        FailureMessage:  "Please hold on a second.",
+        MaxHistory:      agora.Int(32),
+    }),
+).WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `llm` configuration in your request:
 
 ```json
 "llm": {
-    "url": "https://api.groq.com/openai/v1/chat/completions",
-    "api_key": "<your_llm_key>",
-    "system_messages": [
-      {
-        "role": "system",
-        "content": "You are a helpful chatbot."
-      }
-    ],
-    "max_history": 32,
-    "greeting_message": "Hello, how can I assist you?",
     "failure_message": "Please hold on a second.",
     "params": {
       "model": "llama-3.3-70b-versatile"
-    },
-  }
+    }
+}
 ```
+
+</TabsContent>
+</Tabs>
 
 ### Key parameters
 
