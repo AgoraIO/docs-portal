@@ -45,6 +45,12 @@ const sidebarPageButtonClassName =
 const openApiSidebarButtonClassName =
   'h-auto min-h-[28px] items-start overflow-visible py-1';
 
+const expandedSidebarChildrenClassName =
+  'border-l border-[color:var(--line-strong)] pl-3';
+
+const nestedExpandedSidebarChildrenClassName =
+  'mt-1 flex flex-col gap-1 border-l border-[color:var(--line-strong)] pl-3';
+
 const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [];
 
 export function DocsSidebarTree({
@@ -227,7 +233,7 @@ function SidebarSection({
         />
       </SidebarMenuButton>
       {isOpen ? (
-        <SidebarMenuSub>
+        <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {node.children.map((child) =>
             child.type === 'section' ? (
               <SidebarMenuSubItem key={child.id}>
@@ -345,7 +351,7 @@ function SidebarLinkedSection({
         </SidebarMenuButton>
       </div>
       {isOpen ? (
-        <SidebarMenuSub>
+        <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {items.map((child) =>
             child.type === 'section' ? (
               <SidebarMenuSubItem key={child.id}>
@@ -427,7 +433,7 @@ function SidebarQuickstartGroup({
         />
       </SidebarMenuButton>
       {isOpen ? (
-        <SidebarMenuSub>
+        <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {pages.map((child) => (
             <SidebarMenuSubItem key={child.id}>
               <SidebarMenuSubButton
@@ -493,7 +499,7 @@ function SidebarNestedSection({
         />
       </button>
       {isOpen ? (
-        <div className="mt-1 flex flex-col gap-1 pl-3.5">
+        <div className={nestedExpandedSidebarChildrenClassName}>
           {node.children.map((child) =>
             child.type === 'section' ? (
               <SidebarNestedSection
