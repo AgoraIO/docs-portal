@@ -305,9 +305,15 @@ describe('DocsSidebarTree', () => {
 
     fireEvent.click(toggle);
 
-    expect(
-      await screen.findByRole('link', { name: 'Use RESTful API' }),
-    ).toBeInTheDocument();
+    const link = await screen.findByRole('link', { name: 'Use RESTful API' });
+    const expandedChildren = link.closest('[data-sidebar="menu-sub"]');
+
+    expect(link).toBeInTheDocument();
+    expect(expandedChildren).toHaveClass(
+      'border-l',
+      'border-[color:var(--line-strong)]',
+      'pl-3',
+    );
   });
 
   it('renders linked collapsed sections as navigation entries', async () => {
@@ -541,6 +547,11 @@ describe('DocsSidebarTree', () => {
     expect(
       screen.getByRole('link', { name: '场景化 API' }),
     ).toBeInTheDocument();
+    expect(
+      screen
+        .getByRole('link', { name: '场景化 API' })
+        .closest('div[class*="border-l"]'),
+    ).toHaveClass('border-[color:var(--line-strong)]', 'pl-3');
   });
 
   it('keeps the Build subsection collapsed by default inside Get started', async () => {
