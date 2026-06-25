@@ -88,4 +88,29 @@ describe('docs content regressions', () => {
       '`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array',
     );
   });
+
+  it('renders IoT authentication code tabs without leaking MDX tags', async () => {
+    const { source } = await import('./source.server');
+    const page = source.getPage(
+      ['solutions', 'iot', 'build', 'authentication-workflow'],
+      'en',
+    );
+
+    expect(page).toBeDefined();
+    expect(page?.type).toBe('docs');
+
+    if (!page || !('getText' in page.data)) {
+      throw new Error(
+        'Expected IoT authentication page to expose processed markdown.',
+      );
+    }
+
+    const processed = await page.data.getText('processed');
+
+    expect(processed).toContain('<CodeBlockTabs defaultValue="java">');
+    expect(processed).toContain('<CodeBlockTab value="java">');
+    expect(processed).toContain('<CodeBlockTab value="kotlin">');
+    expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
+    expect(processed).not.toContain('&lt;CodeBlockTab');
+  });
 });

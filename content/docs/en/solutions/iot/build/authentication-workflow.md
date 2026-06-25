@@ -40,6 +40,7 @@ The client requests a token from your authentication server corresponding to the
 </CodeBlockTabsList>
 
 <CodeBlockTab value="java">
+
 ```java
 // Channel name
 String channelId = "xxx";
@@ -53,9 +54,11 @@ option.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
 // Join a channel
 engine.joinChannel(token, channelId, 0, option);
 ```
+
 </CodeBlockTab>
 
 <CodeBlockTab value="kotlin">
+
 ```kotlin
 // Channel name
 val channelId = "xxx"
@@ -70,6 +73,7 @@ val option = ChannelMediaOptions().apply {
 // Join a channel
 engine.joinChannel(token, channelId, 0, option)
 ```
+
 </CodeBlockTab>
 
 </CodeBlockTabs>
@@ -101,6 +105,7 @@ The following sample code demonstrates how to call `renewToken` to update the to
 </CodeBlockTabsList>
 
 <CodeBlockTab value="java">
+
 ```java
 class RtcEngineEventHandlerImpl extends IRtcEngineEventHandler {
     // Callback is triggered when the token is about to expire
@@ -115,9 +120,11 @@ class RtcEngineEventHandlerImpl extends IRtcEngineEventHandler {
     }
 }
 ```
+
 </CodeBlockTab>
 
 <CodeBlockTab value="kotlin">
+
 ```kotlin
 class RtcEngineEventHandlerImpl : IRtcEngineEventHandler() {
     // Callback triggered when the token is about to expire
@@ -131,6 +138,7 @@ class RtcEngineEventHandlerImpl : IRtcEngineEventHandler() {
     }
 }
 ```
+
 </CodeBlockTab>
 
 </CodeBlockTabs>
@@ -151,14 +159,15 @@ This section presents sample code to implement token authentication in your clie
 
     **Complete sample code for token authentication**
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-```java
+    <CodeBlockTab value="java">
+
+    ```java
     package com.example.rtcquickstart;
        import androidx.appcompat.app.AppCompatActivity;
        import android.os.Bundle;
@@ -329,10 +338,13 @@ This section presents sample code to implement token authentication in your clie
              mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
           }
        }
-</CodeBlockTab>
+    ```
 
-<CodeBlockTab value="kotlin">
-```kotlin
+    </CodeBlockTab>
+
+    <CodeBlockTab value="kotlin">
+
+    ```kotlin
     package com.example.rtcquickstart
        
        import android.Manifest;
@@ -504,10 +516,11 @@ This section presents sample code to implement token authentication in your clie
              mRtcEngine?.setupRemoteVideo(VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid))
           }
        }
-```
-</CodeBlockTab>
+    ```
 
-</CodeBlockTabs>
+    </CodeBlockTab>
+
+    </CodeBlockTabs>
 
 :::warning
 > The user ID and channel name used to join a channel must be consistent with the values used to generate the token.
