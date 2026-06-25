@@ -47,13 +47,9 @@ This section shows you how to set up your Android project and install the Agora 
    1. Set the project name and storage path.
    1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
 
-    :::note
-    After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
-    :::
-
-2. Add a layout file for your activity.
-
-   Set up a basic layout for your activity. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
+:::note
+After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+:::
 
 </TabsContent>
 
@@ -88,50 +84,50 @@ Use either of the following methods to add Voice SDK to your project.
 
 1. Open the `settings.gradle` file in the project's root directory and add the Maven Central dependency, if it doesn't already exist:
 
-  ```groovy
-  repositories {
-    mavenCentral()
-  }
-  ```
+    ```groovy
+    repositories {
+      mavenCentral()
+    }
+    ```
 
-:::note
-If your Android project uses <a href="https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration">dependencyResolutionManagement</a>, the method of adding the Maven Central dependency may differ.
-:::
+    :::note
+    If your Android project uses <a href="https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration">dependencyResolutionManagement</a>, the method of adding the Maven Central dependency may differ.
+    :::
 
 1. To integrate the Voice SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
 
-   - Groovy `build.gradle`
+    - Groovy `build.gradle`
 
-     ```json
-     implementation 'io.agora.rtc:voice-sdk:x.y.z'
-     ```
+        ```json
+        implementation 'io.agora.rtc:voice-sdk:x.y.z'
+        ```
 
-   - Kotlin `build.gradle.kts`
+    - Kotlin `build.gradle.kts`
 
-    ```kotlin
-    implementation("io.agora.rtc:voice-sdk:x.y.z")
-    ```
+        ```kotlin
+        implementation("io.agora.rtc:voice-sdk:x.y.z")
+        ```
 
-   Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
+    Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
 
-:::note
-To get the latest version number, check the [Release notes](reference/release-notes.mdx). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
-:::
+    :::note
+    To get the latest version number, check the [Release notes](reference/release-notes.mdx). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
+    :::
 
 1. Prevent code obfuscation
 
-  Open the `/app/proguard-rules.pro` file and add the following lines to prevent the Voice SDK code from being obfuscated:
+    Open the `/app/proguard-rules.pro` file and add the following lines to prevent the Voice SDK code from being obfuscated:
 
-  ```java
-  -keep class io.agora.** { *; }
-    -dontwarn io.agora.**
-  ```
+    ```java
+    -keep class io.agora.** { *; }
+      -dontwarn io.agora.**
+    ```
 
 </TabsContent>
 
 <TabsContent value="manual">
 
-1. Download the latest version of Voice SDK from the the [SDKs](../../../sdks.md) page and unzip it.
+1. Download the latest version of Voice SDK from the [SDKs](../../../sdks.md) page and unzip it.
 
 1. Open the unzipped file and copy the following files or subfolders to your project path.
 
@@ -148,12 +144,12 @@ To get the latest version number, check the [Release notes](reference/release-no
 
 1. Prevent code obfuscation
 
-  Open the `/app/proguard-rules.pro` file and add the following lines to prevent the Voice SDK code from being obfuscated:
+    Open the `/app/proguard-rules.pro` file and add the following lines to prevent the Voice SDK code from being obfuscated:
 
-  ```java
-  -keep class io.agora.** { *; }
-    -dontwarn io.agora.**
-  ```
+    ```java
+    -keep class io.agora.** { *; }
+      -dontwarn io.agora.**
+    ```
 
 </TabsContent>
 </Tabs>
@@ -372,188 +368,192 @@ private val mRtcEventHandler = object : IRtcEngineEventHandler() {
   }
 }
 ```
-</CodeBlockTab>
 
+</CodeBlockTab>
 </CodeBlockTabs>
+
 ### Handle permissions
 
 To access the microphone on Android devices, declare the necessary permissions in the app's manifest and ensure that the user grants these permissions when the app starts.
 
 1. Open your project's `AndroidManifest.xml` file and add the following permissions before `<application>`:
 
-  ```xml
-  <!--Required permissions-->
-  <uses-permission android:name="android.permission.INTERNET"/>
+    ```xml
+    <!--Required permissions-->
+    <uses-permission android:name="android.permission.INTERNET"/>
 
-  <!--Optional permissions-->
-  <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-  <uses-permission android:name="android.permission.BLUETOOTH"/>
-  <!-- For devices running Android 12 (API level 32) or higher and integrating Agora Voice SDK version v4.1.0 or lower, you also need to add the following permissions -->
-  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
-  <!-- For Android 12 or higher, the following permissions are also required -->
-  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-  <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
-  ```
+    <!--Optional permissions-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <!-- For devices running Android 12 (API level 32) or higher and integrating Agora Voice SDK version v4.1.0 or lower, you also need to add the following permissions -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <!-- For Android 12 or higher, the following permissions are also required -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+    ```
 
 1. Use the following code to handle runtime permissions in your Android app. The logic ensures that the necessary permissions are granted before starting Voice Calling. In your `MainActivity` file, add the following code:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  private static final int PERMISSION_REQ_ID = 22;
+    <CodeBlockTab value="java">
+      ```java
+      private static final int PERMISSION_REQ_ID = 22;
 
-    private boolean checkPermissions() {
-      for (String permission : getRequiredPermissions()) {
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-          return false;
+        private boolean checkPermissions() {
+          for (String permission : getRequiredPermissions()) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+              return false;
+            }
+          }
+          return true;
         }
-      }
-      return true;
-    }
 
-    private void requestPermissions() {
-      ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
-    }
-
-    private String[] getRequiredPermissions() {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        return new String[]{
-          Manifest.permission.RECORD_AUDIO,
-          Manifest.permission.READ_PHONE_STATE,
-          Manifest.permission.BLUETOOTH_CONNECT
-        };
-      } else {
-        return new String[]{Manifest.permission.RECORD_AUDIO};
-      }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-      super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-      if (checkPermissions()) {
-        startVoiceCalling();
-      }
-    }
-  ```
-</CodeBlockTab>
-
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  private val permissionReqId = 22
-
-    private fun checkPermissions(): Boolean {
-      for (permission in getRequiredPermissions()) {
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-          return false
+        private void requestPermissions() {
+          ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
         }
-      }
-      return true
-    }
-    private fun requestPermissions() {
-      ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID)
-    }
-    private fun getRequiredPermissions(): Array<String> {
-      return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        arrayOf(
-          Manifest.permission.RECORD_AUDIO,
-          Manifest.permission.READ_PHONE_STATE,
-          Manifest.permission.BLUETOOTH_CONNECT
-        )
-      } else {
-        arrayOf(Manifest.permission.RECORD_AUDIO)
-      }
-    }
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-      super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-      if (checkPermissions()) {
-        startVoiceCalling()
-      }
-    }
-  ```
-</CodeBlockTab>
 
-</CodeBlockTabs>
+        private String[] getRequiredPermissions() {
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return new String[]{
+              Manifest.permission.RECORD_AUDIO,
+              Manifest.permission.READ_PHONE_STATE,
+              Manifest.permission.BLUETOOTH_CONNECT
+            };
+          } else {
+            return new String[]{Manifest.permission.RECORD_AUDIO};
+          }
+        }
+
+        @Override
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+          super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+          if (checkPermissions()) {
+            startVoiceCalling();
+          }
+        }
+      ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      private val permissionReqId = 22
+
+        private fun checkPermissions(): Boolean {
+          for (permission in getRequiredPermissions()) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+              return false
+            }
+          }
+          return true
+        }
+        private fun requestPermissions() {
+          ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID)
+        }
+        private fun getRequiredPermissions(): Array<String> {
+          return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+              Manifest.permission.RECORD_AUDIO,
+              Manifest.permission.READ_PHONE_STATE,
+              Manifest.permission.BLUETOOTH_CONNECT
+            )
+          } else {
+            arrayOf(Manifest.permission.RECORD_AUDIO)
+          }
+        }
+        override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+          super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+          if (checkPermissions()) {
+            startVoiceCalling()
+          }
+        }
+      ```
+    </CodeBlockTab>
+
+    </CodeBlockTabs>
+
 ### Start and close the app
 
 When a user launches your app, start real-time interaction. When a user closes the app, stop the interaction.
 
 1. In the `onCreate` callback, check whether the app has been granted the required permissions. If the permissions have not been granted, request the required permissions from the user. If permissions are granted, initialize `RtcEngine` and join a channel.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  @Override
-    protected void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_main);
-      if (checkPermissions()) {
-        startVoiceCalling();
-      } else {
-        requestPermissions();
-      }
-    }
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      @Override
+        protected void onCreate(Bundle savedInstanceState) {
+          super.onCreate(savedInstanceState);
+          setContentView(R.layout.activity_main);
+          if (checkPermissions()) {
+            startVoiceCalling();
+          } else {
+            requestPermissions();
+          }
+        }
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  override fun onCreate(savedInstanceState: Bundle?) {
-      super.onCreate(savedInstanceState)
-      setContentView(R.layout.activity_main)
-      if (checkPermissions()) {
-        startVoiceCalling()
-      } else {
-        requestPermissions()
-      }
-    }
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      override fun onCreate(savedInstanceState: Bundle?) {
+          super.onCreate(savedInstanceState)
+          setContentView(R.layout.activity_main)
+          if (checkPermissions()) {
+            startVoiceCalling()
+          } else {
+            requestPermissions()
+          }
+        }
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
+
 2. When a user closes the app, or switches the app to the background, call `leaveChannel` to leave the current channel and release all session-related resources.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  private void cleanupAgoraEngine() {
-      if (mRtcEngine != null) {
-        mRtcEngine.leaveChannel();
-        mRtcEngine = null;
-      }
-    }
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      private void cleanupAgoraEngine() {
+          if (mRtcEngine != null) {
+            mRtcEngine.leaveChannel();
+            mRtcEngine = null;
+          }
+        }
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  private fun cleanupAgoraEngine() {
-      mRtcEngine?.apply {
-        leaveChannel()
-      }
-      mRtcEngine = null
-    }
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      private fun cleanupAgoraEngine() {
+          mRtcEngine?.apply {
+            leaveChannel()
+          }
+          mRtcEngine = null
+        }
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
+
 ### Complete sample code
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following lines into the `MainActivity` file in your project. Then, replace `<projectname>` in package `com.example.<projectname>` with your project's name.
