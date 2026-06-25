@@ -338,7 +338,7 @@ export function DocsShell({
             'mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden',
             isWideLayout
               ? 'xl:grid-cols-[256px_minmax(0,1fr)]'
-              : 'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
+              : 'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
           )}
           data-testid="docs-body-shell"
         >
