@@ -10,7 +10,7 @@ This page shows you how to use Video SDK to run pre-call tests to identify and t
 
 ## Understand the tech
 
-Pre-call testing typically covers two aspects: 
+Pre-call testing typically covers two aspects:
 
 - **Equipment quality test**
 
@@ -44,7 +44,7 @@ The SDK provides the `startEchoTest` [3/3] method to test the network connection
 
 1. Before joining a channel, call `startEchoTest` [3/3] with `EchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
 
-1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
 1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
 :::note
@@ -93,7 +93,7 @@ private void testVideoDevice() {
   // Start the test
   engine.startEchoTest(config);
 }
-``` 
+```
 </CodeBlockTab>
 
 <CodeBlockTab value="kotlin">
@@ -144,10 +144,10 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
 1. After you start the test, the SDK triggers the following callbacks:
-  
-  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
-  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+   - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+   - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
 1. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
@@ -186,7 +186,7 @@ public void onLastmileProbeResult(LastmileProbeResult lastmileProbeResult) {
 
 // Stop the network quality probe
 engine.stopLastmileProbeTest();
-``` 
+```
 </CodeBlockTab>
 
 <CodeBlockTab value="kotlin">
@@ -259,7 +259,7 @@ This page shows you how to use Video SDK to run pre-call tests to identify and t
 
 ## Understand the tech
 
-Pre-call testing typically covers two aspects: 
+Pre-call testing typically covers two aspects:
 
 - **Equipment quality test**
 
@@ -293,7 +293,7 @@ The SDK provides the `startEchoTest(withConfig:)` method to test the network con
 
 1. Before joining a channel, call `startEchoTest(withConfig:)` with `AgoraEchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
 
-1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
 1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
 :::note
@@ -342,10 +342,10 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
 1. After calling this method, the SDK triggers the following callbacks:
-  
-  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
-  
-  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+   - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+   - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
 1. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
@@ -427,7 +427,7 @@ This page shows you how to use Video SDK to run pre-call tests to identify and t
 
 ## Understand the tech
 
-Pre-call testing typically covers two aspects: 
+Pre-call testing typically covers two aspects:
 
 - **Equipment quality test**
 
@@ -461,7 +461,7 @@ The SDK provides the `startEchoTest(withConfig:)` method to test the network con
 
 1. Before joining a channel, call `startEchoTest(withConfig:)` with `AgoraEchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
 
-1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
 1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
 :::note
@@ -510,10 +510,10 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
 1. After calling this method, the SDK triggers the following callbacks:
-  
-  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
-  
-  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+
+   - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+   - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
 1. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
@@ -595,7 +595,7 @@ This page shows you how to use Video SDK to run pre-call tests to identify and t
 
 ## Understand the tech
 
-Pre-call testing typically covers two aspects: 
+Pre-call testing typically covers two aspects:
 
 - **Equipment quality test**
 
@@ -678,8 +678,8 @@ The Agora SDK for Web does not provide an API for testing audio playback devices
 Refer to the following steps to perform a network quality test before a call or live broadcast:
 
 1. Call `createClient` twice, to create two clients:
-  - `uplinkClient`: To test the connection status of the uplink network.
-  - `downlinkClient`: To test the connection status of the downlink network.
+   - `uplinkClient`: To test the connection status of the uplink network.
+   - `downlinkClient`: To test the connection status of the downlink network.
 
 1. Both clients call `join` to enter a channel for testing.
 
@@ -691,7 +691,7 @@ Refer to the following steps to perform a network quality test before a call or 
 
 1. Listen to `downlinkClient.on("network-quality")` event to get the downlink network status between the local device and the Agora server. The SDK triggers the `client.on("network-quality")` callback every two seconds.
 
-1. To get specific statistics about the sent or received media tracks, such as send/receive bitrate, end-to-end latency, call `getLocalAudioStats` and `getLocalVideoStats` on `uplinkClient` to get the uplink statistics, and `getRemoteAudioStats` and `getRemoteVideoStats` on `downlinkClient` to get the downlink statistics. 
+1. To get specific statistics about the sent or received media tracks, such as send/receive bitrate, end-to-end latency, call `getLocalAudioStats` and `getLocalVideoStats` on `uplinkClient` to get the uplink statistics, and `getRemoteAudioStats` and `getRemoteVideoStats` on `downlinkClient` to get the downlink statistics.
 
 The following figure summarizes the calling sequence of network quality tests:
 
@@ -738,7 +738,7 @@ If you encounter problems while running pre-call tests, first ensure that you ha
 
 ### Sample project
 
-Agora provides the following open-source projects for your reference: 
+Agora provides the following open-source projects for your reference:
 
 - [JoinChannelAudio](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx)
 
@@ -766,7 +766,7 @@ This page shows you how to use Video SDK to run pre-call tests to identify and t
 
 ## Understand the tech
 
-Pre-call testing typically covers two aspects: 
+Pre-call testing typically covers two aspects:
 
 - **Equipment quality test**
 
@@ -800,7 +800,7 @@ The SDK provides the `startEchoTest` [3/3] method to test the network connection
 
 1. Before joining a channel, call `startEchoTest` [3/3] with `EchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
 
-1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
 1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
 :::note
@@ -849,10 +849,10 @@ Voice SDK provides the `startLastmileProbeTest` method to probe the last-mile ne
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
 1. After you start the test, the SDK triggers the following callbacks:
-  
-  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
-  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+   - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+   - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
 1. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
@@ -918,7 +918,7 @@ This page shows you how to use Video SDK to run pre-call tests to identify and t
 
 ## Understand the tech
 
-Pre-call testing typically covers two aspects: 
+Pre-call testing typically covers two aspects:
 
 - **Equipment quality test**
 
@@ -952,7 +952,7 @@ The SDK provides the `startEchoTest` method to test the network connection and w
 
 1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
 
-1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
 1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
 
@@ -1042,10 +1042,10 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
 1. After you start the test, the SDK triggers the following callbacks:
-  
-  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
-  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+   - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+   - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
 1. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
@@ -1094,7 +1094,7 @@ This page shows you how to use Video SDK to run pre-call tests to identify and t
 
 ## Understand the tech
 
-Pre-call testing typically covers two aspects: 
+Pre-call testing typically covers two aspects:
 
 - **Equipment quality test**
 
@@ -1128,7 +1128,7 @@ The SDK provides the `startEchoTest` method to test the network connection and w
 
 1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
 
-1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
 1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
 
@@ -1227,10 +1227,10 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
 1. After you start the test, the SDK triggers the following callbacks:
-  
-  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
-  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+   - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+   - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
 1. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
@@ -1288,7 +1288,7 @@ This page shows you how to use Video SDK to run pre-call tests to identify and t
 
 ## Understand the tech
 
-Pre-call testing typically covers two aspects: 
+Pre-call testing typically covers two aspects:
 
 - **Equipment quality test**
 
@@ -1322,7 +1322,7 @@ The SDK provides the `startEchoTest` method to test the network connection and w
 
 1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
 
-1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
 1. To stop the test, call `stopEchoTest`, and then call `joinChannelByToken` to join a channel.
 
@@ -1340,10 +1340,10 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
 1. After you start the test, the SDK triggers the following callbacks:
-  
-  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
-  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+   - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+   - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
 1. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
@@ -1402,7 +1402,7 @@ This page shows you how to use Video SDK to run pre-call tests to identify and t
 
 ## Understand the tech
 
-Pre-call testing typically covers two aspects: 
+Pre-call testing typically covers two aspects:
 
 - **Equipment quality test**
 
@@ -1436,7 +1436,7 @@ The SDK provides the `StartEchoTest` method to test the network connection and w
 
 1. Before joining a channel, call `StartEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
 
-1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
 1. To stop the test, call `StopEchoTest`, and then call `JoinChannel` to join a channel.
 
@@ -1486,7 +1486,7 @@ audioDeviceManager.StartRecordingDeviceTest(100);
 
 class UserEventHandler : IRtcEngineEventHandler
 {
-  // Implement the audio volume callback 
+  // Implement the audio volume callback
   public override void OnAudioVolumeIndication(RtcConnection connection, AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume)
   {
 
@@ -1552,7 +1552,7 @@ RtcEngineContext context = new RtcEngineContext(_appID, 0,
 RtcEngine.Initialize(context);
 // Set up the callbacks
 RtcEngine.InitEventHandler(handler);
-// Test the local audio device loop 
+// Test the local audio device loop
 IAudioDeviceManager audioDeviceManager = RtcEngine.GetAudioDeviceManager();
 audioDeviceManager.StartAudioDeviceLoopbackTest(100);
 
@@ -1576,10 +1576,10 @@ The SDK provides the `StartLastmileProbeTest` method to probe the last-mile netw
 1. Before joining a channel or switching user roles, call `StartLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
 1. After you start the test, the SDK triggers the following callbacks:
-  
-  - `OnLastmileQuality`: This callback is triggered two seconds after `StartLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
-  - `OnLastmileProbeResult`: This callback is triggered 30 seconds after `StartLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+   - `OnLastmileQuality`: This callback is triggered two seconds after `StartLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+   - `OnLastmileProbeResult`: This callback is triggered 30 seconds after `StartLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
 1. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
@@ -1597,7 +1597,7 @@ RtcEngine.InitEventHandler(handler);
 // Start last-mile network inspection
 RtcEngine.StartLastmileProbeTest(new LastmileProbeConfig());
 
-// Stop the network test. 
+// Stop the network test.
 // Agora recommends not calling any other APIs until the test is over
 RtcEngine.StopLastmileProbeTest();
 
@@ -1633,7 +1633,7 @@ If you encounter problems while running pre-call tests, first ensure that you ha
 | Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
 
 ### API reference
- 
+
 - [`StartRecordingDeviceTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startrecordingdevicetest)
 - [`StopRecordingDeviceTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_stoprecordingdevicetest)
 - [`StartPlaybackDeviceTest`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_startplaybackdevicetest)
@@ -1653,7 +1653,7 @@ This page shows you how to use Video SDK to run pre-call tests to identify and t
 
 ## Understand the tech
 
-Pre-call testing typically covers two aspects: 
+Pre-call testing typically covers two aspects:
 
 - **Equipment quality test**
 
@@ -1687,7 +1687,7 @@ The SDK provides the `startEchoTest` method to test the network connection and w
 
 1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
 
-1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally. 
+1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
 1. To stop the test, call `stopEchoTest`, and then call `joinChannelByToken` to join a channel.
 
@@ -1723,9 +1723,9 @@ To implement running a recording device test in your game, refer to the followin
 // Select an audio capture device
 lpDeviceManager->setRecordingDevice(strDeviceID);
 
-// Implement the audio volume callback 
-virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers, 
-                   unsigned int speakerNumber, 
+// Implement the audio volume callback
+virtual void onAudioVolumeIndication(const AudioVolumeInfo* speakers,
+                   unsigned int speakerNumber,
                    int totalVolume) {
   (void)speakers;
   (void)speakerNumber;
@@ -1781,10 +1781,10 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
 1. After you start the test, the SDK triggers the following callbacks:
-  
-  - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
-  - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+   - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+   - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
 1. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
@@ -1859,7 +1859,7 @@ This page shows you how to use Video SDK to run pre-call tests to identify and t
 
 ## Understand the tech
 
-Pre-call testing typically covers two aspects: 
+Pre-call testing typically covers two aspects:
 
 - **Equipment quality test**
 
@@ -1931,7 +1931,7 @@ The SDK provides the `startEchoTest` method to test the network connection and w
 
 1. Implement the UI event
 
-  Create `OnStoptEchoTestClicked` callback function. After getting the test result, you press the stop button to trigger this callback and call the **Stop Echo Test** method to stop the test. 
+  Create `OnStoptEchoTestClicked` callback function. After getting the test result, you press the stop button to trigger this callback and call the **Stop Echo Test** method to stop the test.
 
   ![Implement UI Events](/images/video-sdk/connection-status-mng-blueprint-lastmile-quality-stopechotest-impl-ui-events.png)
 
@@ -1976,10 +1976,10 @@ The SDK provides the `StartLastmileProbeTest` method to probe the last-mile netw
 1. Before joining a channel or switching user roles, call `StartLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
 1. After you start the test, the SDK triggers the following callbacks:
-  
-  - `FOnLastmileQuality`: This callback is triggered two seconds after `StartLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
-  - `FOnLastmileProbeResult`: This callback is triggered 30 seconds after `StartLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
+   - `FOnLastmileQuality`: This callback is triggered two seconds after `StartLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
+
+   - `FOnLastmileProbeResult`: This callback is triggered 30 seconds after `StartLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
 1. Call `StopLastmileProbeTest` to stop last-mile network testing.
 

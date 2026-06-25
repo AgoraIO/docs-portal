@@ -52,7 +52,7 @@ Before proceeding, ensure that you meet the following requirements:
 - You have initialized the Chat SDK. For details, see [SDK quickstart](../../get-started-sdk).
 - You understand the call frequency limit of the Chat APIs supported by different pricing plans as described in [Limitations](../limitations).
 - You understand the number of chat rooms supported by different pricing plans as described in [Pricing Plan Details](../pricing-plan-details).
-- Only the app super admin has the privilege of creating a chat room. Ensure that you have added an app super admin by calling the [super-admin RESTful API](..//en/realtime-media/im/reference/server-api/chatroom-management/manage-chatroom-admins#adding-a-chat-room-super-admin).
+- Only the app super admin has the privilege of creating a chat room. Ensure that you have added an app super admin by calling the [super-admin RESTful API](..//en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins#adding-a-chat-room-super-admin).
 
 ## Implementation
 
@@ -62,10 +62,10 @@ This section introduces how to call the APIs provided by the Chat SDK to impleme
 
 ### Create and destroy a chat room
 
-[The app super admin](..//en/realtime-media/im/reference/server-api/chatroom-management/manage-chatroom-admins#adding-a-chat-room-super-admin) can call `createChatRoom` to create a chat room and set the chat room attributes such as the chat room subject, description, and the maximum number of members.
+[The app super admin](..//en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins#adding-a-chat-room-super-admin) can call `createChatRoom` to create a chat room and set the chat room attributes such as the chat room subject, description, and the maximum number of members.
 
 :::info
-You are advised to call the [RESTful API](/en/realtime-media/im/reference/server-api/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
+You are advised to call the [RESTful API](/en/api-reference/api-ref/im/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
 :::
 
 ```java
@@ -272,10 +272,10 @@ ChatClient.getInstance().chatroomManager().addChatRoomChangeListener(new ChatRoo
 
 ### Create and destroy a chat room
 
-The [app super admin](..//en/realtime-media/im/reference/server-api/chatroom-management/manage-chatroom-admins) can create a chat room and set the chat room attributes such as the chat room subject, description, and the maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
+The [app super admin](..//en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins) can create a chat room and set the chat room attributes such as the chat room subject, description, and the maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
 
 :::info
-You are advised to call the [RESTful API](/en/realtime-media/im/reference/server-api/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
+You are advised to call the [RESTful API](/en/api-reference/api-ref/im/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
 :::
 
 Only the chat room owner can disband a chat room. Once a chat room is disbanded, all the chat room members receive the `didDismissFromChatroom` callback and are immediately removed from the chat room.
@@ -489,10 +489,10 @@ AgoraChatClient.shared().roomManager?.add(self, delegateQueue: nil)
 
 ### Create a chat room
 
-Only the [app super admin](..//en/realtime-media/im/reference/server-api/chatroom-management/manage-chatroom-admins#adding-a-chat-room-super-admin) can call `createChatRoom` to create a chat room and set the chat room attributes such as the chat room name, description, and maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
+Only the [app super admin](..//en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins#adding-a-chat-room-super-admin) can call `createChatRoom` to create a chat room and set the chat room attributes such as the chat room name, description, and maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
 
 :::info
-You are advised to call the [RESTful API](/en/realtime-media/im/reference/server-api/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
+You are advised to call the [RESTful API](/en/api-reference/api-ref/im/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
 :::
 
 The following code sample shows how to create a chat room:
@@ -717,10 +717,10 @@ ChatClient.getInstance.chatRoomManager.removeEventHandler('UNIQUE_HANDLER_ID');
 
 ### Create a chat room
 
-Only the [app super admin](..//en/realtime-media/im/reference/server-api/chatroom-management/manage-chatroom-admins) can call `createChatRoom` to create a chat room and set the chat room attributes such as the chat room name, description, and maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
+Only the [app super admin](..//en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins) can call `createChatRoom` to create a chat room and set the chat room attributes such as the chat room name, description, and maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
 
 :::info
-You are advised to call the [RESTful API](/en/realtime-media/im/reference/server-api/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
+You are advised to call the [RESTful API](/en/api-reference/api-ref/im/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
 :::
 
 The following code sample shows how to create a chat room:
@@ -1025,10 +1025,10 @@ ChatClient.getInstance()
 
 ### Create a chat room
 
-Only the [app super admin](..//en/realtime-media/im/reference/server-api/chatroom-management/manage-chatroom-admins) can call `CreateRoom` to create a chat room and set the chat room attributes such as the chat room name, description, and maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
+Only the [app super admin](..//en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins) can call `CreateRoom` to create a chat room and set the chat room attributes such as the chat room name, description, and maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
 
 :::info
-You are advised to call the [RESTful API](/en/realtime-media/im/reference/server-api/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
+You are advised to call the [RESTful API](/en/api-reference/api-ref/im/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
 :::
 
 The following code sample shows how to create a chat room:
@@ -1331,10 +1331,10 @@ public interface IRoomManagerDelegate
 
 ### Create a chat room
 
-Only the [app super admin](..//en/realtime-media/im/reference/server-api/chatroom-management/manage-chatroom-admins) can call `CreateRoom` to create a chat room and set the chat room attributes such as the chat room name, description, and maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
+Only the [app super admin](..//en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins) can call `CreateRoom` to create a chat room and set the chat room attributes such as the chat room name, description, and maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
 
 :::info
-You are advised to call the [RESTful API](/en/realtime-media/im/reference/server-api/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
+You are advised to call the [RESTful API](/en/api-reference/api-ref/im/chatroom-management/manage-chatrooms#creating-a-chat-room) to create a chat room from the server.
 :::
 
 The following code sample shows how to create a chat room:
@@ -1636,11 +1636,11 @@ public interface IRoomManagerDelegate
 
 ### Create and destroy a chat room
 
-The [app super admin](..//en/realtime-media/im/reference/server-api/chatroom-management/manage-chatroom-admins) can create a chat room and set the chat room attributes such as the chat room name, description, and the maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
+The [app super admin](..//en/api-reference/api-ref/im/chatroom-management/manage-chatroom-admins) can create a chat room and set the chat room attributes such as the chat room name, description, and the maximum number of members. Once a chat room is created, the super admin automatically becomes the chat room owner.
 
 :::info
 You are advised to call the [RESTful
-  API](/en/realtime-media/im/reference/server-api/chatroom-management/manage-chatrooms#creating-a-chat-room)
+  API](/en/api-reference/api-ref/im/chatroom-management/manage-chatrooms#creating-a-chat-room)
   to create a chat room from the server.
 :::
 

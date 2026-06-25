@@ -1,0 +1,778 @@
+---
+title: "Offline push configuration"
+description: "Shows how to call Chat RESTful APIs to set the display name, display style, push notification mode, and do-not-disturb (DND) mode."
+---
+
+### Web
+
+Push notifications are not available for Web.
+
+### All except Web
+
+This page shows how to call Chat RESTful APIs to set the display name, display style, push notification mode, and do-not-disturb (DND) mode.
+
+Before calling the following methods, ensure that you meet the following:
+- You understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](../limitations#call-limit-of-server-sides).
+
+- You have activated the advanced features for push in [Agora Console](https://console.agora.io/v2). Advanced features allow you to set the push notification mode, do-not-disturb mode, and custom push template.
+
+:::info
+You must contact [support@agora.io](mailto:support@agora.io) to disable the advanced features for push as this operation will delete all the relevant configurations.
+:::
+
+## Common parameters
+
+The following table lists common request and response parameters of the Chat RESTful APIs:
+
+### Request parameters 
+
+| Parameter | Type | Description | Required |
+| :--------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `username` | String | The unique login account of the user.  | Yes |
+
+### Response parameters 
+
+| Parameter | Type | Description |
+| :------------------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `action` | String | The request method. |
+| `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
+| `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service . This is the same as `app_name`. |
+| `timestamp` | Number | The Unix timestamp (ms) of the HTTP response. |
+| `duration` | Number | The duration (ms) from when the HTTP request is sent to the time the response is received. |
+| `path` | String | The request path, which is part of the request URL. You can safely ignore this parameter. |
+| `uri` | String | The request URI. |
+| `entities ` | JSON | The response entity. |
+| `data`  | JSON | The response details.  |
+
+## Authorization
+
+Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request is sent, the following `Authorization` field must be filled in the request header:
+
+```html
+Authorization: Bearer ${YourAppToken}
+```
+
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/authentication).
+
+## Set the display name in push notifications
+
+Sets the nickname displayed in push notifications.
+
+For each App Key, the total call frequency limit of this method and the method to set the display style is 100 per second.
+
+### HTTP request
+
+```html
+PUT https://{host}/{org_name}/{app_name}/users/{userId}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `userId` | String | The user ID of the current user.  | Yes |
+
+For the descriptions of other path parameters, see [Common Parameters](#param).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `Content-Type` | String | The content type. Set it as `application/json`.   | Yes  |
+| `Accept` | String | The parameter type. Set it as `application/json`. | Yes  |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Required |
+| :----- | :----- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| -------- |
+| `nickname` | String | The nickname that is displayed in the push notification bar of the recipient's client when a message from the user is pushed. The length of the nickname cannot exceed 100 characters, and the following character sets are supported:26 lowercase English letters (a-z)26 uppercase English letters (A-Z)10 numbers (0-9)Chinese charactersSpecial characters  If no nickname is set, when a message from this user is pushed, the user ID of the message sender, instead of the nickname, is indicated in the notification details (`notification_display_style` is set to 1). :::info
+The nickname can be different from the nickname in user attributes. However, Agora recommends that you use the same nickname for both. Therefore, if either nickname is updated, the other should be changed at the same time. To update the nickname in user attributes, see [User attributes management](../user-attributes-management).
+::: | No  |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+|  Parameter  |  Type  |  Description  |
+| :-------- | :------- | :------- |
+|  `uuid` | String | A unique internal identifier generated by the Chat service for the user in this request. |
+| `type`  |  String  | The type of the chat. "user" indicates a One-to-one chat. |
+| `created`  | Number | The Unix timestamp (ms) when the user account is registered.  |
+| `modified`  | Number | The Unix timestamp (ms) when the user information is last modified.  |
+| `username`  | String | The ID of the user. |
+| `activated`  | Bool | Whether the user account is active:`true`: The user account is active.`false`: The user account is deactivated. To unban a deactivated user account, refer to [Unbanning a user](../user-system-registration#unban). |
+|  `nickname`  | String | The nickname displayed in push notifications.  |
+
+For other fields and detailed descriptions, see [Common parameters](#response).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+### Example
+
+#### Request example
+
+```bash
+curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{ "nickname": "testuser" }' 'http://XXXX/XXXX/XXXX/users/user1'
+```
+
+#### Response example
+
+```json
+{  
+  "action": "put",  
+  "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
+  "path": "/users",  
+  "uri": "https://XXXX/XXXX/XXXX/users",
+  "entities": [    
+    {      
+      "uuid": "4759aa70-XXXX-XXXX-925f-6fa0510823ba",
+      "type": "user",      
+      "created": 1542595573399,      
+      "modified": 1542596083687,      
+      "username": "user1",      
+      "activated": true,      
+      "nickname": "testuser"    
+      }  ],  
+"timestamp": 1542596083685,  
+"duration": 6,  
+"organization": "agora-demo",  
+"applicationName": "testapp"
+}
+```
+
+## Set the display style in push notifications
+
+Sets the display style of push notifications.
+
+For each App Key, the total call frequency limit of this method and the method to set the display name is 100 per second.
+
+### HTTP request
+
+```html
+PUT https://{host}/{org_name}/{app_name}/users/{username}
+```
+
+#### Path parameter
+
+For the descriptions of path parameters, see [Common Parameters](#request).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `Content-Type` | String | The content type. Set it as `application/json`.   | Yes  |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `notification_display_style` | Int | The display style of push notifications:(Default) `0`: The push title is "You have a new message", and the push content is "Click to check".`1`: The push title is "You have a new message", and the push content contains the nickname of the sender and the content of the offline message.  | Yes  |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+|  Parameter  |  Type  |  Description  |
+| :-------- | :------- | :------- |
+|  `uuid` | String | A unique internal identifier generated by the Chat service for the user in this request. |
+| `type`  | String | The type of the chat. "user" indicates a One-to-one chat. |
+| `created`  | Number | The Unix timestamp (ms) when the user account is registered.  |
+| `modified`  | Number | The Unix timestamp (ms) when the user information is last modified.  |
+| `username`  | String | The ID of the user. |
+| `activated`  | Bool | Whether the user account is active:`true`: The user account is active.`false`: The user account is deactivated. To unban a deactivated user account, refer to [Unbanning a user](../user-system-registration#unban). |
+| `notification_display_style`  |  Int  | The display style of push notifications. This parameter is returned only if you specify it when sending the request. |
+| `nickname`  | String | The nickname displayed in push notifications. |
+| `notifier_name` | String  | The name of the push certificate. |
+
+For other fields and detailed descriptions, see [Common parameters](#response).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+### Example
+
+#### Request example
+
+```bash
+curl -X PUT -H "Authorization: Bearer " -i https://XXXX/XXXX/XXXX/users/a -d '{"notification_display_style": "1"}'
+```
+
+#### Response example
+
+```json
+{  
+  "action" : "put",  
+  "application" : "17d59e50-XXXX-XXXX-8092-0dc80c0f5e99",
+  "path" : "/users",  
+  "uri" : "https://XXXX/XXXX/XXXX/users/XXXX",
+  "entities" : [ 
+    {    
+      "uuid" : "3b8c9890-XXXX-XXXX-9d88-f50bf55cafad",
+      "type" : "user",    
+      "created" : 1530276298905,    
+      "modified" : 1534407146060,   
+      "username" : "user1",    
+      "activated" : true,      
+      "notification_display_style" : 1,    
+      "nickname" : "testuser",    
+      "notifier_name" : "2882303761517426801"  
+      } ],  
+"timestamp" : 1534407146058,  
+"duration" : 3,  
+"organization" : "XXXX",
+"applicationName" : "XXXX"
+}
+```
+
+## Set up push notifications
+
+Sets the push notification and DND modes at both the app and conversation levels.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```html
+PUT https://{host}/{org}/{app}/users/{username}/notification/{chattype}/{key}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `chattype` | String | The type of the chat:`user`: One-to-one chats.`chatgroup`: Group chats.  | Yes |
+| `key` | String | The identifier of the chat:If `type` is set to `user`, `key` indicates the user ID of the peer user.If `type` is set to `chatgroup`, `key` indicates the ID of the chat group. | Yes |
+
+:::info
+To set up push notifications at the app level, you can set `type` to `user` and `key` to the user ID of the current user.
+:::
+For the descriptions of other path parameters, see [Common Parameters](#request).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `Content-Type` | String | The content type. Set it as `application/json`.   | Yes  |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `type` | String | The push notification mode:`DEFAULT`: A specific conversation uses the setting at the app level. This parameter is valid only for one-to-one and group chat conversations, but not for the app level. `ALL`: Receives push notifications for all offline messages.`AT`: Only receives push notifications for mentioned messages.`NONE`: Do not receive push notifications for offline messages.   | No |
+| `ignoreInterval` | String | The interval during which the DND mode is scheduled everyday. The value is in the format of `{HH:MM-HH:MM}`, for example, 08:30-10:00, where HH ranges from `00` to `23` in hour and MM from `00` to `59` in minute. This parameter works only when `chattype` is set to `user` and `key` to the current user ID in the request header, meaning that the DND interval is valid only for the entire app rather than specific one-to-one or group chat conversations.The DND mode is enabled everyday in the specified interval. For example, if you set this parameter to 08:00-10:00, the app stays in DND mode during 8:00-10:00; if you set the same period at 9:00, the DND mode works during 9:00-10:00 on the current day and 8:00-10:00 in later days.If the start time is set to the same time spot as the end time, like 00:00-00:00, the app enters the permanent DND mode.If the start time is later than the end time, the app remains in DND mode from the start time on the current day until the end time next day. For example, if you set 10:00-08:00, the DND mode lasts from 10:00 until 08:00 the next day.  Currently, only one DND interval is allowed, with the new setting overwriting the old.If this parameter is not specified, pass in an empty string. If both `ignoreInterval` and `ignoreDuration` are set, the DND mode works in both periods. For example, at 8:00, you set `ignoreInterval` to 8:00-10:00 and `ignoreDuration` to 14400000 (4 hours) for the app, the app stays in DND mode during 8:00-12:00 on the current day and 8:00-10:00 in the later days.  | No |
+| `ignoreDuration` | Number   | The DND duration in milliseconds. The value range is [0,604800000], where `0` indicates that this parameter is invalid and `604800000` indicates that the DND mode lasts for 7 days. This parameter works for both the app and one-to-one and group chat conversations in it.  Unlike `ignoreInterval` set as a daily period, this parameter specifies that the DND mode works only for the given duration starting from the current time. For example, if this parameter is set to 14400000 (4 hours) for the app at 8:00, the DND mode lasts only during 8:00-12:00 on the current day. If both `ignoreInterval` and `ignoreDuration` are set, the DND mode remains in both periods. For example, at 8:00, you set `ignoreInterval` to 8:00-10:00 and `ignoreDuration` to 14400000 (4 hours) for the app, the app stays in DND mode during 8:00-12:00 on the current day and 8:00-10:00 in the later days. | No  |
+
+:::info
+For both the app and all the conversations in the app, the DNS mode setting (`ignoreInterval` or `ignoreDuration`) takes precedence over the setting of the push notification mode (`type`). For example, assume that `ignoreInterval` or `ignoreDuration` is specified at the app level and `type` is set to `ALL` for a specific conversation. The app enters the DND mode during the designated period and you do not receive any push notifications during the period.
+:::
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+|  Parameter  |  Type  |  Description  |
+| :-------- | :------- | :------- |
+| `type`  | String | The push notification mode. |
+| `ignoreInterval`  | String | The DND time frame.  |
+| `ignoreDuration`  | Long | The DND duration. |
+
+For other fields and detailed descriptions, see [Common parameters](#response).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+### Example
+
+#### Request example
+
+```bash
+curl -L -X PUT 'http://XXXX/XXXX/XXXX/users/{username}/notification/user/{key}' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "type":"NONE",
+    "ignoreInterval":"21:30-08:00",
+    "ignoreDuration":86400000
+}'
+```
+
+#### Response example
+
+```json
+{
+    "path": "/users",
+    "uri": "https://XXXX/XXXX/XXXX/users/notification/user/hxtest",
+    "timestamp": 1647503749918,
+    "organization": "XXX",
+    "application": "17fe201b-XXXX-XXXX-83df-1ed1ebd7b227",
+    "action": "put",
+    "data": {
+        "type": "NONE",
+        "ignoreDuration": 1647590149924,
+        "ignoreInterval": "21:30-08:00"
+    },
+    "duration": 20,
+    "applicationName": "XXXX"
+}
+```
+
+## Retrieve the settings of push notifications
+
+Retrieves the push notification and DND modes at both the app and conversation levels.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```html
+GET https://{host}/{org_name}/{app_name}/users/{username}/notification/{chattype}/{key}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `chattype` | String | The type of the chat:`user`: One-to-one chats.`chatgroup`: Group chats.  | Yes |
+| `key` | String | The identifier of the chat:If `type` is set to `user`, `key` indicates the user ID of the peer user.If `type` is set to `chatgroup`, `key` indicates the ID of the chat group. | Yes |
+
+For the descriptions of other path parameters, see [Common Parameters](#request).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+|  Parameter  |  Type  |  Description  |
+| :-------- | :------- | :------- |
+| `type`  | String | The push notification mode. |
+| `ignoreInterval`  | String | The DND time frame.  |
+| `ignoreDuration`  | Long | The DND duration. |
+
+For other fields and detailed descriptions, see [Common parameters](#response).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+### Example
+
+#### Request example
+
+```bash
+curl -L -X GET 'https://XXXX/XXXX/XXXX/users/{username}/notification/chatgroup/{key}' \
+-H 'Authorization: Bearer '
+```
+
+#### Response example
+
+```json
+{
+    "path": "/users",
+    "uri": "https://XXXX/XXXX/XXXX/users/notification/chatgroup/12312312321",
+    "timestamp": 1647503749918,
+    "organization": "XXXX",
+    "application": "17fe201b-XXXX-XXXX-83df-1ed1ebd7b227",
+    "action": "get",
+    "data": {
+        "type": "NONE",
+        "ignoreDuration": 1647590149924,
+        "ignoreInterval": "21:30-08:00"
+    },
+    "duration": 20,
+    "applicationName": "XXXX"
+}
+```
+
+## Set the preferred language of push notifications
+
+Sets the preferred language of push notifications.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```html
+PUT https://{host}/{org_name}/{app_name}/users/{username}/notification/language
+```
+
+#### Path parameter
+
+For the descriptions of path parameters, see [Common Parameters](#request).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `Content-Type` | String | The content type. Set it as `application/json`.   | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `translationLanguage` | String | The code for the language that the user prefers to see push notifications in. If set to an empty string, the server pushes the notifications of the original language directly.  | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+|  Parameter  |  Type  |  Description  |
+| :-------- | :------- | :------- |
+| `language`  | String | The code for the language that the user prefers to see push notifications in. |
+
+For other fields and detailed descriptions, see [Common parameters](#response).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+### Example
+
+#### Request example
+
+```bash
+curl -L -X PUT 'https://XXXX/XXXX/XXXX/users/{username}/notification/language' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "translationLanguage":"EU"
+}'
+```
+
+#### Response example
+
+```json
+{
+    "path": "/users",
+    "uri": "https://XXXX/XXXX/XXXX/users/XXXX/notification/language",
+    "timestamp": 1648089630244,
+    "organization": "XXXX",
+    "application": "17fe201b-XXXX-XXXX-83df-1ed1ebd7b227",
+    "action": "put",
+    "data": {
+        "language": "EU"
+    },
+    "duration": 66,
+    "applicationName": "XXXX"
+}
+```
+
+## Retrieve the preferred language of push notifications
+
+Retrieves the preferred language of push notifications.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```html
+GET https://{host}/{org}/{app}/users/{username}/notification/language
+```
+
+#### Path parameter
+
+For the descriptions of path parameters, see [Common Parameters](#request).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `Content-Type` | String | The content type. Set it as `application/json`.   | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+|  Parameter  |  Type  |  Description  |
+| :-------- | :------- | :------- |
+| `language`  | String | The code for the language that the user prefers to see push notifications in. |
+
+For other fields and detailed descriptions, see [Common parameters](#response).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+### Example
+
+#### Request example
+
+```bash
+curl -L -X GET 'https://XXXX/XXXX/XXXX/users/{username}/notification/language' \
+-H 'Authorization: Bearer '
+```
+
+#### Response example
+
+```json
+{
+    "path": "/users",
+    "uri": "https://XXXX/XXXX/XXXX/users/notification/language",
+    "timestamp": 1648089630244,
+    "organization": "XXXX",
+    "application": "17fe201b-XXXX-XXXX-83df-1ed1ebd7b227",
+    "action": "put",
+    "data": {
+        "language": "EU"
+    },
+    "duration": 66,
+    "applicationName": "XXXX"
+}
+```
+
+<a id="create-a-push-template"></a>
+## Create a push template
+
+Creates a template for push notifications.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```html
+POST https://{host}/{org}/{app}/notification/template`
+```
+
+For filling of template parameters, `title_args` and `content_args`, see the request body.
+
+#### Path parameter
+
+For the descriptions of path parameters, see [Common Parameters](#request).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `Content-Type` | String | The content type. Set it as `application/json`.   | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `name` | String | The name of the push template. | Yes |
+| `title_pattern` | String | The custom title of the push template. You can add variables in the title, such as {0}. | Yes |
+| `content_pattern` | String | The custom content of the push template. You can add variables in the content, such as {0} and {1}. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+|  Parameter  |  Type  |  Description  |
+| :-------- | :------- | :------- |
+| `name`  | String | The name of the push template. |
+| `createAt`  | Number | The Unix timestamp (ms) when the template is created. |
+| `updateAt`  | Number | The Unix timestamp (ms) when the template is last modified. |
+| `title_pattern`  | String | The custom title of the push template. |
+| `content_pattern`  | String | The custom content of the push template. |
+
+For other fields and detailed descriptions, see [Common parameters](#response).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+### Example
+
+#### Request example
+
+```bash
+curl -X POST 'https://XXXX/XXXX/XXXX/notification/template' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "name": "test7",
+    "title_pattern": "Hello,{0}",
+    "content_pattern": "Test,{0}"
+}'
+```
+
+#### Response example
+
+```json
+{
+    "uri": "https://XXXX/XXXX/XXXX/notification/template",
+    "timestamp": 1646989584108,
+    "organization": "XXXX",
+    "application": "17fe201b-XXXX-XXXX-83df-1ed1ebd7b227",
+    "action": "post",
+    "data": {
+        "name": "test7",
+        "createAt": 1646989584124,
+        "updateAt": 1646989584124,
+        "title_pattern": "Hello,{0}",
+        "content_pattern": "Test,{0}"
+    },
+    "duration": 26,
+    "applicationName": "XXXX"
+}
+```
+
+## Retrieve a push template
+
+Retrieves the specified template for push notifications.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```
+GET https://{host}/{org}/{app}/notification/template/{name}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `name` | String | The name of the push template.  | Yes |
+
+For the descriptions of other path parameters, see [Common Parameters](#request).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+|  Parameter  |  Type  |  Description  |
+| :-------- | :------- | :------- |
+| `name`  | String | The name of the push template. |
+| `createAt`  | Number | The Unix timestamp (ms) when the template is created. |
+| `updateAt`  | Number | The Unix timestamp (ms) when the template is last modified. |
+| `title_pattern`  | String | The custom title of the push template. |
+| `content_pattern`  | String | The custom content of the push template. |
+
+For other fields and detailed descriptions, see [Common parameters](#response).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+### Example
+
+#### Request example
+
+```bash
+curl -X GET 'https://XXXX/XXXX/XXXX/notification/template/{name}' \
+-H 'Authorization: Bearer '
+```
+
+#### Response example
+
+```json
+{
+    "uri": "https://XXXX/XXXX/XXXX/notification/template/test7",
+    "timestamp": 1646989686393,
+    "organization": "XXXX",
+    "application": "17fe201b-XXXX-XXXX-83df-1ed1ebd7b227",
+    "action": "get",
+    "data": {
+        "name": "test7",
+        "createAt": 1646989584124,
+        "updateAt": 1646989584124,
+        "title_pattern": "Hello,{0}",
+        "content_pattern": "Test,{0}"
+    },
+    "duration": 11,
+    "applicationName": "XXXX"
+}
+```
+
+## Delete a push template
+
+Deletes the specified template for push notifications.
+
+For each App Key, the call frequency limit of this method is 100 per second.
+
+### HTTP request
+
+```html
+DELETE https://{host}/{org}/{app}/notification/template/{name}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `name` | String | The name of the push template.  | Yes |
+
+For the descriptions of other path parameters, see [Common Parameters](#request).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+| :----- | :----- | :------- | -------- |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
+
+|  Parameter  |  Type  |  Description  |
+| :-------- | :------- | :------- |
+| `name`  | String | The name of the push template. |
+| `createAt`  | Number | The Unix timestamp (ms) when the template is created. |
+| `updateAt`  | Number | The Unix timestamp (ms) when the template is last modified. |
+| `title_pattern`  | String | The custom title of the push template. |
+| `content_pattern`  | String | The custom content of the push template. |
+
+For other fields and detailed descriptions, see [Common parameters](#response).
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible reasons.
+
+### Example
+
+#### Request example
+
+```bash
+curl -X DELETE 'https://XXXX/XXXX/XXXX/notification/template' \
+-H 'Authorization: Bearer '
+```
+
+#### Response example
+
+```json
+{
+    "uri": "https://XXXX/XXXX/XXXX/notification/template",
+    "timestamp": 1646989686393,
+    "organization": "XXXX",
+    "application": "17fe201b-XXXX-XXXX-83df-1ed1ebd7b227",
+    "action": "delete",
+    "data": {
+        "name": "test7",
+        "createAt": 1646989584124,
+        "updateAt": 1646989584124,
+        "title_pattern": "Hello,{0}",
+        "content_pattern": "Test,{0}"
+    },
+    "duration": 11,
+    "applicationName": "XXXX"
+}
+```
+
+## Status codes
+
+For details, see [HTTP Status Codes](../http-status-codes).

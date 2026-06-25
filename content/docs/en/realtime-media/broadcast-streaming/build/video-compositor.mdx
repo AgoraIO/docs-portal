@@ -58,17 +58,17 @@ For this example, integrate both the Virtual Background extension and the Video 
 
 1. Import the Video Compositor extension in either of the following ways:
 
-  - **Method 1:** Add the following code to the JavaScript file:
+   - **Method 1:** Add the following code to the JavaScript file:
 
-    ```javascript
-    import VideoCompositingExtension from "agora-extension-video-compositor";
-    ```
+     ```javascript
+     import VideoCompositingExtension from "agora-extension-video-compositor";
+     ```
 
-  - **Method 2:** Import it in the HTML file through the `script` tag. After importing, you can directly use the `VideoCompositingExtension` object in the JavaScript file:
+   - **Method 2:** Import it in the HTML file through the `script` tag. After importing, you can directly use the `VideoCompositingExtension` object in the JavaScript file:
 
-    ```javascript
-    <script src="./agora-extension-video-compositor.js"></script>
-    ```
+     ```javascript
+     <script src="./agora-extension-video-compositor.js"></script>
+     ```
 
 ### Register the extension
 
@@ -94,7 +94,7 @@ Follow these steps to inject images into the local video stream:
 1. Call the `createScreenVideoTrack`, `createCameraVideoTrack`, and `createCustomVideoTrack` methods respectively to create three video tracks:
 
   ```typescript
-  // Create a screen sharing video track 
+  // Create a screen sharing video track
   screenShareTrack = await AgoraRTC.createScreenVideoTrack({
    encoderConfig: { frameRate: 15 },
   });
@@ -374,11 +374,11 @@ async function leave() {
  screenShareTrack?.unpipe();
  screenShareTrack.close();
 }
-``` 
+```
 
 ## Reference
 
-This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product. 
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
 - For a working example, check out the [Video Compositor extension](https://webdemo.agora.io/example/plugin/videoCompositor/index.html?_gl=1*1437x8t*_gcl_au*MTM4NzU5ODkyNy4xNzE5NTgxMTUy*_ga*MjA2MzYxMjY4Mi4xNzAzMDczMjA1*_ga_BFVGG7E02W*MTcxOTY1MDQ3NS4zNTQuMC4xNzE5NjUwNDc1LjAuMC4w) extension.
 

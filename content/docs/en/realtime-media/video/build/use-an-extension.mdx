@@ -43,12 +43,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
   3. Select a pricing plan and click **Buy and Activate**.
-    - If you have already created an Agora project:
+     - If you have already created an Agora project:
 
-      The **Projects** section appears and lists all of your projects.
-    - If you have not created an Agora project:
+       The **Projects** section appears and lists all of your projects.
+     - If you have not created an Agora project:
 
-      [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
   4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -62,23 +62,23 @@ In order to integrate an extension into your project:
 
 1. **Install the extension in your project**
 
-  - Android Archive file (`.aar`)
+   - Android Archive file (`.aar`)
 
-    1. Save the extension `.aar` file to `/app/libs` in your project.
+     1. Save the extension `.aar` file to `/app/libs` in your project.
 
-    2. In `/Gradle Scripts/build.gradle(Module: <ProjectName> app)`, add the following line under `dependencies`:
+     2. In `/Gradle Scripts/build.gradle(Module: <ProjectName> app)`, add the following line under `dependencies`:
 
-      ```java
-      implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-      ```
+       ```java
+       implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+       ```
 
-  - Shared Library (`.so`)
+   - Shared Library (`.so`)
 
-    Save the `.so` file to the following paths in your project:
+     Save the `.so` file to the following paths in your project:
 
-    1. `/app/src/main/jniLibs/arm64-v8a`
+     1. `/app/src/main/jniLibs/arm64-v8a`
 
-    2. `/app/src/main/jniLibs/armeabi-v7a`
+     2. `/app/src/main/jniLibs/armeabi-v7a`
 
 You are now ready to integrate the extension in your app.
 
@@ -160,20 +160,20 @@ in your Agora project:
       public void onEvent(String vendor, String extension, String key, String value) {
         // Add callback handling logics for extension events.
         showMessage("Extension: " + extension + "
-   Key: " + key + " 
+   Key: " + key + "
   Value:" + value);
       }
-  
+
       @Override
       public void onStarted(String provider, String extension) {
         showMessage("Extension started");
       }
-  
+
       @Override
       public void onStopped(String provider, String extension) {
         showMessage("Extension stopped");
       }
-  
+
       @Override
       public void onError(String provider, String extension, int error, String message) {
         showMessage(message);
@@ -185,24 +185,24 @@ in your Agora project:
 <CodeBlockTab value="kotlin">
   ```kotlin
   config.addExtension(ExtensionManager.EXTENSION_NAME)
-  
+
     // Register IMediaExtensionObserver to receive events from the extension.
     config.mExtensionObserver = object : IMediaExtensionObserver {
       override fun onEvent(vendor: String, extension: String, key: String, value: String) {
         // Add callback handling logics for extension events.
         showMessage("Extension: $extension
-   Key: $key 
+   Key: $key
   Value: $value")
       }
-  
+
       override fun onStarted(provider: String, extension: String) {
         showMessage("Extension started")
       }
-  
+
       override fun onStopped(provider: String, extension: String) {
         showMessage("Extension stopped")
       }
-  
+
       override fun onError(provider: String, extension: String, error: Int, message: String) {
         showMessage(message)
       }
@@ -242,7 +242,7 @@ in your Agora project:
 </CodeBlockTabs>
 1. **Set extension properties**
 
-  In the `joinChannel(View view)` method, add the following code after `agoraEngine.joinChannel`: 
+  In the `joinChannel(View view)` method, add the following code after `agoraEngine.joinChannel`:
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -257,7 +257,7 @@ in your Agora project:
       // Pass in the key-value pairs defined by the extension provider to configure the feature you want to use.
       o.put("plugin.watermark.wmStr", "Agora");
       o.put("plugin.watermark.wmEffectEnabled", true);
-  
+
       // Call setExtensionProperty to use the watermark feature.
       agoraEngine.setExtensionProperty(ExtensionManager.EXTENSION_VENDOR_NAME,
           ExtensionManager.EXTENSION_VIDEO_FILTER_NAME, "key", o.toString());
@@ -274,7 +274,7 @@ in your Agora project:
       // Pass in the key-value pairs defined by the extension provider to configure the feature you want to use.
       o.put("plugin.watermark.wmStr", "Agora")
       o.put("plugin.watermark.wmEffectEnabled", true)
-  
+
       // Call setExtensionProperty to use the watermark feature.
       agoraEngine.setExtensionProperty(
         ExtensionManager.EXTENSION_VENDOR_NAME,
@@ -356,12 +356,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
   3. Select a pricing plan and click **Buy and Activate**.
-    - If you have already created an Agora project:
+     - If you have already created an Agora project:
 
-      The **Projects** section appears and lists all of your projects.
-    - If you have not created an Agora project:
+       The **Projects** section appears and lists all of your projects.
+     - If you have not created an Agora project:
 
-      [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
   4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -448,12 +448,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
   3. Select a pricing plan and click **Buy and Activate**.
-    - If you have already created an Agora project:
+     - If you have already created an Agora project:
 
-      The **Projects** section appears and lists all of your projects.
-    - If you have not created an Agora project:
+       The **Projects** section appears and lists all of your projects.
+     - If you have not created an Agora project:
 
-      [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
   4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -542,12 +542,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
   3. Select a pricing plan and click **Buy and Activate**.
-    - If you have already created an Agora project:
+     - If you have already created an Agora project:
 
-      The **Projects** section appears and lists all of your projects.
-    - If you have not created an Agora project:
+       The **Projects** section appears and lists all of your projects.
+     - If you have not created an Agora project:
 
-      [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
   4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -652,12 +652,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
   3. Select a pricing plan and click **Buy and Activate**.
-    - If you have already created an Agora project:
+     - If you have already created an Agora project:
 
-      The **Projects** section appears and lists all of your projects.
-    - If you have not created an Agora project:
+       The **Projects** section appears and lists all of your projects.
+     - If you have not created an Agora project:
 
-      [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
   4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -688,15 +688,15 @@ Integrating an extension into your project involves a few important steps to ens
     const char* extensionLibrarayPath = "<extension dynamic library path and name>"; // For example : "/ library / libagora_segmentation_extension.dll"
     const char * extensionProvider = "<extension library path and name>"; // For example : "agora.io";
     const char* extensionName = "<extension name>"; // For example : "libagora_segmentation_extension.dll";
-    
-    // The key is a string that identifies a specific property of the extension, 
+
+    // The key is a string that identifies a specific property of the extension,
     // and value is the new value for that property.
     // What these keys are and what values they can take is entirely up to the extension.
     // For example, an extension might have a property that controls the quality of a video stream, with a key named "videoQuality".
     // To set this property to "high", you would call setExtensionProperty() with "videoQuality" as the key and "high" as the value.
     const char* extensionKey = "<name of the extension property you want to set>";
     const char* extensionValue = "<new value of the property>";
-    
+
     // When using methods that take a MEDIA_SOURCE_TYPE parameter, you would specify the value that corresponds to the type of media source
     // you want the method to operate on. For example, if you want to use the second camera to capture video, set this parameter to "SECONDARY_CAMERA_SOURCE".
     // The default value is UNKNOWN_MEDIA_SOURCE.
@@ -752,8 +752,8 @@ Integrating an extension into your project involves a few important steps to ens
 1. **Enable the extension and set the extension properties**
 
     To use the extension you downloaded in your app:
-    
-      1. Load the extension. 
+
+      1. Load the extension.
       2. Register the extension.
       3. Enable the extension.
       4. Set the extension property.
@@ -761,24 +761,24 @@ Integrating an extension into your project involves a few important steps to ens
     To accomplish these tasks, do the following:
 
       1. In `AgoraImplementationDlg.h`, declare `setupMarketExtension()` before `setupVideoSDKEngine();``:
-        
+
         ```cpp
         // Function to load, register and enable the extension. Here you also set the extension propertties for your specific extension
         void setupMarketExtension(IRtcEngine* agoraEngine);
         ```
       1. In `AgoraImplementationDlg.cpp`, put the following in the `setupVideoSDKEngine` function just after
      initializing Agora Engine `agoraEngine->initialize(context);`:
-        
+
         ```cpp
         // Integrate extension to the Agora SDK.
         setupMarketExtension(agoraEngine);
         ```
       1. Define `setupMarketExtension()`:
-        
+
         ```cpp
         void CAgoraImplementationDlg::setupMarketExtension(IRtcEngine* agoraEngine)
         {
-          // Load the extension with the file path to the dynamic library (.dll file on Windows) and a boolean flag 'unload_after_use' is true here mean 
+          // Load the extension with the file path to the dynamic library (.dll file on Windows) and a boolean flag 'unload_after_use' is true here mean
           // unload the dynamic library after it has been used.
           agoraEngine->loadExtensionProvider(extensionLibrarayPath,true);
 
@@ -799,9 +799,9 @@ Integrating an extension into your project involves a few important steps to ens
      `true` in `loadExtensionProvider()`, the extension dynamic link library unloads automatically after it has
      been used. You disable the extension to prevent any potential memory leaks or unanticipated
      effects. To do this, put the following in `OnClose()` before `agoraEngine->release();`:
-  
+
     ```cpp
-    // Disable extension by making 'eanbled' flag as false . 
+    // Disable extension by making 'eanbled' flag as false .
     agoraEngine->enableExtension(extensionProvider, extensionName, false);
     ```
 
@@ -881,12 +881,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
   3. Select a pricing plan and click **Buy and Activate**.
-    - If you have already created an Agora project:
+     - If you have already created an Agora project:
 
-      The **Projects** section appears and lists all of your projects.
-    - If you have not created an Agora project:
+       The **Projects** section appears and lists all of your projects.
+     - If you have not created an Agora project:
 
-      [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
   4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -940,7 +940,7 @@ This section shows you how to implement the video filter extension in your app:
   To disable the extension, call `enableExtension` and pass the `provider`, `extension`, and `enableExtension` variables as parameters. The `enableExtension` variable is set to `false` to disable the extension. To implment this logic, in `preload.js`, add the following method before `window.onload = () =>`:
 
   ```javascript
-  function disableExtension() 
+  function disableExtension()
   {
     agoraEngine.enableExtension(provider, extension, enableExtension);
   };
@@ -979,7 +979,7 @@ This section shows you how to implement the video filter extension in your app:
   ```javascript
   onExtensionError:( provider, extName, error, msg) =>
   {
-    console.log("Error :" + error, "Error detail :" + msg); 
+    console.log("Error :" + error, "Error detail :" + msg);
   },
   onExtensionEvent:( provider, extName, key, value) =>
   {
@@ -999,7 +999,7 @@ To ensure that you have integrated the extension in your app:
 1. In **preload.js**, update `appID`, `channel` and `token` with your values.
 
 2. Run the app
-  
+
   Execute the following command in the terminal:
   ```bash
   npm start
@@ -1084,12 +1084,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
   3. Select a pricing plan and click **Buy and Activate**.
-    - If you have already created an Agora project:
+     - If you have already created an Agora project:
 
-      The **Projects** section appears and lists all of your projects.
-    - If you have not created an Agora project:
+       The **Projects** section appears and lists all of your projects.
+     - If you have not created an Agora project:
 
-      [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
   4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -1238,12 +1238,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
   3. Select a pricing plan and click **Buy and Activate**.
-    - If you have already created an Agora project:
+     - If you have already created an Agora project:
 
-      The **Projects** section appears and lists all of your projects.
-    - If you have not created an Agora project:
+       The **Projects** section appears and lists all of your projects.
+     - If you have not created an Agora project:
 
-      [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
   4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -1406,16 +1406,16 @@ To ensure that you have integrated the extension in your app:
 
 1. Run your app:
 
-  - *Android*
+   - *Android*
 
-    1. Enable Developer options on your Android device, and then connect it to your computer using a USB cable.
-    1. Run `npx react-native run-android` in the project root directory.
+     1. Enable Developer options on your Android device, and then connect it to your computer using a USB cable.
+     1. Run `npx react-native run-android` in the project root directory.
 
-  - *iOS:*
+   - *iOS:*
 
-    1. Run your app with Xcode.
+     1. Run your app with Xcode.
 
-  If this is the first time you run the project, you need to grant microphone and camera access to your app.
+   If this is the first time you run the project, you need to grant microphone and camera access to your app.
 
 3. Join the same channel from another test device or the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html).
 
@@ -1470,12 +1470,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
   3. Select a pricing plan and click **Buy and Activate**.
-    - If you have already created an Agora project:
+     - If you have already created an Agora project:
 
-      The **Projects** section appears and lists all of your projects.
-    - If you have not created an Agora project:
+       The **Projects** section appears and lists all of your projects.
+     - If you have not created an Agora project:
 
-      [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
   4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 

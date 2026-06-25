@@ -34,10 +34,10 @@ describe('fumadocs openapi source', () => {
       'en/api-reference/api-ref/cloud-transcoding/acquire.mdx',
     );
     expect(pagePaths).toContain(
-      'en/realtime-media/rtmp-gateway/reference/rest-api/create-streaming-key.mdx',
+      'en/api-reference/api-ref/rtmp-gateway/create-streaming-key.mdx',
     );
     expect(pagePaths).not.toContain(
-      'zh-CN/realtime-media/rtmp-gateway/reference/rest-api/create-streaming-key.mdx',
+      'zh-CN/api-reference/api-ref/rtmp-gateway/create-streaming-key.mdx',
     );
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/speech-to-text/join.mdx',

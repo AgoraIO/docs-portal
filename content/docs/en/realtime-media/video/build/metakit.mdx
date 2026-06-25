@@ -115,7 +115,7 @@ To configure the extension, take the following steps:
 ### Handle Android permissions
 
 To request the required permissions, take the following steps:
-  
+
 1. Navigate to the project's `/app/src/main` directory and add the following permissions to the `AndroidManifest.xml` file:
 
     ```xml
@@ -176,7 +176,7 @@ To request the required permissions, take the following steps:
         };
       }
     }
-  
+
     // Check if the app has obtained all required permissions
     private boolean checkPermissions() {
       for (String permission : getRequiredPermissions()) {
@@ -213,7 +213,7 @@ To request the required permissions, take the following steps:
         )
       }
     }
-  
+
     // Check if the app has obtained all required permissions
     private fun checkPermissions(): Boolean {
       return getRequiredPermissions().all { permission ->
@@ -274,13 +274,13 @@ When calling `createInitialize` on `RtcEngine`, ensure the following configurati
         config.mContext = getBaseContext();
         config.mAppId = appId;
         config.mEventHandler = mRtcEventHandler;
-    
+
         // Add Face Capture extension
         config.addExtension("agora_face_capture_extension");
-    
+
         // Add MetaKit extension
         config.addExtension("agora_metakit_extension");
-    
+
         // Create the event callback interface class for extensions and register callbacks for extension events such as onEvent
         config.mExtensionObserver = new IMediaExtensionObserver() {
           public void onEvent(String provider, String extension, String key, String value) {
@@ -296,7 +296,7 @@ When calling `createInitialize` on `RtcEngine`, ensure the following configurati
           // Implementation of onError callback
           }
         };
-    
+
         // Create and initialize RtcEngine
         mRtcEngine = RtcEngine.create(config);
     ```
@@ -309,13 +309,13 @@ When calling `createInitialize` on `RtcEngine`, ensure the following configurati
           mContext = baseContext
           mAppId = appId
           mEventHandler = mRtcEventHandler
-    
+
           // Add Face Capture extension
           addExtension("agora_face_capture_extension")
-    
+
           // Add MetaKit extension
           addExtension("agora_metakit_extension")
-    
+
           // Create the event callback interface class for extensions and register callbacks for extension events such as onEvent
           mExtensionObserver = object : IMediaExtensionObserver {
             override fun onEvent(provider: String, extension: String, key: String, value: String) {
@@ -332,7 +332,7 @@ When calling `createInitialize` on `RtcEngine`, ensure the following configurati
             }
           }
         }
-    
+
         // Create and initialize RtcEngine
         mRtcEngine = RtcEngine.create(config)
     ```
@@ -352,10 +352,10 @@ When calling `createInitialize` on `RtcEngine`, ensure the following configurati
     public void onEvent(String provider, String ext, String key, String msg) {
           // Filter events from the MetaKit extension
           if (!provider.equals("agora_video_filters_metakit") || !ext.equals("metakit")) return;
-    
+
           // Log event details
           Log.i(TAG, "metakitx onEvent: " + key + ", msg: " + msg);
-    
+
           // Handle different event keys
           switch(key) {
             case "initializeFinish":
@@ -389,27 +389,27 @@ When calling `createInitialize` on `RtcEngine`, ensure the following configurati
           }
           isSyncing = false;
         }
-    
+
         public void onError(String provider, String ext, int key, String msg) {
         // Filter errors from the MetaKit extension
         if (!provider.equals("agora_video_filters_metakit") || !ext.equals("metakit")) return;
-    
+
           // Log error details
           Log.i("[MetaKit]", "onError: " + key + ", msg: " + msg);
         }
-    
+
         public void onStart(String provider, String ext) {
         // Filter start events from the MetaKit extension
         if (!provider.equals("agora_video_filters_metakit") || !ext.equals("metakit")) return;
-    
+
           // Log start event
           Log.i("[MetaKit]", "onStart");
         }
-    
+
         public void onStop(String provider, String ext) {
         // Filter stop events from the MetaKit extension
         if (!provider.equals("agora_video_filters_metakit") || !ext.equals("metakit")) return;
-    
+
           // Log stop event
           Log.i("[MetaKit]", "onStop");
         }
@@ -421,10 +421,10 @@ When calling `createInitialize` on `RtcEngine`, ensure the following configurati
     fun onEvent(provider: String, ext: String, key: String, msg: String) {
           // Filter events from the MetaKit extension
           if (provider != "agora_video_filters_metakit" || ext != "metakit") return
-    
+
           // Log event details
           Log.i(TAG, "metakitx onEvent: $key, msg: $msg")
-    
+
           // Handle different event keys
           when (key) {
             "initializeFinish" -> runningState = IMetaRunningState.initialized
@@ -452,27 +452,27 @@ When calling `createInitialize` on `RtcEngine`, ensure the following configurati
           }
           isSyncing = false
         }
-    
+
         fun onError(provider: String, ext: String, key: Int, msg: String) {
         // Filter errors from the MetaKit extension
         if (provider != "agora_video_filters_metakit" || ext != "metakit") return
-    
+
           // Log error details
           Log.i("[MetaKit]", "onError: $key, msg: $msg")
         }
-    
+
         fun onStart(provider: String, ext: String) {
         // Filter start events from the MetaKit extension
         if (provider != "agora_video_filters_metakit" || ext != "metakit") return
-    
+
           // Log start event
           Log.i("[MetaKit]", "onStart")
         }
-    
+
         fun onStop(provider: String, ext: String) {
         // Filter stop events from the MetaKit extension
         if (provider != "agora_video_filters_metakit" || ext != "metakit") return
-    
+
           // Log stop event
           Log.i("[MetaKit]", "onStop")
         }
@@ -500,7 +500,7 @@ To enable the Face Capture extension, follow these steps:
     ```java
     // Register the facial capture extension
         mRtcEngine.registerExtension("agora_video_filters_face_capture", "face_capture", Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE);
-    
+
         // Enable the facial capture extension
         mRtcEngine.enableExtension("agora_video_filters_face_capture", "face_capture", true);
     ```
@@ -510,7 +510,7 @@ To enable the Face Capture extension, follow these steps:
     ```kotlin
     // Register the facial capture extension
         mRtcEngine.registerExtension("agora_video_filters_face_capture", "face_capture", Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE)
-    
+
         // Enable the facial capture extension
         mRtcEngine.enableExtension("agora_video_filters_face_capture", "face_capture", true)
     ```
@@ -574,8 +574,8 @@ To enable the Virtual Background extension, take the following steps:
 
 </CodeBlockTabs>
   1. Call `enableVirtualBackground` with the following configurations:
-    - Set `backgroundSourceType` to `0` to process the background into alpha information, separating the portrait from the background.
-    - Set `modelType` to `1` to select background processing suitable for all scenes.
+     - Set `backgroundSourceType` to `0` to process the background into alpha information, separating the portrait from the background.
+     - Set `modelType` to `1` to select background processing suitable for all scenes.
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -591,12 +591,12 @@ To enable the Virtual Background extension, take the following steps:
             source.color = 0xFFFFFF;
             source.source = "";
             source.blurDegree = 1;
-      
+
             SegmentationProperty param = new SegmentationProperty();
             // Set modelType to 1 to select background processing suitable for all scenes
             param.modelType = 1;
             param.greenCapacity = 0.5f;
-      
+
             // Enable the Virtual Background extension
             mRtcEngine.enableVirtualBackground(true, source, param, Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE);
       ```
@@ -611,13 +611,13 @@ To enable the Virtual Background extension, take the following steps:
               source = ""
               blurDegree = 1
             }
-      
+
             val param = SegmentationProperty().apply {
             // Set modelType to 1 to select background processing suitable for all scenes
             modelType = 1
             greenCapacity = 0.5f
             }
-      
+
             // Enable the Virtual Background extension
             mRtcEngine.enableVirtualBackground(true, source, param, Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE)
       ```
@@ -693,7 +693,7 @@ To enable the MetaKit extension, follow these steps:
     } catch (JSONException e) {
       e.printStackTrace();
     }
-  
+
     mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "setActivityContext", valueObj.toString());
   ```
 </CodeBlockTab>
@@ -708,7 +708,7 @@ To enable the MetaKit extension, follow these steps:
     } catch (e: JSONException) {
       e.printStackTrace()
     }
-  
+
     mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "setActivityContext", valueObj.toString())
   ```
 </CodeBlockTab>
@@ -742,8 +742,8 @@ To enable the MetaKit extension, follow these steps:
 
 1. When the `onEvent` callback captures the `unityLoadFinish` event, it indicates that the environment has been loaded. At this point, you can call `setExtensionProperty` to load the MetaKit scene resources. Use the following parameters:
 
-  - `key`: `loadScene`
-  - `value`: A string containing relevant information about the scene resources
+   - `key`: `loadScene`
+   - `value`: A string containing relevant information about the scene resources
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -761,13 +761,13 @@ To enable the MetaKit extension, follow these steps:
       // Assume the resources are stored at /first/second/DefaultPackage/ on the phone; only /first/second needs to be specified in scenePath
       sceneObj.put("scenePath", "/sdcard/metaAssets/15");
       // highlight-end
-  
+
       JSONObject customObj = new JSONObject();
       // highlight-start
       // Set the scene index to 0
       customObj.put("sceneIndex", 0);
       // highlight-end
-  
+
       valueObj.put("sceneInfo", sceneObj);
       valueObj.put("assetManifest", "");
       valueObj.put("userId", "123456");
@@ -775,7 +775,7 @@ To enable the MetaKit extension, follow these steps:
     } catch (JSONException e) {
       e.printStackTrace();
     }
-  
+
     // highlight-start
     // Load scene resources based on the JSON configuration
     mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "loadScene", valueObj.toString());
@@ -793,13 +793,13 @@ To enable the MetaKit extension, follow these steps:
       // Assume the resources are stored at /first/second/DefaultPackage/ on the phone; only /first/second needs to be specified in scenePath
       sceneObj.put("scenePath", "/sdcard/metaAssets/15")
       // highlight-end
-  
+
       val customObj = JSONObject()
       // highlight-start
       // Set the scene index to 0
       customObj.put("sceneIndex", 0)
       // highlight-end
-  
+
       valueObj.put("sceneInfo", sceneObj)
       valueObj.put("assetManifest", "")
       valueObj.put("userId", "123456")
@@ -807,7 +807,7 @@ To enable the MetaKit extension, follow these steps:
     } catch (e: JSONException) {
       e.printStackTrace()
     }
-  
+
     // highlight-start
     // Load scene resources based on the JSON configuration
     mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "loadScene", valueObj.toString())
@@ -837,7 +837,7 @@ To enable the MetaKit extension, follow these steps:
         } catch (JSONException e) {
           e.printStackTrace();
         }
-    
+
         // highlight-start
         // Perform face pinching operation based on JSON configuration
         mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "updateFace", valueObj.toString());
@@ -858,7 +858,7 @@ To enable the MetaKit extension, follow these steps:
         } catch (e: JSONException) {
           e.printStackTrace()
         }
-    
+
         // highlight-start
         // Perform face pinching operation based on JSON configuration
         mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "updateFace", valueObj.toString())
@@ -889,11 +889,11 @@ To enable the MetaKit extension, follow these steps:
       valueObj.put("index", 0); // Texture index, currently only supports 0
       valueObj.put("enable", true); // Enable texture request
       // highlight-end
-  
+
       JSONObject configObj = new JSONObject();
       configObj.put("width", 640);
       configObj.put("height", 480);
-  
+
       JSONObject extraObj = new JSONObject();
       // highlight-start
       extraObj.put("sceneIndex", 0); // Scene index, currently only supports 0
@@ -902,13 +902,13 @@ To enable the MetaKit extension, follow these steps:
       // highlight-end
       extraObj.put("userId", "123");
       configObj.put("extraInfo", extraObj.toString());
-  
+
       valueObj.put("config", configObj);
-  
+
     } catch (JSONException e) {
       e.printStackTrace();
     }
-  
+
     // highlight-start
     // Render the virtual human scene based on the JSON configuration
     mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "requestTexture", valueObj.toString());
@@ -924,11 +924,11 @@ To enable the MetaKit extension, follow these steps:
       valueObj.put("index", 0) // Texture index, currently only supports 0
       valueObj.put("enable", true) // Enable texture request
       // highlight-end
-  
+
       val configObj = JSONObject()
       configObj.put("width", 640)
       configObj.put("height", 480)
-  
+
       val extraObj = JSONObject()
       // highlight-start
       extraObj.put("sceneIndex", 0) // Scene index, currently only supports 0
@@ -937,13 +937,13 @@ To enable the MetaKit extension, follow these steps:
       // highlight-end
       extraObj.put("userId", "123")
       configObj.put("extraInfo", extraObj.toString())
-  
+
       valueObj.put("config", configObj)
-  
+
     } catch (e: JSONException) {
       e.printStackTrace()
     }
-  
+
     // highlight-start
     // Render the virtual human scene based on the JSON configuration
     mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "requestTexture", valueObj.toString())
@@ -975,7 +975,7 @@ To enable the MetaKit extension, follow these steps:
     } catch (JSONException e) {
       e.printStackTrace();
     }
-  
+
     // highlight-start
     // Perform face pinching operations based on the JSON configuration
     mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "updateFace", valueObj.toString());
@@ -996,7 +996,7 @@ To enable the MetaKit extension, follow these steps:
     } catch (e: JSONException) {
       e.printStackTrace()
     }
-  
+
     // highlight-start
     // Perform face pinching operations based on the JSON configuration
     mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "updateFace", valueObj.toString())
@@ -1062,24 +1062,24 @@ In addition to the already available Animoji images (`dog`, `girl`,` headarkit`)
 
 <CodeBlockTab value="java">
 ```java
-JSONObject valueObj = new JSONObject(); 
+JSONObject valueObj = new JSONObject();
 try {
   // highlight-start
   valueObj.put("index", 0); // Texture index, currently only supports 0
   valueObj.put("enable", true); // Enable texture request
   // highlight-end
 
-  JSONObject configObj = new JSONObject(); 
+  JSONObject configObj = new JSONObject();
   configObj.put("width", 640);
   configObj.put("height", 480);
 
-  JSONObject extraObj = new JSONObject(); 
+  JSONObject extraObj = new JSONObject();
   // highlight-start
   extraObj.put("sceneIndex", 0); // Scene index, currently only supports 0
   extraObj.put("avatarMode", 1); // Set scene mode to 1, which is Animoji mode
   extraObj.put("avatar", "dog"); // Set Animoji image to "dog"
   // highlight-end
-  extraObj.put("userId", "123"); 
+  extraObj.put("userId", "123");
   configObj.put("extraInfo", extraObj.toString());
 
   valueObj.put("config", configObj);
@@ -1096,24 +1096,24 @@ mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "reque
 
 <CodeBlockTab value="kotlin">
 ```kotlin
-val valueObj = JSONObject() 
+val valueObj = JSONObject()
 try {
   // highlight-start
   valueObj.put("index", 0) // Texture index, currently only supports 0
   valueObj.put("enable", true) // Enable texture request
   // highlight-end
 
-  val configObj = JSONObject() 
-  configObj.put("width", 640) 
+  val configObj = JSONObject()
+  configObj.put("width", 640)
   configObj.put("height", 480)
 
-  val extraObj = JSONObject() 
+  val extraObj = JSONObject()
   // highlight-start
   extraObj.put("sceneIndex", 0) // Scene index, currently only supports 0
   extraObj.put("avatarMode", 1) // Set scene mode to 1, which is Animoji mode
   extraObj.put("avatar", "dog") // Set Animoji image to "dog"
   // highlight-end
-  extraObj.put("userId", "123") 
+  extraObj.put("userId", "123")
   configObj.put("extraInfo", extraObj.toString())
 
   valueObj.put("config", configObj)
@@ -1186,30 +1186,30 @@ When the `onEvent` callback captures the `materialLoaded` event, it means that t
 
 <CodeBlockTab value="java">
   ```java
-  JSONObject valueObj = new JSONObject(); 
+  JSONObject valueObj = new JSONObject();
     try {
       // highlight-start
       valueObj.put("index", 0); // Texture index, currently only supports 0
       valueObj.put("enable", true); // Enable texture request
       // highlight-end
-  
-      JSONObject configObj = new JSONObject(); 
-      configObj.put("width", 640); 
+
+      JSONObject configObj = new JSONObject();
+      configObj.put("width", 640);
       configObj.put("height", 480);
-  
-      JSONObject extraObj = new JSONObject(); 
+
+      JSONObject extraObj = new JSONObject();
       // highlight-start
       extraObj.put("sceneIndex", 0); // Scene index, currently only supports 0
       extraObj.put("avatarMode", 2); // Set scene mode to 2, which is lighting effects and 360 background mode
       // highlight-end
-      extraObj.put("userId", "123"); 
-      configObj.put("extraInfo", extraObj.toString()); 
-      
+      extraObj.put("userId", "123");
+      configObj.put("extraInfo", extraObj.toString());
+
       valueObj.put("config", configObj);
     } catch (JSONException e) {
       e.printStackTrace();
     }
-  
+
     // highlight-start
     // Render the scene with lighting effects and 360 background based on the JSON configuration
     mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "requestTexture", valueObj.toString());
@@ -1219,30 +1219,30 @@ When the `onEvent` callback captures the `materialLoaded` event, it means that t
 
 <CodeBlockTab value="kotlin">
   ```kotlin
-  val valueObj = JSONObject() 
+  val valueObj = JSONObject()
     try {
       // highlight-start
       valueObj.put("index", 0) // Texture index, currently only supports 0
       valueObj.put("enable", true) // Enable texture request
       // highlight-end
-  
-      val configObj = JSONObject() 
-      configObj.put("width", 640) 
+
+      val configObj = JSONObject()
+      configObj.put("width", 640)
       configObj.put("height", 480)
-  
-      val extraObj = JSONObject() 
+
+      val extraObj = JSONObject()
       // highlight-start
       extraObj.put("sceneIndex", 0) // Scene index, currently only supports 0
       extraObj.put("avatarMode", 2) // Set scene mode to 2, which is lighting effects and 360 background mode
       // highlight-end
-      extraObj.put("userId", "123") 
-      configObj.put("extraInfo", extraObj.toString()) 
-      
+      extraObj.put("userId", "123")
+      configObj.put("extraInfo", extraObj.toString())
+
       valueObj.put("config", configObj)
     } catch (e: JSONException) {
       e.printStackTrace()
     }
-  
+
     // highlight-start
     // Render the scene with lighting effects and 360 background based on the JSON configuration
     mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "requestTexture", valueObj.toString())
@@ -1274,7 +1274,7 @@ When the `onEvent` callback captures the `materialLoaded` event, it means that t
         } catch (JSONException e) {
           e.printStackTrace();
         }
-    
+
         // highlight-start
         // Add advertising light effect based on the JSON configuration
         mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "setEffectVideo", configObj.toString());
@@ -1293,7 +1293,7 @@ When the `onEvent` callback captures the `materialLoaded` event, it means that t
         } catch (e: JSONException) {
           e.printStackTrace()
         }
-    
+
         // highlight-start
         // Add advertising light effect based on the JSON configuration
         mRtcEngine.setExtensionProperty("agora_video_filters_metakit", "metakit", "setEffectVideo", configObj.toString())
@@ -2466,8 +2466,8 @@ Contact [Agora](mailto:extensions.marketplace@agora.io) to obtain the company na
 
   1. Call `setParameters` to set `"rtc.video.seg_before_exts"` to `true`, ensuring that the Virtual Background extension executes before MetaKit.
   1. Call `enableVirtualBackground` to enable the extension, specifying the following:
-    - `backgroundSourceType` as `AgoraVirtualBackgroundNone` to process the background as alpha information, separating the subject from the background.
-    - `modelType` as `SegModelAgoraAi` for background processing suitable for all use-cases.
+     - `backgroundSourceType` as `AgoraVirtualBackgroundNone` to process the background as alpha information, separating the subject from the background.
+     - `modelType` as `SegModelAgoraAi` for background processing suitable for all use-cases.
 
   ```swift
   // Ensure Virtual Background executes before MetaKit

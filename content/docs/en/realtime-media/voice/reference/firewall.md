@@ -72,9 +72,9 @@ For a message channel, you need to add the following content to the firewall whi
   | 443; 9591; 9593; 27387 | TCP   | Allow  |
 
 :::note
-  > If you are using Signaling 1.x, also add port 9601.
-
+  If you are using Signaling 1.x, also add port 9601.
 :::
+
 #### Stream channel
 
 For a stream channel, you need to add the following to your firewall whitelist:

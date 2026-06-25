@@ -115,7 +115,7 @@ ChatClient.getInstance().userInfoManager().updateOwnInfoByAttribute(UserInfoType
    });
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/realtime-media/im/reference/server-api/user-attributes-management#setting-user-attributes) or [delete](/en/realtime-media/im/reference/server-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/api-reference/api-ref/im/user-attributes-management#setting-user-attributes) or [delete](/en/api-reference/api-ref/im/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -187,7 +187,7 @@ NSString *url = @"https://download-sdk.oss-cn-beijing.aliyuncs.com/downloads/IMD
     }];
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/realtime-media/im/reference/server-api/user-attributes-management#setting-user-attributes) or [delete](/en/realtime-media/im/reference/server-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/api-reference/api-ref/im/user-attributes-management#setting-user-attributes) or [delete](/en/api-reference/api-ref/im/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -235,7 +235,7 @@ try {
 }
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/realtime-media/im/reference/server-api/user-attributes-management#setting-user-attributes) or [delete](/en/realtime-media/im/reference/server-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/api-reference/api-ref/im/user-attributes-management#setting-user-attributes) or [delete](/en/api-reference/api-ref/im/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -306,7 +306,7 @@ ChatClient.getInstance()
   });
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/realtime-media/im/reference/server-api/user-attributes-management#setting-user-attributes) or [delete](/en/realtime-media/im/reference/server-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/api-reference/api-ref/im/user-attributes-management#setting-user-attributes) or [delete](/en/api-reference/api-ref/im/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -379,7 +379,7 @@ SDKClient.Instance.UserInfoManager.UpdateOwnInfo(userInfo, new CallBack(
 ));
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/realtime-media/im/reference/server-api/user-attributes-management#setting-user-attributes) or [delete](/en/realtime-media/im/reference/server-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/api-reference/api-ref/im/user-attributes-management#setting-user-attributes) or [delete](/en/api-reference/api-ref/im/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -438,7 +438,7 @@ SDKClient.Instance.UserInfoManager.UpdateOwnInfo(userInfo, new CallBack(
 ));
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/realtime-media/im/reference/server-api/user-attributes-management#setting-user-attributes) or [delete](/en/realtime-media/im/reference/server-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/api-reference/api-ref/im/user-attributes-management#setting-user-attributes) or [delete](/en/api-reference/api-ref/im/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field        | Type   | Description                                                         |
 | :---------- | :----- | :----------------------------------------------------------- |
@@ -506,7 +506,7 @@ chatClient.updateUserInfo("nickname", "Your nickname").then((res) => {
 });
 ```
 
-Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/realtime-media/im/reference/server-api/user-attributes-management#setting-user-attributes) or [delete](/en/realtime-media/im/reference/server-api/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
+Keys listed in the following table are used by default when user attributes are set on the client side, including the nickname, avatar URL, contact information, email address, gender, signature, birthday and extension fields. When you call the [RESTful API to set](/en/api-reference/api-ref/im/user-attributes-management#setting-user-attributes) or [delete](/en/api-reference/api-ref/im/user-attributes-management#deleting-user-attributes) these user attributes, you must pass in the following keys to make sure that the client can obtain the settings from the server:
 
 | Field       | Type   | Description                                                                                                                           |
 | :---------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------ |

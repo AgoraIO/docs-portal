@@ -56,13 +56,13 @@ To implement cross-channel media stream relay in your app, take the following st
   To forward the stream to multiple target channels or exit the current forwarding channel after staring channel media relay, call `startOrUpdateChannelMediaRelay` again to add or remove target channels for forwarding.
 
   :::note
-  > The updated configuration completely **replaces** the previous configuration.
+  The updated configuration completely **replaces** the previous configuration.
+:::
 
 3. Pause or resume media stream relay
 
   To pause forwarding the media stream to all target channels, call `pauseAllChannelMediaRelay`.
 
-  :::
   ```java
   engine.pauseAllChannelMediaRelay();
   isPaused = true;
@@ -201,13 +201,13 @@ To implement cross-channel media stream relay in your app, take the following st
   To forward the stream to multiple target channels or exit the current forwarding channel after starting channel media relay, call `startOrUpdateChannelMediaRelay` again to add or remove target channels for forwarding.
 
   :::note
-  > The updated configuration completely **replaces** the previous configuration.
+  The updated configuration completely **replaces** the previous configuration.
+:::
 
 3. Pause or resume media stream relay
 
   To pause forwarding the media stream to all target channels, call `pauseAllChannelMediaRelay`.
 
-  :::
   ```swift
   isPauseRelaying = true
   agoraKit.pauseAllChannelMediaRelay()
@@ -232,13 +232,13 @@ To implement cross-channel media stream relay in your app, take the following st
   ```
   
   :::note
-  > If this method fails, you can call `leaveChannel` to leave the channel, and cross-channel media stream relay will automatically stop.
+  If this method fails, you can call `leaveChannel` to leave the channel, and cross-channel media stream relay will automatically stop.
+:::
 
 5. Listen for cross-channel media stream status changes
 
   During cross-channel media stream relay, the SDK reports changes in the status of media stream relay through the `onChannelMediaRelayStateChanged` callback. Implement relevant business logic based on the [status codes](#status-codes).
 
-  :::
   ```swift
   func rtcEngine(_ engine: AgoraRtcEngineKit, 
         channelMediaRelayStateDidChange state: AgoraChannelMediaRelayState, 
@@ -346,13 +346,13 @@ To implement cross-channel media stream relay in your app, take the following st
   To forward the stream to multiple target channels or exit the current forwarding channel after starting channel media relay, call `startOrUpdateChannelMediaRelay` again to add or remove target channels for forwarding.
 
   :::note
-  > The updated configuration completely **replaces** the previous configuration.
+  The updated configuration completely **replaces** the previous configuration.
+:::
 
 3. Pause or resume media stream relay
 
   To pause forwarding the media stream to all target channels, call `pauseAllChannelMediaRelay`.
 
-  :::
   ```swift
   isPauseRelaying = true
   agoraKit.pauseAllChannelMediaRelay()
@@ -377,13 +377,13 @@ To implement cross-channel media stream relay in your app, take the following st
   ```
   
   :::note
-  > If this method fails, you can call `leaveChannel` to leave the channel, and cross-channel media stream relay will automatically stop.
+  If this method fails, you can call `leaveChannel` to leave the channel, and cross-channel media stream relay will automatically stop.
+:::
 
 5. Listen for cross-channel media stream status changes
 
   During cross-channel media stream relay, the SDK reports changes in the status of media stream relay through the `onChannelMediaRelayStateChanged` callback. Implement relevant business logic based on the [status codes](#status-codes).
 
-  :::
   ```swift
   func rtcEngine(_ engine: AgoraRtcEngineKit, 
         channelMediaRelayStateDidChange state: AgoraChannelMediaRelayState, 
@@ -611,13 +611,13 @@ To implement cross-channel media stream relay in your app, take the following st
   To forward the stream to multiple target channels or exit the current forwarding channel after staring channel media relay, call `startOrUpdateChannelMediaRelay` again to add or remove target channels for forwarding.
 
   :::note
-  > The updated configuration completely **replaces** the previous configuration.
+  The updated configuration completely **replaces** the previous configuration.
+:::
 
 3. Pause or resume media stream relay
 
   To pause forwarding the media stream to all target channels, call `pauseAllChannelMediaRelay`.
 
-  :::
 	```cpp
 	m_rtcEngine->pauseAllChannelMediaRelay();
 	```
@@ -639,13 +639,13 @@ To implement cross-channel media stream relay in your app, take the following st
 	```
 	
 	:::note
-	> If this method fails, you can call `leaveChannel` to leave the channel, and cross-channel media stream relay will automatically stop.
+	If this method fails, you can call `leaveChannel` to leave the channel, and cross-channel media stream relay will automatically stop.
+:::
 
 5. Listen for cross-channel media stream status changes
 
   During cross-channel media stream relay, the SDK reports changes in the status of media stream relay through the `onChannelMediaRelayStateChanged` callback. Implement relevant business logic based on the [status codes](#status-codes).
 
-	:::
 	```cpp
 	class CAgoraCrossChannelEventHandler : public IRtcEngineEventHandler {
 		virtual void onChannelMediaRelayStateChanged(
@@ -749,13 +749,13 @@ To implement cross-channel media stream relay in your app, take the following st
   To forward the stream to multiple target channels or exit the current forwarding channel after staring channel media relay, call `startOrUpdateChannelMediaRelay` again to add or remove target channels for forwarding.
 
   :::note
-  > The updated configuration completely **replaces** the previous configuration.
+  The updated configuration completely **replaces** the previous configuration.
+:::
 
 3. Pause or resume media stream relay
 
   To pause forwarding the media stream to all target channels, call `pauseAllChannelMediaRelay`.
 
-  :::
   ```typescript
   rtcEngine.pauseAllChannelMediaRelay();
   ```
@@ -885,13 +885,13 @@ To implement cross-channel media stream relay in your app, take the following st
   To forward the stream to multiple target channels or exit the current forwarding channel after staring channel media relay, call `startOrUpdateChannelMediaRelay` again to add or remove target channels for forwarding.
 
   :::note
-  > The updated configuration completely **replaces** the previous configuration.
+  The updated configuration completely **replaces** the previous configuration.
+:::
 
 3. Pause or resume media stream relay
 
   To pause forwarding the media stream to all target channels, call `pauseAllChannelMediaRelay`.
 
-  :::
   ```dart
   await engine.pauseAllChannelMediaRelay();
   isPaused = true;
@@ -1028,13 +1028,13 @@ To implement cross-channel media stream relay in your app, take the following st
   To forward the stream to multiple target channels or exit the current forwarding channel after staring channel media relay, call `startOrUpdateChannelMediaRelay` again to add or remove target channels for forwarding.
 
   :::note
-  > The updated configuration completely **replaces** the previous configuration.
+  The updated configuration completely **replaces** the previous configuration.
+:::
 
 3. Pause or resume media stream relay
 
   To pause forwarding the media stream to all target channels, call `pauseAllChannelMediaRelay`.
 
-  :::
   ```typescript
   rtcEngine.pauseAllChannelMediaRelay();
   ```
@@ -1162,13 +1162,13 @@ To implement cross-channel media stream relay in your game, take the following s
   To forward the stream to multiple target channels or exit the current forwarding channel after staring channel media relay, call `StartOrUpdateChannelMediaRelay` again to add or remove target channels for forwarding.
 
   :::note
-  > The updated configuration completely **replaces** the previous configuration.
+  The updated configuration completely **replaces** the previous configuration.
+:::
 
 3. Pause or resume media stream relay
 
   To pause forwarding the media stream to all target channels, call `PauseAllChannelMediaRelay`.
 
-  :::
   ```csharp
   private void onPauseAllButtonClick()
   {

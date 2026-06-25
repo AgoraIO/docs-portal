@@ -1,0 +1,107 @@
+---
+title: "Limitations"
+description: "Explains how your bill for using Agora Chat is calculated."
+---
+
+This page introduces the usage limits of Chat, including limits to the user, the message, the group, the chatroom and the call limit of the server APIs.
+
+### User attributes
+
+The user attributes [UserInfo](https://hyphenateinc.github.io/android_reference/classio_1_1agora_1_1chat_1_1_user_info.html) include the user avatar, nickname, email address, and so on. The total length of the user information for one user must be 2 KB or less, and the total length for all users under an app must be within 10 GB or less.
+
+### Message length
+
+The length limits of the different types of messages are as follows:
+
+| **Message type** | **Length limit** | **Related API** |
+| --- | --- | --- |
+| Text message | 5 KB | [createTxtSendMessage](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#af6312e5ea0ca70b36d22c5e0bdfc288f) |
+| Image message | 10 MB (default) to 200 MB. Set via [Agora Console](https://console.agora.io/v2). | [createImageSendMessage[1/2]](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#af8d0cd1cfc67aa8deb50386ff4dac2cd)[createImageSendMessage[2/2]](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#a1207ebdd9c5ee4abd78ca1e49de6c7e1) |
+| Voice message | 10 MB (default) to 200 MB. Set via [Agora Console](https://console.agora.io/v2). | [createVoiceSendMessage[1/2]](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#afff9282db0b4fe2086a7afc70dc092f8)[createVoiceSendMessage[2/2]](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#a5935e8c3e8ed4069b01ca38b1f1a6ab9) |
+| Video message | 10 MB (default) to 200 MB. Set via [Agora Console](https://console.agora.io/v2). | [createVideoSendMessage[1/3]](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#ac78142ff1dfe3fa07d63027978a9ef84)[createVideoSendMessage[2/3]](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#a487c212c323a110d1d5ca6406903e11f)[createVideoSendMessage[3/3]](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#aae1215a31dad2f68bcad9a321defe3fd)|
+| File message | 10 MB (default) to 200 MB. Set via [Agora Console](https://console.agora.io/v2). | [createFileSendMessage[1/2]](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#a7b0d8a9c7edb6a7ed02a02a9d67d65f7)[createFileSendMessage[2/2]](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#acbab1df477a2b8a5aaf7053e27fc9232)|
+| Transparent transmission message | 5 KB | [createSendMessage](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#a1c26e1f6420a89921bae7eb9ea362506) |
+| Customized extended message | The size of the extended message must not exceed that of the original message. | [createSendMessage](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#a1c26e1f6420a89921bae7eb9ea362506) |
+| Customized message | 5 KB | [createSendMessage](https:///classio_1_1agora_1_1chat_1_1_chat_message.html#a1c26e1f6420a89921bae7eb9ea362506) |
+
+Starting from v1.3, you can slice an image, voice, video, and file message into chunks and upload them in sequence.
+
+:::info
+Note that exceeding the free quota for file storage or download traffic in your package will lead to an overage charge. See Agora Console for pricing details.
+:::
+
+### Group-related limitations
+
+**Group attributes**
+
+When a group [createGroup](https:///classio_1_1agora_1_1chat_1_1_group_manager.html#a57cfa23aae3b00d282b75023fc43899c) is created, the length limits of the group information are as follows:
+
+- Group name: 128 characters or less
+
+- Group description: 512 characters or less
+
+- Group extension information: 1024 characters or less
+
+**Group member attributes**
+
+- Key: Of string type, 16 bytes or less, only supports English uppercase and lowercase letters, numbers, and underscores
+
+- Value: 512 bytes or less
+
+- The total size of key-value pairs of a  members: 4KB or less
+
+### Chatroom-related limitations
+
+**PCU per chatroom**
+
+The limit of Peak Concurrent Users per chatroom is 10,000. To extend this limit, contact support@agora.io.
+
+**Chatroom attributes**
+
+When a chatroom [createChatRoom](https://hyphenateinc.github.io/android_reference/classio_1_1agora_1_1chat_1_1_chat_room_manager.html#a6ea3f7131041f844e710f00996091cab) is created, the length limits of the chatroom information are as follows:
+
+- Chatroom name: 128 characters or less
+
+- Chatroom description: 512 characters or less
+
+Each  can have up to 100 custom attributes, and the total size of  custom attributes of each app cannot exceed 10 GB. The custom  attributes are of a key-value pair structure. A single key cannot exceed 128 characters and a room attribute value cannot exceed 4096 characters. Attribute keys support the following character sets:
+- 26 lowercase English letters a-z;
+- 26 uppercase English letters A-Z;
+- 10 numbers 0 -9;
+- "_", "-", ".".
+
+### Multiple messages forwarding limitations
+
+* The forwarding multiple messages​ capability is available only in client APIs and not RESTful APIs. 
+* End users can only forward up to 300 messages at a time. 
+* The content of the forwarded messages can't be searched. 
+* When forwarding multiple messages in a combined form, the title and preview of the combined message is displayed. The content of the message preview can't exceed 5KB.
+* Applications developed with Chat SDK versions prior to `1.2.x` will not support display of forwarded messages.
+
+### Sent message modification limitations
+
+This feature has the following limitations:
+
+* For a , regular group members can only edit message sent by themselves, but the group owner and admins can also edit messages sent by regular group members. The message sender remains unchanged regardless of the message edit operator.
+* Supported message types: text only.  
+* Supported use case: One-on-one . Does not support Chatroom. 
+* End users can recall and modify messages that were sent up to 7 days ago.
+* Agora supports editing the same message up to 10 times.
+
+### Storage limitations
+
+* The Agora Chat server stores up to 100 conversations per end user.
+
+### RESTful API Call limit of server-side
+
+The RESTful API call frequency limit of each method varies. For details about each method, see [**Chat RESTful API Reference**](/en/api-reference/api-ref/im).
+
+If the provided call frequency limit cannot meet your business requirements, contact [support@agora.io](mailto:support@agora.io).
+
+### Presence limitations
+
+The presence status of each user can be subscribed by up to 3000 users.
+
+### Contact limitations
+
+Each user can have a block list that can contain a maximum of 500 users.

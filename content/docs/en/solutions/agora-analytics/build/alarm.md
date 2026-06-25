@@ -39,120 +39,25 @@ To create an alert rule, do the following:
 
 3.  In the upper-right corner, click the **Create a rule** button, and fill in the following information in the pop-up window:
 
-<table>
-<colgroup>
-<col/>
-<col/>
-<col/>
-</colgroup>
-<thead>
-<tr>
-<th>Item</th>
-<th>Description</th>
-<th>Limitations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p>Associated project</p></td>
-<td><p>The project to which the rule applies.</p></td>
-<td><p>Each individual rule can only be associated with one project.</p></td>
-</tr>
-<tr class="even">
-<td><p>Rule name</p></td>
-<td><p>A name for the rule.</p></td>
-<td><p>Rules associated with the same project must have unique names.</p></td>
-</tr>
-<tr class="odd">
-<td><p>Alert type</p></td>
-<td><p>Choose one of the following:</p>
-<p>- Metric alert: Sends an alert when a metric value is higher or lower than the threshold value.</p>
-<p>- Event alert: Sends an alert when a predefined event occurs.</p></td>
-<td><p>/</p></td>
-</tr>
-<tr class="even">
-<td><p>Alert granularity</p></td>
-<td><p>Choose one of the following:</p>
-<p>- Channel: Sends an alert when a channel encounters abnormalities.</p>
-<p>- User: Sends an alert when a user encounters abnormalities.</p></td>
-<td><p><strong>User</strong> is the only option for event alerts.</p></td>
-</tr>
-<tr class="odd">
-<td><p>Rule description</p></td>
-<td><p>The conditions that must be met to trigger an alert. For instance, the combination of <strong>Audio Freeze Rate</strong>, <strong>20s Cycle</strong>, <strong>Lasts for 2 cycles</strong>, <strong>&gt;=</strong>, and <strong>10%</strong> indicates: The audio freeze rate is calculated every 20 seconds; if the calculated value equals or exceeds 10% for two continuous 20-second cycles, the alert is triggered.</p>
-<p>To monitor multiple metrics or events, add additional rule descriptions. You can set the operator between different rule descriptions as "AND" or "OR".</p></td>
-<td><p>The maximum number of rule descriptions per rule is 20.</p></td>
-</tr>
-<tr class="even">
-<td><p>Silent period</p></td>
-<td><p>The time period after an alert during which the alert is not triggered even if the same alert rule is met again. In this case, "the same alert rule" means that both the alert granularity and the applicable rule description are identical.</p></td>
-<td><p>/</p></td>
-</tr>
-<tr class="odd">
-<td><p>Effective period</p></td>
-<td><p>The time period during which the alert can be triggered.</p></td>
-<td><p>/</p></td>
-</tr>
-<tr class="even">
-<td><p>Scope</p></td>
-<td><p>Choose one of the following:</p>
-<p>- <strong>All users</strong> or <strong>All channels</strong>.</p>
-<p>- Name list: A custom list of user names or channel names. Separate list entries with hard line breaks.</p>
-<p>- Regular expression: A string search pattern. For example, "aa.*" would apply to every channel whose name starts with "aa".</p></td>
-<td><p>/</p></td>
-</tr>
-<tr class="odd">
-<td><p>Set advanced filters</p></td>
-<td><p>Predefined filters that help increase the precision of alerts. Click the button to edit or disable the default settings.</p></td>
-<td><p>/</p></td>
-</tr>
-<tr class="even">
-<td><p>Alert level</p></td>
-<td><p>Choose one of the following:</p>
-<p>- Critical</p>
-<p>- Warning</p>
-<p>- Info</p></td>
-<td><p>/</p></td>
-</tr>
-<tr class="odd">
-<td><p>Notification type</p></td>
-<td><p>Choose one or both:</p>
-<p>- Email: Sends alerts to the email addresses of the specified contacts.</p>
-<p>- WeCom bot: Sends alerts to a WeCom group.</p></td>
-<td><p>A maximum of 500 alert emails can be sent per account per day. The number of emails is calculated based on the total recipients. For example, if two contacts are set to receive alert emails and the rule is triggered 20 times during the day, Agora counts the number of sent emails as 40.</p></td>
-</tr>
-<tr class="even">
-<td><p>Email note</p></td>
-<td><p>The message contained in emails of alert notifications.</p></td>
-<td><p>Notification type must be <strong>Email</strong> for this item to appear.</p></td>
-</tr>
-<tr class="odd">
-<td><p>WeCom bot webhooks</p></td>
-<td><p>The webhook URL for the WeCom bot.</p></td>
-<td><p>Notification type must be <strong>WeCom bot</strong> for this item to appear.</p></td>
-</tr>
-<tr class="even">
-<td><p>Alert contacts</p></td>
-<td><p>Email addresses set to receive alerts.</p></td>
-<td><p>The maximum number of alert contacts per rule is five.</p></td>
-</tr>
-<tr class="odd">
-<td><p>Notification language</p></td>
-<td><p>The language of the alert notification.</p></td>
-<td><p>/</p></td>
-</tr>
-<tr class="even">
-<td><p>Timezone</p></td>
-<td><p>The timezone displayed in the alert notification.</p></td>
-<td><p>/</p></td>
-</tr>
-<tr class="odd">
-<td><p>Alert callbacks</p></td>
-<td><p>A publicly accessible URL that receives HTTP requests. You can take further action according to the alert information in these requests. See [Alert callback parameters](#alert-callback-parameters).</p></td>
-<td><p>See [Alert callback parameters](#alert-callback-parameters).</p></td>
-</tr>
-</tbody>
-</table>
+| Item | Description | Limitations |
+| --- | --- | --- |
+| Associated project | The project to which the rule applies. | Each individual rule can only be associated with one project. |
+| Rule name | A name for the rule. | Rules associated with the same project must have unique names. |
+| Alert type | Choose one of the following:<br>- Metric alert: Sends an alert when a metric value is higher or lower than the threshold value.<br>- Event alert: Sends an alert when a predefined event occurs. | / |
+| Alert granularity | Choose one of the following:<br>- Channel: Sends an alert when a channel encounters abnormalities.<br>- User: Sends an alert when a user encounters abnormalities. | **User** is the only option for event alerts. |
+| Rule description | The conditions that must be met to trigger an alert. For instance, the combination of **Audio Freeze Rate**, **20s Cycle**, **Lasts for 2 cycles**, **>=**, and **10%** indicates: The audio freeze rate is calculated every 20 seconds; if the calculated value equals or exceeds 10% for two continuous 20-second cycles, the alert is triggered.<br>To monitor multiple metrics or events, add additional rule descriptions. You can set the operator between different rule descriptions as "AND" or "OR". | The maximum number of rule descriptions per rule is 20. |
+| Silent period | The time period after an alert during which the alert is not triggered even if the same alert rule is met again. In this case, "the same alert rule" means that both the alert granularity and the applicable rule description are identical. | / |
+| Effective period | The time period during which the alert can be triggered. | / |
+| Scope | Choose one of the following:<br>- **All users** or **All channels**.<br>- Name list: A custom list of user names or channel names. Separate list entries with hard line breaks.<br>- Regular expression: A string search pattern. For example, "aa.*" would apply to every channel whose name starts with "aa". | / |
+| Set advanced filters | Predefined filters that help increase the precision of alerts. Click the button to edit or disable the default settings. | / |
+| Alert level | Choose one of the following:<br>- Critical<br>- Warning<br>- Info | / |
+| Notification type | Choose one or both:<br>- Email: Sends alerts to the email addresses of the specified contacts.<br>- WeCom bot: Sends alerts to a WeCom group. | A maximum of 500 alert emails can be sent per account per day. The number of emails is calculated based on the total recipients. For example, if two contacts are set to receive alert emails and the rule is triggered 20 times during the day, Agora counts the number of sent emails as 40. |
+| Email note | The message contained in emails of alert notifications. | Notification type must be **Email** for this item to appear. |
+| WeCom bot webhooks | The webhook URL for the WeCom bot. | Notification type must be **WeCom bot** for this item to appear. |
+| Alert contacts | Email addresses set to receive alerts. | The maximum number of alert contacts per rule is five. |
+| Notification language | The language of the alert notification. | / |
+| Timezone | The timezone displayed in the alert notification. | / |
+| Alert callbacks | A publicly accessible URL that receives HTTP requests. You can take further action according to the alert information in these requests. See [Alert callback parameters](#alert-callback-parameters). | See [Alert callback parameters](#alert-callback-parameters). |
 
 ### Enable an alert rule
 

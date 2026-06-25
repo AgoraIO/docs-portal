@@ -25,14 +25,14 @@ const apiReferenceTree: Root = {
                       $id: 'convoai-rest-api-authentication',
                       name: 'Authentication',
                       type: 'page',
-                      url: '/en/api-reference/conversational-ai/rest-api/authentication',
+                      url: '/en/api-reference/api-ref/conversational-ai/rest-api/authentication',
                     },
                   ],
                   index: {
                     $id: 'convoai-rest-api-index',
                     name: 'REST API',
                     type: 'page',
-                    url: '/en/api-reference/conversational-ai/rest-api',
+                    url: '/en/api-reference/api-ref/conversational-ai/rest-api',
                   },
                   name: 'REST API',
                   type: 'folder',
@@ -41,14 +41,14 @@ const apiReferenceTree: Root = {
                   $id: 'convoai-go-page',
                   name: 'Go',
                   type: 'page',
-                  url: '/en/api-reference/conversational-ai/go',
+                  url: '/en/api-reference/api-ref/conversational-ai/go',
                 },
               ],
               index: {
                 $id: 'convoai-index',
                 name: 'Conversational AI',
                 type: 'page',
-                url: '/en/api-reference/conversational-ai',
+                url: '/en/api-reference/api-ref/conversational-ai',
               },
               name: 'Conversational AI',
               type: 'folder',
@@ -60,7 +60,7 @@ const apiReferenceTree: Root = {
                   $id: 'rtc-index',
                   name: 'RTC',
                   type: 'page',
-                  url: '/en/api-reference/rtc',
+                  url: '/en/api-reference/api-ref/rtc',
                 },
                 {
                   $id: 'android-folder',
@@ -137,7 +137,7 @@ const apiReferenceTree: Root = {
                 $id: 'rtc-index',
                 name: 'RTC',
                 type: 'page',
-                url: '/en/api-reference/rtc',
+                url: '/en/api-reference/api-ref/rtc',
               },
               name: 'RTC',
               type: 'folder',
@@ -205,7 +205,7 @@ describe('docs nav scope', () => {
     expect(scope?.activeVersion?.id).toBe('current');
     expect(scope?.sidebarRoot.$id).toBe('android-current-folder');
     expect(scope?.header).toEqual({
-      backHref: '/en/api-reference/rtc',
+      backHref: '/en/api-reference/api-ref/rtc',
       backLabel: 'RTC',
       title: 'Android API Reference',
       versionSwitcher: {
@@ -298,13 +298,13 @@ describe('docs nav scope', () => {
             id: 'folder-convoai-rest-api-folder',
             title: 'RESTful',
             type: 'section',
-            url: '/en/api-reference/conversational-ai/rest-api',
+            url: '/en/api-reference/api-ref/conversational-ai/rest-api',
           },
           {
-            id: '/en/api-reference/conversational-ai/go',
+            id: '/en/api-reference/api-ref/conversational-ai/go',
             title: 'Go',
             type: 'page',
-            url: '/en/api-reference/conversational-ai/go',
+            url: '/en/api-reference/api-ref/conversational-ai/go',
           },
         ],
         collapsible: false,
@@ -318,7 +318,7 @@ describe('docs nav scope', () => {
         id: 'folder-rtc-folder',
         title: 'RTC',
         type: 'section',
-        url: '/en/api-reference/rtc',
+        url: '/en/api-reference/api-ref/rtc',
       },
     ]);
   });

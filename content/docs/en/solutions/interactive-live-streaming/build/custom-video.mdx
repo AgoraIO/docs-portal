@@ -115,7 +115,8 @@ Take the following steps to implement this workflow:
   Before sending captured video frames to Video SDK, integrate your video module with the `VideoFrame`. To ensure audio-video synchronization, best practice is to obtain the current monotonic time from Video SDK and pass it as the timestamp parameter in the `VideoFrame`.
 
   :::note
-  > To ensure audio-video synchronization, set the timestamp parameter of `VideoFrame` to the system's Monotonic Time. Use `getCurrentMonotonicTimeInMs` to obtain the current monotonic Time.
+  To ensure audio-video synchronization, set the timestamp parameter of `VideoFrame` to the system's Monotonic Time. Use `getCurrentMonotonicTimeInMs` to obtain the current monotonic Time.
+:::
 
   Call `pushExternalVideoFrameById` [2/2] to push the captured video frames through the video track to Video SDK. Ensure that the `videoTrackId` matches the track ID you specified when joining the channel. Customize parameters like pixel format, data type, and timestamp in the `VideoFrame`.
 
@@ -123,7 +124,6 @@ Take the following steps to implement this workflow:
   
   **I420**
 
-  :::
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
@@ -357,13 +357,13 @@ Take the following steps to implement this workflow:
 
 </CodeBlockTabs>
   :::note
-  > If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+  If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+:::
 
 5. Destroy custom video tracks
 
   To stop custom video capture and destroy the video track, call `destroyCustomVideoTrack`. 
 
-  :::
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
@@ -538,17 +538,17 @@ CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/iO
   ```
 
   :::note
-  > To ensure audio and video synchronization, Agora recommends setting the `time` (timestamp) of `AgoraVideoFrame` to the system monotonic time. To retrieve the current monotonic time, call `getCurrentMonotonicTimeInMs`.
+  To ensure audio and video synchronization, Agora recommends setting the `time` (timestamp) of `AgoraVideoFrame` to the system monotonic time. To retrieve the current monotonic time, call `getCurrentMonotonicTimeInMs`.
+:::
 
-  :::
   :::note
-  > If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+  If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+:::
 
 1. Destroy custom video track
 
   To stop publishing the custom video track, call `destroyCustomVideoTrack`. 
 
-  :::
   ```swift
   // Destroy the custom video track
   agoraKit.destroyCustomVideoTrack(UInt(userModel?.trackId ?? 0))
@@ -711,17 +711,17 @@ CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/ma
   ```
 
   :::note
-  > To ensure audio and video synchronization, Agora recommends setting the `time` (timestamp) of `AgoraVideoFrame` to the system monotonic time. To retrieve the current monotonic time, call `getCurrentMonotonicTimeInMs`.
+  To ensure audio and video synchronization, Agora recommends setting the `time` (timestamp) of `AgoraVideoFrame` to the system monotonic time. To retrieve the current monotonic time, call `getCurrentMonotonicTimeInMs`.
+:::
 
-  :::
   :::note
-  > If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+  If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+:::
 
 1. Destroy custom video track
 
   To stop publishing the custom video track, call `destroyCustomVideoTrack`. 
 
-  :::
   ```swift
   // Destroy the custom video track
   agoraKit.destroyCustomVideoTrack(UInt(userModel?.trackId ?? 0))
@@ -997,9 +997,9 @@ Take the following steps to implement this workflow:
   Call `pushVideoFrame` to push the captured video frames through the video track to Video SDK. Ensure that the `videoTrackId` matches the track ID you specified when joining the channel. Customize parameters like pixel format, data type, and timestamp in the `VideoFrame`.
 
   :::note
-  > To ensure audio-video synchronization, set the timestamp parameter of `VideoFrame` to the system's Monotonic Time. Use `getCurrentMonotonicTimeInMs` to obtain the current Monotonic Time.
+  To ensure audio-video synchronization, set the timestamp parameter of `VideoFrame` to the system's Monotonic Time. Use `getCurrentMonotonicTimeInMs` to obtain the current Monotonic Time.
+:::
 
-  :::
   ```cpp
   void MultiVideoSourceTracksYUVReaderHander::OnYUVRead(int width, int height, 
                              unsigned char* buffer, 
@@ -1024,17 +1024,17 @@ Take the following steps to implement this workflow:
   }
   ```
   :::note
-  > The sample code demonstrates converting YUV format to raw video data in `I420` format. Agora video self-capture supports pushing external video frames in other formats; refer to [`VIDEO_PIXEL_FORMAT`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/enum_videopixelformat.html).
+  The sample code demonstrates converting YUV format to raw video data in `I420` format. Agora video self-capture supports pushing external video frames in other formats; refer to [`VIDEO_PIXEL_FORMAT`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/enum_videopixelformat.html).
+:::
 
-  :::
   :::note
-  > If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+  If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+:::
 
 5. Destroy custom video tracks
     
   To stop custom video capture and destroy the video track, call `destroyCustomVideoTrack`. To destroy multiple video tracks, call the method for each track.
 
-  :::
   ```cpp
   // Stop self-captured video data
   m_yuvReaders[trackIndex].stop();
@@ -1276,13 +1276,13 @@ Take the following steps to implement this workflow:
   ```
 
   :::note
-  > The sample code demonstrates converting Unreal's BGRA format to raw video data. Agora video capture supports pushing external video frames in other formats; refer to `VIDEO_PIXEL_FORMAT`.
+  The sample code demonstrates converting Unreal's BGRA format to raw video data. Agora video capture supports pushing external video frames in other formats; refer to `VIDEO_PIXEL_FORMAT`.
+:::
 
 5. **Cleanup**
 
   When finished unregister the callback and clean up resources.
 
-  :::
   ```cpp
   void NativeDestruct()
   {

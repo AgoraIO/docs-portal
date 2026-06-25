@@ -41,11 +41,12 @@ This section shows you how to set up your Android project and install the Agora 
 
   1. Open Android Studio and select **File > New > New Project...**.
   1. Select **Phone and Tablet** > **Empty Activity** and click **Next**.
-  1. Set the project name and storage path. 
+  1. Set the project name and storage path.
   1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
-  
+
   :::note
-  > After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+  After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+:::
 
 **Add to an existing project**
 1. Add a new activity to your project.
@@ -53,14 +54,13 @@ This section shows you how to set up your Android project and install the Agora 
   1. Open your project in Android Studio.
   1. Right-click on the `app/src/main/java/<your.package.name>` folder.
   1. Select **New → Activity → Empty Activity**.
-  1. Enter an activity name and click **Finish**. 
+  1. Enter an activity name and click **Finish**.
     This guide uses `MainActivity` as the activity name in the sample code. Replace it with your activity name where required.
 
-2. Add a layout file for your activity. 
+2. Add a layout file for your activity.
 
   Set up two container elements in your activity to display local and remote video streams. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
 
-  :::
 ### Install the SDK
 
 Use either of the following methods to add Video SDK to your project.
@@ -74,33 +74,33 @@ Use either of the following methods to add Video SDK to your project.
   }
   ```
   :::note
-  > If your Android project uses <a href="https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration">dependencyResolutionManagement</a>, the method of adding the Maven Central dependency may differ.
+  If your Android project uses <a href="https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration">dependencyResolutionManagement</a>, the method of adding the Maven Central dependency may differ.
+:::
 
 1. To integrate the Video SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
 
-  - Groovy `build.gradle`
+   - Groovy `build.gradle`
 
-  :::
-    ```json
-    implementation 'io.agora.rtc:full-sdk:x.y.z'
-    ```
+     ```json
+     implementation 'io.agora.rtc:full-sdk:x.y.z'
+     ```
 
-  - Kotlin `build.gradle.kts`
+   - Kotlin `build.gradle.kts`
 
-    ```kotlin
-    implementation("io.agora.rtc:full-sdk:x.y.z")
-    ```
+     ```kotlin
+     implementation("io.agora.rtc:full-sdk:x.y.z")
+     ```
 
-  Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
+   Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
 
-  :::note
-  > To get the latest version number, check the [Release notes](reference/release-notes). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
+   :::note
+   To get the latest version number, check the [Release notes](reference/release-notes). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
+:::
 
 1. Prevent code obfuscation
 
   Open the `/app/proguard-rules.pro` file and add the following lines to prevent the Video SDK code from being obfuscated:
 
-  :::
   ```java
   -keep class io.agora.** { *; }
     -dontwarn io.agora.**
@@ -236,9 +236,9 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.md) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
 
-- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback. 
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
-- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters. 
+- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
 For Interactive Live Streaming, set the `channelProfile` to `CHANNEL_PROFILE_LIVE_BROADCASTING`, the `clientRoleType` to `CLIENT_ROLE_BROADCASTER` (host) or `CLIENT_ROLE_AUDIENCE`, and the `audienceLatencyLevel` to `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY`.
 
@@ -327,7 +327,7 @@ private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandl
     runOnUiThread(() -> {
       // Initialize and display remote video view for the new user.
       setupRemoteVideo(uid);
-      showToast("User joined: " + uid); 
+      showToast("User joined: " + uid);
     });
   }
 
@@ -336,7 +336,7 @@ private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandl
   public void onUserOffline(int uid, int reason) {
     super.onUserOffline(uid, reason);
     runOnUiThread(() -> {
-      showToast("User offline: " + uid); 
+      showToast("User offline: " + uid);
     });
   }
 };
@@ -516,7 +516,7 @@ To access the camera and microphone on Android devices, declare the necessary pe
       }
       return true;
     }
-  
+
     private String[] getRequiredPermissions() {
       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
         return new String[]{
@@ -532,7 +532,7 @@ To access the camera and microphone on Android devices, declare the necessary pe
         };
       }
     }
-  
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
       super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -546,11 +546,11 @@ To access the camera and microphone on Android devices, declare the necessary pe
 <CodeBlockTab value="kotlin">
   ```kotlin
   private val PERMISSION_REQ_ID = 22
-  
+
     private fun requestPermissions() {
       ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID)
     }
-  
+
     private fun checkPermissions(): Boolean {
       for (permission in getRequiredPermissions()) {
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -559,7 +559,7 @@ To access the camera and microphone on Android devices, declare the necessary pe
       }
       return true
     }
-  
+
     private fun getRequiredPermissions(): Array<String> {
       return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         arrayOf(
@@ -575,7 +575,7 @@ To access the camera and microphone on Android devices, declare the necessary pe
         )
       }
     }
-  
+
     override fun onRequestPermissionsResult(
       requestCode: Int,
       permissions: Array<out String>,
@@ -1102,8 +1102,8 @@ Take the following steps to test the sample code:
 
 6. On a second Android device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
-  * If users on both devices join the channel as hosts, they can see and hear each other.
-  * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
+   * If users on both devices join the channel as hosts, they can see and hear each other.
+   * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
 
 ## Reference
 
@@ -1196,7 +1196,8 @@ Follow these steps to create a project in Xcode:
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application** select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
 
   :::note
-  > If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+  If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+:::
 
 2. [Set up automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your projects.
 
@@ -1213,7 +1214,6 @@ Follow these steps to add Interactive Live Streaming to your Xcode project:
 
 3. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.
 
-  :::
 ### Install the SDK
 
 Use one of the following methods to install Video SDK.
@@ -1228,7 +1228,7 @@ Use one of the following methods to install Video SDK.
 
 1. Click **Add Package**, select the latest version, and click **Next**.
 1. For basic Interactive Live Streaming, select **RtcBasic**.
-  
+
   If needed, also select:
   - **`SpatialAudio`** for spatial audio effects.
   - **`VirtualBackground`** for virtual background.
@@ -1247,7 +1247,7 @@ Use one of the following methods to install Video SDK.
      # For x.y.z fill in the specific SDK version number, such as 4.4.0.
      # Integrate the Full SDK
      pod 'AgoraRtcEngine_iOS', 'x.y.z'
-  
+
      # To integrate the Lite SDK, use the following line instead
      # pod 'AgoraLite_iOS', '4.4.0'
     end
@@ -1267,7 +1267,7 @@ Use one of the following methods to install Video SDK.
 1. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
   :::note
-  > Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
+  Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
   :::
 :::note
 The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
@@ -1314,9 +1314,9 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.md) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
 
-- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback. 
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback.
 
-- **Channel media options**: Configure `AgoraRtcChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters. 
+- **Channel media options**: Configure `AgoraRtcChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
 For Interactive Live Streaming, set the `channelProfile` to `.liveBroadcasting`, the `clientRoleType` to `.broadcaster` (host) or `.audience`, and the `audienceLatencyLevel` to `ultraLowLatency`.
 
@@ -1354,7 +1354,7 @@ func joinChannel() {
 You can also set the latency level after joining a channel by calling the `setClientRole` method with `role` set to `AgoraClientRole.audience` and `options.audienceLatencyLevel` set to `ultraLowLatency`.
 
 ```swift
-// Set the user role to audience 
+// Set the user role to audience
 let role = AgoraClientRole.audience
 let options = AgoraClientRoleOptions()
 // Set the ultra low latency level
@@ -1372,12 +1372,12 @@ To ensure that you receive all Video SDK events, set the Agora Engine event hand
 ```swift
 // Extension for handling Agora SDK callbacks
 extension ViewController: AgoraRtcEngineDelegate {
-  
+
   // Triggered when the local user successfully joins a channel
   func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
     print("Successfully joined channel: \(channel) with UID: \(uid)")
   }
-  
+
   // Triggered when a remote user joins the channel
   func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
     setupRemoteVideo(uid: uid, view: remoteView)
@@ -1452,9 +1452,9 @@ When the user launches the app, it joins the channel and starts Interactive Live
 
   ```swift
   // Initialize the Agora engine
-  initializeAgoraVideoSDK()  
+  initializeAgoraVideoSDK()
   // Start the local video preview
-  setupLocalVideo()  
+  setupLocalVideo()
   // Join an Agora channel
   joinChannel()
   ```
@@ -1490,7 +1490,7 @@ class ViewController: UIViewController {
   let appId = "<Your app ID>" // Replace with your actual App ID
   let channelName = "demo"  // Replace with your actual channel name
   let token = "<Authentication token>" // Replace with your token
-  
+
   // UI view for displaying the local video stream
   var localView: UIView!
   // UI view for displaying the remote video stream
@@ -1500,7 +1500,7 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     // Initialize the Agora engine
     initializeAgoraVideoSDK()
     // Set up the user interface
@@ -1517,26 +1517,26 @@ class ViewController: UIViewController {
     agoraKit.leaveChannel(nil)
     AgoraRtcEngineKit.destroy()
   }
-  
+
   // Initializes the Video SDK instance
   func initializeAgoraVideoSDK() {
     // Create an instance of AgoraRtcEngineKit and set the delegate
     agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
   }
-  
+
   // Sets up the UI layout for local and remote video views
   func setupUI() {
     // Create the local video view covering the full screen
     localView = UIView(frame: UIScreen.main.bounds)
-    
+
     // Create the remote video view positioned in the top-right corner
     remoteView = UIView(frame: CGRect(x: self.view.bounds.width - 135, y: 50, width: 135, height: 240))
-    
+
     // Add video views to the main view
     self.view.addSubview(localView)
     self.view.addSubview(remoteView)
   }
-  
+
   // Configures and starts displaying the local video feed
   func setupLocalVideo() {
     // Enable video functionality (audio is enabled by default)
@@ -1575,7 +1575,7 @@ class ViewController: UIViewController {
       mediaOptions: options
     )
   }
-  
+
   func setupRemoteVideo(uid: UInt, view: UIView?) {
     let videoCanvas = AgoraRtcVideoCanvas()
     videoCanvas.uid = uid
@@ -1587,12 +1587,12 @@ class ViewController: UIViewController {
 
 // Extension for handling Agora SDK callbacks
 extension ViewController: AgoraRtcEngineDelegate {
-  
+
   // Triggered when the local user successfully joins a channel
   func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
     print("Successfully joined channel: \(channel) with UID: \(uid)")
   }
-  
+
   // Triggered when a remote user joins the channel
   func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
     // Assign the remote user’s video stream to the remote view
@@ -1632,15 +1632,15 @@ class ViewController: UIViewController {
     // Set up the user interface
     setupUI()
   }
-  
+
   // Sets up the UI layout for local and remote video views
   func setupUI() {
     // Create the local video view covering the full screen
     localView = UIView(frame: UIScreen.main.bounds)
-    
+
     // Create the remote video view positioned in the top-right corner
     remoteView = UIView(frame: CGRect(x: self.view.bounds.width - 135, y: 50, width: 135, height: 240))
-    
+
     // Add video views to the main view
     self.view.addSubview(localView)
     self.view.addSubview(remoteView)
@@ -1664,8 +1664,8 @@ Take the following steps to test the sample code:
 
 1. On a second iOS device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
-  * If users on both devices join the channel as hosts, they can see and hear each other.
-  * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
+   * If users on both devices join the channel as hosts, they can see and hear each other.
+   * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
 
 ## Reference
 
@@ -1690,8 +1690,8 @@ Agora provides an open source sample project on [GitHub](https://github.com/Agor
 1. Create a privacy manifest in your app project:
 
   1. Choose **File > New File**.
-  
-  1. Scroll down to the **Resource** section and select **App Privacy File** type. 
+
+  1. Scroll down to the **Resource** section and select **App Privacy File** type.
 
   1. Click **Next**.
 
@@ -1818,7 +1818,8 @@ Follow these steps to create a project in Xcode:
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application** select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
 
   :::note
-  > If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+  If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+:::
 
 2. [Set up automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your projects.
 
@@ -1835,7 +1836,6 @@ Follow these steps to add Interactive Live Streaming to your Xcode project:
 
 3. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.
 
-  :::
 ### Install the SDK
 
 Use one of the following methods to install Video SDK.
@@ -1847,10 +1847,10 @@ Use one of the following methods to install Video SDK.
   ```
   {`https://github.com/AgoraIO/AgoraRtcEngine_macOS.git`}
   ```
-  
+
 1. Click **Add Package**, select the latest version, and click **Next**.
 1. For basic Interactive Live Streaming, select **RtcBasic**.
-  
+
   If needed, also select:
   - **`SpatialAudio`** for spatial audio effects.
   - **`VirtualBackground`** for virtual background.
@@ -1867,7 +1867,7 @@ Use one of the following methods to install Video SDK.
   platform :macos, '10.11'
     target 'Your App' do
      # For x.y.z fill in the specific SDK version number, such as 4.4.0.
-     pod 'AgoraRtcEngine_macOS', 'x.y.z' 
+     pod 'AgoraRtcEngine_macOS', 'x.y.z'
     end
   ```
 
@@ -1885,7 +1885,7 @@ Use one of the following methods to install Video SDK.
 1. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
   :::note
-  > Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
+  Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
   :::
 :::note
 The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
@@ -1932,9 +1932,9 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.md) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
 
-- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback. 
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback.
 
-- **Channel media options**: Configure `AgoraRtcChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters. 
+- **Channel media options**: Configure `AgoraRtcChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
 For Interactive Live Streaming, set the `channelProfile` to `.liveBroadcasting`, the `clientRoleType` to `.broadcaster` (host) or `.audience`, and the `audienceLatencyLevel` to `ultraLowLatency`.
 
@@ -1972,7 +1972,7 @@ func joinChannel() {
 You can also set the latency level after joining a channel by calling the `setClientRole` method with `role` set to `AgoraClientRole.audience` and `options.audienceLatencyLevel` set to `ultraLowLatency`.
 
 ```swift
-// Set the user role to audience 
+// Set the user role to audience
 let role = AgoraClientRole.audience
 let options = AgoraClientRoleOptions()
 // Set the ultra low latency level
@@ -1990,12 +1990,12 @@ To ensure that you receive all Video SDK events, set the Agora Engine event hand
 ```swift
 // Extension for handling Agora SDK callbacks
 extension ViewController: AgoraRtcEngineDelegate {
-  
+
   // Triggered when the local user successfully joins a channel
   func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
     print("Successfully joined channel: \(channel) with UID: \(uid)")
   }
-  
+
   // Triggered when a remote user joins the channel
   func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
     setupRemoteVideo(uid: uid, view: remoteView)
@@ -2078,9 +2078,9 @@ When the user launches the app, it joins the channel and starts Interactive Live
 
   ```swift
   // Initialize the Agora engine
-  initializeAgoraVideoSDK()  
+  initializeAgoraVideoSDK()
   // Start the local video preview
-  setupLocalVideo()  
+  setupLocalVideo()
   // Join an Agora channel
   joinChannel()
   ```
@@ -2112,7 +2112,7 @@ import Cocoa
 import AgoraRtcKit
 
 class ViewController: NSViewController {
-  
+
   let appId = "<Your app ID>" // Replace with your actual App ID
   let channelName = "demo"  // Replace with your actual channel name
   let token = "<Authentication token>" // Replace with your token
@@ -2126,7 +2126,7 @@ class ViewController: NSViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     // Initialize the Agora engine
     initializeAgoraVideoSDK()
     // Set up the user interface
@@ -2143,22 +2143,22 @@ class ViewController: NSViewController {
     agoraKit.leaveChannel(nil)
     AgoraRtcEngineKit.destroy()
   }
-  
+
   // Initializes the Video SDK instance
   func initializeAgoraVideoSDK() {
     // Create an instance of AgoraRtcEngineKit and set the delegate
     agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
   }
-  
+
   func setupUI() {
     guard let screenFrame = NSScreen.main?.frame else { return } // Ensure screen is available
 
     // Create the local video view covering the full screen
     localView = NSView(frame: screenFrame)
-    
+
     // Create the remote video view positioned in the top-right corner
     remoteView = NSView(frame: CGRect(x: self.view.bounds.width - 135, y: 50, width: 250, height: 250))
-    
+
     // Add video views to the main view
     self.view.addSubview(localView)
     self.view.addSubview(remoteView)
@@ -2197,7 +2197,7 @@ class ViewController: NSViewController {
     // If you set uid=0, the engine generates a uid internally; on success, it triggers didJoinChannel callback
     agoraKit.joinChannel(byToken: "<#Your Token#>", channelId: "<#Your Channel Name#>", uid: 0, mediaOptions: options)
   }
-  
+
   func setupRemoteVideo(uid: UInt, view: NSView?) {
     let videoCanvas = AgoraRtcVideoCanvas()
     videoCanvas.uid = uid
@@ -2209,12 +2209,12 @@ class ViewController: NSViewController {
 
 // Extension for handling Agora SDK callbacks
 extension ViewController: AgoraRtcEngineDelegate {
-  
+
   // Triggered when the local user successfully joins a channel
   func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
     print("Successfully joined channel: \(channel) with UID: \(uid)")
   }
-  
+
   // Triggered when a remote user joins the channel
   func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
     // Assign the remote user’s video stream to the remote view
@@ -2243,7 +2243,7 @@ import Cocoa
 import AgoraRtcKit
 
 class ViewController: NSViewController {
-  
+
   // UI view for displaying the local video stream
   var localView: NSView!
   // UI view for displaying the remote video stream
@@ -2251,7 +2251,7 @@ class ViewController: NSViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     // Set up the user interface
     setupUI()
   }
@@ -2261,10 +2261,10 @@ class ViewController: NSViewController {
 
     // Create the local video view covering the full screen
     localView = NSView(frame: screenFrame)
-    
+
     // Create the remote video view positioned in the top-right corner
     remoteView = NSView(frame: CGRect(x: self.view.bounds.width - 135, y: 50, width: 250, height: 250))
-    
+
     // Add video views to the main view
     self.view.addSubview(localView)
     self.view.addSubview(remoteView)
@@ -2284,8 +2284,8 @@ Take the following steps to test the sample code:
 
 4. On a second macOS device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
-  * If users on both devices join the channel as hosts, they can see and hear each other.
-  * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
+   * If users on both devices join the channel as hosts, they can see and hear each other.
+   * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
 
 ## Reference
 
@@ -2418,14 +2418,14 @@ import AgoraRTC from "agora-rtc-sdk-ng";
 
 ### Initialize an instance of `AgoraRTCClient`
 
-Call [`createClient`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createclient) to initialize an `AgoraRTCClient` object. 
-Set the [Channel mode](#channel-modes) and [Video encoding format](#video-encoding-formats) based on your use case. 
+Call [`createClient`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createclient) to initialize an `AgoraRTCClient` object.
+Set the [Channel mode](#channel-modes) and [Video encoding format](#video-encoding-formats) based on your use case.
 
 For Interactive Live Streaming Set `mode` to `live`.
 
 ```javascript
 // RTC client instance
-let client = null; 
+let client = null;
 
 // Initialize the AgoraRTC client
 function initializeClient() {
@@ -2434,7 +2434,7 @@ function initializeClient() {
 }
 ```
 
-### Join a channel 
+### Join a channel
 
 To join a channel, call `join` with the following parameters:
 
@@ -2444,9 +2444,9 @@ To join a channel, call `join` with the following parameters:
 
 - **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.md) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
 
-- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID. 
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID.
 
-When you join as a host, you can publish local media streams in the channel; you can also subscribe to streams published by other hosts. As an audience member, you may only subscribe to media streams published by hosts. 
+When you join as a host, you can publish local media streams in the channel; you can also subscribe to streams published by other hosts. As an audience member, you may only subscribe to media streams published by hosts.
 
 * Join as a host
 
@@ -2471,7 +2471,7 @@ When you join as a host, you can publish local media streams in the channel; you
   // Join as audience
   async function joinAsAudience() {
     await client.join(appId, channel, token, uid);
-    
+
     // Set ultra-low latency level for interactive live streaming
     let clientRoleOptions = { level: 2 };
     // Audience can only subscribe to tracks
@@ -2512,7 +2512,7 @@ See [Local audio and video tracks](#local--tracks) to learn more about local tra
 
 ### Set up event listeners
 
-Use the `on` method to register event listeners for SDK events. The SDK triggers the `user-published` event when a user publishes an audio track in the channel. Similarly, it triggers the `user-unpublished` event when a user leaves the channel, goes offline, or unpublishes a media track. 
+Use the `on` method to register event listeners for SDK events. The SDK triggers the `user-published` event when a user publishes an audio track in the channel. Similarly, it triggers the `user-unpublished` event when a user leaves the channel, goes offline, or unpublishes a media track.
 
 ```javascript
 // Handle client events
@@ -2582,7 +2582,7 @@ function displayRemoteVideo(user) {
 
 ### Leave the channel
 
-To exit the channel, close local audio and video tracks and call `leave`. 
+To exit the channel, close local audio and video tracks and call `leave`.
 
 ```javascript
 // Leave the channel and clean up
@@ -2590,11 +2590,11 @@ async function leaveChannel() {
   // Stop the local media tracks to release the microphone and camera resources
   if (localAudioTrack) {
     localAudioTrack.close();
-    localAudioTrack = null; 
+    localAudioTrack = null;
   }
   if (localVideoTrack) {
     localVideoTrack.close();
-    localVideoTrack = null; 
+    localVideoTrack = null;
   }
   // Leave the channel
   await client.leave();
@@ -2603,7 +2603,7 @@ async function leaveChannel() {
 
 ### Complete sample code
 
-A complete code sample demonstrating the basic process of real-time interaction is provided here for your reference. To use the sample, copy the following code to the JavaScript file in the project's `src` folder. 
+A complete code sample demonstrating the basic process of real-time interaction is provided here for your reference. To use the sample, copy the following code to the JavaScript file in the project's `src` folder.
 
 **Complete sample code for Interactive Live Streaming**
 
@@ -2614,13 +2614,13 @@ import AgoraRTC from "agora-rtc-sdk-ng";
 let client = null;
 
 // Declare variables for local tracks
-let localAudioTrack = null; 
-let localVideoTrack = null; 
+let localAudioTrack = null;
+let localVideoTrack = null;
 
 // Connection parameters
 let appId = "<-- Insert app ID -->";
 let channel = "<-- Insert channel name -->";
-let token = "<-- Insert token -->"; 
+let token = "<-- Insert token -->";
 let uid = 0; // User ID
 
 // Initialize the AgoraRTC client
@@ -2708,11 +2708,11 @@ function displayRemoteVideo(user) {
 async function leaveChannel() {
   if (localAudioTrack) {
     localAudioTrack.close();
-    localAudioTrack = null; 
+    localAudioTrack = null;
   }
   if (localVideoTrack) {
     localVideoTrack.close();
-    localVideoTrack = null; 
+    localVideoTrack = null;
   }
   const localPlayerContainer = document.getElementById(uid);
   localPlayerContainer && localPlayerContainer.remove();
@@ -2750,7 +2750,7 @@ function startBasicLiveStreaming() {
   window.onload = setupButtonHandlers;
 }
 startBasicLiveStreaming();
-``` 
+```
 
 ### Create a user interface​
 
@@ -2787,7 +2787,7 @@ Take the following steps to run and test the sample code:
 1. In your `.js` file, update the values for `appId`, and `token` with values from Agora Console. Use the same `channel` name you used to generate the token.
 
 1. To start the development server, use the following command:
-  
+
   ```shell
   npm run dev
   ```
@@ -2800,8 +2800,8 @@ Take the following steps to run and test the sample code:
 
 1. On a second device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) or clone the [sample project on Github](https://github.com/AgoraIO/API-Examples-Web) to join the same channel and test the following use-cases:
 
-  * If users on both devices join the channel as hosts, they can see and hear each other.
-  * If one user joins as host and the other as audience, the host can see themselves; the audience can see the host in the remote video view and hear the host.
+   * If users on both devices join the channel as hosts, they can see and hear each other.
+   * If one user joins as host and the other as audience, the host can see themselves; the audience can see the host in the remote video view and hear the host.
 :::note
 - Run the web app on a local server (localhost) for testing purposes only. When deploying to a production environment, use the HTTPS protocol.
  - Due to browser security policies that restrict HTTP addresses to 127.0.0.1, the Agora Web SDK only supports HTTPS protocol and `http://localhost` (`http://127.0.0.1`). Please do not use the HTTP protocol to access your project, except for `http://localhost` (`http://127.0.0.1`).
@@ -2837,7 +2837,7 @@ After implementing the quickstart sample, read the following documents to learn 
 
 ### Channel modes
 
-The Video SDK supports the following channel modes: 
+The Video SDK supports the following channel modes:
 
 - `rtc`: Communication use-case
 - `live`: Live broadcast use-case
@@ -2911,7 +2911,7 @@ Visit the [Download](../../../sdks.md) page to obtain the link for the latest SD
 
 **Why do I get a `digital envelope routines::unsupported` error when running the quickstart project locally?**
 
-This issue arises in projects configured with `webpack` for local execution due to changes in Node.js 16 and above. The modifications in Node.js, particularly its dependency on OpenSSL (detailed in the [node issue](https://github.com/nodejs/node/issues/29817)), impact the local development environment dependencies of the project. Refer to the [webpack issue](https://github.com/webpack/webpack/issues/14532) for details. 
+This issue arises in projects configured with `webpack` for local execution due to changes in Node.js 16 and above. The modifications in Node.js, particularly its dependency on OpenSSL (detailed in the [node issue](https://github.com/nodejs/node/issues/29817)), impact the local development environment dependencies of the project. Refer to the [webpack issue](https://github.com/webpack/webpack/issues/14532) for details.
 
 Use one of the following solutions to resolve the issue:
 
@@ -2964,7 +2964,7 @@ To start a Interactive Live Streaming session, implement the following steps in 
 This section shows you how to set up your Windows project and install the Agora Video SDK.
 
 **Create a new project**
-The following steps outline the process to set up a new Visual Studio 2022 project on Windows 11 for implementing real-time audio and video interaction functions. 
+The following steps outline the process to set up a new Visual Studio 2022 project on Windows 11 for implementing real-time audio and video interaction functions.
 
 1. In Visual Studio, select **File > New > Project** to create a new project. In the pop-up window, select **MFC application** as the project template, click **Next**, update the project name to `AgoraQuickStart`, set the project storage location, and then click **Create**.
 
@@ -2980,14 +2980,14 @@ To integrate real-time audio and video interaction into your project:
 3. Create a user-interface for your app based on your application use-case.
 
   A basic UI, consists of the following controls:
-  
+
   * A Picture Control for displaying local video
   * A Picture Control for displaying remote video
   * An Edit Control for entering a channel name
-  * Buttons to join and leave a channel 
+  * Buttons to join and leave a channel
 
   Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
-  
+
 ### Install the SDK
 
 Install the Agora Video SDK:
@@ -3002,11 +3002,11 @@ In the Solution Explorer window, right-click the project name and click **Proper
 
 1. Go to the **C/C++ > General > Additional Include Directory** menu, click **Edit**, and in the pop-up window enter `$(SolutionDir)sdk\high_level_api\include`.
 1. Go to the **Linker > General > Additional Library Directory** menu, click **Edit**, and in the pop-up window:
-  * for 64 bit Windows, enter `$(SolutionDir)sdk\x86_64`.
-  * for x86 Windows, enter `$(SolutionDir)sdk\x86`.
+   * for 64 bit Windows, enter `$(SolutionDir)sdk\x86_64`.
+   * for x86 Windows, enter `$(SolutionDir)sdk\x86`.
 1. Go to the **Linker > Input > Additional Dependencies** menu, click **Edit**, and in the pop-up window:
-  * for 64 bit Windows, enter `$(SolutionDir)sdk\x86_64\agora_rtc_sdk.dll.lib`.
-  * for x86 Windows, enter `$(SolutionDir)sdk\x86\agora_rtc_sdk.dll.lib`.
+   * for 64 bit Windows, enter `$(SolutionDir)sdk\x86_64\agora_rtc_sdk.dll.lib`.
+   * for x86 Windows, enter `$(SolutionDir)sdk\x86\agora_rtc_sdk.dll.lib`.
 1. Enter the **Advanced** menu, and in **Advanced Properties**, set **Copy contents to OutDir** and **Copy C++ runtime to output directory** to `Yes`.
 1. Go to the **Build Events > Post-Build Events > Command Line** menu and enter `copy $(SolutionDir)sdk\x86_64\*.dll $(SolutionDir)$(Platform)\$(Configuration)`.
 1. Click **Apply** to save the configuration.
@@ -3030,7 +3030,7 @@ For real-time communication, initialize an `IRtcEngine` instance and set up even
 ```cpp
 // Declare the required variables
 IRtcEngine* m_rtcEngine = nullptr; // RTC engine instance
-CAgoraQuickStartRtcEngineEventHandler m_eventHandler; // IRtcEngineEventHandler 
+CAgoraQuickStartRtcEngineEventHandler m_eventHandler; // IRtcEngineEventHandler
 ```
 
 ```cpp
@@ -3064,9 +3064,9 @@ To join a channel, call `joinChannel`[2/2] with the following parameters:
 
 - **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.md) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
 
-- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback. 
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
-- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters. 
+- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
 For Interactive Live Streaming, set the `channelProfile` to `CHANNEL_PROFILE_LIVE_BROADCASTING`, the `clientRoleType` to `CLIENT_ROLE_BROADCASTER` (host) or `CLIENT_ROLE_AUDIENCE`, and the `audienceLatencyLevel` to `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY`.
 
@@ -3286,7 +3286,7 @@ A complete code sample that implements the basic process of real-time interactio
 
 ```cpp
 #pragma once
-#include 
+#include
 // Import related header files
 #include
 using namespace now;
@@ -3637,7 +3637,7 @@ Alternatively, follow these steps to create a bare-bones UI for your project.
 
 **Steps to create a minimalistic UI**
 
-1. Switch the project to resource view in the right menu bar, and then open the `.Dialog` file. 
+1. Switch the project to resource view in the right menu bar, and then open the `.Dialog` file.
 
 1. From **View > Toolbox**, select Add **Picture Control**, and in **Properties > Miscellaneous**, set the ID of the control to `IDC_STATIC_REMOTE`.
 
@@ -3657,14 +3657,14 @@ To test your app, follow these steps:
 
 1. In Visual Studio, select local Windows debugger to start compiling the application.
 
-1. Enter the name of the channel you want to join in the input box and click the **Join** button to join the channel. 
+1. Enter the name of the channel you want to join in the input box and click the **Join** button to join the channel.
 
   You see yourself in the local view.
 
 1. Use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
-  * If users on both devices join the channel as hosts, they can see and hear each other.
-  * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
+   * If users on both devices join the channel as hosts, they can see and hear each other.
+   * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
 
 ## Reference
 
@@ -3680,7 +3680,7 @@ After implementing the quickstart sample, read the following documents to learn 
 
 ### Sample project
 
-Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/) for your reference. 
+Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/) for your reference.
 
 * Download or view the [sample project](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Basic/LiveBroadcasting) for a more detailed example.
 * For a Windows C# implementation, see [this sample project](https://github.com/AgoraIO-Extensions/Agora-C_Sharp-SDK/tree/master/APIExample/src/Basic/JoinChannelVideo).
@@ -3748,12 +3748,12 @@ This section shows you how to set up your Electron project and install the Agora
 
 1. Create a new directory for your Electron project in a local folder. Add the following files to the root of the project directory:
 
-  - `package.json`: Manages project dependencies and scripts.
-  - `index.html`: Defines the app's user interface.
-  - `main.js`: The main process entry point.
-  - `renderer.js`: The renderer process script, responsible for interacting with the Agora Electron SDK.
+   - `package.json`: Manages project dependencies and scripts.
+   - `index.html`: Defines the app's user interface.
+   - `main.js`: The main process entry point.
+   - `renderer.js`: The renderer process script, responsible for interacting with the Agora Electron SDK.
 
-1. Create a user interface for your app based on your use-case. 
+1. Create a user interface for your app based on your use-case.
 
   A basic user interface consists of an element for local video and an element for remote video. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
 
@@ -3764,79 +3764,79 @@ Add the Video SDK to your project using `npm`:
 
 1. Configure `package.json`
 
-  * macOS
+   * macOS
 
-    ```json
-    {
-     "name": "electron-demo-app",
-     "version": "0.1.0",
-     "author": "your name",
-     "description": "My Electron app",
-     "main": "main.js",
-     "scripts": {
-      "start": "electron ."
-     },
-     "agora_electron": {
-      "platform": "darwin",
-      "prebuilt": true
-     },
-     "dependencies": {
-      "agora-electron-sdk": "latest"
-     },
-     "devDependencies": {
-      "electron": "latest"
+     ```json
+     {
+      "name": "electron-demo-app",
+      "version": "0.1.0",
+      "author": "your name",
+      "description": "My Electron app",
+      "main": "main.js",
+      "scripts": {
+       "start": "electron ."
+      },
+      "agora_electron": {
+       "platform": "darwin",
+       "prebuilt": true
+      },
+      "dependencies": {
+       "agora-electron-sdk": "latest"
+      },
+      "devDependencies": {
+       "electron": "latest"
+      }
      }
-    }
-    ```
-  
-  * Windows
+     ```
 
-    ```json
-    {
-     "name": "electron-demo-app",
-     "version": "0.1.0",
-     "author": "your name",
-     "description": "My Electron app",
-     "main": "main.js",
-     "scripts": {
-      "start": "electron ."
-     },
-     "agora_electron": {
-      "platform": "win32",
-      "prebuilt": true,
-      "arch": "ia32"
-     },
-     "dependencies": { "agora-electron-sdk": "latest" },
-     "devDependencies": {"electron": "latest" }
-    }
-    ```
+   * Windows
 
-    **Configuration parameters**
+     ```json
+     {
+      "name": "electron-demo-app",
+      "version": "0.1.0",
+      "author": "your name",
+      "description": "My Electron app",
+      "main": "main.js",
+      "scripts": {
+       "start": "electron ."
+      },
+      "agora_electron": {
+       "platform": "win32",
+       "prebuilt": true,
+       "arch": "ia32"
+      },
+      "dependencies": { "agora-electron-sdk": "latest" },
+      "devDependencies": {"electron": "latest" }
+     }
+     ```
 
-    - `agora-electron-sdk`: Version number of the Agora Electron SDK. Set to latest for the most recent version, or specify a version number. See [`agora-electron-sdk`](https://www.npmjs.com/package/agora-electron-sdk) on npm for available versions.
-    - `electron`: Electron version number. Versions 5.0.0 and above are supported. For macOS devices with M1 chips, use version 11.0.0 or higher.
-    - `platform` (Optional): Target platform. Set to `darwin` for macOS or `win32` for Windows.
-    - `prebuilt` (Optional): Set to `true` by default to prevent compatibility issues between Electron, Node.js, and the SDK.
-    - `arch` (Optional): Target architecture. Defaults to your system architecture.
+     **Configuration parameters**
 
-  :::note
-  Different versions of Electron have different environment requirements. If you see errors due to a mismatched environment when running the project, refer to the official [Electron documentation](https://releases.electronjs.org/releases/stable) to choose the appropriate Electron and Node.js versions.
-  :::
+     - `agora-electron-sdk`: Version number of the Agora Electron SDK. Set to latest for the most recent version, or specify a version number. See [`agora-electron-sdk`](https://www.npmjs.com/package/agora-electron-sdk) on npm for available versions.
+     - `electron`: Electron version number. Versions 5.0.0 and above are supported. For macOS devices with M1 chips, use version 11.0.0 or higher.
+     - `platform` (Optional): Target platform. Set to `darwin` for macOS or `win32` for Windows.
+     - `prebuilt` (Optional): Set to `true` by default to prevent compatibility issues between Electron, Node.js, and the SDK.
+     - `arch` (Optional): Target architecture. Defaults to your system architecture.
+
+   :::note
+   Different versions of Electron have different environment requirements. If you see errors due to a mismatched environment when running the project, refer to the official [Electron documentation](https://releases.electronjs.org/releases/stable) to choose the appropriate Electron and Node.js versions.
+   :::
 
 1. To install the dependencies, open a terminal in your project root directory and run the following commands::
 
-  * macOS
+   * macOS
 
-    ```bash
-    npm install
-    ```
+     ```bash
+     npm install
+     ```
 
-  * Windows
-  
-    ```bash
-    npm install -D --arch=ia32 electron
-    npm install
-    ```
+   * Windows
+
+     ```bash
+     npm install -D --arch=ia32 electron
+     npm install
+     ```
 :::note
 - On Windows, you must first install the 32-bit version of Electron by running `npm install -D --arch=ia32 electron`, and then run `npm install`. Otherwise, you may encounter the error: “Not a valid Win32 application.”
 - If a `node_modules` folder exists in the project root directory, delete it before running `npm install` to avoid potential errors.
@@ -4001,9 +4001,9 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.md) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
 
-- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback. 
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
-- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters. 
+- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
 For Interactive Live Streaming, set the `channelProfile` to `ChannelProfileLiveBroadcasting`, the `clientRoleType` to `ClientRoleBroadcaster` (host) or `ClientRoleAudience`, and the `audienceLatencyLevelType` to `AudienceLatencyLevelUltraLowLatency`.
 
@@ -4029,7 +4029,7 @@ rtcEngine.joinChannel(token, channel, uid, {
 
 ### Register event handlers
 
-Call the `registerEventHandler` method to register the following callback events: 
+Call the `registerEventHandler` method to register the following callback events:
 
 - `onJoinChannelSuccess`: Triggered when the local user successfully joins a channel. After joining, call `setupLocalVideo` to configure the local video window.
 - `onUserJoined`: Triggered when a remote user joins the current channel. After the remote user joins, call `setupRemoteVideo` to configure the remote video window.
@@ -4073,7 +4073,7 @@ const EventHandles = {
         sourceType: VideoSourceType.VideoSourceRemote,
         uid: remoteUid,
         view: remoteVideoContainer,
-        setupMode: VideoViewSetupMode.VideoViewSetupRemove,        
+        setupMode: VideoViewSetupMode.VideoViewSetupRemove,
       },
     );
   },
@@ -4120,7 +4120,7 @@ rtcEngine.setupRemoteVideo(
     sourceType: VideoSourceType.VideoSourceRemote,
     uid: remoteUid,
     view: remoteVideoContainer,
-    setupMode: VideoViewSetupMode.VideoViewSetupRemove,        
+    setupMode: VideoViewSetupMode.VideoViewSetupRemove,
   },
 );
 ```
@@ -4157,7 +4157,7 @@ When a user launches your app, start Interactive Live Streaming. When a user clo
 
 ### Complete sample code
 
-A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Replace the entire contents of the `main.js` and `renderer.js` with the following code samples: 
+A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Replace the entire contents of the `main.js` and `renderer.js` with the following code samples:
 
 **`main.js`**
 
@@ -4342,7 +4342,7 @@ window.onload = () => {
 - In `renderer.js`, replace the values for `APPID`, `token`, and `channel` with your App ID, the temporary token from Agora Console, and the channel name you used to generate the token.
 - If you're targeting macOS v10.14 or later, add the device permission code to `main.js`. For more details, see [Get device permissions](#get-device-permissions).
 :::
-To test the complete code, see [Test the sample code](#test-the-sample-code). 
+To test the complete code, see [Test the sample code](#test-the-sample-code).
 
 ### Create a user interface
 
@@ -4380,7 +4380,7 @@ Alternatively, use the following sample to create a minimal interface. Add the f
 
 Take the following steps to test the sample code:
 
-1. Update the `APPID`, `token`, and `channel` parameter values in your code. 
+1. Update the `APPID`, `token`, and `channel` parameter values in your code.
 
 1. To run the app, execute the following command in the project root directory:
 
@@ -4392,8 +4392,8 @@ Take the following steps to test the sample code:
 
 1. Invite a friend to run the demo app on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel.
 
-  * If users on both devices join the channel as hosts, they can see and hear each other.
-  * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
+   * If users on both devices join the channel as hosts, they can see and hear each other.
+   * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
 
 ## Reference
 
@@ -4512,10 +4512,10 @@ Install the Agora Video SDK and other dependencies.
     ```yaml
     dependencies:
      flutter:
-      sdk: flutter 
+      sdk: flutter
      agora_rtc_engine: ^6.5.0 # Agora Flutter SDK, please use the latest version
      permission_handler: ^11.3.1 # Package for managing runtime permissions
-     cupertino_icons: ^1.0.8 
+     cupertino_icons: ^1.0.8
     ```
 
 1. Install the dependencies.
@@ -4593,7 +4593,7 @@ Future<void> _joinChannel() async {
    clientRoleType: ClientRoleType.clientRoleBroadcaster,
    // Set the audience latency level
    audienceLatencyLevel: AudienceLatencyLevelType.audienceLatencyLevelUltraLowLatency
-  
+
   ),
   uid: 0,
  );
@@ -4729,7 +4729,7 @@ After you call `release`, you no longer have access to the methods and callbacks
 
 ### Complete sample code
 
-A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following code to replace the entire contents of the `.dart` file in your project. 
+A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following code to replace the entire contents of the `.dart` file in your project.
 
 **Complete sample code for Interactive Live Streaming**
 
@@ -4840,7 +4840,7 @@ class _MainScreenScreenState extends State<_MainScreen> {
     publishMicrophoneTrack: true,
     clientRoleType: ClientRoleType.clientRoleBroadcaster,
     audienceLatencyLevel: AudienceLatencyLevelType.audienceLatencyLevelUltraLowLatency
-   
+
    ),
    uid: 0,
   );
@@ -4893,7 +4893,7 @@ class _MainScreenScreenState extends State<_MainScreen> {
     ),
    ),
   );
- } 
+ }
 
  // Displays remote video view
  Widget _remoteVideo() {
@@ -4970,12 +4970,12 @@ Take the following steps to test the sample code:
 
 1. On a second target device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
-  * If users on both devices join the channel as hosts, they can see and hear each other.
-  * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
+   * If users on both devices join the channel as hosts, they can see and hear each other.
+   * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
 
-  On an Android device, the app UI appears similar to the following:
+   On an Android device, the app UI appears similar to the following:
 
-  ![quickstart-ui-flutter.png](/images/video-sdk/quickstart-ui-flutter.png)
+   ![quickstart-ui-flutter.png](/images/video-sdk/quickstart-ui-flutter.png)
 
 ## Reference
 
@@ -5093,7 +5093,7 @@ To create a new application using [React Native Community CLI](https://github.co
 
 ### Install the SDK
 
-Download and add the Agora Video SDK to your React Native project. Choose either of the following methods: 
+Download and add the Agora Video SDK to your React Native project. Choose either of the following methods:
 
 **npm**
 In your project folder, execute the following command:
@@ -5168,9 +5168,9 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.md) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
 
-- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback. 
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
-- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters. 
+- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
 For Interactive Live Streaming, set the `channelProfile` to `ChannelProfileLiveBroadcasting`, the `clientRoleType` to `ClientRoleBroadcaster` (host) or `ClientRoleAudience`, and the `audienceLatencyLevel` to `audienceLatencyLevelUltraLowLatency`.
 
@@ -5715,11 +5715,11 @@ Take the following steps to test the sample code:
 
 1. Update the values for `appId`, `token`, and `channelName` in your code.
 
-1. Run the app. 
+1. Run the app.
 
   :::warning
 
-  > Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
+  Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
 
   :::
 
@@ -5754,9 +5754,9 @@ To run on the app on an iOS device:
 </CodeBlockTabs>
 
   :::note
-  > For detailed steps on running the app on a real Android or iOS device, please refer to [Running On Device](https://reactnative.dev/docs/running-on-device).
+  For detailed steps on running the app on a real Android or iOS device, please refer to [Running On Device](https://reactnative.dev/docs/running-on-device).
+:::
 
-  :::
 
 1. Launch the app and click the **Join channel** button to join a channel.
 
@@ -5935,7 +5935,7 @@ To join a channel, use the `useJoin` hook. You can specify the following `joinOp
 
 - **Authentication token**: A `token` is a dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.md) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
 
-- **User ID**: `uid` is a 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you do not set a user ID or set it to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value. 
+- **User ID**: `uid` is a 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you do not set a user ID or set it to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value.
 
 Add the following to `Basics`:
 
@@ -6131,7 +6131,7 @@ const Basics = () => {
   </>
  );
 };
- 
+
 export default InteractiveLiveStreaming;
 ```
 
@@ -6230,13 +6230,13 @@ To start a Interactive Live Streaming session, implement the following steps in 
 This section shows you how to set up your Unity project and install the Agora Video SDK.
 
 **Create a new project**
-Refer to the following steps or the [Official Unity documentation](https://docs.unity3d.com/hub/manual/AddProject.html#add-projects) to create a Unity project. 
+Refer to the following steps or the [Official Unity documentation](https://docs.unity3d.com/hub/manual/AddProject.html#add-projects) to create a Unity project.
 
 1. Open Unity and click **New**.
 1. Enter the following details:
-  * **Project name** : The name of the project.
-  * **Location** : Project storage path.
-  * **Template** : The project type. Select **3D**.
+   * **Project name** : The name of the project.
+   * **Location** : Project storage path.
+   * **Template** : The project type. Select **3D**.
 
 1. Click **Create project**.
 
@@ -6284,7 +6284,7 @@ Before proceeding, create and set up a script to implement Interactive Live Stre
     using UnityEngine;
     using UnityEngine.UI;
     ```
-1. Bind the script to the canvas. 
+1. Bind the script to the canvas.
 
   In `Assets/Agora-Unity-RTC-SDK/Code/Rtc` , select the `JoinChannel.cs` file, and drag it to the Canvas. In the **Inspector** panel, ensure that the file is bound to the Canvas.
 
@@ -6305,7 +6305,7 @@ internal IRtcEngine RtcEngine;
 // Fill in your app ID
 private string _appID= "";
 
-private void SetupVideoSDKEngine() 
+private void SetupVideoSDKEngine()
 {
   // Create an IRtcEngine instance
   RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
@@ -6326,9 +6326,9 @@ To join a channel, call `JoinChannel` with the following parameters:
 
 - **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.md) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
 
-- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `OnJoinChannelSuccess` callback. 
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `OnJoinChannelSuccess` callback.
 
-- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters. 
+- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
 For Interactive Live Streaming, set the `channelProfile` to `CHANNEL_PROFILE_LIVE_BROADCASTING`, the `clientRoleType` to `CLIENT_ROLE_BROADCASTER` (host) or `CLIENT_ROLE_AUDIENCE`, and the `audienceLatencyLevel` to `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY`.
 
@@ -6360,7 +6360,7 @@ public void Join() {
 
 ### Subscribe to Video SDK events
 
-Create an instance of the `UserEventHandler` class and set it as the engine event handler. Override the callbacks based on your use-case. 
+Create an instance of the `UserEventHandler` class and set it as the engine event handler. Override the callbacks based on your use-case.
 
 ```c#
 // Implement your own callback class by inheriting from the IRtcEngineEventHandler interface
@@ -6396,7 +6396,7 @@ internal class UserEventHandler : IRtcEngineEventHandler
 }
 ```
 
-Create an instance of the user callback class and call `InitEventHandler` to register the event handler. 
+Create an instance of the user callback class and call `InitEventHandler` to register the event handler.
 
 ```csharp
 private void InitEventHandler()
@@ -6445,7 +6445,7 @@ public override void OnUserJoined(RtcConnection connection, uint uid, int elapse
 
 ### Leave the channel
 
-Call `LeaveChannel` to leave the current channel. 
+Call `LeaveChannel` to leave the current channel.
 
   ```c#
   public void Leave() {
@@ -6466,7 +6466,7 @@ Call `LeaveChannel` to leave the current channel.
 To access the camera and microphone, add device permissions to your project according to your target platform.
 
 **Android**
-Since version 2018.3, Unity does not actively obtain device permissions from the user. Call `CheckPermission` to check for and obtain the necessary permissions. 
+Since version 2018.3, Unity does not actively obtain device permissions from the user. Call `CheckPermission` to check for and obtain the necessary permissions.
 
 1. Include the `UnityEngine.Android` namespace, which contains Android-specific classes for interacting with Android devices from Unity:
 
@@ -6476,7 +6476,7 @@ Since version 2018.3, Unity does not actively obtain device permissions from the
   #endif
   ```
 
-2. Create a list of permissions to be obtained. 
+2. Create a list of permissions to be obtained.
 
   ```c#
   #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
@@ -6503,7 +6503,7 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
 
 ### Start and stop your game
 
-1. When the game starts, ensure that device permissions have been granted. 
+1. When the game starts, ensure that device permissions have been granted.
 
   ```c#
   void Update() {
@@ -6536,9 +6536,9 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
   ```
 
   :::note
-  > After calling `Dispose`, you can no longer use any methods or callbacks of the SDK. To use Interactive Live Streaming features again, create a new engine instance.
+  After calling `Dispose`, you can no longer use any methods or callbacks of the SDK. To use Interactive Live Streaming features again, create a new engine instance.
+:::
 
-  :::
 ### Complete sample code
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To quickly implement the basic functions of real-time Video Calling, copy the following sample code into your project:
@@ -6741,16 +6741,16 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
   1. In your Unity project, right-click the **Sample Scene** and select **Game Object > UI > Button**. You see a button on the scene canvas.
 
   1. In the **Inspector** panel, rename the button to `Join` and adjust the position coordinates as needed. For example:
-    
-    * **Pos X**：`-329`
-    * **Pos Y**: `-172`
+
+     * **Pos X**：`-329`
+     * **Pos Y**: `-172`
 
   1. Select the **Text** control of the **Join** button , and change the text to `Join` in the **Inspector** panel.
 
   1. Repeat the steps to create a **Leave** button, using the following positions:
 
-    * **Pos X**：`329`
-    * **Pos Y**: `-172`
+     * **Pos X**：`329`
+     * **Pos Y**: `-172`
 
 2. Create local and remote view windows
 
@@ -6758,19 +6758,19 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
   1. In the **Inspector** panel, rename `Raw Image` to `LocalView` and adjust its size and position on the canvas. For example:
 
-    * **PosX**：`-250`
-    * **Pos Y**: `0`
-    * **Width**: `250`
-    * **Height**: `250`
-    
+     * **PosX**：`-250`
+     * **Pos Y**: `0`
+     * **Width**: `250`
+     * **Height**: `250`
+
   1. Repeat the above steps to create a remote view window, name it `RemoteView` , and adjust its position on the canvas:
 
-    * **PosX**：`250`
-    * **Pos Y**: `0`
-    * **Width**: `250`
-    * **Height**: `250`
+     * **PosX**：`250`
+     * **Pos Y**: `0`
+     * **Width**: `250`
+     * **Height**: `250`
 
-    Save the changes. 
+     Save the changes.
 
 At this point your UI looks similar to the following:
 
@@ -6784,7 +6784,7 @@ Take the following steps to test the sample code:
 
 1. In `JoinChannel.cs`, update `_appID`, `_channelName`, and `_token` with the app ID, channel name, and temporary token for your project.
 
-1. In Unity Editor, click **Play** to run your project. 
+1. In Unity Editor, click **Play** to run your project.
 
 1. Click **Join** to join a channel.
 
@@ -6887,16 +6887,16 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
 2. Configure your project as follows:
 
-  * **Template**: Select **Blank**.
-  * **Project Defaults**: 
-    * **Language**: Select **C++**.
-    * **Target Platform**: Select **Desktop**.
-  * **Project Location**: Enter the project files storage path.
-  * **Project Name**: Type a suitable name for your project.
+   * **Template**: Select **Blank**.
+   * **Project Defaults**:
+     * **Language**: Select **C++**.
+     * **Target Platform**: Select **Desktop**.
+   * **Project Location**: Enter the project files storage path.
+   * **Project Name**: Type a suitable name for your project.
 
-  Click **Create**.
+   Click **Create**.
 
-  ![create-project-unreal](/images/video-sdk/create-project-unreal.jpg)
+   ![create-project-unreal](/images/video-sdk/create-project-unreal.jpg)
 
 **Add to an existing project**
 1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.
@@ -6909,13 +6909,13 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
   ```cpp
   // Add the AgoraPlugin library
-  PublicDependencyModuleNames.AddRange(new string[] 
-  { 
-    "Core", 
-    "CoreUObject", 
-    "Engine", 
-    "InputCore", 
-    "AgoraPlugin" 
+  PublicDependencyModuleNames.AddRange(new string[]
+  {
+    "Core",
+    "CoreUObject",
+    "Engine",
+    "InputCore",
+    "AgoraPlugin"
   });
   ```
 
@@ -6938,12 +6938,12 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
   In Unreal Editor, click **Content Drawer**, select **Class Settings > Graph**, and set the **Parent Class** under **Class Options** to **AgoraWidget**.
 
     ![image](/images/video-sdk/associate-classes-unreal.png)
-  
+
 1. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI. A basic user interface consists of the following elements:
 
-  * Local user video window
-  * Remote user video window
-  * Join and leave channel buttons
+   * Local user video window
+   * Remote user video window
+   * Join and leave channel buttons
 
 ### Install the SDK
 
@@ -6977,14 +6977,14 @@ To import Agora library, add the following to `AgoraWidget.h`:
 
 For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](manage-agora-account.md), and custom [event handler](#subscribe-to--events), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
 
-Add the `SetupSDKEngine` method declaration and implementation to the following files: 
+Add the `SetupSDKEngine` method declaration and implementation to the following files:
 
 * `AgoraWidget.h`
 
   ```cpp
   // Fill in your app ID
   FString _appID = "";
-  // Define a global variable for IRtcEngine 
+  // Define a global variable for IRtcEngine
   agora::rtc::IRtcEngine* RtcEngineProxy;
 
   private:
@@ -7004,7 +7004,7 @@ Add the `SetupSDKEngine` method declaration and implementation to the following 
 
     // Create IRtcEngine instance
     RtcEngineProxy = agora::rtc::ue::createAgoraRtcEngine();
-    
+
     // Initialize IRtcEngine
     RtcEngineProxy->initialize(RtcEngineContext);
   }
@@ -7018,9 +7018,9 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.md) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
 
-- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback. 
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
-- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters. 
+- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
 Add the `Join` method declaration and implementation to the following files:
 
@@ -7094,7 +7094,7 @@ The Video SDK provides an interface for subscribing to channel events. To use it
   // Implement the callback triggered after a remote user joins the channel
   void UAgoraWidget::onUserJoined(agora::rtc::uid_t uid, int elapsed)
   {
-    // Set up remote video 
+    // Set up remote video
     agora::rtc::VideoCanvas videoCanvas;
     videoCanvas.view = RemoteVideo;
     videoCanvas.uid = uid;
@@ -7109,7 +7109,7 @@ The Video SDK provides an interface for subscribing to channel events. To use it
   // Implement the callback triggered when a remote user leaves the channel
   void UAgoraWidget::onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason)
   {
-    // Stop remote video 
+    // Stop remote video
     agora::rtc::VideoCanvas videoCanvas;
     videoCanvas.view = nullptr;
     videoCanvas.uid = uid;
@@ -7174,45 +7174,45 @@ Add the `AndroidPermission` library to obtain device and network permissions:
     }
   ```
 
-1. To check whether Android permissions have been granted, add the `CheckAndroidPermission` method and its implementation to the `AgoraWidget.h` and `AgoraWidget.cpp` files. 
-  
-  * `AgoraWidget.h`
+1. To check whether Android permissions have been granted, add the `CheckAndroidPermission` method and its implementation to the `AgoraWidget.h` and `AgoraWidget.cpp` files.
 
-    ```cpp
-    private:
-        // Get Android permissions
-        void CheckAndroidPermission();
-    ```
+   * `AgoraWidget.h`
 
-  * `AgoraWidget.cpp`
+     ```cpp
+     private:
+         // Get Android permissions
+         void CheckAndroidPermission();
+     ```
 
-    ```cpp
-    void UAgoraWidget::CheckAndroidPermission()
-       {
-       #if PLATFORM_ANDROID
-         FString pathfromName = UGameplayStatics::GetPlatformName();
-         if (pathfromName == "Android")
-         {
-           TArray<FString> AndroidPermission;
-           AndroidPermission.Add(FString("android.permission.CAMERA"));
-           AndroidPermission.Add(FString("android.permission.RECORD_AUDIO"));
-           AndroidPermission.Add(FString("android.permission.READ_PHONE_STATE"));
-           AndroidPermission.Add(FString("android.permission.WRITE_EXTERNAL_STORAGE"));
-           AndroidPermission.Add(FString("android.permission.ACCESS_WIFI_STATE"));
-           AndroidPermission.Add(FString("android.permission.ACCESS_NETWORK_STATE"));
-           UAndroidPermissionFunctionLibrary::AcquirePermissions(AndroidPermission);
-         }
-       #endif
-       }
-    
-       void UAgoraWidget::NativeConstruct()
-       {
-         Super::NativeConstruct();
-       #if PLATFORM_ANDROID
-         CheckAndroidPermission()
-       #endif
-       }
-    ```
+   * `AgoraWidget.cpp`
+
+     ```cpp
+     void UAgoraWidget::CheckAndroidPermission()
+        {
+        #if PLATFORM_ANDROID
+          FString pathfromName = UGameplayStatics::GetPlatformName();
+          if (pathfromName == "Android")
+          {
+            TArray<FString> AndroidPermission;
+            AndroidPermission.Add(FString("android.permission.CAMERA"));
+            AndroidPermission.Add(FString("android.permission.RECORD_AUDIO"));
+            AndroidPermission.Add(FString("android.permission.READ_PHONE_STATE"));
+            AndroidPermission.Add(FString("android.permission.WRITE_EXTERNAL_STORAGE"));
+            AndroidPermission.Add(FString("android.permission.ACCESS_WIFI_STATE"));
+            AndroidPermission.Add(FString("android.permission.ACCESS_NETWORK_STATE"));
+            UAndroidPermissionFunctionLibrary::AcquirePermissions(AndroidPermission);
+          }
+        #endif
+        }
+
+        void UAgoraWidget::NativeConstruct()
+        {
+          Super::NativeConstruct();
+        #if PLATFORM_ANDROID
+          CheckAndroidPermission()
+        #endif
+        }
+     ```
 
 **iOS and macOS**
 1. Refer to [How to add the permissions required for real-time interaction to an Unreal Engine project?](https://docs-md.agora.io/en/interactive-live-streaming/get-started.md)
@@ -7257,7 +7257,7 @@ AsyncTask(ENamedThreads::GameThread, =
 When a remote user joins the channel, display their video.
 
 ```cpp
-// Set up remote video 
+// Set up remote video
 agora::rtc::VideoCanvas videoCanvas;
 videoCanvas.view = RemoteVideo;
 videoCanvas.uid = uid;
@@ -7281,7 +7281,7 @@ To leave a channel call `leaveChannel`. Implement the following method:
   ```
 
 * `AgoraWidget.cpp`
-  
+
   ```cpp
   void UAgoraWidget::Leave()
   {
@@ -7292,7 +7292,7 @@ To leave a channel call `leaveChannel`. Implement the following method:
 
 ### Release resources
 
-When the local user leaves the channel, or exits the game, release memory by calling the `release` method of `IRtcEngine`. Override the `NativeDestruct()` method and add its implementation as follows: 
+When the local user leaves the channel, or exits the game, release memory by calling the `release` method of `IRtcEngine`. Override the `NativeDestruct()` method and add its implementation as follows:
 
 * `AgoraWidget.h`
 
@@ -7301,7 +7301,7 @@ When the local user leaves the channel, or exits the game, release memory by cal
   ```
 
 * `AgoraWidget.cpp`
-  
+
   ```cpp
   void UAgoraWidget::NativeDestruct()
   {
@@ -7389,7 +7389,7 @@ protected:
   void NativeConstruct() override; // Initialize the custom Widget
   void NativeDestruct() override; // Clean up all session-related resources
 };
-``` 
+```
 
 **`Project/Source/Project/AgoraWidget.cpp`**
 
@@ -7503,7 +7503,7 @@ void UAgoraWidget::onLeaveChannel(const agora::rtc::RtcStats& stats)
     RtcEngineProxy->setupLocalVideo(videoCanvas);
   });
 }
-``` 
+```
 
 **`Project/Source/Project/Project.Build.cs`**
 
@@ -7516,13 +7516,13 @@ public class UnrealLearning : ModuleRules
   {
     PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-    PublicDependencyModuleNames.AddRange(new string[] 
-    { 
-      "Core", 
-      "CoreUObject", 
-      "Engine", 
-      "InputCore", 
-      "AgoraPlugin" 
+    PublicDependencyModuleNames.AddRange(new string[]
+    {
+      "Core",
+      "CoreUObject",
+      "Engine",
+      "InputCore",
+      "AgoraPlugin"
     });
 
     if (Target.Platform == UnrealTargetPlatform.Android)
@@ -7541,7 +7541,7 @@ public class UnrealLearning : ModuleRules
     // To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
   }
 }
-``` 
+```
 
 ### Create a user interface
 
@@ -7555,8 +7555,8 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
   ![image](/images/video-sdk/unreal-setup-ui-1.png)
 
-1. Create a view canvas. 
-  
+1. Create a view canvas.
+
   Select **Palette > PANEL > Canvas Panel** and drag it to **AgoraWidget**.
 
   ![image](/images/video-sdk/unreal-setup-ui-2.png)
@@ -7565,30 +7565,30 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
   1. In **AgoraWidget**, select **COMMON > Button**, drag it to the **Canvas Panel**, and rename it to **JoinBtn**. Adjust the button's size and position on the canvas or use the following sample settings:
 
-    * **Position X**：`300`
-    * **Position Y**: `700`
-    * **Size X**：`240`
-    * **Size Y**: `120`
+     * **Position X**：`300`
+     * **Position Y**: `700`
+     * **Size X**：`240`
+     * **Size Y**: `120`
 
   1. Select **COMMON > Text** and drag it to **JoinBtn**. Select the **Text** control of **JoinBtn**, and change the text content of **Text** to **Join** in the **Details** panel.
 
   1. Repeat the above steps to create a **LeaveBtn**. Adjust the button size and position according to your layout design.
 
 4. Create local and remote views in the Widget Blueprint
-  
+
   1. Select **COMMON > Image**, drag it to the **Canvas Panel**, rename it **LocalVideo**. Adjust its position and size on the canvas. Use the following values, or specify as per your own layout design:
 
-    * **Position X**：`350`
-    * **Position Y**: `150`
-    * **Size X**：`450`
-    * **Size Y**: `450`
+     * **Position X**：`350`
+     * **Position Y**: `150`
+     * **Size X**：`450`
+     * **Size Y**: `450`
 
   1. Repeat the above steps to create a remote view and name it **RemoteVideo**. Adjust its position and size on the canvas. Use the following values, or specify as per your own layout design:
 
-    * **Position X**：`1200`
-    * **Position Y**: `150`
-    * **Size X**：`450`
-    * **Size Y**: `450`
+     * **Position X**：`1200`
+     * **Position Y**: `150`
+     * **Size X**：`450`
+     * **Size Y**: `450`
 
 1. Save the changes. Your user interface in **Widget Blueprint** looks similar to the following:
 
@@ -7620,7 +7620,7 @@ Take the following steps to test the sample code:
 
 1. In the Unreal Editor, click the play button to run your project, then click **Join** to join a channel.
 
-1. Invite a friend to run the demo game on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel. 
+1. Invite a friend to run the demo game on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel.
 
   After your friend joins successfully, you can hear and see each other.
 
@@ -7720,16 +7720,16 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
 2. Configure your project as follows:
 
-  * **Template**: Select **Blank**.
-  * **Project Defaults**: 
-    * **Language**: Select **Blueprint**.
-    * **Target Platform**: Pick **Desktop**.
-  * **Project Location**: Enter a project files storage path.
-  * **Project Name**: Type a suitable name for your project.
+   * **Template**: Select **Blank**.
+   * **Project Defaults**:
+     * **Language**: Select **Blueprint**.
+     * **Target Platform**: Pick **Desktop**.
+   * **Project Location**: Enter a project files storage path.
+   * **Project Name**: Type a suitable name for your project.
 
-  Click **Create**.  
+   Click **Create**.
 
-  ![create-project-unreal](/images/video-sdk/create-project-unreal.jpg)
+   ![create-project-unreal](/images/video-sdk/create-project-unreal.jpg)
 
 **Add to an existing project**
 1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.
@@ -7781,7 +7781,7 @@ The following table lists the main nodes:
 ### Add channel-related variables​
 Add variables to create an engine instance and join a channel.
 
-1. Create three variables: 
+1. Create three variables:
 
   **Token**, **ChannelId**, and **AppId**. Select the **Variable Type** as **String**.
 
@@ -7796,10 +7796,11 @@ Add variables to create an engine instance and join a channel.
   ![image](/images/video-sdk/quickstart-implementation-blueprint-5.png)
 
   :::note
-  > If your target platform is macOS or iOS, please refer to [How do I add the permissions needed for real-time interaction to my Unreal Engine project?](https://docs-md.agora.io/en/help/integration-issues/unreal_permissions.md)
+  If your target platform is macOS or iOS, please refer to [How do I add the permissions needed for real-time interaction to my Unreal Engine project?](https://docs-md.agora.io/en/help/integration-issues/unreal_permissions.md)
+:::
 
 1. To initialize the RTC engine, in the **InitRtcEngine** function, create and connect nodes as shown in the following figure:
-  
+
   ![image](/images/video-sdk/quickstart-implementation-blueprint-6.png)
 
  1. Create `IRtcEngine` and `IRtcEngineEventHandler`.
@@ -7829,31 +7830,30 @@ Add variables to create an engine instance and join a channel.
 
     2. Connect to the **RtcEngineContext** configuration `IRtcEngine` instance and select **Channel Profile** as `CHANNEL_PROFILE_LIVE_BROADCASTING`.
 
-  :::
 ### Bind UI events​
 
 To bind UI events:
 
 1. Create and implement the `OnJoinChannelClicked` event callback.
-  
+
   ![Join Channel Clicked](/images/video-sdk/quickstart-implementation-blueprint-8.png)
-  
+
   1. Call **Enable Video** and **Enable Audio** to enable the video and audio modules.
   2. Call **Join Channel** to join the channel.
   3. Set the following parameters in **Make ChannelMediaOptions**:
-    - Set **Publish Camera Track** to `AGORA TRUE VALUE` to publish the video stream recorded by the camera.
-    - Set **Publish Microphone Track** to `AGORA TRUE VALUE` to publish the audio stream recorded by the microphone.
-    - Set **Auto Subscribe Video** to `AGORA TRUE VALUE` to automatically subscribe to all video streams.
-    - Set **Auto Subscribe Audio** to `AGORA TRUE VALUE` to automatically subscribe to all audio streams.
-    - Check **Client Role Type Set Value** and set **Client Role Type** to `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE`, to set the user role to host or audience.
-    - Check **Channel Profile Set Value** and set **Channel Profile** to `CHANNEL_PROFILE_LIVE_BROADCASTING`.
+     - Set **Publish Camera Track** to `AGORA TRUE VALUE` to publish the video stream recorded by the camera.
+     - Set **Publish Microphone Track** to `AGORA TRUE VALUE` to publish the audio stream recorded by the microphone.
+     - Set **Auto Subscribe Video** to `AGORA TRUE VALUE` to automatically subscribe to all video streams.
+     - Set **Auto Subscribe Audio** to `AGORA TRUE VALUE` to automatically subscribe to all audio streams.
+     - Check **Client Role Type Set Value** and set **Client Role Type** to `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE`, to set the user role to host or audience.
+     - Check **Channel Profile Set Value** and set **Channel Profile** to `CHANNEL_PROFILE_LIVE_BROADCASTING`.
 
 1. Create and implement the `OnLeaveChannelClicked` event callback. When the event is triggered, call **Leave Channel** to leave the channel.
 
   ![Leave Channel Clicked](/images/video-sdk/quickstart-implementation-blueprint-9.png)
 
 1. In the **Bind UIEvent** function, refer to the figure below to bind the `OnJoinChannelClicked` and `OnLeaveChannelClicked` callback functions to the **Join Channel** and **Leave Channel** buttons respectively. When the button is clicked, the corresponding event callback is triggered.
-  
+
   ![Bind Join Leave Callbacks](/images/video-sdk/quickstart-implementation-blueprint-10.png)
 :::note
 You can also bind UI events in Unreal Motion Graphics (UMG). This document only shows binding using the **Bind UIEvent Function**.
@@ -7881,19 +7881,19 @@ You can also bind UI events in Unreal Motion Graphics (UMG). This document only 
 Configure the previously created `onJoinChannelSuccess`, `onLeaveChannel`, `onUserJoined`, and `onUserOffline` callback functions as follows:
 
 1. After the local user successfully joins the channel, the `onJoinChannelSuccess` callback is triggered and the local view is created. The `uid` is set to `0` by default, but it is assigned a random value by the SDK. The video source type is `VIDEO_SOURCE_CAMERA_PRIMARY` (first camera):
-  
+
   ![Join Channel Success Callback](/images/video-sdk/quickstart-implementation-blueprint-13.png)
 
 2. After the local user leaves the channel, the `onLeaveChannel` callback is triggered which releases the local view:
-  
+
   ![Leave Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-14.png)
 
 3. When a remote user joins the channel, the `onUserJoined` callback is triggeredd to create a remote view. `uid` is the uid sent from the remote end, and the video source type is `VIDEO_SOURCE_REMOTE` (remote video obtained from the network):
-  
+
   ![Remote User Join Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-15.png)
 
 4. When a remote user leaves the channel, the `onUserOffline` callback is triggered to release the remote view:
-  
+
   ![Remote User Leave Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-16.png)
 
 ### Leave the channel and release resources​
