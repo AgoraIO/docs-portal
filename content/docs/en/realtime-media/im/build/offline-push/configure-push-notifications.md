@@ -5,7 +5,7 @@ description: "Configure push translations"
 
 ### Android
 
-You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/realtime-media/im/reference/server-api/offline-push/offline-push-extension).
+You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/api-reference/api-ref/im/offline-push/offline-push-extension).
 
 ## Set custom push fields
 
@@ -74,7 +74,7 @@ message.setAttribute("em_ignore_notification", true);
 
 ### iOS
 
-You can use extension fields to implement customized push settings. This page uses force push, sending silent messages, and rich text push as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/realtime-media/im/reference/server-api/offline-push/offline-push-extension).
+You can use extension fields to implement customized push settings. This page uses force push, sending silent messages, and rich text push as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/api-reference/api-ref/im/offline-push/offline-push-extension).
 
 ## Set custom push fields
 
@@ -207,7 +207,7 @@ When the receiver gets a rich text push, the `didReceiveNotificationRequest:with
 
 ### Web
 
-You can use extension fields to implement force push and send silent messages. For more information, see [Offline push notification extension](..//en/realtime-media/im/reference/server-api/offline-push/offline-push-extension).
+You can use extension fields to implement force push and send silent messages. For more information, see [Offline push notification extension](..//en/api-reference/api-ref/im/offline-push/offline-push-extension).
 
 ### Force push
 
@@ -257,7 +257,7 @@ const sendTextMsg = () => {
 
 ### Flutter
 
-You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/realtime-media/im/reference/server-api/offline-push/offline-push-extension).
+You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/api-reference/api-ref/im/offline-push/offline-push-extension).
 
 ## Set custom push fields
 
@@ -342,7 +342,7 @@ try {
 
 ### React Native
 
-You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/realtime-media/im/reference/server-api/offline-push/offline-push-extension).
+You can use extension fields to implement customized push settings. This page uses force push and sending silent messages as examples to explain how to implement push extensions. For more information, see [Offline push notification extension](..//en/api-reference/api-ref/im/offline-push/offline-push-extension).
 
 ## Set custom push fields
 

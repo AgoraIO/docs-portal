@@ -1,0 +1,377 @@
+---
+title: "Presence"
+description: "Introduces how to use the Agora Chat RESTful API to implement presence in your project."
+---
+
+The presence feature enables users to publicly display their online presence status and quickly determine the status of others. Users can customize their presence status; using more specific terms such as "busy", "away", or "in a call" can add fun and diversity to real-time chatting.
+
+This page shows how to use the Chat RESTful APIs to implement presence in your project. Before calling the following methods, ensure that you meet the following:
+- You understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](./limitations#call-limit-of-server-sides).
+- You have activated the presence feature in [Agora Console](https://console.agora.io/v2).
+
+## Common parameters 
+
+| Parameter | Type | Description | Required |
+| :--------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `uid`      | String | The unique login account of the user.         |
+
+## Authorization
+
+Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request is sent, the following `Authorization` field must be filled in the request header:
+
+```html
+Authorization: Bearer ${YourAppToken}
+```
+
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/authentication).
+
+## Set the presence status of a user
+
+Sets the user's presence status on a specific device.
+
+For each App Key, the call frequency limit of this method is 50 per second.
+
+### HTTP request
+
+```html
+POST https://{host}/{org_name}/{app_name}/users/{uid}/presence/{resource}/{status}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `uid` | String | The user ID of user whose presence status is to be set. | Required |
+| `resource` | String | The ID of the user's device for which the presence status is set. This device ID is the unique identifier assigned to each device resource in the format `{Device Platform}_{Resource ID}`, where the device platform can be `android`, `ios`, or `webim`, followed by an underscore plus a resource ID assigned by the SDK. For example, `android_34f0bbf7-8eab-46db-b572-b56b02405690`.| Yes |
+| `status` | String | The presence status defined by the user:`0`: Offline.`1`: OnlineOther numeric strings: Custom status. | Yes |
+
+For the descriptions of the other path parameters, see [Common Parameters](#param).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `Content-Type` | String | The content type. Set it to `application/json`.  | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `ext` | String | The extension information of the presence status. The size of the extension field can be a maximum of 1024 bytes. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the data field in the response body contains the following parameters:
+
+| Parameter      | Type   | Description |
+| :------- |:-------------|:-------------|
+| `result` | String |  Whether the setting of the presence status succeeds. `ok` indicates the presence setting succeeds; otherwise, you can troubleshoot according to the returned reasons.  | 
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
+
+### Example
+
+#### Request example
+
+```json
+curl -X POST 'http://XXXX/XXXX/XXXX/users/c1/presence/android_123423453246/0' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+-d '{"ext":"123"}'
+```
+
+#### Response example
+
+```json
+{"result":"ok"}
+```
+
+## Subscribe to the presence status of multiple users
+
+Subscribes to the presence status of multiple users.
+
+For each App Key, the call frequency limit of this method is 50 per second.
+
+### HTTP request
+
+```html
+POST https://{host}/{org_name}/{app_name}/users/{uid}/presence/{expiry}
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `uid` | String | The user ID of user for which the presence status is subscribed. | Required |
+| `expiry` | String |  The subscription duration in seconds. The maximum value is 2,592,000, which equals 30 days.  | Yes |
+
+For the descriptions of the other path parameters, see [Common Parameters](#param).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `Content-Type` | String | The content type. Set it to `application/json`.  | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `usernames` | JSON Array |  The list of users to whom you subscribe, for example, `[“user1”, “user2”]`. This list can contain a maximum of 100 usernames.  | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the data field in the response body contains the following parameters:
+
+| Parameter | Type   | Description |
+| :------- |:-------------|:-------------|
+| `result`    | JSON       | Whether the subscription succeeds. If successful, the presence statuses of the users return; otherwise, you can troubleshoot according to the returned reasons. |
+| `uid`       | String     | The unique login account of the user.                |
+| `last_time` | Number     | The Unix timestamp when the user was last online, in seconds. |                    
+| `expiry`    | Number     | The Unix timestamp when the subscription expires, in seconds.  |         
+| `ext`       | String     | The extension information of the presence status.                |
+| `status`    | JSON | The presence statuses on multiple devices of the user.`0`: Offline.`1`: Online.Other strings: User-defined custom presence status. |
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
+
+### Example
+
+#### Request example
+
+```json
+curl -X POST 'http://XXXX/XXXX/XXXX/users/wzy/presence/1000' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+-d '{"usernames":["c2","c3"]}'
+```
+
+#### Response example
+
+```json
+{"result":[{"uid":"","last_time":"1644466063","expiry":"1645500371","ext":"123","status":{"android":"1","android_6b5610ac-4e11-4661-82b3-dee17bc7b2cc":"0"}},{"uid":"c3","last_time":"1645183991","expiry":"1645500371","ext":"","status":{"android":"0","android_6b5610ac-4e11-4661-82b3-dee17bc7b2cc":"0"}}]}
+```
+
+## Retrieve the presence status of multiple users
+
+Retrieves the presence status of multiple users.
+
+:::info
+By default, if a user logs in and out several times in one second, the Chat server sends the presence status change notification to the SDK only after the last login or logout of the user.
+:::
+
+For each App Key, the call frequency limit of this method is 50 per second.
+
+### HTTP request
+
+```html
+POST https://{host}/{org_name}/{app_name}/users/{uid}/presence
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `uid` | String | The user whose subscribed presence statuses are retrieved. If the user ID you passed does not exist or the user does not subscribe to the presence status of any users, an empty list is returned. | Yes |
+
+For other parameters and descriptions, see [Common Parameters](#param).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `Content-Type` | String | The content type. Set it to `application/json`.  | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `usernames` | JSON Array |  The list of users whose presence statuses you attempt to retrieve, for example, `[“user1”, “user2”]`. This list can contain a maximum of 100 usernames.  | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the data field in the response body contains the following parameters:
+
+| Parameter | Type   | Description |
+| :------- |:-------------|:-------------|
+| `result`    | JSON | Whether the retrieving operation succeeds. If successful, the presence statuses of the users return; otherwise, you can troubleshoot according to the returned reasons. |
+| `uid`       | String     | The unique login account of the user.                |
+| `last_time` | Number     | The Unix timestamp when the user was last online, in seconds.                                           |
+| `ext`       | String     | The extension information of the presence status.                |
+| `status`    | JSON | The presence statuses on multiple devices of the user.`0`: Offline.`1`: Online.Other strings: User-defined custom presence status. |
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
+
+### Example
+
+#### Request example
+
+```json
+curl -X POST 'http://XXXX/XXXX/XXXX/users/wzy/presence' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+-d '{"usernames":["c2","c3"]}'
+```
+
+#### Response example
+
+```json
+{
+"result":[
+  {"uid":"c2",
+  "last_time":"1644466063",
+  "ext":"",
+  "status":{"android":"0"}
+     },
+   {"uid":"c3",
+   "last_time":"1644475330",
+   "ext":"",
+   "status":{
+       "android":"0",
+       "android":"0"}
+    }]
+ }
+```
+
+## Unsubscribe from the presence status of multiple users
+
+Unsubscribes from the presence status of multiple users.
+
+For each App Key, the call frequency limit of this method is 50 per second.
+
+### HTTP request
+
+```html
+DELETE https://{host}/{org_name}/{app_name}/users/{uid}/presence
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `uid` | String | The user whose subscribed presence statuses are unsubscribed from. | Yes |
+
+For other parameters and descriptions, see [Common Parameters](#param).
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `Content-Type` | String | The content type. Set it to `application/json`.  | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+#### Request body
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `users` | JSON Array |  The list of users from whom you unsubscribe, for example, `[“user1”, “user2”]`. This list can contain a maximum of 100 usernames.  | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the data field in the response body contains the following parameters:
+
+| Parameter      | Type   | Description |
+| :------- |:-------------|:-------------|
+| `result` | String |  Whether the subscription cancellation succeeds. `ok` indicates the subscription cancellation succeeds; otherwise, you can troubleshoot according to the returned reasons.  | 
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
+
+### Example
+
+#### Request example
+
+```json
+curl -X DELETE 'http://XXXX/XXXX/XXXX/users/wzy/presence' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' \
+-d '["c1"]'
+```
+
+#### Response example
+
+```json
+{"result":"ok"}
+```
+
+## Retrieve the subscriptions of a user
+
+Retrieves the subscriptions of a user in a paginated list.
+
+For each App Key, the call frequency limit of this method is 50 per second.
+
+### HTTP request
+
+```html
+GET https://{host}/{org_name}/{app_name}/users/{uid}/presence/sublist?pageNum=1&pageSize=100
+```
+
+#### Path parameter
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `uid` | String |  The user for which the subscriptions are retrieved.  | Yes |
+
+For other parameters and descriptions, see [Common Parameters](#param).
+
+#### Query parameter
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `pageNum` | Int | The page from which to start retrieving subscriptions. The parameter value must be no smaller than the default value `1`.  | Yes |
+| `pageSize` | Int | The maximum number of subscriptions to retrieve per page. The value range is [1,500] with `1` as the default. | Yes |
+
+#### Request header
+
+| Parameter | Type | Description | Required |
+|:---------------| :------ | :------- |:------------------|
+| `Content-Type` | String | The content type. Set it to `application/json`.  | Yes |
+| `Authorization` | String | The authentication token of the user or administrator, in the format of `Bearer ${token}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
+
+### HTTP response
+
+#### Response body
+
+If the returned HTTP status code is `200`, the request succeeds, and the data field in the response body contains the following parameters:
+
+| Parameter      | Type   | Description |
+| :------- |:-------------|:-------------|
+| `result` | String | Whether the retrieving operation succeeds. If successful, the subscription information returns; otherwise, you can troubleshoot according to the returned reasons.  | 
+| `totalnum` | String | The total number of the users you subscribe to.                         |
+| `sublist`  | Object | The list of subscriptions. Each object in the list contains the `uid` and `expiry` fields.            |
+| `uid`      | String |  The unique login account of the user.           |
+| `expiry`   | String | The Unix timestamp when the subscription expires, in seconds|
+
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
+
+### Example
+
+#### Request example
+
+```json
+curl -X GET 'http://XXXX/XXXX/XXXX/users/wzy/presence/sublist?pageNum=1&pageSize=100' \
+-H 'Authorization: Bearer ' \
+-H 'Content-Type: application/json' 
+```
+
+#### Response example
+
+```json
+{"result":{"totalnum":"2","sublist":[{"uid":"lxml2","expiry":"1645822322"},{"uid":"lxml1","expiry":"1645822322"}]}}%
+```
+
+## Status codes
+
+For details, see [HTTP Status Codes](./http-status-codes).

@@ -11,54 +11,16 @@ If you have already signed a contract with Agora, the billing terms and conditio
 
 The unit prices for whiteboard features are as follows:
 
-<table>
-    <thead>
-        <tr>
-            <th>Whiteboard feature</th>
-            <th>Volume</th>
-            <th>Pricing per volume/month</th>
-            <th>Pricing per PCW/month</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan="5">Online whiteboard</td>
-            <td>Under 10,000 minutes</td>
-            <td>Free</td>
-            <td rowspan="5"> - </td>
-        </tr>
-        <tr>
-            <td>10,000 - 60,000 minutes</td>
-            <td>$1.40 USD/1,000 minutes</td>
-        </tr>
-        <tr>
-            <td>60,000 - 120,000 minutes</td>
-            <td>$1.30 USD/1,000 minutes</td>
-        </tr>
-        <tr>
-            <td>120,000 - 1,000,000 minutes</td>
-            <td>$1.10 USD/1,000 minutes</td>
-        </tr>
-        <tr>
-            <td>Over 1,000,000 minutes</td>
-            <td>Contact Agora Sales</td>
-        </tr>
-        <tr>
-            <td rowspan="3">File conversion</td>
-            <td>0 - 1,000 images/web pages</td>
-            <td>Free</td>
-            <td rowspan="3">$499/PCW</td>
-        </tr>
-        <tr>
-            <td>Static file conversion (to image)</td>
-            <td>$0.50 USD/1,000 images</td>
-        </tr>
-        <tr>
-            <td>Dynamic file conversion (to web page)</td>
-            <td>$2.50 USD/1,000 web pages</td>
-        </tr>
-    </tbody>
-</table>
+| Whiteboard feature | Volume | Pricing per volume/month | Pricing per PCW/month |
+| --- | --- | --- | --- |
+| Online whiteboard | Under 10,000 minutes | Free | - |
+| Online whiteboard | 10,000 - 60,000 minutes | $1.40 USD/1,000 minutes | - |
+| Online whiteboard | 60,000 - 120,000 minutes | $1.30 USD/1,000 minutes | - |
+| Online whiteboard | 120,000 - 1,000,000 minutes | $1.10 USD/1,000 minutes | - |
+| Online whiteboard | Over 1,000,000 minutes | Contact Agora Sales | - |
+| File conversion | 0 - 1,000 images/web pages | Free | $499/PCW |
+| File conversion | Static file conversion (to image) | $0.50 USD/1,000 images | $499/PCW |
+| File conversion | Dynamic file conversion (to web page) | $2.50 USD/1,000 web pages | $499/PCW |
 
 If your use-case involves other Agora products or services, such as the Video Calling, Signaling, or Cloud Recording, expect additional charges for these products or services. For details, see the pricing policy for each Agora product or service.
 
@@ -132,7 +94,10 @@ The usage calculation is as follows:
 
 The following table shows the calculation of the total cost of the lecture:
 
-<div><table><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th><span class="td-span"><span class="md-plain">Billed service</span></span></th><th><span class="td-span"><span class="md-plain">Unit price, US$/1,000 minutes </span></span></th><th><span class="td-span"><span class="md-plain">Cost of each service, US$</span></span></th><th><span class="td-span"><span class="md-plain">Total cost, US$</span></span></th></tr></thead><tbody><tr><td class="confluenceTd"><span class="td-span"><span class="md-plain">Online whiteboard</span></span></td><td class="confluenceTd"><span class="td-span"><span class="md-plain">$1.40/1,000 minutes</span></span></td><td class="confluenceTd"><span class="td-span"><span class="md-plain">(12,060 - 10,000)/1000 × 1.40 = 2.884</span></span></td><td rowspan="3" class="confluenceTd"><span class="td-span"><span class="md-plain">2.884 </span><span><strong>≈ 2.89</strong></span></span><br /><br /></td></tr><tr><td class="confluenceTd"><span class="td-span"><span class="md-plain">File conversion to web page</span></span></td><td class="confluenceTd"><span class="td-span"><span class="md-plain">$2.50/1,000 web pages</span></span></td><td class="confluenceTd">0 (The first 1,000 converted web pages are free of charge）<span> </span></td></tr></tbody></table></div>
+| Billed service | Unit price, US$/1,000 minutes | Cost of each service, US$ | Total cost, US$ |
+| --- | --- | --- | --- |
+| Online whiteboard | $1.40/1,000 minutes | (12,060 - 10,000)/1000 × 1.40 = 2.884 | 2.89 |
+| File conversion to web page | $2.50/1,000 web pages | 0 (The first 1,000 converted web pages are free of charge) | 2.89 |
 
 Agora rounds up the total cost to two decimal places.
 

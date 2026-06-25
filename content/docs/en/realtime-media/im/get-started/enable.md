@@ -68,7 +68,7 @@ Follow these steps to get the project information:
 
 ## Manage users and generate tokens
 
-For development purposes, Agora enables you to manage users and generate Chat user authentication tokens using Agora Console. In a production environment, you use the [RESTful API](/en/realtime-media/im/reference/server-api/user-system-registration) to manage users and a token server to [generate user authentication tokens](/en/realtime-media/im/build/authentication).
+For development purposes, Agora enables you to manage users and generate Chat user authentication tokens using Agora Console. In a production environment, you use the [RESTful API](/en/api-reference/api-ref/im/user-system-registration) to manage users and a token server to [generate user authentication tokens](/en/realtime-media/im/build/authentication).
 
 This section shows you how to register Chat users and generate temporary tokens using Agora Console.
 

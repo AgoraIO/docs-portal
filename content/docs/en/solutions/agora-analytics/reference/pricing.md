@@ -28,107 +28,19 @@ For details about the Standard, Premium, and Enterprise-level Call Inspector RES
 
 The available features for Data Insights and Data Insights Plus are:
 
-<table>
-    <colgroup>
-        <col/>
-        <col/>
-        <col style={{ textAlign: 'center' }}/>
-        <col style={{ textAlign: 'center' }}/>
-        <col style={{ textAlign: 'center' }}/>
-        <col style={{ textAlign: 'center' }}/>
-    </colgroup>
-    <thead>
-    <tr>
-        <th>Module</th>
-        <th>Feature</th>
-        <th style={{ textAlign: 'center' }}>Starter</th>
-        <th style={{ textAlign: 'center' }}>Standard</th>
-        <th style={{ textAlign: 'center' }}>Premium</th>
-        <th style={{ textAlign: 'center' }}>Enterprise</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="odd">
-        <td rowspan='8' colspan='1'><p><strong>Data Insights</strong></p></td>
-        <td><p>Access through Agora Console</p></td>
-        <td><p>✘</p></td>
-        <td><p>✔</p></td>
-        <td><p>✔</p></td>
-        <td><p>✔</p></td>
-    </tr>
-    <tr class="even">
-        <td><p>Data retention</p></td>
-        <td><p>✘</p></td>
-        <td><p>30 days</p></td>
-        <td><p>60 days</p></td>
-        <td><p>90 days</p></td>
-    </tr>
-    <tr class="odd">
-        <td rowspan='2' colspan='1'><p>Data granularity</p></td>
-        <td><p>✘</p></td>
-        <td><p><strong>Usage Overview</strong>: Day</p></td>
-        <td><p><strong>Usage Overview</strong>: Day/Hour</p></td>
-        <td><p><strong>Usage Overview</strong>: Day/Hour</p></td>
-    </tr>
-    <tr >
-        <td><p>✘</p></td>
-        <td><p><strong>Quality Overview</strong>: Day/Hour</p></td>
-        <td><p><strong>Quality Overview</strong>: Day/Hour/Minute</p></td>
-        <td><p><strong>Quality Overview</strong>: Day/Hour/Minute</p></td>
-    </tr>
-    <tr class="even">
-        <td rowspan='2' colspan='1'><p>Data latency</p></td>
-        <td><p>N/A</p></td>
-        <td><p><strong>Usage Overview</strong>: 24 hours</p></td>
-        <td><p><strong>Usage Overview</strong>: 12 hours</p></td>
-        <td><p><strong>Usage Overview</strong>: 6 hours</p></td>
-    </tr>
-    <tr class="even">
-        <td><p>N/A</p></td>
-        <td><p><strong>Quality Overview</strong>: 12 hours</p></td>
-        <td><p><strong>Quality Overview</strong>: 6 hours</p></td>
-        <td><p><strong>Quality Overview</strong>: 6 hours</p></td>
-    </tr>
-    <tr class="odd">
-        <td><p>Support for embedding in web portals</p></td>
-        <td><p>✘</p></td>
-        <td><p>✘</p></td>
-        <td><p>✔</p></td>
-        <td><p>✔</p></td>
-    </tr>
-    <tr class="odd">
-        <td><p>Data Insights RESTful API</p></td>
-        <td><p>✘</p></td>
-        <td><p>✘</p></td>
-        <td><p>✔</p></td>
-        <td><p>✔</p></td>
-    </tr>
-    <tr class="odd">
-        <td rowspan='8' colspan='1'><p><strong>Data Insights Plus</strong></p><p>With Premium or Enterprise
-            subscription you
-            access these features as well as Data Insights.</p></td>
-        <td><p>Multi-dimensional cross analysis</p></td>
-        <td><p>✘</p></td>
-        <td><p>✔</p></td>
-        <td><p>✔</p></td>
-        <td><p>✔</p></td>
-    </tr>
-    <tr >
-        <td><p>Data sampling analysis</p></td>
-        <td><p>✘</p></td>
-        <td><p>✘</p></td>
-        <td><p>✔</p></td>
-        <td><p>✔</p></td>
-    </tr>
-    <tr >
-        <td><p>Comparative analysis</p></td>
-        <td><p>✘</p></td>
-        <td><p>✘</p></td>
-        <td><p>✔</p></td>
-        <td><p>✔</p></td>
-    </tr>
-    </tbody>
-</table>
+| Module | Feature | Starter | Standard | Premium | Enterprise |
+| --- | --- | --- | --- | --- | --- |
+| Data Insights | Access through Agora Console | ✘ | ✔ | ✔ | ✔ |
+| Data Insights | Data retention | ✘ | 30 days | 60 days | 90 days |
+| Data Insights | Data granularity | ✘ | **Usage Overview**: Day | **Usage Overview**: Day/Hour | **Usage Overview**: Day/Hour |
+| Data Insights | Data granularity | ✘ | **Quality Overview**: Day/Hour | **Quality Overview**: Day/Hour/Minute | **Quality Overview**: Day/Hour/Minute |
+| Data Insights | Data latency | N/A | **Usage Overview**: 24 hours | **Usage Overview**: 12 hours | **Usage Overview**: 6 hours |
+| Data Insights | Data latency | N/A | **Quality Overview**: 12 hours | **Quality Overview**: 6 hours | **Quality Overview**: 6 hours |
+| Data Insights | Support for embedding in web portals | ✘ | ✘ | ✔ | ✔ |
+| Data Insights | Data Insights RESTful API | ✘ | ✘ | ✔ | ✔ |
+| Data Insights Plus | Multi-dimensional cross analysis | ✘ | ✔ | ✔ | ✔ |
+| Data Insights Plus | Data sampling analysis | ✘ | ✘ | ✔ | ✔ |
+| Data Insights Plus | Comparative analysis | ✘ | ✘ | ✔ | ✔ |
 
 For details about the Standard, Premium, and Enterprise-level Data Insights RESTful APIs, see [RESTful API](api.md).
 

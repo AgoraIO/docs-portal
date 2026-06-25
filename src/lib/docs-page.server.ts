@@ -22,8 +22,8 @@ import {
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import {
-  getOpenApiLaneLocales,
   getOpenApiEndpointUrl,
+  getOpenApiLaneLocales,
   getOpenApiLanes,
   getOpenApiOperationIds,
   isOpenApiTab,
@@ -150,6 +150,25 @@ export async function loadDocsPagePayload(
   if (legacyRedirect) {
     return {
       redirectUrl: legacyRedirect,
+    };
+  }
+
+  const realtimeMediaApiReferenceRedirect =
+    resolveRealtimeMediaApiReferenceRedirect(locale, tab, slugSegments);
+  if (realtimeMediaApiReferenceRedirect) {
+    return {
+      redirectUrl: realtimeMediaApiReferenceRedirect,
+    };
+  }
+
+  const solutionsApiReferenceRedirect = resolveSolutionsApiReferenceRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (solutionsApiReferenceRedirect) {
+    return {
+      redirectUrl: solutionsApiReferenceRedirect,
     };
   }
 
@@ -399,7 +418,28 @@ function resolveApiReferenceRedirect(
     return `/${locale}/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`;
   }
 
-  if (locale === 'en' && isLegacyEnglishApiReferenceProductPath(normalizedPath)) {
+  if (
+    locale === 'en' &&
+    CONSOLE_API_REFERENCE_DUPLICATE_PATHS.has(normalizedPath)
+  ) {
+    return '/en/api-reference/api-ref/solutions-agora-console-rest-api';
+  }
+
+  if (
+    locale === 'en' &&
+    (normalizedPath === 'api-ref/video' || normalizedPath === 'api-ref/voice')
+  ) {
+    return '/en/api-reference/api-ref/rtc';
+  }
+
+  if (
+    locale === 'en' &&
+    isLegacyEnglishApiReferenceProductPath(normalizedPath)
+  ) {
+    if (normalizedPath === 'video' || normalizedPath === 'voice') {
+      return '/en/api-reference/api-ref/rtc';
+    }
+
     return `/en/${getApiReferenceProductRoot(locale)}/${normalizedPath}`;
   }
 
@@ -415,6 +455,10 @@ function isLegacyEnglishApiReferenceProductPath(path: string) {
     return false;
   }
 
+  if (path === 'video' || path === 'voice') {
+    return true;
+  }
+
   return API_REFERENCE_PRODUCT_SLUGS.includes(path);
 }
 
@@ -422,10 +466,21 @@ const API_REFERENCE_PRODUCT_SLUGS = [
   'cloud-recording',
   'cloud-transcoding',
   'conversational-ai',
+  'broadcast-streaming',
+  'im',
+  'media-pull',
+  'media-push',
+  'on-premise-recording',
   'rtc',
   'signaling',
   'speech-to-text',
 ];
+
+const CONSOLE_API_REFERENCE_DUPLICATE_PATHS = new Set([
+  'api-ref/broadcast-streaming/agora-console-rest-api',
+  'api-ref/video/agora-console-rest-api',
+  'api-ref/voice/agora-console-rest-api',
+]);
 
 function resolveLegacyConversationalAiRestRedirect(
   locale: string,
@@ -507,6 +562,132 @@ function resolveRealtimeMediaRedirect(
   };
 
   return redirects[normalizedPath] ?? null;
+}
+
+function resolveRealtimeMediaApiReferenceRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (locale !== 'en' || tab !== 'realtime-media') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+  const exactRedirects: Record<string, string> = {
+    'broadcast-streaming/reference/agora-console-rest-api':
+      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    'broadcast-streaming/reference/api-sunset':
+      '/en/api-reference/api-ref/broadcast-streaming/api-sunset',
+    'broadcast-streaming/reference/restful-api':
+      '/en/api-reference/api-ref/broadcast-streaming',
+    'cloud-recording/reference/rest-api-overview':
+      '/en/api-reference/api-ref/cloud-recording/api-callback-service',
+    'cloud-recording/reference/restful-api':
+      '/en/api-reference/api-ref/cloud-recording',
+    'cloud-recording/reference/restful-authentication':
+      '/en/api-reference/api-ref/cloud-recording/authentication',
+    'im/reference/server-api': '/en/api-reference/api-ref/im',
+    'im/reference/http-status-codes':
+      '/en/api-reference/api-ref/im/http-status-codes',
+    'im/reference/limitations': '/en/api-reference/api-ref/im/limitations',
+    'im/reference/server-api/restful-overview': '/en/api-reference/api-ref/im',
+    'media-pull/reference/restful-api': '/en/api-reference/api-ref/media-pull',
+    'media-pull/reference/restful-authentication':
+      '/en/api-reference/api-ref/media-pull/restful-authentication',
+    'media-push/build/restful-api': '/en/api-reference/api-ref/media-push',
+    'media-push/reference/restful-authentication':
+      '/en/api-reference/api-ref/media-push/restful-authentication',
+    'media-push/reference/restful-type-definition':
+      '/en/api-reference/api-ref/media-push/restful-type-definition',
+    'on-premise-recording/reference/api-reference':
+      '/en/api-reference/api-ref/on-premise-recording',
+    'rtmp-gateway/reference/rest-api': '/en/api-reference/api-ref/rtmp-gateway',
+    'rtmp-gateway/reference/restful-authentication':
+      '/en/api-reference/api-ref/rtmp-gateway/restful-authentication',
+    'speech-to-text/reference/api-callback-service':
+      '/en/api-reference/api-ref/speech-to-text/api-callback-service',
+    'speech-to-text/reference/rest-api':
+      '/en/api-reference/api-ref/speech-to-text',
+    'speech-to-text/reference/restful-authentication':
+      '/en/api-reference/api-ref/speech-to-text/restful-authentication',
+    'video/reference/agora-console-rest-api':
+      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    'video/reference/api-sunset': '/en/api-reference/api-ref/rtc',
+    'voice/reference/agora-console-rest-api':
+      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    'voice/reference/api-sunset': '/en/api-reference/api-ref/rtc',
+    'whiteboard/reference/rest-api': '/en/api-reference/api-ref/whiteboard',
+    'whiteboard/reference/rest-api/overview':
+      '/en/api-reference/api-ref/whiteboard',
+    'whiteboard/reference/uikit-sdk': '/en/api-reference/api-ref/uikit-sdk',
+  };
+
+  if (exactRedirects[normalizedPath]) {
+    return exactRedirects[normalizedPath];
+  }
+
+  const prefixRedirects: [string, string][] = [
+    [
+      'broadcast-streaming/reference/restful-api/',
+      '/en/api-reference/api-ref/broadcast-streaming/',
+    ],
+    ['im/reference/server-api/', '/en/api-reference/api-ref/im/'],
+    [
+      'rtmp-gateway/reference/rest-api/',
+      '/en/api-reference/api-ref/rtmp-gateway/',
+    ],
+    [
+      'speech-to-text/reference/rest-api-v5/',
+      '/en/api-reference/api-ref/speech-to-text/rest-api-v5/',
+    ],
+    [
+      'speech-to-text/reference/rest-api-v6/',
+      '/en/api-reference/api-ref/speech-to-text/rest-api-v6/',
+    ],
+    ['whiteboard/reference/rest-api/', '/en/api-reference/api-ref/whiteboard/'],
+  ];
+
+  for (const [oldPrefix, newPrefix] of prefixRedirects) {
+    if (normalizedPath.startsWith(oldPrefix)) {
+      return `${newPrefix}${normalizedPath.slice(oldPrefix.length)}`;
+    }
+  }
+
+  return null;
+}
+
+function resolveSolutionsApiReferenceRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (locale !== 'en' || tab !== 'solutions') {
+    return null;
+  }
+
+  const redirects: Record<string, string> = {
+    'agora-analytics/reference/agora-console-rest-api':
+      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    'agora-analytics/reference/api':
+      '/en/api-reference/api-ref/analytics-rest-api',
+    'agora-analytics/reference/restful-authentication':
+      '/en/api-reference/api-ref/analytics-restful-authentication',
+    'flexible-classroom/reference/agora-console-rest-api':
+      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    'flexible-classroom/reference/classroom-rest-api':
+      '/en/api-reference/api-ref/classroom-rest-api',
+    'interactive-live-streaming/reference/agora-console-rest-api':
+      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    'interactive-live-streaming/reference/api-sunset':
+      '/en/api-reference/api-ref/solutions-api-sunset',
+    'iot/reference/agora-console-rest-api':
+      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+    'iot/reference/channel-management-rest-api':
+      '/en/api-reference/api-ref/iot-channel-management-rest-api',
+  };
+
+  return redirects[slugSegments.join('/')] ?? null;
 }
 
 function hasDocsPageForUrl(source: typeof docsSource, url: string) {
@@ -689,12 +870,15 @@ async function getDocsSidebarNodes({
         tab,
       });
 
+  const sidebarWithRealtimeMediaApiReference =
+    addRealtimeMediaApiReferenceSidebarItem(sidebar, activePath);
+
   if (!isOpenApiTab(tab) || !locale) {
-    return sidebar;
+    return sidebarWithRealtimeMediaApiReference;
   }
 
   const openApiSidebar = await addOpenApiEndpointSidebarItems(
-    sidebar,
+    sidebarWithRealtimeMediaApiReference,
     locale,
     tab,
   );
@@ -714,6 +898,179 @@ function isApiReferenceOverviewPath(path?: string) {
   return path === '/en/api-reference/api-ref';
 }
 
+const REALTIME_MEDIA_API_REFERENCE_LINKS = [
+  {
+    productSlug: 'broadcast-streaming',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/broadcast-streaming',
+  },
+  {
+    productSlug: 'cloud-recording',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/cloud-recording',
+  },
+  {
+    productSlug: 'im',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/im',
+  },
+  {
+    productSlug: 'media-pull',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/media-pull',
+  },
+  {
+    productSlug: 'media-push',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/media-push',
+  },
+  {
+    productSlug: 'on-premise-recording',
+    title: 'API reference',
+    url: '/en/api-reference/api-ref/on-premise-recording',
+  },
+  {
+    productSlug: 'rtmp-gateway',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/rtmp-gateway',
+  },
+  {
+    productSlug: 'speech-to-text',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/speech-to-text',
+  },
+  {
+    productSlug: 'video',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/rtc',
+  },
+  {
+    productSlug: 'voice',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/rtc',
+  },
+  {
+    productSlug: 'whiteboard',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/whiteboard',
+  },
+] as const;
+
+function addRealtimeMediaApiReferenceSidebarItem(
+  nodes: DocsSidebarNode[],
+  activePath?: string,
+): DocsSidebarNode[] {
+  const link = getRealtimeMediaApiReferenceLink(activePath);
+
+  if (!link) {
+    return nodes;
+  }
+
+  const pageNode = {
+    id: link.url,
+    linked: true,
+    title: link.title,
+    type: 'page',
+    url: link.url,
+  } satisfies DocsSidebarPageNode;
+
+  const existingUrls = new Set([
+    link.url,
+    ...getRealtimeMediaLegacyApiReferenceUrls(link.productSlug),
+  ]);
+
+  return nodes.map((node) => {
+    if (node.type !== 'section' || node.title !== 'Reference') {
+      return node;
+    }
+
+    return {
+      ...node,
+      children: [
+        pageNode,
+        ...node.children.filter(
+          (child) => child.type !== 'page' || !existingUrls.has(child.url),
+        ),
+      ],
+    };
+  });
+}
+
+function getRealtimeMediaApiReferenceLink(activePath?: string) {
+  if (!activePath?.startsWith('/en/realtime-media/')) {
+    return null;
+  }
+
+  const productSlug = activePath.split('/').filter(Boolean)[2];
+
+  return (
+    REALTIME_MEDIA_API_REFERENCE_LINKS.find(
+      (link) => link.productSlug === productSlug,
+    ) ?? null
+  );
+}
+
+function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
+  const prefix = `/en/realtime-media/${productSlug}`;
+
+  switch (productSlug) {
+    case 'broadcast-streaming':
+      return [
+        `${prefix}/reference/agora-console-rest-api`,
+        `${prefix}/reference/api-sunset`,
+        `${prefix}/reference/restful-api`,
+      ];
+    case 'cloud-recording':
+      return [
+        `${prefix}/reference/rest-api-overview`,
+        `${prefix}/reference/restful-api`,
+        `${prefix}/reference/restful-authentication`,
+      ];
+    case 'im':
+      return [`${prefix}/reference/server-api`];
+    case 'media-pull':
+      return [
+        `${prefix}/reference/restful-api`,
+        `${prefix}/reference/restful-authentication`,
+      ];
+    case 'media-push':
+      return [
+        `${prefix}/build/restful-api`,
+        `${prefix}/reference/restful-authentication`,
+        `${prefix}/reference/restful-type-definition`,
+      ];
+    case 'on-premise-recording':
+      return [`${prefix}/reference/api-reference`];
+    case 'rtmp-gateway':
+      return [
+        `${prefix}/reference/rest-api`,
+        `${prefix}/reference/restful-authentication`,
+      ];
+    case 'speech-to-text':
+      return [
+        `${prefix}/reference/api-callback-service`,
+        `${prefix}/reference/rest-api`,
+        `${prefix}/reference/rest-api-v5`,
+        `${prefix}/reference/rest-api-v6`,
+        `${prefix}/reference/restful-authentication`,
+      ];
+    case 'video':
+      return [
+        `${prefix}/reference/agora-console-rest-api`,
+        `${prefix}/reference/api-sunset`,
+      ];
+    case 'voice':
+      return [
+        `${prefix}/reference/agora-console-rest-api`,
+        `${prefix}/reference/api-sunset`,
+      ];
+    case 'whiteboard':
+      return [`${prefix}/reference/rest-api`, `${prefix}/reference/uikit-sdk`];
+    default:
+      return [];
+  }
+}
+
 function groupApiReferenceOverviewSidebar(
   nodes: DocsSidebarNode[],
 ): DocsSidebarNode[] {
@@ -722,11 +1079,13 @@ function groupApiReferenceOverviewSidebar(
   }
 
   const [indexNode, ...apiReferenceNodes] = nodes;
+  const groupedApiReferenceNodes =
+    createApiReferenceOverviewPageNodes(apiReferenceNodes);
 
   return [
     indexNode,
     {
-      children: apiReferenceNodes,
+      children: groupedApiReferenceNodes,
       collapsible: false,
       id: 'api-reference-restful-api',
       title: 'RESTful API',
@@ -735,6 +1094,78 @@ function groupApiReferenceOverviewSidebar(
   ];
 }
 
+function createApiReferenceOverviewPageNodes(
+  nodes: DocsSidebarNode[],
+): DocsSidebarPageNode[] {
+  return nodes.flatMap((node) => {
+    const nodeUrl = getApiReferenceOverviewNodeUrl(node);
+    if (
+      !nodeUrl ||
+      nodeUrl === '/en/api-reference/api-ref/video' ||
+      nodeUrl === '/en/api-reference/api-ref/voice'
+    ) {
+      return [];
+    }
+
+    const title =
+      nodeUrl === '/en/api-reference/api-ref/rtc'
+        ? 'Voice & Video Calling'
+        : node.title;
+
+    return [
+      {
+        id: nodeUrl,
+        title,
+        type: 'page',
+        url: nodeUrl,
+      },
+    ];
+  });
+}
+
+function getApiReferenceOverviewNodeUrl(node: DocsSidebarNode) {
+  if (node.type === 'page') {
+    return node.url;
+  }
+
+  if (node.url) {
+    return node.url;
+  }
+
+  const firstChildPageUrl = findFirstSidebarPageUrl(node.children);
+  return firstChildPageUrl
+    ? getApiReferenceProductRootUrl(firstChildPageUrl)
+    : undefined;
+}
+
+function findFirstSidebarPageUrl(nodes: DocsSidebarNode[]): string | undefined {
+  for (const node of nodes) {
+    if (node.type === 'page') {
+      return node.url;
+    }
+
+    const childUrl = findFirstSidebarPageUrl(node.children);
+    if (childUrl) {
+      return childUrl;
+    }
+  }
+
+  return undefined;
+}
+
+function getApiReferenceProductRootUrl(url: string) {
+  const segments = url.split('/').filter(Boolean);
+  if (
+    segments[0] !== 'en' ||
+    segments[1] !== 'api-reference' ||
+    segments[2] !== 'api-ref' ||
+    !segments[3]
+  ) {
+    return url;
+  }
+
+  return `/${segments.slice(0, 4).join('/')}`;
+}
 function isRecipesApiReferencePath(path?: string) {
   return (
     path?.startsWith('/en/api-reference/recipes') ||

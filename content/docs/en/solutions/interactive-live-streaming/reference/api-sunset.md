@@ -1,7 +1,9 @@
 ---
 title: "API sunset notice"
-description: "Deprecated and removed APIs"
+description: "Open the API sunset notice."
 ---
 
-See the [
-API Sunset Notice](https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_api_sunset.html) page in the API reference.
+The API sunset notice is maintained in the API Reference section.
+
+- [API sunset notice](/en/api-reference/api-ref/solutions-api-sunset)
+- [On-Premise Recording API reference](/en/api-reference/api-ref/on-premise-recording)

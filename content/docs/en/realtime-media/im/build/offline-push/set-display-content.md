@@ -58,7 +58,7 @@ For group chats, "Push nickname of message sender" and "Chat user ID of message 
 
 The default push template is mainly used when the default configuration provided by the server does not meet your needs. It allows you to set the global push title and push content. For example, the default settings provided by the server are push titles and content in  English. If you need to use push titles and content in another language, you can set the push template in the corresponding language.
 
-To use the default template, create a default push template in [Agora Console](https://console.agora.io/v2) or [call RESTful API](/en/realtime-media/im/reference/server-api/offline-push/offline-push-configuration). The template name is `default`. After setting, the default template is automatically used when pushing messages, and there is no need to enter the template name when creating messages.
+To use the default template, create a default push template in [Agora Console](https://console.agora.io/v2) or [call RESTful API](/en/api-reference/api-ref/im/offline-push/offline-push-configuration). The template name is `default`. After setting, the default template is automatically used when pushing messages, and there is no need to enter the template name when creating messages.
 
 Follow the steps below to create a default push template in [Agora Console](https://console.agora.io/v2):
 
@@ -111,7 +111,7 @@ The data structure of the custom display field is as follows:
 
 The steps to use a custom push template are as follows:
 
-1. If you use a custom push template, create it in [Agora Console](https://console.agora.io/v2) or call [RESTful API](/en/realtime-media/im/reference/server-api/offline-push/offline-push-configuration#create-a-push-template). For a description of the parameters in the **Add Push Template** dialog box, see the section about using the default template. When using a custom template, regardless of how the **Title** and **Content** parameters are set, they must be passed in through the extension fields when creating a message.
+1. If you use a custom push template, create it in [Agora Console](https://console.agora.io/v2) or call [RESTful API](/en/api-reference/api-ref/im/offline-push/offline-push-configuration#create-a-push-template). For a description of the parameters in the **Add Push Template** dialog box, see the section about using the default template. When using a custom template, regardless of how the **Title** and **Content** parameters are set, they must be passed in through the extension fields when creating a message.
 
 1. When creating a message, pass in the template name, push title, and push content by using the extension fields. The push title and content in the notification bar use the formats in the template, respectively.
 
@@ -243,7 +243,7 @@ The following table uses a one-to-one chat text message as an example to introdu
 
 The default push template is mainly used when the default configuration provided by the server does not meet your needs. It allows you to set the global push title and push content. For example, the default settings provided by the server are push titles and content in English. If you need to display push titles and content in another language, you can set the push template in the corresponding language.
 
-To use the default template, create a default push template in [Agora Console](https://console.agora.io/v2) or [call RESTful API](/en/realtime-media/im/reference/server-api/offline-push/offline-push-configuration). The template name is `default`. After setting, the default template is automatically used when pushing messages, and there is no need to enter the template name when creating messages.
+To use the default template, create a default push template in [Agora Console](https://console.agora.io/v2) or [call RESTful API](/en/api-reference/api-ref/im/offline-push/offline-push-configuration). The template name is `default`. After setting, the default template is automatically used when pushing messages, and there is no need to enter the template name when creating messages.
 
 Follow the steps below to create a default push template in [Agora Console](https://console.agora.io/v2):
 
@@ -296,7 +296,7 @@ The structure of a custom display field is as follows:
 
 The steps to use a custom push template are as follows:
 
-1. If you use a custom push template, create it in [Agora Console](https://console.agora.io/v2) or call [RESTful API](/en/realtime-media/im/reference/server-api/offline-push/offline-push-configuration#create-a-push-template). For a description of the parameters in the **Add Push Template** dialog box, see the section about using the default template. When using a custom template, regardless of how the **Title** and **Content** parameters are set, they must be passed in through the extension fields when creating a message.
+1. If you use a custom push template, create it in [Agora Console](https://console.agora.io/v2) or call [RESTful API](/en/api-reference/api-ref/im/offline-push/offline-push-configuration#create-a-push-template). For a description of the parameters in the **Add Push Template** dialog box, see the section about using the default template. When using a custom template, regardless of how the **Title** and **Content** parameters are set, they must be passed in through the extension fields when creating a message.
 
 1. When creating a message, pass in the template name, push title, and push content by using the extension fields. The push title and content in the notification bar use the formats in the template, respectively.
 
@@ -352,7 +352,7 @@ The default push template is mainly used when the default configuration provided
 
 #### Use the default push template
 
-To use the default template, create a default push template in [Agora Console](https://console.agora.io/v2) or [call RESTful API](/en/realtime-media/im/reference/server-api/offline-push/offline-push-configuration). The template name is `default`. After setting, the default template is automatically used when pushing messages. You do not need to enter the template name when creating messages.
+To use the default template, create a default push template in [Agora Console](https://console.agora.io/v2) or [call RESTful API](/en/api-reference/api-ref/im/offline-push/offline-push-configuration). The template name is `default`. After setting, the default template is automatically used when pushing messages. You do not need to enter the template name when creating messages.
 
 Follow the steps below to create a default push template in [Agora Console](https://console.agora.io/v2):
 
@@ -375,7 +375,7 @@ Follow the steps below to create a default push template in [Agora Console](http
 
 The steps to use a custom push template are as follows:
 
-1. If you use a custom push template, create a custom push template in [Agora Console](https://console.agora.io/v2) or [Call RESTful API](/en/realtime-media/im/reference/server-api/offline-push/offline-push-configuration#create-a-push-template). For a description of the parameters in the **Add Push Template** dialog box, see [Use the default push template](#use-the-default-push-template). When using a custom template, regardless of how the **Title** and **Content** parameters are set, they must be passed in through the extension fields when creating a message.
+1. If you use a custom push template, create a custom push template in [Agora Console](https://console.agora.io/v2) or [Call RESTful API](/en/api-reference/api-ref/im/offline-push/offline-push-configuration#create-a-push-template). For a description of the parameters in the **Add Push Template** dialog box, see [Use the default push template](#use-the-default-push-template). When using a custom template, regardless of how the **Title** and **Content** parameters are set, they must be passed in through the extension fields when creating a message.
 
 1. When creating a message, pass in the template name, push title, and push content by using the extension fields. The push title and content in the notification bar use the formats in the template, respectively:
 
@@ -474,7 +474,7 @@ For group chats, "Push nickname of message sender" and "Chat user ID of message 
 
 The default push template is mainly used when the default configuration provided by the server does not meet your needs. It allows you to set the global push title and push content. For example, the default settings provided by the server are push titles and content in English. If you need to use push titles and content in another language, you can set the push template in the corresponding language.
 
-To use the default template, create a default push template in [Agora Console](https://console.agora.io/v2) or [call RESTful API](/en/realtime-media/im/reference/server-api/offline-push/offline-push-configuration). The template name is `default`. After setting, the default template is automatically used when pushing messages, and there is no need to enter the template name when creating messages.
+To use the default template, create a default push template in [Agora Console](https://console.agora.io/v2) or [call RESTful API](/en/api-reference/api-ref/im/offline-push/offline-push-configuration). The template name is `default`. After setting, the default template is automatically used when pushing messages, and there is no need to enter the template name when creating messages.
 
 Follow the steps below to create a default push template in [Agora Console](https://console.agora.io/v2):
 
@@ -531,7 +531,7 @@ The data structure of the custom display field is as follows:
 
 The steps to use a custom push template are as follows:
 
-1. If you use a custom push template, create it in [Agora Console](https://console.agora.io/v2) or call [RESTful API](/en/realtime-media/im/reference/server-api/offline-push/offline-push-configuration#create-a-push-template). For a description of the parameters in the **Add Push Template** dialog box, see the section about using the default template. When using a custom template, regardless of how the **Title** and **Content** parameters are set, they must be passed in through the extension fields when creating a message.
+1. If you use a custom push template, create it in [Agora Console](https://console.agora.io/v2) or call [RESTful API](/en/api-reference/api-ref/im/offline-push/offline-push-configuration#create-a-push-template). For a description of the parameters in the **Add Push Template** dialog box, see the section about using the default template. When using a custom template, regardless of how the **Title** and **Content** parameters are set, they must be passed in through the extension fields when creating a message.
 
 1. When creating a message, pass in the template name, push title, and push content by using the extension fields. The push title and content in the notification bar use the formats in the template, respectively.
 
@@ -648,7 +648,7 @@ For group chats, "Push nickname of message sender" and "Chat user ID of message 
 
 The default push template is mainly used when the default configuration provided by the server does not meet your needs. It allows you to set the global push title and push content. For example, the default settings provided by the server are push titles and content in English. If you need to use push titles and content in another language, you can set the push template in the corresponding language.
 
-To use the default template, create a default push template in [Agora Console](https://console.agora.io/v2) or [call RESTful API](/en/realtime-media/im/reference/server-api/offline-push/offline-push-configuration). The template name is `default`. After setting, the default template is automatically used when pushing messages, and there is no need to enter the template name when creating messages.
+To use the default template, create a default push template in [Agora Console](https://console.agora.io/v2) or [call RESTful API](/en/api-reference/api-ref/im/offline-push/offline-push-configuration). The template name is `default`. After setting, the default template is automatically used when pushing messages, and there is no need to enter the template name when creating messages.
 
 Follow the steps below to create a default push template in [Agora Console](https://console.agora.io/v2):
 
@@ -696,7 +696,7 @@ The data structure of the custom display field is as follows:
 
 The steps to use a custom push template are as follows:
 
-1. If you use a custom push template, create it in [Agora Console](https://console.agora.io/v2) or call [RESTful API](/en/realtime-media/im/reference/server-api/offline-push/offline-push-configuration#create-a-push-template). For a description of the parameters in the **Add Push Template** dialog box, see the section about using the default template. When using a custom template, regardless of how the **Title** and **Content** parameters are set, they must be passed in through the extension fields when creating a message.
+1. If you use a custom push template, create it in [Agora Console](https://console.agora.io/v2) or call [RESTful API](/en/api-reference/api-ref/im/offline-push/offline-push-configuration#create-a-push-template). For a description of the parameters in the **Add Push Template** dialog box, see the section about using the default template. When using a custom template, regardless of how the **Title** and **Content** parameters are set, they must be passed in through the extension fields when creating a message.
 
 1. When creating a message, pass in the template name, push title, and push content by using the extension fields. The push title and content in the notification bar use the formats in the template, respectively.
 

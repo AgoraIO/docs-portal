@@ -7,16 +7,16 @@ When recording audio only (`streamTypes` is `0`) in [individual recording mode](
 |     | Individual audio recording  | Individual audio non-transcoding recording  |
 | :-- | :-------------------------- | :------------------------------------------ |
 | Whether to transcode when encoding audio | Yes.     | No.|
-| Audio profile     | The sample rate, number of audio channels, and bitrate are fixed at 48 kHz, mono, and 48 Kbps, respectively. | The sample rate, number of audio channels, and bitrate are determined by the [AudioProfile](/en/api-reference/cloud-recording/restful#transcodingconfig) configuration of the streaming sender. |
-| Audio codec | LC-AAC.  | Determined by the [AudioProfile](/en/api-reference/cloud-recording/restful#transcodingconfig) configuration set by the streaming sender. |
+| Audio profile     | The sample rate, number of audio channels, and bitrate are fixed at 48 kHz, mono, and 48 Kbps, respectively. | The sample rate, number of audio channels, and bitrate are determined by the [AudioProfile](/en/api-reference/api-ref/cloud-recording#transcodingconfig) configuration of the streaming sender. |
+| Audio codec | LC-AAC.  | Determined by the [AudioProfile](/en/api-reference/api-ref/cloud-recording#transcodingconfig) configuration set by the streaming sender. |
 | Recorded files    | One M3U8 file and several TS files are generated per user ID. | The same as Individual transcoding recording. However, when the user calls `mute`, `disable`, or `leaveChannel`, the audio recording is stopped immediately, and there is no recorded data for silenced audio frames. |
-| Player compatibility| Use a player that supports the HLS protocol to play recorded files. | The audio codec format is determined by the [AudioProfile](/en/api-reference/cloud-recording/restful#transcodingconfig) configured by the streaming sender, and player compatibility varies by audio codec. |
+| Player compatibility| Use a player that supports the HLS protocol to play recorded files. | The audio codec format is determined by the [AudioProfile](/en/api-reference/api-ref/cloud-recording#transcodingconfig) configured by the streaming sender, and player compatibility varies by audio codec. |
 
 ## Implement audio individual non-transcoding recording
 
 ### Get a resource ID
 
-Before recording, call the [`acquire`](/en/api-reference/cloud-recording/restful#acquire) method to apply for a resource ID.
+Before recording, call the [`acquire`](/en/api-reference/api-ref/cloud-recording#acquire) method to apply for a resource ID.
 
 #### `acquire` request over HTTPS
 
@@ -44,17 +44,17 @@ Before recording, call the [`acquire`](/en/api-reference/cloud-recording/restful
 
 ### Start recording
 
-To enable individual recording mode, set `mode` to `individual` when calling [`start`](/en/api-reference/cloud-recording/restful#start).
+To enable individual recording mode, set `mode` to `individual` when calling [`start`](/en/api-reference/api-ref/cloud-recording#start).
 
 Configure the following parameters in `clientRequest` for audio individual non-transcoding recording:
 
 | Parameter| Description    | Note  |
 | :------ | :--------------- | :-------------- |
 | [`token`](../reference/glossary#token)| String. The dynamic key used for the channel to record. | Required if the channel uses a token |
-| [`recordingConfig`](/en/api-reference/cloud-recording/restful#recordingconfig)    | JSON. Configures stream subscription, transcoding, and the profile of the output audio and video. | Required|
-| [`recordingConfig.streamTypes`](/en/api-reference/cloud-recording/restful#recordingconfig) | Number. The type of the media stream to subscribe to. Set this to `0` for audio individual non-transcoding recording. | Required|
-| [`recordingConfig.streamMode`](/en/api-reference/cloud-recording/restful#recordingconfig)  | String. The output mode of the media stream in individual mode. Set this to `original` for audio individual non-transcoding recording. | Required|
-| [`storageConfig`](/en/api-reference/cloud-recording/restful#storageconfig)| JSON. Configures the third-party cloud storage.     | Required|
+| [`recordingConfig`](/en/api-reference/api-ref/cloud-recording#recordingconfig)    | JSON. Configures stream subscription, transcoding, and the profile of the output audio and video. | Required|
+| [`recordingConfig.streamTypes`](/en/api-reference/api-ref/cloud-recording#recordingconfig) | Number. The type of the media stream to subscribe to. Set this to `0` for audio individual non-transcoding recording. | Required|
+| [`recordingConfig.streamMode`](/en/api-reference/api-ref/cloud-recording#recordingconfig)  | String. The output mode of the media stream in individual mode. Set this to `original` for audio individual non-transcoding recording. | Required|
+| [`storageConfig`](/en/api-reference/api-ref/cloud-recording#storageconfig)| JSON. Configures the third-party cloud storage.     | Required|
 
 #### `start` request over HTTPS
 
@@ -108,7 +108,7 @@ When the user who publishes the stream mutes or leaves the channel, the recordin
 
 ### Stop recording
 
-When a recording finishes, call [`stop`](/en/api-reference/cloud-recording/restful#stop) to leave the channel and stop recording. To use Agora Cloud Recording again, call the `acquire` method for a new resource ID.
+When a recording finishes, call [`stop`](/en/api-reference/api-ref/cloud-recording#stop) to leave the channel and stop recording. To use Agora Cloud Recording again, call the `acquire` method for a new resource ID.
 
 #### `stop` request over HTTPS
 

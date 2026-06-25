@@ -165,32 +165,14 @@ The following table shows the calculations for the aggregate resolution for each
 
 The following table shows the calculation of the total cost of the live video streaming session:
 
-<tr>
- <th>Billed service (video type)</th>
-     <th>Total usage (minutes) = Sum of all individual usage</th>
- <th>Unit price (US$<span>/1,000 minutes)</span></th>
- <th colspan="1">Cost of each service (US$)</th>
-   <th colspan="1">Total cost (US$)(rounded to two decimal places)</th>
- </tr>
- <tr>
- <td>Full HD</td>
- <td>60</td>
- <td><span>8.99<br/></span></td>
- <td>(60/1000) x 8.99 = 0.5394</td>
- <td rowspan="3" ><p>6.777</p><p><strong>≈ 6.78</strong></p></td>
- </tr>
- <tr>
- <td class="confluenceTd">2K</td>
- <td class="confluenceTd">60 x 2 = 120</td>
- <td class="confluenceTd"><span>15.99<br/></span></td>
- <td>(120/1000) x 15.99 = 1.9188</td>
- </tr>
- <tr>
- <td>2K+</td>
- <td>60 x 2 = 120</td>
- <td><span>35.99<br/></span></td>
- <td>(120/1000) x 35.99 = 4.3188</td>
- </tr>
+| Billed service (video type) | Total usage (minutes) = Sum of all individual usage | Unit price (US$/1,000 minutes) | Cost of each service (US$) | Total cost (US$) |
+| --- | --- | --- | --- | --- |
+| Full HD | 60 | 8.99 | (60/1000) x 8.99 = 0.5394 | **6.777**<br>**≈ 6.78** |
+| 2K | 60 x 2 = 120 | 15.99 | (120/1000) x 15.99 = 1.9188 |  |
+| 2K+ | 60 x 2 = 120 | 35.99 | (120/1000) x 35.99 = 4.3188 |  |
+
+Agora rounds the total cost up to two decimal places.
+
 ## Reference
 
 This section provides additional information for your reference.
