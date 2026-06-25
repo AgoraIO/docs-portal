@@ -209,6 +209,9 @@ describe('DocsShell', () => {
     expect(docsTabsStrip).toHaveClass('hidden', 'md:block');
     expect(docsBodyShell).toHaveClass('grid');
     expect(docsBodyShell).toHaveClass('lg:grid-cols-[256px_minmax(0,1fr)]');
+    expect(docsBodyShell).toHaveClass(
+      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
+    );
     expect(docsSidebar).toHaveStyle({
       '--sidebar-width': '16rem',
     });
@@ -359,7 +362,7 @@ describe('DocsShell', () => {
 
     expect(docsBodyShell).toBeInTheDocument();
     expect(docsBodyShell).toHaveClass(
-      'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
+      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
     expect(screen.getByTestId('docs-sidebar')).toBeInTheDocument();
     expect(screen.getByTestId('docs-main-column')).toBeInTheDocument();
