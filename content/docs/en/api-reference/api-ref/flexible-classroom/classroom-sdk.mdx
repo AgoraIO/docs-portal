@@ -1,0 +1,1651 @@
+---
+title: Classroom client SDK
+description: This page provides the API reference for the Agora Classroom SDK.
+---
+
+This page provides the API reference for the Agora Classroom SDK across Android, iOS, Web, and Electron.
+
+## Android
+
+This page provides the Kotlin API reference of the Agora Classroom SDK for Android.
+
+### AgoraClassSdk
+
+`AgoraClassSdk` is the basic interface of the Agora Classroom SDK and provides the main methods that can be invoked by your app.
+
+#### version
+
+```kotlin
+public static String version();
+```
+
+Gets the SDK version.
+
+**Returns**
+
+The SDK version.
+
+#### setConfig
+
+```kotlin
+public static void setConfig(AgoraEduSDKConfig agoraEduSDKConfig);
+```
+
+Globally configures the SDK.
+
+**Sample code**
+
+```kotlin
+/** Global Configuration */
+// Agora App ID
+String appId = "XXX";
+// Whether to enable eye care mode
+boolean eyeCare = false;
+AgoraClassSdk.setConfig(new AgoraClassSdkConfig(appId, eyeCare));
+```
+
+**Parameter**
+
+| Parameter | Description |
+| :------------------ | :----------------------------------------------------------- |
+| `agoraEduSDKConfig` | The SDK global configuration. See [AgoraClassSdkConfig](#agoraclasssdkconfig). |
+
+#### launch
+
+```kotlin
+public static AgoraEduClassRoom launch(@NotNull Context context,
+                                       @NotNull AgoraEduLaunchConfig config,
+                                       @NotNull AgoraEduLaunchCallback callback);
+```
+
+Launches a flexible classroom.
+
+**Sample code**
+
+```kotlin
+/** Classroom launching configuration */
+// The user name
+String userName = "XXX";
+// The user ID. Must be the same as the user ID that you use for generating an Signaling token.
+String userUuid = "XXX";
+// The classroom name
+String roomName = "XXX";
+// The classroom ID
+String roomUuid = "XXX";
+// The user role
+int roleType = AgoraEduRoleType.AgoraEduRoleTypeStudent.getValue();
+// The classroom type
+int roomType = AgoraEduRoomType.AgoraEduRoomType1V1.getValue()/AgoraEduRoomType.AgoraEduRoomTypeSmall.getValue()/AgoraEduRoomType.AgoraEduRoomTypeBig.getValue();
+// The Signaling token
+String rtmToken = "";
+// The start time (ms) of the class, determined by the first user joining the classroom.
+long startTime = System.currentTimeMillis() + 100;
+// The duration (ms) of the class, determined by the first user joining the classroom.
+long duration = 310L;
+// The region where the classroom is located. All clients must set the same region, otherwise, they may fail to communicate with each other.
+String region = AgoraEduRegion.cn;
+
+AgoraEduLaunchConfig agoraEduLaunchConfig = new AgoraEduLaunchConfignew AgoraEduLaunchConfig(
+    userName, userUuid, roomName, roomUuid, roleType,
+    roomType, rtmToken, startTime, duration, region, null, null,
+    AgoraBoardFitMode.Retain, streamState, AgoraEduLatencyLevel.AgoraEduLatencyLevelUltraLow,
+    null, null);
+AgoraClassSdk.launch(MainActivity2.this, agoraEduLaunchConfig, (state) -> {
+    Log.e(TAG, "launch-classroom-state:" + state.name());
+});
+```
+
+**Parameter**
+
+| Parameter | Description |
+| :--------- | :----------------------------------------------------------- |
+| `context` | The context of the app. |
+| `config` | The classroom launching configuration. See [AgoraEduLaunchConfig](#agoraedulaunchconfig). |
+| `callback` | The SDK uses the [AgoraEduLaunchCallback](#agoraedulaunchcallback) class to report events related to classroom launching to the app. |
+
+**Returns**
+
+The `AgoraEduClassRoom` class.
+
+#### configCourseWare
+
+```kotlin
+public static void configCourseWare(@NotNull List<AgoraEduCourseware> coursewares);
+```
+
+Configures courseware downloading.
+
+**Sample code**
+
+```kotlin
+/** Construct and configure courseware */
+// Configure the courseware
+String taskUuid = "xxxxx";
+// The courseware download address
+String resourceUrl = String.formate("https://convertcdn.netless.link/dynamicConvert/{taskUuid}.zip", taskUuid);
+// The courseware name
+String resourceName = "xxxxxxx"
+// The list of courseware pages
+List<SceneInfo> sceneInfos = new ArrayList();
+// The link of a converted page
+String src = "http://xxxxxxx";
+Ppt ppt = new Ppt(src, 360, 640);
+SceneInfo sceneInfo = new SceneInfo(1, ppt, "ppt-file-name");
+List<SceneInfo> sceneInfos = new ArrayList();
+sceneInfos.add(sceneInfo);
+// The path for storing the courseware
+String scenePath = resourceName + "/" + sceneInfos.get(0).name;
+AgoraEduCourseware courseware = new AgoraEduCourseware(resourceName, scenePath, sceneInfos, resourceUrl);
+List<AgoraEduCourseware> wares = new ArrayList();
+wares.add(courseware);
+// Configure the courseware pre-downloading
+configCoursewares(wares);
+```
+
+**Parameter**
+
+| Parameter | Description |
+| :------ | :----------------------------------------------------------- |
+| `wares` | The courseware pre-download configuration. See [AgoraEduCourseware](#agoraeducourseware). |
+
+#### downloadCourseWare
+
+```kotlin
+public static void downloadCourseWare(@NotNull Context context, @Nullable AgoraEduCoursewarePreloadListener listener)
+        throws Exception;
+```
+
+Pre-downloads the courseware.
+
+**Sample code**
+
+```kotlin
+// Download the configured courseware
+downloadCoursewares(activityContext, new AgoraEduCoursewarePreloadListener() {
+    @Override
+    public void onStartDownload(@NotNull AgoraEduCourseware ware) {
+    }
+    @Override
+    public void onProgress(@NotNull AgoraEduCourseware ware, double progress) {
+    }
+    @Override
+    public void onComplete(@NotNull AgoraEduCourseware ware) {
+    }
+    @Override
+    public void onFailed(@NotNull AgoraEduCourseware ware) {
+    }
+});
+```
+
+**Parameter**
+
+| Parameter | Description |
+| :--------- | :----------------------------------------------------------- |
+| `context` | The context of the app. |
+| `listener` | The SDK reports events related to courseware preloading to the app through the [AgoraEduCoursewarePreloadListener](#agoraeducoursewarepreloadlistener) class. |
+
+#### registerExtensionApp
+
+```kotlin
+public static void registerExtensionApp(List<AgoraExtAppConfiguration> apps);
+```
+
+Register an extension application by using the ExtApp tool. ExtApp is a tool for embedding extension applications in Flexible Classroom. For details, see [Customize Flexible Classroom with ExtApp](/en/solutions/flexible-classroom/build/customize-classroom).
+
+### AgoraEduLaunchCallback
+
+The `AgoraEduLaunchCallback` class reports events related to classroom launching to the app.
+
+#### onCallback
+
+```kotlin
+void onCallback(AgoraEduEvent state);
+```
+
+Reports classroom events.
+
+| Parameter | Description |
+| :------ | :----------------------------------------------- |
+| `state` | The classroom events. See [AgoraEduEvent](#agoraeduevent). |
+
+### AgoraEduCoursewarePreloadListener
+
+The `AgoraEduCoursewarePreloadListener` class reports events related to courseware preloading to the app.
+
+#### onStartDownload
+
+```kotlin
+void onStartDownload(@NotNull AgoraEduCourseware ware);
+```
+
+Indicates that the SDK starts downloading the courseware.
+
+| Parameter | Description |
+| :----- | :----------------------------------------------------------- |
+| `ware` | The courseware pre-download configuration. See [AgoraEduCourseware](#agoraeducourseware). |
+
+#### onProgress
+
+```kotlin
+void onProgress(@NotNull AgoraEduCourseware ware, double progress);
+```
+
+Indicates the progress of courseware pre-downloading.
+
+| Parameter | Description |
+| :--------- | :----------------------------------------------------------- |
+| `ware` | The courseware pre-download configuration. See [AgoraEduCourseware](#agoraeducourseware). |
+| `progress` | Indicates the progress of courseware pre-downloading. |
+
+#### onComplete
+
+```kotlin
+void onComplete(@NotNull AgoraEduCourseware ware);
+```
+
+Indicates that the courseware pre-downloading completes.
+
+| Parameter | Description |
+| :----- | :----------------------------------------------------------- |
+| `ware` | The courseware pre-download configuration. See [AgoraEduCourseware](#agoraeducourseware). |
+
+#### onFailed
+
+```kotlin
+void onFailed(@NotNull AgoraEduCourseware ware);
+```
+
+The courseware pre-downloading fails.
+
+| Parameter | Description |
+| :----- | :----------------------------------------------------------- |
+| `ware` | The courseware pre-download configuration. See [AgoraEduCourseware](#agoraeducourseware). |
+
+### Type definition
+
+#### AgoraClassSdkConfig
+
+```kotlin
+public class AgoraClassSdkConfig {
+    @NotNull
+    private String appId;
+    private int eyeCare;
+}
+```
+
+The SDK global configuration. Used in [setConfig](#setconfig).
+
+| Attributes | Description |
+| :-------- | :----------------------------------------------------------- |
+| `appId` | The Agora App ID. See [Get the Agora App ID](/en/solutions/flexible-classroom/build/manage-agora-account#get-the-app-id). |
+| `eyeCare` | Whether to enable eye care mode:<li>`0`: (Default) Disable eye care mode.</li><li>`1`: Enable eye care mode.</li> |
+
+#### AgoraEduLaunchConfig
+
+```kotlin
+class AgoraEduLaunchConfig(val userName: String,
+                           val userUuid: String,
+                           val roomName: String,
+                           val roomUuid: String,
+                           val roleType: Int = AgoraEduRoleType.AgoraEduRoleTypeStudent.value,
+                           val roomType: Int,
+                           val rtmToken: String,
+                           val startTime: Long?,
+                           val duration: Long?,
+                           val region: String,
+                           var videoEncoderConfig: EduVideoEncoderConfig? = null,
+                           val mediaOptions: AgoraEduMediaOptions?,
+                           val boardFitMode: AgoraBoardFitMode,
+                           val streamState: StreamState?,
+                           val latencyLevel: AgoraEduLatencyLevel? = AgoraEduLatencyLevel.AgoraEduLatencyLevelUltraLow,
+                           val userProperties: MutableMap<String, String>? = null,
+                           val widgetConfigs: MutableList<UiWidgetConfig>? = null) : Parcelable
+```
+
+The classroom launching configuration. Used in [launch](#launch).
+
+| Attributes | Description |
+| :------------------- | :----------------------------------------------------------- |
+| `userName` | The user name for display in the classroom. The string length must be less than 64 bytes. |
+| `userUuid` | The user ID. This is the globally unique identifier of a user. **Must be the same as the User ID that you use for generating an Signaling token**. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `roomName` | The room name for display in the classroom. The string length must be less than 64 bytes. |
+| `roomUuid` | The room ID. This is the globally unique identifier of a classroom. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>   |
+| `roleType` | The role of the user in the classroom. See  [AgoraEduRoleType](#agoraeduroletype). |
+| `roomType` | The classroom type. See [AgoraEduRoomType](#agoraeduroomtype). |
+| `rtmToken` | The Signaling token used for authentication. For details, see [Secure authentication with tokens](/en/solutions/flexible-classroom/build/authentication-workflow). |
+| `startTime` | The start time (ms) of the class, determined by the first user joining the classroom. |
+| `duration` | The duration (ms) of the class, determined by the first user joining the classroom. |
+| `region` | The region where the classrooms is located. All clients must use the same region, otherwise, they may fail to communicate with each other. See [AgoraEduRegionStr](#agoraeduregionstr). |
+| `videoEncoderConfig` | Video encoding configurations, including the width and height, frame rate, and bitrate. See [EduVideoEncoderConfig](#eduvideoencoderconfig) |
+| `mediaOptions` | The media options, including media encryption configurations. See [AgoraEduMediaOptions](#agoraedumediaoptions). |
+| `boardFitMode` | The PPT display mode. See [AgoraBoardFitMode](#agoraboardfitmode). |
+| `streamState` | Controls whether students automatically send audio or video streams after they go onto the stage. See [StreamState](#streamstate). |
+| `latencyLevel` | The latency level of an audience member. See [AgoraEduLatencyLevel](#agoraedulatencylevel). |
+| `userProperties` | User properties customized by the developer. For details, see [How can I set user properties? ](/help/integration-issues/agora_class_custom_properties) |
+
+#### AgoraEduEvent
+
+```kotlin
+public enum AgoraEduEvent {
+    AgoraEduEventFailed(0),
+    AgoraEduEventReady(1),
+    AgoraEduEventDestroyed(2),
+    AgoraEduEventForbidden(3);
+}
+```
+
+Classroom events. Reported in [onCallback](#oncallback).
+
+| Attributes | Description |
+| :----------------------- | :------------------------ |
+| `AgoraEduEventFailed` | `0`: The user fails to enter the classroom. |
+| `AgoraEduEventReady` | `1`: The classroom is ready. |
+| `AgoraEduEventDestroyed` | `2`: The classroom has been destroyed. |
+| `AgoraEduEventForbidden` | `3`: The user is forbidden by the Flexible Classroom cloud service and not allowed to enter the classroom. |
+
+#### AgoraEduRoleType
+
+```kotlin
+public enum AgoraEduRoleType {
+   AgoraEduRoleTypeStudent(2);
+}
+```
+
+The role of the user in the classroom. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Attributes | Description |
+| :------------------------ | :---------- |
+| `AgoraEduRoleTypeStudent` | `2`: A student. |
+
+#### AgoraEduRoomType
+
+```kotlin
+public enum AgoraEduRoomType {
+   AgoraEduRoomType1V1(0),
+   AgoraEduRoomTypeSmall(4),
+   AgoraEduRoomTypeBig(2);
+}
+```
+
+The classroom type. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Attributes | Description |
+| :---------------------- | :----------------------------------------------------------- |
+| `AgoraEduRoomType1V1` | `0`: One-to-one Classroom. An online teacher gives an exclusive lesson to only one student. |
+| `AgoraEduRoomTypeBig` | `2`: Lecture Hall. A teacher gives an online lesson to multiple students. Students do not send their audio and video by default. The maximum number of users in a classroom is 5,000. During the class, students can raise their hands to attract the teacher's attention and request to speak up. Once the teacher approves, the student can send their audio and video to interact with the teacher. |
+| `AgoraEduRoomTypeSmall` | `4`: Small Classroom. A teacher gives an online lesson to multiple students. Students do not send their audio and video by default. The maximum number of users in a classroom is 200. During the class, the teacher can invite students to speak up and have real-time audio and video interactions with the teacher. |
+
+#### AgoraBoardFitMode
+
+```kotlin
+public enum AgoraBoardFitMode {
+    Auto,
+    Retain;
+}
+```
+
+The PPT display mode on the whiteboard. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Parameter | Description |
+| :------- | :----------------------------------------------------------- |
+| `Auto` | (Default) The PPT display mode is fit, which means uniformly scaling the PPT until one of its dimensions fits the boundary. |
+| `Retain` | In this mode, if the student manually adjusts the PPT size, the client maintains this size no matter what class the student joins. |
+
+#### StreamState
+
+```kotlin
+data class StreamState (
+        var videoState:Int,
+        var audioState:Int
+)
+```
+
+Controls whether students automatically send audio or video streams after they go onto the stage. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Parameter | Description |
+| :----------- | :----------------------------------------------------------- |
+| `videoState` | Whether to send the video stream:<li>`0`: (Default) Do not send the video stream.</li><li>`1`: Send the video stream.</li> |
+| `audioState` | Whether to send the audio stream:<li>`0`: (Default) Do not send the audio stream.</li><li>`1`: Send the audio stream.</li> |
+
+#### AgoraEduLatencyLevel
+
+```kotlin
+enum class AgoraEduLatencyLevel(val value: Int) {
+    AgoraEduLatencyLevelLow(1),
+    AgoraEduLatencyLevelUltraLow(2);
+}
+```
+
+The latency level of an audience member. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Parameter | Description |
+| :----------------------------- | :--------------------------------------------------------- |
+| `AgoraEduLatencyLevelLow` | Low latency. The latency from the sender to the receiver is 1500 ms to 2000 ms. |
+| `AgoraEduLatencyLevelUltraLow` | (Default) Ultra-low latency. The latency from the sender to the receiver is 400 ms to 800 ms. |
+
+#### AgoraEduMediaOptions
+
+```kotlin
+class AgoraEduMediaOptions(val encryptionConfigs: AgoraEduMediaEncryptionConfigs?)
+```
+
+Media options. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Parameter | Description |
+| :----------------- | :----------------------------------------------------------- |
+| `encryptionConfig` | The media stream encryption configuration. See [AgoraEduMediaEncryptionConfig](#agoraedumediaencryptionconfig) for details. |
+
+#### AgoraEduMediaEncryptionConfig
+
+```kotlin
+data class AgoraEduMediaEncryptionConfigs(
+        val encryptionKey: String?,
+        val encryptionMode: Int
+)
+```
+
+The media stream encryption configuration. Used in [AgoraEduMediaOptions](#agoraedumediaoptions).
+
+| Parameter | Description |
+| :----- | :------------------------------------- |
+| `mode` | The encryption mode. See `AgoraEduEncryptMode`. |
+| `key` | The encryption key. |
+
+#### AgoraEduEncryptMode
+
+```kotlin
+enum class AgoraEduEncryptMode(val value: Int) {
+    NONE(0),
+    AES_128_XTS(1),
+    AES_128_ECB(2),
+    AES_256_XTS(3),
+    SM4_128_ECB(4),
+    AES_128_GCM(5),
+    AES_256_GCM(6);
+}
+```
+
+The media stream encryption configuration. See [AgoraEduMediaEncryptionConfig](#agoraedumediaencryptionconfig) for details.
+
+| Parameter | Description |
+| :------------ | :-------------------------- |
+| `NONE` | No encryption. |
+| `AES_128_XTS` | 128-bit AES encryption, XTS mode. |
+| `AES_128_ECB` | 128-bit AES encryption, ECB mode. |
+| `AES_256_XTS` | 256-bit AES encryption, XTS mode. |
+| `SM4_128_ECB` | 128-bit ECB encryption, SM4 mode. |
+| `AES_128_GCM` | 128-bit AES encryption, GCM mode. |
+| `AES_256_GCM` | 256-bit AES encryption, GCM mode. |
+
+#### AgoraEduCourseware
+
+```kotlin
+data class AgoraEduCourseware(
+        val resourceName: String?,
+        val scenePath: String?,
+        val scenes: List<SceneInfo>?,
+        val resourceUrl: String?
+) {
+}
+```
+
+The courseware pre-download configuration. Used in [configCoursewares](#configcoursewares).
+
+| Attributes | Description |
+| :------------- | :----------------------------------------------------------- |
+| `resourceName` | The file name. |
+| `scenePath` | The local path for storing the file. Agora recommends setting this parameter as the combination of `resourceName` and `name` of the first `SceneInfo` object in `scenes`, such as, `resourceName + "/" + sceneInfos.get(0).name`. |
+| `scenes` | A list of converted file pages, an array of `SceneInfo` objects. Flexible Classroom automatically converts files with the suffixes of `"ppt"`, `"pptx"`, `"doc"`, `"docx"`, and `"pdf"` to formats that can be displayed on the whiteboard in the classroom and then display the file on the whiteboard in pages. Each `SceneInfo` object represents one page. |
+| `resourceUrl` | The URL address of the file, such as `"https://convertcdn.netless.link/dynamicConvert/{taskUuid}.zip"`. |
+
+#### SceneInfo
+
+```kotlin
+public class SceneInfo {
+    private int componentCount;
+    private Ppt ppt;
+    private String name;
+}
+```
+
+The detailed information of a page. Set in [AgoraEduCourseware](#agoraeducourseware).
+
+| Attributes | Description |
+| :--------------- | :-------------------------------------------------------- |
+| `componentCount` | The number of pages. |
+| `ppt` | The detailed information of a converted page. See [Ppt](#ppt). |
+| `name` | The page name. |
+
+#### Ppt
+
+```kotlin
+public class Ppt {
+    private String src;
+    private double width;
+    private double height;
+}
+```
+
+The detailed information of a page displayed on the whiteboard. Set in [SceneInfo](#sceneinfo).
+
+| Attributes | Description |
+| :------- | :------------------------------ |
+| `src` | The URL address of the converted page. |
+| `width` | The width (pixel) of the page. |
+| `height` | The height (pixel) of the page. |
+
+#### AgoraEduRegion
+
+```kotlin
+object AgoraEduRegion {
+    const val default = "CN"
+    const val cn = "CN"
+    const val na = "NA"
+    const val eu = "EU"
+    const val ap = "AP"
+}
+```
+
+Regions.
+
+| Attributes | Description |
+| :--- | :----------------- |
+| `CN` | Mainland China. |
+| `NA` | North America. |
+| `EU` | Europe. |
+| `AP` | Asia Pacific. |
+
+#### EduVideoEncoderConfig
+
+```kotlin
+data class EduVideoEncoderConfig(
+        var videoDimensionWidth: Int = 320,
+        var videoDimensionHeight: Int = 240,
+        var frameRate: Int = 15,
+        var bitrate: Int = 200,
+        var mirrorMode: Int = EduMirrorMode.AUTO.value
+)
+```
+
+The video encoder configuration. Used in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+> - In the Small Classroom use-case, the default resolution is 120p (160*120).
+- In the One-to-one Classroom and Lecture Hall use-cases, the default resolution is 240p (320*240).
+
+| Parameter | Description |
+| :----------- | :----------------------------------- |
+| `width` | Width (pixel) of the video frame. |
+| `height` | Height (pixel) of the video frame. |
+| `frameRate` | The frame rate (fps) of the video. The default value is 15. |
+| `bitrate` | The bitrate (Kbps) of the video. The default value is 200. |
+| `mirrorMode` | Video mirror modes. See `EduMirrorMode`. |
+
+#### EduMirrorMode
+
+```kotlin
+enum class EduMirrorMode(val value: Int) {
+    AUTO(0),
+    ENABLED(1),
+    DISABLED(2)
+}
+```
+
+Whether to enable mirror mode. Used in [EduVideoEncoderConfig](#eduvideoencoderconfig).
+
+| Parameter | Description |
+| :--------- | :--------------------- |
+| `AUTO` | The SDK disables mirror mode by default. |
+| `ENABLED` | Enable mirror mode. |
+| `DISABLED` | Disable mirror mode. |
+
+## iOS
+
+This page provides the Swift API reference of the Agora Classroom SDK for iOS.
+
+### AgoraClassroomSDK
+
+`AgoraClassroomSDK` is the basic interface of the Agora Classroom SDK and provides the main methods that can be invoked by your app.
+
+#### version
+
+```swift
+(NSString *)version;
+```
+
+Gets the SDK version.
+
+**Returns**
+
+The SDK version.
+
+#### setConfig
+
+```swift
++ (BOOL)setConfig:(AgoraClassroomSDKConfig *)config;
+```
+
+Globally configures the SDK.
+
+**Sample code**
+
+```swift
+/** Global configuration **/
+@interface AgoraClassroomSDKConfig : NSObject
+// Agora App ID
+@property (nonatomic, copy) NSString *appId;
+// Whether to enable eye care mode
+@property (nonatomic, assign) BOOL eyeCare;
+@end
+AgoraClassroomSDKConfig *defaultConfig = [[AgoraClassroomSDKConfig alloc] initWithAppId:appId eyeCare:eyeCare];
+[AgoraClassroomSDK setConfig:defaultConfig];
+```
+
+**Parameter**
+
+| Parameter | Description |
+| :------- | :----------------------------------------------------------- |
+| `config` | The SDK global configuration. See [AgoraClassroomSDKConfig](#agoraclassroomsdkconfig). |
+
+#### launch
+
+```swift
++ (AgoraEduClassroom * _Nullable)launch:(AgoraEduLaunchConfig *)config
+                               delegate:(id<AgoraEduClassroomDelegate> _Nullable)delegate;
+```
+
+Launches a flexible classroom.
+
+**Sample code**
+
+```swift
+/** Classroom launching configuration */
+// The user name
+NSString *userName = @"XXX";
+// The user ID. Must be the same as the user ID that you use for generating an Signaling token.
+NSString *userUUid = @"XXX";
+// The classroom name
+NSString *roomName = @"XXX";
+// The classroom ID
+NSString *roomUuid = @"XXX";
+// The user role
+AgoraEduRoleType roleType = AgoraEduRoleTypeStudent;
+// The classroom type
+AgoraEduRoomType roomType = AgoraEduRoomType1V1;
+// The Signaling token
+NSString *rtmToken = "";
+// The start time (ms) of the class, determined by the first user joining the classroom.
+NSNumber *startTime = @(XXX);
+// The duration (ms) of the class, determined by the first user joining the classroom.
+NSNumber *duration = @(1800);
+
+AgoraEduLaunchConfig *config = [[AgoraEduLaunchConfig alloc] initWithUserName:userName userUuid:userUuid roleType:roleType roomName:roomName roomUuid:roomUuid roomType:roomType token:rtmToken startTime:startTime duration:duration];
+[AgoraClassroomSDK launch:config delegate:self];
+```
+
+**Parameter**
+
+| Parameter | Description |
+| :--------- | :----------------------------------------------------------- |
+| `config` | The classroom launching configuration. See [AgoraEduLaunchConfig](#agoraedulaunchconfig). |
+| `delegate` | The SDK uses the [AgoraEduClassroomDelegate](#agoraeduclassroomdelegate) class to report events related to classroom launching to the app. |
+
+**Returns**
+
+The `AgoraEduClassroom` class.
+
+#### configCoursewares
+
+```swift
++ (void)configCoursewares:(NSArray<AgoraEduCourseware *> *)config;
+```
+
+Configures courseware downloading.
+
+**Sample code**
+
+```swift
+/** Construct, configure, and download the courseware */
+// The ID of the courseware conversion task
+NSString *taskUuid = @"xxxx";
+// The courseware download address
+NSString *resourceUrl = [NSString stringWithFormat:@"https://convertcdn.netless.link/dynamicConvert/%@/.zip", taskUuid];
+// The courseware name
+NSString *resourceName = @"XXX";
+// The list of courseware pages
+NSArray<WhiteScene*> *convertedFileList = @[];
+// The path for storing the courseware
+// Agora recommends setting this parameter as the combination of resourceName and name of the first object in convertedFileList
+NSString *scenePath = [NSString stringWithFormat:@"%@/%@", resourceName, [convertedFileList.firstObject name]];
+
+AgoraEduCourseware *courseware = [[AgoraEduCourseware alloc] initWithResourceName:resourceName scenePath:scenePath scenes:convertedFileList resourceUrl:resourceUrl];
+// Configure the courseware pre-downloading
+[AgoraClassroomSDK configCoursewares:@[courseware]];
+```
+
+**Parameter**
+
+| Parameter | Description |
+| :------- | :----------------------------------------------------------- |
+| `config` | The courseware pre-download configuration. See [AgoraEduCourseware](#agoraeducourseware). |
+
+#### downloadCoursewares
+
+```
++ (void)downloadCoursewares:(id<AgoraEduCoursewareDelegate> _Nullable)delegate;
+```
+
+Pre-downloads the courseware.
+
+**Sample code**
+
+```swift
+// Download the configured courseware
+[AgoraClassroomSDK downloadCoursewares:self];
+```
+
+**Parameter**
+
+| Parameter | Description |
+| :--------- | :----------------------------------------------------------- |
+| `delegate` | The SDK reports events related to courseware preloading to the app through the [AgoraEduCoursewareDelegate](#agoraeducoursewaredelegate) class. |
+
+#### registerExtApps
+
+```swift
++ (void)registerExtApps:(NSArray<AgoraExtAppConfiguration *> *)apps;
+```
+
+Register an extension application by using the ExtApp tool. ExtApp is a tool for embedding extension applications in Flexible Classroom. For details, see [Customize Flexible Classroom with ExtApp](/en/solutions/flexible-classroom/build/customize-classroom).
+
+### AgoraEduClassroom
+
+#### destroy
+
+```swift
+- (void)destroy;
+```
+
+Release the resources occupied by the` AgoraEduClassroom` object.
+
+### AgoraEduClassroomDelegate
+
+The `AgoraEduLaunchCallback` class reports events related to classroom launching to your app.
+
+#### didReceivedEvent
+
+```swift
+- (void)classroom:(AgoraEduClassroom *)classroom didReceivedEvent:(AgoraEduEvent)event;
+```
+
+Reports classroom events.
+
+**Parameter**
+
+| Parameter | Description |
+| :------ | :----------------------------------------------- |
+| `event` | The classroom events. See [AgoraEduEvent](#agoraeduevent). |
+
+### AgoraEduCoursewareDelegate
+
+The `AgoraEduCoursewareDelegate` class reports events related to courseware preloading to your app.
+
+#### didProcessChanged
+
+```swift
+- (void)courseware:(AgoraEduCourseware *)courseware didProcessChanged:(float)process;
+```
+
+Indicates the progress of courseware pre-downloading.
+
+| Parameter | Description |
+| :--------- | :--------------- |
+| `progress` | Indicates the progress of courseware pre-downloading. |
+
+#### didCompleted
+
+```swift
+- (void)courseware:(AgoraEduCourseware *)courseware idCompleted:(NSError * _Nullable)error;
+```
+
+Indicates that the courseware pre-downloading completes.
+
+| Parameter | Description |
+| :------ | :------- |
+| `error` | The error code. |
+
+### Type definition
+
+#### AgoraEduEvent
+
+```swift
+typedef NS_ENUM(NSInteger, AgoraEduEvent) {
+    AgoraEduEventFailed = 0,
+    AgoraEduEventReady = 1,
+    AgoraEduEventDestroyed =2,
+};
+```
+
+Classroom events. Reported in the [didReceivedEvent](#didreceivedevent) callback.
+
+| Attributes | Description |
+| :----------------------- | :------------------ |
+| `AgoraEduEventFailed` | `0`: The user fails to enter the classroom. |
+| `AgoraEduEventReady` | `1`: The classroom is ready. |
+| `AgoraEduEventDestroyed` | `2`: The classroom has been destroyed. |
+
+#### AgoraEduRoleType
+
+```swift
+typedef NS_ENUM(NSInteger, AgoraEduRoleType) {
+    AgoraEduRoleTypeStudent = 2,
+};
+```
+
+The role of the user in the classroom. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Attributes | Description |
+| :------------------------ | :---------- |
+| `AgoraEduRoleTypeStudent` | `2`: A student. |
+
+#### AgoraEduRoomType
+
+```swift
+typedef NS_ENUM(NSInteger, AgoraEduRoomType) {
+    AgoraEduRoomType1V1 = 0,
+    AgoraEduRoomTypeSmall = 4,
+    AgoraEduRoomTypeBig = 2,
+};
+```
+
+The classroom type. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Attributes | Description |
+| :---------------------- | :----------------------------------------------------------- |
+| `AgoraEduRoomType1V1` | `0`: One-to-one Classroom. An online teacher gives an exclusive lesson to only one student. |
+| `AgoraEduRoomTypeBig` | `2`: Lecture Hall. A teacher gives an online lesson to multiple students. Students do not send their audio and video by default. The maximum number of users in a classroom is 5,000. During the class, students can raise their hands to attract the teacher's attention and request to speak up. Once the teacher approves, the student can send their audio and video to interact with the teacher. |
+| `AgoraEduRoomTypeSmall` | `4`: Small Classroom. A teacher gives an online lesson to multiple students. Students do not send their audio and video by default. The maximum number of users in a classroom is 200. During the class, the teacher can invite students to speak up on stage and have real-time audio and video interactions with the teacher. |
+
+#### AgoraClassroomSDKConfig
+
+```swift
+@interface AgoraClassroomSDKConfig : NSObject
+@property (nonatomic, copy) NSString *appId;
+@property (nonatomic, assign) BOOL eyeCare;
+- (instancetype)initWithAppId:(NSString *)appId;
+- (instancetype)initWithAppId:(NSString *)appId
+                      eyeCare:(BOOL)eyeCare;
+@end
+```
+
+The SDK global configuration. Used in [setConfig](#setconfig).
+
+| Attributes | Description |
+| :-------- | :----------------------------------------------------------- |
+| `appId` | The Agora App ID. See [Get the Agora App ID](/en/solutions/flexible-classroom/build/manage-agora-account#get-the-app-id). |
+| `eyeCare` | Whether to enable eye care mode:<li>`false`: (Default) Disable eye care mode.</li><li>`true`: Enable eye care mode.</li> |
+
+#### AgoraEduLaunchConfig
+
+```swift
+@interface AgoraEduLaunchConfig : NSObject
+@property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *userUuid;
+@property (nonatomic, assign) AgoraEduRoleType roleType;
+@property (nonatomic, copy) NSString *roomName;
+@property (nonatomic, copy) NSString *roomUuid;
+@property (nonatomic, assign) AgoraEduRoomType roomType;
+@property (nonatomic, copy) NSString *token;
+@property (nonatomic, copy) NSNumber *startTime;
+@property (nonatomic, copy, nullable) NSNumber *duration;
+@property (nonatomic, copy) NSString *region;
+@property (nonatomic, strong, nullable) AgoraEduMediaOptions *mediaOptions;
+@property (nonatomic, copy, nullable) NSDictionary<NSString *, NSString *> * userProperties;
+@property (nonatomic, assign) AgoraEduStreamState videoState;
+@property (nonatomic, assign) AgoraEduStreamState audioState;
+@property (nonatomic, strong, nullable) AgoraEduVideoEncoderConfiguration *cameraEncoderConfiguration;
+@property (nonatomic, assign) AgoraEduLatencyLevel latencyLevel;
+@property (nonatomic, assign) AgoraBoardFitMode boardFitMode;
+
+- (instancetype)initWithUserName:(NSString *)userName
+                        userUuid:(NSString *)userUuid
+                        roleType:(AgoraEduRoleType)roleType
+                        roomName:(NSString *)roomName
+                        roomUuid:(NSString *)roomUuid
+                        roomType:(AgoraEduRoomType)roomType
+                           token:(NSString *)token
+                       startTime:(NSNumber * _Nullable)startTime
+                        duration:(NSNumber * _Nullable)duration
+                  userProperties:(NSDictionary<NSString *, NSString *> * _Nullable)userProperties;
+@end
+```
+
+The classroom launching configuration. Used in [launch](#launch).
+
+| Attributes | Description |
+| :--------------------------- | :----------------------------------------------------------- |
+| `userName` | The user name for display in the classroom. The string length must be less than 64 bytes. |
+| `userUuid` | The user ID. This is the globally unique identifier of a user. **Must be the same as the User ID that you use for generating an Signaling token**. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `roomName` | The room name for display in the classroom. The string length must be less than 64 bytes. |
+| `roomUuid` | The room ID. This is the globally unique identifier of a classroom. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `roleType` | The user's role in the classroom. See `AgoraEduRoleType`. |
+| `roomType` | The classroom type. See `AgoraEduRoomType`. |
+| `token` | The Signaling token used for authentication. For details, see [Generate a Signaling Token](/en/solutions/flexible-classroom/build/authentication-workflow). |
+| `startTime` | The start time (ms) of the class, determined by the first user joining the classroom. |
+| `duration` | The duration (ms) of the class, determined by the first user joining the classroom. |
+| `region` | The region where the classrooms is located. All clients must use the same region, otherwise, they may fail to communicate with each other. Supported regions are:<li>`CN`: Mainland China</li><li>`AP`: Asia Pacific</li><li>`EU`: Europe</li><li>`NA`: North America</li> |
+| `mediaOptions` | Media options, including the media stream encryption configuration. See `AgoraEduMediaOptions` for details. |
+| `userProperties` | User properties customized by the developer. For details, see [How can I set user properties? ](/help/integration-issues/agora_class_custom_properties) |
+| `videoState` | Controls whether students automatically send audio or video streams after they go onto the stage. See  `AgoraEduStreamState`. |
+| `audioState` | Controls whether students automatically send audio or video streams after they go onto the stage. See  `AgoraEduStreamState`. |
+| `cameraEncoderConfiguration` | The encoding configurations of the video stream captured by the camera, including the width and height, frame rate, and bitrate. For details, see `AgoraEduVideoEncoderConfiguration`. |
+| `latencyLevel` | The latency level of an audience member. See `AgoraEduLatencyLevel`. |
+| `boardFitMode` | The PPT display mode on the whiteboard. See `AgoraBoardFitMode`. |
+
+#### AgoraBoardFitMode
+
+```swift
+@objc public enum AgoraBoardFitMode: Int {
+    case auto, retain
+}
+```
+
+The PPT display mode on the whiteboard. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Parameter | Description |
+| :------- | :----------------------------------------------------------- |
+| `auto` | (Default) The PPT display mode is fit, which means uniformly scaling the PPT until one of its dimensions fits the boundary. |
+| `retain` | In this mode, if the student manually adjusts the PPT size, the client maintains this size no matter what class the student joins. |
+
+#### StreamState
+
+```swift
+@objc public enum AgoraEduStreamState: Int {
+    case off = 0, on, `default`
+}
+```
+
+Controls whether students automatically send audio or video streams after they go onto the stage. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Parameter | Description |
+| :---- | :--------------- |
+| `off` | (Default) Students do not automatically send audio and video streams after they go onto the stage. |
+| `on` | Students automatically send audio and video streams after they go onto the stage. |
+
+#### AgoraEduLatencyLevel
+
+```java
+@objc public enum AgoraEduLatencyLevel: Int {
+    case low = 0
+    case ultraLow
+}
+```
+
+The latency level of an audience member. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Parameter | Description |
+| :--------- | :--------------------------------------------------------- |
+| `low` | Low latency. The latency from the sender to the receiver is 1500 ms to 2000 ms. |
+| `ultraLow` | (Default) Ultra-low latency. The latency from the sender to the receiver is 400 ms to 800 ms. |
+
+#### AgoraEduMediaOptions
+
+```swift
+@interface AgoraEduMediaOptions : NSObject
+@property (nonatomic, strong) AgoraEduMediaEncryptionConfig *encryptionConfig;
+
+- (instancetype)initWithConfig:(AgoraEduMediaEncryptionConfig *)encryptionConfig;
+@end
+```
+
+Media options. Set in [AgoraEduLaunchConfig](#agoraedulaunchconfig).
+
+| Parameter | Description |
+| :----------------- | :----------------------------------------------------------- |
+| `encryptionConfig` | The media stream encryption configuration. See [AgoraEduMediaEncryptionConfig](#agoraedumediaencryptionconfig) for details. |
+
+#### AgoraEduVideoEncoderConfiguration
+
+```swift
+@interface AgoraEduVideoEncoderConfiguration : NSObject
+@property (nonatomic, assign) NSUInteger width;
+@property (nonatomic, assign) NSUInteger height;
+@property (nonatomic, assign) NSUInteger frameRate;
+@property (nonatomic, assign) NSUInteger bitrate;
+@property (nonatomic, assign) AgoraEduCoreMirrorMode mirrorMode;
+
+- (instancetype)initWithWidth:(NSUInteger)width
+                       height:(NSUInteger)height
+                    frameRate:(NSUInteger)frameRate
+                      bitrate:(NSUInteger)bitrate
+                   mirrorMode:(AgoraEduCoreMirrorMode)mirrorMode;
+@end
+```
+
+The classroom launching configuration. See `AgoraEduLaunchConfig`.
+
+> - In the Small Classroom use-case, the default resolution is 120p (160*120).
+> - In the One-to-one Classroom and Lecture Hall use-cases, the default resolution is 240p (320*240).
+
+| Parameter | Description |
+| :----------- | :-------------------------------------------- |
+| `width` | Width (pixel) of the video frame. |
+| `height` | Height (pixel) of the video frame. |
+| `frameRate` | The frame rate (fps) of the video. The default value is 15. |
+| `bitrate` | The bitrate (Kbps) of the video. The default value is 200. |
+| `mirrorMode` | Video mirror modes. See `EduMirrorMode`. |
+
+#### AgoraEduMediaEncryptionConfig
+
+```swift
+@interface AgoraEduMediaEncryptionConfig : NSObject
+@property (nonatomic, assign) AgoraEduMediaEncryptionMode mode;
+@property (nonatomic, copy) NSString *key;
+
+- (instancetype)initWithMode:(AgoraEduMediaEncryptionMode)mode key:(NSString *)key;
+@end
+```
+
+The media stream encryption configuration. Used in [AgoraEduMediaOptions](#agoraedumediaoptions).
+
+| Parameter | Description |
+| :----- | :----------------------------------------------------------- |
+| `mode` | Encryption mode. See [AgoraEduMediaEncryptionMode](#agoraedumediaencryptionmode). |
+| `key` | The encryption key. |
+
+#### AgoraEduMediaEncryptionMode
+
+```swift
+typedef NS_ENUM(NSInteger, AgoraEduMediaEncryptionMode) {
+    AgoraEduMediaEncryptionModeAES128XTS = 1,
+    AgoraEduMediaEncryptionModeAES128ECB = 2,
+    AgoraEduMediaEncryptionModeAES256XTS = 3,
+    AgoraEduMediaEncryptionModeAES128GCM = 5,
+    AgoraEduMediaEncryptionModeAES256GCM = 6,
+};
+```
+
+Media stream encryption mode. Set in [AgoraEduMediaEncryptionConfig](#agoraedumediaencryptionconfigs).
+
+| Parameter | Description |
+| :------------------------------------- | :-------------------------- |
+| `AgoraEduMediaEncryptionModeAES128XTS` | 128-bit AES encryption, XTS mode. |
+| `AgoraEduMediaEncryptionModeAES128ECB` | 128-bit AES encryption, ECB mode. |
+| `AgoraEduMediaEncryptionModeAES256XTS` | 256-bit AES encryption, XTS mode. |
+| `AgoraEduMediaEncryptionModeAES128GCM` | 128-bit AES encryption, GCM mode. |
+| `AgoraEduMediaEncryptionModeAES256GCM` | 256-bit AES encryption, GCM mode. |
+
+#### AgoraEduCoreMirrorMode
+
+```swift
+@objc public enum AgoraEduCoreMirrorMode: Int {
+    case auto = 0, enabled, disabled
+}
+```
+
+Whether to enable mirror mode.
+
+| Parameter | Description |
+| :--------- | :--------------------- |
+| `auto` | The SDK disables mirror mode by default. |
+| `enabled` | Enable mirror mode. |
+| `disabled` | Disable mirror mode. |
+
+#### AgoraEduCourseware
+
+```swift
+@interface AgoraEduCourseware : NSObject
+@property (nonatomic, copy) NSString *resourceName;
+@property (nonatomic, copy) NSString *scenePath;
+@property (nonatomic, copy) NSString *resourceUrl;
+@property (nonatomic, strong) NSArray<WhiteScene *> *scenes;
+- (instancetype)initWithResourceName:(NSString *)resourceName
+                           scenePath:(NSString *)scenePath
+                              scenes:(NSArray<WhiteScene *> *)scenes
+                         resourceUrl:(NSString *)resourceUrl;
+@end
+```
+
+The courseware pre-download configuration. Used in [configCoursewares](#configcoursewares).
+
+| Attributes | Description |
+| :------------- | :----------------------------------------------------------- |
+| `resourceName` | The file name. |
+| `scenePath` | The local path for storing the file. Agora recommends setting this parameter as the combination of `resourceName` and the `name` of the first `SceneInfo` object in `scenes`. |
+| `resourceUrl` | The URL address of the file, such as `"https://convertcdn.netless.link/dynamicConvert/{taskUuid}.zip".` |
+| `scenes` | A list of converted file pages, an array of `WhiteScene` objects. Flexible Classroom automatically converts files with the suffixes of `"ppt"`, `"pptx"`, `"doc"`, `"docx"`, and `"pdf"` to formats that can be displayed on the whiteboard in the classroom and then display the file on the whiteboard in pages. Each `WhiteScene` object represents one page. |
+
+#### WhiteObject
+
+```swift
+@interface WhiteScene : WhiteObject
+
+- (instancetype)init;
+- (instancetype)initWithName:(nullable NSString *)name ppt:(nullable WhitePptPage *)ppt;
+
+@property (nonatomic, copy, readonly) NSString *name;
+@property (nonatomic, assign, readonly) NSInteger componentsCount;
+@property (nonatomic, strong, readonly, nullable) WhitePptPage *ppt;
+
+@end
+```
+
+The detailed information of a page. Set in [AgoraEduCourseware](#agoraeducourseware).
+
+| Attributes | Description |
+| :---------------- | :--------------------------------------------------------- |
+| `componentsCount` | The number of pages. |
+| `ppt` | The detailed information of a converted page. See `WhitePptPage`. |
+| `name` | The page name. |
+
+#### WhitePptPage
+
+```swift
+@interface WhitePptPage : WhiteObject
+
+- (instancetype)initWithSrc:(NSString *)src size:(CGSize)size;
+- (instancetype)initWithSrc:(NSString *)src preview:(NSString *)url size:(CGSize)size;
+
+@property (nonatomic, copy) NSString *src;
+@property (nonatomic, assign) CGFloat width;
+@property (nonatomic, assign) CGFloat height;
+@property (nonatomic, copy, readonly) NSString *previewURL;
+@end
+```
+
+The detailed information of a converted page. Set in [SceneInfo](#sceneinfo).
+
+| Attributes | Description |
+| :----------- | :------------------------------------------ |
+| `src` | The URL address of the converted page. |
+| `width` | The width (pixel) of the page. |
+| `height` | The height (pixel) of the page. |
+| `previewURL` | The URL address of the preview image generated after the dynamic file conversion. |
+
+## Web
+
+This page provides the TypeScript API reference of the Agora Classroom SDK.
+
+### AgoraEduSDK
+
+`AgoraEduSDK` is the basic interface of the Agora Classroom SDK and provides the main methods that can be invoked by your app.
+
+#### config
+
+```typescript
+static config(params: ConfigParams):void
+```
+
+Configure the SDK.
+
+**Sample code**
+
+```typescript
+AgoraEduSDK.config({
+  // Agora App ID
+  appId: "<YOUR AGORA APPID>",
+  // Region
+  region: "NA"
+})
+```
+
+**Parameter**
+
+| Parameter | Description |
+| :------- | :----------------------------------------------------------- |
+| `params` | The SDK global configuration. See [`ConfigParams`](#configparams). |
+
+#### launch
+
+```typescript
+static launch(dom: Element, option: LaunchOption):() => void
+```
+
+Launch a classroom.
+
+**Sample code**
+
+```typescript
+// Configure courseware
+let resourceUuid = "xxxxx"
+let resourceName = "my ppt slide"
+let sceneInfos = []
+let sceneInfo = {
+    name: "1",
+    ppt: {
+        src: "pptx://....",
+        width: 480,
+        height: 360
+    }
+}
+sceneInfos.push(sceneInfo)
+
+let courseWareList = [{
+    resourceUuid,
+    resourceName,
+    size: 10000,
+    updateTime: new Date().getTime(),
+    ext: "pptx",
+    url:null,
+    scenes: sceneInfos,
+    taskUuid: "xxxx",
+    taskToken: "xxx",
+    taskProgress: NetlessTaskProgress
+}]
+
+// Launch a classroom
+AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
+    rtmToken: "<your rtm token>",
+    userUuid: "test",
+    userName: "teacher",
+    roomUuid: "4321",
+    roleType: 1,
+    roomType: 4,
+    roomName: "demo-class",
+    pretest: false,
+    language: "en",
+    startTime: new Date().getTime(),
+    duration: 60 * 30,
+    courseWareList: [],
+    listener: (evt) => {
+        console.log("evt", evt)
+    }
+})
+```
+
+**Parameter**
+
+| Parameter | Description |
+| :------- | :----------------------------------------------------------- |
+| `dom` | See [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document) for details. |
+| `option` | The classroom launching configuration. See [`LaunchOption`](#launchoption). |
+
+**Return value**
+
+Returns a function used to destroy the scene and recycle resources.
+
+### Type definition
+
+#### ConfigParams
+
+The SDK global configuration. Used when calling [`AgoraEduSDK.config`](#config).
+
+```typescript
+export type ConfigParams = {
+    appId: string;
+    region?: string;
+};
+```
+
+| Attributes | Description |
+| :------- | :----------------------------------------------------------- |
+| `appId` | (Required) The Agora App ID. See [Get the Agora App ID](/en/solutions/flexible-classroom/build/manage-agora-account#get-the-app-id). |
+| `region` | (Optional) The region where the classrooms is located. Agora recommends you set a region close to the region of the object storage service for your courseware or recording files, because cross-region transmission of large static resources can lead to delay. For example, if your S3 service is in North America, you should set this parameter to `NA`. All Smart Classroom clients must set the same area, otherwise they cannot communicate with each other. All clients must use the same region, otherwise, they may fail to communicate with each other. Flexible Classroom supports the following regions:<li>`CN`: Mainland China</li><li>`AP`: Asia Pacific</li><li>`EU`: Europe</li><li>`NA`: North America</li> |
+
+#### ListenerCallback
+
+```typescript
+export type ListenerCallback = (evt: AgoraEduClassroomEvent, ...args: unknown[]) => void;
+```
+
+#### LaunchOption
+
+The classroom launching configuration. Used when calling [`AgoraEduSDK.launch`](#launch).
+
+```typescript
+export type LaunchOption = {
+    userUuid: string;
+    userName: string;
+    roomUuid: string;
+    roleType: EduRoleTypeEnum;
+    roomType: EduRoomTypeEnum;
+    roomServiceType?: EduRoomServiceTypeEnum;
+    roomName: string;
+    listener: ListenerCallback;
+    pretest: boolean;
+    rtmToken: string;
+    language: LanguageEnum;
+    startTime?: number;
+    duration: number;
+    courseWareList: CourseWareList;
+    recordUrl?: string;
+    widgets?: {[key: string]: AgoraWidgetBase};
+    userFlexProperties?: {[key: string]: any};
+    mediaOptions?: MediaOptions;
+    latencyLevel?: 1 | 2;
+    platform?: Platform;
+    virtualBackgroundImages?: string[];
+    webrtcExtensionBaseUrl?: string;
+    rtcCloudProxyType?: AgoraCloudProxyType;
+    rtmCloudProxyEnabled? boolean;
+};
+```
+
+| Parameter | Description |
+| :----------------------- | :----------------------------------------------------------- |
+| `rtmToken` | (Required) The Signaling token used for authentication. For details, see [Secure authentication with tokens](/en/solutions/flexible-classroom/build/authentication-workflow). |
+| `userUuid` | The user ID. This is the globally unique identifier of a user. **Must be the same as the User ID that you use for generating an Signaling token**. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `userName` | (Required) The user name for display in the classroom. The string length must be less than 64 bytes. |
+| `roomUuid` | (Required) The room ID. This is the globally unique identifier of a classroom. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `roomName` | (Required) The room name for display in the classroom. The string length must be less than 64 bytes. |
+| `roleType` | (Required) The role of the user in the classroom. See [`EduRoleTypeEnum`](#eduroletypeenum). |
+| `roomType` | (Required) The classroom type. See [`EduRoomTypeEnum`](#eduroomtypeenum). |
+| `roomServiceType`  | （Optional) The service type of big classrooms. See [EduRoomServiceTypeEnum](#eduroomservicetypeenum).  |
+| `listener` | (Required) Classroom event callback, please refer to the event type for details. |
+| `pretest` | (Required) Whether to enable the pre-class device test:<li>`true`: Enable the pre-class device test. After this function is enabled, end users can see a page for the device test before entering the classroom. They can check whether their camera, microphone, and speaker can work properly.</li><li>`false`: Disable the pre-class device test.</li> |
+| `language` | (Required) The UI language. See [`LanguageEnum`](#languageenum). |
+| `startTime` | (Required) The start time (ms) of the class, determined by the first user joining the classroom. |
+| `duration` | (Required) The duration (second) of the class, determined by the first user joining the classroom. |
+| `recordUrl` | (Optional) The URL address to be recorded. Developers need to pass in the URL of the web page deployed by themselves for page recording, such as `https://cn.bing.com/recordUrl`. |
+| `widgets`| (Optional) Extensive widgets that  extend the classroom capabilities. See [Embed a custom plugin](/en/solutions/flexible-classroom/build/embed-custom-plugin) for details.|
+| `courseWareList` | (Optional) The configuration of courseware assigned by the educational institution, which cannot be edited by the client. See [`CourseWareList`](#coursewarelist) for details. After passing this object, the SDK downloads the courseware from the Agora cloud storage component to the local when launching the classroom. |
+| `userFlexProperties` | (Optional) User properties customized by the developer.  |
+| `mediaOptions` | (Optional) Media stream configurations, including the encryption configuration and the encoding configurations of the screen-sharing stream and the video stream captured by the camera. See `MediaOptions` for details. |
+| `latencyLevel` | (Optional) The latency level of an audience member in interactive live streaming:<li>`1`: Low latency. The latency from the sender to the receiver is 1500 ms to 2000 ms.</li><li>(Default) Ultra-low latency. The latency from the sender to the receiver is 400 ms to 800 ms.</li> |
+| `virtualBackgroundImages` | (Optional) The URL of the virtual background image. The domain name of the resource should be the same as the domain name where you deployed smart classroom. Supports PNG and JPG format images. |
+| `webrtcExtensionBaseUrl` | (Optional) The URL or the `WebRtc` extensions. The default value is `https://solutions-apaas.agora.io/static`. If you want to use the advanced features such as virtual backgrounds, AI noise suppression, and beauty options, you need to implement the `WebRtc` extensions and relevant resources in the Flexible Classroom SDK domain. These are the steps: 1. When you run `yarn build:demo` to complete packaging, the corresponding files are generated in `packages/agora-demo-app/build/extensions`. 2. Implement the directory in the domain of the Flexible Classroom SDK. |
+| `rtcCloudProxy` | (Optional) The cloud proxy type for the RTC service: [`AgoraCloudProxyType`](#agoracloudproxytype). |
+| `rtmCloudProxyEnabled` | (Optional) Where to enable cloud proxy for the RTM service. |
+
+#### MediaOptions
+
+```typescript
+export type MediaOptions = {
+    cameraEncoderConfiguration?: EduVideoEncoderConfiguration;
+    screenShareEncoderConfiguration?: EduVideoEncoderConfiguration;
+    encryptionConfig?: MediaEncryptionConfig;
+    channelProfile?: ChannelProfile;
+    web?: {
+        codec: SDK_CODEC;
+        mode: SDK_MODE;
+    };
+};
+```
+
+Media options.
+
+| Parameter | Description |
+| :-------------------------------- | :----------------------------------------------------------- |
+| `cameraEncoderConfiguration` | The encoding configuration of the video stream captured by the camera. See [EduVideoEncoderConfiguration](#eduvideoencoderconfiguration). |
+| `screenShareEncoderConfiguration` | The encoding configuration of the screen-sharing stream. See [EduVideoEncoderConfiguration](#eduvideoencoderconfiguration). |
+| `encryptionConfig` | The media stream encryption configuration. See [MediaEncryptionConfig](#mediaencryptionconfig). |
+| `channelProfile`                | Channel profile configuration. See [ChannelProfile](#channelprofile) for details.     |
+| `web`   | Web configuration for browser codec format and channel mode. <ul><li>`codec`: Browser codec format. Available values are as follows: <ul> <li>`"vp9"`: VP9</li><li>`"h264"`: H.264</li></ul></li><li>`mode`: Channel mode. Available values are as follows: <ul><li>`"rtc"`: Communication mode, commonly used for one-to-one or one-to-many classrooms.</li><li>`"live"`: Live-streaming mode. It costs less and has a higher latency than the communication mode.</li></ul></li><ul></ul></ul>|
+
+#### EduVideoEncoderConfiguration
+
+```typescript
+export interface EduVideoEncoderConfiguration {
+  width: number;
+  height: number;
+  frameRate: number;
+  bitrate: number;
+}
+```
+
+Video encoder configurations.
+
+| Parameter | Description |
+| :---------- | :------------------- |
+| `width` | Width (pixel) of the video frame. |
+| `height` | Height (pixel) of the video frame. |
+| `frameRate` | The frame rate (fps) of the video. |
+| `bitrate` | The bitrate (Kbps) of the video. |
+
+#### MediaEncryptionConfig
+
+```typescript
+export declare interface MediaEncryptionConfig {
+  mode: MediaEncryptionMode,
+  key: string
+}
+```
+
+The media stream encryption configuration. Used in [MediaOptions](#mediaoptions).
+
+| Parameter | Description |
+| :----- | :----------------------------------------------------------- |
+| `mode` | Encryption mode. See [MediaEncryptionMode](#mediaencryptionmode). All users in the same classroom must use the same encryption mode and encryption key. |
+| `key` | The encryption key. |
+
+#### MediaEncryptionMode
+
+```swift
+export enum MediaEncryptionMode {
+  AES_128_XTS = 1,
+  AES_128_ECB = 2,
+  AES_256_XTS = 3,
+  AES_128_GCM = 5,
+  AES_256_GCM = 6
+}
+```
+
+Encryption modes. Used in [MediaEncryptionConfig](#mediaencryptionconfig).
+
+| Parameter | Description |
+| :------------ | :-------------------------- |
+| `AES_128_XTS` | 128-bit AES encryption, XTS mode. |
+| `AES_128_ECB` | 128-bit AES encryption, ECB mode. |
+| `AES_256_XTS` | 256-bit AES encryption, XTS mode. |
+| `AES_128_GCM` | 128-bit AES encryption, GCM mode. |
+| `AES_256_GCM` | 256-bit AES encryption, GCM mode. |
+
+#### CourseWareList
+
+The courseware pre-download configuration. Used when calling [`AgoraEduSDK.launch`](#launch).
+
+```typescript
+export type CloudDriveResourceConvertProgress = {
+    totalPageSize: number;
+    convertedPageSize: number;
+    convertedPercentage: number;
+    convertedFileList: {
+        name: string;
+        ppt: {
+            width: number;
+            height: number;
+            preview?: string;
+            src: string;
+        };
+    }[];
+    currentStep: string;
+};
+
+export type CourseWareItem = {
+    resourceName: string;
+    resourceUuid: string;
+    ext: string;
+    url?: string;
+    size: number;
+    updateTime: number;
+    taskUuid: string;
+    conversion: {
+        type: string;
+        preview: boolean;
+        scale: number;
+        outputFormat: string;
+    };
+    taskProgress?: CloudDriveResourceConvertProgress;
+};
+
+export type CourseWareList = CourseWareItem[];
+```
+
+`CourseWareList` is an array that consists of `CourseWareItem` objects.
+
+```json
+[
+    {
+        resourceName: xxxxxxx,
+        resourceUuid: xxxxxxxxx,
+        ext: 'pptx',
+        url: 'https://xxxxxxxxxxxxxx',
+        size: 0,
+        updateTime: xxxxxxxx,
+        taskUuid: 'xxxxxxxxx',
+        conversion: {
+            type: 'dynamic',
+            preview: true,
+            scale: 2,
+            outputFormat: 'png',
+        },
+        taskProgress: {
+            totalPageSize: 3,
+            convertedPageSize: 3,
+            convertedPercentage: 100,
+            convertedFileList: [
+                {
+                    name: '1',
+                    ppt: {
+                        src: 'pptx://convertcdn.netless.link/dynamicConvert/3bxxxxxxx/1.slide',
+                        width: 1280,
+                        height: 720,
+                        preview: 'dddddddddddddddurl',
+                    },
+                },
+                ...
+            ] as any,
+            currentStep: '',
+        },
+    },
+],
+```
+
+| Parameter | Description |
+| :---------| :-----------|
+| `resourceName` | The file name for display in the classroom. The string length must be less than 64 bytes. |
+| `resourceUuid` | The file ID. This is the unique identifier of a file. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `ext` | The file suffix. |
+| `size` | The file size (bytes). |
+| `updateTime` | The latest modified time of the file. |
+| `taskUuid` | The unique identifier of the file conversion task. |
+| `conversion` | <ul><li>`type`: A string value that idicates the type of file conversion. You can set it as:<ul><li>`static`: Convert the PPT, PPTX, DOC, DOCX, or PDF file to a static image in PNG, JPG, JPEG, or WEBP format. The converted file does not retain the animation effects of the original file.</li><li>`dynamic`: Convert the PPTX file (edited with Microsoft Office) to an HTML page. The converted file retains the animation effects of the original file.</li></ul></li><li>`preview`: A boolean value that indicates whether you need a preview window.</li><li>`scale`: A number value that indicates the conversion scale. If you set it as `1`, it means the file doesn't change the size after conversion. The range is [0, 3].</li><li>`outputFormat`: A string value that indicates the export format of the images after file conversion. For example, you can set it as `"png"`.</li><ul></ul></ul>  |
+| `url` | The address of the file. Flexible Classroom clients automatically convert files with the suffixes of `"ppt"`, `"pptx"`, `"doc"`, `"docx"`, and `"pdf"` to formats that can be displayed on the whiteboard in classrooms. If the suffix name is not listed above, you must set `url `and leave `scenes` empty. |
+| `taskProgress` | The JSON object, `CloudDriveResourceConvertProgress`, that indicates the progress of the file conversion task. It contains the following fields:<ul><li>`totalPageSize`: Total page size.</li><li>`convertedPageSize`: The number of converted pages.</li><li>`convertedPercentage`: The progress of the conversion task, expressed as a percentage.</li><li>`convertedFileList`: A list of converted file pages. Each file page represents a record that contains the following fields:<ul><li>`name`: The name of the file page.</li><li>`ppt`: Details of the slide included in the file page, which contains the following fields:<ul><li>`width`: The width of the slide.</li><li>`height`: The height of the slide.</li><li>`src`: The download URL of the converted page.</li><li>`preview`: The URL of the preview image.</li></ul></li></ul></li><li>`currentStep`: The current step of the conversion task. The possible values are `extracting` (extracting the resources), `generatingPreview` (generating the preview image), `mediaTranscode` (transcoding the media file), and `packaging` (packaging the file).</li></ul>  |
+
+#### EduRoleTypeEnum
+
+```typescript
+export enum EduRoleTypeEnum {
+  audience = 0,
+  teacher = 1,
+  student = 2,
+  assistant = 3
+}
+```
+
+The role of the user in the classroom. Set in [`LaunchOption`](#launchoption).
+
+| Parameter | Description |
+| :---------- | :------------------------ |
+| `audience` | `0`: Audience, only used for web page recording. |
+| `teacher` | `1`: Teacher. |
+| `student` | `2`: A student. |
+| `assistant` | `3`: Teaching assistant. |
+
+#### EduRoomTypeEnum
+
+```typescript
+export enum EduRoomTypeEnum {
+  Room1v1Class = 0,
+  RoomBigClass = 2,
+  RoomSmallClass = 4
+}
+```
+
+The classroom type. Set in [`LaunchOption`](#launchoption).
+
+| Parameter | Description |
+| :--------------- | :----------------------------------------------------------- |
+| `Room1v1Class` | `0`: One-to-one Classroom. An online teacher gives an exclusive lesson to only one student. |
+| `RoomBigClass` | `2`: Lecture Hall. A teacher gives an online lesson to multiple students. Students do not send their audio and video by default. There is no upper limit on the number of students. During the class, students can raise their hands to attract the teacher's attention and request to speak up. Once the teacher approves, the student can send their audio and video to interact with the teacher. |
+| `RoomSmallClass` | `4`: Small Classroom. A teacher gives an online lesson to multiple students. Students do not send their audio and video by default. The maximum number of users in a classroom is 500. During the class, the teacher can invite students to speak up on stage and have real-time audio and video interactions with the teacher. |
+
+#### EduRoomServiceTypeEnum
+
+```typescript
+export enum EduRoomServiceTypeEnum {
+  LivePremium = 0,
+}
+```
+
+The service type used in [`LaunchOption`](#launchoption).
+
+| Parameter | Description |
+| :--------------- | :----------------------------------------------------- |
+|`LivePremium`  | The classroom use the RTC service in the channel profile of live-broadcasting, with a latency of 400 ms. It works the same as interactive big classes.   |
+
+#### ChannelProfile
+
+```typescript
+export enum ChannelProfile {
+  Communication = 0,
+  LiveBroadcasting = 1,
+}
+```
+
+Channel profiles, used in [MediaOptions](#mediaoptions).
+
+| Values  | Description            |
+| :----- | :-------------------------- |
+| `Communication` | communication mode, commonly used for one-to-one or one-to-many classrooms. |
+| `LiveBroadcasting`  | live-streaming mode. It costs less and has a higher latency than the communication mode. |
+
+#### LanguageEnum
+
+```typescript
+export type LanguageEnum = "en" | "zh"
+```
+
+The language of the user interface. Set in [`LaunchOption`](#launchoption).
+
+| Parameter | Description |
+| :----- | :----- |
+| `"en"` | English. |
+| `"zh"` | Chinese. |
+
+#### AgoraCloudProxyType
+
+The cloud proxy type. Set in [`LaunchOptions`](#launchoption).
+
+| Parameter | Description |
+| --- | --- |
+| `Automatic` | `0`: The automatic mode. In this mode, the SDK will first attempt to connect directly to Agora SDRTN. If the attempt fails, the SDK will automatically fall back to sending media over TLS 443. If you are unsure whether the end user's network environment has a firewall, 'Automatic' mode is recommended as best practice. While transmitting media over TLS 443 may not be as fast and efficient as UDP, connections on TLS 443 can pass through most firewalls. |
+| `UDP` | `1`: UDP. |
+| `TCP` | `2`: TCP. |
+
+#### AgoraEduClassroomEvent
+
+Classroom event listener. Set in [`LaunchOption`](#launchoption).
+
+| Parameter | Description |
+| :----- | :----- |
+| `Ready`|	`1`: Entered the classroom successfully.|
+| `Destroyed`|	`2`: The classroom has been destroyed. Includes the reason for leaving as a parameter: <ul><li>`1`: Left the room voluntarily.</li><li>`2`: Have been kicked out of the room.</li></ul>|
+| `FailedToJoin`|	`3`: Failed to enter the classroom.|
+| `KickOut`|	`101`: Being kicked out of the room.|
+| `TeacherTurnOnMyMic`|	`102`: Audio streaming permission is enabled.|
+| `TeacherTurnOffMyMic`|	`103`: Audio streaming permission is turned off.|
+| `UserAcceptToStage`|	`106`: Get on the podium.|
+| `UserLeaveStage`|	`107`: Leave the podium.|
+| `RewardReceived`|	`108`: Reward received. Includes a list of rewarded users as a parameter.|
+| `TeacherTurnOnMyCam`|	`109`: The video streaming permission is enabled.|
+| `TeacherTurnOffMyCam`|	`110`: The video streaming permission has been turned off.|
+| `CurrentCamUnplugged`|	`111`: The current camera device is unplugged.|
+| `CurrentMicUnplugged`|	`112`: The current microphone device is unplugged.|
+| `CurrentSpeakerUnplugged`|	`113`: The current speaker is unplugged.|
+| `CaptureScreenPermissionDenied`|	`114`: No screen capture permission.|
+| `BatchRewardReceived`|	`117`: Receive bulk rewards. Includes a list of rewarded users as a parameter.|
+| `InvitedToGroup`|	`118`: Receive invitation to join group. Includes group information as parameters.|
+| `MoveToOtherGroup`|	`119`: Moved to other groups. Includes the following parameters:<ul><li>Previous group</li><li>New group</li></ul>|
+| `JoinSubRoom`|	`120`: Join a group.|
+| `LeaveSubRoom`|	`121`: Leave the group.|
+| `AcceptedToGroup`|	`122`: The user accepts to join the group. Includes the following parameters: <ul><li>Group ID</li><li>Accepting user</li></ul>|
+| `UserJoinGroup`|	`123`: Other users join the group. Includes the following parameters: <ul><li>Group ID</li><li>List of joining users</li></ul>|
+| `UserLeaveGroup`|	`124`: Other users leave the group. Includes the following parameters: <ul><li>Group ID</li><li>List of leaving users</li></ul>|
+| `RejectedToGroup`|	`125`: The user refuses to join the group. Includes the following parameters: <ul><li>Group ID</li><li>List of refusing users</li></ul>|
+| `RTCStateChanged`|	`201`: RTC connection status change. Includes the RTC connection status as a parameter: <ul><li>`0`: Not connected</li><li>`1`: Connecting</li><li>`2`: Connected</li><li>`3`: Reconnecting</li></ul>|
+| `ClassStateChanged`|	`202`: Classroom status changes. Includes the class status as a parameter: <ul><li>`0`: Started </li><li>`1`: Not started</li><li>`2`: Dragging </li><li>`3`: Ended</li></ul> |
+
+## Electron
+
+The Electron Classroom SDK uses the same TypeScript API surface as the Web Classroom SDK. See [Web](#web).
