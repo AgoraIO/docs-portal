@@ -177,10 +177,10 @@ To switch to a new Certificate, follow these steps:
 
   :::warning
 
-  > Once a certificate is deleted, it cannot be restored. Before deleting the secondary certificate, make sure that most users have switched to the new certificate to avoid the following consequences:
-  >
-  >   - All tokens generated using the deleted certificate become invalid, and users can no longer use these tokens to join channels.
-  >   - Users who have joined the channel cannot specify new tokens through `renewToken`.
+  Once a certificate is deleted, it cannot be restored. Before deleting the secondary certificate, make sure that most users have switched to the new certificate to avoid the following consequences:
+
+    - All tokens generated using the deleted certificate become invalid, and users can no longer use these tokens to join channels.
+    - Users who have joined the channel cannot specify new tokens through `renewToken`.
 
   :::
 ## Check usage
@@ -203,15 +203,15 @@ Follow these steps to check your usage:
 
 2. (Optional) Add filters for the usage data, as follows:
 
-  - Select a time frame and data granularity.
+   - Select a time frame and data granularity.
 
-  - Select **All Projects** or a specific project from the dropdown menu.
+   - Select **All Projects** or a specific project from the dropdown menu.
 
-  - Select a product to view its usage data.
+   - Select a product to view its usage data.
 
-  - Check **View Breakdown**.
+   - Check **View Breakdown**.
 
-  ![Console Usage](/images/common/console-usage-details.png)
+   ![Console Usage](/images/common/console-usage-details.png)
 
 ## Manage members and teams
 
@@ -240,9 +240,9 @@ On the [Teams and members](https://console.agora.io/v2/teams-members) page, **Me
 -  Delete a member.
 
   :::note
-  > Only the main account can delete a member account. Member accounts assigned to the Admin team cannot delete a member account.
+  Only the main account can delete a member account. Member accounts assigned to the Admin team cannot delete a member account.
+:::
 
-  :::
 ### Manage teams and permissions
 
 On the **Teams and members** page, **Teams** tab, you can view the permissions assigned to teams. Agora predefines five teams for you. The permissions of each predefined team are as follows:
@@ -307,15 +307,15 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
 
   1. On the **Configure SAML** tab, fill in the following SAML configurations generated in Agora Console:
 
-   - In the **Single sign on URL** field, enter `https://sso2.agora.io/api/v0/saml/idp/callback`.
-   - In the **Audience URI (SP Entity ID)** field, enter `https://sso2.agora.io/{companyId}/saml/SSO` where `{companyId}` is your company ID.
-   - In the **Attribute Statements (optional)** section, add the following attribute:
+     - In the **Single sign on URL** field, enter `https://sso2.agora.io/api/v0/saml/idp/callback`.
+     - In the **Audience URI (SP Entity ID)** field, enter `https://sso2.agora.io/{companyId}/saml/SSO` where `{companyId}` is your company ID.
+     - In the **Attribute Statements (optional)** section, add the following attribute:
 
-    |Name       |Value        |
-    |:----------------|:--------------------|
-    |`email`|`user.email`|
+      |Name       |Value        |
+      |:----------------|:--------------------|
+      |`email`|`user.email`|
 
-   ![okta-saml-config](/images/common/okta-saml-config.png)
+     ![okta-saml-config](/images/common/okta-saml-config.png)
 
   1. On the **Feedback** tab, select **I'm an Okta customer adding an internal app** and tick **This is an internal app that we have created**, then click **Finish**.
 
@@ -325,11 +325,11 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
 
   1. In Okta Console, select the **Sign On** tab for Agora integration and click **View Setup Instructions**. You see the following information:
 
-   - **Identity Provider Single Sign-On URL**: At the end of this procedure, your team members use this URL to sign in to Agora Console
-   - **Identity Provider Issuer**
-   - **X.509 Certificate**
+     - **Identity Provider Single Sign-On URL**: At the end of this procedure, your team members use this URL to sign in to Agora Console
+     - **Identity Provider Issuer**
+     - **X.509 Certificate**
 
-   ![okta-saml-setup](/images/common/okta-saml-setup.png)
+     ![okta-saml-setup](/images/common/okta-saml-setup.png)
 
 1. Configure SAML settings in Agora Console
 
@@ -363,13 +363,13 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
    1. In Okta Console, select the **General** tab under **Agora integration** and click **Edit**.
    1. In the **Provisioning** section, select **SCIM** and click **Save**.
    1. Select the **Provisioning** tab under **Agora integration**, then under **Settings** > **Integration** click **Edit**. Make the following changes:
-    - In **SCIM connector base URL**, enter the corresponding URL from Agora Console.
-    - In **Unique identifier field for users**, enter `email`.
-    - Under **Supported provisioning actions**, tick all the checkboxes.
-    - In **Authentication Mode**, select **Basic Auth**.
-    - Under the **Basic Auth** section, enter the username and password from the SSO management page in Agora Console.
+      - In **SCIM connector base URL**, enter the corresponding URL from Agora Console.
+      - In **Unique identifier field for users**, enter `email`.
+      - Under **Supported provisioning actions**, tick all the checkboxes.
+      - In **Authentication Mode**, select **Basic Auth**.
+      - Under the **Basic Auth** section, enter the username and password from the SSO management page in Agora Console.
 
-    ![scim-configured](/images/common/scim-configured.png)
+      ![scim-configured](/images/common/scim-configured.png)
 
 After enabling and configuring Okta integration, the [Big Bang feature](https://help.okta.com/oie/en-us/content/topics/reference/glossary.htm) is enabled by default. This means that login
 to Agora Console with email and password is no longer available and your team members can log in only through Okta.

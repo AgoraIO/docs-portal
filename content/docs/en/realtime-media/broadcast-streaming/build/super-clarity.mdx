@@ -11,7 +11,7 @@ The Super Clarity extension leverages Agora's AI quality enhancement algorithm, 
 
 <PlatformStructured platform="web">
 ## Understand the tech
- 
+
 The media transmission pipeline of the Agora Web SDK consists of capture, pre-processing, encoding, transmission, decoding, post-processing, and playback stages. The Super Clarity extension processes video data in the post-processing stage to apply the AI enhancement effect.
 
 ![Super clarity tech](/images/extensions-marketplace/web-extension-tech.svg)
@@ -20,7 +20,7 @@ The media transmission pipeline of the Agora Web SDK consists of capture, pre-pr
 
 Ensure that you have implemented the [SDK quickstart](../index) in your project.
 
-## Implement the logic 
+## Implement the logic
 
 This section shows you how to integrate the Super Clarity extension into your app.
 
@@ -36,21 +36,21 @@ To install the [Super Clarity extension](https://www.npmjs.com/package/agora-ext
 
   1. To import the Super Clarity extension, use one of the following methods:
 
-    - **Method 1**: Add the following code to your JavaScript file:
+     - **Method 1**: Add the following code to your JavaScript file:
 
-      ```javascript
-      import {
-       SuperClarityExtension,
-       SuperClarityEvents,
-       SuperClarityProcessor,
-      } from 'agora-extension-super-clarity';
-      ```
-   
-    - **Method 2:** Import it in the HTML file using the script tag. After importing, you can directly use the `SuperClarityExtension` object in your JavaScript file.
+       ```javascript
+       import {
+        SuperClarityExtension,
+        SuperClarityEvents,
+        SuperClarityProcessor,
+       } from 'agora-extension-super-clarity';
+       ```
 
-      ```html
-      <script src="./agora-extension-super-clarity.js"></script>
-      ```
+     - **Method 2:** Import it in the HTML file using the script tag. After importing, you can directly use the `SuperClarityExtension` object in your JavaScript file.
+
+       ```html
+       <script src="./agora-extension-super-clarity.js"></script>
+       ```
 ### Register the extension
 
 Before joining a channel, create a `SuperClarityExtension` object and call the SDK's `registerExtensions` method to register the extension.
@@ -99,7 +99,7 @@ async function onUserPublished(user, mediaType) {
  }
  context.uid = user.uid;
  context.track = await context.client.subscribe(user, mediaType);
- 
+
  // Create a processor
  context.processor = extension.createProcessor();
 
@@ -156,11 +156,11 @@ async function onUserUnpublished(user, mediaType) {
  if (!context.client || mediaType !== "video" || context.uid !== user.uid) {
   return;
  }
- 
+
  // Disconnect the pipeline between the processor and the current video track
  context.processor.unpipe();
  context.track.unpipe();
- 
+
  // Destroy the processor and video track
  await context.processor.release();
  context.processor = undefined;
@@ -229,7 +229,7 @@ async function onUserUnpublished(user, mediaType) {
 }
 
 join('your-appid', 'your-channel');
-``` 
+```
 
 ## Reference
 
@@ -316,7 +316,7 @@ var destroySCProcessor = async (processor) => {
    }, 1000);
   }
 }
-``` 
+```
 
 ### API reference
 

@@ -16,7 +16,7 @@ The following figure illustrates the process of data transfer with media stream 
 ![EncryptMediaStream](/images/video-sdk/encrypt_media_streams_dataTransferProcess-web.svg)
 
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement media stream encryption
 
@@ -32,8 +32,8 @@ Video SDK supports the following encryption modes:
 - `"sm4-128-ecb"`: 128-bit SM4 encryption, ECB mode.
 
 Available only in Web SDK v4.5.0 and higher:
-- `"aes-128-gcm2"`: 128-bit AES encryption, GCM mode, salted. 
-- `"aes-256-gcm2"`: 256-bit AES encryption, GCM mode, salted. 
+- `"aes-128-gcm2"`: 128-bit AES encryption, GCM mode, salted.
+- `"aes-256-gcm2"`: 256-bit AES encryption, GCM mode, salted.
 
 For maximum security, best practice is to set the encryption mode to `"aes-128-gcm2"` or `"aes-256-gcm2"`, and specify an encryption key and salt. If you choose another encryption mode, you only need to specify the encryption key.
 
@@ -41,19 +41,19 @@ To add built-in media stream encryption to your app, refer to the following step
 
 1. Generate a key and salt on your server
 
-  - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
-  
-    ```shell
-    # Generate a 32-byte hexadecimal key
-    openssl rand -hex 32
-    ```
+   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
 
-  - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
-  
-    ```shell
-    # Generate a Base64-encoded, 32-byte salt
-    openssl rand -base64 32
-    ```
+     ```shell
+     # Generate a 32-byte hexadecimal key
+     openssl rand -hex 32
+     ```
+
+   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
+
+     ```shell
+     # Generate a Base64-encoded, 32-byte salt
+     openssl rand -base64 32
+     ```
 
 2. Implement client-side logic
 
@@ -62,10 +62,10 @@ To add built-in media stream encryption to your app, refer to the following step
   1. Before joining a channel, call `AgoraRTCClient.setEncryptionConfig` to select the encryption mode and specify the encryption key and salt.
 
   1. When you call `setEncryptionConfig`, the web client:
-  
-    * Converts the key from Hex to ASCII, before passing it to the Video SDK.
 
-    * Converts the salt from Base64 to Uint8Array, before passing it to the Video SDK.
+     * Converts the key from Hex to ASCII, before passing it to the Video SDK.
+
+     * Converts the salt from Base64 to Uint8Array, before passing it to the Video SDK.
 
   :::note
   - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.

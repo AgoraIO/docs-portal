@@ -31,7 +31,7 @@ describe('docs journeys', () => {
       /(\.\.\/best-practices\/audio-setup\.md|\/en\/ai\/best-practices\/audio-setup)/,
     );
     expect(quickstart).toContain(
-      '/en/api-reference/conversational-ai/rest-api',
+      '/en/api-reference/api-ref/conversational-ai/rest-api',
     );
   });
 

@@ -15,16 +15,16 @@ This page shows you how to implement audio mixing and playing sound effects in y
 Video SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
-  
+
     Mix in music file such as background music with microphone audio. Using this feature, you can play only one file at a time.
- 
+
   * **Sound effects**
-    
+
     Play audios with a short duration. For example, applause, cheers, or gunshots. You can play multiple sound effects at the same time.
 
 ## Prerequisites
 
-Ensure that you have: 
+Ensure that you have:
 
 * Implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
 
@@ -54,7 +54,7 @@ To manage audio mixing and sound effects, Video SDK provides the following APIs:
 | Get and adjust playback position and volume  | `setEffectPosition`<br/> `getEffectCurrentPosition`<br/> `getEffectsVolume`<br/> `setEffectsVolume`<br/> `setVolumeOfEffect` | `getAudioMixingCurrentPosition`<br/> `setAudioMixingPosition`<br/> `getAudioMixingPublishVolume`<br/> `adjustAudioMixingPublishVolume`<br/> `getAudioMixingPlayoutVolume`<br/> `adjustAudioMixingPlayoutVolume` |
 | Report playback status of audio files     | `onAudioEffectFinished`            | `onAudioMixingStateChanged`          |
 
-### Set up file access permissions 
+### Set up file access permissions
 For Android projects with `targetSdkVersion` greater than or equal to 20, add the following to the project's `AndroidManifest.xml` file:
 
   ```xml
@@ -189,7 +189,7 @@ override fun onAudioEffectFinished(soundId: Int) {
 </CodeBlockTabs>
 ### Incorporate audio mixing
 
-Before or after joining a channel, call `startAudioMixing` to play the audio file. When the audio mixing status changes, the SDK triggers the `onAudioMixingStateChanged` callback and reports the reason for the change. 
+Before or after joining a channel, call `startAudioMixing` to play the audio file. When the audio mixing status changes, the SDK triggers the `onAudioMixingStateChanged` callback and reports the reason for the change.
 
 To mix in an audio file, refer to the following code example:
 
@@ -323,16 +323,16 @@ This page shows you how to implement audio mixing and playing sound effects in y
 Video SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
-  
+
     Mix in music file such as background music with microphone audio. Using this feature, you can play only one file at a time.
- 
+
   * **Sound effects**
-    
+
     Play audios with a short duration. For example, applause, cheers, or gunshots. You can play multiple sound effects at the same time.
 
 ## Prerequisites
 
-Ensure that you have: 
+Ensure that you have:
 
 * Implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
 
@@ -401,7 +401,7 @@ Before joining a channel, call `preloadEffect`to preload the sound effect file. 
 
 ### Incorporate audio mixing
 
-Before or after joining a channel, call `startAudioMixing` to play the audio file. When the audio mixing status changes, the SDK triggers the `audioMixingStateChanged` callback and reports the reason for the change. 
+Before or after joining a channel, call `startAudioMixing` to play the audio file. When the audio mixing status changes, the SDK triggers the `audioMixingStateChanged` callback and reports the reason for the change.
 
 To mix in an audio file, refer to the following code example:
 
@@ -490,16 +490,16 @@ This page shows you how to implement audio mixing and playing sound effects in y
 Video SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
-  
+
     Mix in music file such as background music with microphone audio. Using this feature, you can play only one file at a time.
- 
+
   * **Sound effects**
-    
+
     Play audios with a short duration. For example, applause, cheers, or gunshots. You can play multiple sound effects at the same time.
 
 ## Prerequisites
 
-Ensure that you have: 
+Ensure that you have:
 
 * Implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
 
@@ -568,7 +568,7 @@ Before joining a channel, call `preloadEffect`to preload the sound effect file. 
 
 ### Incorporate audio mixing
 
-Before or after joining a channel, call `startAudioMixing` to play the audio file. When the audio mixing status changes, the SDK triggers the `audioMixingStateChanged` callback and reports the reason for the change. 
+Before or after joining a channel, call `startAudioMixing` to play the audio file. When the audio mixing status changes, the SDK triggers the `audioMixingStateChanged` callback and reports the reason for the change.
 
 To mix in an audio file, refer to the following code example:
 
@@ -661,16 +661,16 @@ This page shows you how to implement audio mixing and playing sound effects in y
 Video SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
-  
+
     Mix in music file such as background music with microphone audio. Using this feature, you can play only one file at a time.
- 
+
   * **Sound effects**
-    
+
     Play audios with a short duration. For example, applause, cheers, or gunshots. You can play multiple sound effects at the same time.
 
 ## Prerequisites
 
-Ensure that you have: 
+Ensure that you have:
 
 * Implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
 
@@ -690,10 +690,10 @@ To implement audio mixing in your project, take the following steps:
   console.log("create audio file track success");
   ```
 
-  Audio tracks created from audio files follow a different audio data processing flow than microphone audio tracks. After creating a track using an audio file, if you directly call `audioFileTrack.play` or `client.publish([audioFileTrack])`, you do not hear the music either locally or remotely. 
-  
+  Audio tracks created from audio files follow a different audio data processing flow than microphone audio tracks. After creating a track using an audio file, if you directly call `audioFileTrack.play` or `client.publish([audioFileTrack])`, you do not hear the music either locally or remotely.
+
   You can publish the following audio tracks in the channel.
-  
+
   1. **MicrophoneAudioTrack**
 
     For microphone audio tracks, the SDK continuously collects the latest audio data (`AudioBuffer`) from the target microphone device.
@@ -701,7 +701,7 @@ To implement audio mixing in your project, take the following steps:
     ![MicrophoneAudioTrack](/images/video-sdk/microphone-audio-track-web.svg)
 
     * After you call the `play` method, the audio data is sent to the `LocalPlayback` component, allowing the local user to hear it.
-    
+
     * When the `publish` method is called, the audio data is transmitted to Agora SDRTN® and eventually heard by the remote user.
     The microphone audio track continues to acquire audio data until the `close` method is invoked, at which point the audio track becomes unavailable.
 
@@ -714,11 +714,11 @@ To implement audio mixing in your project, take the following steps:
     The key distinctions between collecting audio data and reading files are as follows:
 
     1. **Continuous vs. controlled reading:**
-      * Collection of audio data is continuous and cannot be paused, focusing on capturing the latest audio data.
-      * File reading provides more flexibility. You can pause, jump to specific positions, or loop playback. These operations are core functions of `BufferSourceAudioTrack`.
+       * Collection of audio data is continuous and cannot be paused, focusing on capturing the latest audio data.
+       * File reading provides more flexibility. You can pause, jump to specific positions, or loop playback. These operations are core functions of `BufferSourceAudioTrack`.
 
     1. **Initiating file reading:**
-      * After creating an audio track from an audio file, the SDK does not automatically read the file. You need to use `BufferSourceAudioTrack`'s `startProcessAudioBuffer` method to initiate the reading and audio data processing. You then call the `play` and `publish` methods to make the audio file audible locally and remotely.
+       * After creating an audio track from an audio file, the SDK does not automatically read the file. You need to use `BufferSourceAudioTrack`'s `startProcessAudioBuffer` method to initiate the reading and audio data processing. You then call the `play` and `publish` methods to make the audio file audible locally and remotely.
 
 1. **Enable audio mixing**
 
@@ -727,16 +727,16 @@ To implement audio mixing in your project, take the following steps:
   ```javascript
   // Create a microphone audio track
   const microphoneTrack = await AgoraRTC.createMicrophoneAudioTrack();
-  
+
   // Start processing audio data from the audio file
   audioFileTrack.startProcessAudioBuffer();
-  
+
   // Publish both the audio file track and the microphone track to begin mixing
   await client.publish([microphoneTrack, audioFileTrack]);
-  
+
   // To stop mixing, either stop processing audio data from the file
   audioFileTrack.stopProcessAudioBuffer();
-  
+
   // Or directly unpublish the audio file track
   await client.unpublish([audioFileTrack]);
   ```
@@ -754,7 +754,7 @@ To implement audio mixing in your project, take the following steps:
   audioFileTrack.stopProcessAudioBuffer();
   // Start processing audio data in the loop mode
   audioFileTrack.startProcessAudioBuffer({ loop: true });
-  
+
   // Get the current playback progress (seconds)
   audioFileTrack.getCurrentTime();
   // Total duration of the current audio file (seconds)
@@ -794,16 +794,16 @@ This page shows you how to implement audio mixing and playing sound effects in y
 Video SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
-  
+
     Mix in music file such as background music with microphone audio. Using this feature, you can play only one file at a time.
- 
+
   * **Sound effects**
-    
+
     Play audios with a short duration. For example, applause, cheers, or gunshots. You can play multiple sound effects at the same time.
 
 ## Prerequisites
 
-Ensure that you have: 
+Ensure that you have:
 
 * Implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
 
@@ -824,9 +824,9 @@ To manage audio mixing and voice effects, Video SDK provides the following APIs:
 
 ### Play sound effects
 
-Before joining a channel, call `preloadEffect` to preload the sound effect file. After joining the channel, call `playEffect` to play the specified sound effect file. To play multiple sound effect files simultaneously, set multiple sound effect IDs and call `playEffect` multiple times. After a sound effect is played, the Video SDK triggers the `onAudioEffectFinished` callback. 
+Before joining a channel, call `preloadEffect` to preload the sound effect file. After joining the channel, call `playEffect` to play the specified sound effect file. To play multiple sound effect files simultaneously, set multiple sound effect IDs and call `playEffect` multiple times. After a sound effect is played, the Video SDK triggers the `onAudioEffectFinished` callback.
 
-To implement this logic, refer to the following sample code: 
+To implement this logic, refer to the following sample code:
 
 ```cpp
 void CAgoraEffectDlg::OnBnClickedButtonPreload()
@@ -982,7 +982,7 @@ void CAgoraEffectDlg::OnBnClickedButtonStopAllEffect2()
 
 ### Incorporate audio mixing
 
-To play a music file, call `startAudioMixing` before or after joining a channel. After you successfully call this method, Video SDK triggers the `onAudioMixingStateChanged` callback when the mixing status changes. This callback also reports the reason for the state change. 
+To play a music file, call `startAudioMixing` before or after joining a channel. After you successfully call this method, Video SDK triggers the `onAudioMixingStateChanged` callback when the mixing status changes. This callback also reports the reason for the state change.
 
 To implement this logic, refer to the following code:
 
@@ -1064,7 +1064,7 @@ This section contains content that completes the information on this page, or po
 
 ### Sample projects
 
-Agora provides the following open source sample projects on GitHub for your reference. 
+Agora provides the following open source sample projects on GitHub for your reference.
 
 * [AudioEffect](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioEffect)
 * [AudioMixing](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioMixing)
@@ -1102,16 +1102,16 @@ This page shows you how to implement audio mixing and playing sound effects in y
 Video SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
-  
+
     Mix in music file such as background music with microphone audio. Using this feature, you can play only one file at a time.
- 
+
   * **Sound effects**
-    
+
     Play audios with a short duration. For example, applause, cheers, or gunshots. You can play multiple sound effects at the same time.
 
 ## Prerequisites
 
-Ensure that you have: 
+Ensure that you have:
 
 * Implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
 
@@ -1146,11 +1146,11 @@ Refer to the following code example:
     }
   }
   rtcEngine.registerEventHandler(EventHandler);
-  
+
   // Playing sound files
   rtcEngine.playEffect(
     soundId: 0, // Sets the sound ID
-    filePath: 'your file path', 
+    filePath: 'your file path',
     loopCount: 1, // Sets the number of times the sound effect is looped. 1 means looped once.
     pitch: 1.0, // Sets the pitch of the sound effect. 1.0 indicates the original pitch.
     pan: 0, // Sets the spatial position of the sound effect. 0.0 means the sound effect appears directly in front
@@ -1174,7 +1174,7 @@ Refer to the following code example:
     }
   }
   rtcEngine.registerEventHandler(EventHandler);
-  
+
   // Playing Music Files
   rtcEngine.startAudioMixing(
     filePath: 'your file path', // Sets the music file path
@@ -1210,16 +1210,16 @@ This page shows you how to implement audio mixing and playing sound effects in y
 Video SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
-  
+
     Mix in music file such as background music with microphone audio. Using this feature, you can play only one file at a time.
- 
+
   * **Sound effects**
-    
+
     Play audios with a short duration. For example, applause, cheers, or gunshots. You can play multiple sound effects at the same time.
 
 ## Prerequisites
 
-Ensure that you have: 
+Ensure that you have:
 
 * Implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
 
@@ -1254,7 +1254,7 @@ Refer to the following code example:
     }
   }
   rtcEngine.registerEventHandler(EventHandler);
-  
+
   // Playing sound files
   rtcEngine.playEffect(
     soundId: 0, // Setting the Sound ID
@@ -1282,7 +1282,7 @@ Refer to the following code example:
     }
   }
   rtcEngine.registerEventHandler(EventHandler);
-  
+
   // Playing Music Files
   rtcEngine.startAudioMixing(
     filePath: 'your file path', // Setting the music file path
@@ -1318,16 +1318,16 @@ This page shows you how to implement audio mixing and playing sound effects in y
 Video SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
-  
+
     Mix in music file such as background music with microphone audio. Using this feature, you can play only one file at a time.
- 
+
   * **Sound effects**
-    
+
     Play audios with a short duration. For example, applause, cheers, or gunshots. You can play multiple sound effects at the same time.
 
 ## Prerequisites
 
-Ensure that you have: 
+Ensure that you have:
 
 * Implemented the [SDK quickstart](https://docs-md.agora.io/en/video-calling/get-started/get-started-sdk.md) in your project.
 
@@ -1380,7 +1380,7 @@ To implement this logic, refer to the following code:
 RtcEngine.StartAudioMixing("File Path", false, -1);
 
 public override void OnAudioMixingStateChanged(
-  AUDIO_MIXING_STATE_TYPE state, 
+  AUDIO_MIXING_STATE_TYPE state,
   AUDIO_MIXING_REASON_TYPE errorCode)
 {
   Debug.Log(string.Format(

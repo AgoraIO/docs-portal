@@ -32,8 +32,8 @@ The following tables provide the essential information needed to migrate your Cl
 - **Service type**: The Agora service you want to access
 - **Current IP addresses**: Your existing setup that needs to be updated
 - **New IP addresses**: The specific IP addresses, ports, and network segments to implement
-- **Protocol**: The supported transport protocol(s) used to connect to the service 
-- **Port**: The network port number used for establishing the connection 
+- **Protocol**: The supported transport protocol(s) used to connect to the service
+- **Port**: The network port number used for establishing the connection
 - **Required action**: The specific changes needed for each component
 
 Use these tables to identify the configurations applicable to your regions.
@@ -218,14 +218,14 @@ When adding IP addresses:
 | Signaling and AP Service | *Not previously specified* | `52.80.192.229`, `47.96.234.219` | UDP/TCP | `443` | Add new IPs |
 | Cloud Proxy   | *Not previously specified* | `14.29.38.144/28`, `27.45.161.144/28`, `183.232.200.144/28`, `115.238.206.0/28`, `106.3.209.0/28`, `112.13.216.0/28`, `219.153.111.128/28`, `221.178.42.0/28`, `113.207.12.0/28` | UDP/TCP | `443` | Add new network segments |
 
-## Implementation and validation 
+## Implementation and validation
 Use the following approach to successfully migrate your Cloud Proxy configuration without service disruption.
 
-### Implement migration 
+### Implement migration
 Once you've completed testing, use a phased approach to implement the new Cloud Proxy configuration:
 
 - Begin with non-production environments
-- Update firewall rules based on your region 
+- Update firewall rules based on your region
 
 ### Post-migration validation​
 
@@ -237,9 +237,9 @@ After implementing the changes, verify your new configuration and check the conn
 
 1. **Prepare fallback strategy**
 
-  - Maintain complete documentation of original configuration
-  - Create rollback procedures for quickly reverting changes if needed
-  - Keep support contact information readily available
+   - Maintain complete documentation of original configuration
+   - Create rollback procedures for quickly reverting changes if needed
+   - Keep support contact information readily available
 
 ### Get support
 

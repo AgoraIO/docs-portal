@@ -50,7 +50,7 @@ v1.3.0 was released on December 11, 2024.
 
 - Added the `ChatManager#asyncDeleteAllMsgsAndConversations` method to uni-directionally clear all conversations and messages in them. You can also choose whether to clear the chat history on the server.
 - Added the function of searching for messages by search scope in `Conversation.ChatMessageSearchScope` during keyword-based search.
-  - `Conversation.ChatMessageSearchScope`: Includes three message search scopes: the message content, message extension information, and both. 
+  - `Conversation.ChatMessageSearchScope`: Includes three message search scopes: the message content, message extension information, and both.
   - `ChatManager#searchMsgFromDB(String, long, int, String, Conversation.SearchDirection, Conversation.EMMessageSearchScope)`: Searches for messages in all conversations by search scope.
   - `Conversation#searchMsgFromDB(String, long, int, String, Conversation.SearchDirection, Conversation.EMMessageSearchScope)`: Searches for messages in a conversation by search scope.
 - Added the function of tagging a conversation:
@@ -216,7 +216,7 @@ v1.0.8 was released on November 22, 2022.
 
 ## v1.0.7
 
-v1.0.7 was released on September 7, 2022. 
+v1.0.7 was released on September 7, 2022.
 
 #### New features
 
@@ -419,7 +419,7 @@ v1.3.0 was released on December 11, 2024.
 - Added the privacy protocol `PrivacyInfo.xcprivacy`.
 - Added the `AgoraChatManager#deleteAllMessagesAndConversations:completion:` method to uni-directionally clear all conversations and messages in them. You can also choose whether to clear the chat history on the server.
 - Added the function of searching for messages by search scope in `AgoraChatMessageSearchScope` during keyword-based search:
-  - `AgoraChatMessageSearchScope`: Includes three message search scopes: the message content, message extension information, and both. 
+  - `AgoraChatMessageSearchScope`: Includes three message search scopes: the message content, message extension information, and both.
   - `AgoraChatManager#loadMessagesWithKeyword:timestamp:count:fromUser:searchDirection:scope:completion:`: Searches for messages in all conversations by search scope.
   - `AgoraChatConversation#loadMessagesWithKeyword:timestamp:count:fromUser:searchDirection:scope:completion:`: Searches for messages in a conversation by search scope.
 - Added the function of tagging a conversation:
@@ -468,7 +468,7 @@ v1.3.0 was released on December 11, 2024.
 - The members in a group are double counted in certain use-cases.
 - A SQL statement error is reported when a single quotation mark `'` is included in a message search keyword.
 - The SDK reconnects to the server twice after the network is back to normal.
-- For a modified message, the `from` property is missing from the body of the message pulled from the server by an offline user that gets online. 
+- For a modified message, the `from` property is missing from the body of the message pulled from the server by an offline user that gets online.
 
 ## v1.2.0
 
@@ -555,7 +555,7 @@ v1.0.8 was released on November 22, 2022.
 
 ##  v1.0.7
 
-v1.0.7 was released on September 7, 2022. 
+v1.0.7 was released on September 7, 2022.
 
 #### New features
 
@@ -566,7 +566,7 @@ v1.0.7 was released on September 7, 2022.
 
 #### Improvements
 
-- Changed the `chatManager/contactManager/groupManager/threadManager/roomManager/pushManager` attribute in `AgoraChatClient` from `_Nonnull` to `_Nullable`. The value of this attribute is `Nil` prior to the the SDK initialization. 
+- Changed the `chatManager/contactManager/groupManager/threadManager/roomManager/pushManager` attribute in `AgoraChatClient` from `_Nonnull` to `_Nullable`. The value of this attribute is `Nil` prior to the the SDK initialization.
 - Optimized the login process for quicker login.
 - Upgraded the message encryption algorithm from CBC to GCM.
 
@@ -736,7 +736,7 @@ v1.3.0 was released on December 11, 2024.
 
 #### New features
 
-- Added the `deleteAllMessagesAndConversations` method to uni-directionally clear all conversations and messages in them on the server. 
+- Added the `deleteAllMessagesAndConversations` method to uni-directionally clear all conversations and messages in them on the server.
 - Added the function of tagging a conversation:
   - `addConversationMark`: Tags a conversation.
   - `removeConversationMark`: Untags a conversation.
@@ -778,7 +778,7 @@ v1.3.0 was released on December 11, 2024.
 
 #### Issues fixed
 
-- Some types in the SDK are incorrect. 
+- Some types in the SDK are incorrect.
 
 ## v1.2.0
 
@@ -1013,7 +1013,7 @@ Released on May 2, 2025.
     ```
 
 #### Issues fixed
- 
+
 - Build issue for Android platform on Flutter 3.29.0.
 
 ## v1.3.1
@@ -1221,9 +1221,9 @@ Released on September 7, 2022.
 
 #### New features
 
-- Adds the `customEventHandler` attribute in `ChatClient` to allow you to set custom listeners to receive the data sent from the Android or iOS device to Flutter. 
+- Adds the `customEventHandler` attribute in `ChatClient` to allow you to set custom listeners to receive the data sent from the Android or iOS device to Flutter.
 - Adds event listener classes for event listening.
-- Adds the `PushTemplate` method in `PushManager` to support custom push templates. 
+- Adds the `PushTemplate` method in `PushManager` to support custom push templates.
 - Adds the `isDisabled`  attribute in `Group` to indicate whether a group is disabled. This attribute needs to be set by developers at the server side. This attribute is returned when you call the `fetchGroupInfoFromServer` method to get group details.
 - Adds the `displayName` attribute in `PushConfigs` to allow you to check the nickname displayed in your push notifications.
 
@@ -1573,11 +1573,11 @@ The `unSubscribe` method is renamed `unsubscribe`.
 - Adds the `setConversationExtension` method to set the conversation extension information.
 - Adds the `insertMessage` method to insert a message.
 - Adds the `deleteMessagesBeforeTimestamp` method to delete messages before a specified timestamp.
-- Adds the `getThreadConversation` method to get a specified thread conversation or create the thread conversation if the conversation does not exist. 
+- Adds the `getThreadConversation` method to get a specified thread conversation or create the thread conversation if the conversation does not exist.
 - Adds the `isChatThread` attribute to `ChatConversation` to check whether a conversation is a thread conversation.
 - Adds `ChatPushManager` for the push notification configuration.
 - Adds `ChatPushConfig` for the Firebase Cloud Messaging (FCM) configuration.
-- Adds the `pushConfig` method in `ChatOptions` for the push initialization configuration. 
+- Adds the `pushConfig` method in `ChatOptions` for the push initialization configuration.
 - Adds the `updatePushConfig` method in `ChatClient` for the push configuration update.
 
 #### Improvements
@@ -1840,34 +1840,34 @@ v1.0.9 was released on February 1, 2023.
 
 #### New features
 
-1. Adds the following methods to the `SDKClient` class:     
-  - `GetLoggedInDevicesFromServer`: Gets the list of online devices on which you have logged in with a specified account.
-  - `KickDevice`: Logs out from a specified account on a device.
-  - `kickAllDevices`: Logs out from a specified account on all devices.
-2. Adds the following methods to the `RoomManager` class: 
-  - `FetchAllowListFromServer`: Gets the allow list of a chat room from the server.
-  - `CheckIfInRoomAllowList`: Checks whether the current member is on the chat room blocklist.
-  - `GetChatRoom`: Gets the details of a chat room from the memory.
-  - `UnMuteAllRoomMembers`: Unmutes all members of a chat room.
+1. Adds the following methods to the `SDKClient` class:
+   - `GetLoggedInDevicesFromServer`: Gets the list of online devices on which you have logged in with a specified account.
+   - `KickDevice`: Logs out from a specified account on a device.
+   - `kickAllDevices`: Logs out from a specified account on all devices.
+2. Adds the following methods to the `RoomManager` class:
+   - `FetchAllowListFromServer`: Gets the allow list of a chat room from the server.
+   - `CheckIfInRoomAllowList`: Checks whether the current member is on the chat room blocklist.
+   - `GetChatRoom`: Gets the details of a chat room from the memory.
+   - `UnMuteAllRoomMembers`: Unmutes all members of a chat room.
 3. Adds the following callbacks to the `IRoomManagerDelegate` class:
-  - `OnSpecificationChangedFromRoom`: Occurs when specifications of a chat room are changed.
-  - `OnAddAllowListMembersFromChatroom`: Occurs when a chat room member(s) is/are added to the allow list of a chat room.
-  - `OnRemoveAllowListMembersFromChatroom`: Occurs when a chat room member(s) is/are removed from the allow list of a chat room.
-  - `OnRemoveFromRoomByOffline`: Occurs when a member is removed from a chat room because he or she gets offline.             
+   - `OnSpecificationChangedFromRoom`: Occurs when specifications of a chat room are changed.
+   - `OnAddAllowListMembersFromChatroom`: Occurs when a chat room member(s) is/are added to the allow list of a chat room.
+   - `OnRemoveAllowListMembersFromChatroom`: Occurs when a chat room member(s) is/are removed from the allow list of a chat room.
+   - `OnRemoveFromRoomByOffline`: Occurs when a member is removed from a chat room because he or she gets offline.
 4. Adds the following callbacks to the `IConnectionDelegate` class:
-  - `OnLoggedOtherDevice`: Occurs when the user logs in to another device with the current account.
-  - `OnRemovedFromServer`：Occurs when the current user account is removed from the server.
-  - `OnForbidByServer`: Occurs when the current user account is banned by the server.
-  - `OnChangedIMPwd`：Occurs when the user is forced to log out of the current account because the login password is changed.
-  - `OnLoginTooManyDevice`: Occurs when the user is forced to log out of the current account because she or he has exceeded the maximum number of devices allowed for this account.
-  - `OnKickedByOtherDevice`：Occurs when the user is forced to log out of the current account from the current device due to the login to another device. 
-  - `OnAuthFailed`: Occurs when the user is forced to log out of the current account due to an authentication failure.
-5. Adds the following attributes to the `Group` class:           
-  - `IsMemberOnly`: Whether users can join a group only via a join request or a group invitation, but cannot join freely. 
-  - `IsMemberAllowToInvite`: Whether all the group members, other than the group owner and admins, can invite users to join the group.
-  - `MaxUserCount`：The maximum number of users that can join the group.
-  - `Ext`: The custom group extension information.
-  - `IsDisabled`: Whether the group is disabled.     
+   - `OnLoggedOtherDevice`: Occurs when the user logs in to another device with the current account.
+   - `OnRemovedFromServer`：Occurs when the current user account is removed from the server.
+   - `OnForbidByServer`: Occurs when the current user account is banned by the server.
+   - `OnChangedIMPwd`：Occurs when the user is forced to log out of the current account because the login password is changed.
+   - `OnLoginTooManyDevice`: Occurs when the user is forced to log out of the current account because she or he has exceeded the maximum number of devices allowed for this account.
+   - `OnKickedByOtherDevice`：Occurs when the user is forced to log out of the current account from the current device due to the login to another device.
+   - `OnAuthFailed`: Occurs when the user is forced to log out of the current account due to an authentication failure.
+5. Adds the following attributes to the `Group` class:
+   - `IsMemberOnly`: Whether users can join a group only via a join request or a group invitation, but cannot join freely.
+   - `IsMemberAllowToInvite`: Whether all the group members, other than the group owner and admins, can invite users to join the group.
+   - `MaxUserCount`：The maximum number of users that can join the group.
+   - `Ext`: The custom group extension information.
+   - `IsDisabled`: Whether the group is disabled.
 
 #### Improvements
 
@@ -1878,24 +1878,24 @@ v1.0.9 was released on February 1, 2023.
 5. Removed the `UINT32` and `JSONSTRING` types from the `AttributeValue` subclass in the `Message` class.
 6. Removed the `i` parameter of the integer type from the `OnDisconnected` method.
 7. Adjusted the returned result of the following methods:
-  - `importmessage`: When this method is called, the asynchronous callback is triggered instead of the result returned directly.
-  - `GetGroupMuteListFromServer`: The data type of the returned result is changed from `List` to `Dictionary`.
-  - `FetchRoomMuteList`: The data type of the returned result is changed from `List` to `Dictionary`.
+   - `importmessage`: When this method is called, the asynchronous callback is triggered instead of the result returned directly.
+   - `GetGroupMuteListFromServer`: The data type of the returned result is changed from `List` to `Dictionary`.
+   - `FetchRoomMuteList`: The data type of the returned result is changed from `List` to `Dictionary`.
 8. Renamed the following methods in the `GroupManager` class:
-  - `AddGroupWhiteList` was renamed `AddGroupAllowList`.
-  - `CheckIfInGroupWhiteList` was renamed `CheckIfInGroupAllowList`.
-  - `GetGroupWhiteListFromServer` was renamed `GetGroupAllowListFromServer`.
-  - `RemoveGroupWhiteList` was renamed `RemoveGroupAllowList`.            
+   - `AddGroupWhiteList` was renamed `AddGroupAllowList`.
+   - `CheckIfInGroupWhiteList` was renamed `CheckIfInGroupAllowList`.
+   - `GetGroupWhiteListFromServer` was renamed `GetGroupAllowListFromServer`.
+   - `RemoveGroupWhiteList` was renamed `RemoveGroupAllowList`.
 9. Renamed the following methods in the `RoomManager` class:
-  - `AddWhiteListMembers` was renamed `AddAllowListMembers`.
-  - `RemoveWhiteListMembers` was renamed `RemoveAllowListMembers`.                
-10. Changed the `ReactionList` attribute in the `Message` class to be a method.           
-11. Changed the visibility of options in `Options` in the `Group` class from public to internal.                 
+   - `AddWhiteListMembers` was renamed `AddAllowListMembers`.
+   - `RemoveWhiteListMembers` was renamed `RemoveAllowListMembers`.
+10. Changed the `ReactionList` attribute in the `Message` class to be a method.
+11. Changed the visibility of options in `Options` in the `Group` class from public to internal.
 12. Made the following adjustments in the `IGroupManagerDelegate` class:
-  - `OnAddWhiteListMembersFromGroup` was renamed `OnAddAllowListMembersFromGroup`.
-  - `OnRemoveWhiteListMembersFromGroup` was renamed `OnRemoveAllowListMembersFromGroup`.
-  - The `reason` parameter was removed from the `OnInvitationAcceptedFromGroup` method.
-  - The `groupName` and `decliner` parameters were removed from the `OnRequestToJoinDeclinedFromGroup` method.
+    - `OnAddWhiteListMembersFromGroup` was renamed `OnAddAllowListMembersFromGroup`.
+    - `OnRemoveWhiteListMembersFromGroup` was renamed `OnRemoveAllowListMembersFromGroup`.
+    - The `reason` parameter was removed from the `OnInvitationAcceptedFromGroup` method.
+    - The `groupName` and `decliner` parameters were removed from the `OnRequestToJoinDeclinedFromGroup` method.
 
 ## v1.0.8
 
@@ -2216,35 +2216,35 @@ v1.0.9 was released on February 1, 2023.
 
 #### New features
 
-1. Adds the following methods to the `SDKClient` class:     
-  - `GetLoggedInDevicesFromServer`: Gets the list of online devices on which you have logged in with a specified account.
-  - `KickDevice`: Logs out from a specified account on a device.
-  - `kickAllDevices`: Logs out from a specified account on all devices.
-2. Adds the following methods to the `RoomManager` class: 
-  - `FetchAllowListFromServer`: Gets the allow list of a chat room from the server.
-  - `CheckIfInRoomAllowList`: Checks whether the current member is on the chat room block list.
-  - `GetChatRoom`: Gets the details of a chat room from the memory.
-  - `UnMuteAllRoomMembers`: Unmutes all members of a chat room.
+1. Adds the following methods to the `SDKClient` class:
+   - `GetLoggedInDevicesFromServer`: Gets the list of online devices on which you have logged in with a specified account.
+   - `KickDevice`: Logs out from a specified account on a device.
+   - `kickAllDevices`: Logs out from a specified account on all devices.
+2. Adds the following methods to the `RoomManager` class:
+   - `FetchAllowListFromServer`: Gets the allow list of a chat room from the server.
+   - `CheckIfInRoomAllowList`: Checks whether the current member is on the chat room block list.
+   - `GetChatRoom`: Gets the details of a chat room from the memory.
+   - `UnMuteAllRoomMembers`: Unmutes all members of a chat room.
 3. Adds the following callbacks to the `IRoomManagerDelegate` class:
-  - `OnSpecificationChangedFromRoom`: Occurs when specifications of a chat room are changed.
-  - `OnAddAllowListMembersFromChatroom`: Occurs when a chat room member(s) is/are added to the allow list of a chat room.
-  - `OnRemoveAllowListMembersFromChatroom`: Occurs when a chat room member(s) is/are removed from the allow list of a chat room.
-  - `OnRemoveFromRoomByOffline`: Occurs when a member is removed from a chat room because he or she gets offline.             
+   - `OnSpecificationChangedFromRoom`: Occurs when specifications of a chat room are changed.
+   - `OnAddAllowListMembersFromChatroom`: Occurs when a chat room member(s) is/are added to the allow list of a chat room.
+   - `OnRemoveAllowListMembersFromChatroom`: Occurs when a chat room member(s) is/are removed from the allow list of a chat room.
+   - `OnRemoveFromRoomByOffline`: Occurs when a member is removed from a chat room because he or she gets offline.
 4. Adds the following callbacks to the `IConnectionDelegate` class:
-  - `OnLoggedOtherDevice`: Occurs when the user logs in to another device with the current account.
-  - `OnRemovedFromServer`：Occurs when the current user account is removed from the server.
-  - `OnForbidByServer`: Occurs when the current user account is banned by the server.
-  - `OnChangedIMPwd`：Occurs when the user is forced to log out of the current account because the login password is changed.
-  - `OnLoginTooManyDevice`: Occurs when the user is forced to log out of the current account because she or he has exceeded the maximum number of devices allowed for this account.
-  - `OnKickedByOtherDevice`：Occurs when the user is forced to log out of the current account from the current device due to the login to another device. 
-  - `OnAuthFailed`: Occurs when the user is forced to log out of the current account due to an authentication failure.
-5. Adds the following attributes to the `Group` class:           
-  - `IsMemberOnly`: Whether users can join a group only via a join request or a group invitation, but cannot join freely. 
-  - `IsMemberAllowToInvite`: Whether all the group members, other than the group owner and admins, can invite users to join the group.
-  - `MaxUserCount`：The maximum number of users that can join the group.
-  - `Ext`: The custom group extension information.
-  - `IsDisabled`: Whether the group is disabled.     
-              
+   - `OnLoggedOtherDevice`: Occurs when the user logs in to another device with the current account.
+   - `OnRemovedFromServer`：Occurs when the current user account is removed from the server.
+   - `OnForbidByServer`: Occurs when the current user account is banned by the server.
+   - `OnChangedIMPwd`：Occurs when the user is forced to log out of the current account because the login password is changed.
+   - `OnLoginTooManyDevice`: Occurs when the user is forced to log out of the current account because she or he has exceeded the maximum number of devices allowed for this account.
+   - `OnKickedByOtherDevice`：Occurs when the user is forced to log out of the current account from the current device due to the login to another device.
+   - `OnAuthFailed`: Occurs when the user is forced to log out of the current account due to an authentication failure.
+5. Adds the following attributes to the `Group` class:
+   - `IsMemberOnly`: Whether users can join a group only via a join request or a group invitation, but cannot join freely.
+   - `IsMemberAllowToInvite`: Whether all the group members, other than the group owner and admins, can invite users to join the group.
+   - `MaxUserCount`：The maximum number of users that can join the group.
+   - `Ext`: The custom group extension information.
+   - `IsDisabled`: Whether the group is disabled.
+
 #### Improvements
 
 1. Changed the name space from ChatSDK to AgoraChat.
@@ -2254,24 +2254,24 @@ v1.0.9 was released on February 1, 2023.
 5. Removed the `UINT32` and `JSONSTRING` types from the `AttributeValue` subclass in the `Message` class.
 6. Removed the `i` parameter of the integer type from the `OnDisconnected` method.
 7. Adjusted the returned result of the following methods:
-  - `importmessage`: When this method is called, the asynchronous callback is triggered instead of the result returned directly.
-  - `GetGroupMuteListFromServer`: The data type of the returned result is changed from `List` to `Dictionary`.
-  - `FetchRoomMuteList`: The data type of the returned result is changed from `List` to `Dictionary`.
+   - `importmessage`: When this method is called, the asynchronous callback is triggered instead of the result returned directly.
+   - `GetGroupMuteListFromServer`: The data type of the returned result is changed from `List` to `Dictionary`.
+   - `FetchRoomMuteList`: The data type of the returned result is changed from `List` to `Dictionary`.
 8. Renamed the following methods in the `GroupManager` class:
-  - `AddGroupWhiteList` was renamed `AddGroupAllowList`.
-  - `CheckIfInGroupWhiteList` was renamed `CheckIfInGroupAllowList`.
-  - `GetGroupWhiteListFromServer` was renamed `GetGroupAllowListFromServer`.
-  - `RemoveGroupWhiteList` was renamed `RemoveGroupAllowList`.            
+   - `AddGroupWhiteList` was renamed `AddGroupAllowList`.
+   - `CheckIfInGroupWhiteList` was renamed `CheckIfInGroupAllowList`.
+   - `GetGroupWhiteListFromServer` was renamed `GetGroupAllowListFromServer`.
+   - `RemoveGroupWhiteList` was renamed `RemoveGroupAllowList`.
 9. Renamed the following methods in the `RoomManager` class:
-  - `AddWhiteListMembers` was renamed `AddAllowListMembers`.
-  - `RemoveWhiteListMembers` was renamed `RemoveAllowListMembers`.                
-10. Changed the `ReactionList` attribute in the `Message` class to be a method.           
-11. Changed the visibility of options in `Options` in the `Group` class from public to internal.                 
+   - `AddWhiteListMembers` was renamed `AddAllowListMembers`.
+   - `RemoveWhiteListMembers` was renamed `RemoveAllowListMembers`.
+10. Changed the `ReactionList` attribute in the `Message` class to be a method.
+11. Changed the visibility of options in `Options` in the `Group` class from public to internal.
 12. Made the following adjustments in the `IGroupManagerDelegate` class:
-  - `OnAddWhiteListMembersFromGroup` was renamed `OnAddAllowListMembersFromGroup`.
-  - `OnRemoveWhiteListMembersFromGroup` was renamed `OnRemoveAllowListMembersFromGroup`.
-  - The `reason` parameter was removed from the `OnInvitationAcceptedFromGroup` method.
-  - The `groupName` and `decliner` parameters were removed from the `OnRequestToJoinDeclinedFromGroup` method.
+    - `OnAddWhiteListMembersFromGroup` was renamed `OnAddAllowListMembersFromGroup`.
+    - `OnRemoveWhiteListMembersFromGroup` was renamed `OnRemoveAllowListMembersFromGroup`.
+    - The `reason` parameter was removed from the `OnInvitationAcceptedFromGroup` method.
+    - The `groupName` and `decliner` parameters were removed from the `OnRequestToJoinDeclinedFromGroup` method.
 
 ## v1.0.8
 

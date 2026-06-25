@@ -399,8 +399,33 @@ function resolveApiReferenceRedirect(
     return `/${locale}/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`;
   }
 
+  if (locale === 'en' && isLegacyEnglishApiReferenceProductPath(normalizedPath)) {
+    return `/en/${getApiReferenceProductRoot(locale)}/${normalizedPath}`;
+  }
+
   return null;
 }
+
+function getApiReferenceProductRoot(locale: string) {
+  return locale === 'en' ? 'api-reference/api-ref' : 'api-reference';
+}
+
+function isLegacyEnglishApiReferenceProductPath(path: string) {
+  if (!path || path.startsWith('api-ref/')) {
+    return false;
+  }
+
+  return API_REFERENCE_PRODUCT_SLUGS.includes(path);
+}
+
+const API_REFERENCE_PRODUCT_SLUGS = [
+  'cloud-recording',
+  'cloud-transcoding',
+  'conversational-ai',
+  'rtc',
+  'signaling',
+  'speech-to-text',
+];
 
 function resolveLegacyConversationalAiRestRedirect(
   locale: string,
@@ -674,14 +699,48 @@ async function getDocsSidebarNodes({
     tab,
   );
 
-  if (
-    activePath?.startsWith('/en/api-reference/recipes') ||
-    activePath?.startsWith('/zh-CN/api-reference/recipes')
-  ) {
+  if (isRecipesApiReferencePath(activePath)) {
     return restoreRecipesSidebarSections(openApiSidebar);
   }
 
+  if (isApiReferenceOverviewPath(activePath)) {
+    return groupApiReferenceOverviewSidebar(openApiSidebar);
+  }
+
   return openApiSidebar;
+}
+
+function isApiReferenceOverviewPath(path?: string) {
+  return path === '/en/api-reference/api-ref';
+}
+
+function groupApiReferenceOverviewSidebar(
+  nodes: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  if (nodes.length <= 1) {
+    return nodes;
+  }
+
+  const [indexNode, ...apiReferenceNodes] = nodes;
+
+  return [
+    indexNode,
+    {
+      children: apiReferenceNodes,
+      collapsible: false,
+      id: 'api-reference-restful-api',
+      title: 'RESTful API',
+      type: 'section',
+    },
+  ];
+}
+
+function isRecipesApiReferencePath(path?: string) {
+  return (
+    path?.startsWith('/en/api-reference/recipes') ||
+    path?.startsWith('/zh-CN/api-reference/recipes') ||
+    false
+  );
 }
 
 function restoreRecipesSidebarSections(
