@@ -489,6 +489,14 @@
     list-style: decimal;
   }
 
+  .prose :where(ol > li > ol):not(:where(.not-prose, .not-prose *)) {
+    list-style: lower-alpha;
+  }
+
+  .prose :where(ol > li > ol > li > ol):not(:where(.not-prose, .not-prose *)) {
+    list-style: lower-roman;
+  }
+
   .prose :where(li):not(:where(.not-prose, .not-prose *)) {
     padding-inline-start: 0.2rem;
     margin-block: 0.42rem;
