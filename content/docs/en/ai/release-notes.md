@@ -398,7 +398,7 @@ Included in this release:
         - [OpenAI (Beta)](../models/asr/openai)
         - [Speechmatics](../models/asr/speechmatics)
         - [Google (Beta)](../models/asr/google)
-        - [Amazon Transcribe (Beta)](../models/asr/amazon)
+        - Amazon Transcribe (Beta)
         - [AssemblyAI (Beta)](../models/asr/assembly-ai)
     * LLM
         - [Groq](../models/llm/groq)

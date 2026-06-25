@@ -8,7 +8,89 @@ This integration is fully supported for use with Conversational AI Engine. While
 
 ### Sample configuration
 
-The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure Murf TTS when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import MurfTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(MurfTTS(
+        key='your-murf-key',
+        voice_id='Matthew',
+        base_url='wss://global.api.murf.ai/v1/speech/stream-input',
+        locale='en-US',
+        rate=0,
+        pitch=0,
+        model='FALCON',
+        sample_rate=24000,
+    ))
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, MurfTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new MurfTTS({
+    key: 'your-murf-key',
+    voiceId: 'Matthew',
+    baseUrl: 'wss://global.api.murf.ai/v1/speech/stream-input',
+    locale: 'en-US',
+    rate: 0,
+    pitch: 0,
+    model: 'FALCON',
+    sampleRate: 24000,
+  }));
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewMurfTTS(vendors.MurfTTSOptions{
+        Key:        "your-murf-key",
+        VoiceID:    "Matthew",
+        BaseURL:    "wss://global.api.murf.ai/v1/speech/stream-input",
+        Locale:     "en-US",
+        Rate:       agora.Float64(0),
+        Pitch:      agora.Float64(0),
+        Model:      "FALCON",
+        SampleRate: agora.Int(24000),
+    }),
+)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request:
+
 ```json
 "tts": {
   "vendor": "murf",
@@ -25,30 +107,27 @@ The following example shows a starting `tts` parameter configuration you can use
 }
 ```
 
+</TabsContent>
+</Tabs>
+
 :::caution[Caution]
 The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Murf documentation](https://murf.ai/api/docs/api-reference/text-to-speech/stream-input).
 :::
 
-  
-    The Murf API key used to authenticate requests. You must provide a valid key for the service to function.
-  
-  
-    The WebSocket endpoint for streaming TTS output. For example, `wss://global.api.murf.ai/v1/speech/stream-input`.
-  
-  
-    The voice identifier to use. For example, `Matthew`.
-  
-  
-    The locale for the selected voice. For example, `en-US`.
-  
-  
-    The speech rate adjustment. A value of `0` applies the default rate.
-  
-  
-    The pitch adjustment. A value of `0` applies the default pitch.
-  
-  
-    The TTS model to use. For example, `FALCON`.
-  
-  
-    The audio sample rate in Hz. For example, `24000`.
+### Key parameters
+
+The Murf API key used to authenticate requests. You must provide a valid key for the service to function.
+
+The WebSocket endpoint for streaming TTS output. For example, `wss://global.api.murf.ai/v1/speech/stream-input`.
+
+The voice identifier to use. For example, `Matthew`.
+
+The locale for the selected voice. For example, `en-US`.
+
+The speech rate adjustment. A value of `0` applies the default rate.
+
+The pitch adjustment. A value of `0` applies the default pitch.
+
+The TTS model to use. For example, `FALCON`.
+
+The audio sample rate in Hz. For example, `24000`.

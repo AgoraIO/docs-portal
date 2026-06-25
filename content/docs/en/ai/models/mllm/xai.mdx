@@ -9,9 +9,72 @@ xAI Grok provides multimodal large language model capabilities with realtime aud
 Enabling MLLM disables standalone ASR, LLM, and TTS because the MLLM handles end-to-end voice processing directly.
 :::
 
-## Sample configuration
+### Sample configuration
 
-The following example shows a starting `mllm` configuration you can use when you [start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure xAI Grok MLLM when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import XaiGrok
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_mllm(XaiGrok(
+        api_key='your-xai-key',
+        voice='eve',
+        language='en',
+        sample_rate=24000,
+    ))
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, XaiGrok } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withMllm(new XaiGrok({
+    apiKey: 'your-xai-key',
+    voice: 'eve',
+    language: 'en',
+    sampleRate: 24000,
+  }));
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithMllm(
+    vendors.NewXaiGrok(vendors.XaiGrokOptions{
+        APIKey:     "your-xai-key",
+        Voice:      "eve",
+        Language:   "en",
+        SampleRate: agora.Int(24000),
+    }),
+)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `mllm` configuration in your request:
 
 ```json
 "mllm": {
@@ -40,6 +103,9 @@ The following example shows a starting `mllm` configuration you can use when you
   "greeting_message": "Hello, how can I help?"
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ## Turn detection
 

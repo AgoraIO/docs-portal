@@ -21,7 +21,49 @@ Take the following steps to transmit custom context information from the client 
 
 ### Enable Signaling
 
-To enable SIG integration, set `advanced_features.enable_rtm` to `true`in the [POST request](../../api-reference/conversational-ai/rest-api/agent/join) when creating a conversational AI agent. Refer to the following sample request:
+To enable SIG integration, set `advanced_features.enable_rtm` to `true` in the [POST request](../../api-reference/conversational-ai/rest-api/agent/join) when creating a conversational AI agent. Refer to the following sample request:
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="curl">Curl</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+# ... other agent configuration ...
+.with_advanced_features({'enable_rtm': True})
+# ... continue with .create_session() ...
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+// ... other agent configuration ...
+.withAdvancedFeatures({ enable_rtm: true })
+// ... continue with .createSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// ... other agent configuration ...
+.WithAdvancedFeatures(&agentkit.AdvancedFeatures{
+    EnableRtm: agora.Bool(true),
+})
+// ... continue with .CreateSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="curl">
 
 ```bash
 curl --request post \
@@ -58,6 +100,9 @@ curl --request post \
   }
 }'
 ```
+
+</TabsContent>
+</Tabs>
 
 ### Set Custom Information
 Refer to SIG [User status management](../../realtime-media/rtm/index#user-status-management) to set status information for users in the channel.

@@ -6,7 +6,88 @@ Azure OpenAI service provides REST API access to OpenAI's powerful language mode
 
 ### Sample configuration
 
-The following example shows a starting `llm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following example shows how to configure Azure OpenAI LLM when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, AzureOpenAI
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(AzureOpenAI(
+        api_key='your-azure-api-key',
+        endpoint='https://your-resource-name.openai.azure.com',
+        deployment_name='your-deployment-name', # the name given to your model deployment in Azure OpenAI Studio
+        model='gpt-4o-mini',
+        system_messages=[{'role': 'system', 'content': 'You are a helpful chatbot.'}],
+        greeting_message='Hello, how can I assist you today?',
+        failure_message='Please hold on a second.',
+        max_history=32,
+    ))
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AzureOpenAI } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(new AzureOpenAI({
+    apiKey: 'your-azure-api-key',
+    resourceName: 'your-resource-name',
+    deploymentName: 'your-deployment-name', // the name given to your model deployment in Azure OpenAI Studio
+    model: 'gpt-4o-mini',
+    systemMessages: [{ role: 'system', content: 'You are a helpful chatbot.' }],
+    greetingMessage: 'Hello, how can I assist you today?',
+    failureMessage: 'Please hold on a second.',
+    maxHistory: 32,
+  }))
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(
+    vendors.NewAzureOpenAI(vendors.AzureOpenAIOptions{
+        APIKey:         "your-azure-api-key",
+        Endpoint:       "https://your-resource-name.openai.azure.com",
+        DeploymentName: "your-deployment-name", // the name given to your model deployment in Azure OpenAI Studio
+        Model:          "gpt-4o-mini",
+        SystemMessages: []map[string]interface{}{
+            {"role": "system", "content": "You are a helpful chatbot."},
+        },
+        GreetingMessage: "Hello, how can I assist you today?",
+        FailureMessage:  "Please hold on a second.",
+        MaxHistory:      agora.Int(32),
+    }),
+).WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `llm` configuration in your request:
 
 ```json
 "llm": {
@@ -28,6 +109,9 @@ The following example shows a starting `llm` parameter configuration you can use
     }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ### Key parameters
 

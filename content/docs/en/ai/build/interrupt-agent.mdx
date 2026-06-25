@@ -13,11 +13,107 @@ This page describes how to implement agent interruption in your app.
 
 Conversational AI Engine supports an intelligent interruption feature that allows a user's voice input to automatically interrupt the speaking agent. This enables quicker response times and more natural, fluid interactions.
 
-To customize interruption behavior, configure the `turn_detection` parameters when calling [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join).
+To customize interruption behavior, configure turn detection when starting a conversational AI agent. To enable AIVAD-based interruption, set the end of speech mode to `"semantic"`. The following example shows how to configure turn detection:
 
-To enable AIVAD-based interruption, set [`turn_detection.config.end_of_speech.mode`](../../api-reference/conversational-ai/rest-api/agent/join#properties-turn-detection-config-end-of-speech-mode) to `"semantic"`.
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="curl">Curl</TabsTrigger>
+</TabsList>
 
-The following example shows how to configure `turn_detection`:
+<TabsContent value="python">
+
+```python
+# ... other agent configuration ...
+.with_turn_detection({
+    'mode': 'default',
+    'config': {
+        'speech_threshold': 0.5,
+        'start_of_speech': {
+            'mode': 'vad',
+            'vad_config': {
+                'interrupt_duration_ms': 160,
+                'speaking_interrupt_duration_ms': 320,
+                'prefix_padding_ms': 800,
+            },
+        },
+        'end_of_speech': {
+            'mode': 'semantic',
+            'semantic_config': {
+                'silence_duration_ms': 320,
+                'max_wait_ms': 3000,
+            },
+        },
+    },
+})
+# ... continue with .create_session() ...
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+// ... other agent configuration ...
+.withTurnDetection({
+  mode: 'default',
+  config: {
+    speech_threshold: 0.5,
+    start_of_speech: {
+      mode: 'vad',
+      vad_config: {
+        interrupt_duration_ms: 160,
+        speaking_interrupt_duration_ms: 320,
+        prefix_padding_ms: 800,
+      },
+    },
+    end_of_speech: {
+      mode: 'semantic',
+      semantic_config: {
+        silence_duration_ms: 320,
+        max_wait_ms: 3000,
+      },
+    },
+  },
+})
+// ... continue with .createSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// ... other agent configuration ...
+.WithTurnDetection(&agentkit.TurnDetectionConfig{
+    Mode: agora.String("default"),
+    Config: &agentkit.StartAgentsRequestPropertiesTurnDetectionConfig{
+        SpeechThreshold: agora.Float64(0.5),
+        StartOfSpeech: &agentkit.StartAgentsRequestPropertiesTurnDetectionConfigStartOfSpeech{
+            Mode: agora.String("vad"),
+            VadConfig: &agentkit.StartAgentsRequestPropertiesTurnDetectionConfigStartOfSpeechVadConfig{
+                InterruptDurationMs:         agora.Float64(160),
+                SpeakingInterruptDurationMs: agora.Float64(320),
+                PrefixPaddingMs:             agora.Float64(800),
+            },
+        },
+        EndOfSpeech: &agentkit.StartAgentsRequestPropertiesTurnDetectionConfigEndOfSpeech{
+            Mode: agora.String("semantic"),
+            SemanticConfig: &agentkit.StartAgentsRequestPropertiesTurnDetectionConfigEndOfSpeechSemanticConfig{
+                SilenceDurationMs: agora.Float64(320),
+                MaxWaitMs:         agora.Float64(3000),
+            },
+        },
+    },
+})
+// ... continue with .CreateSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="curl">
 
 ```bash
 curl --request post \
@@ -80,6 +176,9 @@ curl --request post \
 }'
 ```
 
+</TabsContent>
+</Tabs>
+
 If the request succeeds, the API returns a `200` status code and a response body like the following:
 
 ```json
@@ -94,9 +193,45 @@ If the request succeeds, the API returns a `200` status code and a response body
 
 Conversational AI Engine supports actively triggering an interruption by calling RESTful APIs or client component APIs. This allows users to interrupt the agent through a button click or a specific command.
 
-### Call the RESTful API
+### Server-side interruption
 
 Use the [Interrupt agent](../../api-reference/conversational-ai/rest-api/agent/interrupt) API to manually initiate an interruption request.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="curl">Curl</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+session.interrupt()
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+await session.interrupt();
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+if err := session.Interrupt(ctx); err != nil {
+    log.Fatal(err)
+}
+```
+
+</TabsContent>
+
+<TabsContent value="curl">
 
 ```bash
 curl --request post \
@@ -104,6 +239,9 @@ curl --request post \
 --header 'Authorization: Basic <credentials>' \
 --data '{}'
 ```
+
+</TabsContent>
+</Tabs>
 
 If the request is successful, the API returns a 200 status code and the following response body:
 

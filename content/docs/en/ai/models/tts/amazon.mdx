@@ -8,7 +8,79 @@ This integration is fully supported for use with Conversational AI Engine. While
 
 ### Sample configuration
 
-The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure Amazon Polly TTS when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import AmazonTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(AmazonTTS(
+        access_key='your-aws-access-key',
+        secret_key='your-aws-secret-key',
+        region='us-east-1',
+        voice_id='Joanna',
+        engine='neural',
+    ))
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AmazonTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new AmazonTTS({
+    accessKey: 'your-aws-access-key',
+    secretKey: 'your-aws-secret-key',
+    region: 'us-east-1',
+    voiceId: 'Joanna',
+    engine: 'neural',
+  }));
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewAmazonTTS(vendors.AmazonTTSOptions{
+        AccessKey: "your-aws-access-key",
+        SecretKey: "your-aws-secret-key",
+        Region:    "us-east-1",
+        VoiceID:   "Joanna",
+        Engine:    "neural",
+    }),
+)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request:
 
 ```json
 "tts": {
@@ -22,6 +94,9 @@ The following example shows a starting `tts` parameter configuration you can use
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 :::caution[Caution]
 The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Amazon Polly documentation](https://docs.aws.amazon.com/polly/latest/dg/what-is.html).
