@@ -1,6 +1,7 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import type { DocsLayoutMode } from './docs-layout';
 import {
   type DocsNavScopeResolution,
   getNavScopeSidebarNodes,
@@ -223,7 +224,7 @@ export async function loadDocsPagePayload(
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText);
-  const layoutMode = isOpenApiPage ? ('openapi' as const) : ('docs' as const);
+  const layoutMode = resolveDocsLayoutMode(page, isOpenApiPage);
   const sidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,
@@ -715,6 +716,17 @@ export type DocsPagePayload = Exclude<
   Awaited<ReturnType<typeof loadDocsPagePayload>>,
   null | { redirectUrl: string }
 >;
+
+function resolveDocsLayoutMode(
+  page: PageWithSource,
+  isOpenApiPage: boolean,
+): DocsLayoutMode {
+  if (isOpenApiPage) {
+    return 'openapi';
+  }
+
+  return 'full' in page.data && page.data.full ? 'full-page' : 'docs';
+}
 
 async function readProcessedText(page: PageWithSource) {
   try {

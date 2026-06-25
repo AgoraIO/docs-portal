@@ -1,5 +1,5 @@
 import { getOverviewMDXComponents } from '@/components/docs-overview/mdx-components';
-import { getMDXComponents } from '@/components/mdx';
+import { getMDXComponents, MDXAccordionProvider } from '@/components/mdx';
 import { useDocsContent } from '@/lib/source.browser';
 
 export function DocsContentBody({ contentPath }: { contentPath: string }) {
@@ -7,5 +7,9 @@ export function DocsContentBody({ contentPath }: { contentPath: string }) {
     components: getMDXComponents(getOverviewMDXComponents(), { contentPath }),
   });
 
-  return <div className="docs-body">{content}</div>;
+  return (
+    <div className="docs-body">
+      <MDXAccordionProvider>{content}</MDXAccordionProvider>
+    </div>
+  );
 }

@@ -74,6 +74,7 @@ function TabIndexPage() {
     breadcrumb,
     contentPath,
     description,
+    layoutMode,
     markdownUrl,
     sidebarHeader,
     slug,
@@ -87,6 +88,7 @@ function TabIndexPage() {
       breadcrumb={breadcrumb}
       contentPath={contentPath}
       description={description}
+      layoutMode={layoutMode}
       locale={params.locale}
       markdownUrl={markdownUrl}
       sidebarHeader={sidebarHeader}

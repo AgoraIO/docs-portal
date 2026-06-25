@@ -6,6 +6,20 @@ import { describe, expect, it } from 'vitest';
 const docsRoot = resolve(process.cwd(), 'content/docs/en');
 
 describe('docs content regressions', () => {
+  function expectListItemToContainNestedOrderedList(
+    compiled: string,
+    marker: string,
+  ) {
+    const markerIndex = compiled.indexOf(marker);
+    expect(markerIndex).toBeGreaterThanOrEqual(0);
+
+    const nestedListIndex = compiled.indexOf('<_components.ol>', markerIndex);
+    const itemCloseIndex = compiled.indexOf('</_components.li>', markerIndex);
+
+    expect(nestedListIndex).toBeGreaterThan(markerIndex);
+    expect(nestedListIndex).toBeLessThan(itemCloseIndex);
+  }
+
   it('keeps agora analytics call inspector headings free of inline raw anchors', () => {
     const source = readFileSync(
       resolve(
@@ -16,6 +30,31 @@ describe('docs content regressions', () => {
     );
 
     expect(source).not.toMatch(/^#{1,6} .*<a name=".*"><\/a>/m);
+  });
+
+  it('keeps android broadcast streaming setup steps nested in ordered lists', async () => {
+    const source = readFileSync(
+      resolve(
+        process.cwd(),
+        'content/docs/en/realtime-media/broadcast-streaming/quickstart.mdx',
+      ),
+      'utf8',
+    );
+
+    const compiled = String(
+      await compile(source, {
+        jsx: true,
+      }),
+    );
+
+    expectListItemToContainNestedOrderedList(
+      compiled,
+      'href="https://developer.android.com/studio/projects/create-project"',
+    );
+    expectListItemToContainNestedOrderedList(
+      compiled,
+      '{"Add a new activity to your project."}',
+    );
   });
 
   it('compiles the realtime video quickstart without MDX tag nesting errors', async () => {

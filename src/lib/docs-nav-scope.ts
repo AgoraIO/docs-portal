@@ -352,23 +352,58 @@ function flattenNavScopeSidebarNodes(
   getNodeMeta: GetDocsNodeMeta,
   rootMeta?: DocsMeta,
 ): DocsSidebarNode[] {
-  return [
-    ...(folder.index
-      ? [
-          {
-            id: folder.index.url,
-            title:
-              rootMeta?.sidebarIndexTitle ??
-              normalizeLabel(folder.index.name, folder.index.url),
-            type: 'page' as const,
-            url: folder.index.url,
-          },
-        ]
-      : []),
-    ...folder.children.flatMap((child) =>
-      navScopeNodeToSidebarNodes(child, getNodeMeta),
-    ),
-  ];
+  const nodes: DocsSidebarNode[] = [];
+  const indexUrl = folder.index?.url;
+
+  if (folder.index) {
+    nodes.push({
+      id: folder.index.url,
+      title:
+        rootMeta?.sidebarIndexTitle ??
+        normalizeLabel(folder.index.name, folder.index.url),
+      type: 'page',
+      url: folder.index.url,
+    });
+  }
+
+  let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
+    null;
+
+  for (const child of folder.children) {
+    if (child.type === 'separator') {
+      const title = typeof child.name === 'string' ? child.name : '';
+      currentSection = null;
+
+      if (title.length > 0) {
+        const icon = getConfiguredIconName(child);
+        currentSection = {
+          children: [],
+          collapsible: isCollapsibleSectionTitle(title),
+          ...(icon ? { icon } : {}),
+          id: `separator-${title}`,
+          title,
+          type: 'section',
+        };
+        nodes.push(currentSection);
+      }
+
+      continue;
+    }
+
+    for (const node of navScopeNodeToSidebarNodes(child, getNodeMeta)) {
+      if (node.type === 'page' && node.url === indexUrl) {
+        continue;
+      }
+
+      if (currentSection) {
+        currentSection.children.push(node);
+      } else {
+        nodes.push(node);
+      }
+    }
+  }
+
+  return nodes;
 }
 
 function remapSharedSidebarChildren({
@@ -424,7 +459,11 @@ function remapSharedSidebarNode({
       ? {
           index: {
             ...node.index,
-            url: remapSharedSidebarUrl(canonicalRoot, node.index.url, targetRoot),
+            url: remapSharedSidebarUrl(
+              canonicalRoot,
+              node.index.url,
+              targetRoot,
+            ),
           },
         }
       : {}),

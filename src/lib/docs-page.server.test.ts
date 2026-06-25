@@ -2781,6 +2781,68 @@ Web body
 
   it('returns a scoped Recipes sidebar with a Back to Reference header', async () => {
     const page = createPage();
+    const recipesPageTree: Root = {
+      ...apiReferencePageTree,
+      children: apiReferencePageTree.children.map((localeNode) =>
+        localeNode.type === 'folder' && localeNode.$id === 'en-root'
+          ? {
+              ...localeNode,
+              children: localeNode.children.map((tabNode) =>
+                tabNode.type === 'folder' &&
+                tabNode.$id === 'api-reference-folder'
+                  ? {
+                      ...tabNode,
+                      children: tabNode.children.map((node) =>
+                        node.$id === 'api-reference-recipes-folder' &&
+                        node.type === 'folder'
+                          ? {
+                              ...node,
+                              children: node.children.map((child) => {
+                                if (
+                                  child.$id ===
+                                    'api-reference-recipes-quickstarts-separator' &&
+                                  child.type === 'separator'
+                                ) {
+                                  return {
+                                    ...child,
+                                    name: 'Content Quickstarts',
+                                  };
+                                }
+
+                                if (
+                                  child.$id ===
+                                    'api-reference-recipes-integration-separator' &&
+                                  child.type === 'separator'
+                                ) {
+                                  return {
+                                    ...child,
+                                    name: 'Content Integration Patterns',
+                                  };
+                                }
+
+                                if (
+                                  child.$id ===
+                                    'api-reference-recipes-use-cases-separator' &&
+                                  child.type === 'separator'
+                                ) {
+                                  return {
+                                    ...child,
+                                    name: 'Content Use Cases',
+                                  };
+                                }
+
+                                return child;
+                              }),
+                            }
+                          : node,
+                      ),
+                    }
+                  : tabNode,
+              ),
+            }
+          : localeNode,
+      ),
+    };
     mockedGetPage.mockReturnValue({
       ...page,
       path: 'en/api-reference/recipes/index.md',
@@ -2792,10 +2854,11 @@ Web body
           fullPath: '/virtual/content/docs/en/api-reference/recipes/index.md',
           path: 'en/api-reference/recipes/index.md',
         },
+        full: true,
         title: 'Recipes',
       },
     });
-    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+    mockedGetPageTree.mockReturnValue(recipesPageTree);
     mockedGetNodeMeta.mockImplementation((node) =>
       node.$id === 'api-reference-recipes-folder'
         ? ({
@@ -2820,6 +2883,7 @@ Web body
       backLabel: 'API Reference',
       title: 'Recipes',
     });
+    expect(payload.layoutMode).toBe('full-page');
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
       expect.arrayContaining([
         '/en/api-reference/recipes',
@@ -2841,15 +2905,23 @@ Web body
     expect(payload.sidebar).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
+          title: 'Content Quickstarts',
+          type: 'section',
+        }),
+        expect.objectContaining({
+          title: 'Content Integration Patterns',
+          type: 'section',
+        }),
+        expect.objectContaining({
+          title: 'Content Use Cases',
+          type: 'section',
+        }),
+      ]),
+    );
+    expect(payload.sidebar).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
           title: 'Quickstarts',
-          type: 'section',
-        }),
-        expect.objectContaining({
-          title: 'Integration patterns',
-          type: 'section',
-        }),
-        expect.objectContaining({
-          title: 'Use cases',
           type: 'section',
         }),
       ]),

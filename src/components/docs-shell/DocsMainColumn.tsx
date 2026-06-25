@@ -5,6 +5,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
+import { type DocsLayoutMode, isWideDocsLayout } from '@/lib/docs-layout';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
@@ -22,7 +23,7 @@ export function DocsMainColumn({
   resetKey,
 }: {
   children: React.ReactNode;
-  layoutMode?: 'docs' | 'openapi';
+  layoutMode?: DocsLayoutMode;
   locale?: AppLocale | string;
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
@@ -96,7 +97,7 @@ function DocsPageFooter({
   previous,
 }: {
   includeFeedback?: boolean;
-  layoutMode?: 'docs' | 'openapi';
+  layoutMode?: DocsLayoutMode;
   locale: AppLocale | string;
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
@@ -108,7 +109,9 @@ function DocsPageFooter({
     <footer
       className={cn(
         'mt-10 flex flex-col gap-5 border-t border-[color:var(--line-soft)] pt-6',
-        layoutMode === 'openapi' ? 'max-w-none' : 'max-w-[var(--content-max)]',
+        isWideDocsLayout(layoutMode)
+          ? 'max-w-none'
+          : 'max-w-[var(--content-max)]',
       )}
       data-testid="docs-page-footer"
     >
