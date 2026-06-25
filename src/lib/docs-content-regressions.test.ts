@@ -89,7 +89,7 @@ describe('docs content regressions', () => {
     );
   });
 
-  it('renders IoT authentication code tabs without leaking MDX tags', async () => {
+  it('renders IoT authentication code tabs as MDX components', async () => {
     const { source } = await import('./source.server');
     const page = source.getPage(
       ['solutions', 'iot', 'build', 'authentication-workflow'],
@@ -98,10 +98,41 @@ describe('docs content regressions', () => {
 
     expect(page).toBeDefined();
     expect(page?.type).toBe('docs');
+    expect(page?.path).toBe(
+      'en/solutions/iot/build/authentication-workflow.mdx',
+    );
 
     if (!page || !('getText' in page.data)) {
       throw new Error(
         'Expected IoT authentication page to expose processed markdown.',
+      );
+    }
+
+    const processed = await page.data.getText('processed');
+
+    expect(processed).toContain('<CodeBlockTabs defaultValue="java">');
+    expect(processed).toContain('<CodeBlockTab value="java">');
+    expect(processed).toContain('<CodeBlockTab value="kotlin">');
+    expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
+    expect(processed).not.toContain('&lt;CodeBlockTab');
+  });
+
+  it('renders stream channel code tabs as MDX components', async () => {
+    const { source } = await import('./source.server');
+    const page = source.getPage(
+      ['realtime-media', 'rtm', 'build', 'channels', 'stream-channel'],
+      'en',
+    );
+
+    expect(page).toBeDefined();
+    expect(page?.type).toBe('docs');
+    expect(page?.path).toBe(
+      'en/realtime-media/rtm/build/channels/stream-channel.mdx',
+    );
+
+    if (!page || !('getText' in page.data)) {
+      throw new Error(
+        'Expected stream channel page to expose processed markdown.',
       );
     }
 
