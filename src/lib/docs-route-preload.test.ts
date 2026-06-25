@@ -87,7 +87,6 @@ function createPayload(
       next: undefined,
       previous: undefined,
     },
-    pages: [],
     sidebar: [],
     sidebarHeader: undefined,
     slug: 'about',
