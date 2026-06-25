@@ -398,6 +398,22 @@ describe('DocsShell', () => {
     expect(screen.queryByText('On this page')).not.toBeInTheDocument();
   });
 
+  it('uses the full-page layout without the generic toc rail', async () => {
+    renderDocsShell({
+      layoutMode: 'full-page',
+    });
+
+    const docsBodyShell = await screen.findByTestId('docs-body-shell');
+
+    expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
+    expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
+    for (const footer of screen.getAllByTestId('docs-page-footer')) {
+      expect(footer).toHaveClass('max-w-none');
+      expect(footer).not.toHaveClass('max-w-[var(--content-max)]');
+    }
+    expect(screen.queryByText('On this page')).not.toBeInTheDocument();
+  });
+
   it('keeps desktop sidebar, content, and toc as independent scroll regions', async () => {
     renderDocsShell({
       next: { title: 'Next Page', url: '/en/introduction/next-page' },

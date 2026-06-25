@@ -11,6 +11,7 @@ import {
   scrollDocsHashTarget,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
+import { type DocsLayoutMode, isWideDocsLayout } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import {
@@ -37,6 +38,7 @@ export function DocsContent({
   description,
   locale = DEFAULT_LOCALE,
   markdownUrl,
+  layoutMode = 'docs',
   sidebarHeader,
   slug,
   title,
@@ -47,6 +49,7 @@ export function DocsContent({
   contentPath?: string;
   description?: string;
   locale?: AppLocale | string;
+  layoutMode?: DocsLayoutMode;
   markdownUrl?: string;
   sidebarHeader?: DocsSidebarHeader;
   slug?: string;
@@ -65,6 +68,8 @@ export function DocsContent({
         } satisfies DocsContentBodyPayload)
       : undefined);
   const isOpenApiBody = resolvedBody?.kind === 'openapi';
+  const effectiveLayoutMode = isOpenApiBody ? 'openapi' : layoutMode;
+  const isWideLayout = isWideDocsLayout(effectiveLayoutMode);
   const platformTabs =
     resolvedBody?.kind === 'mdx' ? resolvedBody.platformTabs : undefined;
 
@@ -91,7 +96,7 @@ export function DocsContent({
       className={cn(
         'flex min-w-0 flex-col',
         platformTabs ? 'gap-6' : 'gap-9',
-        isOpenApiBody ? 'max-w-none' : 'max-w-[var(--content-max)]',
+        isWideLayout ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
       <header
@@ -204,7 +209,7 @@ export function DocsContent({
           ) : null}
         </div>
       )}
-      {isOpenApiBody ? null : (
+      {isWideLayout ? null : (
         <DocsTableOfContents
           className="xl:hidden"
           locale={currentLocale}

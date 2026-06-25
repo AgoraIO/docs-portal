@@ -57,6 +57,7 @@ function Page() {
     breadcrumb,
     contentPath,
     description,
+    layoutMode,
     markdownUrl,
     sidebarHeader,
     slug,
@@ -70,6 +71,7 @@ function Page() {
       breadcrumb={breadcrumb}
       contentPath={contentPath}
       description={description}
+      layoutMode={layoutMode}
       locale={params.locale}
       markdownUrl={markdownUrl}
       sidebarHeader={sidebarHeader}

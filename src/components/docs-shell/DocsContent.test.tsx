@@ -180,6 +180,24 @@ describe('DocsContent', () => {
     ).toHaveTextContent('/v2/projects/{appid}/join');
   });
 
+  it('renders full-page MDX content without the article max-width or mobile TOC', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/api-reference/recipes/index.mdx"
+        layoutMode="full-page"
+        slug="recipes"
+        title="Recipes"
+        toc={[{ depth: 2, title: 'Browse all recipes', url: '#browse' }]}
+      />,
+    );
+
+    const article = await screen.findByRole('article');
+
+    expect(article).toHaveClass('max-w-none');
+    expect(article).not.toHaveClass('max-w-[var(--content-max)]');
+    expect(screen.queryByText('On this page')).not.toBeInTheDocument();
+  });
+
   it('derives TOC items from rendered headings when the payload TOC is empty', async () => {
     renderWithRouter(
       <AppProviders>
@@ -810,6 +828,20 @@ describe('DocsMainColumn', () => {
     expect(
       within(footer).getByRole('link', { name: /Next Next Page/i }),
     ).toHaveAttribute('href', '/en/introduction/next-page');
+  });
+
+  it('widens footer content in full-page layout', async () => {
+    renderWithRouter(
+      <DocsMainColumn layoutMode="full-page">
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const footer = within(desktopScroll).getByTestId('docs-page-footer');
+
+    expect(footer).toHaveClass('max-w-none');
+    expect(footer).not.toHaveClass('max-w-[var(--content-max)]');
   });
 
   it('keeps footer controls stacked and non-overlapping in the mobile flow', async () => {
