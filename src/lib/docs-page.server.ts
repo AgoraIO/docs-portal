@@ -47,6 +47,7 @@ const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
 const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
 const RECIPES_ROOT_SLUG = 'recipes';
+const SDKS_ROOT_SLUG = 'sdks';
 
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 
@@ -86,6 +87,14 @@ const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
 };
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
+  if (locale === 'en' && tab === SDKS_ROOT_SLUG) {
+    return {
+      locale,
+      tab,
+      url: `/${locale}/${OPENAPI_TAB}/${SDKS_ROOT_SLUG}`,
+    };
+  }
+
   const { source } = await import('./source.server');
   const pageTree = source.getPageTree(locale);
   const tabSummaries = getTabSummaries(pageTree);

@@ -227,6 +227,8 @@ const LEGACY_GET_STARTED_PATHS: Record<string, (locale: string) => string> = {
 
 const LEGACY_ABSOLUTE_PATHS: Record<string, string> = {
   '/doc/convoai/restful/webhook/ncs-events': '/zh-CN/api-reference/ncs-events',
+  '/en/sdks': '/en/api-reference/sdks',
+  '/sdks': '/en/api-reference/sdks',
 };
 
 function getRtcAndroidVersionScope(contentPath?: string) {

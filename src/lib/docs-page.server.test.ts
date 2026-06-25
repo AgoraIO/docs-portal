@@ -1841,6 +1841,14 @@ Web body
     });
   });
 
+  it('redirects the legacy SDKs tab to the API Reference SDKs page', async () => {
+    await expect(loadDocsTabIndex('en', 'sdks')).resolves.toEqual({
+      locale: 'en',
+      tab: 'sdks',
+      url: '/en/api-reference/sdks',
+    });
+  });
+
   it('keeps Recipes visible in the API Reference root sidebar while hiding the legacy alias', async () => {
     const page = createPage();
     mockedGetPage.mockReturnValue({

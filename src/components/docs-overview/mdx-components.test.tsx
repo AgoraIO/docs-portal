@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import type { ComponentType, ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { getOverviewMDXComponents } from './mdx-components';
+import { SdksCatalog } from './SdksCatalog';
 
 type SolutionCardGridComponent = ComponentType<{
   children: ReactNode;
@@ -118,6 +119,7 @@ type RecipesCatalogComponent = ComponentType<{
     }>;
     product: string;
     stack?: string;
+    tags?: string[];
     title: string;
     tone?: 'blue' | 'green' | 'pink' | 'purple' | 'sand';
   }>;
@@ -135,6 +137,7 @@ type RecipesCatalogComponent = ComponentType<{
   showDescription?: boolean;
   showTags?: boolean;
   stackFilterLabel: string;
+  stackQueryParam?: string;
 }>;
 
 describe('overview MDX components', () => {
@@ -637,5 +640,132 @@ describe('overview MDX components', () => {
     expect(screen.getByText('Product')).toBeVisible();
     expect(screen.getByText('Platform')).toBeVisible();
     expect(screen.queryByText('Reference type')).toBeNull();
+  });
+
+  it('uses the platform query parameter as the initial SDK stack filter', () => {
+    window.history.pushState(null, '', '/en/api-reference/sdks?platform=android');
+
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    render(
+      <RecipesCatalog
+        allCategoriesLabel="All download types"
+        allProductsLabel="All SDKs"
+        allStacksLabel="All platforms"
+        categoryFilterLabel="Download type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No SDKs match the current filters."
+        items={[
+          {
+            category: 'Core SDK',
+            description: 'Android voice package.',
+            links: [
+              {
+                href: 'https://download.agora.io/sdk/release/android.zip',
+                label: 'Direct download',
+              },
+            ],
+            product: 'Voice SDK',
+            stack: 'Android',
+            title: 'Android Voice SDK 4.6.3',
+          },
+          {
+            category: 'Core SDK',
+            description: 'iOS voice package.',
+            links: [
+              {
+                href: 'https://download.agora.io/sdk/release/ios.zip',
+                label: 'Direct download',
+              },
+            ],
+            product: 'Voice SDK',
+            stack: 'iOS',
+            title: 'iOS Voice SDK 4.6.2',
+          },
+        ]}
+        productFilterLabel="SDK"
+        searchPlaceholder="Search SDKs"
+        stackFilterLabel="Platform"
+        stackQueryParam="platform"
+      />,
+    );
+
+    expect(screen.getByText('Android Voice SDK 4.6.3')).toBeVisible();
+    expect(screen.queryByText('iOS Voice SDK 4.6.2')).not.toBeInTheDocument();
+  });
+
+  it('renders SDK downloads as product rows with version lists', () => {
+    window.history.pushState(null, '', '/en/api-reference/sdks?platform=android');
+
+    render(<SdksCatalog />);
+
+    expect(screen.getByText('Platforms')).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Android' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(screen.getByRole('heading', { name: 'Core Products' })).toBeVisible();
+
+    const voiceHeadings = screen.getAllByRole('heading', {
+      level: 3,
+      name: 'Voice SDK',
+    });
+    expect(voiceHeadings).toHaveLength(1);
+
+    const voiceRow = voiceHeadings[0]?.closest('article');
+    expect(voiceRow).not.toBeNull();
+    expect(
+      within(voiceRow as HTMLElement).getByRole('combobox', {
+        name: 'Voice SDK version',
+      }),
+    ).toHaveValue('4.6.3-voice-sdk-android');
+    expect(
+      within(voiceRow as HTMLElement).getByRole('option', {
+        name: 'v4.6.2',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      within(voiceRow as HTMLElement).getByRole('link', {
+        name: /Package Manager/i,
+      }),
+    ).toHaveAttribute(
+      'href',
+      'https://central.sonatype.com/artifact/io.agora.rtc/voice-sdk/4.6.3/aar',
+    );
+    expect(
+      within(voiceRow as HTMLElement).getByRole('link', {
+        name: /Direct Download/i,
+      }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.6.3_VOICE.zip',
+    );
+  });
+
+  it('uses the SDK platform query parameter and keeps platform changes in the URL', () => {
+    window.history.pushState(null, '', '/en/api-reference/sdks?platform=ios');
+
+    render(<SdksCatalog />);
+
+    expect(screen.getByRole('button', { name: 'iOS' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(
+      screen.queryByRole('heading', { level: 3, name: 'IoT SDK' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Linux' }));
+
+    expect(window.location.search).toBe('?platform=linux');
+    expect(screen.getByRole('button', { name: 'Linux' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(screen.getByRole('heading', { name: 'Product Add-ons' })).toBeVisible();
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Server Gateway SDK' }),
+    ).toBeVisible();
   });
 });
