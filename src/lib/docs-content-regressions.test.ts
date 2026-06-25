@@ -146,6 +146,30 @@ describe('docs content regressions', () => {
     );
   });
 
+  it('renders media push layout images inside GFM table cells', async () => {
+    const { source } = await import('./source.server');
+    const page = source.getPage(
+      ['realtime-media', 'media-push', 'reference', 'set-vertical-layout'],
+      'en',
+    );
+
+    expect(page).toBeDefined();
+    expect(page?.type).toBe('docs');
+
+    if (!page || !('getText' in page.data)) {
+      throw new Error(
+        'Expected media push vertical layout page to expose processed markdown.',
+      );
+    }
+
+    const processed = await page.data.getText('processed');
+
+    expect(processed).toContain('| Number of people | Layout effect');
+    expect(processed).toMatch(
+      /\| 1\s+\| !\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
+    );
+  });
+
   it('keeps parameter table lists and callouts in the media push type definition page', async () => {
     const { source } = await import('./source.server');
     const page = source.getPage(

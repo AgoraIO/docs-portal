@@ -656,6 +656,16 @@
     line-height: 1.7;
   }
 
+  .prose :where(td:has(> img)):not(:where(.not-prose, .not-prose *)) {
+    width: 16rem;
+    min-width: 12rem;
+  }
+
+  .prose :where(td > img):not(:where(.not-prose, .not-prose *)) {
+    max-width: 100%;
+    height: auto;
+  }
+
   .prose
     :where(th:first-child, td:first-child):not(
       :where(.not-prose, .not-prose *)
