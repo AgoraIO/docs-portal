@@ -33,6 +33,7 @@ import {
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
+import { type DocsLayoutMode, isWideDocsLayout } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import { replaceDocLocale } from '@/lib/docs-routing';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
@@ -90,7 +91,7 @@ export function DocsShell({
   activePath: string;
   activeTab: string;
   children: React.ReactNode;
-  layoutMode?: 'docs' | 'openapi';
+  layoutMode?: DocsLayoutMode;
   localeLinks: LocaleLink[];
   locale: string;
   pages: SearchEntry[];
@@ -145,7 +146,7 @@ export function DocsShell({
     '--docs-shell-header-offset': `${headerOffset}px`,
     '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
-  const isOpenApiLayout = layoutMode === 'openapi';
+  const isWideLayout = isWideDocsLayout(layoutMode);
 
   return (
     <SidebarProvider
@@ -335,7 +336,7 @@ export function DocsShell({
         <div
           className={cn(
             'mx-auto grid w-full max-w-[1440px] min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden',
-            isOpenApiLayout
+            isWideLayout
               ? 'xl:grid-cols-[256px_minmax(0,1fr)]'
               : 'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
           )}
@@ -357,7 +358,7 @@ export function DocsShell({
           >
             {children}
           </DocsMainColumn>
-          {isOpenApiLayout ? null : (
+          {isWideLayout ? null : (
             <DocsTocRail locale={currentLocale} toc={toc} />
           )}
         </div>
