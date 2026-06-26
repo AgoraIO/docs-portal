@@ -53,9 +53,32 @@ To use co-host token authentication, set the user role using the `role` paramete
 
 | Characters and use-cases | Authentication steps |
 |:--------------------------|:---------------------------------------------|
-| Host joins the channel to send streams | <ol><li>Request a token with the `role` set to `kRolePublisher`. This token gives the host permission to send streams. </li><li>Call `setClientRole` to set the role as the host.</li><li>Call `joinChannel` to pass in a token with streaming privileges to join the channel.</li></ol>      |
-| Audience members join the channel	 | <ol><li>Request a token with the `role` set to `kRoleSubscriber`. This token does not permit the user to send streams</li><li>Since a user's role when joining a channel is by default audience, it is sufficient to call `joinChannel` directly and pass in a token to join the channel.</li></ol>     |
-| Audience gets the mic after joining the channel | <ol><li>Request a token with the `role` set to `kRolePublisher` to give the user permission to send streams.</li><li>Call `renewToken` to update the new token on the Agora server.</li><li>Call `setClientRole` to switch the role to host.</li></ol> |
+| Host joins the channel to send streams | <Slot name="host-joins-the-channel-to-send-streams" /> |
+| Audience members join the channel | <Slot name="audience-members-join-the-channel" /> |
+| Audience gets the mic after joining the channel | <Slot name="audience-gets-the-mic-after-joining-the-channel" /> |
+
+<Slot for="host-joins-the-channel-to-send-streams">
+
+1. Request a token with the `role` set to `kRolePublisher`. This token gives the host permission to send streams.
+2. Call `setClientRole` to set the role as the host.
+3. Call `joinChannel` to pass in a token with streaming privileges to join the channel.
+
+</Slot>
+
+<Slot for="audience-members-join-the-channel">
+
+1. Request a token with the `role` set to `kRoleSubscriber`. This token does not permit the user to send streams
+2. Since a user's role when joining a channel is by default audience, it is sufficient to call `joinChannel` directly and pass in a token to join the channel.
+
+</Slot>
+
+<Slot for="audience-gets-the-mic-after-joining-the-channel">
+
+1. Request a token with the `role` set to `kRolePublisher` to give the user permission to send streams.
+2. Call `renewToken` to update the new token on the Agora server.
+3. Call `setClientRole` to switch the role to host.
+
+</Slot>
 :::note
 If your business use-case requires more refined streaming permission control, refer to the [Co-host token authentication](use-tokens.mdx) guide.
 :::

@@ -75,59 +75,150 @@ The request Body is the `converter` field of JSON Object type. The field structu
 
 Details for these fields are shown in the following table:
 
-| Field                                                        | Type                   | Descriptions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| :----------------------------------------------------------- | :--------------------- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| name                                                    | (Optional) String      | The name of the Converter. The maximum length is 64 characters. The supported character set range is:<li>All lowercase English letters (a-z)</li><li>All uppercase English letters (A-Z)</li><li>Numbers 0-9</li><li>"-", "_"</li>The field is empty when no value is passed. Multiple converters with an empty name field can be created under a project. Two converters cannot have the same name, however; you will receive a response status code of <code>409</code> (Conflict) if you try to create a converter with the same name as one that already exists under that project.
+| Field | Type | Descriptions |
+| :--- | :--- | :--- |
+| name | (Optional) String | <Slot name="name" /> |
+| transcodeOptions | (Required) JSON Object | <Slot name="transcodeoptions" /> |
+| transcodeOptions.rtcChannel | (Required) String | <Slot name="transcodeoptions-rtcchannel" /> |
+| transcodeOptions.audioOptions | (Optional) JSON Object | <Slot name="transcodeoptions-audiooptions" /> |
+| transcodeOptions.videoOptions | (Optional) JSON Object | <Slot name="transcodeoptions-videooptions" /> |
+| transcodeOptions.videoOptions.canvas | (Required) JSON Object | The video canvas. See [canvas](./restful-type-definition#canvas) for details. |
+| transcodeOptions.videoOptions.layoutType | (Optional) Number | <Slot name="transcodeoptions-videooptions-layouttype" /> |
+| transcodeOptions.videoOptions.layout | (Optional) JSON Array | <Slot name="transcodeoptions-videooptions-layout" /> |
+| transcodeOptions.videoOptions.layout.RtcStreamView element | None | The video screen of each user on the canvas. See [RtcStreamView](./restful-type-definition#layout) for details. |
+| transcodeOptions.videoOptions.layout.ImageView element | None | The video image on the canvas, which can be used as a watermark. See [ImageView](./restful-type-definition#layoutimageview) for details. |
+| transcodeOptions.videoOptions.vertical | (Optional) JSON Object | Vertical layout. This parameter must be set when `layoutType` is 1. See [vertical](./restful-type-definition#vertical) for details. |
+| transcodeOptions.videoOptions.defaultPlaceholderImageUrl | (Optional) String | <Slot name="transcodeoptions-videooptions-defaultplaceholderimageurl" /> |
+| transcodeOptions.videoOptions.bitrate | (Required) Number | The encoding bitrate (Kbps) of the video. The value range is [1,10000]. |
+| transcodeOptions.videoOptions.gop | (Optional) Number | The GOP of the video. The defalt value is the value of `frameRate` * 2。 |
+| transcodeOptions.videoOptions.frameRate | (Optional) Number | The encoding frame rate (fps) of the video. The value range is [1,30]. The default value is 15. |
+| transcodeOptions.videoOptions.codec | (Optional) String | <Slot name="transcodeoptions-videooptions-codec" /> |
+| transcodeOptions.videoOptions.codecProfile | (Optional) String | <Slot name="transcodeoptions-videooptions-codecprofile" /> |
+| transcodeOptions.videoOptions.seiOptions | JSON Object | Sets the user SEI information carried in the output video stream. The default is empty. If it is not set, it means that no SEI information is output. See [seiOptions](./restful-type-definition#seioptions) for details. |
+| rtmpUrl | (Required) String | The address of Media Push. It must be a valid RTMP address with a length of 1,024 characters or less. |
+| idleTimeOut | (Optional) Number | The maximum time (seconds) that the Converter is idle. Idle means that all users corresponding to the media stream processed by the Converter have left the channel. After the idle state exceeds the set `idleTimeOut`, the Converter will be destroyed automatically. |
+| jitterBufferSizeMs | (Optional) Int | <Slot name="jitterbuffersizems" /> |
+
+<Slot for="name">
+
+The name of the Converter. The maximum length is 64 characters. The supported character set range is:
+
+- All lowercase English letters (a-z)
+- All uppercase English letters (A-Z)
+- Numbers 0-9
+- "-", "_"
+
+The field is empty when no value is passed. Multiple converters with an empty name field can be created under a project. Two converters cannot have the same name, however; you will receive a response status code of `409` (Conflict) if you try to create a converter with the same name as one that already exists under that project.
 
 :::info
-To avoid repeatedly creating multiple Converters and repetitively pushing streams, please use the <code>name</code> field to manage the Converters under the specified project. Agora recommends that you combine "channel name (<code>rtcChannel</code>)" and "Converter feature" to assign a value to the <code>name</code>. For example, <code>show68_horizontal</code> and <code>show68_vertical</code> would represent converters for the user screen created in channel <code>show68</code> with horizontal and vertical layouts, respectively.
+To avoid repeatedly creating multiple Converters and repetitively pushing streams, please use the `name` field to manage the Converters under the specified project. Agora recommends that you combine "channel name (`rtcChannel`)" and "Converter feature" to assign a value to the `name`. For example, `show68_horizontal` and `show68_vertical` would represent converters for the user screen created in channel `show68` with horizontal and vertical layouts, respectively.
 :::
 
- |
-| transcodeOptions                                         | (Required) JSON Object | The Converter’s transcoding configuration. <li>When the `audioOptions` and `videoOptions` fields in `converter.transcodeOptions` are not defined, the converter will output a video stream only (without audio).</li><li>When there is no `rtcStreamUids` field in the `converter.transcodeOptions.audioOptions` field, Agora will mix the audio streams of all users in the channel and output the mixed audio stream through the Converter.</li><li>When there is an `rtcStreamUids` field in the `converter.transcodeOptions.audioOptions` field, Agora will mix the audio stream of the specified user and output the mixed audio stream through the Converter.</li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| transcodeOptions.rtcChannel                                | (Required) String      | The Agora channel name. This is the channel to which the stream processed by the Converter belongs. The maximum length of the string is 64 characters, and the following character sets (89 characters in total) are supported:<li>All lowercase English letters (a-z)</li><li>All uppercase English letters (A-Z)</li><li>Numbers 0-9</li><li>The space character "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", "," </li>|
-| transcodeOptions.audioOptions                              | (Optional) JSON Object | The audio transcoding configuration of the Converter. See [audioOptions](./restful-type-definition#audiooptions) for details.
+</Slot>
+
+<Slot for="transcodeoptions">
+
+The Converter’s transcoding configuration.
+
+- When the `audioOptions` and `videoOptions` fields in `converter.transcodeOptions` are not defined, the converter will output a video stream only (without audio).
+- When there is no `rtcStreamUids` field in the `converter.transcodeOptions.audioOptions` field, Agora will mix the audio streams of all users in the channel and output the mixed audio stream through the Converter.
+- When there is an `rtcStreamUids` field in the `converter.transcodeOptions.audioOptions` field, Agora will mix the audio stream of the specified user and output the mixed audio stream through the Converter.
+
+</Slot>
+
+<Slot for="transcodeoptions-rtcchannel">
+
+The Agora channel name. This is the channel to which the stream processed by the Converter belongs. The maximum length of the string is 64 characters, and the following character sets (89 characters in total) are supported:
+
+- All lowercase English letters (a-z)
+- All uppercase English letters (A-Z)
+- Numbers 0-9
+- The space character "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ","
+
+</Slot>
+
+<Slot for="transcodeoptions-audiooptions">
+
+The audio transcoding configuration of the Converter. See [audioOptions](./restful-type-definition#audiooptions) for details.
 
 :::info
-<li>There is no need to set <code>audioOptions</code> and related fields in a video stream only (without audio) use-case.</li> <li>In an audio & video use-case, `audioOptions` is a required field. If there is no field setting requirement, you can set `audioOptions` to empty, for example: "audioOptions":{} </li>
+- There is no need to set `audioOptions` and related fields in a video stream only (without audio) use-case.
+- In an audio & video use-case, `audioOptions` is a required field. If there is no field setting requirement, you can set `audioOptions` to empty, for example: "audioOptions":{}.
 :::
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| transcodeOptions.videoOptions                             | (Optional) JSON Object | The video transcoding configuration of the Converter.
+</Slot>
+
+<Slot for="transcodeoptions-videooptions">
+
+The video transcoding configuration of the Converter.
 
 :::info
-<li>There is no need to set <code>videoOptions</code> and related fields in an audio stream only (without video) use-case. </li> <li>In an audio & video use-case, `videoOptions` is a required field and cannot be empty.</li>
+- There is no need to set `videoOptions` and related fields in an audio stream only (without video) use-case.
+- In an audio & video use-case, `videoOptions` is a required field and cannot be empty.
 :::
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| transcodeOptions.videoOptions.canvas                     | (Required) JSON Object | The video canvas. See [canvas](./restful-type-definition#canvas) for details.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-|transcodeOptions.videoOptions.layoutType                  | (Optional) Number      | The screen layout type of the output video: <li>`0` or empty: (Default) Custom layout, which is set through the`transcodeOptions.videoOptions.layout` parameter. </li><li>`1`: Vertical layout. Specify one user to display in the large window on the left side of the screen, while the other users are vertically arranged in the small windows on the right side of the screen. For details, see [Set Vertical Layout](/en/realtime-media/media-push/reference/set-vertical-layout).</li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| transcodeOptions.videoOptions.layout                     | (Optional) JSON Array  | The content description of the video screen on the canvas. Two elements are supported: RtcStreamView and ImageView.
+</Slot>
+
+<Slot for="transcodeoptions-videooptions-layouttype">
+
+The screen layout type of the output video:
+
+- `0` or empty: (Default) Custom layout, which is set through the`transcodeOptions.videoOptions.layout` parameter.
+- `1`: Vertical layout. Specify one user to display in the large window on the left side of the screen, while the other users are vertically arranged in the small windows on the right side of the screen. For details, see [Set Vertical Layout](/en/realtime-media/media-push/reference/set-vertical-layout).
+
+</Slot>
+
+<Slot for="transcodeoptions-videooptions-layout">
+
+The content description of the video screen on the canvas. Two elements are supported: RtcStreamView and ImageView.
 
 :::info
 If `layoutType` is 0 or empty, this field is required.
 :::
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| transcodeOptions.videoOptions.layout.RtcStreamView element | None                   | The video screen of each user on the canvas. See [RtcStreamView](./restful-type-definition#layout) for details.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| transcodeOptions.videoOptions.layout.ImageView element     | None                   | The video image on the canvas, which can be used as a watermark. See [ImageView](./restful-type-definition#layoutimageview) for details.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-|transcodeOptions.videoOptions.vertical                  | (Optional) JSON Object      | Vertical layout. This parameter must be set when `layoutType` is 1. See [vertical](./restful-type-definition#vertical) for details.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| transcodeOptions.videoOptions.defaultPlaceholderImageUrl                        | (Optional) String      | The default user screen background image URL address. Supports images in JPG, PNG and GIF formats. This controls what happens when a user in a channel stops publishing their video stream:<li>If this field is set, the user's window switches to this background image.</li><li>If this field is not set, the user's window initially displays the last frame of the user's video. Once the layout refreshes, the window displays the background color of the canvas.</li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| transcodeOptions.videoOptions.bitrate                     | (Required) Number      | The encoding bitrate (Kbps) of the video. The value range is [1,10000].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-|transcodeOptions.videoOptions.gop|(Optional) Number| The GOP of the video. The defalt value is the value of `frameRate` * 2。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| transcodeOptions.videoOptions.frameRate                   | (Optional) Number      | The encoding frame rate (fps) of the video. The value range is [1,30]. The default value is 15.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| transcodeOptions.videoOptions.codec                 | (Optional) String      | The video codec type of the output video stream. The following values are supported: <li>(Default) H.264</li><li>H.265</li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| transcodeOptions.videoOptions.codecProfile                 | (Optional) String      | The encoding specification of the video. The following values are supported:<li>`high` (Default): High video codec profile, generally used for high-resolution broadcasts or television.</li><li>`baseline`: Baseline video codec profile, generally used for video calls on mobile phones.</li><li>`main`: Main video codec profile, generally used for mainstream electronics, such as MP4 players, portable video players, PSPs, and iPads.</li>
+</Slot>
+
+<Slot for="transcodeoptions-videooptions-defaultplaceholderimageurl">
+
+The default user screen background image URL address. Supports images in JPG, PNG and GIF formats. This controls what happens when a user in a channel stops publishing their video stream:
+
+- If this field is set, the user's window switches to this background image.
+- If this field is not set, the user's window initially displays the last frame of the user's video. Once the layout refreshes, the window displays the background color of the canvas.
+
+</Slot>
+
+<Slot for="transcodeoptions-videooptions-codec">
+
+The video codec type of the output video stream. The following values are supported:
+
+- (Default) H.264
+- H.265
+
+</Slot>
+
+<Slot for="transcodeoptions-videooptions-codecprofile">
+
+The encoding specification of the video. The following values are supported:
+
+- `high` (Default): High video codec profile, generally used for high-resolution broadcasts or television.
+- `baseline`: Baseline video codec profile, generally used for video calls on mobile phones.
+- `main`: Main video codec profile, generally used for mainstream electronics, such as MP4 players, portable video players, PSPs, and iPads.
 
 :::info
-If <code>codec</code> is set to <code>H.256</code>, <code>codecProfile</code> is automatically set to <code>main</code>.
+If `codec` is set to `H.256`, `codecProfile` is automatically set to `main`.
 :::
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| transcodeOptions.videoOptions.seiOptions                | JSON Object  | Sets the user SEI information carried in the output video stream. The default is empty. If it is not set, it means that no SEI information is output. See [seiOptions](./restful-type-definition#seioptions) for details.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| rtmpUrl                                                    | (Required) String      | The address of Media Push. It must be a valid RTMP address with a length of 1,024 characters or less.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| idleTimeOut                                              | (Optional) Number      | The maximum time (seconds) that the Converter is idle. Idle means that all users corresponding to the media stream processed by the Converter have left the channel. After the idle state exceeds the set `idleTimeOut`, the Converter will be destroyed automatically.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| jitterBufferSizeMs                                              | (Optional) Int      | Network delay (ms) from the receiver to the jitter buffer. The default value is 1000. The value range is [0, 1000].<li>The Media Push service rounds up to the nearest 100 multiples with the value you set.</li><li>If the value is set to 0, jitter buffer delay does not take effect. Agora recommends that you do not set the `jitterBufferSizeMs` to 0 because poor network may cause low audio quality.</li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+</Slot>
+
+<Slot for="jitterbuffersizems">
+
+Network delay (ms) from the receiver to the jitter buffer. The default value is 1000. The value range is [0, 1000].
+
+- The Media Push service rounds up to the nearest 100 multiples with the value you set.
+
+- If the value is set to 0, jitter buffer delay does not take effect. Agora recommends that you do not set the `jitterBufferSizeMs` to 0 because poor network may cause low audio quality.
+
+</Slot>
 
 **Media Push without transcoding**
 
@@ -140,12 +231,22 @@ Details for these fields are shown in the following table:
 | Field | Category | Description |
 | :---------------------- | :------------------ | :----------------------------------------------------------- |
 | name | String | The name of the Converter. |
-| rawOptions |  (Required)JSON Object | Media Push configuration for the Converter. |
+| rawOptions | (Required)JSON Object | Media Push configuration for the Converter. |
 | rawOptions.rtcChannel | String | The Agora channel name. The channel to which the stream processed by the Converter belongs. |
 | rawOptions.rtcStreamUid | Number | The UID of the user to which the media stream belongs. |
-| rtmpUrl | (Required)String  | The CDN streaming address. |
+| rtmpUrl | (Required)String | The CDN streaming address. |
 | idleTimeOut | Number | The maximum time (s) that the Converter is idle. Idle means that all users of the corresponding media streams processed by the Converter have left the channel. When the Converter is in the idle state for longer than `idleTimeout`, the Converter is automatically destroyed and the streaming stops. |
-| jitterBufferSizeMs                                              | (Optional) Int      | Network delay (ms) from the receiver to the jitter buffer. The default value is 1000. The value range is [0, 1000].<li>The Media Push service rounds up to the nearest 100 multiples with the value you set.</li><li>If the value is set to 0, jitter buffer delay does not take effect. Agora recommends that you do not set the `jitterBufferSizeMs` to 0 because poor network may cause low audio quality.</li> |
+| jitterBufferSizeMs | (Optional) Int | <Slot name="jitterbuffersizems" /> |
+
+<Slot for="jitterbuffersizems">
+
+Network delay (ms) from the receiver to the jitter buffer. The default value is 1000. The value range is [0, 1000].
+
+- The Media Push service rounds up to the nearest 100 multiples with the value you set.
+
+- If the value is set to 0, jitter buffer delay does not take effect. Agora recommends that you do not set the `jitterBufferSizeMs` to 0 because poor network may cause low audio quality.
+
+</Slot>
 
 ### HTTP response
 
@@ -167,13 +268,25 @@ If the status code is 2XX, the request is successful. The field structure is sho
 
 Details for these fields are shown in the following table:
 
-| Field      | Type   | Descriptions                                                 |
+| Field | Type | Descriptions |
 | :--------- | :----- | :----------------------------------------------------------- |
-| `id`       | String | The ID of the Converter. This is a UUID (Universal Unique Identifier) generated by the Agora server to identify a created Converter. |
-| `createTs` | Number | The Unix timestamp(seconds) when the Converter was created.  |
+| `id` | String | The ID of the Converter. This is a UUID (Universal Unique Identifier) generated by the Agora server to identify a created Converter. |
+| `createTs` | Number | The Unix timestamp(seconds) when the Converter was created. |
 | `updateTs` | Number | The Unix timestamp(seconds) when the Converter configuration was last updated. |
-| `state`    | String | The running status of the Converter:<li>`connecting`: Connecting to the Agora streaming server and the CDN server.</li><li>`running`: The  Agora streaming server is pushing the streams.</li><li>`failed`: The Media Push fails.</li> |
-| `fields`   | String | The field mask of the converter JSON Object. See [Google protobuf FieldMask Document](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask) for details. This is used to describe the set of fields contained in the returned `converter`. In this example, `fields` specifies that the Agora server returns a subset of the `id`, `createTs`, `updateTs` and `state` fields in the `converter` field. |
+| `state` | String | <Slot name="state" /> |
+| `fields` | String | The field mask of the converter JSON Object. See [Google protobuf FieldMask Document](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask) for details. This is used to describe the set of fields contained in the returned `converter`. In this example, `fields` specifies that the Agora server returns a subset of the `id`, `createTs`, `updateTs` and `state` fields in the `converter` field. |
+
+<Slot for="state">
+
+The running status of the Converter:
+
+- `connecting`: Connecting to the Agora streaming server and the CDN server.
+
+- `running`: The Agora streaming server is pushing the streams.
+
+- `failed`: The Media Push fails.
+
+</Slot>
 
 If the status code is not 2XX, the request fails. The body contains a String type `message` field that describes the specific reason for the failure.
 
@@ -491,13 +604,25 @@ If the status code is 2XX, the request is successful. The field structure is sho
 
 Details of these fields are shown in the following table:
 
-| Field      | Type   | Descriptions                                                 |
+| Field | Type | Descriptions |
 | :--------- | :----- | :----------------------------------------------------------- |
-| `id`       | String | The ID of the Converter. This is a UUID (Universal Unique Identifier) generated by the Agora server to identify a created Converter. |
-| `createTs` | Number | The Unix timestamp(seconds) when the Converter was created.  |
+| `id` | String | The ID of the Converter. This is a UUID (Universal Unique Identifier) generated by the Agora server to identify a created Converter. |
+| `createTs` | Number | The Unix timestamp(seconds) when the Converter was created. |
 | `updateTs` | Number | The Unix timestamp(seconds) when the Converter configuration was last updated. |
-| `state`   | String | The running status of the Converter:<li>`connecting`: Connecting to the Agora streaming server and the CDN server.</li><li>`running`: The Agora streaming server is pushing the streams.</li><li>`failed`: The Media Push Fails.</li> |
-| `fields`  | String | The field mask of the converter JSON Object. See [Google protobuf FieldMask Document](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask) for details. This is used to describe the set of fields contained in the returned `converter`. <br/>In this example, `fields` specifies that the Agora server returns a subset of the `id`, `createTs`, `updateTs`, and `state` fields in the `converter` field. |
+| `state` | String | <Slot name="state" /> |
+| `fields` | String | The field mask of the converter JSON Object. See [Google protobuf FieldMask Document](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask) for details. This is used to describe the set of fields contained in the returned `converter`. <br/>In this example, `fields` specifies that the Agora server returns a subset of the `id`, `createTs`, `updateTs`, and `state` fields in the `converter` field. |
+
+<Slot for="state">
+
+The running status of the Converter:
+
+- `connecting`: Connecting to the Agora streaming server and the CDN server.
+
+- `running`: The Agora streaming server is pushing the streams.
+
+- `failed`: The Media Push Fails.
+
+</Slot>
 
 If the status code is not 2XX, the request fails. The body contains a String type `message` field that describes the specific reason for the failure.
 
@@ -592,26 +717,38 @@ If the status code is 2XX, the request is successful. The field structure is sho
 
 Details of these fields are shown in the following table:
 
-| Field      | Type   | Descriptions                                                 |
+| Field | Type | Descriptions |
 | :--------- | :----- | :----------------------------------------------------------- |
-|name  | String| The name of the Converter.|
-|transcodeOptions| JSON Object| The transcoding configuration of the Converter.        |
-|transcodeOptions.rtcChannel|String|The Agora channel name.       |
-|transcodeOptions.audioOptions|JSON Object|The audio transcoding configuration of the Converter. See [audioOptions](./restful-type-definition#audiooptions) for details.|
-|transcodeOptions.videoOptions|JSON Object|The video transcoding configuration of the Converter.    |
-|transcodeOptions.videoOptions.canvas|JSON Object |The video canvas. See [canvas](./restful-type-definition#canvas) for details. |
-|transcodeOptions.videoOptions.layout|JSON Array|The content description of the video screen on the canvas. Two elements are supported: RtcStreamView and ImageView.|
-|transcodeOptions.videoOptions.layout.RtcStreamView element |NA|The video screen of each user on the canvas. See [RtcStreamView](./restful-type-definition#layout) for details.      |
-|transcodeOptions.videoOptions.layout.ImageView element|NA| The video image on the canvas, which can be used as a watermark. See [ImageView](./restful-type-definition#layoutimageview) for details.  |
-|transcodeOptions.videoOptions.bitrate|Number|The encoding bitrate (Kbps) of the video.|
-|transcodeOptions.videoOptions.frameRate|Number| The encoding frame rate (fps) of the video.|
-|transcodeOptions.videoOptions.codec|String|The video codec type of the output video stream.|
-|transcodeOptions.videoOptions.codecProfile|String|The encoding specification of the video.|
-| transcodeOptions.videoOptions.seiOptions                | JSON Object  |The user SEI information carried in the output video stream. See [seiOptions](./restful-type-definition#seioptions) for details.  |
-|rtmpUrl|String|The address of Media Push. |
-|idleTimeout|Number|The maximum time (seconds) that the Converter is idle. Idle means that all users corresponding to the media stream processed by the Converter have left the channel. |
-|createTs|Number|The Unix timestamp(seconds) when the Converter was created. |
-|state|String|The running status of the Converter:<li>`connecting`: Connecting to the Agora streaming server and the CDN server.</li><li>`running`: Pushing the stream.</li><li>`failed`: Failed to push the stream.</li> |
+| name | String | The name of the Converter. |
+| transcodeOptions | JSON Object | The transcoding configuration of the Converter. |
+| transcodeOptions.rtcChannel | String | The Agora channel name. |
+| transcodeOptions.audioOptions | JSON Object | The audio transcoding configuration of the Converter. See [audioOptions](./restful-type-definition#audiooptions) for details. |
+| transcodeOptions.videoOptions | JSON Object | The video transcoding configuration of the Converter. |
+| transcodeOptions.videoOptions.canvas | JSON Object | The video canvas. See [canvas](./restful-type-definition#canvas) for details. |
+| transcodeOptions.videoOptions.layout | JSON Array | The content description of the video screen on the canvas. Two elements are supported: RtcStreamView and ImageView. |
+| transcodeOptions.videoOptions.layout.RtcStreamView element | NA | The video screen of each user on the canvas. See [RtcStreamView](./restful-type-definition#layout) for details. |
+| transcodeOptions.videoOptions.layout.ImageView element | NA | The video image on the canvas, which can be used as a watermark. See [ImageView](./restful-type-definition#layoutimageview) for details. |
+| transcodeOptions.videoOptions.bitrate | Number | The encoding bitrate (Kbps) of the video. |
+| transcodeOptions.videoOptions.frameRate | Number | The encoding frame rate (fps) of the video. |
+| transcodeOptions.videoOptions.codec | String | The video codec type of the output video stream. |
+| transcodeOptions.videoOptions.codecProfile | String | The encoding specification of the video. |
+| transcodeOptions.videoOptions.seiOptions | JSON Object | The user SEI information carried in the output video stream. See [seiOptions](./restful-type-definition#seioptions) for details. |
+| rtmpUrl | String | The address of Media Push. |
+| idleTimeout | Number | The maximum time (seconds) that the Converter is idle. Idle means that all users corresponding to the media stream processed by the Converter have left the channel. |
+| createTs | Number | The Unix timestamp(seconds) when the Converter was created. |
+| state | String | <Slot name="state" /> |
+
+<Slot for="state">
+
+The running status of the Converter:
+
+- `connecting`: Connecting to the Agora streaming server and the CDN server.
+
+- `running`: Pushing the stream.
+
+- `failed`: Failed to push the stream.
+
+</Slot>
 
 If the status code is not 2XX, the request fails. The body contains a String type `message` field that describes the specific reason for the failed.
 
@@ -858,21 +995,33 @@ If the status code is 2XX, the request is successful. The field structure is sho
 
 Details for these fields are shown in the following table:
 
-| Field                        | Type        | Descriptions                                                 |
+| Field | Type | Descriptions |
 | :--------------------------- | :---------- | :----------------------------------------------------------- |
-| `success`                    | Bool        | The request was successful.                                  |
-| `data`                       | JSON Object | Returns data details.                                        |
-| `data.total_count`           | String      | The number of all Converters under the queried project or channel. |
-| `data.cursor`                | JSON        | Cursor for paging query Converter information list. If the cursor is `0`, it means that all Converters under the project or the specified channel have been queried; otherwise, the query needs to be continued. |
-| `data.members.rtcChannel`    | String      | The Agora channel name. This is the channel to which the stream processed by the Converter belongs. |
-| `data.members.converterName` | String      | The name of the Converter.                                   |
-| `data.members.updateTs`      | Number      | The Unix timestamp(seconds) when the Converter configuration was last updated. |
-| `data.members.appId`         | String      | The **App ID** provided by Agora . You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project. |
-| `data.members.rtmpUrl`       | String      | The CDN streaming address.                                   |
-| `data.members.converterId`   | String      | The **ID** of the Converter. The unique identifier for the Converter. |
-| `data.members.create`        | Number      | The Unix timestamp(seconds) when the Converter was created.  |
-| `data.members.idleTimeout`   | Number      | The maximum time (seconds) that the Converter is idle. Idle means that all users corresponding to the media stream processed by the Converter have left the channel. |
-| `data.members.state`         | String      | The running status of the Converter:<li>`connecting`: Connecting to the Agora streaming server and the CDN server.</li><li>`running`: Pushing the stream.</li><li>`failed`: Failed to push the stream.</li> |
+| `success` | Bool | The request was successful. |
+| `data` | JSON Object | Returns data details. |
+| `data.total_count` | String | The number of all Converters under the queried project or channel. |
+| `data.cursor` | JSON | Cursor for paging query Converter information list. If the cursor is `0`, it means that all Converters under the project or the specified channel have been queried; otherwise, the query needs to be continued. |
+| `data.members.rtcChannel` | String | The Agora channel name. This is the channel to which the stream processed by the Converter belongs. |
+| `data.members.converterName` | String | The name of the Converter. |
+| `data.members.updateTs` | Number | The Unix timestamp(seconds) when the Converter configuration was last updated. |
+| `data.members.appId` | String | The **App ID** provided by Agora . You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project. |
+| `data.members.rtmpUrl` | String | The CDN streaming address. |
+| `data.members.converterId` | String | The **ID** of the Converter. The unique identifier for the Converter. |
+| `data.members.create` | Number | The Unix timestamp(seconds) when the Converter was created. |
+| `data.members.idleTimeout` | Number | The maximum time (seconds) that the Converter is idle. Idle means that all users corresponding to the media stream processed by the Converter have left the channel. |
+| `data.members.state` | String | <Slot name="data-members-state" /> |
+
+<Slot for="data-members-state">
+
+The running status of the Converter:
+
+- `connecting`: Connecting to the Agora streaming server and the CDN server.
+
+- `running`: Pushing the stream.
+
+- `failed`: Failed to push the stream.
+
+</Slot>
 
 ### Response example
 ```json
@@ -917,19 +1066,27 @@ The Agora server limits the call rate for the Media Push API by method. When a c
 - If the status code is 2XX, the request is successful.
 - If the status code is not 2XX, the request fails. Please troubleshoot the problem based on the content of the `message` field in the corresponding response message Body.
 
-| Status codes            | Possible message field content                               |
+| Status codes | Possible message field content |
 | :---------------------- | :----------------------------------------------------------- |
-| 200 OK                  | /                                                            |
-| 400 Bad Request         | <li>Invalid parameter: rtmpUrl. Replace it, and retry. </li><li>Invalid parameter: idleTimeout. Replace it, and retry. </li>|
-| 401 Unauthorized        | Invalid authentication credentials.                          |
-| 403 Forbidden           | The project lacks permission to use this function. Contact [Agora technical support](mailto:support@agora.io). |
-| 404 Not Found           | Resource cannot be found/has been destroyed.                         |
-| 409 Conflict            | Resource with the same name already exists. Use the existing resource; otherwise, delete it, and create a new resource. |
-| 429 Too Many Requests   | Request rate limit exceeded.Resource quota limit exceeded.No available resources. |
-| 500 Unknown             | Internal errors. Contact Agora for assistance with troubleshooting.             |
-| 501 Not Implemented     | The method requested has not been implemented.               |
+| 200 OK | / |
+| 400 Bad Request | <Slot name="400-bad-request" /> |
+| 401 Unauthorized | Invalid authentication credentials. |
+| 403 Forbidden | The project lacks permission to use this function. Contact [Agora technical support](mailto:support@agora.io). |
+| 404 Not Found | Resource cannot be found/has been destroyed. |
+| 409 Conflict | Resource with the same name already exists. Use the existing resource; otherwise, delete it, and create a new resource. |
+| 429 Too Many Requests | Request rate limit exceeded.Resource quota limit exceeded.No available resources. |
+| 500 Unknown | Internal errors. Contact Agora for assistance with troubleshooting. |
+| 501 Not Implemented | The method requested has not been implemented. |
 | 503 Service Unavailable | The server is temporarily overloading. Retry with a backoff strategy and contact Agora for assistance with troubleshooting.The server is temporarily down. Retry with a backoff strategy. |
-| 504 Gateway Timeout     | Gateway timeout. Check whether the resource is created; if not, re-create a new resource. |
+| 504 Gateway Timeout | Gateway timeout. Check whether the resource is created; if not, re-create a new resource. |
+
+<Slot for="400-bad-request">
+
+- Invalid parameter: rtmpUrl. Replace it, and retry.
+
+- Invalid parameter: idleTimeout. Replace it, and retry.
+
+</Slot>
 
 ## Consideration
 

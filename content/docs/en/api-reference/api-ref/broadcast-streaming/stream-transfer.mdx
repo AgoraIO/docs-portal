@@ -31,8 +31,18 @@ The request body is in the JSON Object type and contains the following fields:
 
 | Field | Type | Description |
 | :------------ | :--- | :----------------------------------------------------------- |
-| `enabled` | Bool | Optional. Whether to enable the transfer function:<li>`true`: Enable the transfer function.</li><li>`false`: (Default) Disable the transfer function.</li> |
+| `enabled` | Bool | <Slot name="enabled" /> |
 | `callbackUrl` | String | Optional. Your callback URL. If you enable the transfer function, Agora sends requests to this URL to get the platform addresses where the live stream are published. For details, see [Transfer callback requirements](#callback). |
+
+<Slot for="enabled">
+
+Optional. Whether to enable the transfer function:
+
+- `true`: Enable the transfer function.
+
+- `false`: (Default) Disable the transfer function.
+
+</Slot>
 
 ### HTTP response
 
@@ -86,8 +96,18 @@ If the returned HTTP status code is 200, the request is successful, and the resp
 
 | Field | Type | Description |
 | :------------ | :--- | :----------------------------------------------------------- |
-| `enabled` | Bool | Whether the transfer function is enabled:<li>`true`: The transfer function is enabled.</li><li>`false`: The transfer function is disabled.</li> |
+| `enabled` | Bool | <Slot name="enabled" /> |
 | `callbackUrl` | String | Your callback URL. If you enable the transfer function, Agora sends requests to this URL to get the platform addresses where the live stream are published. For details, see [Transfer callback requirements](#callback). |
+
+<Slot for="enabled">
+
+Whether the transfer function is enabled:
+
+- `true`: The transfer function is enabled.
+
+- `false`: The transfer function is disabled.
+
+</Slot>
 
 If the returned HTTP status code is not 200, the request fails. You can refer to the [HTTP status code ](#http-code)for possible reasons.
 

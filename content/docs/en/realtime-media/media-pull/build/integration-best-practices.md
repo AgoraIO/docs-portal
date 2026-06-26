@@ -22,11 +22,25 @@ Check that your Peak Concurrent Worker (PCW), Queries Per Second (QPS), and the 
 
 Agora sets the following QPS limits for the Media Pull RESTful API:
 
-|API      |QPS limit            |
+| API | QPS limit |
 |:--------|:---------------------|
-|Create|<ul><li>Creating Media Pull tasks (cloud players) with names is limited to 2 queries per second. </li><li>Creating cloud players without names is limited to 50 queries per second.</li></ul>|
-|Delete|Deleting cloud players is limited to 100 queries per second.|
-|List|<ul><li>For a project with filter, the limit of the query rate is 2 times per second and 15 times per minute.</li><li>When there is no filter, the limit of query rate is 10 times per second and 20 times per minute.</li></ul>|
+| Create | <Slot name="create" /> |
+| Delete | Deleting cloud players is limited to 100 queries per second. |
+| List | <Slot name="list" /> |
+
+<Slot for="create">
+
+- Creating Media Pull tasks (cloud players) with names is limited to 2 queries per second.
+- Creating cloud players without names is limited to 50 queries per second.
+
+</Slot>
+
+<Slot for="list">
+
+- For a project with filter, the limit of the query rate is 2 times per second and 15 times per minute.
+- When there is no filter, the limit of query rate is 10 times per second and 20 times per minute.
+
+</Slot>
 
 When the QPS limit is exceeded, the status code `429` (Too Many Requests) is returned. To extend the QPS limit, contact support@agora.io.
 
@@ -40,9 +54,41 @@ Resolutions:
 - HD: High definition video, resolution ≤ 1280 × 720 and > 640 × 360
 - FHD: Full HD video, resolution ≤ 1920 × 1080 and > 1280 × 720
 
-| Service type | Mainland China        | Europe                | America               | Asia (excluding mainland China) |
+| Service type | Mainland China | Europe | America | Asia (excluding mainland China) |
 |:-------------|:----------------------|:----------------------|:----------------------|:--------------------------------|
-| Media Pull   | <ul><li>SD 20</li> <li>HD 20</li> <li>FHD 10</li></ul>  | <ul><li>SD 20</li> <li>HD 10</li> <li>FHD 5</li></ul>   |<ul><li>SD 20</li> <li>HD 10</li> <li>FHD 5</li></ul>    | <ul><li>SD 20</li> <li>HD 20</li> <li>FHD 5</li></ul>     |
+| Media Pull | <Slot name="media-pull-mainland-china" /> | <Slot name="media-pull-europe" /> | <Slot name="media-pull-america" /> | <Slot name="media-pull-asia-excluding-mainland-china" /> |
+
+<Slot for="media-pull-mainland-china">
+
+- SD 20
+- HD 20
+- FHD 10
+
+</Slot>
+
+<Slot for="media-pull-europe">
+
+- SD 20
+- HD 10
+- FHD 5
+
+</Slot>
+
+<Slot for="media-pull-america">
+
+- SD 20
+- HD 10
+- FHD 5
+
+</Slot>
+
+<Slot for="media-pull-asia-excluding-mainland-china">
+
+- SD 20
+- HD 20
+- FHD 5
+
+</Slot>
 
 If you need to extend the PCW limit, contact support@agora.io.
 
@@ -55,9 +101,41 @@ The upper limit of video attributes supported by Agora is as follows:
 
 The maximum number of supported streams is as follows:
 
-| Service type   | Mainland China        | Europe               | America               | Asia (excluding mainland China) |
+| Service type | Mainland China | Europe | America | Asia (excluding mainland China) |
 |:---------------|:----------------------|:---------------------|:----------------------|:--------------------------------|
-| Media Pull   | <ul><li>SD 20</li> <li>HD 20</li> <li>FHD 10</li></ul>  | <ul><li>SD 20</li> <li>HD 10</li> <li>FHD 5</li></ul>   |<ul><li>SD 20</li> <li>HD 10</li> <li>FHD 5</li></ul>    | <ul><li>SD 20</li> <li>HD 20</li> <li>FHD 5</li></ul>     |
+| Media Pull | <Slot name="media-pull-mainland-china" /> | <Slot name="media-pull-europe" /> | <Slot name="media-pull-america" /> | <Slot name="media-pull-asia-excluding-mainland-china" /> |
+
+<Slot for="media-pull-mainland-china">
+
+- SD 20
+- HD 20
+- FHD 10
+
+</Slot>
+
+<Slot for="media-pull-europe">
+
+- SD 20
+- HD 10
+- FHD 5
+
+</Slot>
+
+<Slot for="media-pull-america">
+
+- SD 20
+- HD 10
+- FHD 5
+
+</Slot>
+
+<Slot for="media-pull-asia-excluding-mainland-china">
+
+- SD 20
+- HD 20
+- FHD 5
+
+</Slot>
 
 :::caution[Important]
 If you need to inject multiple streams of different resolutions at the same time, make sure you meet the following requirements:<ul><li>The number of streams per resolution cannot exceed the corresponding limit for that resolution.</li><li>The total number of streams cannot exceed the limit set for the higher resolution. For example, if you need to inject both SD and HD streams in Europe, the total number of streams cannot exceed 20. If you need to inject HD and FHD, the total number cannot exceed 10.</li></ul>
@@ -182,14 +260,39 @@ If the error persists, print the `X-Request-ID` and `X-Resource-ID` fields in th
 Refer to the following table to quickly check whether each check item meets the integration requirements to ensure the
 reliability of Media Pull.
 
-|Required or optional |Item       |Check 	|
+| Required or optional | Item | Check |
 |:--------------------|:----------|:----------------|
-|Required	              |Channel mode	|Ensure that the scene of the channel is live.	|
-|Required	              |Availability	|Enable Media Pull.	|
-|Required	              |QPS limit	| Ensure that the rate of API calls in a project is below the maximum limit.|
-|Required	              |Maximum number of concurrent Tasks| Ensure that the number of concurrent tasks in a project is below 50.|
-|Optional	              |Cloud player user name	|<ul><li>Set UID or account as the user name for cloud player. Do not set both fields at the same time.</li><li>Use the name field to manage the cloud player under the specified project.</li></ul>|
-|Required	              |Region	|<ul><li>Set the region in the same area as your media streaming.</li><li>Pass region value in lowercase.</li></ul>|
-|Required	              |Idle timeout	|Set an appropriate `idleTimeout` value. 300 seconds is recommended.|
-|Optional	              |Troubleshooting	|Rectify the errors as follows: <ul><li>Use the retreat strategy.</li><li>Check the error code.</li></ul>If the preceding troubleshooting methods do not resolve the problem, print the values of the `X-Request-ID` and `X-Resource-ID` fields in the response header and contact Agora technical support.|
-|Optional	              |Message notifications	|Enable message notification service for Media Pull and listen to Media Pull events.|
+| Required | Channel mode | Ensure that the scene of the channel is live. |
+| Required | Availability | Enable Media Pull. |
+| Required | QPS limit | Ensure that the rate of API calls in a project is below the maximum limit. |
+| Required | Maximum number of concurrent Tasks | Ensure that the number of concurrent tasks in a project is below 50. |
+| Optional | Cloud player user name | <Slot name="optional" /> |
+| Required | Region | <Slot name="required" /> |
+| Required | Idle timeout | Set an appropriate `idleTimeout` value. 300 seconds is recommended. |
+| Optional | Troubleshooting | <Slot name="optional-2" /> |
+| Optional | Message notifications | Enable message notification service for Media Pull and listen to Media Pull events. |
+
+<Slot for="optional">
+
+- Set UID or account as the user name for cloud player. Do not set both fields at the same time.
+- Use the name field to manage the cloud player under the specified project.
+
+</Slot>
+
+<Slot for="required">
+
+- Set the region in the same area as your media streaming.
+- Pass region value in lowercase.
+
+</Slot>
+
+<Slot for="optional-2">
+
+Rectify the errors as follows:
+
+- Use the retreat strategy.
+- Check the error code.
+
+If the preceding troubleshooting methods do not resolve the problem, print the values of the `X-Request-ID` and `X-Resource-ID` fields in the response header and contact Agora technical support.
+
+</Slot>

@@ -1,4 +1,4 @@
-import type { Root, RootContent, Table, TableCell } from 'mdast';
+import type { List, ListItem, Root, Table, TableCell } from 'mdast';
 import type {
   MdxJsxAttribute,
   MdxJsxFlowElement,
@@ -18,51 +18,19 @@ type SlotPlaceholder = {
   name: string;
 };
 
+type FlowChild =
+  | Root['children'][number]
+  | MdxJsxFlowElement['children'][number]
+  | ListItem['children'][number];
+
+type FlowContainer = {
+  children: FlowChild[];
+};
+
 export function remarkTableSlots() {
   return (tree: Root) => {
     validateSlotUsage(tree);
-
-    const nextChildren: RootContent[] = [];
-
-    for (let index = 0; index < tree.children.length; index += 1) {
-      const node = tree.children[index];
-
-      if (node.type !== 'table') {
-        nextChildren.push(node);
-        continue;
-      }
-
-      const placeholders = collectTablePlaceholders(node);
-
-      if (placeholders.length === 0) {
-        nextChildren.push(node);
-        continue;
-      }
-
-      const { definitions, endIndex } = collectAdjacentDefinitions(
-        tree.children,
-        index + 1,
-      );
-
-      applySlotDefinitions(placeholders, definitions);
-      ensureNoUnusedDefinitions(definitions);
-
-      nextChildren.push(node);
-      index = endIndex - 1;
-    }
-
-    const orphanDefinition = nextChildren.find(isSlotDefinition);
-
-    if (orphanDefinition) {
-      throw new Error(
-        `Slot definition "${getRequiredStringAttribute(
-          orphanDefinition,
-          'for',
-        )}" must appear immediately after the table that references it.`,
-      );
-    }
-
-    tree.children = nextChildren;
+    processFlowContainer(tree);
   };
 }
 
@@ -103,12 +71,64 @@ function validateSlotUsage(tree: Root) {
       );
     }
 
-    if (target && parent?.type !== 'root') {
+    if (target && !isFlowContainer(parent)) {
       throw new Error(
-        '<Slot for="..."> must be placed at the top level immediately after its table.',
+        '<Slot for="..."> must be placed as a flow sibling immediately after its table.',
       );
     }
   });
+}
+
+function processFlowContainer(container: FlowContainer) {
+  const nextChildren: typeof container.children = [];
+
+  for (let index = 0; index < container.children.length; index += 1) {
+    const node = container.children[index];
+
+    if (isList(node)) {
+      for (const listItem of node.children) {
+        processFlowContainer(listItem);
+      }
+    } else if (isFlowContainer(node)) {
+      processFlowContainer(node);
+    }
+
+    if (node.type !== 'table') {
+      nextChildren.push(node);
+      continue;
+    }
+
+    const placeholders = collectTablePlaceholders(node);
+
+    if (placeholders.length === 0) {
+      nextChildren.push(node);
+      continue;
+    }
+
+    const { definitions, endIndex } = collectAdjacentDefinitions(
+      container.children,
+      index + 1,
+    );
+
+    applySlotDefinitions(placeholders, definitions);
+    ensureNoUnusedDefinitions(definitions);
+
+    nextChildren.push(node);
+    index = endIndex - 1;
+  }
+
+  const orphanDefinition = nextChildren.find(isSlotDefinition);
+
+  if (orphanDefinition) {
+    throw new Error(
+      `Slot definition "${getRequiredStringAttribute(
+        orphanDefinition,
+        'for',
+      )}" must appear immediately after the table that references it.`,
+    );
+  }
+
+  container.children = nextChildren;
 }
 
 function collectTablePlaceholders(table: Table) {
@@ -139,7 +159,7 @@ function collectTablePlaceholders(table: Table) {
 }
 
 function collectAdjacentDefinitions(
-  children: RootContent[],
+  children: FlowContainer['children'],
   startIndex: number,
 ) {
   const definitions = new Map<string, SlotDefinition>();
@@ -217,7 +237,7 @@ function isSlotPlaceholder(
   );
 }
 
-function isSlotDefinition(node: RootContent): node is MdxJsxFlowElement {
+function isSlotDefinition(node: FlowChild): node is MdxJsxFlowElement {
   return (
     node.type === 'mdxJsxFlowElement' &&
     node.name === SLOT_COMPONENT_NAME &&
@@ -248,6 +268,27 @@ function isTableCell(node: unknown): node is TableCell {
     node !== null &&
     'type' in node &&
     node.type === 'tableCell'
+  );
+}
+
+function isList(node: unknown): node is List {
+  return (
+    typeof node === 'object' &&
+    node !== null &&
+    'type' in node &&
+    node.type === 'list'
+  );
+}
+
+function isFlowContainer(node: unknown): node is FlowContainer {
+  return (
+    typeof node === 'object' &&
+    node !== null &&
+    'children' in node &&
+    Array.isArray(node.children) &&
+    ('type' in node
+      ? ['root', 'mdxJsxFlowElement', 'listItem'].includes(String(node.type))
+      : true)
   );
 }
 

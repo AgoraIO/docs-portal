@@ -41,14 +41,41 @@ GET https://{host}/usage?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}
 
 The response body contains the following fields:
 
-| Field          | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Field | Type | Description |
 | :------------- | :------ |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `status`       | Number     | The status code. `0` means that the request succeeds.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `statusReason` | String  | The reason for the status.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `totalSize`    | Number  | The total number of the user's Agora projects where your extension is added.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `pageNum`      | Number     | The page number of the usage list. This parameter should be the same with the `pageNum` field in the request.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `hasNext`      | Boolean | Whether the usage page list has the next page:<li>`true`: The usage page list has the next page. The request repeats.</li><li>`false`: The usage page list does not have the next page. The request stops.</li>                                                                                                                                                                                                                                                                                                                                                                                              |
-| `data`         | Array   | The usage data, which contains the following properties: <li>`projectId`: The project ID. </li> <li>`amount`: The usage amount. The data format is BigDecimal. The unit of measurement is as follows: <ul><li>If usage is measured in duration, the default unit is minute.</li><li>If usage is measured in the amount of times, the default unit is times.</li><li>If you need a custom unit of measurement, contact your account manager.</li></ul><li>`description`: The detailed description of the usage amount.</li>Return the usage data only when `projectId` is not empty and `amount` is not zero.</li> |
+| `status` | Number | The status code. `0` means that the request succeeds. |
+| `statusReason` | String | The reason for the status. |
+| `totalSize` | Number | The total number of the user's Agora projects where your extension is added. |
+| `pageNum` | Number | The page number of the usage list. This parameter should be the same with the `pageNum` field in the request. |
+| `hasNext` | Boolean | <Slot name="hasnext" /> |
+| `data` | Array | <Slot name="data" /> |
+
+<Slot for="hasnext">
+
+Whether the usage page list has the next page:
+
+- `true`: The usage page list has the next page. The request repeats.
+
+- `false`: The usage page list does not have the next page. The request stops.
+
+</Slot>
+
+<Slot for="data">
+
+The usage data, which contains the following properties:
+
+- `projectId`: The project ID.
+
+- `amount`: The usage amount. The data format is BigDecimal. The unit of measurement is as follows:
+    - If usage is measured in duration, the default unit is minute.
+    - If usage is measured in the amount of times, the default unit is times.
+    - If you need a custom unit of measurement, contact your account manager.
+
+- `description`: The detailed description of the usage amount.
+
+Return the usage data only when `projectId` is not empty and `amount` is not zero.
+
+</Slot>
 
 ### Example
 
@@ -104,14 +131,38 @@ GET https://{host}/bill?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}&
 
 The response body contains the following fields:
 
-| Field          | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Field | Type | Description |
 | :------------- | :------ |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `status`       | Number     | The status code. `0` means that the request succeeds.                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `statusReason` | String  | The reason for the status.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `totalSize`    | Number  | The total number of the user's Agora projects where your extension is added.                                                                                                                                                                                                                                                                                                                                                                                         |
-| `pageNum`      | Number     | The page number of the billing list. This parameter should be the same with the `pageNum` field in the request.                                                                                                                                                                                                                                                                                                                                                      |
-| `hasNext`      | Boolean | Whether the billing page list has the next page:<li>`true`: The billing page list has the next page. The request repeats.</li> <li>`false`: The billing page list does not have the next page. The request stops.</li>                                                                                                                                                                                                                                               |
-| `data`         | Array   | The billing data, which contains the following properties:<li>`projectId`: The project ID.</li> <li>`amount`: The billing amount. The data format is BigDecimal. The unit of measurement is set with the configuration with Agora. To change the unit of measurement, contact your account manager.</li> <li>`description`: The detailed description of the billing amount.</li> Return the billing data only when `projectId` is not empty and `amount` is not zero.|
+| `status` | Number | The status code. `0` means that the request succeeds. |
+| `statusReason` | String | The reason for the status. |
+| `totalSize` | Number | The total number of the user's Agora projects where your extension is added. |
+| `pageNum` | Number | The page number of the billing list. This parameter should be the same with the `pageNum` field in the request. |
+| `hasNext` | Boolean | <Slot name="hasnext" /> |
+| `data` | Array | <Slot name="data" /> |
+
+<Slot for="hasnext">
+
+Whether the billing page list has the next page:
+
+- `true`: The billing page list has the next page. The request repeats.
+
+- `false`: The billing page list does not have the next page. The request stops.
+
+</Slot>
+
+<Slot for="data">
+
+The billing data, which contains the following properties:
+
+- `projectId`: The project ID.
+
+- `amount`: The billing amount. The data format is BigDecimal. The unit of measurement is set with the configuration with Agora. To change the unit of measurement, contact your account manager.
+
+- `description`: The detailed description of the billing amount.
+
+Return the billing data only when `projectId` is not empty and `amount` is not zero.
+
+</Slot>
 
 ### Example
 
@@ -170,12 +221,22 @@ GET https://{host}/customers/{customerId}/license?apiKey={apiKey}&signature={sig
 
 The response body contains the following fields:
 
-| Field          | Type      | Description                                           |
+| Field | Type | Description |
 | :------------- | :-------- | :---------------------------------------------------- |
-| `status`       | String     | The status of the request:<li>`success`: The request succeeds.</li><li>`failed`: The request fails.</li>         |
-| `statusReason` | String  | The reason for the status.                                   |
-| `expireDate`   | String | The expiration time of the license.                   |
-| `residueCount` | String    | The remaining amount of usage covered by the license. |
+| `status` | String | <Slot name="status" /> |
+| `statusReason` | String | The reason for the status. |
+| `expireDate` | String | The expiration time of the license. |
+| `residueCount` | String | The remaining amount of usage covered by the license. |
+
+<Slot for="status">
+
+The status of the request:
+
+- `success`: The request succeeds.
+
+- `failed`: The request fails.
+
+</Slot>
 
 ### Example
 

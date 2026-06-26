@@ -156,18 +156,24 @@ The Agora service immediately retries after the first notification failure, and 
 
 The request body is a JSON Object, containing the following fields:
 
-| Field      | Type    | Description                         |
+| Field | Type | Description |
 | :-------------- | :---------- | :----------------------------------------------------------- |
-| `requestId`   | String   | Callback notification ID, identifying an event notification from the Agora business server.    |
+| `requestId` | String | Callback notification ID, identifying an event notification from the Agora business server. |
 | `callbackParam` | JSON Object | Custom fields passed in the callback, currently includes the `cname` field, representing the channel name. |
-| `callbackData` | String   | String data passed through by the SDK local screenshot upload module.            |
-| `checksum`   | String   | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
-| `object`    | String   | Name of the screenshot file. The naming convention for this file is: `<OSS prefix>/<year month day>/<sid>_<cname>__uid_s_<uid>__uid_e_<type>_utc.jpg`. The meanings of the fields in the filename are as follows: <ul><li>`<sid>`: Screenshot ID, a unique identifier for a screenshot.</li><li>`<cname>`: Channel name to which the user being screenshotted belongs.</li><li>`<uid>`: The user ID set when joining the channel.</li><li>`<type>`: File type, supports only `video`.</li><li>`<utc>`: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.</li></ul> |
-| `code`     | Number   | Status code of this screenshot. `200` indicates that the screenshot is completed.            |
-| `msg`      | String   | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed.  |
-| `channelName`  | String   | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`.     |
-| `userId`    | String   | User ID of the user being screenshotted. Consistent with `object.uid`.       |
-| `timestamp`   | Int     | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+| `callbackData` | String | String data passed through by the SDK local screenshot upload module. |
+| `checksum` | String | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
+| `object` | String | <Slot name="object" /> |
+| `code` | Number | Status code of this screenshot. `200` indicates that the screenshot is completed. |
+| `msg` | String | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed. |
+| `channelName` | String | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`. |
+| `userId` | String | User ID of the user being screenshotted. Consistent with `object.uid`. |
+| `timestamp` | Int | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+
+<Slot for="object">
+
+Name of the screenshot file. The naming convention for this file is: `//___uid_s___uid_e__utc.jpg`. The meanings of the fields in the filename are as follows: ``: Screenshot ID, a unique identifier for a screenshot.``: Channel name to which the user being screenshotted belongs.``: The user ID set when joining the channel.``: File type, supports only `video`.``: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.
+
+</Slot>
 
 **Request Example**
 
@@ -219,10 +225,20 @@ Monthly fee = (Number of screenshots - free quota) × Screenshot unit price
       + (Monthly peak QPS - free QPS) × QPS overage unit price
 ```
 
-| Billing Type    | Unit Price        | Discount Policy      |
+| Billing Type | Unit Price | Discount Policy |
 |--------------------|--------------------------|----------------------------|
-| Screenshot Fee   | $0.30 per 10,000 images | First 10,000 images per month are free |
-| QPS Overage Fee  | $1.5 per QPS      | Includes 500 QPS per month: <li> ≤ 500 QPS: No charge </li> <li> > 500 QPS: Charged based on monthly peak QPS </li>|
+| Screenshot Fee | $0.30 per 10,000 images | First 10,000 images per month are free |
+| QPS Overage Fee | $1.5 per QPS | <Slot name="qps-overage-fee" /> |
+
+<Slot for="qps-overage-fee">
+
+Includes 500 QPS per month:
+
+- ≤ 500 QPS: No charge
+
+- > 500 QPS: Charged based on monthly peak QPS
+
+</Slot>
 
 * **Example 1:**
  A project generates **910,000 screenshots** in one month. Peak QPS = **100**
@@ -394,18 +410,24 @@ The Agora service immediately retries after the first notification failure, and 
 
 The request body is a JSON Object, containing the following fields:
 
-| Field      | Type    | Description                         |
+| Field | Type | Description |
 | :-------------- | :---------- | :----------------------------------------------------------- |
-| `requestId`   | String   | Callback notification ID, identifying an event notification from the Agora business server.    |
+| `requestId` | String | Callback notification ID, identifying an event notification from the Agora business server. |
 | `callbackParam` | JSON Object | Custom fields passed in the callback, currently includes the `cname` field, representing the channel name. |
-| `callbackData` | String   | String data passed through by the SDK local screenshot upload module.            |
-| `checksum`   | String   | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
-| `object`    | String   | Name of the screenshot file. The naming convention for this file is: `<OSS prefix>/<year month day>/<sid>_<cname>__uid_s_<uid>__uid_e_<type>_utc.jpg`. The meanings of the fields in the filename are as follows: <ul><li>`<sid>`: Screenshot ID, a unique identifier for a screenshot.</li><li>`<cname>`: Channel name to which the user being screenshotted belongs.</li><li>`<uid>`: The user ID set when joining the channel.</li><li>`<type>`: File type, supports only `video`.</li><li>`<utc>`: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.</li></ul> |
-| `code`     | Number   | Status code of this screenshot. `200` indicates that the screenshot is completed.            |
-| `msg`      | String   | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed.  |
-| `channelName`  | String   | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`.     |
-| `userId`    | String   | User ID of the user being screenshotted. Consistent with `object.uid`.       |
-| `timestamp`   | Int     | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+| `callbackData` | String | String data passed through by the SDK local screenshot upload module. |
+| `checksum` | String | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
+| `object` | String | <Slot name="object" /> |
+| `code` | Number | Status code of this screenshot. `200` indicates that the screenshot is completed. |
+| `msg` | String | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed. |
+| `channelName` | String | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`. |
+| `userId` | String | User ID of the user being screenshotted. Consistent with `object.uid`. |
+| `timestamp` | Int | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+
+<Slot for="object">
+
+Name of the screenshot file. The naming convention for this file is: `//___uid_s___uid_e__utc.jpg`. The meanings of the fields in the filename are as follows: ``: Screenshot ID, a unique identifier for a screenshot.``: Channel name to which the user being screenshotted belongs.``: The user ID set when joining the channel.``: File type, supports only `video`.``: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.
+
+</Slot>
 
 **Request Example**
 
@@ -457,10 +479,20 @@ Monthly fee = (Number of screenshots - free quota) × Screenshot unit price
       + (Monthly peak QPS - free QPS) × QPS overage unit price
 ```
 
-| Billing Type    | Unit Price        | Discount Policy      |
+| Billing Type | Unit Price | Discount Policy |
 |--------------------|--------------------------|----------------------------|
-| Screenshot Fee   | $0.30 per 10,000 images | First 10,000 images per month are free |
-| QPS Overage Fee  | $1.5 per QPS      | Includes 500 QPS per month: <li> ≤ 500 QPS: No charge </li> <li> > 500 QPS: Charged based on monthly peak QPS </li>|
+| Screenshot Fee | $0.30 per 10,000 images | First 10,000 images per month are free |
+| QPS Overage Fee | $1.5 per QPS | <Slot name="qps-overage-fee" /> |
+
+<Slot for="qps-overage-fee">
+
+Includes 500 QPS per month:
+
+- ≤ 500 QPS: No charge
+
+- > 500 QPS: Charged based on monthly peak QPS
+
+</Slot>
 
 * **Example 1:**
  A project generates **910,000 screenshots** in one month. Peak QPS = **100**
@@ -632,18 +664,24 @@ The Agora service immediately retries after the first notification failure, and 
 
 The request body is a JSON Object, containing the following fields:
 
-| Field      | Type    | Description                         |
+| Field | Type | Description |
 | :-------------- | :---------- | :----------------------------------------------------------- |
-| `requestId`   | String   | Callback notification ID, identifying an event notification from the Agora business server.    |
+| `requestId` | String | Callback notification ID, identifying an event notification from the Agora business server. |
 | `callbackParam` | JSON Object | Custom fields passed in the callback, currently includes the `cname` field, representing the channel name. |
-| `callbackData` | String   | String data passed through by the SDK local screenshot upload module.            |
-| `checksum`   | String   | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
-| `object`    | String   | Name of the screenshot file. The naming convention for this file is: `<OSS prefix>/<year month day>/<sid>_<cname>__uid_s_<uid>__uid_e_<type>_utc.jpg`. The meanings of the fields in the filename are as follows: <ul><li>`<sid>`: Screenshot ID, a unique identifier for a screenshot.</li><li>`<cname>`: Channel name to which the user being screenshotted belongs.</li><li>`<uid>`: The user ID set when joining the channel.</li><li>`<type>`: File type, supports only `video`.</li><li>`<utc>`: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.</li></ul> |
-| `code`     | Number   | Status code of this screenshot. `200` indicates that the screenshot is completed.            |
-| `msg`      | String   | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed.  |
-| `channelName`  | String   | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`.     |
-| `userId`    | String   | User ID of the user being screenshotted. Consistent with `object.uid`.       |
-| `timestamp`   | Int     | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+| `callbackData` | String | String data passed through by the SDK local screenshot upload module. |
+| `checksum` | String | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
+| `object` | String | <Slot name="object" /> |
+| `code` | Number | Status code of this screenshot. `200` indicates that the screenshot is completed. |
+| `msg` | String | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed. |
+| `channelName` | String | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`. |
+| `userId` | String | User ID of the user being screenshotted. Consistent with `object.uid`. |
+| `timestamp` | Int | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+
+<Slot for="object">
+
+Name of the screenshot file. The naming convention for this file is: `//___uid_s___uid_e__utc.jpg`. The meanings of the fields in the filename are as follows: ``: Screenshot ID, a unique identifier for a screenshot.``: Channel name to which the user being screenshotted belongs.``: The user ID set when joining the channel.``: File type, supports only `video`.``: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.
+
+</Slot>
 
 **Request Example**
 
@@ -695,10 +733,20 @@ Monthly fee = (Number of screenshots - free quota) × Screenshot unit price
       + (Monthly peak QPS - free QPS) × QPS overage unit price
 ```
 
-| Billing Type    | Unit Price        | Discount Policy      |
+| Billing Type | Unit Price | Discount Policy |
 |--------------------|--------------------------|----------------------------|
-| Screenshot Fee   | $0.30 per 10,000 images | First 10,000 images per month are free |
-| QPS Overage Fee  | $1.5 per QPS      | Includes 500 QPS per month: <li> ≤ 500 QPS: No charge </li> <li> > 500 QPS: Charged based on monthly peak QPS </li>|
+| Screenshot Fee | $0.30 per 10,000 images | First 10,000 images per month are free |
+| QPS Overage Fee | $1.5 per QPS | <Slot name="qps-overage-fee" /> |
+
+<Slot for="qps-overage-fee">
+
+Includes 500 QPS per month:
+
+- ≤ 500 QPS: No charge
+
+- > 500 QPS: Charged based on monthly peak QPS
+
+</Slot>
 
 * **Example 1:**
  A project generates **910,000 screenshots** in one month. Peak QPS = **100**
@@ -876,18 +924,24 @@ The Agora service immediately retries after the first notification failure, and 
 
 The request body is a JSON Object, containing the following fields:
 
-| Field      | Type    | Description                         |
+| Field | Type | Description |
 | :-------------- | :---------- | :----------------------------------------------------------- |
-| `requestId`   | String   | Callback notification ID, identifying an event notification from the Agora business server.    |
+| `requestId` | String | Callback notification ID, identifying an event notification from the Agora business server. |
 | `callbackParam` | JSON Object | Custom fields passed in the callback, currently includes the `cname` field, representing the channel name. |
-| `callbackData` | String   | String data passed through by the SDK local screenshot upload module.            |
-| `checksum`   | String   | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
-| `object`    | String   | Name of the screenshot file. The naming convention for this file is: `<OSS prefix>/<year month day>/<sid>_<cname>__uid_s_<uid>__uid_e_<type>_utc.jpg`. The meanings of the fields in the filename are as follows: <ul><li>`<sid>`: Screenshot ID, a unique identifier for a screenshot.</li><li>`<cname>`: Channel name to which the user being screenshotted belongs.</li><li>`<uid>`: The user ID set when joining the channel.</li><li>`<type>`: File type, supports only `video`.</li><li>`<utc>`: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.</li></ul> |
-| `code`     | Number   | Status code of this screenshot. `200` indicates that the screenshot is completed.            |
-| `msg`      | String   | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed.  |
-| `channelName`  | String   | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`.     |
-| `userId`    | String   | User ID of the user being screenshotted. Consistent with `object.uid`.       |
-| `timestamp`   | Int     | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+| `callbackData` | String | String data passed through by the SDK local screenshot upload module. |
+| `checksum` | String | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
+| `object` | String | <Slot name="object" /> |
+| `code` | Number | Status code of this screenshot. `200` indicates that the screenshot is completed. |
+| `msg` | String | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed. |
+| `channelName` | String | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`. |
+| `userId` | String | User ID of the user being screenshotted. Consistent with `object.uid`. |
+| `timestamp` | Int | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+
+<Slot for="object">
+
+Name of the screenshot file. The naming convention for this file is: `//___uid_s___uid_e__utc.jpg`. The meanings of the fields in the filename are as follows: ``: Screenshot ID, a unique identifier for a screenshot.``: Channel name to which the user being screenshotted belongs.``: The user ID set when joining the channel.``: File type, supports only `video`.``: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.
+
+</Slot>
 
 **Request Example**
 
@@ -939,10 +993,20 @@ Monthly fee = (Number of screenshots - free quota) × Screenshot unit price
       + (Monthly peak QPS - free QPS) × QPS overage unit price
 ```
 
-| Billing Type    | Unit Price        | Discount Policy      |
+| Billing Type | Unit Price | Discount Policy |
 |--------------------|--------------------------|----------------------------|
-| Screenshot Fee   | $0.30 per 10,000 images | First 10,000 images per month are free |
-| QPS Overage Fee  | $1.5 per QPS      | Includes 500 QPS per month: <li> ≤ 500 QPS: No charge </li> <li> > 500 QPS: Charged based on monthly peak QPS </li>|
+| Screenshot Fee | $0.30 per 10,000 images | First 10,000 images per month are free |
+| QPS Overage Fee | $1.5 per QPS | <Slot name="qps-overage-fee" /> |
+
+<Slot for="qps-overage-fee">
+
+Includes 500 QPS per month:
+
+- ≤ 500 QPS: No charge
+
+- > 500 QPS: Charged based on monthly peak QPS
+
+</Slot>
 
 * **Example 1:**
  A project generates **910,000 screenshots** in one month. Peak QPS = **100**
@@ -1120,18 +1184,24 @@ The Agora service immediately retries after the first notification failure, and 
 
 The request body is a JSON Object, containing the following fields:
 
-| Field      | Type    | Description                         |
+| Field | Type | Description |
 | :-------------- | :---------- | :----------------------------------------------------------- |
-| `requestId`   | String   | Callback notification ID, identifying an event notification from the Agora business server.    |
+| `requestId` | String | Callback notification ID, identifying an event notification from the Agora business server. |
 | `callbackParam` | JSON Object | Custom fields passed in the callback, currently includes the `cname` field, representing the channel name. |
-| `callbackData` | String   | String data passed through by the SDK local screenshot upload module.            |
-| `checksum`   | String   | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
-| `object`    | String   | Name of the screenshot file. The naming convention for this file is: `<OSS prefix>/<year month day>/<sid>_<cname>__uid_s_<uid>__uid_e_<type>_utc.jpg`. The meanings of the fields in the filename are as follows: <ul><li>`<sid>`: Screenshot ID, a unique identifier for a screenshot.</li><li>`<cname>`: Channel name to which the user being screenshotted belongs.</li><li>`<uid>`: The user ID set when joining the channel.</li><li>`<type>`: File type, supports only `video`.</li><li>`<utc>`: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.</li></ul> |
-| `code`     | Number   | Status code of this screenshot. `200` indicates that the screenshot is completed.            |
-| `msg`      | String   | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed.  |
-| `channelName`  | String   | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`.     |
-| `userId`    | String   | User ID of the user being screenshotted. Consistent with `object.uid`.       |
-| `timestamp`   | Int     | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+| `callbackData` | String | String data passed through by the SDK local screenshot upload module. |
+| `checksum` | String | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
+| `object` | String | <Slot name="object" /> |
+| `code` | Number | Status code of this screenshot. `200` indicates that the screenshot is completed. |
+| `msg` | String | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed. |
+| `channelName` | String | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`. |
+| `userId` | String | User ID of the user being screenshotted. Consistent with `object.uid`. |
+| `timestamp` | Int | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+
+<Slot for="object">
+
+Name of the screenshot file. The naming convention for this file is: `//___uid_s___uid_e__utc.jpg`. The meanings of the fields in the filename are as follows: ``: Screenshot ID, a unique identifier for a screenshot.``: Channel name to which the user being screenshotted belongs.``: The user ID set when joining the channel.``: File type, supports only `video`.``: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.
+
+</Slot>
 
 **Request Example**
 
@@ -1183,10 +1253,20 @@ Monthly fee = (Number of screenshots - free quota) × Screenshot unit price
       + (Monthly peak QPS - free QPS) × QPS overage unit price
 ```
 
-| Billing Type    | Unit Price        | Discount Policy      |
+| Billing Type | Unit Price | Discount Policy |
 |--------------------|--------------------------|----------------------------|
-| Screenshot Fee   | $0.30 per 10,000 images | First 10,000 images per month are free |
-| QPS Overage Fee  | $1.5 per QPS      | Includes 500 QPS per month: <li> ≤ 500 QPS: No charge </li> <li> > 500 QPS: Charged based on monthly peak QPS </li>|
+| Screenshot Fee | $0.30 per 10,000 images | First 10,000 images per month are free |
+| QPS Overage Fee | $1.5 per QPS | <Slot name="qps-overage-fee" /> |
+
+<Slot for="qps-overage-fee">
+
+Includes 500 QPS per month:
+
+- ≤ 500 QPS: No charge
+
+- > 500 QPS: Charged based on monthly peak QPS
+
+</Slot>
 
 * **Example 1:**
  A project generates **910,000 screenshots** in one month. Peak QPS = **100**
@@ -1364,18 +1444,24 @@ The Agora service immediately retries after the first notification failure, and 
 
 The request body is a JSON Object, containing the following fields:
 
-| Field      | Type    | Description                         |
+| Field | Type | Description |
 | :-------------- | :---------- | :----------------------------------------------------------- |
-| `requestId`   | String   | Callback notification ID, identifying an event notification from the Agora business server.    |
+| `requestId` | String | Callback notification ID, identifying an event notification from the Agora business server. |
 | `callbackParam` | JSON Object | Custom fields passed in the callback, currently includes the `cname` field, representing the channel name. |
-| `callbackData` | String   | String data passed through by the SDK local screenshot upload module.            |
-| `checksum`   | String   | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
-| `object`    | String   | Name of the screenshot file. The naming convention for this file is: `<OSS prefix>/<year month day>/<sid>_<cname>__uid_s_<uid>__uid_e_<type>_utc.jpg`. The meanings of the fields in the filename are as follows: <ul><li>`<sid>`: Screenshot ID, a unique identifier for a screenshot.</li><li>`<cname>`: Channel name to which the user being screenshotted belongs.</li><li>`<uid>`: The user ID set when joining the channel.</li><li>`<type>`: File type, supports only `video`.</li><li>`<utc>`: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.</li></ul> |
-| `code`     | Number   | Status code of this screenshot. `200` indicates that the screenshot is completed.            |
-| `msg`      | String   | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed.  |
-| `channelName`  | String   | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`.     |
-| `userId`    | String   | User ID of the user being screenshotted. Consistent with `object.uid`.       |
-| `timestamp`   | Int     | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+| `callbackData` | String | String data passed through by the SDK local screenshot upload module. |
+| `checksum` | String | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
+| `object` | String | <Slot name="object" /> |
+| `code` | Number | Status code of this screenshot. `200` indicates that the screenshot is completed. |
+| `msg` | String | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed. |
+| `channelName` | String | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`. |
+| `userId` | String | User ID of the user being screenshotted. Consistent with `object.uid`. |
+| `timestamp` | Int | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+
+<Slot for="object">
+
+Name of the screenshot file. The naming convention for this file is: `//___uid_s___uid_e__utc.jpg`. The meanings of the fields in the filename are as follows: ``: Screenshot ID, a unique identifier for a screenshot.``: Channel name to which the user being screenshotted belongs.``: The user ID set when joining the channel.``: File type, supports only `video`.``: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.
+
+</Slot>
 
 **Request Example**
 
@@ -1427,10 +1513,20 @@ Monthly fee = (Number of screenshots - free quota) × Screenshot unit price
       + (Monthly peak QPS - free QPS) × QPS overage unit price
 ```
 
-| Billing Type    | Unit Price        | Discount Policy      |
+| Billing Type | Unit Price | Discount Policy |
 |--------------------|--------------------------|----------------------------|
-| Screenshot Fee   | $0.30 per 10,000 images | First 10,000 images per month are free |
-| QPS Overage Fee  | $1.5 per QPS      | Includes 500 QPS per month: <li> ≤ 500 QPS: No charge </li> <li> > 500 QPS: Charged based on monthly peak QPS </li>|
+| Screenshot Fee | $0.30 per 10,000 images | First 10,000 images per month are free |
+| QPS Overage Fee | $1.5 per QPS | <Slot name="qps-overage-fee" /> |
+
+<Slot for="qps-overage-fee">
+
+Includes 500 QPS per month:
+
+- ≤ 500 QPS: No charge
+
+- > 500 QPS: Charged based on monthly peak QPS
+
+</Slot>
 
 * **Example 1:**
  A project generates **910,000 screenshots** in one month. Peak QPS = **100**
@@ -1606,18 +1702,24 @@ The Agora service immediately retries after the first notification failure, and 
 
 The request body is a JSON Object, containing the following fields:
 
-| Field      | Type    | Description                         |
+| Field | Type | Description |
 | :-------------- | :---------- | :----------------------------------------------------------- |
-| `requestId`   | String   | Callback notification ID, identifying an event notification from the Agora business server.    |
+| `requestId` | String | Callback notification ID, identifying an event notification from the Agora business server. |
 | `callbackParam` | JSON Object | Custom fields passed in the callback, currently includes the `cname` field, representing the channel name. |
-| `callbackData` | String   | String data passed through by the SDK local screenshot upload module.            |
-| `checksum`   | String   | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
-| `object`    | String   | Name of the screenshot file. The naming convention for this file is: `<OSS prefix>/<year month day>/<sid>_<cname>__uid_s_<uid>__uid_e_<type>_utc.jpg`. The meanings of the fields in the filename are as follows: <ul><li>`<sid>`: Screenshot ID, a unique identifier for a screenshot.</li><li>`<cname>`: Channel name to which the user being screenshotted belongs.</li><li>`<uid>`: The user ID set when joining the channel.</li><li>`<type>`: File type, supports only `video`.</li><li>`<utc>`: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.</li></ul> |
-| `code`     | Number   | Status code of this screenshot. `200` indicates that the screenshot is completed.            |
-| `msg`      | String   | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed.  |
-| `channelName`  | String   | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`.     |
-| `userId`    | String   | User ID of the user being screenshotted. Consistent with `object.uid`.       |
-| `timestamp`   | Int     | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+| `callbackData` | String | String data passed through by the SDK local screenshot upload module. |
+| `checksum` | String | MD5 value calculated from the parameters `callbackAddr`, `code`, `object`, and `requestId`. Used to verify whether this callback notification comes from the local screenshot upload service. |
+| `object` | String | <Slot name="object" /> |
+| `code` | Number | Status code of this screenshot. `200` indicates that the screenshot is completed. |
+| `msg` | String | Status of this screenshot. `"Supervise complete"` indicates that the screenshot is completed. |
+| `channelName` | String | Channel name to which the user being screenshotted belongs. Consistent with `object.cname`. |
+| `userId` | String | User ID of the user being screenshotted. Consistent with `object.uid`. |
+| `timestamp` | Int | Unix timestamp (milliseconds) of this screenshot. UTC time, consistent with `object.utc`. |
+
+<Slot for="object">
+
+Name of the screenshot file. The naming convention for this file is: `//___uid_s___uid_e__utc.jpg`. The meanings of the fields in the filename are as follows: ``: Screenshot ID, a unique identifier for a screenshot.``: Channel name to which the user being screenshotted belongs.``: The user ID set when joining the channel.``: File type, supports only `video`.``: Unix timestamp of this screenshot. UTC time, consists of year, month, day, hour, minute, second, and millisecond. For example, if `utc` is equal to `20190611073246073`, it represents the start time of this slice file as UTC June 11, 2019, 7:32:46.073 AM.
+
+</Slot>
 
 **Request Example**
 
@@ -1669,10 +1771,20 @@ Monthly fee = (Number of screenshots - free quota) × Screenshot unit price
       + (Monthly peak QPS - free QPS) × QPS overage unit price
 ```
 
-| Billing Type    | Unit Price        | Discount Policy      |
+| Billing Type | Unit Price | Discount Policy |
 |--------------------|--------------------------|----------------------------|
-| Screenshot Fee   | $0.30 per 10,000 images | First 10,000 images per month are free |
-| QPS Overage Fee  | $1.5 per QPS      | Includes 500 QPS per month: <li> ≤ 500 QPS: No charge </li> <li> > 500 QPS: Charged based on monthly peak QPS </li>|
+| Screenshot Fee | $0.30 per 10,000 images | First 10,000 images per month are free |
+| QPS Overage Fee | $1.5 per QPS | <Slot name="qps-overage-fee" /> |
+
+<Slot for="qps-overage-fee">
+
+Includes 500 QPS per month:
+
+- ≤ 500 QPS: No charge
+
+- > 500 QPS: Charged based on monthly peak QPS
+
+</Slot>
 
 * **Example 1:**
  A project generates **910,000 screenshots** in one month. Peak QPS = **100**

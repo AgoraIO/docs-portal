@@ -282,11 +282,19 @@ For the descriptions of path parameters, see [Common parameters](#param).
 | Parameter           | Type | Description         | Required |
 | :-------------- | :----- |:---| :----------- |
 | `targets`     | List    | The targeting label names. You can either pass one label to send the push notification to all users under the label, or pass a maximum of five labels to send the push notification to the intersection of users under these labels.    | Yes     |
-| `startDate` | String | The start date of the push task. The date format is yyyy-MM-dd HH:mm:ss, for example, 2024-01-01 12:00:00.:::info
-The scheduled time must be one hour later than the curren time or 30 days from the current time. By default, the scheduled time is in the time zone where the server resides. If you want to use a time in a different time zone, you must calculate that time according to your time zone.
-::: | No |
+| `startDate` | String | <Slot name="startdate" /> | No |
 | `strategy`    | Number | The push strategy: `0`: Use the third-party push service first. If the push attempt fails, use the Agora push service instead.`1`: Use Agora push service only. If the target user is online, Agora server sends the push message. If the user is offline, Agora retains the push message for a certain period (depending on the Chat package to which you subscribe) and will send it to the user as soon as he or she gets online. If the user remains offline until the retention period expires, the push message is dropped and the push attempt fails.`2`: (Default) Use the third-party push service only. If the target user is offline, whether to retain the push message and how long the message can be retained depend on the setting of the third-party service. If the push attempt fails, the message is discarded.`3`: Use the Agora push service first. If the user is online, Agora server sends the notification. If the user is offline, the notification is delivered via a third-party push service. If the offline push attempt fails, the notification is sent via Agora server once the user gets online.  `4` Only use online push via Agora server. Push notifications are sent only via Agora server for the online user. If the user is offline, the push notifications are discarded. | No  |
 | `pushMessage` | JSON   | The push messages. See [Configure push notifications](#configure-push-notifications) for details.           | Yes   |
+
+<Slot for="startdate">
+
+The start date of the push task. The date format is yyyy-MM-dd HH:mm:ss, for example, 2024-01-01 12:00:00.
+
+:::info
+The scheduled time must be one hour later than the curren time or 30 days from the current time. By default, the scheduled time is in the time zone where the server resides. If you want to use a time in a different time zone, you must calculate that time according to your time zone.
+:::
+
+</Slot>
 
 #### HTTP response
 
@@ -363,11 +371,20 @@ For the descriptions of path parameters, see [Common parameters](#param).
 
 | Parameter           | Type | Description         | Required |
 | :-------------- | :----- |:---| :----------- |
-| `startDate` | String | The start date of the push task. The date format is yyyy-MM-dd HH:mm:ss, for example, 2024-01-01 12:00:00.:::info
-1. The scheduled time must be one hour later than the curren time or 30 days from the current time. 2. By default, the scheduled time is in the time zone where the server resides. If you want to use a time in a different time zone, you must calculate that time according to your time zone.
-::: | No |
+| `startDate` | String | <Slot name="startdate" /> | No |
 | `strategy`    | Number | The push strategy: `0`: Use the third-party push service first. If the push attempt fails, use the Agora push service instead.`1`: Use Agora push service only. If the target user is online, Agora server sends the push message. If the user is offline, Agora retains the push message for a certain period (depending on the Chat package to which you subscribe) and will send it to the user as soon as he or she gets online. If the user remains offline until the retention period expires, the push message is dropped and the push attempt fails.`2`: (Default) Use the third-party push service only. If the target user is offline, whether to retain the push message and how long the message can be retained depend on the setting of the third-party service. If the push attempt fails, the message is discarded.`3`: Use the Agora push service first. If the user is online, Agora server sends the notification. If the user is offline, the notification is delivered via a third-party push service. If the offline push attempt fails, the notification is sent via Agora server once the user gets online.  `4` Only use online push via Agora server. Push notifications are sent only via Agora server for the online user. If the user is offline, the push notifications are discarded. | No  |
 | `pushMessage` | JSON   | The push messages. See [Configure push notifications](#configure-push-notifications) for details.           | Yes   |
+
+<Slot for="startdate">
+
+The start date of the push task. The date format is yyyy-MM-dd HH:mm:ss, for example, 2024-01-01 12:00:00.
+
+:::info
+- The scheduled time must be one hour later than the curren time or 30 days from the current time.
+- By default, the scheduled time is in the time zone where the server resides. If you want to use a time in a different time zone, you must calculate that time according to your time zone.
+:::
+
+</Slot>
 
 #### HTTP response
 
@@ -657,10 +674,23 @@ For the descriptions of path parameters, see [Common parameters](#param).
 
 | Parameter         | Type | Description         | Required |
 | :------------ | :------- |:---------------| :--------------- |
-| `name`        | String | The name of the push label. The length of each label name cannot exceed 64 characters, and the following character sets are supported:26 lowercase English letters (a-z)26 uppercase English letters (A-Z)10 numbers (0-9)"\_", "-", ".":::info
-The label name is case insensitive, so "Aa" and "aa" are the same label.Ensure that each label name under the same app is unique.
-::: | Yes     |
+| `name` | String | <Slot name="name" /> | Yes |
 | `description` | String | The description of the push label. The length of the label description cannot exceed 255 characters.        | No     |
+
+<Slot for="name">
+
+The name of the push label. The length of each label name cannot exceed 64 characters, and the following character sets are supported:
+
+- 26 lowercase English letters (a-z)
+- 26 uppercase English letters (A-Z)
+- 10 numbers (0-9)
+- "\_", "-", "."
+
+:::info
+The label name is case insensitive, so "Aa" and "aa" are the same label. Ensure that each label name under the same app is unique.
+:::
+
+</Slot>
 
 #### HTTP response
 

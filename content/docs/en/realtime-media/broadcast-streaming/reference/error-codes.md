@@ -23,19 +23,19 @@ During the operation of Agora SDK, error codes may be returned in the following 
 ## Common error codes
 
 | Error code | Description |
-|:--:|:------------------------------|
+| :--: | :------------------------------ |
 | `1` | General error (no clearly categorized cause of error). Please call the method again. |
 | `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Please reset the parameters. |
-| `3` | The SDK is not ready yet. There are usually the following reasons: <ul><li>`RtcEngine` initialization failed. Please reinitialize `RtcEngine`.</li> <li>The user has not joined the channel when the method is called, please check the method calling logic.</li> <li>Please check the calling logic of the method.</li> <li>The user has not left the channel when the `rate` or `complain` method is called, please check the method calling logic.</li> <li>Audio module is not enabled.</li> <li>Incomplete assembly.</li></ul> |
-| `4` | The current state of `RtcEngine` does not support this operation. There are generally the following reasons: <ul><li>Incorrect encryption mode set when using built-in encryption.</li> <li>Failed to load external encryption library. Please check if the enumeration value for encryption is correct, or reload the external encryption library.</li></ul> |
-| `5` | The method call is rejected. There are generally the following reasons: <ul><li>`RtcEngine` initialization failed. Please reinitialize `RtcEngine`.</li> <li>The channel name was set to the empty character "" when joining a channel. Please reset the channel name.</li> <li>In a multi-channel use-case, the channel name set when the `joinChannel` method was called to join a channel already exists. Please reset the channel name.</li> <li>In a multi-channel use-case, the channel name set when the `joinChannelEx` method is called to join a channel already exists. Please reset the channel name.</li></ul> |
+| `3` | <Slot name="3" /> |
+| `4` | <Slot name="4" /> |
+| `5` | <Slot name="5" /> |
 | `6` | The buffer size is not large enough to hold the returned data. |
 | `7` | The method is called before `RtcEngine` is initialized. Please make sure that the `RtcEngine` object has been created and initialized before calling the method. |
 | `8` | The current state is invalid. Please check the SDK callback logs to find the exact reason. |
 | `9` | There is no permission to operate. Please check whether the user has granted the app permission to use audio/video devices. |
 | `10` | Method call timed out. Some method calls require the SDK to return results, and this error occurs if the SDK takes too long to process the event and does not return for more than 10 seconds. |
-| `17` | Joining a channel is rejected. There are usually the following reasons: <ul><li>The user is already in the channel. Agora recommends using the `onConnectionStateChanged` callback to determine if the user is in the channel. Do not call this method again to join the channel unless you receive a `CONNECTION_STATE_DISCONNECTED(1)` status.</li> <li>A user who calls `startEchoTest` for a call test tries to join the channel without calling `stopEchoTest` to end the current test. After starting a call test, you need to call `stopEchoTest` to end the current test before joining the channel.</li></ul> |
-| `18` | Failed to leave the channel. There are generally the following reasons: <ul><li>The user has already left the channel, and this error is returned when the method to exit the channel, such as `leaveChannel`, is called again. Stop calling this method.</li> <li>The exit channel method such as `leaveChannel` is called when the user has not joined the channel yet. No additional action is needed in this case.</li></ul> |
+| `17` | <Slot name="17" /> |
+| `18` | <Slot name="18" /> |
 | `19` | The resource is occupied and cannot be reused. |
 | `20` | The SDK abandons the request, possibly due to too many requests. |
 | `21` | Specific firewall settings on Windows cause the `RtcEngine` initialization to fail and then crash. |
@@ -43,22 +43,84 @@ During the operation of Agora SDK, error codes may be returned in the following 
 | `101` | Not a valid App ID, please rejoin the channel with a valid App ID. |
 | `102` | Not a valid channel name. The possible reason is that the parameter data type set is incorrect. Please rejoin the channel with a valid channel name. |
 | `103` | Cannot get server resources for the current region. Please try to specify a different region when initializing `RtcEngine`. |
-| `109` | The currently used Token has expired and is no longer valid. Please generate a new Token on the server side and call `renewToken` to update the Token. 
+| `109` | <Slot name="109" /> |
+| `110` | <Slot name="110" /> |
+| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
+| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+
+<Slot for="3">
+
+The SDK is not ready yet. There are usually the following reasons:
+
+- `RtcEngine` initialization failed. Please reinitialize `RtcEngine`.
+- The user has not joined the channel when the method is called, please check the method calling logic.
+- Please check the calling logic of the method.
+- The user has not left the channel when the `rate` or `complain` method is called, please check the method calling logic.
+- Audio module is not enabled.
+- Incomplete assembly.
+
+</Slot>
+
+<Slot for="4">
+
+The current state of `RtcEngine` does not support this operation. There are generally the following reasons:
+
+- Incorrect encryption mode set when using built-in encryption.
+- Failed to load external encryption library. Please check if the enumeration value for encryption is correct, or reload the external encryption library.
+
+</Slot>
+
+<Slot for="5">
+
+The method call is rejected. There are generally the following reasons:
+
+- `RtcEngine` initialization failed. Please reinitialize `RtcEngine`.
+- The channel name was set to the empty character "" when joining a channel. Please reset the channel name.
+- In a multi-channel use-case, the channel name set when the `joinChannel` method was called to join a channel already exists. Please reset the channel name.
+- In a multi-channel use-case, the channel name set when the `joinChannelEx` method is called to join a channel already exists. Please reset the channel name.
+
+</Slot>
+
+<Slot for="17">
+
+Joining a channel is rejected. There are usually the following reasons:
+
+- The user is already in the channel. Agora recommends using the `onConnectionStateChanged` callback to determine if the user is in the channel. Do not call this method again to join the channel unless you receive a `CONNECTION_STATE_DISCONNECTED(1)` status.
+- A user who calls `startEchoTest` for a call test tries to join the channel without calling `stopEchoTest` to end the current test. After starting a call test, you need to call `stopEchoTest` to end the current test before joining the channel.
+
+</Slot>
+
+<Slot for="18">
+
+Failed to leave the channel. There are generally the following reasons:
+
+- The user has already left the channel, and this error is returned when the method to exit the channel, such as `leaveChannel`, is called again. Stop calling this method.
+- The exit channel method such as `leaveChannel` is called when the user has not joined the channel yet. No additional action is needed in this case.
+
+</Slot>
+
+<Slot for="109">
+
+The currently used Token has expired and is no longer valid. Please generate a new Token on the server side and call `renewToken` to update the Token.
 
 :::info
 This error code is deprecated. The SDK returns `CONNECTION_CHANGED_TOKEN_EXPIRED(9)` in the `onConnectionStateChanged` callback instead.
 :::
 
- |
-| `110` | Token is invalid. There are generally the following reasons: <ul><li>App certificate is enabled in the Agora Console, but App ID + Token authentication is not used. When App certificate is enabled in the project, you must use Token authentication.</li> <li>The `uid` field entered when generating the Token does not match the `uid` entered when the user joined the channel.</li></ul> 
+</Slot>
+
+<Slot for="110">
+
+Token is invalid. There are generally the following reasons:
+
+- App certificate is enabled in the Agora Console, but App ID + Token authentication is not used. When App certificate is enabled in the project, you must use Token authentication.
+- The `uid` field entered when generating the Token does not match the `uid` entered when the user joined the channel.
 
 :::info
 This error code is deprecated. The SDK returns `CONNECTION_CHANGED_INVALID_TOKEN(8)` in the `onConnectionStateChanged` callback instead.
 :::
 
- |
-| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
-| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+</Slot>
 | `119` | User failed to switch roles, please try to join the channel again. |
 | `120` | Decryption failed. It is possible that the user used the wrong password when joining the channel. Please check the password the user entered when joining the channel, or direct the user to try to rejoin the channel. |
 | `121` | The user ID is invalid. |

@@ -55,9 +55,17 @@ This section shows issues that might significantly affect user experience in the
 
 ![Call Overview](/images/analytics/call-overview.png)
 
-|          | Description | Notes |
+|  | Description | Notes |
 | -------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Statistical insights | Important conclusions related to audio and video freezing. | <ul><li>If the number of [ACU](../reference/call-search-terms.md) for the current call is less than 20 or no conclusion is available, this subsection is hidden.</li><li>The data granularity of this subsection is one minute. If fewer than 20 (included) users are online during a given minute, the data point for this minute is ignored.</li><li>In the upper right corner of this subsection, click the arrow icon `>` to scroll to [Detailed statistics](#detailed-statistics).</li></ul> |
+| Statistical insights | Important conclusions related to audio and video freezing. | <Slot name="statistical-insights" /> |
+
+<Slot for="statistical-insights">
+
+- If the number of [ACU](../reference/call-search-terms.md) for the current call is less than 20 or no conclusion is available, this subsection is hidden.
+- The data granularity of this subsection is one minute. If fewer than 20 (included) users are online during a given minute, the data point for this minute is ignored.
+- In the upper right corner of this subsection, click the arrow icon `>` to scroll to [Detailed statistics](#detailed-statistics).
+
+</Slot>
 
 ### Detailed statistics
 
@@ -69,13 +77,47 @@ This section displays call quality statistics through various charts to help mon
 
 This section includes the following subsections:
 
-|   Sub-section                | Description | Notes |
+| Sub-section | Description | Notes |
 | ---------------------------- | ----------- | ----- |
 | Time selector | Select the time range you want to inspect. | If you change the time range, the data displayed in all of the following subsections is updated. |
-| Top video freezing users/Video freeze details | <ul><li>If the number of [ACU](../reference/call-search-terms.md) does not exceed 20 in the current call, this subsection is shown as **Top video freezing users**, ranking all users in the descending order of video freeze rate.</li><li>If the number of ACU in the current call exceeds 20, this subsection is shown as **Video freeze details**, distributing users into different brackets based on their video freeze rate.</li></ul> | N/A |
-| TOP audio freezing users/Audio freeze details | <ul><li>If the number of ACU does not exceed 20 in the current call, this subsection is shown as **Top audio freezing users**, ranking all users in the descending order of audio freeze rate.</li><li>If the number of ACU in the current call exceeds 20, this subsection is shown as **Audio freeze details**, distributing users into different brackets based on their audio freeze rate.</li></ul> | N/A |
-| Trend tracking | Relations between the following metrics and time:<ul><li>Audio freezing users: The number of users whose audio freeze rate is greater than 3%.</li><li>Video freezing users: The number of users whose video freeze rate is greater than 5%.</li><li>Number of in-call users</li><li>[Audio freeze rate](../reference/call-search-terms.md)</li><li>[Video freeze rate](../reference/call-search-terms.md)</li></ul> | <ul><li>If the number of ACU in the current call does not exceed 20, this subsection is hidden.</li><li>All the metrics displayed in the subsection are calculated by minute.</li><li>The value of Peak Call Users to the left of the line chart is for reference only. The more precise metric is [Peak Concurrent Users](../reference/call-search-terms.md) at the top of the page.</li></ul> |
+| Top video freezing users/Video freeze details | <Slot name="top-video-freezing-users-video-freeze-details" /> | N/A |
+| TOP audio freezing users/Audio freeze details | <Slot name="top-audio-freezing-users-audio-freeze-details" /> | N/A |
+| Trend tracking | <Slot name="trend-tracking-description" /> | <Slot name="trend-tracking-notes" /> |
 | Metric Analysis | Distribution of audio freeze rate and video freeze rate by geography, device, network, SDK version, and operating system. | If the number of ACU in the current call does not exceed 20, this subsection is hidden. |
+
+<Slot for="top-video-freezing-users-video-freeze-details">
+
+- If the number of [ACU](../reference/call-search-terms.md) does not exceed 20 in the current call, this subsection is shown as **Top video freezing users**, ranking all users in the descending order of video freeze rate.
+- If the number of ACU in the current call exceeds 20, this subsection is shown as **Video freeze details**, distributing users into different brackets based on their video freeze rate.
+
+</Slot>
+
+<Slot for="top-audio-freezing-users-audio-freeze-details">
+
+- If the number of ACU does not exceed 20 in the current call, this subsection is shown as **Top audio freezing users**, ranking all users in the descending order of audio freeze rate.
+- If the number of ACU in the current call exceeds 20, this subsection is shown as **Audio freeze details**, distributing users into different brackets based on their audio freeze rate.
+
+</Slot>
+
+<Slot for="trend-tracking-description">
+
+Relations between the following metrics and time:
+
+- Audio freezing users: The number of users whose audio freeze rate is greater than 3%.
+- Video freezing users: The number of users whose video freeze rate is greater than 5%.
+- Number of in-call users
+- [Audio freeze rate](../reference/call-search-terms.md)
+- [Video freeze rate](../reference/call-search-terms.md)
+
+</Slot>
+
+<Slot for="trend-tracking-notes">
+
+- If the number of ACU in the current call does not exceed 20, this subsection is hidden.
+- All the metrics displayed in the subsection are calculated by minute.
+- The value of Peak Call Users to the left of the line chart is for reference only. The more precise metric is [Peak Concurrent Users](../reference/call-search-terms.md) at the top of the page.
+
+</Slot>
 
 ## View Call Details
 

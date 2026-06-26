@@ -41,9 +41,41 @@ Resolutions:
 - HD: High definition video, resolution ≤ 1280 × 720 and > 640 × 360
 - FHD: Full HD video, resolution ≤ 1920 × 1080 and > 1280 × 720
 
-| Item         | Mainland China        | Europe                | America               | Asia (excluding mainland China) |
+| Item | Mainland China | Europe | America | Asia (excluding mainland China) |
 |:-------------|:----------------------|:----------------------|:----------------------|:--------------------------------|
-| RESTful API   | <ul><li>SD 300</li><li>HD 50</li><li>FHD 20</li></ul> | <ul><li>SD 20</li><li>HD 5</li><li>FHD - Contact support@agora.io to enable</li></ul>    |<ul><li>SD 20</li><li>HD 5</li><li>FHD - Contact support@agora.io to enable</li></ul>     | <ul><li>SD 20</li><li>HD 5</li><li>FHD - Contact support@agora.io to enable</li></ul>             |
+| RESTful API | <Slot name="restful-api-mainland-china" /> | <Slot name="restful-api-europe" /> | <Slot name="restful-api-america" /> | <Slot name="restful-api-asia-excluding-mainland-china" /> |
+
+<Slot for="restful-api-mainland-china">
+
+- SD 300
+- HD 50
+- FHD 20
+
+</Slot>
+
+<Slot for="restful-api-europe">
+
+- SD 20
+- HD 5
+- FHD - Contact support@agora.io to enable
+
+</Slot>
+
+<Slot for="restful-api-america">
+
+- SD 20
+- HD 5
+- FHD - Contact support@agora.io to enable
+
+</Slot>
+
+<Slot for="restful-api-asia-excluding-mainland-china">
+
+- SD 20
+- HD 5
+- FHD - Contact support@agora.io to enable
+
+</Slot>
 
 To learn the details of the PCW limits for SDK API, or if you need to extend the RESTful API PCW limit, contact support@agora.io.
 
@@ -56,9 +88,41 @@ The upper limit of video attributes supported by Agora is as follows:
 
 The maximum number of supported streams is as follows:
 
-| Service type | Mainland China        | Europe                | America               | Asia (excluding mainland China) |
+| Service type | Mainland China | Europe | America | Asia (excluding mainland China) |
 |:-------------|:----------------------|:----------------------|:----------------------|:--------------------------------|
-| Media Push   | <ul><li>SD 300</li><li>HD 50</li><li>FHD 20</li></ul> | <ul><li>SD 20</li><li>HD 5</li><li>FHD - Contact support@agora.io to enable</li></ul>    |<ul><li>SD 20</li><li>HD 5</li><li>FHD - Contact support@agora.io to enable</li></ul>     | <ul><li>SD 20</li><li>HD 5</li><li>FHD - Contact support@agora.io to enable</li></ul>             |
+| Media Push | <Slot name="media-push-mainland-china" /> | <Slot name="media-push-europe" /> | <Slot name="media-push-america" /> | <Slot name="media-push-asia-excluding-mainland-china" /> |
+
+<Slot for="media-push-mainland-china">
+
+- SD 300
+- HD 50
+- FHD 20
+
+</Slot>
+
+<Slot for="media-push-europe">
+
+- SD 20
+- HD 5
+- FHD - Contact support@agora.io to enable
+
+</Slot>
+
+<Slot for="media-push-america">
+
+- SD 20
+- HD 5
+- FHD - Contact support@agora.io to enable
+
+</Slot>
+
+<Slot for="media-push-asia-excluding-mainland-china">
+
+- SD 20
+- HD 5
+- FHD - Contact support@agora.io to enable
+
+</Slot>
 
 :::caution[Note]
 If you need to upload multiple streams of different resolutions at the same time, make sure you meet the following requirements:<ul><li>The number of streams per resolution cannot exceed the corresponding limit for that resolution.</li><li>The total number of streams cannot exceed the limit set for the higher resolution. For example, if you upload both SD and HD streams in America, the total number of streams cannot exceed 20. If you upload HD and FHD, the total number cannot exceed 5.</li></ul>
@@ -237,14 +301,32 @@ If the error persists, print the `X-Request-ID` and `X-Resource-ID` fields in th
 Refer to the following table to quickly check whether each check item meets the integration requirements to ensure the
 reliability of Media Push.
 
-|Required or optional     |Item       |Check 	|
+| Required or optional | Item | Check |
 |:------------------------|:----------|:----------------|
-|Required	              |Channel mode	|Ensure that the scene of the channel is live.	|
-|Required	              |Availability	|Enable Media Push.	|
-|Required	              |QPS limit	| Ensure that the rate of API calls in a project is below the maximum limit.|
-|Required	              |Maximum number of concurrent Tasks| Ensure that the number of concurrent tasks in a project is below 300.|
-|Optional	              |Converter name	|Use the name field to manage the converter under the specified project. Assigning the name as a combination of the channel name and a converter property.|
-|Required	              |Region	|<ul><li>Set the region in the same area as your media streaming.</li><li>Pass region value in lowercase.</li></ul>|
-|Required	              |Idle timeout	|Set an appropriate `idleTimeout` value. 300 seconds is recommended.|
-|Optional	              |Troubleshooting	|Rectify the errors as follows: <ul><li>Use the retreat strategy.</li><li>Check the error code.</li></ul>If the preceding troubleshooting methods do not resolve the problem, print the values of the `X-Request-ID` and `X-Resource-ID` fields in the response header and contact Agora technical support.|
-|Optional	              |Message notifications	|Enable message notification service for Media Push and listen to Media Push events.|
+| Required | Channel mode | Ensure that the scene of the channel is live. |
+| Required | Availability | Enable Media Push. |
+| Required | QPS limit | Ensure that the rate of API calls in a project is below the maximum limit. |
+| Required | Maximum number of concurrent Tasks | Ensure that the number of concurrent tasks in a project is below 300. |
+| Optional | Converter name | Use the name field to manage the converter under the specified project. Assigning the name as a combination of the channel name and a converter property. |
+| Required | Region | <Slot name="required" /> |
+| Required | Idle timeout | Set an appropriate `idleTimeout` value. 300 seconds is recommended. |
+| Optional | Troubleshooting | <Slot name="optional" /> |
+| Optional | Message notifications | Enable message notification service for Media Push and listen to Media Push events. |
+
+<Slot for="required">
+
+- Set the region in the same area as your media streaming.
+- Pass region value in lowercase.
+
+</Slot>
+
+<Slot for="optional">
+
+Rectify the errors as follows:
+
+- Use the retreat strategy.
+- Check the error code.
+
+If the preceding troubleshooting methods do not resolve the problem, print the values of the `X-Request-ID` and `X-Resource-ID` fields in the response header and contact Agora technical support.
+
+</Slot>

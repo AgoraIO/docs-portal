@@ -17,16 +17,49 @@ Follow the steps below to add a license to your IoT SDK devices.
 ### Apply for a license
 To apply for a license, contact support@agora.io and provide the following information:
 
-| Name | Description            |
+| Name | Description |
 |------|------------------------|
 | Category | Device license |
 | Company ID (CID) | A unique identifier assigned by Agora to each company or organization. You can create an Agora account and get your company ID on the **Settings** page of the Agora Console. |
-| License type | Choose from the following:<ul><li>Trial license</li><li>Commercial license</li></ul>Agora recommends that you use a trial license during integration testing, and switch to a commercial license before the official launch. For further details, see [Trial license and commercial license](#trial-and-commercial-license). |
-| Stock keeping unit (SKU) | Specify the capability set of the license, including the following parameters: <ul><li>License capabilities: <ul><li>Audio</li><li>Video</li><li>Both audio and video</li></ul></li><li>Upper limit of license minutes: Whether to limit the duration for using the license, which is accurate to minutes. </li><li>License usage period: Whether to limit the period for using the license, which is accurate to minutes.</li></ul>  |
-| Validity period  | The validity period of the license starts on the day of activation.<ul><li>Trial license: Specify the period in months. Minimum is 3 months.</li><li>Commercial license: Specify the period in years. Minimum is 1 year.</li></ul> |
-| Number of applications  | The number of licenses you require. |
+| License type | <Slot name="license-type" /> |
+| Stock keeping unit (SKU) | <Slot name="stock-keeping-unit-sku" /> |
+| Validity period | <Slot name="validity-period" /> |
+| Number of applications | The number of licenses you require. |
 | List of license-enabled project IDs (App ID) | An App ID is the unique identifier of a project, which is provided by Agora and subordinate to the CID. You enable the license for a specific App ID. You can create a project and get the App ID on the **Project Management** page of Agora Console. |
-| Maximum concurrent user (PCU) limit  | After enabling the PCU limit, you can limit the maximum number of people who can access the SDK at the same time in the dimension of CID or App ID.|
+| Maximum concurrent user (PCU) limit | After enabling the PCU limit, you can limit the maximum number of people who can access the SDK at the same time in the dimension of CID or App ID. |
+
+<Slot for="license-type">
+
+Choose from the following:
+
+- Trial license
+- Commercial license
+
+Agora recommends that you use a trial license during integration testing, and switch to a commercial license before the official launch. For further details, see [Trial license and commercial license](#trial-and-commercial-license).
+
+</Slot>
+
+<Slot for="stock-keeping-unit-sku">
+
+Specify the capability set of the license, including the following parameters:
+
+- License capabilities:
+    - Audio
+    - Video
+    - Both audio and video
+- Upper limit of license minutes: Whether to limit the duration for using the license, which is accurate to minutes.
+- License usage period: Whether to limit the period for using the license, which is accurate to minutes.
+
+</Slot>
+
+<Slot for="validity-period">
+
+The validity period of the license starts on the day of activation.
+
+- Trial license: Specify the period in months. Minimum is 3 months.
+- Commercial license: Specify the period in years. Minimum is 1 year.
+
+</Slot>
 
 ### Activate a license
 
@@ -58,7 +91,25 @@ If the status code is `200`, the request is successful, and the response body co
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `license` | String | The value of the active license. |
-| `skuView` | Object | SKU capability set:<ul><li>`product` (Integer):<ul><li>1: Video SDK</li><li>2: IoT SDK SDK</li><li>3: FPA</li></ul></li><li>`name` (String): The name of the SKU</li><li>`mediaType` (Integer):<ul><li>1: Audio</li><li>2: Video</li><li>3: Both audio and video</li></ul></li><li>`minutes` (Integer): The maximum duration of the license</li><li>`period` (String): License usage time period </li></ul> |
+| `skuView` | Object | <Slot name="skuview" /> |
+
+<Slot for="skuview">
+
+SKU capability set:
+
+- `product` (Integer):
+    - 1: Video SDK
+    - 2: IoT SDK SDK
+    - 3: FPA
+- `name` (String): The name of the SKU
+- `mediaType` (Integer):
+    - 1: Audio
+    - 2: Video
+    - 3: Both audio and video
+- `minutes` (Integer): The maximum duration of the license
+- `period` (String): License usage time period
+
+</Slot>
 
 If the request fails, the status code is not `200`. Follow the returned status code and the `message` field in the response body to troubleshoot errors.
 

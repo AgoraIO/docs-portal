@@ -147,14 +147,36 @@ In 4.x, you can achieve the same switching speed as `switchChannel` in v3.7.x by
 
 v4.0.0 adds the feature of automatically loading self-developed dynamic libraries based on v4.0.0 Beta. As of this release, when using an Agora self-developed extension, you do not need to manually integrate the dynamic library in the project. The SDK automatically loads the dynamic library during the initialization phase of `RtcEngine`. You can directly call the corresponding method of the extension to enable this feature.
 
-| API                             | Extension type        |
+| API | Extension type |
 | :----------------------------------------------------------- | :--------------------------- |
-| `enableVirtualBackground`                   | Virtual background extension |
-| <li>`setBeautyEffectOptions`</li><li>`setVideoDenoiserOptions`</li><li>`setLowlightEnhanceOptions`</li><li>`setColorEnhanceOptions`</li> | Video enhancement extension |
-| `enableRemoteSuperResolution`                 | Super resolution extension  |
-|<li> `setAudioEffectPreset`</li><li>`setVoiceBeautifierPreset`</li><li>`setVoiceConversionPreset`</li> | Voice beautifier extension  |
-| `enableSpatialAudio`                      | Spatial audio extension   |
-| `enableContentInspect`                     | Content moderation extension |
+| `enableVirtualBackground` | Virtual background extension |
+| <Slot name="video-enhancement-extension" /> | Video enhancement extension |
+| `enableRemoteSuperResolution` | Super resolution extension |
+| <Slot name="voice-beautifier-extension" /> | Voice beautifier extension |
+| `enableSpatialAudio` | Spatial audio extension |
+| `enableContentInspect` | Content moderation extension |
+
+<Slot for="video-enhancement-extension">
+
+- `setBeautyEffectOptions`
+
+- `setVideoDenoiserOptions`
+
+- `setLowlightEnhanceOptions`
+
+- `setColorEnhanceOptions`
+
+</Slot>
+
+<Slot for="voice-beautifier-extension">
+
+- `setAudioEffectPreset`
+
+- `setVoiceBeautifierPreset`
+
+- `setVoiceConversionPreset`
+
+</Slot>
 
 #### Virtual metronome
 
@@ -550,14 +572,31 @@ In v4.x, you can achieve the same switching speed as `switchChannelByToken` in v
 
 v4.0.0 adds the feature of automatically loading self-developed dynamic libraries based on v4.0.0. As of this release, when using an Agora self-developed extension, you do not need to manually integrate the dynamic library in the project. The SDK automatically loads the dynamic library during the initialization phase of `AgoraRtcEngineKit`. You can directly call the corresponding method of the extension to enable this feature.
 
-| API                             | Extension type        |
+| API | Extension type |
 | :----------------------------------------------------------- | :--------------------------- |
-| `enableVirtualBackground`                  | Virtual background extension |
-| <ul><li>`setBeautyEffectOptions`</li><li>`setVideoDenoiserOptions`</li><li>`setLowlightEnhanceOptions`</li><li>`setColorEnhanceOptions`</li></ul> | Video enhancement extension |
-| `enableRemoteSuperResolution`                | Super resolution extension  |
- | <ul><li>`setAudioEffectPreset`</li><li>`setVoiceBeautifierPreset`</li><li>`setVoiceConversionPreset`</li></ul> | Voice beautifier extension  |
-| `enableSpatialAudio`                     | Spatial audio extension   |
-| `enableContentInspect`                    | Content moderation extension |
+| `enableVirtualBackground` | Virtual background extension |
+| <Slot name="video-enhancement-extension" /> | Video enhancement extension |
+| `enableRemoteSuperResolution` | Super resolution extension |
+ | <Slot name="voice-beautifier-extension" /> | Voice beautifier extension |
+| `enableSpatialAudio` | Spatial audio extension |
+| `enableContentInspect` | Content moderation extension |
+
+ <Slot for="video-enhancement-extension">
+
+ - `setBeautyEffectOptions`
+ - `setVideoDenoiserOptions`
+ - `setLowlightEnhanceOptions`
+ - `setColorEnhanceOptions`
+
+ </Slot>
+
+ <Slot for="voice-beautifier-extension">
+
+ - `setAudioEffectPreset`
+ - `setVoiceBeautifierPreset`
+ - `setVoiceConversionPreset`
+
+ </Slot>
 
 #### Virtual metronome
 

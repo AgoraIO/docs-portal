@@ -54,7 +54,6 @@ To follow this procedure, you must have:
 <PlatformStructured platform="android">
 :::note
 <ul><li>When integrating through Maven Central, specify `io.agora.rtc:full-sdk:x.y.z` and replace `x.y.z` with the specific SDK version number.</li><li>The MetaKit extension uses the Face Capture extension ( `libagora_face_capture_extension.so`) and the Virtual Background extension (`libagora_segmentation_extension.so`). You can delete unnecessary extensions as needed to reduce the size of the app.</li></ul>
-
 :::
 - Android Studio v4.2 or above.
 
@@ -546,7 +545,6 @@ To enable the Face Capture extension, follow these steps:
 </CodeBlockTabs>
 :::note
 Contact [Agora](mailto:extensions.marketplace@agora.io) to obtain the company name and certificate.
-
 :::
 #### Enable the Virtual Background extension
 
@@ -1515,7 +1513,6 @@ The `requestTexture` and [`addSceneView`](#add-scene-view) methods can both be u
  - `requestTexture` supports a single view; `addSceneView` supports multiple views.
  - For scene mode or avatar switching, use `requestTexture` to request textures and [`switchTextureAvatarMode`](#switch-texture-scene) for scene switching. Use `addSceneView` to add scene views and [`switchAvatarMode`](#switch-scene-view) to complete scene switching.
  - To release scene resources, use `requestTexture` and set `enable` to `false` to stop texture requests. If you added a scene view using `addSceneView`, use [`removeSceneView`](#remove-scene-view) to remove it.
-
 :::
 ##### Switch texture scene
 
@@ -1589,7 +1586,6 @@ The MetaKit extension allows you to switch the image, viewpoint, face, and outfi
 
 :::info
 In addition to the existing `girl` and `huamulan` avatars, the Agora MetaKit extension provides an open art ecosystem and supports **one-click import** of avatar models made according to Agora's art standards, providing users with more flexible creation and integration options. [Contact Agora technical support](mailto:extensions.marketplace@agora.io) to use this feature.
-
 :::
 ##### Switch virtual human perspective
 
@@ -1644,7 +1640,6 @@ The MetaKit extension allows you to switch the image of Animoji. To experience A
 
 :::info
 In addition to the existing `dog`, `girlhead` and `arkit` Animoji, the Agora MetaKit extension provides an open art ecosystem and supports **one-click import** of Animoji images made according to Agora's art standards, providing users with more flexible creation and integration options. [Contact Agora technical support](mailto:extensions.marketplace@agora.io) to use this feature.
-
 :::
 ##### Adjust rendering level
 
@@ -2303,7 +2298,6 @@ The complete JSON for the replacement is as follows:
 <PlatformStructured platform="ios">
 :::note
 <ul><li>When integrating through CocoaPods, specify pod `AgoraRtcEngine_Special_iOS` and replace `x.y.z` with the specific SDK version number.</li><li>The MetaKit extension uses the Face Capture extension ( `AgoraFaceCaptureExtension.xcframework`) and the Virtual Background extension (`AgoraVideoSegmentationExtension.xcframework`). You can delete unnecessary extensions as needed to reduce the size of the app.</li></ul>
-
 :::
 - Xcode 13.0 and above
 
@@ -2336,7 +2330,6 @@ To integrate the MetaKit extension, take the following steps:
 
 :::note
 Agora provides extension support in the XCFramework format for the `arm64` architecture but not for the `armv7` architecture.
-
 :::
 1. Open your project in Xcode and [add the required dynamic libraries](https://help.apple.com/xcode/mac/current/#/dev51a648b07), ensuring that the **Embed** attribute of the added dynamic libraries is set to **Embed & Sign**.
 
@@ -2348,12 +2341,27 @@ To configure the extension, take the following steps:
 
 1. Open the MetaKit iOS extension folder. The `/assets` path contains Bundle file resources needed for different scenes and functions. The table below lists the resource name, purpose, and size:
 
-  | Resource   | Required/Optional | Description | Size   |
+  | Resource | Required/Optional | Description | Size |
   |--------------|-------------------|--------------|----------|
-  | `SceneBase` | Required  | Basic scene resources. All functional modules are built on these resources, which include support for hot updates.     | 2.5 MB  |
-  | `Avatar`   | Function-specific  | Virtual human model resources, including the virtual human figures `girl` and `huamulan`. Supports face capture, face pinching, and dress-up capabilities. | <ul><li>`girl`: 17.4 MB</li><li>`huamulan`: 3.1 MB (no face pinching or dress-up support)</li></ul> |
-  | `Animoji`  | Function-specific  | Animoji model resources, including the Animoji figures `dog`, `girlhead`, and `arkit`. Supports face capture. | <ul><li>`dog`: 1.5 MB</li><li>`girlhead`: 4 MB</li><li>`arkit`: 44 KB</li></ul> |
-  | `AREffect`  | Function-specific  | Lighting effects and 360 background resources, including 3D lighting, ambient lights, advertising lights, screen ripples, aurora effects, and portrait edge flames. | 4.9 MB  |
+  | `SceneBase` | Required | Basic scene resources. All functional modules are built on these resources, which include support for hot updates. | 2.5 MB |
+  | `Avatar` | Function-specific | Virtual human model resources, including the virtual human figures `girl` and `huamulan`. Supports face capture, face pinching, and dress-up capabilities. | <Slot name="avatar" /> |
+  | `Animoji` | Function-specific | Animoji model resources, including the Animoji figures `dog`, `girlhead`, and `arkit`. Supports face capture. | <Slot name="animoji" /> |
+  | `AREffect` | Function-specific | Lighting effects and 360 background resources, including 3D lighting, ambient lights, advertising lights, screen ripples, aurora effects, and portrait edge flames. | 4.9 MB |
+
+  <Slot for="avatar">
+
+  - `girl`: 17.4 MB
+  - `huamulan`: 3.1 MB (no face pinching or dress-up support)
+
+  </Slot>
+
+  <Slot for="animoji">
+
+  - `dog`: 1.5 MB
+  - `girlhead`: 4 MB
+  - `arkit`: 44 KB
+
+  </Slot>
 
 1. Combine the basic resources (`SceneBase`) and the subpackage resources of specific functional modules (`Avatar`, `AvatarHeadMask`, and `AREffect`) into a single resource package to experience the corresponding functional modules. The functional modules and their corresponding resource package combinations are shown in the table below:
 
@@ -2447,7 +2455,6 @@ To enable the Face Capture extension, follow these steps:
 
 :::note
 Contact [Agora](mailto:extensions.marketplace@agora.io) to obtain the company name and face capture license.
-
 :::
   ```swift
   // Register Face Capture extension
@@ -2943,7 +2950,6 @@ The MetaKit extension allows you to switch the image of Animoji. To experience A
 
 :::info
 In addition to the existing `girl` and `huamulan` avatars, the Agora MetaKit extension provides an open art ecosystem and supports **one-click import** of avatar models made according to Agora's art standards, providing users with more flexible creation and integration options. [Contact Agora technical support](mailto:extensions.marketplace@agora.io) to use this feature.
-
 :::
 ##### Adjust the rendering level
 
