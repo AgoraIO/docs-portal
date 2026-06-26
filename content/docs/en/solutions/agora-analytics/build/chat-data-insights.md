@@ -34,7 +34,14 @@ The Scale Statistics page shows the scale of users, group chats, and chat rooms 
 |  | Description | Notes |
 | --- | --- | --- |
 | Today's Overview | Values of key usage metrics as of today. For a detailed description of each metric, see [Chat glossary](chat-data-metrics.md). | N/A |
-| Historical Data | Line charts and bar charts showing how the metric values change in a certain time range. | <ul><li>The maximum time range to query is the past 30 days.</li><li>Each metric in this section is calculated at an interval of a day, and the data has a one-minute delay, except for daily chat room PCU, which has a 10-minute delay.</li></ul> |
+| Historical Data | Line charts and bar charts showing how the metric values change in a certain time range. | <Slot name="historical-data" /> |
+
+<Slot for="historical-data">
+
+- The maximum time range to query is the past 30 days.
+- Each metric in this section is calculated at an interval of a day, and the data has a one-minute delay, except for daily chat room PCU, which has a 10-minute delay.
+
+</Slot>
 
 ![](https://web-cdn.agora.io/docs-files/1656493263570)
 
@@ -54,8 +61,15 @@ The Message Statistics page shows the historical numbers of messages and the dis
 
 |  | Description | Notes |
 | --- | --- | --- |
-| Message Count Trends | Line charts showing how the total numbers of messages change within a certain time range. For a detailed description of each metric, see [Chat glossary](chat-data-metrics.md). | <ul><li>The maximum time range to query is the past 6 months.</li><li>Each metric in this section is calculated at an interval of a day, and the data has a one-minute delay.</li></ul> |
+| Message Count Trends | Line charts showing how the total numbers of messages change within a certain time range. For a detailed description of each metric, see [Chat glossary](chat-data-metrics.md). | <Slot name="message-count-trends" /> |
 | Message Type Trends | Line charts showing the number of messages by type in a certain time range, and pie charts showing the message type breakdown. For a detailed description of each metric, see [Chat glossary](chat-data-metrics.md). | Same as Message Count Trends |
+
+<Slot for="message-count-trends">
+
+- The maximum time range to query is the past 6 months.
+- Each metric in this section is calculated at an interval of a day, and the data has a one-minute delay.
+
+</Slot>
 
 ![](https://web-cdn.agora.io/docs-files/1656491965158)
 

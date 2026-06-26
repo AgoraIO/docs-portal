@@ -67,12 +67,39 @@ For example, if you select English as the Language, `&locale=en` is appended to 
 
 The following table lists the available setting in **Page Attributes** and their corresponding parameters in the code snippet:
 
-| Setting              | Description | Parameter  | Parameter Values          |
+| Setting | Description | Parameter | Parameter Values |
 |:---------|:-------|:-----------|:---------|
-| **Language**         | The language of the report.       | `locale`               | <ul><li>`zh`: Chinese</li><li>`en`: English</li></ul> |
-| **Time Zone**        | The timezone used in the report.  | `timezone`             | <ul><li>`Local`: The local timezone</li><li>`UTC`: The UTC timezone</li></ul> |
-| **Project Permission** | **All projects**: Users can access reports of all projects where the specified `feature` is enabled.<br/>**Specify a project by code**: Users can only access reports of the project you select as **Default Project**. | `showProjectSelector`  | <ul><li>`true`: Show the project selector.</li><li>`false`: Do not show the project selector.</li></ul> |
-| **Default Project**  | The default project displayed in the report.            | *(Optional)* `projectId` | <ul><li>The ID of the project. Set this parameter only when `showProjectSelector` is `false`.</li></ul> |
+| **Language** | The language of the report. | `locale` | <Slot name="language" /> |
+| **Time Zone** | The timezone used in the report. | `timezone` | <Slot name="time-zone" /> |
+| **Project Permission** | **All projects**: Users can access reports of all projects where the specified `feature` is enabled.<br/>**Specify a project by code**: Users can only access reports of the project you select as **Default Project**. | `showProjectSelector` | <Slot name="project-permission" /> |
+| **Default Project** | The default project displayed in the report. | *(Optional)* `projectId` | <Slot name="default-project" /> |
+
+<Slot for="language">
+
+- `zh`: Chinese
+- `en`: English
+
+</Slot>
+
+<Slot for="time-zone">
+
+- `Local`: The local timezone
+- `UTC`: The UTC timezone
+
+</Slot>
+
+<Slot for="project-permission">
+
+- `true`: Show the project selector.
+- `false`: Do not show the project selector.
+
+</Slot>
+
+<Slot for="default-project">
+
+- The ID of the project. Set this parameter only when `showProjectSelector` is `false`.
+
+</Slot>
 
 ### Embed Agora Analytics in your app
 

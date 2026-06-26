@@ -713,11 +713,25 @@ This release has optimized the implementation of some functions, which involved 
 
   To improve interface usability, this release removes some methods and callbacks for channel media relay. Use the alternative options listed in the table below:
 
-  | Deleted methods and callbacks             | Alternative methods and callbacks |
+  | Deleted methods and callbacks | Alternative methods and callbacks |
   | ----------------------------------------------------- | ---------------------------------- |
-  | <ul><li>`startChannelMediaRelay`</li><li>`updateChannelMediaRelay`</li></ul>   | `startOrUpdateChannelMediaRelay`  |
-  | <ul><li>`startChannelMediaRelayEx`</li><li>`updateChannelMediaRelayEx`</li></ul> | `startOrUpdateChannelMediaRelayEx` |
-  | `onChannelMediaRelayEvent`              | `onChannelMediaRelayStateChanged` |
+  | <Slot name="startorupdatechannelmediarelay" /> | `startOrUpdateChannelMediaRelay` |
+  | <Slot name="startorupdatechannelmediarelayex" /> | `startOrUpdateChannelMediaRelayEx` |
+  | `onChannelMediaRelayEvent` | `onChannelMediaRelayStateChanged` |
+
+  <Slot for="startorupdatechannelmediarelay">
+
+  - `startChannelMediaRelay`
+  - `updateChannelMediaRelay`
+
+  </Slot>
+
+  <Slot for="startorupdatechannelmediarelayex">
+
+  - `startChannelMediaRelayEx`
+  - `updateChannelMediaRelayEx`
+
+  </Slot>
 
 4. **Custom video source**
 
@@ -2481,9 +2495,23 @@ This release has optimized the implementation of some functions, involving renam
 
   | Deleted methods and callbacks | Alternative methods and callbacks |
   | ----------------------------- | ---------------------------------- |
-  | <ul><li>`startChannelMediaRelay`</li><li>`updateChannelMediaRelay`</li></ul>| `startOrUpdateChannelMediaRelay`  |
-  | <ul><li>`startChannelMediaRelayEx`</li><li>`updateChannelMediaRelayEx`</li></ul>| `startOrUpdateChannelMediaRelayEx` |
-  | `didReceiveChannelMediaRelayEvent`| `channelMediaRelayStateDidChange` |
+  | <Slot name="startorupdatechannelmediarelay" /> | `startOrUpdateChannelMediaRelay` |
+  | <Slot name="startorupdatechannelmediarelayex" /> | `startOrUpdateChannelMediaRelayEx` |
+  | `didReceiveChannelMediaRelayEvent` | `channelMediaRelayStateDidChange` |
+
+  <Slot for="startorupdatechannelmediarelay">
+
+  - `startChannelMediaRelay`
+  - `updateChannelMediaRelay`
+
+  </Slot>
+
+  <Slot for="startorupdatechannelmediarelayex">
+
+  - `startChannelMediaRelayEx`
+  - `updateChannelMediaRelayEx`
+
+  </Slot>
 
 3. **Custom video source**
 
@@ -5157,11 +5185,43 @@ Chrome plans to deprecate the stats dictionary `RTCMediaStreamTrackStats`.
 See the service announcement on [discuss-webrtc@googlegrooups.com](https://groups.google.com/g/discuss-webrtc/c/9c8ZjberEcI).
 This change affects the following media track statistics returned by the SDK:
 
-| Statistics       | Affected fields                       |
+| Statistics | Affected fields |
 | :---------------------- | :----------------------------------------------------------- |
-| `LocalVideoTrackStats` | <li>`sendFrameRate`</li><li>`sendResolutionHeight`</li><li>`sendResolutionWidth`</li> |
-| `RemoteVideoTrackStats` | <li>`receiveFrameRate`</li><li>`receiveResolutionHeight`</li><li>`receiveResolutionWidth`</li><li>`renderFrameRate`</li><li>`receiveDelay`</li> |
-| `RemoteAudioTrackStats` | <li>`receiveDelay`</li><li>`receiveLevel`</li>        |
+| `LocalVideoTrackStats` | <Slot name="localvideotrackstats" /> |
+| `RemoteVideoTrackStats` | <Slot name="remotevideotrackstats" /> |
+| `RemoteAudioTrackStats` | <Slot name="remoteaudiotrackstats" /> |
+
+<Slot for="localvideotrackstats">
+
+- `sendFrameRate`
+
+- `sendResolutionHeight`
+
+- `sendResolutionWidth`
+
+</Slot>
+
+<Slot for="remotevideotrackstats">
+
+- `receiveFrameRate`
+
+- `receiveResolutionHeight`
+
+- `receiveResolutionWidth`
+
+- `renderFrameRate`
+
+- `receiveDelay`
+
+</Slot>
+
+<Slot for="remoteaudiotrackstats">
+
+- `receiveDelay`
+
+- `receiveLevel`
+
+</Slot>
 
 To ensure the accuracy of these media track statistics on Chrome, please upgrade the SDK to v4.16.0 or later as soon as possible.
 
@@ -5212,11 +5272,33 @@ To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
 Video SDK for Web v4.15.0 adds support for the VP9 codec in the following browsers:
 
-|     | Supported browsers①                |
+|  | Supported browsers① |
 | ------- | ------------------------------------------------------------ |
-| Desktop | <li>Chrome 65 or later</li><li>Firefox 69 or later</li><li>Edge 79 or later</li> <li>Safari 16 or later</li>|
-| Android | <li>Chrome 68 or later</li><li>Wechat v8.0.6 or later </li><li>Other apps that use WKWebView: WebView v65.0.3325.109 or later</li> |
-| iOS   | Safari 16 or later |
+| Desktop | <Slot name="desktop" /> |
+| Android | <Slot name="android" /> |
+| iOS | Safari 16 or later |
+
+<Slot for="desktop">
+
+- Chrome 65 or later
+
+- Firefox 69 or later
+
+- Edge 79 or later
+
+- Safari 16 or later
+
+</Slot>
+
+<Slot for="android">
+
+- Chrome 68 or later
+
+- Wechat v8.0.6 or later
+
+- Other apps that use WKWebView: WebView v65.0.3325.109 or later
+
+</Slot>
 
 <div class="alert info">① To ensure the best user experience, best practice is to use the latest version of the browsers listed above.</div>
 

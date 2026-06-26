@@ -42,10 +42,20 @@ The request body contains the following fields:
 ### HTTP response
 The response body contains the following fields:
 
-| Field          | Type   | Description                                                  |
+| Field | Type | Description |
 | :------------- | :----- | :----------------------------------------------------------- |
-| `status`       | String | The status of the request: <li>`success`: The request succeeds.</li><li>`failed`: The request fails.</li> |
-| `statusReason` | String | The reason why the request succeeds or fails.                |
+| `status` | String | <Slot name="status" /> |
+| `statusReason` | String | The reason why the request succeeds or fails. |
+
+<Slot for="status">
+
+The status of the request:
+
+- `success`: The request succeeds.
+
+- `failed`: The request fails.
+
+</Slot>
 
 ### Example
 **Request body**
@@ -98,11 +108,33 @@ The request body contains the following fields:
 ### HTTP response
 The response body contains the following fields:
 
-| Field             | Type   | Description                                                  |
+| Field | Type | Description |
 | :---------------- | :----- | :----------------------------------------------------------- |
-| `status`          | String | The status of the request: <li>`success`: The request succeeds.</li><li>`failed`: The request fails. </li> |
-| `statusReason`    | String | The reason why the request succeeds or fails.                |
-| `data`    | Object | This object includes the following properties:<li>`appKey`: String (32–255 bytes). The app key of the project. You use this field to authenticate the user.</li><li>`appSecret`: String (32–255 bytes). The app secret of the project. You use this field to authenticate the user.</li><li>`licenseUrl`: (Optional) String. The license file for authorizing your extension to users. This field applies only if you charge your extension with license files.</li>    |
+| `status` | String | <Slot name="status" /> |
+| `statusReason` | String | The reason why the request succeeds or fails. |
+| `data` | Object | <Slot name="data" /> |
+
+<Slot for="status">
+
+The status of the request:
+
+- `success`: The request succeeds.
+
+- `failed`: The request fails.
+
+</Slot>
+
+<Slot for="data">
+
+This object includes the following properties:
+
+- `appKey`: String (32–255 bytes). The app key of the project. You use this field to authenticate the user.
+
+- `appSecret`: String (32–255 bytes). The app secret of the project. You use this field to authenticate the user.
+
+- `licenseUrl`: (Optional) String. The license file for authorizing your extension to users. This field applies only if you charge your extension with license files.
+
+</Slot>
 
 ### Example
 **Request body**
@@ -153,10 +185,20 @@ The request body contains the following fields:
 
 The response body contains the following fields:
 
-| Field          | Type   | Description                                                  |
+| Field | Type | Description |
 | :------------- | :----- | :----------------------------------------------------------- |
-| `status`       | String | The status of the request: <li>`success`: The request succeeds.</li><li>`failed`: The request fails.</li> |
-| `statusReason` | String | The reason why the request succeeds or fails.                |
+| `status` | String | <Slot name="status" /> |
+| `statusReason` | String | The reason why the request succeeds or fails. |
+
+<Slot for="status">
+
+The status of the request:
+
+- `success`: The request succeeds.
+
+- `failed`: The request fails.
+
+</Slot>
 
 ### Example
 
@@ -206,10 +248,20 @@ The request body contains the following fields:
 ### HTTP response
 The response body contains the following fields:
 
-| Field          | Type   | Description                                                  |
+| Field | Type | Description |
 | :------------- | :----- | :----------------------------------------------------------- |
-| `status`       | String | The status of the request:<li>`success`: The request succeeds.</li><li>`failed`: The request fails.</li> |
-| `statusReason` | String | The reason why the request succeeds or fails.                |
+| `status` | String | <Slot name="status" /> |
+| `statusReason` | String | The reason why the request succeeds or fails. |
+
+<Slot for="status">
+
+The status of the request:
+
+- `success`: The request succeeds.
+
+- `failed`: The request fails.
+
+</Slot>
 
 ### Example
 

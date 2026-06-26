@@ -126,11 +126,25 @@ curl --request post \
     }
     ```
 
-    | Parameter Name | Type   | Description                             |
+    | Parameter Name | Type | Description |
     |----------------|--------|-----------------------------------------|
-    | `agent_id`       | String | The ID of the agent. |
-    | `createTs`     | Integer | The Unix timestamp (seconds) when the agent was created. |
-    | `status`       | String   | Agent Status:<br/><ul><li>`IDLE`: The agent is not initialized.</li><li>`STARTING`: The agent is starting.</li><li>`RUNNING`: The agent is running.</li><li>`STOPPING`: The agent is exiting.</li><li>`STOPPED`: The agent exited successfully.</li><li>`RECOVERING`: The agent is recovering.</li><li>`FAILED`: Agent exit failed.</li></ul> |
+    | `agent_id` | String | The ID of the agent. |
+    | `createTs` | Integer | The Unix timestamp (seconds) when the agent was created. |
+    | `status` | String | <Slot name="status" /> |
+
+    <Slot for="status">
+
+    Agent Status:
+
+    - `IDLE`: The agent is not initialized.
+    - `STARTING`: The agent is starting.
+    - `RUNNING`: The agent is running.
+    - `STOPPING`: The agent is exiting.
+    - `STOPPED`: The agent exited successfully.
+    - `RECOVERING`: The agent is recovering.
+    - `FAILED`: Agent exit failed.
+
+    </Slot>
 
 - Failure
 

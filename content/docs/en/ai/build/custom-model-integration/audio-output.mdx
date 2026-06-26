@@ -58,9 +58,17 @@ The `audio` response includes three types of content. You can send each type to 
 
 | Audio type | Description | Source | Agent processing |
 |:-----------|:------------|:-------|:-----------------|
-| Audio data<br/>`data` | 	Base64-encoded PCM byte stream array | <li>LLM generation with audio processing capabilities</li> <li>Custom audio processing service generation</li> | Plays the audio directly |
-| Transcription content<br/>`transcript` | The complete text content corresponding to the audio | LLM generation | 	Stores the text in short-term memory (context) |
+| Audio data<br/>`data` | Base64-encoded PCM byte stream array | <Slot name="audio-data-data" /> | Plays the audio directly |
+| Transcription content<br/>`transcript` | The complete text content corresponding to the audio | LLM generation | Stores the text in short-term memory (context) |
 | Verbatim subtitles<br/>`words` | Subtitle content with word-by-word timestamps | Supports LLM generation with verbatim output | Processes into verbatim real-time subtitles |
+
+<Slot for="audio-data-data">
+
+- LLM generation with audio processing capabilities
+
+- Custom audio processing service generation
+
+</Slot>
 
 The specific data structure of a streaming response is as follows:
 

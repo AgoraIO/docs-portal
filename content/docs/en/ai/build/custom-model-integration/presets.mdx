@@ -28,9 +28,33 @@ The following presets are available:
 
 | Category | Available presets |
 |----------|------------------|
-| ASR | <ul><li>`deepgram_nova_2`</li><li>`deepgram_nova_3`</li></ul> |
-| LLM | <ul><li>`openai_gpt_4o_mini`</li><li>`openai_gpt_4_1_mini`</li><li>`openai_gpt_5_nano`</li><li>`openai_gpt_5_mini`</li></ul> |
-| TTS | <ul><li>`minimax_speech_2_6_turbo`</li><li>`minimax_speech_2_8_turbo`</li><li>`openai_tts_1`</li></ul> |
+| ASR | <Slot name="asr" /> |
+| LLM | <Slot name="llm" /> |
+| TTS | <Slot name="tts" /> |
+
+<Slot for="asr">
+
+- `deepgram_nova_2`
+- `deepgram_nova_3`
+
+</Slot>
+
+<Slot for="llm">
+
+- `openai_gpt_4o_mini`
+- `openai_gpt_4_1_mini`
+- `openai_gpt_5_nano`
+- `openai_gpt_5_mini`
+
+</Slot>
+
+<Slot for="tts">
+
+- `minimax_speech_2_6_turbo`
+- `minimax_speech_2_8_turbo`
+- `openai_tts_1`
+
+</Slot>
 
 You can specify one preset per category. If you specify a preset for a
 category, any API key or endpoint URL fields for that category are ignored.

@@ -278,7 +278,17 @@ The SDK global configuration. Used in [setConfig](#setconfig).
 | Attributes | Description |
 | :-------- | :----------------------------------------------------------- |
 | `appId` | The Agora App ID. See [Get the Agora App ID](/en/solutions/flexible-classroom/build/manage-agora-account#get-the-app-id). |
-| `eyeCare` | Whether to enable eye care mode:<li>`0`: (Default) Disable eye care mode.</li><li>`1`: Enable eye care mode.</li> |
+| `eyeCare` | <Slot name="eyecare" /> |
+
+<Slot for="eyecare">
+
+Whether to enable eye care mode:
+
+- `0`: (Default) Disable eye care mode.
+
+- `1`: Enable eye care mode.
+
+</Slot>
 
 #### AgoraEduLaunchConfig
 
@@ -307,9 +317,9 @@ The classroom launching configuration. Used in [launch](#launch).
 | Attributes | Description |
 | :------------------- | :----------------------------------------------------------- |
 | `userName` | The user name for display in the classroom. The string length must be less than 64 bytes. |
-| `userUuid` | The user ID. This is the globally unique identifier of a user. **Must be the same as the User ID that you use for generating an Signaling token**. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `userUuid` | <Slot name="useruuid" /> |
 | `roomName` | The room name for display in the classroom. The string length must be less than 64 bytes. |
-| `roomUuid` | The room ID. This is the globally unique identifier of a classroom. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>   |
+| `roomUuid` | <Slot name="roomuuid" /> |
 | `roleType` | The role of the user in the classroom. See  [AgoraEduRoleType](#agoraeduroletype). |
 | `roomType` | The classroom type. See [AgoraEduRoomType](#agoraeduroomtype). |
 | `rtmToken` | The Signaling token used for authentication. For details, see [Secure authentication with tokens](/en/solutions/flexible-classroom/build/authentication-workflow). |
@@ -322,6 +332,38 @@ The classroom launching configuration. Used in [launch](#launch).
 | `streamState` | Controls whether students automatically send audio or video streams after they go onto the stage. See [StreamState](#streamstate). |
 | `latencyLevel` | The latency level of an audience member. See [AgoraEduLatencyLevel](#agoraedulatencylevel). |
 | `userProperties` | User properties customized by the developer. For details, see [How can I set user properties? ](/help/integration-issues/agora_class_custom_properties) |
+
+<Slot for="useruuid">
+
+The user ID. This is the globally unique identifier of a user. **Must be the same as the User ID that you use for generating an Signaling token**. The string length must be less than 64 bytes. Supported character scopes are:
+
+- All lowercase English letters: a to z.
+
+All numeric characters.
+
+- 0-9
+
+- The space character.
+
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ","
+
+</Slot>
+
+<Slot for="roomuuid">
+
+The room ID. This is the globally unique identifier of a classroom. The string length must be less than 64 bytes. Supported character scopes are:
+
+- All lowercase English letters: a to z.
+
+All numeric characters.
+
+- 0-9
+
+- The space character.
+
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ","
+
+</Slot>
 
 #### AgoraEduEvent
 
@@ -404,8 +446,28 @@ Controls whether students automatically send audio or video streams after they g
 
 | Parameter | Description |
 | :----------- | :----------------------------------------------------------- |
-| `videoState` | Whether to send the video stream:<li>`0`: (Default) Do not send the video stream.</li><li>`1`: Send the video stream.</li> |
-| `audioState` | Whether to send the audio stream:<li>`0`: (Default) Do not send the audio stream.</li><li>`1`: Send the audio stream.</li> |
+| `videoState` | <Slot name="videostate" /> |
+| `audioState` | <Slot name="audiostate" /> |
+
+<Slot for="videostate">
+
+Whether to send the video stream:
+
+- `0`: (Default) Do not send the video stream.
+
+- `1`: Send the video stream.
+
+</Slot>
+
+<Slot for="audiostate">
+
+Whether to send the audio stream:
+
+- `0`: (Default) Do not send the audio stream.
+
+- `1`: Send the audio stream.
+
+</Slot>
 
 #### AgoraEduLatencyLevel
 
@@ -882,7 +944,17 @@ The SDK global configuration. Used in [setConfig](#setconfig).
 | Attributes | Description |
 | :-------- | :----------------------------------------------------------- |
 | `appId` | The Agora App ID. See [Get the Agora App ID](/en/solutions/flexible-classroom/build/manage-agora-account#get-the-app-id). |
-| `eyeCare` | Whether to enable eye care mode:<li>`false`: (Default) Disable eye care mode.</li><li>`true`: Enable eye care mode.</li> |
+| `eyeCare` | <Slot name="eyecare" /> |
+
+<Slot for="eyecare">
+
+Whether to enable eye care mode:
+
+- `false`: (Default) Disable eye care mode.
+
+- `true`: Enable eye care mode.
+
+</Slot>
 
 #### AgoraEduLaunchConfig
 
@@ -924,15 +996,15 @@ The classroom launching configuration. Used in [launch](#launch).
 | Attributes | Description |
 | :--------------------------- | :----------------------------------------------------------- |
 | `userName` | The user name for display in the classroom. The string length must be less than 64 bytes. |
-| `userUuid` | The user ID. This is the globally unique identifier of a user. **Must be the same as the User ID that you use for generating an Signaling token**. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `userUuid` | <Slot name="useruuid" /> |
 | `roomName` | The room name for display in the classroom. The string length must be less than 64 bytes. |
-| `roomUuid` | The room ID. This is the globally unique identifier of a classroom. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `roomUuid` | <Slot name="roomuuid" /> |
 | `roleType` | The user's role in the classroom. See `AgoraEduRoleType`. |
 | `roomType` | The classroom type. See `AgoraEduRoomType`. |
 | `token` | The Signaling token used for authentication. For details, see [Generate a Signaling Token](/en/solutions/flexible-classroom/build/authentication-workflow). |
 | `startTime` | The start time (ms) of the class, determined by the first user joining the classroom. |
 | `duration` | The duration (ms) of the class, determined by the first user joining the classroom. |
-| `region` | The region where the classrooms is located. All clients must use the same region, otherwise, they may fail to communicate with each other. Supported regions are:<li>`CN`: Mainland China</li><li>`AP`: Asia Pacific</li><li>`EU`: Europe</li><li>`NA`: North America</li> |
+| `region` | <Slot name="region" /> |
 | `mediaOptions` | Media options, including the media stream encryption configuration. See `AgoraEduMediaOptions` for details. |
 | `userProperties` | User properties customized by the developer. For details, see [How can I set user properties? ](/help/integration-issues/agora_class_custom_properties) |
 | `videoState` | Controls whether students automatically send audio or video streams after they go onto the stage. See  `AgoraEduStreamState`. |
@@ -940,6 +1012,52 @@ The classroom launching configuration. Used in [launch](#launch).
 | `cameraEncoderConfiguration` | The encoding configurations of the video stream captured by the camera, including the width and height, frame rate, and bitrate. For details, see `AgoraEduVideoEncoderConfiguration`. |
 | `latencyLevel` | The latency level of an audience member. See `AgoraEduLatencyLevel`. |
 | `boardFitMode` | The PPT display mode on the whiteboard. See `AgoraBoardFitMode`. |
+
+<Slot for="useruuid">
+
+The user ID. This is the globally unique identifier of a user. **Must be the same as the User ID that you use for generating an Signaling token**. The string length must be less than 64 bytes. Supported character scopes are:
+
+- All lowercase English letters: a to z.
+
+All numeric characters.
+
+- 0-9
+
+- The space character.
+
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ","
+
+</Slot>
+
+<Slot for="roomuuid">
+
+The room ID. This is the globally unique identifier of a classroom. The string length must be less than 64 bytes. Supported character scopes are:
+
+- All lowercase English letters: a to z.
+
+All numeric characters.
+
+- 0-9
+
+- The space character.
+
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ","
+
+</Slot>
+
+<Slot for="region">
+
+The region where the classrooms is located. All clients must use the same region, otherwise, they may fail to communicate with each other. Supported regions are:
+
+- `CN`: Mainland China
+
+- `AP`: Asia Pacific
+
+- `EU`: Europe
+
+- `NA`: North America
+
+</Slot>
 
 #### AgoraBoardFitMode
 
@@ -1279,7 +1397,21 @@ export type ConfigParams = {
 | Attributes | Description |
 | :------- | :----------------------------------------------------------- |
 | `appId` | (Required) The Agora App ID. See [Get the Agora App ID](/en/solutions/flexible-classroom/build/manage-agora-account#get-the-app-id). |
-| `region` | (Optional) The region where the classrooms is located. Agora recommends you set a region close to the region of the object storage service for your courseware or recording files, because cross-region transmission of large static resources can lead to delay. For example, if your S3 service is in North America, you should set this parameter to `NA`. All Smart Classroom clients must set the same area, otherwise they cannot communicate with each other. All clients must use the same region, otherwise, they may fail to communicate with each other. Flexible Classroom supports the following regions:<li>`CN`: Mainland China</li><li>`AP`: Asia Pacific</li><li>`EU`: Europe</li><li>`NA`: North America</li> |
+| `region` | <Slot name="region" /> |
+
+<Slot for="region">
+
+(Optional) The region where the classrooms is located. Agora recommends you set a region close to the region of the object storage service for your courseware or recording files, because cross-region transmission of large static resources can lead to delay. For example, if your S3 service is in North America, you should set this parameter to `NA`. All Smart Classroom clients must set the same area, otherwise they cannot communicate with each other. All clients must use the same region, otherwise, they may fail to communicate with each other. Flexible Classroom supports the following regions:
+
+- `CN`: Mainland China
+
+- `AP`: Asia Pacific
+
+- `EU`: Europe
+
+- `NA`: North America
+
+</Slot>
 
 #### ListenerCallback
 
@@ -1323,28 +1455,80 @@ export type LaunchOption = {
 | Parameter | Description |
 | :----------------------- | :----------------------------------------------------------- |
 | `rtmToken` | (Required) The Signaling token used for authentication. For details, see [Secure authentication with tokens](/en/solutions/flexible-classroom/build/authentication-workflow). |
-| `userUuid` | The user ID. This is the globally unique identifier of a user. **Must be the same as the User ID that you use for generating an Signaling token**. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `userUuid` | <Slot name="useruuid" /> |
 | `userName` | (Required) The user name for display in the classroom. The string length must be less than 64 bytes. |
-| `roomUuid` | (Required) The room ID. This is the globally unique identifier of a classroom. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `roomUuid` | <Slot name="roomuuid" /> |
 | `roomName` | (Required) The room name for display in the classroom. The string length must be less than 64 bytes. |
 | `roleType` | (Required) The role of the user in the classroom. See [`EduRoleTypeEnum`](#eduroletypeenum). |
 | `roomType` | (Required) The classroom type. See [`EduRoomTypeEnum`](#eduroomtypeenum). |
-| `roomServiceType`  | （Optional) The service type of big classrooms. See [EduRoomServiceTypeEnum](#eduroomservicetypeenum).  |
+| `roomServiceType` | （Optional) The service type of big classrooms. See [EduRoomServiceTypeEnum](#eduroomservicetypeenum). |
 | `listener` | (Required) Classroom event callback, please refer to the event type for details. |
-| `pretest` | (Required) Whether to enable the pre-class device test:<li>`true`: Enable the pre-class device test. After this function is enabled, end users can see a page for the device test before entering the classroom. They can check whether their camera, microphone, and speaker can work properly.</li><li>`false`: Disable the pre-class device test.</li> |
+| `pretest` | <Slot name="pretest" /> |
 | `language` | (Required) The UI language. See [`LanguageEnum`](#languageenum). |
 | `startTime` | (Required) The start time (ms) of the class, determined by the first user joining the classroom. |
 | `duration` | (Required) The duration (second) of the class, determined by the first user joining the classroom. |
 | `recordUrl` | (Optional) The URL address to be recorded. Developers need to pass in the URL of the web page deployed by themselves for page recording, such as `https://cn.bing.com/recordUrl`. |
-| `widgets`| (Optional) Extensive widgets that  extend the classroom capabilities. See [Embed a custom plugin](/en/solutions/flexible-classroom/build/embed-custom-plugin) for details.|
+| `widgets` | (Optional) Extensive widgets that  extend the classroom capabilities. See [Embed a custom plugin](/en/solutions/flexible-classroom/build/embed-custom-plugin) for details. |
 | `courseWareList` | (Optional) The configuration of courseware assigned by the educational institution, which cannot be edited by the client. See [`CourseWareList`](#coursewarelist) for details. After passing this object, the SDK downloads the courseware from the Agora cloud storage component to the local when launching the classroom. |
-| `userFlexProperties` | (Optional) User properties customized by the developer.  |
+| `userFlexProperties` | (Optional) User properties customized by the developer. |
 | `mediaOptions` | (Optional) Media stream configurations, including the encryption configuration and the encoding configurations of the screen-sharing stream and the video stream captured by the camera. See `MediaOptions` for details. |
-| `latencyLevel` | (Optional) The latency level of an audience member in interactive live streaming:<li>`1`: Low latency. The latency from the sender to the receiver is 1500 ms to 2000 ms.</li><li>(Default) Ultra-low latency. The latency from the sender to the receiver is 400 ms to 800 ms.</li> |
+| `latencyLevel` | <Slot name="latencylevel" /> |
 | `virtualBackgroundImages` | (Optional) The URL of the virtual background image. The domain name of the resource should be the same as the domain name where you deployed smart classroom. Supports PNG and JPG format images. |
 | `webrtcExtensionBaseUrl` | (Optional) The URL or the `WebRtc` extensions. The default value is `https://solutions-apaas.agora.io/static`. If you want to use the advanced features such as virtual backgrounds, AI noise suppression, and beauty options, you need to implement the `WebRtc` extensions and relevant resources in the Flexible Classroom SDK domain. These are the steps: 1. When you run `yarn build:demo` to complete packaging, the corresponding files are generated in `packages/agora-demo-app/build/extensions`. 2. Implement the directory in the domain of the Flexible Classroom SDK. |
 | `rtcCloudProxy` | (Optional) The cloud proxy type for the RTC service: [`AgoraCloudProxyType`](#agoracloudproxytype). |
 | `rtmCloudProxyEnabled` | (Optional) Where to enable cloud proxy for the RTM service. |
+
+<Slot for="useruuid">
+
+The user ID. This is the globally unique identifier of a user. **Must be the same as the User ID that you use for generating an Signaling token**. The string length must be less than 64 bytes. Supported character scopes are:
+
+- All lowercase English letters: a to z.
+
+All numeric characters.
+
+- 0-9
+
+- The space character.
+
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ","
+
+</Slot>
+
+<Slot for="roomuuid">
+
+(Required) The room ID. This is the globally unique identifier of a classroom. The string length must be less than 64 bytes. Supported character scopes are:
+
+- All lowercase English letters: a to z.
+
+All numeric characters.
+
+- 0-9
+
+- The space character.
+
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ","
+
+</Slot>
+
+<Slot for="pretest">
+
+(Required) Whether to enable the pre-class device test:
+
+- `true`: Enable the pre-class device test. After this function is enabled, end users can see a page for the device test before entering the classroom. They can check whether their camera, microphone, and speaker can work properly.
+
+- `false`: Disable the pre-class device test.
+
+</Slot>
+
+<Slot for="latencylevel">
+
+(Optional) The latency level of an audience member in interactive live streaming:
+
+- `1`: Low latency. The latency from the sender to the receiver is 1500 ms to 2000 ms.
+
+- (Default) Ultra-low latency. The latency from the sender to the receiver is 400 ms to 800 ms.
+
+</Slot>
 
 #### MediaOptions
 
@@ -1368,8 +1552,22 @@ Media options.
 | `cameraEncoderConfiguration` | The encoding configuration of the video stream captured by the camera. See [EduVideoEncoderConfiguration](#eduvideoencoderconfiguration). |
 | `screenShareEncoderConfiguration` | The encoding configuration of the screen-sharing stream. See [EduVideoEncoderConfiguration](#eduvideoencoderconfiguration). |
 | `encryptionConfig` | The media stream encryption configuration. See [MediaEncryptionConfig](#mediaencryptionconfig). |
-| `channelProfile`                | Channel profile configuration. See [ChannelProfile](#channelprofile) for details.     |
-| `web`   | Web configuration for browser codec format and channel mode. <ul><li>`codec`: Browser codec format. Available values are as follows: <ul> <li>`"vp9"`: VP9</li><li>`"h264"`: H.264</li></ul></li><li>`mode`: Channel mode. Available values are as follows: <ul><li>`"rtc"`: Communication mode, commonly used for one-to-one or one-to-many classrooms.</li><li>`"live"`: Live-streaming mode. It costs less and has a higher latency than the communication mode.</li></ul></li><ul></ul></ul>|
+| `channelProfile` | Channel profile configuration. See [ChannelProfile](#channelprofile) for details. |
+| `web` | <Slot name="web" /> |
+
+<Slot for="web">
+
+Web configuration for browser codec format and channel mode.
+
+- `codec`: Browser codec format. Available values are as follows:
+    - `"vp9"`: VP9
+    - `"h264"`: H.264
+- `mode`: Channel mode. Available values are as follows:
+
+    - `"rtc"`: Communication mode, commonly used for one-to-one or one-to-many classrooms.
+    - `"live"`: Live-streaming mode. It costs less and has a higher latency than the communication mode.
+
+</Slot>
 
 #### EduVideoEncoderConfiguration
 
@@ -1513,14 +1711,59 @@ export type CourseWareList = CourseWareItem[];
 | Parameter | Description |
 | :---------| :-----------|
 | `resourceName` | The file name for display in the classroom. The string length must be less than 64 bytes. |
-| `resourceUuid` | The file ID. This is the unique identifier of a file. The string length must be less than 64 bytes. Supported character scopes are:<li>All lowercase English letters: a to z.</li>All numeric characters.<li>0-9</li><li>The space character.</li><li>"!", "#", "$", "%",  "&", "(", ")", "+", "-", ":", ";", "\<",  "=", ".", ">", "?",  "@", "[", "]",  "^", "_",  " {", "}",  "\|",  "~", "," </li>  |
+| `resourceUuid` | <Slot name="resourceuuid" /> |
 | `ext` | The file suffix. |
 | `size` | The file size (bytes). |
 | `updateTime` | The latest modified time of the file. |
 | `taskUuid` | The unique identifier of the file conversion task. |
-| `conversion` | <ul><li>`type`: A string value that idicates the type of file conversion. You can set it as:<ul><li>`static`: Convert the PPT, PPTX, DOC, DOCX, or PDF file to a static image in PNG, JPG, JPEG, or WEBP format. The converted file does not retain the animation effects of the original file.</li><li>`dynamic`: Convert the PPTX file (edited with Microsoft Office) to an HTML page. The converted file retains the animation effects of the original file.</li></ul></li><li>`preview`: A boolean value that indicates whether you need a preview window.</li><li>`scale`: A number value that indicates the conversion scale. If you set it as `1`, it means the file doesn't change the size after conversion. The range is [0, 3].</li><li>`outputFormat`: A string value that indicates the export format of the images after file conversion. For example, you can set it as `"png"`.</li><ul></ul></ul>  |
+| `conversion` | <Slot name="conversion" /> |
 | `url` | The address of the file. Flexible Classroom clients automatically convert files with the suffixes of `"ppt"`, `"pptx"`, `"doc"`, `"docx"`, and `"pdf"` to formats that can be displayed on the whiteboard in classrooms. If the suffix name is not listed above, you must set `url `and leave `scenes` empty. |
-| `taskProgress` | The JSON object, `CloudDriveResourceConvertProgress`, that indicates the progress of the file conversion task. It contains the following fields:<ul><li>`totalPageSize`: Total page size.</li><li>`convertedPageSize`: The number of converted pages.</li><li>`convertedPercentage`: The progress of the conversion task, expressed as a percentage.</li><li>`convertedFileList`: A list of converted file pages. Each file page represents a record that contains the following fields:<ul><li>`name`: The name of the file page.</li><li>`ppt`: Details of the slide included in the file page, which contains the following fields:<ul><li>`width`: The width of the slide.</li><li>`height`: The height of the slide.</li><li>`src`: The download URL of the converted page.</li><li>`preview`: The URL of the preview image.</li></ul></li></ul></li><li>`currentStep`: The current step of the conversion task. The possible values are `extracting` (extracting the resources), `generatingPreview` (generating the preview image), `mediaTranscode` (transcoding the media file), and `packaging` (packaging the file).</li></ul>  |
+| `taskProgress` | <Slot name="taskprogress" /> |
+
+<Slot for="resourceuuid">
+
+The file ID. This is the unique identifier of a file. The string length must be less than 64 bytes. Supported character scopes are:
+
+- All lowercase English letters: a to z.
+
+All numeric characters.
+
+- 0-9
+
+- The space character.
+
+- "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ","
+
+</Slot>
+
+<Slot for="conversion">
+
+- `type`: A string value that idicates the type of file conversion. You can set it as:
+    - `static`: Convert the PPT, PPTX, DOC, DOCX, or PDF file to a static image in PNG, JPG, JPEG, or WEBP format. The converted file does not retain the animation effects of the original file.
+    - `dynamic`: Convert the PPTX file (edited with Microsoft Office) to an HTML page. The converted file retains the animation effects of the original file.
+- `preview`: A boolean value that indicates whether you need a preview window.
+- `scale`: A number value that indicates the conversion scale. If you set it as `1`, it means the file doesn't change the size after conversion. The range is [0, 3].
+- `outputFormat`: A string value that indicates the export format of the images after file conversion. For example, you can set it as `"png"`.
+
+</Slot>
+
+<Slot for="taskprogress">
+
+The JSON object, `CloudDriveResourceConvertProgress`, that indicates the progress of the file conversion task. It contains the following fields:
+
+- `totalPageSize`: Total page size.
+- `convertedPageSize`: The number of converted pages.
+- `convertedPercentage`: The progress of the conversion task, expressed as a percentage.
+- `convertedFileList`: A list of converted file pages. Each file page represents a record that contains the following fields:
+    - `name`: The name of the file page.
+    - `ppt`: Details of the slide included in the file page, which contains the following fields:
+          - `width`: The width of the slide.
+          - `height`: The height of the slide.
+          - `src`: The download URL of the converted page.
+          - `preview`: The URL of the preview image.
+- `currentStep`: The current step of the conversion task. The possible values are `extracting` (extracting the resources), `generatingPreview` (generating the preview image), `mediaTranscode` (transcoding the media file), and `packaging` (packaging the file).
+
+</Slot>
 
 #### EduRoleTypeEnum
 
@@ -1619,32 +1862,108 @@ Classroom event listener. Set in [`LaunchOption`](#launchoption).
 
 | Parameter | Description |
 | :----- | :----- |
-| `Ready`|	`1`: Entered the classroom successfully.|
-| `Destroyed`|	`2`: The classroom has been destroyed. Includes the reason for leaving as a parameter: <ul><li>`1`: Left the room voluntarily.</li><li>`2`: Have been kicked out of the room.</li></ul>|
-| `FailedToJoin`|	`3`: Failed to enter the classroom.|
-| `KickOut`|	`101`: Being kicked out of the room.|
-| `TeacherTurnOnMyMic`|	`102`: Audio streaming permission is enabled.|
-| `TeacherTurnOffMyMic`|	`103`: Audio streaming permission is turned off.|
-| `UserAcceptToStage`|	`106`: Get on the podium.|
-| `UserLeaveStage`|	`107`: Leave the podium.|
-| `RewardReceived`|	`108`: Reward received. Includes a list of rewarded users as a parameter.|
-| `TeacherTurnOnMyCam`|	`109`: The video streaming permission is enabled.|
-| `TeacherTurnOffMyCam`|	`110`: The video streaming permission has been turned off.|
-| `CurrentCamUnplugged`|	`111`: The current camera device is unplugged.|
-| `CurrentMicUnplugged`|	`112`: The current microphone device is unplugged.|
-| `CurrentSpeakerUnplugged`|	`113`: The current speaker is unplugged.|
-| `CaptureScreenPermissionDenied`|	`114`: No screen capture permission.|
-| `BatchRewardReceived`|	`117`: Receive bulk rewards. Includes a list of rewarded users as a parameter.|
-| `InvitedToGroup`|	`118`: Receive invitation to join group. Includes group information as parameters.|
-| `MoveToOtherGroup`|	`119`: Moved to other groups. Includes the following parameters:<ul><li>Previous group</li><li>New group</li></ul>|
-| `JoinSubRoom`|	`120`: Join a group.|
-| `LeaveSubRoom`|	`121`: Leave the group.|
-| `AcceptedToGroup`|	`122`: The user accepts to join the group. Includes the following parameters: <ul><li>Group ID</li><li>Accepting user</li></ul>|
-| `UserJoinGroup`|	`123`: Other users join the group. Includes the following parameters: <ul><li>Group ID</li><li>List of joining users</li></ul>|
-| `UserLeaveGroup`|	`124`: Other users leave the group. Includes the following parameters: <ul><li>Group ID</li><li>List of leaving users</li></ul>|
-| `RejectedToGroup`|	`125`: The user refuses to join the group. Includes the following parameters: <ul><li>Group ID</li><li>List of refusing users</li></ul>|
-| `RTCStateChanged`|	`201`: RTC connection status change. Includes the RTC connection status as a parameter: <ul><li>`0`: Not connected</li><li>`1`: Connecting</li><li>`2`: Connected</li><li>`3`: Reconnecting</li></ul>|
-| `ClassStateChanged`|	`202`: Classroom status changes. Includes the class status as a parameter: <ul><li>`0`: Started </li><li>`1`: Not started</li><li>`2`: Dragging </li><li>`3`: Ended</li></ul> |
+| `Ready` | `1`: Entered the classroom successfully. |
+| `Destroyed` | <Slot name="destroyed" /> |
+| `FailedToJoin` | `3`: Failed to enter the classroom. |
+| `KickOut` | `101`: Being kicked out of the room. |
+| `TeacherTurnOnMyMic` | `102`: Audio streaming permission is enabled. |
+| `TeacherTurnOffMyMic` | `103`: Audio streaming permission is turned off. |
+| `UserAcceptToStage` | `106`: Get on the podium. |
+| `UserLeaveStage` | `107`: Leave the podium. |
+| `RewardReceived` | `108`: Reward received. Includes a list of rewarded users as a parameter. |
+| `TeacherTurnOnMyCam` | `109`: The video streaming permission is enabled. |
+| `TeacherTurnOffMyCam` | `110`: The video streaming permission has been turned off. |
+| `CurrentCamUnplugged` | `111`: The current camera device is unplugged. |
+| `CurrentMicUnplugged` | `112`: The current microphone device is unplugged. |
+| `CurrentSpeakerUnplugged` | `113`: The current speaker is unplugged. |
+| `CaptureScreenPermissionDenied` | `114`: No screen capture permission. |
+| `BatchRewardReceived` | `117`: Receive bulk rewards. Includes a list of rewarded users as a parameter. |
+| `InvitedToGroup` | `118`: Receive invitation to join group. Includes group information as parameters. |
+| `MoveToOtherGroup` | <Slot name="movetoothergroup" /> |
+| `JoinSubRoom` | `120`: Join a group. |
+| `LeaveSubRoom` | `121`: Leave the group. |
+| `AcceptedToGroup` | <Slot name="acceptedtogroup" /> |
+| `UserJoinGroup` | <Slot name="userjoingroup" /> |
+| `UserLeaveGroup` | <Slot name="userleavegroup" /> |
+| `RejectedToGroup` | <Slot name="rejectedtogroup" /> |
+| `RTCStateChanged` | <Slot name="rtcstatechanged" /> |
+| `ClassStateChanged` | <Slot name="classstatechanged" /> |
+
+<Slot for="destroyed">
+
+`2`: The classroom has been destroyed. Includes the reason for leaving as a parameter:
+
+- `1`: Left the room voluntarily.
+- `2`: Have been kicked out of the room.
+
+</Slot>
+
+<Slot for="movetoothergroup">
+
+`119`: Moved to other groups. Includes the following parameters:
+
+- Previous group
+- New group
+
+</Slot>
+
+<Slot for="acceptedtogroup">
+
+`122`: The user accepts to join the group. Includes the following parameters:
+
+- Group ID
+- Accepting user
+
+</Slot>
+
+<Slot for="userjoingroup">
+
+`123`: Other users join the group. Includes the following parameters:
+
+- Group ID
+- List of joining users
+
+</Slot>
+
+<Slot for="userleavegroup">
+
+`124`: Other users leave the group. Includes the following parameters:
+
+- Group ID
+- List of leaving users
+
+</Slot>
+
+<Slot for="rejectedtogroup">
+
+`125`: The user refuses to join the group. Includes the following parameters:
+
+- Group ID
+- List of refusing users
+
+</Slot>
+
+<Slot for="rtcstatechanged">
+
+`201`: RTC connection status change. Includes the RTC connection status as a parameter:
+
+- `0`: Not connected
+- `1`: Connecting
+- `2`: Connected
+- `3`: Reconnecting
+
+</Slot>
+
+<Slot for="classstatechanged">
+
+`202`: Classroom status changes. Includes the class status as a parameter:
+
+- `0`: Started
+- `1`: Not started
+- `2`: Dragging
+- `3`: Ended
+
+</Slot>
 
 ## Electron
 

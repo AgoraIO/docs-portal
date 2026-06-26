@@ -461,33 +461,60 @@ The following tables describe the fields in the `SttMessage.proto` file.
 
 #### Text message fields
 
-| Field name            | Type                 | Description                |
+| Field name | Type | Description |
 | --------------------- | -------------------- | -------------------------- |
-| `uid`                 | `int64`              | The user ID associated with the text.                 |
-| `time`                | `int64`              | The start time of this sentence segment transcription . Has a value only when `isFinal` is `true`; otherwise, the value is `0`.                   |
-| `words`               | `repeated`           | An array of transcription results. See **WordMessage** type for details.         |
-| `duration_ms`         | `int32`              | The duration of the transcribed text in milliseconds. |
-| `data_type`           | `string`             | The type of data: <ul><li> `transcribe`: Transcription </li><li> `translate`: Text translation </li></ul>  |
-| `trans`               | `repeated`           | An array of translation results. See **TranslationMessage** type for details.    |
-| `culture`             | `string`             | The source language of the transcription.             |
-| `text_ts`             | `int64`              | The continuously incremented timestamp of the transcription result, used to align source and target text during real-time translation. |
-| `original_transcript` | `OriginalTranscript` | The transcribed text used for translation.   |
-| `sentence_id` |	`int64` | A unique identifier for the subtitle in the data stream used for precise alignment between the original and translated subtitles. |
+| `uid` | `int64` | The user ID associated with the text. |
+| `time` | `int64` | The start time of this sentence segment transcription . Has a value only when `isFinal` is `true`; otherwise, the value is `0`. |
+| `words` | `repeated` | An array of transcription results. See **WordMessage** type for details. |
+| `duration_ms` | `int32` | The duration of the transcribed text in milliseconds. |
+| `data_type` | `string` | <Slot name="datatype" /> |
+| `trans` | `repeated` | An array of translation results. See **TranslationMessage** type for details. |
+| `culture` | `string` | The source language of the transcription. |
+| `text_ts` | `int64` | The continuously incremented timestamp of the transcription result, used to align source and target text during real-time translation. |
+| `original_transcript` | `OriginalTranscript` | The transcribed text used for translation. |
+| `sentence_id` | `int64` | A unique identifier for the subtitle in the data stream used for precise alignment between the original and translated subtitles. |
+
+<Slot for="datatype">
+
+The type of data:
+
+- `transcribe`: Transcription
+- `translate`: Text translation
+
+</Slot>
 
 #### Word message fields
 
-| **Field Name** | **Type** | **Description**      |
+| **Field Name** | **Type** | **Description** |
 | ----------- | ---------- | ------------------------- |
-| `text`      | `string`   | The transcription result. |
-| `is_final`  | `bool`     | Indicates whether this sentence is the final transcription result. <ul><li> `true`: The transcription engine has determined the result for this sentence, and no further modifications are expected. This does not mean the sentence is semantically complete. </li><li> `false`: The result is not yet final and may change. </li></ul> |
+| `text` | `string` | The transcription result. |
+| `is_final` | `bool` | <Slot name="isfinal" /> |
+
+<Slot for="isfinal">
+
+Indicates whether this sentence is the final transcription result.
+
+- `true`: The transcription engine has determined the result for this sentence, and no further modifications are expected. This does not mean the sentence is semantically complete.
+- `false`: The result is not yet final and may change.
+
+</Slot>
 
 #### Translation message fields
 
-| **Field Name**              | **Type**   | **Meaning**|
+| **Field Name** | **Type** | **Meaning** |
 | ------------- | ---------- | -------------------- |
-| `is_final`                  | `bool`     | Indicates whether this sentence is the final translation result. <ul><li> `true`: The translation engine has determined that the translation result is final and no further modification is required. This does **not** mean the sentence is semantically complete. </li><li> `false`: The translation result is not yet final and may be updated. </li></ul> |
-| `lang`                      | `string`   | The target language of the translation.                          |
-| `texts`                     | `repeated` | The translated text results.          |
+| `is_final` | `bool` | <Slot name="isfinal" /> |
+| `lang` | `string` | The target language of the translation. |
+| `texts` | `repeated` | The translated text results. |
+
+<Slot for="isfinal">
+
+Indicates whether this sentence is the final translation result.
+
+- `true`: The translation engine has determined that the translation result is final and no further modification is required. This does **not** mean the sentence is semantically complete.
+- `false`: The translation result is not yet final and may be updated.
+
+</Slot>
 
 #### Original transcript message fields
 

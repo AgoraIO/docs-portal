@@ -1,9 +1,10 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { readdirSync, readFileSync } from 'node:fs';
+import { join, relative, resolve } from 'node:path';
 import { compile } from '@mdx-js/mdx';
 import { describe, expect, it } from 'vitest';
 
 const docsRoot = resolve(process.cwd(), 'content/docs/en');
+const allDocsRoot = resolve(process.cwd(), 'content/docs');
 
 describe('docs content regressions', () => {
   function expectListItemToContainNestedOrderedList(
@@ -19,6 +20,76 @@ describe('docs content regressions', () => {
     expect(nestedListIndex).toBeGreaterThan(markerIndex);
     expect(nestedListIndex).toBeLessThan(itemCloseIndex);
   }
+
+  function listMarkdownFiles(root: string): string[] {
+    const files: string[] = [];
+
+    for (const entry of readdirSync(root, { withFileTypes: true })) {
+      const entryPath = join(root, entry.name);
+
+      if (entry.isDirectory()) {
+        files.push(...listMarkdownFiles(entryPath));
+        continue;
+      }
+
+      if (entry.isFile() && /\.(?:md|mdx)$/.test(entry.name)) {
+        files.push(entryPath);
+      }
+    }
+
+    return files;
+  }
+
+  it('keeps block-style lists and notes out of GFM table cells', () => {
+    const blockSyntaxPattern =
+      /(?:<\/?(?:ul|ol|li)\b|\*\*Note\*\*|<Note\b|:::note|:::info|:::warning|:::caution|\[!NOTE\])/i;
+    const inlineTableCellBlockPattern = new RegExp(
+      String.raw`^\s*\|.*${blockSyntaxPattern.source}.*$`,
+      'i',
+    );
+    const offenders: string[] = [];
+
+    for (const file of listMarkdownFiles(allDocsRoot)) {
+      const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+
+      for (let index = 0; index < lines.length; index += 1) {
+        if (inlineTableCellBlockPattern.test(lines[index])) {
+          offenders.push(
+            `${relative(process.cwd(), file)}:${index + 1}: ${lines[index]}`,
+          );
+        }
+
+        if (!/^\s*\|.*\|.*\|\s*\S.*[^|]\s*$/.test(lines[index])) {
+          continue;
+        }
+
+        const blockStart = index;
+        const blockLines: string[] = [];
+        let cursor = index + 1;
+
+        while (
+          cursor < lines.length &&
+          !/^\s*\|\s*$/.test(lines[cursor]) &&
+          !/^\s*\|.*\|/.test(lines[cursor])
+        ) {
+          blockLines.push(lines[cursor]);
+          cursor += 1;
+        }
+
+        if (
+          cursor < lines.length &&
+          /^\s*\|\s*$/.test(lines[cursor]) &&
+          blockSyntaxPattern.test(blockLines.join('\n'))
+        ) {
+          offenders.push(
+            `${relative(process.cwd(), file)}:${blockStart + 1}-${cursor + 1}: multiline table cell contains block syntax`,
+          );
+        }
+      }
+    }
+
+    expect(offenders).toEqual([]);
+  });
 
   it('keeps agora analytics call inspector headings free of inline raw anchors', () => {
     const source = readFileSync(

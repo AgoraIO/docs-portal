@@ -41,16 +41,38 @@ You can specify the following parameters:
 | Parameter         | Category | Required/Optional | Description           |
 | :---------------- | :------- | :---------------- |:----------------------|
 | `resource`        | string   | Required          | The URL of the file you want to convert.       |
-| `type`            | string   | Required          | The conversion type:- `dynamic`: Dynamic-file conversion, converting the file to web pages.<br />- `static`: Static-file conversion, converting the file to images.<br /> |
-| `preview`         | boolean  | Optional          | Whether to generate a preview of the generated files:- `true`: Generate a preview.<br />- `false`: Do not generate a preview.<br />              |
+| `type`            | string   | Required          | The conversion type:
+
+- `dynamic`: Dynamic-file conversion, converting the file to web pages.<br />- `static`: Static-file conversion, converting the file to images.<br /> |
+| `preview`         | boolean  | Optional          | Whether to generate a preview of the generated files:
+
+- `true`: Generate a preview.<br />- `false`: Do not generate a preview.<br />              |
 | `scale`           | number   | Optional          | The scale factor of an image. The range is [0.1,3.0], and the default value is `1.2`. The higher the value, the clearer the generated image. This parameter only takes effect when `type` is set to `static`.                 |
-| `outputFormat`    | string   | Optional          | The format of the generated image:- `png`<br />- `jpg`<br /> - `jpeg`<br />The default value is `png`. This parameter only takes effect when `type` is set to `static`.        |
+| `outputFormat`    | string   | Optional          | The format of the generated image:
+
+- `png`<br />- `jpg`<br /> - `jpeg`<br />The default value is `png`. This parameter only takes effect when `type` is set to `static`.        |
 | `webhookEndpoint` | string   | Optional          | The address of the Webhook callback, generally the app server address, is used to receive information sent by the server, such as the progress of tasks. See [webhook callback](#webhook-callback). |
 | `webhookRetry`    | number   | Optional          | The number of retries the system attempts when the Webhook callback fails. The default value is `3`, and the maximum is `10`.                      |
-| `imageCompressionLevel` | number | Optional | The compression level of the output image. You can only pass in the following values: - `0`: (Default) Output the original image.<br />- `1`: The maximum number of colors used in the output image is limited to 256.<br />- `2`: The maximum number of colors used in the output image is limited to 192.<br />- `3`: The maximum number of colors used in the output image is limited to 128.<br />- `4`: The maximum number of colors used in the output image is limited to 64.<br />This parameter only takes effect when `type` is set to `dynamic`.:::info
-Usually, the size of the output image can be compressed to up to 10% of its original without significantly reducing the image quality. Compressing the size of images can improve the first loading time of PPT files after conversion in poor network environment.
-::: |
+| `imageCompressionLevel` | number | Optional | <Slot name="imagecompressionlevel" /> |
 | `buildSpa` | boolean | Optional |  Specifies whether to build a Single-page Application (SPA) after conversion. - `true`: (Default) Builds an SPA file. The output is an HTML file containing all resources needed to render the PPT, suitable for single-page preview. Note that the server requires additional time (approximately 3 to 300 seconds) to download necessary resources and compile the file.<br /> - `false`: Does not build an SPA file.<br /> |
+
+<Slot for="imagecompressionlevel">
+
+The compression level of the output image. You can only pass in the following values:
+
+- `0`: (Default) Output the original image.
+- `1`: The maximum number of colors used in the output image is limited to 256.
+- `2`: The maximum number of colors used in the output image is limited to 192.
+- `3`: The maximum number of colors used in the output image is limited to 128.
+- `4`: The maximum number of colors used in the output image is limited to 64.
+
+This parameter only takes effect when `type` is set to `dynamic`.
+
+:::info
+Usually, the size of the output image can be compressed to up to 10% of its original without significantly reducing the image quality. Compressing the size of images can improve the first loading time of PPT files after conversion in poor network environment.
+:::
+
+</Slot>
 
 ### Request example
 
@@ -205,7 +227,9 @@ If the status code is `200`, the request is successful. The response returns the
 | :-------------------- | :------- |:-----------------------------|
 | `uuid`                | string   | The task UUID, which is the unique identifier of the file-conversion task.|
 | `status`              | string   | The status of the conversion task:- `Waiting`: Conversion is `waiting` to start.<br />- `Converting`: Conversion is in progress.<br />- `Finished`: Conversion has `finished`.<br />- `Fail`: Conversion failed.<br />      |
-| `type`                | string   | The conversion type:- `dynamic`: Dynamic-file conversion, converting the file to web pages.<br />- `static`: Static-file conversion, converting the file to images.<br />   |
+| `type`                | string   | The conversion type:
+
+- `dynamic`: Dynamic-file conversion, converting the file to web pages.<br />- `static`: Static-file conversion, converting the file to images.<br />   |
 | `convertedPercentage` | number   | The progress of the conversion expressed as a percentage.                 |
 | `prefix`              | string   | The prefix of the address of the generated file. |
 | `pageCount`           | number   | The number of file pages. This value is not available when the conversion task fails.              |

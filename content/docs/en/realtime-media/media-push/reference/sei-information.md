@@ -42,13 +42,40 @@ By default, Agora adds the encoding information of the current video to the tran
 
 The definition of the parameters:
 
-| Parameter | Description                                                  |
+| Parameter | Description |
 | --------- | ------------------------------------------------------------ |
-| `canvas`    | The canvas information. It contains the following properties:<ul><li>`w`: Width (pixel) of the canvas. It corresponds to the  `width`  member in the `LiveTranscoding` class.</li><li>`h`: Height (pixel) of the canvas. It corresponds to the `height` member in the `LiveTranscoding` class.</li><li>`bgnd`: The background color (RGB) of the canvas, represented by a hexademical string. It corresponds to the `backgoundColor` member in the `LiveTranscoding` class.</li></ul> |
-| `regions`   | The layout information of the host. It corresponds to the  `transcodingUsers` member in the `LiveTranscoding` class. It contains the following properties:<ul><li>`suid`: (**Optional**)The string user account of the host in this region. This parameter applies to use-cases where string user accounts are used to identify the host.<li/><li>`uid`: UID of the host in this region. It corresponds to the `uid` member in the `TranscodingUser` class.</li><li>`alpha`: The transparency of the video frame of the host. The value range is [0.0, 1.0]. It corresponds to the `alpha` member in `TranscodingUser` .</li><li>`zorder`: The layout position of the video frame of the host. The value range is [0, 100]. It corresponds to the `zOrder` member in `TranscodingUser`.</li><li>`volume`: The volume (dB) of the host. The value range is [0, 100].</li><li>`x`: The horizontal position of the video frame of the broadacaster from the top left corner of the Media Push. It corresponds to the `x` member in `TranscodingUser`.</li><li>`y`: The vertical position of the video frame of the host from the top left corner of the Media Push. It corresponds to the `y` member in `TranscodingUser`.</li><li>`w`: Width (pixel) of the video frame of the host. It corresponds to the `width` member in `TranscodingUser`.</li></li><li>`h`: Height (pixel) of the video frame of the host. It corresponds to the `height` member in `TranscodingUser`.</li></ul> |
-| `ver`       | The version of the SEI protocol. The current version is 20190611. |
-| `ts`        | Timestamp (ms) of the current encoding information.               |
-| `app_data`  | Extra user-defined information. It corresponds to the `transcodingExtraInfo` member in the `LiveTranscoding` class. |
+| `canvas` | <Slot name="canvas" /> |
+| `regions` | <Slot name="regions" /> |
+| `ver` | The version of the SEI protocol. The current version is 20190611. |
+| `ts` | Timestamp (ms) of the current encoding information. |
+| `app_data` | Extra user-defined information. It corresponds to the `transcodingExtraInfo` member in the `LiveTranscoding` class. |
+
+<Slot for="canvas">
+
+The canvas information. It contains the following properties:
+
+- `w`: Width (pixel) of the canvas. It corresponds to the `width` member in the `LiveTranscoding` class.
+- `h`: Height (pixel) of the canvas. It corresponds to the `height` member in the `LiveTranscoding` class.
+- `bgnd`: The background color (RGB) of the canvas, represented by a hexademical string. It corresponds to the `backgoundColor` member in the `LiveTranscoding` class.
+
+</Slot>
+
+<Slot for="regions">
+
+The layout information of the host. It corresponds to the `transcodingUsers` member in the `LiveTranscoding` class. It contains the following properties:
+
+- `suid`: (**Optional**)The string user account of the host in this region. This parameter applies to use-cases where string user accounts are used to identify the host.
+-
+- `uid`: UID of the host in this region. It corresponds to the `uid` member in the `TranscodingUser` class.
+- `alpha`: The transparency of the video frame of the host. The value range is [0.0, 1.0]. It corresponds to the `alpha` member in `TranscodingUser` .
+- `zorder`: The layout position of the video frame of the host. The value range is [0, 100]. It corresponds to the `zOrder` member in `TranscodingUser`.
+- `volume`: The volume (dB) of the host. The value range is [0, 100].
+- `x`: The horizontal position of the video frame of the broadacaster from the top left corner of the Media Push. It corresponds to the `x` member in `TranscodingUser`.
+- `y`: The vertical position of the video frame of the host from the top left corner of the Media Push. It corresponds to the `y` member in `TranscodingUser`.
+- `w`: Width (pixel) of the video frame of the host. It corresponds to the `width` member in `TranscodingUser`.
+- `h`: Height (pixel) of the video frame of the host. It corresponds to the `height` member in `TranscodingUser`.
+
+</Slot>
 
 ### The structure of SEI
 

@@ -149,11 +149,21 @@ Watermark configuration parameters, including the following fields:
 
 | Field | Type | Description |
 | :------- | :------ | :----------------------------------------------------------- |
-| `url` | String | Required. The URL of the watermark image. Only PNG files are supported. To easily set different watermarks for different entry points or live streams, you can use the following parameters in the URL:<li>`{entry_point}`: This parameter is replaced with the specified entry point.</li><li>`{stream_name}`: This parameter is replaced with the specified stream name.</li> |
+| `url` | String | <Slot name="url" /> |
 | `x` | Integer | Required. The x-coordinate of the watermark. The value range is [0,1920]. |
 | `y` | Integer | Required. The y-coordinate of the watermark. The value range is [0,1920]. |
 | `width` | Integer | Required. The width (pixels) of the watermark image. The value range is [0,1920]. |
 | `height` | Integer | Required. The height (pixels) of the watermark image. The value range is [0,1920]. |
+
+<Slot for="url">
+
+Required. The URL of the watermark image. Only PNG files are supported. To easily set different watermarks for different entry points or live streams, you can use the following parameters in the URL:
+
+- `{entry_point}`: This parameter is replaced with the specified entry point.
+
+- `{stream_name}`: This parameter is replaced with the specified stream name.
+
+</Slot>
 
 
 <a name="http-code"></a>

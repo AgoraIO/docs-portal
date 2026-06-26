@@ -60,9 +60,25 @@ Agora only charges a video transcoding fee when the Agora streaming server trans
 
 | Category | Pricing ($US/1,000 minutes) |
 | :--------- | :------------------------------------ |
-| Audio streams |3.99 |
-| H.264 video stream |<li> High-Definition (HD): 7.99 </li><li>Full High-Definition (Full HD): 15.99 </li>|
-| H.265 video stream |<li> High-Definition (HD): 19.99</li><li> Full High-Definition (Full HD): 39.99 </li>|
+| Audio streams | 3.99 |
+| H.264 video stream | <Slot name="h-264-video-stream" /> |
+| H.265 video stream | <Slot name="h-265-video-stream" /> |
+
+<Slot for="h-264-video-stream">
+
+- High-Definition (HD): 7.99
+
+- Full High-Definition (Full HD): 15.99
+
+</Slot>
+
+<Slot for="h-265-video-stream">
+
+- High-Definition (HD): 19.99
+
+- Full High-Definition (Full HD): 39.99
+
+</Slot>
 
 | Type | The resolution of the output video after transcoding |
 | :---------------- | :----------------------------------------------------------- |

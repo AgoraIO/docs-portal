@@ -114,6 +114,54 @@ const value = true;
     expect(result).toContain('<Tab value="web">{"Web body"}</Tab>');
   });
 
+  it('replaces table cell placeholders inside MDX flow containers', async () => {
+    const result = await compileWithTableSlots(`
+<Wrapper>
+
+| Field | Description |
+| - | - |
+| Options | <Slot name="options" /> |
+
+<Slot for="options">
+
+- Android
+- iOS
+
+</Slot>
+
+</Wrapper>
+`);
+
+    expect(result).toContain('<Wrapper>');
+    expect(result).toContain('<_components.ul>');
+    expect(result).toContain('<_components.li>{"Android"}</_components.li>');
+    expect(result).toContain('<_components.li>{"iOS"}</_components.li>');
+    expect(result).not.toContain('Slot');
+  });
+
+  it('replaces table cell placeholders inside list items', async () => {
+    const result = await compileWithTableSlots(`
+1. Response
+
+   | Field | Description |
+   | - | - |
+   | Status | <Slot name="status" /> |
+
+   <Slot for="status">
+
+   - Running
+   - Stopped
+
+   </Slot>
+`);
+
+    expect(result).toContain('<_components.ol>');
+    expect(result).toContain('<_components.table>');
+    expect(result).toContain('<_components.li>{"Running"}</_components.li>');
+    expect(result).toContain('<_components.li>{"Stopped"}</_components.li>');
+    expect(result).not.toContain('Slot');
+  });
+
   it('fails clearly for duplicate slot definitions after one table', async () => {
     await expect(
       compileWithTableSlots(`
@@ -192,6 +240,20 @@ Text between the table and definition.
 | Options | <Slot name="options" for="options" /> |
 `),
     ).rejects.toThrow('Slot usage is ambiguous');
+  });
+
+  it('fails clearly when a slot definition is not a flow sibling', async () => {
+    await expect(
+      compileWithTableSlots(`
+| Field | Description |
+| - | - |
+| Options | <Slot name="options" /> |
+
+> <Slot for="options">Nested</Slot>
+`),
+    ).rejects.toThrow(
+      '<Slot for="..."> must be placed as a flow sibling immediately after its table.',
+    );
   });
 
   it('keeps normal GFM tables unchanged', async () => {
