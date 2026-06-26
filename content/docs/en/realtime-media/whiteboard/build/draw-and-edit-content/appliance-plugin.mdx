@@ -134,7 +134,7 @@ The Appliance Plugin extends the functionality of the Netless Whiteboard by enab
     import { ApplianceMultiPlugin } from '@netless/appliance-plugin';
     ```
 
-1. Load Web Workers for the Appliance Plugin
+2. Load Web Workers for the Appliance Plugin
 
     If using local distribution (dist), manually import worker files and convert them into `Blob` URLs:
 
@@ -148,7 +148,7 @@ The Appliance Plugin extends the functionality of the Netless Whiteboard by enab
     const subWorkerUrl = URL.createObjectURL(subWorkerBlob);
     ```
 
-1. Initialize `WhiteWebSdk` and join a room
+3. Initialize `WhiteWebSdk` and join a room
 
     Create a `WhiteWebSdk` instance and join a whiteboard room:
 
@@ -162,7 +162,7 @@ The Appliance Plugin extends the functionality of the Netless Whiteboard by enab
     });
     ```
 
-1. Mount `WindowManager` and Enable the Appliance Plugin
+4. Mount `WindowManager` and Enable the Appliance Plugin
 
     After joining the room, mount `WindowManager` and enable the `ApplianceMultiPlugin`:
 
@@ -202,7 +202,7 @@ The Appliance Plugin enhances the `WhiteWebSdk` by adding interactive tools for 
     import { ApplianceSinglePlugin, ApplianceSigleWrapper } from '@netless/appliance-plugin';
     ```
 
-1. Load Web Workers for the Appliance Plugin
+2. Load Web Workers for the Appliance Plugin
 
     If using local distribution (dist), manually import worker scripts and convert them into Blob URLs:
 
@@ -220,7 +220,7 @@ The Appliance Plugin enhances the `WhiteWebSdk` by adding interactive tools for 
 If using a CDN, you do not need to manually import worker scripts.
 :::
 
-1. Initialize `WhiteWebSdk` and join a room
+3. Initialize `WhiteWebSdk` and join a room
 
     Create a `WhiteWebSdk` instance and join a whiteboard room:
 
@@ -234,7 +234,7 @@ If using a CDN, you do not need to manually import worker scripts.
     });
     ```
 
-1. Enable the Appliance Plugin
+4. Enable the Appliance Plugin
 
     After joining a room, initialize the `ApplianceSinglePlugin`:
 
@@ -267,7 +267,7 @@ To implement this feature:
     import { EStrokeType, ApplianceNames } from '@netless/appliance-plugin';
     ```
 
-1. **Set stroke type**:
+2. **Set stroke type**:
 
     ```js
     // Solid line
@@ -285,7 +285,7 @@ To implement this feature:
 
     ![](/images/interactive-whiteboard/appliance-stroke-type.png)
 
-1. **Set stroke opacity**:
+3. **Set stroke opacity**:
 
     ```js
     setMemberState({strokeOpacity: 0.5 });
@@ -293,7 +293,7 @@ To implement this feature:
 
     ![](/images/interactive-whiteboard/appliance-stroke-opacity.png)
 
-1. **Set the text properties**:
+4. **Set the text properties**:
 
     ```js
     setMemberState({textOpacity: 0.5, textBgOpacity: 0.5, textBgColor:[0, 0, 0]});
@@ -312,7 +312,7 @@ To implement this feature:
 
     ![](/images/interactive-whiteboard/appliance-shape-polygon.png)
 
-1. **Stars**:
+2. **Stars**:
 
     ```js
     // Fat hexagonal star
@@ -321,7 +321,7 @@ To implement this feature:
 
     ![](/images/interactive-whiteboard/appliance-shape-star.png)
 
-1. **Speech Balloon**:
+3. **Speech Balloon**:
 
     ```js
     // The dialog box in the lower left corner
@@ -330,7 +330,7 @@ To implement this feature:
 
     ![](/images/interactive-whiteboard/appliance-shape-balloon.png)
 
-1. **Set shape fill color and fill opacity**:
+4. **Set shape fill color and fill opacity**:
 
     ```js
     setMemberState({fillOpacity: 0.5, fillColor:[0, 0, 0]});
