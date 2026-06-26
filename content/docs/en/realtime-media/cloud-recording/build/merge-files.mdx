@@ -107,10 +107,68 @@ A `convert-done.txt` file is generated after the transcoding is complete. Once t
 
 The transcoded MP4 file supports most mainstream media players. See the following table for details:
 
-| Operating System | Media Players          |
+| Operating System | Media Players |
 | :--------------- | :--- |
-| Linux            | <li>VLC</li><li>ffplayer</li>            |
-| Windows          | <li>Media Player</li><li>KM Player</li><li>VLC Player</li><li>Chrome (49.0.2623 or later)</li>   |
-| macOS            | <li>QuickTime Player</li><li>Movist</li><li>MPlayerX</li><li>Chrome (49.0.2623 or later)</li><li>Safari (11.0.3 or later)</li> |
-| iOS              | <li>iOS default player</li><li>KMPlayer</li><li>Safari (9.0 or later)</li>              |
-| Android          | <li>Android default player</li><li>MXPlayer</li><li>VLC</li><li>KMPlayer</li><li>Chrome (9.0.2623 or later)</li> |
+| Linux | <Slot name="linux" /> |
+| Windows | <Slot name="windows" /> |
+| macOS | <Slot name="macos" /> |
+| iOS | <Slot name="ios" /> |
+| Android | <Slot name="android" /> |
+
+<Slot for="linux">
+
+- VLC
+
+- ffplayer
+
+</Slot>
+
+<Slot for="windows">
+
+- Media Player
+
+- KM Player
+
+- VLC Player
+
+- Chrome (49.0.2623 or later)
+
+</Slot>
+
+<Slot for="macos">
+
+- QuickTime Player
+
+- Movist
+
+- MPlayerX
+
+- Chrome (49.0.2623 or later)
+
+- Safari (11.0.3 or later)
+
+</Slot>
+
+<Slot for="ios">
+
+- iOS default player
+
+- KMPlayer
+
+- Safari (9.0 or later)
+
+</Slot>
+
+<Slot for="android">
+
+- Android default player
+
+- MXPlayer
+
+- VLC
+
+- KMPlayer
+
+- Chrome (9.0.2623 or later)
+
+</Slot>

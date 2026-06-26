@@ -17,6 +17,7 @@ import {
 import { type ComponentProps, type ReactNode, useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
+import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import { i18n } from '@/lib/i18n/i18n';
 import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
@@ -63,6 +64,13 @@ const sidebar: DocsSidebarNode[] = [
 
 type DocsShellProps = ComponentProps<typeof DocsShell>;
 
+const loadSearchPages = async () => [
+  {
+    title: 'Quick Start',
+    url: '/en/introduction/quick-start',
+  },
+];
+
 function renderDocsShell(
   overrides: Partial<DocsShellProps> = {},
   initialEntry = '/en/introduction/about-agora',
@@ -71,6 +79,7 @@ function renderDocsShell(
     activePath: '/en/introduction',
     activeTab: 'introduction',
     children: <article>Body</article>,
+    loadPages: loadSearchPages,
     localeLinks: [
       {
         href: '/en/introduction',
@@ -85,12 +94,6 @@ function renderDocsShell(
     ],
     locale: 'en',
     next: undefined,
-    pages: [
-      {
-        title: 'Quick Start',
-        url: '/en/introduction/quick-start',
-      },
-    ],
     previous: undefined,
     sidebar,
     tabs,
@@ -163,6 +166,7 @@ describe('DocsShell', () => {
 
     const mainHeaderRow = screen.getByTestId('docs-main-header-row');
     const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
+    const docsTabsRow = docsTabsStrip.firstElementChild;
     const docsBodyShell = screen.getByTestId('docs-body-shell');
     const docsSidebar = screen.getByTestId('docs-sidebar');
     const desktopSearch = within(mainHeaderRow)
@@ -207,8 +211,17 @@ describe('DocsShell', () => {
     expect(docsTabsStrip).toContainElement(tabsAiLink);
     expect(mainHeaderRow).not.toContainElement(docsTabsStrip);
     expect(docsTabsStrip).toHaveClass('hidden', 'md:block');
+    expect(mainHeaderRow).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsTabsRow).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
     expect(docsBodyShell).toHaveClass('grid');
     expect(docsBodyShell).toHaveClass('lg:grid-cols-[256px_minmax(0,1fr)]');
+    expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
     expect(docsBodyShell).toHaveClass(
       'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
@@ -323,7 +336,7 @@ describe('DocsShell', () => {
             locale: 'zh-CN',
           },
         ],
-        pages: [],
+        loadPages: async () => [],
         sidebar,
         tabs,
         toc: [],
@@ -362,6 +375,9 @@ describe('DocsShell', () => {
 
     expect(docsBodyShell).toBeInTheDocument();
     expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).toHaveClass(
       'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
     expect(screen.getByTestId('docs-sidebar')).toBeInTheDocument();
@@ -369,7 +385,6 @@ describe('DocsShell', () => {
     const tocRail = screen.getByTestId('docs-toc-rail');
     expect(tocRail).toBeInTheDocument();
     expect(screen.queryByTestId('docs-page-actions')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('docs-shell-footer')).not.toBeInTheDocument();
     expect(
       within(tocRail).queryByRole('button', { name: 'Copy Page' }),
     ).not.toBeInTheDocument();
@@ -381,17 +396,149 @@ describe('DocsShell', () => {
     expect(
       within(mainColumn).getByRole('link', { name: /Previous Previous Page/i }),
     ).toBeInTheDocument();
+    expect(
+      within(mainColumn).queryByTestId('docs-site-footer'),
+    ).not.toBeInTheDocument();
   });
 
-  it('uses the openapi layout without the generic toc rail', async () => {
+  it('renders the Agora site footer as a shell-level full-width footer on desktop', async () => {
+    renderDocsShell();
+
+    const docsBodyShell = await screen.findByTestId('docs-body-shell');
+    const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
+    const pageFooter = within(mainColumn).getByTestId('docs-page-footer');
+    const siteFooter = screen
+      .getAllByTestId('docs-site-footer')
+      .find((footer) => !footer.classList.contains('lg:hidden'));
+    if (!siteFooter) {
+      throw new Error('expected a desktop site footer');
+    }
+    const footerContent = within(siteFooter).getByTestId(
+      'docs-site-footer-content',
+    );
+
+    expect(docsBodyShell).not.toContainElement(siteFooter);
+    expect(mainColumn).not.toContainElement(siteFooter);
+    expect(pageFooter).not.toContainElement(siteFooter);
+    expect(siteFooter.parentElement).toHaveClass('flex', 'min-h-screen');
+    expect(siteFooter).toHaveClass(
+      'w-full',
+      'border-t',
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+      'lg:block',
+    );
+    expect(siteFooter).not.toHaveClass('w-screen', '-ml-8');
+    expect(footerContent).toHaveClass('mx-auto', 'lg:px-10');
+
+    expect(
+      within(siteFooter).getByRole('link', { name: 'LinkedIn' }),
+    ).toHaveAttribute(
+      'href',
+      'https://www.linkedin.com/company/agora-lab-inc/',
+    );
+    expect(within(siteFooter).getByRole('link', { name: 'X' })).toHaveAttribute(
+      'href',
+      'https://x.com/AgoraIO',
+    );
+    expect(
+      within(siteFooter).getByRole('link', { name: 'YouTube' }),
+    ).toHaveAttribute(
+      'href',
+      'https://www.youtube.com/channel/UCjPZukasIgWoB4HBHga5CGA',
+    );
+    expect(
+      within(siteFooter).getByRole('link', { name: 'GitHub' }),
+    ).toHaveAttribute('href', 'https://github.com/AgoraIO-Community');
+
+    expect(within(siteFooter).getByText('Contact Us')).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByText('+1 (408) 879-5885'),
+    ).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByText('2804 Mission College Blvd.'),
+    ).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByText('Santa Clara, CA, USA 95054'),
+    ).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByRole('link', { name: 'Agora Advantage' }),
+    ).toHaveAttribute(
+      'href',
+      'https://www.agora.io/en/the-agora-platform-advantage/',
+    );
+    expect(
+      within(siteFooter).getByRole('link', { name: 'Investor Relations' }),
+    ).toHaveAttribute('href', 'https://investor.agora.io/');
+    expect(
+      within(siteFooter).getByRole('link', { name: 'Documentation' }),
+    ).toHaveAttribute('href', 'https://docs.agora.io/en/');
+    expect(
+      within(siteFooter).getByRole('link', { name: 'Privacy Policy' }),
+    ).toHaveAttribute('href', 'https://www.agora.io/en/privacy-policy/');
+    expect(
+      within(siteFooter).getByRole('link', { name: 'Manage My Cookies' }),
+    ).toHaveAttribute('href', '#');
+    expect(
+      within(siteFooter).getByRole('img', { name: 'Agora' }),
+    ).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByText('Copyright © 2026 Agora'),
+    ).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByText('All rights reserved'),
+    ).toBeInTheDocument();
+  });
+
+  it('keeps the shell footer responsive on mobile', async () => {
+    renderDocsShell();
+
+    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const siteFooter = within(mobileFlow).getByTestId('docs-site-footer');
+    const navGrid = within(siteFooter).getByText('Contact Us').closest('.grid');
+    const copyrightRow = within(siteFooter)
+      .getByText('Copyright © 2026 Agora')
+      .closest('div');
+
+    expect(siteFooter).toHaveClass(
+      'left-1/2',
+      'w-screen',
+      '-translate-x-1/2',
+      'lg:hidden',
+    );
+    expect(navGrid).toHaveClass(
+      'grid-cols-1',
+      'sm:grid-cols-2',
+      'lg:grid-cols-4',
+    );
+    expect(copyrightRow).toHaveClass('flex-col', 'sm:flex-row');
+  });
+
+  it('keeps the openapi layout on the stable docs shell without the generic toc rail', async () => {
     renderDocsShell({
       layoutMode: 'openapi',
     });
 
     const docsBodyShell = await screen.findByTestId('docs-body-shell');
+    const mainHeaderRow = screen.getByTestId('docs-main-header-row');
+    const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
 
-    expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
+    expect(mainHeaderRow).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsTabsStrip.firstElementChild).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).toHaveClass(
+      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
+    );
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
+    expect(screen.getByTestId('docs-toc-rail-placeholder')).toHaveClass(
+      'w-[220px]',
+      'xl:block',
+    );
     expect(screen.queryByTestId('docs-page-actions')).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-side-rail')).not.toBeInTheDocument();
     for (const footer of screen.getAllByTestId('docs-page-footer')) {
@@ -401,15 +548,21 @@ describe('DocsShell', () => {
     expect(screen.queryByText('On this page')).not.toBeInTheDocument();
   });
 
-  it('uses the full-page layout without the generic toc rail', async () => {
+  it('keeps the full-page layout on the stable docs shell without the generic toc rail', async () => {
     renderDocsShell({
       layoutMode: 'full-page',
     });
 
     const docsBodyShell = await screen.findByTestId('docs-body-shell');
 
-    expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
+    expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).toHaveClass(
+      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
+    );
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
+    expect(screen.getByTestId('docs-toc-rail-placeholder')).toBeInTheDocument();
     for (const footer of screen.getAllByTestId('docs-page-footer')) {
       expect(footer).toHaveClass('max-w-none');
       expect(footer).not.toHaveClass('max-w-[var(--content-max)]');
@@ -505,12 +658,7 @@ describe('DocsShell', () => {
               },
             ]}
             locale="en"
-            pages={[
-              {
-                title: 'Quick Start',
-                url: '/en/introduction/quick-start',
-              },
-            ]}
+            loadPages={loadSearchPages}
             sidebar={
               activeTab === 'introduction'
                 ? sidebar
@@ -546,7 +694,7 @@ describe('DocsShell', () => {
     });
   });
 
-  it('resets desktop main-column scroll position when the active path changes', async () => {
+  it('delegates desktop main-column scroll restoration to the router', async () => {
     function ShellWithPathSwitcher() {
       const [activePath, setActivePath] = useState(
         '/en/introduction/about-agora',
@@ -576,12 +724,7 @@ describe('DocsShell', () => {
               },
             ]}
             locale="en"
-            pages={[
-              {
-                title: 'Quick Start',
-                url: '/en/introduction/quick-start',
-              },
-            ]}
+            loadPages={loadSearchPages}
             sidebar={sidebar}
             tabs={tabs}
             toc={[]}
@@ -602,16 +745,107 @@ describe('DocsShell', () => {
     renderWithRouter(<ShellWithPathSwitcher />);
 
     const mainScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    expect(mainScroll).toHaveAttribute(
+      'data-scroll-restoration-id',
+      DOCS_MAIN_SCROLL_RESTORATION_ID,
+    );
     mainScroll.scrollTop = 180;
 
     fireEvent.click(screen.getByRole('button', { name: 'Switch page' }));
 
     await waitFor(() => {
-      expect(mainScroll.scrollTop).toBe(0);
+      expect(mainScroll).toHaveAttribute(
+        'data-reset-key',
+        '/en/introduction/quick-start',
+      );
     });
-    expect(windowScrollTo).toHaveBeenCalledWith({
+    expect(mainScroll.scrollTop).toBe(180);
+    expect(windowScrollTo).not.toHaveBeenCalledWith({
       behavior: 'auto',
       top: 0,
+    });
+  });
+
+  it('restores the desktop main-column scroll position on browser back navigation', async () => {
+    const history = createMemoryHistory({
+      initialEntries: ['/en/introduction/about-agora'],
+    });
+    const rootRoute = createRootRoute({
+      component: () => <Outlet />,
+    });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$',
+      component: () => {
+        const params = docsRoute.useParams();
+        const activePath = `/${params.locale}/${params.tab}/${params._splat}`;
+
+        return (
+          <AppProviders>
+            <DocsShell
+              activePath={activePath}
+              activeTab="introduction"
+              localeLinks={[
+                {
+                  href: activePath,
+                  isActive: true,
+                  locale: 'en',
+                },
+                {
+                  href: `/zh-CN/${params.tab}/${params._splat}`,
+                  isActive: false,
+                  locale: 'zh-CN',
+                },
+              ]}
+              locale="en"
+              loadPages={loadSearchPages}
+              sidebar={sidebar}
+              tabs={tabs}
+              toc={[]}
+            >
+              <article>{activePath}</article>
+            </DocsShell>
+          </AppProviders>
+        );
+      },
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history,
+      scrollRestoration: true,
+      scrollToTopSelectors: [
+        `[data-scroll-restoration-id="${DOCS_MAIN_SCROLL_RESTORATION_ID}"]`,
+      ],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const mainScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    mainScroll.scrollTop = 180;
+    fireEvent.scroll(mainScroll);
+
+    await act(async () => {
+      await router.navigate({ to: '/en/introduction/quick-start' as never });
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getAllByText('/en/introduction/quick-start').length,
+      ).toBeGreaterThan(0);
+    });
+    expect(mainScroll.scrollTop).toBe(0);
+
+    await act(async () => {
+      history.back();
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getAllByText('/en/introduction/about-agora').length,
+      ).toBeGreaterThan(0);
+    });
+    await waitFor(() => {
+      expect(mainScroll.scrollTop).toBe(180);
     });
   });
 
@@ -640,7 +874,7 @@ describe('DocsShell', () => {
               },
             ]}
             locale="en"
-            pages={[]}
+            loadPages={async () => []}
             sidebar={[]}
             tabs={tabs}
             toc={[]}
@@ -757,12 +991,7 @@ describe('DocsShell', () => {
               },
             ]}
             locale="en"
-            pages={[
-              {
-                title: 'Quick Start',
-                url: '/en/introduction/quick-start',
-              },
-            ]}
+            loadPages={loadSearchPages}
             sidebar={sidebar}
             tabs={tabs}
             toc={[]}

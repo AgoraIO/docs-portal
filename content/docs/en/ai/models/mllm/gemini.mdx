@@ -10,7 +10,76 @@ Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles en
 
 ### Sample configuration
 
-The following example shows a starting `mllm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure Google Gemini Live MLLM (Gemini Developer API) when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import GeminiLive
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_mllm(GeminiLive(
+        api_key='your-google-api-key',
+        model='gemini-3.1-flash-live-preview',
+        voice='Charon',
+        instructions='You are a friendly assistant.',
+        transcribe_agent=True,
+        transcribe_user=True,
+    ))
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, GeminiLive } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withMllm(new GeminiLive({
+    apiKey: 'your-google-api-key',
+    model: 'gemini-3.1-flash-live-preview',
+    voice: 'Charon',
+    instructions: 'You are a friendly assistant.',
+    transcribeAgent: true,
+    transcribeUser: true,
+  }));
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithMllm(
+    vendors.NewGeminiLive(vendors.GeminiLiveOptions{
+        APIKey:         "your-google-api-key",
+        Model:          "gemini-3.1-flash-live-preview",
+        Voice:          "Charon",
+        Instructions:   "You are a friendly assistant.",
+        TranscribeAgent: agora.Bool(true),
+        TranscribeUser:  agora.Bool(true),
+    }),
+)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `mllm` configuration in your request:
 
 ```json
 "mllm": {
@@ -48,6 +117,9 @@ The following example shows a starting `mllm` parameter configuration you can us
   "vendor": "gemini"
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ### Turn detection
 

@@ -34,6 +34,36 @@ describe('docsMetaSchema', () => {
     ]);
   });
 
+  it('normalizes structured sidebar groups to page-tree separator entries', () => {
+    expect(
+      docsMetaSchema.parse({
+        pages: [
+          'index',
+          {
+            collapsible: true,
+            icon: 'Play',
+            pages: ['start-agent', 'stop-agent'],
+            title: 'Create and connect an agent',
+            type: 'group',
+          },
+          {
+            collapsible: false,
+            pages: ['architecture'],
+            title: 'Plan architecture',
+            type: 'group',
+          },
+        ],
+      }).pages,
+    ).toEqual([
+      'index',
+      '---[Play]Create and connect an agent{dropdown}---',
+      'start-agent',
+      'stop-agent',
+      '---Plan architecture{flat}---',
+      'architecture',
+    ]);
+  });
+
   it('treats sidebar page objects as external links by default', () => {
     expect(
       docsMetaSchema.parse({

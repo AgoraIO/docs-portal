@@ -2064,11 +2064,32 @@ To access the camera and microphone on macOS devices, add the required permissio
 :::
 Configure your macOS project settings by navigating to **TARGETS > Project Name > Signing & Capabilities**. Enable **App Sandbox and Hardened Runtime**, and add the necessary permissions as follows:
 
-| Capability | Category | Permission   |
+| Capability | Category | Permission |
 |:-----------|:---------|:----------------|
-| App Sandbox | Network | <ul><li>Incoming Connections (Server)</li><li>Outgoing Connections (Client)</li></ul> |
-| App Sandbox | Hardware | <ul><li>Camera</li><li>Audio Input</li></ul> |
-| Hardened Runtime | Resource Access | <ul><li>Camera</li><li>Audio Input</li></ul> |
+| App Sandbox | Network | <Slot name="app-sandbox" /> |
+| App Sandbox | Hardware | <Slot name="app-sandbox-2" /> |
+| Hardened Runtime | Resource Access | <Slot name="hardened-runtime" /> |
+
+<Slot for="app-sandbox">
+
+- Incoming Connections (Server)
+- Outgoing Connections (Client)
+
+</Slot>
+
+<Slot for="app-sandbox-2">
+
+- Camera
+- Audio Input
+
+</Slot>
+
+<Slot for="hardened-runtime">
+
+- Camera
+- Audio Input
+
+</Slot>
 
 ### Start and close the app
 
@@ -6158,7 +6179,6 @@ To run the demo code in `CodeSandbox`:
 To experiment and learn more, modify the code directly in the editor on the left, and preview the runtime effect on the right.
 :::note
 If `CodeSandbox` access is slow, try adjusting your network configuration.
-
 :::
 ## Reference
 
@@ -7764,16 +7784,34 @@ In the **My Blueprint** panel, double-click **Graphs > EventGraph** to open the 
 The following table lists the main nodes:
 
 | # | Node | Type | Description |
-|:--|:-----|:-----|:------------|
+| :-- | :----- | :----- | :------------ |
 | 1 | **Set Show Mouse Cursor** | Native* | (Optional) Set whether to display the mouse cursor. Check to display it. Note: This node is available on Windows and macOS only. If the node is not retrieved at creation time, uncheck **Context Sensitive**. ![image](/images/video-sdk/quickstart-implementation-blueprint-3.png) |
 | 2 | **Load Agora Config** | Custom** | Loads Agora configuration. Used to verify user identity when creating and joining channels. |
-| 3 | **Create BP Video Widget** | Native | Create user interface: <ol><li>Add **Create Widget** node.</li><li>Select the node's **Class** as **BP_VideoWidget** and associate the node with the already created user interface.</li></ol> |
-| 4 | **Set Basic Video Call Widget** | Custom | Set up the user interface:<ol><li>Create the **BasicVideoCallWidget** variable and select the **Variable Type** of the variable as **BP_VideoWidget**, which is the user interface created to store a reference to the user interface in the blueprint.</li><li>After dragging the created variables to **EventGraph**, two options, **Set BasicVideoCallWidget** and **Get BasicVideoCallWidget**, appear. Select **Set BasicVideoCallWidget** to create a node for accessing and setting the user interface.</li></ol> |
+| 3 | **Create BP Video Widget** | Native | <Slot name="3" /> |
+| 4 | **Set Basic Video Call Widget** | Custom | <Slot name="4" /> |
 | 5 | **BindUIEvent** | Custom | Use Bind UI events to handle event logic after clicking the **Join Channel** and **Leave Channel** buttons. |
 | 6 | **Add to Viewport** | Native | Add user interface to the viewport. |
 | 7 | **Check Permission** | Custom | (Optional) Check whether you have obtained the system permissions required for real-time audio and video interaction, such as access to the camera and microphone. Note: If your target platform is Android, create this node to check system permissions. |
 | 8 | **Init Rtc Engine** | Custom | Create and initialize the RTC engine. |
 | 9 | **Un Init Rtc Engine** | Custom | Leave the channel and release resources. |
+
+<Slot for="3">
+
+Create user interface:
+
+1. Add **Create Widget** node.
+2. Select the node's **Class** as **BP_VideoWidget** and associate the node with the already created user interface.
+
+</Slot>
+
+<Slot for="4">
+
+Set up the user interface:
+
+1. Create the **BasicVideoCallWidget** variable and select the **Variable Type** of the variable as **BP_VideoWidget**, which is the user interface created to store a reference to the user interface in the blueprint.
+2. After dragging the created variables to **EventGraph**, two options, **Set BasicVideoCallWidget** and **Get BasicVideoCallWidget**, appear. Select **Set BasicVideoCallWidget** to create a node for accessing and setting the user interface.
+
+</Slot>
 
 \* Native nodes are nodes that come with the blueprint and can be added and called directly.<br/>
 \** Custom nodes are not included in the blueprint. You create a custom function before you can add the corresponding node.
@@ -7815,10 +7853,38 @@ Add variables to create an engine instance and join a channel.
 
       | Callback | Description | Input parameters |
       |:--------|:------------------|:------------|
-      | `FOnJoinChannelSuccess` | The local user successfully joined a channel. | <ul><li>`channel`: (String) Channel name.</li><li>`uid`: (Integer64) The ID of the user joining the channel.</li><li>`elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event.</li></ul> |
-      | `FOnLeaveChannel` | The local user left the channel. | <ul><li>`stats`: Call statistics.</li></ul> |
-      | `FOnUserJoined` | A remote user joined the current channel. | <ul><li>`uid`: (Integer64) The user ID of the remote user joining the channel.</li><li>`elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event.</li></ul> |
-      | `FOnUserOffline` | A remote user left the current channel. | <ul><li>`uid`: (Integer64) The ID of the user going offline.</li><li>`reason`: Offline reason. For details, see `EUSER_OFFLINE_REASON_TYPE`.</li></ul> |
+      | `FOnJoinChannelSuccess` | The local user successfully joined a channel. | <Slot name="fonjoinchannelsuccess" /> |
+      | `FOnLeaveChannel` | The local user left the channel. | <Slot name="fonleavechannel" /> |
+      | `FOnUserJoined` | A remote user joined the current channel. | <Slot name="fonuserjoined" /> |
+      | `FOnUserOffline` | A remote user left the current channel. | <Slot name="fonuseroffline" /> |
+
+      <Slot for="fonjoinchannelsuccess">
+
+      - `channel`: (String) Channel name.
+      - `uid`: (Integer64) The ID of the user joining the channel.
+      - `elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event.
+
+      </Slot>
+
+      <Slot for="fonleavechannel">
+
+      - `stats`: Call statistics.
+
+      </Slot>
+
+      <Slot for="fonuserjoined">
+
+      - `uid`: (Integer64) The user ID of the remote user joining the channel.
+      - `elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event.
+
+      </Slot>
+
+      <Slot for="fonuseroffline">
+
+      - `uid`: (Integer64) The ID of the user going offline.
+      - `reason`: Offline reason. For details, see `EUSER_OFFLINE_REASON_TYPE`.
+
+      </Slot>
 
     1. Create a **Bind Event** function. In this function, add a **Sequence** node, and then bind the `onJoinChannelSuccess`, `onLeaveChannel`, `onUserJoined`, and `onUserOffline` callback events.
 

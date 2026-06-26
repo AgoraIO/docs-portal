@@ -4,47 +4,112 @@ description: Configure Deepgram as an ASR provider for Voice Agent.
 ---
 Deepgram provides fast, accurate automatic speech recognition with advanced AI models optimized for real-time streaming and conversational applications across multiple languages.
 
-### Use a preset
-
-To use Deepgram ASR with an Agora managed key, specify one of the following presets in the [`preset`](../../../api-reference/conversational-ai/rest-api/agent/join#preset) field when starting an agent:
-
-- `deepgram_nova_2`
-- `deepgram_nova_3`
-
-When using a preset, you do not need to provide the API key, endpoint URL, or model. You can still use the `asr` field to configure additional settings such as `language` and `keyterm`. To provide your own API key, see [Sample configuration](#sample-configuration).
-
 ### Sample configuration
 
-The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following example shows how to configure Deepgram ASR when starting a conversational AI agent.
 
-### Use a preset model
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
 
-```json
-"name": "unique_name",
-"preset": "deepgram_nova_3",
-"properties": {
-  // ...
-  "asr": {
-    "language": "en-US",
-    "keyterm": "term1%20term2"
-  }
-}
+```python
+from agora_agent import Agent, DeepgramSTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(DeepgramSTT(
+        api_key='your-deepgram-key',  # omit to use Agora-managed mode
+        model='nova-3',
+        language='en',
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
 ```
 
-### Use your own API key (BYOK)
+</TabsContent>
+<TabsContent value="typescript">
 
-```json
-"asr": {
-  "vendor": "deepgram",
-  "params": {
-    "url": "wss://api.deepgram.com/v1/listen",
-    "key": "<deepgram_key>",
-    "model": "nova-3",
-    "language": "en",
-    "keyterm": "term1%20term2"
-  }
-}
+```typescript
+import { Agent, DeepgramSTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new DeepgramSTT({
+    apiKey: 'your-deepgram-key',  // omit to use Agora-managed mode
+    model: 'nova-3',
+    language: 'en',
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
 ```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{
+        APIKey:   "your-deepgram-key",  // omit to use Agora-managed mode
+        Model:    "nova-3",
+        Language: "en",
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+- **Preset**
+
+  To use Deepgram ASR with an Agora managed key, specify one of the following presets in the `preset` field when starting an agent:
+
+    - `deepgram_nova_2`
+    - `deepgram_nova_3`
+
+  When using a `preset`, you do not need to provide the API key, endpoint URL, or model. You can still use the `asr` field to configure additional settings such as `language` and `keyterm`. 
+
+    ```json
+    "name": "unique_name",
+    "preset": "deepgram_nova_3",
+    "properties": {
+      // ...
+      "asr": {
+        "language": "en-US",
+        "params": {
+          "keyterm": "term1%20term2"
+        }
+      }
+    }
+    ```
+
+- **BYOK**
+
+    ```json
+    "asr": {
+      "vendor": "deepgram",
+      "params": {
+        "url": "wss://api.deepgram.com/v1/listen",
+        "key": "<deepgram_key>",
+        "model": "nova-3",
+        "language": "en",
+        "keyterm": "term1%20term2"
+      }
+    }
+    ```
+
+</TabsContent>
+</Tabs>
 
 ### Key parameters
 

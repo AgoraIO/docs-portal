@@ -2,16 +2,17 @@
 
 import { Link } from '@tanstack/react-router';
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
-import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
 import { type DocsLayoutMode, isWideDocsLayout } from '@/lib/docs-layout';
+import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
 import { DocsPageFeedback } from './DocsPageFeedback';
+import { DocsSiteFooter } from './DocsSiteFooter';
 import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsMainColumn({
@@ -29,25 +30,8 @@ export function DocsMainColumn({
   previous?: { title: string; url: string };
   resetKey?: string;
 }) {
-  const { isScrollbarVisible, scrollContainerRef, scrollToTop } =
+  const { isScrollbarVisible, scrollContainerRef } =
     useTransientScrollbar<HTMLDivElement>();
-  const previousResetKey = useRef<string | undefined>(undefined);
-
-  useEffect(() => {
-    if (!resetKey) {
-      return;
-    }
-
-    if (previousResetKey.current && previousResetKey.current !== resetKey) {
-      scrollToTop();
-      window.scrollTo({
-        behavior: 'auto',
-        top: 0,
-      });
-    }
-
-    previousResetKey.current = resetKey;
-  }, [resetKey, scrollToTop]);
 
   return (
     <main
@@ -66,13 +50,16 @@ export function DocsMainColumn({
           next={next}
           previous={previous}
         />
+        <DocsSiteFooter className="relative left-1/2 w-screen -translate-x-1/2 lg:hidden" />
       </div>
       <div
         className={cn(
           'docs-scrollbar hidden h-full min-h-0 overflow-y-auto lg:block',
           isScrollbarVisible && 'docs-scrollbar-visible',
         )}
+        data-scroll-restoration-id={DOCS_MAIN_SCROLL_RESTORATION_ID}
         data-testid="docs-main-desktop-scroll"
+        data-reset-key={resetKey}
         ref={scrollContainerRef}
       >
         <div className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10">

@@ -1282,13 +1282,20 @@ If you encounter problems while running pre-call tests, first ensure that you ha
 
 | Problem | Solution |
 |:---|:---------------|
-| Can't hear sound when testing audio devices. | - Check that the recording device and the playback device are working properly, and are not occupied by other programs.
-- Check that the network connection is normal. |
-| Cannot see the screen when testing video devices. | - Check that the video device is working properly and not occupied by other programs.
-- Check whether the network connection is normal.  |
-| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | - Check that the local network is working properly.
-- Ensure that the bitrate of the published audio and video streams does not exceed the available uplink bandwidth by reducing the resolution or lowering the frame rate. |
-| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <ul><li>Check that the local network is working properly.</li><li>Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:<ul><li>Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.</li><li>Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.</li><li>Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.</li></ul></li></ul> |
+| Can't hear sound when testing audio devices. | - Check that the recording device and the playback device are working properly, and are not occupied by other programs. |
+| Cannot see the screen when testing video devices. | - Check that the video device is working properly and not occupied by other programs. |
+| Poor uplink network quality detected (packet loss > 5%; network jitter > 100ms) | - Check that the local network is working properly. |
+| Poor downlink network quality detected (packet loss > 5%; network jitter > 100ms) | <Slot name="poor-downlink-network-quality-detected-packet-loss-5" /> |
+
+<Slot for="poor-downlink-network-quality-detected-packet-loss-5">
+
+- Check that the local network is working properly.
+- Ensure that the total bandwidth of the local subscription does not exceed the available downstream bandwidth by:
+    - Reducing the number of subscribed audio and video streams on the receiving end or reducing the bitrate of published audio and video streams on the sending end.
+    - Enabling dual-stream mode on the sending side and requesting to receive small streams on the receiving side to reduce bandwidth consumption.
+    - Enabling the video stream fallback function or the multiple streams by priority fallback function at the receiving end.
+
+</Slot>
 
 <PlatformStructured platform="android">
 ### Sample project

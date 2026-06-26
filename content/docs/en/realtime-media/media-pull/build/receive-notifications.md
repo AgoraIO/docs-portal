@@ -348,13 +348,24 @@ The header of notification callbacks contains the following fields:
 ### Request Body
 The request body of notification callbacks contains the following fields:
 
-| Field name | Type|  Description |
+| Field name | Type | Description |
 |:--------|:-----|:------------|
 | `noticeId` | String | The notification ID, identifying the notification callback when the event occurs. |
-| `productId` | Number | The product ID: <ul><li> `1`: Realtime Communication (RTC) service</li><li>`3`: Cloud Recording</li><li>`4`: Media Pull</li><li>`5`: Media Push</li></ul> |
+| `productId` | Number | <Slot name="productid" /> |
 | `eventType` | Number | The type of event being notified. For details, see [event types](#event-types). |
 | `notifyMs` | Number | The Unix timestamp (ms) when Notifications sends a callback to your server. This value is updated when Notifications resends the notification callback. |
 | `payload` | JSON Object | The content of the event being notified. The payload varies with event type. |
+
+<Slot for="productid">
+
+The product ID:
+
+- `1`: Realtime Communication (RTC) service
+- `3`: Cloud Recording
+- `4`: Media Pull
+- `5`: Media Push
+
+</Slot>
 
 #### Example
 

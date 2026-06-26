@@ -1,18 +1,33 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { loadDocsPagePayload, loadDocsTabIndex } from './docs-page.server';
+import {
+  loadDocsPagePayload,
+  loadDocsSearchIndex,
+  loadDocsTabIndex,
+} from './docs-page.server';
 import { type PageWithSource, source } from './source.server';
 
 vi.mock('./source.server', () => ({
-  getPageMarkdownUrl: (page: { path: string }) => ({
-    segments: page.path
+  getPageMarkdownUrl: (page: { path: string }, platform?: string) => {
+    const segments = page.path
       .split('/')
       .filter(Boolean)
       .map((segment, index, array) =>
         index === array.length - 1 ? segment.replace(/\.mdx$/, '.md') : segment,
-      ),
-    url: `/llms.mdx/docs/${page.path.replace(/\.mdx$/, '.md')}`,
-  }),
+      );
+    const markdownSegments = platform
+      ? [
+          ...segments.slice(0, -1),
+          segments.at(-1)?.replace(/\.md$/, '') ?? 'index',
+          `${platform}.md`,
+        ]
+      : segments;
+
+    return {
+      segments: markdownSegments,
+      url: `/llms.mdx/docs/${markdownSegments.join('/')}`,
+    };
+  },
   source: {
     getNodeMeta: vi.fn(),
     getPage: vi.fn(),
@@ -996,6 +1011,33 @@ describe('loadDocsTabIndex', () => {
   });
 });
 
+describe('loadDocsSearchIndex', () => {
+  beforeEach(() => {
+    mockedGetPages.mockReturnValue([createPage()]);
+  });
+
+  it('returns locale page entries and generated OpenAPI endpoints for the static docs search index', async () => {
+    await expect(loadDocsSearchIndex('en')).resolves.toEqual(
+      expect.arrayContaining([
+        {
+          description:
+            'Build a working mental model of Agora by understanding what it is.',
+          title: 'About Agora',
+          url: '/en/introduction/about-agora',
+        },
+        {
+          title: 'Start a conversational AI agent',
+          url: '/en/api-reference/api-ref/conversational-ai/join',
+        },
+      ]),
+    );
+  });
+
+  it('returns an empty index for unsupported locales', async () => {
+    await expect(loadDocsSearchIndex('fr')).resolves.toEqual([]);
+  });
+});
+
 describe('loadDocsPagePayload', () => {
   beforeEach(() => {
     const page = createPage();
@@ -1115,6 +1157,63 @@ Web body
     });
   });
 
+  it('resolves a trailing platform URL segment to the canonical docs page', async () => {
+    const page = createPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## Shared intro
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+## Android setup
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Web setup
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale === 'zh-CN') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'introduction', ['about-agora', 'android']),
+    ).resolves.toMatchObject({
+      activePath: '/en/introduction/about-agora',
+      body: {
+        kind: 'mdx',
+        platformTabs: {
+          canonicalPlatform: 'web',
+          initialPlatform: 'android',
+          platforms: '["android","web"]',
+        },
+      },
+      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/android.md',
+      toc: [
+        {
+          depth: 2,
+          title: 'Shared intro',
+          url: '#shared-intro',
+        },
+        {
+          depth: 2,
+          title: 'Web setup',
+          url: '#web-setup',
+        },
+      ],
+    });
+  });
+
   it('returns OpenAPI content inside the existing docs shell payload from the merged source', async () => {
     mockedGetPage.mockImplementation((_slugs, locale) =>
       locale === 'zh-CN' ? createZhOpenApiPage() : createOpenApiPage(),
@@ -1156,12 +1255,6 @@ Web body
           locale: 'zh-CN',
         },
       ],
-      pages: expect.arrayContaining([
-        expect.objectContaining({
-          title: 'About Agora',
-          url: '/en/introduction/about-agora',
-        }),
-      ]),
       markdownUrl:
         '/llms.mdx/docs/en/api-reference/api-ref/conversational-ai/join.md',
       tabs: [
@@ -1838,6 +1931,14 @@ Web body
       loadDocsPagePayload('en', 'api-reference', ['voice-ai-recipes']),
     ).resolves.toEqual({
       redirectUrl: '/en/api-reference/recipes',
+    });
+  });
+
+  it('redirects the legacy SDKs tab to the API Reference SDKs page', async () => {
+    await expect(loadDocsTabIndex('en', 'sdks')).resolves.toEqual({
+      locale: 'en',
+      tab: 'sdks',
+      url: '/en/api-reference/sdks',
     });
   });
 
@@ -2623,6 +2724,7 @@ Web body
       expect.arrayContaining([
         '/en/ai',
         '/en/ai/get-started/quickstart',
+        '/en/api-reference/api-ref/server-sdk/typescript',
         '/en/ai/reference/event-types',
         '/en/ai/reference/release-notes',
         '/en/ai/reference/pricing',

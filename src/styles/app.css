@@ -405,10 +405,10 @@
   }
 
   .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
+    position: relative;
     margin-top: 3.5rem;
     margin-bottom: 0.875rem;
     padding-top: 1.75rem;
-    border-top: 1px solid var(--line);
     letter-spacing: -0.012em;
     font-size: 1.375rem;
     font-weight: 600;
@@ -416,10 +416,30 @@
     scroll-margin-top: 7rem;
   }
 
+  .prose :where(h2):not(:where(.not-prose, .not-prose *))::before {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: min(18rem, 58%);
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--line),
+      color-mix(in srgb, var(--line) 40%, transparent) 72%,
+      transparent
+    );
+    content: "";
+    pointer-events: none;
+  }
+
   .prose :where(h2):not(:where(.not-prose, .not-prose *)):first-child {
     margin-top: 0.5rem;
     padding-top: 0;
     border-top: 0;
+  }
+
+  .prose :where(h2):not(:where(.not-prose, .not-prose *)):first-child::before {
+    content: none;
   }
 
   .prose[data-platform-header-tabs="true"]
@@ -429,6 +449,15 @@
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
+  }
+
+  .prose[data-platform-header-tabs="true"]
+    [data-platform-group="structured"]:first-child
+    > [data-platform-panel]:not([hidden])
+    > h2.group\/heading:first-of-type:not(
+      :where(.not-prose, .not-prose *)
+    )::before {
+    content: none;
   }
 
   .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
@@ -458,6 +487,14 @@
 
   .prose :where(ol):not(:where(.not-prose, .not-prose *)) {
     list-style: decimal;
+  }
+
+  .prose :where(ol > li > ol):not(:where(.not-prose, .not-prose *)) {
+    list-style: lower-alpha;
+  }
+
+  .prose :where(ol > li > ol > li > ol):not(:where(.not-prose, .not-prose *)) {
+    list-style: lower-roman;
   }
 
   .prose :where(li):not(:where(.not-prose, .not-prose *)) {
@@ -602,7 +639,7 @@
     text-align: left;
     vertical-align: top;
     word-break: normal;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
   }
 
   .prose :where(th):not(:where(.not-prose, .not-prose *)) {
@@ -610,7 +647,7 @@
     font-size: 0.92rem;
     font-weight: 600;
     line-height: 1.45;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .prose :where(td):not(:where(.not-prose, .not-prose *)) {
@@ -619,38 +656,34 @@
     line-height: 1.7;
   }
 
+  .prose :where(td:has(> img)):not(:where(.not-prose, .not-prose *)) {
+    width: 16rem;
+    min-width: 12rem;
+  }
+
+  .prose :where(td > img):not(:where(.not-prose, .not-prose *)) {
+    max-width: 100%;
+    height: auto;
+  }
+
   .prose
     :where(th:first-child, td:first-child):not(
       :where(.not-prose, .not-prose *)
     ) {
-    width: 1%;
     min-width: 5.5rem;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .prose :where(tbody tr:last-child td):not(:where(.not-prose, .not-prose *)) {
     border-bottom: 0;
   }
 
-  .prose
-    :where([data-param-table] .param-table-description > :first-child):not(
-      :where(.not-prose, .not-prose *)
-    ) {
+  .prose :where(td > :first-child):not(:where(.not-prose, .not-prose *)) {
     margin-top: 0;
   }
 
-  .prose
-    :where([data-param-table] .param-table-description > :last-child):not(
-      :where(.not-prose, .not-prose *)
-    ) {
+  .prose :where(td > :last-child):not(:where(.not-prose, .not-prose *)) {
     margin-bottom: 0;
-  }
-
-  .prose
-    :where([data-param-table] .param-table-description > ul):not(
-      :where(.not-prose, .not-prose *)
-    ) {
-    margin-block: 0.55rem 0.75rem;
   }
 
   .prose

@@ -19,9 +19,21 @@ The following table lists common request and response parameters of the Chat RES
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).      | Yes |
 | `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).     | Yes |
 | `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).| Yes |
-| `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
-Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.Do not set this parameter as a [UUID](https://www.rfc-editor.org/rfc/rfc9562.html), email address, phone number, or other sensitive information.
-::: | Yes |
+| `username` | String | <Slot name="username" /> | Yes |
+
+<Slot for="username">
+
+The unique login account of the user. The user ID must be 64 characters or less and cannot be empty. The following character sets are supported:
+
+- 26 lowercase English letters (a-z)
+- 10 numbers (0-9)
+- "\_", "-", "."
+
+:::info
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique. Do not set this parameter as a [UUID](https://www.rfc-editor.org/rfc/rfc9562.html), email address, phone number, or other sensitive information.
+:::
+
+</Slot>
 
 ### Response parameters 
 

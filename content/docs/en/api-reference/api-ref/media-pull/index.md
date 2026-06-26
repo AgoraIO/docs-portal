@@ -577,11 +577,27 @@ If the status code is not 2XX, the response header does not contain the field.
 
 Do not exceed the API rate limits, otherwise you receive the `429(Too Many Requests)` status code.
 
-| API      | Rate limit                                                   |
+| API | Rate limit |
 | :------- | :----------------------------------------------------------- |
-| `Create` | <li>In a project, when creating cloud players with `name`, the maximum rate of creating each cloud player with a different name is 2 times per second.</li><li>In a project, the maximum rate of creating a cloud player without `name` is 50 times per second.</li> |
+| `Create` | <Slot name="create" /> |
 | `Delete` | In a project, the maximum rate of destroying a cloud player is 100 times per second. |
-| `List`   | <li>In a project, the maximum rate of querying a cloud player with `filter`(`channelName`) is 2 times per second and 15 times per minute.</li><li>In a project, the maximum rate of querying a cloud player without `filter`(`channelName`) is 10 times per second and 20 times per minute.</li> |
+| `List` | <Slot name="list" /> |
+
+<Slot for="create">
+
+- In a project, when creating cloud players with `name`, the maximum rate of creating each cloud player with a different name is 2 times per second.
+
+- In a project, the maximum rate of creating a cloud player without `name` is 50 times per second.
+
+</Slot>
+
+<Slot for="list">
+
+- In a project, the maximum rate of querying a cloud player with `filter`(`channelName`) is 2 times per second and 15 times per minute.
+
+- In a project, the maximum rate of querying a cloud player without `filter`(`channelName`) is 10 times per second and 20 times per minute.
+
+</Slot>
 
 <a id="code"></a>
 ## Status codes
@@ -589,18 +605,52 @@ Do not exceed the API rate limits, otherwise you receive the `429(Too Many Reque
 - If the status code is 2XX, the request succeeds.
 - If the status code is not 2XX, the request fails. Use the `message` field in the response body for troubleshooting.
 
-| Status code             | Possible message field                                       |
+| Status code | Possible message field |
 | ----------------------- | ------------------------------------------------------------ |
-| 200 OK                  | /                                                            |
-| 400 Bad Request         | <li>Parameter 'streamUrl' is invalid formatted.</li><li>Parameter channelName is invalid. Fix it in your request and retry.</li> |
-| 401 Unauthorized        | Invalid authentication credentials.                          |
-| 403 Forbidden           | <li>This project has not enabled Cloud Player product yet. Contact us to enable it.</li><li>This project's permission to use Cloud Player was revoked. Contact us for details.</li> |
-| 404 Not Found           | Resource is not found and destroyed.                         |
-| 409 Conflict            | Resource with the same name already exists.                  |
-| 429 Too Many Requests   | <li>Request rate limit exceeded.</li><li>Resources quota limit exceeded.</li><li>no available resources</li> |
-| 500 Unknown             | Some internal error happened. Contact us to help fix it.     |
-| 503 Service Unavailable | <li>Service overload. Retry with back off strategy, and contact us to help fix it.</li><li>Service unavailable temporarily. Retry with back off strategy.</li> |
-| 504 Gateway Timeout     | Gateway timeout. Query to check whether the player has been created, or to create another one instead. |
+| 200 OK | / |
+| 400 Bad Request | <Slot name="400-bad-request" /> |
+| 401 Unauthorized | Invalid authentication credentials. |
+| 403 Forbidden | <Slot name="403-forbidden" /> |
+| 404 Not Found | Resource is not found and destroyed. |
+| 409 Conflict | Resource with the same name already exists. |
+| 429 Too Many Requests | <Slot name="429-too-many-requests" /> |
+| 500 Unknown | Some internal error happened. Contact us to help fix it. |
+| 503 Service Unavailable | <Slot name="503-service-unavailable" /> |
+| 504 Gateway Timeout | Gateway timeout. Query to check whether the player has been created, or to create another one instead. |
+
+<Slot for="400-bad-request">
+
+- Parameter 'streamUrl' is invalid formatted.
+
+- Parameter channelName is invalid. Fix it in your request and retry.
+
+</Slot>
+
+<Slot for="403-forbidden">
+
+- This project has not enabled Cloud Player product yet. Contact us to enable it.
+
+- This project's permission to use Cloud Player was revoked. Contact us for details.
+
+</Slot>
+
+<Slot for="429-too-many-requests">
+
+- Request rate limit exceeded.
+
+- Resources quota limit exceeded.
+
+- no available resources
+
+</Slot>
+
+<Slot for="503-service-unavailable">
+
+- Service overload. Retry with back off strategy, and contact us to help fix it.
+
+- Service unavailable temporarily. Retry with back off strategy.
+
+</Slot>
 
 ## RESTful API callback service
 

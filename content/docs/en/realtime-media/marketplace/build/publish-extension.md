@@ -30,18 +30,28 @@ Include these endpoints in a markdown file.
 
 You need to provide the following assets for your extension listing. If you have provided some of them when testing the extension, ensure that what you provide at this stage is the final version.
 
-|      | Content                     | Requirements                                                 |
+|  | Content | Requirements |
 | :--- | :-------------------------- | :----------------------------------------------------------- |
-| 1    | Extension name              | A name that reflects the core functionality of your extension. |
-| 2    | Extension short description | A short summary of what your extension can do. Use no more than 160 characters. |
-| 3    | Extension logo              | A 600 x 315 JPG file                                         |
-| 4    | Extension category          | Currently must be one of the following: <li>Audio and video modifiers: Extensions that modify the audio or video source.</li><li>Tools: Extensions that provide other stand-alone functions.</li> |
-| 5    | Vendor name                 | Your company's real name.  |
-| 6    | Vendor description          | A brief introduction about your company. Use no more than 300 words |
-| 7    | Vendor logo                 | A 600 x 315 JPG file                                         |
-| 8    | Vendor website URL          | Must be accessible                                           |
-| 9    | Vendor support URL          | Must link to a page providing your company's contact information |
-| 10   | Implementation guides     | Must include quickstart guides and API reference. You need to provide the URL to the documentation. See [Implementation guides](./implementation-guide) for details. |
+| 1 | Extension name | A name that reflects the core functionality of your extension. |
+| 2 | Extension short description | A short summary of what your extension can do. Use no more than 160 characters. |
+| 3 | Extension logo | A 600 x 315 JPG file |
+| 4 | Extension category | <Slot name="4" /> |
+| 5 | Vendor name | Your company's real name. |
+| 6 | Vendor description | A brief introduction about your company. Use no more than 300 words |
+| 7 | Vendor logo | A 600 x 315 JPG file |
+| 8 | Vendor website URL | Must be accessible |
+| 9 | Vendor support URL | Must link to a page providing your company's contact information |
+| 10 | Implementation guides | Must include quickstart guides and API reference. You need to provide the URL to the documentation. See [Implementation guides](./implementation-guide) for details. |
+
+<Slot for="4">
+
+Currently must be one of the following:
+
+- Audio and video modifiers: Extensions that modify the audio or video source.
+
+- Tools: Extensions that provide other stand-alone functions.
+
+</Slot>
 
 ### Supplementary information
 

@@ -90,9 +90,25 @@ For the descriptions of other path parameters, see [Common Parameters](#param).
 
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Required |
 | :----- | :----- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| -------- |
-| `nickname` | String | The nickname that is displayed in the push notification bar of the recipient's client when a message from the user is pushed. The length of the nickname cannot exceed 100 characters, and the following character sets are supported:26 lowercase English letters (a-z)26 uppercase English letters (A-Z)10 numbers (0-9)Chinese charactersSpecial characters  If no nickname is set, when a message from this user is pushed, the user ID of the message sender, instead of the nickname, is indicated in the notification details (`notification_display_style` is set to 1). :::info
+| `nickname` | String | <Slot name="nickname" /> | No |
+
+<Slot for="nickname">
+
+The nickname that is displayed in the push notification bar of the recipient's client when a message from the user is pushed. The length of the nickname cannot exceed 100 characters, and the following character sets are supported:
+
+- 26 lowercase English letters (a-z)
+- 26 uppercase English letters (A-Z)
+- 10 numbers (0-9)
+- Chinese characters
+- Special characters
+
+If no nickname is set, when a message from this user is pushed, the user ID of the message sender, instead of the nickname, is indicated in the notification details (`notification_display_style` is set to 1).
+
+:::info
 The nickname can be different from the nickname in user attributes. However, Agora recommends that you use the same nickname for both. Therefore, if either nickname is updated, the other should be changed at the same time. To update the nickname in user attributes, see [User attributes management](../user-attributes-management).
-::: | No  |
+:::
+
+</Slot>
 
 ### HTTP response
 

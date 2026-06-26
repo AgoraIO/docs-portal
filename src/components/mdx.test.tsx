@@ -5,7 +5,10 @@ import type { ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { getMDXComponents, MDXAccordionProvider } from './mdx';
-import { PlatformHeaderTabs } from './mdx/PlatformTabsGroup';
+import {
+  PlatformHeaderTabs,
+  PlatformTabsPlacementProvider,
+} from './mdx/PlatformTabsGroup';
 
 type TabsComponent = ComponentType<{
   children: ReactNode;
@@ -23,6 +26,7 @@ type PlatformGroupComponent = ComponentType<{
   canonicalPlatform: string;
   children: ReactNode;
   groupMode: 'inline' | 'structured';
+  initialPlatform?: string;
   platforms: string;
   tabsPlacement?: 'inline' | 'header';
 }>;
@@ -40,6 +44,10 @@ type CodeBlockPreComponent = ComponentType<{
 type AnchorComponent = ComponentType<{
   children: ReactNode;
   href: string;
+}>;
+type ImageComponent = ComponentType<{
+  alt?: string;
+  src?: string;
 }>;
 type LegacyLinkComponent = ComponentType<{
   children: ReactNode;
@@ -63,15 +71,6 @@ type HeadingComponent = ComponentType<{
   children: ReactNode;
   id?: string;
 }>;
-type ParamTableComponent = ComponentType<{
-  children: ReactNode;
-}> & {
-  Row: ComponentType<{
-    children: ReactNode;
-    field: ReactNode;
-    type?: ReactNode;
-  }>;
-};
 
 function createStorageMock(): Storage {
   const values = new Map<string, string>();
@@ -90,6 +89,8 @@ function createStorageMock(): Storage {
 
 describe('common MDX registry', () => {
   beforeEach(() => {
+    window.history.replaceState({}, '', '/en/introduction/about-agora');
+
     const localStorage = createStorageMock();
     const sessionStorage = createStorageMock();
 
@@ -115,7 +116,7 @@ describe('common MDX registry', () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const defaults = defaultMdxComponents as Record<string, unknown>;
 
-    expect(components.img).toBe(defaults.img);
+    expect(components.img).not.toBe(defaults.img);
     expect(components.table).toBe(defaults.table);
     expect(components.Card).not.toBe(defaults.Card);
     expect(components.Cards).toBe(defaults.Cards);
@@ -141,6 +142,27 @@ describe('common MDX registry', () => {
     expect(components.TabsList).toBe(fumadocsTabs.TabsList);
     expect(components.TabsTrigger).toBe(fumadocsTabs.TabsTrigger);
     expect(components.TabsContent).not.toBe(fumadocsTabs.TabsContent);
+  });
+
+  it('opens MDX images in a zoom dialog', async () => {
+    const components = getMDXComponents();
+    const Image = components.img as ImageComponent;
+
+    render(<Image alt="Product Architecture" src="/images/product.png" />);
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Zoom image: Product Architecture',
+      }),
+    );
+
+    const dialog = await screen.findByRole('dialog');
+
+    expect(dialog).toHaveTextContent('Product Architecture');
+    expect(dialog).toHaveTextContent('Enlarged documentation image preview.');
+    expect(
+      within(dialog).getByRole('img', { name: 'Product Architecture' }),
+    ).toHaveAttribute('src', '/images/product.png');
   });
 
   it('keeps relative docs links normalized', () => {
@@ -290,56 +312,9 @@ describe('common MDX registry', () => {
 
     expect(components.PlatformInline).toBeDefined();
     expect(components.PlatformStructured).toBeDefined();
-    expect(components.ParamTable).toBeDefined();
     expect(components._PlatformTabsGroup).toBeDefined();
     expect(components._PlatformPanel).toBeDefined();
-  });
-
-  it('renders parameter table description cells with block MDX content', () => {
-    const components = getMDXComponents() as Record<string, unknown>;
-    const ParamTable = components.ParamTable as ParamTableComponent;
-    const CalloutContainer = components.CalloutContainer as ComponentType<{
-      children: ReactNode;
-      type: string;
-    }>;
-    const CalloutDescription = components.CalloutDescription as ComponentType<{
-      children: ReactNode;
-    }>;
-
-    render(
-      <div className="prose">
-        <ParamTable>
-          <ParamTable.Row field="volumes.rtcStreamUid" type="Number">
-            <p>The user IDs of the mixing users to set the volume.</p>
-            <ul>
-              <li>Keep the value in rtcStreamUids.</li>
-              <li>Use a numeric UID.</li>
-            </ul>
-            <CalloutContainer type="info">
-              <CalloutDescription>
-                <p>
-                  <code>volumes.rtcStreamUid</code> needs to exist in the{' '}
-                  <code>rtcStreamUids</code> array.
-                </p>
-              </CalloutDescription>
-            </CalloutContainer>
-          </ParamTable.Row>
-        </ParamTable>
-      </div>,
-    );
-
-    const table = screen.getByRole('table');
-    const row = screen.getByRole('row', {
-      name: /volumes\.rtcStreamUid Number The user IDs/i,
-    });
-
-    expect(table).toHaveAttribute('data-param-table');
-    expect(within(row).getAllByText('volumes.rtcStreamUid')).toHaveLength(2);
-    expect(within(row).getByRole('list')).toBeInTheDocument();
-    expect(
-      within(row).getByText('Keep the value in rtcStreamUids.'),
-    ).toBeInTheDocument();
-    expect(within(row).getByText(/needs to exist in the/i)).toBeInTheDocument();
+    expect(components.Slot).toBeUndefined();
   });
 
   it('renders transformed platform groups with persisted preference fallback and hidden inactive panels', () => {
@@ -537,6 +512,9 @@ describe('common MDX registry', () => {
     expect(
       screen.getByRole('button', { name: 'More platforms' }),
     ).toHaveAttribute('data-state', 'active');
+    expect(
+      screen.getByRole('button', { name: 'More platforms' }),
+    ).toHaveTextContent('Flutter');
   });
 
   it('shares platform preference updates across multiple rendered groups', () => {
@@ -596,6 +574,106 @@ describe('common MDX registry', () => {
     );
 
     fireEvent.click(screen.getByRole('tab', { name: 'Android' }));
+
+    expect(
+      screen.getByText('Android instructions').closest('section'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('Web instructions').closest('section'),
+    ).not.toBeVisible();
+  });
+
+  it('does not push URL paths for inline platform tab groups', () => {
+    window.history.replaceState({}, '', '/en/ai/get-started/test-mdx-comps');
+
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <Group
+        canonicalPlatform="web"
+        groupMode="inline"
+        platforms='["web","android"]'
+      >
+        <Panel platform="web">Web inline</Panel>
+        <Panel platform="android">Android inline</Panel>
+      </Group>,
+    );
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Android' }));
+
+    expect(window.location.pathname).toBe('/en/ai/get-started/test-mdx-comps');
+    expect(screen.getByText('Android inline').closest('section')).toBeVisible();
+  });
+
+  it('uses URL platform as initial selection and pushes platform paths on tab click', () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/ios',
+    );
+
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <>
+        <PlatformHeaderTabs
+          canonicalPlatform="web"
+          initialPlatform="ios"
+          platforms='["web","ios","android"]'
+        />
+        <Group
+          canonicalPlatform="web"
+          groupMode="structured"
+          initialPlatform="ios"
+          platforms='["web","ios","android"]'
+          tabsPlacement="header"
+        >
+          <Panel platform="web">Web instructions</Panel>
+          <Panel platform="ios">iOS instructions</Panel>
+          <Panel platform="android">Android instructions</Panel>
+        </Group>
+      </>,
+    );
+
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(
+      screen.getByText('iOS instructions').closest('section'),
+    ).toBeVisible();
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Android' }));
+
+    expect(window.location.pathname).toBe(
+      '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/android',
+    );
+    expect(
+      screen.getByText('Android instructions').closest('section'),
+    ).toBeVisible();
+  });
+
+  it('passes URL platform through the placement context to body groups', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <PlatformTabsPlacementProvider initialPlatform="android" value="header">
+        <Group
+          canonicalPlatform="web"
+          groupMode="structured"
+          platforms='["web","android"]'
+        >
+          <Panel platform="web">Web instructions</Panel>
+          <Panel platform="android">Android instructions</Panel>
+        </Group>
+      </PlatformTabsPlacementProvider>,
+    );
 
     expect(
       screen.getByText('Android instructions').closest('section'),

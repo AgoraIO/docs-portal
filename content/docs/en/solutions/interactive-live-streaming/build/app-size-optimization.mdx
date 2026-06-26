@@ -287,11 +287,39 @@ The name of the extension for each platform and the increase in the size of your
 
 | Platform | Architecture | Library name | App size increase (KB) |
 |:------ |:--------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a   | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1413          |
-| Android | armeabi-v7a  | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1014          |
-| Android | x86      | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1403          |
-| Android | x86_64    | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1444          |
-| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772          |
+| Android | arm64-v8a | <Slot name="android" /> | 1413 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 1014 |
+| Android | x86 | <Slot name="android-3" /> | 1403 |
+| Android | x86_64 | <Slot name="android-4" /> | 1444 |
+| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772 |
+
+<Slot for="android">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
 
 **Face Detection**
 
@@ -396,34 +424,168 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 :::
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 945          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 873          |
-| Android | x86     | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1125          |
-| Android | x86_64    | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1126          |
-| iOS   | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 773          |
-| iOS   | armv7    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 788          |
-| macOS  | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 1504          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 2020          |
-| Windows | x86     | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2501          |
-| Windows | x86_64    | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2853          |
-**Video Decoding**
-
-Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
-
-Starting with v4.6.2, to improve the video decoding experience, the `video_decoder` library is now built into the SDK, and the `video_dec` library is merged into the basic library (`full-rtc-basic`). The video decoding plugin no longer supports cropping.
- 
+| Android | arm64-v8a | <Slot name="android" /> | 945 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 873 |
+| Android | x86 | <Slot name="android-3" /> | 1125 |
+| Android | x86_64 | <Slot name="android-4" /> | 1126 |
+| iOS | arm64 | <Slot name="ios" /> | 773 |
+| iOS | armv7 | <Slot name="ios-2" /> | 788 |
+| macOS | arm64 | <Slot name="macos" /> | 1504 |
+| macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
+| Windows | x86 | <Slot name="windows" /> | 2501 |
+| Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
 | Platform | Architecture | Library name | App size increase (KB) |
-|:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 817          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 763          |
-| Android | x86     | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 952          |
-| Android | x86_64    | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 976          |
-| iOS   | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 635          |
-| iOS   | armv7    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 662          |
-| macOS  | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1296          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1848          |
-| Windows | x86     | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2115          |
-| Windows | x86_64    | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2421          |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
+<Slot for="android">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="ios">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="ios-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="windows">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="windows-2">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="android-5">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-6">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-7">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-8">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="ios-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="ios-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="windows-3">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
+
+<Slot for="windows-4">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
 
 **AV1 Stream Encoding**
 
@@ -483,7 +645,7 @@ When integrating the Android SDK through Maven Central, you can modify the `depe
 **Android Video SDK**
 | File | Category | `implementation` field |
 | :--- | :--- | :--- |
-| <ul><li>`agora-rtc-sdk.jar`</li><li>`libagora-rtc-sdk.so`</li><li>`libagora-fdkaac.so`</li><li>`libagora-ffmpeg.so`</li><li>`libagora-soundtouch.so`</li><li>`video_dec.so` (added since v4.6.2)</li><li>`libagora-core.so` (renamed to `libaosl.so` since v4.3.0; dependency since v4.5.0)</li><li>SDK header files</li></ul> | Required | `io.agora.rtc:full-rtc-basic` |
+| <Slot name="required" /> | Required | `io.agora.rtc:full-rtc-basic` |
 | `libaosl.so` (dependency since v4.5.0) | Required | `io.agora.infra:aosl` |
 | `libagora_ai_noise_suppression_extension.so` | Optional | `io.agora.rtc:ains` |
 | `libagora_ai_noise_suppression_ll_extension.so` | Optional | `io.agora.rtc:ains-ll` (≥ v4.4.0) |
@@ -503,16 +665,43 @@ When integrating the Android SDK through Maven Central, you can modify the `depe
 | `libagora_video_quality_analyzer_extension.so` | Optional | `io.agora.rtc:full-vqa` (≥ v4.1.0) |
 | `libagora_face_detection_extension.so` | Optional | `io.agora.rtc:full-face-detect` (≥ v4.1.1) |
 | `libagora_face_capture_extension.so` | Optional | `io.agora.rtc:full-face-capture` (≥ v4.3.0) |
-| <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | Optional | `io.agora.rtc:full-video-codec-enc` (≥ v4.2.0) |
-| <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | Optional | `io.agora.rtc:full-video-codec-dec` (v4.2.0 to v4.6.1) |
+| <Slot name="optional" /> | Optional | `io.agora.rtc:full-video-codec-enc` (≥ v4.2.0) |
+| <Slot name="optional-2" /> | Optional | `io.agora.rtc:full-video-codec-dec` (v4.2.0 to v4.6.1) |
 | `libagora_video_av1_encoder_extension.so` | Optional | `io.agora.rtc:full-video-av1-codec-enc` (≥ v4.3.0) |
 | `libagora_video_av1_decoder_extension.so` | Optional | `io.agora.rtc:full-video-av1-codec-dec` (v4.3.0 to v4.6.1) |
 | `libagora_lip_sync_extension.so` | Optional | `io.agora.rtc:full-lip-sync` (≥ v4.3.1) |
 
+<Slot for="required">
+
+- `agora-rtc-sdk.jar`
+- `libagora-rtc-sdk.so`
+- `libagora-fdkaac.so`
+- `libagora-ffmpeg.so`
+- `libagora-soundtouch.so`
+- `video_dec.so` (added since v4.6.2)
+- `libagora-core.so` (renamed to `libaosl.so` since v4.3.0; dependency since v4.5.0)
+- SDK header files
+
+</Slot>
+
+<Slot for="optional">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="optional-2">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
 **Android Voice SDK**
 | File | Category | `implementation` field |
 | :--- | :--- | :--- |
-| <ul><li>`agora-rtc-sdk.jar`</li><li>`libagora-rtc-sdk.so`</li><li>`libagora-fdkaac.so`</li><li>`libagora-soundtouch.so`</li><li>`libagora-core.so` (renamed to `libaosl.so` since v4.3.0; dependency since v4.5.0)</li><li>SDK header files</li></ul> | Required | `io.agora.rtc:voice-rtc-basic` |
+| <Slot name="required" /> | Required | `io.agora.rtc:voice-rtc-basic` |
 | `libaosl.so` (dependency since v4.5.0) | Required | `io.agora.infra:aosl` |
 | `libagora_ai_noise_suppression_extension.so` | Optional | `io.agora.rtc:ains` |
 | `libagora_ai_noise_suppression_ll_extension.so` | Optional | `io.agora.rtc:ains-ll` (≥ v4.4.0) |
@@ -522,6 +711,17 @@ When integrating the Android SDK through Maven Central, you can modify the `depe
 | `libagora_udrm3_extension.so` | Optional | `io.agora.rtc:drm` (v4.1.0 to v4.2.6) |
 | `libagora_ai_echo_cancellation_extension.so` | Optional | `io.agora.rtc:aiaec` (≥ v4.1.0) |
 | `libagora_ai_echo_cancellation_ll_extension.so` | Optional | `io.agora.rtc:aiaec-ll` (≥ v4.4.0) |
+
+<Slot for="required">
+
+- `agora-rtc-sdk.jar`
+- `libagora-rtc-sdk.so`
+- `libagora-fdkaac.so`
+- `libagora-soundtouch.so`
+- `libagora-core.so` (renamed to `libaosl.so` since v4.3.0; dependency since v4.5.0)
+- SDK header files
+
+</Slot>
 
 ### Frequently asked questions
 
@@ -805,11 +1005,39 @@ The name of the extension for each platform and the increase in the size of your
 
 | Platform | Architecture | Library name | App size increase (KB) |
 |:------ |:--------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a   | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1413          |
-| Android | armeabi-v7a  | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1014          |
-| Android | x86      | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1403          |
-| Android | x86_64    | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1444          |
-| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772          |
+| Android | arm64-v8a | <Slot name="android" /> | 1413 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 1014 |
+| Android | x86 | <Slot name="android-3" /> | 1403 |
+| Android | x86_64 | <Slot name="android-4" /> | 1444 |
+| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772 |
+
+<Slot for="android">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
 
 **Face Detection**
 
@@ -911,34 +1139,168 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 :::
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 945          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 873          |
-| Android | x86     | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1125          |
-| Android | x86_64    | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1126          |
-| iOS   | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 773          |
-| iOS   | armv7    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 788          |
-| macOS  | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 1504          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 2020          |
-| Windows | x86     | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2501          |
-| Windows | x86_64    | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2853          |
-**Video Decoding**
-
-Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
-
-Starting with v4.6.2, to improve the video decoding experience, the `video_decoder` library is now built into the SDK, and the `video_dec` library is merged into the basic library (`full-rtc-basic`). The video decoding plugin no longer supports cropping.
- 
+| Android | arm64-v8a | <Slot name="android" /> | 945 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 873 |
+| Android | x86 | <Slot name="android-3" /> | 1125 |
+| Android | x86_64 | <Slot name="android-4" /> | 1126 |
+| iOS | arm64 | <Slot name="ios" /> | 773 |
+| iOS | armv7 | <Slot name="ios-2" /> | 788 |
+| macOS | arm64 | <Slot name="macos" /> | 1504 |
+| macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
+| Windows | x86 | <Slot name="windows" /> | 2501 |
+| Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
 | Platform | Architecture | Library name | App size increase (KB) |
-|:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 817          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 763          |
-| Android | x86     | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 952          |
-| Android | x86_64    | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 976          |
-| iOS   | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 635          |
-| iOS   | armv7    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 662          |
-| macOS  | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1296          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1848          |
-| Windows | x86     | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2115          |
-| Windows | x86_64    | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2421          |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
+<Slot for="android">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="ios">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="ios-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="windows">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="windows-2">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="android-5">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-6">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-7">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-8">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="ios-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="ios-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="windows-3">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
+
+<Slot for="windows-4">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
 
 **AV1 Stream Encoding**
 
@@ -998,7 +1360,7 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 **iOS Video SDK**
 | Dynamic Library | Category | `subspecs` field |
 | :--- | :--- | :--- |
-| <ul><li>`AgoraRtcKit.xcframework`</li><li>`Agorafdkaac.xcframework`</li><li>`AgoraSoundTouch.xcframework`</li><li>`Agoraffmpeg.xcframework`</li><li>`video_dec.xcframework` (added since v4.6.2)</li><li>`AgoraCore.xcframework` (renamed to `aosl.xcframework` since v4.3.0; dependency since v4.5.0, see [AgoraInfra_iOS](https://cocoapods.org/pods/AgoraInfra_iOS))</li></ul> | Required | `RtcBasic` |
+| <Slot name="required" /> | Required | `RtcBasic` |
 | `AgoraAiNoiseSuppressionExtension.xcframework` | Optional | `AINS` |
 | `AgoraAiNoiseSuppressionLLExtension.xcframework` | Optional | `AINSLL` (≥ v4.4.0) |
 | `AgoraAudioBeautyExtension.xcframework` | Optional | `AudioBeauty` |
@@ -1015,16 +1377,41 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 | `AgoraVideoQualityAnalyzerExtension.xcframework` | Optional | `VQA` (≥ v4.1.0) |
 | `AgoraReplayKitExtension.xcframework` | Optional | `ReplayKit` |
 | `AgoraSuperResolutionExtension.xcframework` | Optional | `SuperResolution` (< v4.1.1) |
-| <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | Optional | `VideoCodecEnc` (≥ v4.2.0) |
-| <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | Optional | `VideoCodecDec` (v4.2.0 to v4.6.1) |
+| <Slot name="optional" /> | Optional | `VideoCodecEnc` (≥ v4.2.0) |
+| <Slot name="optional-2" /> | Optional | `VideoCodecDec` (v4.2.0 to v4.6.1) |
 | `AgoraVideoAv1EncoderExtension.xcframework` | Optional | `VideoAv1CodecEnc` (≥ v4.3.0) |
 | `AgoraVideoAv1DecoderExtension.xcframework` | Optional | `VideoAv1CodecDec` (v4.3.0 to v4.6.1) |
 | `AgoraLipSyncExtension.xcframework` | Optional | `LipSync` (≥ v4.3.1) |
 
+<Slot for="required">
+
+- `AgoraRtcKit.xcframework`
+- `Agorafdkaac.xcframework`
+- `AgoraSoundTouch.xcframework`
+- `Agoraffmpeg.xcframework`
+- `video_dec.xcframework` (added since v4.6.2)
+- `AgoraCore.xcframework` (renamed to `aosl.xcframework` since v4.3.0; dependency since v4.5.0, see [AgoraInfra_iOS](https://cocoapods.org/pods/AgoraInfra_iOS))
+
+</Slot>
+
+<Slot for="optional">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="optional-2">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
 **iOS Voice SDK**
 | Dynamic Library | Category | `subspecs` field |
 | :--- | :--- | :--- |
-| <ul><li>`AgoraRtcKit.xcframework`</li><li>`Agorafdkaac.xcframework`</li><li>`AgoraSoundTouch.xcframework`</li><li>`AgoraCore.xcframework` (renamed to `aosl.xcframework` since v4.3.0; dependency since v4.5.0, see [AgoraInfra_iOS](https://cocoapods.org/pods/AgoraInfra_iOS))</li></ul> | Required | `RtcBasic` |
+| <Slot name="required" /> | Required | `RtcBasic` |
 | `AgoraAiNoiseSuppressionExtension.xcframework` | Optional | `AINS` |
 | `AgoraAiNoiseSuppressionLLExtension.xcframework` | Optional | `AINSLL` (≥ v4.4.0) |
 | `AgoraAudioBeautyExtension.xcframework` | Optional | `AudioBeauty` |
@@ -1032,6 +1419,15 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 | `AgoraAiEchoCancellationExtension.xcframework` | Optional | `AIAEC` (≥ v4.1.0) |
 | `AgoraAiEchoCancellationLLExtension.xcframework` | Optional | `AIAECLL` (≥ v4.4.0) |
 | `AgoraDrmLoaderExtension.xcframework` | Optional | `DRM` (≥ v4.1.0) |
+
+<Slot for="required">
+
+- `AgoraRtcKit.xcframework`
+- `Agorafdkaac.xcframework`
+- `AgoraSoundTouch.xcframework`
+- `AgoraCore.xcframework` (renamed to `aosl.xcframework` since v4.3.0; dependency since v4.5.0, see [AgoraInfra_iOS](https://cocoapods.org/pods/AgoraInfra_iOS))
+
+</Slot>
  
 
 ### Frequently asked questions
@@ -1302,11 +1698,39 @@ The name of the extension for each platform and the increase in the size of your
 
 | Platform | Architecture | Library name | App size increase (KB) |
 |:------ |:--------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a   | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1413          |
-| Android | armeabi-v7a  | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1014          |
-| Android | x86      | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1403          |
-| Android | x86_64    | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1444          |
-| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772          |
+| Android | arm64-v8a | <Slot name="android" /> | 1413 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 1014 |
+| Android | x86 | <Slot name="android-3" /> | 1403 |
+| Android | x86_64 | <Slot name="android-4" /> | 1444 |
+| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772 |
+
+<Slot for="android">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
 
 **Face Detection**
 
@@ -1408,34 +1832,168 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 :::
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 945          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 873          |
-| Android | x86     | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1125          |
-| Android | x86_64    | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1126          |
-| iOS   | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 773          |
-| iOS   | armv7    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 788          |
-| macOS  | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 1504          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 2020          |
-| Windows | x86     | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2501          |
-| Windows | x86_64    | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2853          |
-**Video Decoding**
-
-Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
-
-Starting with v4.6.2, to improve the video decoding experience, the `video_decoder` library is now built into the SDK, and the `video_dec` library is merged into the basic library (`full-rtc-basic`). The video decoding plugin no longer supports cropping.
- 
+| Android | arm64-v8a | <Slot name="android" /> | 945 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 873 |
+| Android | x86 | <Slot name="android-3" /> | 1125 |
+| Android | x86_64 | <Slot name="android-4" /> | 1126 |
+| iOS | arm64 | <Slot name="ios" /> | 773 |
+| iOS | armv7 | <Slot name="ios-2" /> | 788 |
+| macOS | arm64 | <Slot name="macos" /> | 1504 |
+| macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
+| Windows | x86 | <Slot name="windows" /> | 2501 |
+| Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
 | Platform | Architecture | Library name | App size increase (KB) |
-|:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 817          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 763          |
-| Android | x86     | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 952          |
-| Android | x86_64    | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 976          |
-| iOS   | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 635          |
-| iOS   | armv7    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 662          |
-| macOS  | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1296          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1848          |
-| Windows | x86     | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2115          |
-| Windows | x86_64    | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2421          |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
+<Slot for="android">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="ios">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="ios-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="windows">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="windows-2">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="android-5">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-6">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-7">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-8">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="ios-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="ios-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="windows-3">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
+
+<Slot for="windows-4">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
 
 **AV1 Stream Encoding**
 
@@ -1494,7 +2052,7 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 
 | Dynamic Library | Category | `subspecs` field |
 | :--- | :--- | :--- |
-| <ul><li>`AgoraRtcKit.xcframework`</li><li>`Agorafdkaac.xcframework`</li><li>`AgoraSoundTouch.xcframework`</li><li>`Agoraffmpeg.xcframework`</li><li>`video_dec.xcframework` (added since v4.6.2)</li><li>`AgoraCore.xcframework` (renamed to `aosl.xcframework` since v4.3.0; dependency since v4.5.0, see [AgoraInfra_macOS](https://cocoapods.org/pods/AgoraInfra_macOS))</li></ul> | Required | `RtcBasic` |
+| <Slot name="required" /> | Required | `RtcBasic` |
 | `AgoraAiNoiseSuppressionExtension.xcframework` | Optional | `AINS` |
 | `AgoraAiNoiseSuppressionLLExtension.xcframework` | Optional | `AINSLL` (≥ v4.4.0) |
 | `AgoraAudioBeautyExtension.xcframework` | Optional | `AudioBeauty` |
@@ -1510,11 +2068,36 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 | `AgoraFaceCaptureExtension.xcframework` | Optional | `FaceCapture` (≥ v4.3.0) |
 | `AgoraVideoQualityAnalyzerExtension.xcframework` | Optional | `VQA` (≥ v4.1.0) |
 | `AgoraScreenCaptureExtension.xcframework` | Optional | `ScreenCapture` (≥ v4.2.0) |
-| <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | Optional | `VideoCodecEnc` (≥ v4.2.0) |
-| <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | Optional | `VideoCodecDec` (v4.2.0 to v4.6.1) |
+| <Slot name="optional" /> | Optional | `VideoCodecEnc` (≥ v4.2.0) |
+| <Slot name="optional-2" /> | Optional | `VideoCodecDec` (v4.2.0 to v4.6.1) |
 | `AgoraVideoAv1EncoderExtension.xcframework` | Optional | `VideoAv1CodecEnc` (≥ v4.3.0) |
 | `AgoraVideoAv1DecoderExtension.xcframework` | Optional | `VideoAv1CodecDec` (v4.3.0 to v4.6.1) |
 | `AgoraLipSyncExtension.xcframework` | Optional | `LipSync` (≥ v4.3.1) |
+
+<Slot for="required">
+
+- `AgoraRtcKit.xcframework`
+- `Agorafdkaac.xcframework`
+- `AgoraSoundTouch.xcframework`
+- `Agoraffmpeg.xcframework`
+- `video_dec.xcframework` (added since v4.6.2)
+- `AgoraCore.xcframework` (renamed to `aosl.xcframework` since v4.3.0; dependency since v4.5.0, see [AgoraInfra_macOS](https://cocoapods.org/pods/AgoraInfra_macOS))
+
+</Slot>
+
+<Slot for="optional">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="optional-2">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
 
 ### Frequently asked questions
 
@@ -1853,11 +2436,39 @@ The name of the extension for each platform and the increase in the size of your
 
 | Platform | Architecture | Library name | App size increase (KB) |
 |:------ |:--------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a   | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1413          |
-| Android | armeabi-v7a  | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1014          |
-| Android | x86      | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1403          |
-| Android | x86_64    | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1444          |
-| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772          |
+| Android | arm64-v8a | <Slot name="android" /> | 1413 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 1014 |
+| Android | x86 | <Slot name="android-3" /> | 1403 |
+| Android | x86_64 | <Slot name="android-4" /> | 1444 |
+| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772 |
+
+<Slot for="android">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
 
 **Face Detection**
 
@@ -1959,34 +2570,168 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 :::
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 945          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 873          |
-| Android | x86     | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1125          |
-| Android | x86_64    | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1126          |
-| iOS   | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 773          |
-| iOS   | armv7    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 788          |
-| macOS  | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 1504          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 2020          |
-| Windows | x86     | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2501          |
-| Windows | x86_64    | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2853          |
-**Video Decoding**
-
-Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
-
-Starting with v4.6.2, to improve the video decoding experience, the `video_decoder` library is now built into the SDK, and the `video_dec` library is merged into the basic library (`full-rtc-basic`). The video decoding plugin no longer supports cropping.
- 
+| Android | arm64-v8a | <Slot name="android" /> | 945 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 873 |
+| Android | x86 | <Slot name="android-3" /> | 1125 |
+| Android | x86_64 | <Slot name="android-4" /> | 1126 |
+| iOS | arm64 | <Slot name="ios" /> | 773 |
+| iOS | armv7 | <Slot name="ios-2" /> | 788 |
+| macOS | arm64 | <Slot name="macos" /> | 1504 |
+| macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
+| Windows | x86 | <Slot name="windows" /> | 2501 |
+| Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
 | Platform | Architecture | Library name | App size increase (KB) |
-|:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 817          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 763          |
-| Android | x86     | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 952          |
-| Android | x86_64    | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 976          |
-| iOS   | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 635          |
-| iOS   | armv7    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 662          |
-| macOS  | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1296          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1848          |
-| Windows | x86     | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2115          |
-| Windows | x86_64    | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2421          |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
+<Slot for="android">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="ios">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="ios-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="windows">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="windows-2">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="android-5">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-6">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-7">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-8">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="ios-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="ios-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="windows-3">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
+
+<Slot for="windows-4">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
 
 **AV1 Stream Encoding**
 
@@ -2279,11 +3024,39 @@ The name of the extension for each platform and the increase in the size of your
 
 | Platform | Architecture | Library name | App size increase (KB) |
 |:------ |:--------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a   | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1413          |
-| Android | armeabi-v7a  | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1014          |
-| Android | x86      | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1403          |
-| Android | x86_64    | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1444          |
-| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772          |
+| Android | arm64-v8a | <Slot name="android" /> | 1413 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 1014 |
+| Android | x86 | <Slot name="android-3" /> | 1403 |
+| Android | x86_64 | <Slot name="android-4" /> | 1444 |
+| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772 |
+
+<Slot for="android">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
 
 **Face Detection**
 
@@ -2385,34 +3158,168 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 :::
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 945          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 873          |
-| Android | x86     | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1125          |
-| Android | x86_64    | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1126          |
-| iOS   | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 773          |
-| iOS   | armv7    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 788          |
-| macOS  | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 1504          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 2020          |
-| Windows | x86     | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2501          |
-| Windows | x86_64    | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2853          |
-**Video Decoding**
-
-Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
-
-Starting with v4.6.2, to improve the video decoding experience, the `video_decoder` library is now built into the SDK, and the `video_dec` library is merged into the basic library (`full-rtc-basic`). The video decoding plugin no longer supports cropping.
- 
+| Android | arm64-v8a | <Slot name="android" /> | 945 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 873 |
+| Android | x86 | <Slot name="android-3" /> | 1125 |
+| Android | x86_64 | <Slot name="android-4" /> | 1126 |
+| iOS | arm64 | <Slot name="ios" /> | 773 |
+| iOS | armv7 | <Slot name="ios-2" /> | 788 |
+| macOS | arm64 | <Slot name="macos" /> | 1504 |
+| macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
+| Windows | x86 | <Slot name="windows" /> | 2501 |
+| Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
 | Platform | Architecture | Library name | App size increase (KB) |
-|:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 817          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 763          |
-| Android | x86     | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 952          |
-| Android | x86_64    | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 976          |
-| iOS   | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 635          |
-| iOS   | armv7    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 662          |
-| macOS  | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1296          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1848          |
-| Windows | x86     | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2115          |
-| Windows | x86_64    | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2421          |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
+<Slot for="android">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="ios">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="ios-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="windows">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="windows-2">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="android-5">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-6">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-7">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-8">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="ios-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="ios-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="windows-3">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
+
+<Slot for="windows-4">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
 
 **AV1 Stream Encoding**
 
@@ -2784,11 +3691,39 @@ The name of the extension for each platform and the increase in the size of your
 
 | Platform | Architecture | Library name | App size increase (KB) |
 |:------ |:--------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a   | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1413          |
-| Android | armeabi-v7a  | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1014          |
-| Android | x86      | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1403          |
-| Android | x86_64    | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1444          |
-| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772          |
+| Android | arm64-v8a | <Slot name="android" /> | 1413 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 1014 |
+| Android | x86 | <Slot name="android-3" /> | 1403 |
+| Android | x86_64 | <Slot name="android-4" /> | 1444 |
+| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772 |
+
+<Slot for="android">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
 
 **Face Detection**
 
@@ -2890,34 +3825,168 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 :::
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 945          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 873          |
-| Android | x86     | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1125          |
-| Android | x86_64    | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1126          |
-| iOS   | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 773          |
-| iOS   | armv7    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 788          |
-| macOS  | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 1504          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 2020          |
-| Windows | x86     | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2501          |
-| Windows | x86_64    | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2853          |
-**Video Decoding**
-
-Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
-
-Starting with v4.6.2, to improve the video decoding experience, the `video_decoder` library is now built into the SDK, and the `video_dec` library is merged into the basic library (`full-rtc-basic`). The video decoding plugin no longer supports cropping.
- 
+| Android | arm64-v8a | <Slot name="android" /> | 945 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 873 |
+| Android | x86 | <Slot name="android-3" /> | 1125 |
+| Android | x86_64 | <Slot name="android-4" /> | 1126 |
+| iOS | arm64 | <Slot name="ios" /> | 773 |
+| iOS | armv7 | <Slot name="ios-2" /> | 788 |
+| macOS | arm64 | <Slot name="macos" /> | 1504 |
+| macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
+| Windows | x86 | <Slot name="windows" /> | 2501 |
+| Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
 | Platform | Architecture | Library name | App size increase (KB) |
-|:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 817          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 763          |
-| Android | x86     | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 952          |
-| Android | x86_64    | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 976          |
-| iOS   | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 635          |
-| iOS   | armv7    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 662          |
-| macOS  | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1296          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1848          |
-| Windows | x86     | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2115          |
-| Windows | x86_64    | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2421          |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
+<Slot for="android">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="ios">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="ios-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="windows">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="windows-2">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="android-5">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-6">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-7">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-8">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="ios-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="ios-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="windows-3">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
+
+<Slot for="windows-4">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
 
 **AV1 Stream Encoding**
 
@@ -3289,11 +4358,39 @@ The name of the extension for each platform and the increase in the size of your
 
 | Platform | Architecture | Library name | App size increase (KB) |
 |:------ |:--------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a   | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1413          |
-| Android | armeabi-v7a  | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1014          |
-| Android | x86      | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1403          |
-| Android | x86_64    | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1444          |
-| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772          |
+| Android | arm64-v8a | <Slot name="android" /> | 1413 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 1014 |
+| Android | x86 | <Slot name="android-3" /> | 1403 |
+| Android | x86_64 | <Slot name="android-4" /> | 1444 |
+| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772 |
+
+<Slot for="android">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
 
 **Face Detection**
 
@@ -3395,34 +4492,168 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 :::
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 945          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 873          |
-| Android | x86     | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1125          |
-| Android | x86_64    | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1126          |
-| iOS   | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 773          |
-| iOS   | armv7    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 788          |
-| macOS  | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 1504          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 2020          |
-| Windows | x86     | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2501          |
-| Windows | x86_64    | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2853          |
-**Video Decoding**
-
-Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
-
-Starting with v4.6.2, to improve the video decoding experience, the `video_decoder` library is now built into the SDK, and the `video_dec` library is merged into the basic library (`full-rtc-basic`). The video decoding plugin no longer supports cropping.
- 
+| Android | arm64-v8a | <Slot name="android" /> | 945 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 873 |
+| Android | x86 | <Slot name="android-3" /> | 1125 |
+| Android | x86_64 | <Slot name="android-4" /> | 1126 |
+| iOS | arm64 | <Slot name="ios" /> | 773 |
+| iOS | armv7 | <Slot name="ios-2" /> | 788 |
+| macOS | arm64 | <Slot name="macos" /> | 1504 |
+| macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
+| Windows | x86 | <Slot name="windows" /> | 2501 |
+| Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
 | Platform | Architecture | Library name | App size increase (KB) |
-|:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 817          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 763          |
-| Android | x86     | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 952          |
-| Android | x86_64    | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 976          |
-| iOS   | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 635          |
-| iOS   | armv7    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 662          |
-| macOS  | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1296          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1848          |
-| Windows | x86     | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2115          |
-| Windows | x86_64    | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2421          |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
+<Slot for="android">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="ios">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="ios-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="windows">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="windows-2">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="android-5">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-6">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-7">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-8">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="ios-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="ios-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="windows-3">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
+
+<Slot for="windows-4">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
 
 **AV1 Stream Encoding**
 
@@ -3737,11 +4968,39 @@ The name of the extension for each platform and the increase in the size of your
 
 | Platform | Architecture | Library name | App size increase (KB) |
 |:------ |:--------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a   | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1413          |
-| Android | armeabi-v7a  | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1014          |
-| Android | x86      | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1403          |
-| Android | x86_64    | <ul><li>`libagora_drm_loader_extension.so`</li><li>`libagora_udrm3_extension.so`</li></ul> | 1444          |
-| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772          |
+| Android | arm64-v8a | <Slot name="android" /> | 1413 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 1014 |
+| Android | x86 | <Slot name="android-3" /> | 1403 |
+| Android | x86_64 | <Slot name="android-4" /> | 1444 |
+| iOS | arm64 & armv7 | `AgoraDrmLoaderExtension.xcframework` | 1772 |
+
+<Slot for="android">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_drm_loader_extension.so`
+- `libagora_udrm3_extension.so`
+
+</Slot>
 
 **Face Detection**
 
@@ -3843,34 +5102,168 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 :::
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 945          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 873          |
-| Android | x86     | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1125          |
-| Android | x86_64    | <ul><li>`libagora_video_encoder_extension.so`</li><li>`video_enc.so`</li></ul> | 1126          |
-| iOS   | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 773          |
-| iOS   | armv7    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 788          |
-| macOS  | arm64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 1504          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoEncoderExtension.xcframework`</li><li>`video_enc.xcframework`</li></ul> | 2020          |
-| Windows | x86     | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2501          |
-| Windows | x86_64    | <ul><li>`libagora_video_encoder_extension.dll`</li><li>`video_enc.dll`</li></ul> | 2853          |
-**Video Decoding**
-
-Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
-
-Starting with v4.6.2, to improve the video decoding experience, the `video_decoder` library is now built into the SDK, and the `video_dec` library is merged into the basic library (`full-rtc-basic`). The video decoding plugin no longer supports cropping.
- 
+| Android | arm64-v8a | <Slot name="android" /> | 945 |
+| Android | armeabi-v7a | <Slot name="android-2" /> | 873 |
+| Android | x86 | <Slot name="android-3" /> | 1125 |
+| Android | x86_64 | <Slot name="android-4" /> | 1126 |
+| iOS | arm64 | <Slot name="ios" /> | 773 |
+| iOS | armv7 | <Slot name="ios-2" /> | 788 |
+| macOS | arm64 | <Slot name="macos" /> | 1504 |
+| macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
+| Windows | x86 | <Slot name="windows" /> | 2501 |
+| Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
 | Platform | Architecture | Library name | App size increase (KB) |
-|:---------|:-------------|:-------------------------------------------- |:-----------------------|
-| Android | arm64-v8a  | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 817          |
-| Android | armeabi-v7a | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 763          |
-| Android | x86     | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 952          |
-| Android | x86_64    | <ul><li>`libagora_video_decoder_extension.so`</li><li>`video_dec.so`</li></ul> | 976          |
-| iOS   | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 635          |
-| iOS   | armv7    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 662          |
-| macOS  | arm64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1296          |
-| macOS  | x86_64    | <ul><li>`AgoraVideoDecoderExtension.xcframework`</li><li>`video_dec.xcframework`</li></ul> | 1848          |
-| Windows | x86     | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2115          |
-| Windows | x86_64    | <ul><li>`libagora_video_decoder_extension.dll`</li><li>`video_dec.dll`</li></ul> | 2421          |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
+<Slot for="android">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-2">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-3">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="android-4">
+
+- `libagora_video_encoder_extension.so`
+- `video_enc.so`
+
+</Slot>
+
+<Slot for="ios">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="ios-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="macos-2">
+
+- `AgoraVideoEncoderExtension.xcframework`
+- `video_enc.xcframework`
+
+</Slot>
+
+<Slot for="windows">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="windows-2">
+
+- `libagora_video_encoder_extension.dll`
+- `video_enc.dll`
+
+</Slot>
+
+<Slot for="android-5">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-6">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-7">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="android-8">
+
+- `libagora_video_decoder_extension.so`
+- `video_dec.so`
+
+</Slot>
+
+<Slot for="ios-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="ios-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-3">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="macos-4">
+
+- `AgoraVideoDecoderExtension.xcframework`
+- `video_dec.xcframework`
+
+</Slot>
+
+<Slot for="windows-3">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
+
+<Slot for="windows-4">
+
+- `libagora_video_decoder_extension.dll`
+- `video_dec.dll`
+
+</Slot>
 
 **AV1 Stream Encoding**
 

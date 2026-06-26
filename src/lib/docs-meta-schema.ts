@@ -17,11 +17,30 @@ const docsMetaExternalPageLinkSchema = z.object({
     }),
 });
 
+const docsMetaPageGroupSchema = z.object({
+  collapsible: z.boolean().optional(),
+  icon: z.string().min(1).optional(),
+  pages: z.array(z.string().min(1)).min(1),
+  title: z.string().min(1),
+  type: z.literal('group'),
+});
+
 const docsMetaPageEntrySchema = z.union([
   z.string(),
   docsMetaExternalPageLinkSchema.transform(
     (entry) => `external:[${entry.title}](${entry.href})`,
   ),
+  docsMetaPageGroupSchema.transform((entry) => {
+    const iconPrefix = entry.icon ? `[${entry.icon}]` : '';
+    const flags =
+      entry.collapsible === undefined
+        ? ''
+        : entry.collapsible
+          ? '{dropdown}'
+          : '{flat}';
+
+    return [`---${iconPrefix}${entry.title}${flags}---`, ...entry.pages];
+  }),
 ]);
 
 export const docsNavScopeVersionSchema = z.object({
@@ -40,7 +59,10 @@ export const docsNavScopeSchema = z.object({
 
 export const docsMetaSchema = metaSchema.extend({
   navScope: docsNavScopeSchema.optional(),
-  pages: z.array(docsMetaPageEntrySchema).optional(),
+  pages: z
+    .array(docsMetaPageEntrySchema)
+    .transform((entries) => entries.flat())
+    .optional(),
   sidebarIndexTitle: z.string().min(1).optional(),
 });
 

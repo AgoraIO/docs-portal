@@ -11,6 +11,14 @@ import { describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { DocsSearchDialog } from './DocsSearchDialog';
 
+const loadPages = async () => [
+  {
+    description: 'Start here',
+    title: 'Quick Start',
+    url: '/en/ai/get-started/quickstart',
+  },
+];
+
 describe('DocsSearchDialog', () => {
   it('renders compact trigger variants and lets the mobile trigger navigate through the same dialog', async () => {
     const rootRoute = createRootRoute({
@@ -22,14 +30,8 @@ describe('DocsSearchDialog', () => {
       component: () => (
         <AppProviders>
           <DocsSearchDialog
+            loadPages={loadPages}
             mode="desktop"
-            pages={[
-              {
-                description: 'Start here',
-                title: 'Quick Start',
-                url: '/en/ai/get-started/quickstart',
-              },
-            ]}
             tabs={[
               {
                 description: 'AI docs',
@@ -40,14 +42,8 @@ describe('DocsSearchDialog', () => {
             ]}
           />
           <DocsSearchDialog
+            loadPages={loadPages}
             mode="mobile"
-            pages={[
-              {
-                description: 'Start here',
-                title: 'Quick Start',
-                url: '/en/ai/get-started/quickstart',
-              },
-            ]}
             tabs={[
               {
                 description: 'AI docs',
@@ -93,7 +89,7 @@ describe('DocsSearchDialog', () => {
     expect(
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Quick Start'));
+    fireEvent.click(await screen.findByText('Quick Start'));
 
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(
@@ -114,14 +110,8 @@ describe('DocsSearchDialog', () => {
       component: () => (
         <AppProviders>
           <DocsSearchDialog
+            loadPages={loadPages}
             mode="desktop"
-            pages={[
-              {
-                description: 'Start here',
-                title: 'Quick Start',
-                url: '/en/ai/get-started/quickstart',
-              },
-            ]}
             tabs={[
               {
                 description: 'AI docs',
@@ -150,7 +140,7 @@ describe('DocsSearchDialog', () => {
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
     ).toBeInTheDocument();
     expect(screen.getByText('AI')).toBeInTheDocument();
-    expect(screen.getByText('Quick Start')).toBeInTheDocument();
+    expect(await screen.findByText('Quick Start')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Quick Start'));
 
@@ -158,6 +148,60 @@ describe('DocsSearchDialog', () => {
       expect(navigateSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           to: '/en/ai/get-started/quickstart',
+        }),
+      );
+    });
+  });
+
+  it('keeps the search dialog usable when lazy page loading fails', async () => {
+    const rootRoute = createRootRoute({
+      component: () => <Outlet />,
+    });
+    const loadPagesFailure = vi.fn().mockRejectedValue(new Error('not found'));
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={loadPagesFailure}
+            mode="desktop"
+            tabs={[
+              {
+                description: 'AI docs',
+                id: 'ai',
+                title: 'AI',
+                url: '/en/ai',
+              },
+            ]}
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+    const navigateSpy = vi.spyOn(router, 'navigate');
+
+    render(<RouterProvider router={router} />);
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    expect(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('AI')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('AI'));
+
+    await waitFor(() => {
+      expect(loadPagesFailure).toHaveBeenCalledOnce();
+      expect(navigateSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: '/en/ai',
         }),
       );
     });

@@ -39,9 +39,15 @@ import {
   useRef,
   useState,
 } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { cn } from '@/lib/cn';
 import { normalizeDocsHref } from '@/lib/docs-link-normalize';
-import { ParamTable } from './mdx/ParamTable';
 import {
   PlatformInline,
   PlatformProcessedMarker,
@@ -57,6 +63,7 @@ const FumadocsAnchor = defaultMdxComponents.a;
 const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
 const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
 const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
+const FumadocsImage = defaultMdxComponents.img;
 const CodeBlockTabsValueContext = createContext<string | undefined>(undefined);
 
 type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
@@ -562,12 +569,46 @@ function createDocsCard(contentPath?: string) {
   return DocsCard;
 }
 
+function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
+  if (typeof src !== 'string' || src.length === 0) {
+    return <FumadocsImage alt={alt} src={src} {...props} />;
+  }
+
+  const title = alt || 'Documentation image';
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          aria-label={`Zoom image: ${title}`}
+          className="block cursor-zoom-in"
+          type="button"
+        >
+          <FumadocsImage alt={alt} src={src} {...props} />
+        </button>
+      </DialogTrigger>
+      <DialogContent className="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] border-0 bg-transparent p-0 shadow-none sm:max-w-[calc(100vw-2rem)]">
+        <DialogTitle className="sr-only">{title}</DialogTitle>
+        <DialogDescription className="sr-only">
+          Enlarged documentation image preview.
+        </DialogDescription>
+        <img
+          alt={alt}
+          className="max-h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)] rounded-md object-contain shadow-2xl"
+          src={src}
+        />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
   return {
     ...defaultMdxComponents,
+    img: ZoomableImage,
     a: createDocsAnchor(context?.contentPath),
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),
@@ -591,7 +632,6 @@ export function getMDXComponents(
     PlatformInline,
     _PlatformProcessedMarker: PlatformProcessedMarker,
     PlatformStructured,
-    ParamTable,
     _PlatformTabsGroup: PlatformTabsGroup,
     _PlatformPanel: PlatformPanel,
     ...components,

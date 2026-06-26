@@ -10,7 +10,73 @@ Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles en
 
 ### Sample configuration
 
-The following example shows a starting `mllm` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following examples show how to configure OpenAI Realtime MLLM when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import OpenAIRealtime
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_mllm(OpenAIRealtime(
+        api_key='your-openai-key',
+        url='wss://api.openai.com/v1/realtime',
+        model='gpt-realtime',
+        voice='coral',
+        instructions='You are a Conversational AI Agent, developed by Agora.',
+    ))
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, OpenAIRealtime } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withMllm(new OpenAIRealtime({
+    apiKey: 'your-openai-key',
+    url: 'wss://api.openai.com/v1/realtime',
+    model: 'gpt-realtime',
+    voice: 'coral',
+    instructions: 'You are a Conversational AI Agent, developed by Agora.',
+  }));
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithMllm(
+    vendors.NewOpenAIRealtime(vendors.OpenAIRealtimeOptions{
+        APIKey:       "your-openai-key",
+        URL:          "wss://api.openai.com/v1/realtime",
+        Model:        "gpt-realtime",
+        Voice:        "coral",
+        Instructions: "You are a Conversational AI Agent, developed by Agora.",
+    }),
+)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `mllm` configuration in your request:
 
 ```json
 "mllm": {
@@ -35,6 +101,9 @@ The following example shows a starting `mllm` parameter configuration you can us
   "vendor": "openai"
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ### Turn detection
 

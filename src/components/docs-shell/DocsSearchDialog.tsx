@@ -2,7 +2,7 @@
 
 import { useNavigate } from '@tanstack/react-router';
 import { SearchIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,6 +13,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import type { SearchEntry } from '@/lib/docs-search';
 import type { TabSummary } from '@/lib/docs-tree';
 import {
   type AppLocale,
@@ -20,27 +21,31 @@ import {
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
 
-export type SearchEntry = {
-  description?: string;
-  title: string;
-  url: string;
-};
-
 export function DocsSearchDialog({
+  loadPages,
   locale = DEFAULT_LOCALE,
   mode = 'desktop',
-  pages,
   tabs,
 }: {
+  loadPages: () => Promise<SearchEntry[]>;
   locale?: AppLocale | string;
   mode?: 'desktop' | 'mobile';
-  pages: SearchEntry[];
   tabs: TabSummary[];
 }) {
   const { i18n } = useTranslation('common');
-  const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
+  const searchLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const t = i18n.getFixedT(searchLocale, 'common');
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [pagesState, setPagesState] = useState<{
+    locale: AppLocale;
+    pages: SearchEntry[];
+  } | null>(null);
+  const pagesPromiseRef = useRef<{
+    locale: AppLocale;
+    promise: Promise<SearchEntry[]>;
+  } | null>(null);
+  const pages = pagesState?.locale === searchLocale ? pagesState.pages : [];
 
   async function handleSelect(url: string) {
     setOpen(false);
@@ -49,12 +54,37 @@ export function DocsSearchDialog({
     });
   }
 
+  async function handleOpenChange(nextOpen: boolean) {
+    setOpen(nextOpen);
+
+    if (nextOpen && pages.length === 0) {
+      try {
+        if (pagesPromiseRef.current?.locale !== searchLocale) {
+          pagesPromiseRef.current = {
+            locale: searchLocale,
+            promise: loadPages(),
+          };
+        }
+        setPagesState({
+          locale: searchLocale,
+          pages: await pagesPromiseRef.current.promise,
+        });
+      } catch {
+        pagesPromiseRef.current = null;
+        setPagesState({
+          locale: searchLocale,
+          pages: [],
+        });
+      }
+    }
+  }
+
   return (
     <>
       {mode === 'mobile' ? (
         <Button
           aria-label={t('docs.search')}
-          onClick={() => setOpen(true)}
+          onClick={() => void handleOpenChange(true)}
           size="icon"
           variant="ghost"
         >
@@ -64,7 +94,7 @@ export function DocsSearchDialog({
         <Button
           aria-label={t('docs.search')}
           className="docs-shell-search-trigger"
-          onClick={() => setOpen(true)}
+          onClick={() => void handleOpenChange(true)}
           size="sm"
           variant="outline"
         >
@@ -76,7 +106,7 @@ export function DocsSearchDialog({
       <CommandDialog
         className="max-w-2xl overflow-hidden border-border p-0"
         description={t('docs.searchDescription')}
-        onOpenChange={setOpen}
+        onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
         open={open}
         title={t('docs.search')}
       >

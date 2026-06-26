@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, useMatch } from '@tanstack/react-router';
 import { DocsShell } from '@/components/docs-shell/DocsShell';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
+import { readStaticDocsSearchIndex } from '@/lib/docs-search-index';
 
 export const Route = createFileRoute('/$locale/$tab')({
   component: DocsTabLayout,
@@ -30,7 +31,6 @@ function DocsTabLayout() {
     localeLinks,
     layoutMode,
     navigation,
-    pages,
     sidebar,
     sidebarHeader,
     tabs,
@@ -41,11 +41,11 @@ function DocsTabLayout() {
     <DocsShell
       activePath={activePath}
       activeTab={activeTab}
+      loadPages={() => readStaticDocsSearchIndex(params.locale)}
       localeLinks={localeLinks}
       layoutMode={layoutMode}
       locale={params.locale}
       next={navigation.next}
-      pages={pages}
       previous={navigation.previous}
       sidebar={sidebar}
       sidebarHeader={sidebarHeader}

@@ -71,12 +71,17 @@ describe('DocsSidebarTree', () => {
     const activeButton = activeLink.closest('[data-sidebar="menu-button"]');
 
     expect(activeButton).toBeInstanceOf(HTMLElement);
-    expect(activeButton?.className).not.toContain('font-semibold');
     expect(activeButton).toHaveClass(
       'min-h-[30px]',
       'h-auto',
       'items-start',
       'py-1',
+    );
+    expect(activeButton?.className).toContain(
+      'data-[active=true]:font-semibold',
+    );
+    expect(activeButton?.className).toContain(
+      'data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)]',
     );
     expect(activeButton?.className).toContain(
       'data-[active=true]:before:bg-[color:var(--accent-brand)]',
@@ -305,9 +310,19 @@ describe('DocsSidebarTree', () => {
 
     fireEvent.click(toggle);
 
-    expect(
-      await screen.findByRole('link', { name: 'Use RESTful API' }),
-    ).toBeInTheDocument();
+    const link = await screen.findByRole('link', { name: 'Use RESTful API' });
+    const expandedChildren = link.closest('[data-sidebar="menu-sub"]');
+
+    expect(link).toBeInTheDocument();
+    expect(link.closest('[data-sidebar="menu-sub-button"]')).toHaveClass(
+      'data-[active=true]:font-semibold',
+      'data-[active=true]:before:bg-[color:var(--accent-brand)]',
+    );
+    expect(expandedChildren).toHaveClass(
+      'border-l',
+      'border-[color:var(--line-strong)]',
+      'pl-3',
+    );
   });
 
   it('renders linked collapsed sections as navigation entries', async () => {
@@ -541,6 +556,11 @@ describe('DocsSidebarTree', () => {
     expect(
       screen.getByRole('link', { name: '场景化 API' }),
     ).toBeInTheDocument();
+    expect(
+      screen
+        .getByRole('link', { name: '场景化 API' })
+        .closest('div[class*="border-l"]'),
+    ).toHaveClass('border-[color:var(--line-strong)]', 'pl-3');
   });
 
   it('keeps the Build subsection collapsed by default inside Get started', async () => {
@@ -650,7 +670,7 @@ describe('DocsSidebarTree', () => {
                 url: '/en/ai/build/start-stop-agent',
               },
             ],
-            collapsible: false,
+            collapsible: true,
             id: 'separator-Create and connect an agent',
             title: 'Create and connect an agent',
             type: 'section',
@@ -686,16 +706,17 @@ describe('DocsSidebarTree', () => {
       }),
     ).toHaveAttribute('aria-expanded', 'false');
     expect(
-      screen.getByRole('button', { name: /Shape the conversation/i }),
-    ).toHaveAttribute('aria-expanded', 'false');
+      screen.queryByRole('button', { name: /Shape the conversation/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText('Shape the conversation')).toBeInTheDocument();
     expect(
       screen.queryByRole('link', { name: 'Start and stop an agent' }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole('link', {
+      screen.getByRole('link', {
         name: 'Keep conversation context across turns',
       }),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
   });
 
   it('renders full sidebar labels for long Build document titles', async () => {

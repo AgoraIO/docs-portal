@@ -8,9 +8,9 @@ The following table shows the data formats supported when the IoT SDK communicat
 
 | Video SDK Type | Supported formats |
 |:---|:---------------|
-| Native/third-party frameworks: <ul> <li>Android</li><li>iOS/macOS</li><li>Windows</li><li>Electron</li><li>Unity</li><li>Flutter</li><li>React Native</li></ul> | <ul><li>Audio: G722, G711, Opus, AAC</li><li>Video: H.264, JPEG</li></ul> |
-| Web (v4.x) | <ul><li>Audio: G722, G711, Opus</li><li>Video: H.264</li></ul> |
-| Embedded systems | <ul><li>Audio: G711, Opus</li><li>Video: H.264, JPEG</li></ul> |
+| Native/third-party frameworks: Android, iOS/macOS, Windows, Electron, Unity, Flutter, React Native | Audio: G722, G711, Opus, AAC; Video: H.264, JPEG |
+| Web (v4.x) | Audio: G722, G711, Opus; Video: H.264 |
+| Embedded systems | Audio: G711, Opus; Video: H.264, JPEG |
 
 The sending and receiving ends can communicate with each other only if the set data format is consistent and complies with the above table.
 

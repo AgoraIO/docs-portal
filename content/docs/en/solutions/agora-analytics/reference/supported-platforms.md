@@ -17,11 +17,28 @@ description: "A list of platforms supported by Agora Analytics."
     |Safari |Sending and receiving streams |OS 12.2 and later |iOS 11 and later|
 
 - *Desktop*:
-    |Operating system |Browsers |Receiving streams |Sending streams|
+    | Operating system | Browsers | Receiving streams | Sending streams |
     |:-----|:-----|:-----|:-----|
-    |macOS|<ul><li>Chrome</li><li>Firefox</li><li>Safari</li><li>Edge</li></ul>|Supported |Supported|
-    |Windows|<ul><li>Chrome</li><li>Firefox</li><li>Edge</li></ul>|Supported |Supported|
-    |ChromeOS |Chrome |Supported |Supported|
+    | macOS | <Slot name="macos" /> | Supported | Supported |
+    | Windows | <Slot name="windows" /> | Supported | Supported |
+    | ChromeOS | Chrome | Supported | Supported |
+
+    <Slot for="macos">
+
+    - Chrome
+    - Firefox
+    - Safari
+    - Edge
+
+    </Slot>
+
+    <Slot for="windows">
+
+    - Chrome
+    - Firefox
+    - Edge
+
+    </Slot>
 
 To ensure the best user experience, best practice is to use the latest version each browser on the latest version of the operating system. Download the latest version of:
 

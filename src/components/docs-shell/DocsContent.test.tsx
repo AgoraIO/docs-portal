@@ -17,6 +17,7 @@ import type { ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
+import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsTocRail } from './DocsTocRail';
@@ -36,8 +37,19 @@ vi.mock('@/components/mdx/PlatformTabsGroup', async (importOriginal) => {
 
   return {
     ...actual,
-    PlatformHeaderTabs: ({ platforms }: { platforms?: string }) => (
-      <div data-testid="platform-header-tabs">{platforms}</div>
+    PlatformHeaderTabs: ({
+      initialPlatform,
+      platforms,
+    }: {
+      initialPlatform?: string;
+      platforms?: string;
+    }) => (
+      <div
+        data-initial-platform={initialPlatform}
+        data-testid="platform-header-tabs"
+      >
+        {platforms}
+      </div>
     ),
   };
 });
@@ -289,6 +301,7 @@ describe('DocsContent', () => {
           kind: 'mdx',
           platformTabs: {
             canonicalPlatform: 'web',
+            initialPlatform: 'android',
             platforms: '["web","android"]',
           },
         }}
@@ -304,6 +317,7 @@ describe('DocsContent', () => {
     const body = await screen.findByTestId('docs-content-body');
 
     expect(tabs).toHaveTextContent('["web","android"]');
+    expect(tabs).toHaveAttribute('data-initial-platform', 'android');
     expect(
       title.compareDocumentPosition(tabs) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
@@ -393,6 +407,9 @@ describe('DocsContent', () => {
         `code --add-mcp '{"name":"agora-docs","url":"https://mcp.agora.io"}'`,
       );
     });
+    expect(
+      screen.getByRole('button', { name: 'Copy Page' }),
+    ).not.toHaveAttribute('data-copied');
   });
 
   it('copies the markdown url from the primary copy button', async () => {
@@ -415,6 +432,32 @@ describe('DocsContent', () => {
         'https://docs.agora.io/llms.mdx/docs/en/introduction/about-agora.md',
       );
     });
+  });
+
+  it('uses a more visible success state after copying the page link', async () => {
+    clipboardWriteText.mockReset();
+    clipboardWriteText.mockResolvedValue(undefined);
+
+    renderWithRouter(
+      <DocsCopyMenu
+        locale="en"
+        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        slug="introduction/about-agora"
+        title="About Agora"
+      />,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Copy Page' }));
+
+    const copyButton = await screen.findByRole('button', { name: 'Copy Page' });
+
+    await waitFor(() => {
+      expect(copyButton).toHaveTextContent('Copied');
+    });
+    expect(copyButton).toHaveAttribute('data-copied', 'true');
+    expect(copyButton).toHaveAttribute('aria-live', 'polite');
+    expect(copyButton).toHaveClass('bg-emerald-500/12');
+    expect(copyButton).toHaveClass('ring-emerald-500/35');
   });
 });
 
@@ -865,6 +908,65 @@ describe('DocsMainColumn', () => {
     expect(feedback).toHaveClass('flex-col', 'sm:flex-row');
     expect(pager).toHaveClass('grid-cols-1', 'sm:grid-cols-2');
   });
+
+  it('keeps the mobile site footer outside the page footer semantics', async () => {
+    renderWithRouter(
+      <DocsMainColumn>
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const pageFooter = within(desktopScroll).getByTestId('docs-page-footer');
+    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const siteFooter = within(mobileFlow).getByTestId('docs-site-footer');
+
+    expect(
+      within(desktopScroll).queryByTestId('docs-site-footer'),
+    ).not.toBeInTheDocument();
+    expect(pageFooter).not.toContainElement(siteFooter);
+  });
+
+  it('marks the desktop scroll region for router-managed scroll restoration', async () => {
+    renderWithRouter(
+      <DocsMainColumn resetKey="/en/introduction/about-agora">
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    expect(desktopScroll).toHaveAttribute(
+      'data-scroll-restoration-id',
+      DOCS_MAIN_SCROLL_RESTORATION_ID,
+    );
+  });
+
+  it('does not override router scroll restoration when the reset key changes', async () => {
+    const { rerender } = renderWithRouter(
+      <DocsMainColumn resetKey="/en/introduction/about-agora">
+        <article>First page</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const windowScrollTo = vi.fn();
+    Object.defineProperty(window, 'scrollTo', {
+      configurable: true,
+      value: windowScrollTo,
+      writable: true,
+    });
+
+    desktopScroll.scrollTop = 180;
+
+    rerender(
+      <DocsMainColumn resetKey="/en/introduction/quick-start">
+        <article>Second page</article>
+      </DocsMainColumn>,
+    );
+
+    expect(desktopScroll.scrollTop).toBe(180);
+    expect(windowScrollTo).not.toHaveBeenCalled();
+  });
 });
 
 describe('DocsTocRail', () => {
@@ -879,10 +981,67 @@ describe('DocsTocRail', () => {
     expect(await screen.findByText('On this page')).toBeInTheDocument();
     expect(screen.getByTestId('docs-feedback')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Yes' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Send feedback' }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('docs-feedback').lastElementChild).toHaveClass(
+      'flex-wrap',
+    );
+    expect(screen.getByRole('button', { name: 'Send feedback' })).toHaveClass(
+      'w-full',
+    );
   });
 });
 
 describe('DocsPageFeedback placement', () => {
+  it('opens a feedback dialog with a prefilled issue link', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/en/introduction/about-agora?platform=web#what-is',
+    );
+
+    renderWithRouter(
+      <DocsMainColumn locale="en">
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const feedback = within(mobileFlow).getByTestId('docs-feedback');
+
+    fireEvent.click(
+      within(feedback).getByRole('button', { name: 'Send feedback' }),
+    );
+    fireEvent.click(await screen.findByLabelText('Suggestion'));
+    fireEvent.change(
+      screen.getByPlaceholderText(
+        'Describe what is wrong, missing, confusing, or hard to use.',
+      ),
+      {
+        target: {
+          value: 'The setup step is missing a required parameter.',
+        },
+      },
+    );
+
+    const issueLink = screen.getByRole('link', { name: 'Open issue' });
+    const href = issueLink.getAttribute('href') ?? '';
+    const issueBody = new URL(href).searchParams.get('body') ?? '';
+
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(href).toContain(
+      'https://github.com/Shengwang-Community/docs-portal/issues/new',
+    );
+    expect(issueBody).toContain(
+      'Page: http://localhost:3000/en/introduction/about-agora?platform=web#what-is',
+    );
+    expect(issueBody).toContain('Feedback type: Suggestion');
+    expect(issueBody).toContain(
+      'The setup step is missing a required parameter.',
+    );
+  });
+
   it('shows helpfulness feedback in the mobile footer only', async () => {
     renderWithRouter(
       <DocsMainColumn

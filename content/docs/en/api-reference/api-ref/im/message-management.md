@@ -18,9 +18,21 @@ The following table lists common request and response parameters of the Chat RES
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                                | Yes |
 | `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                 | Yes |
 | `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of the Chat project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                                                                                                                                    | Yes |
-| `username` | String | The unique login account of the user. The user ID must be 64 characters or less and cannot be empty.  The following character sets are supported:26 lowercase English letters (a-z)10 numbers (0-9)"\_", "-", ".":::info
-Do not use any of the 26 uppercase English letters (A-Z).Ensure that each `username` under the same app is unique.Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
-::: | Yes |
+| `username` | String | <Slot name="username" /> | Yes |
+
+<Slot for="username">
+
+The unique login account of the user. The user ID must be 64 characters or less and cannot be empty. The following character sets are supported:
+
+- 26 lowercase English letters (a-z)
+- 10 numbers (0-9)
+- "\_", "-", "."
+
+:::info
+Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `username` under the same app is unique. Do not set this parameter as a UUID, email address, phone number, or other sensitive information.
+:::
+
+</Slot>
 
 ### Response parameters 
 
@@ -60,10 +72,8 @@ Follow the instructions below to implement sending messages:
    2. Call the send-message method, and pass the `file_uuid` in the request body.
 
 :::info
-
 When calling the RESTful APIs to send a message, you can use the `from` field to specify the message sender.
 The maximum data length of the request body and extension fields is 5 KB, or the error 413 will be returned.
-
 :::
 
 ### Send a one-to-one message
@@ -1936,13 +1946,34 @@ For the parameters and detailed descriptions, see [Common parameters](#param).
 | Parameter        | Type | Required | Description                                                                                                                                                                                                                                                                                                                                   |
 | :---------- | :------- | :------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `msg_id`    | String   | Yes     | The ID of the message to recall. As only one message can be recalled each time, you can pass in only one message ID.                                                                                                                                                                                                                          |
-| `to`        | String   | Yes   | The user, chat group, or chat room that receives the message to recall. You can specify a user ID, a chat group ID, or a chat room ID. **Note**: If the message to recall no longer exists on the server, only the message on the recipient client is recalled.                                                                               |
+| `to` | String | Yes | <Slot name="to" /> |
 | `chat_type` | String   | Yes     | The type of the chat where the message to recall is sent. `chat`: An one-on-one chat.`groupchat`: A chat group.`chatroom`: A chat room.                                                                                                                                                                   |
 | `from`      | String   | No   | The user who recalls the message. By default, the recaller is the app admin. You can also specify another user as the recaller.                                                                                                                                                                                                               |
-| `sync_device` | Bool| No | Whether to synchronize the recall of a one-to-one message to all online devices of the message sender. (Default) `true`: Yes`false`: No:::info
-When `force` is set to `true`, to recall a message that expires, you need to set `from` to the sender of the message.
-:::                  |
+| `sync_device` | Bool | No | <Slot name="sync-device" /> |
 | `force` | Bool | No | Whether to allow to recall messages forcibly: `true`: Yes. In this case, you can recall messages whether they expire. To recall the expired messages, you must set `force` to `true`. (Default) `false`: No. In this case, you can only recall messages that still exist on the server within the recall duration. |
+
+<Slot for="to">
+
+The user, chat group, or chat room that receives the message to recall. You can specify a user ID, a chat group ID, or a chat room ID.
+
+:::info[Note]
+If the message to recall no longer exists on the server, only the message on the recipient client is recalled.
+:::
+
+</Slot>
+
+<Slot for="sync-device">
+
+Whether to synchronize the recall of a one-to-one message to all online devices of the message sender. (Default):
+
+- `true`: Yes
+- `false`: No
+
+:::info
+When `force` is set to `true`, to recall a message that expires, you need to set `from` to the sender of the message.
+:::
+
+</Slot>
 
 ### HTTP response
 

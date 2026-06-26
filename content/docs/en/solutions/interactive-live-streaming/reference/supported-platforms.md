@@ -7,9 +7,20 @@ This section lists the platforms and products you use to develop apps that inter
 
 - *Platforms*:
 
-  | Target Platform | Operating system version | IDE version   |
+  | Target Platform | Operating system version | IDE version |
   |:-----------------|:-------|:-----|
-  | Android     | Android 4.1 or later. Video SDK supports the following ABIs. <ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul>  | Android Studio 3.0 or later|
+  | Android | <Slot name="android" /> | Android Studio 3.0 or later |
+
+  <Slot for="android">
+
+  Android 4.1 or later. Video SDK supports the following ABIs.
+
+  - armeabi-v7a
+  - arm64-v8a
+  - x86
+  - x86-64
+
+  </Slot>
 
 - *Browsers supported on Android*:
 

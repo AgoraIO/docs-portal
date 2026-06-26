@@ -77,15 +77,26 @@ Following is an example of a message notification callback request body:
 
 The Agora message notification service notifies the following Conversational AI Engine events:
 
-| Event Type | Event name  | Event description          |
+| Event Type | Event name | Event description |
 |:-----------|:------------|:----------------------------|
 | [101](#101-agent-joined) | agent joined | The agent joins the channel. |
-| [102](#102-agent-left)   | agent left   | The agent leaves the channel. |
-| [103](#103-agent-history)   | agent history   | After an agent stops, this event notifies the stored history, which includes the following information:<ul><li>Messages exchanged between the user and the agent</li><li>Timestamps indicating when the agent was created and stopped</li></ul> The maximum number of entries is determined by the `llm.max_history` parameter you can set when starting the agent. The default value is `32`. |
-| [110](#110-agent-error)  | agent error  | Agent error. |
-| [111](#111-agent-metrics)  | agent metrics  | The performance metrics of an agent. |
-| [201](#201-inbound-call-state)  | inbound call state | Changes in the status of an incoming call. | 
+| [102](#102-agent-left) | agent left | The agent leaves the channel. |
+| [103](#103-agent-history) | agent history | <Slot name="103" /> |
+| [110](#110-agent-error) | agent error | Agent error. |
+| [111](#111-agent-metrics) | agent metrics | The performance metrics of an agent. |
+| [201](#201-inbound-call-state) | inbound call state | Changes in the status of an incoming call. |
 | [202](#202-outbound-call-state) | outbound call state | Changes in the status of an outgoing call. |
+
+<Slot for="103">
+
+After an agent stops, this event notifies the stored history, which includes the following information:
+
+- Messages exchanged between the user and the agent
+- Timestamps indicating when the agent was created and stopped
+
+The maximum number of entries is determined by the `llm.max_history` parameter you can set when starting the agent. The default value is `32`.
+
+</Slot>
 
 ### 101 agent joined
 

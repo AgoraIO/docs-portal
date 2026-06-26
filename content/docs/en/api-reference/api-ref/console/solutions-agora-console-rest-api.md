@@ -43,10 +43,23 @@ Creates an Agora project.
 
 Pass in the following parameters in the request body:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`name` |String |(Required) The project name, which is between 1 to 255 characters in length.|
-|`enable_sign_key` |Boolean|(Required) Whether to enable the primary app certificate: <ul><li>true: Enable the primary app certificate.</li><li>false: (Default) Do not enable the primary app certificate.</li></ul><br />**Note**: After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey` to enable or disable the primary app certificate, or send a request to `https://api.agora.io/dev/v1/reset_signkey` to reset the primary app certificate.|
+| `name` | String | (Required) The project name, which is between 1 to 255 characters in length. |
+| `enable_sign_key` | Boolean | <Slot name="enablesignkey" /> |
+
+<Slot for="enablesignkey">
+
+(Required) Whether to enable the primary app certificate:
+
+- true: Enable the primary app certificate.
+- false: (Default) Do not enable the primary app certificate.
+
+:::info[Note]
+After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey` to enable or disable the primary app certificate, or send a request to `https://api.agora.io/dev/v1/reset_signkey` to reset the primary app certificate.
+:::
+
+</Slot>
 
 #### Request example
 
@@ -67,9 +80,27 @@ If the status code is not `201`, the request fails. See the `message` field in t
 
 If the status code is `201`, the request succeeds, and the response body includes the following parameters:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`project`|Object|The information on the project, including the following fields:<ul><li>`id`: String. The project ID </li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary app certificate of the project.</li><li>`recording_server`: String. The IP address of the recording server.</li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project:</li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created.</li></ul>|
+| `project` | Object | <Slot name="project" /> |
+
+<Slot for="project">
+
+The information on the project, including the following fields:
+
+- `id`: String. The project ID
+- `name`: String. The project name.
+- `vendor_key`: String. The App ID of the project.
+- `sign_key`: String. The primary app certificate of the project.
+- `recording_server`: String. The IP address of the recording server.
+  - Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.
+  - Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.
+- `status`: Number. The status of the project:
+  - `1`: The project is enabled.
+  - `0`: The project is disabled.
+- `created`: Number. The Unix timestamp (in seconds) of when the project is created.
+
+</Slot>
 
 
 #### Response example
@@ -125,9 +156,27 @@ If the status code is not `201`, the request fails. See the `message` field in t
 
 If the status code is `201`, the request succeeds, and the response body includes the following parameters:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`projects` |Array|The information on the projects. This Array consists of multiple Objects. Each Object shows the information on one project and includes the following fields: <ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary App Certificate of the project. </li><li>`recording_server`: String. The IP of the recording server. </li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul>|
+| `projects` | Array | <Slot name="projects" /> |
+
+<Slot for="projects">
+
+The information on the projects. This Array consists of multiple Objects. Each Object shows the information on one project and includes the following fields:
+
+- `id`: String. The project ID.
+- `name`: String. The project name.
+- `vendor_key`: String. The App ID of the project.
+- `sign_key`: String. The primary App Certificate of the project.
+- `recording_server`: String. The IP of the recording server.
+  - Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.
+  - Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.
+- `status`: Number. The status of the project:
+  - `1`: The project is enabled.
+  - `0`: The project is disabled.
+- `created`: Number. The Unix timestamp (in seconds) of when the project is created.
+
+</Slot>
 
 #### Response example
 
@@ -173,9 +222,27 @@ If the status code is not `201`, the request fails. See the `message` field in t
 
 If the status code is `201`, the request succeeds, and the response body includes the following parameters:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`projects`|Array|The information on the projects. This Array consists of multiple Objects. Each Object shows the information on one project and includes the following fields:<ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary App Certificate of the project. </li><li>`recording_server`: String. The IP of the recording server. </li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul></ul>|
+| `projects` | Array | <Slot name="projects" /> |
+
+<Slot for="projects">
+
+The information on the projects. This Array consists of multiple Objects. Each Object shows the information on one project and includes the following fields:
+
+- `id`: String. The project ID.
+- `name`: String. The project name.
+- `vendor_key`: String. The App ID of the project.
+- `sign_key`: String. The primary App Certificate of the project.
+- `recording_server`: String. The IP of the recording server.
+  - Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.
+  - Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.
+- `status`: Number. The status of the project:
+  - `1`: The project is enabled.
+  - `0`: The project is disabled.
+  - `created`: Number. The Unix timestamp (in seconds) of when the project is created.
+
+</Slot>
 
 #### Response example
 
@@ -222,10 +289,19 @@ Disables or enables a specified Agora project.
 
 Pass in the following parameters in the request body:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`id` |String |(Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API.
-|`status`|Number|(Required) Whether to enable or disable the project:<ul><li>`0`: Disable the project. </li><li>`1`: Enable the project.</li></ul>|
+| `id` | String | (Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API. |
+| `status` | Number | <Slot name="status" /> |
+
+<Slot for="status">
+
+(Required) Whether to enable or disable the project:
+
+- `0`: Disable the project.
+- `1`: Enable the project.
+
+</Slot>
 
 #### Request example
 
@@ -246,9 +322,27 @@ If the status code is not `201`, the request fails. See the `message` field in t
 
 If the status code is `201`, the request succeeds, and the response body includes the following parameters:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`project` |Object|The information on the project, including the following fields: <ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary app certificate of the project.</li><li>`recording_server`: String. The IP address of the recording server. </li> <ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul>|
+| `project` | Object | <Slot name="project" /> |
+
+<Slot for="project">
+
+The information on the project, including the following fields:
+
+- `id`: String. The project ID.
+- `name`: String. The project name.
+- `vendor_key`: String. The App ID of the project.
+- `sign_key`: String. The primary app certificate of the project.
+- `recording_server`: String. The IP address of the recording server.
+  - Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.
+  - Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.
+- `status`: Number. The status of the project:
+  - `1`: The project is enabled.
+  - `0`: The project is disabled.
+- `created`: Number. The Unix timestamp (in seconds) of when the project is created.
+
+</Slot>
 
 #### Response example
 
@@ -308,9 +402,27 @@ If the status code is not `201`, the request fails. See the `message` field in t
 
 If the status code is `201`, the request succeeds, and the response body includes the following parameters:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`project` |Object|The information on the project, including the following fields:<ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary app certificate of the project.</li><li>`recording_server`: String. The IP address of the recording server. </li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul>|
+| `project` | Object | <Slot name="project" /> |
+
+<Slot for="project">
+
+The information on the project, including the following fields:
+
+- `id`: String. The project ID.
+- `name`: String. The project name.
+- `vendor_key`: String. The App ID of the project.
+- `sign_key`: String. The primary app certificate of the project.
+- `recording_server`: String. The IP address of the recording server.
+  - Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.
+  - Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.
+- `status`: Number. The status of the project:
+  - `1`: The project is enabled.
+  - `0`: The project is disabled.
+- `created`: Number. The Unix timestamp (in seconds) of when the project is created.
+
+</Slot>
 
 #### Response example
 
@@ -346,10 +458,19 @@ Enables or disables the primary app certificate for a specified project.
 
 The following parameters are required in the request body:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`id` |String |(Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API.|
-|`enable` |Boolean|(Required) Whether to enable or disable the primary app certificate for the project:<ul><li>true: (Default) Enable the primary app certificate. </li><li> false: Do not enable the primary app certificate.</li></ul>|
+| `id` | String | (Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API. |
+| `enable` | Boolean | <Slot name="enable" /> |
+
+<Slot for="enable">
+
+(Required) Whether to enable or disable the primary app certificate for the project:
+
+- true: (Default) Enable the primary app certificate.
+- false: Do not enable the primary app certificate.
+
+</Slot>
 
 #### Request example
 
@@ -370,9 +491,27 @@ If the status code is not `201`, the request fails. See the `message` field in t
 
 If the status code is `201`, the request succeeds, and the response body includes the following parameters:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`project` |Object |The information on the project, including the following fields:<ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary app certificate of the project.</li><li>`recording_server`: String. The IP address of the recording server. </li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul>|
+| `project` | Object | <Slot name="project" /> |
+
+<Slot for="project">
+
+The information on the project, including the following fields:
+
+- `id`: String. The project ID.
+- `name`: String. The project name.
+- `vendor_key`: String. The App ID of the project.
+- `sign_key`: String. The primary app certificate of the project.
+- `recording_server`: String. The IP address of the recording server.
+  - Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.
+  - Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.
+- `status`: Number. The status of the project:
+  - `1`: The project is enabled.
+  - `0`: The project is disabled.
+- `created`: Number. The Unix timestamp (in seconds) of when the project is created.
+
+</Slot>
 
 #### Response example
 
@@ -430,9 +569,27 @@ If the status code is not `201`, the request fails. See the `message` field in t
 
 If the status code is `201`, the request succeeds, and the response body includes the following parameters:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`project` |Object |The information on the project, including the following fields:<ul><li>`id`: String. The project ID.</li><li>`name`: String. The project name.</li><li>`vendor_key`: String. The App ID of the project. </li><li>`sign_key`: String. The primary app certificate of the project.</li><li>`recording_server`: String. The IP address of the recording server. </li><ul><li>Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.</li><li>Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.</li></ul><li>`status`: Number. The status of the project: </li><ul><li>`1`: The project is enabled. </li><li>`0`: The project is disabled. </li></ul><li>`created`: Number. The Unix timestamp (in seconds) of when the project is created. </li></ul>|
+| `project` | Object | <Slot name="project" /> |
+
+<Slot for="project">
+
+The information on the project, including the following fields:
+
+- `id`: String. The project ID.
+- `name`: String. The project name.
+- `vendor_key`: String. The App ID of the project.
+- `sign_key`: String. The primary app certificate of the project.
+- `recording_server`: String. The IP address of the recording server.
+  - Pay attention to this field if you use v1.9.0 and earlier versions of the Agora On-Premise Recording SDK.
+  - Ignore this field if you use v1.11.0 and later versions of the Agora On-Premise Recording SDK.
+- `status`: Number. The status of the project:
+  - `1`: The project is enabled.
+  - `0`: The project is disabled.
+- `created`: Number. The Unix timestamp (in seconds) of when the project is created.
+
+</Slot>
 
 #### Response example
 
@@ -468,12 +625,24 @@ Gets the usage data of a specified project.
 
 Pass the following query parameters in the request path:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`project_id` |String |(Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API.|
-|`from_date` |String |(Required) The start date of the query, UTC time. For example, 2020-01-01.|
-|`to_date` |String |(Required) The end date of the query, UTC time. For example, 2020-01-31.|
-|`business` |String|(Required) The business type. You can choose one of the following values:<ul><li>`default`: Audio and video. The usage on Miniapp is not included.</li><li>`transcodeDuration`: Transcoding. </li><li>`recording`: On-premise recording.</li><li>`cloudRecording`: Cloud recording.</li><li>`miniapp`: Miniapp.</li></ul>|
+| `project_id` | String | (Required) The project ID, which can be obtained by calling the [Get all projects](#get-all-projects) API. |
+| `from_date` | String | (Required) The start date of the query, UTC time. For example, 2020-01-01. |
+| `to_date` | String | (Required) The end date of the query, UTC time. For example, 2020-01-31. |
+| `business` | String | <Slot name="business" /> |
+
+<Slot for="business">
+
+(Required) The business type. You can choose one of the following values:
+
+- `default`: Audio and video. The usage on Miniapp is not included.
+- `transcodeDuration`: Transcoding.
+- `recording`: On-premise recording.
+- `cloudRecording`: Cloud recording.
+- `miniapp`: Miniapp.
+
+</Slot>
 
 #### Request example
 
@@ -489,10 +658,50 @@ If the status code is not `200`, the request fails. See the `message` field in t
 
 If the status code is `200`, the request succeeds, and the response body includes the following parameters:
 
-|Parameter |Type |Description|
+| Parameter | Type | Description |
 |---|---|---|
-|`meta` |Object |Metadata, which describes the meaning of `durationAudioAll`, `durationVideo1080P`, `durationVideo2K`, `durationVideo4K`, `durationVideoHd` and `durationVideoHdp` in the `usage` parameter. <ul><li> `durationAudioAll`: Object. Total audio duration. </li><ul><li> `en`: String . `durationAudioAll` in English, that is, "Total Audio Duration". </li><li> `unit`: String. The unit of audio duration, in seconds. </li></ul><li> `durationVideo1080P`: Object. Total Full HD video duration. </li><ul><li> `en`: String . `durationVideo1080P` in English, that is, "Full HD Video Duration (including Recording)".</li><li> `unit`: String . The unit of Full HD video duration, in seconds. </li></ul><li> `durationVideo2K`: Object. Total duration of 2K video. </li><ul><li> `en`: String. `durationVideo2K` in English, that is, "2K Video Duration(including Recording)". </li><li> `unit`: String . The unit of 2K video duration, in seconds.</li></ul><li> `durationVideo4K`: Object. Total duration of 2K+ video. </li><ul><li> `en`: String. `durationVideo4K` in English, that is, "2K+ Video Duration(including Recording)".</li><li> `unit`: String. The unit of 2K+ video duration, in seconds. </li></ul><li> `durationVideoHd`: Total duration of HD video. </li><ul><li> `en`: String. `durationVideoHd` in English, that is, "HD Video Duration (including On premise Recording)".</li><li> `unit`: String. The unit of HD video duration, in seconds.</li></ul><li> `durationVideoHdp`: Total duration of Hdp video. </li><ul><li> `en`: String. `durationVideoHdp` in English, that is, "HDP Video Duration(including Recording)". </li><li> `unit`: String. The unit of HDP video duration, in seconds. </li></ul></ul>|
-|`usages` |Array |Usage of the specified project. This array consists of multiple objects. Each object shows the usage of a specific day and includes the following fields:<ul><li> `date`: Number. The query date, using UTC time and Unix timestamp.</li><li>`usage`: Object. The usage of the query date. </li><li> `durationAudioAll`: Number. Total duration of the audio, in seconds.</li><li> `durationVideo1080P`: Number. Total duration of Full HD video, in seconds.</li><li> `durationVideo2K`: Number. Total duration of 2K video, in seconds. </li><li> `durationVideo4K`: Number. Total duration of 2K+ video, in seconds. </li><li> `durationVideoHd`: Number. Total duration of HD video, in seconds. </li><li>`durationVideoHdp`: Number. Total duration of HDP video, in seconds. </li></ul>|
+| `meta` | Object | <Slot name="meta" /> |
+| `usages` | Array | <Slot name="usages" /> |
+
+<Slot for="meta">
+
+Metadata, which describes the meaning of `durationAudioAll`, `durationVideo1080P`, `durationVideo2K`, `durationVideo4K`, `durationVideoHd` and `durationVideoHdp` in the `usage` parameter.
+
+- `durationAudioAll`: Object. Total audio duration.
+  - `en`: String . `durationAudioAll` in English, that is, "Total Audio Duration".
+  - `unit`: String. The unit of audio duration, in seconds.
+- `durationVideo1080P`: Object. Total Full HD video duration.
+  - `en`: String . `durationVideo1080P` in English, that is, "Full HD Video Duration (including Recording)".
+  - `unit`: String . The unit of Full HD video duration, in seconds.
+- `durationVideo2K`: Object. Total duration of 2K video.
+  - `en`: String. `durationVideo2K` in English, that is, "2K Video Duration(including Recording)".
+  - `unit`: String . The unit of 2K video duration, in seconds.
+- `durationVideo4K`: Object. Total duration of 2K+ video.
+  - `en`: String. `durationVideo4K` in English, that is, "2K+ Video Duration(including Recording)".
+  - `unit`: String. The unit of 2K+ video duration, in seconds.
+- `durationVideoHd`: Total duration of HD video.
+  - `en`: String. `durationVideoHd` in English, that is, "HD Video Duration (including On premise Recording)".
+  - `unit`: String. The unit of HD video duration, in seconds.
+- `durationVideoHdp`: Total duration of Hdp video.
+  - `en`: String. `durationVideoHdp` in English, that is, "HDP Video Duration(including Recording)".
+  - `unit`: String. The unit of HDP video duration, in seconds.
+
+</Slot>
+
+<Slot for="usages">
+
+Usage of the specified project. This array consists of multiple objects. Each object shows the usage of a specific day and includes the following fields:
+
+- `date`: Number. The query date, using UTC time and Unix timestamp.
+- `usage`: Object. The usage of the query date.
+- `durationAudioAll`: Number. Total duration of the audio, in seconds.
+- `durationVideo1080P`: Number. Total duration of Full HD video, in seconds.
+- `durationVideo2K`: Number. Total duration of 2K video, in seconds.
+- `durationVideo4K`: Number. Total duration of 2K+ video, in seconds.
+- `durationVideoHd`: Number. Total duration of HD video, in seconds.
+- `durationVideoHdp`: Number. Total duration of HDP video, in seconds.
+
+</Slot>
 
 #### Response example
 
@@ -572,17 +781,27 @@ The following table shows the possible response status codes.
 
 -   If the status code is neither `200` nor `201`, the request fails. See the `message` field in the response body for the reason for this failure.
 
-|Response status code |Description|
+| Response status code | Description |
 |---|---|
-|200 |The request is successful.|
-|201 |The request has been fulfilled, resulting in the creation of a new resource.|
-|400 |Bad request. Possible reasons:<ul><li>Duplicate project name.</li><li>Vendor is blocked.</li><li>The number of projects exceeds the maximum limit.</li></ul>|
-|401 |Unauthorized (incorrect App ID/Customer Certificate).|
-|403 |Forbidden.|
-|404 |The requested resource could not be found.|
-|415 |Unsupported media type. Make sure that you set `Content-Type` in `Headers` as `application/json`.|
-|429 |Too many requests.|
-|500 |Internal error of the Agora RESTful API service.|
+| 200 | The request is successful. |
+| 201 | The request has been fulfilled, resulting in the creation of a new resource. |
+| 400 | <Slot name="400" /> |
+| 401 | Unauthorized (incorrect App ID/Customer Certificate). |
+| 403 | Forbidden. |
+| 404 | The requested resource could not be found. |
+| 415 | Unsupported media type. Make sure that you set `Content-Type` in `Headers` as `application/json`. |
+| 429 | Too many requests. |
+| 500 | Internal error of the Agora RESTful API service. |
+
+<Slot for="400">
+
+Bad request. Possible reasons:
+
+- Duplicate project name.
+- Vendor is blocked.
+- The number of projects exceeds the maximum limit.
+
+</Slot>
 
 ## Ensure service reliability
 

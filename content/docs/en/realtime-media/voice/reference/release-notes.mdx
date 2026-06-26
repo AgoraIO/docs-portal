@@ -468,11 +468,25 @@ This release has optimized the implementation of some functions, which involved 
 
   To improve interface usability, this release removes some methods and callbacks for channel media relay. Use the alternative options listed in the table below:
 
-  | Deleted methods and callbacks             | Alternative methods and callbacks |
+  | Deleted methods and callbacks | Alternative methods and callbacks |
   | ----------------------------------------------------- | ---------------------------------- |
-  | <ul><li>`startChannelMediaRelay`</li><li>`updateChannelMediaRelay`</li></ul>   | `startOrUpdateChannelMediaRelay`  |
-  | <ul><li>`startChannelMediaRelayEx`</li><li>`updateChannelMediaRelayEx`</li></ul> | `startOrUpdateChannelMediaRelayEx` |
-  | `onChannelMediaRelayEvent`              | `onChannelMediaRelayStateChanged` |
+  | <Slot name="startorupdatechannelmediarelay" /> | `startOrUpdateChannelMediaRelay` |
+  | <Slot name="startorupdatechannelmediarelayex" /> | `startOrUpdateChannelMediaRelayEx` |
+  | `onChannelMediaRelayEvent` | `onChannelMediaRelayStateChanged` |
+
+  <Slot for="startorupdatechannelmediarelay">
+
+  - `startChannelMediaRelay`
+  - `updateChannelMediaRelay`
+
+  </Slot>
+
+  <Slot for="startorupdatechannelmediarelayex">
+
+  - `startChannelMediaRelayEx`
+  - `updateChannelMediaRelayEx`
+
+  </Slot>
 
 1. **Audio route**
 
@@ -1573,9 +1587,23 @@ This release has optimized the implementation of some functions, involving renam
 
   | Deleted methods and callbacks | Alternative methods and callbacks |
   | ----------------------------- | ---------------------------------- |
-  | <ul><li>`startChannelMediaRelay`</li><li>`updateChannelMediaRelay`</li></ul>| `startOrUpdateChannelMediaRelay`  |
-  | <ul><li>`startChannelMediaRelayEx`</li><li>`updateChannelMediaRelayEx`</li></ul>| `startOrUpdateChannelMediaRelayEx` |
-  | `didReceiveChannelMediaRelayEvent`| `channelMediaRelayStateDidChange` |
+  | <Slot name="startorupdatechannelmediarelay" /> | `startOrUpdateChannelMediaRelay` |
+  | <Slot name="startorupdatechannelmediarelayex" /> | `startOrUpdateChannelMediaRelayEx` |
+  | `didReceiveChannelMediaRelayEvent` | `channelMediaRelayStateDidChange` |
+
+  <Slot for="startorupdatechannelmediarelay">
+
+  - `startChannelMediaRelay`
+  - `updateChannelMediaRelay`
+
+  </Slot>
+
+  <Slot for="startorupdatechannelmediarelayex">
+
+  - `startChannelMediaRelayEx`
+  - `updateChannelMediaRelayEx`
+
+  </Slot>
 
 1. **Audio route**
 
@@ -2620,11 +2648,25 @@ This release has optimized the implementation of some functions, involving renam
 
    To improve interface usability, this release removes some methods and callbacks for channel media relay. Use the alternative options listed in the table below:
 
-   | Deleted methods and callbacks | Alternative methods and callbacks  |
+   | Deleted methods and callbacks | Alternative methods and callbacks |
    | ----------------------------- | ---------------------------------- |
-   | <ul><li>`startChannelMediaRelay`</li><li>`updateChannelMediaRelay`</li> </ul>| `startOrUpdateChannelMediaRelay`   |
-   | <ul><li>`startChannelMediaRelayEx`</li><li>`updateChannelMediaRelayEx`</li></ul>| `startOrUpdateChannelMediaRelayEx` |
-   | `didReceiveChannelMediaRelayEvent` | `channelMediaRelayStateDidChange`  |
+   | <Slot name="startorupdatechannelmediarelay" /> | `startOrUpdateChannelMediaRelay` |
+   | <Slot name="startorupdatechannelmediarelayex" /> | `startOrUpdateChannelMediaRelayEx` |
+   | `didReceiveChannelMediaRelayEvent` | `channelMediaRelayStateDidChange` |
+
+   <Slot for="startorupdatechannelmediarelay">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="startorupdatechannelmediarelayex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 1. **Audio loopback capturing**
 
@@ -4416,11 +4458,43 @@ Chrome plans to deprecate the stats dictionary `RTCMediaStreamTrackStats`.
 See the service announcement on [discuss-webrtc@googlegrooups.com](https://groups.google.com/g/discuss-webrtc/c/9c8ZjberEcI).
 This change affects the following media track statistics returned by the SDK:
 
-| Statistics       | Affected fields                       |
+| Statistics | Affected fields |
 | :---------------------- | :----------------------------------------------------------- |
-| `LocalVideoTrackStats` | <li>`sendFrameRate`</li><li>`sendResolutionHeight`</li><li>`sendResolutionWidth`</li> |
-| `RemoteVideoTrackStats` | <li>`receiveFrameRate`</li><li>`receiveResolutionHeight`</li><li>`receiveResolutionWidth`</li><li>`renderFrameRate`</li><li>`receiveDelay`</li> |
-| `RemoteAudioTrackStats` | <li>`receiveDelay`</li><li>`receiveLevel`</li>        |
+| `LocalVideoTrackStats` | <Slot name="localvideotrackstats" /> |
+| `RemoteVideoTrackStats` | <Slot name="remotevideotrackstats" /> |
+| `RemoteAudioTrackStats` | <Slot name="remoteaudiotrackstats" /> |
+
+<Slot for="localvideotrackstats">
+
+- `sendFrameRate`
+
+- `sendResolutionHeight`
+
+- `sendResolutionWidth`
+
+</Slot>
+
+<Slot for="remotevideotrackstats">
+
+- `receiveFrameRate`
+
+- `receiveResolutionHeight`
+
+- `receiveResolutionWidth`
+
+- `renderFrameRate`
+
+- `receiveDelay`
+
+</Slot>
+
+<Slot for="remoteaudiotrackstats">
+
+- `receiveDelay`
+
+- `receiveLevel`
+
+</Slot>
 
 To ensure the accuracy of these media track statistics on Chrome, please upgrade the SDK to v4.16.0 or later as soon as possible.
 
@@ -4471,11 +4545,33 @@ To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
 Video SDK for Web v4.15.0 adds support for the VP9 codec in the following browsers:
 
-|     | Supported browsers①                |
+|  | Supported browsers① |
 | ------- | ------------------------------------------------------------ |
-| Desktop | <li>Chrome 65 or later</li><li>Firefox 69 or later</li><li>Edge 79 or later</li> <li>Safari 16 or later</li>|
-| Android | <li>Chrome 68 or later</li><li>Wechat v8.0.6 or later </li><li>Other apps that use WKWebView: WebView v65.0.3325.109 or later</li> |
-| iOS   | Safari 16 or later |
+| Desktop | <Slot name="desktop" /> |
+| Android | <Slot name="android" /> |
+| iOS | Safari 16 or later |
+
+<Slot for="desktop">
+
+- Chrome 65 or later
+
+- Firefox 69 or later
+
+- Edge 79 or later
+
+- Safari 16 or later
+
+</Slot>
+
+<Slot for="android">
+
+- Chrome 68 or later
+
+- Wechat v8.0.6 or later
+
+- Other apps that use WKWebView: WebView v65.0.3325.109 or later
+
+</Slot>
 
 :::note
 ① To ensure the best user experience, best practice is to use the latest version of the browsers listed above.
@@ -5699,12 +5795,40 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
 
    To enhance the adaptability of various frameworks to the SDK, this version has made the following modifications to some API members or parameters:
 
-   | API                             | Members/Parameters                                         | Change                                                       |
+   | API | Members/Parameters | Change |
    | ------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
-   | `startScreenCaptureByDisplayId` | **displayId**                                              | Changed from `uint32_t` to `int64_t`                             |
-   | `startScreenCaptureByWindowId`  | **windowId**                                               | Changed from `view_t` to `int64_t`                               |
-   | `ScreenCaptureConfiguration`    | <ul><li>**displayId**</li><li>**windowId**</li></ul>       | <ul><li>**displayId**: Changed from `uint32_t` to `int64_t`</li><li>**windowId**: Changed from `view_t` to `int64_t`</li></ul> |
-   | `ScreenCaptureSourceInfo`       | <ul><li>**sourceDisplayId**</li><li>**sourceId**</li></ul> | <ul><li>**sourceDisplayId**： Changed from `view_t` to `int64_t`</li><li>**sourceId**：Default value changed from `nullptr` to `0`</li></ul> |
+   | `startScreenCaptureByDisplayId` | **displayId** | Changed from `uint32_t` to `int64_t` |
+   | `startScreenCaptureByWindowId` | **windowId** | Changed from `view_t` to `int64_t` |
+   | `ScreenCaptureConfiguration` | <Slot name="screencaptureconfiguration-members-parameters" /> | <Slot name="screencaptureconfiguration-change" /> |
+   | `ScreenCaptureSourceInfo` | <Slot name="screencapturesourceinfo-members-parameters" /> | <Slot name="screencapturesourceinfo-change" /> |
+
+   <Slot for="screencaptureconfiguration-members-parameters">
+
+   - **displayId**
+   - **windowId**
+
+   </Slot>
+
+   <Slot for="screencaptureconfiguration-change">
+
+   - **displayId**: Changed from `uint32_t` to `int64_t`
+   - **windowId**: Changed from `view_t` to `int64_t`
+
+   </Slot>
+
+   <Slot for="screencapturesourceinfo-members-parameters">
+
+   - **sourceDisplayId**
+   - **sourceId**
+
+   </Slot>
+
+   <Slot for="screencapturesourceinfo-change">
+
+   - **sourceDisplayId**： Changed from `view_t` to `int64_t`
+   - **sourceId**：Default value changed from `nullptr` to `0`
+
+   </Slot>
 
 #### New features
 
@@ -5898,11 +6022,25 @@ This release has optimized the implementation of some functions, involving renam
 
    To improve interface usability, this release removes some methods and callbacks for channel media relay. Use the alternative options listed in the table below:
 
-   | Deleted methods and callbacks                                | Alternative methods and callbacks  |
+   | Deleted methods and callbacks | Alternative methods and callbacks |
    | ------------------------------------------------------------ | ---------------------------------- |
-   | <ul><li>`startChannelMediaRelay`</li><li>`updateChannelMediaRelay`</li></ul> | `startOrUpdateChannelMediaRelay`   |
-   | <ul><li>`startChannelMediaRelayEx`</li><li>`updateChannelMediaRelayEx`</li></ul> | `startOrUpdateChannelMediaRelayEx` |
-   | `onChannelMediaRelayEvent`                                   | `onChannelMediaRelayStateChanged`  |
+   | <Slot name="startorupdatechannelmediarelay" /> | `startOrUpdateChannelMediaRelay` |
+   | <Slot name="startorupdatechannelmediarelayex" /> | `startOrUpdateChannelMediaRelayEx` |
+   | `onChannelMediaRelayEvent` | `onChannelMediaRelayStateChanged` |
+
+   <Slot for="startorupdatechannelmediarelay">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="startorupdatechannelmediarelayex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 1. **Audio loopback capturing**
 
@@ -8135,11 +8273,25 @@ This release has optimized the implementation of some functions, involving renam
 
    To improve interface usability, this release removes some methods and callbacks for channel media relay. Use the alternative options listed in the table below:
 
-   | Deleted methods and callbacks                         | Alternative methods and callbacks  |
+   | Deleted methods and callbacks | Alternative methods and callbacks |
    | ----------------------------------------------------- | ---------------------------------- |
-   | <ul><li>`startChannelMediaRelay`</li><li>`updateChannelMediaRelay`</li></ul>     | `startOrUpdateChannelMediaRelay`   |
-   | <ul><li>`startChannelMediaRelayEx`</li><li>`updateChannelMediaRelayEx`</li></ul> | `startOrUpdateChannelMediaRelayEx` |
-   | `onChannelMediaRelayEvent`                            | `onChannelMediaRelayStateChanged`  |
+   | <Slot name="startorupdatechannelmediarelay" /> | `startOrUpdateChannelMediaRelay` |
+   | <Slot name="startorupdatechannelmediarelayex" /> | `startOrUpdateChannelMediaRelayEx` |
+   | `onChannelMediaRelayEvent` | `onChannelMediaRelayStateChanged` |
+
+   <Slot for="startorupdatechannelmediarelay">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="startorupdatechannelmediarelayex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 1. **Audio route**
 
@@ -10155,11 +10307,25 @@ This version includes optimizations to some features, including changes to SDK b
 
    This version has made the following modifications to some API members or parameters:
 
-   | API                            | Members/Parameters                                         | Change                       |
+   | API | Members/Parameters | Change |
    | ------------------------------ | ---------------------------------------------------------- | ---------------------------- |
-   | `StartScreenCaptureByWindowId` | `windowId`                                               | Changed from `view_t` to `long`  |
-   | `ScreenCaptureConfiguration`   | <ul><li>`displayId`</li><li>`windowId`</li></ul>        | Changed from `unit` to  `long`   |
-   | `ScreenCaptureSourceInfo`      | <ul><li>`sourceDisplayId`</li><li>`sourceId`</li></ul> | Changed from `view_t` to  `long` |
+   | `StartScreenCaptureByWindowId` | `windowId` | Changed from `view_t` to `long` |
+   | `ScreenCaptureConfiguration` | <Slot name="screencaptureconfiguration" /> | Changed from `unit` to  `long` |
+   | `ScreenCaptureSourceInfo` | <Slot name="screencapturesourceinfo" /> | Changed from `view_t` to  `long` |
+
+   <Slot for="screencaptureconfiguration">
+
+   - `displayId`
+   - `windowId`
+
+   </Slot>
+
+   <Slot for="screencapturesourceinfo">
+
+   - `sourceDisplayId`
+   - `sourceId`
+
+   </Slot>
 
 1. **Changes in strong video noise suppression implementation**
 
@@ -10463,11 +10629,25 @@ This release has optimized the implementation of some functions, involving renam
 
    To improve interface usability, this release removes some methods and callbacks for channel media relay. Use the alternative options listed in the table below:
 
-   | Deleted methods and callbacks                                | Alternative methods and callbacks  |
+   | Deleted methods and callbacks | Alternative methods and callbacks |
    | ------------------------------------------------------------ | ---------------------------------- |
-   | <ul><li>`startChannelMediaRelay`</li><li>`updateChannelMediaRelay`</li></ul> | `startOrUpdateChannelMediaRelay`   |
-   | <ul><li>`startChannelMediaRelayEx`</li><li>`updateChannelMediaRelayEx`</li></ul> | `startOrUpdateChannelMediaRelayEx` |
-   | `onChannelMediaRelayEvent`                                   | `onChannelMediaRelayStateChanged`  |
+   | <Slot name="startorupdatechannelmediarelay" /> | `startOrUpdateChannelMediaRelay` |
+   | <Slot name="startorupdatechannelmediarelayex" /> | `startOrUpdateChannelMediaRelayEx` |
+   | `onChannelMediaRelayEvent` | `onChannelMediaRelayStateChanged` |
+
+   <Slot for="startorupdatechannelmediarelay">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="startorupdatechannelmediarelayex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 1. **Audio route**
 

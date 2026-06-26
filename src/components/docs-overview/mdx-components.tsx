@@ -33,8 +33,20 @@ import {
   ZapIcon,
 } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
-import { type ReactNode, useDeferredValue, useMemo, useState } from 'react';
+import {
+  lazy,
+  type ReactNode,
+  useDeferredValue,
+  useMemo,
+  useState,
+} from 'react';
 import { cn } from '@/lib/cn';
+
+const SdksCatalog = lazy(() =>
+  import('./SdksCatalog').then((module) => ({
+    default: module.SdksCatalog,
+  })),
+);
 
 export function getOverviewMDXComponents(): MDXComponents {
   return {
@@ -51,6 +63,7 @@ export function getOverviewMDXComponents(): MDXComponents {
     OverviewSpotlightGrid,
     OverviewToolkits,
     RecipesCatalog,
+    SdksCatalog,
     SolutionCard,
     SolutionCardGrid,
     ToolkitGroup,
@@ -156,7 +169,9 @@ function HelpHub({
               className="group flex min-h-[11.5rem] flex-col rounded-[22px] border border-border bg-background px-4 py-4 transition-colors hover:border-primary/35 hover:bg-accent/35"
               href={card.href}
               key={card.title}
-              rel={isExternalHref(card.href) ? 'noreferrer noopener' : undefined}
+              rel={
+                isExternalHref(card.href) ? 'noreferrer noopener' : undefined
+              }
               target={isExternalHref(card.href) ? '_blank' : undefined}
             >
               <div className="flex items-start justify-between gap-3">
@@ -195,7 +210,11 @@ function HelpHub({
                 <a
                   className="group flex items-center justify-between gap-4 rounded-[16px] px-3 py-3 text-sm text-foreground transition-colors hover:bg-accent/45 hover:text-primary"
                   href={item.href}
-                  rel={isExternalHref(item.href) ? 'noreferrer noopener' : undefined}
+                  rel={
+                    isExternalHref(item.href)
+                      ? 'noreferrer noopener'
+                      : undefined
+                  }
                   target={isExternalHref(item.href) ? '_blank' : undefined}
                 >
                   <span className="leading-6">{item.label}</span>
@@ -216,7 +235,9 @@ function HelpHub({
                 className="group flex items-center justify-between gap-4 rounded-[16px] border border-border bg-background px-4 py-3.5 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-accent/35 hover:text-primary"
                 href={item.href}
                 key={item.label}
-                rel={isExternalHref(item.href) ? 'noreferrer noopener' : undefined}
+                rel={
+                  isExternalHref(item.href) ? 'noreferrer noopener' : undefined
+                }
                 target={isExternalHref(item.href) ? '_blank' : undefined}
               >
                 <span>{item.label}</span>
@@ -230,11 +251,7 @@ function HelpHub({
   );
 }
 
-function HelpHubIcon({
-  kind,
-}: {
-  kind: HelpHubCard['icon'];
-}) {
+function HelpHubIcon({ kind }: { kind: HelpHubCard['icon'] }) {
   if (kind === 'ticket') {
     return <TicketIcon className="size-4" />;
   }
@@ -534,8 +551,8 @@ function SolutionCardGrid({
       className={cn(
         'not-prose my-8 grid gap-4',
         size === 'small'
-          ? 'sm:grid-cols-2 xl:grid-cols-3'
-          : 'sm:grid-cols-2 lg:grid-cols-3',
+          ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
+          : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
       )}
     >
       {children}
@@ -571,18 +588,18 @@ type SolutionCardIconKind =
 
 type SolutionCardTone = 'blue' | 'green' | 'pink' | 'purple' | 'sand';
 
-type RecipeCatalogItemLink = {
+export type RecipeCatalogItemLink = {
   href: string;
   label: string;
 };
 
-type RecipeCatalogGroupMeta = {
+export type RecipeCatalogGroupMeta = {
   description?: string;
   icon?: SolutionCardIconKind;
   title?: string;
 };
 
-type RecipeCatalogItem = {
+export type RecipeCatalogItem = {
   category: string;
   description: string;
   href?: string;
@@ -656,7 +673,9 @@ function SolutionCard({
               href={action.href}
               key={action.href}
               rel={
-                action.href.startsWith('http') ? 'noreferrer noopener' : undefined
+                action.href.startsWith('http')
+                  ? 'noreferrer noopener'
+                  : undefined
               }
               target={action.href.startsWith('http') ? '_blank' : undefined}
             >
@@ -692,7 +711,7 @@ function SolutionCard({
   );
 }
 
-function RecipesCatalog({
+export function RecipesCatalog({
   allCategoriesLabel,
   allProductsLabel,
   allStacksLabel,
@@ -708,6 +727,7 @@ function RecipesCatalog({
   showDescription = true,
   showTags = true,
   stackFilterLabel,
+  stackQueryParam,
 }: {
   allCategoriesLabel: string;
   allProductsLabel: string;
@@ -724,11 +744,16 @@ function RecipesCatalog({
   showDescription?: boolean;
   showTags?: boolean;
   stackFilterLabel: string;
+  stackQueryParam?: string;
 }) {
   const [query, setQuery] = useState('');
   const [activeProduct, setActiveProduct] = useState(allProductsLabel);
   const [activeCategory, setActiveCategory] = useState(allCategoriesLabel);
-  const [activeStack, setActiveStack] = useState(allStacksLabel);
+  const initialStack = useMemo(
+    () => getInitialRecipeStack(items, allStacksLabel, stackQueryParam),
+    [allStacksLabel, items, stackQueryParam],
+  );
+  const [activeStack, setActiveStack] = useState(initialStack);
   const deferredQuery = useDeferredValue(query);
 
   const products = useMemo(
@@ -888,11 +913,15 @@ function RecipesCatalog({
             {groupedItems.map((group) => (
               <section className="space-y-4" key={group.product}>
                 <div className="flex items-start gap-3">
-                  {productGroups?.[group.product]?.icon ? (
-                    <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-foreground">
-                      <SolutionCardIcon kind={productGroups[group.product].icon!} />
-                    </span>
-                  ) : null}
+                  {(() => {
+                    const productGroup = productGroups?.[group.product];
+
+                    return productGroup?.icon ? (
+                      <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-foreground">
+                        <SolutionCardIcon kind={productGroup.icon} />
+                      </span>
+                    ) : null;
+                  })()}
                   <div className="min-w-0">
                     <h3 className="m-0 text-lg font-semibold text-foreground">
                       {productGroups?.[group.product]?.title ?? group.product}
@@ -911,7 +940,8 @@ function RecipesCatalog({
                       description={item.description}
                       href={item.href}
                       key={
-                        item.href ?? `${item.product}-${item.stack ?? item.title}`
+                        item.href ??
+                        `${item.product}-${item.stack ?? item.title}`
                       }
                       size="small"
                       showDescription={showDescription}
@@ -1011,6 +1041,41 @@ function getUniqueValues(values: Array<string | undefined>) {
   return [
     ...new Set(values.filter((value): value is string => Boolean(value))),
   ];
+}
+
+function getInitialRecipeStack(
+  items: RecipeCatalogItem[],
+  fallback: string,
+  queryParam?: string,
+) {
+  if (typeof window === 'undefined' || !queryParam) {
+    return fallback;
+  }
+
+  const queryValue = new URLSearchParams(window.location.search).get(
+    queryParam,
+  );
+
+  if (!queryValue) {
+    return fallback;
+  }
+
+  const normalizedQueryValue = normalizeRecipeFilterValue(
+    queryValue.replace(/-/g, ' '),
+  );
+  const matchingStack = getUniqueValues(
+    items.map((item) => item.stack).filter(Boolean),
+  ).find((stack) => {
+    const normalizedStack = normalizeRecipeFilterValue(stack);
+
+    return (
+      normalizedStack === normalizedQueryValue ||
+      normalizedStack.replace(/\s+/g, '-') ===
+        normalizeRecipeFilterValue(queryValue)
+    );
+  });
+
+  return matchingStack ?? fallback;
 }
 
 function normalizeRecipeFilterValue(value: string) {

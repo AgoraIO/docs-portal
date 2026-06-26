@@ -8,7 +8,71 @@ This integration is fully supported for use with Conversational AI Engine. While
 
 ### Sample configuration
 
-The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+The following example shows how to configure AssemblyAI ASR when starting a conversational AI agent.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, AssemblyAISTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(AssemblyAISTT(
+        api_key='your-assemblyai-key',
+        language='en-US',
+        uri='wss://streaming.assemblyai.com/v3/ws',
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AssemblyAISTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new AssemblyAISTT({
+    apiKey: 'your-assemblyai-key',
+    language: 'en-US',
+    uri: 'wss://streaming.assemblyai.com/v3/ws',
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewAssemblyAISTT(vendors.AssemblyAISTTOptions{
+        APIKey:   "your-assemblyai-key",
+        Language: "en-US",
+        URI:      "wss://streaming.assemblyai.com/v3/ws",
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+<TabsContent value="rest-api">
+
+Use the following `asr` configuration in your request:
 
 ```json
 "asr": {
@@ -20,6 +84,9 @@ The following example shows a starting `asr` parameter configuration you can use
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 :::caution[Caution]
 The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [AssemblyAI official documentation](https://www.assemblyai.com/docs/universal-streaming).

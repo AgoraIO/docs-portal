@@ -409,6 +409,79 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('uses structured separator flags for sidebar group collapsibility', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'build-folder',
+        children: [
+          {
+            $id: 'build-separator-create',
+            icon: 'Play',
+            name: 'Create and connect an agent{dropdown}',
+            type: 'separator',
+          },
+          {
+            $id: 'build-start-stop',
+            name: 'Start and stop an agent',
+            type: 'page',
+            url: '/en/ai/build/start-stop-agent',
+          },
+          {
+            $id: 'build-separator-realtime',
+            name: 'Realtime{flat}',
+            type: 'separator',
+          },
+          {
+            $id: 'build-monitor-runtime',
+            name: 'Monitor agent runtime',
+            type: 'page',
+            url: '/en/ai/build/monitor-agent-runtime',
+          },
+        ],
+        name: 'Build',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        children: [
+          {
+            children: [
+              {
+                id: '/en/ai/build/start-stop-agent',
+                title: 'Start and stop an agent',
+                type: 'page',
+                url: '/en/ai/build/start-stop-agent',
+              },
+            ],
+            collapsible: true,
+            icon: 'Play',
+            id: 'separator-Create and connect an agent',
+            title: 'Create and connect an agent',
+            type: 'section',
+          },
+          {
+            children: [
+              {
+                id: '/en/ai/build/monitor-agent-runtime',
+                title: 'Monitor agent runtime',
+                type: 'page',
+                url: '/en/ai/build/monitor-agent-runtime',
+              },
+            ],
+            collapsible: false,
+            id: 'separator-Realtime',
+            title: 'Realtime',
+            type: 'section',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-build-folder',
+        title: 'Build',
+        type: 'section',
+      },
+    ]);
+  });
+
   it('builds recursive sidebar nodes from nested product folders', () => {
     const productTree: Root = {
       children: [

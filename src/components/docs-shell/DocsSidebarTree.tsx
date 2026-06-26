@@ -37,13 +37,19 @@ const sidebarSectionTitleClassName =
   'block min-w-0 flex-1 break-words leading-5 whitespace-normal';
 
 const sidebarSubButtonClassName =
-  'min-h-[28px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1 text-[12.75px] text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
+  'relative min-h-[28px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1 text-[12.75px] text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const sidebarPageButtonClassName =
-  'relative min-h-[30px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
+  'relative min-h-[30px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const openApiSidebarButtonClassName =
   'h-auto min-h-[28px] items-start overflow-visible py-1';
+
+const expandedSidebarChildrenClassName =
+  'border-l border-[color:var(--line-strong)] pl-3';
+
+const nestedExpandedSidebarChildrenClassName =
+  'mt-1 flex flex-col gap-1 border-l border-[color:var(--line-strong)] pl-3';
 
 const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [];
 
@@ -57,10 +63,8 @@ export function DocsSidebarTree({
   onSelectPath: () => void;
 }) {
   const renderableNodes = normalizeRootSections(
-    normalizeBuildNestedSections(
-      mergeBestPracticesIntoBuild(
-        mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
-      ),
+    mergeBestPracticesIntoBuild(
+      mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
     ),
   );
 
@@ -227,7 +231,7 @@ function SidebarSection({
         />
       </SidebarMenuButton>
       {isOpen ? (
-        <SidebarMenuSub>
+        <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {node.children.map((child) =>
             child.type === 'section' ? (
               <SidebarMenuSubItem key={child.id}>
@@ -345,7 +349,7 @@ function SidebarLinkedSection({
         </SidebarMenuButton>
       </div>
       {isOpen ? (
-        <SidebarMenuSub>
+        <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {items.map((child) =>
             child.type === 'section' ? (
               <SidebarMenuSubItem key={child.id}>
@@ -427,7 +431,7 @@ function SidebarQuickstartGroup({
         />
       </SidebarMenuButton>
       {isOpen ? (
-        <SidebarMenuSub>
+        <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {pages.map((child) => (
             <SidebarMenuSubItem key={child.id}>
               <SidebarMenuSubButton
@@ -493,7 +497,7 @@ function SidebarNestedSection({
         />
       </button>
       {isOpen ? (
-        <div className="mt-1 flex flex-col gap-1 pl-3.5">
+        <div className={nestedExpandedSidebarChildrenClassName}>
           {node.children.map((child) =>
             child.type === 'section' ? (
               <SidebarNestedSection
@@ -640,44 +644,6 @@ function mergeBestPracticesIntoBuild(
   }
 
   return merged;
-}
-
-function normalizeBuildNestedSections(
-  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
-) {
-  return nodes.map((node) => normalizeBuildNestedSectionNode(node));
-}
-
-function normalizeBuildNestedSectionNode(
-  node: DocsSidebarNode | RenderableSidebarSectionNode,
-): DocsSidebarNode | RenderableSidebarSectionNode {
-  if (node.type !== 'section') {
-    return node;
-  }
-
-  const normalizedChildren = node.children.map((child) =>
-    normalizeBuildNestedSectionNode(child),
-  );
-
-  if (node.title !== 'Build') {
-    return {
-      ...node,
-      children: normalizedChildren,
-    };
-  }
-
-  return {
-    ...node,
-    children: normalizedChildren.map((child) =>
-      child.type === 'section'
-        ? {
-            ...child,
-            collapsible: true,
-            icon: undefined,
-          }
-        : child,
-    ),
-  };
 }
 
 function normalizeRootSections(
