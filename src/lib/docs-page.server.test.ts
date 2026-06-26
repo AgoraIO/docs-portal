@@ -2384,6 +2384,17 @@ Web body
 
     await expect(
       loadDocsPagePayload('en', 'solutions', [
+        'flexible-classroom',
+        'reference',
+        'restful-authentication',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'solutions', [
         'interactive-live-streaming',
         'reference',
         'agora-console-rest-api',
@@ -2408,10 +2419,50 @@ Web body
       loadDocsPagePayload('en', 'solutions', [
         'iot',
         'reference',
+        'restful-authentication',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/rtc/authentication',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'solutions', [
+        'iot',
+        'reference',
         'channel-management-rest-api',
       ]),
     ).resolves.toEqual({
       redirectUrl: '/en/api-reference/api-ref/iot-channel-management-rest-api',
+    });
+  });
+
+  it('redirects legacy standalone REST reference pages to canonical targets', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'interactive-whiteboard', [
+        'develop',
+        'generate-token-rest',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard/build/generate-token-rest',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'media-gateway', [
+        'reference',
+        'restful-authentication',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/rtmp-gateway/authentication',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'rtmp-gateway',
+        'reference',
+        'restful-authentication',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/rtmp-gateway/authentication',
     });
   });
 

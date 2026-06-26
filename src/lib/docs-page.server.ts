@@ -161,6 +161,17 @@ export async function loadDocsPagePayload(
     };
   }
 
+  const legacyProductRedirect = resolveLegacyProductRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (legacyProductRedirect) {
+    return {
+      redirectUrl: legacyProductRedirect,
+    };
+  }
+
   const legacyRedirect = resolveLegacyBestPracticesRedirect(
     locale,
     tab,
@@ -676,6 +687,34 @@ function resolveAiDocsRedirect(
   return redirects[normalizedPath] ?? null;
 }
 
+function resolveLegacyProductRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (locale !== 'en') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+  const redirects: Record<string, string> = {
+    'flexible-classroom/reference/restful-authentication':
+      '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
+    'interactive-whiteboard/develop/generate-token-rest':
+      '/en/realtime-media/whiteboard/build/generate-token-rest',
+    'iot/reference/restful-authentication':
+      '/en/api-reference/api-ref/rtc/authentication',
+    'media-gateway/reference/restful-authentication':
+      '/en/api-reference/api-ref/rtmp-gateway/authentication',
+    'solutions/flexible-classroom/reference/restful-authentication':
+      '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
+    'solutions/iot/reference/restful-authentication':
+      '/en/api-reference/api-ref/rtc/authentication',
+  };
+
+  return redirects[`${tab}/${normalizedPath}`] ?? null;
+}
+
 function resolveRealtimeMediaRedirect(
   locale: string,
   tab: string,
@@ -736,7 +775,7 @@ function resolveRealtimeMediaApiReferenceRedirect(
       '/en/api-reference/api-ref/on-premise-recording',
     'rtmp-gateway/reference/rest-api': '/en/api-reference/api-ref/rtmp-gateway',
     'rtmp-gateway/reference/restful-authentication':
-      '/en/api-reference/api-ref/rtmp-gateway/restful-authentication',
+      '/en/api-reference/api-ref/rtmp-gateway/authentication',
     'speech-to-text/reference/api-callback-service':
       '/en/api-reference/api-ref/speech-to-text/api-callback-service',
     'speech-to-text/reference/rest-api':
