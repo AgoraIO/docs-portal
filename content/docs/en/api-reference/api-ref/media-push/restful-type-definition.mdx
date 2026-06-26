@@ -9,45 +9,53 @@ This page lists all the type definitions of the Media Push RESTful API.
 
 The audio transcoding configuration of the Converter.
 
-<ParamTable>
-  <ParamTable.Row field="codecProfile" type="(Optional) String">
-    The audio codec output by the Converter. The following values are supported:
+| Field | Type | Descriptions |
+| :---- | :--- | :----------- |
+| `codecProfile` | (Optional) String | <Slot name="audio-codec-profile-description" /> |
+| `sampleRate` | (Optional) Number | The audio coding sampling rate (Hz) output by the Converter, which can can be `32000`, `44100,` or `48000 `(Default value). |
+| `bitrate` | (Optional) Number | The audio encoding bit rate (Kbps) output by the Converter. The value range is [32,128]. The default value is 48. If the audio codec is LC-AAC, the recommended audio code rate range is [32,112]. If the audio codec is HE-AAC, the recommended audio code rate range is [40,96]. |
+| `audioChannels` | (Optional) Number | The number of audio channels output by the Converter, which can be `1` (Default) or `2`. |
+| `rtcStreamUids` | (Optional) JSON Array of Numbers | <Slot name="audio-rtc-stream-uids-description" /> |
+| `volumes` | (Optional) JSON Array | <Slot name="audio-volumes-description" /> |
+| `volumes.rtcStreamUid` | Number | <Slot name="audio-volumes-rtc-stream-uid-description" /> |
+| `volumes.volume` | Number | The volume of the specified mix user. The default value is `100`, and the value range is [0, 200]. |
 
-    - `LC-AAC` (Default): MPEG-4 AAC LC
-    - `HE-AAC`: High-Efficiency AAC
-  </ParamTable.Row>
-  <ParamTable.Row field="sampleRate" type="(Optional) Number">
-    The audio coding sampling rate (Hz) output by the Converter, which can can be `32000`, `44100,` or `48000 `(Default value).
-  </ParamTable.Row>
-  <ParamTable.Row field="bitrate" type="(Optional) Number">
-    The audio encoding bit rate (Kbps) output by the Converter. The value range is [32,128]. The default value is 48. If the audio codec is LC-AAC, the recommended audio code rate range is [32,112]. If the audio codec is HE-AAC, the recommended audio code rate range is [40,96].
-  </ParamTable.Row>
-  <ParamTable.Row field="audioChannels" type="(Optional) Number">
-    The number of audio channels output by the Converter, which can be `1` (Default) or `2`.
-  </ParamTable.Row>
-  <ParamTable.Row field="rtcStreamUids" type="(Optional) JSON Array of Numbers">
-    The user IDs of the users participating in the mixing.
+<Slot for="audio-codec-profile-description">
 
-    - The default value is user IDs of all users in the channel, which means that Agora mixes all users's audio streams in the channel.
-    - An empty array means that Agora does not mix any user's audio streams.
-  </ParamTable.Row>
-  <ParamTable.Row field="volumes" type="(Optional) JSON Array">
-    Set the volume of users participating in the mixing.
+The audio codec output by the Converter. The following values are supported:
 
-    - This field takes effect only when mixing user IDs are specified (set `rtcStreamUids`).
-    - You can call the [`Update`](./index#update-update-the-converter) method to adjust the volume of the specified user. Each time the `Update` request is successful, the volume of other users in the mixing is reseted to the default value (`100`).
-  </ParamTable.Row>
-  <ParamTable.Row field="volumes.rtcStreamUid" type="Number">
-    The user IDs of the mixing users to set the volume.
+- `LC-AAC` (Default): MPEG-4 AAC LC
+- `HE-AAC`: High-Efficiency AAC
 
-    :::info
-    `volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array, otherwise the request `fails` with a response status code of `400`.
-    :::
-  </ParamTable.Row>
-  <ParamTable.Row field="volumes.volume" type="Number">
-    The volume of the specified mix user. The default value is `100`, and the value range is [0, 200].
-  </ParamTable.Row>
-</ParamTable>
+</Slot>
+
+<Slot for="audio-rtc-stream-uids-description">
+
+The user IDs of the users participating in the mixing.
+
+- The default value is user IDs of all users in the channel, which means that Agora mixes all users's audio streams in the channel.
+- An empty array means that Agora does not mix any user's audio streams.
+
+</Slot>
+
+<Slot for="audio-volumes-description">
+
+Set the volume of users participating in the mixing.
+
+- This field takes effect only when mixing user IDs are specified (set `rtcStreamUids`).
+- You can call the [`Update`](./index#update-update-the-converter) method to adjust the volume of the specified user. Each time the `Update` request is successful, the volume of other users in the mixing is reseted to the default value (`100`).
+
+</Slot>
+
+<Slot for="audio-volumes-rtc-stream-uid-description">
+
+The user IDs of the mixing users to set the volume.
+
+:::info
+`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array, otherwise the request `fails` with a response status code of `400`.
+:::
+
+</Slot>
 
 ## videoOptions
 
