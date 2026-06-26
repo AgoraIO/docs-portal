@@ -18,6 +18,8 @@ The following sample code shows how to set and get the preferred language for pu
   <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
   <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
   <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="react-native">React Native</CodeBlockTabsTrigger>
 </CodeBlockTabsList>
 
 <CodeBlockTab value="android">
@@ -71,14 +73,6 @@ chatClient.getPushPerformLanguage();
 ```
 
 </CodeBlockTab>
-
-</CodeBlockTabs>
-
-<CodeBlockTabs defaultValue="flutter">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="react-native">React Native</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
 
 <CodeBlockTab value="flutter">
 

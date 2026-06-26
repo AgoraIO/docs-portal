@@ -65,6 +65,8 @@ Refer to the following code samples to generate a token with basic permissions:
   <CodeBlockTabsTrigger value="nodejs">Node.js</CodeBlockTabsTrigger>
   <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
   <CodeBlockTabsTrigger value="python">Python/Python3</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
 </CodeBlockTabsList>
 
 <CodeBlockTab value="go">
@@ -211,12 +213,6 @@ if __name__ == "__main__":
 main()
 ```
 </CodeBlockTab>
-</CodeBlockTabs>
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
 
 <CodeBlockTab value="java">
 ```java
@@ -389,6 +385,8 @@ Refer to the following code samples to generate a token with advanced permission
   <CodeBlockTabsTrigger value="nodejs">Node.js</CodeBlockTabsTrigger>
   <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
   <CodeBlockTabsTrigger value="python">Python/Python3</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
 </CodeBlockTabsList>
 
 <CodeBlockTab value="go">
@@ -583,12 +581,6 @@ if __name__ == "__main__":
 main()
 ```
 </CodeBlockTab>
-</CodeBlockTabs>
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
 
 <CodeBlockTab value="java">
 ```java

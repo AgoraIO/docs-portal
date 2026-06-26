@@ -34,6 +34,11 @@ Refer to the following sample code for sending messages:
     <CodeBlockTabsList>
      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="objective-c">Objective-C</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="javascript">JavaScript</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
     </CodeBlockTabsList>
 
     <CodeBlockTab value="java">
@@ -73,16 +78,6 @@ Refer to the following sample code for sending messages:
     })
     ```
     </CodeBlockTab>
-    </CodeBlockTabs>
-
-    <CodeBlockTabs defaultValue="swift">
-    <CodeBlockTabsList>
-      <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
-      <CodeBlockTabsTrigger value="objective-c">Objective-C</CodeBlockTabsTrigger>
-      <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
-      <CodeBlockTabsTrigger value="javascript">JavaScript</CodeBlockTabsTrigger>
-      <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
-    </CodeBlockTabsList>
 
     <CodeBlockTab value="swift">
     ```swift
@@ -181,6 +176,10 @@ Refer to the following sample code for sending messages:
     <CodeBlockTabsList>
      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="javascript">JavaScript</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
     </CodeBlockTabsList>
 
     <CodeBlockTab value="java">
@@ -222,15 +221,6 @@ Refer to the following sample code for sending messages:
     })
     ```
     </CodeBlockTab>
-    </CodeBlockTabs>
-
-    <CodeBlockTabs defaultValue="swift">
-    <CodeBlockTabsList>
-      <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
-      <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
-      <CodeBlockTabsTrigger value="javascript">JavaScript</CodeBlockTabsTrigger>
-      <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
-    </CodeBlockTabsList>
 
     <CodeBlockTab value="swift">
     ```swift
