@@ -5,7 +5,10 @@ import type { ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { getMDXComponents, MDXAccordionProvider } from './mdx';
-import { PlatformHeaderTabs } from './mdx/PlatformTabsGroup';
+import {
+  PlatformHeaderTabs,
+  PlatformTabsPlacementProvider,
+} from './mdx/PlatformTabsGroup';
 
 type TabsComponent = ComponentType<{
   children: ReactNode;
@@ -23,6 +26,7 @@ type PlatformGroupComponent = ComponentType<{
   canonicalPlatform: string;
   children: ReactNode;
   groupMode: 'inline' | 'structured';
+  initialPlatform?: string;
   platforms: string;
   tabsPlacement?: 'inline' | 'header';
 }>;
@@ -85,6 +89,8 @@ function createStorageMock(): Storage {
 
 describe('common MDX registry', () => {
   beforeEach(() => {
+    window.history.replaceState({}, '', '/en/introduction/about-agora');
+
     const localStorage = createStorageMock();
     const sessionStorage = createStorageMock();
 
@@ -568,6 +574,82 @@ describe('common MDX registry', () => {
     );
 
     fireEvent.click(screen.getByRole('tab', { name: 'Android' }));
+
+    expect(
+      screen.getByText('Android instructions').closest('section'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('Web instructions').closest('section'),
+    ).not.toBeVisible();
+  });
+
+  it('uses URL platform as initial selection and pushes platform paths on tab click', () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/ios',
+    );
+
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <>
+        <PlatformHeaderTabs
+          canonicalPlatform="web"
+          initialPlatform="ios"
+          platforms='["web","ios","android"]'
+        />
+        <Group
+          canonicalPlatform="web"
+          groupMode="structured"
+          initialPlatform="ios"
+          platforms='["web","ios","android"]'
+          tabsPlacement="header"
+        >
+          <Panel platform="web">Web instructions</Panel>
+          <Panel platform="ios">iOS instructions</Panel>
+          <Panel platform="android">Android instructions</Panel>
+        </Group>
+      </>,
+    );
+
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(
+      screen.getByText('iOS instructions').closest('section'),
+    ).toBeVisible();
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Android' }));
+
+    expect(window.location.pathname).toBe(
+      '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/android',
+    );
+    expect(
+      screen.getByText('Android instructions').closest('section'),
+    ).toBeVisible();
+  });
+
+  it('passes URL platform through the placement context to body groups', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <PlatformTabsPlacementProvider initialPlatform="android" value="header">
+        <Group
+          canonicalPlatform="web"
+          groupMode="structured"
+          platforms='["web","android"]'
+        >
+          <Panel platform="web">Web instructions</Panel>
+          <Panel platform="android">Android instructions</Panel>
+        </Group>
+      </PlatformTabsPlacementProvider>,
+    );
 
     expect(
       screen.getByText('Android instructions').closest('section'),

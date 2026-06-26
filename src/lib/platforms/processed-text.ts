@@ -23,6 +23,41 @@ export function buildCanonicalPlatformTocText(processedText: string) {
   );
 }
 
+export function buildPlatformMarkdownText(
+  processedText: string,
+  platform: PlatformKey,
+) {
+  return processedText
+    .replace(
+      PLATFORM_BLOCK_PATTERN,
+      (
+        _match,
+        _mode: string,
+        _canonical: string,
+        blockPlatform: string,
+        body: string,
+      ) => (blockPlatform === platform ? body : ''),
+    )
+    .replace(/<\/?_PlatformTabsGroup\b[^>]*>\n?/g, '')
+    .replace(/<\/?_PlatformPanel\b[^>]*>\n?/g, '');
+}
+
+export function buildPlatformLLMText({
+  pageTitle,
+  pageUrl,
+  platform,
+  processedText,
+}: {
+  pageTitle?: string;
+  pageUrl: string;
+  platform: PlatformKey;
+  processedText: string;
+}) {
+  return `# ${pageTitle ?? pageUrl} (${pageUrl}/${platform})
+
+${buildPlatformMarkdownText(processedText, platform)}`;
+}
+
 export function extractStructuredPlatformTabs(
   processedText: string,
 ): ProcessedPlatformTabs | undefined {

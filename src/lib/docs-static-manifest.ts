@@ -1,3 +1,5 @@
+import { isKnownPlatform } from './platforms/registry';
+
 const STATIC_DOCS_BASE = '/__static/docs';
 const STATIC_DOCS_PUBLIC_DIR = '__static/docs';
 
@@ -59,6 +61,93 @@ export async function readStaticDocsPayload<T>({
   }
 
   return (await response.json()) as T;
+}
+
+type PlatformStaticPayload = {
+  body: {
+    kind: string;
+    platformTabs?: {
+      canonicalPlatform: string;
+      initialPlatform?: string;
+      platforms: string;
+    };
+  };
+  markdownUrl: string;
+};
+
+export async function resolvePlatformStaticDocsPayload<
+  T extends PlatformStaticPayload | { redirectUrl: string },
+>({
+  locale,
+  slugSegments,
+  tab,
+}: {
+  locale: string;
+  slugSegments: string[];
+  tab: string;
+}) {
+  const payload = await readStaticDocsPayload<T>({
+    locale,
+    slugSegments,
+    tab,
+  });
+
+  if (payload) {
+    return payload;
+  }
+
+  const platform = slugSegments.at(-1);
+
+  if (!platform || !isKnownPlatform(platform)) {
+    return null;
+  }
+
+  const canonicalPayload = await readStaticDocsPayload<T>({
+    locale,
+    slugSegments: slugSegments.slice(0, -1),
+    tab,
+  });
+
+  if (
+    !canonicalPayload ||
+    'redirectUrl' in canonicalPayload ||
+    canonicalPayload.body.kind !== 'mdx' ||
+    !canonicalPayload.body.platformTabs ||
+    !platformsInclude(canonicalPayload.body.platformTabs.platforms, platform)
+  ) {
+    return canonicalPayload;
+  }
+
+  return {
+    ...canonicalPayload,
+    body: {
+      ...canonicalPayload.body,
+      platformTabs: {
+        ...canonicalPayload.body.platformTabs,
+        initialPlatform: platform,
+      },
+    },
+    markdownUrl: getPlatformMarkdownUrl(canonicalPayload.markdownUrl, platform),
+  };
+}
+
+function platformsInclude(platformsJson: string, platform: string) {
+  try {
+    const platforms = JSON.parse(platformsJson) as unknown;
+    return Array.isArray(platforms) && platforms.includes(platform);
+  } catch {
+    return false;
+  }
+}
+
+function getPlatformMarkdownUrl(markdownUrl: string, platform: string) {
+  return markdownUrl.replace(/\/([^/]+)\.md$/, (_match, leaf: string) => {
+    if (leaf === 'index') {
+      return `/${platform}.md`;
+    }
+
+    return `/${leaf}/${platform}.md`;
+  });
 }
 
 async function readStaticDocsPayloadFromDisk<T>({

@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildCanonicalPlatformTocText,
+  buildPlatformLLMText,
+  buildPlatformMarkdownText,
   extractStructuredPlatformTabs,
 } from './processed-text';
 
@@ -60,5 +62,47 @@ Web body
 `;
 
     expect(extractStructuredPlatformTabs(processedText)).toBeUndefined();
+  });
+
+  it('keeps shared content and the selected platform block for markdown output', () => {
+    const processedText = `Shared intro
+
+<_PlatformTabsGroup groupMode="structured" canonicalPlatform="web" platforms="[&#x22;android&#x22;,&#x22;web&#x22;]" showTabs="true">
+<_PlatformPanel platform="android">
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+Android body
+<_PlatformProcessedMarker close="true" />
+</_PlatformPanel>
+
+<_PlatformPanel platform="web">
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+Web body
+<_PlatformProcessedMarker close="true" />
+</_PlatformPanel>
+</_PlatformTabsGroup>
+
+Shared outro`;
+
+    const filtered = buildPlatformMarkdownText(processedText, 'android');
+
+    expect(filtered).toContain('Shared intro');
+    expect(filtered).toContain('Android body');
+    expect(filtered).not.toContain('Web body');
+    expect(filtered).not.toContain('_PlatformTabsGroup');
+    expect(filtered).not.toContain('_PlatformPanel');
+    expect(filtered).toContain('Shared outro');
+  });
+
+  it('builds a platform-specific markdown document header', () => {
+    expect(
+      buildPlatformLLMText({
+        pageTitle: 'Quickstart',
+        pageUrl: '/en/rtc/quickstart',
+        platform: 'ios',
+        processedText: 'iOS body',
+      }),
+    ).toBe(`# Quickstart (/en/rtc/quickstart/ios)
+
+iOS body`);
   });
 });
