@@ -670,7 +670,7 @@ describe('DocsSidebarTree', () => {
                 url: '/en/ai/build/start-stop-agent',
               },
             ],
-            collapsible: false,
+            collapsible: true,
             id: 'separator-Create and connect an agent',
             title: 'Create and connect an agent',
             type: 'section',
@@ -706,16 +706,17 @@ describe('DocsSidebarTree', () => {
       }),
     ).toHaveAttribute('aria-expanded', 'false');
     expect(
-      screen.getByRole('button', { name: /Shape the conversation/i }),
-    ).toHaveAttribute('aria-expanded', 'false');
+      screen.queryByRole('button', { name: /Shape the conversation/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText('Shape the conversation')).toBeInTheDocument();
     expect(
       screen.queryByRole('link', { name: 'Start and stop an agent' }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole('link', {
+      screen.getByRole('link', {
         name: 'Keep conversation context across turns',
       }),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
   });
 
   it('renders full sidebar labels for long Build document titles', async () => {

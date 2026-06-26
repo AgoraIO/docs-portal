@@ -8,6 +8,7 @@ import {
   getSidebarNodes,
   isCollapsibleSectionTitle,
   pageTreeNodeToSidebarNodes,
+  parseSidebarGroupMetadata,
 } from './docs-tree';
 
 export type DocsSidebarHeaderVersion = {
@@ -279,14 +280,15 @@ function flattenParentNavScopeSidebarNodes(
 
   for (const child of folder.children) {
     if (child.type === 'separator') {
-      const title = typeof child.name === 'string' ? child.name : '';
+      const group = parseSidebarGroupMetadata(child.name);
+      const title = group.title;
       currentSection = null;
 
       if (title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
-          collapsible: isCollapsibleSectionTitle(title),
+          collapsible: group.collapsible ?? isCollapsibleSectionTitle(title),
           ...(icon ? { icon } : {}),
           id: `separator-${title}`,
           title,
@@ -371,14 +373,15 @@ function flattenNavScopeSidebarNodes(
 
   for (const child of folder.children) {
     if (child.type === 'separator') {
-      const title = typeof child.name === 'string' ? child.name : '';
+      const group = parseSidebarGroupMetadata(child.name);
+      const title = group.title;
       currentSection = null;
 
       if (title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
-          collapsible: isCollapsibleSectionTitle(title),
+          collapsible: group.collapsible ?? isCollapsibleSectionTitle(title),
           ...(icon ? { icon } : {}),
           id: `separator-${title}`,
           title,
@@ -535,14 +538,15 @@ function pageTreeFolderToParentSidebarNodes(
 
   for (const child of node.children) {
     if (child.type === 'separator') {
-      const title = typeof child.name === 'string' ? child.name : '';
+      const group = parseSidebarGroupMetadata(child.name);
+      const title = group.title;
       currentSection = null;
 
       if (title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
-          collapsible: isCollapsibleSectionTitle(title),
+          collapsible: group.collapsible ?? isCollapsibleSectionTitle(title),
           ...(icon ? { icon } : {}),
           id: `separator-${title}`,
           title,

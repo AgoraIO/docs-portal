@@ -56,7 +56,13 @@ export type DocsBreadcrumbItem = {
   url?: string;
 };
 
+export type DocsSidebarGroupMetadata = {
+  collapsible?: boolean;
+  title: string;
+};
+
 const HIDDEN_TAB_IDS = new Set(['best-practices']);
+const STRUCTURED_GROUP_FLAG_PATTERN = /\{(dropdown|flat)\}$/;
 
 export function getTabSummaries(root: Root): TabSummary[] {
   return getTabNodes(root).flatMap((node) => {
@@ -163,14 +169,15 @@ export function getSidebarNodes(
 
   for (const child of tabNode.children) {
     if (child.type === 'separator') {
-      const title = typeof child.name === 'string' ? child.name : '';
+      const group = parseSidebarGroupMetadata(child.name);
+      const title = group.title;
       currentSection = null;
 
       if (title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
-          collapsible: isCollapsibleSectionTitle(title),
+          collapsible: group.collapsible ?? isCollapsibleSectionTitle(title),
           ...(icon ? { icon } : {}),
           id: `separator-${title}`,
           title,
@@ -317,14 +324,15 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
 
   for (const child of node.children) {
     if (child.type === 'separator') {
-      const title = typeof child.name === 'string' ? child.name : '';
+      const group = parseSidebarGroupMetadata(child.name);
+      const title = group.title;
       currentSection = null;
 
       if (title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
-          collapsible: isCollapsibleSectionTitle(title),
+          collapsible: group.collapsible ?? isCollapsibleSectionTitle(title),
           ...(icon ? { icon } : {}),
           id: `separator-${title}`,
           title,
@@ -535,12 +543,16 @@ function getFirstDescendantPageUrl(node: Folder): string | null {
 function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
   if (node.type === 'separator') {
     const icon = getConfiguredIconName(node);
+    const group = parseSidebarGroupMetadata(node.name);
 
     return [
       {
+        ...(group.collapsible !== undefined
+          ? { collapsible: group.collapsible }
+          : {}),
         ...(icon ? { icon } : {}),
-        id: `${prefix}separator-${String(node.name ?? 'unnamed')}`,
-        title: typeof node.name === 'string' ? node.name : '',
+        id: `${prefix}separator-${group.title || 'unnamed'}`,
+        title: group.title,
         type: 'separator',
       },
     ];
@@ -723,6 +735,28 @@ export function isCollapsibleSectionTitle(title: string) {
     title === 'Server APIs' ||
     title === 'Console and analytics'
   );
+}
+
+export function parseSidebarGroupMetadata(
+  value: ReactNode,
+): DocsSidebarGroupMetadata {
+  if (typeof value !== 'string' || value.length === 0) {
+    return {
+      title: '',
+    };
+  }
+
+  const flagMatch = value.match(STRUCTURED_GROUP_FLAG_PATTERN);
+  if (!flagMatch) {
+    return {
+      title: value,
+    };
+  }
+
+  return {
+    collapsible: flagMatch[1] === 'dropdown',
+    title: value.slice(0, flagMatch.index).trimEnd(),
+  };
 }
 
 function getFolderIndexTitle(index: Item, folderName: ReactNode) {
