@@ -1075,6 +1075,100 @@ describe('DocsShell', () => {
     });
   });
 
+  it('keeps mobile navigation groups spaced with distinct active tab and page states', async () => {
+    renderDocsShell(
+      {
+        activePath: '/en/api-reference/api-ref/cloud-recording/acquire',
+        activeTab: 'api-reference',
+        sidebar: [
+          {
+            id: 'overview',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/api-reference/api-ref/cloud-recording/overview',
+          },
+          {
+            id: 'auth',
+            title: 'RESTful authentication',
+            type: 'page',
+            url: '/en/api-reference/api-ref/cloud-recording/authentication',
+          },
+          {
+            id: 'acquire',
+            title: 'Acquire a cloud recording resource',
+            type: 'page',
+            url: '/en/api-reference/api-ref/cloud-recording/acquire',
+          },
+        ],
+        sidebarHeader: {
+          backHref: '/en/api-reference/api-ref',
+          backLabel: 'API Reference',
+          title: 'Cloud Recording',
+        },
+        tabs: [
+          {
+            id: 'ai',
+            title: 'Voice Agent',
+            url: '/en/ai',
+          },
+          {
+            id: 'realtime-media',
+            title: 'Realtime Media',
+            url: '/en/realtime-media',
+          },
+          {
+            id: 'solutions',
+            title: 'Solutions',
+            url: '/en/solutions',
+          },
+          {
+            id: 'api-reference',
+            title: 'Reference',
+            url: '/en/api-reference',
+          },
+        ],
+      },
+      '/en/api-reference/acquire',
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Open navigation' }),
+    );
+
+    const mobileSheet = await screen.findByRole('dialog');
+    const tabList = within(mobileSheet).getByRole('tablist');
+    const referenceTab = within(mobileSheet).getByRole('tab', {
+      name: 'Reference',
+    });
+    const currentPageLink = within(mobileSheet).getByRole('link', {
+      name: 'Acquire a cloud recording resource',
+    });
+    const pagesLabel = within(mobileSheet).getByText('Pages');
+
+    expect(tabList).toHaveAttribute('aria-orientation', 'vertical');
+    expect(tabList).toHaveClass('h-auto', 'gap-1.5');
+    expect(referenceTab).toHaveAttribute('aria-selected', 'true');
+    expect(referenceTab).toHaveClass('min-w-0', 'w-full', 'whitespace-normal');
+    expect(referenceTab.className).toContain(
+      'data-[state=active]:bg-[color:var(--accent-brand-soft)]',
+    );
+    expect(referenceTab.className).toContain(
+      'data-[state=active]:shadow-[inset_3px_0_0_var(--accent-brand)]',
+    );
+    expect(pagesLabel).toHaveClass('pb-0.5', 'leading-4');
+    expect(
+      within(mobileSheet).getByRole('link', { name: 'API Reference' }),
+    ).toBeInTheDocument();
+    expect(currentPageLink).toHaveClass('min-w-0');
+    expect(currentPageLink.className).toContain(
+      'bg-[color:var(--accent-brand-soft)]',
+    );
+    expect(currentPageLink.className).toContain(
+      'before:bg-[color:var(--accent-brand)]',
+    );
+    expect(currentPageLink.className).toContain('focus-visible:ring-[3px]');
+  });
+
   it('keeps mobile docs content in normal page flow instead of a nested scroll viewport', async () => {
     renderDocsShell();
 

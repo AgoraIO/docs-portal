@@ -62,6 +62,15 @@ const DOCS_WIDE_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_minmax(0,1fr)_220px]';
 const DOCS_OPENAPI_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_minmax(0,1fr)]';
+const mobileSidebarGroupLabelClassName =
+  'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
+const mobileTabLinkClassName =
+  'min-h-9 w-full min-w-0 justify-start overflow-visible rounded-md border border-transparent px-3 py-2 text-sm whitespace-normal text-muted-foreground hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring data-[state=active]:border-[color:var(--accent-brand)] data-[state=active]:bg-[color:var(--accent-brand-soft)] data-[state=active]:font-semibold data-[state=active]:text-[color:var(--accent-brand)] data-[state=active]:shadow-[inset_3px_0_0_var(--accent-brand)] data-[state=active]:after:bg-[color:var(--accent-brand)]';
+const mobilePageLinkClassName =
+  'relative min-h-9 min-w-0 overflow-visible rounded-md px-3 py-2 text-sm transition-colors before:absolute before:left-1 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&>span]:break-words [&>span]:whitespace-normal';
+const mobileActivePageLinkClassName =
+  'bg-[color:var(--accent-brand-soft)] font-semibold text-[color:var(--accent-brand)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] before:bg-[color:var(--accent-brand)]';
+const mobileInactivePageLinkClassName = 'text-muted-foreground';
 
 type LocaleLink = {
   href: string;
@@ -210,7 +219,7 @@ export function DocsShell({
                   </Button>
                 </SheetTrigger>
                 <SheetContent
-                  className="w-[88vw] max-w-sm gap-0 p-0"
+                  className="w-[88vw] max-w-sm gap-0 overflow-hidden p-0"
                   side="left"
                 >
                   <SheetHeader className="border-b">
@@ -587,22 +596,22 @@ function MobileSidebar({
   const t = i18n.getFixedT(currentLocale, 'common');
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <ScrollArea className="min-h-0 flex-1 px-4 py-4">
-        <div className="flex flex-col gap-6 pb-6">
-          <div className="flex flex-col gap-2">
-            <p className="px-1 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+      <ScrollArea className="min-h-0 min-w-0 flex-1 overflow-x-hidden px-4 py-4">
+        <div className="flex min-w-0 flex-col gap-7 pb-6">
+          <div className="flex min-w-0 flex-col gap-2.5">
+            <p className={mobileSidebarGroupLabelClassName}>
               {t('docs.tabsLabel')}
             </p>
-            <Tabs className="w-full" value={activeTab}>
+            <Tabs className="w-full" orientation="vertical" value={activeTab}>
               <TabsList
-                className="flex h-auto w-full flex-col items-stretch gap-1 bg-transparent p-0"
+                className="flex h-auto w-full flex-col items-stretch gap-1.5 bg-transparent p-0"
                 variant="line"
               >
                 {tabs.map((tab) => (
                   <TabsTrigger asChild key={tab.id} value={tab.id}>
                     <Link
-                      className="h-auto justify-start rounded-md px-3 py-2 text-sm"
+                      className={mobileTabLinkClassName}
                       onClick={onSelectPath}
                       params={{}}
                       search={{}}
@@ -615,8 +624,8 @@ function MobileSidebar({
               </TabsList>
             </Tabs>
           </div>
-          <div className="flex flex-col gap-2">
-            <p className="px-1 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          <div className="flex min-w-0 flex-col gap-2.5">
+            <p className={mobileSidebarGroupLabelClassName}>
               {t('docs.pagesLabel')}
             </p>
             {sidebarHeader ? (
@@ -626,7 +635,7 @@ function MobileSidebar({
                 onSelectPath={onSelectPath}
               />
             ) : null}
-            <div className="flex flex-col gap-1">
+            <div className="flex min-w-0 flex-col gap-1">
               {sidebar.map((node) => (
                 <MobileSidebarNode
                   activePath={activePath}
@@ -673,29 +682,32 @@ function MobileSidebarNode({
   onSelectPath: () => void;
 }) {
   if (node.type === 'page') {
+    const isActive = node.url === activePath;
+
     return (
       <Link
-        className={`rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent ${
-          node.url === activePath
-            ? 'bg-accent text-foreground'
-            : 'text-muted-foreground'
-        }`}
+        className={cn(
+          mobilePageLinkClassName,
+          isActive
+            ? mobileActivePageLinkClassName
+            : mobileInactivePageLinkClassName,
+        )}
         onClick={onSelectPath}
         params={{}}
         search={{}}
         to={node.url}
       >
-        {node.title}
+        <span className="block min-w-0">{node.title}</span>
       </Link>
     );
   }
 
   return (
-    <div className="flex flex-col gap-1">
-      <p className="mt-3 px-3 text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
+    <div className="flex min-w-0 flex-col gap-1">
+      <p className="mt-3 min-w-0 px-3 text-xs font-medium uppercase leading-4 tracking-[0.12em] text-muted-foreground">
         {node.title.replaceAll('-', ' ')}
       </p>
-      <div className="flex flex-col gap-1 pl-2">
+      <div className="flex min-w-0 flex-col gap-1 pl-2">
         {node.children.map((child) => (
           <MobileSidebarNode
             activePath={activePath}
