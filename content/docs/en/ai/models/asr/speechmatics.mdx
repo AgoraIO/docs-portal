@@ -92,12 +92,14 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
- 
-   
+<ParameterList title="params" required={true}> 
+  <Parameter name="api_key" type="string" required={true}> 
     The Speechmatics API key used to authenticate requests. You must provide a valid key for the service to function. 
-   
-   
+  </Parameter> 
+  <Parameter name="language" type="string" required={true}> 
     The language code to use for transcription. For example, use `en` for English. 
-   
-    
+  </Parameter> 
+  <Parameter name="uri" type="string" required={false}>  
     The WebSocket URL for the Speechmatics streaming API. Specify this to target a particular region. For example, `wss://eu2.rt.speechmatics.com/v2`.
+  </Parameter>
+</ParameterList>

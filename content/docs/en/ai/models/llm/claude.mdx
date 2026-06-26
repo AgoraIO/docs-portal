@@ -118,18 +118,27 @@ Use the following `llm` configuration in your request:
 
 ### Key parameters
 
-The following parameters are required when using your own API key (BYOK).
+<ParameterList title="llm" required={true}>
+  <Parameter name="api_key" type="string" required={true}>  
+  Get your API key from [Anthropic Console](https://console.anthropic.com/).
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>  
+  Use Anthropic's messages endpoint.
+  </Parameter>
+  <Parameter name="headers" type="string" required={true}>  
+  Must include `anthropic-version` header for API compatibility.
+  </Parameter>
+  <Parameter name="style" type="string" required={true}>  
+  Set to `anthropic` to use Claude's message format.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>  
+    <Parameter name="model" type="string" required={true}>  
+    Refer to [Claude models](https://docs.anthropic.com/en/docs/about-claude/models) for available models.
+    </Parameter>
+    <Parameter name="max_tokens" type="integer" required={true}>  
+    Must specify maximum tokens in the response.
+    </Parameter>
+  </Parameter>
+</ParameterList>
 
-Get your API key from the [Anthropic Console](https://console.anthropic.com/).
-
-Use Anthropic's messages endpoint.
-
-Must include the `anthropic-version` header for API compatibility.
-
-Set to `anthropic` to use Claude's message format.
-
-Refer to [Claude models](https://docs.anthropic.com/en/docs/about-claude/models) for available models.
-
-The maximum number of tokens to generate in the response.
-
-For complete `llm` configuration options, see [LLM parameters](../../../api-reference/conversational-ai/rest-api/agent/join#properties-llm). For Claude-specific options and model capabilities, see the [Claude API documentation](https://docs.anthropic.com/en/api/messages).
+For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Claude API documentation](https://docs.anthropic.com/en/api/messages).
