@@ -67,7 +67,7 @@ This method can only generate a permanent `admin` SDK Token. Do not send this to
 
 - Call the Interactive Whiteboard RESTful API from your app server. See [Generate a token using RESTful API](generate-token-rest.md).
 
-- Use the open-source [netless-token](https://github.com/netless-io/netless-token) repository. See [Generate a token at your app server](generate-token-app-server.md). (Recommended)
+- Use the open-source [netless-token](https://github.com/netless-io/netless-token) repository. See [Generate a token at your app server](generate-token-app-server.mdx). (Recommended)
 
 When generating a token, pass in the following parameters:
 
