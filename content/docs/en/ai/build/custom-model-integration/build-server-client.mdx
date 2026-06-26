@@ -1,28 +1,23 @@
 ---
 title: Build a backend and client from scratch
-description: Set up a token server, start and stop agents using the Agent Server SDK, and stream live transcripts to a browser client..
+description: Set up a token server, start and stop agents using the Agent Server SDK, and stream live transcripts to a browser client.
 ---
-This guide walks through building the full Conversational AI stack from scratch: a server
-that issues tokens and manages agent sessions, and a browser client that captures microphone audio and streams live transcripts. You will end up with the same structure as the official
-[Next.js](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-nextjs) and
-[Python](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python) starter
-repos, but with every step explained.
+This guide walks through building the full Conversational AI stack from scratch: a server that issues tokens and manages agent sessions, and a browser client that captures microphone audio and streams live transcripts. You end up with the same structure as the official [Next.js](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-nextjs) and [Python](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python) starter repos, but with every step explained.
 
-If you want to hear an agent speak in under five minutes, follow the
-[Voice AI quickstart](../get-started/quickstart) guide. 
+If you want to hear an agent speak in under five minutes, follow the [Voice AI quickstart](../get-started/quickstart) guide.
 
-> **Info**
-> This project uses Agora-managed presets, so no vendor API keys are required to complete this tutorial. If you prefer to switch to your own vendor accounts, see the documentation for your chosen [ASR](../models/asr/index), [LLM](../models/llm/index), and [TTS](../models/tts/index) providers.
+:::info[Info]
+This project uses Agora-managed presets, so no vendor API keys are required to complete this tutorial. If you prefer to switch to your own vendor accounts, see the documentation for your chosen [ASR](../models/asr/index), [LLM](../models/llm/index), and [TTS](../models/tts/index) providers.
+:::
 
 ## What you will build
 
 A complete client-server app:
 
-- **Backend**: Three HTTP endpoints: 
-  - `POST /api/token`: Issues RTC + RTM tokens for a given channel and UID
+- **Backend**: Three HTTP endpoints:
+  - `POST /api/token`: Issues RTC and RTM tokens for a given channel and UID
   - `POST /api/invite-agent`: Starts the agent using the Agent Server SDK
   - `POST /api/stop-conversation`: Stops the agent by ID
-
 - **Frontend**: A Next.js page that:
   - Requests microphone permission
   - Joins the Agora channel using the RTC SDK
@@ -42,9 +37,9 @@ The backend never touches audio, and the browser never embeds your App Certifica
 - An active [Agora account](https://console.agora.io).
 - `git` and a terminal.
 - One of the following language runtimes:
-  - **Node.js 20 LTS or later** with `pnpm` (TypeScript)
+  - **Node.js 20 LTS or later** with `pnpm` for TypeScript
   - **Python 3.11 or later** with `uv` or `pip`
-  - **Go 1.22 or later** 
+  - **Go 1.22 or later**
 - A modern browser with microphone access
 
 ## Set up your environment
@@ -53,8 +48,7 @@ This section walks you through installing the Agora CLI and scaffolding your pro
 
 ### Install the Agora CLI
 
-The Agora CLI is the recommended way to bootstrap a new Agora project. Use it to create
-projects, enable features, write credentials to `.env` files, and run diagnostics.
+The Agora CLI is the recommended way to bootstrap a new Agora project. Use it to create projects, enable features, write credentials to `.env` files, and run diagnostics.
 
 To install the Agora CLI, log in, and create a project with Conversational AI enabled:
 
@@ -71,7 +65,7 @@ Confirm that the CLI can read your credentials:
 agora project env --shell
 ```
 
-```
+```bash
 AGORA_APP_ID=your_app_id_here
 AGORA_APP_CERTIFICATE=your_certificate_here
 ```
@@ -85,56 +79,117 @@ Select the tab for your preferred language.
 <Tabs>
 <TabsList>
   <TabsTrigger value="typescript">TypeScript</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="go">Go</TabsTrigger>
 </TabsList>
 
 <TabsContent value="typescript">
 
-For TypeScript, the backend and frontend live in the same Next.js app. 
+For TypeScript, the backend and frontend live in the same Next.js app.
 
 1. Scaffold a Next.js app with TypeScript, the App Router, Tailwind CSS, and ESLint, then install the required Agora packages:
 
-    ```bash
-    pnpm dlx create-next-app@latest conv-ai-tutorial --typescript --app --tailwind --eslint --src-dir=false --import-alias='@/*'
-    cd conv-ai-tutorial
-    pnpm add agora-agents agora-rtc-sdk-ng agora-rtm-sdk agora-token
-    ```
+```bash
+pnpm dlx create-next-app@latest conv-ai-tutorial --typescript --app --tailwind --eslint --src-dir=false --import-alias='@/*'
+cd conv-ai-tutorial
+pnpm add agora-agents agora-rtc-sdk-ng agora-rtm-sdk agora-token
+```
 
-    - `agora-agents`: Starts and stops agent sessions from the backend
-    - `agora-rtc-sdk-ng`: Handles mic capture and RTC channel joining in the browser
-    - `agora-rtm-sdk`: Receives live transcript messages from the agent
-    - `agora-token`: Generates RTC and RTM tokens
+- `agora-agents`: Starts and stops agent sessions from the backend
+- `agora-rtc-sdk-ng`: Handles mic capture and RTC channel joining in the browser
+- `agora-rtm-sdk`: Receives live transcript messages from the agent
+- `agora-token`: Generates RTC and RTM tokens
 
 1. Write your Agora credentials to `.env.local`:
 
-    ```bash
-    eval "$(agora project env --shell)"
-    cat > .env.local < server-python/.env < web-client/.env.local < **Coming soon**
-> The Go backend walkthrough is not yet available. It will mirror the Python path: a
-> standalone backend on port 8000, a Next.js web client on port 3000, and the same three
-> HTTP endpoints.
+```bash
+eval "$(agora project env --shell)"
+cat > .env.local <<EOF
+NEXT_PUBLIC_AGORA_APP_ID=$AGORA_APP_ID
+NEXT_AGORA_APP_CERTIFICATE=$AGORA_APP_CERTIFICATE
+EOF
+```
 
-In the meantime, use the [Voice AI quickstart](../get-started/quickstart)
-for a Go agent walkthrough that runs as a single process without a frontend.
+The `NEXT_PUBLIC_` prefix makes `AGORA_APP_ID` available in the browser, which is required to join the RTC channel. Never apply this prefix to `APP_CERTIFICATE`; it must remain server-side only.
 
-{/* The Go backend walkthrough is tracked in the same release as the Go starter repo (`github.com/AgoraIO-Community/agent-quickstart-go`, coming soon). Its shape will mirror the Python path: a standalone backend on port 8000, a Next.js web client on port 3000, and the same three HTTP endpoints.
+</TabsContent>
 
-When the Go tab lands here, it will include:
+<TabsContent value="python">
 
-- `go mod init`, dependencies for `net/http` + `github.com/AgoraIO-Conversational-AI/agent-server-sdk-go` + `github.com/AgoraIO/rtcTokenBuilder`.
-- Three handlers matching the Python path (`/api/token`, `/api/invite-agent`, `/api/stop-conversation`).
-- A `main.go` that starts the HTTP server on port 8000 and reads env vars from a `.env` file via `godotenv`. */}
+For Python, the backend and frontend are separate apps in a single monorepo.
+
+1. Scaffold the monorepo, create a Python virtual environment, and install the required packages:
+
+```bash
+mkdir conv-ai-tutorial && cd conv-ai-tutorial
+git init
+
+# Backend
+mkdir server-python && cd server-python
+python -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install fastapi 'uvicorn[standard]' agora-agents agora-token-builder python-dotenv
+cd ..
+
+# Frontend
+pnpm dlx create-next-app@latest web-client --typescript --app --tailwind --eslint --src-dir=false --import-alias='@/*'
+cd web-client
+pnpm add agora-rtc-sdk-ng agora-rtm-sdk
+cd ..
+```
+
+- `agora-agents`: Starts and stops agent sessions from the backend
+- `agora-token-builder`: Generates RTC and RTM tokens
+- `agora-rtc-sdk-ng`: Handles mic capture and RTC channel joining in the browser
+- `agora-rtm-sdk`: Receives live transcript messages from the agent
+
+1. Write your Agora credentials to the backend and frontend environment files:
+
+```bash
+eval "$(agora project env --shell)"
+
+# Backend environment
+cat > server-python/.env <<EOF
+APP_ID=$AGORA_APP_ID
+APP_CERTIFICATE=$AGORA_APP_CERTIFICATE
+PORT=8000
+EOF
+
+# Frontend environment
+cat > web-client/.env.local <<EOF
+NEXT_PUBLIC_AGORA_APP_ID=$AGORA_APP_ID
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+EOF
+```
+
+The backend reads `APP_ID` and `APP_CERTIFICATE` directly. The frontend only receives `APP_ID` through `NEXT_PUBLIC_AGORA_APP_ID`. The certificate never leaves `server-python/`.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+:::info[Coming soon]
+The Go backend walkthrough is not yet available. It will mirror the Python path: a standalone backend on port 8000, a Next.js web client on port 3000, and the same three HTTP endpoints.
+:::
+
+In the meantime, use the [Voice AI quickstart](../get-started/quickstart) for a Go agent walkthrough that runs as a single process without a frontend.
+
+</TabsContent>
+</Tabs>
 
 ## Build the backend
 
 The backend exposes three endpoints, one for each operation the frontend needs.
 
-</TabsContent>
+<Tabs>
+<TabsList>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="go">Go</TabsTrigger>
+</TabsList>
 
 <TabsContent value="typescript">
 
-</TabsContent>
-</Tabs>
 ### Generate tokens
 
 Endpoint: `POST /api/token`
@@ -143,6 +198,8 @@ This endpoint builds an RTC token and an RTM token for the browser client. It is
 
 ```ts
 // app/api/token/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { RtcTokenBuilder, RtcRole, RtmTokenBuilder } from 'agora-token';
 
 const APP_ID = process.env.NEXT_PUBLIC_AGORA_APP_ID!;
 const APP_CERTIFICATE = process.env.NEXT_AGORA_APP_CERTIFICATE!;
@@ -157,10 +214,19 @@ export async function POST(req: NextRequest) {
   const expireAt = Math.floor(Date.now() / 1000) + TOKEN_TTL_SECONDS;
 
   const rtcToken = RtcTokenBuilder.buildTokenWithUid(
-    APP_ID, APP_CERTIFICATE, channel, uid, RtcRole.PUBLISHER, expireAt, expireAt
+    APP_ID,
+    APP_CERTIFICATE,
+    channel,
+    uid,
+    RtcRole.PUBLISHER,
+    expireAt,
+    expireAt,
   );
   const rtmToken = RtmTokenBuilder.buildToken(
-    APP_ID, APP_CERTIFICATE, String(uid), expireAt
+    APP_ID,
+    APP_CERTIFICATE,
+    String(uid),
+    expireAt,
   );
 
   return NextResponse.json({ rtcToken, rtmToken, expireAt });
@@ -175,10 +241,15 @@ This endpoint uses the Agent Server SDK to configure an agent and start a sessio
 
 ```ts
 // app/api/invite-agent/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 import {
-  AgoraClient, Agent, Area, DeepgramSTT, MiniMaxTTS, OpenAI, ExpiresIn,
+  AgoraClient,
+  Agent,
+  Area,
+  DeepgramSTT,
+  ExpiresIn,
+  MiniMaxTTS,
+  OpenAI,
 } from 'agora-agents';
 
 const client = new AgoraClient({
@@ -206,7 +277,12 @@ export async function POST(req: NextRequest) {
   })
     .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en' }))
     .withLlm(new OpenAI({ model: 'gpt-4o-mini', maxHistory: 15 }))
-    .withTts(new MiniMaxTTS({ model: 'speech_2_6_turbo', voiceId: 'English_captivating_female1' }));
+    .withTts(
+      new MiniMaxTTS({
+        model: 'speech_2_6_turbo',
+        voiceId: 'English_captivating_female1',
+      }),
+    );
 
   const session = agent.createSession({
     channel,
@@ -235,7 +311,6 @@ This endpoint stops a running agent session by ID.
 
 ```ts
 // app/api/stop-conversation/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 import { AgoraClient, Area } from 'agora-agents';
 
@@ -261,7 +336,9 @@ export async function POST(req: NextRequest) {
 }
 ```
 
-### Python
+</TabsContent>
+
+<TabsContent value="python">
 
 All backend code lives in `server-python/main.py`.
 
@@ -269,12 +346,12 @@ All backend code lives in `server-python/main.py`.
 
 Endpoint: `POST /api/token`
 
-This endpoint generates an RTC token and an RTM token for the browser client. It is the
-only place the App Certificate is used.
+This endpoint generates an RTC token and an RTM token for the browser client. It is the only place the App Certificate is used.
 
 ```python
 # server-python/main.py
-
+import os
+import time
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -303,11 +380,19 @@ class TokenRequest(BaseModel):
 def token(body: TokenRequest):
     expire_at = int(time.time()) + TOKEN_TTL_SECONDS
     rtc_token = RtcTokenBuilder.buildTokenWithUid(
-        APP_ID, APP_CERTIFICATE, body.channel, body.uid,
-        role=1, privilegeExpiredTs=expire_at,
+        APP_ID,
+        APP_CERTIFICATE,
+        body.channel,
+        body.uid,
+        role=1,
+        privilegeExpiredTs=expire_at,
     )
     rtm_token = RtmTokenBuilder.buildToken(
-        APP_ID, APP_CERTIFICATE, str(body.uid), role=1, privilegeExpiredTs=expire_at,
+        APP_ID,
+        APP_CERTIFICATE,
+        str(body.uid),
+        role=1,
+        privilegeExpiredTs=expire_at,
     )
     return {"rtcToken": rtc_token, "rtmToken": rtm_token, "expireAt": expire_at}
 ```
@@ -316,15 +401,19 @@ def token(body: TokenRequest):
 
 Endpoint: `POST /api/invite-agent`
 
-This endpoint uses the Agent Server SDK to configure an agent and start a session in the
-caller's channel. The STT, LLM, and TTS configurations use Agora-managed presets and
-therefore do not require an `api_key`.
+This endpoint uses the Agent Server SDK to configure an agent and start a session in the caller's channel. The STT, LLM, and TTS configurations use Agora-managed presets and therefore do not require an `api_key`.
 
 Add the following to `main.py`:
 
 ```python
 from agora_agent import (
-    Agora, Agent, Area, DeepgramSTT, MiniMaxTTS, OpenAI, expires_in_hours,
+    Agora,
+    Agent,
+    Area,
+    DeepgramSTT,
+    MiniMaxTTS,
+    OpenAI,
+    expires_in_hours,
 )
 
 agora_client = Agora(
@@ -351,7 +440,12 @@ def invite_agent(body: InviteRequest):
         )
         .with_stt(DeepgramSTT(model="nova-3", language="en"))
         .with_llm(OpenAI(model="gpt-4o-mini", max_history=15))
-        .with_tts(MiniMaxTTS(model="speech_2_6_turbo", voice_id="English_captivating_female1"))
+        .with_tts(
+            MiniMaxTTS(
+                model="speech_2_6_turbo",
+                voice_id="English_captivating_female1",
+            )
+        )
     )
 
     session = agent.create_session(
@@ -400,66 +494,92 @@ uvicorn main:app --reload --port 8000
 
 Swagger docs are available at `http://localhost:8000/docs`.
 
-### Go
+</TabsContent>
 
-> **Coming soon**
-> The Go backend walkthrough is not yet available. It will mirror the Python path: a standalone backend on port 8000, a Next.js web client on port 3000, and the same three HTTP endpoints. In the meantime, see the [Voice AI quickstart](../get-started/quickstart) guide to get started with Go.
+<TabsContent value="go">
+
+:::info[Coming soon]
+The Go backend walkthrough is not yet available. It will mirror the Python path: a standalone backend on port 8000, a Next.js web client on port 3000, and the same three HTTP endpoints.
+:::
+
+In the meantime, see the [Voice AI quickstart](../get-started/quickstart) guide to get started with Go.
+
+</TabsContent>
+</Tabs>
 
 ## Build the frontend
 
-The frontend is the same Next.js app for all three backends. The only difference is whether it calls its own API routes (TypeScript) or a separate backend on port `8000` (Python and Go).
+The frontend is the same Next.js app for all three backends. The only difference is whether it calls its own API routes for TypeScript or a separate backend on port `8000` for Python and Go.
 
 ### A basic API client
 
-Create `lib/api.ts` to give the frontend a single place to manage the backend URL and
-endpoint calls.
+Create `lib/api.ts` to give the frontend a single place to manage the backend URL and endpoint calls.
 
 ```ts
 // lib/api.ts
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? '';
 
-async function post(path: string, body: object): Promise {
+async function post<T>(path: string, body: object): Promise<T> {
   const res = await fetch(`${BACKEND}${path}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`${path} failed: ${res.status} ${await res.text()}`);
-  return res.json() as Promise;
+  if (!res.ok) {
+    throw new Error(`${path} failed: ${res.status} ${await res.text()}`);
+  }
+  return res.json() as Promise<T>;
 }
 
-export type TokenResponse = { rtcToken: string; rtmToken: string; expireAt: number };
-export type InviteResponse = { agentId: string; agentUid: number };
+export type TokenResponse = {
+  rtcToken: string;
+  rtmToken: string;
+  expireAt: number;
+};
 
-  token: (channel: string, uid: number) => post('/api/token', { channel, uid }),
-  invite: (channel: string) => post('/api/invite-agent', { channel }),
-  stop: (agentId: string) => post<{ stopped: boolean }>('/api/stop-conversation', { agentId }),
+export type InviteResponse = {
+  agentId: string;
+  agentUid: number;
+};
+
+export const api = {
+  token: (channel: string, uid: number) =>
+    post<TokenResponse>('/api/token', { channel, uid }),
+  invite: (channel: string) =>
+    post<InviteResponse>('/api/invite-agent', { channel }),
+  stop: (agentId: string) =>
+    post<{ stopped: boolean }>('/api/stop-conversation', { agentId }),
 };
 ```
 
-For TypeScript, `NEXT_PUBLIC_BACKEND_URL` is not set in `.env.local`, so calls go
-to same-origin routes like `/api/token`. For Python and Go, it is set to
-`http://localhost:8000` in the scaffold step, so calls go to the external backend.
+For TypeScript, `NEXT_PUBLIC_BACKEND_URL` is not set in `.env.local`, so calls go to same-origin routes like `/api/token`. For Python and Go, it is set to `http://localhost:8000` in the scaffold step, so calls go to the external backend.
 
 ### Create the RTC and RTM hook
 
-Create `hooks/useConvoAgent.ts`. This hook joins the RTC channel for audio, connects to
-RTM for transcripts, and exposes a `start()` and `stop()` function to the UI.
+Create `hooks/useConvoAgent.ts`. This hook joins the RTC channel for audio, connects to RTM for transcripts, and exposes `start()` and `stop()` functions to the UI.
 
 ```ts
 // hooks/useConvoAgent.ts
 'use client';
 
+import { useCallback, useRef, useState } from 'react';
+import AgoraRTC, {
+  IAgoraRTCClient,
+  IMicrophoneAudioTrack,
+} from 'agora-rtc-sdk-ng';
+import { RTMClient, RTMEvents } from 'agora-rtm-sdk';
+import { api } from '@/lib/api';
+
 type TranscriptLine = { role: 'user' | 'agent'; text: string; final: boolean };
 
 export function useConvoAgent(channel: string, uid: number) {
-  const rtcRef = useRef(null);
-  const micRef = useRef(null);
-  const rtmRef = useRef(null);
+  const rtcRef = useRef<IAgoraRTCClient | null>(null);
+  const micRef = useRef<IMicrophoneAudioTrack | null>(null);
+  const rtmRef = useRef<RTMClient | null>(null);
   const agentIdRef = useRef<string | null>(null);
 
   const [connected, setConnected] = useState(false);
-  const [transcripts, setTranscripts] = useState([]);
+  const [transcripts, setTranscripts] = useState<TranscriptLine[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const start = useCallback(async () => {
@@ -489,13 +609,13 @@ export function useConvoAgent(channel: string, uid: number) {
         try {
           const payload = JSON.parse(e.message as string);
           if (payload.type === 'transcript') {
-            setTranscripts(prev => [
+            setTranscripts((prev) => [
               ...prev,
               { role: payload.role, text: payload.text, final: payload.final },
             ]);
           }
         } catch {
-          // Non-JSON RTM messages. Ignore for this tutorial.
+          // Ignore non-JSON RTM messages for this tutorial.
         }
       });
       rtmRef.current = rtm;
@@ -512,7 +632,9 @@ export function useConvoAgent(channel: string, uid: number) {
 
   const stop = useCallback(async () => {
     try {
-      if (agentIdRef.current) await api.stop(agentIdRef.current);
+      if (agentIdRef.current) {
+        await api.stop(agentIdRef.current);
+      }
     } finally {
       micRef.current?.stop();
       micRef.current?.close();
@@ -530,35 +652,44 @@ export function useConvoAgent(channel: string, uid: number) {
 }
 ```
 
-The hook follows the same structure as `components/ConversationComponent.tsx` in the
-[Next.js starter repo](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-nextjs).
+The hook follows the same structure as `components/ConversationComponent.tsx` in the [Next.js starter repo](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-nextjs).
 
 ### Build the client UI
 
-Create `app/page.tsx` as the main UI. It renders a start/stop button and a live
-transcript list.
+Create `app/page.tsx` as the main UI. It renders a start and stop button plus a live transcript list.
 
 ```tsx
 // app/page.tsx
 'use client';
 
+import { useConvoAgent } from '@/hooks/useConvoAgent';
+
 const CHANNEL = 'support-room-123';
 const USER_UID = 111222;
 
 export default function Home() {
-  const { connected, transcripts, error, start, stop } = useConvoAgent(CHANNEL, USER_UID);
+  const { connected, transcripts, error, start, stop } = useConvoAgent(
+    CHANNEL,
+    USER_UID,
+  );
 
   return (
-    <main className="mx-auto max-w-2xl p-8 space-y-6">
+    <main className="mx-auto max-w-2xl space-y-6 p-8">
       <h1 className="text-2xl font-semibold">Conv AI Tutorial</h1>
 
       <div className="space-x-3">
         {!connected ? (
-          <button onClick={start} className="rounded bg-blue-600 text-white px-4 py-2">
+          <button
+            onClick={start}
+            className="rounded bg-blue-600 px-4 py-2 text-white"
+          >
             Start conversation
           </button>
         ) : (
-          <button onClick={stop} className="rounded bg-red-600 text-white px-4 py-2">
+          <button
+            onClick={stop}
+            className="rounded bg-red-600 px-4 py-2 text-white"
+          >
             Stop
           </button>
         )}
@@ -568,10 +699,17 @@ export default function Home() {
 
       <ol className="space-y-2">
         {transcripts.map((line, i) => (
-          <li key={i} className={line.role === 'agent' ? 'text-blue-800' : 'text-slate-800'}>
-            <span className="font-medium">{line.role === 'agent' ? 'Agent' : 'You'}:</span>{' '}
+          <li
+            key={i}
+            className={
+              line.role === 'agent' ? 'text-blue-800' : 'text-slate-800'
+            }
+          >
+            <span className="font-medium">
+              {line.role === 'agent' ? 'Agent' : 'You'}:
+            </span>{' '}
             {line.text}
-            {!line.final && <span className="text-slate-400"> …</span>}
+            {!line.final && <span className="text-slate-400"> ...</span>}
           </li>
         ))}
       </ol>
@@ -584,13 +722,14 @@ The page has no state library or design system. It provides just enough UI to ve
 
 ### Handle page unload (optional)
 
-Add this effect inside `app/page.tsx` to stop the agent cleanly when the user closes
-the tab, rather than waiting for the 30-second idle timeout.
+Add this effect inside `app/page.tsx` to stop the agent cleanly when the user closes the tab, rather than waiting for the 30-second idle timeout.
 
 ```ts
 // Inside the page, after useConvoAgent(...)
 useEffect(() => {
-  const onUnload = () => { if (connected) stop(); };
+  const onUnload = () => {
+    if (connected) stop();
+  };
   window.addEventListener('beforeunload', onUnload);
   return () => window.removeEventListener('beforeunload', onUnload);
 }, [connected, stop]);
@@ -642,20 +781,23 @@ Open `http://localhost:3000`.
 
 <TabsContent value="go">
 
-> **Coming soon**
-> The Go walkthrough is not yet available. See the
-> [Voice AI quickstart](../get-started/quickstart) guide in the meantime.
+:::info[Coming soon]
+The Go walkthrough is not yet available.
+:::
+
+See the [Voice AI quickstart](../get-started/quickstart) guide in the meantime.
 
 </TabsContent>
 </Tabs>
+
 ### Verify the integration
 
 A healthy run passes all three checks:
 
 | Check | How to verify | Time budget |
-|---|---|---|
+| --- | --- | --- |
 | Agent joined the channel | The `invite-agent` response resolves with an `agentId`, and the agent emits a greeting in RTC within two seconds. | < 2 s |
-| Transcripts stream | `transcripts` state updates as you speak; partial lines are marked `final: false`. | < 500 ms partial latency |
+| Transcripts stream | `transcripts` state updates as you speak, and partial lines are marked `final: false`. | < 500 ms partial latency |
 | Stop is clean | After **Stop**, the backend returns `{ stopped: true }`, and the Convo AI engine logs `STATE=STOPPED, reason=API`. | Immediate |
 
 If you run into problems, first run the CLI diagnostic:
@@ -669,23 +811,23 @@ This checks for credential errors, feature-enablement issues, and network reacha
 ## Troubleshooting
 
 | Symptom | Likely cause | Fix |
-|---|---|---|
-| `Error: /api/token failed: 500` in the browser | Backend cannot read the `APP_CERTIFICATE` environment variable. | Confirm `.env.local` (TypeScript) or `server-python/.env` (Python) contains the variable and that the server loaded the file on startup. |
+| --- | --- | --- |
+| `Error: /api/token failed: 500` in the browser | Backend cannot read the `APP_CERTIFICATE` environment variable. | Confirm `.env.local` for TypeScript or `server-python/.env` for Python contains the variable and that the server loaded the file on startup. |
 | `invalid token` from the RTC join | Clock skew between token generation and channel join. | RTC tokens are time-sensitive. Regenerate a token on each `start()` call to avoid expiry issues. |
-| Agent never speaks but `agentId` is returned | Conversational AI feature not enabled on the Agora project. | Run `agora project feature list`. If `convoai` is missing, rerun `agora project create --feature convoai` or enable it in the Agora Console. |
-| No transcripts in RTM | `enable_rtm` not set, or `data_channel` is set to `stream` instead of `rtm`. | Confirm `advancedFeatures.enable_rtm: true` and `parameters.data_channel: 'rtm'` in the agent config. |
-| CORS error in the browser (Python) | FastAPI CORS middleware does not include your frontend origin. | Add `http://localhost:3000` to `allow_origins` in `main.py`. |
+| Agent never speaks but `agentId` is returned | Conversational AI feature is not enabled on the Agora project. | Run `agora project feature list`. If `convoai` is missing, rerun `agora project create --feature convoai` or enable it in the Agora Console. |
+| No transcripts in RTM | `enable_rtm` is not set, or `data_channel` is set to `stream` instead of `rtm`. | Confirm `advancedFeatures.enable_rtm: true` and `parameters.data_channel: 'rtm'` in the agent config. |
+| CORS error in the browser for Python | FastAPI CORS middleware does not include your frontend origin. | Add `http://localhost:3000` to `allow_origins` in `main.py`. |
 | Agent greets itself in a loop | No echo cancellation on the device. | Use headphones, or set `parameters.enable_aec: true`. |
-| `unauthorized` error on `agora login` in CI | SSO browser flow cannot open on a headless machine. | Use `agora login --device` for the device-code flow. |
+| `unauthorized` error on `agora login` in CI | The SSO browser flow cannot open on a headless machine. | Use `agora login --device` for the device-code flow. |
 | Chrome blocks microphone access | `getUserMedia` is not available on non-localhost HTTP origins. | Test on `http://localhost:3000` exactly, not `http://127.0.0.1` or a LAN IP. |
 
 ## Next steps
 
 Now that you have a working agent, explore the following topics:
 
-- [Integrate an MLLM](../models/mllm/index): Replace the cascading STT → LLM → TTS pipeline with a single realtime model.
-- [Transmit custom information](custom-information): Guide the agent with user-specific context to personalize responses.
-- [Integrate short-term memory](short-term-memory): Help the agent maintain context across a conversation.
-- [Receive webhook notifications](webhooks): Receive agent event notifications in real time.
-- [Use filler words](filler-words): Reduce perceived latency by filling silence during LLM processing.
+- [Integrate an MLLM](../models/mllm/index): Replace the cascading STT -> LLM -> TTS pipeline with a single realtime model.
+- [Transmit custom information](../shape-the-conversation/custom-information): Guide the agent with user-specific context to personalize responses.
+- [Integrate short-term memory](../shape-the-conversation/short-term-memory): Help the agent maintain context across a conversation.
+- [Receive webhook notifications](../handle-runtime-events/webhooks): Receive agent event notifications in real time.
+- [Use presets](presets): Reuse Agora-managed provider presets instead of configuring each model manually.
 - [Optimize conversation latency](../best-practices/optimize-latency): Tune LLM, ASR, and TTS components for lower end-to-end latency.
