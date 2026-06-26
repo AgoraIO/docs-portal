@@ -260,14 +260,14 @@ To verify that your Cloud Proxy configuration is working correctly:
 To test your configuration:
 
 1. **Identify SDK version**:
-  Use the SDK's version identification method to confirm your current version.
+    Use the SDK's version identification method to confirm your current version.
 
 2. **Test connectivity**:
-  Configure the Cloud Proxy UDP mode and enable the lastmile test to check connectivity.
+    Configure the Cloud Proxy UDP mode and enable the lastmile test to check connectivity.
 
 3. **Monitor performance**:
-   - Track latency, packet loss, and jitter
-   - Test across all targeted regions
+    - Track latency, packet loss, and jitter
+    - Test across all targeted regions
 
 ### Get support
 

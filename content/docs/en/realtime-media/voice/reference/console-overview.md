@@ -165,11 +165,11 @@ To switch to a new Certificate, follow these steps:
 
 1. Turn off the switch next to the **Secondary Certificate** to disable it.
 
-  ![Enable Secondary Certificate](/images/common/console-enable-secondary-certificate.png)
+    ![Enable Secondary Certificate](/images/common/console-enable-secondary-certificate.png)
 
 1. Follow the on-screen instructions to complete verification. If verified successfully, the status of the Secondary Certificate is updated to **Disabled**, and the **Delete** icon appears.
 
-  ![Delete Certificate](/images/common/console-delete-certificate.png)
+    ![Delete Certificate](/images/common/console-delete-certificate.png)
 
 1. Click the **Delete** icon.
 
@@ -203,15 +203,15 @@ Follow these steps to check your usage:
 
 2. (Optional) Add filters for the usage data, as follows:
 
-   - Select a time frame and data granularity.
+    - Select a time frame and data granularity.
 
-   - Select **All Projects** or a specific project from the dropdown menu.
+    - Select **All Projects** or a specific project from the dropdown menu.
 
-   - Select a product to view its usage data.
+    - Select a product to view its usage data.
 
-   - Check **View Breakdown**.
+    - Check **View Breakdown**.
 
-   ![Console Usage](/images/common/console-usage-details.png)
+    ![Console Usage](/images/common/console-usage-details.png)
 
 ## Manage members and teams
 
@@ -227,7 +227,7 @@ Follow these steps to add a member to your account:
 
 1. Click the **Add New Member** button, fill in the email address of the new member, and choose a team from the dropdown menu. Then click **OK**.
 
-  ![Add new member](/images/common/console-add-new-member.png)
+    ![Add new member](/images/common/console-add-new-member.png)
 
 1. Agora sends a confirmation email to this address. The new member should follow the instructions in the email to finish joining the project.
 
@@ -263,7 +263,7 @@ Follow these steps to add a custom team:
 
 1. On the **Teams and Members** page, **Teams** tab, click **Add New Team**.
 
-  ![Add new team](/images/common/console-add-team.png)
+    ![Add new team](/images/common/console-add-team.png)
 
 2. Fill in the team name, and select the permissions of this team in the **Usage**, **Finance**, **Teams and Members**, **Project**, **Agora Analytics**, and **Data** columns.
 
@@ -281,31 +281,31 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
 
 1. Apply for Okta integration in Agora Console.
 
-  Log in to your Agora account. On the [SSO Management](https://console.agora.io/settings/sso-management) page, click **Request**.
+    Log in to your Agora account. On the [SSO Management](https://console.agora.io/settings/sso-management) page, click **Request**.
 
-  ![okta-application](/images/common/okta-application.png)
+    ![okta-application](/images/common/okta-application.png)
 
-  Once you apply, a request is sent to Agora to enable integration for you.
+    Once you apply, a request is sent to Agora to enable integration for you.
 
-  ![okta-applied](/images/common/okta-applied.png)
+    ![okta-applied](/images/common/okta-applied.png)
 
-  When your application is processed by Agora, **SAML Configuration** on the same page is automatically enabled and a set of **SSO URL** and **Audience URI** is generated.
+    When your application is processed by Agora, **SAML Configuration** on the same page is automatically enabled and a set of **SSO URL** and **Audience URI** is generated.
 
 1. Create a SAML integration for Agora in Okta Console.
 
-  1. Log in to your Okta developer account as a user with administrative privileges and click **Admin** in the upper right corner.
+    1. Log in to your Okta developer account as a user with administrative privileges and click **Admin** in the upper right corner.
 
-   ![okta-admin](/images/common/okta-admin.png)
+    ![okta-admin](/images/common/okta-admin.png)
 
-  1. Go to **Applications** > **Applications** and click **Create App Integration**.
+    1. Go to **Applications** > **Applications** and click **Create App Integration**.
 
-   ![okta-create-app-integration](/images/common/okta-create-app-integration.png)
+    ![okta-create-app-integration](/images/common/okta-create-app-integration.png)
 
-  1. In the **Sign-in method** section, select **SAML 2.0** and click **Next**.
+    1. In the **Sign-in method** section, select **SAML 2.0** and click **Next**.
 
-  1. On the **General Settings** tab, enter a name for this integration, for example, `Agora`, and click **Next**.
+    1. On the **General Settings** tab, enter a name for this integration, for example, `Agora`, and click **Next**.
 
-  1. On the **Configure SAML** tab, fill in the following SAML configurations generated in Agora Console:
+    1. On the **Configure SAML** tab, fill in the following SAML configurations generated in Agora Console:
 
      - In the **Single sign on URL** field, enter `https://sso2.agora.io/api/v0/saml/idp/callback`.
      - In the **Audience URI (SP Entity ID)** field, enter `https://sso2.agora.io/{companyId}/saml/SSO` where `{companyId}` is your company ID.
@@ -317,13 +317,13 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
 
      ![okta-saml-config](/images/common/okta-saml-config.png)
 
-  1. On the **Feedback** tab, select **I'm an Okta customer adding an internal app** and tick **This is an internal app that we have created**, then click **Finish**.
+    1. On the **Feedback** tab, select **I'm an Okta customer adding an internal app** and tick **This is an internal app that we have created**, then click **Finish**.
 
-   ![okta-feedback](/images/common/okta-feedback.png)
+    ![okta-feedback](/images/common/okta-feedback.png)
 
 1. View IdP information in Okta Console
 
-  1. In Okta Console, select the **Sign On** tab for Agora integration and click **View Setup Instructions**. You see the following information:
+    1. In Okta Console, select the **Sign On** tab for Agora integration and click **View Setup Instructions**. You see the following information:
 
      - **Identity Provider Single Sign-On URL**: At the end of this procedure, your team members use this URL to sign in to Agora Console
      - **Identity Provider Issuer**
@@ -333,36 +333,36 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
 
 1. Configure SAML settings in Agora Console
 
-  In the **SAML Configuration** section on the [SSO Management](https://console.agora.io/settings/sso-management) page in Agora Console, enter the following information from Okta Console:
+    In the **SAML Configuration** section on the [SSO Management](https://console.agora.io/settings/sso-management) page in Agora Console, enter the following information from Okta Console:
 
-   - **Identity Provider Single Sign-On URL**
-   - **Identity Provider Issuer**
-   - **X.509 Certificate**, including the `BEGIN CERTIFICATE` and `END CERTIFICATE lines`.
+    - **Identity Provider Single Sign-On URL**
+    - **Identity Provider Issuer**
+    - **X.509 Certificate**, including the `BEGIN CERTIFICATE` and `END CERTIFICATE lines`.
 
-  Click **Save**.
+    Click **Save**.
 
 1. Manage access
 
-  You can manage access for your team members manually using SAML, which is enabled when you apply for Okta
-  integration in Agora Console, or automatically, if you additionally enable SCIM. Manual management means that adding, managing, and removing a team member's access must be done in both, Okta and Agora Console. Automatic management means that SCIM automatically adds, manages, and removes members' access to Agora Console when you make changes in Okta.
+    You can manage access for your team members manually using SAML, which is enabled when you apply for Okta
+    integration in Agora Console, or automatically, if you additionally enable SCIM. Manual management means that adding, managing, and removing a team member's access must be done in both, Okta and Agora Console. Automatic management means that SCIM automatically adds, manages, and removes members' access to Agora Console when you make changes in Okta.
 
-  **Note**: Once enabled, SAML is applicable for both, existing and newly created Agora accounts for team members. For new accounts, however, log in as the admin in Agora Console and create an account *before* it is configured in Okta. SCIM is applicable only for new accounts.
+    **Note**: Once enabled, SAML is applicable for both, existing and newly created Agora accounts for team members. For new accounts, however, log in as the admin in Agora Console and create an account *before* it is configured in Okta. SCIM is applicable only for new accounts.
 
-  - Manual management with SAML
+    - Manual management with SAML
 
-   1. In Agora Console, add team members and choose their teams. For details, see [Manage members and teams](#manage-members-and-teams).
-   1. In Okta Console, go to **Directory** > **People**. Ensure that the email address of each team member is the same as that in Agora Console.
-   1. Go to **Applications** > **Applications** > **Agora integration**.
-   1. On the **Assignments** tab, click **Assign** and select **Assign to People**.
-   1. Enter the team members that need to sign in to Agora Console and click **Assign** for each. Click **Done**.
+    1. In Agora Console, add team members and choose their teams. For details, see [Manage members and teams](#manage-members-and-teams).
+    1. In Okta Console, go to **Directory** > **People**. Ensure that the email address of each team member is the same as that in Agora Console.
+    1. Go to **Applications** > **Applications** > **Agora integration**.
+    1. On the **Assignments** tab, click **Assign** and select **Assign to People**.
+    1. Enter the team members that need to sign in to Agora Console and click **Assign** for each. Click **Done**.
 
-  - Automated management with SCIM
+    - Automated management with SCIM
 
-   1. In Agora Console, enable **SCIM API Basic Auth** on the **SSO Management** page. A set of username and password is generated, along with the SCIM connector base URL.
+    1. In Agora Console, enable **SCIM API Basic Auth** on the **SSO Management** page. A set of username and password is generated, along with the SCIM connector base URL.
     ![scim-enabled](/images/common/scim-enabled.png)
-   1. In Okta Console, select the **General** tab under **Agora integration** and click **Edit**.
-   1. In the **Provisioning** section, select **SCIM** and click **Save**.
-   1. Select the **Provisioning** tab under **Agora integration**, then under **Settings** > **Integration** click **Edit**. Make the following changes:
+    1. In Okta Console, select the **General** tab under **Agora integration** and click **Edit**.
+    1. In the **Provisioning** section, select **SCIM** and click **Save**.
+    1. Select the **Provisioning** tab under **Agora integration**, then under **Settings** > **Integration** click **Edit**. Make the following changes:
       - In **SCIM connector base URL**, enter the corresponding URL from Agora Console.
       - In **Unique identifier field for users**, enter `email`.
       - Under **Supported provisioning actions**, tick all the checkboxes.
@@ -398,15 +398,15 @@ To add money to your account with a credit card, follow these steps:
 
 2. (Optional) If you have not added a credit card to your account, follow these steps:
 
-  1. Click **Add New Card**.
+    1. Click **Add New Card**.
 
     ![Add new card](/images/common/console-add-new-card.png)
 
-  2. Enter the card number, card holder name, expiration date, and CVC.
+    2. Enter the card number, card holder name, expiration date, and CVC.
 
-  3. Choose whether or not to set this card as the default credit card.
+    3. Choose whether or not to set this card as the default credit card.
 
-  4. Click **Continue**.
+    4. Click **Continue**.
 
 3. Select a credit card, enter the **Payment Amount**, and click **Pay**. If the payment is successful, you see a "Payment Succeeded" message.
 
@@ -416,7 +416,7 @@ To add money to your account via bank transfer, follow these steps:
 
 1. In [Billing](https://console.agora.io/v2/billing), select the **Bank Transfer** tab.
 
-  ![Bank transfer](/images/common/console-bank-transfer.png)
+    ![Bank transfer](/images/common/console-bank-transfer.png)
 
 2. Follow the on-screen instructions to complete.
 
@@ -434,11 +434,11 @@ To ask Agora support a question, follow these steps:
 
 1. Click **Get Support** > **Create Support Ticket**
 
-  ![Create a support ticket](/images/common/console-create-support-ticket.png)
+    ![Create a support ticket](/images/common/console-create-support-ticket.png)
 
 1. Type in your question or keywords to see if the question has been answered. If you cannot find your answer, select a category and submit a ticket to Agora’s customer support.
 
-  ![https://web-cdn.agora.io/docs-files/1658716858508)
+    ![https://web-cdn.agora.io/docs-files/1658716858508)
 
 You can track the status of your ticket under **Tickets**.
 
@@ -478,13 +478,13 @@ Follow these steps to delete your Agora account:
 
 2. In the left navigation panel, click **Account**.
 
-  ![Delete an account](/images/common/console-delete-account.png)
+    ![Delete an account](/images/common/console-delete-account.png)
 
 3. Ensure that you meet all the prerequisites, and click **Delete Account** at the bottom of the page.
 
 4. Read the pop-up prompt carefully and fill in the confirmation field. Click **Delete Account**.
 
-  If any prerequisite is not met, an error message appears after you click **Delete Account**. Check the [Prerequisites](#prerequisites) and try again.
+    If any prerequisite is not met, an error message appears after you click **Delete Account**. Check the [Prerequisites](#prerequisites) and try again.
 
 ## Reference
 

@@ -42,10 +42,10 @@ Follow these steps to build and run a token generator locally:
 
 1. Create a new `token-server` folder. Create a `server.go` file inside the folder and paste the following Golang sample code into the file. Replace the values for `appID` and `appCertificate` with your App ID and App certificate.
 
-  **Sample code for a token server**
+    **Sample code for a token server**
 
-```go
-  package main
+    ```go
+      package main
   
     import (
       rtctokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2"
@@ -164,25 +164,25 @@ Follow these steps to build and run a token generator locally:
         log.Fatal(err)
       }
     }
-  ```
+      ```
 
 1. Open the terminal, go to the `token-server` folder path, and run the following command line to create a `go.mod` file for your token generator. This file defines the import path and dependencies:
 
-  ```go
-  go mod init sampleServer
-  ```
+    ```shell
+    go mod init sampleServer
+    ```
 
 1. Run the following command to install dependencies. 
  
-  ```go
-  go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
-  ```
+    ```shell
+    go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
+    ```
 
 1. Run the following command to start the token generator:
 
-  ```go
-  go run server.go
-  ```
+    ```shell
+    go run server.go
+    ```
 
 After the token generator is deployed successfully, your terminal returns the token generated based on the App ID and App certificate you filled in.
 
@@ -196,63 +196,63 @@ If your current token server implementation uses `AccessToken`, follow these ste
 
 1. Replace the import `rtctokenbuilder` declaration with the following code and delete the declaration that imports `time`:
 
-  ```go
-  import (
-    // Replace
-    // rtctokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/RtcTokenBuilder"
-    rtctokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2"
-    "fmt"
-    "log"
-    "net/http"
-    // delete
-    // "time"
-    "encoding/json"
-    "errors"
-    "strconv"
-  )
-  ```
+    ```go
+    import (
+      // Replace
+      // rtctokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/RtcTokenBuilder"
+      rtctokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2"
+      "fmt"
+      "log"
+      "net/http"
+      // delete
+      // "time"
+      "encoding/json"
+      "errors"
+      "strconv"
+    )
+    ```
 
 1. Remove the statement that generates the timestamp and add `tokenExpireTimeInSeconds` and `privilegeExpireTimeInSeconds` related code:
 
-  ```go
-  // expireTimeInSeconds := uint32(40)
-  // Get the current timestamp
-  // currentTimestamp := uint32(time.Now().UTC().Unix())
-  // Timestamp when the token expires.
-  // expireTimestamp := currentTimestamp + expireTimeInSeconds
-  tokenExpireTimeInSeconds := uint32(40)
-  privilegeExpireTimeInSeconds := uint32(40)
-  ```
+    ```go
+    // expireTimeInSeconds := uint32(40)
+    // Get the current timestamp
+    // currentTimestamp := uint32(time.Now().UTC().Unix())
+    // Timestamp when the token expires.
+    // expireTimestamp := currentTimestamp + expireTimeInSeconds
+    tokenExpireTimeInSeconds := uint32(40)
+    privilegeExpireTimeInSeconds := uint32(40)
+    ```
 
 1. Update `tokenbuilder` method code:
 
-  ```go
-  // Code before updating
-  // result, err := rtctokenbuilder.BuildTokenWithUID(appID, appCertificate, channelName, int_uid, role, expireTimestamp)
-  // Updated code
-  // Change BuildTokenWithUID to BuildTokenWithUid
-  // Change expireTimestamp to tokenExpireTimeInSeconds and privilegeExpireTimeInSeconds
-  result, err := rtctokenbuilder.BuildTokenWithUid(appID, appCertificate, channelName, int_uid, role, tokenExpireTimeInSeconds, privilegeExpireTimeInSeconds)
-  ```
+    ```go
+    // Code before updating
+    // result, err := rtctokenbuilder.BuildTokenWithUID(appID, appCertificate, channelName, int_uid, role, expireTimestamp)
+    // Updated code
+    // Change BuildTokenWithUID to BuildTokenWithUid
+    // Change expireTimestamp to tokenExpireTimeInSeconds and privilegeExpireTimeInSeconds
+    result, err := rtctokenbuilder.BuildTokenWithUid(appID, appCertificate, channelName, int_uid, role, tokenExpireTimeInSeconds, privilegeExpireTimeInSeconds)
+    ```
 
 1. Remove unsupported roles
 
-  ```go
-  switch role_num {
-  // delete
-  // case 0:
-    // Deprecated. RoleAttendee and RolePublisher have the same permissions
-    // role = rtctokenbuilder.RoleAttendee
-    case 1:
-      role = rtctokenbuilder.RolePublisher
-    case 2:
-      role = rtctokenbuilder.RoleSubscriber
-  // delete
-  // case 101:
-    // Deprecated. RoleAdmin and RolePublisher have the same permissions
-    // role = rtctokenbuilder.RoleAdmin
-  }
-  ```
+    ```go
+    switch role_num {
+    // delete
+    // case 0:
+      // Deprecated. RoleAttendee and RolePublisher have the same permissions
+      // role = rtctokenbuilder.RoleAttendee
+      case 1:
+        role = rtctokenbuilder.RolePublisher
+      case 2:
+        role = rtctokenbuilder.RoleSubscriber
+    // delete
+    // case 101:
+      // Deprecated. RoleAdmin and RolePublisher have the same permissions
+      // role = rtctokenbuilder.RoleAdmin
+    }
+    ```
 
 ### See also
 
