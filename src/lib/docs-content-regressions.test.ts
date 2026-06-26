@@ -141,6 +141,60 @@ describe('docs content regressions', () => {
     ).resolves.toBeDefined();
   });
 
+  it('uses nested canonical build routes for voice docs content', async () => {
+    const { source } = await import('./source.server');
+
+    expect(
+      source.getPage(
+        [
+          'realtime-media',
+          'voice',
+          'build',
+          'set-up-token-authentication',
+          'use-tokens',
+        ],
+        'en',
+      ),
+    ).toBeDefined();
+    expect(
+      source.getPage(
+        [
+          'realtime-media',
+          'voice',
+          'build',
+          'set-up-your-project',
+          'compile-run-sample-project',
+        ],
+        'en',
+      ),
+    ).toBeDefined();
+    expect(
+      source.getPage(
+        [
+          'realtime-media',
+          'voice',
+          'build',
+          'manage-connection-and-quality',
+          'cloud-proxy',
+        ],
+        'en',
+      ),
+    ).toBeDefined();
+
+    expect(
+      source.getPage(['realtime-media', 'voice', 'build', 'use-tokens'], 'en'),
+    ).toBeUndefined();
+    expect(
+      source.getPage(
+        ['realtime-media', 'voice', 'build', 'compile-run-sample-project'],
+        'en',
+      ),
+    ).toBeUndefined();
+    expect(
+      source.getPage(['realtime-media', 'voice', 'build', 'cloud-proxy'], 'en'),
+    ).toBeUndefined();
+  });
+
   it('does not leave legacy videoURL placeholders in MDX content', () => {
     const sources = [
       'realtime-media/cloud-recording/build/receive-notifications.mdx',

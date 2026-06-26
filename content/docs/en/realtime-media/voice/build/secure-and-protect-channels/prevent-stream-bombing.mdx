@@ -40,7 +40,7 @@ To prevent unauthorized users from joining a channel by taking advantage of long
 When a token is about to expire, the SDK triggers the `onTokenPrivilegeWillExpire` callback. When you receive this callback, obtain a fresh token from the token server, and call `renewToken` to pass the newly generated token to the SDK.
 :::note
 - Agora recommends setting the validity period of `tokenExpirationInSeconds` and `privilegeExpirationInSeconds` to be the same.
-- Ensure the secrecy of your app ID and app certificate. Agora recommends storing the app ID and app certificate securely on the app server. If you suspect leakage, [Switch to a new primary certificate](../manage-agora-account.md).
+- Ensure the secrecy of your app ID and app certificate. Agora recommends storing the app ID and app certificate securely on the app server. If you suspect leakage, [Switch to a new primary certificate](../../manage-agora-account.md).
 - When updating the app certificate, best practice is to choose a time when the number of online users is at a minimum to avoid large-scale user login failure.
 :::
 ### Use Co-host token authentication
