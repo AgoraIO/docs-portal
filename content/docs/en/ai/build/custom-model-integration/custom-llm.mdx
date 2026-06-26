@@ -476,13 +476,80 @@ app.listen(PORT, () => {
 });
 ```
 
-When calling the POST method to [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), use the LLM configuration to point your agent to the custom service:
+</TabsContent>
+</Tabs>
+### Configure Conversational AI Engine
+
+To configure the agent to use your custom LLM service, update the LLM configuration as follows:
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import CustomLLM
+
+# ... other agent configuration ...
+.with_llm(CustomLLM(
+    api_key='your-llm-api-key',
+    base_url='https://your-custom-llm-service/chat/completions',
+    model='your-model-name',
+    system_messages=[{'role': 'system', 'content': 'You are a helpful assistant.'}],
+))
+# ... continue with .with_tts() and .create_session() ...
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { CustomLLM } from 'agora-agents';
+
+// ... other agent configuration ...
+.withLlm(new CustomLLM({
+  apiKey: 'your-llm-api-key',
+  url: 'https://your-custom-llm-service/chat/completions',
+  model: 'your-model-name',
+  systemMessages: [{ role: 'system', content: 'You are a helpful assistant.' }],
+}))
+// ... continue with .withTts() and .createSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// ... other agent configuration ...
+.WithLlm(
+    vendors.NewCustomLLM(vendors.CustomLLMOptions{
+        APIKey:  "your-llm-api-key",
+        BaseURL: "https://your-custom-llm-service/chat/completions",
+        Model:   "your-model-name",
+        SystemMessages: []map[string]interface{}{
+            {"role": "system", "content": "You are a helpful assistant."},
+        },
+    }),
+)
+// ... continue with .WithTts() and .CreateSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
 
 ```json
 {
   "llm": {
     "url": "https://your-custom-llm-service/chat/completions",
-    "api_key": "",
+    "api_key": "your-llm-api-key",
     "system_messages": [
       {
         "role": "system",
@@ -492,35 +559,13 @@ When calling the POST method to [Start a conversational AI agent](../../api-refe
   }
 }
 ```
-
-:::info[Info]
-If accessing your custom LLM service requires identity verification, provide the authentication information in the `api_key` field.
-:::
 
 </TabsContent>
 </Tabs>
-### Configure Agora's Conversational AI Engine
-
-When you [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), use the `llm` configuration to point your agent to the custom service:
 
 :::info[Info]
 If accessing your custom LLM service requires identity verification, provide the authentication information in the `api_key` field.
 :::
-
-```json
-{
-  "llm": {
-    "url": "https://your-custom-llm-service/chat/completions",
-    "api_key": "",
-    "system_messages": [
-      {
-        "role": "system",
-        "content": "You are a helpful assistant."
-      }
-    ]
-  }
-}
-```
 
 ## Advanced features
 
@@ -1327,15 +1372,84 @@ app.post('/audio/chat/completions', async (req, res) => {
 });
 ```
 
-When calling the POST method to [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), use the following configuration to specify the `output_modalities`:
+To configure the agent to use your audio endpoint, update the LLM configuration as follows:
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import CustomLLM
+
+# ... other agent configuration ...
+.with_llm(CustomLLM(
+    api_key='your-llm-api-key',
+    base_url='https://your-custom-llm-service/audio/chat/completions',
+    model='your-model-name',
+    input_modalities=['text'],
+    output_modalities=['text', 'audio'],
+    system_messages=[{'role': 'system', 'content': 'You are a helpful assistant.'}],
+))
+# ... continue with .with_tts() and .create_session() ...
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { CustomLLM } from 'agora-agents';
+
+// ... other agent configuration ...
+.withLlm(new CustomLLM({
+  apiKey: 'your-llm-api-key',
+  url: 'https://your-custom-llm-service/audio/chat/completions',
+  model: 'your-model-name',
+  inputModalities: ['text'],
+  outputModalities: ['text', 'audio'],
+  systemMessages: [{ role: 'system', content: 'You are a helpful assistant.' }],
+}))
+// ... continue with .withTts() and .createSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// ... other agent configuration ...
+.WithLlm(
+    vendors.NewCustomLLM(vendors.CustomLLMOptions{
+        APIKey:           "your-llm-api-key",
+        BaseURL:          "https://your-custom-llm-service/audio/chat/completions",
+        Model:            "your-model-name",
+        InputModalities:  []string{"text"},
+        OutputModalities: []string{"text", "audio"},
+        SystemMessages: []map[string]interface{}{
+            {"role": "system", "content": "You are a helpful assistant."},
+        },
+    }),
+)
+// ... continue with .WithTts() and .CreateSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
 
 ```json
 {
   "llm": {
-    "url": "http://your-custom-llm-service/audio/chat/completions",
-    "api_key": "your_api_key",
+    "url": "https://your-custom-llm-service/audio/chat/completions",
+    "api_key": "your-llm-api-key",
     "input_modalities": ["text"],
-    "output_modalities": ["text", "audio"]
+    "output_modalities": ["text", "audio"],
     "system_messages": [
       {
         "role": "system",
@@ -1348,6 +1462,7 @@ When calling the POST method to [Start a conversational AI agent](../../api-refe
 
 </TabsContent>
 </Tabs>
+
 ### Control agent behavior using first-packet metadata
 
 In streaming response (SSE) scenarios, a single LLM response is segmented into multiple chunks for transmission. Agora's Conversational AI Engine supports processing a special first-chunk response where `object` is `chat.completion.custom_metadata`, and uses the `metadata` field in that response to control the following agent behaviors:
