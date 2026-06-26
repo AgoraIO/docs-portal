@@ -36,18 +36,18 @@ The device is now powered on and ready for setup.
 Before starting conversations, follow these steps to connect your device to your Wi-Fi network.
 
 1. Press and hold the **Left button** for 3 seconds or longer.
-1. You hear the voice prompt: "Please use Bluetooth for network provisioning."
+2. You hear the voice prompt: "Please use Bluetooth for network provisioning."
 
-    The device is now in network configuration mode and ready to pair with your smartphone.
+   The device is now in network configuration mode and ready to pair with your smartphone.
 
-1. On your smartphone, open the Convo AI app and tap the **Menu** button in the top-left corner.
-1. Under **Convo AI Devices**, tap the **+** button.
-1. Tap the **+** button in the top-right to add a new device.
-1. Tap **Next**.
-1. When your device appears in the list, tap the device name.
-1. Confirm your Wi-Fi network name.
-1. Enter your Wi-Fi password and tap **Next**.
-1. Wait 3-5 seconds for the "Device Added" confirmation message.
+3. On your smartphone, open the Convo AI app and tap the **Menu** button in the top-left corner.
+4. Under **Convo AI Devices**, tap the **+** button.
+5. Tap the **+** button in the top-right to add a new device.
+6. Tap **Next**.
+7. When your device appears in the list, tap the device name.
+8. Confirm your Wi-Fi network name.
+9. Enter your Wi-Fi password and tap **Next**.
+10. Wait 3-5 seconds for the "Device Added" confirmation message.
 
 Your device is now connected to your network.
 
