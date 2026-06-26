@@ -1327,62 +1327,16 @@ function buildAiProductSidebar(
     type: 'page',
     url: restApiUrl,
   } satisfies DocsSidebarPageNode;
-
-  const manualServerSdkSection = {
-    children: [
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`,
-        title: 'TypeScript',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`,
-      },
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/go`,
-        title: 'Go',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/go`,
-      },
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/python`,
-        title: 'Python',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/python`,
-      },
-    ],
-    collapsible: true,
-    id: `ai-reference-server-sdk-${isZhCn ? 'zh-CN' : 'en'}`,
-    title: 'Server SDK',
-    type: 'section',
-    url: `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk`,
-  } satisfies DocsSidebarSectionNode;
-
-  const manualClientToolkitSection = {
-    children: [
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/android`,
-        title: 'Android',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/android`,
-      },
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/ios`,
-        title: 'iOS',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/ios`,
-      },
-      {
-        id: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/web`,
-        title: 'Web',
-        type: 'page',
-        url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit/web`,
-      },
-    ],
-    collapsible: true,
-    id: `ai-reference-client-toolkit-${isZhCn ? 'zh-CN' : 'en'}`,
-    title: isZhCn ? 'Client Toolkit' : 'Client toolkit',
-    type: 'section',
-    url: `${aiLocalePrefix}/api-reference/conversational-ai/client-toolkit`,
-  } satisfies DocsSidebarSectionNode;
+  const serverSdkTypescriptUrl = isZhCn
+    ? `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`
+    : `${aiLocalePrefix}/api-reference/api-ref/server-sdk/typescript`;
+  const serverSdkTypescriptPage = {
+    id: serverSdkTypescriptUrl,
+    linked: true,
+    title: isZhCn ? 'Server SDK TypeScript' : 'Server SDK TypeScript',
+    type: 'page',
+    url: serverSdkTypescriptUrl,
+  } satisfies DocsSidebarPageNode;
 
   const referenceLeadingChildren = referenceSection.children.filter(
     (child) =>
@@ -1409,8 +1363,7 @@ function buildAiProductSidebar(
     ...stripSidebarSectionMeta(referenceSection),
     children: [
       restApiPage,
-      manualServerSdkSection,
-      manualClientToolkitSection,
+      serverSdkTypescriptPage,
       ...referenceLeadingChildren,
       ...stripSidebarSectionMetaFromNodes(referenceTrailingChildren),
     ],
