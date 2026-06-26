@@ -21,6 +21,24 @@ describe('docs content regressions', () => {
     expect(nestedListIndex).toBeLessThan(itemCloseIndex);
   }
 
+  function expectCompiledSectionToHaveSingleOrderedList(
+    compiled: string,
+    startMarker: string,
+    endMarker: string,
+    itemCount: number,
+  ) {
+    const startIndex = compiled.indexOf(startMarker);
+    const endIndex = compiled.indexOf(endMarker, startIndex + 1);
+
+    expect(startIndex).toBeGreaterThanOrEqual(0);
+    expect(endIndex).toBeGreaterThan(startIndex);
+
+    const section = compiled.slice(startIndex, endIndex);
+
+    expect(section.match(/<_components\.ol>/g) ?? []).toHaveLength(1);
+    expect(section.match(/<_components\.li>/g) ?? []).toHaveLength(itemCount);
+  }
+
   function listMarkdownFiles(root: string): string[] {
     const files: string[] = [];
 
@@ -193,6 +211,41 @@ describe('docs content regressions', () => {
     expect(
       source.getPage(['realtime-media', 'voice', 'build', 'cloud-proxy'], 'en'),
     ).toBeUndefined();
+  });
+
+  it('keeps voice token server deployment steps in continuous ordered lists', async () => {
+    const source = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/voice/build/set-up-token-authentication/deploy-token-server.mdx',
+      ),
+      'utf8',
+    );
+
+    const compiled = String(
+      await compile(source, {
+        jsx: true,
+      }),
+    );
+
+    expectCompiledSectionToHaveSingleOrderedList(
+      compiled,
+      'Use the NPM package',
+      'Deploy with Docker',
+      4,
+    );
+    expectCompiledSectionToHaveSingleOrderedList(
+      compiled,
+      'Deploy with Docker',
+      'Manual local deployment',
+      3,
+    );
+    expectCompiledSectionToHaveSingleOrderedList(
+      compiled,
+      'Manual local deployment',
+      'Reference',
+      4,
+    );
   });
 
   it('does not leave legacy videoURL placeholders in MDX content', () => {
