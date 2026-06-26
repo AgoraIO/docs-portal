@@ -122,9 +122,9 @@ Each message contains both standard OpenAI fields and enhanced fields that provi
 
 Conversational AI Engine provides the following methods to access short-term memory:
 
-* **During agent runtime**: Call the [Retrieve agent history](../../api-reference/conversational-ai/rest-api/agent/history) API to retrieve the agent's complete short-term memory in JSON format. This API returns all short-term memory stored during the agent's lifecycle.
+* **During agent runtime**: Call the [Retrieve agent history](../../../api-reference/conversational-ai/rest-api/agent/history) API to retrieve the agent's complete short-term memory in JSON format. This API returns all short-term memory stored during the agent's lifecycle.
 
-* **After agent stops**: Agora sends short-term memory to your business server through the message notification service. For details, see [Notification event types](../reference/event-types#103-agent-history).
+* **After agent stops**: Agora sends short-term memory to your business server through the message notification service. For details, see [Notification event types](../../reference/event-types#103-agent-history).
 
 ## Pass memory content to the LLM
 
@@ -169,7 +169,7 @@ When `llm.vendor` is not `"custom"`, the engine only transfers the OpenAI standa
 
 ### Custom scenario
 
-When `llm.vendor` is set to `"custom"`, the engine transmits all fields in short-term memory to the LLM. You can implement a wrapper to filter or merge extended fields as needed. For implementation details, see [Custom LLM](custom-llm).
+When `llm.vendor` is set to `"custom"`, the engine transmits all fields in short-term memory to the LLM. You can implement a wrapper to filter or merge extended fields as needed. For implementation details, see [Custom LLM](../custom-model-integration/custom-llm).
 
 **Example use cases:**
 * **Add timestamps**: Include message timestamps in the `content` field
@@ -272,4 +272,4 @@ The following example shows how to inject summarized memory content using the `s
 
 ## Update memory at runtime
 
-Starting with version 1.4, you can call the [Update agent configuration](../../api-reference/conversational-ai/rest-api/agent/update) API to update the agent's `llm.system_messages` field while the agent is running. This enables you to update the memory content dynamically.
+Starting with version 1.4, you can call the [Update agent configuration](../../../api-reference/conversational-ai/rest-api/agent/update) API to update the agent's `llm.system_messages` field while the agent is running. This enables you to update the memory content dynamically.

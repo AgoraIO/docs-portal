@@ -8,9 +8,9 @@ When interacting with an agent, you may need to upload images or send image mess
 
 Agora provides a flexible, scalable, and standardized conversational AI engine toolkit. The toolkit supports **iOS**, **Android**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate the capabilities of the [Agora Signaling SDK](../../realtime-media/rtm/index) and [Agora Video SDK](../../introduction/realtime-audio-video) to enable the following features:
 
-- [Interrupt agents](interrupt-agent)
+- [Interrupt agents](shape-the-conversation/interrupt-agent)
 - [Display live transcripts](transcripts)
-- [Receive event notifications](event-notifications)
+- [Receive event notifications](handle-runtime-events/event-notifications)
 - [Set optimal audio parameters](../best-practices/audio-setup) for iOS and Android
 - [Send picture messages](send-multimodal-messages)
 

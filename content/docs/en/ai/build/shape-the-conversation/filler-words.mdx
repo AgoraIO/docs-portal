@@ -6,7 +6,7 @@ In conversational AI, delays in LLM responses may cause users to wonder if the a
 
 Common use cases for filler words include:
 
-- **MCP tool calls**: When the agent invokes tools through [MCP servers](../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-mcp-servers), response times can increase significantly. Filler words bridge this gap while the agent waits for tool results.
+- **MCP tool calls**: When the agent invokes tools through [MCP servers](../../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-mcp-servers), response times can increase significantly. Filler words bridge this gap while the agent waits for tool results.
 - **Complex queries**: Queries that require more LLM processing time benefit from a brief acknowledgment to signal that the agent is working on a response.
 - **Customer service scenarios**: In support interactions, filler words such as "Let me look into that for you" reassure users that their request is being handled.
 
@@ -14,14 +14,14 @@ Common use cases for filler words include:
 
 Before you begin, make sure you have the following:
 
-- An Agora [account](../../api-reference/conversational-ai/rest-api/agent/join) and project with Conversational AI enabled.
-- A working Conversational AI Engine project. If you don't have one yet, follow the [quickstart](../get-started/quickstart) to set one up.
+- An Agora [account](../../../api-reference/conversational-ai/rest-api/agent/join) and project with Conversational AI enabled.
+- A working Conversational AI Engine project. If you don't have one yet, follow the [quickstart](../../get-started/quickstart) to set one up.
 
 ## Implementation
 
 ### Enable filler words
 
-To enable filler words, add the `filler_words` object to `properties` when calling the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) API. Set `enable` to `true`:
+To enable filler words, add the `filler_words` object to `properties` when calling the [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join) API. Set `enable` to `true`:
 
 ```json
 "properties": {
@@ -202,7 +202,7 @@ agent := agentkit.NewAgent(client).
 
 <TabsContent value="rest-api">
 
-Add the following `filler_words` object to `properties` in your [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) request body:
+Add the following `filler_words` object to `properties` in your [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join) request body:
 
 ```json
 "filler_words": {
@@ -242,4 +242,4 @@ Keep the following tips in mind when configuring filler words:
 
 ## References
 
-- [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join)
+- [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join)
