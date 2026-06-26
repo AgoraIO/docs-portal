@@ -78,7 +78,7 @@ After account suspension, none of your projects can access Agora services. To 
 
 1. Add a credit card to your account or top up your balance using a bank account. This unfreezes your account and upgrades it to a paid account.
 
-2. Purchase a [pre-paid monthly package](https://docs.agora.io/en/iot/overview/subscription-packages) or [top-up package](https://docs.agora.io/en/iot/overview/subscription-packages). This option is highly recommended.
+2. Purchase a [pre-paid monthly package](/en/introduction/billing/subscription-packages) or [top-up package](/en/introduction/billing/subscription-packages). This option is highly recommended.
 
 ## Account settlement
 

@@ -289,7 +289,7 @@ In v2.1.0, Agora fully optimizes the internal architecture of Flexible Classroom
 
 If you have made changes to your Flexible Classroom UI in earlier versions, in order to migrate to v2.1.0, Agora recommends you create a new project based on v2.1.0 and re-implement the UI changes. Please refer to the following Flexible Classroom v2.1.0 migration guides:
 
-- [migration guide](https://docs.agora.io/en/flexible-classroom/overview/develop/migration-guide)
+- [migration guide](/en/solutions/flexible-classroom/reference/migration-guide)
 
 If you encounter any problem during the migration process, or need to migrate from Flexible Classroom earlier than v1.1.5, please contact [support@agora.io](mailto:support@agora.io) so that Agora technical support team can help.
 

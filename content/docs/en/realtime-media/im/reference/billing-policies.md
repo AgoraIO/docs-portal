@@ -88,7 +88,7 @@ After account suspension, none of your projects can access Agora services. To 
 ## Free-of-charge policy
 
 :::info
-Agora offers a new [pricing](/en/realtime-media/rtc/overview/pricing#subscription-packages) model. If your account uses this model, you receive a monthly free usage package by default instead of the 10,000 free minutes described below.
+Agora offers a new [pricing](/en/realtime-media/video/reference/pricing#subscription-packages) model. If your account uses this model, you receive a monthly free usage package by default instead of the 10,000 free minutes described below.
 :::
 
 Agora provides each account with 10,000 free minutes per month and deducts them in the following order:

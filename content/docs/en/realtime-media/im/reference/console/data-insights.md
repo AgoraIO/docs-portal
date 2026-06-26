@@ -5,7 +5,7 @@ description: "Introduces Agora Analytics for Agora Chat."
 
 ## Introduction
 
-[Agora Analytics](/en/api-reference/analytics/overview/product-overview) provides periodic analysis of usage and quality data for [Chat](../index), helping you keep track of the usage trends and quality details.
+[Agora Analytics](/en/solutions/agora-analytics/product-overview) provides periodic analysis of usage and quality data for [Chat](../index), helping you keep track of the usage trends and quality details.
 
 ### Feature overview
 
