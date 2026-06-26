@@ -13,7 +13,7 @@ Video Calling 4.x is a JavaScript and TypeScript library loaded by an HTML web p
 
 ### Compatibility
 
-See [Supported platforms](supported-platforms).
+See [Supported platforms](/en/realtime-media/video/reference/supported-platforms).
 
 ### Known issues
 
@@ -221,7 +221,7 @@ This release modified the calculation of [`freezeRate`](https://api-ref.agora.io
 
 1. **Reduced package size**
 
-    To further reduce the package size, this release separates the Plan-B feature, which is compatible with WebRTC, from the ESM-bundle package into an independent service module. Users can integrate them manually based on actual needs. For details, see [Use tree shaking](../build/optimize-and-operate/app-size-optimization#use-tree-shaking).
+    To further reduce the package size, this release separates the Plan-B feature, which is compatible with WebRTC, from the ESM-bundle package into an independent service module. Users can integrate them manually based on actual needs. For details, see [Use tree shaking](/en/realtime-media/video/build/optimize-and-operate/app-size-optimization#use-tree-shaking).
 
 1. **Other improvements**
 
@@ -289,13 +289,13 @@ v4.22.0 was released on 16 August, 2024.
 
 #### Compatibility changes
 
-To further reduce the package size, this version splits the Channel Media Relay Service and the Live Streaming Service from the ESM-bundle format package into independent service modules. You can manually import these modules for integration based on your actual needs. See [Use tree shaking](../build/optimize-and-operate/app-size-optimization#use-tree-shaking) for details on how to integrate.
+To further reduce the package size, this version splits the Channel Media Relay Service and the Live Streaming Service from the ESM-bundle format package into independent service modules. You can manually import these modules for integration based on your actual needs. See [Use tree shaking](/en/realtime-media/video/build/optimize-and-operate/app-size-optimization#use-tree-shaking) for details on how to integrate.
 
 #### New features
 
 **Optimize channel preload**
 
-When using the channel preload feature, Agora recommends sending the host's media stream immediately when calling the method to join the channel. This reduces the first frame rendering time. For details, see [Preload channels](../build/join-and-manage-channels/preload-channels). With this setting, users will start pulling streams as soon as they join the channel, which will generate charges. For details on how Agora charges for the services, see [Pricing](pricing).
+When using the channel preload feature, Agora recommends sending the host's media stream immediately when calling the method to join the channel. This reduces the first frame rendering time. For details, see [Preload channels](/en/realtime-media/video/build/join-and-manage-channels/preload-channels). With this setting, users will start pulling streams as soon as they join the channel, which will generate charges. For details on how Agora charges for the services, see [Pricing](/en/realtime-media/video/reference/pricing).
 
 **Support for AV1 encoding (Beta)**
 
@@ -381,7 +381,7 @@ This release adds the following new features:
         **Note:**
 
         - This functionality is only supported on Chrome 87 or later, as well as Safari 15.4 or later.
-        - Due to the conflicts in certain browser core components, this feature is not available when [end-to-end media encryption (Beta)](../build/secure-and-protect-channels/media-stream-encryption) is enabled.
+        - Due to the conflicts in certain browser core components, this feature is not available when [end-to-end media encryption (Beta)](/en/realtime-media/video/build/secure-and-protect-channels/media-stream-encryption) is enabled.
 
 **Monitor the video states of receivers**
 
@@ -512,7 +512,7 @@ As of this release, you can call `setLowStreamParameter` after `publish` to dyna
 
 **Tree shaking support**
 
-As of this release, the SDK supports [tree shaking](https://webpack.js.org/guides/tree-shaking/), which removes unused code during the build process, reducing your app's size after integrating the SDK. To use this feature, see [App size optimization](../build/optimize-and-operate/app-size-optimization#use-tree-shaking).
+As of this release, the SDK supports [tree shaking](https://webpack.js.org/guides/tree-shaking/), which removes unused code during the build process, reducing your app's size after integrating the SDK. To use this feature, see [App size optimization](/en/realtime-media/video/build/optimize-and-operate/app-size-optimization#use-tree-shaking).
 
 **Dual display of video stream**
 
@@ -724,7 +724,7 @@ These methods support the following event names as parameters:- `"camera-changed
 
 v4.18.0 fixes the following issues:
 
-- Mobile devices experienced delays in receiving notifications for the [broadcaster leave channel event](../build/optimize-and-operate/receive-notifications#104-broadcaster-leave-channel).
+- Mobile devices experienced delays in receiving notifications for the [broadcaster leave channel event](/en/realtime-media/video/build/optimize-and-operate/receive-notifications#104-broadcaster-leave-channel).
 - Users experienced a black screen while watching video streams encoded with H.264 in older browser versions.
 - Memory usage increased when using the SDK with the Virtual Background or Image Enhancer extension.
 - The SDK continued to use the expired token during reconnection attempts after generating a new token using the `renewToken` method.
@@ -764,9 +764,9 @@ For detailed explanations of these properties, see [ScreenVideoTrackInitConfig](
 This release improves the flexibility in setting video profiles for different types of video tracks:
 
 - You can now specify the resolution and the frame rate when calling `createCustomVideoTrack` to create a custom video track, by passing in values for the `width`, `height`, and `frameRate` parameters.
-- After creating a screen track or a custom video track, you can dynamically adjust the video profile using `LocalVideoTrack.setEncoderConfiguration`. Please note that there is a known issue with calling this method on a screen track in certain versions of macOS Safari. [See issue details](common-problems).
+- After creating a screen track or a custom video track, you can dynamically adjust the video profile using `LocalVideoTrack.setEncoderConfiguration`. Please note that there is a known issue with calling this method on a screen track in certain versions of macOS Safari. [See issue details](/en/realtime-media/video/reference/common-problems).
 
-For details, see more about [Configure video encoding](../build/manage-connection-and-quality/optimize-multihost-video).
+For details, see more about [Configure video encoding](/en/realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video).
 
 **Other improvements**
 
@@ -1064,9 +1064,9 @@ v4.12.0 was released on June 15, 2022.
 
 Media processing extensions have the following changes:
 
-- The [Image Enhancement Extension (Beta)](https://www.npmjs.com/package/agora-extension-beauty-effect) is released. This extension incorporates and upgrades the built-in image enhancement feature (enabled by  [setBeautyEffect](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalvideotrack.html#setbeautyeffect))) of the Agora Web SDK 4.x. You can adjust parameters including the contrast, brightness, and smoothness levels, in order to touch up the image for effects such as skin lightening and skin smoothing. For details, see [Use the Image Enhancement Extension](../build/apply-video-effects/beauty-effect).
+- The [Image Enhancement Extension (Beta)](https://www.npmjs.com/package/agora-extension-beauty-effect) is released. This extension incorporates and upgrades the built-in image enhancement feature (enabled by  [setBeautyEffect](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalvideotrack.html#setbeautyeffect))) of the Agora Web SDK 4.x. You can adjust parameters including the contrast, brightness, and smoothness levels, in order to touch up the image for effects such as skin lightening and skin smoothing. For details, see [Use the Image Enhancement Extension](/en/realtime-media/video/build/apply-video-effects/beauty-effect).
 
-- The [Virtual Background Extension (Beta)](https://www.npmjs.com/package/agora-extension-virtual-background) supports animated virtual backgrounds as of v1.0.0-beta-3. You can set a user's background as a short video. For details, see [Use the Virtual Background Extension](../build/apply-video-effects/virtual-background).
+- The [Virtual Background Extension (Beta)](https://www.npmjs.com/package/agora-extension-virtual-background) supports animated virtual backgrounds as of v1.0.0-beta-3. You can set a user's background as a short video. For details, see [Use the Virtual Background Extension](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
 #### Issues fixed
 
@@ -1128,8 +1128,8 @@ v4.10.0 supports using media processing extensions in the Video Calling. The fol
 
 | Extension                           | Description                                                                                                       | Documentation                                                                    |
 |-------------------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| Virtual Background Extension (Beta) | Enables users to replace their actual background with a solid color or custom image, or to blur their background. | [Use the Virtual Background Extension (Beta)](../build/apply-video-effects/virtual-background) |
-| AI Noise Suppression Extension (Beta)        | Reduces many types of sudden noise and reduces vocal distortion when multiple people speak at the same time.      | [AI Noise Suppression](../build/enhance-the-audio-experience/ai-noise-suppression) |
+| Virtual Background Extension (Beta) | Enables users to replace their actual background with a solid color or custom image, or to blur their background. | [Use the Virtual Background Extension (Beta)](/en/realtime-media/video/build/apply-video-effects/virtual-background) |
+| AI Noise Suppression Extension (Beta)        | Reduces many types of sudden noise and reduces vocal distortion when multiple people speak at the same time.      | [AI Noise Suppression](/en/realtime-media/video/build/enhance-the-audio-experience/ai-noise-suppression) |
 
 
 #### API changes
@@ -1337,7 +1337,7 @@ As of v4.6.0, the Video Calling supports Interactive Live Streaming Standard. Th
 
 -   Interactive Live Streaming Standard: Low latency (1500 ms to 2000 ms) from the host’s client to an audience member’s client.
 
-The charges for Standard and Premium are different. For details, see the [product overview](../) and [pricing](./pricing) of Interactive Live Streaming Standard.
+The charges for Standard and Premium are different. For details, see the [product overview](/en/realtime-media/video/) and [pricing](/en/realtime-media/video/reference/pricing) of Interactive Live Streaming Standard.
 
 You can set the latency level of the audience role in the following two ways:
 
@@ -1405,7 +1405,7 @@ To strengthen the security of the key, v4.5.0 adds two encryption modes, `"aes-1
 
 **Restrict media zones**
 
-As of v4.5.0, when calling `setArea` to specify the media zone for connection, you can use the `areaCode` parameter to specify a large zone and use the `excludedArea` parameter to specify a small zone. The region for connection is the large zone excluding the small zone. You can only specify the large zone as `"GLOBAL"`. For details, see [Restrict media zones](../build/manage-connection-and-quality/geofencing).
+As of v4.5.0, when calling `setArea` to specify the media zone for connection, you can use the `areaCode` parameter to specify a large zone and use the `excludedArea` parameter to specify a small zone. The region for connection is the large zone excluding the small zone. You can only specify the large zone as `"GLOBAL"`. For details, see [Restrict media zones](/en/realtime-media/video/build/manage-connection-and-quality/geofencing).
 
 
 **The preset video encoder configurations for screen sharing**
@@ -1479,7 +1479,7 @@ Once you enable the built-in encryption, all users in the same channel must use 
 
 **Cloud proxy**
 
-v4.4.0 adds the `client.on("is-using-cloud-proxy")` event. The SDK triggers this event after the local client successfully publishes a media stream to indicate whether the media stream is forwarded by the [Cloud proxy service](../build/manage-connection-and-quality/cloud-proxy).
+v4.4.0 adds the `client.on("is-using-cloud-proxy")` event. The SDK triggers this event after the local client successfully publishes a media stream to indicate whether the media stream is forwarded by the [Cloud proxy service](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy).
 
 **Error code**
 
@@ -1513,7 +1513,7 @@ v4.3.0 was released on January 26, 2021.
 
 This release optimizes the Agora cloud proxy architecture and enhances the connectivity of the Video Calling in environments with restricted network access. The optimized Agora cloud proxy service also supports regional connection.
 
-You can contact (mailto:support@agora.io) to apply for using the optimized Agora cloud proxy service and set the `mode` parameter as `3` when calling `startProxyServer`. For details, see [Cloud proxy service](../build/manage-connection-and-quality/cloud-proxy).
+You can contact (mailto:support@agora.io) to apply for using the optimized Agora cloud proxy service and set the `mode` parameter as `3` when calling `startProxyServer`. For details, see [Cloud proxy service](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy).
 
 ### v4.2.1
 
@@ -2276,7 +2276,7 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
    Starting from this version, Agora introduces Lite SDK, which includes only the basic audio and video capabilities and partially cuts advanced features, effectively reducing the app size after integrating the SDK.
 
    - Lite SDK supports manual integration or third-party repository integration.
-   - For information on dynamic libraries included in the Lite SDK, see [App size optimization](../build/optimize-and-operate/app-size-optimization).
+   - For information on dynamic libraries included in the Lite SDK, see [App size optimization](/en/realtime-media/video/build/optimize-and-operate/app-size-optimization).
    - For the list of APIs supported by Lite SDK, see [Lite SDK API](https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_lite_api.html).
    - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](/en/api-reference/faq/product/audio_format)
 
@@ -2938,7 +2938,7 @@ The `onCaptureVideoFrame` and `onPreEncodeVideoFrame` callbacks are added with a
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode to balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
 :::
 
 
@@ -2949,7 +2949,7 @@ To increase the fun of real-time video calls and protect user privacy, this vers
 - Process the background as Alpha information without replacement, only separating the portrait and the background. This can be combined with the local video mixing feature to achieve a portrait-in-picture effect.
 - Replace the background with various formats of local videos.
 
-See [Virtual Background documentation](../build/apply-video-effects/virtual-background).
+See [Virtual Background documentation](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
 
 **3. Video scenario settings**
@@ -3081,7 +3081,7 @@ As of this release, the SDK optimizes the video encoder algorithm and upgrades t
 Call the `setVideoEncoderConfiguration` method to set the expected video encoding resolution in the video encoding parameters configuration.
 
 :::info
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 :::
 
 
@@ -3162,7 +3162,7 @@ For more information about registering video observers and subscription options,
 
 As of this release, the SDK supports MPUDP protocol, which enables you to connect and use multiple paths to maximize the use of channel resources based on the UDP protocol. You can use different physical NICs on both mobile and desktop and aggregate them to effectively combat network jitter and improve transmission quality.
 
-To enable this feature, contact [support@agora.io](mailto:mailto:support@agora.io).
+To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
 **4. Camera capture options**
 
@@ -3438,7 +3438,7 @@ This release has optimized the implementation of some features, resulting in inc
 - Custom video capture and rendering (Media IO)
 - Warning codes
 
-After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migrate from v3.7.x to v4.0.0](../reference/migration-guide).
+After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migrate from v3.7.x to v4.0.0](/en/realtime-media/video/reference/migration-guide).
 
 **2. Callback exception handling**
 
@@ -3468,11 +3468,11 @@ You can also experience the following features with the multi-channel capability
 
 In order to improve the interactive video experience, the SDK optimizes the whole process of video capturing, encoding, decoding, and rendering. Starting from this version, it supports Full HD (FHD) and Ultra HD (UHD) video resolutions. You can set the `dimensions` parameter to 1920 × 1080 or higher when calling the `setVideoEncoderConfiguration` method. If your device does not support high resolutions, the SDK automatically falls back to an appropriate resolution.
 
-The UHD resolution (4K, 60 fps) is currently in beta and requires certain device performance and network bandwidth. If you want to enable this feature, contact [technical support](mailto:mailto:support@agora.io).
+The UHD resolution (4K, 60 fps) is currently in beta and requires certain device performance and network bandwidth. If you want to enable this feature, contact [technical support](mailto:support@agora.io).
 
 High resolution typically means higher performance consumption. To avoid a decrease in experience due to insufficient device performance, Agora recommends that you enable FHD and UHD video resolutions on devices with better performance.
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **3. Agora media player**
 
@@ -3513,7 +3513,7 @@ In order to enhance the real-time audio and video interactive activities based o
 
 - Easy to integrate: The integration of modular functions can be achieved simply by calling an API, and the integration efficiency is improved by nearly 95%.
 - Extensibility design: The modular and extensible SDK design style endows the Agora SDK with good extensibility, which enables developers to quickly build real-time interactive apps based on the Agora extensions marketplace ecosystem.
-- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../build/customize-audio-processing/use-an-extension).
+- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](/en/realtime-media/video/build/customize-audio-processing/use-an-extension).
 - Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](/en/api-reference/api-ref/extensions-marketplace/provisioning).
 
 **8. Enhanced channel management**
@@ -3684,7 +3684,7 @@ The version of the `aosl.xcframework` library in the v4.6.0 SDK is 1.3.0. You ca
 
 This version includes SDK behavior changes, API deprecations, and deletions. To ensure your app functions correctly, update your code after upgrading to this version.
 
-For details on deprecated and deleted APIs in each version, see the [API Sunset Notice](../reference/api-sunset).
+For details on deprecated and deleted APIs in each version, see the [API Sunset Notice](/en/api-reference/api-ref/video/api-sunset).
 
 - **Deprecation of direct CDN streaming APIs**
 
@@ -3898,9 +3898,9 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
 
 1. **Changes in strong video noise suppression**
 
-   This version adjusts the implementation of strong video noise suppression. The `AgoraVideoDenoiserLevel` removes `AgoraVideoDenoiserLevelStrength`. Instead, after enabling video noise suppression by calling [`setVideoDenoiserOptions:options:`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setvideodenoiseroptions(_:options:)), you can call the [`setBeautyEffectOptions:options:`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setbeautyeffectoptions(_:options:)) method to enable the beauty skin smoothing feature. Using both together will help achieve better video noise suppression effects. For strong noise suppression, it is recommended to set the skin smoothing parameters as detailed in [`setVideoDenoiserOptions:options:`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setvideodenoiseroptions(_:options:)).
+   This version adjusts the implementation of strong video noise suppression. The `AgoraVideoDenoiserLevel` removes `AgoraVideoDenoiserLevelStrength`. Instead, after enabling video noise suppression by calling [`setVideoDenoiserOptions:options:`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setvideodenoiseroptions(_:options:)>), you can call the [`setBeautyEffectOptions:options:`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setbeautyeffectoptions(_:options:)>) method to enable the beauty skin smoothing feature. Using both together will help achieve better video noise suppression effects. For strong noise suppression, it is recommended to set the skin smoothing parameters as detailed in [`setVideoDenoiserOptions:options:`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setvideodenoiseroptions(_:options:)>).
 
-   Additionally, due to this adjustment, to achieve the best low-light enhancement effect with a focus on image quality, you need to enable video noise suppression first and use specific settings as detailed in [`setLowlightEnhanceOptions:options:`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setlowlightenhanceoptions(_:options:)).
+   Additionally, due to this adjustment, to achieve the best low-light enhancement effect with a focus on image quality, you need to enable video noise suppression first and use specific settings as detailed in [`setLowlightEnhanceOptions:options:`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setlowlightenhanceoptions(_:options:)>).
 
 1. **Changes in video encoding preferences**
 
@@ -3982,7 +3982,7 @@ v4.4.0 was released on August 5, 2024.
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
 :::info[Note]
-Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API sunset notice](../reference/api-sunset).
+Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API sunset notice](/en/api-reference/api-ref/video/api-sunset).
 :::
 
 
@@ -4009,7 +4009,7 @@ Starting with v4.4.0, the SDK uses native iOS APIs to manage the microphone. As 
    Starting from this version, Agora introduces Lite SDK, which includes only the basic audio and video capabilities and partially cuts advanced features, effectively reducing the app size after integrating the SDK.
 
    - Lite SDK supports manual integration or third-party repository integration.
-   - For information on dynamic libraries included in the Lite SDK, see [App size optimization](../build/optimize-and-operate/app-size-optimization).
+   - For information on dynamic libraries included in the Lite SDK, see [App size optimization](/en/realtime-media/video/build/optimize-and-operate/app-size-optimization).
    - For the list of APIs supported by Lite SDK, see [API reference](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit).
    - For the limitations and precautions when using the Lite SDK  to play media files, refer to [Which audio file formats does the Agora Video SDK support?](/en/api-reference/faq/product/audio_format)
 
@@ -4055,7 +4055,7 @@ v4.3.2 was released on June 4, 2024.
 
 #### Improvements
 
-1. This release enhances the usability of the [setRemoteSubscribeFallbackOption](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setremotesubscribefallbackoption(_:)) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
+1. This release enhances the usability of the [setRemoteSubscribeFallbackOption](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setremotesubscribefallbackoption(_:)>) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
 
 1. The Agora media player supports playing mp4 files with an Alpha channel.
 
@@ -4068,7 +4068,7 @@ This version fixed the following issues:
 - Occasional video smoothness issues during audio and video interactions.
 - The app occasionally crashed when the decoded video resolution on the receiving end was an odd number.
 - The app occasionally crashed when remote users left the channel.
-- When playing an audio file using [startAudioMixing [1/2\]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/startaudiomixing(_:loopback:cycle:)) and the playing finished, the SDK sometimes failed to trigger the [audioMixingStateChanged](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:audiomixingstatechanged:reasoncode:)) (`AgoraAudioMixingStateTypeStopped`, `AgoraAudioMixingReasonAllLoopsCompleted`) callback which reports that the playing is completed.
+- When playing an audio file using [startAudioMixing [1/2\]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/startaudiomixing(_:loopback:cycle:)) and the playing finished, the SDK sometimes failed to trigger the [audioMixingStateChanged](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:audiomixingstatechanged:reasoncode:)>) (`AgoraAudioMixingStateTypeStopped`, `AgoraAudioMixingReasonAllLoopsCompleted`) callback which reports that the playing is completed.
 - When calling the [playEffect [3/3\]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/playeffect(_:filepath:loopcount:pitch:pan:gain:publish:startpos:)) method to play sound effect files shorter than 1 second with `loopCount` set to `0`, there was no sound.
 - When using the Agora media player to play a video and stopping it during playing, sometimes there was no sound for a short time after the playback was resumed.
 
@@ -4089,21 +4089,21 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Portrait center stage**
 
-   To enhance the presentation effect in online meetings, shows, and online education use-cases, this version introduces the  [enableCameraCenterStage](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)) method to activate the Portrait center stage. This ensures that presenters, regardless of movement, always remain centered in the video frame, achieving better presentation effects.
+   To enhance the presentation effect in online meetings, shows, and online education use-cases, this version introduces the  [enableCameraCenterStage](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)>) method to activate the Portrait center stage. This ensures that presenters, regardless of movement, always remain centered in the video frame, achieving better presentation effects.
 
-   Before enabling portrait center stage, it is recommended to verify whether your current device supports this feature by calling [isCameraCenterStageSupported](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/iscameracenterstagesupported()). A list of supported devices can be found in the API documentation at [enableCameraCenterStage](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)).
+   Before enabling portrait center stage, it is recommended to verify whether your current device supports this feature by calling [isCameraCenterStageSupported](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/iscameracenterstagesupported()>). A list of supported devices can be found in the API documentation at [enableCameraCenterStage](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)>).
 
 1. **Camera stabilization**
 
-   To improve video stability in mobile filming, low-light environments, and hand-held shooting use-cases, this version introduces a camera stabilization feature. You can activate this feature and select an appropriate stabilization mode by calling [setCameraStabilizationMode](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setcamerastabilizationmode(_:)), achieving more stable and clearer video footage.
+   To improve video stability in mobile filming, low-light environments, and hand-held shooting use-cases, this version introduces a camera stabilization feature. You can activate this feature and select an appropriate stabilization mode by calling [setCameraStabilizationMode](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setcamerastabilizationmode(_:)>), achieving more stable and clearer video footage.
 
 1. **Wide and ultra-wide cameras**
 
-   To allow users to capture a broader field of view and more complete scene content, this release introduces support for wide and ultra-wide cameras. You can first call [queryCameraFocalLengthCapability](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querycamerafocallengthcapability()) to check the device's focal length capabilities, and then call  [setCameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setcameracapturerconfiguration(_:)) and set `cameraFocalLengthType` to the supported focal length types, including wide and ultra-wide.
+   To allow users to capture a broader field of view and more complete scene content, this release introduces support for wide and ultra-wide cameras. You can first call [queryCameraFocalLengthCapability](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querycamerafocallengthcapability()>) to check the device's focal length capabilities, and then call  [setCameraCapturerConfiguration](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setcameracapturerconfiguration(_:)>) and set `cameraFocalLengthType` to the supported focal length types, including wide and ultra-wide.
 
 1. **Data stream encryption**
 
-   This version adds `datastreamEncryptionEnabled` to [AgoraEncryptionConfig](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraencryptionconfig) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryption(_:encryptionconfig:)). If there are issues causing failures in data stream encryption or decryption, these can be identified by the newly added `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE` and `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE` enumerations.
+   This version adds `datastreamEncryptionEnabled` to [AgoraEncryptionConfig](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraencryptionconfig) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryption(_:encryptionconfig:)>). If there are issues causing failures in data stream encryption or decryption, these can be identified by the newly added `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE` and `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE` enumerations.
 
 1. **Local video rendering**
 
@@ -4120,9 +4120,9 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Other features**
 
-   - A new method [enableEncryptionEx](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryptionex(_:encryptionconfig:connection:)) is added for enabling media stream or data stream encryption in multi-channel use-cases.
-   - A new method [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setaudiomixingplaybackspeed(_:)) is introduced for setting the playback speed of audio files.
-   - A new method [getCallIdEx](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/getcallidex(_:)) is introduced for retrieving call IDs in multi-channel use-cases.
+   - A new method [enableEncryptionEx](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryptionex(_:encryptionconfig:connection:)>) is added for enabling media stream or data stream encryption in multi-channel use-cases.
+   - A new method [setAudioMixingPlaybackSpeed](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setaudiomixingplaybackspeed(_:)>) is introduced for setting the playback speed of audio files.
+   - A new method [getCallIdEx](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/getcallidex(_:)>) is introduced for retrieving call IDs in multi-channel use-cases.
 
 1. **Beta features**
 
@@ -4167,14 +4167,14 @@ This version fixed the following issue:
 
 **Added**
 
-- [enableCameraCenterStage](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:))
-- [isCameraCenterStageSupported](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/iscameracenterstagesupported())
-- [setCameraStabilizationMode](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setcamerastabilizationmode(_:))
+- [enableCameraCenterStage](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)>)
+- [isCameraCenterStageSupported](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/iscameracenterstagesupported()>)
+- [setCameraStabilizationMode](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setcamerastabilizationmode(_:)>)
 - [AgoraCameraStabilizationMode](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoracamerastabilizationmode)
 - The `enableAlphaMask` member in [AgoraRtcVideoCanvas](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcvideocanvas)
-- [setFaceInfoDelegate](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setfaceinfodelegate(_:))
+- [setFaceInfoDelegate](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setfaceinfodelegate(_:)>)
 - [AgoraFaceInfoDelegate](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorafaceinfodelegate)
-- [onFaceInfo](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorafaceinfodelegate/onfaceinfo(_:))
+- [onFaceInfo](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorafaceinfodelegate/onfaceinfo(_:)>)
 - The `publishLipSyncTrack` member in [AgoraRtcChannelMediaOptions](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcchannelmediaoptions)
 - [AgoraMediaSourceType](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoramediasourcetype) adds `AgoraMediaSourceTypeSpeechDriven`
 - [AgoraVideoSourceType](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoravideosourcetype) adds `AgoraVideoSourceTypeSpeechDriven`
@@ -4185,10 +4185,10 @@ This version fixed the following issue:
 - [AgoraRtcRemoteAudioStats](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcremoteaudiostats) adds `e2eDelay`
 - [AgoraErrorCode](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraerrorcode) adds `AgoraErrorCodeDatastreamDecryptionFailed`
 - [AgoraAudioEffectPreset](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraaudioeffectpreset) adds `AgoraAudioEffectPresetRoomAcousticsChorus`, enhancing the spatial presence of vocals in chorus use-cases
-- [getCallIdEx](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/getcallidex(_:))
-- [enableEncryptionEx](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryptionex(_:encryptionconfig:connection:))
-- [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setaudiomixingplaybackspeed(_:))
-- [queryCameraFocalLengthCapability](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querycamerafocallengthcapability())
+- [getCallIdEx](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/getcallidex(_:)>)
+- [enableEncryptionEx](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryptionex(_:encryptionconfig:connection:)>)
+- [setAudioMixingPlaybackSpeed](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setaudiomixingplaybackspeed(_:)>)
+- [queryCameraFocalLengthCapability](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querycamerafocallengthcapability()>)
 - [AgoraFocalLengthInfo](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorafocallengthinfo)
 - [AgoraFocalLength](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorafocallength)
 - [AgoraCameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoracameracapturerconfiguration) adds a new member `cameraFocalLengthType`
@@ -4265,7 +4265,7 @@ This release has optimized the implementation of some functions, involving renam
 
 1. **Custom mixed video layout on the receiving end**
 
-   To facilitate customized layout of mixed video stream at the receiver end, this release introduces the [`didTranscodedStreamLayoutInfoUpdatedWithUserId`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:didtranscodedstreamlayoutinfoupdatedwithuserid:videolayoutinfo:)) callback. When the receiver receives the channel's mixed video stream sent by the video mixing server, this callback is triggered, reporting the layout information of the mixed video stream and the layout information of each sub-video stream in the mixed stream. The receiver can set a separate `view` for rendering the sub-video stream (distinguished by `subviewUid`) in the mixed video stream when calling the [setupRemoteVideo](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setupremotevideo(_:)) method, achieving a custom video layout effect.
+   To facilitate customized layout of mixed video stream at the receiver end, this release introduces the [`didTranscodedStreamLayoutInfoUpdatedWithUserId`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:didtranscodedstreamlayoutinfoupdatedwithuserid:videolayoutinfo:)>) callback. When the receiver receives the channel's mixed video stream sent by the video mixing server, this callback is triggered, reporting the layout information of the mixed video stream and the layout information of each sub-video stream in the mixed stream. The receiver can set a separate `view` for rendering the sub-video stream (distinguished by `subviewUid`) in the mixed video stream when calling the [setupRemoteVideo](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setupremotevideo(_:)>) method, achieving a custom video layout effect.
 
    When the layout of the sub-video streams in the mixed video stream changes, this callback will also be triggered to report the latest layout information in real time.
 
@@ -4275,33 +4275,33 @@ This release has optimized the implementation of some functions, involving renam
 
    This release supports local preview with simultaneous display of multiple frames, where the videos shown in the frames are positioned at different observation positions along the video link. Examples of usage are as follows:
 
-   1. Call [setupLocalVideo](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setuplocalvideo(_:)) to set the first view: Set the `position` parameter to `AgoraVideoModulePositionPostCaptureOrigin` (introduced in this release) in `AgoraRtcVideoCanvas`. This corresponds to the position after local video capture and before preprocessing. The video observed here does not have preprocessing effects.
-   2. Call [setupLocalVideo](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setuplocalvideo(_:)) to set the second view: Set the `position` parameter to `AgoraVideoModulePositionPostCapture` in `AgoraRtcVideoCanvas`, the video observed here has the effect of video preprocessing.
+   1. Call [setupLocalVideo](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setuplocalvideo(_:)>) to set the first view: Set the `position` parameter to `AgoraVideoModulePositionPostCaptureOrigin` (introduced in this release) in `AgoraRtcVideoCanvas`. This corresponds to the position after local video capture and before preprocessing. The video observed here does not have preprocessing effects.
+   2. Call [setupLocalVideo](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setuplocalvideo(_:)>) to set the second view: Set the `position` parameter to `AgoraVideoModulePositionPostCapture` in `AgoraRtcVideoCanvas`, the video observed here has the effect of video preprocessing.
    3. Observe the local preview effect: The first view is the original video of a real person; the second view is the virtual portrait after video preprocessing (including image enhancement, virtual background, and local preview of watermarks) effects.
 
 3. **Query Device Score**
 
-   This release adds the [queryDeviceScore](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querydevicescore()) method to query the device's score level to ensure that the user-set parameters do not exceed the device's capabilities. For example, in HD or UHD video use-cases, you can first call this method to query the device's score. If the returned score is low (for example, below 60), you need to lower the video resolution to avoid affecting the video experience. The minimum device score required for different business use-cases is varied. For specific score recommendations, please contact [technical support](mailto:support@agora.io).
+   This release adds the [queryDeviceScore](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querydevicescore()>) method to query the device's score level to ensure that the user-set parameters do not exceed the device's capabilities. For example, in HD or UHD video use-cases, you can first call this method to query the device's score. If the returned score is low (for example, below 60), you need to lower the video resolution to avoid affecting the video experience. The minimum device score required for different business use-cases is varied. For specific score recommendations, please contact [technical support](mailto:support@agora.io).
 
 4. **Select different audio tracks for local playback and streaming**
 
-   This release introduces the [selectMultiAudioTrack](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/selectmultiaudiotrack(_:publishtrackindex:)) method that allows you to select different audio tracks for local playback and streaming to remote users. For example, in use-cases like online karaoke, the host can choose to play the original sound locally and publish the accompaniment in the channel. Before using this function, you need to open the media file through the `openWithMediaSource` method and enable this function by setting the `enableMultiAudioTrack` parameter in [AgoraMediaSource](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoramediasource).
+   This release introduces the [selectMultiAudioTrack](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/selectmultiaudiotrack(_:publishtrackindex:)>) method that allows you to select different audio tracks for local playback and streaming to remote users. For example, in use-cases like online karaoke, the host can choose to play the original sound locally and publish the accompaniment in the channel. Before using this function, you need to open the media file through the `openWithMediaSource` method and enable this function by setting the `enableMultiAudioTrack` parameter in [AgoraMediaSource](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoramediasource).
 
 5. **Device test for audio capturing and playback**
 
    This release introduces the following methods to test whether the audio capturing or playback devices work properly before joining a channel:
 
-   - [startRecordingDeviceTest](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/startrecordingdevicetest(_:)): Tests whether the local audio capturing device, such as the speaker, is working properly. After calling this method, the SDK triggers a callback at the time interval set in this method, which reports uid = 0 and the volume information of the capturing device. After the test is completed, you need to call the newly added [stopRecordingDeviceTest](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/stoprecordingdevicetest()) method to stop the test.
-   - [startPlaybackDeviceTest](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/startplaybackdevicetest(_:)): Tests whether the local audio playback device is working properly. You can specify the audio file to be played through the `testAudioFilePath` parameter and see if your audio device works properly. After the test is completed, you need to call the newly added [stopPlaybackDeviceTest](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/stopplaybackdevicetest()) method to stop the test.
+   - [startRecordingDeviceTest](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/startrecordingdevicetest(_:)>): Tests whether the local audio capturing device, such as the speaker, is working properly. After calling this method, the SDK triggers a callback at the time interval set in this method, which reports uid = 0 and the volume information of the capturing device. After the test is completed, you need to call the newly added [stopRecordingDeviceTest](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/stoprecordingdevicetest()>) method to stop the test.
+   - [startPlaybackDeviceTest](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/startplaybackdevicetest(_:)>): Tests whether the local audio playback device is working properly. You can specify the audio file to be played through the `testAudioFilePath` parameter and see if your audio device works properly. After the test is completed, you need to call the newly added [stopPlaybackDeviceTest](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/stopplaybackdevicetest()>) method to stop the test.
 
 6. **Others**
 
    This release has passed the test verification of the following APIs and can be applied to the entire series of the SDK v4.x.
 
-   - [setRemoteSubscribeFallbackOption](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setremotesubscribefallbackoption(_:)): Sets fallback option for the subscribed video stream in weak network conditions.
-   - [didRemoteSubscribeFallbackToAudioOnly](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:didremotesubscribefallbacktoaudioonly:byuid:)): Occurs when the subscribed video stream falls back to audio-only stream due to weak network conditions or switches back to the video stream after the network conditions improve.
+   - [setRemoteSubscribeFallbackOption](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setremotesubscribefallbackoption(_:)>): Sets fallback option for the subscribed video stream in weak network conditions.
+   - [didRemoteSubscribeFallbackToAudioOnly](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:didremotesubscribefallbacktoaudioonly:byuid:)>): Occurs when the subscribed video stream falls back to audio-only stream due to weak network conditions or switches back to the video stream after the network conditions improve.
    - [setPlayerOption [1/2\]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/setplayeroption(_:value:)) and [setPlayerOption [2/2\]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/setplayeroptionstring(_:value:)): Sets media player options for providing technical previews or special customization features.
-   - [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecustomaudiolocalplayback(_:enabled:)): Sets whether to enable the local playback of external audio source.
+   - [enableCustomAudioLocalPlayback](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecustomaudiolocalplayback(_:enabled:)>): Sets whether to enable the local playback of external audio source.
 
 #### Improvements
 
@@ -4316,13 +4316,13 @@ This release has optimized the implementation of some functions, involving renam
 
 2. **In-ear monitoring volume boost**
 
-   This release provides users with more flexible in-ear monitoring audio adjustment options, supporting the ability to set the in-ear monitoring volume to four times the original volume by calling [setInEarMonitoringVolume](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setinearmonitoringvolume(_:)).
+   This release provides users with more flexible in-ear monitoring audio adjustment options, supporting the ability to set the in-ear monitoring volume to four times the original volume by calling [setInEarMonitoringVolume](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setinearmonitoringvolume(_:)>).
 
 3. **Spatial audio effects usability improvement**
 
-   - This release optimizes the design of the [setZones](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraspatialaudiokitbase/setzones(_:)) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
+   - This release optimizes the design of the [setZones](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraspatialaudiokitbase/setzones(_:)>) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
    - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling methods in [AgoraLocalSpatialAudioKit](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoralocalspatialaudiokit).
-   - This release introduces the [updateSelfTransform](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraspatialaudiokitbase/updateselftransform(_:)) method, designed to pass position vectors for direct rendering in iOS native frameworks such as SceneKit or RealityKit.
+   - This release introduces the [updateSelfTransform](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraspatialaudiokitbase/updateselftransform(_:)>) method, designed to pass position vectors for direct rendering in iOS native frameworks such as SceneKit or RealityKit.
 
 4. **Local audio state changed callback optimization**
 
@@ -4347,26 +4347,26 @@ This release has optimized the implementation of some functions, involving renam
    - This release optimizes the SDK's domain name resolution strategy, improving the stability of calling to resolve domain names in complex network environments.
    - When passing in an image with transparent background as the virtual background image, the transparent background can be filled with customized color.
    - This release adds the `earMonitorDelay` and `aecEstimatedDelay` members in [AgoraRtcLocalAudioStats](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartclocalaudiostats) to report ear monitor delay and acoustic echo cancellation (AEC) delay, respectively.
-   - The [cacheStats](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:cachestats:)) callback is added to report the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
-   - The [playbackStats](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:playbackstats:)) callback is added to report the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file through `AgoraMediaPlayerPlaybackStats`.
+   - The [cacheStats](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:cachestats:)>) callback is added to report the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
+   - The [playbackStats](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:playbackstats:)>) callback is added to report the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file through `AgoraMediaPlayerPlaybackStats`.
 
 #### Issues fixed
 
 This release fixed the following issues:
 
-- When sharing two screen sharing video streams simultaneously, the reported `captureFrameRate` in the [localVideoStats](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostats:sourcetype:)) callback is 0, which is not as expected.
+- When sharing two screen sharing video streams simultaneously, the reported `captureFrameRate` in the [localVideoStats](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostats:sourcetype:)>) callback is 0, which is not as expected.
 
 #### API changes
 
 **Added**
 
-- [`didTranscodedStreamLayoutInfoUpdatedWithUserId`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:didtranscodedstreamlayoutinfoupdatedwithuserid:videolayoutinfo:))
+- [`didTranscodedStreamLayoutInfoUpdatedWithUserId`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:didtranscodedstreamlayoutinfoupdatedwithuserid:videolayoutinfo:)>)
 - [AgoraVideoLayoutInfo](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoravideolayoutinfo)
 - The `subviewUid` member in [AgoraRtcVideoCanvas](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcvideocanvas)
-- [updateSelfTransform](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraspatialaudiokitbase/updateselftransform(_:))
+- [updateSelfTransform](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraspatialaudiokitbase/updateselftransform(_:)>)
 - The `AgoraAudioLocalReasonInterrupted` enumeration in [AgoraAudioLocalReason](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraaudiolocalreason)
-- [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecustomaudiolocalplayback(_:enabled:))
-- [queryDeviceScore](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querydevicescore())
+- [enableCustomAudioLocalPlayback](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecustomaudiolocalplayback(_:enabled:)>)
+- [queryDeviceScore](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querydevicescore()>)
 - The `AgoraMediaSourceTypeCustomVideo` enumeration in [AgoraMediaSourceType](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoramediasourcetype)
 - [setBeautyEffectOptions [2/2\]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setbeautyeffectoptions(_:options:sourcetype:))
 - [setLowlightEnhanceOptions [2/2\]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setlowlightenhanceoptions(_:options:sourcetype:))
@@ -4375,12 +4375,12 @@ This release fixed the following issues:
 - [enableVirtualBackground [2/2\]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablevirtualbackground(_:backdata:segdata:sourcetype:))
 - The `AgoraAudioOutputRoutingBluetoothDeviceA2dp` enumeration in [AgoraAudioOutputRouting](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoraaudiooutputrouting)
 - Adds the `earMonitorDelay` and `aecEstimatedDelay` in [AgoraRtcLocalAudioStats](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartclocalaudiostats)
-- [selectMultiAudioTrack](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/selectmultiaudiotrack(_:publishtrackindex:))
-- [cacheStats](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:cachestats:))
-- [playbackStats](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:playbackstats:))
+- [selectMultiAudioTrack](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/selectmultiaudiotrack(_:publishtrackindex:)>)
+- [cacheStats](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:cachestats:)>)
+- [playbackStats](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:playbackstats:)>)
 - [AgoraMediaPlayerPlaybackStats](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agoramediaplayerplaybackstats)
-- [startPlaybackDeviceTest](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/startplaybackdevicetest(_:))
-- [stopPlaybackDeviceTest](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/stopplaybackdevicetest())
+- [startPlaybackDeviceTest](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/startplaybackdevicetest(_:)>)
+- [stopPlaybackDeviceTest](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/stopplaybackdevicetest()>)
 
 **Modified**
 
@@ -4803,7 +4803,7 @@ As of this release, the SDK optimizes the video encoder algorithm and upgrades t
 You can call the `setVideoEncoderConfiguration` method to set the expected video encoding resolution in the video encoding parameters configuration.
 
 :::info
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 :::
 
 
@@ -4892,7 +4892,7 @@ For more information about registering video observers and subscription options,
 
 As of this release, the SDK supports MPUDP protocol, which enables you to connect and use multiple paths to maximize the use of channel resources based on the UDP protocol. You can use different physical NICs on both mobile and desktop and aggregate them to effectively combat network jitter and improve transmission quality.
 
-> To enable this feature, contact [support@agora.io](https://docs.agora.io/cn/video-call-4.x/support@agora.io).
+> To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
 **5. Camera capture options**
 
@@ -5020,7 +5020,7 @@ The UHD resolution (4K, 60 fps) is currently in beta and requires certain device
 
 High resolution typically means higher performance consumption. To avoid a decrease in experience due to insufficient device performance, Agora recommends that you enable FHD and UHD video resolutions on devices with better performance.
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 :::
 
 ### v4.2.2
@@ -5176,7 +5176,7 @@ The `onCaptureVideoFrame` and `onPreEncodeVideoFrame` callbacks are added with a
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode as balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
 :::
 
 
@@ -5187,7 +5187,7 @@ To increase the fun of real-time video calls and protect user privacy, this vers
 - Process the background as Alpha information without replacement, only separating the portrait and the background. This can be combined with the local video mixing feature to achieve a portrait-in-picture effect.
 - Replace the background with various formats of local videos.
 
-See [Virtual Background documentation](../build/apply-video-effects/virtual-background).
+See [Virtual Background documentation](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
 
 **3. Video scenario settings**
@@ -5313,7 +5313,7 @@ As of this release, the SDK optimizes the video encoder algorithm and upgrades t
 Call the `setVideoEncoderConfiguration` method to set the expected video encoding resolution in the video encoding parameters configuration.
 
 :::info
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 :::
 
 
@@ -5586,7 +5586,7 @@ This release has optimized the implementation of some features, resulting in inc
 - Custom video capture and rendering (Media IO)
 - Warning codes
 
-After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migrate from v3.7.x to v4.0.0](../reference/migration-guide).
+After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migrate from v3.7.x to v4.0.0](/en/realtime-media/video/reference/migration-guide).
 
 #### New features
 
@@ -5605,11 +5605,11 @@ You can also experience the following features with the multi-channel capability
 
 In order to improve the interactive video experience, the SDK optimizes the whole process of video capturing, encoding, decoding and rendering. Starting from this version, it supports Full HD (FHD) and Ultra HD (UHD) video resolutions. You can set the `dimensions` parameter to 1920 × 1080 or higher resolution when calling the `setVideoEncoderConfiguration` method. If your device does not support high resolutions, the SDK will automatically fall back to an appropriate resolution.
 
-The UHD resolution (4K, 60 fps) is currently in beta and requires certain device performance and network bandwidth. If you want to enable this feature, contact [technical support](mailto:mailto:support@agora.io).
+The UHD resolution (4K, 60 fps) is currently in beta and requires certain device performance and network bandwidth. If you want to enable this feature, contact [technical support](mailto:support@agora.io).
 
 High resolution typically means higher performance consumption. To avoid a decrease in experience due to insufficient device performance, Agora recommends that you enable FHD and UHD video resolutions on devices with better performance.
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **3. Agora media player**
 
@@ -5650,7 +5650,7 @@ In order to enhance the real-time audio and video interactive activities based o
 
 - Easy to integrate: The integration of modular functions can be achieved simply by calling an API, and the integration efficiency is improved by nearly 95%.
 - Extensibility design: The modular and extensible SDK design style endows the Agora SDK with good extensibility, which enables developers to quickly build real-time interactive apps based on the Agora extensions marketplace ecosystem.
-- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../build/customize-audio-processing/use-an-extension).
+- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](/en/realtime-media/video/build/customize-audio-processing/use-an-extension).
 - Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](/en/api-reference/api-ref/extensions-marketplace/provisioning).
 
 **8. Enhanced channel management**
@@ -5770,7 +5770,7 @@ The version of the aosl.xcframework library in the v4.6.0 SDK is 1.3.0. You can 
 
 This version includes SDK behavior changes, API deprecations, and deletions. To ensure your app functions correctly, update your code after upgrading to this version.
 
-For details on deprecated and deleted APIs in each version, see the [API Sunset Notice](../reference/api-sunset).
+For details on deprecated and deleted APIs in each version, see the [API Sunset Notice](/en/api-reference/api-ref/video/api-sunset).
 
 - **Deprecation of direct CDN streaming APIs**
 
@@ -5970,13 +5970,13 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
 
 1. **Automatic installation of virtual sound card**
 
-   Starting from this version, the SDK supports the automatic installation of a virtual sound card. When you call [`enableLoopbackRecording:deviceName:`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableloopbackrecording(_:devicename:)) for the first time, the SDK will automatically install the AgoraALD, a virtual sound card developed by Agora. Once the installation is successful, the audio routing will automatically switch to the virtual sound card, and the virtual sound card will be used for audio capture.
+   Starting from this version, the SDK supports the automatic installation of a virtual sound card. When you call [`enableLoopbackRecording:deviceName:`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableloopbackrecording(_:devicename:)>) for the first time, the SDK will automatically install the AgoraALD, a virtual sound card developed by Agora. Once the installation is successful, the audio routing will automatically switch to the virtual sound card, and the virtual sound card will be used for audio capture.
 
 1. **Changes in strong video noise suppression**
 
-   This version adjusts the implementation of strong video noise suppression.[`AgoraVideoDenoiserLevel`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoravideodenoiserlevel) removes `AgoraVideoDenoiserLevelStrength`. Instead, after enabling video noise suppression by calling [`setVideoDenoiserOptions:options:`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setvideodenoiseroptions(_:options:)), you can call the [`setBeautyEffectOptions:options:`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setbeautyeffectoptions(_:options:)) method to enable the beauty skin smoothing feature. Using both together will help achieve better noise suppression effects. For strong noise suppression, it is recommended to set the skin smoothing parameters as detailed in `setVideoDenoiserOptions:options:`.
+   This version adjusts the implementation of strong video noise suppression.[`AgoraVideoDenoiserLevel`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoravideodenoiserlevel) removes `AgoraVideoDenoiserLevelStrength`. Instead, after enabling video noise suppression by calling [`setVideoDenoiserOptions:options:`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setvideodenoiseroptions(_:options:)>), you can call the [`setBeautyEffectOptions:options:`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setbeautyeffectoptions(_:options:)>) method to enable the beauty skin smoothing feature. Using both together will help achieve better noise suppression effects. For strong noise suppression, it is recommended to set the skin smoothing parameters as detailed in `setVideoDenoiserOptions:options:`.
 
-   Additionally, due to this adjustment, to achieve the best low-light enhancement effect with a focus on image quality, you need to enable video noise suppression first and use specific settings as detailed in [`setLowlightEnhanceOptions:options:`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setlowlightenhanceoptions(_:options:)).
+   Additionally, due to this adjustment, to achieve the best low-light enhancement effect with a focus on image quality, you need to enable video noise suppression first and use specific settings as detailed in [`setLowlightEnhanceOptions:options:`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setlowlightenhanceoptions(_:options:)>).
 
 1. **Changes in camera plug and unplug status**
 
@@ -5993,7 +5993,7 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
 
 1. **Live show scenario**
 
-   This version adds the `AgoraApplicationLiveShowScenario`(3) (Live Show) enumeration to [`AgoraApplicationScenarioType`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraapplicationscenariotype). You can call [`setVideoScenario:`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setvideoscenario(_:)) to set the video business scenario to show room. In this scenario, fast video rendering and high image quality are crucial. The SDK implements several performance optimizations, such as enabling accelerated audio and video frame rendering to minimize first-frame latency for better image quality and bandwidth efficiency.
+   This version adds the `AgoraApplicationLiveShowScenario`(3) (Live Show) enumeration to [`AgoraApplicationScenarioType`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraapplicationscenariotype). You can call [`setVideoScenario:`](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setvideoscenario(_:)>) to set the video business scenario to show room. In this scenario, fast video rendering and high image quality are crucial. The SDK implements several performance optimizations, such as enabling accelerated audio and video frame rendering to minimize first-frame latency for better image quality and bandwidth efficiency.
 
 1. **Maximum frame rate for video rendering**
 
@@ -6058,7 +6058,7 @@ v4.4.0 was released on August 5, 2024.
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
 :::info[Note]
-Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API sunset notice](../reference/api-sunset).
+Starting from v4.4.0, the SDK provides an API sunset notice, which includes information about deprecated and removed APIs in each version. See [API sunset notice](/en/api-reference/api-ref/video/api-sunset).
 :::
 
 
@@ -6110,7 +6110,7 @@ v4.3.2 was released on June 4, 2024.
 
 #### Improvements
 
-This release enhances the usability of the [setRemoteSubscribeFallbackOption](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setremotesubscribefallbackoption(_:)) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
+This release enhances the usability of the [setRemoteSubscribeFallbackOption](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setremotesubscribefallbackoption(_:)>) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
 
 #### Issues fixed
 
@@ -6128,13 +6128,13 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Portrait center stage**
 
-   To enhance the presentation effect in online meetings, shows, and online education use-cases, this version introduces the [enableCameraCenterStage](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)) method to activate the portrait center stage. This ensures that presenters, regardless of movement, always remain centered in the video frame, achieving better presentation effects.
+   To enhance the presentation effect in online meetings, shows, and online education use-cases, this version introduces the [enableCameraCenterStage](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)>) method to activate the portrait center stage. This ensures that presenters, regardless of movement, always remain centered in the video frame, achieving better presentation effects.
 
-   Before enabling the portrait center stage, it is recommended to verify whether your current device supports this feature by calling [isCameraCenterStageSupported](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/iscameracenterstagesupported()). A list of supported devices can be found in the API documentation at [enableCameraCenterStage](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)).
+   Before enabling the portrait center stage, it is recommended to verify whether your current device supports this feature by calling [isCameraCenterStageSupported](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/iscameracenterstagesupported()>). A list of supported devices can be found in the API documentation at [enableCameraCenterStage](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)>).
 
 1. **Data stream encryption**
 
-   This version adds `datastreamEncryptionEnabled` to [AgoraEncryptionConfig](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraencryptionconfig) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryption(_:encryptionconfig:)). If there are issues causing failures in data stream encryption or decryption, these can be identified by the newly added `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE` and `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE` enumerations.
+   This version adds `datastreamEncryptionEnabled` to [AgoraEncryptionConfig](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraencryptionconfig) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryption(_:encryptionconfig:)>). If there are issues causing failures in data stream encryption or decryption, these can be identified by the newly added `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE` and `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE` enumerations.
 
 1. **Adaptive configuration for low-quality video streams**
 
@@ -6145,9 +6145,9 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Other features**
 
-   - A new method [enableEncryptionEx](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryptionex(_:encryptionconfig:connection:)) is added for enabling media stream or data stream encryption in multi-channel use-cases.
-   - A new method [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setaudiomixingplaybackspeed(_:)) is introduced for setting the playback speed of audio files.
-   - A new method [getCallIdEx](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/getcallidex(_:)) is introduced for retrieving call IDs in multi-channel use-cases.
+   - A new method [enableEncryptionEx](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryptionex(_:encryptionconfig:connection:)>) is added for enabling media stream or data stream encryption in multi-channel use-cases.
+   - A new method [setAudioMixingPlaybackSpeed](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setaudiomixingplaybackspeed(_:)>) is introduced for setting the playback speed of audio files.
+   - A new method [getCallIdEx](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/getcallidex(_:)>) is introduced for retrieving call IDs in multi-channel use-cases.
 
 1. **Beta features**
 
@@ -6157,7 +6157,7 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Optimization of local video status callbacks**
 
-   To facilitate understanding of the specific reasons for changes in local video status, this version adds the following enumerations to the [localVideoStateChangedOf](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostatechangedof:reason:sourcetype:)) callback's [AgoraLocalVideoStreamReason](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoralocalvideostreamreason) enumeration class:
+   To facilitate understanding of the specific reasons for changes in local video status, this version adds the following enumerations to the [localVideoStateChangedOf](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostatechangedof:reason:sourcetype:)>) callback's [AgoraLocalVideoStreamReason](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoralocalvideostreamreason) enumeration class:
 
    - `AgoraLocalVideoStreamReasonScreenCaptureRecoverFromMinimized`(27): The window being captured for screen sharing has recovered from a minimized state.
 
@@ -6186,7 +6186,7 @@ v4.3.1 was released on April 29, 2024.
    This version also includes the following improvements:
 
    - Optimization of video encoding and decoding strategies in non-screen-sharing use-cases to save system performance overhead.
-   - For macOS 14 and above, optimization of [getScreenCaptureSourcesWithThumbSize](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/getscreencapturesources(withthumbsize:iconsize:includescreen:)) behavior. From this version onward, the method automatically filters out widget windows from the list of available window resources.
+   - For macOS 14 and above, optimization of [getScreenCaptureSourcesWithThumbSize](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/getscreencapturesources(withthumbsize:iconsize:includescreen:)>) behavior. From this version onward, the method automatically filters out widget windows from the list of available window resources.
    - Enhanced media player capabilities to handle WebM format videos, including support for rendering Alpha channels.
    - In [AgoraAudioEffectPreset](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraaudioeffectpreset), a new enumeration `AgoraAudioEffectPresetRoomAcousticsChorus` (chorus effect) is added, enhancing the spatial presence of vocals in chorus use-cases.
    - In [AgoraRtcRemoteAudioStats](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcremoteaudiostats), a new `e2eDelay` field is added to report the delay from when the audio is captured on the sending end to when the audio is played on the receiving end.
@@ -6203,13 +6203,13 @@ This version fixed the following issues:
 
 **Added**
 
-- [enableCameraCenterStage](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:))
-- [isCameraCenterStageSupported](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/iscameracenterstagesupported())
+- [enableCameraCenterStage](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)>)
+- [isCameraCenterStageSupported](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/iscameracenterstagesupported()>)
 - The following enumeration in [AgoraLocalVideoStreamReason](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoralocalvideostreamreason):
   - `AgoraLocalVideoStreamReasonScreenCaptureRecoverFromMinimized`
-- [setFaceInfoDelegate](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setfaceinfodelegate(_:))
+- [setFaceInfoDelegate](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setfaceinfodelegate(_:)>)
 - [AgoraFaceInfoDelegate](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorafaceinfodelegate)
-- [onFaceInfo](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorafaceinfodelegate/onfaceinfo(_:))
+- [onFaceInfo](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorafaceinfodelegate/onfaceinfo(_:)>)
 - The `publishLipSyncTrack` member in [AgoraRtcChannelMediaOptions](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcchannelmediaoptions)
 - [AgoraMediaSourceType](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoramediasourcetype) adds `AgoraMediaSourceTypeSpeechDriven`
 - [AgoraVideoSourceType](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoravideosourcetype) adds `AgoraVideoSourceTypeSpeechDriven`
@@ -6221,9 +6221,9 @@ This version fixed the following issues:
 - [AgoraRtcRemoteAudioStats](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcremoteaudiostats) adds `e2eDelay`
 - [AgoraErrorCode](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraerrorcode) adds `AgoraErrorCodeDatastreamDecryptionFailed`
 - [AgoraAudioEffectPreset](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraaudioeffectpreset) adds `AgoraAudioEffectPresetRoomAcousticsChorus`, enhancing the spatial presence of vocals in chorus use-cases.
-- [getCallIdEx](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/getcallidex(_:))
-- [enableEncryptionEx](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryptionex(_:encryptionconfig:connection:))
-- [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setaudiomixingplaybackspeed(_:))
+- [getCallIdEx](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/getcallidex(_:)>)
+- [enableEncryptionEx](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableencryptionex(_:encryptionconfig:connection:)>)
+- [setAudioMixingPlaybackSpeed](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setaudiomixingplaybackspeed(_:)>)
 - [AgoraEarMonitoringFilterType](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraearmonitoringfiltertype) adds a new enumeration `AgoraEarMonitoringFilterBuiltInAudioFilters`
 - [pushExternalAudioFrameSampleBuffer [2/2]](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:samplerate:channels:trackid:))
 
@@ -6279,8 +6279,8 @@ This release has optimized the implementation of some functions, involving renam
 
 4. **Audio loopback capturing**
 
-   - Before v4.3.0, if you call the [disableAudio](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/disableaudiospectrummonitor()) method to disable the audio module, audio loopback capturing will not be disabled.
-   - As of v4.3.0, if you call the [disableAudio](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/disableaudiospectrummonitor()) method to disable the audio module, audio loopback capturing will be disabled as well. If you need to enable audio loopback capturing, you need to enable the audio module by calling the [enableAudio](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableaudio()) method and then call [enableLoopbackRecording](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableloopbackrecording(_:devicename:)).
+   - Before v4.3.0, if you call the [disableAudio](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/disableaudiospectrummonitor()>) method to disable the audio module, audio loopback capturing will not be disabled.
+   - As of v4.3.0, if you call the [disableAudio](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/disableaudiospectrummonitor()>) method to disable the audio module, audio loopback capturing will be disabled as well. If you need to enable audio loopback capturing, you need to enable the audio module by calling the [enableAudio](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableaudio()>) method and then call [enableLoopbackRecording](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enableloopbackrecording(_:devicename:)>).
 
 5. **Log encryption behavior changes**
 
@@ -6297,26 +6297,26 @@ This release has optimized the implementation of some functions, involving renam
 
    This release supports local preview with simultaneous display of multiple frames, where the videos shown in the frames are positioned at different observation positions along the video link. Examples of usage are as follows:
 
-   1. Call [setupLocalVideo](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setuplocalvideo(_:)) to set the first view: Set the `position` parameter to `AgoraVideoModulePositionPostCaptureOrigin` (introduced in this release) in `AgoraRtcVideoCanvas`. This corresponds to the position after local video capture and before preprocessing. The video observed here does not have preprocessing effects.
-   2. Call [setupLocalVideo](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setuplocalvideo(_:)) to set the second view: Set the `position` parameter to `AgoraVideoModulePositionPostCapture` in `AgoraRtcVideoCanvas`, the video observed here has the effect of video preprocessing.
+   1. Call [setupLocalVideo](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setuplocalvideo(_:)>) to set the first view: Set the `position` parameter to `AgoraVideoModulePositionPostCaptureOrigin` (introduced in this release) in `AgoraRtcVideoCanvas`. This corresponds to the position after local video capture and before preprocessing. The video observed here does not have preprocessing effects.
+   2. Call [setupLocalVideo](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setuplocalvideo(_:)>) to set the second view: Set the `position` parameter to `AgoraVideoModulePositionPostCapture` in `AgoraRtcVideoCanvas`, the video observed here has the effect of video preprocessing.
    3. Observe the local preview effect: The first view is the original video of a real person; the second view is the virtual portrait after video preprocessing (including image enhancement, virtual background, and local preview of watermarks) effects.
 
 2. **Query device score**
 
-   This release adds the [queryDeviceScore](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querydevicescore()) method to query the device's score level to ensure that the user-set parameters do not exceed the device's capabilities. For example, in HD or UHD video use-cases, you can first call this method to query the device's score. If the returned score is low (for example, below 60), you need to lower the video resolution to avoid affecting the video experience. The minimum device score required for different business use-cases is varied. For specific score recommendations, please contact [technical support](mailto:support@agora.io).
+   This release adds the [queryDeviceScore](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querydevicescore()>) method to query the device's score level to ensure that the user-set parameters do not exceed the device's capabilities. For example, in HD or UHD video use-cases, you can first call this method to query the device's score. If the returned score is low (for example, below 60), you need to lower the video resolution to avoid affecting the video experience. The minimum device score required for different business use-cases is varied. For specific score recommendations, please contact [technical support](mailto:support@agora.io).
 
 3. **Select different audio tracks for local playback and streaming**
 
-   This release introduces the [selectMultiAudioTrack](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/selectmultiaudiotrack(_:publishtrackindex:)) method that allows you to select different audio tracks for local playback and streaming to remote users. For example, in use-cases like online karaoke, the host can choose to play the original sound locally and publish the accompaniment in the channel. Before using this function, you need to open the media file through the `openWithMediaSource` method and enable this function by setting the `enableMultiAudioTrack` parameter in [AgoraMediaSource](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoramediasource).
+   This release introduces the [selectMultiAudioTrack](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/selectmultiaudiotrack(_:publishtrackindex:)>) method that allows you to select different audio tracks for local playback and streaming to remote users. For example, in use-cases like online karaoke, the host can choose to play the original sound locally and publish the accompaniment in the channel. Before using this function, you need to open the media file through the `openWithMediaSource` method and enable this function by setting the `enableMultiAudioTrack` parameter in [AgoraMediaSource](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoramediasource).
 
 4. **Others**
 
    This release has passed the test verification of the following APIs and can be applied to the entire series of RTC 4.x SDK.
 
-   - [setRemoteSubscribeFallbackOption](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setremotesubscribefallbackoption(_:)): Sets fallback option for the subscribed video stream in weak network conditions.
-   - [didRemoteSubscribeFallbackToAudioOnly](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:didremotesubscribefallbacktoaudioonly:byuid:)): Occurs when the subscribed video stream falls back to audio-only stream due to weak network conditions or switches back to the video stream after the network conditions improve.
+   - [setRemoteSubscribeFallbackOption](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setremotesubscribefallbackoption(_:)>): Sets fallback option for the subscribed video stream in weak network conditions.
+   - [didRemoteSubscribeFallbackToAudioOnly](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:didremotesubscribefallbacktoaudioonly:byuid:)>): Occurs when the subscribed video stream falls back to audio-only stream due to weak network conditions or switches back to the video stream after the network conditions improve.
    - [setPlayerOption [1/2\]](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/setplayeroption(_:value:)) and [setPlayerOption [2/2\]](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/setplayeroptionstring(_:value:)): Sets media player options for providing technical previews or special customization features.
-   - [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecustomaudiolocalplayback(_:enabled:)): Sets whether to enable the local playback of external audio source.
+   - [enableCustomAudioLocalPlayback](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecustomaudiolocalplayback(_:enabled:)>): Sets whether to enable the local playback of external audio source.
 
 #### Improvements
 
@@ -6331,16 +6331,16 @@ This release has optimized the implementation of some functions, involving renam
 
 2. **In-ear monitoring volume boost**
 
-   This release provides users with more flexible in-ear monitoring audio adjustment options, supporting the ability to set the in-ear monitoring volume to four times the original volume by calling [setInEarMonitoringVolume](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setinearmonitoringvolume(_:)).
+   This release provides users with more flexible in-ear monitoring audio adjustment options, supporting the ability to set the in-ear monitoring volume to four times the original volume by calling [setInEarMonitoringVolume](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setinearmonitoringvolume(_:)>).
 
 3. **Spatial audio effects usability improvement**
 
-   - This release optimizes the design of the [setZones](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraspatialaudiokitbase/setzones(_:)) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
+   - This release optimizes the design of the [setZones](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraspatialaudiokitbase/setzones(_:)>) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
    - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling methods in [AgoraLocalSpatialAudioKit](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoralocalspatialaudiokit).
 
 4. **Local audio state changed callback optimization**
 
-   This release introduces the following enumerations in [AgoraAudioLocalReason](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraaudiolocalreason), enabling users to obtain more details about local audio errors through the [localAudioStateChanged](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:localaudiostatechanged:reason:)) callback:
+   This release introduces the following enumerations in [AgoraAudioLocalReason](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraaudiolocalreason), enabling users to obtain more details about local audio errors through the [localAudioStateChanged](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:localaudiostatechanged:reason:)>) callback:
 
    - `AgoraAudioLocalReasonNoRecordingDevice`: No recording device is available. Remind your users to check whether the microphone is connected to the device properly in the control plane of the device or if the microphone is working properly.
    - `AgoraAudioLocalReasonNoPlayoutDevice`: No playback device is available. Remind your users to check whether the speaker is connected to the device properly in the control plane of the device or if the speaker is working properly.
@@ -6353,14 +6353,14 @@ This release has optimized the implementation of some functions, involving renam
    - When passing in an image with transparent background as the virtual background image, the transparent background can be filled with customized color.
    - This release adds the `earMonitorDelay` and `aecEstimatedDelay` members in [AgoraRtcLocalAudioStats](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartclocalaudiostats) to report ear monitor delay and acoustic echo cancellation (AEC) delay, respectively.
    - When using the sound card for recording, it supports capturing audio data in stereo.
-   - The [cacheStats](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:cachestats:)) callback is added to report the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
-   - The [playbackStats](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:playbackstats:)) callback is added to report the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file.
+   - The [cacheStats](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:cachestats:)>) callback is added to report the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
+   - The [playbackStats](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:playbackstats:)>) callback is added to report the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file.
 
 #### Issues fixed
 
 This release fixed the following issues:
 
-- When sharing two screen sharing video streams simultaneously, the reported `captureFrameRate` in the [localVideoStats](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostats:sourcetype:)) callback is 0, which is not as expected.
+- When sharing two screen sharing video streams simultaneously, the reported `captureFrameRate` in the [localVideoStats](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostats:sourcetype:)>) callback is 0, which is not as expected.
 
 #### API changes
 
@@ -6370,14 +6370,14 @@ This release fixed the following issues:
 - The following enumerations in [AgoraAudioLocalReason](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraaudiolocalreason):
   - `AgoraAudioLocalReasonNoRecordingDevice`
   - `AgoraAudioLocalReasonNoPlayoutDevice`
-- [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecustomaudiolocalplayback(_:enabled:))
-- [queryDeviceScore](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querydevicescore())
+- [enableCustomAudioLocalPlayback](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecustomaudiolocalplayback(_:enabled:)>)
+- [queryDeviceScore](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querydevicescore()>)
 - The `AgoraMediaSourceTypeCustomVideo` enumeration in [AgoraMediaSourceType](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoramediasourcetype)
 - The `AgoraAudioOutputRoutingBluetoothDeviceA2dp` enumeration in [AgoraAudioOutputRouting](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agoraaudiooutputrouting)
 - Adds the `earMonitorDelay` and `aecEstimatedDelay` in [AgoraRtcLocalAudioStats](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartclocalaudiostats)
-- [selectMultiAudioTrack](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/selectmultiaudiotrack(_:publishtrackindex:))
-- [cacheStats](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:cachestats:))
-- [playbackStats](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:playbackstats:))
+- [selectMultiAudioTrack](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerprotocol/selectmultiaudiotrack(_:publishtrackindex:)>)
+- [cacheStats](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:cachestats:)>)
+- [playbackStats](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:playbackstats:)>)
 
 **Modified**
 
@@ -6670,7 +6670,7 @@ If you set AgoraALD or Soundflower as the default input or output device when jo
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode as balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
 :::
 
 
@@ -6682,7 +6682,7 @@ To increase the fun of real-time video calls and protect user privacy, this vers
 - Replace the background with various formats of local videos.
 - Segment the portrait in the remote video, transmit it locally, and customize the display. This feature is available via private APIs. Contact [support@agora.io](mailto:support@agora.io) to enable this feature.
 
-See [Virtual Background documentation](../build/apply-video-effects/virtual-background).
+See [Virtual Background documentation](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
 **3. Video scenario settings**
 
@@ -6799,7 +6799,7 @@ As of this release, the SDK optimizes the video encoder algorithm and upgrades t
 Call the `setVideoEncoderConfiguration` method to set the expected video encoding resolution in the video encoding parameters configuration.
 
 :::info
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 :::
 
 
@@ -6878,7 +6878,7 @@ For more information about registering video observers and subscription options,
 
 As of this release, the SDK supports MPUDP protocol, which enables you to connect and use multiple paths to maximize the use of channel resources based on the UDP protocol. You can use different physical NICs on both mobile and desktop and aggregate them to effectively combat network jitter and improve transmission quality.
 
-To enable this feature, contact [support@agora.io](mailto:mailto:support@agora.io).
+To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
 **4. Camera capture options**
 
@@ -7130,7 +7130,7 @@ This release has optimized the implementation of some features, resulting in inc
 - Custom video capture and rendering (Media IO)
 - Warning codes
 
-After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migrate from v3.7.x to v4.0.0](../reference/migration-guide).
+After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migrate from v3.7.x to v4.0.0](/en/realtime-media/video/reference/migration-guide).
 
 #### New features
 
@@ -7160,7 +7160,7 @@ Additionally, you can set the encoding resolution to 4K (3840 × 2160) and the f
 
 This feature has certain requirements with regards to device performance and network bandwidth, and the supported upstream and downstream frame rates vary on different platforms. To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **3. Agora media player**
 
@@ -7200,7 +7200,7 @@ In order to enhance the real-time audio and video interactive activities based o
 
 - Easy to integrate: The integration of modular functions can be achieved simply by calling an API, and the integration efficiency is improved by nearly 95%.
 - Extensibility design: The modular and extensible SDK design style endows the Agora SDK with good extensibility, which enables developers to quickly build real-time interactive apps based on the Agora extensions marketplace ecosystem.
-- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../build/customize-audio-processing/use-an-extension).
+- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](/en/realtime-media/video/build/customize-audio-processing/use-an-extension).
 - Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](/en/api-reference/api-ref/extensions-marketplace/provisioning).
 
 **8. Enhanced channel management**
@@ -7350,7 +7350,7 @@ The version of the libaosl.dll library in the v4.6.0 SDK is 1.3.0. You can find 
 
 This version includes SDK behavior changes, API deprecations, and deletions. To ensure your app functions correctly, update your code after upgrading to this version.
 
-For details on deprecated and deleted APIs in each version, see the [API Sunset Notice](../reference/api-sunset).
+For details on deprecated and deleted APIs in each version, see the [API Sunset Notice](/en/api-reference/api-ref/video/api-sunset).
 
 - **Deprecation of direct CDN streaming APIs**
 
@@ -8302,7 +8302,7 @@ This release optimizes the APIs for camera and screen capture function. As of v4
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise reduction mode as balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
 :::
 
 
@@ -8314,7 +8314,7 @@ To increase the fun of real-time video calls and protect user privacy, this vers
 - Replace the background with various formats of local videos.
 
 
-See [Virtual Background documentation](../build/apply-video-effects/virtual-background).
+See [Virtual Background documentation](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
 **3. Video scenario settings**
 
@@ -8430,7 +8430,7 @@ As of this release, the SDK optimizes the video encoder algorithm and upgrades t
 Call the `setVideoEncoderConfiguration` method to set the expected video encoding resolution in the video encoding parameters configuration.
 
 :::info
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 :::
 
 
@@ -8506,7 +8506,7 @@ For more information about registering video observers and subscription options,
 
 As of this release, the SDK supports MPUDP protocol, which enables you to connect and use multiple paths to maximize the use of channel resources based on the UDP protocol. You can use different physical NICs on both mobile and desktop and aggregate them to effectively combat network jitter and improve transmission quality.
 
-> To enable this feature, contact [support@agora.io](mailto:mailto:support@agora.io).
+> To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
 **4. Register extensions**
 
@@ -8558,7 +8558,7 @@ In order to enable users to know whether the switched user role is low-latency o
 
 The SDK supports a new version of AI noise reduction (in comparison to the basic AI noise reduction in v3.7.x). The new AI noise reduction has better vocal fidelity, cleaner noise suppression, and adds a dereverberation option.
 
-To experience this feature, contact [support@agora.io](mailto:mailto:support@agora.io).
+To experience this feature, contact [support@agora.io](mailto:support@agora.io).
 
 **11. Spatial audio effect**
 
@@ -8729,12 +8729,12 @@ To make it easier for users to know the connection type of the local network at 
 
 **3. Audio stream filter**
 
-This release introduces filtering audio streams based on volume. Once this function is enabled, the Agora server ranks all audio streams by volume and transports 3 audio streams with the highest volumes to the receivers by default. The number of audio streams to be transported can be adjusted; you can contact [support@agora.io](support@agora.io) to adjust this number according to your use-case.
+This release introduces filtering audio streams based on volume. Once this function is enabled, the Agora server ranks all audio streams by volume and transports 3 audio streams with the highest volumes to the receivers by default. The number of audio streams to be transported can be adjusted; you can contact [support@agora.io](mailto:support@agora.io) to adjust this number according to your use-case.
 
 Meanwhile, Agora supports publishers to choose whether or not the audio streams being published are to be filtered based on volume. Streams that are not filtered will bypass this filter mechanism and transported directly to the receivers. In use-cases where there are a number of publishers, enabling this function helps reducing the bandwidth and device system pressure for the receivers.
 
 
-To enable this function, contact [technical support](mailto:mailto:support@agora.io).
+To enable this function, contact [technical support](mailto:support@agora.io).
 
 
 **4. Dual-stream mode**
@@ -8837,7 +8837,7 @@ This release has optimized the implementation of some features, resulting in inc
 - Custom video capture and rendering (Media IO)
 - Warning codes
 
-After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migrate from v3.7.x to v4.0.0](../reference/migration-guide).
+After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migrate from v3.7.x to v4.0.0](/en/realtime-media/video/reference/migration-guide).
 
 
 #### New features
@@ -8869,7 +8869,7 @@ Additionally, you can set the encoding resolution to 4K (3840 × 2160) and the f
 
 This feature has certain requirements with regards to device performance and network bandwidth, and the supported upstream and downstream frame rates vary on different platforms. To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **3. Build-in media player**
 
@@ -8883,7 +8883,7 @@ To make the audio clearer and restore more details, this release adds the `ULTRA
 
 ::::info
 
-This feature is in experimental status. To enable this feature, contact [support@agora.io](mailto:mailto:support@agora.io). Contact [technical support](mailto:mailto:support@agora.io) if needed.
+This feature is in experimental status. To enable this feature, contact [support@agora.io](mailto:support@agora.io). Contact [technical support](mailto:support@agora.io) if needed.
 
 ::::
 You can set the spatial audio for the remote user as following:
@@ -8913,7 +8913,7 @@ In order to enhance the real-time audio and video interactive activities based o
 
 - Easy to integrate: The integration of modular functions can be achieved simply by calling an API, and the integration efficiency is improved by nearly 95%.
 - Extensibility design: The modular and extensible SDK design style endows the Agora SDK with good extensibility, which enables developers to quickly build real-time interactive apps based on the Agora extensions marketplace ecosystem.
-- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../build/customize-audio-processing/use-an-extension).
+- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](/en/realtime-media/video/build/customize-audio-processing/use-an-extension).
 - Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](/en/api-reference/api-ref/extensions-marketplace/provisioning).
 
 **8. Enhanced channel management**
@@ -9924,7 +9924,7 @@ As of this release, the SDK optimizes the video encoder algorithm and upgrades t
 
 Call the `setVideoEncoderConfiguration` method to set the expected video encoding resolution in the video encoding parameters configuration.
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **7. Miscellaneous**
 
@@ -9941,7 +9941,7 @@ The increase in the default resolution affects the aggregate resolution and thus
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode to balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
 :::
 
 
@@ -9952,7 +9952,7 @@ To increase the fun of real-time video calls and protect user privacy, this vers
 - Process the background as Alpha information without replacement, only separating the portrait and the background. This can be combined with the local video mixing feature to achieve a portrait-in-picture effect.
 - Replace the background with various formats of local videos.
 
-See [Virtual Background documentation](../build/apply-video-effects/virtual-background).
+See [Virtual Background documentation](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
 **3. Video scenario settings**
 
@@ -10117,7 +10117,7 @@ Agora also supports publishers in choosing whether the audio streams being publi
 
 ::::info
 
-To enable this function, contact [support@agora.io](mailto:support@agora.io/).
+To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
 ::::
 **4. Dual-stream mode**
@@ -10162,7 +10162,7 @@ As of this release, the SDK supports MPUDP protocol, which enables you to connec
 
 ::::info
 
-To enable this feature, contact [support@agora.io](mailto:mailto:support@agora.io).
+To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
 ::::
 **9. Register extensions (Windows)**
@@ -10215,7 +10215,7 @@ In order to enable users to know whether the switched user role is low-latency o
 
 The SDK supports a new version of AI noise reduction (in comparison to the basic AI noise reduction in v4.0.0). The new AI noise reduction has better vocal fidelity, cleaner noise suppression, and adds a dereverberation option.
 
-To experience this feature, contact [support@agora.io](mailto:mailto:support@agora.io).
+To experience this feature, contact [support@agora.io](mailto:support@agora.io).
 
 #### Improvements
 
@@ -10405,7 +10405,7 @@ This release has changed the SDK package name from `electron-agora-rtc-ng` to `a
 - Media stream publishing control
 - Warning codes
 
-After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migration guide](../reference/migration-guide).
+After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migration guide](/en/realtime-media/video/reference/migration-guide).
 
 
 #### New features
@@ -10435,9 +10435,9 @@ In order to improve the interactive video experience, the SDK optimizes the whol
 
 Additionally, you can set the encoding resolution to 4K (3840 × 2160) and the frame rate to 60 fps when calling `SetVideoEncoderConfiguration`. The SDK supports automatic fallback to the appropriate resolution and frame rate if your device does not support 4K.
 
-This feature has certain requirements with regards to device performance and network bandwidth, and the supported upstream and downstream frame rates vary on different platforms. To enable this feature, contact [technical support](mailto:mailto:support@agora.io).
+This feature has certain requirements with regards to device performance and network bandwidth, and the supported upstream and downstream frame rates vary on different platforms. To enable this feature, contact [technical support](mailto:support@agora.io).
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **3. Agora media player**
 
@@ -11716,7 +11716,7 @@ As of this release, the SDK optimizes the video encoder algorithm and upgrades t
 
 Call the `setVideoEncoderConfiguration` method to set the expected video encoding resolution in the video encoding parameters configuration.
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **6. Miscellaneous**
 
@@ -11733,7 +11733,7 @@ The increase in the default resolution affects the aggregate resolution and thus
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode to balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
 :::
 
 
@@ -11744,7 +11744,7 @@ To increase the fun of real-time video calls and protect user privacy, this vers
 - Process the background as Alpha information without replacement, only separating the portrait and the background. This can be combined with the local video mixing feature to achieve a portrait-in-picture effect.
 - Replace the background with various formats of local videos.
 
-See [Virtual Background documentation](../build/apply-video-effects/virtual-background).
+See [Virtual Background documentation](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
 **3. Video scenario settings**
 
@@ -11965,7 +11965,7 @@ Agora also supports publishers in choosing whether the audio streams being publi
 
 ::::info
 
-To enable this function, contact [support@agora.io](mailto:support@agora.io/).
+To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
 ::::
 **5. Dual-stream mode**
@@ -12023,7 +12023,7 @@ As of this release, the SDK supports MPUDP protocol, which enables you to connec
 
 ::::info
 
-To enable this feature, contact [support@agora.io](mailto:mailto:support@agora.io).
+To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
 ::::
 **12. Register extensions (Windows)**
@@ -12283,7 +12283,7 @@ This release changed SDK package name from `agora_rtc_ng` to `agora_rtc_engine`,
 - Custom video capture and renderer (Media IO)
 - Error codes and warning codes
 
-After upgrading the SDK, you need to update the code in your app according to the business use-cases. See [Migration guide](../reference/migration-guide) for details.
+After upgrading the SDK, you need to update the code in your app according to the business use-cases. See [Migration guide](/en/realtime-media/video/reference/migration-guide) for details.
 
 
 #### New features
@@ -12315,17 +12315,17 @@ Additionally, you can set the encoding resolution to 4K (3840 × 2160) and the f
 
 This feature has certain requirements with regards to device performance and network bandwidth, and the supported upstream and downstream frame rates vary on different platforms. To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **3. Full HD and Ultra HD resolution (Beta) (Android, iOS)**
 
 In order to improve the interactive video experience, the SDK optimizes the whole process of video capturing, encoding, decoding and rendering. Starting from this version, it supports Full HD (FHD) and Ultra HD (UHD) video resolutions. You can set the `dimensions` parameter to 1920 × 1080 or higher when calling the `setVideoEncoderConfiguration` method. If your device does not support high resolutions, the SDK will automatically fall back to an appropriate resolution.
 
-The UHD resolution (4K, 60 fps) is currently in beta and requires certain device performance and network bandwidth. If you want to enable this feature, contact [technical support](mailto:mailto:support@agora.io).
+The UHD resolution (4K, 60 fps) is currently in beta and requires certain device performance and network bandwidth. If you want to enable this feature, contact [technical support](mailto:support@agora.io).
 
 High resolution typically means higher performance consumption. To avoid a decrease in experience due to insufficient device performance, Agora recommends that you enable FHD and UHD video resolutions on devices with better performance.
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **4. Agora media player**
 
@@ -12342,7 +12342,7 @@ To make audios sound clearer and stay true to the original sound of audio files,
 
 **5. Spatial audio**
 
-    > **_NOTE:_** This feature is in experimental status. To enable this feature, contact [support@agora.io](mailto:mailto:support@agora.io). Contact Technical Support if needed.
+    > **_NOTE:_** This feature is in experimental status. To enable this feature, contact [support@agora.io](mailto:support@agora.io). Contact Technical Support if needed.
 
 You can set the spatial audio for the remote user as following:
 
@@ -13454,7 +13454,7 @@ As of this release, the SDK optimizes the video encoder algorithm and upgrades t
 
 Call the `setVideoEncoderConfiguration` method to set the expected video encoding resolution in the video encoding parameters configuration.
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **5. Miscellaneous**
 
@@ -13469,7 +13469,7 @@ The increase in the default resolution affects the aggregate resolution and thus
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode to balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
 :::
 
 
@@ -13480,7 +13480,7 @@ To increase the fun of real-time video calls and protect user privacy, this vers
 - Process the background as Alpha information without replacement, only separating the portrait and the background. This can be combined with the local video mixing feature to achieve a portrait-in-picture effect.
 - Replace the background with various formats of local videos.
 
-See [Virtual Background documentation](../build/apply-video-effects/virtual-background).
+See [Virtual Background documentation](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
 **3. Video scenario settings**
 
@@ -13658,7 +13658,7 @@ Agora also supports publishers in choosing whether the audio streams being publi
 
 ::::info
 
-To enable this function, contact [support@agora.io](mailto:support@agora.io/).
+To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
 ::::
 **5. Dual-stream mode**
@@ -13698,7 +13698,7 @@ As of this release, the SDK supports MPUDP protocol, which enables you to connec
 
 ::::info
 
-To enable this feature, contact [support@agora.io](mailto:mailto:support@agora.io).
+To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
 ::::
 **10. Camera capture options**
@@ -13733,7 +13733,7 @@ In order to enable users to know whether the switched user role is low-latency o
 
 The SDK supports a new version of AI noise reduction (in comparison to the basic AI noise reduction in v4.0.0). The new AI noise reduction has better vocal fidelity, cleaner noise suppression, and adds a dereverberation option.
 
-To experience this feature, contact [support@agora.io](mailto:mailto:support@agora.io).
+To experience this feature, contact [support@agora.io](mailto:support@agora.io).
 
 #### Improvements
 
@@ -13874,7 +13874,7 @@ This release has changed the SDK package name from `react-native-agora-rtc-ng` t
 - Media stream publishing control
 - Warning codes
 
-After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migration guide](../reference/migration-guide).
+After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migration guide](/en/realtime-media/video/reference/migration-guide).
 
 
 #### New features
@@ -13904,11 +13904,11 @@ In order to improve the interactive video experience, the SDK optimizes the whol
 
 Additionally, you can set the encoding resolution to 4K (3840 × 2160) and the frame rate to 60 fps when calling `SetVideoEncoderConfiguration`. The SDK supports automatic fallback to the appropriate resolution and frame rate if your device does not support 4K.
 
-The UHD resolution (4K, 60 fps) is currently in beta and requires certain device performance and network bandwidth. If you want to enable this feature, contact [technical support](mailto:mailto:support@agora.io).
+The UHD resolution (4K, 60 fps) is currently in beta and requires certain device performance and network bandwidth. If you want to enable this feature, contact [technical support](mailto:support@agora.io).
 
 High resolution typically means higher performance consumption. To avoid a decrease in experience due to insufficient device performance, Agora recommends that you enable FHD and UHD video resolutions on devices with better performance.
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **3. Agora media player**
 
@@ -13973,7 +13973,7 @@ This release supports replacing video feeds with images when publishing video st
 
 **11. Spatial audio**
 
-> **_NOTE:_** This feature is in experimental status. To enable this feature, contact [support@agora.io](mailto:mailto:support@agora.io).
+> **_NOTE:_** This feature is in experimental status. To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
 You can set the spatial audio for the remote user as following:
 
@@ -14020,7 +14020,7 @@ Released on December 18, 2025.
 
 This release includes the following changes:
 
-- Updates the built-in Web SDK to v4.24.1. For details on the changes between Web SDK v4.24.0 to v4.24.1, see the [Web SDK release notes](?platform=web).
+- Updates the built-in Web SDK to v4.24.1. For details on the changes between Web SDK v4.24.0 to v4.24.1, see the [Web SDK release notes](/en/realtime-media/video/reference?platform=web).
 
 
 ### v2.5.0
@@ -14029,7 +14029,7 @@ Released on September 1, 2025.
 
 This release includes the following changes:
 
-- Updates the built-in Web SDK to v4.24.0. For details on the changes between Web SDK v4.23.2 to v4.24.0, see the [Web SDK release notes](?platform=web).
+- Updates the built-in Web SDK to v4.24.0. For details on the changes between Web SDK v4.23.2 to v4.24.0, see the [Web SDK release notes](/en/realtime-media/video/reference?platform=web).
 
 ### v2.4.0
 
@@ -14038,7 +14038,7 @@ Released on March 19, 2025.
 This release includes the following changes:
 
 - Internal optimizations to support [Agora Conversational AI Engine](/en/introduction/conversational-ai).
-- Updates the built-in Web SDK to v4.23.2. For details on the changes between Web SDK v4.22.0 to v4.23.2, see the [Web SDK release notes](?platform=web).
+- Updates the built-in Web SDK to v4.23.2. For details on the changes between Web SDK v4.22.0 to v4.23.2, see the [Web SDK release notes](/en/realtime-media/video/reference?platform=web).
 - Fixes an issue where network state changes could unexpectedly create new tracks.
 
 ### v2.3.0
@@ -14046,19 +14046,19 @@ This release includes the following changes:
 Released on August 21, 2024.
 
 This version updates the built-in Web SDK to v4.22.0. For more details on the changes between Web SDK v4.21.0 and 4.22
-.0, see the [Web SDK release notes](?platform=web).
+.0, see the [Web SDK release notes](/en/realtime-media/video/reference?platform=web).
 
 ### v2.2.0
 
 Released on June 13, 2024.
 
-This version updates the built-in Web SDK to v4.21.0. For more details on the changes between Web SDK v4.20.0 and 4.21.0, see the [Web SDK release notes](?platform=web).
+This version updates the built-in Web SDK to v4.21.0. For more details on the changes between Web SDK v4.20.0 and 4.21.0, see the [Web SDK release notes](/en/realtime-media/video/reference?platform=web).
 
 ### v2.1.0
 
 Released on January 5, 2024.
 
-This version updates the built-in SDK for Web in the SDK for React JS to version 4.20.0. Check the related changes in the [Web SDK release notes](?platform=web).
+This version updates the built-in SDK for Web in the SDK for React JS to version 4.20.0. Check the related changes in the [Web SDK release notes](/en/realtime-media/video/reference?platform=web).
 
 ### v2.0.0
 
@@ -15344,7 +15344,7 @@ In use-cases such as 1-on-1 video calls and video group chats, the increase in t
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode to balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
 :::
 
 
@@ -15355,7 +15355,7 @@ To increase the fun of real-time video calls and protect user privacy, this vers
 - Process the background as Alpha information without replacement, only separating the portrait and the background. This can be combined with the local video mixing feature to achieve a portrait-in-picture effect.
 - Replace the background with various formats of local videos.
 
-See [Virtual Background documentation](../build/apply-video-effects/virtual-background).
+See [Virtual Background documentation](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
 **3. Video scenario settings**
 
@@ -15572,7 +15572,7 @@ To make it easier for users to know the connection type of the local network at 
 
 **4. Audio stream filter**
 
-This release introduces filtering audio streams based on volume. Once this function is enabled, the Agora server ranks all audio streams by volume and transports the three audio streams with the highest volumes to the receivers by default. The number of audio streams to be transported can be adjusted; contact [support@agora.io](support@agora.io) to adjust this number according to your use-case.
+This release introduces filtering audio streams based on volume. Once this function is enabled, the Agora server ranks all audio streams by volume and transports the three audio streams with the highest volumes to the receivers by default. The number of audio streams to be transported can be adjusted; contact [support@agora.io](mailto:support@agora.io) to adjust this number according to your use-case.
 
 Agora also supports publishers in choosing whether the audio streams being published are to be filtered based on volume. Streams that are not filtered bypass this filter mechanism and are transported directly to the receivers. In use-cases with a number of publishers, enabling this function helps reduce the bandwidth and device system pressure for the receivers.
 
@@ -15878,7 +15878,7 @@ This release has optimized the implementation of some features, resulting in inc
 - Media stream publishing control
 - Warning codes
 
-After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migration guide](../reference/migration-guide).
+After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migration guide](/en/realtime-media/video/reference/migration-guide).
 
 #### New features
 
@@ -15909,17 +15909,17 @@ Additionally, you can set the encoding resolution to 4K (3840 × 2160) and the f
 
 This feature has certain requirements with regards to device performance and network bandwidth, and the supported upstream and downstream frame rates vary on different platforms. To experience this feature, contact [support@agora.io](mailto:support@agora.io).
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **3. Full HD and Ultra HD resolution (Beta) (Android, iOS)**
 
 In order to improve the interactive video experience, the SDK optimizes the whole process of video capturing, encoding, decoding and rendering. Starting from this version, it supports Full HD (FHD) and Ultra HD (UHD) video resolutions. You can set the `dimensions` parameter to 1920 × 1080 or higher resolution when calling the `SetVideoEncoderConfiguration` method. If your device does not support high resolutions, the SDK will automatically fall back to an appropriate resolution.
 
-The UHD resolution (4K, 60 fps) is currently in beta and requires certain device performance and network bandwidth. If you want to enable this feature, contact [technical support](mailto:mailto:support@agora.io).
+The UHD resolution (4K, 60 fps) is currently in beta and requires certain device performance and network bandwidth. If you want to enable this feature, contact [technical support](mailto:support@agora.io).
 
 High resolution typically means higher performance consumption. To avoid a decrease in experience due to insufficient device performance, Agora recommends that you enable FHD and UHD video resolutions on devices with better performance.
 
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](./pricing).
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 
 **4. Agora media player**
 
@@ -16276,7 +16276,7 @@ If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App
 
 1. **Wildcard token**
 
-   This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user ID. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can prevent repeated application of tokens every time users join a new channel, which reduces the pressure on your token server. See [Generate wildcard tokens](../build/authenticate-users/deploy-token-server#generate-wildcard-tokens).
+   This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user ID. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can prevent repeated application of tokens every time users join a new channel, which reduces the pressure on your token server. See [Generate wildcard tokens](/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens).
 
    :::info[Note]
 All 4.x SDKs support using wildcard tokens.
@@ -16287,7 +16287,7 @@ All 4.x SDKs support using wildcard tokens.
 
    This release adds `preloadChannel` and `preloadChannelWithUserAccount` methods, which allows a user whose role is set as audience to preload channels before joining one. Calling the method can help shorten the time of joining a channel, thus reducing the time it takes for audience members to hear and see the host.
 
-   When preloading more than one channels, Agora recommends that you use a wildcard token for preloading to prevent repeated application of tokens every time you join a new channel, thus saving the time for switching between channels. See [Generate wildcard tokens](../build/authenticate-users/deploy-token-server#generate-wildcard-tokens).
+   When preloading more than one channels, Agora recommends that you use a wildcard token for preloading to prevent repeated application of tokens every time you join a new channel, thus saving the time for switching between channels. See [Generate wildcard tokens](/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens).
 
 1. **Publishing video streams from different sources** (Windows, macOS)
 
@@ -16341,12 +16341,12 @@ The SDK for Unreal Blueprint offers a visual interface and a set of intuitive an
 
 Read more:
 
-- [SDK quickstart](../get-started-sdk)
+- [SDK quickstart](/en/realtime-media/video/get-started-sdk)
 - [API Reference](/en/api-reference)
 
 Agora provides an [open source example project](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example) on GitHub for your reference.
 
-If you have already integrated the 3.x version of the SDK and wish to upgrade to this version, please refer to [Migration Guide](../reference/migration-guide) for upgrade instructions.
+If you have already integrated the 3.x version of the SDK and wish to upgrade to this version, please refer to [Migration Guide](/en/realtime-media/video/reference/migration-guide) for upgrade instructions.
 
 </PlatformStructured>
 
@@ -16559,7 +16559,7 @@ If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App
    This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a
    wildcard character. The token generated can be used to join any channel if you use the same user ID. In use-cases
    involving multiple channels, such as switching between different channels, using a wildcard token can prevent
-   repeated application of tokens every time users join a new channel, which reduces the pressure on your token server. See [Generate wildcard tokens](../build/authenticate-users/deploy-token-server#generate-wildcard-tokens).
+   repeated application of tokens every time users join a new channel, which reduces the pressure on your token server. See [Generate wildcard tokens](/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens).
 
    :::info[Note]
 All 4.x SDKs support using wildcard tokens.
@@ -16570,7 +16570,7 @@ All 4.x SDKs support using wildcard tokens.
 
    This release adds `PreloadChannel` and `PreloadChannelWithUserAccount` methods, which allow a user whose role is set as audience to preload channels before joining one. Calling the method can help shorten the time of joining a channel, thus reducing the time it takes for audience members to hear and see the host.
 
-   When preloading more than one channel, Agora recommends that you use a wildcard token for preloading to avoid repeated application of tokens every time you join a new channel, thus saving the time for switching between channels. See [Generate wildcard tokens](../build/authenticate-users/deploy-token-server#generate-wildcard-tokens).
+   When preloading more than one channel, Agora recommends that you use a wildcard token for preloading to avoid repeated application of tokens every time you join a new channel, thus saving the time for switching between channels. See [Generate wildcard tokens](/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens).
 
 1. **Publishing video streams from different sources** (Windows, macOS)
 
@@ -16624,7 +16624,7 @@ Video SDK for Unreal Blueprint offers a visual interface and a set of intuitive 
 
 To integrate real-time engagement functionality into your app using Video SDK for Unreal Engine, see:
 
-- [SDK quickstart](../get-started-sdk)
+- [SDK quickstart](/en/realtime-media/video/get-started-sdk)
 - [API reference](/en/api-reference/api-ref/rtc?platform=blueprint)
 
 Agora provides the open source [example project](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) on GitHub for your reference.

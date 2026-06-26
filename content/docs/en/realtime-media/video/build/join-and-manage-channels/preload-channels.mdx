@@ -5,27 +5,18 @@ description: "Preload channels for faster rendering."
 
 <PlatformStructured platform="web">
 
-## Prerequisites
-
-
-## Project setup
-
-
 ## Implementation
-
-
-
 
 Follow these steps to implement channel preloading:
 
 ### Preload channel list
 
-    On the channel list page, preload the channels within the user's view area with the `preload` method.
+On the channel list page, preload the channels within the user's view area with the `preload` method.
 
-        - If the total number of channels does not exceed 10, preload all channels.
-        - If the total number of channels exceeds 10, preload only the first 10 channels. If the user scrolls the channel list, wait for the scrolling to stop, then preload the new channels in the user's view area.
+- If the total number of channels does not exceed 10, preload all channels.
+- If the total number of channels exceeds 10, preload only the first 10 channels. If the user scrolls the channel list, wait for the scrolling to stop, then preload the new channels in the user's view area.
 
-    To speed up the subsequent joining of the channel, use a [wildcard token](../authenticate-users/deploy-token-server#generate-wildcard-tokens) in the `token` parameter of the `preload` method.
+To speed up the subsequent joining of the channel, use a [wildcard token](/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens) in the `token` parameter of the `preload` method.
 
 ### Pre-join individual channels
 
@@ -38,7 +29,7 @@ Implement pre-joining for different mouse interactions:
     - Call `join` to join the channel and subscribe to the host's audio and video streams.
     - Render the video in advance in a small preview window.
 
-    To speed up joining the channel, use a [wildcard token](../authenticate-users/deploy-token-server#generate-wildcard-tokens) in the `token` parameter of the `join` method.
+    To speed up joining the channel, use a [wildcard token](/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens) in the `token` parameter of the `join` method.
 
 - Entering the channel
 
@@ -68,15 +59,14 @@ Implement pre-joining for different mouse interactions:
 
     :::info[Note]
 
-    Joining a channel incurs additional fees due to the transmission of media streams. See [Pricing](../../reference/pricing#cost-calculation) for details.
+    Joining a channel incurs additional fees due to the transmission of media streams. See [Pricing](/en/realtime-media/video/reference/pricing#cost-calculation) for details.
 
-:::
-
+    :::
 
     When a user clicks on the channel in the list, take the following actions:
 
-        - Switch the app interface from the channel list page to the single channel page. Best practice is to add a page switching animation.
-        - Call `IRemoteAudioTrack.play` and `IRemoteVideoTrack.play`. The video needs to be passed in the specified DOM element.
+    - Switch the app interface from the channel list page to the single channel page. Best practice is to add a page switching animation.
+    - Call `IRemoteAudioTrack.play` and `IRemoteVideoTrack.play`. The video needs to be passed in the specified DOM element.
 
 - Leaving without entering
 
@@ -136,7 +126,7 @@ Take the following steps before using the fast joining and fast switching featur
 
 2. Use a wildcard token.
 
-    To speed up the process of users joining a channel, use a [wildcard token](../authenticate-users/deploy-token-server#generate-wildcard-tokens). Generate the token on your server and pass it to the client for authentication.
+    To speed up the process of users joining a channel, use a [wildcard token](/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens). Generate the token on your server and pass it to the client for authentication.
 
     :::info[Note]
 
@@ -542,7 +532,7 @@ Take the following steps before using the fast joining and fast switching featur
 
 2. Use a wildcard token.
 
-    To speed up the process of users joining a channel, use a [wildcard token](../authenticate-users/deploy-token-server#generate-wildcard-tokens). Generate the token on your server and pass it to the client for authentication.
+    To speed up the process of users joining a channel, use a [wildcard token](/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens). Generate the token on your server and pass it to the client for authentication.
 
     :::info[Note]
 
@@ -864,7 +854,7 @@ Take the following steps before using the fast joining and fast switching featur
 
 2. Use a wildcard token.
 
-    To speed up the process of users joining a channel, use a [wildcard token](../authenticate-users/deploy-token-server#generate-wildcard-tokens). Generate the token on your server and pass it to the client for authentication.
+    To speed up the process of users joining a channel, use a [wildcard token](/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens). Generate the token on your server and pass it to the client for authentication.
 
     :::info[Note]
 
