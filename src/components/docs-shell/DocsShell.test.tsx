@@ -527,17 +527,14 @@ describe('DocsShell', () => {
       'max-w-[min(100%,1600px)]',
     );
     expect(docsBodyShell).toHaveClass('max-w-[min(100%,1600px)]');
-    expect(docsBodyShell).toHaveClass(
-      'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
-    );
+    expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
     expect(docsBodyShell).not.toHaveClass(
       'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
-    expect(screen.getByTestId('docs-toc-rail-placeholder')).toHaveClass(
-      'w-[220px]',
-      'xl:block',
-    );
+    expect(
+      screen.queryByTestId('docs-toc-rail-placeholder'),
+    ).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-page-actions')).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-side-rail')).not.toBeInTheDocument();
     for (const footer of screen.getAllByTestId('docs-page-footer')) {
