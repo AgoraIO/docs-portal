@@ -81,20 +81,20 @@ describe('auditDocsLinks', () => {
       resolvedByHref.get('../operations/start-agent.md#llm-max_history'),
     ).toMatchObject({
       normalizedHref:
-        '/en/api-reference/conversational-ai/rest-api/agent/join#llm-max_history',
+        '/en/api-reference/api-ref/conversational-ai/join#llm-max_history',
       resolution: 'openapi-route',
       resolvedTargetPath:
-        'openapi:/en/api-reference/conversational-ai/rest-api/agent/join',
+        'openapi:/en/api-reference/api-ref/conversational-ai/join',
     });
     expect(
       resolvedByHref.get(
         '../api-reference/conversational-ai/rest-api/agent/join.md',
       ),
     ).toMatchObject({
-      normalizedHref: '/en/api-reference/conversational-ai/rest-api/agent/join',
+      normalizedHref: '/en/api-reference/api-ref/conversational-ai/join',
       resolution: 'openapi-route',
       resolvedTargetPath:
-        'openapi:/en/api-reference/conversational-ai/rest-api/agent/join',
+        'openapi:/en/api-reference/api-ref/conversational-ai/join',
     });
   });
 });

@@ -1,0 +1,299 @@
+---
+title: Proctor SDK TypeScript API
+description: This page provides the TypeScript API reference for the Agora Proctor SDK.
+---
+
+This TypeScript API reference covers the Agora Proctor SDK APIs for launching and managing Flexible Classroom proctoring scenarios.
+
+## AgoraProctorSDK
+
+`AgoraProctorSDK` is the basic interface of the Agora Proctor SDK and provides the main methods for a flexible classroom in proctoring scenarios.
+
+### config
+
+```typescript
+static config(config: ConfigParams): void
+```
+
+Configures the Agora Proctor SDK.
+
+**Parameters**
+
+| Parameter | Description |
+| :--- | :--- |
+| `config` | The configuration for the flexible classroom. See [ConfigParams](#configparams) for details. |
+
+### launch
+
+```typescript
+static launch(dom: HTMLElement, option: LaunchOption): () => void
+```
+
+Launches a flexible classroom in a proctoring scenario.
+
+**Parameters**
+
+| Parameter | Description |
+| :--- | :--- |
+| `dom` | The Document Object Model (DOM). See [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document) for details. |
+| `option` | The classroom launching configuration. See [LaunchOption](#launchoption) for details. |
+
+**Return value**
+
+Returns a function used to destroy the scene and recycle resources.
+
+## Type definitions
+
+### ConfigParams
+
+The global SDK configuration, used in [AgoraProctorSDK.config](#config).
+
+```typescript
+export type ConfigParams = {
+  appId: string;
+  region?: string;
+};
+```
+
+| Property | Description |
+| :--- | :--- |
+| `appId` | The Agora App ID. See [Get the Agora App ID](/en/solutions/flexible-classroom/build/manage-agora-account#get-the-app-id). |
+| `region` | (Optional) The region where the classroom is. All clients must use the same region; otherwise, they may fail to communicate with each other. Supported regions are `CN` for Mainland China, `NA` for North America, `EU` for Europe, and `AP` for Asia Pacific. |
+
+### LaunchOption
+
+The classroom launching configuration used in [AgoraProctorSDK.launch](#launch).
+
+```typescript
+export type LaunchOption = {
+  userUuid: string;
+  userName: string;
+  roomUuid: string;
+  roleType: EduRoleTypeEnum;
+  roomType: EduRoomTypeEnum;
+  roomName: string;
+  listener: ListenerCallback;
+  pretest: boolean;
+  rtmToken: string;
+  language: LanguageEnum;
+  startTime?: number;
+  duration: number;
+  widgets?: { [key: string]: typeof AgoraWidgetBase };
+  userFlexProperties?: { [key: string]: any };
+  mediaOptions?: LaunchMediaOptions;
+  latencyLevel?: 1 | 2;
+  uiMode?: FcrMultiThemeMode;
+  checkStudentScreenShareState?: boolean;
+  rtcCloudProxyType?: AgoraCloudProxyType;
+  rtmCloudProxyEnabled?: boolean;
+};
+```
+
+| Property | Description |
+| :--- | :--- |
+| `userUuid` | The user ID. This is the globally unique identifier of a user. This value must be the same as the User ID that you use for generating a Signaling token. This value must be less than 64 bytes. Supported characters include lowercase and uppercase English letters, numbers, spaces, and the following symbols: `"!"`, `"#"`, `"$"`, `"%"`, `"&"`, `"("`, `")"`, `"+"`, `"-"`, `":"`, `";"`, `"<"`, `"="`, `"."`, `">"`, `"?"`, `"@"`, `"["`, `"]"`, `"^"`, `"_"`, `"{"`, `"}"`, `"|"`, `"~"`, and `","`. |
+| `userName` | The user name for display in the classroom. This value must be less than 64 bytes. |
+| `roomUuid` | The room ID. This is the globally unique identifier of a classroom. This value must be less than 64 bytes. Supported characters include lowercase and uppercase English letters, numbers, spaces, and the symbols listed for `userUuid`. |
+| `roleType` | The user's role in the classroom. See [EduRoleTypeEnum](#eduroletypeenum) for details. |
+| `roomType` | The classroom type. See [EduRoomTypeEnum](#eduroomtypeenum) for details. |
+| `roomName` | The room name for display in the classroom. The string length must be less than 64 bytes. |
+| `listener` | The state of classroom launching: `ready` means the classroom is ready, and `destroyed` means the classroom has been destroyed. |
+| `pretest` | Whether to enable the pre-class device test. If set to `true`, end users see a pop-up window to test their camera, microphone, and speaker before entering the classroom. |
+| `rtmToken` | The Signaling token used for authentication. See [Secure authentication with tokens](/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow). |
+| `language` | The language on the classroom UI. See [LanguageEnum](#languageenum) for details. |
+| `startTime` | (Optional) The start time (ms) of the class, determined by the first user joining the classroom. |
+| `duration` | The duration (seconds) of the class, determined by the first user joining the classroom. The maximum value is 86,400. Agora recommends that you set this value to the actual class duration. |
+| `widgets` | (Optional) Extensive widgets that extend the classroom capabilities. See [Embed a custom plugin](/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/embed-custom-plugin). |
+| `userFlexProperties` | (Optional) User properties customized by the developer. |
+| `mediaOptions` | (Optional) Media options, including the media encryption configuration, camera video encoder configuration, and screen sharing video encoder configuration. See [LaunchMediaOptions](#launchmediaoptions) for details. |
+| `latencyLevel` | (Optional) The latency level of an audience member. This property does not apply to cohosting users. `1` means low latency, where the latency from the sender to the receiver is between 1500 ms and 2000 ms. `2` means ultra-low latency, where the latency from the sender to the receiver is between 400 ms and 800 ms. The default value is `2`. |
+| `uiMode` | (Optional) The UI theme mode of the classroom. The default value is `light`, which means a light theme. See [FcrMultiThemeMode](#fcrmultithememode) for details. |
+| `checkStudentScreenShareState` | (Optional) Whether to kick students out of the classroom immediately when they stop screen sharing. |
+| `rtcCloudProxyType` | (Optional) The cloud proxy type for the RTC service. See [AgoraCloudProxyType](#agoracloudproxytype). |
+| `rtmCloudProxyEnabled` | (Optional) Whether to enable cloud proxy for the Signaling service. |
+
+### LaunchMediaOptions
+
+```typescript
+export type LaunchMediaOptions = {
+  cameraEncoderConfiguration?: EduVideoEncoderConfiguration;
+  screenShareEncoderConfiguration?: EduVideoEncoderConfiguration;
+  encryptionConfig?: MediaEncryptionConfig;
+  channelProfile?: ChannelProfile;
+  web?: {
+    codec: SDK_CODEC;
+    mode: SDK_MODE;
+  };
+};
+```
+
+Media options, including the media encryption configuration, camera video encoder configuration, and screen sharing video encoder configuration. Set in [LaunchOption](#launchoption).
+
+| Property | Description |
+| :--- | :--- |
+| `cameraEncoderConfiguration` | (Optional) The encoding configuration of the video stream captured by the camera. See [EduVideoEncoderConfiguration](#eduvideoencoderconfiguration) for details. |
+| `screenShareEncoderConfiguration` | (Optional) The encoding configuration of the screen sharing stream. See [EduVideoEncoderConfiguration](#eduvideoencoderconfiguration) for details. |
+| `encryptionConfig` | (Optional) The media stream encryption configuration. See [MediaEncryptionConfig](#mediaencryptionconfig) for details. |
+| `channelProfile` | The channel profile configuration. See [ChannelProfile](#channelprofile) for details. |
+| `web` | The web configuration for browser codec format and channel mode. `codec` can be `"vp9"` for VP9 or `"h264"` for H.264. `mode` can be `"rtc"` for communication mode or `"live"` for live-streaming mode. |
+
+### EduVideoEncoderConfiguration
+
+```typescript
+export interface EduVideoEncoderConfiguration {
+  width: number;
+  height: number;
+  frameRate: number;
+  bitrate: number;
+}
+```
+
+The video encoder configuration.
+
+| Property | Description |
+| :--- | :--- |
+| `width` | The width of the video frame in pixels. The default value is 320. |
+| `height` | The height of the video frame in pixels. The default value is 240. |
+| `frameRate` | The frame rate of the video in FPS. The default value is 15. |
+| `bitrate` | The bitrate of the video in Kbps. The default value is 200. |
+
+### MediaEncryptionConfig
+
+```typescript
+export declare interface MediaEncryptionConfig {
+  mode: MediaEncryptionMode;
+  key: string;
+}
+```
+
+The media stream encryption configuration used in [LaunchMediaOptions](#launchmediaoptions).
+
+| Property | Description |
+| :--- | :--- |
+| `mode` | The encryption mode. See [MediaEncryptionMode](#mediaencryptionmode). Teachers and students in the same classroom must use the same encryption mode and key. |
+| `key` | The encryption key. |
+
+### ChannelProfile
+
+```typescript
+export enum ChannelProfile {
+  Communication = 0,
+  LiveBroadcasting = 1,
+}
+```
+
+The channel profiles, used in [LaunchMediaOptions](#launchmediaoptions).
+
+| Value | Description |
+| :--- | :--- |
+| `Communication` | Communication mode, commonly used for one-to-one or one-to-many classrooms. |
+| `LiveBroadcasting` | Live-streaming mode. This option costs less than communication mode and has a higher latency. |
+
+### MediaEncryptionMode
+
+```typescript
+export enum MediaEncryptionMode {
+  AES_128_XTS = 1,
+  AES_128_ECB = 2,
+  AES_256_XTS = 3,
+  AES_128_GCM = 5,
+  AES_256_GCM = 6,
+}
+```
+
+The media stream encryption mode, used in [MediaEncryptionConfig](#mediaencryptionconfig).
+
+| Value | Description |
+| :--- | :--- |
+| `AES_128_XTS` | `1`: 128-bit AES encryption, XTS mode. |
+| `AES_128_ECB` | `2`: 128-bit AES encryption, ECB mode. |
+| `AES_256_XTS` | `3`: 256-bit AES encryption, XTS mode. |
+| `AES_128_GCM` | `5`: 128-bit AES encryption, GCM mode. |
+| `AES_256_GCM` | `6`: 256-bit AES encryption, GCM mode. |
+
+### FcrMultiThemeMode
+
+```typescript
+export enum FcrMultiThemeMode {
+  light = 'light',
+  dark = 'dark',
+}
+```
+
+The UI theme mode of the classroom, used in [LaunchOption](#launchoption).
+
+| Value | Description |
+| :--- | :--- |
+| `light` | Light theme. |
+| `dark` | Dark theme. |
+
+### EduRoleTypeEnum
+
+```typescript
+export enum EduRoleTypeEnum {
+  teacher = 1,
+  student = 2,
+}
+```
+
+The role of the user in the classroom, used in [LaunchOption](#launchoption).
+
+| Value | Description |
+| :--- | :--- |
+| `teacher` | `1`: Teacher or proctor. |
+| `student` | `2`: Student or exam taker. |
+
+### EduRoomTypeEnum
+
+```typescript
+export enum EduRoomTypeEnum {
+  RoomProctor = 6,
+}
+```
+
+The classroom type, used in [LaunchOption](#launchoption).
+
+| Value | Description |
+| :--- | :--- |
+| `RoomProctor` | `6`: A proctored exam. In proctoring scenarios, `roomType` can only be set to this value. |
+
+### LanguageEnum
+
+```typescript
+export type LanguageEnum = 'en' | 'zh';
+```
+
+The language on the UI, used in [LaunchOption](#launchoption).
+
+| Value | Description |
+| :--- | :--- |
+| `"en"` | English. |
+| `"zh"` | Chinese. |
+
+### DeviceTypeEnum
+
+```typescript
+export enum DeviceTypeEnum {
+  Main = 'main',
+  Sub = 'sub',
+}
+```
+
+Device types.
+
+For more about main devices and secondary devices, see [Proctor exams online](/en/solutions/flexible-classroom/build/enable-teaching-features/proctor-exams-online).
+
+| Value | Description |
+| :--- | :--- |
+| `Main` | Main device. |
+| `Sub` | Secondary device. |
+
+### AgoraCloudProxyType
+
+The cloud proxy type. Set in [LaunchOption](#launchoption).
+
+| Value | Description |
+| :--- | :--- |
+| `Automatic` | `0`: Automatic mode. In this mode, the SDK first attempts to connect directly to Agora SDRTN. If the attempt fails, the SDK automatically falls back to sending media over TLS 443. If you are unsure whether the end user's network environment has a firewall, `Automatic` mode is recommended. |
+| `UDP` | `1`: UDP. |
+| `TCP` | `2`: TCP. |
