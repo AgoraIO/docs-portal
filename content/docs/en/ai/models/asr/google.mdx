@@ -102,17 +102,24 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-    
-  The Google Cloud project ID where the Speech-to-Text API is enabled. Get your project ID from the [Google Cloud Console](https://console.cloud.google.com/).
-  
-    
-  The Google Cloud region where the speech service is hosted, for example, `global`, `us-central1`, or `europe-west1`.
-  
-    
-  The Google Cloud service account credentials JSON string used for authentication. Get your credentials from the [Google Cloud Console](https://console.cloud.google.com/).
-  
-    
-  The language code for speech recognition, for example, `en-US`, `es-ES`, or `fr-FR`. See [supported languages](https://cloud.google.com/speech-to-text/docs/speech-to-text-supported-languages) for available language codes.
-  
-    
-  The recognition model to use.
+<ParameterList title="params">
+  <Parameter name="project_id" type="string" required>
+    The Google Cloud project ID where the Speech-to-Text API is enabled. Get your project ID from the [Google Cloud Console](https://console.cloud.google.com/).
+  </Parameter>
+
+  <Parameter name="location" type="string" required>
+    The Google Cloud region where the speech service is hosted, for example, `global`, `us-central1`, or `europe-west1`.
+  </Parameter>
+
+  <Parameter name="adc_credentials_string" type="string" required>
+    The Google Cloud service account credentials JSON string used for authentication. Get your credentials from the [Google Cloud Console](https://console.cloud.google.com/).
+  </Parameter>
+
+  <Parameter name="language" type="string" optional>
+    The language code for speech recognition, for example, `en-US`, `es-ES`, or `fr-FR`. See [supported languages](https://cloud.google.com/speech-to-text/docs/speech-to-text-supported-languages) for available language codes.
+  </Parameter>
+
+  <Parameter name="model" type="string" optional>
+    The recognition model to use.
+  </Parameter>
+</ParameterList>
