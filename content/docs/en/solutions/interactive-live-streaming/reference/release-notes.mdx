@@ -313,7 +313,7 @@ The `libaosl.so` library version in Video SDK v4.5.1 is 1.2.13.
 
 **AI conversation scenario**
 
-This version introduces the `AUDIO_SCENARIO_AI_CLIENT` audio scenario option, specifically designed for interacting with conversational AI agents powered by the [Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview.md).
+This version introduces the `AUDIO_SCENARIO_AI_CLIENT` audio scenario option, specifically designed for interacting with conversational AI agents powered by the [Conversational AI Engine](https://docs-md.agora.io/en/en/ai.md).
 
 This scenario optimizes audio transmission algorithms based on the characteristics of AI-generated voices, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. The optimization enhances conversation continuity and reliability across various network environments.
 
@@ -590,7 +590,7 @@ To ensure parameter naming consistency, this version renames `channelName` to `c
 
 1. **Beta features**
 
-   - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+   - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -1274,7 +1274,7 @@ As of this release, the SDK optimizes the video encoder algorithm and upgrades t
 
 Call the `setVideoEncoderConfiguration` method to set the expected video encoding resolution in the video encoding parameters configuration.
 :::note
-The increase in the default resolution affects the aggregate resolution and thus the billing rate. See <a href="../overview/pricing">Pricing</a>.
+The increase in the default resolution affects the aggregate resolution and thus the billing rate. See <a href="../reference/pricing">Pricing</a>.
 :::
 #### New features
 
@@ -2132,7 +2132,7 @@ The `aosl.xcframework` library version in Video SDK v4.5.1 is 1.2.13. You can ch
 
 1. **AI Conversation Scenario**
 
-  This version introduces the `AgoraAudioScenarioAiClient` audio scenario, specifically designed for interacting with the conversational AI agent created by [Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview.md). This scenario optimizes the audio transmission algorithm based on the characteristics of AI-generated voices, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. The optimization enhances conversation continuity and reliability, adapting to various challenging network environments.
+  This version introduces the `AgoraAudioScenarioAiClient` audio scenario, specifically designed for interacting with the conversational AI agent created by [Conversational AI Engine](https://docs-md.agora.io/en/en/ai.md). This scenario optimizes the audio transmission algorithm based on the characteristics of AI-generated voices, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. The optimization enhances conversation continuity and reliability, adapting to various challenging network environments.
 
 #### Improvements
 
@@ -2387,7 +2387,7 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Beta features**
 
-   - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+   - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -4522,7 +4522,7 @@ Released on March 4, 2025.
 
 This release includes the following improvements:
 
-- Internal optimizations to support [Agora Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview.md).
+- Internal optimizations to support [Agora Conversational AI Engine](https://docs-md.agora.io/en/en/ai.md).
   - Enable audio metadata transmission
   - Get presentation timestamp from the audio stream
 
@@ -4866,7 +4866,7 @@ See `setImageModeration` in the [API Reference](https://api-ref.agora.io/en/vide
 **Beta features**
 
 End-to-end media encryption and Super Clarity extension are released in beta.
-See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+See [beta documentation](https://docs-beta.agora.io/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -5017,7 +5017,7 @@ You can continue using the previous approach. However, for higher flexibility an
 - `onAudioAutoplayFailed`: Deprecated, see `onAutoplayFailed` instead
 
 Scalable Video Coding, access to encoded data, and enhanced connection experience in restricted networks are released in beta.
-See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+See [beta documentation](https://docs-beta.agora.io/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -5144,7 +5144,7 @@ which prevents a black screen during the reconnection process. This optimization
 
 This release also includes the following improvements:
 
-- The accuracy of SDK-related quality metrics on [Analytics](https://docs-md.agora.io/en/agora-analytics/overview/product-overview.md) is improved.
+- The accuracy of SDK-related quality metrics on [Analytics](https://docs-md.agora.io/en/solutions/agora-analytics/product-overview.md) is improved.
 - The time required to join a channel is reduced. This optimization is not available on Firefox due to Firefox's limitations.
 
 #### API changes
@@ -5430,9 +5430,9 @@ v4.12.0 was released on June 15, 2022.
 
 Media processing extensions have the following changes:
 
-- The [Image Enhancement Extension (Beta)](https://www.npmjs.com/package/agora-extension-beauty-effect) is released. This extension incorporates and upgrades the built-in image enhancement feature (enabled by [setBeautyEffect](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalvideotrack.html#setbeautyeffect))) of the Agora Web SDK 4.x. You can adjust parameters including the contrast, brightness, and smoothness levels, in order to touch up the image for effects such as skin lightening and skin smoothing. For details, see [Use the Image Enhancement Extension](https://docs-md.agora.io/en/interactive-live-streaming/overview/beauty_effect_web_ng.md).
+- The [Image Enhancement Extension (Beta)](https://www.npmjs.com/package/agora-extension-beauty-effect) is released. This extension incorporates and upgrades the built-in image enhancement feature (enabled by [setBeautyEffect](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalvideotrack.html#setbeautyeffect))) of the Agora Web SDK 4.x. You can adjust parameters including the contrast, brightness, and smoothness levels, in order to touch up the image for effects such as skin lightening and skin smoothing. For details, see [Use the Image Enhancement Extension](/en/realtime-media/marketplace/build/add-video-and-ar-effects/banuba).
 
-- The [Virtual Background Extension (Beta)](https://www.npmjs.com/package/agora-extension-virtual-background) supports animated virtual backgrounds as of v1.0.0-beta-3. You can set a user's background as a short video. For details, see [Use the Virtual Background Extension](https://docs-md.agora.io/en/interactive-live-streaming/overview/virtual_background_web_ng.md).
+- The [Virtual Background Extension (Beta)](https://www.npmjs.com/package/agora-extension-virtual-background) supports animated virtual backgrounds as of v1.0.0-beta-3. You can set a user's background as a short video. For details, see [Use the Virtual Background Extension](/en/realtime-media/marketplace/build/add-video-and-ar-effects/virtual-background).
 
 #### Issues fixed
 
@@ -6153,7 +6153,7 @@ v4.0.0 fixed the following issues:
 
 ## AI Noise Suppression
 :::note
-Agora charges additionally for this extension. See [Pricing](https://docs-md.agora.io/en/video-calling/overview/pricing.md).
+Agora charges additionally for this extension. See [Pricing](https://docs-md.agora.io/en/en/realtime-media/video/reference/pricing.md).
 :::
 ### v2.0.1
 
@@ -6214,7 +6214,7 @@ First release.
 
 ### v1.0.0-beta2
 
-[`agora-conversational-ai-denoiser`](https://www.npmjs.com/package/agora-conversational-ai-denoiser) v1.0.0-beta2 was released on March 5, 2025, to enhance the user experience in applications powered by [Agora Conversational AI Engine](https://docs-md.agora.io/en/conversational-ai/overview/product-overview.md).
+[`agora-conversational-ai-denoiser`](https://www.npmjs.com/package/agora-conversational-ai-denoiser) v1.0.0-beta2 was released on March 5, 2025, to enhance the user experience in applications powered by [Agora Conversational AI Engine](https://docs-md.agora.io/en/en/ai.md).
 :::warning
 
 The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommend using it only for AI-related use cases.

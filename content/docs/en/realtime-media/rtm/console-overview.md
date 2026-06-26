@@ -43,11 +43,11 @@ Agora Console provides access to the following:
 
 - Agora Analytics
 
-    Track and analyze the usage and quality data of real-time communication products through highly visualized reports in order to spot issues and find root causes. For more information, see the [Agora Analytics overview](https://docs.agora.io/en/agora-analytics/overview/product-overview).
+    Track and analyze the usage and quality data of real-time communication products through highly visualized reports in order to spot issues and find root causes. For more information, see the [Agora Analytics overview](/en/solutions/agora-analytics/product-overview).
 
 - Agora Extensions Marketplace
 
-    Gain access to extensions that rapidly add fun features to your app on top of Agora SDKs. For more information, see the [Extensions Marketplace overview](https://docs.agora.io/en/extensions-marketplace/overview/product-overview).
+    Gain access to extensions that rapidly add fun features to your app on top of Agora SDKs. For more information, see the [Extensions Marketplace overview](/en/realtime-media/marketplace).
 
 ## Manage profile
 
