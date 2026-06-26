@@ -335,43 +335,43 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 <CodeBlockTab value="android">
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/android#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/android#destroy)
-- [`onAgentStateChanged`](../../api-reference/conversational-ai/client-toolkit/android#onagentstatechanged)
-- [`onAgentListeningChanged`](../../api-reference/conversational-ai/client-toolkit/android#onagentlisteningchanged)
-- [`onAgentThinkingChanged`](../../api-reference/conversational-ai/client-toolkit/android#onagentthinkingchanged)
-- [`onAgentSpeakingChanged`](../../api-reference/conversational-ai/client-toolkit/android#onagentspeakingchanged)
-- [`onAgentInterrupted`](../../api-reference/conversational-ai/client-toolkit/android#onagentinterrupted)
-- [`onAgentMetrics`](../../api-reference/conversational-ai/client-toolkit/android#onagentmetrics)
-- [`onAgentError`](../../api-reference/conversational-ai/client-toolkit/android#onagenterror)
+- [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#addhandler)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#unsubscribemessage)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#destroy)
+- [`onAgentStateChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentstatechanged)
+- [`onAgentListeningChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentlisteningchanged)
+- [`onAgentThinkingChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentthinkingchanged)
+- [`onAgentSpeakingChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentspeakingchanged)
+- [`onAgentInterrupted`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentinterrupted)
+- [`onAgentMetrics`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentmetrics)
+- [`onAgentError`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagenterror)
 
 </CodeBlockTab>
 
 <CodeBlockTab value="ios">
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/ios#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios#destroy)
-- [`onAgentStateChanged`](../../api-reference/conversational-ai/client-toolkit/ios#onagentstatechanged)
-- [`onAgentListeningChanged`](../../api-reference/conversational-ai/client-toolkit/ios#onagentlisteningchanged)
-- [`onAgentThinkingChanged`](../../api-reference/conversational-ai/client-toolkit/ios#onagentthinkingchanged)
-- [`onAgentSpeakingChanged`](../../api-reference/conversational-ai/client-toolkit/ios#onagentspeakingchanged)
-- [`onAgentInterrupted`](../../api-reference/conversational-ai/client-toolkit/ios#onagentinterrupted)
-- [`onAgentMetrics`](../../api-reference/conversational-ai/client-toolkit/ios#onagentmetrics)
-- [`onAgentError`](../../api-reference/conversational-ai/client-toolkit/ios#onagenterror)
+- [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#addhandler)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#unsubscribemessage)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#destroy)
+- [`onAgentStateChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentstatechanged)
+- [`onAgentListeningChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentlisteningchanged)
+- [`onAgentThinkingChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentthinkingchanged)
+- [`onAgentSpeakingChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentspeakingchanged)
+- [`onAgentInterrupted`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentinterrupted)
+- [`onAgentMetrics`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentmetrics)
+- [`onAgentError`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagenterror)
 
 </CodeBlockTab>
 
 <CodeBlockTab value="web">
 
-- [`IConversationalAIAPIEventHandler`](../../api-reference/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
-- [`EConversationalAIAPIEvents`](../../api-reference/conversational-ai/client-toolkit/web#econversationalaiapievents)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#unsubscribe)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/web#destroy)
+- [`IConversationalAIAPIEventHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
+- [`EConversationalAIAPIEvents`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#econversationalaiapievents)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#unsubscribe)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#destroy)
 
 </CodeBlockTab>
 </CodeBlockTabs>
