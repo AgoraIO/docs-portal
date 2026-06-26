@@ -42,10 +42,10 @@ This section shows you how to set up your Android project and install the Agora 
 
 1. Create a [new project](https://developer.android.com/studio/projects/create-project).
 
-   1. Open Android Studio and select **File > New > New Project...**.
-   1. Select **Phone and Tablet** > **Empty Activity** and click **Next**.
-   1. Set the project name and storage path.
-   1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
+    1. Open Android Studio and select **File > New > New Project...**.
+    1. Select **Phone and Tablet** > **Empty Activity** and click **Next**.
+    1. Set the project name and storage path.
+    1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
 
 :::note
 After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
@@ -57,11 +57,11 @@ After you create a project, Android Studio automatically starts gradle sync. Ens
 
 1. Add a new activity to your project.
 
-   1. Open your project in Android Studio.
-   1. Right-click on the `app/src/main/java/<your.package.name>` folder.
-   1. Select **New → Activity → Empty Activity**.
-   1. Enter an activity name and click **Finish**.
-      This guide uses `MainActivity` as the activity name in the sample code. Replace it with your activity name where required.
+    1. Open your project in Android Studio.
+    1. Right-click on the `app/src/main/java/<your.package.name>` folder.
+    1. Select **New → Activity → Empty Activity**.
+    1. Enter an activity name and click **Finish**.
+        This guide uses `MainActivity` as the activity name in the sample code. Replace it with your activity name where required.
 
 2. Add a layout file for your activity.
 
@@ -160,9 +160,13 @@ This section guides you through the implementation of basic real-time audio inte
 
 The following figure illustrates the essential steps:
 
-**Quick start sequence**
+<Accordions>
+  <Accordion title="Quick start sequence">
 
-![image](/images/video-sdk/quickstart-voice-call-sequence.svg)
+    ![image](/images/video-sdk/quickstart-voice-call-sequence.svg)
+
+  </Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps and use the code in your `MainActivity` file.
 
@@ -961,7 +965,13 @@ To start a Voice Calling session, implement the following steps in your app:
 
 - **Send and receive audio**: All users can publish streams to the channel and subscribe to audio streams published by other users in the channel.
 
-![Video calling workflow](/images/voice-sdk/get-started-sdk-voice.svg)
+<Accordions>
+  <Accordion title="Voice Calling workflow">
+
+    ![Voice Calling workflow](/images/voice-sdk/get-started-sdk-voice.svg)
+
+  </Accordion>
+</Accordions>
 
 ## Prerequisites
 
@@ -978,14 +988,21 @@ To start a Voice Calling session, implement the following steps in your app:
 
 This section shows you how to set up your iOS project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new">
+
 Follow these steps to create a project in Xcode:
 
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application** select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
 
-:::note
-  If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
-:::
+    :::note
+    If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+    :::
 
 2. [Set up automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your projects.
 
@@ -993,7 +1010,10 @@ Follow these steps to create a project in Xcode:
 
 4. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.
 
-**Add to an existing project**
+</TabsContent>
+
+<TabsContent value="existing">
+
 Follow these steps to add Voice Calling to your Xcode project:
 
 1. Open your project in Xcode.
@@ -1001,49 +1021,65 @@ Follow these steps to add Voice Calling to your Xcode project:
 2. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
 
 3. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.
-:::
+
+</TabsContent>
+</Tabs>
 ### Install the SDK
 
 Use one of the following methods to install Voice SDK.
 
-**Swift Package Manager**
-1. In Xcode, go to **File** > **Add Package Dependencies**.
-1. In the search bar, past the following URL:
+<Tabs>
+<TabsList>
+  <TabsTrigger value="spm">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="manual">Manual integration</TabsTrigger>
+</TabsList>
 
-  ```
-  {`https://github.com/AgoraIO/AgoraRtcEngine_iOS.git`}
-  ```
+<TabsContent value="spm">
+
+1. In Xcode, go to **File** > **Add Package Dependencies**.
+1. In the search bar, paste the following URL:
+
+    ```
+    https://github.com/AgoraIO/AgoraRtcEngine_iOS.git
+    ```
 
 1. Click **Add Package**, select the latest version, and click **Next**.
 1. For basic Voice Calling, select **RtcBasic**.
 
-  If needed, also select:
-  - **`SpatialAudio`** for spatial audio effects.
-  - **`VirtualBackground`** for virtual background.
+    If needed, also select:
+    - **`SpatialAudio`** for spatial audio effects.
+    - **`VirtualBackground`** for virtual background.
 1. Under **Add to Target**, select your project and click **Add Package**.
 
-  For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
+    For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
-**CocoaPods**
+</TabsContent>
+
+<TabsContent value="cocoapods">
+
 1. Go to the project root directory in the terminal and run the `pod init` command. A text file named `Podfile` is generated in the project folder.
 
 1. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
 
-  ```ruby
-  platform :ios, '9.0'
-    target 'Your App' do
-     # For x.y.z fill in the specific SDK version number, such as 4.4.0.
-     pod 'AgoraAudio_iOS', 'x.y.z'
-    end
-  ```
+    ```ruby
+    platform :ios, '9.0'
+      target 'Your App' do
+       # For x.y.z fill in the specific SDK version number, such as 4.4.0.
+       pod 'AgoraAudio_iOS', 'x.y.z'
+      end
+    ```
 
-  Obtain the latest version number from the [release notes](reference/release-notes.mdx).
+    Obtain the latest version number from the [release notes](reference/release-notes.mdx).
 
 1. Run the `pod install` command in the terminal to install the Voice SDK. After successful installation, the terminal shows **Pod installation complete!**.
 
 1. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file through Xcode for subsequent operations.
 
-**Manual integration**
+</TabsContent>
+
+<TabsContent value="manual">
+
 1. Download the latest version of the SDK from [SDKs download](../../../sdks.md) and extract the contents.
 
 1. Copy the files in the `libs` folder of the SDK package to your project directory.
@@ -1051,18 +1087,28 @@ Use one of the following methods to install Voice SDK.
 1. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
 :::note
-  Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
+Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
 :::
+
 :::note
 The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
 :::
+
+</TabsContent>
+</Tabs>
 ## Implement Voice Calling
 
 This section guides you through the implementation of basic real-time audio interaction in your app.
 
 The following figure illustrates the essential steps:
 
-![image](/images/video-sdk/quickstart-voice-call-sequence.svg)
+<Accordions>
+  <Accordion title="Quick start sequence">
+
+    ![Voice Calling call sequence](/images/video-sdk/quickstart-voice-call-sequence.svg)
+
+  </Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -1490,7 +1536,13 @@ To start a Voice Calling session, implement the following steps in your app:
 
 - **Send and receive audio**: All users can publish streams to the channel and subscribe to audio streams published by other users in the channel.
 
-![Video calling workflow](/images/voice-sdk/get-started-sdk-voice.svg)
+<Accordions>
+  <Accordion title="Voice Calling workflow">
+
+    ![Voice Calling workflow](/images/voice-sdk/get-started-sdk-voice.svg)
+
+  </Accordion>
+</Accordions>
 
 ## Prerequisites
 
@@ -1501,20 +1553,27 @@ To start a Voice Calling session, implement the following steps in your app:
 
 - A microphone
 
-- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.md) for details.
+- A valid Agora account and project. Please refer to [Agora account management](manage-agora-account.mdx) for details.
 
 ## Set up your project
 
 This section shows you how to set up your macOS project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new">
+
 Follow these steps to create a project in Xcode:
 
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application** select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
 
-:::note
-  If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
-:::
+    :::note
+    If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+    :::
 
 2. [Set up automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your projects.
 
@@ -1522,7 +1581,10 @@ Follow these steps to create a project in Xcode:
 
 4. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.
 
-**Add to an existing project**
+</TabsContent>
+
+<TabsContent value="existing">
+
 Follow these steps to add Voice Calling to your Xcode project:
 
 1. Open your project in Xcode.
@@ -1530,49 +1592,65 @@ Follow these steps to add Voice Calling to your Xcode project:
 2. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
 
 3. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.
-:::
+
+</TabsContent>
+</Tabs>
 ### Install the SDK
 
 Use one of the following methods to install Voice SDK.
 
-**Swift Package Manager**
-1. In Xcode, go to **File** > **Add Package Dependencies**.
-1. In the search bar, past the following URL:
+<Tabs>
+<TabsList>
+  <TabsTrigger value="spm">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="manual">Manual integration</TabsTrigger>
+</TabsList>
 
-  ```
-  {`https://github.com/AgoraIO/AgoraRtcEngine_macOS.git`}
-  ```
+<TabsContent value="spm">
+
+1. In Xcode, go to **File** > **Add Package Dependencies**.
+1. In the search bar, paste the following URL:
+
+    ```
+    https://github.com/AgoraIO/AgoraRtcEngine_macOS.git
+    ```
 
 1. Click **Add Package**, select the latest version, and click **Next**.
 1. For basic Voice Calling, select **RtcBasic**.
 
-  If needed, also select:
-  - **`SpatialAudio`** for spatial audio effects.
-  - **`VirtualBackground`** for virtual background.
+    If needed, also select:
+    - **`SpatialAudio`** for spatial audio effects.
+    - **`VirtualBackground`** for virtual background.
 1. Under **Add to Target**, select your project and click **Add Package**.
 
-  For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
+    For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
-**CocoaPods**
+</TabsContent>
+
+<TabsContent value="cocoapods">
+
 1. Go to the project root directory in the terminal and run the `pod init` command. A text file named `Podfile` is generated in the project folder.
 
 1. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
 
-  ```ruby
-  platform :macos, '10.11'
-    target 'Your App' do
-     # For x.y.z fill in the specific SDK version number, such as 4.4.0.
-     pod 'AgoraRtcEngine_macOS', 'x.y.z'
-    end
-  ```
+    ```ruby
+    platform :macos, '10.11'
+      target 'Your App' do
+       # For x.y.z fill in the specific SDK version number, such as 4.4.0.
+       pod 'AgoraRtcEngine_macOS', 'x.y.z'
+      end
+    ```
 
-  Obtain the latest version number from the [release notes](reference/release-notes.mdx).
+    Obtain the latest version number from the [release notes](reference/release-notes.mdx).
 
 1. Run the `pod install` command in the terminal to install the Voice SDK. After successful installation, the terminal shows **Pod installation complete!**.
 
 1. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file through Xcode for subsequent operations.
 
-**Manual integration**
+</TabsContent>
+
+<TabsContent value="manual">
+
 1. Download the latest version of the SDK from [SDKs download](../../../sdks.md) and extract the contents.
 
 1. Copy the files in the `libs` folder of the SDK package to your project directory.
@@ -1580,18 +1658,28 @@ Use one of the following methods to install Voice SDK.
 1. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
 :::note
-  Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
+Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
 :::
+
 :::note
 The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
 :::
+
+</TabsContent>
+</Tabs>
 ## Implement Voice Calling
 
 This section guides you through the implementation of basic real-time audio interaction in your app.
 
 The following figure illustrates the essential steps:
 
-![image](/images/video-sdk/quickstart-voice-call-sequence.svg)
+<Accordions>
+  <Accordion title="Quick start sequence">
+
+    ![Voice Calling call sequence](/images/video-sdk/quickstart-voice-call-sequence.svg)
+
+  </Accordion>
+</Accordions>
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -1605,7 +1693,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](manage-agora-account.md) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](manage-agora-account.mdx) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
 
 ```swift
 var agoraKit: AgoraRtcEngineKit!
@@ -1623,7 +1711,7 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
 
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.md) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.md).
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](build/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](manage-agora-account.mdx).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback.
 
