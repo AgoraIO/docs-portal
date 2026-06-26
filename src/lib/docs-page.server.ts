@@ -1454,7 +1454,7 @@ function buildAiProductSidebar(
   const serverSdkTypescriptPage = {
     id: serverSdkTypescriptUrl,
     linked: true,
-    title: isZhCn ? 'Server SDK TypeScript' : 'Server SDK TypeScript',
+    title: isZhCn ? 'Server SDK API' : 'Server SDK API',
     type: 'page',
     url: serverSdkTypescriptUrl,
   } satisfies DocsSidebarPageNode;

@@ -1,0 +1,1890 @@
+---
+title: "Manage media and devices"
+description: "Implement key workflow steps required to develop a fully functional video calling app"
+---
+
+This page shows you how to configure volume settings for audio recording, audio playback, and for the playback of music files.
+
+## Understand the tech
+
+Agora Video SDK supports adjusting the audio volume for both recording and playback to meet practical application use-cases. For example, during a two-person call, you can mute a remote user by adjusting the playback volume setting to 0.
+
+<PlatformStructured platform="android">
+The figure below shows the workflow of adjusting the volume.
+**Volume adjust workflow**
+
+![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+
+**Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
+
+**In-ear monitoring** refers to the process of playing audio captured by a device.
+
+**Recording** refers to the process in which audio signals are captured by a recording device and then sent to the transmitter.
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+### Mute and unmute users
+
+To mute or unmute the local audio stream, call `muteLocalAudioStream`:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Stop publishing the local audio stream
+mRtcEngine.muteLocalAudioStream(true);
+
+// Resume publishing the local audio stream
+mRtcEngine.muteLocalAudioStream(false);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Stop publishing the local audio stream
+mRtcEngine.muteLocalAudioStream(true)
+
+// Resume publishing the local audio stream
+mRtcEngine.muteLocalAudioStream(false)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Stop subscribing to the audio stream of the remote user
+mRtcEngine.muteRemoteAudioStream(remoteUid, true);
+
+// Resume subscribing to the audio stream of the remote user
+mRtcEngine.muteRemoteAudioStream(remoteUid, false);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Stop subscribing to the audio stream of the remote user
+mRtcEngine.muteRemoteAudioStream(remoteUid, true)
+
+// Resume subscribing to the audio stream of the remote user
+mRtcEngine.muteRemoteAudioStream(remoteUid, false)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+:::note
+To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
+:::
+### Adjust the playback volume
+Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+int volume = 50;
+int uid = 123456;
+// Set the local playback volume for all remote users 
+mRtcEngine.adjustPlaybackSignalVolume(volume);
+// Set the local playback volume for a specific remote user. For example, a user with uid=123
+mRtcEngine.adjustUserPlaybackSignalVolume(uid, volume);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+val volume = 50
+val uid = 123456
+
+// Set the local playback volume for all remote users
+mRtcEngine.adjustPlaybackSignalVolume(volume)
+
+// Set the local playback volume for a specific remote user (e.g., user with uid=123)
+mRtcEngine.adjustUserPlaybackSignalVolume(uid, volume)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Adjust the in-ear monitoring volume
+During the process of audio capture, mixing, and playback, Agora enables you to adjust the in-ear monitoring volume. Enable and set the volume using `enableInEarMonitoring` and `setInEarMonitoringVolume`.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Enable in-ear monitoring
+mRtcEngine.enableInEarMonitoring(true);
+int volume = 50;
+// Adjust in-ear monitoring volume
+mRtcEngine.setInEarMonitoringVolume(volume);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Enable in-ear monitoring
+mRtcEngine.enableInEarMonitoring(true)
+
+val volume = 50
+// Adjust in-ear monitoring volume
+mRtcEngine.setInEarMonitoringVolume(volume)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Adjust the recording volume
+Call `adjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+ChannelMediaOptions options = new ChannelMediaOptions();
+options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+mRtcEngine.joinChannel(token, channelName, 1234, options);
+// Adjust the recording signal volume to 50
+int vol = 50;
+mRtcEngine.adjustRecordingSignalVolume(vol);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Create ChannelMediaOptions and set client role
+val options = ChannelMediaOptions().apply {
+  clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+}
+
+// Join channel
+mRtcEngine.joinChannel(token, channelName, 1234, options)
+
+// Adjust the recording signal volume to 50
+val vol = 50
+mRtcEngine.adjustRecordingSignalVolume(vol)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
+
+* The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
+* A volume of `0` means mute, and a volume of `255` represents the maximum volume of the device.
+* If the SDK detects that the recording volume is too low in the current environment, it automatically increases the volume of the recording device.
+* The volume of the recording device directly influences the global volume of the device.
+* If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
+
+### Get volume information of users
+
+Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() 
+{
+   // ...
+   // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
+   // their respective volumes, and determine whether the local user is speaking.
+   @Override
+   public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume) {
+   }
+};
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+private val mRtcEventHandler = object : IRtcEngineEventHandler() {
+  // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
+  // their respective volumes, and determine whether the local user is speaking.
+  override fun onAudioVolumeIndication(speakers: Array<AudioVolumeInfo>?, totalVolume: Int) {
+    // Your implementation here
+  }
+}
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+:::note
+Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
+:::
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Enable the onAudioVolumeIndication callback
+ mRtcEngine.enableAudioVolumeIndication(1000, 3, true);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Enable the onAudioVolumeIndication callback
+mRtcEngine.enableAudioVolumeIndication(1000, 3, true)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`adjustRecordingSignalVolume`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`enableInEarMonitoring` [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_enableinearmonitoring2)
+- [`setInEarMonitoringVolume`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setinearmonitoringvolume)
+- [`onAudioVolumeIndication`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication)
+- [`muteLocalAudioStream`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_mutelocalaudiostream)
+- [`muteRemoteAudioStream`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_muteremoteaudiostream)
+
+### Sample projects
+
+Agora offers the following open-source sample project for adjusting recording, playback, and in-ear monitoring volumes for your reference.
+
+* GitHub: [JoinChannelAudio](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java)
+
+### Frequently asked questions​
+
+* [How can I solve the problem of low volume?](https://docs-md.agora.io/en/help/quality-issues/audio_low)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+The figure below shows the workflow of adjusting the volume.
+**Volume adjust workflow**
+
+![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+
+**Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
+
+**In-ear monitoring** refers to the process of playing audio captured by a device.
+
+**Recording** refers to the process in which audio signals are captured by a recording device and then sent to the transmitter.
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+### Mute and unmute users 
+
+* To mute or unmute the local audio stream, call `muteLocalAudioStream`:
+
+  <CodeBlockTabs defaultValue="objective-c">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="objective-c">
+  ```objc
+  [agoraKit muteLocalAudioStream:YES];
+  ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="swift">
+  ```swift
+  // Stop publishing the local audio stream
+  agoraKit.muteLocalAudioStream(true)
+  
+  // Resume publishing the local audio stream
+  agoraKit.muteLocalAudioStream(false)
+  ```
+  </CodeBlockTab>
+  </CodeBlockTabs>
+* To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
+
+  <CodeBlockTabs defaultValue="objective-c">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="objective-c">
+  ```objc
+  [agoraKit muteRemoteAudioStream:remoteUid mute:YES];
+  ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="swift">
+  ```swift
+  // Stop subscribing to the audio stream of the remote user
+  agoraKit.muteRemoteAudioStream(remoteUid, mute: true)
+  
+  // Resume subscribing to the audio stream of the remote user
+  agoraKit.muteRemoteAudioStream(remoteUid, mute: false)
+  ```
+  </CodeBlockTab>
+  </CodeBlockTabs>
+:::note
+To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
+:::
+### Adjust the playback volume
+
+Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
+
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
+```objc
+// Set the volume of all remote users played locally
+[agoraKit adjustPlaybackSignalVolume: 50];
+// Set the local playback volume for a specific remote user.
+[agoraKit adjustUserPlaybackSignalVolume: uid, volume: 50];
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="swift">
+```swift
+// Set the volume of all remote users played locally
+agoraKit.adjustPlaybackSignalVolume(50)
+// Set the local playback volume for a specific remote user
+agoraKit.adjustUserPlaybackSignalVolume(uid, volume: 50)
+```
+</CodeBlockTab>
+</CodeBlockTabs>
+### Adjust the in-ear monitoring volume
+
+During the process of audio capture, mixing, and playback, Agora enables you to adjust the volume of in-ear monitoring. Enable and set the in-ear monitoring through `enableInEarMonitoring` and `setInEarMonitoringVolume`.
+
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
+```objc
+// Enable in-ear monitoring
+[agoraKit enableInEarMonitoring:true];
+// Adjust in-ear monitoring volume
+[agoraKit setInEarMonitoringVolume:50];
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="swift">
+```swift
+// Enable in-ear monitoring
+agoraKit.enableInEarMonitoring(true)
+// Adjust in-ear monitoring volume
+agoraKit.setInEarMonitoringVolume(50)
+```
+</CodeBlockTab>
+</CodeBlockTabs>
+### Adjust the recording volume
+
+Call `adjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
+
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
+```objc
+// Adjust the recording signal volume
+[agoraKit adjustRecordingSignalVolume: 50];
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="swift">
+```swift
+// Adjust the recording signal volume
+agoraKit.adjustRecordingSignalVolume(50)
+```
+</CodeBlockTab>
+</CodeBlockTabs>
+When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
+
+* The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
+* A volume of `0` means mute, and a volume of `255` represents the maximum volume of the device.
+* If the SDK detects that the recording volume is too low in the current environment, it automatically increases the volume of the recording device.
+* The volume of the recording device directly influences the global volume of the device.
+* If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
+
+### Get volume information of users
+
+Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use `reportAudioVolumeIndicationOfSpeakers` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+:::note
+Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
+:::
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
+```objc
+// Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
+// their respective volumes, and determine whether the local user is speaking.
+- (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine 
+reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo *> *_Nonnull)speakers 
+           totalVolume:(NSInteger)totalVolume {
+}
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="swift">
+```swift
+// Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
+// their respective volumes, and determine whether the local user is speaking.
+func rtcEngine(
+_ engine: AgoraRtcEngineKit, 
+reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo], 
+totalVolume: Int
+) {
+}
+
+// Enable the reportAudioVolumeIndicationOfSpeakers callback
+agoraKit.enableAudioVolumeIndication(200, smooth: 3, reportVad: true)
+```
+</CodeBlockTab>
+</CodeBlockTabs>
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`adjustRecordingSignalVolume`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/adjustrecordingsignalvolume(_:))
+- [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/adjustplaybacksignalvolume(_:))
+- [`adjustUserPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/adjustuserplaybacksignalvolumeex(_:volume:connection:))
+- [`adjustAudioMixingPlayoutVolume`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/adjustaudiomixingplayoutvolume(_:))
+- [`enableInEarMonitoring`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enable(inearmonitoring:includeaudiofilters:))
+- [`setInEarMonitoringVolume`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setinearmonitoringvolume(_:))
+- [`enableaudiovolumeindication`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableaudiovolumeindication(_:smooth:reportvad:))
+- [`muteLocalAudioStream`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraspatialaudiokitbase/mutelocalaudiostream(_:))
+- [`muteRemoteAudioStream`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/muteremoteaudiostream(_:mute:))
+
+### Sample projects
+
+Agora offers the following open-source sample project for adjusting recording, playback, and in-ear monitoring volumes for your reference:
+
+* GitHub: [JoinChannelAudio](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio)
+
+For adjusting the playback volume of mixing or audio effect files, refer to the following sample project:
+
+* GitHub: [AudioMixing](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/AudioMixing)
+
+### Frequently asked questions​
+
+* [How can I solve the problem of low volume?](https://docs-md.agora.io/en/help/quality-issues/audio_low)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+The figure below shows the workflow of adjusting the volume.
+**Volume adjust workflow**
+
+![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+
+**Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
+
+**Recording** refers to the process in which audio signals are captured by a recording device and then sent to the transmitter.
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+### Mute and unmute users 
+
+* To mute or unmute the local audio stream, call `muteLocalAudioStream`:
+
+  <CodeBlockTabs defaultValue="objective-c">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="objective-c">
+  ```objc
+  [agoraKit muteLocalAudioStream:YES];
+  ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="swift">
+  ```swift
+  // Stop publishing the local audio stream
+  agoraKit.muteLocalAudioStream(true)
+  
+  // Resume publishing the local audio stream
+  agoraKit.muteLocalAudioStream(false)
+  ```
+  </CodeBlockTab>
+  </CodeBlockTabs>
+* To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
+
+  <CodeBlockTabs defaultValue="objective-c">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="objective-c">
+  ```objc
+  [agoraKit muteRemoteAudioStream:remoteUid mute:YES];
+  ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="swift">
+  ```swift
+  // Stop subscribing to the audio stream of the remote user
+  agoraKit.muteRemoteAudioStream(remoteUid, mute: true)
+  
+  // Resume subscribing to the audio stream of the remote user
+  agoraKit.muteRemoteAudioStream(remoteUid, mute: false)
+  ```
+  </CodeBlockTab>
+  </CodeBlockTabs>
+:::note
+To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
+:::
+### Adjust the playback volume
+
+Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
+
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
+```objc
+// Set the volume of all remote users played locally
+[agoraKit adjustPlaybackSignalVolume: 50];
+// Set the local playback volume for a specific remote user.
+[agoraKit adjustUserPlaybackSignalVolume: uid, volume: 50];
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="swift">
+```swift
+// Set the volume of all remote users played locally
+agoraKit.adjustPlaybackSignalVolume(50)
+// Set the local playback volume for a specific remote user
+agoraKit.adjustUserPlaybackSignalVolume(uid, volume: 50)
+```
+</CodeBlockTab>
+</CodeBlockTabs>
+### Adjust the in-ear monitoring volume
+
+During the process of audio capture, mixing, and playback, Agora enables you to adjust the volume of in-ear monitoring. Enable and set the in-ear monitoring through `enableInEarMonitoring` and `setInEarMonitoringVolume`.
+
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
+```objc
+// Enable in-ear monitoring
+[agoraKit enableInEarMonitoring:true];
+// Adjust in-ear monitoring volume
+[agoraKit setInEarMonitoringVolume:50];
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="swift">
+```swift
+// Enable in-ear monitoring
+agoraKit.enableInEarMonitoring(true)
+// Adjust in-ear monitoring volume
+agoraKit.setInEarMonitoringVolume(50)
+```
+</CodeBlockTab>
+</CodeBlockTabs>
+### Adjust the recording volume
+
+Call `adjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
+
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
+```objc
+// Adjust the recording signal volume
+[agoraKit adjustRecordingSignalVolume: 50];
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="swift">
+```swift
+// Adjust the recording signal volume
+agoraKit.adjustRecordingSignalVolume(50)
+```
+</CodeBlockTab>
+</CodeBlockTabs>
+When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
+
+* The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
+* A volume of `0` means mute, and a volume of `255` represents the maximum volume of the device.
+* If the SDK detects that the recording volume is too low in the current environment, it automatically increases the volume of the recording device.
+* The volume of the recording device directly influences the global volume of the device.
+* If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
+
+### Get volume information of users
+
+Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use `reportAudioVolumeIndicationOfSpeakers` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+:::note
+Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
+:::
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
+```objc
+// Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
+// their respective volumes, and determine whether the local user is speaking.
+- (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine 
+reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo *> *_Nonnull)speakers 
+           totalVolume:(NSInteger)totalVolume {
+}
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="swift">
+```swift
+// Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
+// their respective volumes, and determine whether the local user is speaking.
+func rtcEngine(
+_ engine: AgoraRtcEngineKit, 
+reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo], 
+totalVolume: Int
+) {
+}
+
+// Enable the reportAudioVolumeIndicationOfSpeakers callback
+agoraKit.enableAudioVolumeIndication(200, smooth: 3, reportVad: true)
+```
+</CodeBlockTab>
+</CodeBlockTabs>
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`setdevicevolume`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setdevicevolume(_:volume:))
+- [`adjustRecordingSignalVolume`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/adjustrecordingsignalvolume(_:))
+- [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/adjustplaybacksignalvolume(_:))
+- [`adjustUserPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/adjustuserplaybacksignalvolumeex(_:volume:connection:))
+- [`adjustAudioMixingPlayoutVolume`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/adjustaudiomixingplayoutvolume(_:))
+- [`enableaudiovolumeindication`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/enableaudiovolumeindication(_:smooth:reportvad:))
+- [`muteLocalAudioStream`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoraspatialaudiokitbase/mutelocalaudiostream(_:))
+- [`muteRemoteAudioStream`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/muteremoteaudiostream(_:mute:))
+
+### Sample projects
+
+Agora offers the following open-source sample project for adjusting recording, playback, and in-ear monitoring volumes for your reference:
+
+* GitHub: [JoinChannelAudio](https://github.com/AgoraIO/API-Examples/blob/main/macOS/APIExample/Examples/Basic/JoinChannelAudio/JoinChannelAudio.swift)
+
+For adjusting the playback volume of mixing or audio effect files, refer to the following sample project:
+
+* GitHub: [AudioMixing](https://github.com/AgoraIO/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/AudioMixing)
+
+### Frequently asked questions​
+
+* [How can I solve the problem of low volume?](https://docs-md.agora.io/en/help/quality-issues/audio_low)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+The Agora SDK provides a `setVolume` method for both local and remote audio track objects to adjust the volume of local audio capture and remote audio playback.
+
+### Mute the local audio stream
+
+To mute or unmute the local audio track, call `setMuted` or `setEnabled`:
+
+ ```js
+ // Mute the local audio stream
+ localAudioTrack.setMuted(true);
+
+ // Unmute the local audio stream
+ localAudioTrack.setMuted(false);
+ ```
+
+### Adjust the playback volume of remote audio
+
+In this example, `remoteUser` refers to a subscribed remote user object.
+
+```javascript
+// Reduce the volume by half
+remoteUser.audioTrack.setVolume(50);
+// Use the original volume
+remoteUser.audioTrack.setVolume(100);
+// To mute remote users without unsubscribing, set the remote volume to 0
+remoteUser.audioTrack.setVolume(0);
+```
+
+### Adjust the capture volume of local audio
+
+In this example, `localAudioTrack` is the local audio track object you created.
+
+```javascript
+AgoraRTC.createMicrophoneAudioTrack().then(localAudioTrack => {
+ // Reduce microphone volume by half
+ localAudioTrack.setVolume(50);
+ // Double the microphone volume
+ localAudioTrack.setVolume(200);
+ // Set the microphone volume to 0
+ localAudioTrack.setVolume(0);
+});
+```
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`ILocalAudioTrack.setVolume`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalaudiotrack.html#setvolume)
+- [`IRemoteAudioTrack.setVolume`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iremoteaudiotrack.html#setvolume)
+- [`ILocalAudioTrack.setMuted`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalaudiotrack.html#setmuted)
+- [`ILocalAudioTrack.setEnabled`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalaudiotrack.html#setenabled)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+The figure below shows the workflow of adjusting the volume.
+**Volume adjust workflow**
+
+![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+
+**Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
+
+**Recording** refers to the process in which audio signals are captured by a recording device and then sent to the transmitter.
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+### Mute and unmute users 
+
+To mute or unmute the local audio stream, call `muteLocalAudioStream`:
+
+  ```cpp
+  // Stop publishing the local audio stream
+  m_rtcEngine->muteLocalAudioStream(true);
+
+  // Resume publishing the local audio stream
+  m_rtcEngine->muteLocalAudioStream(false);
+  ```
+
+To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
+
+  ```cpp
+  // Stop subscribing to the audio stream of the remote user
+  m_rtcEngine->muteRemoteAudioStream(remoteUid, true);
+
+  // Resume subscribing to the audio stream of the remote user
+  m_rtcEngine->muteRemoteAudioStream(remoteUid, false);
+  ```
+:::note
+To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
+:::
+### Adjust the playback volume
+Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
+
+```cpp
+int volume = 50;
+int uid = 123456;
+// Set the local playback volume for all remote users 
+m_rtcEngine->adjustPlaybackSignalVolume(volume);
+// Set the local playback volume for a specific remote user. For example, user 123456
+m_rtcEngine->adjustUserPlaybackSignalVolume(uid, volume)
+```
+
+### Adjust the recording volume
+Call `adjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
+
+```cpp
+// Adjust the recording signal volume to 50
+int vol = 50;
+m_rtcEngine->adjustRecordingSignalVolume(vol);
+```
+
+When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
+
+* The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
+* A volume of `0` means mute, and a volume of `255` represents the maximum volume of the device.
+* If the SDK detects that the recording volume is too low in the current environment, it automatically increases the volume of the recording device.
+* The volume of the recording device directly influences the global volume of the device.
+* If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
+
+### Get volume information of users
+
+Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+
+```cpp
+// Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
+// their respective volumes, and determine whether the local user is speaking.
+void CAudioVolumeEventHandler::onAudioVolumeIndication(const AudioVolumeInfo* speakers, unsigned int speakerNumber, int totalVolume){
+}
+
+// Enable the onAudioVolumeIndication callback
+m_rtcEngine->enableAudioVolumeIndication(1000, 0, true);
+```
+:::note
+Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
+:::
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`adjustRecordingSignalVolume`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`onAudioVolumeIndication`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication)
+- [`muteLocalAudioStream`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_mutelocalaudiostream)
+- [`muteRemoteAudioStream`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_muteremoteaudiostream)
+
+### Sample projects
+
+Agora offers the following open-source sample project for adjusting recording, playback, and in-ear monitoring volumes for your reference:
+
+* GitHub: [AudioVolume](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioVolume)
+
+For adjusting the playback volume of mixing or audio effect files, refer to the following sample project:
+
+* GitHub: [AudioMixing](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioMixing) or [AudioEffect](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioEffect)
+
+### Frequently asked questions​
+
+* [How can I solve the problem of low volume?](https://docs-md.agora.io/en/help/quality-issues/audio_low)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+The figure below shows the workflow of adjusting the volume.
+**Volume adjust workflow**
+
+![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+
+**Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
+
+**Recording** refers to the process in which audio signals are captured by a recording device and then sent to the transmitter.
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+### Mute and unmute users
+
+To mute or unmute the local audio stream, call `muteLocalAudioStream`:
+
+  ```typescript
+  // Stop publishing the local audio stream
+  engine.muteLocalAudioStream(true);
+
+  // Resume publishing the local audio stream
+  engine.muteLocalAudioStream(true);
+  ```
+
+To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
+
+  ```typescript
+  // Stop subscribing to the audio stream of the remote user
+  engine.muteRemoteAudioStream(remoteUid, true);
+
+  // Resume subscribing to the audio stream of the remote user
+  engine.muteRemoteAudioStream(remoteUid, false);
+  ```
+:::note
+To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
+:::
+### Adjust the playback volume
+Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
+
+```typescript
+// Set the local playback volume to 50 for all remote users 
+engine.adjustPlaybackSignalVolume(50);
+// Set the local playback volume for a specific remote user. For example, user with uid 12
+engine.adjustUserPlaybackSignalVolume(12, 50);
+```
+### Adjust the recording volume
+Call `adjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
+
+```typescript
+// Adjust the recording signal volume to 50
+engine.adjustRecordingSignalVolume(50);
+```
+
+When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
+
+* The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
+* A volume of `0` means mute, and a volume of `255` represents the maximum volume of the device.
+* If the SDK detects that the recording volume is too low in the current environment, it automatically increases the volume of the recording device.
+* The volume of the recording device directly influences the global volume of the device.
+* If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
+
+### Get volume information of users
+
+Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+:::note
+Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
+:::
+```typescript
+// Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
+// their respective volumes, and determine whether the local user is speaking.
+onAudioVolumeIndication?(
+  connection: RtcConnection,
+  speakers: AudioVolumeInfo[],
+  speakerNumber: number,
+  totalVolume: number
+ ): void;
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`adjustRecordingSignalVolume`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`onAudioVolumeIndication`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication)
+- [`muteLocalAudioStream`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_mutelocalaudiostream)
+- [`muteRemoteAudioStream`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_muteremoteaudiostream)
+
+### Sample projects
+
+Agora offers the following open-source sample project for adjusting recording, playback, and in-ear monitoring volumes for your reference:
+
+* GitHub: [JoinChannelAudio](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx)
+
+For adjusting the playback volume of mixing or audio effect files, refer to the following sample project:
+
+* GitHub: [AudioMixing](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/AudioMixing/AudioMixing.tsx)
+
+### Frequently asked questions​
+
+* [How can I solve the problem of low volume?](https://docs-md.agora.io/en/help/quality-issues/audio_low)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+The figure below shows the workflow of adjusting the volume.
+**Volume adjust workflow**
+
+![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+
+**Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
+
+**Recording** refers to the process in which audio signals are captured by a recording device and then sent to the transmitter.
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+### Mute and unmute users
+
+To mute or unmute the local audio stream, call `muteLocalAudioStream`:
+
+  ```dart
+  // Stop publishing the local audio stream
+  _rtcEngine.muteLocalAudioStream(true);
+
+  // Resume publishing the local audio stream
+  _rtcEngine.muteLocalAudioStream(false);
+  ```
+
+To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
+
+  ```dart
+  // Stop subscribing to the audio stream of the remote user
+  _rtcEngine.muteRemoteAudioStream(remoteUid, true);
+
+  // Resume subscribing to the audio stream of the remote user
+  _rtcEngine.muteRemoteAudioStream(remoteUid, false);
+  ```
+:::note
+To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
+:::
+### Adjust the playback volume
+Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
+
+```dart
+const int volume = 50;
+// Set the local playback volume to 50 for all remote users 
+await _rtcEngine.adjustPlaybackSignalVolume(volume);
+// Set the local playback volume for a specific remote user. For example, user with uid 1000
+await _rtcEngine.adjustUserPlaybackSignalVolume(uid: 1000, volume: volume);
+```
+
+### Adjust the recording volume
+Call `adjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
+
+```dart
+// Adjust the recording signal volume to 50
+int vol = 50;
+await _rtcEngine.adjustRecordingSignalVolume(vol);
+```
+
+When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
+
+* The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
+* A volume of `0` means mute, and a volume of `255` represents the maximum volume of the device.
+* If the SDK detects that the recording volume is too low in the current environment, it automatically increases the volume of the recording device.
+* The volume of the recording device directly influences the global volume of the device.
+* If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
+  
+### Get volume information of users
+
+Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+:::note
+Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
+:::
+```dart
+// Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
+// their respective volumes, and determine whether the local user is speaking.
+_rtcEngine.registerEventHandler(RtcEngineEventHandler(
+ onAudioVolumeIndication: (RtcConnection connection,
+   List<AudioVolumeInfo> speakers, int speakerNumber, int totalVolume) {
+  logSink.log(
+   '[onAudioVolumeIndication] speakers: ${speakers.toString()}, speakerNumber: $speakerNumber, totalVolume: $totalVolume');
+  }
+));
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`adjustRecordingSignalVolume`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`onAudioVolumeIndication`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication)
+- [`muteLocalAudioStream`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_mutelocalaudiostream)
+- [`muteRemoteAudioStream`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_muteremoteaudiostream)
+
+### Sample projects
+
+Agora offers the following open-source sample project for adjusting recording, playback, and in-ear monitoring volumes for your reference:
+
+* GitHub: [join_channel_audio.dart](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/lib/examples/basic/join_channel_audio/join_channel_audio.dart)
+
+For adjusting the playback volume of mixing or audio effect files, refer to the following sample project:
+
+* GitHub: [audio_mixing.dart](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/lib/examples/advanced/audio_mixing/audio_mixing.dart)
+
+### Frequently asked questions​
+
+* [How can I solve the problem of low volume?](https://docs-md.agora.io/en/help/quality-issues/audio_low)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+The figure below shows the workflow of adjusting the volume.
+**Volume adjust workflow**
+
+![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+
+**Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
+
+**Recording** refers to the process in which audio signals are captured by a recording device and then sent to the transmitter.
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+### Mute and unmute users 
+
+To mute or unmute the local audio stream, call `muteLocalAudioStream`:
+
+  ```typescript
+  // Stop publishing the local audio stream
+  engine.muteLocalAudioStream(true);
+
+  // Resume publishing the local audio stream
+  engine.muteLocalAudioStream(false);
+  ```
+
+To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
+
+  ```typescript
+  // Stop subscribing to the audio stream of the remote user
+  engine.muteRemoteAudioStream(remoteUid, true);
+
+  // Resume subscribing to the audio stream of the remote user
+  engine.muteRemoteAudioStream(remoteUid, false);
+  ```
+:::note
+To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
+:::
+### Adjust the playback volume
+Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
+
+```typescript
+// Set the local playback volume to 50 for all remote users 
+engine.adjustPlaybackSignalVolume(50);
+// Set the local playback volume for a specific remote user. For example, user with uid 12
+engine.adjustUserPlaybackSignalVolume(12, 50);
+```
+
+### Adjust the recording volume
+
+Call `adjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
+
+```typescript
+// Adjust the recording signal volume to 50
+engine.adjustRecordingSignalVolume(50);
+```
+
+When configuring audio settings, it's essential to understand the default behavior and options available. Here are the key points to keep in mind:
+
+* The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
+* A volume of `0` means mute, and a volume of `255` represents the maximum volume of the device.
+* If the SDK detects that the recording volume is too low in the current environment, it automatically increases the volume of the recording device.
+* The volume of the recording device directly influences the global volume of the device.
+* If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
+
+### Get volume information of users
+
+Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+:::note
+Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
+:::
+```typescript
+// Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
+// their respective volumes, and determine whether the local user is speaking.
+onAudioVolumeIndication?(
+  connection: RtcConnection,
+  speakers: AudioVolumeInfo[],
+  speakerNumber: number,
+  totalVolume: number
+ ): void;
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`adjustRecordingSignalVolume`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`onAudioVolumeIndication`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication)
+- [`muteLocalAudioStream`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_mutelocalaudiostream)
+- [`muteRemoteAudioStream`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_muteremoteaudiostream)
+
+### Sample projects
+
+Agora offers the following open-source sample project for adjusting recording, playback, and in-ear monitoring volumes for your reference:
+
+* GitHub: [JoinChannelAudio](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx)
+
+For adjusting the playback volume of mixing or audio effect files, refer to the following sample project:
+
+* GitHub: [AudioMixing](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/AudioMixing/AudioMixing.tsx)
+
+### Frequently asked questions​
+
+* [How can I solve the problem of low volume?](https://docs-md.agora.io/en/help/quality-issues/audio_low)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="react-js">
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+### Adjust the capture volume of remote audio
+
+To set the volume, mute, or unmute a remote user, call `setVolume` on the remote audio track:
+
+```typescript
+// Mute remote audio
+const muteRemoteAudio = (audioTrack: IRemoteAudioTrack | null) => {
+ if (!audioTrack) return;
+ audioTrack.setVolume(0);
+};
+
+// Unmute remote audio
+const unmuteRemoteAudio = (audioTrack: IRemoteAudioTrack | null) => {
+ if (!audioTrack) return;
+ audioTrack.setVolume(100); // Set to a reasonable volume level
+};
+```
+
+### Adjust the capture volume of local audio
+
+To set the capture volume, mute, or unmute the local user, call `setVolume` on the local audio track:
+
+```typescript
+// Mute local audio
+const muteLocalAudio = (audioTrack: IMicrophoneAudioTrack | null) => {
+ if (!audioTrack) return;
+ audioTrack.setVolume(0);
+};
+
+// Unmute local audio
+const unmuteLocalAudio = (audioTrack: IMicrophoneAudioTrack | null) => {
+ if (!audioTrack) return;
+ audioTrack.setVolume(100); // Set the volume to a reasonable volume level
+};
+
+```
+
+The following example demonstrates how to mute and unmute local and remote users using `useLocalMicrophoneTrack` and `useRemoteUsers`.
+```typescript
+const { localMicrophoneTrack } = useLocalMicrophoneTrack(micOn);
+const remoteUsers = useRemoteUsers();
+
+return (
+  <>
+    <div>
+      <button
+        onClick={() => muteLocalAudio(localMicrophoneTrack)}
+      >
+        Mute local user
+      </button>
+      <button
+        onClick={() => unmuteLocalAudio(localMicrophoneTrack)}
+      >
+        Unmute local user
+      </button>
+      <button
+        onClick={() => muteRemoteAudio(remoteUsers[0].audioTrack || null)}
+      >
+        Mute remote user
+      </button>
+      <button
+        onClick={() => unmuteRemoteAudio(remoteUsers[0].audioTrack || null)}
+      >
+        Unmute remote user
+      </button>
+    </div>
+  </>
+);
+```
+
+### Get volume information of users
+
+The Video SDK provides the ability to monitor the volume level of users using the `useVolumeLevel` hook. To get the audio volume level, pass the respective audio track (local or remote) to the hook:
+
+```typescript
+// Component to track and display the local user's audio volume level
+const AudioVolumeTracker = ({ audioTrack }: { audioTrack?: IMicrophoneAudioTrack }) => {
+ const volumeLevel = useVolumeLevel(audioTrack);
+
+ return (
+  <div>
+   <label>Current Volume Level: {volumeLevel}</label>
+  </div>
+ );
+};
+
+// Component to track and display the remote user's audio volume level
+const RemoteAudioVolumeTracker = ({ audioTrack }: { audioTrack?: IRemoteAudioTrack }) => {
+ const volumeLevel = useVolumeLevel(audioTrack);
+
+ return (
+  <div>
+   <label>Remote User's Volume Level: {volumeLevel}</label>
+  </div>
+ );
+};
+```
+
+How to use:
+
+```typescript
+const { localMicrophoneTrack } = useLocalMicrophoneTrack();
+
+// Display the volume level of the local user
+<AudioVolumeTracker audioTrack={localMicrophoneTrack} />;
+
+const remoteUsers = useRemoteUsers();
+
+// Display the volume level of the first remote user
+<RemoteAudioVolumeTracker audioTrack={remoteUsers[0]?.audioTrack} />;
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`IMicrophoneAudioTrack`](https://api-ref.agora.io/en/video-sdk/reactjs/2.x/interfaces/IMicrophoneAudioTrack.html)
+- [`IRemoteAudioTrack`](https://api-ref.agora.io/en/video-sdk/reactjs/2.x/interfaces/IRemoteAudioTrack.html)
+- [`setVolume`](https://api-ref.agora.io/en/video-sdk/reactjs/2.x/interfaces/IMicrophoneAudioTrack.html#setVolume.setVolume-1)
+- [`useVolumeLevel`](https://api-ref.agora.io/en/video-sdk/reactjs/2.x/functions/useVolumeLevel.html)
+
+### Sample projects
+
+Agora offers the following open-source sample project for monitoring audio volume for your reference.
+
+* GitHub: [useVolumeLevel](https://github.com/AgoraIO-Extensions/agora-rtc-react/blob/main/packages/agora-rtc-react/test/hook/useVolumeLevel.test.ts)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+The figure below shows the workflow of adjusting the volume.
+**Volume adjust workflow**
+
+![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+
+**Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
+
+**Recording** refers to the process in which audio signals are captured by a recording device and then sent to the transmitter.
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+### Mute and unmute users
+
+To mute or unmute the local audio stream, call `MuteLocalAudioStream`:
+
+```csharp
+// Stop publishing the local audio stream
+RtcEngine.MuteLocalAudioStream(true);
+
+// Resume publishing the local audio stream
+RtcEngine.MuteLocalAudioStream(false);
+``` 
+
+To mute or unmute a remote user, call `MuteRemoteAudioStream` with the `uid` of the remote user:
+
+```csharp
+// Stop subscribing to the audio stream of the remote user
+RtcEngine.MuteRemoteAudioStream(remoteUid, true);
+
+// Resume subscribing to the audio stream of the remote user
+RtcEngine.MuteRemoteAudioStream(remoteUid, false);
+```
+:::note
+To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
+:::
+### Adjust the playback volume
+Call `AdjustPlaybackSignalVolume` or `AdjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
+
+```csharp
+// Set the volume for all remote users' playback locally to 50
+RtcEngine.AdjustPlaybackSignalVolume(50);
+
+// Set the playback volume for the remote user with the uid of 12 locally to 50
+RtcEngine.AdjustUserPlaybackSignalVolume(12, 50);
+```
+
+### Adjust the recording volume
+Call `AdjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
+
+```csharp
+// Adjust the recording signal volume to 50
+RtcEngine.AdjustRecordingSignalVolume(50);
+```
+
+When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
+
+* The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
+* A volume of `0` means mute, and a volume of `255` represents the maximum volume of the device.
+* If the SDK detects that the recording volume is too low in the current environment, it automatically increases the volume of the recording device.
+* The volume of the recording device directly influences the global volume of the device.
+* If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
+
+### Get volume information of users
+Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `OnAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+:::note
+Call `EnableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
+:::
+```csharp
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+UserEventHandler handler = new UserEventHandler(this);
+RtcEngineContext context = new RtcEngineContext(
+  _appID, 
+  0,
+  CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
+  AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT
+);
+RtcEngine.Initialize(context);
+
+// Set up listener callback
+RtcEngine.InitEventHandler(handler);
+
+// Enable volume indication
+RtcEngine.EnableAudioVolumeIndication(1, 1, true);
+
+class UserEventHandler : IRtcEngineEventHandler
+{
+  // This callback is triggered at the interval set in EnableAudioVolumeIndication and reports the three users with the highest instant volume in the channel
+  public override void OnAudioVolumeIndication(
+    RtcConnection connection, 
+    AudioVolumeInfo[] speakers, 
+    uint speakerNumber, 
+    int totalVolume
+  ) { }
+}
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`AdjustRecordingSignalVolume`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_adjustrecordingsignalvolume)
+- [`AdjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_adjustplaybacksignalvolume)
+- [`AdjustUserPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`AdjustAudioMixingPlayoutVolume`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`OnAudioVolumeIndication`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication)
+- [`MuteLocalAudioStream`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_mutelocalaudiostream)
+- [`MuteRemoteAudioStream`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_muteremoteaudiostream)
+
+### Sample projects
+
+Agora offers the following open-source sample project for adjusting recording, playback, and in-ear monitoring volumes for your reference:
+
+* GitHub: [AudioMixing](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/AudioMixing)
+
+### Frequently asked questions​
+
+* [How can I solve the problem of low volume?](https://docs-md.agora.io/en/help/quality-issues/audio_low)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+The figure below shows the workflow of adjusting the volume.
+**Volume adjust workflow**
+
+![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+
+**Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
+
+**Recording** refers to the process in which audio signals are captured by a recording device and then sent to the transmitter.
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+### Mute and unmute users
+
+To mute or unmute the local audio stream, call `muteLocalAudioStream`:
+
+  ```cpp
+  // Stop publishing the local audio stream
+  m_rtcEngine->muteLocalAudioStream(true);
+
+  // Resume publishing the local audio stream
+  m_rtcEngine->muteLocalAudioStream(false);
+  ```
+  
+To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
+
+  ```cpp
+  // Stop subscribing to the audio stream of the remote user
+  m_rtcEngine->muteRemoteAudioStream(remoteUid, true);
+
+  // Resume subscribing to the audio stream of the remote user
+  m_rtcEngine->muteRemoteAudioStream(remoteUid, false);
+  ```
+:::note
+To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
+:::
+### Adjust the playback volume
+Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
+
+```cpp
+int volume = 50;
+int uid = 123456;
+// Set the local playback volume for all remote users 
+m_rtcEngine->adjustPlaybackSignalVolume(volume);
+// Set the local playback volume for a specific remote user. For example, user 123456
+m_rtcEngine->adjustUserPlaybackSignalVolume(uid, volume)
+```
+
+### Adjust the recording volume
+Call `adjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
+
+```cpp
+// Adjust the recording signal volume to 50
+int vol = 50;
+m_rtcEngine->adjustRecordingSignalVolume(vol);
+```
+
+When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
+
+* The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
+* A volume of `0` means mute, and a volume of `255` represents the maximum volume of the device.
+* If the SDK detects that the recording volume is too low in the current environment, it automatically increases the volume of the recording device.
+* The volume of the recording device directly influences the global volume of the device.
+* If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
+
+### Get volume information of users
+
+Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+
+```cpp
+// Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
+// their respective volumes, and determine whether the local user is speaking.
+void CAudioVolumeEventHandler::onAudioVolumeIndication(const AudioVolumeInfo* speakers, unsigned int speakerNumber, int totalVolume){
+}
+
+// Enable the onAudioVolumeIndication callback
+m_rtcEngine->enableAudioVolumeIndication(1000, 0, true);
+```
+:::note
+Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
+:::
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`adjustRecordingSignalVolume`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`onAudioVolumeIndication`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication)
+- [`muteLocalAudioStream`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_mutelocalaudiostream)
+- [`muteRemoteAudioStream`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_muteremoteaudiostream)
+
+### Sample project
+
+Agora provides an open source sample project for your reference. Download or view the [SDK API-Example](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example) source code for a more detailed example.
+
+### Frequently asked questions​
+
+* [How can I solve the problem of low volume?](https://docs-md.agora.io/en/help/quality-issues/audio_low)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="blueprint">
+The figure below shows the workflow of adjusting the volume.
+**Volume adjust workflow**
+
+![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+
+**Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
+
+**Recording** refers to the process in which audio signals are captured by a recording device and then sent to the transmitter.
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+### Adjust playback volume
+
+This section shows you how to adjust the audio playback signal volume using `AdjustPlaybackSignalVolume`.
+
+1. Create UMG
+
+  Create a **Slider** widget named **Slider_PlaybackSignalVolume** for users to drag the volume bar to adjust the playback volume. In this example, set the minimum value to `0` (mute) and the maximum value to `100` (original volume), as shown in the following figure:
+
+  ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-1.png)
+
+1. Bind UI Events
+
+  Create a **Bind Event to On Value Changed node** and connect it to the **Slider_PlaybackSignalVolume** widget and the **OnPlaybackSignalVolumeValChanged** callback. When users drag the volume bar to adjust the audio playback signal, the **OnPlaybackSignalVolumeValChanged** callback is triggered, as shown in the following figure:
+  
+  ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-2.png)
+
+1. Implement Callback Function
+
+  Create **OnPlaybackSignalVolumeValChanged** callback function with the following parameters:
+
+  | Input parameter | Data type | Parameter description |
+  | -------- | ------------- | ------------ |
+  | `value` | Float | Playback Volume |
+
+  When this callback is triggered, the specified playback volume is obtained and assigned to the Volume parameter of **Adjust Playback Signal Volume**. The **AdjustPlaybackSignalVolume** method is called to adjust the playback volume, as shown in the following figure:
+  
+  ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-3.png)
+
+### Adjust recording volume
+
+This section shows you how to adjust the audio recording signal volume using `AdjustRecordingSignalVolume`.
+
+1. Create UMG
+
+  Create a **Slider** widget named **Slider_RecordingSignalVolume** to enable users to adjust the recording volume. For this example, set the minimum value to `0` (mute) and the maximum value to `100` (original volume), as shown in the following figure:
+  
+  ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-4.png)
+
+1. Bind UI Events
+
+  Create a **Bind Event to On Value Changed node** and connect it to the **Slider_RecordingSignalVolume** widget and the **OnRecordingSignalVolumeValChanged** callback. When users drag the volume bar to adjust the audio recording signal, the **OnRecordingSignalVolumeValChanged** callback is triggered, as shown in the following figure:
+
+  ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-5.png)
+
+3. Implement UI Events
+
+  Create the **OnRecordingSignalVolumeValChanged** callback function with the following parameters:
+
+  | Input parameter | Data type | Parameter description |
+  | -------- | ------------- | ------------ |
+  | `value` | Float | Recording Volume |
+
+  When the callback is triggered, the specified recording volume is obtained and assigned to the Volume parameter of **Adjust Recording Signal Volume**. The **AdjustRecordingSignalVolume** method is called to adjust the recording volume, as shown in the following figure:
+  ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-6.png)
+
+  When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
+
+  * The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
+  * A volume of `0` means mute, and a volume of `255` represents the maximum volume of the device.
+  * If the SDK detects that the recording volume is too low in the current environment, it automatically increases the volume of the recording device.
+  * The volume of the recording device directly influences the global volume of the device.
+  * If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
+
+### Get volume information of users​
+
+Throughout the process of audio recording, mixing, and playback, you can obtain the user IDs and volumes of the three users with the highest instant volumes in the channel using the `FOnAudioVolumeIndication` callback. A returned `uid` of `0` represents the local user. You need to call the `EnableAudioVolumeIndication` method to activate the voice detection function to receive this callback.
+
+1. Create UMG
+
+  Create a **Button** widget named **Btn_EnableAudioIndication** for users to control whether to enable the volume indication. As shown in the following figure:
+
+  ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-7.png)
+
+1. Bind UI Events
+
+  Create a **Bind Event to On Clicked node** and connect it to the **Btn_EnableAudioIndication** widget and the **OnVolumeIndicationClick** callback. When users press the button to enable the volume indication, the **OnVolumeIndicationClick** callback is triggered, as shown in the following figure:
+
+  ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-8.png)
+
+1. Implement UI Events
+
+  Create the **OnVolumeIndicationClick** callback function. When this callback is triggered, the **Enable Audio Volume Indication** method is called to enable volume indication. In this example, set the volume indication **Interval** to 200 milliseconds, the smoothing factor **Smooth** to 3, and check **Report Vad** to activate the voice detection function, as shown in the following figure:
+  
+  ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-9.png)
+
+4. Add Callback Event
+
+  1. Create the **OnAudioVolumeIndication** callback function with the following parameters:
+  
+    | Input parameter | Data type | Parameter description |
+    | -------- | ------------- | ------------ |
+    | `speaker` | Float | Structure Volume information of users, see [FAudioVolumeInfo](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication) for details. |
+    | `totalVolume` | Integer | The total volume after mixing |
+
+  1. Enable listening to the **OnAudioVolumeIndication** callback, as shown in the following figure:
+  
+    ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-10.png)
+
+  1. When the **OnAudioVolumeIndication** callback is triggered, print the received user volume information, as shown in the following figure:
+  
+    ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-11.png)
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample projects
+
+Agora provides an open-source [Blueprint sample project](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) on GitHub for your reference. 
+To learn how to implement call volume adjustment, refer to [JoinChannelAudio](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic/JoinChannelAudio) in the sample project. 
+
+### Frequently asked questions​
+
+* [How can I solve the problem of low volume?](https://docs-md.agora.io/en/help/quality-issues/audio_low)
+
+### API reference
+
+- [`adjustRecordingSignalVolume`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`FOnAudioVolumeIndication`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+
+<PlatformStructured platform="python">
+The figure below shows the workflow of adjusting the volume.
+**Volume adjust workflow**
+
+![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+
+**Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
+
+**Recording** refers to the process in which audio signals are captured by a recording device and then sent to the transmitter.
+:::warning
+
+If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
+:::
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+
+## Implement volume control
+
+Use one or more of the following volume control methods to adjust volume settings.
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### See also
+
+- [Custom audio source](custom-audio)
+- [Custom video source](custom-video)
+</PlatformStructured>
+

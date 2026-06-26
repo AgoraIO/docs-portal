@@ -82,7 +82,7 @@ other products.
 
 ### Cloud proxy pricing
 
-Typically, about 5% to 10% of the audio and video traffic may require [Cloud proxy](../build/cloud-proxy.mdx). For Cloud proxy, automatic mode is free of charge. Agora offers Force UDP and Force TCP cloud proxy modes with tiered capacity.
+Typically, about 5% to 10% of the audio and video traffic may require [Cloud proxy](../build/manage-connection-and-quality/cloud-proxy.mdx). For Cloud proxy, automatic mode is free of charge. Agora offers Force UDP and Force TCP cloud proxy modes with tiered capacity.
 
 The minimum monthly base fee for each tier is:
 
@@ -116,7 +116,7 @@ Billing occurs at the end of each calendar month. For other tiers, contact [Agor
 
 ### AI Noise Suppression pricing
 
-[AI Noise Suppression](../build/ai-noise-suppression.mdx) helps reduce noise and voice distortion in virtual communication. Agora charges for voice sent to the channel by a host while AI Noise Suppression is enabled.
+[AI Noise Suppression](../build/enhance-the-audio-experience/ai-noise-suppression.mdx) helps reduce noise and voice distortion in virtual communication. Agora charges for voice sent to the channel by a host while AI Noise Suppression is enabled.
 
 AI Noise Suppression is free for up to 10,000 minutes each month. Additional usage is billed at the standard rate.
 
@@ -127,7 +127,7 @@ AI Noise Suppression is free for up to 10,000 minutes each month. Additional usa
 
 ### 3D Spatial Audio pricing
 
-[3D Spatial Audio](../build/spatial-audio.mdx) brings theater-like effects to virtual communication, making it seem as if the sound originates from all around the user.
+[3D Spatial Audio](../build/enhance-the-audio-experience/spatial-audio.mdx) brings theater-like effects to virtual communication, making it seem as if the sound originates from all around the user.
 
 The unit prices for this extension are as follows:
 

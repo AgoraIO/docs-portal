@@ -10,7 +10,7 @@ Enhance Agora's Video SDK with broadcast production capabilities such as recordi
 ## Start building with
 
 - [SDK quickstart](quickstart) - Customize your experience from the start with our flexible Video SDK.
-- [Authentication](build/use-tokens)
+- [Authentication](build/authenticate-users/use-tokens)
 - [API reference](../../api-reference/rtc/index)
 - [Samples](https://github.com/AgoraIO/API-Examples)
 
