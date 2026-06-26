@@ -2656,6 +2656,7 @@ Web body
       expect.arrayContaining([
         '/en/ai',
         '/en/ai/get-started/quickstart',
+        '/en/api-reference/api-ref/server-sdk/typescript',
         '/en/ai/reference/event-types',
         '/en/ai/reference/release-notes',
         '/en/ai/reference/pricing',
