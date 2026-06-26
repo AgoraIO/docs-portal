@@ -7,7 +7,7 @@ To receive message and event notifications when you subscribe to or join channel
 
 ## Prerequisites
 
-Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../../index.mdx) page.
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
     
 ## Implement event listeners
 

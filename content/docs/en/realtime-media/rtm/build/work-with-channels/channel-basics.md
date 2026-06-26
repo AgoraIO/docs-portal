@@ -31,7 +31,7 @@ When using stream channels, although a channel is essentially ready-to-use, you 
 
 ## Channel usage restrictions
 
-Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../../../reference/limitations.md).
+Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../../reference/limitations.md).
 
 ## Channel naming
 
@@ -58,4 +58,4 @@ The use of `.`, `*`, `/`, `\`, `\0` and non-printable ASCII characters in channe
 
 ### Naming convention
 
-Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../../../reference/channel-naming.md).
+Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../../reference/channel-naming.md).

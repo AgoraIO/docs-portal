@@ -9,7 +9,7 @@ Signaling provides message channels for implementing publish-subscribe (pub/sub)
 
 Pub/sub is the simplest form of messaging. Signaling creates a channel when a user subscribes to it. Your app listens for events which contain messages users publish to a channel.
 
-Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../../../reference/limitations.md).
+Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations.md).
 
 ### Communication models in message channels
 
@@ -25,7 +25,7 @@ Signaling SDK enables you to implement a variety of communication models using m
 
 ## Prerequisites
 
-Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../../index.mdx) page.
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
 
 ## Implement message channels
 
@@ -182,7 +182,7 @@ Signaling allows a single client to subscribe to up to 50 message channels simul
 
 ### Send a message
 
-To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends messages to one channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../../../reference/limitations.md) for details.
+To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends messages to one channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../../reference/limitations.md) for details.
 
 :::info
 The `publish` method can only be used with a message channel and a user channel; it does not apply to a stream channel.
@@ -294,7 +294,7 @@ Refer to the following sample code for sending messages:
     </CodeBlockTab>
     </CodeBlockTabs>
 :::info
-Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../../send-and-receive-messages/messaging/message-payload-structuring.md).
+Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring.md).
 
 :::
 
