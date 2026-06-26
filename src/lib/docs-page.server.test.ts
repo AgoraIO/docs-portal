@@ -250,6 +250,63 @@ const pageTree: Root = {
   name: 'Docs',
 };
 
+const platformGroupPageTree: Root = {
+  children: [
+    {
+      $id: 'en-root',
+      children: [
+        {
+          $id: 'ai-folder',
+          children: [
+            {
+              $id: 'ai-get-started-separator',
+              name: 'Get started',
+              type: 'separator',
+            },
+            {
+              $id: 'ai-platform-split-folder',
+              children: [
+                {
+                  $id: 'ai-platform-split-ios',
+                  name: 'iOS',
+                  type: 'page',
+                  url: '/en/ai/get-started/platform-split/ios',
+                },
+                {
+                  $id: 'ai-platform-split-android',
+                  name: 'Android',
+                  type: 'page',
+                  url: '/en/ai/get-started/platform-split/android',
+                },
+              ],
+              index: {
+                $id: 'ai-platform-split-index',
+                name: 'Split platform page',
+                type: 'page',
+                url: '/en/ai/get-started/platform-split',
+              },
+              name: 'Split platform page',
+              type: 'folder',
+            },
+          ],
+          index: {
+            $id: 'ai-index',
+            name: 'AI',
+            type: 'page',
+            url: '/en/ai',
+          },
+          name: 'AI',
+          root: true,
+          type: 'folder',
+        },
+      ],
+      name: 'English',
+      type: 'folder',
+    },
+  ],
+  name: 'Docs',
+};
+
 const apiReferencePageTree: Root = {
   children: [
     {
@@ -987,8 +1044,38 @@ function createZhOpenApiPage(): PageWithSource {
   } as unknown as PageWithSource;
 }
 
+function createPlatformGroupPage(): PageWithSource {
+  return {
+    ...createPage(),
+    data: {
+      ...createPage().data,
+      defaultPlatform: 'ios',
+      layout: 'platform-group',
+      platforms: ['ios', 'android'],
+      title: 'Split platform page',
+    },
+    path: 'en/ai/get-started/platform-split/index.mdx',
+    slugs: ['en', 'ai', 'get-started', 'platform-split'],
+    url: '/en/ai/get-started/platform-split',
+  } as unknown as PageWithSource;
+}
+
+function createPlatformPanelPage(platform: 'android' | 'ios'): PageWithSource {
+  return {
+    ...createPage(),
+    data: {
+      ...createPage().data,
+      title: platform === 'ios' ? 'iOS panel' : 'Android panel',
+    },
+    path: `en/ai/get-started/platform-split/${platform}.mdx`,
+    slugs: ['en', 'ai', 'get-started', 'platform-split', platform],
+    url: `/en/ai/get-started/platform-split/${platform}`,
+  } as unknown as PageWithSource;
+}
+
 describe('loadDocsTabIndex', () => {
   beforeEach(() => {
+    mockedGetPages.mockReturnValue([]);
     mockedGetPageTree.mockReturnValue(pageTree);
   });
 
@@ -1035,6 +1122,33 @@ describe('loadDocsSearchIndex', () => {
 
   it('returns an empty index for unsupported locales', async () => {
     await expect(loadDocsSearchIndex('fr')).resolves.toEqual([]);
+  });
+
+  it('excludes split-file platform panel pages from search entries', async () => {
+    const parentPage = createPlatformGroupPage();
+    const iosPage = createPlatformPanelPage('ios');
+    const androidPage = createPlatformPanelPage('android');
+
+    mockedGetPages.mockReturnValue([parentPage, iosPage, androidPage]);
+
+    await expect(loadDocsSearchIndex('en')).resolves.toEqual(
+      expect.arrayContaining([
+        {
+          description:
+            'Build a working mental model of Agora by understanding what it is.',
+          title: 'Split platform page',
+          url: '/en/ai/get-started/platform-split',
+        },
+      ]),
+    );
+    const pages = await loadDocsSearchIndex('en');
+
+    expect(pages.map((page) => page.url)).not.toContain(
+      '/en/ai/get-started/platform-split/ios',
+    );
+    expect(pages.map((page) => page.url)).not.toContain(
+      '/en/ai/get-started/platform-split/android',
+    );
   });
 });
 
@@ -1211,6 +1325,76 @@ Web body
           url: '#web-setup',
         },
       ],
+    });
+  });
+
+  it('builds split-file platform group body payloads and hides panel pages', async () => {
+    const parentPage = createPlatformGroupPage();
+    const iosPage = createPlatformPanelPage('ios');
+    const androidPage = createPlatformPanelPage('android');
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale === 'zh-CN') {
+        return undefined;
+      }
+
+      if (slugs.join('/') === 'ai/get-started/platform-split') {
+        return parentPage;
+      }
+
+      return undefined;
+    });
+    mockedGetPages.mockReturnValue([parentPage, iosPage, androidPage]);
+    mockedGetPageTree.mockReturnValue(platformGroupPageTree);
+
+    const payload = await loadDocsPagePayload('en', 'ai', [
+      'get-started',
+      'platform-split',
+    ]);
+
+    expect(payload).toMatchObject({
+      body: {
+        canonicalPlatform: 'ios',
+        contentPath: 'en/ai/get-started/platform-split/index.mdx',
+        kind: 'platform-group',
+        panels: [
+          {
+            contentPath: 'en/ai/get-started/platform-split/ios.mdx',
+            platform: 'ios',
+          },
+          {
+            contentPath: 'en/ai/get-started/platform-split/android.mdx',
+            platform: 'android',
+          },
+        ],
+        platformTabs: {
+          canonicalPlatform: 'ios',
+          platforms: '["ios","android"]',
+        },
+        platforms: ['ios', 'android'],
+      },
+      navigation: {
+        next: undefined,
+        previous: undefined,
+      },
+    });
+    expect(
+      flattenSidebarPageUrls(unwrapPayload(payload).sidebar),
+    ).not.toContain('/en/ai/get-started/platform-split/ios');
+  });
+
+  it('redirects split-file platform panel routes to the parent page', async () => {
+    const parentPage = createPlatformGroupPage();
+    const iosPage = createPlatformPanelPage('ios');
+
+    mockedGetPage.mockReturnValue(iosPage);
+    mockedGetPages.mockReturnValue([parentPage, iosPage]);
+    mockedGetPageTree.mockReturnValue(pageTree);
+
+    await expect(
+      loadDocsPagePayload('en', 'ai', ['get-started', 'platform-split', 'ios']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/get-started/platform-split',
     });
   });
 
@@ -3255,4 +3439,17 @@ function findSidebarPage(
   }
 
   return undefined;
+}
+
+function unwrapPayload(
+  payload: Awaited<ReturnType<typeof loadDocsPagePayload>>,
+): Exclude<
+  Awaited<ReturnType<typeof loadDocsPagePayload>>,
+  null | { redirectUrl: string }
+> {
+  if (!payload || 'redirectUrl' in payload) {
+    throw new Error('expected a docs page payload');
+  }
+
+  return payload;
 }
