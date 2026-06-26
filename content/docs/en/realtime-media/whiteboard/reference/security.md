@@ -15,9 +15,9 @@ Securing access to your services and resources starts with identity and access c
 
 Refer to the following guides for detailed information on Interactive Whiteboard tokens:
 
-- [Interactive Whiteboard Token Overview](../build/authentication-workflow.md): Describes the different types of whiteboard tokens and their uses, the various methods of generating a token, and token safety precautions.
-- [Generate Token Using an App Server](../build/generate-token-app-server.md): Introduces how to generate tokens at your app server using code samples.
-- [Generate Token Using REST API](../build/generate-token-rest.md): Describes the RESTful APIs for generating whiteboard tokens.
+- [Interactive Whiteboard Token Overview](../build/authenticate-users/authentication-workflow.md): Describes the different types of whiteboard tokens and their uses, the various methods of generating a token, and token safety precautions.
+- [Generate Token Using an App Server](../build/authenticate-users/generate-token-app-server.md): Introduces how to generate tokens at your app server using code samples.
+- [Generate Token Using REST API](../build/authenticate-users/generate-token-rest.md): Describes the RESTful APIs for generating whiteboard tokens.
 
 ## Data encryption and storage
 
@@ -29,7 +29,7 @@ Interactive Whiteboard also offers server-side file conversion and screenshottin
 
 Refer to the following articles for more information on file conversion and taking screenshots:
 
-- [Enable Interactive Whiteboard](../build/enable-whiteboard.md): The **Enable whiteboard server-side features** section describes how to configure the third-party storage space.
+- [Enable Interactive Whiteboard](../build/set-up-and-build-your-first-app/enable-whiteboard.md): The **Enable whiteboard server-side features** section describes how to configure the third-party storage space.
 - [File Conversion Overview](rest-api/file-conversion.md): The **Start file conversion** section describes the basic workflow for converting a file.
 
 ## Network geofencing

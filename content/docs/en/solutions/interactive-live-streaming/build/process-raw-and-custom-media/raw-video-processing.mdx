@@ -1,0 +1,893 @@
+---
+title: "Raw video processing"
+description: "Pre and post-process captured video and audio data to achieve the desired playback effect."
+---
+
+**Supported platforms:** Android, iOS, macOS, Windows, Unity, and Unreal Engine.
+
+In certain use-cases, it is necessary to process raw video captured through the camera to achieve desired functionality or enhance the user experience. Video SDK provides the capability to pre-process and post-process the captured video data, allowing you to implement custom playback effects.
+
+<PlatformStructured platform="android">
+## Understand the tech
+
+Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
+
+The following figure shows the video data processing flow in the SDK video module.
+
+**Process raw video**
+
+![image](/images/video-sdk/video-module-data-processing.svg)
+
+* Position (2) corresponds to the `onCaptureVideoFrame` callback.
+* Position (3) corresponds to the `onPreEncodeVideoFrame` callback.
+* Position (4) corresponds to the`onRenderVideoFrame` callback.
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement raw video processing
+
+To implement raw video data functionality in your project, refer to the following steps:
+
+1. Before joining the channel, create an `IVideoFrameObserver` object and register the video observer by calling the `registerVideoFrameObserver` method.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+  int ret = engine.registerVideoFrameObserver(iVideoFrameObserver);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+  val ret = engine.registerVideoFrameObserver(iVideoFrameObserver)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+1. Implement the `onCaptureVideoFrame` and `onRenderVideoFrame` callbacks. After obtaining the video data, process it according to your specific use-case.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+private final IVideoFrameObserver iVideoFrameObserver = new IVideoFrameObserver() {
+  @Override
+  public boolean onCaptureVideoFrame(VideoFrame videoFrame) {
+    Log.i(TAG, "OnEncodedVideoImageReceived" + \Thread.currentThread().getName());
+    if (isSnapshot) {
+      isSnapshot = false;
+      
+      // Get the image bitmap
+      VideoFrame.Buffer buffer = videoFrame.getBuffer();
+      VideoFrame.I420Buffer i420Buffer = buffer.toI420();
+      int width = i420Buffer.getWidth();
+      int height = i420Buffer.getHeight();
+      
+      ByteBuffer bufferY = i420Buffer.getDataY();
+      ByteBuffer bufferU = i420Buffer.getDataU();
+      ByteBuffer bufferV = i420Buffer.getDataV();
+      
+      byte[] i420 = YUVUtils.toWrappedI420(bufferY, bufferU, bufferV, width, height);
+      
+      Bitmap bitmap = YUVUtils.NV21ToBitmap(getContext(),
+        YUVUtils.I420ToNV21(i420, width, height),
+        width,
+        height);
+      
+      Matrix matrix = new Matrix();
+      matrix.setRotate(270);
+      // Rotate around the center
+      Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
+      // Save to file
+      saveBitmap2Gallery(newBitmap);
+      
+      bitmap.recycle();
+      i420Buffer.release();
+    }
+    return false;
+  }
+  
+  @Override
+  public boolean onScreenCaptureVideoFrame(VideoFrame videoFrame) {
+    return false;
+  }
+  
+  @Override
+  public boolean onMediaPlayerVideoFrame(VideoFrame videoFrame, int i) {
+    return false;
+  }
+  
+  @Override
+  public boolean onRenderVideoFrame(String s, int i, VideoFrame videoFrame) {
+    return false;
+  }
+  
+  @Override
+  public int getVideoFrameProcessMode() {
+    return 0;
+  }
+  
+  @Override
+  public int getVideoFormatPreference() {
+    return 1;
+  }
+  
+  @Override
+  public int getRotationApplied() {
+    return 0;
+  }
+  
+  @Override
+  public boolean getMirrorApplied() {
+    return false;
+  }
+};
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+private val iVideoFrameObserver = object : IVideoFrameObserver {
+  override fun onCaptureVideoFrame(videoFrame: VideoFrame): Boolean {
+    Log.i(TAG, "OnEncodedVideoImageReceived\${\Thread.currentThread().name\}")
+    if (isSnapshot) {
+      isSnapshot = false
+
+      // Get the image bitmap
+      val buffer = videoFrame.buffer
+      val i420Buffer = buffer.toI420()
+      val width = i420Buffer.width
+      val height = i420Buffer.height
+
+      val bufferY = i420Buffer.dataY
+      val bufferU = i420Buffer.dataU
+      val bufferV = i420Buffer.dataV
+
+      val i420 = YUVUtils.toWrappedI420(bufferY, bufferU, bufferV, width, height)
+
+      val bitmap = YUVUtils.NV21ToBitmap(
+        context = context,
+        nv21Data = YUVUtils.I420ToNV21(i420, width, height),
+        width = width,
+        height = height
+      )
+
+      val matrix = Matrix().apply { setRotate(270f) }
+      // Rotate around the center
+      val newBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false)
+
+      // Save to file
+      saveBitmap2Gallery(newBitmap)
+
+      bitmap.recycle()
+      i420Buffer.release()
+    }
+    return false
+  }
+
+  override fun onScreenCaptureVideoFrame(videoFrame: VideoFrame): Boolean {
+    return false
+  }
+
+  override fun onMediaPlayerVideoFrame(videoFrame: VideoFrame, i: Int): Boolean {
+    return false
+  }
+
+  override fun onRenderVideoFrame(s: String, i: Int, videoFrame: VideoFrame): Boolean {
+    return false
+  }
+
+  override fun getVideoFrameProcessMode(): Int {
+    return 0
+  }
+
+  override fun getVideoFormatPreference(): Int {
+    return 1
+  }
+
+  override fun getRotationApplied(): Int {
+    return 0
+  }
+
+  override fun getMirrorApplied(): Boolean {
+    return false
+  }
+}
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+  :::warning
+
+  When modifying parameters in a `VideoFrame`, ensure that the updated parameters match the actual video frame in the buffer. Mismatches may cause issues like unexpected rotation, distortion, or other visual problems in the local preview and the remote video.
+
+  :::
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open source sample project [ProcessRawData](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/ProcessRawData.java) on GitHub. Download it or view the source code for a more detailed example.
+
+### API reference
+
+- [`registerVideoFrameObserver`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_imediaengine_registervideoframeobserver)
+- [`registerVideoEncodedFrameObserver`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_imediaengine_registervideoencodedframeobserver)
+- [`onCaptureVideoFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_oncapturevideoframe)
+- [`onRenderVideoFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_onrendervideoframe)
+- [`getVideoFrameProcessMode`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_getvideoframeprocessmode)
+- [`onEncodedVideoFrameReceived`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ivideoencodedframeobserver.html#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+## Understand the tech
+
+Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
+
+The following figure shows the video data processing flow in the SDK video module.
+
+**Process raw video**
+
+![image](/images/video-sdk/video-module-data-processing.svg)
+
+* Position (2) corresponds to the `onCaptureVideoFrame` callback.
+* Position (3) corresponds to the `onPreEncodeVideoFrame` callback.
+* Position (4) corresponds to the`onRenderVideoFrame` callback.
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement raw video processing
+
+To implement raw video data functionality in your project, refer to the following steps:
+
+1. Before joining the channel, call `setVideoFrameDelegate` to register the video observer object.
+
+2. Implement the `onCaptureVideoFrame` and `onRenderVideoFrame` callbacks to handle the capture and rendering of video frames.
+
+  :::warning
+
+  When modifying parameters in a `videoFrame`, ensure that the updated parameters match the actual video frame in the buffer. Failure to do so may result in unexpected rotation or distortion in both the local preview and the remote video.
+
+  :::
+  ```swift
+  class RawVideoDataMain: BaseViewController {
+    var localVideo = Bundle.loadVideoView(type: .local, audioOnly: false)
+    var remoteVideo = Bundle.loadVideoView(type: .remote, audioOnly: false)
+
+    @IBOutlet weak var container: AGEVideoContainer!
+    // Define agoraKit variable
+    var agoraKit: AgoraRtcEngineKit!
+
+    // ...
+    // Initialize agoraKit and register the corresponding callbacks
+    agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+    // Call setVideoFrameDelegate to register the video observer object
+    agoraKit.setVideoFrameDelegate (self)
+
+    // ...
+
+    // Implement the AgoraVideoFrameDelegate protocol extension in the current class
+    extension RawVideoDataMain: AgoraVideoFrameDelegate {
+
+      // Implement the onCaptureVideoFrame callback
+      func onCaptureVideoFrame(_ videoFrame: AgoraOutputVideoFrame) -> Bool {
+        return true
+      }
+
+      // Implement the onScreenCaptureVideoFrame callback
+      func onScreenCaptureVideoFrame(_ videoFrame: AgoraOutputVideoFrame) -> Bool {
+        return true
+      }
+
+      // Implement the onRenderVideoFrame callback
+      func onRenderVideoFrame(_ videoFrame: AgoraOutputVideoFrame, uid: UInt, channelId: String) -> Bool {
+        return true
+      }
+    }
+  }
+  ```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open source sample project [RawVideoData](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/RawVideoData) on GitHub. Download it or view the source code for a more detailed example.
+
+### API reference
+
+- [`setVideoFrameDelegate(_:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setvideoframedelegate(_:))
+- [`onRenderVideoFrame(_:uid:channelId:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoravideoframedelegate/onrendervideoframe(_:uid:channelid:))
+- [`onCapture(_:sourceType:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoravideoframedelegate/oncapture(_:sourcetype:))
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+## Understand the tech
+
+Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
+
+The following figure shows the video data processing flow in the SDK video module.
+
+**Process raw video**
+
+![image](/images/video-sdk/video-module-data-processing.svg)
+
+* Position (2) corresponds to the `onCaptureVideoFrame` callback.
+* Position (3) corresponds to the `onPreEncodeVideoFrame` callback.
+* Position (4) corresponds to the`onRenderVideoFrame` callback.
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement raw video processing
+
+To implement raw video data functionality in your project, refer to the following steps:
+
+1. Before joining the channel, call `setVideoFrameDelegate` to register the video observer object.
+
+2. Implement the `onCaptureVideoFrame` and `onRenderVideoFrame` callbacks to handle the capture and rendering of video frames.
+
+  :::warning
+
+  When modifying parameters in a `videoFrame`, ensure that the updated parameters match the actual video frame in the buffer. Failure to do so may result in unexpected rotation or distortion in both the local preview and the remote video.
+
+  :::
+  ```swift
+  class RawVideoDataMain: BaseViewController {
+    var localVideo = Bundle.loadVideoView(type: .local, audioOnly: false)
+    var remoteVideo = Bundle.loadVideoView(type: .remote, audioOnly: false)
+
+    @IBOutlet weak var container: AGEVideoContainer!
+    // Define agoraKit variable
+    var agoraKit: AgoraRtcEngineKit!
+
+    // ...
+    // Initialize agoraKit and register the corresponding callbacks
+    agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+    // Call setVideoFrameDelegate to register the video observer object
+    agoraKit.setVideoFrameDelegate (self)
+
+    // ...
+
+    // Implement the AgoraVideoFrameDelegate protocol extension in the current class
+    extension RawVideoDataMain: AgoraVideoFrameDelegate {
+
+      // Implement the onCaptureVideoFrame callback
+      func onCaptureVideoFrame(_ videoFrame: AgoraOutputVideoFrame) -> Bool {
+        return true
+      }
+
+      // Implement the onScreenCaptureVideoFrame callback
+      func onScreenCaptureVideoFrame(_ videoFrame: AgoraOutputVideoFrame) -> Bool {
+        return true
+      }
+
+      // Implement the onRenderVideoFrame callback
+      func onRenderVideoFrame(_ videoFrame: AgoraOutputVideoFrame, uid: UInt, channelId: String) -> Bool {
+        return true
+      }
+    }
+  }
+  ```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open source sample project [RawVideoData](https://github.com/AgoraIO/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/RawVideoData) on GitHub. Download it or view the source code for a more detailed example.
+
+### API reference
+
+- [`setVideoFrameDelegate(_:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setvideoframedelegate(_:))
+- [`onRenderVideoFrame(_:uid:channelId:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoravideoframedelegate/onrendervideoframe(_:uid:channelid:))
+- [`onCapture(_:sourceType:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoravideoframedelegate/oncapture(_:sourcetype:))
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+## Understand the tech
+
+Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
+
+The following figure shows the video data processing flow in the SDK video module.
+
+**Process raw video**
+
+![image](/images/video-sdk/video-module-data-processing.svg)
+
+* Position (2) corresponds to the `onCaptureVideoFrame` callback.
+* Position (3) corresponds to the `onPreEncodeVideoFrame` callback.
+* Position (4) corresponds to the`onRenderVideoFrame` callback.
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement raw video processing
+
+To implement raw video data functionality in your project, refer to the following steps:
+
+1. Before joining the channel, create an instance of `IVideoFrameObserver` and call `registerVideoFrameObserver` to register the video observer.
+
+  :::warning
+
+  When modifying parameters in a `VideoFrame`, ensure that the updated parameters match the actual video frame in the buffer. Failure to do so may result in unexpected rotation or distortion in both the local preview and the remote video.
+
+  :::
+  ```cpp
+  // Register or unregister the video observer
+  BOOL CGrayVideoProcFrameObserver::RegisterVideoFrameObserver(
+    BOOL bEnable, IVideoFrameObserver *videoFrameObserver) {
+    
+    // Create an AutoPtr instance using IMediaEngine as a template for IMediaEngine
+    agora::util::AutoPtr<agora::media::IMediaEngine> mediaEngine;
+    // Use the queryInterface method through AutoPtr instance to get a pointer to IMediaEngine instance
+    // Access the IMediaEngine instance pointer through the arrow operator of AutoPtr instance
+    // Call registerVideoFrameObserver through IMediaEngine instance using AutoPtr instance
+    mediaEngine.queryInterface(m_rtcEngine, AGORA_IID_MEDIA_ENGINE);
+    int nRet = 0;
+    
+    agora::base::AParameter apm(*m_rtcEngine);
+    
+    if (mediaEngine.get() == NULL) return FALSE;
+    
+    if (bEnable) {
+      // Register the video frame observer
+      nRet = mediaEngine->registerVideoFrameObserver(videoFrameObserver);
+    } else {
+      // Unregister the video observer
+      nRet = mediaEngine->registerVideoFrameObserver(nullptr);
+    }
+    
+    return nRet == 0 ? TRUE : FALSE;
+  }
+  ```
+
+2. Obtain video data through the `onCaptureVideoFrame` and `onRenderVideoFrame` callbacks and process the video frames according to your requirements.
+
+  ```cpp
+  // Process locally captured raw video data from the camera, perform grayscale processing, and then send it back to the SDK
+  bool CGrayVideoProcFrameObserver::onCaptureVideoFrame(VideoFrame &videoFrame) {
+    // Calculate the size of the video frame
+    int nSize = videoFrame.height * videoFrame.width;
+    
+    // Apply grayscale processing to the U and V components of the video frame
+    memset(videoFrame.uBuffer, 128, nSize / 4);
+    memset(videoFrame.vBuffer, 128, nSize / 4);
+    
+    // Return true to indicate successful processing
+    return true;
+  }
+
+  // Process raw video data received from a remote user
+  bool CGrayVideoProcFrameObserver::onRenderVideoFrame(const char *channelId, 
+                            rtc::uid_t remoteUid, 
+                            VideoFrame &videoFrame) {
+    // Return true to indicate that the received video frame is processed successfully
+    return true;
+  }
+
+  // Apply an average filter to the locally captured raw video data
+  bool CAverageFilterVideoProcFrameObserver::onCaptureVideoFrame(
+    VideoFrame &videoFrame) {
+    // Static variables to control the step size and direction of the average filter
+    static int step = 1;
+    static bool flag = true;
+    
+    // Update the step size based on the flag
+    if (flag) {
+      step += 2;
+    } else {
+      step -= 2;
+    }
+    
+    // Adjust step size and direction based on certain conditions
+    if (step >= 151) {
+      flag = false;
+      step -= 4;
+    } else if (step <= 0) {
+      flag = true;
+      step += 4;
+    }
+    
+    // Apply average filtering to the Y, U, and V components of the video frame
+    AverageFiltering((unsigned char *)videoFrame.yBuffer, videoFrame.width, 
+            videoFrame.height, step);
+    AverageFiltering((unsigned char *)videoFrame.uBuffer, videoFrame.width / 2, 
+            videoFrame.height / 2, step);
+    AverageFiltering((unsigned char *)videoFrame.vBuffer, videoFrame.width / 2, 
+            videoFrame.height / 2, step);
+    
+    // Return true to indicate successful processing
+    return true;
+  }
+
+  // Process the locally captured raw video data from screen capture
+  bool CGrayVideoProcFrameObserver::onScreenCaptureVideoFrame(
+    VideoFrame &videoFrame) {
+    // Return true to indicate that the screen-captured video frame is processed successfully
+    return true;
+  }
+  ```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open source sample project [OriginalVideo](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/OriginalVideo) on GitHub. Download it or view the source code for a more detailed example.
+
+### API reference
+
+- [`registerVideoFrameObserver`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_imediaengine_registervideoframeobserver)
+- [`registerVideoEncodedFrameObserver`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_imediaengine_registervideoencodedframeobserver)
+- [`onCaptureVideoFrame`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_oncapturevideoframe)
+- [`onRenderVideoFrame`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_onrendervideoframe)
+- [`getVideoFrameProcessMode`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_getvideoframeprocessmode)
+- [`onEncodedVideoFrameReceived`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_ivideoencodedframeobserver.html#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+## Understand the tech
+
+Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
+
+The following figure shows the video data processing flow in the SDK video module.
+
+**Process raw video**
+
+![image](/images/video-sdk/video-module-data-processing.svg)
+
+* Position (2) corresponds to the `onCaptureVideoFrame` callback.
+* Position (3) corresponds to the `onPreEncodeVideoFrame` callback.
+* Position (4) corresponds to the`onRenderVideoFrame` callback.
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement raw video processing
+
+To implement raw video data functionality in your project, refer to the following steps:
+
+1. Before joining the channel, create an `IVideoFrameObserver` object and register the video observer by calling the `RegisterVideoFrameObserver` method. To apply pre-processed video data, set the `formatPreference` to `FRAME_TYPE_YUV420` and the `mode` to `INTPTR`.
+
+  ```csharp
+  // Register the video observer
+  RtcEngine.RegisterVideoFrameObserver(
+    new VideoFrameObserver(this),
+    VIDEO_OBSERVER_FRAME_TYPE.FRAME_TYPE_YUV420,
+    VIDEO_MODULE_POSITION.POSITION_POST_CAPTURER |
+    VIDEO_MODULE_POSITION.POSITION_PRE_RENDERER |
+    VIDEO_MODULE_POSITION.POSITION_PRE_ENCODER,
+    OBSERVER_MODE.INTPTR
+  );
+  ```
+
+1. After obtaining video data via the `OnCaptureVideoFrame` and `OnRenderVideoFrame` callbacks, process it according to your requirements.
+
+  ```csharp
+  class VideoFrr : IVideoFrameObserver {
+    // Get the original video data captured by the local camera
+    public override bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame videoFrame) {
+      ProcessVideoFrame(videoFrame);
+      return true;
+    }
+
+    // Get the video data sent by the remote user
+    public override bool OnRenderVideoFrame(string channelId, uint remoteUid, VideoFrame videoFrame) {
+      ProcessVideoFrame(videoFrame);
+      return true;
+    }
+
+    public void ProcessVideoFrame(VideoFrame videoFrame) {
+      int yBufferLength = videoFrame.yStride * videoFrame.height;
+      int uBufferLength = videoFrame.uStride * videoFrame.height / 2;
+      int vBufferLength = videoFrame.vStride * videoFrame.height / 2;
+
+      byte[] bytes = new byte[uBufferLength];
+      for (int i = 0; i < uBufferLength; i++) {
+        bytes[i] = 128;
+      }
+
+      System.Runtime.InteropServices.Marshal.Copy(bytes, 0, videoFrame.uBufferPtr, uBufferLength);
+      System.Runtime.InteropServices.Marshal.Copy(bytes, 0, videoFrame.vBufferPtr, vBufferLength);
+    }
+  }
+  ```
+
+  :::warning
+
+  When modifying parameters in `videoFrame`, ensure that the updated values are consistent with the actual video frames in the buffer. Mismatches may cause issues like unexpected rotation, distortion, or other visual problems in the local preview and the remote video.
+
+  :::
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open source sample project [ProcessRawData](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/blob/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/ProcessVideoRawData/ProcessVideoRawData.cs) on GitHub. Download it or view the source code for a more detailed example.
+
+### API reference
+
+- [`RegisterVideoFrameObserver`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_imediaengine_registervideoframeobserver)
+- [`RegisterVideoEncodedFrameObserver`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_imediaengine_registervideoencodedframeobserver)
+- [`OnCaptureVideoFrame`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_oncapturevideoframe)
+- [`OnRenderVideoFrame`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_onrendervideoframe)
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+## Understand the tech
+
+Video SDK enables you to pre-process the captured video frames before sending the data to the encoder or perform post-processing on the received video frames after sending the data to the decoder.
+
+The following figure shows the video data processing flow in the SDK video module.
+
+**Process raw video**
+
+![image](/images/video-sdk/video-module-data-processing.svg)
+
+* Position (2) corresponds to the `onCaptureVideoFrame` callback.
+* Position (3) corresponds to the `onPreEncodeVideoFrame` callback.
+* Position (4) corresponds to the`onRenderVideoFrame` callback.
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement raw video processing
+
+To implement raw video data functionality in your project, refer to the following steps:
+
+To implement raw video data functionality in your project, refer to the following steps:
+
+1. **Initialize MediaEngine and register video observer**
+
+  Before joining the channel, obtain the MediaEngine interface and create an instance of `IVideoFrameObserver`, then call `registerVideoFrameObserver` to register it:
+
+  ```cpp
+  void InitAgoraEngine(FString APP_ID, FString TOKEN, FString CHANNEL_NAME)
+  {
+    // Initialize RtcEngine context and event handler
+    agora::rtc::RtcEngineContext RtcEngineContext;
+    UserRtcEventHandlerEx = MakeShared<FUserRtcEventHandlerEx>(this);
+    std::string StdStrAppId = TCHAR_TO_UTF8(*APP_ID);
+    RtcEngineContext.appId = StdStrAppId.c_str();
+    RtcEngineContext.eventHandler = UserRtcEventHandlerEx.Get();
+    RtcEngineContext.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_LIVE_BROADCASTING;
+    
+    // Initialize the RtcEngine
+    int ret = AgoraUERtcEngine::Get()->initialize(RtcEngineContext);
+    
+    // Query for the MediaEngine interface
+    AgoraUERtcEngine::Get()->queryInterface(AGORA_IID_MEDIA_ENGINE, (void**)&MediaEngine);
+    
+    // Create and register video frame observer
+    UserVideoFrameObserver = MakeShared<FUserVideoFrameObserver>(this);
+    MediaEngine->registerVideoFrameObserver(UserVideoFrameObserver.Get());
+  }
+  ```
+
+2. **Join channel and configure video**
+
+  Enable audio and video, set the client role, and join the channel:
+
+  ```cpp
+  void OnBtnJoinChannelClicked()
+  {
+    AgoraUERtcEngine::Get()->enableAudio();
+    AgoraUERtcEngine::Get()->enableVideo();
+    AgoraUERtcEngine::Get()->setClientRole(CLIENT_ROLE_BROADCASTER);
+    int ret = AgoraUERtcEngine::Get()->joinChannel(TCHAR_TO_UTF8(*Token), TCHAR_TO_UTF8(*ChannelName), "", 0);
+    
+    // Set up UI for raw video rendering
+    MakeVideoViewForRawData();
+  }
+  ```
+
+3. **Implement video frame observer class**
+
+  Create a class that inherits from `IVideoFrameObserver` and implement the required callbacks to receive and process video frames:
+
+  ```cpp
+  class FUserVideoFrameObserver : public agora::media::IVideoFrameObserver
+  {
+  public:
+    FUserVideoFrameObserver(UProcessVideoRawDataWidget* InWidgetPtr) : WidgetPtr(InWidgetPtr) {}
+
+    bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, agora::media::base::VideoFrame& videoFrame) override
+    {
+      if (!IsWidgetValid())
+        return false;
+
+      // Process captured video frames
+      WidgetPtr->RenderRawData(videoFrame);
+      return true;
+    }
+
+    bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, agora::media::base::VideoFrame& videoFrame) override
+    {
+      return false;
+    }
+
+    bool onMediaPlayerVideoFrame(agora::media::base::VideoFrame& videoFrame, int mediaPlayerId) override
+    {
+      return false;
+    }
+
+    bool onRenderVideoFrame(const char* channelId, agora::rtc::uid_t remoteUid, agora::media::base::VideoFrame& videoFrame) override
+    {
+      // Process remote user video frames
+      return false;
+    }
+
+    bool onTranscodedVideoFrame(agora::media::base::VideoFrame& videoFrame) override
+    {
+      return false;
+    }
+
+    // Required methods to specify video processing mode and format preference
+    agora::media::IVideoFrameObserver::VIDEO_FRAME_PROCESS_MODE getVideoFrameProcessMode() override
+    {
+      return agora::media::IVideoFrameObserver::PROCESS_MODE_READ_ONLY;
+    }
+
+    agora::media::base::VIDEO_PIXEL_FORMAT getVideoFormatPreference() override
+    {
+      return agora::media::base::VIDEO_PIXEL_RGBA;
+    }
+
+  private:
+    UProcessVideoRawDataWidget* WidgetPtr;
+    
+    bool IsWidgetValid() const
+    {
+      return WidgetPtr && IsValid(WidgetPtr);
+    }
+  };
+  ```
+
+4. **Implement raw video data rendering**
+
+  Process the received video frames and render them using Unreal Engine's texture system:
+
+  ```cpp
+  void RenderRawData(agora::media::base::VideoFrame& videoFrame)
+  {
+    TWeakObjectPtr<UProcessVideoRawDataWidget> SelfWeakPtr(this);
+    if (!SelfWeakPtr.IsValid())
+      return;
+
+    int Width = videoFrame.width;
+    int Height = videoFrame.height;
+    uint8* rawdata = new uint8[Width * Height * 4];
+    memcpy(rawdata, videoFrame.yBuffer, Width * Height * 4);
+
+    AsyncTask(ENamedThreads::GameThread, [=, this]()
+    {
+      if (!SelfWeakPtr.IsValid())
+        return;
+
+      TWeakObjectPtr<UDraggableVideoViewWidget> VideoRenderViewWeakPtr(VideoRenderView);
+      if (!VideoRenderViewWeakPtr.IsValid())
+        return;
+
+      if (RenderTexture == nullptr || !RenderTexture->IsValidLowLevel() || 
+        RenderTexture->GetSizeX() != Width || RenderTexture->GetSizeY() != Height)
+      {
+        RenderTexture = UTexture2D::CreateTransient(Width, Height, PF_R8G8B8A8);
+      }
+
+      // Copy raw data to texture
+      uint8* raw = (uint8*)RenderTexture->GetPlatformData()->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
+      memcpy(raw, rawdata, Width * Height * 4);
+      delete[] rawdata;
+      RenderTexture->GetPlatformData()->Mips[0].BulkData.Unlock();
+      RenderTexture->UpdateResource();
+
+      // Update UI brush and size
+      RenderBrush.SetResourceObject(RenderTexture);
+      RenderBrush.SetImageSize(FVector2D(Width, Height));
+      VideoRenderViewWeakPtr->View->SetBrush(RenderBrush);
+
+      UCanvasPanelSlot* CanvasPanelSlot = UWidgetLayoutLibrary::SlotAsCanvasSlot(VideoRenderViewWeakPtr.Get());
+      CanvasPanelSlot->SetSize(FVector2D(Width, Height));
+    });
+  }
+  ```
+
+5. **Set up UI for raw video display**
+
+  Create and manage the UI widget for displaying the raw video data:
+
+  ```cpp
+  void MakeVideoViewForRawData()
+  {
+    ReleaseVideoViewForRawData();
+
+    UWorld* world = GEngine->GameViewport->GetWorld();
+    VideoRenderView = CreateWidget<UDraggableVideoViewWidget>(world, DraggableVideoViewTemplate);
+
+    FText ShowedText = FText::FromString(FString("RawDataRenderView"));
+    VideoRenderView->Text->SetText(ShowedText);
+
+    UPanelSlot* PanelSlot = CanvasPanel_VideoView->AddChild(VideoRenderView);
+    UCanvasPanelSlot* CanvasPanelSlot = UWidgetLayoutLibrary::SlotAsCanvasSlot(VideoRenderView);
+  }
+
+  void ReleaseVideoViewForRawData()
+  {
+    if (VideoRenderView != nullptr)
+    {
+      VideoRenderView->RemoveFromParent();
+      VideoRenderView = nullptr;
+    }
+  }
+  ```
+
+6. **Unregister the video frame observer**
+
+  Call `registerVideoFrameObserver` with `nullptr` to unregister the video frame observer before leaving the channel:
+
+  ```cpp
+  void UnInitAgoraEngine()
+  {
+    if (AgoraUERtcEngine::Get() != nullptr)
+    {
+      AgoraUERtcEngine::Get()->leaveChannel();
+      ReleaseVideoViewForRawData();
+
+      if (MediaEngine != nullptr)
+      {
+        // Unregister the video frame observer
+        MediaEngine->registerVideoFrameObserver(nullptr);
+      }
+
+      AgoraUERtcEngine::Get()->unregisterEventHandler(UserRtcEventHandlerEx.Get());
+      AgoraUERtcEngine::Release();
+    }
+  }
+  ```
+:::warning
+
+When modifying parameters in a `VideoFrame`, ensure that the updated parameters match the actual video frame in the buffer. Mismatches may cause issues like unexpected rotation, distortion, or other visual problems in the local preview and the remote video.
+:::
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Sample project
+
+Agora provides an open source sample project [ProcessVideoRawData](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example/Source/AgoraExample/Examples/Advanced/ProcessVideoRawData) on GitHub. Download it or view the source code for a more detailed example.
+
+### API reference
+
+- [`registerVideoFrameObserver`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_imediaplayer.html#api_imediaplayer_registervideoframeobserver)
+- [`registerVideoEncodedFrameObserver`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_imediaengine.html#api_imediaengine_registervideoencodedframeobserver)
+- [`onCaptureVideoFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_oncapturevideoframe)
+- [`onRenderVideoFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_onrendervideoframe)
+- [`getVideoFrameProcessMode`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_ivideoframeobserver.html#callback_ivideoframeobserver_getvideoframeprocessmode)
+- [`onEncodedVideoFrameReceived`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_ivideoencodedframeobserver.html#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
+</PlatformStructured>
+

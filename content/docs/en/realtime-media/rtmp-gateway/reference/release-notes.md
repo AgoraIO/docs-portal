@@ -11,11 +11,11 @@ This page provides the release notes for Media Gateway.
 
 - **Low-bitrate high-quality streaming**
 
-  Video transcoding now supports low-bitrate high-quality streaming through PVC and Super Resolution features. For configuration details, see [PVC and Super Quality configuration](../build/pvc-and-super-quality-configuration.md).
+  Video transcoding now supports low-bitrate high-quality streaming through PVC and Super Resolution features. For configuration details, see [PVC and Super Quality configuration](../build/optimize-quality-and-monitor-events/pvc-and-super-quality-configuration.md).
 
 - **Adaptive Bitrate (ABR)**
 
-  Stream configuration templates now support ABR functionality. For configuration details, see [Enable adaptive bitrate](../build/enable-adaptive-bitrate.md).
+  Stream configuration templates now support ABR functionality. For configuration details, see [Enable adaptive bitrate](../build/optimize-quality-and-monitor-events/enable-adaptive-bitrate.md).
 
 - **SRT streaming protocol support**
 

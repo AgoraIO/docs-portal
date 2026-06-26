@@ -23,7 +23,7 @@ Agora bills you based on the total number of MAUs (Monthly Active Users) in the 
 
 - MAU is the number of unique end users who log in to Agora Chat, connect to Agora Chat servers, and establish a long-lived connection at any time across a calendar month.
 - If a unique end-user connects to Agora Chat multiple times across a calendar month, they are counted as 1 MAU.
-- The end user is considered logged in when you call the “open” function in step 6 during the user authentication process [here](/en/realtime-media/im/build/authentication#use-tokens-for-user-authentication).
+- The end user is considered logged in when you call the “open” function in step 6 during the user authentication process [here](/en/realtime-media/im/build/secure-access-and-authentication/authentication#use-tokens-for-user-authentication).
 - Once logged in, that end user is counted towards the MAU, regardless of if they send or receive messages.
 
 :::info

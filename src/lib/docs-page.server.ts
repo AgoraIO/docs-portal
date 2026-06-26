@@ -1398,7 +1398,45 @@ function buildAiProductSidebar(
     'Reference',
     '参考',
   ]);
-  const deviceKitSection = findTopLevelSidebarSection(nodes, [
+  const tenAgentSection = findTopLevelSidebarSection(nodes, ['TEN Agent']);
+  const deviceKitSection =
+    findTopLevelSidebarSection(nodes, ['Convo AI Device Kit']) ??
+    (tenAgentSection
+      ? findNestedSidebarSectionByTitles(tenAgentSection, [
+          'Convo AI Device Kit',
+        ])
+      : null);
+  const tenAgentPages = tenAgentSection
+    ? stripSidebarSectionMetaFromNodes(
+        tenAgentSection.children.filter(
+          (child) =>
+            !(
+              child.type === 'section' && child.title === 'Convo AI Device Kit'
+            ),
+        ),
+      )
+    : [];
+  const mergedTenAgentSection =
+    tenAgentPages.length > 0
+      ? ({
+          ...(tenAgentSection
+            ? {
+                collapsible: tenAgentSection.collapsible,
+                ...(tenAgentSection.icon ? { icon: tenAgentSection.icon } : {}),
+                id: tenAgentSection.id,
+                title: tenAgentSection.title,
+                type: tenAgentSection.type,
+              }
+            : {
+                collapsible: false,
+                id: 'ai-ten-agent',
+                title: 'TEN Agent',
+                type: 'section' as const,
+              }),
+          children: tenAgentPages,
+        } satisfies DocsSidebarSectionNode)
+      : null;
+  const deviceKitTopLevelSection = findTopLevelSidebarSection(nodes, [
     'Convo AI Device Kit',
   ]);
 
@@ -1527,9 +1565,12 @@ function buildAiProductSidebar(
     },
     {
       ...stripSidebarSectionMeta(deviceKitSection),
-      children: stripSidebarSectionMetaFromNodes(
-        flattenDeviceKitSidebarChildren(deviceKitSection.children),
-      ),
+      children: [
+        ...stripSidebarSectionMetaFromNodes(
+          flattenDeviceKitSidebarChildren(deviceKitSection.children),
+        ),
+        ...(mergedTenAgentSection ? [mergedTenAgentSection] : []),
+      ],
       icon: 'Cpu',
       id: 'ai-product-dedicated-devices',
       title: isZhCn
@@ -1653,6 +1694,28 @@ function findNestedSidebarSectionByExactUrl(
 
   for (const child of node.children) {
     const match = findNestedSidebarSectionByExactUrl(child, url);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
+function findNestedSidebarSectionByTitles(
+  node: DocsSidebarNode,
+  titles: string[],
+): DocsSidebarSectionNode | null {
+  if (node.type === 'page') {
+    return null;
+  }
+
+  if (titles.includes(node.title)) {
+    return node;
+  }
+
+  for (const child of node.children) {
+    const match = findNestedSidebarSectionByTitles(child, titles);
     if (match) {
       return match;
     }

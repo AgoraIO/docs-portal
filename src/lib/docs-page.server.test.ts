@@ -2689,6 +2689,24 @@ Web body
                   type: 'folder',
                 },
                 {
+                  $id: 'ai-ten-agent-separator',
+                  icon: 'Wrench',
+                  name: 'TEN Agent',
+                  type: 'separator',
+                },
+                {
+                  $id: 'ai-create-asr-extension',
+                  name: 'Create ASR extension',
+                  type: 'page',
+                  url: '/en/ai/create_asr_extension',
+                },
+                {
+                  $id: 'ai-create-tts-extension',
+                  name: 'Create TTS extension',
+                  type: 'page',
+                  url: '/en/ai/create_tts_extension',
+                },
+                {
                   $id: 'ai-device-kit-folder',
                   children: [
                     {
@@ -2812,6 +2830,8 @@ Web body
         '/en/ai/reference/event-types',
         '/en/ai/reference/release-notes',
         '/en/ai/reference/pricing',
+        '/en/ai/create_asr_extension',
+        '/en/ai/create_tts_extension',
         '/en/ai/device-kit/start-here/quickstart',
         '/en/ai/device-kit/build/run-the-r1-demo',
         '/en/ai/device-kit/build/device-controls',
@@ -2937,6 +2957,33 @@ Web body
     expect(
       dedicatedDevicesSection.children.some(
         (node) => node.type === 'section' && node.title === 'Reference',
+      ),
+    ).toBe(true);
+    expect(
+      dedicatedDevicesSection.children.some(
+        (node) => node.type === 'section' && node.title === 'TEN Agent',
+      ),
+    ).toBe(true);
+
+    const tenAgentSection = dedicatedDevicesSection.children.find(
+      (node) => node.type === 'section' && node.title === 'TEN Agent',
+    );
+
+    if (!tenAgentSection || tenAgentSection.type !== 'section') {
+      throw new Error('expected the TEN Agent section');
+    }
+
+    expect(tenAgentSection.icon).toBe('Wrench');
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' && node.url === '/en/ai/create_asr_extension',
+      ),
+    ).toBe(true);
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' && node.url === '/en/ai/create_tts_extension',
       ),
     ).toBe(true);
     expect(

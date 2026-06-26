@@ -1,0 +1,445 @@
+---
+title: "Classroom SDK & Proctor SDK"
+description: "Integrate the Classroom SDK or Proctor SDK into your app with the default UI or a customized UI."
+---
+This page introduces how to add Flexible Classroom into your app.
+
+:::note
+The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](https://docs.agora.io/en/flexible-classroom/develop/integrate/integrate-flexible-classroom/integrate-flexible-classroom/integrate-flexible-classroom-fcr).
+:::
+
+## Understand the tech
+
+The following figure shows the overall technical architecture of Flexible Classroom:
+
+![](https://web-cdn.agora.io/docs-files/1653557375318)
+
+The source code of Flexible Classroom contains the following packages:
+
+- `agora-classroom-sdk`: The Agora Classroom SDK, which contains the following modules:
+    - `/lib/externals`: Stores video-related extensions such as beautifying and noise reduction.
+    - `/src/infra/api`: SDK interface.
+    - `/src/infra/configs`: Default color and theme configuration.
+    - `/src/infra/stores`: The UI stores implement the business logic for the UI components.
+    - `/src/infra/capabilities`:
+        - `/containers`: This folder contains all the business components. A business component is implemented by combining the UI components with the UI stores.
+        - `/scenarios`: This folder contains the code for arranging the layout of business components in different scenarios.
+    - `/src/ui-kit`: Common UI components.
+- `agora-demo-app`: The Agora Classroom SDK demo app, supports Web, H5, Electron and other platforms, supports online classroom, online invigilation function, and provides code samples for online classroom before, during, and after class.
+
+- `agora-plugin-gallery`: An independent plug-in library for Agora Classroom SDK, which inherits the `AgoraWidgetBase` class and implements the `AgoraWidgetLifecycle` interface. It includes plug-ins such as interactive whiteboard, IM chat, answering machine, voting machine, and timer.
+
+- `agora-proctor-sdk`: The Agora Classroom invigilation scene SDK, including the following modules:
+    - `/src/infra/stores`: The UI stores implement the business logic for the UI components.
+    - `/src/infra/capabilities`:
+         - `/components`: Common UI components.
+         - `/containers`: This folder contains all the business components. A business component is implemented by combining the UI components with the UI stores.
+         - `/scenarios`: This folder contains the code for arranging the layout of business components in different scenarios.
+
+- `agora-common-libs`: General tool class library, including ThemeProvider, I18nProvider, and other global general tools
+
+- `agora-edu-core`: Provides upstream API calls and downstream data structure encapsulation for education and proctoring scenarios in smart classrooms.
+
+- `agora-rte-sdk`: Provides cross-end RTC adaptation capabilities as well as classroom event callbacks and data structure encapsulation.
+
+## Integration methods
+
+You can use multiple methods to integrate Flexible Classroom into your web project. Depending on whether you need to customize the classroom UI, you can choose different integration methods:
+
+- If you are satisfied with the default UI of Flexible Classroom and do not want to change any of it, integrate the whole Flexible Classroom through [npm](https://www.npmjs.com/package/agora-classroom-sdk) or CDN.
+- If you want to customize the classroom UI based on the default UI of Flexible Classroom, you need to integrate Flexible Classroom by downloading the [source code](https://github.com/AgoraIO-Community/flexible-classroom-desktop/tree/release/2.8.13) on GitHub.
+
+## Integrated education scenario
+
+### Use the default UI of Flexible Classroom
+
+If you are satisfied with the default UI of Flexible Classroom and do not want to change any of it, integrate the whole Flexible Classroom through npm or CDN.
+
+#### Through npm
+
+1. To install the SDK, run the following command:
+
+    ```shell
+    npm install agora-classroom-sdk agora-plugin-gallery
+    ```
+
+2. To import the `AgoraEduSDK` and plugin modules, add the following code in the Javascript code in your project.
+
+    ```javascript
+    import {AgoraEduSDK} from 'agora-classroom-sdk'
+    import {
+      AgoraSelector,
+      AgoraCountdown,
+      AgoraHXChatWidget,
+      FcrStreamMediaPlayerWidget,
+      AgoraPolling,
+      FcrWatermarkWidget,
+      FcrWebviewWidget,
+      FcrBoardWidget
+    } from 'agora-plugin-gallery/classroom'
+    ```
+
+3. To launch a classroom, call [AgoraEduSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) and [AgoraEduSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) in the JavaScript code of the project.
+
+   :::tip
+   Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
+   :::
+
+#### Through CDN
+
+1. Add the following code to the HTML file in your project:
+
+    ```html
+    <!-- Replace X.Y.Z with the Flexible Classroom version number, such as 2.9.40.
+    You can check the latest version number through the release notes or GitHub repository branch. -->
+    <script src="https://download.agora.io/edu-apaas/release/edu_sdk@X.Y.Z.bundle.js"></script>
+    <script src="https://download.agora.io/edu-apaas/release/edu_widget@X.Y.Z.bundle.js"></script>
+    ```
+
+2. To launch a classroom, call [AgoraEduSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) and [AgoraEduSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) in the JavaScript code of the project.
+
+#### Sample code
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Introducing SDK, 2.9.40 is the sample version number, you can check the latest version number through the release notes or GitHub warehouse branch  -->
+    <script src="https://download.agora.io/edu-apaas/release/edu_sdk@2.9.40.bundle.js"></script>
+    <!-- Introducing Widget, 2.9.40 is the sample version number. You can check the latest version number through the release notes or GitHub warehouse branch. (Widgets before 2.9.0 are packaged together with the SDK, and there is no need to introduce this library) -->
+    <script src="https://download.agora.io/edu-apaas/release/edu_widget@2.9.40.bundle.js"></script>
+</head>
+<body>
+    <style>
+        #root {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <div id="root"></div>
+    <script type="text/javascript">
+        // Configure the SDK
+        // Replace 'Your App ID' with your App ID
+        AgoraEduSDK.config({
+                appId: 'Your App ID',
+                region: 'NA'
+        });
+        // Start online classroom
+        const unmount = AgoraEduSDK.launch(document.querySelector("#root"), {
+            userUuid: 'user id',
+            userName: 'user name',
+            roomUuid: 'room id',
+            roleType: 1, // User roles: 1 is teacher, 2 is student.
+            roomType: 0, // Room type: 0 is one-on-one, 2 is large class, and 4 is small class.
+            roomName: 'room name',
+            pretest: true, // Whether to enable pre-class equipment detection.
+            rtmToken: 'rtm token', // In a test environment, you can use a temporary RTM Token; in a production or security environment, it is strongly recommended that you use a server-generated RTM Token.
+            language: 'zh', // The language of the classroom interface. If the interface is in English, set it to 'en'.
+            duration: 60 * 30, // Course time in seconds.
+            recordUrl: 'https://solutions-apaas.agora.io/apaas/record/dev/2.8.0/record_page.html',
+            courseWareList: [],
+            virtualBackgroundImages: [], // Virtual background image resource list.
+            webrtcExtensionBaseUrl: 'https://solutions-apaas.agora.io/static', // WebRTC Plug-in deployment address.
+            uiMode: 'light', // Set the classroom interface to bright mode. If you want the interface to be in dark mode, set it to 'dark'.
+            widgets: {
+                popupQuiz: AgoraSelector,
+                countdownTimer: AgoraCountdown,
+                easemobIM: AgoraHXChatWidget,
+                mediaPlayer: FcrStreamMediaPlayerWidget,
+                poll: AgoraPolling,
+                watermark: FcrWatermarkWidget,
+                webView: FcrWebviewWidget,
+                netlessBoard: FcrBoardWidget
+            },
+            listener: (evt, args) => {
+            },
+        });
+    </script>
+</body>
+</html>
+```
+
+The sample code requires passing in `rtmToken`. You can refer to [Generate a Signaling token](../manage-agora-account.md) to learn what a Signaling token is, how to get a temporary Signaling token for testing purposes, and how to generate a Signaling token from the server. The generated token passed in `userId` must be consistent with the `userUuid` parameters passed in the `launch` method; otherwise, the generated token will be invalid.
+
+For details on the values of other parameters, see [LaunchOption](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk).
+
+:::note
+Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
+:::
+
+### Customize the classroom UI
+
+If you want to customize the classroom UI based on the default UI of Flexible Classroom, you need to integrate Flexible Classroom by downloading the source code on GitHub. Refer to the following steps:
+
+:::note
+Make sure you have set up a development environment. See [Demo quickstart](../../index.md).
+:::
+
+1. Clone the Flexible-Classroom-Desktop repository:
+
+   ```bash
+   git clone https://github.com/AgoraIO-Community/flexible-classroom-desktop.git
+   ```
+
+1. [Checkout the latest release branch](https://github.com/AgoraIO-Community/flexible-classroom-desktop/tree/release/2.9.20).
+
+    1. Change directory to `flexible-classroom-desktop`
+
+    1. Switch the branch, run the following commands:
+
+        ```bash
+        cd flexible-classroom-desktop
+        git checkout release/2.9.20
+        ```
+
+1. Modify the code according to your needs. See [Classroom and Proctor SDK UI customization guide](../customize-the-ui-and-plugins/customize-classroom.md) for details.
+1. Debug your code.
+
+    After finishing the development, follow these steps to debug:
+
+    1. To install dependencies, run the following command:
+
+        ```bash
+        yarn install:packages
+        ```
+
+    1. To run the project in development mode, use the following command:
+
+        ```bash
+        yarn dev:classroom
+        ```
+
+1. After finishing the development, package the SDK JS file with the following command:
+
+    1. To package the SDK code:
+
+    ```bash
+    yarn pack:classroom:sdk
+    ```
+
+    1. To package the SDK plug-ins:
+
+    ```bash
+    yarn pack:classroom:plugin
+    ```
+
+:::note
+Find the output in `packages/agora-classroom-sdk/lib/edu_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/edu_widget.bundle.js` respectively.
+:::
+
+## Integrated proctoring scenario
+
+### Use the default UI of Flexible Classroom
+
+If you are satisfied with the default UI of Flexible Classroom and do not want to change any of it, integrate the whole Flexible Classroom through npm or CDN.
+
+#### Through npm
+
+1. To install the SDK, run the following command:
+
+    ```shell
+    npm install agora-proctor-sdk agora-plugin-gallery
+    ```
+
+2. To import the `AgoraEduSDK` and plugin modules, add the following code in the Javascript code in your project:
+
+    ```javascript
+    import { AgoraProctorSDK } from 'agora-proctor-sdk'
+    import {
+      FcrWebviewWidget
+    } from 'agora-plugin-gallery/proctor'
+    ```
+
+3. To launch a classroom, call [AgoraProctorSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) and [AgoraProctorSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) in the JavaScript code of the project.
+
+   :::tip
+   Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
+   :::
+
+#### Through CDN
+
+1. Add the following code to the HTML file in your project:
+
+    ```html
+    <!-- Replace X.Y.Z with the Flexible Classroom version number. For example, 1.0.40
+    You can check the latest version number through the release notes or the GitHub repository branch. -->
+    <script src="https://download.agora.io/edu-apaas/release/proctor_sdk@X.Y.Z.bundle.js"></script>
+    ```
+
+2. To launch a classroom, call [AgoraProctorSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) and [AgoraProctorSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) in the JavaScript code of the project.
+
+#### Sample code
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Introduce SDK, 1.0.40 is the sample version number. You can check the latest version number through the release notes or GitHub repository branch. -->
+    <script src="https://download.agora.io/edu-apaas/release/proctor_sdk@1.0.40.bundle.js"></script>
+    <!-- Introducing Widget, 1.0.40 is the sample version number. You can check the latest version number through the release notes or GitHub warehouse branch. (Widgets before 1.0.10 are packaged together with the SDK, so there is no need to introduce this library) -->
+    <script src="https://download.agora.io/edu-apaas/release/proctor_widget@1.0.40.bundle.js"></script>
+  </head>
+
+  <body>
+    <style>
+      #root {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <div id="root"></div>
+    <script type="text/javascript">
+      // Configure the SDK
+      // Replace "Your App ID" with your App ID
+      AgoraProctorSDK.config({
+        appId: "Your App ID",
+        region: "NA",
+      });
+      // Start online proctoring
+      const unmount = AgoraProctorSDK.launch(document.querySelector("#root"), {
+        userUuid: "user id", // Refer to the description below to fill in userUuid
+        userName: "user name",
+        roomUuid: "room id",
+        roleType: 1, // User roles: 1 is teacher, 2 is student
+        roomType: 6, // Room type: The room type of the proctoring scene is fixed at 6
+        roomName: "room name",
+        pretest: true, // Whether to enable pre-class equipment detection
+        rtmToken: "rtm token", // In a test environment, you can use temporary RTM Token; in a production or security environment, it is strongly recommended that you use a server-generated RTM Token
+        language: "zh", // The language of the classroom interface. If the interface is in English, set it to 'en'
+        duration: 60 * 30, // Course time in seconds
+        courseWareList: [],
+        widgets: {
+          webView: FcrWebviewWidget, // 内嵌浏览器widget
+        },
+        listener: (evt, args) => {},
+      });
+    </script>
+  </body>
+</html>
+```
+
+:::note
+Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
+:::
+
+When being proctored online, students need to use the primary and secondary devices to access the exam. For example, the main device is a Web client used to collect students' videos and share their screens when they answer questions; the secondary device is an Android or iOS device used to capture students' bodies when they answer questions. The proctor observes students answering questions through videos from several points to prevent cheating. You need to fill in the `userUuid` on different devices. For example, for student A, pass it in the `AgoraProctorSDK.launch` parameter on the Web side, and then on the Android or iOS side. Flexible Classroom will identify them as student A's primary and secondary devices, merge their video streams, and render the merged video images in the teacher's proctoring video window.
+
+The sample code requires passing in `rtmToken`. You can refer to [Generate a Signaling token](../manage-agora-account.md) to learn what a Signaling token is, how to get a temporary Signaling token for testing purposes, and how to generate a Signaling token from the server. The generated token passed in `userId` must be consistent with the `launch` parameters passed in the `userUuid` method; otherwise, the generated token will be invalid.
+
+For details on the values of other parameters, see [LaunchOption](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk).
+
+### Customize the classroom UI
+
+If you want to customize the classroom UI based on the default UI of Flexible Classroom, you need to integrate Flexible Classroom by downloading the source code on GitHub. Refer to the following steps:
+
+:::note
+Make sure you have set up a development environment. See [Demo quickstart](../../index.md).
+:::
+
+1. Clone the Flexible-Classroom-Desktop repository:
+
+   ```bash
+   git clone https://github.com/AgoraIO-Community/flexible-classroom-desktop.git
+   ```
+
+1. [Checkout the latest release branch](https://github.com/AgoraIO-Community/flexible-classroom-desktop/tree/release/2.9.20).
+
+    1. Change directory to `flexible-classroom-desktop`
+
+    1. Switch the branch, run the following commands:
+
+        ```bash
+        cd flexible-classroom-desktop
+        git checkout release/2.9.20
+        ```
+
+1. Modify the code according to your needs. See [Classroom and Proctor SDK](../customize-the-ui-and-plugins/customize-classroom.md) for details.
+1. Debug your code.
+
+    After finishing the development, follow these steps to debug:
+
+    1. To install dependencies, run the following command:
+
+        ```bash
+        yarn install:packages
+        ```
+
+    1. To run the project in development mode, use the following command:
+
+        ```bash
+        yarn dev:proctor
+        ```
+
+1. After finishing the development, package the SDK JS file with the following command:
+
+    1. To package the SDK code:
+
+    ```bash
+    yarn pack:proctor:sdk
+    ```
+
+    1. To package the SDK plug-ins:
+
+    ```bash
+    yarn pack:proctor:plugin
+    ```
+
+:::note
+Find the output in `packages/agora-proctor-sdk/lib/proctor_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/proctor_widget.bundle.js` respectively.
+:::
+
+### Set exam link
+
+After the online exam starts, candidates will load the exam papers locally through the created Webview window. The link to the exam paper is set through the `examinationUrl` field in the room properties (`roomProperties`). You can set the exam paper link as follows:
+
+- When creating a room: Call the create classroom properties interface of the RESTful API to create a class, and set the `examinationUrl` field in the request package body.
+
+    ```json
+    {
+      "roomName": "jasoncai61734",
+      "roomType": 4,
+      "roomProperties": {
+        "schedule": {
+          "startTime": 1655452800000,
+          "duration": 600,
+          "closeDelay": 0
+        },
+        // Set the exam paper link for this exam
+        "examinationUrl": "your examination url"
+      }
+    }
+    ```
+
+- After creating a room: Call the update classroom attribute interface of the RESTful API, and set the `examinationUrl` field in the request package body.
+
+    ```json
+    {
+      "properties": {
+        // Set the exam paper link for this exam
+        "examinationUrl": "your examination url"
+      },
+      "cause": {}
+    }
+    ```
+
+## Frequent issues
+
+### Installation of the `agora-electron-sdk` module fails
+
+If you seem unable to install the `agora-electron-sdk` module under the Linux system, it is because the current operating system of the module does not support Linux. Take the following steps to solve the problem:
+
+1. Modify the `package.json` configuration parameters: In the project's `agora_electron` root directory set `platform` as `win32`:
+
+    ```json
+    "agora_electron": {
+      "electron_version": "12.0.0",
+      "prebuilt": true,
+      "platform": "win32"
+    }
+    ```
+
+1. Install dependencies again.

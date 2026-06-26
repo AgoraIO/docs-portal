@@ -126,7 +126,7 @@ This section contains content that completes the information on this page, or po
 
 - [Manual install](../../../sdks.md) shows you how to install Video SDK manually.
 
-- To ensure communication security in a test or production environment, best practice is to use a token server to ensure communication security, see [Secure authentication with tokens](../build/use-tokens.mdx).
+- To ensure communication security in a test or production environment, best practice is to use a token server to ensure communication security, see [Secure authentication with tokens](../build/authenticate-users/use-tokens.mdx).
 
 ### API reference
 

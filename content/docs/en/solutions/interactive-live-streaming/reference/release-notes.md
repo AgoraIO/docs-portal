@@ -471,7 +471,7 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
   Starting from this version, Agora introduces Lite SDK, which includes only the basic audio and video capabilities and partially cuts advanced features, effectively reducing the app size after integrating the SDK.
 
   - Lite SDK supports manual integration or third-party repository integration.
-  - For information on dynamic libraries included in the Lite SDK, see [App size optimization](../../../build/app-size-optimization.mdx).
+  - For information on dynamic libraries included in the Lite SDK, see [App size optimization](../../../build/optimize-quality-and-connection/app-size-optimization.mdx).
   - For the list of APIs supported by Lite SDK, see [Lite SDK API](https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_lite_api.html).
   - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](https://docs-md.agora.io/en/help/general-product-inquiry/audio_format.md)
 
@@ -1031,7 +1031,7 @@ v4.2.2 was released on july 27, 2023.
 
 1. **Wildcard token**
 
-  This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](../../realtime-media/video/build/use-tokens.mdx).
+  This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](../../realtime-media/video/build/authenticate-users/use-tokens.mdx).
 
   :::note
   All 4.x SDKs support using wildcard tokens.
@@ -1041,7 +1041,7 @@ v4.2.2 was released on july 27, 2023.
 
   This release adds `preloadChannel[1/2]` and `preloadChannel[2/2]` methods, which allows a user whose role is set as audience to preload channels before joining one. Calling the method can help shortening the time of joining a channel, thus reducing the time it takes for audience members to hear and see the host.
 
-  When preloading more than one channels, Agora recommends that you use a wildcard token for preloading to avoid repeated application of tokens every time you joining a new channel, thus saving the time for switching between channels. See [Secure authentication with tokens](../../realtime-media/video/build/use-tokens.mdx).
+  When preloading more than one channels, Agora recommends that you use a wildcard token for preloading to avoid repeated application of tokens every time you joining a new channel, thus saving the time for switching between channels. See [Secure authentication with tokens](../../realtime-media/video/build/authenticate-users/use-tokens.mdx).
 
 3. **Customized background color of video canvas**
 
@@ -1150,7 +1150,7 @@ To increase the fun of real-time video calls and protect user privacy, this vers
 - Process the background as Alpha information without replacement, only separating the portrait and the background. This can be combined with the local video mixing feature to achieve a portrait-in-picture effect.
 - Replace the background with various formats of local videos.
 
-See [Virtual Background documentation](../../../build/virtual-background.mdx).
+See [Virtual Background documentation](../../../build/apply-effects-and-enhancements/virtual-background.mdx).
 
 **3. Video scenario settings**
 
@@ -1699,7 +1699,7 @@ In order to enhance the real-time audio and video interactive activities based o
 
 - Easy to integrate: The integration of modular functions can be achieved simply by calling an API, and the integration efficiency is improved by nearly 95%.
 - Extensibility design: The modular and extensible SDK design style endows the Agora SDK with good extensibility, which enables developers to quickly build real-time interactive apps based on the Agora extensions marketplace ecosystem.
-- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../../../build/use-an-extension.mdx).
+- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../../../build/apply-effects-and-enhancements/use-an-extension.mdx).
 - Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](https://docs-md.agora.io/en/extensions-marketplace/get-started/quickstart-implement.md).
 
 **8. Enhanced channel management**
@@ -2271,7 +2271,7 @@ Starting with v4.4.0, the SDK uses native iOS APIs to manage the microphone. As 
   Starting from this version, Agora introduces Lite SDK, which includes only the basic audio and video capabilities and partially cuts advanced features, effectively reducing the app size after integrating the SDK.
 
   - Lite SDK supports manual integration or third-party repository integration.
-  - For information on dynamic libraries included in the Lite SDK, see [App size optimization](../../../build/app-size-optimization.mdx).
+  - For information on dynamic libraries included in the Lite SDK, see [App size optimization](../../../build/optimize-quality-and-connection/app-size-optimization.mdx).
   - For the list of APIs supported by Lite SDK, see [API reference](https://api-ref.agora.io/en/lite-sdk/ios/4.x/documentation/agorartckit).
   - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](https://docs-md.agora.io/en/help/general-product-inquiry/audio_format.md)
 
@@ -2802,7 +2802,7 @@ v4.2.2 was released on July 27, 2023.
 
 1. **Wildcard token**
 
-  This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](../../realtime-media/video/build/use-tokens.mdx).
+  This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](../../realtime-media/video/build/authenticate-users/use-tokens.mdx).
 
   <div class="alert info">All 4.x SDKs support using wildcard tokens.</div>
 
@@ -2810,7 +2810,7 @@ v4.2.2 was released on July 27, 2023.
 
   This release adds `preloadChannelByToken [1/2]` and `preloadChannelByToken [2/2]` methods, which allows a user whose role is set as audience to preload channels before joining one. Calling the method can help shortening the time of joining a channel, thus reducing the time it takes for audience members to hear and see the host.
 
-  When preloading more than one channels, Agora recommends that you use a wildcard token for preloading to avoid repeated application of tokens every time you joining a new channel, thus saving the time for switching between channels. See [Secure authentication with tokens](../../realtime-media/video/build/use-tokens.mdx).
+  When preloading more than one channels, Agora recommends that you use a wildcard token for preloading to avoid repeated application of tokens every time you joining a new channel, thus saving the time for switching between channels. See [Secure authentication with tokens](../../realtime-media/video/build/authenticate-users/use-tokens.mdx).
 
 3. **Customized background color of video canvas**
 
@@ -3283,7 +3283,7 @@ v4.2.2 was released on july 27, 2023.
 
 1. **Wildcard token**
 
-  This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](../../realtime-media/video/build/use-tokens.mdx).
+  This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](../../realtime-media/video/build/authenticate-users/use-tokens.mdx).
 
   <div class="alert info">All 4.x SDKs support using wildcard tokens.</div>
 
@@ -3291,7 +3291,7 @@ v4.2.2 was released on july 27, 2023.
 
   This release adds `preloadChannelByToken[1/2]` and `preloadChannelByToken[2/2]` methods, which allows a user whose role is set as audience to preload channels before joining one. Calling the method can help shortening the time of joining a channel, thus reducing the time it takes for audience members to hear and see the host.
 
-  When preloading more than one channels, Agora recommends that you use a wildcard token for preloading to avoid repeated application of tokens every time you joining a new channel, thus saving the time for switching between channels. See [Secure authentication with tokens](../../realtime-media/video/build/use-tokens.mdx).
+  When preloading more than one channels, Agora recommends that you use a wildcard token for preloading to avoid repeated application of tokens every time you joining a new channel, thus saving the time for switching between channels. See [Secure authentication with tokens](../../realtime-media/video/build/authenticate-users/use-tokens.mdx).
 
 3. **Customized background color of video canvas**
 
@@ -3429,7 +3429,7 @@ To increase the fun of real-time video calls and protect user privacy, this vers
 - Process the background as Alpha information without replacement, only separating the portrait and the background. This can be combined with the local video mixing feature to achieve a portrait-in-picture effect.
 - Replace the background with various formats of local videos.
 
-See [Virtual Background documentation](../../../build/virtual-background.mdx).
+See [Virtual Background documentation](../../../build/apply-effects-and-enhancements/virtual-background.mdx).
 
 **3. Video scenario settings**
 
@@ -3883,7 +3883,7 @@ In order to enhance the real-time audio and video interactive activities based o
 
 - Easy to integrate: The integration of modular functions can be achieved simply by calling an API, and the integration efficiency is improved by nearly 95%.
 - Extensibility design: The modular and extensible SDK design style endows the Agora SDK with good extensibility, which enables developers to quickly build real-time interactive apps based on the Agora extensions marketplace ecosystem.
-- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../../../build/use-an-extension.mdx).
+- Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../../../build/apply-effects-and-enhancements/use-an-extension.mdx).
 - Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](https://docs-md.agora.io/en/extensions-marketplace/get-started/quickstart-implement.md).
 
 **8. Enhanced channel management**
@@ -4566,7 +4566,7 @@ This release modified the calculation of [`freezeRate`](https://api-ref.agora.io
 
 1. **Reduced package size**
 
-  To further reduce the package size, this release separates the Plan-B feature, which is compatible with WebRTC, from the ESM-bundle package into an independent service module. Users can integrate them manually based on actual needs. For details, see [Use tree shaking](../../../build/app-size-optimization.mdx).
+  To further reduce the package size, this release separates the Plan-B feature, which is compatible with WebRTC, from the ESM-bundle package into an independent service module. Users can integrate them manually based on actual needs. For details, see [Use tree shaking](../../../build/optimize-quality-and-connection/app-size-optimization.mdx).
 
 1. **Other improvements**
 
@@ -4626,13 +4626,13 @@ v4.22.0 was released on 16 August, 2024.
 
 #### Compatibility changes
 
-To further reduce the package size, this version splits the Channel Media Relay Service and the Live Streaming Service from the ESM-bundle format package into independent service modules. You can manually import these modules for integration based on your actual needs. See [Use tree shaking](../../../build/app-size-optimization.mdx) for details on how to integrate.
+To further reduce the package size, this version splits the Channel Media Relay Service and the Live Streaming Service from the ESM-bundle format package into independent service modules. You can manually import these modules for integration based on your actual needs. See [Use tree shaking](../../../build/optimize-quality-and-connection/app-size-optimization.mdx) for details on how to integrate.
 
 #### New features
 
 **Optimize channel preload**
 
-When using the channel preload feature, Agora recommends sending the host's media stream immediately when calling the method to join the channel. This reduces the first frame rendering time. For details, see [Preload channels](../../../build/preload-channels.mdx). With this setting, users will start pulling streams as soon as they join the channel, which will generate charges. For details on how Agora charges for the services, see [Pricing](reference/pricing.md).
+When using the channel preload feature, Agora recommends sending the host's media stream immediately when calling the method to join the channel. This reduces the first frame rendering time. For details, see [Preload channels](../../../build/optimize-quality-and-connection/preload-channels.mdx). With this setting, users will start pulling streams as soon as they join the channel, which will generate charges. For details on how Agora charges for the services, see [Pricing](reference/pricing.md).
 
 **Support for AV1 encoding (Beta)**
 
@@ -4718,7 +4718,7 @@ This release adds the following new features:
     **Note:**
 
     - This functionality is only supported on Chrome 87 or later, as well as Safari 15.4 or later.
-    - Due to the conflicts in certain browser core components, this feature is not available when [end-to-end media encryption (Beta)](../../../build/media-stream-encryption.mdx) is enabled.
+    - Due to the conflicts in certain browser core components, this feature is not available when [end-to-end media encryption (Beta)](../../../build/secure-and-protect-channels/media-stream-encryption.mdx) is enabled.
 
 **Monitor the video states of receivers**
 
@@ -5088,7 +5088,7 @@ This release improves the flexibility in setting video profiles for different ty
 - You can now specify the resolution and the frame rate when calling `createCustomVideoTrack` to create a custom video track, by passing in values for the `width`, `height`, and `frameRate` parameters.
 - After creating a screen track or a custom video track, you can dynamically adjust the video profile using `LocalVideoTrack.setEncoderConfiguration`. Please note that there is a known issue with calling this method on a screen track in certain versions of macOS Safari. [See issue details](https://docs-md.agora.io/en/known-issues.md).
 
-For details, see more about [Configure video encoding](../../../build/configure-video-encoding.mdx).
+For details, see more about [Configure video encoding](../../../build/manage-video-and-streaming/configure-video-encoding.mdx).
 
 **Other improvements**
 
@@ -5492,8 +5492,8 @@ v4.10.0 supports using media processing extensions in the Interactive Live Strea
 
 | Extension              | Description                                                    | Documentation                                  |
 |-------------------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| Virtual Background Extension (Beta) | Enables users to replace their actual background with a solid color or custom image, or to blur their background. | [Use the Virtual Background Extension (Beta)](../../../build/virtual-background.mdx) |
-| AI Noise Suppression Extension (Beta)    | Reduces many types of sudden noise and reduces vocal distortion when multiple people speak at the same time.   | [AI Noise Suppression](../../../build/ai-noise-suppression.mdx) |
+| Virtual Background Extension (Beta) | Enables users to replace their actual background with a solid color or custom image, or to blur their background. | [Use the Virtual Background Extension (Beta)](../../../build/apply-effects-and-enhancements/virtual-background.mdx) |
+| AI Noise Suppression Extension (Beta)    | Reduces many types of sudden noise and reduces vocal distortion when multiple people speak at the same time.   | [AI Noise Suppression](../../../build/apply-effects-and-enhancements/ai-noise-suppression.mdx) |
 
 #### API changes
 
@@ -5760,7 +5760,7 @@ In a use-case where multiple users play a media file at the same time, such as w
 
 **Channel encryption**
 
-To strengthen the security of the key, v4.5.0 adds two encryption modes, `"aes-128-gcm2"` and `"aes-256-gcm2"`, which use the PBKDF2 (Password-Based Key Derivation Function 2). When calling `setEncryptionConfig` and setting the encryption mode as `"aes-128-gcm2"` or `"aes-256-gcm2"`, you need to set `secret` and `salt`. For how to generate and set `secret` and `salt`, see [Secure channel encryption](../../realtime-media/video/build/media-stream-encryption.mdx).
+To strengthen the security of the key, v4.5.0 adds two encryption modes, `"aes-128-gcm2"` and `"aes-256-gcm2"`, which use the PBKDF2 (Password-Based Key Derivation Function 2). When calling `setEncryptionConfig` and setting the encryption mode as `"aes-128-gcm2"` or `"aes-256-gcm2"`, you need to set `secret` and `salt`. For how to generate and set `secret` and `salt`, see [Secure channel encryption](../../realtime-media/video/build/secure-and-protect-channels/media-stream-encryption.mdx).
 
 **Restrict media zones**
 
@@ -5837,7 +5837,7 @@ Once you enable the built-in encryption, all users in the same channel must use 
 
 **Cloud proxy**
 
-v4.4.0 adds the `client.on("is-using-cloud-proxy")` event. The SDK triggers this event after the local client successfully publishes a media stream to indicate whether the media stream is forwarded by the [Cloud proxy service](../../../build/cloud-proxy.mdx).
+v4.4.0 adds the `client.on("is-using-cloud-proxy")` event. The SDK triggers this event after the local client successfully publishes a media stream to indicate whether the media stream is forwarded by the [Cloud proxy service](../../../build/optimize-quality-and-connection/cloud-proxy.mdx).
 
 **Error code**
 
@@ -5871,7 +5871,7 @@ v4.3.0 was released on January 26, 2021.
 
 This release optimizes the Agora cloud proxy architecture and enhances the connectivity of the Interactive Live Streaming in environments with restricted network access. The optimized Agora cloud proxy service also supports regional connection.
 
-You can contact (mailto:support@agora.io) to apply for using the optimized Agora cloud proxy service and set the `mode` parameter as `3` when calling `startProxyServer`. For details, see [Cloud proxy service](../../../build/cloud-proxy.mdx).
+You can contact (mailto:support@agora.io) to apply for using the optimized Agora cloud proxy service and set the `mode` parameter as `3` when calling `startProxyServer`. For details, see [Cloud proxy service](../../../build/optimize-quality-and-connection/cloud-proxy.mdx).
 
 ### v4.2.1
 

@@ -38,14 +38,14 @@ To enable Chat, make sure that you have the following:
     ![](/images/im/chat_feature_overview.png)
 
 For details about these advanced features, see the following:
-- [Message Callback](/en/realtime-media/im/build/setup-webhooks)
-- [Message Recall](/en/realtime-media/im/build/messages/send-receive-messages#recall-a-message)
-- [Message Thread](/en/realtime-media/im/build/threading/thread-management)
-- [Reaction](/en/realtime-media/im/build/reaction)
-- [Offline Message Push (Advanced)](/en/realtime-media/im/build/offline-push/overview)
-- [Presence](/en/realtime-media/im/build/presence)
-- [Translation](/en/realtime-media/im/build/messages/translate-messages)
-- [Moderation](/en/realtime-media/im/build/moderation-mechanism)
+- [Message Callback](/en/realtime-media/im/build/notifications-and-event-handling/setup-webhooks)
+- [Message Recall](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#recall-a-message)
+- [Message Thread](/en/realtime-media/im/build/build-groups-rooms-and-threads/threading/thread-management)
+- [Reaction](/en/realtime-media/im/build/build-core-messaging/reaction)
+- [Offline Message Push (Advanced)](/en/realtime-media/im/build/notifications-and-event-handling/offline-push/overview)
+- [Presence](/en/realtime-media/im/build/build-core-messaging/presence)
+- [Translation](/en/realtime-media/im/build/build-core-messaging/messages/translate-messages)
+- [Moderation](/en/realtime-media/im/build/moderate-and-manage-client-behavior/moderation-mechanism)
 
 ## Get Chat project information
 
@@ -68,7 +68,7 @@ Follow these steps to get the project information:
 
 ## Manage users and generate tokens
 
-For development purposes, Agora enables you to manage users and generate Chat user authentication tokens using Agora Console. In a production environment, you use the [RESTful API](/en/api-reference/api-ref/im/user-system-registration) to manage users and a token server to [generate user authentication tokens](/en/realtime-media/im/build/authentication).
+For development purposes, Agora enables you to manage users and generate Chat user authentication tokens using Agora Console. In a production environment, you use the [RESTful API](/en/api-reference/api-ref/im/user-system-registration) to manage users and a token server to [generate user authentication tokens](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
 
 This section shows you how to register Chat users and generate temporary tokens using Agora Console.
 

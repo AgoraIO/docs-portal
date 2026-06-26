@@ -1,0 +1,1129 @@
+---
+title: "Custom audio source"
+description: "Integrate a custom video or audio capture into your client"
+---
+
+**Supported platforms:** Android, iOS, macOS, Windows, and Unreal Engine.
+
+<PlatformStructured platform="android">
+The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
+
+Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
+
+* Your app has its own audio module.
+* You need to process the captured audio with a pre-processing library for audio enhancement.
+* You need flexible device resource allocation to avoid conflicts with other services.
+
+This page shows you how to capture and render audio from custom sources.
+
+## Understand the tech
+
+To set an external audio source, you configure the Agora Engine before joining a channel. To manage the capture and processing of audio frames, you use methods from outside the Video SDK that are specific to your custom source. Video SDK enables you to push processed audio data to the subscribers in a channel.
+
+#### Capture custom audio
+The following figure illustrates the process of custom audio capture.
+
+![Audio data transmission](/images/video-sdk/audio-data-transmission.svg)
+
+- You implement the capture module using external methods provided by the SDK.
+
+- You call `pushExternalAudioFrame` to send the captured audio frames to the SDK.
+
+#### Render custom audio
+
+The following figure illustrates the process of custom audio rendering.
+
+![Audio Data Transmission](/images/video-sdk/custom-audio-rendering-sdk.svg)
+
+- You implement the rendering module using external methods provided by the SDK.
+
+- You call `pullPlaybackAudioFrame` to retrieve the audio data sent by remote users.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implementation
+
+This section shows you how to implement custom audio capture and render audio from a custom source.
+
+### Custom audio capture
+
+Refer to the following call sequence diagram to implement custom audio capture in your app:
+
+**Custom audio capture process**
+
+![Custom audio capture](/images/video-sdk/custom-audio-capture-with-custom-track.svg)
+
+Follow these steps to implement custom audio capture in your project:
+
+1. After initializing `RtcEngine`, call `createCustomAudioTrack` to create a custom audio track and obtain the audio track ID.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+  ```java
+  AudioTrackConfig config = new AudioTrackConfig();
+    config.enableLocalPlayback = false;
+    customAudioTrack = engine.createCustomAudioTrack(Constants.AudioTrackType.AUDIO_TRACK_MIXABLE, config);
+  ```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+  ```kotlin
+  val config = AudioTrackConfig().apply {
+      enableLocalPlayback = false
+    }
+    customAudioTrack = engine.createCustomAudioTrack(Constants.AudioTrackType.AUDIO_TRACK_MIXABLE, config)
+  ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+2. Call `joinChannel` to join the channel. In `ChannelMediaOptions`, set `publishCustomAudioTrackId` to the audio track ID obtained in step 1, and set `publishCustomAudioTrack` to `true` to publish the custom audio track.
+
+:::note
+To use `enableCustomAudioLocalPlayback` for local playback of an external audio source, or to adjust the volume of a custom audio track with `adjustCustomAudioPlayoutVolume`, set `enableAudioRecordingOrPlayout` to `true` in `ChannelMediaOptions`.
+
+:::
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+  ```java
+  ChannelMediaOptions option = new ChannelMediaOptions();
+    option.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+    option.autoSubscribeAudio = true;
+    option.autoSubscribeVideo = true;
+    // In the audio self-collection use-case, the audio collected by the microphone is not published
+    option.publishMicrophoneTrack = false;
+    // Publish the custom audio track
+    publishCustomAudioTrack = true
+    // Set the custom audio track ID
+    publishCustomAudioTrackId = customAudioTrack
+
+    // Join the channel
+    val res = engine.joinChannel(accessToken, channelId, 0, option)
+  ```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+  ```kotlin
+  val option = ChannelMediaOptions().apply {
+      clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+      autoSubscribeAudio = true
+      autoSubscribeVideo = true
+      // In the audio self-collection use-case, the audio collected by the microphone is not published
+      publishMicrophoneTrack = false
+      // Publish the custom audio track
+      publishCustomAudioTrack = true
+      // Set the custom audio track ID
+      publishCustomAudioTrackId = customAudioTrack
+    }
+
+    // Join the channel
+    val res = engine.joinChannel(accessToken, channelId, 0, option)
+  ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+3. Agora provides the [AudioFileReader.java](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/utils/AudioFileReader.java) sample to demonstrate how to read and publish PCM-format audio data from a local file. In a production environment, you create a custom audio acquisition module based on your business needs.
+
+4. Call `pushExternalAudioFrame` to send the captured audio frame to the SDK through the custom audio track. Ensure that the `trackId` matches the audio track ID you obtained by calling `createCustomAudioTrack`. Set `sampleRate`, `channels`, and `bytesPerSample` to define the sampling rate, number of channels, and bytes per sample of the external audio frame.
+
+:::note
+For audio and video synchronization, Agora recommends calling `getCurrentMonotonicTimeInMs` to get the system’s current monotonic time and setting the `timestamp` accordingly.
+
+:::
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+  ```java
+  audioPushingHelper = new AudioFileReader(requireContext(), (buffer, timestamp) -> {
+      if (joined && engine != null && customAudioTrack != -1) {
+        // Push external audio frames to SDK
+        int ret = engine.pushExternalAudioFrame(buffer, timestamp,
+            AudioFileReader.SAMPLE_RATE,
+            AudioFileReader.SAMPLE_NUM_OF_CHANNEL,
+            Constants.BytesPerSample.TWO_BYTES_PER_SAMPLE,
+            customAudioTrack);
+        Log.i(TAG, "pushExternalAudioFrame times:" + (++\pushTimes) + ", ret=" + ret);
+      }
+    });
+  ```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+  ```kotlin
+  audioPushingHelper = AudioFileReader(requireContext()) { buffer, timestamp ->
+      if (joined && engine != null && customAudioTrack != -1) {
+        // Push external audio frames to SDK
+        val ret = engine.pushExternalAudioFrame(
+          buffer, timestamp,
+          AudioFileReader.SAMPLE_RATE,
+          AudioFileReader.SAMPLE_NUM_OF_CHANNEL,
+          Constants.BytesPerSample.TWO_BYTES_PER_SAMPLE,
+          customAudioTrack
+        )
+        Log.i(TAG, "pushExternalAudioFrame times: \${++pushTimes\}, ret=$ret")
+      }
+    }
+  ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+5. To stop publishing custom audio, call `destroyCustomAudioTrack` to destroy the custom audio track.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+  ```java
+  // Destroy the custom audio track
+    engine.destroyCustomAudioTrack(customAudioTrack);
+  ```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+  ```kotlin
+  // Destroy the custom audio track
+    engine.destroyCustomAudioTrack(customAudioTrack)
+  ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Custom audio rendering
+
+This section shows you how to implement custom audio rendering. Refer to the following call sequence diagram to implement custom audio rendering in your app:
+
+**Custom audio rendering workflow**
+
+![Custom Audio Rendering Workflow](/images/video-sdk/custom-audio-render.svg)
+
+To implement custom audio rendering, use the following methods:
+
+1. Before calling `joinChannel`, use `setExternalAudioSink` to enable and configure custom audio rendering.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+  ```java
+  rtcEngine.setExternalAudioSink(
+      true,   // Enable custom audio rendering
+      44100,   // Sampling rate (Hz). Set this value to 16000, 32000, 441000, or 48000
+      1     // Number of channels for the custom audio source. Set this value to 1 or 2
+    );
+  ```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+  ```kotlin
+  rtcEngine.setExternalAudioSink(
+      true,   // Enable custom audio rendering
+      44100,   // Sampling rate (Hz). Set this value to 16000, 32000, 441000, or 48000
+      1     // Number of channels for the custom audio source. Set this value to 1 or 2
+    )
+  ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+2. After joining the channel, call `pullPlaybackAudioFrame` to get audio data sent by remote users. Use your own audio renderer to process the audio data and then play the rendered data.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+  ```java
+  private class FileThread implements Runnable {
+
+      @Override
+      public void run() {
+        while (mPull) {
+          int lengthInByte = 48000 / 1000 * 2 * 1 * 10;
+          ByteBuffer frame = ByteBuffer.allocateDirect(lengthInByte);
+          int ret = engine.pullPlaybackAudioFrame(frame, lengthInByte);
+          byte[] data = new byte[frame.remaining()];
+          frame.get(data, 0, data.length);
+          // Write to a local file or render using a player
+          FileIOUtils.writeFileFromBytesByChannel("/sdcard/agora/pull_48k.pcm", data, true, true);
+          try {
+            Thread.sleep(10);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+    }
+  ```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+  ```kotlin
+  private class FileThread : Runnable {
+
+      override fun run() {
+        while (mPull) {
+          val lengthInByte = 48000 / 1000 * 2 * 1 * 10
+          val frame = ByteBuffer.allocateDirect(lengthInByte)
+          val ret = engine.pullPlaybackAudioFrame(frame, lengthInByte)
+          val data = ByteArray(frame.remaining())
+          frame.get(data, 0, data.size)
+          // Write to a local file or render using a player
+          FileIOUtils.writeFileFromBytesByChannel("/sdcard/agora/pull_48k.pcm", data, true, true)
+          try {
+            Thread.sleep(10)
+          } catch (e: InterruptedException) {
+            e.printStackTrace()
+          }
+        }
+      }
+    }
+  ```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Using raw audio data callback
+
+This section explains how to implement custom audio rendering.
+
+To retrieve audio data for playback, implement collection and processing of raw audio data. Refer to [Raw audio processing](stream-raw-audio.mdx).
+
+Follow these steps to call the raw audio data API in your project for custom audio rendering:
+
+1. Retrieve audio data for playback using the `onRecordAudioFrame`, `onPlaybackAudioFrame`, `onMixedAudioFrame`, or `onPlaybackAudioFrameBeforeMixing` callback.
+
+2. Independently render and play the audio data.
+
+## Reference
+
+This section explains how to implement different sound effects and audio mixing in your app, covering essential steps and code snippets.
+
+### Sample projects
+
+Agora provides the following open-source sample projects for audio self-capture and audio self-rendering for your reference:
+
+* [CustomAudioSource](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/customaudio/CustomAudioSource.java)
+* [CustomAudioRender](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/customaudio/CustomAudioRender.java)
+
+### API reference
+
+* [`createCustomAudioTrack`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_imediaengine.html#api_imediaengine_createcustomaudiotrack)
+
+* [`destroyCustomAudioTrack`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_imediaengine.html#api_imediaengine_destroycustomaudiotrack)
+
+* [`pushExternalAudioFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_pushaudioframe2)
+
+* [`setExternalAudioSink`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_imediaengine_setexternalaudiosink)
+
+* [`pullPlaybackAudioFrame` [1/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_imediaengine_pullaudioframe)
+
+* [`pullPlaybackAudioFrame` [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_pullaudioframe2)
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
+
+Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
+
+* Your app has its own audio module.
+* You need to process the captured audio with a pre-processing library for audio enhancement.
+* You need flexible device resource allocation to avoid conflicts with other services.
+
+This page shows you how to capture and render audio from custom sources.
+
+## Understand the tech
+
+To set an external audio source, you configure the Agora Engine before joining a channel. To manage the capture and processing of audio frames, you use methods from outside the Video SDK that are specific to your custom source. Video SDK enables you to push processed audio data to the subscribers in a channel.
+
+#### Capture custom audio
+The following figure illustrates the process of custom audio capture.
+
+![Audio data transmission](/images/video-sdk/audio-data-transmission.svg)
+
+- You implement the capture module using external methods provided by the SDK.
+
+- You call `pushExternalAudioFrame` to send the captured audio frames to the SDK.
+
+#### Render custom audio
+
+The following figure illustrates the process of custom audio rendering.
+
+![Audio Data Transmission](/images/video-sdk/custom-audio-rendering-sdk.svg)
+
+- You implement the rendering module using external methods provided by the SDK.
+
+- You call `pullPlaybackAudioFrame` to retrieve the audio data sent by remote users.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implementation
+
+This section shows you how to implement custom audio capture and render audio from a custom source.
+
+### Customize the audio source
+
+Refer to the following call sequence diagram to implement custom audio capture in your app:
+
+**Custom audio capture**
+
+![Custom audio capture](/images/video-sdk/custom-audio-capture-with-custom-track.svg)
+
+Follow these steps to implement custom audio capture in your project:
+
+1. After initializing `AgoraRtcEngineKit`, call `createCustomAudioTrack` to create a custom audio track and retrieve the audio track ID.
+
+  ```swift
+  let audioTrack = AgoraAudioTrackConfig()
+  audioTrack.enableLocalPlayback = true
+  trackId = agoraKit.createCustomAudioTrack(.mixable, config: audioTrack)
+  ```
+
+1. Use `joinChannelByToken` to join the channel. In `AgoraRtcChannelMediaOptions`, set the `publishCustomAudioTrackId` parameter to the audio track ID you obtained. Set `publishCustomAudioTrack` to `YES` to publish the custom audio track in the channel.
+
+:::warning
+
+To play an external audio source locally using `enableCustomAudioLocalPlayback`, or to adjust the local playback volume of a custom audio track using `adjustCustomAudioPlayoutVolume`, set `enableAudioRecordingOrPlayout` to `YES` in `AgoraRtcChannelMediaOptions`.
+
+:::
+  ```swift
+  let option = AgoraRtcChannelMediaOptions()
+  // Disable microphone track
+  option.publishMicrophoneTrack = false
+  // Enable the custom audio track
+  option.publishCustomAudioTrack = true
+  // Set the custom audio track ID
+  option.publishCustomAudioTrackId = Int(trackId)
+  option.clientRoleType = GlobalSettings.shared.getUserRole()
+  NetworkManager.shared.generateToken(channelName: channelName, success: { token in
+    // Join the channel
+    let result = self.agoraKit.joinChannel(byToken: token, channelId: channelName, uid: 0, mediaOptions: option)
+    if result != 0 {
+      self.showAlert(title: "Error", message: "Failed to join the channel: \(result). Check your parameters.")
+    }
+  })
+  ```
+
+3. Implement the custom audio acquisition module
+
+  Agora provides a sample project [CustomAudioSource.swift](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/CustomAudioSource) to demonstrate how to read PCM audio data from a local file. In production, create a custom audio acquisition module tailored to your business needs.
+
+4. Call `pushExternalAudioFrameRawData` to send captured audio frames to the SDK via the custom audio track. Ensure `trackId` matches the one used when joining the channel in step 2. Set `sampleRate`, `channels`, and `samples` to configure the external audio frame.
+
+:::note
+- For audio-video synchronization, Agora recommends using `getCurrentMonotonicTimeInMs` to obtain the system’s monotonic time and set the `timestamp`.
+  - To push audio frames in `CMSampleBuffer` format, use `pushExternalAudioFrameSampleBuffer`.
+
+:::
+  ```swift
+  extension CustomAudioSource: AgoraPcmSourcePushDelegate {
+    func onAudioFrame(data: UnsafeMutablePointer<UInt8>) {
+      agoraKit.pushExternalAudioFrameRawData(data,
+                        samples: samples,
+                        sampleRate: Int(sampleRate),
+                        channels: Int(audioChannel),
+                        trackId: Int(trackId),
+                        timestamp: 0)
+    }
+  }
+  ```
+
+5. To stop publishing custom audio, call `destroyCustomAudioTrack` to remove the custom audio track.
+
+  ```swift
+  agoraKit.destroyCustomAudioTrack(Int(trackId))
+  ```
+
+### Custom audio rendering
+
+This section shows you how to implement custom audio rendering.
+
+To retrieve audio data for playback, implement collection and processing of raw audio data. Refer to [Raw audio processing](stream-raw-audio.mdx).
+
+Follow these steps to call the raw audio data API in your project for custom audio rendering:
+
+1. Retrieve the audio data to be played from `onRecordAudioFrame`, `onPlaybackAudioFrame`, `onMixedAudioFrame`, or `onPlaybackAudioFrameBeforeMixing`.
+
+2. Independently render and play the audio data.
+
+## Reference
+
+This section explains how to implement different sound effects and audio mixing in your app, covering essential steps and code snippets.
+
+### Sample projects
+
+Agora provides the following open-source sample projects for audio self-capture and audio self-rendering for your reference:
+
+* [CustomAudioSource](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/CustomAudioSource)
+* [CustomAudioRender](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/CustomAudioRender)
+
+### API reference
+
+- [`createCustomAudioTrack`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/createcustomaudiotrack(_:config:))
+- [`destroyCustomAudioTrack`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/destroycustomaudiotrack(_:))
+- [`pushExternalAudioFrameSampleBuffer`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcmediaplayerprotocol/play())
+- [`pushExternalAudioFrameRawData`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:))
+- [`enableExternalAudioSink`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableexternalaudiosink(_:samplerate:channels:))
+- [`pullPlaybackAudioFrameRawData`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/pullplaybackaudioframerawdata(_:lengthinbyte:))
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
+
+Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
+
+* Your app has its own audio module.
+* You need to process the captured audio with a pre-processing library for audio enhancement.
+* You need flexible device resource allocation to avoid conflicts with other services.
+
+This page shows you how to capture and render audio from custom sources.
+
+## Understand the tech
+
+To set an external audio source, you configure the Agora Engine before joining a channel. To manage the capture and processing of audio frames, you use methods from outside the Video SDK that are specific to your custom source. Video SDK enables you to push processed audio data to the subscribers in a channel.
+
+#### Capture custom audio
+The following figure illustrates the process of custom audio capture.
+
+![Audio data transmission](/images/video-sdk/audio-data-transmission.svg)
+
+- You implement the capture module using external methods provided by the SDK.
+
+- You call `pushExternalAudioFrame` to send the captured audio frames to the SDK.
+
+#### Render custom audio
+
+The following figure illustrates the process of custom audio rendering.
+
+![Audio Data Transmission](/images/video-sdk/custom-audio-rendering-sdk.svg)
+
+- You implement the rendering module using external methods provided by the SDK.
+
+- You call `pullPlaybackAudioFrame` to retrieve the audio data sent by remote users.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implementation
+
+This section shows you how to implement custom audio capture and render audio from a custom source.
+
+### Customize the audio source
+
+Refer to the following call sequence diagram to implement custom audio capture in your app:
+
+**Custom audio capture**
+
+![Custom audio capture](/images/video-sdk/custom-audio-capture-with-custom-track.svg)
+
+Follow these steps to implement custom audio capture in your project:
+
+1. After initializing `AgoraRtcEngineKit`, call `createCustomAudioTrack` to create a custom audio track and retrieve the audio track ID.
+
+  ```swift
+  let audioTrack = AgoraAudioTrackConfig()
+  audioTrack.enableLocalPlayback = true
+  trackId = agoraKit.createCustomAudioTrack(.mixable, config: audioTrack)
+  ```
+
+1. Use `joinChannelByToken` to join the channel. In `AgoraRtcChannelMediaOptions`, set the `publishCustomAudioTrackId` parameter to the audio track ID you obtained. Set `publishCustomAudioTrack` to `YES` to publish the custom audio track in the channel.
+
+:::warning
+
+To play an external audio source locally using `enableCustomAudioLocalPlayback`, or to adjust the local playback volume of a custom audio track using `adjustCustomAudioPlayoutVolume`, set `enableAudioRecordingOrPlayout` to `YES` in `AgoraRtcChannelMediaOptions`.
+
+:::
+  ```swift
+  let option = AgoraRtcChannelMediaOptions()
+  // Disable microphone track
+  option.publishMicrophoneTrack = false
+  // Enable the custom audio track
+  option.publishCustomAudioTrack = true
+  // Set the custom audio track ID
+  option.publishCustomAudioTrackId = Int(trackId)
+  option.clientRoleType = GlobalSettings.shared.getUserRole()
+  NetworkManager.shared.generateToken(channelName: channelName, success: { token in
+    // Join the channel
+    let result = self.agoraKit.joinChannel(byToken: token, channelId: channelName, uid: 0, mediaOptions: option)
+    if result != 0 {
+      self.showAlert(title: "Error", message: "Failed to join the channel: \(result). Check your parameters.")
+    }
+  })
+  ```
+
+3. Implement the custom audio acquisition module
+
+  Agora provides a sample project [CustomAudioSource.swift](https://github.com/AgoraIO/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/CustomAudioSource) to demonstrate how to read PCM audio data from a local file. In production, create a custom audio acquisition module tailored to your business needs.
+
+4. Call `pushExternalAudioFrameRawData` to send captured audio frames to the SDK via the custom audio track. Ensure `trackId` matches the one used when joining the channel in step 2. Set `sampleRate`, `channels`, and `samples` to configure the external audio frame.
+
+:::note
+- For audio-video synchronization, Agora recommends using `getCurrentMonotonicTimeInMs` to obtain the system’s monotonic time and set the `timestamp`.
+  - To push audio frames in `CMSampleBuffer` format, use `pushExternalAudioFrameSampleBuffer`.
+
+:::
+  ```swift
+  extension CustomAudioSource: AgoraPcmSourcePushDelegate {
+    func onAudioFrame(data: UnsafeMutablePointer<UInt8>) {
+      agoraKit.pushExternalAudioFrameRawData(data,
+                        samples: samples,
+                        sampleRate: Int(sampleRate),
+                        channels: Int(audioChannel),
+                        trackId: Int(trackId),
+                        timestamp: 0)
+    }
+  }
+  ```
+
+5. To stop publishing custom audio, call `destroyCustomAudioTrack` to remove the custom audio track.
+
+  ```swift
+  agoraKit.destroyCustomAudioTrack(Int(trackId))
+  ```
+
+### Custom audio rendering
+
+This section explains how to implement custom audio rendering.
+
+To retrieve audio data for playback, implement collection and processing of raw audio data. Refer to [Raw audio processing](stream-raw-audio.mdx).
+
+Follow these steps to call the raw audio data API and implement custom audio rendering in your project:
+
+1. Retrieve the audio data to be played from `onRecordAudioFrame`, `onPlaybackAudioFrame`, `onMixedAudioFrame`, or `onPlaybackAudioFrameBeforeMixing`.
+
+2. Independently render and play the audio data.
+
+## Reference
+
+This section explains how to implement different sound effects and audio mixing in your app, covering essential steps and code snippets.
+
+### Sample projects
+
+Agora provides the following open-source sample projects for audio self-capture and audio self-rendering for your reference:
+
+* [CustomAudioSource](https://github.com/AgoraIO/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/CustomAudioSource)
+* [CustomAudioRender](https://github.com/AgoraIO/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/CustomAudioRender)
+
+### API reference
+
+- [`createCustomAudioTrack`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/createcustomaudiotrack(_:config:))
+- [`destroyCustomAudioTrack`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/destroycustomaudiotrack(_:))
+- [`pushExternalAudioFrameSampleBuffer`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcmediaplayerprotocol/play())
+- [`pushExternalAudioFrameRawData`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:))
+- [`enableExternalAudioSink`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/enableexternalaudiosink(_:samplerate:channels:))
+- [`pullPlaybackAudioFrameRawData`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/pullplaybackaudioframerawdata(_:lengthinbyte:))
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+The default audio module of Video SDK meets the need of using basic audio functions in your app. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
+
+Video SDK uses the basic audio module on the device your app runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your app, such as:
+
+* Your app has its own audio module.
+* You need to process the captured audio with a pre-processing library for audio enhancement.
+* You need flexible device resource allocation to avoid conflicts with other services.
+
+This page shows you how to capture and render audio from custom sources.
+
+## Understand the tech
+
+To set an external audio source, you configure the Agora Engine before joining a channel. To manage the capture and processing of audio frames, you use methods from outside the Video SDK that are specific to your custom source. Video SDK enables you to push processed audio data to the subscribers in a channel.
+
+#### Capture custom audio
+The following figure illustrates the process of custom audio capture.
+
+![Audio data transmission](/images/video-sdk/audio-data-transmission.svg)
+
+- You implement the capture module using external methods provided by the SDK.
+
+- You call `pushExternalAudioFrame` to send the captured audio frames to the SDK.
+
+#### Render custom audio
+
+The following figure illustrates the process of custom audio rendering.
+
+![Audio Data Transmission](/images/video-sdk/custom-audio-rendering-sdk.svg)
+
+- You implement the rendering module using external methods provided by the SDK.
+
+- You call `pullPlaybackAudioFrame` to retrieve the audio data sent by remote users.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implementation
+
+### Custom audio capture
+
+Refer to the following call sequence diagram to implement custom audio capture in your app:
+
+**Custom audio capture**
+
+![Custom audio capture](/images/video-sdk/custom-audio-capture.svg)
+
+Follow these steps to implement custom audio capture in your project:
+
+1. Enable and configure custom audio source:
+
+  Before calling `joinChannel` to join the channel, call `setExternalAudioSource` to enable and configure custom audio capture.
+
+  ```cpp
+  // Specify the custom audio source
+  m_rtcEngine->setExternalAudioSource(true, m_capAudioInfo.sampleRate, m_capAudioInfo.channels);
+
+  // Local user joins the channel
+  ChannelMediaOptions option;
+  option.autoSubscribeAudio = true;
+  option.autoSubscribeVideo = true;
+  m_rtcEngine->joinChannel("Your token", szChannelId.c_str(), 0, option);
+  ```
+
+1. Implement audio capture and processing
+
+  Use methods outside the SDK to implement audio capture and processing yourself.
+
+1. Send audio frames to SDK
+
+  Call `pushAudioFrame` to send the captured audio frames to the SDK for later use.
+
+  ```cpp
+  mediaEngine->pushAudioFrame(AUDIO_RECORDING_SOURCE, &m_audioFrame);
+  ```
+
+### Custom audio rendering
+
+This section shows you how to implement custom audio rendering. Refer to the following call sequence diagram to implement custom audio rendering in your app:
+
+**Custom audio rendering workflow**
+
+![Custom Audio Rendering Workflow](/images/video-sdk/custom-audio-render.svg)
+
+To implement custom audio rendering, use the following methods:
+
+1. Enable and configure custom audio sink
+
+  Before calling `joinChannel` to join the channel, call `setExternalAudioSink` to enable and configure custom audio rendering.
+  ```cpp
+  // Enable custom audio rendering
+  // Sample rate (Hz) can be set to 16000, 32000, 44100 or 48000
+  // Number of channels can be set to 1 or 2
+  nRet = m_rtcEngine->setExternalAudioSink(m_renderAudioInfo.sampleRate, m_renderAudioInfo.channels);
+  ```
+
+1. Pull and render remote audio data
+
+   * After joining the channel, call `pullAudioFrame` to get the audio data sent by the remote user.
+   * Use your own audio renderer to process the audio data and then play the rendered data.
+
+   ```cpp
+   void CAgoraCaptureAduioDlg::PullAudioFrameThread(CAgoraCaptureAduioDlg * self)
+   {
+     int nRet = 0;
+     agora::util::AutoPtr<agora::media::IMediaEngine> mediaEngine;
+     mediaEngine.queryInterface(self->m_rtcEngine, AGORA_IID_MEDIA_ENGINE);
+     IAudioFrameObserver::AudioFrame audioFrame;
+     audioFrame.avsync_type = 0; // Reserved parameter 
+     audioFrame.bytesPerSample = TWO_BYTES_PER_SAMPLE;
+     audioFrame.type = agora::media::IAudioFrameObserver::FRAME_TYPE_PCM16;
+     audioFrame.channels = self->m_renderAudioInfo.channels;
+     audioFrame.samplesPerChannel = self->m_renderAudioInfo.sampleRate / 100 * self->m_renderAudioInfo.channels;
+     audioFrame.samplesPerSec = self->m_renderAudioInfo.sampleRate;
+     audioFrame.buffer = new BYTE[audioFrame.samplesPerChannel * audioFrame.bytesPerSample];
+     while (self->m_extenalRenderAudio )
+     {
+       // Pull remote audio data
+       nRet = mediaEngine->pullAudioFrame(&audioFrame);
+       if (nRet != 0)
+       {
+         Sleep(10);
+         continue;
+       }
+       SIZE_T nSize = audioFrame.samplesPerChannel * audioFrame.bytesPerSample;
+       self->m_audioRender.Render((BYTE*)audioFrame.buffer, nSize);
+     }
+     delete audioFrame.buffer;
+   }
+   ```
+
+### Using raw audio data callback
+
+This section explains how to implement custom audio rendering.
+
+To retrieve audio data for playback, implement collection and processing of raw audio data. Refer to [Raw audio processing](stream-raw-audio.mdx).
+
+Follow these steps to call the raw audio data API in your project for custom audio rendering:
+
+1. Retrieve audio data for playback using the `onRecordAudioFrame`, `onPlaybackAudioFrame`, `onMixedAudioFrame`, or `onPlaybackAudioFrameBeforeMixing` callback.
+
+2. Independently render and play the audio data.
+
+## Reference
+
+This section explains how to implement different sound effects and audio mixing in your app, covering essential steps and code snippets.
+
+### Sample projects
+
+Agora provides an open-source [CustomAudioCapture](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/CustomAudioCapture) project for your reference. Download the project or inspect the source code for a more detailed example.
+
+### API reference
+
+* [`setExternalAudioSource`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_imediaengine_setexternalaudiosource2)
+
+* [`pushAudioFrame`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_imediaengine.html#api_imediaengine_pushaudioframe0)
+
+* [`setExternalAudioSink`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_imediaengine_setexternalaudiosink)
+
+* [`pullAudioFrame`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_imediaengine.html#api_imediaengine_pullaudioframe)
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+The default audio module of Video SDK meets the need of using basic audio functions in your game. For adding advanced audio functions, Video SDK supports using custom audio sources and custom audio rendering modules.
+
+Video SDK uses the basic audio module on the device your game runs on by default. However, there are certain use-cases where you want to integrate a custom audio source into your game, such as:
+
+* Your game has its own audio module.
+* You need to process the captured audio with a pre-processing library for audio enhancement.
+* You need flexible device resource allocation to avoid conflicts with other services.
+
+This page shows you how to capture and render audio from custom sources.
+
+## Understand the tech
+
+To set an external audio source, you configure the Agora Engine before joining a channel. To manage the capture and processing of audio frames, you use methods from outside the Video SDK that are specific to your custom source. Video SDK enables you to push processed audio data to the subscribers in a channel.
+
+#### Capture custom audio
+The following figure illustrates the process of custom audio capture.
+
+![Audio data transmission](/images/video-sdk/audio-data-transmission.svg)
+
+- You implement the capture module using external methods provided by the SDK.
+
+- You call `pushAudioFrame` to send the captured audio frames to the SDK.
+
+#### Render custom audio
+
+The following figure illustrates the process of custom audio rendering.
+
+![Audio Data Transmission](/images/video-sdk/custom-audio-rendering-sdk.svg)
+
+- You implement the rendering module using external methods provided by the SDK.
+
+- You call `pullAudioFrame` to retrieve the audio data sent by remote users.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implementation
+
+This section shows you how to implement custom audio capture and render audio from an external source using the SDK.
+
+### Initialize MediaEngine
+
+Before implementing custom audio features, obtain the `MediaEngine` interface from the initialized `RtcEngine`:
+
+```cpp
+void InitAgoraEngine(FString APP_ID, FString TOKEN, FString CHANNEL_NAME)
+{
+  // Initialize RtcEngine context and event handler
+  agora::rtc::RtcEngineContext RtcEngineContext;
+  UserRtcEventHandler = MakeShared<FUserRtcEventHandler>(this);
+  std::string StdStrAppId = TCHAR_TO_UTF8(*APP_ID);
+  RtcEngineContext.appId = StdStrAppId.c_str();
+  RtcEngineContext.eventHandler = UserRtcEventHandler.Get();
+  RtcEngineContext.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_LIVE_BROADCASTING;
+
+  // Initialize the RtcEngine
+  int ret = AgoraUERtcEngine::Get()->initialize(RtcEngineContext);
+
+  // Query for the MediaEngine interface
+  AgoraUERtcEngine::Get()->queryInterface(AGORA_IID_MEDIA_ENGINE, (void**)&MediaEngine);
+}
+```
+
+:::info
+The MediaEngine is not created directly. Instead, it's obtained as an interface from the initialized RtcEngine using the `queryInterface` method with `AGORA_IID_MEDIA_ENGINE`.
+
+:::
+### Custom audio capture
+
+Refer to the following call sequence diagram to implement custom audio capture in your app:
+
+**Custom audio capture process**
+
+![Custom audio capture](/images/video-sdk/custom-audio-capture-with-custom-track.svg)
+
+Follow these steps to implement custom audio capture in your project:
+
+1. **Enable and configure custom audio source**
+ Before calling `joinChannel` to join the channel, call `setExternalAudioSource` to enable and configure custom audio capture.
+
+  ```cpp
+  void SetExternalAudioSource()
+  {
+    // Specify the custom audio source
+    int ret = MediaEngine->setExternalAudioSource(true, SAMPLE_RATE, CHANNEL, 1);
+    UBFL_Logger::Print(FString::Printf(TEXT("%s ret %d"), *FString(FUNCTION_MACRO), ret), LogMsgViewPtr);
+  }
+
+  void JoinChannel()
+  {
+    // Enable audio and set client role
+    AgoraUERtcEngine::Get()->enableAudio();
+    AgoraUERtcEngine::Get()->setClientRole(CLIENT_ROLE_BROADCASTER);
+
+    // Join the channel
+    int ret = AgoraUERtcEngine::Get()->joinChannel(TCHAR_TO_UTF8(*Token), TCHAR_TO_UTF8(*ChannelName), "", 0);
+  }
+  ```
+
+2. **Implement audio capture and processing**
+ Use methods outside the SDK to implement audio capture and processing yourself.
+
+3. **Send audio frames to SDK**
+ Call `pushAudioFrame` to send the captured audio frames to the SDK for later use.
+
+  1. Load audio data from a file and start a thread to push the frames:
+
+    ```cpp
+    void StartPushAudio()
+    {
+      FString LoadDir = FPaths::ProjectContentDir() / TEXT("Audio/Agora.io-Interactions.wav");
+      TArray<uint8> AudioData;
+      FFileHelper::LoadFileToArray(AudioData, *LoadDir, 0);
+      Runnable = new FAgoraCaptureRunnable(MediaEngine, AudioData.GetData(), AudioData.Num() * sizeof(uint8));
+      FRunnableThread* RunnableThread = FRunnableThread::Create(Runnable, TEXT("AgoraUE-UserThread"));
+    }
+    ```
+
+  2. This class reads audio data at 10ms intervals, converts it into `AudioFrame` format, and sends it to the Agora SDK using `pushAudioFrame`.
+
+    ```cpp
+    class FAgoraCaptureRunnable : public FRunnable
+    {
+    public:
+      FAgoraCaptureRunnable(agora::media::IMediaEngine* MediaEngine, const uint8* audioData, int dataLength)
+        : MediaEngine(MediaEngine), dataLength(dataLength)
+      {
+        this->audioData = new uint8[dataLength];
+        FMemory::Memcpy(this->audioData, audioData, dataLength * sizeof(uint8));
+      }
+
+      virtual uint32 Run() override
+      {
+        auto tic = getTimeStamp();
+        bStopThread = false;
+        const uint8* Ptr = reinterpret_cast<const uint8*>(audioData);
+
+        while (!bStopThread)
+        {
+          if (MediaEngine == nullptr) break;
+
+          auto toc = getTimeStamp();
+          if ((toc - tic) >= 10) // Push every 10ms
+          {
+            if (dataLength <= 0) break;
+
+            if (sendByte == nullptr)
+            {
+              sendByte = FMemory::Malloc(SAMPLE_RATE / PUSH_FREQ_PER_SEC *
+                          agora::rtc::BYTES_PER_SAMPLE::TWO_BYTES_PER_SAMPLE * CHANNEL);
+            }
+
+            FMemory::Memcpy(sendByte, Ptr, SAMPLE_RATE / PUSH_FREQ_PER_SEC *
+                   agora::rtc::BYTES_PER_SAMPLE::TWO_BYTES_PER_SAMPLE * CHANNEL);
+
+            // Prepare audio frame
+            agora::media::IAudioFrameObserverBase::AudioFrame externalAudioFrame;
+            externalAudioFrame.bytesPerSample = agora::rtc::BYTES_PER_SAMPLE::TWO_BYTES_PER_SAMPLE;
+            externalAudioFrame.type = agora::media::IAudioFrameObserver::FRAME_TYPE_PCM16;
+            externalAudioFrame.samplesPerChannel = SAMPLE_RATE / PUSH_FREQ_PER_SEC;
+            externalAudioFrame.samplesPerSec = SAMPLE_RATE;
+            externalAudioFrame.channels = CHANNEL;
+            externalAudioFrame.buffer = sendByte;
+            externalAudioFrame.renderTimeMs = 10;
+
+            // Push audio frame to SDK
+            agora::rtc::track_id_t trackId = 0;
+            int ret = MediaEngine->pushAudioFrame(&externalAudioFrame, trackId);
+
+            Ptr += SAMPLE_RATE / PUSH_FREQ_PER_SEC * 2 * CHANNEL;
+            dataLength -= SAMPLE_RATE / PUSH_FREQ_PER_SEC * 2 * CHANNEL;
+            tic = toc;
+          }
+          FPlatformProcess::Sleep(0.001f);
+        }
+        return 0;
+      }
+
+    private:
+      agora::media::IMediaEngine* MediaEngine = nullptr;
+      uint8* audioData = nullptr;
+      void* sendByte = nullptr;
+      int dataLength = 0;
+      bool bStopThread = false;
+
+      // Audio configuration
+      const int CHANNEL = 2;
+      const int SAMPLE_RATE = 48000;
+      const int PUSH_FREQ_PER_SEC = 100;
+    };
+    ```
+
+### Custom audio rendering
+
+This section shows you how to implement custom audio rendering. Refer to the following call sequence diagram to implement custom audio rendering in your game:
+
+**Custom audio rendering workflow**
+
+![Custom Audio Rendering Workflow](/images/video-sdk/custom-audio-render.svg)
+
+To implement custom audio rendering, use the following methods:
+
+1. **Enable and configure custom audio sink**
+ Before calling `joinChannel` to join the channel, call `setExternalAudioSink` to enable and configure custom audio rendering.
+
+  ```cpp
+  void SetExternalAudioSink()
+  {
+    // Enable custom audio rendering
+    // Sample rate (Hz) can be set to 16000, 32000, 44100 or 48000
+    // Number of channels can be set to 1 or 2
+    int CHANNEL = 1;
+    int SAMPLE_RATE = 44100;
+    int ret = MediaEngine->setExternalAudioSink(true, SAMPLE_RATE, CHANNEL);
+  }
+  ```
+
+2. **Pull and render remote audio data**
+ To pull audio frames for custom rendering, call `pullAudioFrame` in a dedicated thread. After pulling the frame, send the audio buffer to your custom sound player (such as a `USoundWaveProcedural` wrapper like `AgoraSoundWaveProcedural`).
+
+  ```cpp
+  class FAgoraRenderRunnable : public FRunnable
+  {
+  public:
+    FAgoraRenderRunnable(agora::media::IMediaEngine* InMediaEngine, UAgoraSoundWaveProcedural* InAgoraSoundWaveProcedural)
+      : MediaEngine(InMediaEngine), AgoraSoundWaveProcedural(InAgoraSoundWaveProcedural)
+    {
+    }
+
+    virtual uint32 Run() override
+    {
+      constexpr int PUSH_FREQ_PER_SEC = 100;
+      constexpr int SAMPLE_RATE = 44100;
+      constexpr int CHANNEL = 1;
+
+      auto tic = getTimeStamp();
+      bStopThread = false;
+
+      // Prepare the external audio frame
+      agora::media::IAudioFrameObserverBase::AudioFrame externalAudioFrame;
+      externalAudioFrame.avsync_type = 0; // Reserved parameter
+      externalAudioFrame.bytesPerSample = agora::rtc::BYTES_PER_SAMPLE::TWO_BYTES_PER_SAMPLE;
+      externalAudioFrame.type = agora::media::IAudioFrameObserver::FRAME_TYPE_PCM16;
+      externalAudioFrame.samplesPerChannel = SAMPLE_RATE / PUSH_FREQ_PER_SEC;
+      externalAudioFrame.samplesPerSec = SAMPLE_RATE;
+      externalAudioFrame.channels = CHANNEL;
+      externalAudioFrame.renderTimeMs = 10;
+      externalAudioFrame.buffer = FMemory::Malloc(
+        externalAudioFrame.samplesPerChannel *
+        externalAudioFrame.bytesPerSample *
+        externalAudioFrame.channels
+      );
+
+      while (!bStopThread)
+      {
+        if (MediaEngine == nullptr) break;
+
+        auto toc = getTimeStamp();
+        if ((toc - tic) >= 10) // Pull every 10 ms
+        {
+          tic = getTimeStamp();
+
+          // Pull remote audio data
+          int ret = MediaEngine->pullAudioFrame(&externalAudioFrame);
+          if (ret == 0 && AgoraSoundWaveProcedural)
+          {
+            // Send the frame to custom renderer (e.g., USoundWaveProcedural wrapper)
+            AgoraSoundWaveProcedural->AddToFrames(externalAudioFrame);
+          }
+          else if (ret != 0)
+          {
+            FPlatformProcess::Sleep(0.01f); // Sleep 10ms if no data
+            continue;
+          }
+        }
+        FPlatformProcess::Sleep(0.001f); // Yield to CPU
+      }
+
+      // Free audio buffer after loop
+      FMemory::Free(externalAudioFrame.buffer);
+      return 0;
+    }
+
+  private:
+    agora::media::IMediaEngine* MediaEngine = nullptr;
+    UAgoraSoundWaveProcedural* AgoraSoundWaveProcedural = nullptr;
+    bool bStopThread = false;
+  };
+  ```
+
+ - After joining the channel, call `pullAudioFrame` to get the audio data sent by the remote user.
+ - Use your own audio renderer to process the audio data and then play the rendered data.
+
+### Using raw audio data callback
+
+This section explains how to implement custom audio rendering.
+
+To retrieve audio data for playback, implement collection and processing of raw audio data. Refer to [Raw audio processing](stream-raw-audio.mdx).
+
+Follow these steps to call the raw audio data API in your project for custom audio rendering:
+
+1. Retrieve audio data for playback using the `onRecordAudioFrame`, `onPlaybackAudioFrame`, `onMixedAudioFrame`, or `onPlaybackAudioFrameBeforeMixing` callback.
+
+2. Independently render and play the audio data.
+
+## Reference
+
+This section explains how to implement different sound effects and audio mixing in your game, covering essential steps and code snippets.
+
+### Sample projects
+
+Agora provides the following open-source sample projects for audio self-capture and audio self-rendering for your reference:
+
+* [CustomCaptureAudio](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example/Source/AgoraExample/Examples/Advanced/CustomCaptureAudio)
+* [CustomRenderAudio](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/blob/main/Agora-Unreal-SDK-CPP-Example/Source/AgoraExample/Examples/Advanced/CustomRenderAudio/)
+
+### API reference
+
+* [`setExternalAudioSource`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_imediaengine_setexternalaudiosource2)
+
+* [`pushAudioFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_imediaengine.html#api_imediaengine_pushaudioframe0)
+
+* [`setExternalAudioSink`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_imediaengine_setexternalaudiosink)
+
+* [`pullAudioFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_imediaengine.html#api_imediaengine_pullaudioframe)
+
+* [`createCustomAudioTrack`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_imediaengine.html#api_imediaengine_createcustomaudiotrack)
+
+* [`destroyCustomAudioTrack`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_imediaengine.html#api_imediaengine_destroycustomaudiotrack)
+</PlatformStructured>
+

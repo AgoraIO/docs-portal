@@ -21,7 +21,7 @@ Agora's server for the whiteboard service will allow more data formats but canno
 
 The Whiteboard SDK RESTful API provides the following features:
 
-- [Token generation](/en/realtime-media/whiteboard/build/generate-token-rest.md)
+- [Token generation](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md)
 - [Room management](room-management)
 - [Screenshot management](screenshots)
 - [Scene management](scene-management)

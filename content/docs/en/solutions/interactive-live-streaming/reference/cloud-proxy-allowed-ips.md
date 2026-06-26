@@ -25,7 +25,7 @@ Follow these guidelines to configure cloud proxy settings.
 
   :::note
   When adding IP addresses:
-    - If you use cloud proxy with [Restricted media zones](../build/geofencing.mdx), add only the IP addresses dedicated to your specified region.
+    - If you use cloud proxy with [Restricted media zones](../build/secure-and-protect-channels/geofencing.mdx), add only the IP addresses dedicated to your specified region.
     - If you do not restrict media zones, add all IP addresses to ensure connectivity.
 :::
 

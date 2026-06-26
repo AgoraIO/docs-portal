@@ -1,0 +1,893 @@
+---
+title: "Restrict media zones"
+description: "Control and customize video SDK data routing in your app"
+---
+
+<PlatformStructured platform="android">
+When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN® media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® media zone users connect to.
+
+:::info
+This is an advanced feature suitable only for use-cases with access security restrictions.
+
+:::
+## Understand the tech
+
+After you turn on the restricted media zones feature, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user. As an example, the following table shows the outcome if you specify North America as the access zone, and users connect to Agora SDRTN® from North America and China respectively:
+
+<thead>
+  <tr>
+   <th>Designated access zone</th>
+   <th>User's location</th>
+   <th>Zone actually accessed by the SDK</th>
+   <th>User experience</th>
+  </tr>
+ </thead>
+ <tr>
+   <td rowspan="2">North America</td>
+   <td>North America</td>
+   <td>North America</td>
+   <td>Normal</td>
+  </tr>
+  <tr>
+   <td>China</td>
+   <td>North America</td>
+   <td>Quality may be affected</td>
+  </tr>
+:::info
+* If a server in the specified zone is not available, the SDK reports an error.
+* Due to cross-regional public internet between the designated zone and the geographical location where the app user is located, the audio and video experience may be affected.
+
+:::
+The following figure shows the workflow you implement to restrict access to media zones:
+
+**Restrict media zones**
+
+![Restrict media zones](/images/video-sdk/restrict-media-zones.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement restricted media zones
+This section shows you how to restrict access to media zones in your app.
+
+You specify the access zones by setting the `RtcEngineConfig.mAreaCode` parameter when calling the `create` method to create an `RtcEngine` instance. The available zones are:
+
+* `AREA_CODE_GLOB`: Global (Default)
+* `AREA_CODE_CN` : Mainland China 
+* `AREA_CODE_NA` : North America
+* `AREA_CODE_EU` : Europe
+* `AREA_CODE_AS` : Asia excluding Mainland China
+* `AREA_CODE_JP` : Japan
+* `AREA_CODE_IN` : India
+
+:::info
+Media zones support bitwise operations.
+
+:::
+### Include a media zone
+
+To limit access to servers in only one zone, such as North America, set `config.mAreaCode = AREA_CODE_NA;` before creating the `RtcEngine` instance:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Initialize the App and join the channel
+private void initializeAndJoinChannel() {
+  try {
+    RtcEngineConfig config = new RtcEngineConfig();
+    config.mAppId = appId;
+    config.mContext = mContext;
+    config.mEventHandler = mEngineEventHandler.mRtcEventHandler;
+    // Restrict access to servers in North America only
+    config.mAreaCode = AREA_CODE_NA;
+    mRtcEngine = RtcEngine.create(config);
+  } catch (Exception e) {
+      throw new RuntimeException("Check the error.");
+  }
+}
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Initialize the App and join the channel
+private fun initializeAndJoinChannel() {
+  try {
+    val config = RtcEngineConfig()
+    config.mAppId = appId
+    config.mContext = mContext
+    config.mEventHandler = mEngineEventHandler.mRtcEventHandler
+    // Restrict access to servers in North America only
+    config.mAreaCode = AREA_CODE_NA
+    mRtcEngine = RtcEngine.create(config)
+  } catch (e: Exception) {
+      throw RuntimeException("Check the error.")
+  }
+}
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Exclude a media zone
+
+To exclude servers in a zone, such as Mainland China, set `config.mAreaCode = AREA_CODE_GLOB ^ AREA_CODE_CN;` before creating the `RtcEngine` instance:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Initialize the App and join the channel
+private void initializeAndJoinChannel() {
+  try {
+    RtcEngineConfig config = new RtcEngineConfig();
+    config.mAppId = appId;
+    config.mContext = mContext;
+    config.mEventHandler = mEngineEventHandler.mRtcEventHandler;
+    // Exclude Mainland China from access zones
+    config.mAreaCode = AREA_CODE_GLOB ^ AREA_CODE_CN;
+    mRtcEngine = RtcEngine.create(config);
+  } catch (Exception e) {
+      throw new RuntimeException("Check the error.");
+  }
+}
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Initialize the App and join the channel
+private fun initializeAndJoinChannel() {
+  try {
+    val config = RtcEngineConfig()
+    config.mAppId = appId
+    config.mContext = mContext
+    config.mEventHandler = mEngineEventHandler.mRtcEventHandler
+    // Exclude Mainland China from access zones
+    config.mAreaCode = AREA_CODE_GLOB xor AREA_CODE_CN
+    mRtcEngine = RtcEngine.create(config)
+  } catch (e: Exception) {
+      throw RuntimeException("Check the error.")
+  }
+}
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`create` [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_initialize)
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN® media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® media zone users connect to.
+
+:::info
+This is an advanced feature suitable only for use-cases with access security restrictions.
+
+:::
+## Understand the tech
+
+After you turn on the restricted media zones feature, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user. As an example, the following table shows the outcome if you specify North America as the access zone, and users connect to Agora SDRTN® from North America and China respectively:
+
+<thead>
+  <tr>
+   <th>Designated access zone</th>
+   <th>User's location</th>
+   <th>Zone actually accessed by the SDK</th>
+   <th>User experience</th>
+  </tr>
+ </thead>
+ <tr>
+   <td rowspan="2">North America</td>
+   <td>North America</td>
+   <td>North America</td>
+   <td>Normal</td>
+  </tr>
+  <tr>
+   <td>China</td>
+   <td>North America</td>
+   <td>Quality may be affected</td>
+  </tr>
+:::info
+* If a server in the specified zone is not available, the SDK reports an error.
+* Due to cross-regional public internet between the designated zone and the geographical location where the app user is located, the audio and video experience may be affected.
+
+:::
+The following figure shows the workflow you implement to restrict access to media zones:
+
+**Restrict media zones**
+
+![Restrict media zones](/images/video-sdk/restrict-media-zones.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement restricted media zones
+This section shows you how to restrict access to media zones in your app.
+
+You specify the access zones by setting the `AgoraRtcEngineConfig.areaCode` parameter when calling the `sharedEngineWithConfig` method to create an instance of `AgoraRtcEngineKit`.
+
+* `AgoraAreaCodeType.global`: Global (Default)
+* `AgoraAreaCodeType.AS` : Asia except Mainland China
+* `AgoraAreaCodeType.CN` : Mainland China 
+* `AgoraAreaCodeType.EUR` : Europe
+* `AgoraAreaCodeType.IN` : India
+* `AgoraAreaCodeType.JP` : Japan
+* `AgoraAreaCodeType.NA` : North America
+
+:::info
+Media zones support bitwise operations.
+
+:::
+### Include a media zone
+
+To limit access to servers in only one zone, such as North America, set `config.areaCode = .NA` before creating the `AgoraRtcEngineKit` instance.
+
+```swift
+// Initialize AgoraEngine
+func initializeAgoraEngine() {
+   let config = AgoraRtcEngineConfig()
+   // Pass in your App ID
+   config.appId = "YourAppId"
+   config.channelProfile = .liveBroadcasting
+   // Specify access to only servers in North America
+   config.areaCode = .NA
+   agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+ }
+```
+
+### Exclude a media zone
+
+To exclude servers in a zone, such as Mainland China, set `config.areaCode = AgoraAreaCodeType(rawValue: AgoraAreaCodeType.global.rawValue ^ AgoraAreaCodeType.CN.rawValue)！` before creating the `AgoraRtcEngineKit` instance.
+
+```swift
+// Initialize AgoraEngine
+func initializeAgoraEngine() {
+  let config = AgoraRtcEngineConfig()
+  // Pass in your App ID
+  config.appId = "YourAppId"
+  config.channelProfile = .liveBroadcasting
+  // Exclude Mainland China from access area
+  config.areaCode = AgoraAreaCodeType(rawValue: AgoraAreaCodeType.global.rawValue ^ AgoraAreaCodeType.CN.rawValue)！
+  agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+}
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`areaCode`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcengineconfig/areacode)
+- [`AgoraRtcEngineConfig`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcengineconfig)
+- [`AgoraAreaCodeType`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraareacodetype)
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN® media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® media zone users connect to.
+
+:::info
+This is an advanced feature suitable only for use-cases with access security restrictions.
+
+:::
+## Understand the tech
+
+After you turn on the restricted media zones feature, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user. As an example, the following table shows the outcome if you specify North America as the access zone, and users connect to Agora SDRTN® from North America and China respectively:
+
+<thead>
+  <tr>
+   <th>Designated access zone</th>
+   <th>User's location</th>
+   <th>Zone actually accessed by the SDK</th>
+   <th>User experience</th>
+  </tr>
+ </thead>
+ <tr>
+   <td rowspan="2">North America</td>
+   <td>North America</td>
+   <td>North America</td>
+   <td>Normal</td>
+  </tr>
+  <tr>
+   <td>China</td>
+   <td>North America</td>
+   <td>Quality may be affected</td>
+  </tr>
+:::info
+* If a server in the specified zone is not available, the SDK reports an error.
+* Due to cross-regional public internet between the designated zone and the geographical location where the app user is located, the audio and video experience may be affected.
+
+:::
+The following figure shows the workflow you implement to restrict access to media zones:
+
+**Restrict media zones**
+
+![Restrict media zones](/images/video-sdk/restrict-media-zones.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement restricted media zones
+This section shows you how to restrict access to media zones in your app.
+
+You specify the access zones by setting the `AgoraRtcEngineConfig.areaCode` parameter when calling the `sharedEngineWithConfig` method to create an instance of `AgoraRtcEngineKit`.
+
+* `AgoraAreaCodeType.global`: Global (Default)
+* `AgoraAreaCodeType.AS` : Asia except Mainland China
+* `AgoraAreaCodeType.CN` : Mainland China 
+* `AgoraAreaCodeType.EUR` : Europe
+* `AgoraAreaCodeType.IN` : India
+* `AgoraAreaCodeType.JP` : Japan
+* `AgoraAreaCodeType.NA` : North America
+
+:::info
+Media zones support bitwise operations.
+
+:::
+### Include a media zone
+
+To limit access to servers in only one zone, such as North America, set `config.areaCode = .NA` before creating the `AgoraRtcEngineKit` instance.
+
+```swift
+// Initialize AgoraEngine
+func initializeAgoraEngine() {
+   let config = AgoraRtcEngineConfig()
+   // Pass in your App ID
+   config.appId = "YourAppId"
+   config.channelProfile = .liveBroadcasting
+   // Specify access to only servers in North America
+   config.areaCode = .NA
+   agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+ }
+```
+
+### Exclude a media zone
+
+To exclude servers in a zone, such as Mainland China, set `config.areaCode = AgoraAreaCodeType(rawValue: AgoraAreaCodeType.global.rawValue ^ AgoraAreaCodeType.CN.rawValue)！` before creating the `AgoraRtcEngineKit` instance.
+
+```swift
+// Initialize AgoraEngine
+func initializeAgoraEngine() {
+  let config = AgoraRtcEngineConfig()
+  // Pass in your App ID
+  config.appId = "YourAppId"
+  config.channelProfile = .liveBroadcasting
+  // Exclude Mainland China from access area
+  config.areaCode = AgoraAreaCodeType(rawValue: AgoraAreaCodeType.global.rawValue ^ AgoraAreaCodeType.CN.rawValue)！
+  agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+}
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`areaCode`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcengineconfig/areacode)
+- [`AgoraRtcEngineConfig`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcengineconfig)
+- [`AgoraAreaCodeType`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoraareacodetype)
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN® media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® media zone users connect to.
+
+:::info
+This is an advanced feature suitable only for use-cases with access security restrictions.
+
+:::
+## Understand the tech
+
+After you turn on the restricted media zones feature, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user. As an example, the following table shows the outcome if you specify North America as the access zone, and users connect to Agora SDRTN® from North America and China respectively:
+
+<thead>
+  <tr>
+   <th>Designated access zone</th>
+   <th>User's location</th>
+   <th>Zone actually accessed by the SDK</th>
+   <th>User experience</th>
+  </tr>
+ </thead>
+ <tr>
+   <td rowspan="2">North America</td>
+   <td>North America</td>
+   <td>North America</td>
+   <td>Normal</td>
+  </tr>
+  <tr>
+   <td>China</td>
+   <td>North America</td>
+   <td>Quality may be affected</td>
+  </tr>
+:::info
+* If a server in the specified zone is not available, the SDK reports an error.
+* Due to cross-regional public internet between the designated zone and the geographical location where the app user is located, the audio and video experience may be affected.
+
+:::
+The following figure shows the workflow you implement to restrict access to media zones:
+
+**Restrict media zones**
+
+![Restrict media zones](/images/video-sdk/restrict-media-zones.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement restricted media zones
+This section shows you how to restrict access to media zones in your app.
+
+You specify the media zone by setting the `context.areaCode` parameter before calling the `initialize` method to create an `IRtcEngine` instance. The available media zones are:
+
+* `AREA_CODE_GLOB`: Global (Default)
+* `AREA_CODE_CN` : Mainland China
+* `AREA_CODE_NA` : North America
+* `AREA_CODE_EU` : Europe
+* `AREA_CODE_AS` : Asia except Mainland China
+* `AREA_CODE_JP` : Japan
+* `AREA_CODE_IN` : India
+
+:::info
+Media zones support bitwise operations.
+
+:::
+### Include a media zone
+
+To limit access to servers in only one media zone, such as North America, set `context.areaCode = AREA_CODE_NA;` before calling the `initialize` method:
+
+```cpp
+// Initialize Agora SDK
+bool CAgoraRegionConnDlg::InitAgora() {
+  // Create AgoraRtcEngine instance
+  m_rtcEngine = createAgoraRtcEngine();
+  if (!m_rtcEngine) {
+    m_lstInfo.InsertString(m_lstInfo.GetCount() - 1, _T("createAgoraRtcEngine failed"));
+    return false;
+  }
+  m_eventHandler.SetMsgReceiver(m_hWnd);
+
+  RtcEngineContext context;
+  std::string strAppID = GET_APP_ID;
+  context.appId = strAppID.c_str();
+  CString area_code;
+  m_cmbAreaCode.GetWindowText(area_code);
+
+  // Restrict access to servers in North America
+  context.areaCode = AREA_CODE_NA;
+
+  // Initialize RtcEngineContext
+  int ret = m_rtcEngine->initialize(context);
+  if (ret != 0) {
+    m_initialize = false;
+    CString strInfo;
+    strInfo.Format(_T("initialize failed: %d"), ret);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+    return false;
+  } else {
+    m_initialize = true;
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), _T("initialize success"));
+  }
+  
+  return true;
+}
+```
+
+### Exclude a media zone
+
+To exclude servers in a region, such as Mainland China, set `context.areaCode = AREA_CODE_GLOB ^ AREA_CODE_CN;` before calling the `initialize` method:
+
+```cpp
+// Initialize Agora SDK
+bool CAgoraRegionConnDlg::InitAgora() {
+	// Create AgoraRtcEngine instance
+	m_rtcEngine = createAgoraRtcEngine();
+	if (!m_rtcEngine) {
+		m_lstInfo.InsertString(m_lstInfo.GetCount() - 1, 
+		            _T("createAgoraRtcEngine failed"));
+		return false;
+	}
+	m_eventHandler.SetMsgReceiver(m_hWnd);
+
+	RtcEngineContext context;
+	std::string strAppID = GET_APP_ID;
+	context.appId = strAppID.c_str();
+	CString area_code;
+	m_cmbAreaCode.GetWindowText(area_code);
+
+	// Exclude Mainland China from access area
+  context.areaCode = AREA_CODE_GLOB ^ AREA_CODE_CN;
+
+	// Initialize RtcEngineContext
+	int ret = m_rtcEngine->initialize(context);
+	if (ret != 0) {
+		m_initialize = false;
+		CString strInfo;
+		strInfo.Format(_T("initialize failed: %d"), ret);
+		m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+		return false;
+	} else
+		m_initialize = true;
+	m_lstInfo.InsertString(m_lstInfo.GetCount(), _T("initialize success"));
+}
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`initialize`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_initialize)
+- [`RtcEngineContext`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_rtcengineconfig.html)
+- [`AREA_CODE`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/enum_areacode.html)
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN® media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® media zone users connect to.
+
+:::info
+This is an advanced feature suitable only for use-cases with access security restrictions.
+
+:::
+## Understand the tech
+
+After you turn on the restricted media zones feature, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user. As an example, the following table shows the outcome if you specify North America as the access zone, and users connect to Agora SDRTN® from North America and China respectively:
+
+<thead>
+  <tr>
+   <th>Designated access zone</th>
+   <th>User's location</th>
+   <th>Zone actually accessed by the SDK</th>
+   <th>User experience</th>
+  </tr>
+ </thead>
+ <tr>
+   <td rowspan="2">North America</td>
+   <td>North America</td>
+   <td>North America</td>
+   <td>Normal</td>
+  </tr>
+  <tr>
+   <td>China</td>
+   <td>North America</td>
+   <td>Quality may be affected</td>
+  </tr>
+:::info
+* If a server in the specified zone is not available, the SDK reports an error.
+* Due to cross-regional public internet between the designated zone and the geographical location where the app user is located, the audio and video experience may be affected.
+
+:::
+The following figure shows the workflow you implement to restrict access to media zones:
+
+**Restrict media zones**
+
+![Restrict media zones](/images/video-sdk/restrict-media-zones.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement restricted media zones
+This section shows you how to restrict access to media zones in your app.
+
+By default, the SDK connects to the nearest Agora media zone. Set the `areaCode` parameter when calling the `initialize` method to specify the access zone(s). After you set the access zone, the SDK only connects to Agora servers in the specified zone.
+
+You can set the `areaCode` to:
+
+* `AreaCodeGlob`: Global (Default) 
+* `AreaCodeCn` : Mainland China
+* `AreaCodeNa` : North America
+* `AreaCodeEu` : Europe
+* `AreaCodeAs` : Asia excluding Mainland China
+* `AreaCodeJp` : Japan
+* `AreaCodeIn` : India
+
+:::info
+Media zones support bitwise operations.
+
+:::
+Refer to the following sample code:
+
+```javascript
+// Only connect to the Agora SDRTN® located in North America.
+agoraEngine.initialize(
+{
+  appId: appID,
+  areaCode: AreaCode.AreaCodeNa
+});
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`RtcEngineContext`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_rtcengineconfig.html)
+- [`AreaCode`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/enum_areacode.html)
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN® media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® media zone users connect to.
+
+:::info
+This is an advanced feature suitable only for use-cases with access security restrictions.
+
+:::
+## Understand the tech
+
+After you turn on the restricted media zones feature, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user. As an example, the following table shows the outcome if you specify North America as the access zone, and users connect to Agora SDRTN® from North America and China respectively:
+
+<thead>
+  <tr>
+   <th>Designated access zone</th>
+   <th>User's location</th>
+   <th>Zone actually accessed by the SDK</th>
+   <th>User experience</th>
+  </tr>
+ </thead>
+ <tr>
+   <td rowspan="2">North America</td>
+   <td>North America</td>
+   <td>North America</td>
+   <td>Normal</td>
+  </tr>
+  <tr>
+   <td>China</td>
+   <td>North America</td>
+   <td>Quality may be affected</td>
+  </tr>
+:::info
+* If a server in the specified zone is not available, the SDK reports an error.
+* Due to cross-regional public internet between the designated zone and the geographical location where the app user is located, the audio and video experience may be affected.
+
+:::
+The following figure shows the workflow you implement to restrict access to media zones:
+
+**Restrict media zones**
+
+![Restrict media zones](/images/video-sdk/restrict-media-zones.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement restricted media zones
+This section shows you how to restrict access to media zones in your app.
+
+By default, the SDK connects to the nearest Agora server. Set the `areaCode` property of `RtcEngineContext` when calling the `initialize` method to specify the access area. After setting the access zone, the SDK only connects to Agora servers in the specified zone(s).
+
+You can set the area to:
+
+* `areaCodeGlob`: Global (Default)
+* `areaCodeCn` : Mainland China
+* `areaCodeNa` : North America
+* `areaCodeEu` : Europe
+* `areaCodeAs` : Asia excluding Mainland China
+* `areaCodeJp` : Japan
+* `areaCodeIn` : India
+
+:::info
+Media zones support bitwise operations.
+
+:::
+Refer to the following sample code:
+
+```dart
+// Your app only connects to Agora SDRTN® located in North America.
+await agoraEngine.initialize(RtcEngineContext(
+  areaCode: AreaCode.areaCodeNa.value(),
+  appId: appId
+));
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`initialize`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_initialize)
+- [`RtcEngineContext`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_rtcengineconfig.html)
+- [`AreaCode`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/enum_areacode.html)
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN® media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® media zone users connect to.
+
+:::info
+This is an advanced feature suitable only for use-cases with access security restrictions.
+
+:::
+## Understand the tech
+
+After you turn on the restricted media zones feature, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user. As an example, the following table shows the outcome if you specify North America as the access zone, and users connect to Agora SDRTN® from North America and China respectively:
+
+<thead>
+  <tr>
+   <th>Designated access zone</th>
+   <th>User's location</th>
+   <th>Zone actually accessed by the SDK</th>
+   <th>User experience</th>
+  </tr>
+ </thead>
+ <tr>
+   <td rowspan="2">North America</td>
+   <td>North America</td>
+   <td>North America</td>
+   <td>Normal</td>
+  </tr>
+  <tr>
+   <td>China</td>
+   <td>North America</td>
+   <td>Quality may be affected</td>
+  </tr>
+:::info
+* If a server in the specified zone is not available, the SDK reports an error.
+* Due to cross-regional public internet between the designated zone and the geographical location where the app user is located, the audio and video experience may be affected.
+
+:::
+The following figure shows the workflow you implement to restrict access to media zones:
+
+**Restrict media zones**
+
+![Restrict media zones](/images/video-sdk/restrict-media-zones.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement restricted media zones
+This section shows you how to restrict access to media zones in your app.
+
+By default, the SDK connects to the nearest Agora server. Set the `areaCode` property of `RTCEngineContext` before passing it to the `initialize` method. After you set the media zone, the SDK only connects to servers in the specified zone.
+
+You can set the `areaCode` to:
+
+* `AreaCodeGlob`: Global (Default)
+* `AreaCodeCn` : Mainland China
+* `AreaCodeNa` : North America
+* `AreaCodeEu` : Europe
+* `AreaCodeAs` : Asia excluding Mainland China
+* `AreaCodeJp` : Japan
+* `AreaCodeIn` : India
+
+:::info
+Media zones support bitwise operations.
+
+:::
+Refer to the following sample code:
+
+```javascript
+this._rtcContext.areaCode = AreaCode.AreaCodeNa;
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`RtcEngineContext`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_rtcengineconfig.html)
+- [`AreaCode`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/enum_areacode.html)
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN® media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your game by specifying the Agora SDRTN® media zone users connect to.
+
+:::info
+This is an advanced feature suitable only for use-cases with access security restrictions.
+
+:::
+## Understand the tech
+
+After you turn on the restricted media zones feature, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user. As an example, the following table shows the outcome if you specify North America as the access zone, and users connect to Agora SDRTN® from North America and China respectively:
+
+<thead>
+  <tr>
+   <th>Designated access zone</th>
+   <th>User's location</th>
+   <th>Zone actually accessed by the SDK</th>
+   <th>User experience</th>
+  </tr>
+ </thead>
+ <tr>
+   <td rowspan="2">North America</td>
+   <td>North America</td>
+   <td>North America</td>
+   <td>Normal</td>
+  </tr>
+  <tr>
+   <td>China</td>
+   <td>North America</td>
+   <td>Quality may be affected</td>
+  </tr>
+:::info
+* If a server in the specified zone is not available, the SDK reports an error.
+* Due to cross-regional public internet between the designated zone and the geographical location where the app user is located, the audio and video experience may be affected.
+
+:::
+The following figure shows the workflow you implement to restrict access to media zones:
+
+**Restrict media zones**
+
+![Restrict media zones](/images/video-sdk/restrict-media-zones.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Implement restricted media zones
+This section shows you how to restrict access to media zones in your game.
+
+By default, the SDK connects to the nearest Agora server. Set the `areaCode` property of `RtcEngineContext` when calling the `initialize` method to specify the access zone(s). After setting the access zone, the SDK only connects to Agora servers in the specified zone(s).
+
+You can set the `areaCode` to:
+
+* `AREA_CODE_GLOB`: Global (Default)
+* `AREA_CODE_CN` : Mainland China
+* `AREA_CODE_NA` : North America
+* `AREA_CODE_EU` : Europe
+* `AREA_CODE_AS` : Asia except Mainland China
+* `AREA_CODE_JP` : Japan
+* `AREA_CODE_IN` : India
+
+:::info
+Media zones support bitwise operations.
+
+:::
+### Include a media zone
+
+To limit access to servers in only one media zone, such as North America, set `context.areaCode = AREA_CODE_NA;` before calling the `initialize` method:
+
+```csharp
+// Initialize Agora SDK
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+RtcEngineContext context = new RtcEngineContext();
+context.appId = _appID;
+context.channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING;
+context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT;
+// Restrict access to servers in North America
+context.areaCode = AREA_CODE.AREA_CODE_NA;
+// Initialize RtcEngineContext
+RtcEngine.Initialize(context);
+```
+
+### Exclude a media zone
+
+To exclude servers in a region, such as Mainland China, set `context.areaCode = AREA_CODE.AREA_CODE_GLOB ^ AREA_CODE.AREA_CODE_CN;` before calling the `initialize` method:
+
+```csharp
+// Initialize Agora SDK
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+RtcEngineContext context = new RtcEngineContext();
+context.appId = _appID;
+context.channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING;
+context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT;
+// Exclude Mainland China from access area
+context.areaCode = AREA_CODE.AREA_CODE_GLOB ^ AREA_CODE.AREA_CODE_CN;
+// Initialize RtcEngineContext
+RtcEngine.Initialize(context);
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`Initialize`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_initialize)
+- [`RtcEngineContext`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_rtcengineconfig.html)
+- [`AreaCode`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/enum_areacode.html)
+- [`CreateAgoraRtcEngine`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_createagorartcengine)
+</PlatformStructured>
+

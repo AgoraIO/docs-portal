@@ -27,7 +27,7 @@ Add-on fees are incurred if you use this feature. See [Pricing](/en/realtime-med
 	 ![enable_moderation_en](https://web-cdn.agora.io/docs-files/1656312916879)
 
 :::info
-After enabling the moderation feature, see [Message moderation mechanism](/en/realtime-media/im/build/moderation-mechanism) to understand how message moderation works and how to configure your moderation strategy.
+After enabling the moderation feature, see [Message moderation mechanism](/en/realtime-media/im/build/moderate-and-manage-client-behavior/moderation-mechanism) to understand how message moderation works and how to configure your moderation strategy.
 :::
 
 ## Message management

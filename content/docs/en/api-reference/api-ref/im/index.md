@@ -28,7 +28,7 @@ Data structure of an org
 Ensure that you meet the following requirements before calling the Chat RESTful APIs:
 
 - You have [enabled and configured Chat in the Console](/en/realtime-media/im/get-started/enable).
-- You have retrieved an app token from the app server. For details, see [Authentication with App Token](/en/realtime-media/im/build/authentication).
+- You have retrieved an app token from the app server. For details, see [Authentication with App Token](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
 
 ## Features
 
@@ -249,7 +249,7 @@ The Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP req
 Authorization: Bearer ${token}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. The Chat RESTful APIs only supports authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/authentication).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. The Chat RESTful APIs only supports authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
 
 ### Server address
 

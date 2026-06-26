@@ -10,7 +10,7 @@ Enhance Agora's Video SDK with additional capabilities such as recording, virtua
 ## Start building with
 
 - [SDK quickstart](index.mdx) - Customize your experience from the start with our flexible Video SDK.
-- [Authentication](build/use-tokens.mdx)
+- [Authentication](build/authenticate-users/use-tokens.mdx)
 - [API reference](../../api-reference/rtc/index.md)
 - [Samples](https://github.com/AgoraIO/API-Examples)
 

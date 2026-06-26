@@ -56,7 +56,7 @@ Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request
 Authorization: Bearer ${YourAppToken}
 ```
 
-In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/authentication).
+In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
 
 ## Send a message
 
@@ -1033,7 +1033,7 @@ The request body is a JSON object, which contains the following parameters:
 | `msg` | String | The message body. | Yes |
 | `msg.type` | String | The broadcast message type: `txt`: Text message`img`: Image message`audio`: Audio message`video`: Video message`file`: File message`loc`: Location message`cmd`: Command message`custom`: Custom message | Yes |
 | `msg.msg` | String | The message content. For different message types, this parameter contains different fields. For details, see [Body of different message types](#body). | Yes |
-| `ext`  | JSON  | The extension filed of the message. It cannot be `null`. Also, the offline push notification can contain custom extension fields. For details, see [custom displays](/en/realtime-media/im/build/offline-push#custom-displays) of offline push. | No |
+| `ext`  | JSON  | The extension filed of the message. It cannot be `null`. Also, the offline push notification can contain custom extension fields. For details, see [custom displays](/en/realtime-media/im/build/notifications-and-event-handling/offline-push/overview#custom-displays) of offline push. | No |
 
 For the request body, different types of message only differ in fields in `msg`. Except `type`, fields in `msg` in this request have the same meanings as those in `body` in the request body of an HTTP request of [sending a one-to-one message](#send-a-one-to-one-message).
 
