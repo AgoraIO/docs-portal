@@ -67,7 +67,7 @@ export function DocsMainColumn({
           next={next}
           previous={previous}
         />
-        <DocsSiteFooter />
+        <DocsSiteFooter className="relative left-1/2 w-screen -translate-x-1/2 lg:hidden" />
       </div>
       <div
         className={cn(
@@ -84,15 +84,6 @@ export function DocsMainColumn({
             locale={locale}
             next={next}
             previous={previous}
-          />
-          <DocsSiteFooter
-            className="lg:w-[var(--docs-site-footer-width)]"
-            contentClassName="px-0"
-            style={{
-              marginLeft: isWideDocsLayout(layoutMode)
-                ? 'calc(-1 * 1rem)'
-                : 'calc(-1 * var(--docs-site-footer-offset))',
-            }}
           />
         </div>
       </div>

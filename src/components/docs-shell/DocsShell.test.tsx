@@ -389,46 +389,45 @@ describe('DocsShell', () => {
     ).not.toBeInTheDocument();
 
     const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
-    const siteFooter = within(mainColumn).getByTestId('docs-site-footer');
     expect(
       within(mainColumn).getByRole('link', { name: /Next Next Page/i }),
     ).toBeInTheDocument();
     expect(
       within(mainColumn).getByRole('link', { name: /Previous Previous Page/i }),
     ).toBeInTheDocument();
-    expect(mainColumn).toContainElement(siteFooter);
-    expect(docsBodyShell).toContainElement(siteFooter);
+    expect(
+      within(mainColumn).queryByTestId('docs-site-footer'),
+    ).not.toBeInTheDocument();
   });
 
-  it('renders the Agora site footer as a full-width break-out in the main scroll region', async () => {
+  it('renders the Agora site footer as a shell-level full-width footer on desktop', async () => {
     renderDocsShell();
 
     const docsBodyShell = await screen.findByTestId('docs-body-shell');
     const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
     const pageFooter = within(mainColumn).getByTestId('docs-page-footer');
-    const siteFooter = within(mainColumn).getByTestId('docs-site-footer');
+    const siteFooter = screen
+      .getAllByTestId('docs-site-footer')
+      .find((footer) => !footer.classList.contains('lg:hidden'));
+    if (!siteFooter) {
+      throw new Error('expected a desktop site footer');
+    }
     const footerContent = within(siteFooter).getByTestId(
       'docs-site-footer-content',
     );
 
-    expect(docsBodyShell.getAttribute('style')).toContain(
-      '--docs-site-footer-width',
-    );
-    expect(docsBodyShell.getAttribute('style')).toContain(
-      '--docs-site-footer-offset',
-    );
-    expect(mainColumn).toContainElement(siteFooter);
+    expect(docsBodyShell).not.toContainElement(siteFooter);
+    expect(mainColumn).not.toContainElement(siteFooter);
     expect(pageFooter).not.toContainElement(siteFooter);
+    expect(siteFooter.parentElement).toHaveClass('flex', 'min-h-screen');
     expect(siteFooter).toHaveClass(
-      'w-screen',
-      '-ml-8',
+      'w-full',
       'border-t',
-      'lg:w-[var(--docs-site-footer-width)]',
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+      'lg:block',
     );
-    expect(siteFooter).toHaveStyle({
-      marginLeft: 'calc(-1 * var(--docs-site-footer-offset))',
-    });
-    expect(footerContent).toHaveClass('mx-auto', 'px-0');
+    expect(siteFooter).not.toHaveClass('w-screen', '-ml-8');
+    expect(footerContent).toHaveClass('mx-auto', 'lg:px-10');
 
     expect(
       within(siteFooter).getByRole('link', { name: 'LinkedIn' }),
@@ -499,6 +498,12 @@ describe('DocsShell', () => {
       .getByText('Copyright © 2026 Agora')
       .closest('div');
 
+    expect(siteFooter).toHaveClass(
+      'left-1/2',
+      'w-screen',
+      '-translate-x-1/2',
+      'lg:hidden',
+    );
     expect(navGrid).toHaveClass(
       'grid-cols-1',
       'sm:grid-cols-2',

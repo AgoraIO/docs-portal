@@ -50,6 +50,7 @@ import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
+import { DocsSiteFooter } from './DocsSiteFooter';
 import { DocsTocRail } from './DocsTocRail';
 
 type LocaleLink = {
@@ -151,12 +152,6 @@ export function DocsShell({
   const docsShellMaxWidthClassName = isWideLayout
     ? 'max-w-[1440px]'
     : 'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
-  const docsShellStyle = {
-    '--docs-site-footer-offset': 'calc(256px + 1rem + 2.5rem)',
-    '--docs-site-footer-width': isWideLayout
-      ? 'min(100vw, 1440px)'
-      : 'min(100vw, calc(256px + var(--content-max) + 5rem + 220px + 2rem))',
-  } as React.CSSProperties;
 
   return (
     <SidebarProvider
@@ -360,7 +355,6 @@ export function DocsShell({
               : 'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
           )}
           data-testid="docs-body-shell"
-          style={docsShellStyle}
         >
           <DocsSidebar
             activePath={activePath}
@@ -382,6 +376,13 @@ export function DocsShell({
             <DocsTocRail locale={currentLocale} toc={toc} />
           )}
         </div>
+        <DocsSiteFooter
+          className={cn(
+            'mx-auto hidden w-full shrink-0 lg:block',
+            docsShellMaxWidthClassName,
+          )}
+          contentClassName="px-4 sm:px-6 lg:px-10"
+        />
       </div>
     </SidebarProvider>
   );
