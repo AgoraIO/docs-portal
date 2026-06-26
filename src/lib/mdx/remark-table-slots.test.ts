@@ -7,9 +7,13 @@ import remarkDirective from 'remark-directive';
 import { describe, expect, it } from 'vitest';
 import { remarkTableSlots } from './remark-table-slots';
 
-async function compileWithTableSlots(source: string) {
+async function compileWithTableSlots(
+  source: string,
+  format: 'md' | 'mdx' = 'mdx',
+) {
   return String(
     await compile(source, {
+      format,
       jsx: true,
       remarkPlugins: [
         remarkGfm,
@@ -18,6 +22,7 @@ async function compileWithTableSlots(source: string) {
           remarkDirectiveAdmonition,
           {
             types: {
+              info: 'info',
               note: 'info',
             },
           },
@@ -70,6 +75,38 @@ Hahaha
     expect(result).toContain('<CalloutDescription>');
     expect(result).toContain('{"Hahaha"}');
     expect(result).toContain('</_components.td></_components.tr>');
+  });
+
+  it('supports Markdown raw HTML slot tags used by .md source files', async () => {
+    const result = await compileWithTableSlots(
+      `
+| Field | Description |
+| - | - |
+| Options | <Slot name="options" /> |
+
+<Slot for="options">
+
+Text before note.
+
+:::info[Note]
+Body inside note.
+:::
+
+</Slot>
+`,
+      'md',
+    );
+
+    const cellStart = result.indexOf('<_components.td><_components.p>');
+    const noteIndex = result.indexOf('<CalloutContainer type="info">');
+    const cellEnd = result.indexOf('</_components.td>', cellStart);
+
+    expect(result).not.toContain('Slot');
+    expect(result).toContain('{"Text before note."}');
+    expect(result).toContain('<CalloutTitle>{"Note"}</CalloutTitle>');
+    expect(result).toContain('{"Body inside note."}');
+    expect(noteIndex).toBeGreaterThan(cellStart);
+    expect(noteIndex).toBeLessThan(cellEnd);
   });
 
   it('supports paragraphs and code blocks inside slot definitions', async () => {

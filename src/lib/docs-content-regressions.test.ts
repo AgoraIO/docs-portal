@@ -352,6 +352,38 @@ describe('docs content regressions', () => {
     );
   });
 
+  it('keeps console REST API table slot callout content in processed markdown', async () => {
+    const { source } = await import('./source.server');
+    const page = source.getPage(
+      [
+        'api-reference',
+        'api-ref',
+        'console',
+        'solutions-agora-console-rest-api',
+      ],
+      'en',
+    );
+
+    expect(page).toBeDefined();
+    expect(page?.type).toBe('docs');
+
+    if (!page || !('getText' in page.data)) {
+      throw new Error(
+        'Expected console REST API page to expose processed markdown.',
+      );
+    }
+
+    const processed = await page.data.getText('processed');
+
+    expect(processed).toContain('| `enable_sign_key`');
+    expect(processed).not.toContain('<Slot name="enablesignkey"');
+    expect(processed).toContain('<CalloutContainer type="info">');
+    expect(processed).toMatch(/<CalloutTitle>\s*Note\s*<\/CalloutTitle>/);
+    expect(processed).toContain(
+      'After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey`',
+    );
+  });
+
   it('renders IoT authentication code tabs as MDX components', async () => {
     const { source } = await import('./source.server');
     const page = source.getPage(
