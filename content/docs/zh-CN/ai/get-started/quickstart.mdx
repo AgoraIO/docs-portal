@@ -61,33 +61,40 @@ agora login
 
 根据你选择的语言初始化项目、绑定 Agora 项目，并生成所需环境文件。
 
-#### Python
+<CodeBlockTabs defaultValue="python">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="typescript">TypeScript</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="go">Go</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="python">
 ```bash
 agora init my-python-demo --template python
 cd my-python-demo
 bun install
 bun run dev
 ```
+</CodeBlockTab>
 
-#### TypeScript
-
+<CodeBlockTab value="typescript">
 ```bash
 agora init my-nextjs-demo --template nextjs
 cd my-nextjs-demo
 pnpm install
 pnpm dev
 ```
+</CodeBlockTab>
 
-#### Go
-
+<CodeBlockTab value="go">
 ```bash
 agora init my-go-demo --template go
 cd my-go-demo
 make setup
 make dev
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 3. 打开本地页面开始对话
 
 打开 `http://localhost:3000`，点击 **Start conversation**。

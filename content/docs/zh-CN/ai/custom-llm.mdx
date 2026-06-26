@@ -35,8 +35,13 @@ description: 在 AI 对话互动场景下，你可能需要使用自定义的大
 
 下面的示例代码展示了如何实现一个符合 OpenAI API 协议的接口：
 
-#### Python
+<CodeBlockTabs defaultValue="python">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="go">Go</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="python">
 ```python
 class TextContent(BaseModel):
     type: str = "text"
@@ -144,9 +149,9 @@ async def create_chat_completion(request: ChatCompletionRequest):
         logger.error(error_message)
         raise HTTPException(status_code=500, detail=error_message)
 ```
+</CodeBlockTab>
 
-#### Go
-
+<CodeBlockTab value="go">
 ```go
 type (
 	AudioContent struct {
@@ -357,7 +362,8 @@ func main() {
 	r.Run(":8000")
 }
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 配置声网对话式 AI 引擎
 
 在调用 [POST 创建对话式智能体](../operations/start-agent.md)时，将 LLM 配置指向你的自定义服务：
@@ -390,8 +396,13 @@ func main() {
 
 以下示例代码模拟了从知识库中检索并返回内容的流程，并创建了 `/rag/chat/completions` 接口用于使用 RAG 检索结果调用 LLM 生成回答：
 
-#### Python
+<CodeBlockTabs defaultValue="python">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="go">Go</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="python">
 ```python
 async def perform_rag_retrieval(messages: Optional[Dict]) -> str:
     """
@@ -504,9 +515,9 @@ async def create_rag_chat_completion(request: ChatCompletionRequest):
         logger.error(error_message)
         raise HTTPException(status_code=500, detail=error_message)
 ```
+</CodeBlockTab>
 
-#### Go
-
+<CodeBlockTab value="go">
 ```go
 // 处理 RAG  Chat Completion 端点
 func (s *Server) handleRAGChatCompletion(c *gin.Context) {
@@ -621,7 +632,8 @@ func (s *Server) refactMessages(context string, messages []Message) []Message {
 	return messages
 }
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 在调用 [POST 创建对话式智能体](../operations/start-agent.md)时，只需将 LLM URL 指向你的 RAG 接口：
 
 > 信息
@@ -651,8 +663,13 @@ func (s *Server) refactMessages(context string, messages []Message) []Message {
 
 以下示例代码展示了通过读取文本和音频文件，并发送给大模型生成音频回复的流程：
 
-#### Python
+<CodeBlockTabs defaultValue="python">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="go">Go</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="python">
 ```python
 async def read_text_file(file_path: str) -> str:
     """
@@ -770,9 +787,9 @@ async def create_audio_chat_completion(request: ChatCompletionRequest):
         logger.error(error_message)
         raise HTTPException(status_code=500, detail=error_message)
 ```
+</CodeBlockTab>
 
-#### Go
-
+<CodeBlockTab value="go">
 ```go
 // 处理音频 Chat Completion 端点
 func (s *Server) handleAudioChatCompletion(c *gin.Context) {
@@ -896,7 +913,8 @@ func (s *Server) readTextFile(filePath string) (string, error) {
 	return string(data), nil
 }
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 调用 [POST 创建对话式智能体](../operations/start-agent.md)时，参考如下配置：
 
 ```json

@@ -193,7 +193,13 @@ Refer to the following sample code for sending messages:
 
 * String message
 
-    **Java**
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="java">
     ```java
     // Send a string message
         String message = "Hello World"; // Declaring a string variable for the message content
@@ -213,8 +219,9 @@ Refer to the following sample code for sending messages:
             }
         });
     ```
+    </CodeBlockTab>
 
-    **Kotlin**
+    <CodeBlockTab value="kotlin">
     ```kotlin
     // Send a string message
         val message = "Hello World" // Declaring a string variable for the message content
@@ -233,10 +240,17 @@ Refer to the following sample code for sending messages:
             }
         })
     ```
-
+    </CodeBlockTab>
+    </CodeBlockTabs>
 * Binary message
 
-    **Java**
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="java">
     ```java
     // Send a binary message
         byte[] message = new byte[] { 00, 01, 35, (byte) 196 }; // Defining a byte array for the binary message
@@ -256,8 +270,9 @@ Refer to the following sample code for sending messages:
             }
         });
     ```
+    </CodeBlockTab>
 
-    **Kotlin**
+    <CodeBlockTab value="kotlin">
     ```kotlin
     // Send a binary message
         val message = byteArrayOf(0, 1, 35, 196.toByte()) // Defining a byte array for the binary message
@@ -276,7 +291,8 @@ Refer to the following sample code for sending messages:
             }
         })
     ```
-
+    </CodeBlockTab>
+    </CodeBlockTabs>
 :::info
 Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../messaging/message-payload-structuring.md).
 

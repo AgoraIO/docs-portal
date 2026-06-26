@@ -79,16 +79,23 @@ The reason why the request failed.
 This endpoint requires [Basic Auth](../restful-authentication).
 ## Request example
 
-### curl
+<CodeBlockTabs defaultValue="curl">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="curl">curl</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="nodejs">Node.js</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="curl">
 ```bash
       curl --request GET \
         --url https://api.agora.io/v1/projects/:appId/rtsc/speech-to-text/tasks/:taskId?builderToken=your_builder_token \
         --header 'Authorization: Basic <credentials>' \
         --header 'Content-Type: <string>'
       ```
-    ### Python
+</CodeBlockTab>
 
+<CodeBlockTab value="python">
 ```python
     import requests
 
@@ -103,8 +110,9 @@ This endpoint requires [Basic Auth](../restful-authentication).
 
     print(response.text)
     ```
-    ### Node.js
+</CodeBlockTab>
 
+<CodeBlockTab value="nodejs">
 ```js
     const url = 'https://api.agora.io/v1/projects/:appId/rtsc/speech-to-text/tasks/:taskId?builderToken=your_builder_token';
     const options = {
@@ -117,6 +125,8 @@ This endpoint requires [Basic Auth](../restful-authentication).
       .then(json => console.log(json))
       .catch(err => console.error(err));
     ```
+</CodeBlockTab>
+</CodeBlockTabs>
     ## Response example
 
 ### 200

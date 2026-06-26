@@ -224,7 +224,13 @@ Refer to the following sample code for sending messages:
 
 * String message
 
-    **Java**
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="java">
     ```java
     // Send a string message
         String message = "Hello Agora!"; // Message content
@@ -245,8 +251,9 @@ Refer to the following sample code for sending messages:
             }
         });
     ```
+    </CodeBlockTab>
 
-    **Kotlin**
+    <CodeBlockTab value="kotlin">
     ```kotlin
     // Send a string message
         val message = "Hello Agora!" // Message content
@@ -265,10 +272,17 @@ Refer to the following sample code for sending messages:
             }
         })
     ```
-
+    </CodeBlockTab>
+    </CodeBlockTabs>
 * Binary message
 
-    **Java**
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="java">
     ```java
     // Send a binary message
         byte[] message = new byte[] { 00, 01, 35, 196 }; // Binary message content
@@ -289,8 +303,9 @@ Refer to the following sample code for sending messages:
             }
         });
     ```
+    </CodeBlockTab>
 
-    **Kotlin**
+    <CodeBlockTab value="kotlin">
     ```kotlin
     // Send a binary message
         val message = byteArrayOf(0, 1, 35, 196) // Binary message content
@@ -309,7 +324,8 @@ Refer to the following sample code for sending messages:
             }
         })
     ```
-
+    </CodeBlockTab>
+    </CodeBlockTabs>
 In Signaling, a user may register as a message publisher for up to 8 topics concurrently. However, there are no limitations on the number of users a single topic can accommodate. You can achieve a message transmission frequency to a topic of up to 120 QPS. This capability is useful in use-cases that demand high-frequency and high-concurrency data processing, such as Metaverse location status synchronization, collaborative office sketchpad applications, and parallel control operation-instructions transmission.
 
 ### Leave a stream channel

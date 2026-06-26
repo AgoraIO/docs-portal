@@ -55,8 +55,14 @@ description: 与对话式智能体进行实时互动时，你可能需要监听�
 
 为 RTC 和 RTM 实例创建配置对象，之后创建组件实例：
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```java
 // 为 RTC 和 RTM 实例创建配置对象
 val config = ConversationalAIAPIConfig(
@@ -67,9 +73,9 @@ val config = ConversationalAIAPIConfig(
 // 创建组件实例
 val api = ConversationalAIAPIImpl(config)
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 // 为 RTC 和 RTM 实例创建配置对象
 let config = ConversationalAIAPIConfig(
@@ -80,9 +86,9 @@ let config = ConversationalAIAPIConfig(
 /// 创建组件实例
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 // 为 RTC 和 RTM 实例创建配置对象
 ConversationalAIAPI.init({
@@ -93,7 +99,8 @@ ConversationalAIAPI.init({
 // 获取 API 实例（单例）
 const conversationalAIAPI = ConversationalAIAPI.getInstance()
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 注册回调
 
 #### Android
@@ -291,8 +298,14 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.AGENT_ERROR, onAgentError)
 
 智能体的相关事件通过 RTM 频道消息传递，你需要在开始智能体会话前调用 `subscribeMessage` 订阅频道消息，以接收智能体相关事件。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 api.subscribeMessage("channelName") { error ->
     if (error != null) {
@@ -300,9 +313,9 @@ api.subscribeMessage("channelName") { error ->
     }
 }
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 convoAIAPI.subscribeMessage(channelName: channelName) { error in
     if let error = error {
@@ -312,13 +325,14 @@ convoAIAPI.subscribeMessage(channelName: channelName) { error in
     }
 }
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 conversationalAIAPI.subscribeMessage(channel_name)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 智能体加入频道
 
 调用 [POST 创建对话式智能体](../operations/start-agent.md)接口，并完成以下参数设置：
@@ -333,8 +347,14 @@ conversationalAIAPI.subscribeMessage(channel_name)
 
 每次智能体会话结束后，你需要取消订阅频道消息，以释放回调事件相关资源。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 api.unsubscribeMessage("channelName") { error ->
     if (error != null) {
@@ -342,9 +362,9 @@ api.unsubscribeMessage("channelName") { error ->
     }
 }
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 /// 取消订阅频道消息
 convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
@@ -355,35 +375,43 @@ convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
     }
 }
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 conversationalAIAPI.unsubscribeMessage(channel_name)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 销毁组件实例
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 api.destroy()
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 convoAIAPI.destroy()
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 conversationalAIAPI.destroy()
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ## 参考信息
 
 ### 示例项目

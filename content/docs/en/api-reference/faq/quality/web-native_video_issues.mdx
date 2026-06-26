@@ -25,18 +25,24 @@ Troubleshoot the problem by following the steps below:
 
 4. If the client sending the video stream is a Web client on desktop, ask the user to launch Chrome with the following command:
 
-   **Windows**
+   <CodeBlockTabs defaultValue="windows">
+   <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="windows">Windows</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="macos">macOS</CodeBlockTabsTrigger>
+   </CodeBlockTabsList>
 
+   <CodeBlockTab value="windows">
    ```shell
    chrome.exe --forcefieldtrials="WebRTCSpsPpsIdrIsH264Keyframe/Enabled/"
    ```
+   </CodeBlockTab>
 
-   **macOS**
-
+   <CodeBlockTab value="macos">
    ```shell
    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --force-fieldtrials="WebRTC-SpsPpsIdrIsH264Keyframe/Enabled/"
    ```
-
+   </CodeBlockTab>
+   </CodeBlockTabs>
 ## See also
 
 - [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank)

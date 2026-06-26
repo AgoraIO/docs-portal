@@ -32,8 +32,14 @@ For testing and debugging, you can use a Basic Auth header generator. Enter the 
 
 The following examples send a request to get all projects under your Agora account.
 
-### cURL
+<CodeBlockTabs defaultValue="curl">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="curl">cURL</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="nodejs">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="curl">
 ```bash
 customer_key="Your customer ID"
 customer_secret="Your customer secret"
@@ -43,9 +49,9 @@ curl --request GET 'https://api.agora.io/dev/v1/projects' \
   --header "Authorization: Basic $authorization" \
   --header 'Content-Type: application/json'
 ```
+</CodeBlockTab>
 
-### Node.js
-
+<CodeBlockTab value="nodejs">
 ```js
 const https = require('https');
 
@@ -75,9 +81,9 @@ const req = https.request(
 req.on('error', console.error);
 req.end();
 ```
+</CodeBlockTab>
 
-### Python
-
+<CodeBlockTab value="python">
 ```python
 import base64
 import http.client
@@ -98,3 +104,5 @@ conn.request("GET", "/dev/v1/projects", "", headers)
 res = conn.getresponse()
 print(res.read().decode("utf-8"))
 ```
+</CodeBlockTab>
+</CodeBlockTabs>

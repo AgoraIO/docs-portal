@@ -54,8 +54,14 @@ description: 与智能体互动期间，你可能需要在端侧上传图片或�
 
 为 RTC 和 RTM 实例创建配置对象，之后创建组件实例：
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```java
 // 为 RTC 和 RTM 实例创建配置对象
 val config = ConversationalAIAPIConfig(
@@ -66,9 +72,9 @@ val config = ConversationalAIAPIConfig(
 // 创建组件实例
 val api = ConversationalAIAPIImpl(config)
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 // 为 RTC 和 RTM 实例创建配置对象
 let config = ConversationalAIAPIConfig(
@@ -79,9 +85,9 @@ let config = ConversationalAIAPIConfig(
 /// 创建组件实例
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 // 为 RTC 和 RTM 实例创建配置对象
 ConversationalAIAPI.init({
@@ -92,7 +98,8 @@ ConversationalAIAPI.init({
 // 获取 API 实例（单例）
 const conversationalAIAPI = ConversationalAIAPI.getInstance()
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 注册回调
 
 #### Android
@@ -124,8 +131,14 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_ERROR, onMessageError)
 
 智能体的相关事件通过 RTM 频道消息传递，你需要在开始智能体会话前调用 `subscribeMessage` 订阅频道消息，以接收智能体相关事件。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 api.subscribeMessage("channelName") { error ->
     if (error != null) {
@@ -133,9 +146,9 @@ api.subscribeMessage("channelName") { error ->
     }
 }
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 convoAIAPI.subscribeMessage(channelName: channelName) { error in
     if let error = error {
@@ -145,13 +158,14 @@ convoAIAPI.subscribeMessage(channelName: channelName) { error in
     }
 }
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 conversationalAIAPI.subscribeMessage(channel_name)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 智能体加入频道
 
 调用 [POST 创建对话式智能体](../operations/start-agent.md)接口，并完成以下参数设置：
@@ -169,8 +183,14 @@ conversationalAIAPI.subscribeMessage(channel_name)
 > 注意
 > `chat` 接口的 `completion` 回调仅表示发送请求是否成功，不代表消息实际处理状态。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 val uuid = "unique-image-id-123" // 生成唯一的图片标识符
 val imageUrl = "https://example.com/image.jpg" // 图片的 HTTP/HTTPS URL
@@ -183,9 +203,9 @@ api.chat("agentUserId", ImageMessage(uuid = uuid, imageUrl = imageUrl)) { error 
     }
 }
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 let uuid = UUID().uuidString
 let imageUrl = "https://example.com/image.jpg"
@@ -198,9 +218,9 @@ self.convoAIAPI.chat(agentUserId: "\(agentUid)", message: message) { [weak self]
     }
 }
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 import { EChatMessageType } from '@/conversational-ai-api/type'
 
@@ -211,7 +231,8 @@ await conversationalAIAPI.chat(`${agent_rtc_uid}`, {
           uuid: genUUID()
         })
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 处理图片发送状态
 
 图片消息发送的成功和失败分别通过图片消息回执 `onMessageReceiptUpdated` 和图片消息出错回调 `onMessageError` 确认，你需要根据图片的 `uuid` 来区分不同的图片消息。
@@ -220,8 +241,14 @@ await conversationalAIAPI.chat(`${agent_rtc_uid}`, {
 
 当收到 `onMessageReceiptUpdated` 回调时，需要解析回调中的 JSON 消息，获取图片的 `uuid` 以确认图片发送成功：
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 override fun onMessageReceiptUpdated(agentUserId: String, receipt: MessageReceipt) {
     if (receipt.chatMessageType == ChatMessageType.Image) {
@@ -243,9 +270,9 @@ override fun onMessageReceiptUpdated(agentUserId: String, receipt: MessageReceip
     }
 }
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 struct PictureInfo: Codable {
     let uuid: String
@@ -274,9 +301,9 @@ public func onMessageReceiptUpdated(agentUserId: String, messageReceipt: Message
 
   }
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 import { TMessageReceipt, EModuleType, EConversationalAIAPIEvents } from '@/conversational-ai-api/type'
 
@@ -301,13 +328,20 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_RECEIPT_UPDATED, (agen
     }
 })
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 #### 图片发送失败
 
 当收到 `onMessageError` 回调时，需要解析回调中的 JSON 消息，获取图片的 `uuid` 以确认图片发送失败：
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 override fun onMessageError(agentUserId: String, error: MessageError) {
     if (error.chatMessageType == ChatMessageType.Image) {
@@ -329,9 +363,9 @@ override fun onMessageError(agentUserId: String, error: MessageError) {
     }
 }
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 struct ImageUploadError: Codable {
     let code: Int
@@ -365,9 +399,9 @@ public func onMessageError(agentUserId: String, error: MessageError) {
     }
 }
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 import { EConversationalAIAPIEvents, EChatMessageType } from '@/conversational-ai-api/type';
 
@@ -385,13 +419,20 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_ERROR, (agentUserId, e
   }
  })
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 取消订阅频道消息
 
 每次智能体会话结束后，你需要取消订阅频道消息，以释放回调事件相关资源。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 api.unsubscribeMessage("channelName") { error ->
     if (error != null) {
@@ -399,9 +440,9 @@ api.unsubscribeMessage("channelName") { error ->
     }
 }
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 /// 取消订阅频道消息
 convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
@@ -412,35 +453,43 @@ convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
     }
 }
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 conversationalAIAPI.unsubscribeMessage(channel_name)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 销毁组件实例
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 api.destroy()
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 convoAIAPI.destroy()
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 conversationalAIAPI.destroy()
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ## 参考信息
 
 ### 示例项目

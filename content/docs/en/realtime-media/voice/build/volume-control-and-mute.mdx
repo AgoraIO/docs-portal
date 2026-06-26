@@ -322,12 +322,19 @@ Use one or more of the following volume control methods to adjust volume setting
 
 * To mute or unmute the local audio stream, call `muteLocalAudioStream`:
 
-  **objc**
+  <CodeBlockTabs defaultValue="objective-c">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="objective-c">
   ```objc
   [agoraKit muteLocalAudioStream:YES];
   ```
+  </CodeBlockTab>
 
-  **swift**
+  <CodeBlockTab value="swift">
   ```swift
   // Stop publishing the local audio stream
   agoraKit.muteLocalAudioStream(true)
@@ -335,15 +342,23 @@ Use one or more of the following volume control methods to adjust volume setting
   // Resume publishing the local audio stream
   agoraKit.muteLocalAudioStream(false)
   ```
-
+  </CodeBlockTab>
+  </CodeBlockTabs>
 * To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
 
-  **objc**
+  <CodeBlockTabs defaultValue="objective-c">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="objective-c">
   ```objc
   [agoraKit muteRemoteAudioStream:remoteUid mute:YES];
   ```
+  </CodeBlockTab>
 
-  **swift**
+  <CodeBlockTab value="swift">
   ```swift
   // Stop subscribing to the audio stream of the remote user
   agoraKit.muteRemoteAudioStream(remoteUid, mute: true)
@@ -351,6 +366,8 @@ Use one or more of the following volume control methods to adjust volume setting
   // Resume subscribing to the audio stream of the remote user
   agoraKit.muteRemoteAudioStream(remoteUid, mute: false)
   ```
+  </CodeBlockTab>
+  </CodeBlockTabs>
 :::note
 To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
 :::
@@ -358,58 +375,82 @@ To mute remote users without unsubscribing, set their [playback volume](#adjust-
 
 Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
 
-**objc**
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
 ```objc
 // Set the volume of all remote users played locally
 [agoraKit adjustPlaybackSignalVolume: 50];
 // Set the local playback volume for a specific remote user.
 [agoraKit adjustUserPlaybackSignalVolume: uid, volume: 50];
 ```
+</CodeBlockTab>
 
-**swift**
+<CodeBlockTab value="swift">
 ```swift
 // Set the volume of all remote users played locally
 agoraKit.adjustPlaybackSignalVolume(50)
 // Set the local playback volume for a specific remote user
 agoraKit.adjustUserPlaybackSignalVolume(uid, volume: 50)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### Adjust the in-ear monitoring volume
 
 During the process of audio capture, mixing, and playback, Agora enables you to adjust the volume of in-ear monitoring. Enable and set the in-ear monitoring through `enableInEarMonitoring` and `setInEarMonitoringVolume`.
 
-**objc**
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
 ```objc
 // Enable in-ear monitoring
 [agoraKit enableInEarMonitoring:true];
 // Adjust in-ear monitoring volume
 [agoraKit setInEarMonitoringVolume:50];
 ```
+</CodeBlockTab>
 
-**swift**
+<CodeBlockTab value="swift">
 ```swift
 // Enable in-ear monitoring
 agoraKit.enableInEarMonitoring(true)
 // Adjust in-ear monitoring volume
 agoraKit.setInEarMonitoringVolume(50)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### Adjust the recording volume
 
 Call `adjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
 
-**objc**
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
 ```objc
 // Adjust the recording signal volume
 [agoraKit adjustRecordingSignalVolume: 50];
 ```
+</CodeBlockTab>
 
-**swift**
+<CodeBlockTab value="swift">
 ```swift
 // Adjust the recording signal volume
 agoraKit.adjustRecordingSignalVolume(50)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
 
 * The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
@@ -424,7 +465,13 @@ Voice SDK enables you to obtain the user IDs and corresponding volumes of the th
 :::note
 Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
 :::
-**objc**
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
 ```objc
 // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
 // their respective volumes, and determine whether the local user is speaking.
@@ -433,8 +480,9 @@ reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo *> *_Nonn
            totalVolume:(NSInteger)totalVolume {
 }
 ```
+</CodeBlockTab>
 
-**swift**
+<CodeBlockTab value="swift">
 ```swift
 // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
 // their respective volumes, and determine whether the local user is speaking.
@@ -448,7 +496,8 @@ totalVolume: Int
 // Enable the reportAudioVolumeIndicationOfSpeakers callback
 agoraKit.enableAudioVolumeIndication(200, smooth: 3, reportVad: true)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
@@ -508,12 +557,19 @@ Use one or more of the following volume control methods to adjust volume setting
 
 * To mute or unmute the local audio stream, call `muteLocalAudioStream`:
 
-  **objc**
+  <CodeBlockTabs defaultValue="objective-c">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="objective-c">
   ```objc
   [agoraKit muteLocalAudioStream:YES];
   ```
+  </CodeBlockTab>
 
-  **swift**
+  <CodeBlockTab value="swift">
   ```swift
   // Stop publishing the local audio stream
   agoraKit.muteLocalAudioStream(true)
@@ -521,15 +577,23 @@ Use one or more of the following volume control methods to adjust volume setting
   // Resume publishing the local audio stream
   agoraKit.muteLocalAudioStream(false)
   ```
-
+  </CodeBlockTab>
+  </CodeBlockTabs>
 * To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
 
-  **objc**
+  <CodeBlockTabs defaultValue="objective-c">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="objective-c">
   ```objc
   [agoraKit muteRemoteAudioStream:remoteUid mute:YES];
   ```
+  </CodeBlockTab>
 
-  **swift**
+  <CodeBlockTab value="swift">
   ```swift
   // Stop subscribing to the audio stream of the remote user
   agoraKit.muteRemoteAudioStream(remoteUid, mute: true)
@@ -537,6 +601,8 @@ Use one or more of the following volume control methods to adjust volume setting
   // Resume subscribing to the audio stream of the remote user
   agoraKit.muteRemoteAudioStream(remoteUid, mute: false)
   ```
+  </CodeBlockTab>
+  </CodeBlockTabs>
 :::note
 To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
 :::
@@ -544,58 +610,82 @@ To mute remote users without unsubscribing, set their [playback volume](#adjust-
 
 Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
 
-**objc**
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
 ```objc
 // Set the volume of all remote users played locally
 [agoraKit adjustPlaybackSignalVolume: 50];
 // Set the local playback volume for a specific remote user.
 [agoraKit adjustUserPlaybackSignalVolume: uid, volume: 50];
 ```
+</CodeBlockTab>
 
-**swift**
+<CodeBlockTab value="swift">
 ```swift
 // Set the volume of all remote users played locally
 agoraKit.adjustPlaybackSignalVolume(50)
 // Set the local playback volume for a specific remote user
 agoraKit.adjustUserPlaybackSignalVolume(uid, volume: 50)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### Adjust the in-ear monitoring volume
 
 During the process of audio capture, mixing, and playback, Agora enables you to adjust the volume of in-ear monitoring. Enable and set the in-ear monitoring through `enableInEarMonitoring` and `setInEarMonitoringVolume`.
 
-**objc**
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
 ```objc
 // Enable in-ear monitoring
 [agoraKit enableInEarMonitoring:true];
 // Adjust in-ear monitoring volume
 [agoraKit setInEarMonitoringVolume:50];
 ```
+</CodeBlockTab>
 
-**swift**
+<CodeBlockTab value="swift">
 ```swift
 // Enable in-ear monitoring
 agoraKit.enableInEarMonitoring(true)
 // Adjust in-ear monitoring volume
 agoraKit.setInEarMonitoringVolume(50)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### Adjust the recording volume
 
 Call `adjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
 
-**objc**
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
 ```objc
 // Adjust the recording signal volume
 [agoraKit adjustRecordingSignalVolume: 50];
 ```
+</CodeBlockTab>
 
-**swift**
+<CodeBlockTab value="swift">
 ```swift
 // Adjust the recording signal volume
 agoraKit.adjustRecordingSignalVolume(50)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
 
 * The SDK defaults to a device volume of `85` when using the recording device to capture audio signals.
@@ -610,7 +700,13 @@ Voice SDK enables you to obtain the user IDs and corresponding volumes of the th
 :::note
 Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
 :::
-**objc**
+<CodeBlockTabs defaultValue="objective-c">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="objective-c">objc</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="objective-c">
 ```objc
 // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
 // their respective volumes, and determine whether the local user is speaking.
@@ -619,8 +715,9 @@ reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo *> *_Nonn
            totalVolume:(NSInteger)totalVolume {
 }
 ```
+</CodeBlockTab>
 
-**swift**
+<CodeBlockTab value="swift">
 ```swift
 // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
 // their respective volumes, and determine whether the local user is speaking.
@@ -634,7 +731,8 @@ totalVolume: Int
 // Enable the reportAudioVolumeIndicationOfSpeakers callback
 agoraKit.enableAudioVolumeIndication(200, smooth: 3, reportVad: true)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 

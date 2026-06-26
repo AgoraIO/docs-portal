@@ -74,8 +74,14 @@ description: 与对话式智能体进行实时互动时，你可能需要实时�
 
 为 RTC 和 RTM 实例创建配置对象，并设置转录字幕渲染模式，之后创建组件实例：
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 // 为 RTC 和 RTM 实例创建配置对象
 val config = ConversationalAIAPIConfig(
@@ -92,9 +98,9 @@ val config = ConversationalAIAPIConfig(
 // 创建组件实例
 val api = ConversationalAIAPIImpl(config)
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 /// 为 RTC 和 RTM 实例创建配置对象
 let config = ConversationalAIAPIConfig(
@@ -111,9 +117,9 @@ let config = ConversationalAIAPIConfig(
 /// 创建组件实例
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 // 初始化组件
 ConversationalAIAPI.init({
@@ -132,7 +138,8 @@ ConversationalAIAPI.init({
 // 获取 API 实例（单例）
 const conversationalAIAPI = ConversationalAIAPI.getInstance()
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 > 信息
 > 逐字渲染模式 (`ESubtitleHelperMode.WORD`) 下需要接收来自 RTC 的音频时间戳信息才能实现字幕和语音同步输出。为此，在创建客户端对象前，请确保完成以下设置：
 >
@@ -147,25 +154,32 @@ const conversationalAIAPI = ConversationalAIAPI.getInstance()
 
 调用 `addHandler` 方法，注册并实现字幕转录回调：
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 api.addHandler(covEventHandler)
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 convoAIAPI.addHandler(handler: self)
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 // 监听转录内容更新，用于实时显示字幕转录内容
 conversationalAIAPI.on(EConversationalAIAPIEvents.TRANSCRIPT_UPDATED, onTextChanged)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 实现字幕数据回调接口
 
 你需要自行实现字幕处理逻辑，根据转录内容更新 UI 显示。
@@ -286,8 +300,14 @@ conversationalAIAPI.subscribeMessage(channel_name)
 
 每次智能体会话结束后，你需要取消订阅频道消息，以释放字幕相关资源。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 api.unsubscribeMessage("channelName") { error ->
     if (error != null) {
@@ -295,9 +315,9 @@ api.unsubscribeMessage("channelName") { error ->
     }
 }
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 /// 取消订阅频道消息
 convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
@@ -308,35 +328,43 @@ convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
     }
 }
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 conversationalAIAPI.unsubscribeMessage(channel_name)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### 销毁组件实例
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 api.destroy()
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 convoAIAPI.destroy()
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 conversationalAIAPI.destroy()
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ## 参考信息
 
 ### 示例项目

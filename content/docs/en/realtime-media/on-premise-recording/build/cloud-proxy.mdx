@@ -44,20 +44,26 @@ To implement Cloud proxy in your app, follow these steps:
 
     Set the private parameter `rtc.enable_proxy` to `true`.
 
-    **C++**
+    <CodeBlockTabs defaultValue="cpp">
+    <CodeBlockTabsList>
+      <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
+    <CodeBlockTab value="cpp">
     ```cpp
     auto agoraParameter = service->getAgoraParameter();
     agoraParameter->setBool("rtc.enable_proxy", true);
     ```
+    </CodeBlockTab>
 
-    **Java**
-
+    <CodeBlockTab value="java">
     ```java
     AgoraParameter parameter = agoraService.getAgoraParameter();
     parameter.setBool("rtc.enable_proxy", true);
     ```
-
+    </CodeBlockTab>
+    </CodeBlockTabs>
 4. **Test your setup**
 
    Record audio and video to confirm the proxy configuration is working as expected.

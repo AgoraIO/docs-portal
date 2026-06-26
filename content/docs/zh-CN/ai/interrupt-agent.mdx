@@ -183,8 +183,14 @@ curl --request POST \
 
 为 RTC 和 RTM 实例创建配置对象，之后创建组件实例：
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```java
 // 为 RTC 和 RTM 实例创建配置对象
 val config = ConversationalAIAPIConfig(
@@ -195,9 +201,9 @@ val config = ConversationalAIAPIConfig(
 // 创建组件实例
 val api = ConversationalAIAPIImpl(config)
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 // 为 RTC 和 RTM 实例创建配置对象
 let config = ConversationalAIAPIConfig(
@@ -208,9 +214,9 @@ let config = ConversationalAIAPIConfig(
 /// 创建组件实例
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 // 为 RTC 和 RTM 实例创建配置对象
 ConversationalAIAPI.init({
@@ -221,7 +227,8 @@ ConversationalAIAPI.init({
 // 获取 API 实例（单例）
 const conversationalAIAPI = ConversationalAIAPI.getInstance()
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 #### 智能体加入频道
 
 调用 [POST 创建对话式智能体](../operations/start-agent.md)接口，并完成以下参数设置：
@@ -236,14 +243,20 @@ const conversationalAIAPI = ConversationalAIAPI.getInstance()
 
 调用 `interrupt` 方法，打断智能体。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 api.interrupt("agentId") { error -> /* ... */ }
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 convoAIAPI.interrupt(agentUserId: "\(agentUid)") { error in
     if let error = error {
@@ -253,35 +266,43 @@ convoAIAPI.interrupt(agentUserId: "\(agentUid)") { error in
     }
 }
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 await conversationalAIAPI.interrupt(`${agent_rtc_uid}`)
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 #### 销毁组件实例
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="android">
 ```kotlin
 api.destroy()
 ```
+</CodeBlockTab>
 
-#### iOS
-
+<CodeBlockTab value="ios">
 ```swift
 convoAIAPI.destroy()
 ```
+</CodeBlockTab>
 
-#### Web
-
+<CodeBlockTab value="web">
 ```typescript
 conversationalAIAPI.destroy()
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ## 参考信息
 
 ### 示例项目

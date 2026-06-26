@@ -12,18 +12,26 @@ This section shows how to enable recovery mode and regenerate MP4 files after a 
 
 To enable file recovery, set the `che.media_recorder_recover_files` parameter to `true` during `AgoraService` initialization:
 
-**C++**
+<CodeBlockTabs defaultValue="cpp">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="cpp">
 ```cpp
 auto agoraParameter = service->getAgoraParameter();
 agoraParameter->setBool("che.media_recorder_recover_files", true);
 ```
+</CodeBlockTab>
 
-**Java**
+<CodeBlockTab value="java">
 ```java
 AgoraParameter parameter = agoraService.getAgoraParameter();
 parameter.setBool("che.media_recorder_recover_files", true);
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### Understand file behavior
 
 When file recovery is enabled, the SDK generates an MP4 file as well as two additional files, H264 and AAC—with the same base name. For example, if the output file is `storagePath/agoraRecording.mp4`, then `agoraRecording.mp4.h264` and `agoraRecording.mp4.aac` files are also generated in the same path.
@@ -36,16 +44,24 @@ When file recovery is enabled, the SDK generates an MP4 file as well as two addi
 
 To regenerate a corrupted MP4 file, use [ffmpeg](https://ffmpeg.org/), a command-line tool for processing video and audio, to merge the retained files into a playable MP4.
 
-**C++**
+<CodeBlockTabs defaultValue="cpp">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="cpp">
 ```bash
 ffmpeg -i video.h264 -i audio.aac -c:v copy -c:a copy output.mp4
 ```
+</CodeBlockTab>
 
-**Java**
+<CodeBlockTab value="java">
 ```bash
 ffmpeg -i agoraRecording.mp4.h264 -i agoraRecording.mp4.aac -c:v copy -c:a copy output.mp4
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 This command creates a new playable MP4 file using the video and audio data from the retained files.
 
 ## Reference

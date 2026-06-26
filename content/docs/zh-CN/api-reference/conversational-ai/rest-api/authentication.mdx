@@ -101,8 +101,17 @@ curl --request POST \
 
 复制如下代码，填入你的客户 ID 和客户密钥，即可生成对应的 `Authorization` 字段：
 
-#### Java
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="go">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="csharp">C#</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="nodejs">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="java">
 ```java
 import java.io.IOException;
 import java.net.URI;
@@ -127,9 +136,9 @@ public class Base64Encoding {
     }
 }
 ```
+</CodeBlockTab>
 
-#### Golang
-
+<CodeBlockTab value="go">
 ```go
 package main
 
@@ -158,9 +167,9 @@ func main() {
     fmt.Println(authHeader)
 }
 ```
+</CodeBlockTab>
 
-#### PHP
-
+<CodeBlockTab value="php">
 ```php
 <?php
 // 客户 ID
@@ -177,9 +186,9 @@ $base64Credentials = base64_encode($credentials);
 // 创建 authorization header
 $arr_header = "Authorization: Basic " . $base64Credentials;
 ```
+</CodeBlockTab>
 
-#### C#
-
+<CodeBlockTab value="csharp">
 ```cs
 using System;
 using System.IO;
@@ -210,9 +219,9 @@ namespace Examples.System.Net
     }
 }
 ```
+</CodeBlockTab>
 
-#### Node.js
-
+<CodeBlockTab value="nodejs">
 ```javascript
 // 基于 Node.js 实现的 HTTP 基本认证示例
 const https = require('https')
@@ -229,9 +238,9 @@ encodedCredential = Buffer.from(plainCredential).toString('base64')
 // 创建 authorization header
 authorizationField = "Basic " + encodedCredential
 ```
+</CodeBlockTab>
 
-#### Python
-
+<CodeBlockTab value="python">
 ```python
 # -- coding utf-8 --
 # Python 3
@@ -253,3 +262,5 @@ credential = base64_credentials.decode("utf8")
 # 创建 authorization header
 basic_auth_header = 'basic ' + credential
 ```
+</CodeBlockTab>
+</CodeBlockTabs>

@@ -75,7 +75,16 @@ Refer to the following sample code for sending messages:
     </CodeBlockTab>
     </CodeBlockTabs>
 
-    **Swift**
+    <CodeBlockTabs defaultValue="swift">
+    <CodeBlockTabsList>
+      <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="objective-c">Objective-C</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="javascript">JavaScript</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="swift">
     ```swift
     let message = "Hello Agora!"
     let user = "Tony"
@@ -91,8 +100,9 @@ Refer to the following sample code for sending messages:
         }
     })
     ```
+    </CodeBlockTab>
 
-    **Objective-C**
+    <CodeBlockTab value="objective-c">
     ```objc
     // Send string message
     NSString* message = @"Hello Agora!";
@@ -109,8 +119,9 @@ Refer to the following sample code for sending messages:
         }
     }];
     ```
+    </CodeBlockTab>
 
-    **C++**
+    <CodeBlockTab value="cpp">
     ```cpp
     // Send string message
     std::string message = "Hello Agora!";
@@ -122,8 +133,9 @@ Refer to the following sample code for sending messages:
     uint64_t requestId;
     rtmClient->publish("Tony", message.c_str(), message.size(), options, requestId);
     ```
+    </CodeBlockTab>
 
-    **JavaScript**
+    <CodeBlockTab value="javascript">
     ```js
     const payload = "Hello Agora!";
     const channelName = "Tony";
@@ -138,8 +150,9 @@ Refer to the following sample code for sending messages:
         console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
     }
     ```
+    </CodeBlockTab>
 
-    **Flutter**
+    <CodeBlockTab value="flutter">
     ```dart
     final channelName = '"Tony"';
     var payload = 'Hello world';
@@ -160,7 +173,8 @@ Refer to the following sample code for sending messages:
         print('something went wrong: $e');
     }
     ```
-
+    </CodeBlockTab>
+    </CodeBlockTabs>
 * Binary message
 
     <CodeBlockTabs defaultValue="java">
@@ -210,7 +224,15 @@ Refer to the following sample code for sending messages:
     </CodeBlockTab>
     </CodeBlockTabs>
 
-    **Swift**
+    <CodeBlockTabs defaultValue="swift">
+    <CodeBlockTabsList>
+      <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="javascript">JavaScript</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="swift">
     ```swift
     let bytes: [UInt8] = [ /* your raw values */ ]
     let rawMessage = Data(bytes: bytes, count: bytes.count)
@@ -223,8 +245,9 @@ Refer to the following sample code for sending messages:
         }
     }
     ```
+    </CodeBlockTab>
 
-    **C++**
+    <CodeBlockTab value="cpp">
     ```cpp
     // Send binary message
     PublishOptions options;
@@ -236,8 +259,9 @@ Refer to the following sample code for sending messages:
     uint64_t requestId;
     rtmClient->publish("Tony", message, 5, options, requestId);
     ```
+    </CodeBlockTab>
 
-    **JavaScript**
+    <CodeBlockTab value="javascript">
     ```js
     const message = "Hello Agora!";
     const payload = new TextEncoder().encode(message);
@@ -250,8 +274,9 @@ Refer to the following sample code for sending messages:
         console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
     }
     ```
+    </CodeBlockTab>
 
-    **Flutter**
+    <CodeBlockTab value="flutter">
     ```dart
     final channelName = '"Tony"';
     var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
@@ -272,7 +297,8 @@ Refer to the following sample code for sending messages:
         print('something went wrong: $e');
     }
     ```
-
+    </CodeBlockTab>
+    </CodeBlockTabs>
 For C++, when you call this method, the SDK triggers the `onPublishResult` callback and returns the API call result.
 
 ```cpp

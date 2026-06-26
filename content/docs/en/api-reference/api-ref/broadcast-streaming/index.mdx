@@ -64,7 +64,7 @@ When you send an HTTP request, you need to generate a signature using the HMAC-S
 You need the following Agora account information to generate the authentication field:
 
 - The App ID of your Agora project. See [Get the App ID](/en/realtime-media/broadcast-streaming/reference/console-overview).
-- A Customer ID/Customer Secret pair. See [Generate a Customer ID and Customer Secret](/en/api-reference/api-ref/solutions-agora-console-rest-api).
+- A Customer ID/Customer Secret pair. See [Generate a Customer ID and Customer Secret](/en/api-reference/api-ref/console/solutions-agora-console-rest-api).
 
 To show you how to generate the value of the `authorization` field, the following Python code (Python 3.7+) takes the API that lists domain names as an example :
 
@@ -121,8 +121,15 @@ The call frequency limit of the Media Broadcast RESTful API is 50 times per seco
 
 This section provides complete code samples for calling the Media Broadcast RESTful API.
 
-### Python
+<CodeBlockTabs defaultValue="python">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="nodejs">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
+<CodeBlockTab value="python">
 ```python
 from hashlib import sha256
 
@@ -164,9 +171,9 @@ response = requests.patch("https://{}{}".format(host, path), headers=headers, da
 print(response.status_code, response.content.decode())
 print(response.headers)
 ```
+</CodeBlockTab>
 
-### Java
-
+<CodeBlockTab value="java">
 ```java
 
 
@@ -244,9 +251,9 @@ public class GatewayKey {
     }
 }
 ```
+</CodeBlockTab>
 
-### Node.js
-
+<CodeBlockTab value="nodejs">
 ```javascript
 var crypto = require("crypto");
 var request = require("request");
@@ -291,8 +298,9 @@ request.patch(
     },
 );
 ```
+</CodeBlockTab>
 
-### PHP
+<CodeBlockTab value="php">
 ```php
 <?php
 
@@ -346,7 +354,8 @@ function getCurl($url, $headerArray, $method, $data){
     return $output;
 }
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 ### Postman Pre-request Script
 ```javascript
 var customer_username = "hmac_user_name"

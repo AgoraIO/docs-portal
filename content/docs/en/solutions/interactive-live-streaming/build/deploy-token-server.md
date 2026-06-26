@@ -59,7 +59,15 @@ Agora provides an open source token generator code repository on [GitHub](https:
 
 Refer to the following code samples to generate a token with basic permissions:
 
-**Golang**
+<CodeBlockTabs defaultValue="go">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="go">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="nodejs">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python/Python3</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="go">
 ```go
 package main
 
@@ -100,8 +108,9 @@ if err != nil {
 }
 }
 ```
+</CodeBlockTab>
 
-**Node.js**
+<CodeBlockTab value="nodejs">
 ```js
 const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
 const RtcRole = require("../src/RtcTokenBuilder2").Role;
@@ -132,8 +141,9 @@ process.exit(1);
 const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, channelName, uid, role, tokenExpirationInSecond, privilegeExpirationInSecond);
 console.log("Token with int uid:", tokenWithUid);
 ```
+</CodeBlockTab>
 
-**PHP**
+<CodeBlockTab value="php">
 ```js
 <?php
 include("../src/RtcTokenBuilder2.php");
@@ -161,8 +171,9 @@ exit;
 $token = RtcTokenBuilder2::buildTokenWithUid($appId, $appCertificate, $channelName, $uid, RtcTokenBuilder2::ROLE_PUBLISHER, $tokenExpirationInSeconds, $privilegeExpirationInSeconds);
 echo 'Token with int uid: ' . $token . PHP_EOL;
 ```
+</CodeBlockTab>
 
-**Python/Python3**
+<CodeBlockTab value="python">
 ```python
 import os
 import sys
@@ -199,7 +210,8 @@ print("Token with int uid: {}".format(token))
 if __name__ == "__main__":
 main()
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
@@ -371,7 +383,15 @@ Use the following methods from the token generation [Github repository](https://
 
 Refer to the following code samples to generate a token with advanced permissions
 
-**Golang**
+<CodeBlockTabs defaultValue="go">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="go">Golang</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="nodejs">Node.js</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python/Python3</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="go">
 ```go
 package main
 
@@ -430,8 +450,9 @@ if err != nil {
 }
 }
 ```
+</CodeBlockTab>
 
-**Node.js**
+<CodeBlockTab value="nodejs">
 ```js
 const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
 
@@ -476,8 +497,9 @@ pubDataStreamPrivilegeExpireInSeconds
 );
 console.log("Token with int uid and privilege:", tokenWithUidAndPrivilege);
 ```
+</CodeBlockTab>
 
-**PHP**
+<CodeBlockTab value="php">
 ```js
 <?php
 include("../src/RtcTokenBuilder2.php");
@@ -513,8 +535,9 @@ exit;
 $token = RtcTokenBuilder2::buildTokenWithUidAndPrivilege($appId, $appCertificate, $channelName, $uid, $tokenExpirationInSeconds, $joinChannelPrivilegeExpireInSeconds, $pubAudioPrivilegeExpireInSeconds, $pubVideoPrivilegeExpireInSeconds, $pubDataStreamPrivilegeExpireInSeconds);
 echo 'Token with int uid and privilege: ' . $token . PHP_EOL;
 ```
+</CodeBlockTab>
 
-**Python/Python3**
+<CodeBlockTab value="python">
 ```python
 import os
 import sys
@@ -559,7 +582,8 @@ print("Token with int uid and privilege: {}".format(token))
 if __name__ == "__main__":
 main()
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
