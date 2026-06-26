@@ -393,6 +393,9 @@ describe('DocsContent', () => {
         `code --add-mcp '{"name":"agora-docs","url":"https://mcp.agora.io"}'`,
       );
     });
+    expect(
+      screen.getByRole('button', { name: 'Copy Page' }),
+    ).not.toHaveAttribute('data-copied');
   });
 
   it('copies the markdown url from the primary copy button', async () => {
@@ -415,6 +418,32 @@ describe('DocsContent', () => {
         'https://docs.agora.io/llms.mdx/docs/en/introduction/about-agora.md',
       );
     });
+  });
+
+  it('uses a more visible success state after copying the page link', async () => {
+    clipboardWriteText.mockReset();
+    clipboardWriteText.mockResolvedValue(undefined);
+
+    renderWithRouter(
+      <DocsCopyMenu
+        locale="en"
+        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        slug="introduction/about-agora"
+        title="About Agora"
+      />,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Copy Page' }));
+
+    const copyButton = await screen.findByRole('button', { name: 'Copy Page' });
+
+    await waitFor(() => {
+      expect(copyButton).toHaveTextContent('Copied');
+    });
+    expect(copyButton).toHaveAttribute('data-copied', 'true');
+    expect(copyButton).toHaveAttribute('aria-live', 'polite');
+    expect(copyButton).toHaveClass('bg-emerald-500/12');
+    expect(copyButton).toHaveClass('ring-emerald-500/35');
   });
 });
 
