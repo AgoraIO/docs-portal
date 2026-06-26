@@ -1,6 +1,7 @@
 ---
-title: "Architecture"
-description: "Understand TEN Framework subgraphs and graph architecture."
+title: 'Subgraphs'
+description: >
+  Create reusable graph modules with subgraphs to improve code organization and maintainability in TEN applications.
 ---
 
 The TEN framework uses a graph structure of interconnected nodes to define data flow between extensions. Subgraphs extend this architecture by providing a powerful reuse mechanism that allows you to break down complex graph structures into modular, reusable components.
@@ -56,7 +57,7 @@ A subgraph is defined in a standard JSON file that contains the same basic struc
      "addon": "audio_enhancement"
    },
    {
-     "type": "extension",
+     "type": "extension", 
      "name": "audio_filter",
      "addon": "noise_reduction"
    }
@@ -83,7 +84,7 @@ A subgraph is defined in a standard JSON file that contains the same basic struc
      "name": "raw_audio"
    },
    {
-     "extension": "audio_filter",
+     "extension": "audio_filter", 
      "type": "audio_frame_out",
      "name": "clean_audio"
    }
@@ -96,7 +97,7 @@ A subgraph is defined in a standard JSON file that contains the same basic struc
    },
    {
      "extension": "audio_filter",
-     "name": "noise_threshold",
+     "name": "noise_threshold", 
      "alias": "filter_sensitivity"
    }
  ]
@@ -129,7 +130,7 @@ The `exposed_messages` field defines which message interfaces are available for 
  "exposed_messages": [
    {
      "extension": "internal_extension_name",
-     "type": "message_direction_and_type",
+     "type": "message_direction_and_type", 
      "name": "message_name"
    }
  ]
@@ -152,13 +153,13 @@ The `exposed_messages` field defines which message interfaces are available for 
      "name": "audio_input"
    },
    {
-     "extension": "text_processor",
+     "extension": "text_processor", 
      "type": "data_out",
      "name": "transcribed_text"
    },
    {
      "extension": "speech_recognizer",
-     "type": "cmd_in",
+     "type": "cmd_in", 
      "name": "configure_language"
    }
  ]
@@ -194,7 +195,7 @@ The `exposed_properties` field specifies which internal extension properties can
  "exposed_properties": [
    {
      "extension": "video_encoder",
-     "name": "bitrate_kbps",
+     "name": "bitrate_kbps", 
      "alias": "output_quality"
    },
    {
@@ -203,7 +204,7 @@ The `exposed_properties` field specifies which internal extension properties can
      "alias": "buffer_limit"
    },
    {
-     "extension": "video_encoder",
+     "extension": "video_encoder", 
      "name": "codec_type"
    }
  ]
@@ -232,7 +233,7 @@ To use a subgraph in your main graph, reference it as a node with type `subgraph
      "addon": "audio_input"
    },
    {
-     "type": "extension",
+     "type": "extension", 
      "name": "output_sink",
      "addon": "audio_output"
    },
@@ -257,7 +258,7 @@ To use a subgraph in your main graph, reference it as a node with type `subgraph
      ]
    },
    {
-     "subgraph": "audio_pipeline",
+     "subgraph": "audio_pipeline", 
      "audio_frame": [
        {
          "name": "processed_audio",
@@ -332,7 +333,7 @@ For more granular control, connect directly to specific extensions within a subg
      "extension": "external_source",
      "data": [
        {
-         "name": "raw_input",
+         "name": "raw_input", 
          "dest": [
            {
              "extension": "video_pipeline:frame_buffer"
@@ -390,7 +391,7 @@ You can mix different connection patterns within the same graph to create sophis
      "subgraph": "processing_pipeline",
      "cmd": [
        {
-         "name": "status_update",
+         "name": "status_update", 
          "dest": [
            {
              "extension": "monitoring_extension"
@@ -432,7 +433,7 @@ Before your application runs, the TEN framework automatically flattens all subgr
 
 5. **Interface removal**: The `exposed_messages` and `exposed_properties` metadata is removed since it's only needed during graph composition.
 
-**Naming convention:**
+**Naming convention:**  
 The colon (`:`) is replaced with an underscore (`_`) to create valid extension names in the flattened structure.
 
 - Original: `subgraph_name:extension_name`
@@ -453,7 +454,7 @@ Following is a complete example that shows how a graph with subgraphs transforms
      "addon": "microphone_input"
    },
    {
-     "type": "extension",
+     "type": "extension", 
      "name": "output_sink",
      "addon": "speaker_output"
    },
@@ -468,7 +469,7 @@ Following is a complete example that shows how a graph with subgraphs transforms
    },
    {
      "type": "subgraph",
-     "name": "effects_chain",
+     "name": "effects_chain", 
      "source_uri": "./subgraphs/audio_effects.json"
    }
  ],
@@ -490,7 +491,7 @@ Following is a complete example that shows how a graph with subgraphs transforms
      "extension": "audio_pipeline:processor",
      "audio_frame": [
        {
-         "name": "clean_audio",
+         "name": "clean_audio", 
          "dest": [
            {
              "extension": "effects_chain:reverb"
@@ -522,7 +523,7 @@ Following is a complete example that shows how a graph with subgraphs transforms
  "nodes": [
    {
      "type": "extension",
-     "name": "input_source",
+     "name": "input_source", 
      "addon": "microphone_input"
    },
    {
@@ -533,7 +534,7 @@ Following is a complete example that shows how a graph with subgraphs transforms
    {
      "type": "extension",
      "name": "audio_pipeline_enhancer",
-     "addon": "audio_enhancement",
+     "addon": "audio_enhancement", 
      "property": {
        "sample_rate": 48000
      }
@@ -547,13 +548,13 @@ Following is a complete example that shows how a graph with subgraphs transforms
      }
    },
    {
-     "type": "extension",
+     "type": "extension", 
      "name": "effects_chain_reverb",
      "addon": "reverb_effect"
    },
    {
      "type": "extension",
-     "name": "effects_chain_compressor",
+     "name": "effects_chain_compressor", 
      "addon": "dynamic_compressor"
    }
  ],
@@ -585,7 +586,7 @@ Following is a complete example that shows how a graph with subgraphs transforms
      ]
    },
    {
-     "extension": "audio_pipeline_processor",
+     "extension": "audio_pipeline_processor", 
      "audio_frame": [
        {
          "name": "clean_audio",
@@ -614,7 +615,7 @@ Following is a complete example that shows how a graph with subgraphs transforms
      "extension": "effects_chain_compressor",
      "audio_frame": [
        {
-         "name": "final_audio",
+         "name": "final_audio", 
          "dest": [
            {
              "extension": "output_sink"
@@ -631,7 +632,7 @@ Following is a complete example that shows how a graph with subgraphs transforms
 
 - **Subgraph nodes removed**: `audio_pipeline` and `effects_chain` subgraph nodes are replaced with their constituent extensions
 - **Names prefixed**: Internal extensions get prefixed names (`audio_pipeline_processor`, `effects_chain_reverb`)
-- **Properties distributed**: Subgraph properties are applied to the correct internal extensions
+- **Properties distributed**: Subgraph properties are applied to the correct internal extensions 
 - **Connections resolved**: All namespace references and subgraph connections are converted to direct extension connections
 - **Internal connections preserved**: Connections that existed within the original subgraphs are included in the flattened result
 
@@ -677,7 +678,7 @@ You can apply message conversion rules when connecting to subgraphs, internal su
            {
              "extension": "nlp_pipeline:tokenizer",
              "msg_conversion": {
-               "type": "per_property",
+               "type": "per_property", 
                "rules": [
                  {
                    "path": "input_text",
@@ -714,7 +715,7 @@ Message conversion rules are preserved during the flattening process, ensuring t
                "type": "per_property",
                "rules": [
                  {
-                   "path": "request_type",
+                   "path": "request_type", 
                    "conversion_mode": "fixed_value",
                    "value": "chat_completion"
                  }
@@ -729,7 +730,7 @@ Message conversion rules are preserved during the flattening process, ensuring t
                "rules": [
                  {
                    "path": "input_text",
-                   "conversion_mode": "from_original",
+                   "conversion_mode": "from_original", 
                    "original_path": "user_message"
                  }
                ],
@@ -766,7 +767,7 @@ You can reference and connect to other predefined graphs within the same TEN app
      "singleton": true
    },
    {
-     "type": "graph",
+     "type": "graph", 
      "graph_name": "monitoring_system",
      "singleton": false
    }
@@ -789,7 +790,7 @@ You can reference and connect to other predefined graphs within the same TEN app
      ]
    },
    {
-     "graph": "analytics_pipeline",
+     "graph": "analytics_pipeline", 
      "cmd": [
        {
          "name": "analysis_complete",
@@ -825,7 +826,7 @@ Connect to graphs running in different TEN applications across the network:
    },
    {
      "type": "graph",
-     "graph_name": "data_warehouse",
+     "graph_name": "data_warehouse", 
      "singleton": false,
      "app": "msgpack://data-cluster.example.com:8003/"
    }
@@ -883,7 +884,7 @@ TEN supports three types of graph nodes for different connection scenarios:
 **Local graph nodes:**
 ```json
 {
- "type": "graph",
+ "type": "graph", 
  "graph_name": "background_service",
  "singleton": true
 }
@@ -892,7 +893,7 @@ TEN supports three types of graph nodes for different connection scenarios:
 ```json
 {
  "type": "graph",
- "graph_name": "worker_pool",
+ "graph_name": "worker_pool", 
  "singleton": false
 }
 ```
@@ -911,7 +912,7 @@ TEN supports three types of graph nodes for different connection scenarios:
 {
  "type": "graph",
  "graph_name": "distributed_cache",
- "singleton": false,
+ "singleton": false, 
  "app": "msgpack://cache-cluster.internal:8004/"
 }
 ```
@@ -945,7 +946,7 @@ Reference external graph files as reusable components within your graph:
 **Subgraph node with properties:**
 ```json
 {
- "type": "subgraph",
+ "type": "subgraph", 
  "name": "configurable_module",
  "source_uri": "./ten_packages/extension/module/subgraph.json",
  "property": {
@@ -963,7 +964,7 @@ Reference external graph files as reusable components within your graph:
 ```json
 {
  "type": "subgraph",
- "name": "shared_component",
+ "name": "shared_component", 
  "source_uri": "https://cdn.example.com/subgraphs/v1.2/nlp_pipeline.json"
 }
 ```
@@ -1026,7 +1027,7 @@ Reference graphs running in different TEN applications across the network:
 {
  "type": "graph",
  "graph_name": "data_processor",
- "singleton": false,
+ "singleton": false, 
  "app": "msgpack://processing-farm.example.com:8003/"
 }
 ```
@@ -1116,7 +1117,7 @@ Connect to graphs using their identifiers:
  "graph": "background_service",
  "data": [
    {
-     "name": "status_update",
+     "name": "status_update", 
      "dest": [
        {
          "extension": "monitor:logger"
@@ -1151,7 +1152,7 @@ Combine multiple connection types for sophisticated data flow architectures:
 **Multi-destination routing:**
 ```json
 {
- "extension": "data_ingester",
+ "extension": "data_ingester", 
  "data": [
    {
      "name": "incoming_data",
@@ -1180,7 +1181,7 @@ Combine multiple connection types for sophisticated data flow architectures:
  "graph": "local_analytics",
  "cmd": [
    {
-     "name": "analysis_request",
+     "name": "analysis_request", 
      "dest": [
        {
          "extension": "ml_cluster:inference_engine"
@@ -1206,7 +1207,7 @@ Combine multiple connection types for sophisticated data flow architectures:
            "rules": [
              {
                "path": "priority",
-               "conversion_mode": "fixed_value",
+               "conversion_mode": "fixed_value", 
                "value": "high"
              }
            ]

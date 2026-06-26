@@ -1,59 +1,24 @@
 ---
-title: Create an ASR Extension
-description: Build, test, and publish a complete ASR extension from scratch
+title: Create an ASR extension project
+description: Generate a TEN Agent ASR extension project and install its development dependencies
 ---
 
-This guide covers the complete process of creating, developing, testing, and publishing an ASR Extension.
+This guide shows how to scaffold a TEN Agent ASR extension project, install its dependencies, and review the generated files before you implement vendor-specific transcription logic.
 
-## Usage Guide
+In a TEN Agent graph, an ASR extension receives real-time audio frames and emits transcribed text for downstream LLM or dialog-processing extensions.
 
-- **Basic Part**: Implement basic functionality to make the ASR Extension work and pass end-to-end verification.
-- **Advanced Part**: Implement production-grade features (auto-reconnection, finalize mechanism, standardized logging, audio dump, etc.), perfect testing, and publish to the store.
+## When to use this guide
 
-Choose the appropriate section to read based on your needs.
+Use this guide when you are starting a new Python ASR extension from the default template. For the complete extension lifecycle, see [Development workflow](./development-workflow). For metadata and schema concepts, see [Schema system](../architecture/schema-system).
 
 ## Prerequisites
 
-- Understand the development and testing process of TEN Extensions. Refer to [How to Develop with Extensions](https://github.com/TEN-framework/ten-framework/tree/main/docs).
+- Understand the development and testing process of TEN extensions. See [Development workflow](./development-workflow).
 - Master Python asynchronous programming (`asyncio`, `async/await`).
 - Have the `tman` command-line tool installed and be familiar with its basic usage.
 - Have an API key from an ASR vendor ready (for testing).
 
-## Table of Contents
-
-### Part 1: Basic - Implement Basic Functionality
-1. [Introduction to ASR Extension](#1-introduction-to-asr-extension)
-2. [Create Project](#2-create-project)
-3. [Understand Interface Specifications](#3-understand-interface-specifications)
-4. [Implement Core Functionality](#4-implement-core-functionality)
-5. [Testing](#5-testing)
-6. [Basic Development Checklist](#6-basic-development-checklist)
-
-### Part 2: Advanced - Production-Grade Quality
-7. [Auto Reconnection Mechanism](#7-auto-reconnection-mechanism)
-8. [Optimize Finalize Mechanism](#8-optimize-finalize-mechanism)
-9. [Standardized Logging](#9-standardized-logging)
-10. [Error Reporting Specifications](#10-error-reporting-specifications)
-11. [Audio Dump Functionality](#11-audio-dump-functionality)
-12. [Audio Buffer Strategy](#12-audio-buffer-strategy)
-13. [Perfect Testing](#13-perfect-testing)
-14. [Advanced Development Checklist](#14-advanced-development-checklist)
-
-### Part 3: Publish and Contribute
-15. [Publish to TEN Store](#15-publish-to-ten-store)
-16. [Adapt Other ASR Services](#16-adapt-other-asr-services)
-
-### Appendix
-- [A. ASR Interface Specifications](#a-asr-interface-specifications)
-- [B. Base Class Methods Reference](#b-base-class-methods-reference)
-- [C. Full Code Example](#c-full-code-example)
-- [D. Debugging Tools](#d-debugging-tools)
-
----
-
-# Part 1: Basic - Implement Basic Functionality
-
-## 1. Introduction to ASR Extension
+## What an ASR extension does
 
 The ASR Extension is one of the standard building blocks of the TEN Framework, responsible for **transcribing audio streams into text** in corresponding languages in **real-time**.
 
@@ -63,9 +28,9 @@ The ASR Extension is one of the standard building blocks of the TEN Framework, r
 [RTC Extension] ──audio stream──> [ASR Extension] ──text stream──> [LLM Extension]
 ```
 
-## 2. Create Project
+## Create the project
 
-### 2.0 Preparation
+### Prepare the repository
 
 :::info
 If you haven't cloned the TEN Framework repository yet, please clone it first:
@@ -78,7 +43,7 @@ cd ten-framework
 This tutorial assumes you are developing in the root directory of the TEN Framework repository.
 :::
 
-### 2.1 Create with Template
+### Create with the template
 
 Use the `tman` command-line tool to create a project from the ASR extension template:
 
@@ -92,7 +57,7 @@ tman create extension my_asr_extension --template default_asr_python --template-
 - `--template default_asr_python`: Use the ASR Python extension template.
 - `--template-data class_name_prefix=MyAsr`: Set the class name prefix for the Python Extension class to `MyAsr` (the generated class name will be `MyAsrExtension`).
 
-### 2.2 Install TEN Package Dependencies
+### Install TEN package dependencies
 
 ```bash
 cd my_asr_extension
@@ -103,7 +68,7 @@ tman install --standalone
 This command uses the dependency calculation and download capabilities of the `tman` tool to calculate the dependency tree based on the dependencies declared in `manifest.json`. Since these are development dependencies, the `--standalone` parameter is required. Dependencies will be installed in the `.ten` directory, including Python modules for development and system packages for standalone testing.
 :::
 
-### 2.3 Project Structure
+### Review the project structure
 
 ```
 my_asr_extension/
@@ -118,14 +83,14 @@ my_asr_extension/
 └── tests/              # Test files
 ```
 
-#### File Descriptions
+#### File descriptions
 
 **manifest.json and property.json** are standard metadata files for TEN Extensions:
 - `manifest.json`: Contains the extension's **name, version, description, dependencies, and schema definitions**.
 - `property.json`: Defines the extension's **default property values**.
 
 :::info
-For a detailed understanding of the TEN Framework metadata system, please refer to the [Metadata System Documentation](https://github.com/TEN-framework/ten-framework/tree/main/docs).
+For details about TEN Framework metadata and schemas, see [Schema system](../architecture/schema-system).
 :::
 
 **requirements.txt** is unique to Python extensions and is used to declare the extension's **dependencies on third-party pip packages**.

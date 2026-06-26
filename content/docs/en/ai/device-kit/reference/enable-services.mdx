@@ -1,9 +1,35 @@
 ---
-title: "RESTful authentication"
-description: "Set up authentication for Cloud Recording RESTful API calls."
+title: "Enable services"
+description: "Enable the services required by Convo AI Device Kit for your Agora project."
 ---
 
-Cloud Recording RESTful API requires REST authentication.
+Agora's Convo AI Device Kit is based on Agora's [IoT SDK](/en/solutions/iot/product-overview) and [Conversational AI Engine](/en/ai).
+
+## Manage your Agora account
+
+Create an Agora account and project in Agora Console. Record the App ID for the project because you use it when calling Agora services and running the device kit.
+
+## Enable Conversational AI
+
+Before using Convo AI Device Kit, enable it for your app ID in Agora Console.
+
+:::info[Note]
+The following steps apply to the new version of Agora Console. If you are using the old version, switch to the new version by clicking **Switch to the new version** at the top of the screen.
+:::
+
+
+1. Navigate to the [Projects](https://api-ref.agora.io) page, locate your project in the **My Projects** list and click the associated ✏️ icon to configure it.
+
+    ![configure_project](/images/signaling/configure_project.png)
+
+1. Under **All features** select **Conversational AI > Configurations** and toggle the switch to **Enable Conversational AI**.
+
+    ![Console](/images/conversational-ai/enable-convo-ai-console.png)
+
+After enabling, you can call the Convo AI Device Kit RESTful API.
+
+
+Convo AI Device Kit RESTful API requires REST authentication.
 The following REST authentication methods are available:
 
 
