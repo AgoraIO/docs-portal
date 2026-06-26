@@ -39,7 +39,7 @@ The following tables provide the essential information needed to migrate your Cl
 Use these tables to identify the configurations applicable to your regions.
 :::note
 When adding IP addresses:
-- If you use cloud proxy with [Restricted media zones](../build/geofencing), add only the IP addresses dedicated to your specified region.
+- If you use cloud proxy with [Restricted media zones](../build/secure-and-protect-channels/geofencing), add only the IP addresses dedicated to your specified region.
 - If you do not restrict media zones, add all IP addresses to ensure connectivity.
 :::
 ### Native RTC Force UDP mode
