@@ -11,9 +11,11 @@ Scalable for one-on-one tutoring, group discussions, or large lecture halls, Fle
 
 ## Start building with
 
-- [SDK quickstart](./index.md) - Customize your experience from the start with our flexible Video SDK.
-- [API reference](https://docs.agora.io/en/api-reference)
-- [Samples](./reference/downloads.md)
+<Cards>
+  <Card title="SDK quickstart" href="./index.md" description="Create and run a basic Flexible Classroom experience." />
+  <Card title="API reference" href="/en/api-reference/api-ref/flexible-classroom/classroom-rest-api" description="Explore Flexible Classroom APIs and related references." />
+  <Card title="Samples" href="./reference/downloads.md" description="Download sample projects and classroom resources." />
+</Cards>
 
 ## Product Features
 
