@@ -162,6 +162,7 @@ describe('common MDX registry', () => {
     const dialog = await screen.findByRole('dialog');
 
     expect(dialog).toHaveTextContent('Product Architecture');
+    expect(dialog).toHaveTextContent('Enlarged documentation image preview.');
     expect(
       within(dialog).getByRole('img', { name: 'Product Architecture' }),
     ).toHaveAttribute('src', '/images/product.png');
