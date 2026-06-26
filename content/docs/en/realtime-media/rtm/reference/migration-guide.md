@@ -594,7 +594,7 @@ Signaling supports the restricted access area feature to comply with the laws an
 
 ## Call invitation
 
-Call Invitation is no longer available in Signaling `2.x`. Use [CallAPI](../build/connect-and-authenticate/connection/connection-management.md) as an alternate approach.
+Call Invitation is no longer available in Signaling `2.x`. Use [CallAPI](../build/connect-and-authenticate/connection/connection-management.mdx) as an alternate approach.
 
 ## Other new features
 

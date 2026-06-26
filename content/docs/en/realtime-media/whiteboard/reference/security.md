@@ -16,7 +16,7 @@ Securing access to your services and resources starts with identity and access c
 Refer to the following guides for detailed information on Interactive Whiteboard tokens:
 
 - [Interactive Whiteboard Token Overview](../build/authenticate-users/authentication-workflow.md): Describes the different types of whiteboard tokens and their uses, the various methods of generating a token, and token safety precautions.
-- [Generate Token Using an App Server](../build/authenticate-users/generate-token-app-server.md): Introduces how to generate tokens at your app server using code samples.
+- [Generate Token Using an App Server](../build/authenticate-users/generate-token-app-server.mdx): Introduces how to generate tokens at your app server using code samples.
 - [Generate Token Using REST API](../build/authenticate-users/generate-token-rest.md): Describes the RESTful APIs for generating whiteboard tokens.
 
 ## Data encryption and storage
