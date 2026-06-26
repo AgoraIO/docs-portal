@@ -457,6 +457,51 @@ describe('overview MDX components', () => {
     ).toBeVisible();
   });
 
+  it('names recipe catalog filter groups and selected filter controls', () => {
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    render(
+      <RecipesCatalog
+        allCategoriesLabel="All reference types"
+        allProductsLabel="All products"
+        allStacksLabel="All platforms"
+        categoryFilterLabel="Reference type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No references match the current filters."
+        items={[
+          {
+            category: 'Hosted SDK reference',
+            description: 'Voice SDK for Android API reference.',
+            href: '/en/api-reference/rtc/android/overview',
+            product: 'Voice SDK',
+            stack: 'Android',
+            title: 'Android',
+            tone: 'blue',
+          },
+        ]}
+        productFilterLabel="Product"
+        searchPlaceholder="Search references"
+        stackFilterLabel="Platform"
+      />,
+    );
+
+    expect(
+      screen.getByRole('searchbox', { name: 'Search references' }),
+    ).toBeVisible();
+
+    const productGroup = screen.getByRole('group', { name: 'Product' });
+    expect(
+      within(productGroup).getByRole('button', { name: 'All products' }),
+    ).toHaveAttribute('aria-pressed', 'true');
+    expect(
+      within(productGroup).getByRole('button', { name: 'Voice SDK' }),
+    ).toHaveAttribute('aria-pressed', 'false');
+
+    expect(screen.getByRole('group', { name: 'Reference type' })).toBeVisible();
+    expect(screen.getByRole('group', { name: 'Platform' })).toBeVisible();
+  });
+
   it('renders multiple version links inside a recipe catalog card', () => {
     const components = getOverviewMDXComponents();
     const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;

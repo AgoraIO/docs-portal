@@ -1019,13 +1019,14 @@ function RecipesCatalogFilterGroup({
   values: string[];
 }) {
   return (
-    <div className="grid gap-2">
-      <p className="m-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+    <fieldset className="m-0 grid min-w-0 border-0 p-0">
+      <legend className="mb-2 p-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         {label}
-      </p>
+      </legend>
       <div className="flex flex-wrap gap-2">
         {values.map((value) => (
           <button
+            aria-pressed={value === activeValue}
             className={cn(
               'rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors',
               value === activeValue
@@ -1040,7 +1041,7 @@ function RecipesCatalogFilterGroup({
           </button>
         ))}
       </div>
-    </div>
+    </fieldset>
   );
 }
 
