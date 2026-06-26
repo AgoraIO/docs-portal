@@ -195,6 +195,33 @@ describe('docs content regressions', () => {
     ).toBeUndefined();
   });
 
+  it('uses specific titles for English top-level overview pages', async () => {
+    const { source } = await import('./source.server');
+
+    const overviewPages = [
+      {
+        expectedTitle: 'Voice Agent overview',
+        slugs: ['ai'],
+      },
+      {
+        expectedTitle: 'Realtime Media overview',
+        slugs: ['realtime-media', 'overview'],
+      },
+      {
+        expectedTitle: 'Solutions overview',
+        slugs: ['solutions'],
+      },
+      {
+        expectedTitle: 'Reference overview',
+        slugs: ['api-reference'],
+      },
+    ];
+
+    for (const { expectedTitle, slugs } of overviewPages) {
+      expect(source.getPage(slugs, 'en')?.data.title).toBe(expectedTitle);
+    }
+  });
+
   it('does not leave legacy videoURL placeholders in MDX content', () => {
     const sources = [
       'realtime-media/cloud-recording/build/receive-notifications.mdx',
