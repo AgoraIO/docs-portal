@@ -481,6 +481,9 @@ describe('common MDX registry', () => {
     expect(
       screen.getByRole('button', { name: 'More platforms' }),
     ).toHaveAttribute('data-state', 'active');
+    expect(
+      screen.getByRole('button', { name: 'More platforms' }),
+    ).toHaveTextContent('Flutter');
   });
 
   it('shares platform preference updates across multiple rendered groups', () => {

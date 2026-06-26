@@ -190,6 +190,9 @@ function PlatformHeaderTabsList({
     unorderedOverflowPlatforms,
   );
   const moreActive = overflowPlatforms.includes(activePlatform);
+  const moreLabel = moreActive
+    ? getPlatformLabel(activePlatform, locale)
+    : 'More';
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const menuId = useId();
   const overflowMenuRef = useRef<HTMLDivElement | null>(null);
@@ -269,7 +272,7 @@ function PlatformHeaderTabsList({
             onClick={() => setIsMoreOpen((isOpen) => !isOpen)}
             type="button"
           >
-            More
+            {moreLabel}
             <ChevronDownIcon
               aria-hidden="true"
               className={cn(
