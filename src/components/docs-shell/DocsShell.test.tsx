@@ -512,7 +512,7 @@ describe('DocsShell', () => {
     expect(copyrightRow).toHaveClass('flex-col', 'sm:flex-row');
   });
 
-  it('uses the openapi layout without the generic toc rail', async () => {
+  it('keeps the openapi layout on the stable docs shell without the generic toc rail', async () => {
     renderDocsShell({
       layoutMode: 'openapi',
     });
@@ -521,11 +521,23 @@ describe('DocsShell', () => {
     const mainHeaderRow = screen.getByTestId('docs-main-header-row');
     const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
 
-    expect(mainHeaderRow).toHaveClass('max-w-[1440px]');
-    expect(docsTabsStrip.firstElementChild).toHaveClass('max-w-[1440px]');
-    expect(docsBodyShell).toHaveClass('max-w-[1440px]');
-    expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
+    expect(mainHeaderRow).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsTabsStrip.firstElementChild).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).toHaveClass(
+      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
+    );
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
+    expect(screen.getByTestId('docs-toc-rail-placeholder')).toHaveClass(
+      'w-[220px]',
+      'xl:block',
+    );
     expect(screen.queryByTestId('docs-page-actions')).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-side-rail')).not.toBeInTheDocument();
     for (const footer of screen.getAllByTestId('docs-page-footer')) {
@@ -535,16 +547,21 @@ describe('DocsShell', () => {
     expect(screen.queryByText('On this page')).not.toBeInTheDocument();
   });
 
-  it('uses the full-page layout without the generic toc rail', async () => {
+  it('keeps the full-page layout on the stable docs shell without the generic toc rail', async () => {
     renderDocsShell({
       layoutMode: 'full-page',
     });
 
     const docsBodyShell = await screen.findByTestId('docs-body-shell');
 
-    expect(docsBodyShell).toHaveClass('max-w-[1440px]');
-    expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
+    expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).toHaveClass(
+      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
+    );
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
+    expect(screen.getByTestId('docs-toc-rail-placeholder')).toBeInTheDocument();
     for (const footer of screen.getAllByTestId('docs-page-footer')) {
       expect(footer).toHaveClass('max-w-none');
       expect(footer).not.toHaveClass('max-w-[var(--content-max)]');
