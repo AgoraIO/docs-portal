@@ -45,13 +45,13 @@ Follow these steps to install, configure, and use the VAD plugin in your project
    npm install agora-extension-vad
    ```
 
-  1. Import the VAD module in your JavaScript or TypeScript file:
+  2. Import the VAD module in your JavaScript or TypeScript file:
 
    ```ts
    import { VADExtension } from "agora-extension-vad";
    ```
 
-1. Deploy Wasm files
+2. Deploy Wasm files
 
   The VAD plugin requires WebAssembly files to function. Make these files accessible to your web application:
   
@@ -151,7 +151,7 @@ Agora recommends that you create only one instance of `VADExtension`.
    });
    ```
 
-  1. Inject the plugin into the audio processing pipeline by calling the SDK's <Link to = "{{global.API_REF_WEB_ROOT}}/interfaces/imicrophoneaudiotrack.html#pipe">`pipe`</Link> method and specify the `processorDestination` property.
+  2. Inject the plugin into the audio processing pipeline by calling the SDK's <Link to = "{{global.API_REF_WEB_ROOT}}/interfaces/imicrophoneaudiotrack.html#pipe">`pipe`</Link> method and specify the `processorDestination` property.
 
    ```ts
    // Create an audio track
@@ -160,13 +160,13 @@ Agora recommends that you create only one instance of `VADExtension`.
    audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
    ```
 
-  1. If the plugin is not enabled by default, call the `enable` method to enable the plugin.
+  3. If the plugin is not enabled by default, call the `enable` method to enable the plugin.
 
    ```ts
    await processor.enable();
    ```
 
-1. Get detection results
+2. Get detection results
 
   After you enable the plugin, listen to the `result` event to get the detection results and process them as needed.
 

@@ -2717,14 +2717,14 @@ To set the video encoder configuration, take the following steps:
     2. Locate the **My Blueprint** panel.
     3. Create a new UI event node named `OnVideoConfigConfirmClicked`.
   
-  1. Connect the created UI element to the **Make VideoEncoderConfiguration** node. Pass in the encoding parameters entered by the user to configure the `VideoEncoderConfiguration`. Follow the steps below:
+  2. Connect the created UI element to the **Make VideoEncoderConfiguration** node. Pass in the encoding parameters entered by the user to configure the `VideoEncoderConfiguration`. Follow the steps below:
     1. Retrieve the user-specified values from the UI elements.
     2. Use these values as inputs to the **Make VideoEncoderConfiguration** node.
     3. Connect the output of the **Make VideoEncoderConfiguration** node to the appropriate input of the video encoding process.
     
         ![VideoEncoderConfiguration](/images/video-sdk/blueprint-assets/bp-videoconfig-value.png)
   
-  1. Call the `SetVideoEncoderConfiguration` method and configure the following parameters in the **Make VideoEncoderConfiguration** node according to your specific requirements:
+  3. Call the `SetVideoEncoderConfiguration` method and configure the following parameters in the **Make VideoEncoderConfiguration** node according to your specific requirements:
     1. **Orientation Mode:** Set the rotation direction of the video.
     2. **Degradation Preference:** Specify the degradation preference for video encoding when bandwidth is limited.
     3. **Mirror Mode:** Define whether the video screen seen by the remote user should be mirrored.
@@ -2734,7 +2734,7 @@ To set the video encoder configuration, take the following steps:
 
     ![Orientation Mode](/images/video-sdk/blueprint-assets/bp-setvideoencoderconfiguration.png)
 
-1. **Implement the `OnVideoSizeChanged` callback**
+4. **Implement the `OnVideoSizeChanged` callback**
 
   Follow the steps below to implement the `OnVideoSizeChanged` callback function and adjust the local view based on the video change information obtained in the callback:
   

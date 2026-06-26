@@ -165,24 +165,28 @@ The following table shows the calculations for the aggregate resolution for each
 
 The following table shows the calculation of the total cost of the live video streaming session:
 
+<table>
+<thead>
 <tr>
  <th>Billed service (video type)</th>
      <th>Total usage (minutes) = Sum of all individual usage</th>
  <th>Unit price (US$<span>/1,000 minutes)</span></th>
- <th colspan="1">Cost of each service (US$)</th>
-   <th colspan="1">Total cost (US$)(rounded to two decimal places)</th>
+ <th colSpan="1">Cost of each service (US$)</th>
+   <th colSpan="1">Total cost (US$)(rounded to two decimal places)</th>
  </tr>
+</thead>
+<tbody>
  <tr>
  <td>Full HD</td>
  <td>60</td>
  <td><span>4.59<br/></span></td>
  <td>(60/1000) x 4.59 = 0.2754</td>
- <td rowspan="3" ><p>3.393</p><p><strong>≈ 3.39</strong></p></td>
+ <td rowSpan="3" ><p>3.393</p><p><strong>≈ 3.39</strong></p></td>
  </tr>
  <tr>
- <td class="confluenceTd">2K</td>
- <td class="confluenceTd">60 x 2 = 120</td>
- <td class="confluenceTd"><span>7.99<br/></span></td>
+ <td className="confluenceTd">2K</td>
+ <td className="confluenceTd">60 x 2 = 120</td>
+ <td className="confluenceTd"><span>7.99<br/></span></td>
  <td>(120/1000) x 7.99 = 0.9588</td>
  </tr>
  <tr>
@@ -191,6 +195,9 @@ The following table shows the calculation of the total cost of the live video st
  <td><span>17.99<br/></span></td>
  <td>(120/1000) x 17.99 = 2.1588</td>
  </tr>
+</tbody>
+</table>
+
 ## Reference
 
 This section provides additional information for your reference.
