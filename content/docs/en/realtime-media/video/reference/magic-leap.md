@@ -85,7 +85,7 @@ Video from your ML2 is streamed to the channel and is visible in the web demo. Y
 ## Reference
 
 - [Manual install](/sdks) shows how to install Video SDK manually
-- To ensure communication security in test or production environments, best practice is to use a token server. See [Use tokens](../build/authentication-workflow.mdx)
+- To ensure communication security in test or production environments, best practice is to use a token server. See [Use tokens](../build/authenticate-users/authentication-workflow.mdx)
 
 ### API reference
 

@@ -64,7 +64,7 @@ This version adds the following new scenarios:
 
 - Online classroom scenarios and the introduction of a new UI style and interactive experience that are closer to the usage habits of educational users. See the following documentation:
 
-  - [FcrUIScene SDK](../build/customize-ui-scene-sdk.md)
+  - [FcrUIScene SDK](../build/customize-the-ui-and-plugins/customize-ui-scene-sdk.md)
   - [API Reference](https://docs.agora.io/en/flexible-classroom/client-api/ui-scene)
 
 One-to-one private chat function. This function does not currently support retrieving historical messages from servers on demand.

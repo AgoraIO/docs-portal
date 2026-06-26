@@ -71,11 +71,11 @@ This release adds the following improvements:
 This release adds the following improvements:
 
 - Improves player compatibility for MPD files generated in individual recording `standard` mode, see [Recording configuration](/en/api-reference/api-ref/cloud-recording).
-- Optimizes the Agora Format Converter Script for individual recording, you can refer to [Merge audio and video files](/en/realtime-media/cloud-recording/build/merge-files) to get the latest Agora Format Converter Script.
+- Optimizes the Agora Format Converter Script for individual recording, you can refer to [Merge audio and video files](/en/realtime-media/cloud-recording/build/process-recorded-files/merge-files) to get the latest Agora Format Converter Script.
 
 ### 2022.10.20
 
-This release supports the postpone transcoding feature globally. You need to set the scene field to `2` (postpone transcoding) when calling the `acquire`. After setting this scene, the recording service transcodes the recorded file within 24 hours after recording to generate an MP4 file, and uploads the MP4 file to the third-party cloud storage you specify. Please note that the `region` of the third-party cloud storage must be consistent with the `region` set when calling `acquire`. For details, see [Individual recording](/en/realtime-media/cloud-recording/build/individual-mode).
+This release supports the postpone transcoding feature globally. You need to set the scene field to `2` (postpone transcoding) when calling the `acquire`. After setting this scene, the recording service transcodes the recorded file within 24 hours after recording to generate an MP4 file, and uploads the MP4 file to the third-party cloud storage you specify. Please note that the `region` of the third-party cloud storage must be consistent with the `region` set when calling `acquire`. For details, see [Individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode).
 
 ### 2022.8.12
 This release adds support for Amazon S3 in some regions. See [Cloud storage configuration](/en/realtime-media/cloud-recording/reference/region-vendor).
@@ -100,7 +100,7 @@ In composite recording mode, Agora provides a transcoder script for merging the 
 
 **Individual Audio Non-transcoding Recording**
 
-In order to meet the diverse recording needs of users, this release adds the [`streamMode`](/en/realtime-media/cloud-recording/reference/stream-mode) parameter in the `start` method to support [Individual Audio Non-transcoding Recording](/en/realtime-media/cloud-recording/build/individual-nontranscoding).
+In order to meet the diverse recording needs of users, this release adds the [`streamMode`](/en/realtime-media/cloud-recording/reference/stream-mode) parameter in the `start` method to support [Individual Audio Non-transcoding Recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding).
 
 **Postpone Audio Mixing**
 For voice chat use-cases, this release adds the [`appsCollection`](/en/api-reference/api-ref/cloud-recording) and [`transcodeOptions`](/en/api-reference/api-ref/cloud-recording) parameters in the `start` method to support [Postpone Audio Mixing](../develop/individual-nontranscoding#implement-an-postpone-audio-mixing). If you enable this function, the recording service merges and transcodes the recorded files of all user IDs in the specified channel within 24 hours after the recording ends to generate an MP3/M4A/AAC file, and then uploads the recording file to your specified third-party cloud storage.
@@ -183,7 +183,7 @@ The new server version requirements for transcoding recorded files are as follow
 
 **Web page load timeout detection**
 
-In order to ensure the validity and completeness of page recording, this version supports page load timeout detection function. See [Web Page Load Timeout Detection](/en/realtime-media/cloud-recording/build/webpage-load-timeout).
+In order to ensure the validity and completeness of page recording, this version supports page load timeout detection function. See [Web Page Load Timeout Detection](/en/realtime-media/cloud-recording/build/customize-the-recording/webpage-load-timeout).
 
 **Pause the page recording**
 
@@ -191,7 +191,7 @@ This release adds the `onhold` parameter to the [`start`](/en/api-reference/api-
 
 **Capture screenshots and recording in a recording process**
 
-This release adds support for recording and taking screenshots in a recording process. Only the recording fee is charged. See [Capture Screenshots](/en/realtime-media/cloud-recording/build/screen-capture).
+This release adds support for recording and taking screenshots in a recording process. Only the recording fee is charged. See [Capture Screenshots](/en/realtime-media/cloud-recording/build/start-a-recording/screen-capture).
 
 #### Improvements
 
@@ -316,14 +316,14 @@ In composite recording mode, you can set the background image for both the video
 - Adds the `fileList` field in the [`web_recorder_stopped`](../reference/rest-api-overview#71-web_recorder_stopped) callback.
 
 ### 2021.02.05
-This release raises the maximum resolution of video sources for [web page recording](/en/realtime-media/cloud-recording/build/webpage-mode). The recorded web page can now contain video that has a resolution of up to of 1920 × 1080.
+This release raises the maximum resolution of video sources for [web page recording](/en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode). The recorded web page can now contain video that has a resolution of up to of 1920 × 1080.
 
 ### 2020.12.10
 This release includes the following new feature and API changes:
 
 #### New feature
 
-Adds [web page recording](/en/realtime-media/cloud-recording/build/webpage-mode) mode. In this mode, the content and audio of a specified web page are recorded in a single file.
+Adds [web page recording](/en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode) mode. In this mode, the content and audio of a specified web page are recorded in a single file.
 
 #### API changes
 
@@ -361,7 +361,7 @@ In composite recording mode, you can now upload recorded files to [ApsaraVideo f
 
 #### Flexible user ID subscription
 
-This release provides a more flexible user ID subscription feature, enabling you to set up a whitelist or blacklist for audio and video subscriptions. You can also update the subscription lists during the cloud recording. For details, see [Set up subscription lists](/en/realtime-media/cloud-recording/build/subscription).
+This release provides a more flexible user ID subscription feature, enabling you to set up a whitelist or blacklist for audio and video subscriptions. You can also update the subscription lists during the cloud recording. For details, see [Set up subscription lists](/en/realtime-media/cloud-recording/build/customize-the-recording/subscription).
 
 #### Callback for high availability
 
@@ -377,7 +377,7 @@ This release adds the [`session_failover`](../reference/rest-api-overview#12-ses
 This release adds support for Kingsoft Cloud.
 
 ### 2020.04.17
-Cloud Recording now supports taking screenshots of the video streams in individual recording mode. See [Capture Screenshots](/en/realtime-media/cloud-recording/build/screen-capture) for details.
+Cloud Recording now supports taking screenshots of the video streams in individual recording mode. See [Capture Screenshots](/en/realtime-media/cloud-recording/build/start-a-recording/screen-capture) for details.
 
 ### 2019.12.16
 
@@ -403,7 +403,7 @@ This release supports Tencent Cloud as one of the third-party cloud storages.
 
 #### 1. Individual recording
 
-The RESTful API adds individual recording mode, which supports recording the audio and video of each user ID separately. See [Individual Recording](/en/realtime-media/cloud-recording/build/individual-mode) for details. Meanwhile, Agora provides the Audio & Video File Merging script, which you can use to merge the audio and video files generated in individual mode. See [Merge Audio and Video Files](/en/realtime-media/cloud-recording/build/merge-files) for details.
+The RESTful API adds individual recording mode, which supports recording the audio and video of each user ID separately. See [Individual Recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode) for details. Meanwhile, Agora provides the Audio & Video File Merging script, which you can use to merge the audio and video files generated in individual mode. See [Merge Audio and Video Files](/en/realtime-media/cloud-recording/build/process-recorded-files/merge-files) for details.
 
 #### 2. Record specified user IDs
 
@@ -419,11 +419,11 @@ The RESTful API callback service adds the `recorder_audio_stream_state_changed` 
 
 #### 5. Format Converter script
 
-Agora provides the Format Converter script, which you can use to convert between multiple file formats, such as TS, MP3, and MP4. See [Convert File Format](/en/realtime-media/cloud-recording/build/convert-format) for details.
+Agora provides the Format Converter script, which you can use to convert between multiple file formats, such as TS, MP3, and MP4. See [Convert File Format](/en/realtime-media/cloud-recording/build/process-recorded-files/convert-format) for details.
 
 #### 6. Synchronized playback
 
-You can achieve synchronized playback between the recorded files and other stream files, such as online whiteboards, courseware, and messages, by using the timestamp when the recording starts. You can get the timestamp by using the RESTful API callback service, or by parsing the M3U8 file. See [Synchronized Playback](/en/realtime-media/cloud-recording/build/playback) for details.
+You can achieve synchronized playback between the recorded files and other stream files, such as online whiteboards, courseware, and messages, by using the timestamp when the recording starts. You can get the timestamp by using the RESTful API callback service, or by parsing the M3U8 file. See [Synchronized Playback](/en/realtime-media/cloud-recording/build/process-recorded-files/playback) for details.
 
 **Improvement**
 

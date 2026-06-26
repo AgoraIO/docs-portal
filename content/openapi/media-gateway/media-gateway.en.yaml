@@ -71,6 +71,8 @@ paths:
                   uid: "1001"
                   expiresAfter: 0
                   createdAt: "1686820170"
+        "401":
+          $ref: "#/components/responses/error"
         default:
           $ref: "#/components/responses/error"
   /{region}/v1/projects/{appId}/rtls/ingress/streamkeys/{streamkey}:
@@ -103,6 +105,8 @@ paths:
                   uid: "1001"
                   expiresAfter: 0
                   createdAt: "1686820170"
+        "401":
+          $ref: "#/components/responses/error"
         default:
           $ref: "#/components/responses/error"
     delete:
@@ -135,6 +139,8 @@ paths:
                 $ref: "#/components/schemas/status-response"
               example:
                 status: success
+        "401":
+          $ref: "#/components/responses/error"
         default:
           $ref: "#/components/responses/error"
   /{region}/v1/projects/{appId}/rtls/ingress/online-streams:
@@ -178,6 +184,8 @@ paths:
                     audio:
                       channels: 0
                       sampleRate: 0
+        "401":
+          $ref: "#/components/responses/error"
         default:
           $ref: "#/components/responses/error"
   /{region}/v1/projects/{appId}/rtls/ingress/online-streams/{sid}:
@@ -220,6 +228,8 @@ paths:
                     audio:
                       channels: 0
                       sampleRate: 0
+        "401":
+          $ref: "#/components/responses/error"
         default:
           $ref: "#/components/responses/error"
     delete:
@@ -250,6 +260,8 @@ paths:
                 $ref: "#/components/schemas/status-response"
               example:
                 status: success
+        "401":
+          $ref: "#/components/responses/error"
         default:
           $ref: "#/components/responses/error"
   /{region}/{version}/projects/{appId}/rtls/ingress/online-streams/mute/{sid}:
@@ -302,6 +314,8 @@ paths:
                 $ref: "#/components/schemas/status-response"
               example:
                 status: success
+        "401":
+          $ref: "#/components/responses/error"
         default:
           $ref: "#/components/responses/error"
   /{region}/v1/projects/{appId}/rtls/ingress/stream-templates/{templateId}:
@@ -368,6 +382,8 @@ paths:
                 $ref: "#/components/schemas/status-response"
               example:
                 status: success
+        "401":
+          $ref: "#/components/responses/error"
         default:
           $ref: "#/components/responses/error"
     patch:
@@ -427,6 +443,8 @@ paths:
                 $ref: "#/components/schemas/status-response"
               example:
                 status: success
+        "401":
+          $ref: "#/components/responses/error"
         default:
           $ref: "#/components/responses/error"
     delete:
@@ -460,6 +478,8 @@ paths:
                 $ref: "#/components/schemas/status-response"
               example:
                 status: success
+        "401":
+          $ref: "#/components/responses/error"
         default:
           $ref: "#/components/responses/error"
   /{region}/v1/projects/{appId}/rtls/ingress/appconfig:
@@ -502,6 +522,8 @@ paths:
                 $ref: "#/components/schemas/status-response"
               example:
                 status: success
+        "401":
+          $ref: "#/components/responses/error"
         default:
           $ref: "#/components/responses/error"
   /v2/ncs/ip:
@@ -636,7 +658,9 @@ components:
         header. If omitted, Agora automatically generates a UUID.
   responses:
     error:
-      description: The request failed.
+      description: >-
+        The request failed. A `401 (Unauthorized)` response status code means
+        the request is not authorized.
       content:
         application/json:
           schema:
@@ -814,6 +838,8 @@ components:
           $ref: "#/components/schemas/template-settings"
     template-settings:
       type: object
+      required:
+        - transcoding
       properties:
         transcoding:
           type: object

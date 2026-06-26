@@ -101,7 +101,7 @@ The callback triggering time of plugin rendering:
 
 - `render`: Called when the Widget DOM node is ready for drawing. The Widget user interface is drawn using this method.
 - `unload`: Called when the Widget DOM node is about to be unloaded.
-- `locate`: Called before the Widget is mounted. It returns a DOM node, and the Widget user interface is drawn on this node. Among the built-in plugins of Flexible Classroom, the whiteboard and chatroom plugins are mounted in fixed locations, and the other built-in plugins are mounted in the Widget container. You can refer to the [built-in plugins](../build/embed-custom-plugin.md) for details.
+- `locate`: Called before the Widget is mounted. It returns a DOM node, and the Widget user interface is drawn on this node. Among the built-in plugins of Flexible Classroom, the whiteboard and chatroom plugins are mounted in fixed locations, and the other built-in plugins are mounted in the Widget container. You can refer to the [built-in plugins](../build/customize-the-ui-and-plugins/embed-custom-plugin.md) for details.
 
 ## Plugin communication mechanism
 
@@ -278,7 +278,7 @@ export enum AgoraWidgetTrackMode {
 }
 ```
 
-You can refer to [rollbook-widget](../build/embed-custom-plugin.md) for details on setting up track synchronization.
+You can refer to [rollbook-widget](../build/customize-the-ui-and-plugins/embed-custom-plugin.md) for details on setting up track synchronization.
 
 ### Implement multi-language support
 

@@ -10,7 +10,7 @@ Extend Agora Analytics with the Datadog integration to bring Agora Analytics dat
 ## Start building with
 
 <Cards>
-  <Card title="Call search quickstart" href="build/call-search.md" description="Use Agora Analytics to search and inspect call quality data." />
+  <Card title="Call search quickstart" href="build/explore-and-analyze-data/call-search.md" description="Use Agora Analytics to search and inspect call quality data." />
   <Card title="API reference" href="/en/api-reference/api-ref/agora-analytics/analytics-rest-api" description="Explore Agora Analytics APIs and related references." />
 </Cards>
 

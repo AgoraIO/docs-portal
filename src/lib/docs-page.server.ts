@@ -161,6 +161,17 @@ export async function loadDocsPagePayload(
     };
   }
 
+  const legacyProductRedirect = resolveLegacyProductRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (legacyProductRedirect) {
+    return {
+      redirectUrl: legacyProductRedirect,
+    };
+  }
+
   const legacyRedirect = resolveLegacyBestPracticesRedirect(
     locale,
     tab,
@@ -676,6 +687,34 @@ function resolveAiDocsRedirect(
   return redirects[normalizedPath] ?? null;
 }
 
+function resolveLegacyProductRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (locale !== 'en') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+  const redirects: Record<string, string> = {
+    'flexible-classroom/reference/restful-authentication':
+      '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
+    'interactive-whiteboard/develop/generate-token-rest':
+      '/en/realtime-media/whiteboard/build/generate-token-rest',
+    'iot/reference/restful-authentication':
+      '/en/api-reference/api-ref/rtc/authentication',
+    'media-gateway/reference/restful-authentication':
+      '/en/api-reference/api-ref/rtmp-gateway/authentication',
+    'solutions/flexible-classroom/reference/restful-authentication':
+      '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
+    'solutions/iot/reference/restful-authentication':
+      '/en/api-reference/api-ref/rtc/authentication',
+  };
+
+  return redirects[`${tab}/${normalizedPath}`] ?? null;
+}
+
 function resolveRealtimeMediaRedirect(
   locale: string,
   tab: string,
@@ -736,7 +775,7 @@ function resolveRealtimeMediaApiReferenceRedirect(
       '/en/api-reference/api-ref/on-premise-recording',
     'rtmp-gateway/reference/rest-api': '/en/api-reference/api-ref/rtmp-gateway',
     'rtmp-gateway/reference/restful-authentication':
-      '/en/api-reference/api-ref/rtmp-gateway/restful-authentication',
+      '/en/api-reference/api-ref/rtmp-gateway/authentication',
     'speech-to-text/reference/api-callback-service':
       '/en/api-reference/api-ref/speech-to-text/api-callback-service',
     'speech-to-text/reference/rest-api':
@@ -1398,7 +1437,45 @@ function buildAiProductSidebar(
     'Reference',
     '参考',
   ]);
-  const deviceKitSection = findTopLevelSidebarSection(nodes, [
+  const tenAgentSection = findTopLevelSidebarSection(nodes, ['TEN Agent']);
+  const deviceKitSection =
+    findTopLevelSidebarSection(nodes, ['Convo AI Device Kit']) ??
+    (tenAgentSection
+      ? findNestedSidebarSectionByTitles(tenAgentSection, [
+          'Convo AI Device Kit',
+        ])
+      : null);
+  const tenAgentPages = tenAgentSection
+    ? stripSidebarSectionMetaFromNodes(
+        tenAgentSection.children.filter(
+          (child) =>
+            !(
+              child.type === 'section' && child.title === 'Convo AI Device Kit'
+            ),
+        ),
+      )
+    : [];
+  const mergedTenAgentSection =
+    tenAgentPages.length > 0
+      ? ({
+          ...(tenAgentSection
+            ? {
+                collapsible: tenAgentSection.collapsible,
+                ...(tenAgentSection.icon ? { icon: tenAgentSection.icon } : {}),
+                id: tenAgentSection.id,
+                title: tenAgentSection.title,
+                type: tenAgentSection.type,
+              }
+            : {
+                collapsible: false,
+                id: 'ai-ten-agent',
+                title: 'TEN Agent',
+                type: 'section' as const,
+              }),
+          children: tenAgentPages,
+        } satisfies DocsSidebarSectionNode)
+      : null;
+  const deviceKitTopLevelSection = findTopLevelSidebarSection(nodes, [
     'Convo AI Device Kit',
   ]);
 
@@ -1527,9 +1604,12 @@ function buildAiProductSidebar(
     },
     {
       ...stripSidebarSectionMeta(deviceKitSection),
-      children: stripSidebarSectionMetaFromNodes(
-        flattenDeviceKitSidebarChildren(deviceKitSection.children),
-      ),
+      children: [
+        ...stripSidebarSectionMetaFromNodes(
+          flattenDeviceKitSidebarChildren(deviceKitSection.children),
+        ),
+        ...(mergedTenAgentSection ? [mergedTenAgentSection] : []),
+      ],
       icon: 'Cpu',
       id: 'ai-product-dedicated-devices',
       title: isZhCn
@@ -1653,6 +1733,28 @@ function findNestedSidebarSectionByExactUrl(
 
   for (const child of node.children) {
     const match = findNestedSidebarSectionByExactUrl(child, url);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
+function findNestedSidebarSectionByTitles(
+  node: DocsSidebarNode,
+  titles: string[],
+): DocsSidebarSectionNode | null {
+  if (node.type === 'page') {
+    return null;
+  }
+
+  if (titles.includes(node.title)) {
+    return node;
+  }
+
+  for (const child of node.children) {
+    const match = findNestedSidebarSectionByTitles(child, titles);
     if (match) {
       return match;
     }

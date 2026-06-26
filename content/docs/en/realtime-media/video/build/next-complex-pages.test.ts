@@ -5,10 +5,10 @@ import { describe, expect, it } from 'vitest';
 import { remarkPlatformContent } from '@/lib/platforms/remark-platform-content';
 
 const files = [
-  '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/compile-run-sample-project.mdx',
+  '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/join-and-manage-channels/compile-run-sample-project.mdx',
   '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/reference/supported-platforms.mdx',
-  '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/pre-call-tests.mdx',
-  '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/connection-status-management.mdx',
+  '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/manage-connection-and-quality/pre-call-tests.mdx',
+  '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
 ];
 
 describe('next video complex pages', () => {
@@ -42,7 +42,7 @@ describe('next video complex pages', () => {
 
   it('compile-run-sample-project avoids CodeBlockTabs inside list items', () => {
     const file =
-      '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/compile-run-sample-project.mdx';
+      '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/join-and-manage-channels/compile-run-sample-project.mdx';
     const content = readFileSync(file, 'utf8');
 
     expect(content).not.toContain(

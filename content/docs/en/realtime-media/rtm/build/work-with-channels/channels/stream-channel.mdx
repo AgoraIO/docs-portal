@@ -1,0 +1,432 @@
+---
+title: "Stream channels"
+description: "Stream messages to and from a room."
+---
+
+Stream channels are based on the room model. In Signaling, communication through stream channels requires use of specific APIs. This page shows you how to join, leave, and send messages in stream channels.
+
+## Understand the tech
+
+To use stream channels, you first create a stream channel object instance. The channel instance gives you access to all stream channel management methods. Use the stream channel instance to:
+
+* Join and leave a channel
+* Join and leave topics
+* Subscribe to and unsubscribe from topics
+* Send messages
+* Destroy the channel instance
+
+After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics.md). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../../reference/limitations.md).
+
+## Prerequisites
+
+Ensure that you have:
+
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../../index.mdx) page.
+
+* Activated the stream channel capability.
+
+:::warning
+    **Stream channel activation requirements**
+
+        Please note that the activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
+
+        - Submit a formal request to [support@agora.io](mailto:support@agora.io.md).
+        - Specifically request activation of the 128-host feature.
+        - Wait for confirmation before implementing Stream Channel features.
+
+        For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io.md).    
+
+:::
+
+    
+## Implement communication in a stream channel
+
+This section shows you how to use the Signaling SDK to implement stream channel communication in your app.
+
+### Create a stream channel
+
+To use stream channel functionality, call `createStreamChannel` to create a `StreamChannel` object instance. 
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
+```java
+// Create a StreamChannel instance
+StreamChannel mStreamChannel = mRtmClient.createStreamChannel("chat_room");
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+
+```kotlin
+// Create a StreamChannel instance
+val mStreamChannel = mRtmClient.createStreamChannel("chat_room")
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
+This method creates only one `StreamChannel` instance at a time. If you need to create multiple instances, call the method multiple times.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
+```java
+// Create the first instance
+StreamChannel mStreamChannel1 = mRtmClient.createStreamChannel("chat_room1");
+// Create the second instance
+StreamChannel mStreamChannel2 = mRtmClient.createStreamChannel("chat_room2");
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+
+```kotlin
+// Create the first instance
+val mStreamChannel1 = mRtmClient.createStreamChannel("chat_room1")
+// Create the second instance
+val mStreamChannel2 = mRtmClient.createStreamChannel("chat_room2")
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
+:::info
+Signaling enables you to create unlimited stream channel instances in a single app. However, best practice is to create channels based on your actual requirements to maintain optimal client-side performance. For instance, if you hold multiple stream channel instances, destroy the ones that are no longer in use to prevent resource blocking, and recreate them when they are needed again.
+
+:::
+
+### Join a stream channel
+
+Call the `join` method on the `StreamChannel` instance with appropriate options as follows:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
+```java
+JoinChannelOptions options = new JoinChannelOptions();
+options.setToken("your_token");
+options.setWithPresence(true);
+options.setWithLock(true);
+options.setWithMetadata(true);
+
+mStreamChannel.join(options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "join stream channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+
+```kotlin
+val options = JoinChannelOptions().apply {
+    token = "your_token"
+    withPresence = true
+    withLock = true
+    withMetadata = true
+}
+
+mStreamChannel.join(options, object : ResultCallback<Void> {
+    override fun onSuccess(responseInfo: Void?) {
+        log(CALLBACK, "join stream channel success")
+    }
+
+    override fun onFailure(errorInfo: ErrorInfo) {
+        log(ERROR, errorInfo.toString())
+    }
+})
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
+When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console. 
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
+```java
+JoinChannelOptions options = new JoinChannelOptions("your_token", true, true, true);
+mStreamChannel.join(options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "join stream channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+
+```kotlin
+val options = JoinChannelOptions("your_token", true, true, true)
+
+mStreamChannel.join(options, object : ResultCallback<Void> {
+    override fun onSuccess(responseInfo: Void?) {
+        log(CALLBACK, "join stream channel success")
+    }
+
+    override fun onFailure(errorInfo: ErrorInfo) {
+        log(ERROR, errorInfo.toString())
+    }
+})
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
+In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics.md) for more information.
+
+### Send a message 
+
+To send a message to a stream channel:
+
+- Create a `StreamChannel` instance.
+- Use the `join` method to join a channel.
+- Call `joinTopic` to register as a message publisher for the specified topic. See [Topics](topics.md).
+
+Call `publishTopicMessage` to publish a message to a topic. This method sends a message to a single topic at a time. To deliver messages to multiple topics, call the method separately for each topic.
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="java">
+    ```java
+    // Send a string message
+        String message = "Hello Agora!"; // Message content
+        String topicName = "chat_topic"; // Topic name for publishing
+        var options = new TopicMessageOptions(); // Topic message sending options
+        options.customType = "PlainTxt"; // Set a custom type for the message
+        mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void responseInfo) {
+                // Log success
+                log(CALLBACK, "publish topic message success"); 
+            }
+    
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                // Log failure
+                log(ERROR, errorInfo.toString()); 
+            }
+        });
+    ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="kotlin">
+    ```kotlin
+    // Send a string message
+        val message = "Hello Agora!" // Message content
+        val topicName = "chat_topic" // Topic name for publishing
+        val options = TopicMessageOptions() // Topic message sending options
+        options.customType = "PlainTxt" // Set a custom type for the message
+        mStreamChannel.publishTopicMessage(topicName, message, options, object : ResultCallback<Void> {
+            override fun onSuccess(responseInfo: Void?) {
+                // Log success
+                log(CALLBACK, "publish topic message success") 
+            }
+    
+            override fun onFailure(errorInfo: ErrorInfo) {
+                // Log failure
+                log(ERROR, errorInfo.toString()) 
+            }
+        })
+    ```
+    </CodeBlockTab>
+    </CodeBlockTabs>
+* Binary message
+
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="java">
+    ```java
+    // Send a binary message
+        byte[] message = new byte[] { 00, 01, 35, 196 }; // Binary message content
+        String topicName = "chat_topic"; // Topic name for publishing
+        var options = new TopicMessageOptions(); // Topic message sending options
+        options.customType = "ByteArray"; // Set a custom type for the message
+        mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void responseInfo) {
+                // Log success
+                log(CALLBACK, "publish topic message success"); 
+            }
+    
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                // Log failure
+                log(ERROR, errorInfo.toString()); 
+            }
+        });
+    ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="kotlin">
+    ```kotlin
+    // Send a binary message
+        val message = byteArrayOf(0, 1, 35, 196) // Binary message content
+        val topicName = "chat_topic" // Topic name for publishing
+        val options = TopicMessageOptions() // Topic message sending options
+        options.customType = "ByteArray" // Set a custom type for the message
+        mStreamChannel.publishTopicMessage(topicName, message, options, object : ResultCallback<Void> {
+            override fun onSuccess(responseInfo: Void?) {
+                // Log success
+                log(CALLBACK, "publish topic message success") 
+            }
+    
+            override fun onFailure(errorInfo: ErrorInfo) {
+                // Log failure
+                log(ERROR, errorInfo.toString()) 
+            }
+        })
+    ```
+    </CodeBlockTab>
+    </CodeBlockTabs>
+In Signaling, a user may register as a message publisher for up to 8 topics concurrently. However, there are no limitations on the number of users a single topic can accommodate. You can achieve a message transmission frequency to a topic of up to 120 QPS. This capability is useful in use-cases that demand high-frequency and high-concurrency data processing, such as Metaverse location status synchronization, collaborative office sketchpad applications, and parallel control operation-instructions transmission.
+
+### Leave a stream channel
+
+To leave a channel, call the `leave` method on the `StreamChannel` instance:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
+```java
+mStreamChannel.leave(new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "leave stream channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+
+```kotlin
+mStreamChannel.leave(object : ResultCallback<Void> {
+    override fun onSuccess(responseInfo: Void?) {
+        log(CALLBACK, "leave stream channel success")
+    }
+
+    override fun onFailure(errorInfo: ErrorInfo) {
+        log(ERROR, errorInfo.toString())
+    }
+})
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
+To rejoin a stream channel, call the `join` method again. You can join and leave as long as the corresponding `StreamChannel` instance remains active and has not been destroyed.
+
+### Destroy the stream channel instance
+
+To destroy a stream channel instance, call `release`:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
+```java
+mStreamChannel.release();
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+
+```kotlin
+mStreamChannel.release()
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+
+:::info
+Destroying a stream channel removes the `StreamChannel` instance from your app. This action is local to your app and does not affect other users or the Signaling channel.
+
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message packet size
+
+Signaling SDK imposes size limits on message payload packets sent in Message channels and Stream channels. The limit is 32 KB for Message channels and 1 KB for Stream channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
+
+```js
+ErrorInfo {
+    errorCode = -11010;
+    reason = "Publish too long message.";
+    operation = "publishTopicMessage"; // or "publish"
+}
+```
+
+To avoid sending failure due to message payload packet size exceeding the limit, check the packet size before sending.
+
+### API reference
+
+- [`createStreamChannel `](https://docs.agora.io/en/signaling/reference/api)
+- [`join`](https://docs.agora.io/en/signaling/reference/api)
+- [`publishTopicMessage`](https://docs.agora.io/en/signaling/reference/api)
+- [`leave`](https://docs.agora.io/en/signaling/reference/api)
+- [`release`](https://docs.agora.io/en/signaling/reference/api)

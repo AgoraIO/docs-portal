@@ -1,0 +1,228 @@
+---
+title: "FaceUnity AR Filter"
+description: "Integrate and use the FaceUnity AR Filter extension in your Android, iOS, or Flutter app."
+---
+
+The FaceUnity AR Filter extension uses 3D vision, 3D graphics, and deep learning technologies to provide advanced AR portrait video effects for the Agora Video SDK. It enables features such as:
+
+- **Basic beauty**: Skin beautification, whitening, and rosy effects.
+- **Advanced beauty**: Beauty effects for shape, face, and skin.
+- **Number detection**: Detect the number of faces, humans, or gestures.
+
+This page shows you how to integrate and use the FaceUnity AR Filter extension in your app.
+
+<PlatformStructured platform="android">
+## Understand the tech
+
+To quickly integrate FaceUnity AR filter capabilities in your app, set extension properties using the `key` and `value` parameters in the Video SDK. Calling `setExtensionProperty` with a pair of `key` and `value` parameters is equivalent to calling the corresponding FaceUnity API. The `key` is named after the FaceUnity API method, and `value` wraps the parameters required for that method in JSON.
+
+## Prerequisites
+
+- Android Studio 4.1 or later.
+- A physical device (not an emulator) running Android 5.0 or later.
+- Implemented the [SDK quickstart](../../../video/quickstart.mdx).
+
+## Project setup
+
+To get started, use the FaceUnity sample project on GitHub:
+
+1. Clone the repository:
+
+   ```shell
+   git clone https://github.com/AgoraIO-Community/AgoraMarketPlace.git
+   ```
+
+2. Complete the setup described in the [README](https://github.com/AgoraIO-Community/AgoraMarketplace/blob/master/FaceUnity/android/README.md).
+
+3. Contact [support@agora.io](mailto:support@agora.io) for activation, provide your package name, and obtain the `authpack` certificate file.
+4. Download the FaceUnity AR Filter package and the FaceUnity resource package.
+
+## Integrate the extension
+
+### Add the extension to your project
+
+1. Unzip the AR Filter package and save all `.aar` files to `/app/libs`.
+2. Save `authpack.java` to the path that matches the package name you registered.
+3. Save the required model and prop files from the resource package to `/app/src/main/assets`.
+4. Add the following Gradle dependency:
+
+   ```groovy
+   implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+   ```
+
+5. Import the required Agora and FaceUnity classes.
+
+### Enable the extension
+
+Call `enableExtension` before other APIs, including `enableVideo` and `joinChannel`.
+
+```java
+RtcEngineConfig config = new RtcEngineConfig();
+config.addExtension("AgoraFaceUnityExtension");
+mRtcEngine = RtcEngine.create(config);
+mRtcEngine.enableExtension("FaceUnity", "Effect", enabled);
+```
+
+### Initialize the extension
+
+After receiving the `onExtensionStarted` callback, call `setExtensionProperty` to load the certificate and AI models.
+
+```java
+private void initExtension() {
+  try {
+    JSONObject jsonObject = new JSONObject();
+    JSONArray jsonArray = new JSONArray();
+    for (byte it : authpack.A()) {
+      jsonArray.put(it);
+    }
+    jsonObject.put("authdata", jsonArray);
+    setExtensionProperty("fuSetup", jsonObject.toString());
+  } catch (JSONException e) {
+    Log.e(TAG, e.toString());
+  }
+}
+```
+
+### Configure beauty effects and body recognition
+
+Load props, adjust beautification intensity, and enable face, gesture, and human recognition by calling `setExtensionProperty` with the corresponding keys and values.
+
+### Release resources
+
+When you stop using FaceUnity, call `setExtensionProperty` with the `fuDestroyLibData` key, and after receiving the callback, destroy the engine.
+
+## Reference
+
+### API reference
+
+- [setExtensionProperty](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setextensionproperty)
+- [RtcEngineConfig.addExtension](../../../../api-reference/rtc/android/(current)/class-and-enum/classes/class-rtcengineconfig.mdx)
+- [ContentInspectConfig](../../../../api-reference/rtc/android/(current)/class-and-enum/classes/class-contentinspectconfig.mdx)
+
+### Error codes
+
+| API | Error code | Description |
+| --- | --- | --- |
+| `enableExtension` | `-3` (SDK layer) | The SDK cannot find the corresponding extension dynamic library. |
+| `setExtensionProperty` | `-1` (extension layer) | Invalid or repeated extension initialization or model loading. |
+| `setExtensionProperty` | `-2` (SDK layer or extension layer) | The timing of the call is wrong or the parameter is invalid. |
+| `setExtensionProperty` | `-20` (extension layer) | The incoming key is not supported or the resource is already loaded or destroyed. |
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+## Understand the tech
+
+To quickly integrate FaceUnity AR filter capabilities in your app, set extension properties using the `key` and `value` parameters in the Video SDK. Calling `setExtensionPropertyWithVendor` with a pair of `key` and `value` parameters is equivalent to calling the corresponding FaceUnity API.
+
+## Prerequisites
+
+- Xcode 12.0 or higher.
+- A physical device running iOS 9.0 or later.
+- Implemented the [SDK quickstart](../../../video/quickstart.mdx).
+
+## Project setup
+
+1. Clone the FaceUnity sample project:
+
+   ```shell
+   git clone https://github.com/AgoraIO-Community/AgoraMarketPlace.git
+   ```
+
+2. Follow the [README](https://github.com/AgoraIO-Community/AgoraMarketplace/blob/master/FaceUnity/ios/README.md).
+3. Download the FaceUnity iOS package and resource package.
+4. Create a `Resource` folder and place the required model and prop files there.
+5. Import the required `.framework` files and ensure they are set to **Embed & Sign**.
+
+## Integrate the extension
+
+### Enable the extension
+
+```objective-c
+[self.agoraKit enableExtensionWithVendor:@"FaceUnity"
+                               extension:@"Effect"
+                                 enabled:self.enable];
+```
+
+### Initialize the extension
+
+After `onExtensionStarted`, call `setExtensionPropertyWithVendor` to load certificates, AI models, and prop packages.
+
+### Configure beauty effects and body recognition
+
+Call `setExtensionPropertyWithVendor` with the appropriate keys and values to configure the desired effects.
+
+### Release resources
+
+When you stop using FaceUnity, call `setExtensionPropertyWithVendor` with the `fuDestroyLibData` key and then destroy the engine after the callback confirms success.
+
+## Reference
+
+- [enableExtensionWithVendor](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableextension(withvendor:extension:enabled:)?language=objc)
+- [setExtensionPropertyWithVendor](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setextensionpropertywithvendor(_:extension:extensioninfo:key:value:)?language=objc)
+
+</PlatformStructured>
+
+
+<PlatformStructured platform="flutter">
+## Understand the tech
+
+In a Flutter project, you integrate the native Android and iOS plug-ins through Gradle and CocoaPods respectively.
+
+## Prerequisites
+
+- [Flutter](https://docs.flutter.dev/get-started/install) 2.0.0 or higher.
+- Dart 2.15.1 or higher.
+- Implemented the [SDK quickstart](../../../video/quickstart.mdx).
+
+## Project setup
+
+1. Integrate the Android plugin through Gradle by adding the downloaded `.aar` files to `android/libs` and configuring `build.gradle`.
+2. Integrate the iOS plugin through CocoaPods by importing the `.framework` files and updating the podspec and Podfile.
+3. Convert the `authpack` certificate to Dart and save it in the Flutter `lib` folder.
+4. Save the required model and `.bundle` files from the resource package to the project folder.
+
+![FaceUnity Flutter resources](/images/extensions-marketplace/faceunity-fluter-resources.png)
+
+5. Add the necessary Flutter dependencies and assets to `pubspec.yaml`.
+
+## Integrate the extension
+
+### Enable the extension
+
+```dart
+if (Platform.isAndroid) {
+  await agoraEngine.loadExtensionProvider(path: 'AgoraFaceUnityExtension');
+}
+
+await agoraEngine.enableExtension(
+  provider: "FaceUnity",
+  extension: "Effect",
+  enable: true,
+);
+```
+
+### Handle extension callbacks
+
+Register `onExtensionStarted`, `onExtensionError`, and `onExtensionEvent` in `RtcEngineEventHandler`.
+
+### Initialize the extension
+
+Call `setExtensionProperty` to set `fuSetup` and `fuLoadAIModelFromPackage`.
+
+### Apply AR effects
+
+Call `setExtensionProperty` to load props and apply effects such as the cat ears demo effect.
+
+### Release resources
+
+Call `setExtensionProperty` with `fuDestroyLibData` when you dispose of the engine.
+
+## Reference
+
+- [Flutter FaceUnity sample project](https://github.com/AgoraIO-Community/AgoraMarketplace/tree/master/FaceUnity/flutter)
+- [enableExtension](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_enableextension)
+- [loadExtensionProvider](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_loadextensionprovider)
+- [setExtensionProperty](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setextensionproperty)
+
+</PlatformStructured>

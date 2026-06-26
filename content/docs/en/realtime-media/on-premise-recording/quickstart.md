@@ -700,7 +700,7 @@ Agora provides a complete sample project in the SDK download package. After down
     * Use `singleVideo.json` for individual recording.
 
 :::info[info]
-For more information on the differences between mixed and individual recording modes, see [Individual recording](/en/realtime-media/on-premise-recording/build/individual-mode) and [Composite recording](/en/realtime-media/on-premise-recording/build/composite-mode).
+For more information on the differences between mixed and individual recording modes, see [Individual recording](/en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode) and [Composite recording](/en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode).
 :::
 
 5. Run the sample recorder with the selected configuration file:

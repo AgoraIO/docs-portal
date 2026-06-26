@@ -123,7 +123,7 @@ curl --location --request POST 'https://api.agora.io/v1/apps/<appid>/cloud_recor
 
 ### Start recording {#start}
 
-Call the [`start`](/en/api-reference/api-ref/cloud-recording#start) method within five minutes of getting a resource ID to join a channel and start recording. You can choose either [individual recording](/en/realtime-media/cloud-recording/build/individual-mode) or [composite recording](/en/realtime-media/cloud-recording/build/composite-mode) as the recording mode.
+Call the [`start`](/en/api-reference/api-ref/cloud-recording#start) method within five minutes of getting a resource ID to join a channel and start recording. You can choose either [individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode) or [composite recording](/en/realtime-media/cloud-recording/build/start-a-recording/composite-mode) as the recording mode.
 
 If this method call succeeds, you receive a recording ID (sid) in the HTTP response body. This ID identifies the current recording.
 
@@ -171,7 +171,7 @@ curl --location --request POST  'https://api.agora.io/v1/apps/<appid>/cloud_reco
 
 During a recording session, can call the [`query`](/en/api-reference/api-ref/cloud-recording#query) method to query the recording status. You can call this API multiple times.
 
-When you call this method successfully, you receive the current recording status and related information about the recording file in the response body. See [Best Practices in Integrating Cloud Recording](/en/realtime-media/cloud-recording/build/integration-best-practices) for details about how to [Monitor service status during a recording](../best-practices/integration-best-practices#monitor-service-status-during-a-recording) and[ Obtain the M3U8 file name](../best-practices/integration-best-practices#obtain-the-m3u8-file-name).
+When you call this method successfully, you receive the current recording status and related information about the recording file in the response body. See [Best Practices in Integrating Cloud Recording](/en/realtime-media/cloud-recording/build/best-practices/integration-best-practices) for details about how to [Monitor service status during a recording](../best-practices/integration-best-practices#monitor-service-status-during-a-recording) and[ Obtain the M3U8 file name](../best-practices/integration-best-practices#obtain-the-m3u8-file-name).
 
 #### Sample code
 
@@ -239,25 +239,25 @@ You can also use Postman to generate code snippets written in various programmin
 - To streamline the use of Agora RESTful APIs within your infrastructure, see
 [Quickstart using middleware](/en/realtime-media/cloud-recording/middleware-quickstart). The community middleware project provides RESTful APIs for tasks such as token generation and cloud recording management.
 
-- To update the subscription lists during the recording, call [`update`](/en/api-reference/api-ref/cloud-recording#update). You can call this method multiple times. See [Set up subscription lists](/en/realtime-media/cloud-recording/build/subscription) for details.
+- To update the subscription lists during the recording, call [`update`](/en/api-reference/api-ref/cloud-recording#update). You can call this method multiple times. See [Set up subscription lists](/en/realtime-media/cloud-recording/build/customize-the-recording/subscription) for details.
 
-- To set or update the video layout during the recording, call the [`updateLayout`](/en/api-reference/api-ref/cloud-recording#updatelayout) method. See [Set Video Layout](/en/realtime-media/cloud-recording/build/layout) for details.
+- To set or update the video layout during the recording, call the [`updateLayout`](/en/api-reference/api-ref/cloud-recording#updatelayout) method. See [Set Video Layout](/en/realtime-media/cloud-recording/build/customize-the-recording/layout) for details.
 
 - [Common errors in cloud recording](/en/realtime-media/cloud-recording/reference/common-errors) lists common error codes and error messages in the response body.
 
 - [Agora Cloud Recording RESTful API Callback Service](../reference/rest-api-overview) lists all the callback events of cloud recording.
 - To learn more about the implementation steps and details of basic functions, you can refer to the following documents:
-  - [Individual recording](/en/realtime-media/cloud-recording/build/individual-mode)
-  - [Composite recording](/en/realtime-media/cloud-recording/build/composite-mode)
-  - [Web page recording](/en/realtime-media/cloud-recording/build/webpage-mode)
-  - [Capture screenshots](/en/realtime-media/cloud-recording/build/screen-capture)
+  - [Individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode)
+  - [Composite recording](/en/realtime-media/cloud-recording/build/start-a-recording/composite-mode)
+  - [Web page recording](/en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode)
+  - [Capture screenshots](/en/realtime-media/cloud-recording/build/start-a-recording/screen-capture)
 
 ## Next steps
 
 ### Manage recorded files
 
-After the recording starts, the Agora server splits the recorded content into multiple TS/WebM files and keeps uploading them to the third-party cloud storage until the recording stops. You can refer to [Manage Recorded Files](/en/realtime-media/cloud-recording/build/manage-files) to learn about the naming rules, file sizes, and slicing rules of recording files.
+After the recording starts, the Agora server splits the recorded content into multiple TS/WebM files and keeps uploading them to the third-party cloud storage until the recording stops. You can refer to [Manage Recorded Files](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files) to learn about the naming rules, file sizes, and slicing rules of recording files.
 
 ### Token authentication
 
-To ensure communication security, in a formal production environment, you need to generate tokens on your app server. See [Authenticate Your Users with Token](/en/realtime-media/cloud-recording/build/authentication-workflow).
+To ensure communication security, in a formal production environment, you need to generate tokens on your app server. See [Authenticate Your Users with Token](/en/realtime-media/cloud-recording/build/set-up-authentication/authentication-workflow).

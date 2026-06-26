@@ -9,7 +9,7 @@ The file-conversion feature provided by Interactive Whiteboard can convert PPT, 
 
 :::info
 Before calling the RESTful API for file conversion, ensure that:
-- You have enabled <b>Docs to Picture</b> or <b>Docs to Web</b> and configured storage settings in [Agora Console](https://console.agora.io/v2). See [Enable whiteboard server-side features](/en/realtime-media/whiteboard/build/enable-whiteboard.md#enable-whiteboard-server-side-features).<br />- You have generated a URL address for the file you want to convert, and the address is publicly accessible.<br />
+- You have enabled <b>Docs to Picture</b> or <b>Docs to Web</b> and configured storage settings in [Agora Console](https://console.agora.io/v2). See [Enable whiteboard server-side features](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#enable-whiteboard-server-side-features).<br />- You have generated a URL address for the file you want to convert, and the address is publicly accessible.<br />
 :::
 
 ## Start file conversion (POST)
@@ -27,7 +27,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Data type | Required/Optional | Description                                                  |
 | :-------- | :-------- | :---------------- | :----------------------------------------------------------- |
-| `token`   | string    | Required          | A SDK token with the `writer` or `admin` role. <br />To get a SDK Token, you can:- Get a test-purpose SDK token from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK Token](/en/realtime-media/whiteboard/build/generate-token-rest.md#generate-an-sdk-token-post).<br /> |
+| `token`   | string    | Required          | A SDK token with the `writer` or `admin` role. <br />To get a SDK Token, you can:- Get a test-purpose SDK token from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK Token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-an-sdk-token-post).<br /> |
 | `region`  | string    | Required          | Specifies a data center to process the request: - `us-sv`: Silicon Valley, US, which provides services to North America and South America.<br />- `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.<br />- `in-mum`: Mumbai, India, which provides services to India.<br />- `eu`: Frankfurt, Europe, which provides services to Europe.<br />- `cn-hz`: Hangzhou, China, which provides services to the areas not covered by other data centers.<br /> |
 
 ### Request Body
@@ -176,7 +176,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Data type | Required/Optional | Description                                                  |
 | :-------- | :-------- | :---------------- | :----------------------------------------------------------- |
-| `token`   | string    | Required          | A Task Token. To get one, you can:- Call the RESTful API. See [Generate a Task Token](/en/realtime-media/whiteboard/build/generate-token-rest.md#generate-a-task-token-post).<br />- Use code samples. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/generate-token-app-server.md).<br /> |
+| `token`   | string    | Required          | A Task Token. To get one, you can:- Call the RESTful API. See [Generate a Task Token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-a-task-token-post).<br />- Use code samples. See [Generate a token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.md).<br /> |
 | `region`  | string    | Required             | Specifies a data center to process the request: - `us-sv`: Silicon Valley, US, which provides services to North America and South America.<br />- `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.<br />- `in-mum`: Mumbai, India, which provides services to India.<br />- `eu`: Frankfurt, Europe, which provides services to Europe.<br />- `cn-hz`: Hangzhou, China, which provides services to the areas not covered by other data centers.<br /> |
 
 ### Request Path

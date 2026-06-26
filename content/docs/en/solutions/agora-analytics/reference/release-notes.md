@@ -22,7 +22,7 @@ Data Insights Plus helps businesses make better decisions by providing deeper in
 
 **New features**
 
-Media service is an important auxiliary product of real-time audio and video. This release upgrades the [Usage Insights](../build/data-insight.md) and [Real-time Monitoring](../build/monitor.md) modules to support querying historical or real-time scale of the Cloud Recording, Media Pull, and Media Push services. The Usage Insights module now includes a new Media Service panel that presents peak numbers of Cloud Recording and Media Pull concurrent workers. The Real-time Monitoring module includes three new charts for the number of Cloud Recording, Media Pull, and Media Push workers, respectively.
+Media service is an important auxiliary product of real-time audio and video. This release upgrades the [Usage Insights](../build/explore-and-analyze-data/data-insight.md) and [Real-time Monitoring](../build/monitor-and-get-alerts/monitor.md) modules to support querying historical or real-time scale of the Cloud Recording, Media Pull, and Media Push services. The Usage Insights module now includes a new Media Service panel that presents peak numbers of Cloud Recording and Media Pull concurrent workers. The Real-time Monitoring module includes three new charts for the number of Cloud Recording, Media Pull, and Media Push workers, respectively.
 
 ## 2023.03
 
@@ -69,11 +69,11 @@ This release launches a new version of Call Inspector. This new version has the 
 - Key quality metrics and events now offer receiver's and sender's views, making it convenient to locate exceptions.
 - Agora's auto-diagnosis engine is fully integrated to reduce the time cost of inspecting a call through intuitive conclusions. All features related to the auto-diagnosis engine are currently in beta.
 
-For full details, see [Call Inspector Overview](../build/call-search.md).
+For full details, see [Call Inspector Overview](../build/explore-and-analyze-data/call-search.md).
 
 ## 2021.11
 
-This release retires the Realtime (Beta) and Real-time Alarm (Beta) features on November 1, 2021, and adds the [Real-time Monitoring](../build/monitor.md) and [Alert Notifications](../build/alarm.md) features:
+This release retires the Realtime (Beta) and Real-time Alarm (Beta) features on November 1, 2021, and adds the [Real-time Monitoring](../build/monitor-and-get-alerts/monitor.md) and [Alert Notifications](../build/monitor-and-get-alerts/alarm.md) features:
 
 -   Real-time Monitoring: Provides visualized data for multiple call metrics in real time.
 
@@ -145,11 +145,11 @@ This release adds the Big Channel function (Beta), which provides the Big Channe
 
 ## 2019.10
 
-This release adds the Realtime function (Beta), which helps to monitor the live status of your project. It also informs you of any abnormalities that occur along with their root cause. See details in [Realtime Monitor](../build/monitor.md).
+This release adds the Realtime function (Beta), which helps to monitor the live status of your project. It also informs you of any abnormalities that occur along with their root cause. See details in [Realtime Monitor](../build/monitor-and-get-alerts/monitor.md).
 
 ## 2019.09
 
-This release adds the Data Insights function (Beta), which provides statistics on the usage and quality of your project over a specified period of time. You can view the quality statistics in various dimensions, such as country and SDK version. See details in [Data Insights](../build/data-insight.md).
+This release adds the Data Insights function (Beta), which provides statistics on the usage and quality of your project over a specified period of time. You can view the quality statistics in various dimensions, such as country and SDK version. See details in [Data Insights](../build/explore-and-analyze-data/data-insight.md).
 
 ## 2019.08
 
@@ -157,4 +157,4 @@ This release adds key events in Call Inspector function, which improves the effi
 
 ## 2018.08
 
-This release provides Call Inspector function, which helps to search calls and analyze quality issues. See details in [Call Inspector](../build/call-search.md).
+This release provides Call Inspector function, which helps to search calls and analyze quality issues. See details in [Call Inspector](../build/explore-and-analyze-data/call-search.md).

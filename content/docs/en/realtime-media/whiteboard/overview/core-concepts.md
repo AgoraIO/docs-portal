@@ -36,10 +36,10 @@ Interactive Whiteboard supports:
 - **Static file conversion** for converting PPT, PPTX, DOC, DOCX, and PDF files into images.
 - **Dynamic file conversion** for converting PPT and PPTX files into HTML pages that preserve animations.
 
-For implementation details, see [File conversion overview](../build/file-conversion-overview.md).
+For implementation details, see [File conversion overview](../build/display-files-and-manage-scenes/file-conversion-overview.md).
 
 ## Related setup
 
-- [Enable whiteboard](../build/enable-whiteboard.md)
-- [Secure authentication with tokens](../build/authentication-workflow.md)
-- [Scenes overview](../build/scenes/overview.mdx)
+- [Enable whiteboard](../build/set-up-and-build-your-first-app/enable-whiteboard.md)
+- [Secure authentication with tokens](../build/authenticate-users/authentication-workflow.md)
+- [Scenes overview](../build/display-files-and-manage-scenes/scenes/overview.mdx)

@@ -12,7 +12,7 @@ Enhance Agora's Video SDK with additional capabilities such as recording, virtua
 <Cards>
   <Card title="SDK quickstart" href="index.mdx" description="Create a basic interactive live streaming app with Video SDK." />
   <Card title="Download SDKs" href="/en/api-reference/sdks" description="Get the latest Video SDK package for your streaming platform." />
-  <Card title="Authentication" href="build/use-tokens.mdx" description="Protect live streaming channels with tokens." />
+  <Card title="Authentication" href="build/authenticate-users/use-tokens.mdx" description="Protect live streaming channels with tokens." />
   <Card title="API reference" href="/en/api-reference/api-ref/rtc" description="Explore RTC API references for supported streaming platforms." />
   <Card title="Samples" href="https://github.com/AgoraIO/API-Examples" description="Browse open-source sample projects for live streaming workflows." />
 </Cards>

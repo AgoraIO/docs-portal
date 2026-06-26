@@ -185,10 +185,10 @@ v1.1.0 was released on April 28, 2023.
 #### New features
 
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](/en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes).
-- Adds the `ChatMessage#setPriority(ChatRoomMessagePriority)` method to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](/en/realtime-media/im/build/messages/send-receive-messages#set-message-priority).
-- Adds the pagination parameters `pageNum` and `pageSize` to the `ChatManager#asyncFetchConversationsFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `ChatMessage#setPriority(ChatRoomMessagePriority)` method to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#set-message-priority).
+- Adds the pagination parameters `pageNum` and `pageSize` to the `ChatManager#asyncFetchConversationsFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
 - Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by  labels. For how to configure and send push notifications, see [Push notification management](/en/api-reference/api-ref/im/push-notification-management).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/messages/manage-messages#delete-conversations-and-historical-messages).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/build-core-messaging/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -524,10 +524,10 @@ v1.1.0 was released on April 28, 2023.
 #### New features
 
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](/en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes).
-- Adds the `AgoraChatMessage#priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. [Set message priority](/en/realtime-media/im/build/messages/send-receive-messages#set-message-priority).
-- Adds the pagination parameters `pageNum` and `pageSize` to the `IAgoraChatManager#getConversationsFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `AgoraChatMessage#priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. [Set message priority](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#set-message-priority).
+- Adds the pagination parameters `pageNum` and `pageSize` to the `IAgoraChatManager#getConversationsFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
 - Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](/en/api-reference/api-ref/im/push-notification-management).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/messages/manage-messages#delete-conversations-and-historical-messages).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/build-core-messaging/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -726,7 +726,7 @@ v1.3.1 was released on December 20, 2024.
 #### Improvements
 
 - Added support for pinning messages in one-to-one conversations. Users can call `pinMessage` or `unpinMessage` to pin or unpin a one-to-one chat message.
-- Added the `ConnectionParameters#isFixedDeviceId` parameter (`true` by default) to specify whether to use a fixed device ID. Specifically, the SDK generates a device ID for a browser and saves it to the local storage. Then in the browser, all SDK instances use the same device. The setting of this parameter affects the strategy of forced logout in multi-device login use-cases. For details, see [Log in from multiple devices](/en/realtime-media/im/build/multiple-device-login). In previous versions, a random device ID was used for connections of each SDK instance. In this case, each SDK instance uses a different device for connections.
+- Added the `ConnectionParameters#isFixedDeviceId` parameter (`true` by default) to specify whether to use a fixed device ID. Specifically, the SDK generates a device ID for a browser and saves it to the local storage. Then in the browser, all SDK instances use the same device. The setting of this parameter affects the strategy of forced logout in multi-device login use-cases. For details, see [Log in from multiple devices](/en/realtime-media/im/build/moderate-and-manage-client-behavior/multiple-device-login). In previous versions, a random device ID was used for connections of each SDK instance. In this case, each SDK instance uses a different device for connections.
 - Added the callback for DNS request failures.
 - Added the reason for requesting to join the group to the `requestToJoin` event that is received by the group owner and administrators that approved the join request.
 
@@ -821,10 +821,10 @@ v1.1.0 was released on April 28, 2023.
 #### New features
 
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](/en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes).
-- Adds the `priority` attribute to the message creation method `create` to implement the chat room message priority function. This ensures that high-priority messages are dealt with first. See [Set message priority](/en/realtime-media/im/build/messages/send-receive-messages#set-message-priority).
-- Adds the pagination parameters `pageNum` and `pageSize` in the `getConversationlist` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `priority` attribute to the message creation method `create` to implement the chat room message priority function. This ensures that high-priority messages are dealt with first. See [Set message priority](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#set-message-priority).
+- Adds the pagination parameters `pageNum` and `pageSize` in the `getConversationlist` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
 - Adds the group creation event `create`, which occurs on other devices of the group owner after group creation.
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/messages/manage-messages#delete-conversations-and-historical-messages).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/build-core-messaging/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -1173,10 +1173,10 @@ Released on April 28, 2023.
 
 - Upgrades the iOS and Android native platforms that the Flutter platform depends on to v1.1.0.
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](/en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes).
-- Adds the `ChatManager#fetchConversationListFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
-- Adds the `ChatMessage#chatroomMessagePriority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](/en/realtime-media/im/build/messages/send-receive-messages#set-message-priority).
+- Adds the `ChatManager#fetchConversationListFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `ChatMessage#chatroomMessagePriority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#set-message-priority).
 - Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](/en/api-reference/api-ref/im/push-notification-management).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/messages/manage-messages#delete-conversations-and-historical-messages).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/build-core-messaging/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -1260,9 +1260,9 @@ Refer to the following documentations to enable Chat and use the Chat SDK to imp
 
 - [Enable and Configure Chat](../get-started/enable)
 - [Chat SDK quickstart](../get-started-sdk)
-- [Messages](/en/realtime-media/im/build/messages/message-overview)
-- [Chat Group](/en/realtime-media/im/build/chat-group/group-overview)
-- [Chat Room](/en/realtime-media/im/build/chat-room/chatroom-overview)
+- [Messages](/en/realtime-media/im/build/build-core-messaging/messages/message-overview)
+- [Chat Group](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/group-overview)
+- [Chat Room](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/chatroom-overview)
 - [RESTful API overview](/en/api-reference/api-ref/im)
 
 ### React Native
@@ -1513,10 +1513,10 @@ Released on April 28, 2023.
 
 - Upgrades the iOS and Android native platforms that the React Native platform depends on to v1.1.0.
 - Adds the function of managing custom chat room attributes. See [Manage chat room attributes](/en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes).
-- Adds the `ChatManager#fetchConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
-- Adds the `ChatMessage#messagePriority` method to implement the chat room message priority function. See [Set message priority](/en/realtime-media/im/build/messages/send-receive-messages#set-message-priority).
+- Adds the `ChatManager#fetchConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `ChatMessage#messagePriority` method to implement the chat room message priority function. See [Set message priority](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#set-message-priority).
 - Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](/en/api-reference/api-ref/im/push-notification-management).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/messages/manage-messages#delete-conversations-and-historical-messages).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/build-core-messaging/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -1651,9 +1651,9 @@ Refer to the following documentations to enable Chat and use the Chat SDK to imp
 
 - [Enable and Configure Chat](../get-started/enable)
 - [Chat SDK quickstart](../get-started-sdk)
-- [Messages](/en/realtime-media/im/build/messages/message-overview)
-- [Chat Group](/en/realtime-media/im/build/chat-group/group-overview)
-- [Chat Room](/en/realtime-media/im/build/chat-room/chatroom-overview)
+- [Messages](/en/realtime-media/im/build/build-core-messaging/messages/message-overview)
+- [Chat Group](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/group-overview)
+- [Chat Room](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/chatroom-overview)
 - [RESTful API overview](/en/api-reference/api-ref/im)
 
 ### Windows
@@ -1819,10 +1819,10 @@ v1.1.0 was released on April 28, 2023.
 #### New features
 
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](/en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes).
-- Adds the `ChatManager#GetConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
-- Adds the `Message#Priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](/en/realtime-media/im/build/messages/send-receive-messages#set-message-priority).
+- Adds the `ChatManager#GetConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `Message#Priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#set-message-priority).
 - Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](/en/api-reference/api-ref/im/push-notification-management).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/messages/manage-messages#delete-conversations-and-historical-messages).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/build-core-messaging/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -1956,9 +1956,9 @@ Refer to the following documentations to enable Chat and use the Chat SDK to imp
 
 - [Enable and Configure Chat](../get-started/enable)
 - [Chat SDK quickstart](../get-started-sdk)
-- [Messages](/en/realtime-media/im/build/messages/message-overview)
-- [Chat Group](/en/realtime-media/im/build/chat-group/group-overview)
-- [Chat Room](/en/realtime-media/im/build/chat-room/chatroom-overview)
+- [Messages](/en/realtime-media/im/build/build-core-messaging/messages/message-overview)
+- [Chat Group](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/group-overview)
+- [Chat Room](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/chatroom-overview)
 - API Reference
 
 ### Unity
@@ -2195,10 +2195,10 @@ v1.1.0 was released on April 28, 2023.
 
 - Upgrades the native platforms `iOS` and `Android` that the Unity platform depends on to v1.1.0.
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](/en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes).
-- Adds the `ChatManager#GetConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
-- Adds the `Message#Priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](/en/realtime-media/im/build/messages/send-receive-messages#set-message-priority).
+- Adds the `ChatManager#GetConversationsFromServerWithPage` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
+- Adds the `Message#Priority` attribute to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#set-message-priority).
 - Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](/en/api-reference/api-ref/im/push-notification-management).
-- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/messages/manage-messages#delete-conversations-and-historical-messages).
+- Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/build-core-messaging/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
 
@@ -2332,9 +2332,9 @@ Refer to the following documentations to enable Chat and use the Chat SDK to imp
 
 - [Enable and Configure Chat](../get-started/enable)
 - [Chat SDK quickstart](../get-started-sdk)
-- [Messages](/en/realtime-media/im/build/messages/message-overview)
-- [Chat Group](/en/realtime-media/im/build/chat-group/group-overview)
-- [Chat Room](/en/realtime-media/im/build/chat-room/chatroom-overview)
+- [Messages](/en/realtime-media/im/build/build-core-messaging/messages/message-overview)
+- [Chat Group](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/group-overview)
+- [Chat Room](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/chatroom-overview)
 - [RESTful API overview](/en/api-reference/api-ref/im)
 
 ## RESTful API
