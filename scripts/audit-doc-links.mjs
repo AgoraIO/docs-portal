@@ -486,8 +486,8 @@ function getRoutePath(contentPath) {
 }
 
 export function getOpenApiRoutePathsForAudit() {
-  return OPENAPI_ROUTE_LANES.flatMap((lane) =>
-    (lane.locales ?? SUPPORTED_LOCALES).flatMap((locale) =>
+  return getOpenApiRouteLanesForAudit().flatMap((lane) =>
+    lane.locales.flatMap((locale) =>
       lane.routeLeaves.map(
         (routeLeaf) => `/${locale}/${lane.routePrefix}/${routeLeaf}`,
       ),
@@ -497,96 +497,122 @@ export function getOpenApiRoutePathsForAudit() {
 
 const SUPPORTED_LOCALES = ['en', 'zh-CN'];
 
-// Keep this lightweight mirror in sync with src/lib/openapi/lanes.ts.
-const OPENAPI_ROUTE_LANES = [
-  {
-    routePrefix: 'api-reference/api-ref/conversational-ai',
-    routeLeaves: [
-      'join',
-      'leave',
-      'update',
-      'query',
-      'list',
-      'speak',
-      'interrupt',
-      'think',
-      'history',
-      'turns',
-    ],
-  },
-  {
-    locales: ['en'],
-    routePrefix: 'api-reference/api-ref/rtc',
-    routeLeaves: [
-      'query-channel-list',
-      'query-user-list',
-      'query-host-list',
-      'query-user-status',
-      'create-ban-rule',
-      'delete-ban-rule',
-      'get-ban-rule-list',
-      'update-ban-expiration',
-      'query-ip-address',
-    ],
-  },
-  {
-    routePrefix: 'api-reference/api-ref/signaling',
-    routeLeaves: [
-      'peer-to-peer-message',
-      'channel-message',
-      'message-history',
-      'user-events',
-      'channel-events',
-    ],
-  },
-  {
-    routePrefix: 'api-reference/api-ref/cloud-recording',
-    routeLeaves: [
-      'acquire',
-      'start',
-      'update',
-      'update-layout',
-      'query',
-      'stop',
-      'get-ncs-ip',
-    ],
-  },
-  {
-    routePrefix: 'api-reference/api-ref/cloud-transcoding',
-    routeLeaves: [
-      'acquire',
-      'create',
-      'query',
-      'update',
-      'destroy',
-      'template-create',
-      'template-query',
-      'ncs-query-ip',
-    ],
-  },
-  {
-    locales: ['en'],
-    routePrefix: 'api-reference/api-ref/rtmp-gateway',
-    routeLeaves: [
-      'create-streaming-key',
-      'query-streaming-key',
-      'delete-streaming-key',
-      'query-streaming-list',
-      'query-streaming-information',
-      'force-disconnection',
-      'mute-streaming',
-      'create-reset-template',
-      'update-template',
-      'delete-template',
-      'set-global-template',
-      'query-ip-address',
-    ],
-  },
-  {
-    routePrefix: 'api-reference/api-ref/speech-to-text',
-    routeLeaves: ['join', 'query', 'leave', 'update', 'list'],
-  },
-];
+function getOpenApiRouteLanesForAudit() {
+  const lanesPath = path.join(process.cwd(), 'src/lib/openapi/lanes.ts');
+  const source = fs.readFileSync(lanesPath, 'utf8');
+
+  return extractTopLevelObjects(source).map((block) => {
+    const routePrefix = block.match(/routePrefix:\s*'([^']+)'/)?.[1];
+    const locales =
+      block
+        .match(/locales:\s*\[([^\]]+)\]/)?.[1]
+        ?.match(/'([^']+)'/g)
+        ?.map((value) => value.slice(1, -1)) ?? SUPPORTED_LOCALES;
+    const operationsBlock = extractObjectProperty(block, 'operations');
+    const routeLeaves = [
+      ...operationsBlock.matchAll(/routeLeaf:\s*'([^']+)'/g),
+    ].map((match) => match[1]);
+
+    if (!routePrefix || routeLeaves.length === 0) {
+      throw new Error(
+        'Failed to parse OpenAPI route lane from src/lib/openapi/lanes.ts',
+      );
+    }
+
+    return { locales, routePrefix, routeLeaves };
+  });
+}
+
+function extractTopLevelObjects(raw) {
+  const start = raw.indexOf('export const OPENAPI_LANES = [');
+  if (start < 0) return [];
+  const arrayStart = raw.indexOf('[', start);
+  const arrayEnd = raw.indexOf('] as const', arrayStart);
+  const body = raw.slice(arrayStart + 1, arrayEnd);
+  const objects = [];
+  let depth = 0;
+  let objectStart = -1;
+  let inString = false;
+  let stringQuote = '';
+  let escaped = false;
+
+  for (let index = 0; index < body.length; index += 1) {
+    const char = body[index];
+
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === '\\') {
+        escaped = true;
+      } else if (char === stringQuote) {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (char === "'" || char === '"' || char === '`') {
+      inString = true;
+      stringQuote = char;
+      continue;
+    }
+
+    if (char === '{') {
+      if (depth === 0) objectStart = index;
+      depth += 1;
+      continue;
+    }
+
+    if (char === '}') {
+      depth -= 1;
+      if (depth === 0 && objectStart >= 0) {
+        objects.push(body.slice(objectStart, index + 1));
+        objectStart = -1;
+      }
+    }
+  }
+
+  return objects;
+}
+
+function extractObjectProperty(raw, propertyName) {
+  const propIndex = raw.indexOf(`${propertyName}:`);
+  if (propIndex < 0) return '';
+  const start = raw.indexOf('{', propIndex);
+  if (start < 0) return '';
+  let depth = 0;
+  let inString = false;
+  let stringQuote = '';
+  let escaped = false;
+
+  for (let index = start; index < raw.length; index += 1) {
+    const char = raw[index];
+
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === '\\') {
+        escaped = true;
+      } else if (char === stringQuote) {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (char === "'" || char === '"' || char === '`') {
+      inString = true;
+      stringQuote = char;
+      continue;
+    }
+
+    if (char === '{') depth += 1;
+    if (char === '}') {
+      depth -= 1;
+      if (depth === 0) return raw.slice(start, index + 1);
+    }
+  }
+
+  return '';
+}
 
 function isIntentionallyHostedReference(routePath) {
   return HOSTED_REFERENCE_ROUTE_PREFIXES.some(
@@ -621,10 +647,10 @@ const KNOWN_REDIRECT_ROUTES = {
 function normalizeLegacyRootDocsHref(href) {
   const parsed = splitHref(href);
   const segments = parsed.path.split('/').filter(Boolean);
-  const [locale, group, leaf, ...rest] = segments;
+  const [locale, group, leaf] = segments;
 
   if ((locale === 'en' || locale === 'zh-CN') && group && leaf) {
-    const mappedPath = getLegacyLocalePath(locale, group, leaf, rest);
+    const mappedPath = getLegacyLocalePath(locale, group, leaf, segments);
 
     if (mappedPath) {
       return `${mappedPath}${parsed.search}${parsed.hash}`;
@@ -640,19 +666,9 @@ function normalizeLegacyRootDocsHref(href) {
   return href;
 }
 
-function getLegacyLocalePath(locale, group, leaf, rest = []) {
-  if (
-    group === 'api-reference' &&
-    leaf === 'conversational-ai' &&
-    rest[0] === 'rest-api'
-  ) {
-    const routeLeaf = rest[1] === 'agent' ? rest[2] : rest[1];
-
-    if (!routeLeaf) {
-      return `/${locale}/api-reference/api-ref/conversational-ai`;
-    }
-
-    return `/${locale}/api-reference/api-ref/conversational-ai/${routeLeaf}`;
+function getLegacyLocalePath(locale, group, leaf, segments) {
+  if (group === 'api-reference' && leaf === 'conversational-ai') {
+    return getLegacyConversationalAiRestApiPath(locale, segments);
   }
 
   if (group === 'operations') {
@@ -676,6 +692,22 @@ function getLegacyLocalePath(locale, group, leaf, rest = []) {
   }
 
   return null;
+}
+
+function getLegacyConversationalAiRestApiPath(locale, segments) {
+  if (segments[3] !== 'rest-api') {
+    return null;
+  }
+
+  if (!segments[4]) {
+    return `/${locale}/api-reference/api-ref/conversational-ai`;
+  }
+
+  if (segments[4] === 'agent' && segments[5]) {
+    return `/${locale}/api-reference/api-ref/conversational-ai/${segments[5]}`;
+  }
+
+  return `/${locale}/api-reference/api-ref/conversational-ai/${segments[4]}`;
 }
 
 const LEGACY_OPERATION_ROUTE_LEAVES = {

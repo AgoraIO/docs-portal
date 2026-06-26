@@ -1,0 +1,231 @@
+---
+title: UI Scene SDK
+description: This page provides the API reference for the Flexible Classroom UI Scene SDK.
+---
+
+<PlatformStructured platform="android">
+
+The UI Scene SDK is currently not available for Android.
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+The UI Scene SDK is currently not available for Electron.
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+The UI Scene SDK is currently not available for iOS.
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+This TypeScript API reference covers the UI Scene SDK APIs for building Cloud Classroom use cases.
+
+## FcrUIScene
+
+The `FcrUIScene` class is the basic class for Cloud Classroom and provides the core methods for building online class use cases.
+
+### launch
+
+```typescript
+static launch(
+  dom: HTMLElement,
+  option: LaunchOptions,
+  callbackSuccess?: () => void,
+  callbackFailure?: (err: Error) => void,
+  callbackDestroy?: (type: number) => void
+): () => void
+```
+
+Launches Cloud Classroom.
+
+**Parameters**
+
+| Parameter | Description |
+| :--- | :--- |
+| `dom` | See [Document](https://developer.mozilla.org/en-US/docs/Web/API/Document). |
+| `option` | The launch configuration options. See [LaunchOptions](#launchoptions). |
+| `callbackSuccess` | The callback function triggered when the scene is successfully launched. |
+| `callbackFailure` | The callback function triggered when the scene fails to launch. `err` is the error object. |
+| `callbackDestroy` | The callback function triggered when the scene is destroyed. `type` indicates the reason: `1` means leaving the classroom, and `2` means being kicked out of the classroom. |
+
+**Return**
+
+Returns a function that destroys the scene.
+
+## Type definitions
+
+### LaunchOptions
+
+```typescript
+export type LaunchOptions = {
+  appId: string;
+  region: EduRegion;
+  language: Language;
+  userUuid: string;
+  userName: string;
+  roleType: EduRoleTypeEnum;
+  token: string;
+  roomUuid: string;
+  roomName: string;
+  roomType: EduRoomTypeEnum;
+  startTime?: number;
+  duration: number;
+  devicePretest: boolean;
+  coursewareList?: CoursewareList;
+  userFlexProperties?: { [key: string]: unknown };
+  latencyLevel?: AgoraLatencyLevel;
+  recordUrl?: string;
+  recordRetryTimeout?: number;
+  virtualBackgroundImages?: string[];
+  webrtcExtensionBaseUrl?: string;
+  mediaOptions?: LaunchMediaOptions;
+  shareUrl?: string;
+  widgets?: Record<string, typeof FcrUISceneWidget>;
+  rtcCloudProxyType?: AgoraCloudProxyType;
+  rtmCloudProxyEnabled?: boolean;
+};
+```
+
+The launch configuration set in the [FcrUIScene.launch](#launch) method.
+
+| Parameter | Description |
+| :--- | :--- |
+| `appId` | The App ID of your Agora project. |
+| `region` | (Optional) The region. Agora recommends setting it to a region close to where your courseware or recording-file object storage service is located. Ensure that `region` is set to the same value on all app clients, or they cannot interoperate. You can set `region` to `CN` for Mainland China, `AP` for Asia Pacific, `EU` for Europe, or `NA` for North America. |
+| `language` | The language of the classroom UI. See [LanguageEnum](#languageenum). |
+| `userUuid` | The user ID, which is the unique identifier of the user. Ensure that this parameter is the same as the UID that you use to generate the Signaling token. The maximum data length is 64 bytes. Supported characters include lowercase and uppercase English letters, numbers, spaces, and the following symbols: `"!"`, `"#"`, `"$"`, `"%"`, `"&"`, `"("`, `")"`, `"+"`, `"-"`, `":"`, `";"`, `"<"`, `"="`, `"."`, `">"`, `"?"`, `"@"`, `"["`, `"]"`, `"^"`, `"_"`, `"{"`, `"}"`, `"|"`, `"~"`, and `","`. |
+| `userName` | The user name, which is displayed in the classroom UI. The maximum data length is 64 bytes. Supported characters are the same as `userUuid`. |
+| `roleType` | The role of the user in the classroom. See [EduRoleTypeEnum](#eduroletypeenum). |
+| `token` | The Signaling token. See [Secure your classrooms](/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow). |
+| `roomUuid` | The classroom ID, which is the unique identifier of the classroom. The maximum data length is 64 bytes. Supported characters are the same as `userUuid`. |
+| `roomName` | The classroom name, which is displayed in the classroom UI. The maximum data length is 64 bytes. Supported characters are the same as `userUuid`. |
+| `roomType` | The classroom type. See [EduRoomTypeEnum](#eduroomtypeenum). |
+| `startTime` | (Optional) The time (ms) when the class begins. The SDK uses the `startTime` passed by the first user that joins the classroom. |
+| `duration` | The duration time (seconds) of the classroom. The SDK uses the `duration` passed by the first user that joins the classroom. The maximum value is 86,400. You can set it according to your actual use case. |
+| `devicePretest` | Whether to enable the pre-class device test. If set to `true`, a device test tab appears when a user joins the classroom and starts testing whether the user's camera, microphone, and speaker are working properly. |
+| `coursewareList` | (Optional) The courseware list specified by the education provider. Users cannot change the value from app clients. Once specified, the SDK downloads the specified courseware from cloud drive to the local device. |
+| `userFlexProperties` | (Optional) User properties defined by the developer. |
+| `latencyLevel` | (Optional) The latency level on the audience client. This parameter applies to audiences only. `1` means low latency, where the sender-receiver latency is 1500 ms to 2000 ms. `2` means ultra-low latency, where the sender-receiver latency is 400 ms to 800 ms. The default value is `2`. |
+| `recordUrl` | (Optional) The URL address for recording. You need to pass in the URL deployed by yourself for webpage recording, for example, `https://cn.bing.com/recordUrl`. |
+| `recordRetryTimeout` | (Optional) The timeout duration for recording page startup failure. The default value is 60. If the recording service fails to join the classroom within the specified time, recording restarts. |
+| `virtualBackgroundImages` | (Optional) The URL of the virtual background image. The domain name of the resource should be the same as the domain name where you deployed Smart Classroom. PNG and JPG images are supported. |
+| `webrtcExtensionBaseUrl` | (Optional) The URL of the WebRTC extension. The default value is `https://solutions-apaas.agora.io/static`. If you want to use advanced features such as virtual background, AI noise suppression, and image enhancement, deploy the WebRTC extension and related resource files in the same domain as the Flexible Classroom SDK. |
+| `mediaOptions` | (Optional) Media stream options, including whether to encrypt the media stream, and the encoder configurations of the camera-captured video and the screen-captured video. See [LaunchMediaOptions](#launchmediaoptions). |
+| `shareUrl` | (Optional) The URL for sharing. |
+| `widgets` | (Optional) The widget list, which extends the capabilities of the classroom. See [Embed a custom plugin](/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/embed-custom-plugin). |
+| `rtcCloudProxyType` | (Optional) The cloud proxy type for the RTC service. See [AgoraCloudProxyType](#agoracloudproxytype). |
+| `rtmCloudProxyEnabled` | (Optional) Whether to enable cloud proxy for the Signaling service. |
+
+### LaunchMediaOptions
+
+```typescript
+export type LaunchMediaOptions = {
+  cameraEncoderConfiguration?: EduVideoEncoderConfiguration;
+  screenShareEncoderConfiguration?: EduVideoEncoderConfiguration;
+  encryptionConfig?: MediaEncryptionConfig;
+  web?: {
+    codec: SDK_CODEC;
+    mode: SDK_MODE;
+  };
+};
+```
+
+Media stream options.
+
+| Parameter | Description |
+| :--- | :--- |
+| `cameraEncoderConfiguration` | The encoder configuration of the camera-captured video. See [EduVideoEncoderConfiguration](#eduvideoencoderconfiguration). |
+| `screenShareEncoderConfiguration` | The encoder configuration of the screen-captured video. See [EduVideoEncoderConfiguration](#eduvideoencoderconfiguration). |
+| `encryptionConfig` | The encryption configuration. See [MediaEncryptionConfig](#mediaencryptionconfig). |
+| `web` | The codec of the browser and channel profile. `codec` can be `"vp8"` for VP8 or `"h264"` for H.264. `mode` can be `"rtc"` for communication mode or `"live"` for live-broadcasting mode. |
+
+### EduVideoEncoderConfiguration
+
+```typescript
+export interface EduVideoEncoderConfiguration {
+  width: number;
+  height: number;
+  frameRate: number;
+  bitrate: number;
+}
+```
+
+The video encoder configuration.
+
+| Parameter | Description |
+| :--- | :--- |
+| `width` | The width of the video frame in pixels. The default value is 320. |
+| `height` | The height of the video frame in pixels. The default value is 240. |
+| `frameRate` | The video frame rate in FPS. The default value is 15. |
+| `bitrate` | The video bitrate in Kbps. The default value is 200. |
+
+### MediaEncryptionConfig
+
+```typescript
+export declare interface MediaEncryptionConfig {
+  mode: MediaEncryptionMode;
+  key: string;
+}
+```
+
+The media stream encryption configuration set in [LaunchMediaOptions](#launchmediaoptions).
+
+| Parameter | Description |
+| :--- | :--- |
+| `mode` | The encryption mode. See [MediaEncryptionMode](#mediaencryptionmode). All teachers and students in the same classroom need to use the same encryption mode and encryption key. |
+| `key` | The encryption key. |
+
+### MediaEncryptionMode
+
+The media stream encryption mode set in [MediaEncryptionConfig](#mediaencryptionconfig).
+
+| Parameter | Description |
+| :--- | :--- |
+| `AES_128_XTS` | `1`: 128-bit AES encryption, XTS mode. |
+| `AES_128_ECB` | `2`: 128-bit AES encryption, ECB mode. |
+| `AES_256_XTS` | `3`: 256-bit AES encryption, XTS mode. |
+| `AES_128_GCM` | `5`: 128-bit AES encryption, GCM mode. |
+| `AES_256_GCM` | `6`: 256-bit AES encryption, GCM mode. |
+
+### EduRoleTypeEnum
+
+The user role in the classroom set in [LaunchOptions](#launchoptions).
+
+| Parameter | Description |
+| :--- | :--- |
+| `teacher` | `1`: The teacher. |
+| `student` | `2`: The student. |
+
+### EduRoomTypeEnum
+
+The classroom type set in [LaunchOptions](#launchoptions).
+
+| Parameter | Description |
+| :--- | :--- |
+| `RoomSmallClass` | `4`: Cloud Classroom, where a teacher teaches online and multiple students watch and listen. The maximum number of students in a small class is 200. |
+
+### LanguageEnum
+
+The language on the classroom UI set in [LaunchOptions](#launchoptions).
+
+| Parameter | Description |
+| :--- | :--- |
+| `en` | English. |
+| `zh` | Chinese. |
+
+### AgoraCloudProxyType
+
+The cloud proxy type. Set in [LaunchOptions](#launchoptions).
+
+| Parameter | Description |
+| :--- | :--- |
+| `Automatic` | `0`: Automatic mode. In this mode, the SDK first attempts to connect directly to Agora SDRTN. If the attempt fails, the SDK automatically falls back to sending media over TLS 443. If you are unsure whether the end user's network environment has a firewall, `Automatic` mode is recommended. |
+| `UDP` | `1`: UDP. |
+| `TCP` | `2`: TCP. |
+
+</PlatformStructured>

@@ -698,6 +698,14 @@ function resolveLegacyProductRedirect(
 
   const normalizedPath = slugSegments.join('/');
   const redirects: Record<string, string> = {
+    'flexible-classroom/client-api/classroom-sdk':
+      '/en/api-reference/api-ref/flexible-classroom/classroom-sdk',
+    'flexible-classroom/client-api/edu-context-sdk':
+      '/en/api-reference/api-ref/flexible-classroom/classroom-sdk',
+    'flexible-classroom/client-api/proctor-sdk':
+      '/en/api-reference/api-ref/flexible-classroom/proctor-sdk',
+    'flexible-classroom/client-api/ui-scene':
+      '/en/api-reference/api-ref/flexible-classroom/ui-scene',
     'flexible-classroom/reference/restful-authentication':
       '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
     'interactive-whiteboard/develop/generate-token-rest':
