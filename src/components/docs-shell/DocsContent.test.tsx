@@ -17,6 +17,7 @@ import type { ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
+import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsTocRail } from './DocsTocRail';
@@ -911,6 +912,47 @@ describe('DocsMainColumn', () => {
       within(desktopScroll).queryByTestId('docs-site-footer'),
     ).not.toBeInTheDocument();
     expect(pageFooter).not.toContainElement(siteFooter);
+  });
+
+  it('marks the desktop scroll region for router-managed scroll restoration', async () => {
+    renderWithRouter(
+      <DocsMainColumn resetKey="/en/introduction/about-agora">
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    expect(desktopScroll).toHaveAttribute(
+      'data-scroll-restoration-id',
+      DOCS_MAIN_SCROLL_RESTORATION_ID,
+    );
+  });
+
+  it('does not override router scroll restoration when the reset key changes', async () => {
+    const { rerender } = renderWithRouter(
+      <DocsMainColumn resetKey="/en/introduction/about-agora">
+        <article>First page</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const windowScrollTo = vi.fn();
+    Object.defineProperty(window, 'scrollTo', {
+      configurable: true,
+      value: windowScrollTo,
+      writable: true,
+    });
+
+    desktopScroll.scrollTop = 180;
+
+    rerender(
+      <DocsMainColumn resetKey="/en/introduction/quick-start">
+        <article>Second page</article>
+      </DocsMainColumn>,
+    );
+
+    expect(desktopScroll.scrollTop).toBe(180);
+    expect(windowScrollTo).not.toHaveBeenCalled();
   });
 });
 
