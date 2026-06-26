@@ -10,7 +10,7 @@ import {
 } from '@/lib/docs-static-manifest';
 
 export const Route = createFileRoute('/$locale/$tab/$')({
-  loader: async ({ params }) => {
+  loader: async ({ location, params }) => {
     if (!isSupportedDocLocale(params.locale)) {
       throw notFound();
     }
@@ -36,8 +36,14 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     }
 
     if ('redirectUrl' in payload) {
+      const { redirectUrl } = payload;
+
+      if (!redirectUrl) {
+        throw notFound();
+      }
+
       throw redirect({
-        href: payload.redirectUrl,
+        href: preserveRedirectSearch(redirectUrl, location),
       });
     }
 
@@ -80,4 +86,15 @@ function Page() {
       toc={toc}
     />
   );
+}
+
+function preserveRedirectSearch(
+  href: string,
+  location: { hash?: string; searchStr?: string },
+) {
+  if (/[?#]/.test(href)) {
+    return href;
+  }
+
+  return `${href}${location.searchStr ?? ''}${location.hash ?? ''}`;
 }

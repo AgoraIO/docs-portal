@@ -178,4 +178,16 @@ describe('normalizeDocsHref', () => {
       kind: 'root',
     });
   });
+
+  it('normalizes legacy SDK download links to the API Reference SDKs page', () => {
+    expect(normalizeDocsHref('/sdks?platform=android#downloads')).toEqual({
+      href: '/en/api-reference/sdks?platform=android#downloads',
+      kind: 'root',
+    });
+
+    expect(normalizeDocsHref('/en/sdks?platform=linux')).toEqual({
+      href: '/en/api-reference/sdks?platform=linux',
+      kind: 'root',
+    });
+  });
 });
