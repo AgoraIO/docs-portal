@@ -16,7 +16,7 @@ The historical message feature is currently available for User Channels and Mess
 
 Before implementing this feature, ensure that you have:
 
-* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../../index.mdx) page.
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
 * Enabled the message history feature by contacting [support@agora.io](mailto:support@agora.io). You can request a storage duration of 1, 7, 30, 90, or 365 days, or opt for permanent storage.
 
 :::info

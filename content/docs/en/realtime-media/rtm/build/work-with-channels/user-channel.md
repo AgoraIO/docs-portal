@@ -9,7 +9,7 @@ Signaling enables you to send direct, point-to-point messages to individual user
 
 To implement point-to-point communication between individual users in your app:
 
-1. **Set up the Signaling SDK**: [Integrate the Signaling SDK](../../../index.mdx) in your app and initialize an instance of the Signaling client.
+1. **Set up the Signaling SDK**: [Integrate the Signaling SDK](../../index.mdx) in your app and initialize an instance of the Signaling client.
 2. **Authenticate the user**: Log in to Signaling using a unique user ID.
 3. **Send direct messages**: Call the `publish` method with the User channel type and specify the recipient's user ID as the channel name to send direct messages.
 4. **Handle incoming messages**: Listen for message events to receive messages sent directly to the local user.
@@ -18,13 +18,13 @@ To implement point-to-point communication between individual users in your app:
 
 Ensure that you have:
 
-* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../../index.mdx) page.
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
 
 ## Implement user messages
 
 This section shows you how to use the Signaling SDK to send messages directly to a specified user.
 
-To send a message to a user channel, call the `publish` method with the `channelType` parameter set to the User channel type and the `channelName` parameter set to the target user's `userId`. This method enables you to send a message to one user at a time. To send messages to multiple users, call this method for each user. While Signaling does not limit the number of users you can send messages to or receive messages from, it does [limit](../../../reference/limitations.md) the frequency at which you can send messages to users.
+To send a message to a user channel, call the `publish` method with the `channelType` parameter set to the User channel type and the `channelName` parameter set to the target user's `userId`. This method enables you to send a message to one user at a time. To send messages to multiple users, call this method for each user. While Signaling does not limit the number of users you can send messages to or receive messages from, it does [limit](../../reference/limitations.md) the frequency at which you can send messages to users.
 
 Refer to the following sample code for sending messages:
 
@@ -305,7 +305,7 @@ class RtmEventHandler : public IRtmEventHandler {
 ```
 
 :::info
-Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../../send-and-receive-messages/messaging/message-payload-structuring.md).
+Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring.md).
 
 :::
 

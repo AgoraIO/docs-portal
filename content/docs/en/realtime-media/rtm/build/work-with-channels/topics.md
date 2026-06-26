@@ -25,7 +25,7 @@ Ensure that you have:
 
 * Activated stream channel capability in [Agora Console](https://console.agora.io/v2). To do so, go to **Projects** > Edit project > **All features** > **Signaling** > **Stream channel configuration** and toggle to enable.
 
-* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../../index.mdx) page.
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
 
 * Implemented the functionality to create and join a stream channel. See [Stream channels](stream-channel.mdx)
 
@@ -250,7 +250,7 @@ mStreamChannel.unsubscribeTopic(topicName.toString(), options, object : ResultCa
 
 ### Add a topic event listener
 
-To set up an event listener for topic events, refer to [Add event listener](../../send-and-receive-messages/messaging/add-event-listener.md). After successfully adding a topic event handler, you receive `onTopicEvent` notifications for all topics in all stream channels you join or subscribe to. The event returns the following data:
+To set up an event listener for topic events, refer to [Add event listener](../send-and-receive-messages/add-event-listener.md). After successfully adding a topic event handler, you receive `onTopicEvent` notifications for all topics in all stream channels you join or subscribe to. The event returns the following data:
 
 | Attribute     | Description           |
 |---------------|-----------------------|
@@ -284,7 +284,7 @@ A single client can have an unlimited number of topics at the same time, and the
 - The number of topics that a user can subscribe to concurrently.
 - The number of message publishers that can be concurrently subscribed to in a topic.
 
-For details, see [API usage restrictions](../../../../reference/limitations.md).
+For details, see [API usage restrictions](../../reference/limitations.md).
 
 ### Topic naming
 
@@ -308,7 +308,7 @@ The following characters are not supported:
 - `.`, `*`, `/`, `\`, `\0`
 - Non-printable ASCII characters
 
-Although the Signaling SDK does not require it, best practice when naming a topic is to use meaningful prefix characters to indicate the purpose of the topic or the type of messages published in it. Topic naming recommendations are similar to [Channel naming recommendations](../../../../reference/channel-naming.md).
+Although the Signaling SDK does not require it, best practice when naming a topic is to use meaningful prefix characters to indicate the purpose of the topic or the type of messages published in it. Topic naming recommendations are similar to [Channel naming recommendations](../../reference/channel-naming.md).
 
 ### API reference
 
