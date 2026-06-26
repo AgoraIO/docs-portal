@@ -15,6 +15,7 @@ import {
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
+import { buildDocPath } from '@/lib/docs-routing';
 import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
   getStoredPlatformPreference,
@@ -40,9 +41,12 @@ type PlatformPanelProps = {
 };
 
 const ControlledTabs = Tabs as React.ComponentType<ControlledTabsProps>;
-const PlatformTabsPlacementContext = createContext<'header' | 'inline'>(
-  'inline',
-);
+const PlatformTabsPlacementContext = createContext<{
+  initialPlatform?: PlatformKey;
+  placement: 'header' | 'inline';
+}>({
+  placement: 'inline',
+});
 const HEADER_PRIMARY_PLATFORMS: PlatformKey[] = [
   'android',
   'ios',
@@ -61,13 +65,15 @@ const HEADER_OVERFLOW_PLATFORMS: PlatformKey[] = [
 
 export function PlatformTabsPlacementProvider({
   children,
+  initialPlatform,
   value,
 }: {
   children?: ReactNode;
+  initialPlatform?: PlatformKey;
   value: 'header' | 'inline';
 }) {
   return (
-    <PlatformTabsPlacementContext value={value}>
+    <PlatformTabsPlacementContext value={{ initialPlatform, placement: value }}>
       {children}
     </PlatformTabsPlacementContext>
   );
@@ -77,6 +83,7 @@ export function PlatformTabsGroup({
   canonicalPlatform,
   children,
   groupMode,
+  initialPlatform,
   locale = DEFAULT_LOCALE,
   platforms,
   showTabs = 'true',
@@ -85,20 +92,27 @@ export function PlatformTabsGroup({
   canonicalPlatform: PlatformKey;
   children?: ReactNode;
   groupMode: 'inline' | 'structured';
+  initialPlatform?: PlatformKey;
   locale?: AppLocale;
   platforms: string;
   showTabs?: string;
   tabsPlacement?: 'header' | 'inline';
 }) {
   const parsedPlatforms = usePlatformList(platforms);
-  const contextTabsPlacement = useContext(PlatformTabsPlacementContext);
-  const resolvedTabsPlacement = tabsPlacement ?? contextTabsPlacement;
+  const platformContext = useContext(PlatformTabsPlacementContext);
+  const resolvedInitialPlatform =
+    initialPlatform ?? platformContext.initialPlatform;
+  const resolvedTabsPlacement = tabsPlacement ?? platformContext.placement;
   const shouldShowTabs = showTabs !== 'false' && parsedPlatforms.length > 1;
   const shouldRenderInlineTabs =
     shouldShowTabs && resolvedTabsPlacement === 'inline';
+  const shouldSyncPlatformPath =
+    groupMode === 'structured' && resolvedTabsPlacement === 'header';
   const { activePlatform, handlePlatformChange } = usePlatformSelection({
     canonicalPlatform,
+    initialPlatform: resolvedInitialPlatform,
     parsedPlatforms,
+    syncPath: shouldSyncPlatformPath,
   });
 
   const panelChildren = Children.map(children, (child) => {
@@ -139,18 +153,22 @@ export function PlatformTabsGroup({
 export function PlatformHeaderTabs({
   canonicalPlatform,
   className,
+  initialPlatform,
   locale = DEFAULT_LOCALE,
   platforms,
 }: {
   canonicalPlatform: PlatformKey;
   className?: string;
+  initialPlatform?: PlatformKey;
   locale?: AppLocale;
   platforms: string;
 }) {
   const parsedPlatforms = usePlatformList(platforms);
   const { activePlatform, handlePlatformChange } = usePlatformSelection({
     canonicalPlatform,
+    initialPlatform,
     parsedPlatforms,
+    syncPath: true,
   });
 
   if (parsedPlatforms.length <= 1) {
@@ -361,10 +379,14 @@ function usePlatformList(platforms: string) {
 
 function usePlatformSelection({
   canonicalPlatform,
+  initialPlatform,
   parsedPlatforms,
+  syncPath,
 }: {
   canonicalPlatform: PlatformKey;
+  initialPlatform?: PlatformKey;
   parsedPlatforms: PlatformKey[];
+  syncPath: boolean;
 }) {
   const storedPlatformPreferenceRef = useRef<PlatformKey | null | undefined>(
     undefined,
@@ -377,6 +399,10 @@ function usePlatformSelection({
   }
 
   const [activePlatform, setActivePlatform] = useState<PlatformKey>(() => {
+    if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
+      return initialPlatform;
+    }
+
     const stored = storedPlatformPreferenceRef.current;
 
     if (stored && parsedPlatforms.includes(stored)) {
@@ -393,6 +419,7 @@ function usePlatformSelection({
     const stored = getStoredPlatformPreference();
 
     if (
+      initialPlatform === undefined &&
       stored &&
       isKnownPlatform(stored) &&
       parsedPlatforms.includes(stored) &&
@@ -407,7 +434,16 @@ function usePlatformSelection({
       activePlatformRef.current = canonicalPlatform;
       setActivePlatform(canonicalPlatform);
     }
-  }, [activePlatform, canonicalPlatform, parsedPlatforms]);
+  }, [activePlatform, canonicalPlatform, initialPlatform, parsedPlatforms]);
+
+  useEffect(() => {
+    if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
+      activePlatformRef.current = initialPlatform;
+      storedPlatformPreferenceRef.current = initialPlatform;
+      setActivePlatform(initialPlatform);
+      setStoredPlatformPreference(initialPlatform);
+    }
+  }, [initialPlatform, parsedPlatforms]);
 
   useEffect(() => {
     activePlatformRef.current = activePlatform;
@@ -475,12 +511,46 @@ function usePlatformSelection({
       storedPlatformPreferenceRef.current = value;
       setStoredPlatformPreference(value);
     }
+
+    if (syncPath) {
+      syncPlatformPath(value);
+    }
   }
 
   return {
     activePlatform,
     handlePlatformChange,
   };
+}
+
+function syncPlatformPath(platform: PlatformKey) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const segments = window.location.pathname.split('/').filter(Boolean);
+  const [locale, tab, ...slugSegments] = segments;
+
+  if (!locale || !tab) {
+    return;
+  }
+
+  const pathSlugSegments = slugSegments.filter(Boolean);
+  const currentPlatform = pathSlugSegments.at(-1);
+
+  if (currentPlatform && isKnownPlatform(currentPlatform)) {
+    pathSlugSegments.pop();
+  }
+
+  const nextPath = buildDocPath(locale, tab, [...pathSlugSegments, platform]);
+  const nextUrl = `${nextPath}${window.location.search}${window.location.hash}`;
+
+  if (
+    nextUrl !==
+    `${window.location.pathname}${window.location.search}${window.location.hash}`
+  ) {
+    window.history.pushState({}, '', nextUrl);
+  }
 }
 
 export function PlatformPanel({

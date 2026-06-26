@@ -5,7 +5,7 @@ import type { DocsPagePayload } from '@/lib/docs-page.server';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
 import {
-  readStaticDocsPayload,
+  resolvePlatformStaticDocsPayload,
   shouldUseStaticDocsPayload,
 } from '@/lib/docs-static-manifest';
 
@@ -18,7 +18,9 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     const slugSegments = (params._splat ?? '').split('/').filter(Boolean);
 
     const payload = shouldUseStaticDocsPayload()
-      ? await readStaticDocsPayload<DocsPagePayload | { redirectUrl: string }>({
+      ? await resolvePlatformStaticDocsPayload<
+          DocsPagePayload | { redirectUrl: string }
+        >({
           locale: params.locale,
           slugSegments,
           tab: params.tab,

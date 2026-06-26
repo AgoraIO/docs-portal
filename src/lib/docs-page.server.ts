@@ -36,6 +36,8 @@ import {
   buildCanonicalPlatformTocText,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
+import type { PlatformKey } from './platforms/registry';
+import { resolvePlatformRoutePage } from './platforms/route';
 import {
   type source as docsSource,
   getPageMarkdownUrl,
@@ -197,8 +199,10 @@ export async function loadDocsPagePayload(
     };
   }
 
-  const slug = slugSegments.at(-1) ?? 'index';
-  const page = source.getPage(
+  const requestedSlug = slugSegments.at(-1) ?? 'index';
+  let slug = requestedSlug;
+  let resolvedSlugSegments = slugSegments;
+  let page = source.getPage(
     getSourceSlugs({
       locale,
       slug,
@@ -207,6 +211,28 @@ export async function loadDocsPagePayload(
     }),
     locale,
   );
+
+  let requestedPlatform: PlatformKey | undefined;
+  let platformResolvedProcessedText: string | undefined;
+
+  if (!page) {
+    const platformRoute = await resolvePlatformRoutePage({
+      extractPlatformTabs: extractStructuredPlatformTabs,
+      locale,
+      readProcessedText,
+      slugSegments,
+      source,
+      tab,
+    });
+
+    if (platformRoute) {
+      page = platformRoute.page;
+      requestedPlatform = platformRoute.platform;
+      platformResolvedProcessedText = platformRoute.processedText;
+      resolvedSlugSegments = platformRoute.slugSegments;
+      slug = resolvedSlugSegments.at(-1) ?? 'index';
+    }
+  }
 
   if (!page) {
     const pageTree = source.getPageTree(locale);
@@ -223,12 +249,15 @@ export async function loadDocsPagePayload(
 
   const pageTree = source.getPageTree(locale);
   const supportedLocale = toSupportedLocale(locale);
-  const isOpenApiPage = isOpenApiPageWithClientProps(page);
+  const openApiPage = isOpenApiPageWithClientProps(page) ? page : null;
+  const isOpenApiPage = openApiPage !== null;
   const openApiRoute =
     isOpenApiPage && supportedLocale
-      ? resolveOpenApiEndpointRoute(supportedLocale, tab, slugSegments)
+      ? resolveOpenApiEndpointRoute(supportedLocale, tab, resolvedSlugSegments)
       : null;
-  const processedText = isOpenApiPage ? '' : await readProcessedText(page);
+  const processedText = isOpenApiPage
+    ? ''
+    : (platformResolvedProcessedText ?? (await readProcessedText(page)));
   const structuredPlatformTabs = extractStructuredPlatformTabs(processedText);
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
@@ -268,21 +297,23 @@ export async function loadDocsPagePayload(
       ? {
           platformTabs: {
             canonicalPlatform: structuredPlatformTabs.canonicalPlatform,
+            initialPlatform: requestedPlatform,
             platforms: JSON.stringify(structuredPlatformTabs.platforms),
           },
         }
       : {}),
   };
+  const body = isOpenApiPage
+    ? {
+        kind: 'openapi' as const,
+        pageProps: await openApiPage.data.getClientAPIPageProps(),
+      }
+    : mdxBody;
 
   return {
     activePath: page.url,
     activeTab: tab,
-    body: isOpenApiPage
-      ? {
-          kind: 'openapi' as const,
-          pageProps: await page.data.getClientAPIPageProps(),
-        }
-      : mdxBody,
+    body,
     breadcrumb:
       navScope?.scope.meta.sidebarIndexTitle &&
       page.url === navScope.scope.node.index?.url
@@ -302,7 +333,7 @@ export async function loadDocsPagePayload(
             ],
     contentPath: page.path,
     description: page.data.description,
-    markdownUrl: getPageMarkdownUrl(page).url,
+    markdownUrl: getPageMarkdownUrl(page, requestedPlatform).url,
     layoutMode,
     localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
       const targetPage = source.getPage(page.slugs.slice(1), targetLocale);
