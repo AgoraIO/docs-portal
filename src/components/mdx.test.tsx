@@ -41,6 +41,10 @@ type AnchorComponent = ComponentType<{
   children: ReactNode;
   href: string;
 }>;
+type ImageComponent = ComponentType<{
+  alt?: string;
+  src?: string;
+}>;
 type LegacyLinkComponent = ComponentType<{
   children: ReactNode;
   to: string;
@@ -115,7 +119,7 @@ describe('common MDX registry', () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const defaults = defaultMdxComponents as Record<string, unknown>;
 
-    expect(components.img).toBe(defaults.img);
+    expect(components.img).not.toBe(defaults.img);
     expect(components.table).toBe(defaults.table);
     expect(components.Card).not.toBe(defaults.Card);
     expect(components.Cards).toBe(defaults.Cards);
@@ -141,6 +145,26 @@ describe('common MDX registry', () => {
     expect(components.TabsList).toBe(fumadocsTabs.TabsList);
     expect(components.TabsTrigger).toBe(fumadocsTabs.TabsTrigger);
     expect(components.TabsContent).not.toBe(fumadocsTabs.TabsContent);
+  });
+
+  it('opens MDX images in a zoom dialog', async () => {
+    const components = getMDXComponents();
+    const Image = components.img as ImageComponent;
+
+    render(<Image alt="Product Architecture" src="/images/product.png" />);
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Zoom image: Product Architecture',
+      }),
+    );
+
+    const dialog = await screen.findByRole('dialog');
+
+    expect(dialog).toHaveTextContent('Product Architecture');
+    expect(
+      within(dialog).getByRole('img', { name: 'Product Architecture' }),
+    ).toHaveAttribute('src', '/images/product.png');
   });
 
   it('keeps relative docs links normalized', () => {
