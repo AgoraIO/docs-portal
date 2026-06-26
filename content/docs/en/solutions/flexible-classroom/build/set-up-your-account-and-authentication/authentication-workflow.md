@@ -210,7 +210,7 @@ The following reference code comes from the [Flexible Classroom web source code]
     });
     ```
 
-1.  Use the token obtained in this request to create a `launchOption` object:
+2.  Use the token obtained in this request to create a `launchOption` object:
 
     ```typescript
     const launchOption = {
@@ -233,7 +233,7 @@ The following reference code comes from the [Flexible Classroom web source code]
     };
     ```
 
-1. Call `launch` and use the token to join the classroom:
+3. Call `launch` and use the token to join the classroom:
 
     ```typescript
     AgoraEduSDK.launch(dom, launchOption);

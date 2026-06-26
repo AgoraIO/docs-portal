@@ -361,7 +361,7 @@ Flexible Classroom has two built-in languages: English `en` and Chinese `zh`. If
 export type Language = 'en' | 'zh' | 'es';
 ```
 
-1. Create a `esAr.ts` language pack file in `packages/fcr-ui-scene/src/resources/translations` with the following content:
+2. Create a `esAr.ts` language pack file in `packages/fcr-ui-scene/src/resources/translations` with the following content:
 
 ```tsx
 // You can copy the content from the enUs.ts file here and modify the corresponding language text
@@ -371,7 +371,7 @@ export type Language = 'en' | 'zh' | 'es';
 }
 ```
 
-1. Load the language pack corresponding to the language when the launch method is called:
+3. Load the language pack corresponding to the language when the launch method is called:
 
 ```tsx
 // Introduce language pack
@@ -386,7 +386,7 @@ static launch(dom: HTMLElement, launchOptions: LaunchOptions) {
 }
 ```
 
-1. Pass in the corresponding language when calling the launch method:
+4. Pass in the corresponding language when calling the launch method:
 
 ```tsx
 FcrUIScene.launch(document.querySelector('#root'), {
