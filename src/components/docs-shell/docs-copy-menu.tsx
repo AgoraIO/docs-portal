@@ -31,7 +31,7 @@ const AGORA_MCP_DOC_PARAMS = {
 };
 const CHATGPT_BASE_URL = 'https://chatgpt.com/';
 const CLAUDE_BASE_URL = 'https://claude.ai/new';
-const COPY_STATE_MS = 1500;
+const COPY_STATE_MS = 2500;
 
 export type DocsCopyPageAction = {
   markdownUrl: string;
@@ -104,12 +104,13 @@ export function DocsCopyMenu({
   locale: string;
 }) {
   const { t } = useTranslation('common');
-  const [copiedAction, setCopiedAction] = useState<'config' | 'command' | null>(
-    null,
-  );
+  const [copiedAction, setCopiedAction] = useState<
+    'page' | 'config' | 'command' | null
+  >(null);
   const pageUrl = buildCanonicalPageUrl(locale, slug);
+  const isPrimaryCopied = copiedAction === 'page';
 
-  const copy = async (kind: 'config' | 'command', value: string) => {
+  const copy = async (kind: 'page' | 'config' | 'command', value: string) => {
     await navigator.clipboard.writeText(value);
     setCopiedAction(kind);
     window.setTimeout(() => {
@@ -127,21 +128,23 @@ export function DocsCopyMenu({
       >
         <Button
           aria-label={t('docs.copyPage')}
-          className="h-7 gap-1.5 rounded-r-none border-0 px-2.5 text-xs font-medium text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)]"
-          onClick={() =>
-            void copy('command', buildMarkdownPageUrl(markdownUrl))
-          }
+          aria-live="polite"
+          className={cn(
+            'h-7 gap-1.5 rounded-r-none border-0 px-2.5 text-xs font-medium text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)]',
+            isPrimaryCopied &&
+              'scale-[1.02] bg-emerald-500/12 text-emerald-700 ring-1 ring-emerald-500/35 hover:bg-emerald-500/12 hover:text-emerald-700 dark:text-emerald-300',
+          )}
+          data-copied={isPrimaryCopied ? 'true' : undefined}
+          onClick={() => void copy('page', buildMarkdownPageUrl(markdownUrl))}
           size="sm"
           variant="ghost"
         >
-          {copiedAction === 'command' ? (
+          {isPrimaryCopied ? (
             <CheckIcon className="size-3.5" />
           ) : (
             <BotIcon className="size-3.5" />
           )}
-          <span>
-            {copiedAction === 'command' ? t('docs.copied') : t('docs.copyPage')}
-          </span>
+          <span>{isPrimaryCopied ? t('docs.copied') : t('docs.copyPage')}</span>
         </Button>
         <DropdownMenuTrigger asChild>
           <Button
