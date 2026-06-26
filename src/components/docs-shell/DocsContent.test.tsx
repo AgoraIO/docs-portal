@@ -981,10 +981,50 @@ describe('DocsTocRail', () => {
     expect(await screen.findByText('On this page')).toBeInTheDocument();
     expect(screen.getByTestId('docs-feedback')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Yes' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Send feedback' }),
+    ).toBeInTheDocument();
   });
 });
 
 describe('DocsPageFeedback placement', () => {
+  it('opens a feedback dialog with a prefilled issue link', async () => {
+    renderWithRouter(
+      <DocsMainColumn locale="en">
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const feedback = within(mobileFlow).getByTestId('docs-feedback');
+
+    fireEvent.click(
+      within(feedback).getByRole('button', { name: 'Send feedback' }),
+    );
+    fireEvent.click(await screen.findByLabelText('Suggestion'));
+    fireEvent.change(
+      screen.getByPlaceholderText(
+        'Describe what is wrong, missing, confusing, or hard to use.',
+      ),
+      {
+        target: {
+          value: 'The setup step is missing a required parameter.',
+        },
+      },
+    );
+
+    const issueLink = screen.getByRole('link', { name: 'Open issue' });
+    const href = issueLink.getAttribute('href') ?? '';
+    const issueBody = new URL(href).searchParams.get('body') ?? '';
+
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(href).toContain('https://github.com/AgoraIO/docs-portal/issues/new');
+    expect(issueBody).toContain('Feedback type: Suggestion');
+    expect(issueBody).toContain(
+      'The setup step is missing a required parameter.',
+    );
+  });
+
   it('shows helpfulness feedback in the mobile footer only', async () => {
     renderWithRouter(
       <DocsMainColumn
