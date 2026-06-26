@@ -82,6 +82,24 @@ Web content
     expect(result).not.toContain('platform="react-js"');
   });
 
+  it('accepts C++ as a platform key', async () => {
+    const source = `
+<PlatformStructured platform="cpp">
+C++ content
+</PlatformStructured>
+`;
+
+    const result = String(
+      await compile(source, {
+        jsx: true,
+        remarkPlugins: [remarkPlatformContent],
+      }),
+    );
+
+    expect(result).toContain('canonicalPlatform="cpp"');
+    expect(result).toContain('platform="cpp"');
+  });
+
   it('throws a readable error for duplicate platforms in one group', async () => {
     const source = `
 <PlatformInline platform="android">A</PlatformInline>

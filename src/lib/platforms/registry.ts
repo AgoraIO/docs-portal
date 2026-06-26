@@ -52,6 +52,13 @@ export const platformRegistry = {
     },
     order: 60,
   },
+  cpp: {
+    label: {
+      en: 'C++',
+      'zh-CN': 'C++',
+    },
+    order: 65,
+  },
   macos: {
     label: {
       en: 'macOS',
