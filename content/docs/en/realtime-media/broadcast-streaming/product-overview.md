@@ -9,10 +9,13 @@ Enhance Agora's Video SDK with broadcast production capabilities such as recordi
 
 ## Start building with
 
-- [SDK quickstart](quickstart) - Customize your experience from the start with our flexible Video SDK.
-- [Authentication](build/authenticate-users/use-tokens)
-- [API reference](../../api-reference/rtc/index)
-- [Samples](https://github.com/AgoraIO/API-Examples)
+<Cards>
+  <Card title="SDK quickstart" href="quickstart" description="Create a basic Broadcast Streaming app and join as host or audience." />
+  <Card title="Download SDKs" href="/en/api-reference/sdks" description="Get the latest Video SDK package for your broadcast platform." />
+  <Card title="Authentication" href="build/authenticate-users/use-tokens" description="Protect live channels with tokens before moving to production." />
+  <Card title="API reference" href="/en/api-reference/api-ref/rtc" description="Explore RTC API references for supported streaming platforms." />
+  <Card title="Samples" href="https://github.com/AgoraIO/API-Examples" description="Browse open-source sample projects for streaming workflows." />
+</Cards>
 
 ## Product Features
 
