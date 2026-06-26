@@ -337,7 +337,7 @@ paths:
                 sid: string
                 serverResponse:
                   extensionServiceState:
-                    - playload:
+                    - payload:
                         uploadingStatus: string
                       serviceName: string
                 cname: string
@@ -551,6 +551,9 @@ components:
     extensionParams:
       type: object
       description: Encryption and tagging settings for uploaded recording files.
+      required:
+        - sse
+        - tag
       properties:
         sse:
           type: string
@@ -775,6 +778,8 @@ components:
               - mp4
     snapshotConfig:
       type: object
+      required:
+        - fileType
       properties:
         captureInterval:
           type: integer
@@ -792,6 +797,8 @@ components:
     extensionServiceConfig:
       type: object
       description: Extended service configuration for web page recording.
+      required:
+        - extensionServices
       properties:
         errorHandlePolicy:
           type: string
@@ -818,6 +825,12 @@ components:
     serviceParam:
       type: object
       description: Specific configuration for extension services.
+      required:
+        - url
+        - audioProfile
+        - videoWidth
+        - videoHeight
+        - maxRecordingHour
       properties:
         url:
           type: string
@@ -1154,8 +1167,8 @@ components:
           items:
             type: object
             properties:
-              playload:
-                $ref: "#/components/schemas/stop-playload"
+              payload:
+                $ref: "#/components/schemas/stop-payload"
               serviceName:
                 type: string
                 description: Service type, such as `upload_service` or `web_recorder_service`.
@@ -1169,7 +1182,7 @@ components:
           oneOf:
             - $ref: "#/components/schemas/fileList-string"
             - $ref: "#/components/schemas/fileList-json"
-    stop-playload:
+    stop-payload:
       type: object
       properties:
         uploadingStatus:
