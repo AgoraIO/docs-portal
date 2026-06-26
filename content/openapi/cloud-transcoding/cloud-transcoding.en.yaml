@@ -676,6 +676,7 @@ components:
       type: object
       required:
         - canvas
+        - waterMarks
         - outputs
       properties:
         idleTimeout:
@@ -884,6 +885,8 @@ components:
               description: The layer order of the watermark.
     transcoder-output:
       type: object
+      required:
+        - rtc
       properties:
         streamUrl:
           type: string

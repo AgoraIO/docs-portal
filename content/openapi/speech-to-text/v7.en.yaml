@@ -24,7 +24,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/appid'
       security:
-        - Basic Auth: []
+        - BasicAuth: []
       requestBody:
         required: true
         content:
@@ -225,7 +225,7 @@ paths:
       description: Use this method to query the status of a Real-time STT task.
       operationId: query
       security:
-        - Basic Auth: []
+        - BasicAuth: []
       parameters:
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/agentId'
@@ -307,7 +307,7 @@ paths:
       description: Use this method to leave the channel and stop transcription.
       operationId: leave
       security:
-        - Basic Auth: []
+        - BasicAuth: []
       parameters:
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/agentId'
@@ -364,7 +364,7 @@ paths:
       description: Use this method to update the configuration of a Real-time STT task.
       operationId: update
       security:
-        - Basic Auth: []
+        - BasicAuth: []
       parameters:
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/agentId'
@@ -515,7 +515,7 @@ paths:
         translation agents that match specified criteria.
       operationId: list
       security:
-        - Basic Auth: []
+        - BasicAuth: []
       parameters:
         - $ref: '#/components/parameters/appid'
         - name: channel
@@ -527,14 +527,18 @@ paths:
               - TEST
         - name: from_time
           in: query
-          description: The start of the query time range, as a Unix timestamp in seconds.
+          description: >-
+            The start of the query time range, as a Unix timestamp in seconds.
+            Defaults to `1 day ago`.
           schema:
             type: integer
             examples:
               - 1733013296
         - name: to_time
           in: query
-          description: The end of the query time range, as a Unix timestamp in seconds.
+          description: >-
+            The end of the query time range, as a Unix timestamp in seconds.
+            Defaults to the current time.
           schema:
             type: integer
             examples:
@@ -1337,7 +1341,7 @@ components:
           type: string
           description: The request status.
   securitySchemes:
-    Basic Auth:
+    BasicAuth:
       type: http
       scheme: basic
       description: >-
@@ -1345,4 +1349,4 @@ components:
         every HTTP request. For details on how to generate this value, see the
         RESTful authentication guide.
 security:
-  - Basic Auth: []
+  - BasicAuth: []
