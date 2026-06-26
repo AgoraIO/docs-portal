@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
-  PLATFORM_CANONICAL_PRIORITY,
-  PLATFORM_PREFERENCE_STORAGE_KEY,
   getCanonicalPlatform,
   getPlatformLabel,
   isKnownPlatform,
   normalizePlatformKey,
+  PLATFORM_CANONICAL_PRIORITY,
+  PLATFORM_PREFERENCE_STORAGE_KEY,
 } from './registry';
 
 describe('platform registry', () => {
@@ -51,6 +51,7 @@ describe('platform registry', () => {
     expect(isKnownPlatform('web')).toBe(true);
     expect(isKnownPlatform('react-js')).toBe(true);
     expect(isKnownPlatform('windows')).toBe(true);
+    expect(isKnownPlatform('cpp')).toBe(true);
     expect(isKnownPlatform('macos')).toBe(true);
     expect(isKnownPlatform('electron')).toBe(true);
     expect(isKnownPlatform('unity')).toBe(true);
@@ -75,6 +76,7 @@ describe('platform registry', () => {
     expect(getPlatformLabel('javascript', 'zh-CN')).toBe('JavaScript');
     expect(getPlatformLabel('ios', 'en')).toBe('iOS');
     expect(getPlatformLabel('windows', 'en')).toBe('Windows');
+    expect(getPlatformLabel('cpp', 'en')).toBe('C++');
     expect(getPlatformLabel('macos', 'en')).toBe('macOS');
     expect(getPlatformLabel('electron', 'en')).toBe('Electron');
     expect(getPlatformLabel('unity', 'en')).toBe('Unity');
