@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
-import { Edit3Icon, ExternalLinkIcon } from 'lucide-react';
+import { ChevronDownIcon, Edit3Icon, ExternalLinkIcon } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -255,6 +255,7 @@ export function DocsContent({
           className="xl:hidden"
           locale={currentLocale}
           toc={toc}
+          variant="mobile"
         />
       )}
     </article>
@@ -352,14 +353,17 @@ export function DocsTableOfContents({
   className,
   locale = DEFAULT_LOCALE,
   toc,
+  variant = 'rail',
 }: {
   className?: string;
   locale?: AppLocale | string;
   toc: TOCItemType[];
+  variant?: 'mobile' | 'rail';
 }) {
   const { i18n } = useTranslation('common');
   const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
   const [derivedItems, setDerivedItems] = useState<TOCItemType[]>([]);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const items = useMemo(
     () =>
       (toc.length > 0 ? toc : derivedItems).filter(
@@ -381,6 +385,7 @@ export function DocsTableOfContents({
       next.add(url);
       return next;
     });
+    setIsMobileOpen(false);
     scrollDocsHashTarget(url);
   }, []);
 
@@ -492,71 +497,145 @@ export function DocsTableOfContents({
     };
   }, [items]);
 
+  const linkItems =
+    items.length > 0 ? (
+      <TocLinks
+        items={items}
+        onHeadingClick={scrollToHeading}
+        primaryActiveUrl={primaryActiveUrl}
+        visibleUrls={visibleUrls}
+        variant={variant}
+      />
+    ) : (
+      <p className="text-sm text-muted-foreground">{t('docs.tocEmpty')}</p>
+    );
+
   return (
-    <aside className={cn('flex flex-col gap-4', className)}>
-      <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
-        {t('docs.toc')}
-      </div>
-      {items.length > 0 ? (
-        <nav className="flex flex-col border-l border-border">
-          {items.map((item) => {
-            const isPrimary = item.url === primaryActiveUrl;
-            const isVisible = visibleUrls.has(item.url);
-
-            return (
-              <a
-                aria-current={isPrimary ? 'location' : undefined}
-                className={cn(
-                  '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-sm leading-5 text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]',
-                  isVisible &&
-                    'border-[color:var(--line-strong)] text-[color:var(--ink-2)]',
-                  isPrimary &&
-                    'border-[color:var(--accent-brand)] text-[color:var(--ink-1)]',
-                  item.depth > 2 && 'pl-6',
-                  item.depth > 3 && 'pl-8',
-                )}
-                data-primary={isPrimary ? 'true' : undefined}
-                data-visible={isVisible ? 'true' : undefined}
-                href={item.url}
-                key={item.url}
-                onClick={(event) => {
-                  if (!item.url.startsWith('#')) {
-                    return;
-                  }
-
-                  event.preventDefault();
-                  scrollToHeading(item.url);
-                }}
-              >
-                {item.title}
-              </a>
-            );
-          })}
-        </nav>
-      ) : (
-        <p className="text-sm text-muted-foreground">{t('docs.tocEmpty')}</p>
+    <aside
+      className={cn(
+        'flex flex-col',
+        variant === 'mobile' ? 'gap-2' : 'gap-4',
+        className,
       )}
-      <div className="mt-2 flex flex-col gap-1 border-t border-[color:var(--line)] pt-3">
-        <a
-          className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
-          href="https://github.com/Shengwang-Community/docs-portal/tree/main/content/docs"
-          rel="noreferrer"
-          target="_blank"
+    >
+      {variant === 'mobile' ? (
+        <button
+          aria-expanded={isMobileOpen}
+          className="flex min-h-10 w-full items-center justify-between rounded-md border border-[color:var(--line-soft)] bg-card px-3 py-2 text-left text-[13px] font-semibold text-[color:var(--ink-2)] transition-colors hover:border-[color:var(--line-strong)] hover:bg-[color:var(--surface-muted)]"
+          onClick={() => setIsMobileOpen((isOpen) => !isOpen)}
+          type="button"
         >
-          <Edit3Icon className="size-3.5" />
-          {t('docs.editPage')}
-        </a>
-        <a
-          className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
-          href="https://github.com/Shengwang-Community/docs-portal"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <ExternalLinkIcon className="size-3.5" />
-          {t('docs.viewGithub')}
-        </a>
-      </div>
+          <span>{t('docs.toc')}</span>
+          <ChevronDownIcon
+            aria-hidden="true"
+            className={cn(
+              'size-4 text-[color:var(--ink-4)] transition-transform',
+              isMobileOpen && 'rotate-180',
+            )}
+          />
+        </button>
+      ) : (
+        <div className="px-3 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
+          {t('docs.toc')}
+        </div>
+      )}
+      {variant === 'mobile' ? (
+        isMobileOpen ? (
+          <div className="rounded-md border border-[color:var(--line-soft)] bg-card p-2">
+            {linkItems}
+          </div>
+        ) : null
+      ) : (
+        linkItems
+      )}
+      {variant === 'rail' || isMobileOpen ? (
+        <div className="mt-2 flex flex-col gap-1 border-t border-[color:var(--line)] pt-3">
+          <a
+            className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
+            href="https://github.com/Shengwang-Community/docs-portal/tree/main/content/docs"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <Edit3Icon className="size-3.5" />
+            {t('docs.editPage')}
+          </a>
+          <a
+            className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
+            href="https://github.com/Shengwang-Community/docs-portal"
+            rel="noreferrer"
+            target="_blank"
+          >
+            <ExternalLinkIcon className="size-3.5" />
+            {t('docs.viewGithub')}
+          </a>
+        </div>
+      ) : null}
     </aside>
+  );
+}
+
+function TocLinks({
+  items,
+  onHeadingClick,
+  primaryActiveUrl,
+  variant,
+  visibleUrls,
+}: {
+  items: TOCItemType[];
+  onHeadingClick: (url: string) => void;
+  primaryActiveUrl: string;
+  variant: 'mobile' | 'rail';
+  visibleUrls: Set<string>;
+}) {
+  return (
+    <nav
+      className={cn(
+        'flex flex-col',
+        variant === 'rail' && 'border-l border-border',
+      )}
+    >
+      {items.map((item) => {
+        const isPrimary = item.url === primaryActiveUrl;
+        const isVisible = visibleUrls.has(item.url);
+
+        return (
+          <a
+            aria-current={isPrimary ? 'location' : undefined}
+            className={cn(
+              'text-sm leading-5 text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]',
+              variant === 'rail'
+                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5'
+                : 'rounded-md px-2 py-2',
+              isVisible &&
+                variant === 'rail' &&
+                'border-[color:var(--line-strong)] text-[color:var(--ink-2)]',
+              isPrimary &&
+                variant === 'rail' &&
+                'border-[color:var(--accent-brand)] text-[color:var(--ink-1)]',
+              isPrimary &&
+                variant === 'mobile' &&
+                'bg-[color:var(--docs-soft-fill)] text-[color:var(--ink-1)]',
+              item.depth > 2 && (variant === 'rail' ? 'pl-6' : 'pl-4'),
+              item.depth > 3 && (variant === 'rail' ? 'pl-8' : 'pl-6'),
+            )}
+            data-primary={isPrimary ? 'true' : undefined}
+            data-visible={isVisible ? 'true' : undefined}
+            href={item.url}
+            key={item.url}
+            onClick={(event) => {
+              if (!item.url.startsWith('#')) {
+                return;
+              }
+
+              event.preventDefault();
+              onHeadingClick(item.url);
+            }}
+          >
+            {item.title}
+          </a>
+        );
+      })}
+    </nav>
   );
 }
 
