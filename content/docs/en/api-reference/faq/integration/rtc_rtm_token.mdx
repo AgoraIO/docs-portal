@@ -1,0 +1,271 @@
+---
+title: "How can I generate a token with both RTC and Signaling privileges?"
+---
+
+Agora provides [source code](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey) in several languages to generate tokens with both RTC and Signaling privileges. Refer to the following samples to generate tokens on your own server:
+
+
+```cpp tab="C++" tabGroup="rtc-rtm-token"
+#include <cstdlib>
+#include <iostream>
+
+#include "../src/RtcTokenBuilder2.h"
+
+using namespace agora::tools;
+
+int main(int argc, char const *argv[]) {
+    (void)argc;
+    (void)argv;
+
+    // Get the value of the environment variable AGORA_APP_ID. Make sure you set this to the App ID from the Agora Console.
+    const char *env_app_id = getenv("AGORA_APP_ID");
+    std::string app_id = env_app_id ? env_app_id : "";
+    // Get the value of the environment variable AGORA_APP_CERTIFICATE. Make sure you set this to the App Certificate from the Agora Console.
+    const char *env_app_certificate = getenv("AGORA_APP_CERTIFICATE");
+    std::string app_certificate = env_app_certificate ? env_app_certificate : "";
+    // Replace channelName with the name of the channel to join.
+    std::string channel_name = "channelName";
+    // User ID in string format.
+    std::string account = "account";
+    // Token expiration time in seconds.
+    uint32_t token_expiration_in_seconds = 3600;
+    // Privilege expiration time in seconds. Agora recommends setting this equal to the token expiration time.
+    uint32_t privilege_expiration_in_seconds = 3600;
+    std::string result;
+
+    std::cout << "App Id:" << app_id << std::endl;
+    std::cout << "App Certificate:" << app_certificate << std::endl;
+    if (app_id == "" || app_certificate == "") {
+        std::cout << "Need to set environment variable AGORA_APP_ID and "
+                     "AGORA_APP_CERTIFICATE"
+                  << std::endl;
+        return -1;
+    }
+    // Generate a token with both RTC and RTM privileges.
+    result = RtcTokenBuilder2::BuildTokenWithRtm(app_id, app_certificate, channel_name, account, UserRole::kRolePublisher, token_expiration_in_seconds,
+                                                 privilege_expiration_in_seconds);
+    std::cout << "Token With RTM:" << result << std::endl;
+
+    return 0;
+}
+```
+
+```go tab="Golang" tabGroup="rtc-rtm-token"
+package main
+
+import (
+    "fmt"
+    "os"
+
+    rtctokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2"
+)
+
+func main() {
+    // Get the value of the environment variable AGORA_APP_ID. Make sure you set this to the App ID from the Agora Console.
+    appId := os.Getenv("AGORA_APP_ID")
+    // Get the value of the environment variable AGORA_APP_CERTIFICATE. Make sure you set this to the App Certificate from the Agora Console.
+    appCertificate := os.Getenv("AGORA_APP_CERTIFICATE")
+    // Replace channelName with the name of the channel to join.
+    channelName := "channelName"
+    // User ID in string format.
+    uidStr := "uid"
+    // Token expiration time in seconds.
+    tokenExpirationInSeconds := uint32(3600)
+    // Privilege expiration time in seconds. Agora recommends setting this equal to the token expiration time.
+    privilegeExpirationInSeconds := uint32(3600)
+
+    fmt.Println("App Id:", appId)
+    fmt.Println("App Certificate:", appCertificate)
+    if appId == "" || appCertificate == "" {
+        fmt.Println("Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE")
+        return
+    }
+    // Generate a token with both RTC and RTM privileges.
+    result, err := rtctokenbuilder.BuildTokenWithRtm(appId, appCertificate, channelName, uidStr, rtctokenbuilder.RolePublisher, tokenExpirationInSeconds, privilegeExpirationInSeconds)
+    if err != nil {
+        fmt.Println(err)
+    } else {
+        fmt.Printf("Token with RTM: %s\\n", result)
+    }
+}
+```
+
+```java tab="Java" tabGroup="rtc-rtm-token"
+package io.agora.sample;
+
+import io.agora.media.RtcTokenBuilder2;
+import io.agora.media.RtcTokenBuilder2.Role;
+
+public class RtcTokenBuilder2Sample {
+    // Get the value of the environment variable AGORA_APP_ID. Make sure you set this to the App ID from the Agora Console.
+    static String appId = System.getenv("AGORA_APP_ID");
+    // Get the value of the environment variable AGORA_APP_CERTIFICATE. Make sure you set this to the App Certificate from the Agora Console.
+    static String appCertificate = System.getenv("AGORA_APP_CERTIFICATE");
+    // Replace channelName with the name of the channel to join.
+    static String channelName = "channelName";
+    // User ID in string format.
+    static String account = "account";
+    // Token expiration time in seconds.
+    static int tokenExpirationInSeconds = 3600;
+    // Privilege expiration time in seconds. Agora recommends setting this equal to the token expiration time.
+    static int privilegeExpirationInSeconds = 3600;
+
+    public static void main(String[] args) {
+        System.out.printf("App Id: %s\\n", appId);
+        System.out.printf("App Certificate: %s\\n", appCertificate);
+        if (appId == null || appId.isEmpty() || appCertificate == null || appCertificate.isEmpty()) {
+            System.out.printf("Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE\\n");
+            return;
+        }
+
+        // Generate a token with both RTC and RTM privileges.
+        RtcTokenBuilder2 token = new RtcTokenBuilder2();
+        String result =
+                token.buildTokenWithRtm(appId, appCertificate, channelName, account, Role.ROLE_PUBLISHER, tokenExpirationInSeconds,
+                privilegeExpirationInSeconds);
+        System.out.printf("Token with RTM: %s\\n", result);
+    }
+}
+```
+
+```javascript tab="Node.js" tabGroup="rtc-rtm-token"
+const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
+const RtcRole = require("../src/RtcTokenBuilder2").Role;
+
+// Get the value of the environment variable AGORA_APP_ID. Make sure you set this to the App ID from the Agora Console.
+const appId = process.env.AGORA_APP_ID;
+// Get the value of the environment variable AGORA_APP_CERTIFICATE. Make sure you set this to the App Certificate from the Agora Console.
+const appCertificate = process.env.AGORA_APP_CERTIFICATE;
+// Replace channelName with the name of the channel to join.
+const channelName = "channelName";
+// User ID in string format.
+const account = 'account'
+// Set the role to publisher (with stream publishing privileges).
+const role = RtcRole.PUBLISHER;
+// Token expiration time in seconds.
+const tokenExpirationInSecond = 3600;
+// Privilege expiration time in seconds. Agora recommends setting this equal to the token expiration time.
+const privilegeExpirationInSecond = 3600;
+
+console.log("App Id:", appId);
+console.log("App Certificate:", appCertificate);
+if (appId == undefined || appId == "" || appCertificate == undefined || appCertificate == "") {
+    console.log("Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE");
+    process.exit(1);
+}
+
+const tokenWithRtm = RtcTokenBuilder.buildTokenWithRtm(
+    appId,
+    appCertificate,
+    channelName,
+    account,
+    role,
+    tokenExpirationInSecond,
+    privilegeExpirationInSecond
+)
+console.log('Token with RTM:', tokenWithRtm)
+```
+
+```php tab="PHP" tabGroup="rtc-rtm-token"
+<?php
+include("../src/RtcTokenBuilder2.php");
+
+// Get the value of the environment variable AGORA_APP_ID. Make sure you set this to the App ID from the Agora Console.
+$appId = getenv("AGORA_APP_ID");
+// Get the value of the environment variable AGORA_APP_CERTIFICATE. Make sure you set this to the App Certificate from the Agora Console.
+$appCertificate = getenv("AGORA_APP_CERTIFICATE");
+// Replace channelName with the name of the channel to join.
+$channelName = "channelName";
+// User ID in string format.
+$uidStr = "uid";
+// Token expiration time in seconds.
+$tokenExpirationInSeconds = 3600;
+// Privilege expiration time in seconds. Agora recommends setting this equal to the token expiration time.
+$privilegeExpirationInSeconds = 3600;
+
+echo "App Id: " . $appId . PHP_EOL;
+echo "App Certificate: " . $appCertificate . PHP_EOL;
+if ($appId == "" || $appCertificate == "") {
+    echo "Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE" . PHP_EOL;
+    exit;
+}
+// Generate a token with both RTC and RTM privileges.
+$token = RtcTokenBuilder2::buildTokenWithRtm($appId, $appCertificate, $channelName, $uidStr, RtcTokenBuilder2::ROLE_PUBLISHER, $tokenExpirationInSeconds, $privilegeExpirationInSeconds);
+echo 'Token with RTM: ' . $token . PHP_EOL;
+```
+
+```python tab="Python" tabGroup="rtc-rtm-token"
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src.RtcTokenBuilder2 import *
+
+
+def main():
+    # Get the value of the environment variable AGORA_APP_ID. Make sure you set this to the App ID from the Agora Console.
+    app_id = os.environ.get("AGORA_APP_ID")
+    # Get the value of the environment variable AGORA_APP_CERTIFICATE. Make sure you set this to the App Certificate from the Agora Console.
+    app_certificate = os.environ.get("AGORA_APP_CERTIFICATE")
+    # Replace channel_name with the name of the channel to join.
+    channel_name = "channel_name"
+    # User ID in string format.
+    account = "account"
+    # Token expiration time in seconds.
+    token_expiration_in_seconds = 3600
+    # Privilege expiration time in seconds. Agora recommends setting this equal to the token expiration time.
+    privilege_expiration_in_seconds = 3600
+
+    print("App Id: %s" % app_id)
+    print("App Certificate: %s" % app_certificate)
+    if not app_id or not app_certificate:
+        print("Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE")
+        return
+    # Generate a token with both RTC and RTM privileges.
+    token = RtcTokenBuilder.build_token_with_rtm(app_id, app_certificate, channel_name, account, Role_Publisher, token_expiration_in_seconds, privilege_expiration_in_seconds)
+    print("Token with RTM: {}".format(token))
+
+
+if __name__ == "__main__":
+    main()
+```
+
+```python tab="Python3" tabGroup="rtc-rtm-token"
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src.RtcTokenBuilder2 import *
+
+
+def main():
+    # Get the value of the environment variable AGORA_APP_ID. Make sure you set this to the App ID from the Agora Console.
+    app_id = os.environ.get("AGORA_APP_ID")
+    # Get the value of the environment variable AGORA_APP_CERTIFICATE. Make sure you set this to the App Certificate from the Agora Console.
+    app_certificate = os.environ.get("AGORA_APP_CERTIFICATE")
+    # Replace channel_name with the name of the channel to join.
+    channel_name = "channel_name"
+    # User ID in string format.
+    account = "account"
+    # Token expiration time in seconds.
+    token_expiration_in_seconds = 3600
+    # Privilege expiration time in seconds. Agora recommends setting this equal to the token expiration time.
+    privilege_expiration_in_seconds = 3600
+
+    print("App Id: %s" % app_id)
+    print("App Certificate: %s" % app_certificate)
+    if not app_id or not app_certificate:
+        print("Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE")
+        return
+
+    # Generate a token with both RTC and RTM privileges.
+    token = RtcTokenBuilder.build_token_with_rtm(app_id, app_certificate, channel_name, account, Role_Publisher,
+                                                 token_expiration_in_seconds, privilege_expiration_in_seconds)
+    print("Token with RTM: {}".format(token))
+
+
+if __name__ == "__main__":
+    main()
+```

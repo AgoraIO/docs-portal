@@ -1,0 +1,251 @@
+---
+title: "How can I resolve common development issues on Electron?"
+---
+
+This page outlines common challenges encountered throughout the integration, compilation, execution, and packaging phases of Electron SDK app development. It offers potential solutions to address these issues effectively.
+
+## SDK Integrate issues
+
+### npm install is slow or times out
+
+Error message: `code ETIMEDOUT`
+
+This issue is usually caused by a network or proxy problem. Try one of the following solutions:
+
+- Set a mirror source
+
+    `https://registry.npmjs.org/` is the original official npm mirror download address which is slow for domestic users. Switching to a reliable mirror source can improve the download speed:
+
+    ```shell
+    # Set npm mirror source to Taobao source
+    npm config set registry https://registry.npmmirror.com/
+    # Set npm Electron mirror source as a Taobao mirror source
+    npm config set ELECTRON_MIRROR https://npmmirror.com/mirrors/electron/
+    ```
+
+- Set up the proxy correctly
+
+    If you are using a network proxy, make sure that the proxy settings for the command line tool are correct:
+
+    ```shell
+    # View Global Proxy Address
+    npm config get proxy
+    # Set the global proxy (HTTP proxy address)
+    npm config set proxy http://<proxy-server-address>:<port-number>
+    # Set the global proxy (HTTPS proxy address)
+    npm config set proxy https://<proxy-server-address>:<port-number>
+    ```
+
+    Typically, the proxy tool offers a convenient one-click copy command for configuring the terminal proxy settings.
+
+
+- Modify environment variables
+
+<Tabs defaultValue="tab1">
+<TabsList>
+  <TabsTrigger value="tab1">Windows</TabsTrigger>
+  <TabsTrigger value="tab2">macOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="tab1">
+
+Right click on **Computer > Properties > Advanced System Settings > Environment Variables**. Create the following variable under user variables:
+
+| variable name   | variable  |
+|:----------------|:----------|
+| ELECTRON_MIRROR | `https://npmmirror.com/mirrors/electron/` |
+
+Once the setup is complete, reopen a command line tool and run `npm install` to install the dependencies.
+
+</TabsContent>
+
+<TabsContent value="tab2">
+
+Run the following command in a terminal to modify the environment variables:
+
+```shell
+export ELECTRON_MIRROR='https://npmmirror.com/mirrors/electron/'
+export ELECTRON_GET_USE_PROXY=true
+```
+
+
+:::warning[Note]
+Environment variables modified using this method take effect in the current terminal only. If you want the variables to take effect permanently, configure these in `.zshrc` or `.bashrc`.
+:::
+
+
+</TabsContent>
+</Tabs>
+
+
+### Error installing dependencies with `cnpm` and `yarn`
+
+In this case, Agora recommends that you first refer to [npm install is slow or times out](#npm-install-is-slow-or-times-out). Use npm native commands to set the mirror source and proxy address, and then install the dependencies.
+
+Refer to the following commands to set up the proxy and mirror source for yarn:
+
+```shell
+# Set up a proxy
+yarn config set proxy <proxy-server-address>:<port-number>
+yarn config set https-proxy <proxy-server-address>:<port-number>
+
+# Set the mirror source
+yarn config set registry https://registry.npmmirror.com/
+yarn config set ELECTRON_MIRROR https://npmmirror.com/mirrors/electron/
+```
+
+### Too many levels of symbolic links
+
+Error message: `Too many levels of symbolic links error`
+
+The error indicates that there are too many layers of symbolic links (also called soft links) in the project, and there may be circular dependencies that prevent the library from being installed.
+
+Use the following command to prevent symbolic links from being created when installing npm packages:
+
+```shell
+npm install --no-bin-links
+```
+
+### How to identify the correspondence between Electron SDK version number and Native SDK version number?
+
+- Obtain from the release notes: The **SDK version number** listed in the release notes is identical to the **Native version number**.
+
+- Obtain from the demo: The version number of Native SDK is shown directly at the bottom of the Electron demo as shown in the following figure:
+
+    ![Native Version Check](/images/faq/electron_faq_native_version_check.png)
+
+## Compile and run issues
+
+### Running prompts for non-32-bit applications
+
+Error message: `agora_node_ext.node is not a valid Win32 application`
+
+![Run Prompts For Non-32bit Apps](/images/faq/electron_faq_run_prompts_for_non32bit_app.png)
+
+By default, **npm** downloads the native5 module for the current computer architecture when installing dependencies.
+
+This error means that the wrong architecture module was retrieved during the dependency download, resulting in the application being unable to start. It suggests that a 32-bit `agora_node_ext.node` is required.
+
+Try one of the following methods to fix the issue:
+
+- Use npm environment variables
+
+    Create a new `.npmrc` file directly in the root directory of your project and write the following to configure the **npm environment variables**:
+
+    ```shell
+    agora_electron_sdk_arch=ia32
+    arch=ia32
+    ```
+
+    After saving the configuration, reinstall `agora-electron-sdk` and try to package it again.
+
+- Manually configure `agora_electron` in `package.json`
+
+    Configure `agora_electron` with the following fields:
+
+    - `platform`: (Optional) The default is selected according to the system. For example, macOS is `darwin`, Windows is `win32`.
+    - `prebuilt`: (Optional) Set to `true` by default to prevent compatibility issues with Electron or Node.js versions that are incompatible with the SDK.
+    - `arch`: (Optional) Selected by default according to the system architecture.
+
+    For example, if you want to package a 32-bit application on a Windows 64-bit computer, configure `package.json` as follows:
+
+    ```json
+    "agora_electron":{
+        "platform":"win32",
+        "arch":"ia32"
+        }
+    ```
+
+    After saving the configuration, reinstall `agora-electron-sdk` and try to package it again.
+
+### Unable to get the application window, resulting in an inability to share the screen
+
+If you encounter the problem that the application window cannot be obtained through `getScreenWindowsInfo` which prevents you from sharing the screen, refer to the following steps to troubleshoot:
+
+1. Confirm that the API call is correct
+
+    Refer to the following documentation to check that the screen sharing related API calls are correct:
+
+    - [Electron screen sharing demo source code](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/ScreenShare/ScreenShare.tsx)
+
+1. Check for authorization
+
+    Refer to the [Official Electron documentation](https://www.electronjs.org/docs/latest/api/system-preferences#systempreferencesgetmediaaccessstatusmediatype-windows-macos) to make sure that screen sharing permissions have been granted.
+
+1. Contact Agora support to troubleshoot
+
+    If the previous steps do not solve the problem, contact [Agora technical support](https://www.agora.io/en/customer-support).
+
+## Packaging issues
+
+### Packaging crashes
+
+Packaging crashes with a message similar to the following:
+
+![Packaging Crash](/images/faq/electron_faq_packaging_crash.png)
+
+If you encounter this problems, check the following:
+
+1. Check if the file in the error message exists. For example, in the figure, `AgoraRtcwrapper` cannot be found.
+
+1. Check if `webpack.config` is configured correctly.
+
+    Make sure that the syntax of the `webpack.config` file is correct and matches the requirements of your project. Refer to the [official webpack documentation](https://webpack.js.org/concepts/) for details.
+
+1. Check if the `asar.unpacked` configuration is correct.
+
+    The `asar.unpacked` configuration is used to specify which files should be unpacked into the application package. Refer to the [configuration in the demo](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/package.json#L20), or check the [Electron official documentation](https://www.electron.build/configuration/configuration#configuration-asarUnpack).
+
+1. Ensure that you use `require` for your project's dependency on the SDK.
+
+    On macOS, using `import` statements may result in symbol conflict issues that lead to packaging failures. To avoid this, use `require` statements instead. This is particularly relevant for projects using the Vue framework, as they are prone to packaging failures.
+
+    ```typescript
+    // import changed to require
+    // import createAgoraRtcEngine from 'agora-electron-sdk';
+    const createAgoraRtcEngine = require("agora-electron-sdk");
+    ```
+
+### Errors related to application authorization
+
+Error message: `com.apple.security.app-sandbox of null`
+
+This error indicates an `app-sandbox` exception. `app-sandbox` is a security mechanism that restricts an application's access to system resources.
+
+Check that the `.entitlements` file is configured correctly to ensure that there are no syntax and naming errors. If you don't need to publish your app to the App Store, remove `com.apple.security.app-sandbox` from the `.entitlements`.
+
+### Incorrect configuration of `asar.unpacked`
+
+Error message: `Uncaught SyntaxError:Error parsing`
+
+This error appears when the configuration of `asar.unpacked`, which is used to specify which files should be unpacked into the application package, is incorrect.
+Refer to the [configuration in the demo](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/package.json#L20), or check the [official Electron documentation](https://www.electron.build/configuration/configuration#configuration-asarUnpack) for details.
+
+### Unable to resolve library or module
+
+The following errors indicate that the library could not be parsed or the module could not be found.
+
+- `failed to compile, can't resolve agora-electron-sdk`
+
+- `failed to compile, can't resolve agora_node_ext`
+
+- `cannot find module`
+
+The error is usually caused by incorrect configuration of the compilation tool. Refer to the following methods to solve the problem:
+
+1. If your project uses Vue, make sure that you use `require`, not `import`.
+
+    ```typescript
+    // modify import to require
+    // import createAgoraRtcEngine from 'agora-electron-sdk';
+    const createAgoraRtcEngine = require("agora-electron-sdk");
+    ```
+
+1. Modify tool configuration
+
+    Depending on the language you are using and the compilation tool, refer to the following pages for configuration:
+
+    - **Vue**：https://nklayman.github.io/vue-cli-plugin-electron-builder/
+    - **Vite**：https://electron-vite.github.io/
+    - **React**：https://github.com/electron-react-boilerplate/electron-react-boilerplate
+    - **Webpack**：https://webpack.electron.build/

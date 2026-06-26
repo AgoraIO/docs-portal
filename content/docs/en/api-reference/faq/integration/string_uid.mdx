@@ -1,0 +1,193 @@
+---
+title: "How can I use string user IDs?"
+---
+
+## Introduction
+
+Many apps use string usernames. To reduce development costs, Agora has added support for string user IDs. Users can now directly use their string usernames as user accounts to join the Agora channel.
+
+To ensure smooth communication, all the users in a channel should use the same type of ID, that is, either the integer user ID, or the string user ID.
+
+
+:::warning
+This feature is in BETA. Agora recommends contacting [support@agora.io](mailto:support@agora.io) before implementing this function. The following products or features do not support string user IDs:
+
+- [Cloud Recording](/en/cloud-recording/overview/product-overview)
+- [Channel Management RESTful API](/en/video-calling/channel-management-api/overview)
+- [Console RESTful API](/en/video-calling/reference/agora-console-rest-api)
+:::
+
+
+## Implementation
+
+Before proceeding, ensure that you understand the steps and code logic for implementing the basic Video SDK functions. The Agora real-Time interaction SDK supports string user IDs across native platforms using different methods.
+
+### Native
+
+Agora Native SDK supports using user accounts (string user ID) to identify the user:
+
+**Android/Windows**:
+  - `registerLocalUserAccount`: Registers a local user account.
+  - `joinChannelWithUserAccount`: Joins the channel with the registered user account.
+
+**iOS/macOS**:
+
+  - `registerLocalUserAccountWithAppID`: Registers a local user account.
+  - `joinChannelByToken`: Joins the channel with the registered user account.
+
+Follow the steps to join an Agora channel with a string user account:
+
+1. After initializing the RtcEngine instance, call `registerLocalUserAccount` to register a local user account.
+2. Call the `joinChannelWithUserAccount` method to join a channel with the registered user account.
+3. Call the `leaveChannel` method to leave the channel.
+
+**API call sequence**
+
+The following diagram shows how to join a channel with a string user ID:
+
+![](https://web-cdn.agora.io/docs-files/1568711868522)
+
+
+:::info
+This diagram uses Java APIs as an example.
+:::
+
+
+- When calling the `registerLocalUserAccount` and `joinChannelWithUserAccount` methods, the `userAccount` parameter is required and cannot be empty null.
+
+- Agora recommends that you call `registerLocalUserAccount` to register an account before calling `joinChannelWithUserAccount`. This can reduce the time required to join a channel. You can also directly call `joinChannelWithUserAccount` to join the channel.
+
+- For other APIs, Agora still uses the Int UID parameter to identify the user. You can use `getUserInfoByUid` or `getUserInfoByUserAccount` to get the corresponding User Account or UID without having to maintain the mapping table yourself.
+
+**Sample code**
+
+Refer to the following code snippets to implement string user accounts in your project:
+
+
+```java tab="Java" tabGroup="string-user-account-native"
+private void initializeAgoraEngine() {
+  try {
+    String appId = getString(R.string.agora_app_id);
+    mRtcEngine = RtcEngine.create(getBaseContext(), appId, mRtcEventHandler);
+    // Registering a user name after initialization and before joining a channel can shorten the time to join a
+    channelmRtcEngine.registerLocalUserAccount(appId, mLocal.userAccount);
+  } catch (Exception e) {
+    Log.e(LOG_TAG, Log.getStackTraceString(e));
+
+    throw new RuntimeException("NEED TO check rtc sdk init fatal error\n" + Log.getStackTraceString(e));
+  }
+}
+
+private void joinChannel() {
+  String token = getString(R.string.agora_access_token);
+  if (token.isEmpty()) {
+    token = null;
+  }
+  // Join a channel using the registered user
+  IDmRtcEngine.joinChannelWithUserAccount(token, "stringifiedChannel1", mLocal.userAccount);
+}
+```
+
+```cpp tab="C++" tabGroup="string-user-account-native"
+LRESULT COpenLiveDlg::OnJoinChannel(WPARAM wParam, LPARAM lParam)
+{
+	IRtcEngine *lpRtcEngine = CAgoraObject::GetEngine();
+	CAgoraObject *lpAgoraObject = CAgoraObject: :GetAgoraObject();
+
+	// Register the local user name
+	lpAgoraObject->RegisterLocalUserAccount(APP_ID, m_dlgEnterChannel.GetStringUid());
+	// Use the user name to join the channel
+	lpAgoraObject->JoinChannelWithUserAccount(strChannelName, m_dlgEnterChannel.GetStringUid());
+
+}
+```
+
+```swift tab="Swift" tabGroup="string-user-account-native"
+func joinChannel() {
+  // Register user ID before joining the channel
+  let myStringId = "someStringId"
+  agoraKit.registerLocalUserAccount(userAccount: myStringId, appId: myAppId)
+  // Join channel with registered user ID
+  agoraKit.joinChannel(byUserAccount: myStringId, token: Token, channelId: "demoChannel1") {
+    (sid, uid, elapsed) in
+    // Add any additional code to execute after joining the channel
+  }
+}
+```
+
+```objc tab="Objective-C" tabGroup="string-user-account-native"
+-(void)joinChannel {
+// Register user ID before joining the channel
+NSString *userAccount = @"someStringId";
+ [self.agoraKit registerLocalUserAccount: userAccount appId: KeyCenter.AppId];
+// Join channel with registered user ID
+[self.agoraKit joinChannelByToken:token channelId:channelName userAccount:userAccount mediaOptions:options joinSuccess:nil];
+}
+```
+
+
+#### Sample project
+
+Agora provides an open-source [String-Account](https://github.com/AgoraIO/Advanced-Video/tree/dev/backup/String-Account) demo project on Github that implements string user accounts.
+
+#### API Reference
+
+- Java
+
+  - [`registerLocalUserAccount`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_registerlocaluseraccount)
+  - [`joinChannelWithUserAccount`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannelwithuseraccount)
+  - [`getUserInfoByUid`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_getuserinfobyuid)
+  - [`getUserInfoByUserAccount`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_getuserinfobyuseraccount)
+  - [`onLocalUserRegistered`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocaluserregistered)
+  - [`onUserInfoUpdated`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onuserinfoupdated)
+
+- Objective-C
+
+  - [`registerLocalUserAccount`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/registerlocaluseraccount(_:appid:))
+  - [`joinChannel`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:info:uid:joinsuccess:))
+  - [`getUserInfo(byUid:withError:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/getuserinfo(byuid:witherror:))
+  - [`getUserInfo(byUserAccount:withError:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/getuserinfo(byuseraccount:witherror:))
+  - [`didUserInfoUpdatedWithUserId`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:diduserinfoupdatedwithuserid:userinfo:))
+
+- Swift
+
+  - [`registerLocalUserAccount`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/registerlocaluseraccount(_:appid:))
+  - [`joinChannel`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:info:uid:joinsuccess:))
+  - [`getUserInfo(byUid:withError:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/getuserinfo(byuid:witherror:))
+  - [`getUserInfo(byUserAccount:withError:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/getuserinfo(byuseraccount:witherror:))
+  - [`didUserInfoUpdatedWithUserId`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:diduserinfoupdatedwithuserid:userinfo:))
+
+- C++
+
+  - [`registerLocalUserAccount`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_registerlocaluseraccount)
+  - [`joinChannelWithUserAccount`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_joinchannelwithuseraccount)
+  - [`getUserInfoByUid`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_getuserinfobyuid)
+  - [`getUserInfoByUserAccount`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_getuserinfobyuseraccount)
+  - [`onLocalUserRegistered`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocaluserregistered)
+  - [`onUserInfoUpdated`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onuserinfoupdated)
+
+### Web
+
+Starting from v2.5.0, the `uid` parameter in the `Client.join` method can be set as either a number or a string. You can join a channel by calling the `Client.join` method and passing in a string `uid`.
+
+**Sample code**
+
+Refer to the following code sample to implement string user accounts in your project:
+
+```javascript
+// Set UID to 'agora' and join channel 'demo'
+client.join("<appid>", "demo", "<token>", "agora");
+```
+
+#### API Reference
+
+- [`Client.join`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#join)
+
+### Considerations
+
+- Do not mix parameter types within the same channel. If you use SDKs that do not support string usernames, only integer user IDs can be used in the channel. The following Agora SDKs support string user accounts:
+  - The Native SDK: v2.8.0 and later.
+  - The Web SDK: v2.5.0 and later.
+- If you change usernames to strings, ensure that all end users are upgraded synchronously.
+- If you use string user accounts to join a channel, ensure that the token generation script on your server is updated to the latest version, and that you use the same user account or its corresponding integer user ID to generate a token.
+- If the Native SDK and Web SDK join the same channel, ensure that the user id types are the same.

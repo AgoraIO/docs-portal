@@ -1,0 +1,16 @@
+---
+title: "How to resolve Xcode project compilation failure due to missing development team configuration information?"
+---
+
+When deploying the Xcode project to an iOS device for debugging, the following error occurs:
+
+```
+Error: Signing for "Runner" requires a development team. Select a development team in the Signing & Capabilities editor (in target 'Runner' from project 'Runner').
+```
+## Reason
+
+On the iOS platform, all apps require a developer signature certified by Apple to verify the source and security of the app. If Xcode fails to detect a valid development team or certificate, it will not be able to complete the compilation and deployment of the app.
+
+## Solution
+
+Refer to [Apple's official instructions](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7) to configure a valid development team and certificate.

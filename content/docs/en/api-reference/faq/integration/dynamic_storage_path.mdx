@@ -1,0 +1,29 @@
+---
+title: "How to specify a dynamic storage path?"
+---
+
+When configuring the recording file storage path in the Console through the `fileNamePrefix` field,
+you can use built-in variables to specify a dynamic path for storing recording files.
+When the recording starts, variables are replaced with real values. The following two types of variables are currently supported:
+
+| Type           | Variable                                           | Description                           |
+|----------------|----------------------------------------------------|---------------------------------------|
+| Fixed variable | `${appId}`                                         | App ID                                |
+|                | `${roomUuid}`                                      | The `uuid` of the class to be recorded|
+| Date variable  | `${yyyy}`                                          | Year                                  |
+|                | `${MM}`                                            | Month                                 |
+|                | `${dd}`                                            | Day                                   |
+|                | `${yyyyMMdd}`, `${yyyyMM}`, `${yyyy-dd}`,`${MM_dd}`| Date variables can be combined, such as year-month-day, year-month, year-day, month-day, and so on. |
+
+For example, you set the `fileNamePrefix` field as follows:
+
+```json
+"fileNamePrefix": [
+  "scenario",
+  "recording",
+  "${appId}",
+  "${yyyyMM}",
+  "${roomUuid}"
+]
+```
+The recording storage path is `/scenario/recording/xxxxxxxxx/202107/demo/xxxxxxx_demo_0.mp4`.

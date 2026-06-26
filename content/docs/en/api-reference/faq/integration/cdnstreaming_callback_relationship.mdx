@@ -1,0 +1,32 @@
+---
+title: "What is the relationship between the old and new callbacks of Media Push?"
+---
+
+Agora provides two sets of callbacks for you to monitor Media Push:
+
+- Old callbacks: `onStreamPublished` and `onStreamUnpublished`.
+- New callbacks: `onRtmpStreamingStateChanged` and `onRtmpStreamingEvent`.
+
+Agora has deprecated the old callbacks and recommends that you use the new callbacks. The old callbacks are still functional, however. You can choose the most appropriate set of callbacks to use according to your scenario and code logic. The relationship between the old and new callbacks is detailed in the following table:
+
+| New callback | Old callback |
+|----|----|
+| (Since v2.4.1) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_OK (0)  | (Since the first release) onStreamPublished.ERR_OK (0)  |
+| (Since v2.4.1) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_INVALID_ARGUMENT (1)   | (Since the first release) onStreamPublished.ERR_INVALID_ARGUMENT (2)  |
+| (Since v2.4.1) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_ENCRYPTED_STREAM_NOT_ALLOWED (2)  | (Since the first release) onStreamPublished.ERR_ENCRYPTED_STREAM_NOT_ALLOWED_PUBLISH (130)  |
+| (Since v2.4.1) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_CONNECTION_TIMEOUT (3)  | (Since the first release) onStreamPublished.ERR_TIMEDOUT (10)  |
+| (Since v2.4.1) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_INTERNAL_SERVER_ERROR (4)  | (Since the first release) onStreamPublished.ERR_PUBLISH_STREAM_INTERNAL_SERVER_ERROR (154)  |
+| (Since v2.4.1) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_INTERNAL_SERVER_ERROR (4)  | (Since the first release) onStreamPublished.ERR_FAILED (1)  |
+| (Since v2.4.1) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_RTMP_SERVER_ERROR (5)  | (Since v2.4.1) onStreamPublished.ERR_PUBLISH_STREAM_CDN_ERROR (151)  |
+| (Since v2.4.1) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_REACH_LIMIT (7)  | (Since v2.4.1) onStreamPublished.ERR_PUBLISH_STREAM_NUM_REACH_LIMIT (152)  |
+| (Since v2.4.1) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_NOT_AUTHORIZED (8)  | (Since v2.4.1) onStreamPublished.ERR_PUBLISH_STREAM_NOT_AUTHORIZED (153)  |
+| (Since v2.4.1) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_STREAM_NOT_FOUND (9)  | (Since v2.4.1) onStreamPublished.ERR_PUBLISH_STREAM_NOT_FOUND (155)  |
+| (Since v2.4.1) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_FORMAT_NOT_SUPPORTED (10)  | (Since v2.4.1) onStreamPublished.ERR_PUBLISH_STREAM_FORMAT_NOT_SUPPORTED (156)  |
+|(Since v3.6.0) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_NOT_BROADCASTER (11)    |No corresponding callback|
+|(Since v3.6.0) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_TRANSCODING_NO_MIX_STREAM (13)     |No corresponding callback|
+|(Since v3.6.0) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_NET_DOWN (14)           |No corresponding callback|
+|(Since v3.6.0) onRtmpStreamingStateChanged.RTMP_STREAM_PUBLISH_ERROR_INVALID_APPID (15)     |No corresponding callback|
+| (Since v3.4.5) onRtmpStreamingStateChanged.RTMP_STREAM_UNPUBLISH_ERROR_OK (100)  | (Since the first release) onStreamUnpublished  |
+| (Since v3.1.0) onRtmpStreamingEvent.RTMP_STREAMING_EVENT_FAILED_LOAD_IMAGE (1)  |  No corresponding callback |
+| (Since v3.4.5) onRtmpStreamingEvent.RTMP_STREAMING_EVENT_URL_ALREADY_IN_USE (2)  | (Since the first release) onStreamPublished.ERR_ALREADY_IN_USE (19)  |
+|(Since v3.6.0) onRtmpStreamingEvent.RTMP_STREAMING_EVENT_ADVANCED_FEATURE_NOT_SUPPORT (3)         |No corresponding callback|

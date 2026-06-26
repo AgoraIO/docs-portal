@@ -1,0 +1,16 @@
+---
+title: "Why are there no recorded files in the cloud storage?"
+---
+
+If you cannot find any recorded files in the cloud storage after a cloud recording session, check if any of the following situations occurred:
+
+- No user is sending a stream in the channel, and the recording times out.
+- The token has expired, or token authentication has failed.
+- When calling the [`acquire`](/en/cloud-recording/reference/restful-api#acquire) method to get the recording resource, you set the `uid` parameter that matches the ID of a user already in the channel. For example, suppose there are three users in the channel with user IDs `123`, `234`, and `345`. If you set `uid` to `123` when calling the `acquire` method, the recording fails.
+- The `transcodingConfig` settings in the [`start`](/en/cloud-recording/reference/restful-api#start) method do not follow the recommended settings, which causes the recording to fail. See [Media streaming output modes](/en/cloud-recording/reference/stream-mode) and [Set the video profile](/en/cloud-recording/develop/recording-video-profile/) before setting `transcodingConfig`.
+- Your cloud storage settings are incorrect. Check the following:
+  - `bucket`: The name of your cloud storage bucket, which was created in your cloud storage account.
+  - `accessKey`: The access key of your cloud storage account.
+  - `secretKey`: The secret key of your cloud storage account.
+
+If you enable the Agora Message Notification Service, you receive the [`cloud_recording_error`](/en/cloud-recording/reference/common-errors) callback when the service detects that your cloud storage settings are incorrect.

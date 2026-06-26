@@ -1,0 +1,79 @@
+---
+title: "How to handle token expiration?"
+---
+
+After the token expires, you need to call the `logout` method to log out of the Signaling system. Then use the new token to create a new instance and call the `login` method to log in to the system again.
+
+## How to get the list of users who joined and left the stream channel during disconnection and reconnection?
+
+After listening to the `topic` event notification, in a weak network environment, if you disconnect and reconnect, you will receive a `SNAPSHOT` event in `topic`.
+
+To obtain the list of users who joined or left the stream channel during disconnection and reconnection, refer to the following sample code to generate a local cache and compare it with the user list in the `SNAPSHOT` event:
+- Users with more `SNAPSHOT` events than in the local cache are those who joined the channel during the disconnection and reconnection period.
+- Users with fewer `SNAPSHOT` events than in the local cache are those who left the channel during the disconnection and reconnection period.
+
+```javascript
+// Global variable
+const channelTopics = new Map();
+
+// Event handler
+const rtmConfig = {};
+const rtm = new RTM("appid", "uid", rtmConfig);
+rtm.addEventListener("topic", (topicEvent) => {
+  console.log(topicEvent, "topic");
+
+  const topicsCache = channelTopics.get(topicEvent.channelName) ?? new Map();
+  const remoteLeaved = new Map();
+  const remoteJoined = new Map();
+  const { publisher: user, channelName } = topicEvent;
+
+  if (topicEvent.eventType === "SNAPSHOT") {
+    topicEvent.topicInfos.forEach(({ publishers, topicName }) => {
+      remoteJoined.set(topicName, []);
+      remoteLeaved.set(topicName, []);
+      const topicDetailsByCache = topicsCache.get(topicName) ?? [];
+
+      // Removed
+      topicDetailsByCache.forEach(({ publisherMeta, publisherUserId: targetUid }) => {
+        if (!publishers.some(({ publisherUserId: eventUid }) => targetUid === eventUid)) {
+          remoteLeaved.get(topicName)?.push({ publisherUserId: targetUid, publisherMeta });
+          topicDetailsByCache.filter(({ publisherUserId: cacheUid }) => cacheUid !== targetUid);
+        }
+      });
+
+      // Added
+      publishers.forEach(({ publisherMeta, publisherUserId: eventUid }) => {
+        if (!topicDetailsByCache.some(({ publisherUserId: cacheUid }) => eventUid === cacheUid)) {
+          remoteJoined.get(topicName)?.push({ publisherUserId: eventUid, publisherMeta });
+          topicDetailsByCache.push({ publisherUserId: eventUid, publisherMeta });
+        }
+      });
+
+      topicsCache.set(topicName, topicDetailsByCache);
+    });
+  } else {
+    // Your code for handling the updated event
+    topicEvent.topicInfos.forEach(({ topicName, publishers }) => {
+      const topicDetailsByCache = topicsCache.get(topicName) ?? [];
+      publishers.forEach(({ publisherMeta, publisherUserId }) => {
+        if (user === publisherUserId) {
+          switch (topicEvent.eventType) {
+            case "REMOTE_JOIN": {
+              topicDetailsByCache.push({ publisherMeta, publisherUserId });
+              break;
+            }
+            case "REMOTE_LEAVE": {
+              topicDetailsByCache.filter(({ publisherUserId: uid }) => uid !== publisherUserId);
+              break;
+            }
+          }
+          topicsCache.set(topicName, topicDetailsByCache);
+        }
+      });
+    });
+  }
+
+  channelTopics.set(channelName, topicsCache);
+  console.log({ remoteJoined, remoteLeaved, channelTopics, channelName }, "topic diff for debug");
+});
+```

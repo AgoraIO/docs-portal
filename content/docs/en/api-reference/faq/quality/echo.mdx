@@ -1,0 +1,62 @@
+---
+title: "How can I solve echo problems?"
+---
+
+The Agora SDK supports echo cancellation. In most cases, this problem can be fixed by using a headset, and ensure that the headset does not cause an echo.
+
+In a channel joined by multiple users, if a device does not work properly, chances are that all other users in the channel can hear echoes. Therefore, beware that the user hearing the echo may not necessarily be the one having the problem.
+
+## Step 1: Self-check
+
+Check the following:
+
+- Find the source of the echo. You can mute users in the channel one by one to find the source of the echo.
+- Check if the echo is occasional or continuous. An occasional echo may be caused by CPU overload. By using [Call Search](/en/agora-analytics/analyze/video-voice-sdk/call-search/) function of Agora Analytics, you can check the CPU usage on the **End-to-End Details** page.
+- Ensure that all users are in separated physical environments and do not sit too close to each other.
+- Check the SDK version:
+  - Android/iOS: v1.6.0+.
+  - Windows/macOS: v1.7.0+.
+- Check if you enabled an external audio source. If so, echo cancellation is turned off by default.
+- In Windows, ensure the `Monitoring Microphone` option is not checked.
+- On iOS, check whether the app sets Audio Session as `AVAudioSessionCategoryOptionMixWithOthers`. If so, you may encounter echoes when other apps use the audio device at the same time.
+- Systems of some Android or Windows devices support echo cancellation function by default, and you may encounter echoes if the echo cancellation of the system is poor. In this case, Agora recommends disableing the echo cancellation in system and using the echo cancellation of Agora.
+- Use a headset:
+  - In a one-to-one call, if you hear an echo, ask the other user to use a headset.
+  - In a multi-user call, ask users to mute in turn to figure out who causes the echo. The users who cause the echo should use headsets or mute themselves.
+
+## Step 2: Contact Agora Customer Support
+
+If the issue persists, contact Agora customer support and submit the issue with the following information:
+
+
+| Information | Details                         |
+| ----------- | ------------------------------- |
+| Mandatory   | <Slot name="echo-html-0-1-1" /> |
+| Additional  | <Slot name="echo-html-0-2-1" /> |
+
+<Slot for="echo-html-0-1-1">
+
+The name of the channel where the echo occurs.
+
+The uids of the users who hear the echo.
+
+The uid of the user who causes the echo.
+
+The recording files, if available.
+
+</Slot>
+
+<Slot for="echo-html-0-2-1">
+
+The time frame during which the users hear the echo.
+
+If the issue exists after rejoining the channel.
+
+If the issue exists after the user causing or hearing the echo switches the audio route (such as using a headset).
+
+</Slot>
+
+
+## Step 3: Monitor the Quality of Experience in Agora Analytics in Console
+
+You can check the statistics of every call in [Agora Analytics](https://dashboard.agora.io/analytics/call/search) in Console. For more information, see [Agora Analytics Tutorial](/en/agora-analytics/analyze/video-voice-sdk/call-search).

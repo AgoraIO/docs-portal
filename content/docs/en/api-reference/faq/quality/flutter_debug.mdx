@@ -1,0 +1,13 @@
+---
+title: "Why can't a Flutter App installed on iOS 14 and above devices be reopened in debug mode?"
+---
+
+On devices running iOS 14 and above, Flutter apps installed in debug mode cannot be reopened using the home screen icon, deep linking, or other methods. Additionally, if an iOS app integrates a Flutter module in debug mode, reopening the app through the home screen icon or similar actions may cause the app to crash due to the integrated Flutter module.
+
+## Reason
+
+Since iOS 14, Apple has adjusted the execution mechanism for apps in debug mode, specifically adding restrictions on the execution of just-in-time (JIT) code. Flutter apps running in debug mode rely on JIT to execute code, and these new restrictions prevent the apps from being launched from the device in the usual manner.
+
+## Solution
+
+Refer to the [official Flutter documentation](https://docs.flutter.dev/platform-integration/ios/ios-debugging).

@@ -1,0 +1,21 @@
+---
+title: "When pushing streams to the CDN, what should I do when a disconnection happens?"
+---
+
+:::info
+This article only applies to the Agora Web SDK 3.x and earlier versions.
+:::
+
+
+Pushing streams to the CDN refers to the process where a host publishes multiple media streams to the CDN (Content Delivery Network).
+
+During pushing streams, the SDK connects to the dedicated Agora server for pushing streams. When the connection is interrupted, the SDK tries to reconnect to the server to continue pushing streams. If it fails to reconnect, the SDK triggers a callback to report a disconnection.
+
+Based on [live transcoding setting](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#startlivestreaming), the SDK connects to different servers for pushing streams and triggers different callbacks after disconnection.
+
+| `enableTranscoding` | Callback triggered when a disconnection happens                        |
+| -------- | ----------------------------------------- |
+| `true`     | `Client.on("mix-streaming-disconnected")` |
+| `false`   | `Client.on("raw-streaming-disconnected")` |
+
+When either of the previously-mentioned events occurs, call [`stopLiveStreaming`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#stopLiveStreaming) to stop pushing all streams, and then [`startLiveStreaming`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#startlivestreaming) to restart the process.

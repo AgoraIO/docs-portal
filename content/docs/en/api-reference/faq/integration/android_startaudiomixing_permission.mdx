@@ -1,0 +1,25 @@
+---
+title: "Why can't I play the audio file using startAudioMixing or playEffect on Android 9?"
+---
+
+Cannot play an mp3, mp4, or any other music format using `startAudioMixing` or `playEffect` on Android 9.
+
+## Reason
+
+This is caused by an Android permission limit. If `targetSdkVersion` >= 28, you need to add relevant app privileges to play the a music file.
+
+## Solution
+
+For Android projects with `targetSdkVersion` >= 28, add the following line in the `application` zone of the AndroidManifest.xml file to play the music file:
+
+```xml
+<application
+   android:usesCleartextTraffic="true"
+   android:requestLegacyExternalStorage="true"
+   …
+</application>
+```
+
+## Relevant links
+
+For more Android permission settings and considerations, see [Project setup](/en/video-calling/get-started/get-started-sdk#project-setup).

@@ -1,0 +1,53 @@
+---
+title: "How does Flexible Classroom support multiple languages?"
+---
+
+Flexible Classroom currently supports Chinese, English, and Spanish. If you need to add more languages, find the language-related key value in the specified directory and modify it.
+
+### Multilingual configuration on Web
+
+In the source code, the Classroom SDK and Proctor SDK, referred to as main SDKs, and plugins, including clicker, countdown, voter, and the ring letter IM module, have their own separate multi-language files. The specific modification method is as follows:
+
+- Main SDKs:
+
+  1. Add the corresponding language file in the TypeScript format under `packages/agora-classroom-sdk/src/infra/translate`. The file name must be unique. For example:
+
+     ![1680084679972](https://web-cdn.agora.io/docs-files/1680084679972)
+
+  1. Add the corresponding code in `packages/agora-classroom-sdk/src/infra/api/index.tsx`:
+
+     ![1680084689520](https://web-cdn.agora.io/docs-files/1680084689520)
+
+     For example, if you want to add Japanese, add a `jpn.ts` file under `packages/agora-classroom-sdk/src/infra/translate` and `addResourceBundle('jp', jp);` to `packages/agora-classroom-sdk/src/infra/api/index.tsx` file.
+
+     The parameters of `addResourceBundle()` should be unique and easy to match with a language.
+
+- Plugins:
+
+  1. Add a folder with an `index.ts` language file to `packages/agora-plugin-gallery/src/gallery/answer/i18n`. The folder name must be unique. For example:
+
+     ![1680084701486](https://web-cdn.agora.io/docs-files/1680084701486)
+
+  1. Add a line of declaration and a line of corresponding code in `packages/agora-plugin-gallery/src/gallery/answer/i18n/config.ts`:
+
+     ![1680084710288](https://web-cdn.agora.io/docs-files/1680084710288)
+
+     For example, if you need to add Japanese, add a `jp` folder with the `index.ts` file under `packages/agora-plugin-gallery/src/gallery/answer/i18n` and then `import jp from './jp';` declaration and `addResourceBundle(jp", jp);` to `packages/agora-plugin-gallery/src/gallery/answer/i18n/config.ts`.
+
+     The parameters of `addResourceBundle()` should be unique and easy to match with a language.
+
+### Multilingual configuration on Android
+
+Add a directory for the corresponding language with a `string.xml` file inside to the following directories. The folder name must be unique.
+
+- `/AgoraClassSDK/src/main/res`
+- `/AgoraEduUIKit/src/main/res`
+
+For example, if you want to add Japanese, add a `value-jp` folder, which contains a `strings.xml` file.
+
+### Multilingual configuration on iOS
+
+1. Under `others` directory, copy an existing language directory, for example, `en.Iproj`, and rename it to correspond to the new language, for example, `jp.Iproj`. The folder name must be unique and easy to match with a language, and the suffix must be `.lproj`.
+1. Replace all strings in the `Localizable.strings` file under `value` directory with values corresponding to the new language.
+
+Before entering the room, `AgoraUIBaseViews` sets the `agora_ui_language` pointer of the global variable to the directory name corresponding to the new language.

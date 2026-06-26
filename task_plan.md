@@ -2,42 +2,38 @@
 
 ## Goal
 
-Migrate the source-backed Cloud Recording RESTful API docs from `Doc-Source-Private` into the `docs-portal` OpenAPI rendering pipeline.
+Audit RESTful API Reference migration completeness from the legacy English Agora docs site and `Doc-Source-Private` into the new `docs-portal` API Reference tree using Golden Master / Characterization Testing.
 
 ## Completion Criteria
 
-- `$PORTAL` and `$SOURCE` are located by repository features, not hard-coded assumptions.
-- Cloud Recording REST endpoint content exists only in one OpenAPI YAML file under `content/openapi/`.
-- The Cloud Recording API reference lands under the same API Reference level as Signaling: `api-reference/api-ref/cloud-recording`.
-- Authored parent pages contain only overview/authentication prose and links to virtual endpoint leaves.
-- Catalog/reference entry links to the new authored parent page.
-- `src/lib/openapi` tests pass.
-- OpenAPI YAML validates with `@apidevtools/swagger-parser`.
-- `scripts/sync-openapi-assets.mjs` copies the new YAML to `public/openapi`.
-- Consistency check passes: YAML `operationId` values match lane operation keys, and lane `routeLeaf` values match endpoint leaves in `meta.json`.
+- Legacy RESTful API Reference HTML pages are discovered from the old English site and mapped to source files in `Doc-Source-Private`.
+- New corresponding pages under `content/docs/en/api-reference/api-ref` and OpenAPI sources under `content/openapi` are identified.
+- Voice/video split legacy pages are mapped to merged new pages where applicable.
+- Legacy rendered HTML is compared against new rendered HTML/MDX/OpenAPI-rendered content for endpoints, methods, parameters, responses, errors, examples, prose, navigation, and anchors.
+- A migration completeness matrix is produced with old page/source, new page/source, module, status, evidence, and suggested fix location.
+- RESTful API gaps and manual-confirmation items are prioritized with reproducible paths, URLs, or snippets.
 
 ## Phases
 
 | Phase | Status | Notes |
 | --- | --- | --- |
-| 1. Environment self-check | complete | `$PORTAL`, `$SOURCE`, package manager, and pipeline files located. |
-| 2. Source inspection | complete | Endpoint source is `cloud-recording/reference/restful-api.mdx`; overview/auth pages identified. |
-| 3. OpenAPI YAML authoring | complete | Added `content/openapi/cloud-recording/cloud-recording.en.yaml` with 7 endpoints. |
-| 4. Portal registration | complete | Registered `cloud-recording-rest` lane and bundled source text. |
-| 5. Authored docs and catalog | complete | Added parent/auth/meta pages and updated catalog/product reference links. |
-| 6. Tests and verification | complete | YAML validation, asset sync, targeted tests, and consistency check passed. |
+| 1. Environment and source discovery | in_progress | Locate old source root, target IA, render/test tools, and existing OpenAPI lanes. |
+| 2. Legacy REST page inventory | pending | Discover old English RESTful API reference pages, URLs, nav hierarchy, and source files. |
+| 3. Target page inventory | pending | Discover new `api-reference/api-ref` pages, MDX pages, OpenAPI YAML, lane route leaves, and nav metadata. |
+| 4. Mapping construction | pending | Build old-to-new mapping including voice/video-to-merged targets. |
+| 5. Golden Master extraction | pending | Extract comparable signatures from old HTML/source and new rendered content/source. |
+| 6. Gap classification | pending | Classify complete, suspicious, missing, or manual-confirmation cases with evidence. |
+| 7. Report delivery | pending | Produce matrix and prioritized RESTful API action list. |
 
 ## Constraints
 
-- REST endpoint content must live only in OpenAPI YAML.
-- Do not create `.md` or `.mdx` shadow pages for endpoint leaves.
-- Use the existing Signaling REST route as the destination pattern.
-- Preserve unrelated worktree changes if any appear.
+- Do not edit product documentation unless the user later asks for fixes.
+- Prefer primary sources: old Agora docs pages, `Doc-Source-Private`, and local `docs-portal` content/OpenAPI sources.
+- Preserve unrelated worktree changes.
+- Use structured parsers for HTML, MDX, YAML, and OpenAPI where practical.
 
 ## Errors Encountered
 
 | Error | Attempt | Resolution |
 | --- | --- | --- |
-| Initial plan files described a previous Conversion AI task | 1 | Replaced them with the current Cloud Recording migration state. |
-| YAML parser rejected unquoted descriptions with colons | 1 | Quoted the affected `description` values and reran validation. |
-| Meta endpoint order differed from lane route order | 1 | Reordered Cloud Recording meta endpoint leaves to match lane route leaves. |
+| Skill path `/Users/czhen/Documents/GitHub/AgoraIO/Doc-Source-Private` did not exist locally | 1 | Use existing local source root recorded by prior work: `/Users/yangyixuan/Documents/GitHub/Doc-Source-Private`; verify by repository contents. |

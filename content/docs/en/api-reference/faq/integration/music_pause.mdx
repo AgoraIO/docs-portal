@@ -1,0 +1,16 @@
+---
+title: "Why don't music files automatically resume playing after hanging up a system call on an Android device?"
+---
+
+The `startAudioMixing` method is called to play a music file on an Android device. During the playback process, the system's built-in phone software is used to answer or make a call. After hanging up the phone, the music file does not automatically resume playback.
+
+## Reason
+
+The SDK cannot determine whether the system phone has finished using the audio output device, so music files will not resume playback automatically.
+
+## Solution
+
+After calling the `startAudioMixing` method, it is recommended to listen for phone events using the  native Android method `PhoneStateListener` and perform the following steps:
+
+    1. When you answer or make a call, call the `getAudioMixingCurrentPosition` method to get the playing progress of the music file.
+    1. After hanging up the phone, call `startAudioMixing` method again to play the music file, and then call `setAudioMixingPosition` method to restore the playback progress.

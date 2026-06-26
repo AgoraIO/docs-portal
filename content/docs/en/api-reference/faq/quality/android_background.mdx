@@ -1,0 +1,94 @@
+---
+title: "Why do apps on some Android versions fail to capture audio and video after screen locking or switching to the background?"
+---
+
+After screen locking or switching to the background on some Android versions, you may encounter the following issues:
+
+- On Android devices, remote audio is silent or video is not visible within 1 minute of the device being locked.
+- When the Android app switches to the background during operation, remote audio is silent.
+
+## Reason
+
+- Starting from Android 9, the Android system restricts background apps from accessing user data. For more details, see [Android 9 behavior changes](https://developer.android.com/about/versions/pie/android-9.0-changes-all).
+- Starting from Android 14, the Android system requires apps to specify the necessary foreground service types. If developers set the app's `targetSdkVersion` to `34` or higher, the system will trigger a capability check when the app runs on devices with Android 14 or higher to verify if the app has correctly declared its foreground service types. If the app fails to integrate foreground services properly, issues such as microphone capture being ineffective and remote audio being silent may occur when the user switches the app to the background. For more details, see [Android 14 behavior changes](https://developer.android.google.cn/about/versions/14/behavior-changes-14) and [Required foreground service types](https://developer.android.google.cn/about/versions/14/changes/fgs-types-required).
+
+## Solution
+
+To ensure uninterrupted access to microphone, camera, media playback, and other functionalities when your device is locked or your app is in the background, it's crucial to correctly integrate foreground services. This prevents interruptions in audio and video capture due to system restrictions. Agora provides an [example project](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java#L324) demonstrating how to integrate foreground services. Here are the steps:
+
+    1. In the `AndroidManifest.xml` file, declare the `FOREGROUND_SERVICE` privilege and specify the `foregroundServiceType`. For real-time audio/video interactive apps, you usually need to specify the `microphone`, `camera`, and `mediaPlayback` service types. Refer to the following example:
+
+        ``` xml
+        <manifest ...>
+            <!-- Declare front-end service permissions -->
+            <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+            <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+            <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+            <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
+            <application ...>
+                ...
+                <!-- Specify the type of front desk service -->
+                <service
+                    android:name=".YourForegroundService"
+                    android:foregroundServiceType="microphone|camera|mediaPlayback" />
+                ...
+            </application>
+        </manifest>
+        ```
+
+    1. When a service is created, call `startForeground` to promote the specified service to the foreground. The sample code is as follows:
+
+        ``` java
+        @Override
+        public void onCreate() {
+            super.onCreate();
+            // Get default notifications
+            Notification notification = getDefaultNotification();
+            try {
+                // Depending on the Android version, choose the appropriate way to handle the frontend service
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    // For Android 11 and above, start the foreground service and specify multiple service types
+                    int serviceTypes = ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE |
+                                    ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA |
+                                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK;
+                    this.startForeground(NOTIFICATION_ID, notification, serviceTypes);
+                } else {
+                    // For Android 11 and below, there is no need to specify a service type, simply start the foreground service
+                    this.startForeground(NOTIFICATION_ID, notification);
+                }
+            } catch (Exception ex) {
+                Log.e(TAG, "Error starting foreground service", ex);
+            }
+        }
+        ```
+
+    1. When the app switches to the background, call `startForegroundService` to start the service to ensure that the service continues to run. The sample code is as follows:
+
+        ``` java
+        @Override
+        public void onPause() {
+            super.onPause();
+            startRecordingService();
+        }
+
+        private void startRecordingService() {
+            if (joined) {
+                // Create an intent
+                Intent intent = new Intent(requireContext(), LocalRecordingService.class);
+                // Depending on the Android version, choose the appropriate way to start the frontend service
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    // For Android 8 and above, start the service using startForegroundService
+                    requireContext().startForegroundService(intent);
+                } else {
+                    // For Android 8 and below, use startService to start the service
+                    requireContext().startService(intent);
+                }
+            }
+        }
+        ```
+
+## Additional information
+
+- [Foreground services](https://developer.android.com/develop/background-work/services/foreground-services)
+- [Foreground service types](https://developer.android.com/develop/background-work/services/fg-service-types)

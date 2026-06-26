@@ -1,0 +1,39 @@
+---
+title: "How can I switch from custom video capture to SDK capture?"
+---
+
+The Agora Video SDK Native SDK provides both Push and Media IO methods to implement custom video capture. This page describes how to switch from custom video capture to SDK capture.
+
+## Switching from Media IO
+
+If you want to switch from custom video capture by Media IO to SDK capture, you can use one of the following methods.
+
+### Method one: In-channel switching
+
+You can switch custom video capture to SDK capture directly in the channel:
+
+```
+// Java
+ENGINE.setVideoSource(new AgoraDefaultSource());
+```
+```
+// Swift
+agoraKit?.setVideoSource(AgoraRtcDefaultCamera());
+```
+```
+// Objective-C
+[self.agoraKit setVideoSource:[[AgoraRtcDefaultCamera alloc] initWithPosition:AgoraRtcDefaultCameraPositionFront]];
+```
+```
+// C++
+m_rtcEngine->setVideoSource();
+m_rtcEngine->startPreview;
+```
+
+### Method two: Exiting and rejoining the channel
+
+You can leave the current channel first, disable the custom video source, and then rejoin the channel. At this point, the SDK uses the default device for video capture.
+
+## Switching from Push
+
+If you want to switch from custom video capture by Push to SDK capture, you can leave the current channel first, disable the custom video source, and then rejoin the channel. At this point, the SDK uses the default device for video capture.

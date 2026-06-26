@@ -1,0 +1,30 @@
+---
+title: "Why can't I upload courseware?"
+---
+
+### What should I do if there is an error in uploading courseware?
+
+If you receive the `403 Forbidden` error when uploading courseware, please check whether the [whiteboard function has been configured](/en/flexible-classroom/get-started/enable-flexible-classroom#configure-the-whiteboard-feature) correctly and make sure that Agora can access your cloud storage space.
+
+Similarly, if you receive a `600005` or `100004 "service not enable", "messages": "region":"sg"` error codes, it means that you have not enabled the corresponding whiteboard supporting service in the service area. If you need to use PPT, DOC, PDF, or other courseware in the classroom, [enable the interactive whiteboard supporting service](/en/interactive-whiteboard/develop/enable-whiteboard).
+
+### If the above configurations are correct, what should I do if I still get the `403` error when uploading courseware to Alibaba Cloud?
+
+![1680084185700](https://web-cdn.agora.io/docs-files/1680084185700)
+
+This error is because you have not activated the corresponding permissions in your Alibaba Cloud storage account, which resulted in Alibaba Cloud not allowing you to upload. Please add the `oss:PutObject` authorization operation to your Alibaba Cloud storage account. For more information, see [Alibaba Cloud Bucket Policy](https://help.aliyun.com/document_detail/430203.html).
+
+### What is the limit on the upload size of courseware?
+
+The size limits for courseware uploads are as follows:
+
+- The courseware size cannot exceed 100M.
+- The actual transcoding time is affected by the size and dimensions of the courseware, the number of animations included in the courseware, the resolution of the visible pictures included, the number of pages of the courseware, the transcoding queue, and others. The higher the resolution of the included image, the slower the conversion. The number of pages should preferably be within 50; conversion timeout may occur if there are more than 100 pages.
+
+### What are the reasons for courseware upload failure?
+
+The following reasons may cause the courseware upload to fail:
+
+- Supported file formats include: `PPT`, `PPTX`, `DOC`, `DOCX`, `PDF`, `MP3`, `MP4`, `PNG`, `JPG`, and `GIF`.
+- There should be no special symbols in the courseware name, it can only contain Chinese, English, and numbers.
+- The courseware edited with WPS software may fail to upload or transcode. Save such courseware in the `PPTX` or `PDF` format and try to upload again.

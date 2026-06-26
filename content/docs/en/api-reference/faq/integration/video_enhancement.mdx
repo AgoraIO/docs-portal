@@ -1,0 +1,174 @@
+---
+title: "How to enable the video enhancement extensions?"
+---
+
+Video SDK v4.x provides video enhancement extensions for beautification, underexposed video enhancement, color enhancement, and video denoising.
+
+## Functions
+
+The major functions of the video enhancement extensions are as follows:
+
+- Image enhancement
+
+  You can achieve different image enhancement effects by adjusting parameters such as contrast, brightness, smoothness, redness, and sharpness levels.
+
+- Underexposed video enhancement
+
+  When you are in a location where the light is insufficient, the illumination is uneven, or the light source is behind you, you can use the underexposed video enhancement function to turn on supplement light, dynamically increase the overall brightness of the video, and improve the visual range and viewing quality.
+
+- Color enhancement
+
+  Due to the deficiencies of some cameras, the captured video can have insufficient saturation or grayish images. Use the color enhancement function to adjust the saturation of the image and video to make the color richer and more realistic, and enhance people's subjective visual experience.
+
+  At the same time, the algorithm specifically provides skin color protection to prevent people's skin color from being excessively affected.
+
+- Video denoising
+
+  When the ambient light is dark or the capture equipment performance is poor, you can use the video denoising function to eliminate video noise.
+
+
+:::info
+- Video enhancement functions may affect device performance. Consider your actual requirements and user device performance when using these extensions.
+- Before using video enhancement extensions, ensure that the relevant dynamic library is integrated. See [Extension libraries](/en/api-reference/faq/integration/reduce_app_size_rtc).
+:::
+
+
+## Parameter settings
+
+### **Image enhancement**
+
+Call the `setBeautyEffectOptions` method, and adjust various image enhancement effects through the parameters. See the `setBeautyEffectOptions` description for details.
+
+### Underexposed video enhancement
+
+Call `setExtensionProperty,` and set the parameters as follows:
+
+- `provider_name` : `agora_video_filters_clear_vision`
+
+- `extension_name` : `clear_vision`
+
+- `key` : `lowlight_enhance_option`
+
+- `enable`, `mode,` and `level` parameters in the `value` field are described in the following table:
+
+| Parameter | Description                                      |
+| --------- | ------------------------------------------------ |
+| `enable`  | <Slot name="video-enhancement-markdown-0-1-1" /> |
+| `mode`    | <Slot name="video-enhancement-markdown-0-2-1" /> |
+| `level`   | <Slot name="video-enhancement-markdown-0-3-1" /> |
+
+<Slot for="video-enhancement-markdown-0-1-1">
+
+Whether to enable the function:
+
+- 0: (Default) Disable underexposed video enhancement.
+- 1: Enable underexposed video enhancement.
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-0-2-1">
+
+The underexposed video enhancement mode:
+
+- 0: (Default) Adaptive mode. The SDK automatically enables or disables this function according to the ambient lighting conditions.
+- 1: Manual mode.
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-0-3-1">
+
+The underexposed video enhancement level:
+
+- 0: (Default) Prioritize the video quality and eliminate image noise while increasing the brightness. This consumes more CPU resources.
+- 1: Prioritize performance. This conserves CPU resources and reduces processing time.
+
+</Slot>
+
+### Color enhancement
+
+Call `setExtensionProperty,` and set the parameters as follows:
+
+- `provider_name` : `agora_video_filters_clear_vision`
+
+- `extension_name` : `clear_vision`
+
+- `key` : `color_enhance_option`
+
+- `enable`, `Strength,` and `Skin Protection` parameters in the `value` field are shown in the following table:
+
+| Parameter         | Description                                      |
+| ----------------- | ------------------------------------------------ |
+| `enable`          | <Slot name="video-enhancement-markdown-1-1-1" /> |
+| `Strength`        | <Slot name="video-enhancement-markdown-1-2-1" /> |
+| `Skin Protection` | <Slot name="video-enhancement-markdown-1-3-1" /> |
+
+<Slot for="video-enhancement-markdown-1-1-1">
+
+Whether to enable the function:
+
+- 0: (Default) Disable color enhancement.
+- 1: Enable color enhancement.
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-1-2-1">
+
+The level of color saturation improvement. The value range is [0.0,1.0], and the default value is 0.5
+
+The larger the parameter value, the higher the screen color saturation.
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-1-3-1">
+
+The level of skin protection. The value range is [0.0, 1.0], and the default value is 1.0
+
+The larger the parameter value, the less the skin color is affected by color enhancement.
+
+</Slot>
+
+### Video denoising
+
+Call `setExtensionProperty,` and set the parameters as follows:
+
+- `provider_name` : `agora_video_filters_clear_vision`
+
+- `extension_name` : `clear_vision`
+
+- `key` : `video_denoiser_option`
+
+- `enable`, `mode,` and `level` parameters in the `value` field are shown in the following table:
+
+| Parameter | Description                                      |
+| --------- | ------------------------------------------------ |
+| `enable`  | <Slot name="video-enhancement-markdown-2-1-1" /> |
+| `mode`    | <Slot name="video-enhancement-markdown-2-2-1" /> |
+| `level`   | <Slot name="video-enhancement-markdown-2-3-1" /> |
+
+<Slot for="video-enhancement-markdown-2-1-1">
+
+Whether to enable the function:
+
+- 0: (Default) Disable video denoising.
+- 1: Enable video denoising.
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-2-2-1">
+
+Video denoising mode:
+
+- 0: (Default) Adaptive mode. The SDK automatically enables or disables this function according to the ambient lighting conditions.
+- 1: Manual mode.
+
+</Slot>
+
+<Slot for="video-enhancement-markdown-2-3-1">
+
+Video denoising level:
+
+- 0: (Default) Time domain denoising. The denoising effect is medium, the anti-smearing effect is good, application robustness is high. Applicable to most scenarios.
+- 1: Fast denoising. The denoising effect is medium. Applicable to fixed camera scenarios.
+- 2: Time domain denoising plus spatial domain denoising. The denoising effect is excellent and picture purity is improved. Applicable to high-noise scenarios.
+
+</Slot>

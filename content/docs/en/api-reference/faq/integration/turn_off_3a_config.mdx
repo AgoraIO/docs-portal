@@ -1,0 +1,29 @@
+---
+title: "How to turn off noise reduction, echo cancellation, and automatic gain control?"
+---
+
+If your classroom integrates or uses audio mixing or other tools, and you want to turn off noise reduction, echo cancellation, and gain control functions, add the following code to `packages/agora-classroom-sdk/src/infra/api/index.tsx`:
+
+```typescript
+ if (AgoraRteRuntimePlatform.Electron === AgoraRteEngineConfig.platform) {
+      rtcSDKParameters = [
+        { 'rtc.audio.aec.enable': false },
+        { 'rtc.audio.agc.enable': false },
+        { 'rtc.audio.ans.enable': false },
+      ];
+    } else {
+      rtcSDKParameters = [
+        {
+          MEDIA_DEVICE_CONSTRAINTS: {
+            audio: {
+              autoGainControl: false,
+              echoCancellation: false,
+              noiseSuppression: false,
+            },
+          },
+        },
+      ];
+    }
+```
+
+![1680084350900](https://web-cdn.agora.io/docs-files/1680084350900)

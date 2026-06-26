@@ -1,0 +1,29 @@
+---
+title: "What can I do if I get a pop-up warning saying 'the framework cannot be opened' when compiling an Xcode project?"
+---
+
+## Problem
+
+On macOS 11.6 or later, when using Xcode to integrate the Agora Voice or Video SDKs with version 3.6.2 or later, you can encounter a pop-up warning when your project is compiled or running that says "'library_name.framework' cannot be opened because the developer cannot be verified."
+
+
+:::info
+You can also use this workaround if you encounter this warning on macOS 11.5.
+:::
+
+
+## Reason
+
+As of v3.6.2, Agora provides the XCFramework dynamic library for the Voice and Video SDK for macOS. Due to security restrictions on macOS 11.6 or later, when you use Xcode to compile any project with the SDK containing XCFramework, you are warned that "library_name.framework" cannot be opened because the developer cannot be verified.
+
+## Workaround
+
+1. Execute the command: `sudo spctl --master-disable` in the system terminal, and then compile the project in Xcode.
+
+2. A pop-up saying "macOS cannot verify the developer of 'library_name'. Are you sure you want to open it?" appears after step 1. Click **Cancel** in this pop-up window.
+
+3. Open **System Preferences > Security & Privacy > General**. A reminder is displayed on the interface saying, "'library_name' was blocked from opening because it is not from an identified developer." Click the lock button in the bottom left corner of the interface, enter your system password to change the general settings, and click the **Open Anyway** button right of the reminder.
+
+4. In Xcode, click **Product > Clean Build Folder**, and then compile the project.
+
+At this point, the pop-up warning no longer appears.

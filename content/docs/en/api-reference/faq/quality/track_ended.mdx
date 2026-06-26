@@ -1,0 +1,36 @@
+---
+title: "How to deal with the sudden silent audio or black video due to tracks being stopped?"
+---
+
+## Problem
+
+During a call or live broadcast, the audio that a web client is sending suddenly becomes silent, or the video goes black. After checking the log, you find that this occurred because the audio or video track stopped.
+
+## Reason
+
+The most likely reasons why a track would stop are a loose or poor connection, or the device has been disconnected.
+
+## Solution
+
+The applicable solution depends on the version of the Web SDK you are using.
+
+### Web SDK v3.x
+
+The Web SDK v3.x does not support hot plugging. If you remove a device and reconnect it in, you must create a new stream. You can fix the issues of silent audio or black video due to stopped tracks as follows:
+
+1. Listen for the `stream.on("audioTrackEnded")` and `stream.on("videoTrackEnded")` events.
+2. When the SDK triggers the `stream.on("audioTrackEnded")` or `stream.on("videoTrackEnded")` event, use a popup window to remind the end user to check whether the device is working or to reconnect the device.
+3. Call `unpublish` to stop publishing the audio or video stream.
+4. Call `createStream` to recreate the audio or video stream object.
+
+### Web 4.x
+
+The Web SDK v4.x supports hot plugging. You can fix the issues of silent audio or black video due to stopped tracks as follows:
+
+1. Listen for the `localTrack.on("track-ended")` event.
+2. When the SDK triggers the `localTrack.on("track-ended")` event, use a popup window to remind the end user to check whether the device is working or to reconnect the device.
+3. Listen for the `AgoraRTC.onMicrophoneChanged` or `AgoraRTC.onCameraChanged` callback to get the device status. When the device is connected, call `MicrophoneAudioTrack.setDevice` or `CameraVideoTrack.setDevice` to use the device.
+
+## See also
+
+- [Hot plugging of audio and video input devices (Web v4.x).](/en/video-calling/advanced-features/audio-mixing-and-sound-effects)

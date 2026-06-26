@@ -1,0 +1,192 @@
+---
+title: "How to solve SEI-related issues?"
+---
+
+### The Agora SEI
+
+By default, Agora adds the encoding information of the current video to the transcoded H264/H265 SEI (Supplemental Enhancement Information) during Media Push. The encoding information is a JSON string. The following is the sample code:
+
+```json
+{
+  "canvas": {
+    "w": 640,
+    "h": 360,
+    "bgnd": "#000000"
+  },
+  "regions": [
+    {
+      "uid": 1,
+      "alpha": 1.0,
+      "zorder": 1,
+      "volume": 50,
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 360
+    },
+    {
+      "uid": 2,
+      "alpha": 1.0,
+      "zOrder": 1,
+      "volume": 89,
+      "x": 320,
+      "y": 0,
+      "w": 320,
+      "h": 360
+    }
+  ],
+  "ver": "20190611",
+  "ts": 1535385600000,
+  "app_data": ""
+}
+```
+
+The definition of the parameters:
+
+| Parameter  | Description                                                                                                                       |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `canvas`   | <Slot name="sei-markdown-0-1-1" />                                                                                                |
+| `regions`  | <Slot name="sei-markdown-0-2-1" />                                                                                                |
+| `ver`      | The version of the SEI protocol. The current version is 20190611.                                                                 |
+| `ts`       | Timestamp (ms) of the current encoding information.                                                                               |
+| `app_data` | Extra user-defined information. It corresponds to the `transcodingExtraInfo` member in the client or server bypass streaming API. |
+
+<Slot for="sei-markdown-0-1-1">
+
+The canvas information. It contains the following properties:
+
+- `w`: The width of the canvas in pixels. The canvas `width` field is set in the client or server bypass streaming API.
+- `h`: The height of the canvas in pixels. The canvas `height` field is set in the client or server bypass streaming API.
+- `bgnd`: The background color (RGB) of the canvas, represented by a hexademical integer defined in RGB. The `color` field of the canvas set in the client or server bypass streaming API.
+
+</Slot>
+
+<Slot for="sei-markdown-0-2-1">
+
+The layout information of the host. It corresponds to the `transcodingUsers` member in the `LiveTranscoding` class. It contains the following properties:
+
+- `suid`: (**Optional**)The string user account of the host in this region. This parameter applies to scenarios where string user accounts are used to identify the host.
+- `uid`: UID of the host in this region. It corresponds to the `uid` member in the `TranscodingUser` class.
+- `alpha`: The transparency of the video frame of the host. The value range is [0.0, 1.0]. It corresponds to the `alpha` member in `TranscodingUser` .
+- `zorder`: The layout position of the video frame of the host. The value range is [0, 100]. It corresponds to the `zOrder` member in `TranscodingUser`.
+- `volume`: The volume (dB) of the host. The value range is [0, 100].
+- `x`: The horizontal position of the video frame of the broadacaster from the top left corner of the Media Push. It corresponds to the `x` member in `TranscodingUser`.
+- `y`: The vertical position of the video frame of the host from the top left corner of the Media Push. It corresponds to the `y` member in `TranscodingUser`.
+- `w`: Width (pixel) of the video frame of the host. It corresponds to the `width` member in `TranscodingUser`.
+- `h`: Height (pixel) of the video frame of the host. It corresponds to the `height` member in `TranscodingUser`.
+
+</Slot>
+
+### The structure of SEI
+
+* H.264
+
+    A snippet of an H.264 SEI frame is as follows:
+
+    ```
+    0000  0664bd7b 22617070 5f646174 61223a22
+    0010  222c2263 616e7661 73223a7b 2262676e
+    0020  64223a22 23666666 66666622 2c226822
+    0030  3a363430 2c227722 3a333630 7d2c2272
+    0040  6567696f 6e73223a 5b7b2261 6c706861
+    0050  223a3235 352c2268 223a3634 302c2275
+    0060  6964223a 33313031 32373137 39312c22
+    0070  766f6c75 6d65223a 32382c22 77223a33
+    0080  36302c22 78223a30 2c227922 3a302c22
+    0090  7a6f7264 6572223a 317d5d2c 22747322
+    00a0  3a313533 37393630 32333537 38332c22
+    00b0  76657222 3a223230 31383038 3238227d
+    ```
+
+    The transcoded H.264 SEI information is as below:
+
+    ```json
+    {
+      "app_data": "",
+      "canvas": {
+        "bgnd": "#ffffff",
+        "h": 640,
+        "w": 360
+      },
+      "regions": [
+        {
+          "alpha": 255,
+          "h": 640,
+          "uid": 3101279171,
+          "volume": 28,
+          "w": 360,
+          "x": 0,
+          "y": 0,
+          "zorder": 1
+        }
+      ],
+      "ts": 1537960235783,
+      "ver": "20180828"
+    }
+    ```
+
+* H.265
+
+    Here's a snippet of an H.265 SEI frame:
+
+    ```
+    0000014E 0164BC7B 22617070 5F646174 61223A22 222C2263
+    616E7661 73223A7B 2262676E 64223A22 23303030 30303022
+    2C226822 3A363430 2C227722 3A333630 7D2C2272 6567696F
+    6E73223A 5B7B2261 6C706861 223A3235 352C2268 223A3634
+    302C2275 6964223A 32313935 34313935 2C22766F 60756D65
+    223A3131 322C2277 223A3336 302C2278 223A302C 2279223A
+    302C227A 6F726465 72223A31 7D5D2C22 7473223A 31373233
+    32303337 37363236 312C2276 6572223A 22323031 39303631
+    31227D80
+    ```
+
+    The transcoded H.265 SEI information is as follows:
+
+    ```json
+    {
+      "app_data": "",
+      "canvas": {
+        "bgnd": "#000000",
+        "h": 640,
+        "w": 360
+      },
+      "regions": [
+        {
+          "alpha": 255,
+          "h": 640,
+          "uid": 21954195,
+          "volume": 112,
+          "w": 360,
+          "x": 0,
+          "y": 0,
+          "zorder": 1
+        }
+      ],
+      "ts": 17232303776261,
+      "ver": "20190611"
+    }
+    ```
+
+In which:
+
+- `06`: SEI frames in H.264 format.
+- `4E01`: SEI frames in H.265 format.
+- `64`: The SEI frame type defined by the user. Here we define it as 100.
+- `bd`: The length of the SEI frame. The following are some sample calculations rendered in decimal and hexadecimal:
+  - If the length is 922, because 922 can be divided by 255 (`0xff`) three times and the remainder is 157 (`0x9d`), then `bd` is `ffffff9d`.
+  - If the length is 572, because 572 can be divided by 255 (`0xff`) two times and the remainder is 62 (`0x3e`), then `bd` is `ffff3e`.
+  - If the length is 234, because 234 divided by 255 (`0xff`) gives 0 and the remainder is 234 (`0xea`), then `bd` is `ea`.
+- Other digits: Content of the SEI frame.
+
+### FAQs
+
+**Q**: Does this mean that if SEI is used here, the layout cannot be transmitted via signaling? Does the SDK transmit the same field, and can the transmission method (signaling or SEI) only be one or the other?
+
+**A**: The information added to the SEI frame of H264/H265 is done when the server pushes the stream. This is different from the data sent by the app via uplink. The only field related to the data sent by the app uplink is the `app_data` field.
+
+In the new live broadcast system, the only valid method is through the `LiveTranscoding` configuration. The related interfaces from the old live broadcast system are no longer effective.
+
+**Q**: Isn't layout information transmitted through signaling? Why do we need to include layout information here and not just volume information?
+
+**A**: Agora has always sent SEI-related information in the combined image streaming, but it was never standardized. This update standardizes the SEI format and adds volume information for forward compatibility.
