@@ -22,6 +22,8 @@ import {
 import type { PlatformKey } from '@/lib/platforms/registry';
 import {
   PlatformHeaderTabs,
+  PlatformPanel,
+  PlatformTabsGroup,
   PlatformTabsPlacementProvider,
 } from '../mdx/PlatformTabsGroup';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
@@ -71,10 +73,14 @@ export function DocsContent({
   const effectiveLayoutMode = isOpenApiBody ? 'openapi' : layoutMode;
   const isWideLayout = isWideDocsLayout(effectiveLayoutMode);
   const platformTabs =
-    resolvedBody?.kind === 'mdx' ? resolvedBody.platformTabs : undefined;
+    resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group'
+      ? resolvedBody.platformTabs
+      : undefined;
+  const isMdxBody =
+    resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
 
   useEffect(() => {
-    if (resolvedBody?.kind !== 'mdx') {
+    if (!isMdxBody) {
       return;
     }
 
@@ -89,7 +95,7 @@ export function DocsContent({
       window.cancelAnimationFrame(frame);
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, [resolvedBody?.kind]);
+  }, [isMdxBody]);
 
   return (
     <article
@@ -209,6 +215,39 @@ export function DocsContent({
               </PlatformTabsPlacementProvider>
             </Suspense>
           ) : null}
+          {resolvedBody?.kind === 'platform-group' ? (
+            <div className="flex flex-col gap-8">
+              <Suspense fallback={<DocsContentSkeleton />}>
+                <DocsContentBody contentPath={resolvedBody.contentPath} />
+              </Suspense>
+              <PlatformTabsPlacementProvider
+                initialPlatform={platformTabs?.initialPlatform}
+                value="header"
+              >
+                <PlatformTabsGroup
+                  canonicalPlatform={resolvedBody.canonicalPlatform}
+                  groupMode="structured"
+                  initialPlatform={platformTabs?.initialPlatform}
+                  locale={currentLocale}
+                  platforms={JSON.stringify(resolvedBody.platforms)}
+                  showTabs="false"
+                >
+                  {resolvedBody.panels.map((panel) => (
+                    <PlatformPanel
+                      key={panel.platform}
+                      platform={panel.platform}
+                    >
+                      <div className="prose prose-neutral dark:prose-invert max-w-none">
+                        <Suspense fallback={<DocsContentSkeleton />}>
+                          <DocsContentBody contentPath={panel.contentPath} />
+                        </Suspense>
+                      </div>
+                    </PlatformPanel>
+                  ))}
+                </PlatformTabsGroup>
+              </PlatformTabsPlacementProvider>
+            </div>
+          ) : null}
         </div>
       )}
       {isWideLayout ? null : (
@@ -261,6 +300,21 @@ export type DocsContentBodyPayload =
         initialPlatform?: PlatformKey;
         platforms: string;
       };
+    }
+  | {
+      canonicalPlatform: PlatformKey;
+      contentPath: string;
+      kind: 'platform-group';
+      panels: {
+        contentPath: string;
+        platform: PlatformKey;
+      }[];
+      platformTabs: {
+        canonicalPlatform: PlatformKey;
+        initialPlatform?: PlatformKey;
+        platforms: string;
+      };
+      platforms: PlatformKey[];
     }
   | { kind: 'openapi'; pageProps: ClientApiPageProps };
 

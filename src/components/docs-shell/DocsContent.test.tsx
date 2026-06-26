@@ -192,6 +192,46 @@ describe('DocsContent', () => {
     ).toHaveTextContent('/v2/projects/{appid}/join');
   });
 
+  it('renders split-file platform group pages with tabbed panels', async () => {
+    renderWithRouter(
+      <DocsContent
+        body={{
+          canonicalPlatform: 'ios',
+          contentPath: 'en/ai/get-started/platform-split/index.mdx',
+          kind: 'platform-group',
+          panels: [
+            {
+              contentPath: 'en/ai/get-started/platform-split/ios.mdx',
+              platform: 'ios',
+            },
+            {
+              contentPath: 'en/ai/get-started/platform-split/android.mdx',
+              platform: 'android',
+            },
+          ],
+          platformTabs: {
+            canonicalPlatform: 'ios',
+            platforms: '["ios","android"]',
+          },
+          platforms: ['ios', 'android'],
+        }}
+        locale="en"
+        slug="platform-split"
+        title="Split platform page"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Split platform page' }),
+    ).toBeInTheDocument();
+    expect(await screen.findByTestId('platform-header-tabs')).toHaveTextContent(
+      '["ios","android"]',
+    );
+    expect(screen.getByText('en/ai/get-started/platform-split/index.mdx'));
+    expect(screen.getByText('en/ai/get-started/platform-split/ios.mdx'));
+  });
+
   it('renders full-page MDX content without the article max-width or mobile TOC', async () => {
     renderWithRouter(
       <DocsContent

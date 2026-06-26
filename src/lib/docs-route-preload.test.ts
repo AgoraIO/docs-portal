@@ -30,6 +30,47 @@ describe('preloadDocsPageContent', () => {
     expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
   });
 
+  it('preloads platform group index and panel content paths', async () => {
+    await preloadDocsPageContent(
+      createPayload({
+        body: {
+          canonicalPlatform: 'ios',
+          contentPath: 'docs/en/platform-split/index.mdx',
+          kind: 'platform-group',
+          panels: [
+            {
+              contentPath: 'docs/en/platform-split/ios.mdx',
+              platform: 'ios',
+            },
+            {
+              contentPath: 'docs/en/platform-split/android.mdx',
+              platform: 'android',
+            },
+          ],
+          platformTabs: {
+            canonicalPlatform: 'ios',
+            platforms: '["ios","android"]',
+          },
+          platforms: ['ios', 'android'],
+        },
+      }),
+    );
+
+    expect(mockedPreloadDocsContent).toHaveBeenCalledTimes(3);
+    expect(mockedPreloadDocsContent).toHaveBeenNthCalledWith(
+      1,
+      'docs/en/platform-split/index.mdx',
+    );
+    expect(mockedPreloadDocsContent).toHaveBeenNthCalledWith(
+      2,
+      'docs/en/platform-split/ios.mdx',
+    );
+    expect(mockedPreloadDocsContent).toHaveBeenNthCalledWith(
+      3,
+      'docs/en/platform-split/android.mdx',
+    );
+  });
+
   it('does not preload null payloads or redirects', async () => {
     await preloadDocsPageContent(null);
     await preloadDocsPageContent({ redirectUrl: '/en/introduction' });
