@@ -1035,6 +1035,25 @@ function createOpenApiPage(): PageWithSource {
   } as unknown as PageWithSource;
 }
 
+function createOpenApiStaticPage(): PageWithSource {
+  return {
+    ...createPage(),
+    data: {
+      ...createPage().data,
+      title: 'RESTful authentication',
+    },
+    path: 'en/api-reference/api-ref/cloud-recording/authentication.md',
+    slugs: [
+      'en',
+      'api-reference',
+      'api-ref',
+      'cloud-recording',
+      'authentication',
+    ],
+    url: '/en/api-reference/api-ref/cloud-recording/authentication',
+  } as unknown as PageWithSource;
+}
+
 function createZhOpenApiPage(): PageWithSource {
   return {
     ...createOpenApiPage(),
@@ -1490,6 +1509,30 @@ Web body
         url: '/en/api-reference/api-ref/conversational-ai/leave',
       },
       previous: undefined,
+    });
+  });
+
+  it('keeps static pages inside OpenAPI lanes on the same wide layout as generated operations', async () => {
+    const staticPage = createOpenApiStaticPage();
+
+    mockedGetPage.mockReturnValue(staticPage);
+    mockedGetPages.mockReturnValue([staticPage]);
+    mockedGetPageTree.mockReturnValue(apiReferencePageTree);
+
+    const payload = await loadDocsPagePayload('en', 'api-reference', [
+      'api-ref',
+      'cloud-recording',
+      'authentication',
+    ]);
+
+    expect(payload).toMatchObject({
+      activePath: '/en/api-reference/api-ref/cloud-recording/authentication',
+      activeTab: 'api-reference',
+      body: {
+        kind: 'mdx',
+      },
+      layoutMode: 'openapi',
+      title: 'RESTful authentication',
     });
   });
 

@@ -60,6 +60,8 @@ const DOCS_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
 const DOCS_WIDE_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_minmax(0,1fr)_220px]';
+const DOCS_OPENAPI_DESKTOP_GRID_CLASS_NAME =
+  'xl:grid-cols-[256px_minmax(0,1fr)]';
 
 type LocaleLink = {
   href: string;
@@ -160,9 +162,12 @@ export function DocsShell({
   const shellWidthClassName = isWideLayout
     ? DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME
     : DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
-  const desktopGridClassName = isWideLayout
-    ? DOCS_WIDE_DESKTOP_GRID_CLASS_NAME
-    : DOCS_DESKTOP_GRID_CLASS_NAME;
+  const desktopGridClassName =
+    layoutMode === 'openapi'
+      ? DOCS_OPENAPI_DESKTOP_GRID_CLASS_NAME
+      : isWideLayout
+        ? DOCS_WIDE_DESKTOP_GRID_CLASS_NAME
+        : DOCS_DESKTOP_GRID_CLASS_NAME;
 
   return (
     <SidebarProvider
@@ -381,7 +386,7 @@ export function DocsShell({
           >
             {children}
           </DocsMainColumn>
-          {isWideLayout ? (
+          {layoutMode === 'openapi' ? null : isWideLayout ? (
             <div
               aria-hidden="true"
               className="hidden h-full min-h-0 w-[220px] shrink-0 xl:block"

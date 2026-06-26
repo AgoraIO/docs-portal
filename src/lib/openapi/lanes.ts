@@ -628,6 +628,31 @@ export function resolveOpenApiEndpointRoute(
   return null;
 }
 
+export function resolveOpenApiLaneRoute(
+  locale: AppLocale,
+  tab: string,
+  slugSegments: string[],
+) {
+  for (const lane of getOpenApiLanes()) {
+    if (lane.tab !== tab || !getOpenApiLaneLocales(lane).includes(locale)) {
+      continue;
+    }
+
+    const prefixSegments = lane.routePrefix.split('/').filter(Boolean).slice(1);
+
+    if (
+      slugSegments.length < prefixSegments.length ||
+      !prefixSegments.every((segment, index) => slugSegments[index] === segment)
+    ) {
+      continue;
+    }
+
+    return lane;
+  }
+
+  return null;
+}
+
 export function findOpenApiLaneBySourcePath(sourcePath: string) {
   return getOpenApiLanes().find((lane) =>
     Object.values(lane.sourcePath).includes(sourcePath),
