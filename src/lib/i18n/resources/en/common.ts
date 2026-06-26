@@ -46,6 +46,22 @@ const enCommon = {
     feedback: 'Was this page helpful?',
     feedbackYes: 'Yes',
     feedbackNo: 'No',
+    feedbackOpen: 'Send feedback',
+    feedbackDialogTitle: 'Send documentation feedback',
+    feedbackDialogDescription:
+      'Share a documentation issue, content suggestion, or usability problem for this page.',
+    feedbackIssueTitle: 'Docs feedback',
+    feedbackKindLabel: 'Feedback type',
+    feedbackKind: {
+      issue: 'Issue',
+      suggestion: 'Suggestion',
+      usability: 'Usability',
+    },
+    feedbackDetailsLabel: 'Details',
+    feedbackDetailsPlaceholder:
+      'Describe what is wrong, missing, confusing, or hard to use.',
+    feedbackCancel: 'Cancel',
+    feedbackSubmit: 'Open issue',
     openMenu: 'Open navigation',
   },
   home: {
