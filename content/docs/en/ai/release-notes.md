@@ -39,7 +39,7 @@ This release includes the following enhancements:
 
 * **New agent state callbacks**
 
-    Adds three callbacks to the [Android](../../api-reference/conversational-ai/client-toolkit/android#onagentlisteningchanged), [iOS](../../api-reference/conversational-ai/client-toolkit/ios#onagentlisteningchanged), and [web](../../api-reference/conversational-ai/client-toolkit/web#econversationalaiapievents) Toolkit event handler interface:
+    Adds three callbacks to the [Android](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentlisteningchanged), [iOS](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentlisteningchanged), and [web](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#econversationalaiapievents) Toolkit event handler interface:
 
     * `onAgentListeningChanged`: Listen for changes in the agent's listening state to monitor when the agent starts or stops listening to user input.
 
@@ -611,7 +611,7 @@ Released on July 15, 2025.
 
 * **Multi-platform toolkit**
 
-    Agora now offers a toolkit to help you quickly build conversational agent apps. The toolkit is available for [**iOS**](../../api-reference/conversational-ai/client-toolkit/ios), [**Android**](../../api-reference/conversational-ai/client-toolkit/android), and [**Web**](../../api-reference/conversational-ai/client-toolkit/web), and includes APIs for common scenarios. Call these APIs to combine the capabilities of the Agora Voice SDK and Signaling SDK to achieve the following functions:
+    Agora now offers a toolkit to help you quickly build conversational agent apps. The toolkit is available for [**iOS**](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios), [**Android**](/en/api-reference/api-ref/conversational-ai/client-toolkit/android), and [**Web**](/en/api-reference/api-ref/conversational-ai/client-toolkit/web), and includes APIs for common scenarios. Call these APIs to combine the capabilities of the Agora Voice SDK and Signaling SDK to achieve the following functions:
 
     - [**Display live transcript**](../build/transcripts)
     Display real-time text output of user–agent conversations. The transcript component is now more robust, with better error handling, session management, and extensibility.
@@ -651,9 +651,9 @@ This release introduces several important modifications to the RESTful API.
 
 ##### Toolkit APIs
 
-- [Android SDK](../../api-reference/conversational-ai/client-toolkit/android)
-- [iOS SDK](../../api-reference/conversational-ai/client-toolkit/ios)
-- [Web SDK](../../api-reference/conversational-ai/client-toolkit/web)
+- [Android SDK](/en/api-reference/api-ref/conversational-ai/client-toolkit/android)
+- [iOS SDK](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios)
+- [Web SDK](/en/api-reference/api-ref/conversational-ai/client-toolkit/web)
 
 ### v1.5
 

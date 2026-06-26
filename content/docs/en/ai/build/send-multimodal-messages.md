@@ -473,36 +473,36 @@ Before you begin, ensure the following:
 
 <TabsContent value="android">
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/android#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/android#destroy)
-- [`onMessageReceiptUpdated`](../../api-reference/conversational-ai/client-toolkit/android#onmessagereceiptupdated)
-- [`onMessageError`](../../api-reference/conversational-ai/client-toolkit/android#onmessageerror)
-- [`chat`](../../api-reference/conversational-ai/client-toolkit/android#chat)
+- [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#addhandler)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#unsubscribemessage)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#destroy)
+- [`onMessageReceiptUpdated`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onmessagereceiptupdated)
+- [`onMessageError`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onmessageerror)
+- [`chat`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#chat)
 
 </TabsContent>
 
 <TabsContent value="ios">
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/ios#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios#destroy)
-- [`onMessageReceiptUpdated`](../../api-reference/conversational-ai/client-toolkit/ios#onmessagereceiptupdated)
-- [`onMessageError`](../../api-reference/conversational-ai/client-toolkit/ios#onmessageerror)
-- [`chat`](../../api-reference/conversational-ai/client-toolkit/ios#chat)
+- [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#addhandler)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#unsubscribemessage)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#destroy)
+- [`onMessageReceiptUpdated`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onmessagereceiptupdated)
+- [`onMessageError`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onmessageerror)
+- [`chat`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#chat)
 
 </TabsContent>
 
 <TabsContent value="web">
 
-- [`IConversationalAIAPIEventHandler`](../../api-reference/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
-- [`EConversationalAIAPIEvents`](../../api-reference/conversational-ai/client-toolkit/web#econversationalaiapievents)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#unsubscribe)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/web#destroy)
-- [`chat`](../../api-reference/conversational-ai/client-toolkit/web#chat)
+- [`IConversationalAIAPIEventHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
+- [`EConversationalAIAPIEvents`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#econversationalaiapievents)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#unsubscribe)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#destroy)
+- [`chat`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#chat)
 
 </TabsContent>
 </Tabs>

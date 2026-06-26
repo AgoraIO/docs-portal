@@ -153,6 +153,14 @@ export async function loadDocsPagePayload(
     };
   }
 
+  const legacyConversationalAiReferenceRedirect =
+    resolveLegacyConversationalAiReferenceRedirect(locale, tab, slugSegments);
+  if (legacyConversationalAiReferenceRedirect) {
+    return {
+      redirectUrl: legacyConversationalAiReferenceRedirect,
+    };
+  }
+
   const legacyRedirect = resolveLegacyBestPracticesRedirect(
     locale,
     tab,
@@ -449,6 +457,32 @@ function resolveDeviceKitRedirect(
   return redirects[normalizedPath] ?? null;
 }
 
+function resolveLegacyConversationalAiReferenceRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (locale !== 'en' || tab !== 'conversational-ai') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+  const toolkitPrefix = 'reference/toolkot';
+
+  if (normalizedPath === toolkitPrefix) {
+    return '/en/api-reference/api-ref/conversational-ai/client-toolkit';
+  }
+
+  if (!normalizedPath.startsWith(`${toolkitPrefix}/`)) {
+    return null;
+  }
+
+  const routeLeaf = normalizedPath.slice(`${toolkitPrefix}/`.length);
+  return ['android', 'ios', 'web'].includes(routeLeaf)
+    ? `/en/api-reference/api-ref/conversational-ai/client-toolkit/${routeLeaf}`
+    : null;
+}
+
 function resolveApiReferenceRedirect(
   locale: string,
   tab: string,
@@ -459,6 +493,12 @@ function resolveApiReferenceRedirect(
   }
 
   const normalizedPath = slugSegments.join('/');
+  const legacyClientToolkitRedirect =
+    resolveLegacyConversationalAiClientToolkitRedirect(locale, normalizedPath);
+  if (legacyClientToolkitRedirect) {
+    return legacyClientToolkitRedirect;
+  }
+
   const legacyConversationalAiRestRedirect =
     resolveLegacyConversationalAiRestRedirect(locale, normalizedPath);
   if (legacyConversationalAiRestRedirect) {
@@ -499,6 +539,30 @@ function resolveApiReferenceRedirect(
 
 function getApiReferenceProductRoot(locale: string) {
   return locale === 'en' ? 'api-reference/api-ref' : 'api-reference';
+}
+
+function resolveLegacyConversationalAiClientToolkitRedirect(
+  locale: string,
+  normalizedPath: string,
+) {
+  if (locale !== 'en') {
+    return null;
+  }
+
+  const prefix = 'conversational-ai/client-toolkit';
+
+  if (normalizedPath === prefix) {
+    return `/${locale}/api-reference/api-ref/conversational-ai/client-toolkit`;
+  }
+
+  if (!normalizedPath.startsWith(`${prefix}/`)) {
+    return null;
+  }
+
+  const routeLeaf = normalizedPath.slice(`${prefix}/`.length);
+  return ['android', 'ios', 'web'].includes(routeLeaf)
+    ? `/${locale}/api-reference/api-ref/conversational-ai/client-toolkit/${routeLeaf}`
+    : null;
 }
 
 function isLegacyEnglishApiReferenceProductPath(path: string) {

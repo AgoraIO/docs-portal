@@ -1934,6 +1934,30 @@ Web body
     });
   });
 
+  it('redirects legacy Conversational AI client toolkit URLs to the API reference lane', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', [
+        'conversational-ai',
+        'client-toolkit',
+        'android',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/api-reference/api-ref/conversational-ai/client-toolkit/android',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'conversational-ai', [
+        'reference',
+        'toolkot',
+        'android',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/api-reference/api-ref/conversational-ai/client-toolkit/android',
+    });
+  });
+
   it('redirects the legacy SDKs tab to the API Reference SDKs page', async () => {
     await expect(loadDocsTabIndex('en', 'sdks')).resolves.toEqual({
       locale: 'en',

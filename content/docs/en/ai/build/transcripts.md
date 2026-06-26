@@ -415,31 +415,31 @@ This section provides API reference entry points for the transcript module.
 
 <TabsContent value="android">
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/android#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/android#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/android#destroy)
-- [`onTranscriptUpdated`](../../api-reference/conversational-ai/client-toolkit/android#ontranscriptupdated)
+- [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#addhandler)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#unsubscribemessage)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#destroy)
+- [`onTranscriptUpdated`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#ontranscriptupdated)
 
 </TabsContent>
 
 <TabsContent value="ios">
 
-- [`addHandler`](../../api-reference/conversational-ai/client-toolkit/ios#addhandler)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/ios#unsubscribemessage)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/ios#destroy)
-- [`onTranscriptUpdated`](../../api-reference/conversational-ai/client-toolkit/ios#ontranscriptupdated)
+- [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#addhandler)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#unsubscribemessage)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#destroy)
+- [`onTranscriptUpdated`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#ontranscriptupdated)
 
 </TabsContent>
 
 <TabsContent value="web">
 
-- [`IConversationalAIAPIEventHandlers interface`](../../api-reference/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
-- [`EConversationalAIAPIEvents`](../../api-reference/conversational-ai/client-toolkit/web#econversationalaiapievents)
-- [`subscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#subscribemessage)
-- [`unsubscribeMessage`](../../api-reference/conversational-ai/client-toolkit/web#unsubscribe)
-- [`destroy`](../../api-reference/conversational-ai/client-toolkit/web#destroy)
+- [`IConversationalAIAPIEventHandlers interface`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
+- [`EConversationalAIAPIEvents`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#econversationalaiapievents)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#unsubscribe)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#destroy)
 
 </TabsContent>
 </Tabs>
