@@ -63,10 +63,8 @@ export function DocsSidebarTree({
   onSelectPath: () => void;
 }) {
   const renderableNodes = normalizeRootSections(
-    normalizeBuildNestedSections(
-      mergeBestPracticesIntoBuild(
-        mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
-      ),
+    mergeBestPracticesIntoBuild(
+      mergeBuildIntoGettingStarted(mergeSdkQuickstartSection(nodes)),
     ),
   );
 
@@ -646,44 +644,6 @@ function mergeBestPracticesIntoBuild(
   }
 
   return merged;
-}
-
-function normalizeBuildNestedSections(
-  nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
-) {
-  return nodes.map((node) => normalizeBuildNestedSectionNode(node));
-}
-
-function normalizeBuildNestedSectionNode(
-  node: DocsSidebarNode | RenderableSidebarSectionNode,
-): DocsSidebarNode | RenderableSidebarSectionNode {
-  if (node.type !== 'section') {
-    return node;
-  }
-
-  const normalizedChildren = node.children.map((child) =>
-    normalizeBuildNestedSectionNode(child),
-  );
-
-  if (node.title !== 'Build') {
-    return {
-      ...node,
-      children: normalizedChildren,
-    };
-  }
-
-  return {
-    ...node,
-    children: normalizedChildren.map((child) =>
-      child.type === 'section'
-        ? {
-            ...child,
-            collapsible: true,
-            icon: undefined,
-          }
-        : child,
-    ),
-  };
 }
 
 function normalizeRootSections(
