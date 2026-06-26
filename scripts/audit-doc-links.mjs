@@ -4,19 +4,45 @@ import process from 'node:process';
 import { pathToFileURL } from 'node:url';
 
 const DEFAULT_MAX_SAMPLES = 30;
+const OVERVIEW_CARD_SOURCE_PATHS = [
+  'en/introduction/index.mdx',
+  'en/ai/index.mdx',
+  'en/realtime-media/overview.mdx',
+  'en/solutions/index.mdx',
+  'en/api-reference/index.mdx',
+];
 
+/**
+ * @typedef {object} AuditDocsLinksOptions
+ * @property {string} [docsRoot]
+ * @property {string[]} [sourcePaths]
+ */
+
+/**
+ * @param {AuditDocsLinksOptions} [options]
+ */
 export function auditDocsLinks({
   docsRoot = path.join(process.cwd(), 'content', 'docs'),
+  sourcePaths,
 } = {}) {
   const stats = createStats();
   const docsFiles = listMarkdownFiles(docsRoot);
   const existingContentPaths = new Set(
     docsFiles.map((file) => toContentPath(docsRoot, file)),
   );
-  const existingRoutePaths = getExistingRoutePaths(existingContentPaths);
+  const existingRoutePaths = getExistingRoutePaths({
+    docsRoot,
+    existingContentPaths,
+  });
+  const sourcePathFilter = sourcePaths ? new Set(sourcePaths) : null;
 
   for (const filePath of docsFiles) {
     const sourcePath = toContentPath(docsRoot, filePath);
+
+    if (sourcePathFilter && !sourcePathFilter.has(sourcePath)) {
+      continue;
+    }
+
     const markdown = fs.readFileSync(filePath, 'utf8');
     const links = extractLinks(markdown);
 
@@ -42,16 +68,18 @@ function createStats() {
     externalLinks: 0,
     hashLinks: 0,
     legacyRootDocLinks: [],
+    missingRootLinks: [],
     missingRelativeMarkdownLinks: [],
     relativeAssetLinks: 0,
     relativeMarkdownLinks: [],
     resolvedRelativeMarkdownLinks: [],
-    rootLinks: 0,
+    rootLinks: [],
+    skippedRootLinks: [],
     totalLinks: 0,
   };
 }
 
-function getExistingRoutePaths(existingContentPaths) {
+function getExistingRoutePaths({ docsRoot, existingContentPaths }) {
   const routePaths = new Map();
 
   for (const contentPath of existingContentPaths) {
@@ -72,7 +100,114 @@ function getExistingRoutePaths(existingContentPaths) {
     });
   }
 
+  for (const [routePath, entry] of getDirectoryFallbackRoutePaths({
+    docsRoot,
+    existingContentPaths,
+  })) {
+    if (!routePaths.has(routePath)) {
+      routePaths.set(routePath, entry);
+    }
+  }
+
+  for (const [routePath, targetPath] of Object.entries(KNOWN_REDIRECT_ROUTES)) {
+    routePaths.set(routePath, {
+      resolution: 'redirect',
+      resolvedTargetPath: targetPath,
+    });
+  }
+
   return routePaths;
+}
+
+function getDirectoryFallbackRoutePaths({ docsRoot, existingContentPaths }) {
+  const routePaths = new Map();
+  const metaPaths = listMetaFiles(docsRoot);
+
+  for (const metaPath of metaPaths) {
+    const directoryContentPath = path.posix.dirname(
+      toContentPath(docsRoot, metaPath),
+    );
+    const routePath = `/${directoryContentPath}`;
+
+    if (existingContentPaths.has(`${directoryContentPath}/index.mdx`)) {
+      continue;
+    }
+
+    if (existingContentPaths.has(`${directoryContentPath}/index.md`)) {
+      continue;
+    }
+
+    const firstChildPage = getFirstMetaChildPage({
+      directoryContentPath,
+      existingContentPaths,
+      metaPath,
+    });
+
+    if (!firstChildPage) {
+      continue;
+    }
+
+    routePaths.set(routePath, {
+      resolution: 'directory-fallback',
+      resolvedTargetPath: firstChildPage,
+    });
+  }
+
+  return routePaths;
+}
+
+function listMetaFiles(root) {
+  const results = [];
+
+  for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+    const fullPath = path.join(root, entry.name);
+
+    if (entry.isDirectory()) {
+      results.push(...listMetaFiles(fullPath));
+      continue;
+    }
+
+    if (entry.name === 'meta.json') {
+      results.push(fullPath);
+    }
+  }
+
+  return results.sort();
+}
+
+function getFirstMetaChildPage({
+  directoryContentPath,
+  existingContentPaths,
+  metaPath,
+}) {
+  const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+
+  if (!Array.isArray(meta.pages)) {
+    return '';
+  }
+
+  for (const rawPage of meta.pages) {
+    if (typeof rawPage !== 'string' || rawPage.startsWith('---')) {
+      continue;
+    }
+
+    const page = rawPage.replace(/^!/, '');
+    const candidates = [
+      `${directoryContentPath}/${page}.mdx`,
+      `${directoryContentPath}/${page}.md`,
+      `${directoryContentPath}/${page}/index.mdx`,
+      `${directoryContentPath}/${page}/index.md`,
+    ];
+    const targetPath = candidates.find((candidate) =>
+      existingContentPaths.has(candidate),
+    );
+
+    if (targetPath) {
+      return targetPath;
+    }
+  }
+
+  return '';
 }
 
 function listMarkdownFiles(root) {
@@ -138,6 +273,10 @@ function classifyLink(
 
   if (link.isImage) {
     stats.assetLinks += 1;
+
+    if (href.startsWith('/')) {
+      return;
+    }
   }
 
   if (href.startsWith('#')) {
@@ -156,7 +295,21 @@ function classifyLink(
   }
 
   if (href.startsWith('/')) {
-    stats.rootLinks += 1;
+    const entry = resolveRootLink(sourcePath, href, existingRoutePaths);
+
+    entry.source = link.source;
+
+    if (entry.skipped) {
+      stats.skippedRootLinks.push(entry);
+      return;
+    }
+
+    if (entry.resolved) {
+      stats.rootLinks.push(entry);
+      return;
+    }
+
+    stats.missingRootLinks.push(entry);
     return;
   }
 
@@ -193,6 +346,45 @@ function classifyLink(
   }
 
   stats.missingRelativeMarkdownLinks.push(entry);
+}
+
+function resolveRootLink(sourcePath, href, existingRoutePaths) {
+  const normalizedHref = normalizeLegacyRootDocsHref(href);
+  const parsed = splitHref(normalizedHref);
+  const routePath = parsed.path.replace(/\/+$/, '') || '/';
+  const entry = {
+    sourcePath,
+    href,
+    normalizedHref,
+    source: '',
+    resolved: false,
+    resolvedTargetPath: '',
+    resolution: 'missing',
+    skipped: false,
+  };
+
+  if (isIntentionallyHostedReference(routePath)) {
+    return {
+      ...entry,
+      resolved: true,
+      resolvedTargetPath: `hosted:${routePath}`,
+      resolution: 'hosted-reference',
+      skipped: true,
+    };
+  }
+
+  const routeEntry = existingRoutePaths.get(routePath);
+
+  if (routeEntry) {
+    return {
+      ...entry,
+      resolved: true,
+      resolvedTargetPath: routeEntry.resolvedTargetPath,
+      resolution: routeEntry.resolution,
+    };
+  }
+
+  return entry;
 }
 
 function resolveRelativeMarkdownLink(
@@ -311,15 +503,20 @@ function getOpenApiRouteLanesForAudit() {
 
   return extractTopLevelObjects(source).map((block) => {
     const routePrefix = block.match(/routePrefix:\s*'([^']+)'/)?.[1];
-    const locales = block.match(/locales:\s*\[([^\]]+)\]/)?.[1]
-      ?.match(/'([^']+)'/g)
-      ?.map((value) => value.slice(1, -1)) ?? SUPPORTED_LOCALES;
+    const locales =
+      block
+        .match(/locales:\s*\[([^\]]+)\]/)?.[1]
+        ?.match(/'([^']+)'/g)
+        ?.map((value) => value.slice(1, -1)) ?? SUPPORTED_LOCALES;
     const operationsBlock = extractObjectProperty(block, 'operations');
-    const routeLeaves = [...operationsBlock.matchAll(/routeLeaf:\s*'([^']+)'/g)]
-      .map((match) => match[1]);
+    const routeLeaves = [
+      ...operationsBlock.matchAll(/routeLeaf:\s*'([^']+)'/g),
+    ].map((match) => match[1]);
 
     if (!routePrefix || routeLeaves.length === 0) {
-      throw new Error('Failed to parse OpenAPI route lane from src/lib/openapi/lanes.ts');
+      throw new Error(
+        'Failed to parse OpenAPI route lane from src/lib/openapi/lanes.ts',
+      );
     }
 
     return { locales, routePrefix, routeLeaves };
@@ -353,7 +550,7 @@ function extractTopLevelObjects(raw) {
       continue;
     }
 
-    if (char === '\'' || char === '"' || char === '`') {
+    if (char === "'" || char === '"' || char === '`') {
       inString = true;
       stringQuote = char;
       continue;
@@ -401,7 +598,7 @@ function extractObjectProperty(raw, propertyName) {
       continue;
     }
 
-    if (char === '\'' || char === '"' || char === '`') {
+    if (char === "'" || char === '"' || char === '`') {
       inString = true;
       stringQuote = char;
       continue;
@@ -416,6 +613,36 @@ function extractObjectProperty(raw, propertyName) {
 
   return '';
 }
+
+function isIntentionallyHostedReference(routePath) {
+  return HOSTED_REFERENCE_ROUTE_PREFIXES.some(
+    (prefix) => routePath === prefix || routePath.startsWith(`${prefix}/`),
+  );
+}
+
+const HOSTED_REFERENCE_ROUTE_PREFIXES = [
+  '/en/api-reference/rtc/android',
+  '/en/api-reference/whiteboard',
+];
+
+const KNOWN_REDIRECT_ROUTES = {
+  '/en/api-reference/conversational-ai/rest-api':
+    '/en/api-reference/api-ref/conversational-ai',
+  '/en/api-reference/conversational-ai/rest-api/authentication':
+    '/en/api-reference/api-ref/conversational-ai/authentication',
+  '/en/api-reference/conversational-ai/rest-api/status-codes':
+    '/en/api-reference/api-ref/conversational-ai/status-codes',
+  '/en/api-reference/voice-ai-recipes': '/en/api-reference/recipes',
+  '/en/api-reference/recipes/python-quickstart':
+    'virtual:/en/api-reference/recipes#python-quickstart',
+  '/en/api-reference/recipes/golang-quickstart':
+    'virtual:/en/api-reference/recipes#golang-quickstart',
+  '/en/realtime-media/rtc': 'virtual:/en/realtime-media/rtc',
+  '/en/api-reference/api-ref/video': '/en/api-reference/api-ref/rtc',
+  '/en/api-reference/api-ref/voice': '/en/api-reference/api-ref/rtc',
+  '/en/extensions-marketplace/develop/implement/provisioning':
+    '/en/api-reference/api-ref/extensions-marketplace/provisioning',
+};
 
 function normalizeLegacyRootDocsHref(href) {
   const parsed = splitHref(href);
@@ -530,7 +757,9 @@ function printReport(stats, maxSamples) {
     `missingRelativeMarkdownLinks: ${stats.missingRelativeMarkdownLinks.length}`,
   );
   console.log(`legacyRootDocLinks: ${stats.legacyRootDocLinks.length}`);
-  console.log(`rootLinks: ${stats.rootLinks}`);
+  console.log(`rootLinks: ${stats.rootLinks.length}`);
+  console.log(`skippedRootLinks: ${stats.skippedRootLinks.length}`);
+  console.log(`missingRootLinks: ${stats.missingRootLinks.length}`);
   console.log(`externalLinks: ${stats.externalLinks}`);
   console.log(`hashLinks: ${stats.hashLinks}`);
   console.log(`assetLinks: ${stats.assetLinks}`);
@@ -556,6 +785,13 @@ function printReport(stats, maxSamples) {
     stats.legacyRootDocLinks,
     maxSamples,
   );
+  printSection('Sample valid root links', stats.rootLinks, maxSamples);
+  printSection(
+    'Sample skipped hosted root links',
+    stats.skippedRootLinks,
+    maxSamples,
+  );
+  printSection('Sample missing root links', stats.missingRootLinks, maxSamples);
 }
 
 function printSection(title, entries, maxSamples) {
@@ -580,6 +816,16 @@ function printSection(title, entries, maxSamples) {
       continue;
     }
 
+    if ('resolvedTargetPath' in entry) {
+      const resolvedTarget = entry.resolvedTargetPath
+        ? ` (${entry.resolvedTargetPath})`
+        : '';
+      console.log(
+        `- ${entry.sourcePath}: ${entry.href} => ${entry.normalizedHref}${resolvedTarget}`,
+      );
+      continue;
+    }
+
     console.log(`- ${entry.sourcePath}: ${entry.href}`);
   }
 
@@ -596,6 +842,7 @@ function parseArgs(args) {
         `${DEFAULT_MAX_SAMPLES}`,
       10,
     ),
+    overviewCards: args.includes('--overview-cards'),
   };
 }
 
@@ -603,11 +850,20 @@ function main() {
   const repoRoot = process.cwd();
   const docsRoot = path.join(repoRoot, 'content', 'docs');
   const options = parseArgs(process.argv.slice(2));
-  const stats = auditDocsLinks({ docsRoot });
+  const stats = auditDocsLinks({
+    docsRoot,
+    ...(options.overviewCards
+      ? { sourcePaths: OVERVIEW_CARD_SOURCE_PATHS }
+      : {}),
+  });
 
   printReport(stats, options.maxSamples);
 
-  if (options.failOnMissing && stats.missingRelativeMarkdownLinks.length > 0) {
+  if (
+    options.failOnMissing &&
+    (stats.missingRelativeMarkdownLinks.length > 0 ||
+      (options.overviewCards && stats.missingRootLinks.length > 0))
+  ) {
     process.exitCode = 1;
   }
 }
