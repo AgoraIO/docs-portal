@@ -1,0 +1,125 @@
+---
+title: "What are some common mistakes in integrating and using Flexible Classroom?"
+---
+
+### Error when running Flexible Classroom on Web
+
+If you encounter the following errors when running the Flexible Classroom Web project:
+
+```javascript
+./node_modules/agora-electron-sdk/js/Api/index.js
+Module not found: Can't resolve '../../build/Release/agora_node_ext'
+in'/Users/magikarp/workspace/web/teacher-classroom/node_modules/agora-electron-sdk/js/Api'
+```
+or
+
+```javascript
+Error running install script for optional dependency: "/root/flexible-classroom-desktop/node modules/agora-rdc-core: Command failed.
+```
+
+solve this in one of the following ways:
+
+- If your Web project is created with Next.js, add the following code to the `next.config.js` file:
+
+  ```javascript
+  module.exports = {
+      reactStrictMode: true,
+      webpack: (config, options) => {
+          // 添加下面这行代码
+          config.externals.push({"agora-electron-sdk": "commonjs2 agora-electron-sdk", "agora-rdc-core": "commonjs2 agora-rdc-core"});
+          return config;
+      },
+  };
+  ```
+
+- If your Web project is created with React, add the following code to the `webpack.base.js` file:
+
+  ```javascript
+  module.exports = {
+  // 添加下面这行代码
+  externals: { 'agora-electron-sdk': 'commonjs2 agora-electron-sdk' , "agora-rdc-core": "commonjs2 agora-rdc-core"},
+  resolve: {
+  fallback: {
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+      buffer: require.resolve('buffer/'),
+  },
+  ```
+
+- If your Web project is created with Vue.js, add the following code to the `vue.config.js` file:
+
+  ```js
+  const vueConfig = {
+    // publicPath: './',
+    configureWebpack: {
+      // Webpack plugins
+      plugins: [
+        // Add your plugins here
+        // ..........................
+      ],
+
+      externals: {
+        // Add the following line of code
+        'agora-electron-sdk': 'commonjs2 agora-electron-sdk',
+        'agora-rdc-core': 'commonjs2 agora-rdc-core'
+      }
+    }
+  };
+  ```
+
+### Error when running Flexible Classroom on Linux
+
+If you encounter `Error:unsupported platform!`, you can add a corresponding attribute to the `agora-classroom-sdk` file in the `.package.json` platform folder.
+
+Before:
+
+```json
+"agora_electron": {
+    "electron_version": "12.0.0",
+    "prebuilt": true
+},
+```
+
+After:
+
+```json
+"agora_electron": {
+    "electron_version": "12.0.0",
+    "prebuilt": true,
+    "platform":"win32" | "darwin", //choose either "darwin" or "win32"
+},
+```
+
+### How to deal with errors related to joining a class?
+
+- `600001: Failed to join the classroom`
+
+  There are several possible causes for this error:
+
+  - The user Token is invalid. Refer to the solution for the `600001-1` error below.
+  - The user selected the wrong region. Check that the `region` field of the `launch` method is set to the correct locale.
+  - The number of teachers in the classroom has reached the upper limit. For example, if the number of teachers in the classroom reaches the upper limit, the user can no longer enter the classroom as a teacher.
+  - The number of people in the room has reached the upper limit. For example, the total number of people in the room is greater than 200.
+  - The room does not exist or has expired.
+
+- `600001-1` in the web terminal or `401` from the server when logging into a classroom
+
+   ![1680084824802](https://web-cdn.agora.io/docs-files/1680084824802)
+
+   You generally encounter the `600001-1` or `401` error because the Token passed in by the `launch` method is either wrong, or does not match the App ID. Check whether the Token is correct and ensure that the App ID and Token match.
+
+   Agora recommends that you generate a Token on backend and call it on frontend. For details, refer to [Secure authentication with tokens](/en/flexible-classroom/develop/integrate/authentication-workflow).
+
+   If you need to generate Token temporarily for testing, you can use [this tool](https://webdemo.agora.io/token-builder/).
+
+- `code 30409104 detailed information: roomType conflict`
+
+  ![1680084854943](https://web-cdn.agora.io/docs-files/1680084854943)
+
+   The error is produced when the room number (`roomUuid`) has already been used to create a small classroom and is now being configured as a different room type. Agora does not recommend using the same room number to create multiple classrooms, and each room should be configured with a different room type.
+
+  For other related server error codes, refer to [Response Status Codes](/en/flexible-classroom/restful-api/classroom-api#status-code).
+
+- `Error Domain=last launch not finished Code=-1 "(null)` when entering the classroom
+
+   This error is usually encountered because the Signaling Token passed in by the `launch` method is incorrect or expired, or it does not match the App ID or User ID. Check whether the Token is correct and valid, and that it matches the App ID and the User ID.

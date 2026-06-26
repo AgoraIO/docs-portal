@@ -1,0 +1,94 @@
+---
+title: "How to set custom user and class attributes?"
+---
+
+Flexible Classroom supports custom user attributes, classroom attributes, and widget attributes. You can set any classroom attribute according to your business needs, and Flexible Classroom will synchronize it to all terminals.
+
+Attributes include names and values, and each attribute name has only one corresponding attribute value. You can modify the value of custom user attributes or classroom attributes in two ways, by full modification or path modification.
+
+Suppose you currently define the following attributes:
+
+```json
+{"key1":
+   {"subkey1":"a",
+    "subkey2":"b"
+   },
+ "key2":
+   {"subkey3":"c",
+    "subkey4":"d"
+   }
+}
+```
+
+If you want to modify all attributes, you can use the full modification method. For example, to change the value of all `subkey` to uppercase, pass the following JSON array when calling the API:
+
+```json
+{"key1":
+    {"subkey1":"A",
+    "subkey2":"B"
+    },
+  "key2":
+    {"subkey3":"C",
+    "subkey4":"D"
+    }
+}
+```
+
+If you only want to modify some properties, you can use the path modification method. For example, pass in `{"key1.subkey1":"A"}` when calling the API to modify the `A` value to `a` for `subkey1`. The modified attributes are as follows:
+
+```json
+{"key1":
+    {"subkey1":"a",
+    "subkey2":"B"
+    },
+  "key2":
+    {"subkey3":"C",
+    "subkey4":"D"
+    }
+}
+```
+
+If you  pass in `{"key1.subkey5":"E"}`, the modified attributes are as follows:
+
+```json
+{"key1":
+   {"subkey1":"a",
+    "subkey2":"B",
+    "subkey5":"E"
+   },
+ "key2":
+   {"subkey3":"C",
+    "subkey4":"D"
+   }
+}
+```
+
+If you pass in `{"key1":{ "subkey5":"E"}}` with all `key1` original, the modified attributes are as follows:
+
+```json
+{"key1":
+   {
+    "subkey5":"E"
+   },
+ "key2":
+   {"subkey3":"C",
+    "subkey4":"D"
+   }
+}
+```
+
+If you pass in `{"key1.subkey5":"E", "key2.subkey6":"F"}`, the modified attributes are as follows:
+
+```json
+{"key1":
+   {"subkey1":"A",
+    "subkey2":"B",
+    "subkey5":"E"
+   },
+ "key2":
+   {"subkey3":"C",
+    "subkey4":"D",
+    "subkey6":"F"
+   }
+}
+```

@@ -1,0 +1,160 @@
+---
+title: "How do I troubleshoot slow first-frame rendering of remote video when using the Agora Video SDK?"
+---
+
+When using the  Agora Video SDK for real-time Video Calling, Interactive Live Streaming, or Broadcast Streaming, some developers observe that the remote video takes too long to display after joining a channel. This delay can negatively impact user experience, especially in scenarios like live broadcasts where quick video display is critical.
+
+## Why delays occur
+
+The delay in the first frame rendering is usually due to delays across multiple stages, including:
+
+- Setting the remote rendering view too late
+- Not subscribing to the remote video stream in time after joining the channel
+
+## Solution
+
+Video SDK provides a mechanism to help developers identify which stage of the video rendering pipeline is time-consuming. The `onVideoRenderingTracingResult` callback returns the duration of each stage. By default, durations are calculated from the time `joinChannel` is called. To customize the start time, call `startMediaRenderingTracing`.
+
+### Step 1: Use `startMediaRenderingTracing` before joining
+
+To align rendering metrics with actual user experience, call `startMediaRenderingTracing` immediately when the user triggers a join action (such as tapping **Join** or switching channels). This ensures the collected data reflects real-world latency.
+
+The following table explains the fields returned in `tracingInfo` from the `onVideoRenderingTracingResult` callback:
+
+| Field                         | Description                                                   | Reference Range    | Recommendations                                                                                              |
+| ----------------------------- | ------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `elapsedTime`                 | <Slot name="optimize-video-rendering-markdown-0-1-1" />       | < 1000 ms for both | <Slot name="optimize-video-rendering-markdown-0-1-3" />                                                      |
+| `start2JoinChannel`           | Time from `startMediaRenderingTracing` to `joinChannel`.      | < 10 ms            | If too large, ensure `joinChannel` is called promptly after user action.                                     |
+| `join2JoinSuccess`            | Time from `joinChannel` to `onJoinChannelSuccess`.            | 50–500 ms          | If high, check network conditions. Consider calling `preloadChannel` to speed up joining.                    |
+| `joinSuccess2RemoteJoined`    | Time from `onJoinChannelSuccess` to `onUserJoined`.           | ≤50 ms             | <Slot name="optimize-video-rendering-markdown-0-4-3" />                                                      |
+| `remoteJoined2SetView`        | Time from `onUserJoined` to `setupRemoteVideo`.               | 0–20 ms            | Set the remote view immediately in `onUserJoined`. For optimal performance, pre-set the view before joining. |
+| `remoteJoined2UnmuteVideo`    | Time from `onUserJoined` to subscribing to the video stream.  | 0 ms               | If high, check if subscription is delayed. Subscribing during join keeps this value at 0.                    |
+| `remoteJoined2PacketReceived` | Time from `onUserJoined` to receiving the first video packet. | 0–50 ms            | <Slot name="optimize-video-rendering-markdown-0-7-3" />                                                      |
+
+<Slot for="optimize-video-rendering-markdown-0-1-1">
+
+- **Decoding event**: Time from `startMediaRenderingTracing` to `onFirstRemoteVideoDecoded`.
+- **Rendering event**: Time from `startMediaRenderingTracing` to `onFirstRemoteVideoFrame`.
+
+</Slot>
+
+<Slot for="optimize-video-rendering-markdown-0-1-3">
+
+If the difference between decoding and rendering is >200 ms, ensure the remote view is set promptly. If only decoding events are reported, check whether:
+
+- The remote view is unset
+- An external renderer is used
+
+</Slot>
+
+<Slot for="optimize-video-rendering-markdown-0-4-3">
+
+High values may occur if:
+
+- Host joins after the viewer
+- Streams are not subscribed by default
+
+</Slot>
+
+<Slot for="optimize-video-rendering-markdown-0-7-3">
+
+If high, check:
+
+- Whether video stream subscription is delayed
+- Whether the host publishes the stream promptly
+
+</Slot>
+
+### Step 2: Use default behavior (without `startMediaRenderingTracing`)
+
+If you don't call `startMediaRenderingTracing`, the SDK uses the time `joinChannel` is called as the starting point for measuring rendering performance.
+
+With this approach, most fields in the `onVideoRenderingTracingResult` callback have the same meaning as when tracing is started before joining. However, two fields have different interpretations, as shown below:
+
+| Field               | Description                                              | Reference Range    | Recommendations                                                                     |
+| ------------------- | -------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------- |
+| `elapsedTime`       | <Slot name="optimize-video-rendering-markdown-1-1-1" />  | < 1000 ms for both | <Slot name="optimize-video-rendering-markdown-1-1-3" />                             |
+| `start2JoinChannel` | Time from `startMediaRenderingTracing` to `joinChannel`. | 0 ms               | This value is always 0 because no tracing was started before calling `joinChannel`. |
+
+<Slot for="optimize-video-rendering-markdown-1-1-1">
+
+- **Decoding event**: Time from `joinChannel` to `onFirstRemoteVideoDecoded`.
+- **Rendering event**: Time from `joinChannel` to `onFirstRemoteVideoFrame`.
+
+</Slot>
+
+<Slot for="optimize-video-rendering-markdown-1-1-3">
+
+If the difference between decoding and rendering is >200 ms, check whether the remote view is set on time. If only decoding events are received, possible causes include:
+
+- Remote view not set
+- Use of an external renderer
+
+</Slot>
+
+### Step 3: Pre-join the channel, then subscribe on demand
+
+If your app requires extremely low latency for the first frame, pre-join the channel without subscribing to the stream. When the user triggers the join action, call `startMediaRenderingTracing` and subscribe to the remote stream.
+
+For implementation details, see [Optimize first-frame rendering](/en/video-calling/best-practices/optimize-frame-rendering).
+
+The following table describes each field for this scenario:
+
+| Field                         | Description                                                                 | Reference Range   | Recommendations                                                                                                                                        |
+| ----------------------------- | --------------------------------------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `elapsedTime`                 | <Slot name="optimize-video-rendering-markdown-2-1-1" />                     | < 500 ms for both | If the rendering time greatly exceeds decoding time, check whether the remote view was set in time.                                                    |
+| `start2JoinChannel`           | Time from `joinChannel` to `startMediaRenderingTracing`.                    | Negative          | Since the channel was joined before tracing started, this value is negative and can be ignored.                                                        |
+| `join2JoinSuccess`            | Time from `joinChannel` to `onJoinChannelSuccess`.                          | 50–500 ms         | This value is irrelevant because the user has already joined the channel.                                                                              |
+| `joinSuccess2RemoteJoined`    | Time from `startMediaRenderingTracing` to `onUserJoined`.                   | 0 ms              | If greater than 0, it may indicate frequent channel switching. This value is not meaningful if `onUserJoined` is triggered after tracing starts.       |
+| `remoteJoined2SetView`        | Time from `startMediaRenderingTracing` to `setupRemoteVideo`.               | 0 ms              | If greater than 0, check whether the view was set promptly. This value may be invalid if the view was set before calling `startMediaRenderingTracing`. |
+| `remoteJoined2UnmuteVideo`    | Time from `startMediaRenderingTracing` to subscribing to the stream.        | 0 ms              | If this value is large, check for delays between calling `startMediaRenderingTracing` and subscribing to the remote stream.                            |
+| `remoteJoined2PacketReceived` | Time from `startMediaRenderingTracing` to receiving the first video packet. | \~100 ms          | If high, verify that the remote host is publishing video promptly after joining.                                                                       |
+
+<Slot for="optimize-video-rendering-markdown-2-1-1">
+
+- **Decoding event**: Time from `startMediaRenderingTracing` to `onFirstRemoteVideoDecoded`.
+- **Rendering event**: Time from `startMediaRenderingTracing` to `onFirstRemoteVideoFrame`.
+
+</Slot>
+
+## API Reference
+
+### Android
+
+-  [`joinChannel`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2)
+
+- [`startMediaRenderingTracingEx`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineex.html#api_irtcengineex_startmediarenderingtracingex)
+
+- [`onVideoRenderingTracingResult`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+
+- [`preloadChannel`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_preloadchannel)
+
+### iOS
+
+-  [`joinChannel`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:uid:mediaoptions:joinsuccess:))
+
+- [`startMediaRenderingTracingEx`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/startmediarenderingtracingex(_:))
+
+- [`AgoraVideoRenderingTracingInfo`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoravideorenderingtracinginfo)
+
+- [`preloadChannel`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/preloadchannel(bytoken:channelid:uid:))
+
+### macOS
+
+-  [`joinChannel`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:uid:mediaoptions:joinsuccess:))
+
+- [`startMediaRenderingTracingEx`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/startmediarenderingtracingex(_:))
+
+- [`AgoraVideoRenderingTracingInfo`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoravideorenderingtracinginfo)
+
+- [`preloadChannel`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/preloadchannel(bytoken:channelid:uid:))
+
+### Windows
+
+-  [`joinChannel`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2)
+
+- [`startMediaRenderingTracingEx`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineex.html#api_irtcengineex_startmediarenderingtracingex)
+
+- [`onVideoRenderingTracingResult`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+
+- [`preloadChannel`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_preloadchannel)

@@ -1,0 +1,128 @@
+---
+title: "How can I adjust camera exposure and focus?"
+---
+
+In video applications, adjusting camera exposure and focus is essential for capturing subjects with accurate brightness and sharpness. The Agora RTC SDK offers camera management methods for mobile platforms, enabling users to switch between front and rear cameras, as well as control zoom, focus, and exposure settings. This page shows you how to manage the following:
+
+- **Exposure:** Supports both manual exposure area selection and automatic camera exposure.
+- **Focus:** Supports face detection for automatic focus and manual focus.
+
+## Prerequisites
+
+Before implementing camera exposure and focus features, ensure that you have implemented basic real-time audio and video functions in your project.
+
+## Implementation
+
+Follow these steps to implement camera exposure and focus in your project:
+
+### Exposure
+
+1. Call `isCameraExposurePositionSupported` to check if the device supports exposure management.
+2. If supported, call `setCameraExposurePosition` to manually set the exposure position.
+3. To retrieve the camera's current exposure area, use the `onCameraExposureAreaChanged` callback.
+
+### Face autofocus
+
+1. Call `isCameraAutoFocusFaceModeSupported` to check if the device supports face autofocus.
+2. If supported, call `setCameraAutoFocusModeEnabled` to enable face autofocus.
+
+### Manual Focus
+
+1. Call `isCameraFocusSupported` to check if the device supports manual focus.
+2. If supported, call `setCameraFocusPositionInPreview` to manually set the focus position.
+3. To retrieve the camera's current focus area, use the `onCameraFocusAreaChanged` callback.
+
+Refer to the following sample code:
+
+
+```java tab="Java" tabGroup="camera-exposure-focus"
+// Check if the device supports exposure and set the exposure position.
+boolean exposureSupported = rtcEngine.isCameraExposurePositionSupported();
+if (exposureSupported) {
+    float positionX = 50.0f;
+    float positionY = 100.0f;
+    rtcEngine.setCameraExposurePosition(positionX, positionY);
+}
+
+// Check if the device supports face autofocus and enable it.
+boolean faceFocusSupported = rtcEngine.isCameraAutoFocusFaceModeSupported();
+rtcEngine.setCameraAutoFocusFaceModeEnabled(faceFocusSupported);
+
+// Check if the device supports manual focus and set the focus position.
+boolean manualFocusSupported = rtcEngine.isCameraFocusSupported();
+if (manualFocusSupported) {
+    float positionX = 50.0f;
+    float positionY = 100.0f;
+    rtcEngine.setCameraFocusPositionInPreview(positionX, positionY);
+}
+
+// Listen for exposure area updates.
+public void onCameraExposureAreaChanged(Rect rect) {
+    // Handle exposure area changes.
+}
+
+// Listen for focus area updates.
+public void onCameraFocusAreaChanged(Rect rect) {
+    // Handle focus area changes.
+}
+```
+
+```swift tab="Swift" tabGroup="camera-exposure-focus"
+// Check if the device supports exposure and set the exposure position.
+let isSupported = agoraKit.isCameraExposurePositionSupported()
+if isSupported {
+    let point = CGPoint(x: 50, y: 100)
+    agoraKit.setCameraExposurePosition(point)
+}
+
+// Check if the device supports face autofocus and enable it.
+let isFaceFocusSupported = agoraKit.isCameraAutoFocusFaceModeSupported()
+agoraKit.setCameraAutoFocusFaceModeEnabled(isFaceFocusSupported)
+
+// Check if the device supports manual focus and set the focus position.
+let isManualFocusSupported = agoraKit.isCameraFocusPositionInPreviewSupported()
+if isManualFocusSupported {
+    let point = CGPoint(x: 50, y: 100)
+    agoraKit.setCameraFocusPositionInPreview(point)
+}
+
+// Listen for exposure area updates.
+func rtcEngine(_ engine: AgoraRtcEngineKit, cameraExposureDidChangeTo rect: CGRect) {
+    // Handle exposure area changes.
+}
+
+// Listen for focus area updates.
+func rtcEngine(_ engine: AgoraRtcEngineKit, cameraFocusDidChangeTo rect: CGRect) {
+    // Handle focus area changes.
+}
+```
+
+```objc tab="Objective-C" tabGroup="camera-exposure-focus"
+// Check if the device supports exposure and set the exposure position.
+BOOL isSupported = [agoraKit isCameraExposurePositionSupported];
+if (isSupported) {
+    CGPoint point = CGPointMake(50, 100);
+    [agoraKit setCameraExposurePosition:point];
+}
+
+// Check if the device supports face autofocus and enable it.
+BOOL isFaceFocusSupported = [agoraKit isCameraAutoFocusFaceModeSupported];
+[agoraKit setCameraAutoFocusFaceModeEnabled:isFaceFocusSupported];
+
+// Check if the device supports manual focus and set the focus position.
+BOOL isManualFocusSupported = [agoraKit isCameraFocusPositionInPreviewSupported];
+if (isManualFocusSupported) {
+    CGPoint point = CGPointMake(50, 100);
+    [agoraKit setCameraFocusPositionInPreview:point];
+}
+
+// Listen for exposure area updates.
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine cameraExposureDidChangeToRect:(CGRect)rect {
+    // Handle exposure area changes.
+}
+
+// Listen for focus area updates.
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine cameraFocusDidChangeToRect:(CGRect)rect {
+    // Handle focus area changes.
+}
+```

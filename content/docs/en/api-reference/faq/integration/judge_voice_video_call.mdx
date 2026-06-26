@@ -1,0 +1,38 @@
+---
+title: "How can I determine whether a call is an audio call or a video call?"
+---
+
+In real-time audio or video communication, you can use the Agora Signaling SDK or the Agora Video SDK to determine whether an incoming or ongoing call is an audio call or a video call.
+
+## Before a call
+
+If you need to determine and send the call type to the receiver before a call, ensure that you have integrated the Signaling SDK and the Video SDK. Refer to the following articles to learn more about integration:
+
+- [Signaling SDK Quickstart](/en/signaling/get-started/get-started-sdk)
+- [Video SDK Quickstart](/en/interactive-live-streaming/get-started/get-started-sdk)
+
+Complete the following steps to determine the call type:
+
+1. When the caller sends a call, use the [Call Invitation API](/en/signaling/develop/call-invitation) of the Signaling SDK to send a call invitation to the callee.
+2. Call [`sendMessageToPeer`](/en/signaling/reference/release-notes#deprecated-methods) to send the call type to the callee via peer-to-peer message. The callee gets the call type from the received peer-to-peer message.
+
+## After a call
+
+If you need to determine and send the call type to the receiver during a call, ensure that you have integrated the Video SDK. Refer to the following article:
+
+- [Video SDK Quickstart](/en/interactive-live-streaming/get-started/get-started-sdk)
+
+During a call, the receiver can determine the call type according to the following guideline:
+
+- If the receiver receives the [onRemoteVideoStateChange](https://api-ref.agora.io/en/video-sdk/android/3.x/classio_1_1agora_1_1rtc_1_1_i_rtc_channel_event_handler.html#a6ac9d139c17c849e14cc86dff5846e3b) callback, the current call is a video call.
+- If the receiver does not receive the [onRemoteVideoStateChange](https://api-ref.agora.io/en/video-sdk/android/3.x/classio_1_1agora_1_1rtc_1_1_i_rtc_channel_event_handler.html#a6ac9d139c17c849e14cc86dff5846e3b) callback and receives the [onRemoteAudioStateChange](https://api-ref.agora.io/en/video-sdk/android/3.x/classio_1_1agora_1_1rtc_1_1_i_rtc_channel_event_handler.html#a8243351d18932b1678533bee01a856ca) callback, the current call is an audio call.
+
+## Corresponding methods and callbacks
+
+This article references the names of Java methods and callbacks. The following table shows the corresponding methods and callbacks for other languages.
+
+| Java/C++                    | Objective-C                                         | JavaScript            |
+| --------------------------- | --------------------------------------------------- | --------------------- |
+| `sendMessageToPeer`         | `sendMessage:toPeer:sendMessageOptions:completion:` | `sendMessage`         |
+| `onRemoteAudioStateChanged` | `remoteAudioStateChangedOfUid`                      | `getRemoteAudioStats` |
+| `onRemoteVideoStateChanged` | `remoteVideoStateChangedOfUid`                      | `getRemoteVideoStats` |

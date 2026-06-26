@@ -1,0 +1,24 @@
+---
+title: "What should I do if a class recording fails?"
+---
+
+1. Check whether the recording-related configurations are correct:
+
+   - `recordingConfig`: If not set, the default configuration is used.
+   - `storageConfig`: `vendor`, `region`, and `endpoint` fields are correct and match. For example, if a third-party cloud storage area you use is Shanghai, the application server that initiates the request must also be located in Shanghai. Refer to the following example:
+
+     ```json
+     "vendor": 2,
+     "region": 1, //CN_Shanghai
+     endpoint:https://agora-recording.oss-cn-shanghai.aliyuncs.com
+     ```
+
+1. If the above configurations are correct and the recording still fails, check whether the public read permission of the third-party cloud storage account you are using is enabled.
+
+1. If the recording configuration is correct and the public read permission is granted, but the recording still fails, debug the specific cause of the error in the local browser by splicing the URL:
+
+   1. Obtain the URL1 value of the passed in recording page URL from the `recordUrl` parameter of `LaunchOption`.
+   1. Call the [RESTful API](/en/flexible-classroom/restful-api/classroom-api#get-the-recording-list) to get the recording list and get URL2 from `webRecordUrlQuery`.
+   1. Splice URL1 and URL2 to get the complete URL of the recording page, which can be accessed locally through a browser for debugging.
+
+If the recording page opens, the recording is enabled successfully. If the page does not open, you can find the reason in the error report.

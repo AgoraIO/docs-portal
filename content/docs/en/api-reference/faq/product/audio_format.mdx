@@ -1,0 +1,58 @@
+---
+title: "Which audio file formats does the Agora Video SDK support?"
+---
+
+The Agora Video SDK provides a series of methods to manage audio files. The support of each method for single-track or multi-track audio files is as follows:
+
+- `startAudioMixing`: Supports single-track and multi-track audio files.
+- `getAudioTrackCount`: Supports single-track and multi-track audio files.
+- `selectAudioTrack`: Supports single-track and multi-track audio files.
+- `playEffect`: Only supports single-track audio files.
+- `preloadEffect`: Only supports single-track audio files.
+- `getEffectDuration`: Only supports single-track audio files.
+- `startRhythmPlayer`: Only supports single-track audio files.
+- `getAudioFileInfo`: Supports single-track and multi-track audio files.
+
+By default, the SDK supports the audio file formats listed in [Basic audio file formats](#basic). The container format of a audio file (including the filename extensions) must be consistent with the audio codec format.
+
+As of v3.6.2, the SDK provides a full-format audio decoding extension library, which can support more audio file formats. See [Extended audio file formats](#advanced). This extension library is currently only available when you call `startAudioMixing` to play audio files.
+
+## Basic audio file formats
+
+### Supported formats for single-track audio files
+
+The Agora Video SDK supports single-track audio files in the following formats:
+
+- On Android, the SDK supports local and online files in Ogg, 3GP, ASF, AV1, TS, MKV, MP4, WMA, WAV, M4A, MP3, AAC, and ADTS formats.
+- On iOS or macOS, the SDK supports local and online files in WAV, M4A, MP3, MP4, AAC, and ADTS formats. For online MP4 and M4A files, the MOOV atom must be before the MDAT atom.
+- On Windows, the SDK supports local and online files in MP4, TS, WMA, and AAC formats.
+
+### Supported formats for multi-track audio files
+
+The Agora Video SDK supports multi-track audio files in the following formats:
+
+- On Android, the SDK supports local and online files in M4A, MP4, and MKV formats. The SDK does not support switching to a second audio track when playing a multi-track audio file in MP4 format.
+
+:::warning[Note]
+If you are using Lite SDK, when playing multi-track files in the MP4 format, switching to the second track is **not supported**.
+:::
+
+- On iOS or macOS, the SDK supports local and online files in M4A and MP4 formats. For online MP4 and M4A files, the MOOV atom must be before the MDAT atom.
+- On Windows, the SDK supports local and online files in M4A format.
+
+## Extended audio file formats
+
+If you use the SDK v3.6.2 or later and have integrated the full-format audio decoding extension library, the `startAudioMixing` method supports playing the following types of audio files:
+
+| Platform                         | File source      | Audio track                  | File container                                                            | Audio codec                                        |
+| -------------------------------- | ---------------- | ---------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------- |
+| Android, iOS, macOS, and Windows | Local and online | Single-track and multi-track | 3GP, AAC, AMR, ASF, AVI, FLAC, M4A, M4V, MOV, MP3, MP4, TS, Ogg, WAV, WMA | AAC, ARM, FALC, MP2, MP3, PCM, Vorbis, WMAV2, OPUS |
+
+For the extension library name for each platform, see [Reduce App Size](/en/api-reference/faq/integration/reduce_app_size_rtc).
+
+## Considerations
+
+- For iOS, Lite SDK does not support playing audio files without suffixes.
+- For Android, Lite SDK does not support playing audio files that are not supported by the Android system.
+- Due to system compatibility issues, some Android devices, such as Xiaomi, may have problems when using `playEffect` or `preloadEffect` to read 3GP format files.
+- Because some Android devices do not support the WMA format, using Agora API to play WMA files on these devices can fail.

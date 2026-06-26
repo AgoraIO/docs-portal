@@ -1,0 +1,24 @@
+---
+title: "Why are dynamic libraries preferred over static libraries in the Video SDK?"
+---
+
+Static libraries and Dynamic Link Libraries (DLL) are both used for organizing and sharing code in programming. In earlier versions, the Video SDK utilized static libraries on certain platforms. However, there are several drawbacks associated with static libraries:
+
+1. **Compilation Conflicts**: Static libraries can lead to symbol conflicts with third-party libraries used by your application. For instance, if your app and the Agora SDK both utilize the same `ffmpeg` library, conflicts may arise during compilation, resulting in build failures.
+
+2. **Compatibility Issues**: Inconsistent versions of third-party libraries between your application and the Video SDK may lead to compatibility issues and app crashes.
+
+3. **Compliance Concerns**: The Video SDK incorporates open-source protocol libraries like `ffmpeg`. Distributing the SDK as a static library extends the open-source agreement to your application, potentially necessitating that your app also be open-source. To comply with open-source protocol specifications, dynamic libraries are preferred.
+
+To address these challenges and align with industry trends favoring dynamic libraries in the Real-Time Communication sector, the Video SDK platform now exclusively provides dynamic libraries.
+
+## Reference
+The following table summarizes the differences between static and dynamic libraries:
+
+| Feature              | Static Library       | Dynamic Library |
+|:---------------------|:---------------------|:----------------|
+| **Link timing**      | At compile time. The library code and the program code are merged together to form an independent executable file. | The library code is not merged into the executable at compile time, but is loaded dynamically at runtime. |
+| **Space occupied**   | Increases the size of the executable file because the library's code is completely merged into the executable file, thus taking up more disk space. | The size of the executable file is relatively small because it only contains references to dynamic libraries and not the actual code, saving disk space. |
+| **Operating efficiency** | The library is linked to the executable at compile time, so no extra loading step is required at runtime and the program may start faster. | Dynamic loading is required at runtime. The operating system loads the dynamic library into memory when the program starts or when the library is needed. |
+| **Updates and maintenance** | After the library is updated, the program needs to be recompiled to use the new version of the library. | After the library is updated, only the dynamic library files need to be updated without recompiling. |
+| **Reusability**  | The code is statically copied, so each program that uses the library has its own copy of the library. | Multiple programs can share an instance of the same dynamic library because there is only one copy of the dynamic library in memory. |

@@ -1,0 +1,10 @@
+---
+title: "How does an app crash affect cloud recording?"
+---
+
+If an app integrated with cloud recording crashes, the recording session is not affected. You can continue to use the original resource ID and recording ID to control the recording instance, such as to query recording status or stop recording.
+
+
+:::info
+Do not call `acquire` or `start` again with the same App ID, channel name, and UID. Doing so may cause an error or create a new recording instance.
+:::

@@ -1,0 +1,30 @@
+---
+title: "Why can't I adjust the background music through the system volume?"
+---
+
+In mobile devices, users play background music in the background, and after joining the RTC channel, users can't change the volume of the background music by adjusting the system volume.
+
+## Reason
+
+The volume types of mobile devices are categorized into call volume and media volume. Generally, call volume is used for audio and video calls, and media volume is used for playing background music. For more details, see [What is the difference between the in-call volume and the media volume?](/en/api-reference/faq/integration/system_volume).
+
+After a user joins a channel, the type of volume controlled by the Agora SDK determines the type of volume controlled by the system volume control. When the SDK controls the call volume and the background music uses the media volume, the system volume can only control the call volume and cannot adjust the background music volume.
+
+## Solution
+
+You can try one of the following options to overcome this issue.
+
+### Option 1
+
+Playing background music with `startAudioMixing` lets the SDK control both background music and call sound. Regardless of whether the SDK uses call volume or media volume, the user can adjust the volume of the background music and call sound at the same time through the system volume.
+
+### Option 2
+
+Set the `scenario` parameter to `GAME_STREAMING/AgoraAudioScenarioGameStreaming` via the `setAudioScenario` method. That is, set the volume type used by the SDK to the media volume. After a successful setup, user can adjust the volume of the background music and call sound through system volume at the same time.
+
+### Option 3
+
+If the solutions above don't meet your needs, you can utilize the Android or iOS API to intercept volume button events and adjust the volume. Refer to the following documentation:
+
+    - **Android**: [AudioManager](https://developer.android.com/reference/android/media/AudioManager.html)
+    - **iOS**: [MPVolumeView](https://developer.apple.com/documentation/mediaplayer/mpvolumeview)

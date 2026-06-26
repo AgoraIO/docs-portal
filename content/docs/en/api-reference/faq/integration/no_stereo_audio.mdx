@@ -1,0 +1,46 @@
+---
+title: "Why can't I hear audio in stereo when playing a stereo file?"
+---
+
+When calling `startAudioMixing` or `playEffect` to play a stereo file, the user might encounter the issue of not being able to hear audio in stereo.
+
+## Reason
+
+If you cannot hear stereo audio, the possible reasons are as follows:
+
+- The audio file being played is not a stereo file.
+- Stereo encoding is not set in the Agora SDK.
+- The audio playback device does not support stereo audio.
+
+## Solution
+
+To troubleshoot and solve the issue, do the following:
+
+### Step 1: Check the audio file
+
+Check whether the audio file is a stereo file by viewing the audio signal.
+
+- If the audio file has only a mono audio signal, or if the audio file has dual audio signals but the audio signals of the left and right channels are the same, the audio file is not a stereo file. Change the file to a stereo file.
+- If the audio file has dual audio signals and the audio signals of the left and right channels are different, the audio file is a stereo file. Proceed to step 2 to check the SDK settings.
+
+### Step 2: Check the SDK settings
+
+The SDK can correctly encode and transmit stereo audio only when you set the stereo encoding. Check whether you call `setAudioProfile` and set the `profile` parameter to `AUDIO_PROFILE_MUSIC_STANDARD_STEREO` (3) or `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO` (5).
+
+- If a stereo profile is not set, set the `profile` parameter correctly.
+- If the profile is set correctly, proceed to step 3 to check the audio playback device.
+
+### Step 3: Check the audio playback device
+
+Check whether the device supports stereo audio, and check whether the device is working properly.
+
+- If the device does not support stereo audio, change it to a device that supports stereo audio.
+- If the device supports stereo audio but does not work properly, contact the device manufacturer for repair or change it to a device that works properly.
+- If the device supports stereo audio and works properly, [submit a ticket](https://agora-ticket.agora.io/) to contact Agora customer support for further exploration of the issue.
+
+
+:::info
+If you use a Bluetooth device to play audio, note the Bluetooth profile. The two common profiles are as follows:
+- **Advanced Audio Distribution Profile (A2DP):** The unidirectional transmission of high-quality audio data, usually for stereo music playback. A2DP does not support capturing audio through the Bluetooth device, so you need to use other devices to capture audio.
+- **Hands-Free Profile (HFP):** The bidirectional transmission of audio data, usually for audio calls. HFP commonly uses Synchronous Connection Oriented link (SCO) to carry a mono audio channel, so a Bluetooth device cannot play stereo audio using HFP.
+:::

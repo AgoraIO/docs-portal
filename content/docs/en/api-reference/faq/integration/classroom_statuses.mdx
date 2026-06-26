@@ -1,0 +1,60 @@
+---
+title: "What are the classroom states of Flexible Classroom?"
+---
+
+Flexible Classroom has the following classroom states:
+
+| State       | `state` value | Example                                                                                                                                                                                       |
+| ----------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Not started | `0`           | <Slot name="classroom-statuses-markdown-0-1-2" />                                                                                                                                             |
+| Started     | `1`           | <Slot name="classroom-statuses-markdown-0-2-2" />                                                                                                                                             |
+| Ended       | `2`           | The class duration has been exceeded, but it's still within its end delay time. Teachers and students can still enter and leave the classroom, as well as using the other functions normally. |
+| Closed      | `3`           | <Slot name="classroom-statuses-markdown-0-4-2" />                                                                                                                                             |
+
+<Slot for="classroom-statuses-markdown-0-1-2">
+
+Before the start time of the class. Both teachers and students can do the following:
+
+- Use real-time audio and video functions.
+- Use instant messaging.
+- See the student list.
+- Use the interactive whiteboard.
+
+</Slot>
+
+<Slot for="classroom-statuses-markdown-0-2-2">
+
+After the start time of the class and within its duration. Both teachers and students can do the following:
+
+- Use real-time audio and video.
+- Use instant messaging.
+- See the student list.
+- Use the interactive whiteboard.
+
+</Slot>
+
+<Slot for="classroom-statuses-markdown-0-4-2">
+
+The class duration and end delay time have been exceeded.
+
+- Teachers and students are kicked out of the classroom and cannot rejoin.
+- Audio, video, instant messaging, and whiteboard services are disconnected.
+- Once a classroom is closed, it cannot be restarted and is destroyed 1 hour later.
+
+</Slot>
+
+### Classroom state change
+
+Classroom states change according to the following parameters set when calling the `launch` method in the Flexible Classroom client:
+
+- `startTime`: The class start time in milliseconds, subject to the parameter passed in by the first user who enters the class.
+- `duration`: The class duration in seconds, subject to the parameter passed in by the first user who enters the class.
+- `closeDelay`: Delay time in seconds, subject to the parameter passed in when creating the classroom, defaults to 10 minutes.
+
+The class automatically starts at the specified start time and ends after its duration and end delay times are exceeded. Teachers can also start and end classes manually.
+
+You can also switch the class state with [RESTful API](/en/flexible-classroom/restful-api/classroom-api?platform=web#set-the-classroom-state).
+
+### Reference API
+
+- [`launch`](/en/flexible-classroom/client-api/classroom-sdk#launch)

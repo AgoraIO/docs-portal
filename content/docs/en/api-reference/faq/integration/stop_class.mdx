@@ -1,0 +1,36 @@
+---
+title: "How to end a class?"
+---
+
+In Flexible Classroom, the teacher clicks **Leave Classroom** to leave temporarily, which will not change the classroomroom state. To end the class, refer to the following steps:
+
+1. The teacher calls `leaveClassroom`. The sample code is as follows:
+
+    ```javascript
+    this.classroomStore.connectionStore.leaveClassroom(LeaveReason.leave)
+    ```
+
+    At this point, the classroom state includes the following:
+
+    ```javascript
+    ClassState {
+        beforeClass = 0,  // The class has not started
+        ongoing = 1,      // The class is running
+        afterClass = 2,   // The class has ended, but the classroom still exists
+        close = 3         // The classroom is closed
+    }
+    ```
+
+1. If you want to actively close the classroom, call `RoomStore:updateClassState` to update the room state. The sample code is as follows:
+
+    ```javascript
+    // Close the classroom
+    this.classroomStore.roomStore.updateClassState(ClassState.close);
+    ```
+
+1. To end the class in the background, call [RESTful API](/en/flexible-classroom/restful-api/classroom-api#set-the-classroom-state) to set the classroom state to one of the following:
+
+   - `0`: Not started.
+   - `1`: Started.
+   - `2`: Ended. The class is over, but users can still join and stay during the extended time.
+   - `3`: Closed. The classroom is closed after the extended class time. All users are forced out and cannot join again.

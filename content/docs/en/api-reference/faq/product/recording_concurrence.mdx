@@ -1,0 +1,92 @@
+---
+title: "What is recording concurrency?"
+---
+
+For the Agora On-Premise Recording SDK, we conduct tests on the recording concurrency based on the following cloud hosting configuration:
+
+- AWS: Intel(R) Xeon(R) Platinum 8124M CPU @ 3.00 GHz
+- 16 Virtual Core CPU, 32 GB RAM
+- Disk I/O: 412 MB/s
+
+Test conditions:
+
+- Each channel has two users/hosts. The resolution and frame rate of each channel are set as 320 × 240 and 15 fps respectively.
+- The resolution, frame rate, and bitrate of the recorded files in composite recording mode are set as 640 × 480, 15 fps, and 500 Kbps respectively; and the audio bitrate of the recorded files in composite recording mode is set as 48 Kbps.
+
+Test results:
+
+
+| Channel Profile | Recording Mode                                   | Performance                                                             |
+| --------------- | ------------------------------------------------ | ----------------------------------------------------------------------- |
+| Live Broadcast  | <Slot name="recording-concurrence-html-0-1-1" /> | <Slot name="recording-concurrence-html-0-1-2" />                        |
+| Live Broadcast  | <Slot name="recording-concurrence-html-0-2-1" /> | <Slot name="recording-concurrence-html-0-2-2" />                        |
+| Live Broadcast  | <Slot name="recording-concurrence-html-0-3-1" /> | When recording 300 channels simultaneously, the CPU usage is about 75%. |
+| Communication   | <Slot name="recording-concurrence-html-0-4-1" /> | <Slot name="recording-concurrence-html-0-4-2" />                        |
+| Communication   | <Slot name="recording-concurrence-html-0-5-1" /> | When recording 60 channels simultaneously, the CPU usage is about 75%.  |
+
+<Slot for="recording-concurrence-html-0-1-1">
+
+Audio + Video
+
+Individual recording
+
+</Slot>
+
+<Slot for="recording-concurrence-html-0-1-2">
+
+When recording 215 channels simultaneously, the CPU usage is about 75%.
+
+We recommend recording 200 channels simultaneously.
+
+</Slot>
+
+<Slot for="recording-concurrence-html-0-2-1">
+
+Audio + Video
+
+Composite recording
+
+</Slot>
+
+<Slot for="recording-concurrence-html-0-2-2">
+
+When recording 70 channels simultaneously, the CPU usage is about 75%.
+
+We recommend recording 60 channels simultaneously.
+
+</Slot>
+
+<Slot for="recording-concurrence-html-0-3-1">
+
+Audio only
+
+Composite recording
+
+</Slot>
+
+<Slot for="recording-concurrence-html-0-4-1">
+
+Audio + Video
+
+Individual recording
+
+</Slot>
+
+<Slot for="recording-concurrence-html-0-4-2">
+
+When recording 210 channels simultaneously, the CPU usage is about 75%.
+
+We recommend recording 200 channels simultaneously.
+
+</Slot>
+
+<Slot for="recording-concurrence-html-0-5-1">
+
+Audio + Video
+
+Composite recording
+
+</Slot>
+
+
+The test results are for reference purposes only.

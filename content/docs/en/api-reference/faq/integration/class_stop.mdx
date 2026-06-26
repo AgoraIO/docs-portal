@@ -1,0 +1,36 @@
+---
+title: "How to leave a flexible classroom?"
+---
+
+In Flexible Classroom, the teacher can click **Leave Classroom** to temporarily exit the session without changing the room status. To officially end the class, follow these steps:
+
+1. The teacher calls the `leaveClassroom` method to exit the classroom:
+
+    ```javascript
+    this.classroomStore.connectionStore.leaveClassroom(LeaveReason.leave);
+    ```
+
+    The `ClassState` reflects the following states:
+
+    ```javascript
+    ClassState {
+        beforeClass: 0, // Class has not started
+        ongoing: 1,     // Class is ongoing
+        afterClass: 2,  // Class has ended, but the classroom still exists
+        close: 3        // Classroom is closed
+    }
+    ```
+
+2. To actively end the room, call the room status update interface `RoomStore:updateClassState`:
+
+    ```javascript
+    // End the room
+    this.classroomStore.roomStore.updateClassState(ClassState.close);
+    ```
+
+3. To end the course without direct interaction, call Flexible Classroom backend RESTful interface [Set Classroom Status](/en/flexible-classroom/restful-api/classroom-api?platform=android#set-the-classroom-state). Set the class status to one of the following values:
+
+    - `0`: Not started
+    - `1`: In progress
+    - `2`: Ended. The class time has elapsed, but users can join and remain during the extended time.
+    - `3`: Closed. The class is closed after the extended time, and all users are removed and cannot rejoin.

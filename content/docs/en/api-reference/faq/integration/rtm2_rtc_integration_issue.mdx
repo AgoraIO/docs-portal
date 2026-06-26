@@ -1,0 +1,503 @@
+---
+title: "How do I handle issues when integrating the Signaling SDK and Video/Voice SDK simultaneously?"
+---
+
+When integrating Signaling SDK version 2.2.0 and above with Video/Voice SDK version 4.5.0 or higher, the following errors may appear in the IDE:
+
+
+```java tab="Android" tabGroup="platform"
+com.android.builder.merge.DuplicateRelativeFileException: More than one file was found with OS independent path 'lib/x86/libaosl.so'
+```
+
+```bash tab="iOS/macOS" tabGroup="platform"
+Unexpected duplicate tasks
+Multiple commands produce <your_app_build_path>/Contents/Frameworks/aosl.framework/Versions/A'
+
+The 'XXX' target has frameworks with conflicting names: aosl.xcframework.
+```
+
+
+## Why this happens
+
+Both Signaling SDK versions 2.2.0 and above and Video/Voice SDK versions 4.5.0 and above use the same library:
+
+- **Android**: `libaosl.so`
+- **iOS/macOS**: `aosl.xcframework`
+- **Windows**: `libaosl.dll`
+
+As a result, the IDE detects multiple files with the same path during the build process, leading to errors.
+
+## Solution
+
+Follow these steps to resolve the issue:
+
+### Signaling version 2.2.8 or later
+
+For Signaling SDK version 2.2.8 or later, compare the versions of the `aosl` libraries used in the Video/Voice SDK and Signaling SDK. Choose the subsequent operations based on the two.
+
+
+:::info
+You can find the `aosl` library version for the SDKs in the [Video SDK](/en/video-calling/overview/release-notes) or [Voice SDK](/en/voice-calling/overview/release-notes) release notes and [Signaling release notes](/en/signaling/overview/release-notes).
+:::
+
+
+<Tabs defaultValue="android" groupId="platform">
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS/macOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- If the Signaling `aosl` version is lower, integrate the `lite` SDK:
+
+    ```groovy
+    dependencies {
+        // If you are using RTM SDK version 2.2.8 or later
+        // Replace x.y.z with the specific SDK version number, such as 2.2.8
+        // You can obtain the latest version number from the release notes.
+        implementation 'io.agora.rtm:rtm-sdk-lite:2.2.8'
+    }
+    ```
+
+- If the Signaling `aosl` version is higher, integrate the latest `aosl` component and use `pickFirst` to ensure the higher-version `aosl` library is prioritized during the build process.
+
+
+<Tabs defaultValue="groovy" groupId="build-script">
+<TabsList>
+  <TabsTrigger value="groovy">Groovy</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin DSL</TabsTrigger>
+</TabsList>
+
+<TabsContent value="groovy">
+
+* **Android Gradle Plugin < 7.x**
+
+        ```groovy
+        android {
+            packagingOptions {
+                pickFirst 'lib/**/libaosl.so'
+            }
+        }
+
+        dependencies {
+            implementation 'io.agora.infra:aosl:x.y.z'
+            // implementation RTM sdk
+            // implementation RTC sdk
+        }
+        ```
+
+    * **Android Gradle Plugin 7.x or later (Recommended)**
+
+        ```groovy
+        android {
+            packaging {
+                jniLibs {
+                    pickFirsts += ["lib/**/libaosl.so"]
+                }
+            }
+        }
+
+        dependencies {
+            implementation 'io.agora.infra:aosl:x.y.z'
+            // implementation RTM sdk
+            // implementation RTC sdk
+        }
+        ```
+
+</TabsContent>
+
+<TabsContent value="kotlin">
+
+* **Android Gradle Plugin < 7.x**
+
+        ```kotlin
+        android {
+            packagingOptions {
+                pickFirst("lib/**/libaosl.so")
+            }
+        }
+
+        dependencies {
+            implementation("io.agora.infra:aosl:x.y.z")
+            // implementation RTM sdk
+            // implementation RTC sdk
+        }
+        ```
+
+    * **Android Gradle Plugin 7.x or later (Recommended)**
+
+        ```kotlin
+        android {
+            packaging {
+                jniLibs {
+                    pickFirsts += setOf("lib/**/libaosl.so")
+                }
+            }
+        }
+
+        dependencies {
+            implementation("io.agora.infra:aosl:x.y.z")
+            // implementation RTM sdk
+            // implementation RTC sdk
+        }
+        ```
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- If the Signaling `aosl` version is lower, integrate the `lite` SDK:
+
+    ```ruby
+    platform :ios, '11.0'
+    target 'Your App' do
+      # If you are using RTM SDK version 2.2.8 or later
+      # Replace x.y.z with the specific SDK version number, such as 2.2.8
+      # You can obtain the latest version number from the release notes.
+      pod 'AgoraRtm', 'x.y.z', :subspecs => ['RtmKit']
+    end
+    ```
+
+- If the Signaling `aosl` version is higher, add the following script to your `Podfile`:
+
+
+:::info
+The following code uses the Video SDK with the package name `AgoraRtcEngine_iOS` as an example. Use the actual platform and version for your integration.
+:::
+
+
+    ```ruby
+    pre_install do |installer|
+      # Define the path to the RTC framework
+      rtc_pod_path = File.join(installer.sandbox.root, 'AgoraRtcEngine_iOS')
+
+      # Full path to aosl.xcframework
+      aosl_xcframework_path = File.join(rtc_pod_path, 'aosl.xcframework')
+
+      # Check if the file exists, and delete it if so
+      if File.exist?(aosl_xcframework_path)
+        puts "Deleting aosl.xcframework from #{aosl_xcframework_path}"
+        FileUtils.rm_rf(aosl_xcframework_path)
+      else
+        puts "aosl.xcframework not found, skipping deletion."
+      end
+    end
+    ```
+
+</TabsContent>
+</Tabs>
+
+
+### Signaling version 2.2.2 to 2.2.6
+
+For Signaling SDK versions between 2.2.2 and 2.2.6, compare the versions of the `aosl` libraries used in the Video/Voice SDK and Signaling SDK, then delete the library file with the lower version.
+
+
+:::info
+You can find the `aosl` library version for the SDKs in the [Video SDK](/en/video-calling/overview/release-notes) or [Voice SDK](/en/voice-calling/overview/release-notes) release notes and [Signaling release notes](/en/signaling/overview/release-notes).
+:::
+
+
+If the version of the `aosl` library included in the Video/Voice SDK package is lower, delete the outdated library file based on the target platform:
+
+- **Android**: Delete the older-version `libaosl.so` file from the SDK package.
+- **iOS/macOS**: Delete the older-version `aosl.xcframework` file from the SDK package.
+- **Windows**: Delete the older-version `libaosl.dll` file from the SDK package.
+
+If the version of the `aosl` library in the Signaling SDK package is lower, integrate the lite SDK, then clean and rebuild your project to resolve the library conflict.
+
+
+```groovy tab="Android" tabGroup="platform"
+// ...
+dependencies {
+    // If you are using RTM SDK version 2.2.2 to 2.2.6
+    // Replace x.y.z with the specific SDK version number, such as 2.2.2
+    // You can obtain the latest version number from the release notes.
+    implementation 'io.agora:agora-rtm-lite:x.y.z'
+}
+```
+
+```ruby tab="iOS/macOS" tabGroup="platform"
+platform :ios, '11.0'
+target 'Your App' do
+  # If you are using RTM SDK version 2.2.2 to 2.2.6
+  # Replace x.y.z with the specific SDK version number, such as 2.2.2
+  # You can obtain the latest version number from the release notes.
+  pod 'AgoraRtm', 'x.y.z', :subspecs => ['RtmKit']
+end
+```
+
+
+### Signaling versions prior to 2.2.2
+
+If you are using a Signaling SDK version prior to 2.2.2, refer to the following solutions based on your platform.
+
+
+<Tabs defaultValue="android" groupId="platform">
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS/macOS</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- Using CDN
+
+  1. Manually delete the following files from the SDK package:
+
+    - `lib/x86/libaosl.so`
+    - `lib/x86_64/libaosl.so`
+    - `lib/armeabi-v7a/libaosl.so`
+    - `lib/arm64-v8a/libaosl.so`
+
+  1. Rebuild the project
+
+- Using Maven
+
+  1. Add a `packagingOptions` block to the `android` block of your `build.gradle` file to ensure the first matching native library is prioritized during the build process:
+
+
+<Tabs defaultValue="groovy" groupId="build-script">
+<TabsList>
+  <TabsTrigger value="groovy">Groovy</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin DSL</TabsTrigger>
+</TabsList>
+
+<TabsContent value="groovy">
+
+* **Android Gradle Plugin < 7.x**
+
+          ```groovy
+          android {
+              packagingOptions {
+                  pickFirst 'lib/x86/libaosl.so'
+                  pickFirst 'lib/x86_64/libaosl.so'
+                  pickFirst 'lib/armeabi-v7a/libaosl.so'
+                  pickFirst 'lib/arm64-v8a/libaosl.so'
+              }
+          }
+          ```
+
+      * **Android Gradle Plugin 7.x or later (Recommended)**
+
+          ```groovy
+          android {
+              packaging {
+                  jniLibs {
+                      pickFirsts += [
+                          "lib/x86/libaosl.so",
+                          "lib/x86_64/libaosl.so",
+                          "lib/armeabi-v7a/libaosl.so",
+                          "lib/arm64-v8a/libaosl.so"
+                      ]
+                  }
+              }
+          }
+          ```
+
+</TabsContent>
+
+<TabsContent value="kotlin">
+
+* **Android Gradle Plugin < 7.x**
+
+          ```kotlin
+          android {
+              packagingOptions {
+                  pickFirst("lib/x86/libaosl.so")
+                  pickFirst("lib/x86_64/libaosl.so")
+                  pickFirst("lib/armeabi-v7a/libaosl.so")
+                  pickFirst("lib/arm64-v8a/libaosl.so")
+              }
+          }
+          ```
+
+      * **Android Gradle Plugin 7.x or later (Recommended)**
+
+          ```kotlin
+          android {
+              packaging {
+                  jniLibs {
+                      pickFirsts += setOf(
+                          "lib/x86/libaosl.so",
+                          "lib/x86_64/libaosl.so",
+                          "lib/armeabi-v7a/libaosl.so",
+                          "lib/arm64-v8a/libaosl.so"
+                      )
+                  }
+              }
+          }
+          ```
+
+</TabsContent>
+</Tabs>
+
+
+  1. After the Gradle files are synchronized, rebuild the project.
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- Using CDN
+
+    1. Manually delete the `libs/aosl.xcframework` file from the SDK package.
+
+    1. Rebuild the project.
+
+- Using Cocoapods
+
+    1. Add the following script to the end of your project `podfile`:
+
+        ```ruby
+        pre_install do |installer|
+          # Define the path to the AgoraRtm framework
+          rtm_pod_path = File.join(installer.sandbox.root, 'AgoraRtm')
+
+          # The full path to `aosl.xcframework`
+          aosl_xcframework_path = File.join(rtm_pod_path, 'aosl.xcframework')
+
+          # Check if the file exists; delete it if it does.
+          if File.exist?(aosl_xcframework_path)
+            puts "Deleting aosl.xcframework from #{aosl_xcframework_path}"
+            FileUtils.rm_rf(aosl_xcframework_path)
+          else
+            puts "aosl.xcframework not found, skipping deletion."
+          end
+        end
+        ```
+
+    1. Run `pod install` to re-integrate the Signaling and Video/Voice SDK.
+
+    1. Rebuild the project.
+
+</TabsContent>
+
+<TabsContent value="flutter">
+
+Select the solution based on your target platform:
+
+- **Android**
+
+    1. Add the dependency to the `build.gradle` file in the project root directory:
+
+        ```groovy
+        dependencies {
+            api 'io.agora.infra:aosl:1.2.13'
+            // ...
+        }
+        ```
+
+    1. When integrating through Maven, add a `packagingOptions` block to the `android` block of your `build.gradle` file to ensure the first matching native library is prioritized during the build process:
+
+
+<Tabs defaultValue="groovy" groupId="build-script">
+<TabsList>
+  <TabsTrigger value="groovy">Groovy</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin DSL</TabsTrigger>
+</TabsList>
+
+<TabsContent value="groovy">
+
+* **Android Gradle Plugin < 7.x**
+
+            ```groovy
+            android {
+                packagingOptions {
+                    pickFirst 'lib/x86/libaosl.so'
+                    pickFirst 'lib/x86_64/libaosl.so'
+                    pickFirst 'lib/armeabi-v7a/libaosl.so'
+                    pickFirst 'lib/arm64-v8a/libaosl.so'
+                }
+            }
+            ```
+
+        * **Android Gradle Plugin 7.x or later (Recommended)**
+
+            ```groovy
+            android {
+                packaging {
+                    jniLibs {
+                        pickFirsts += [
+                            "lib/x86/libaosl.so",
+                            "lib/x86_64/libaosl.so",
+                            "lib/armeabi-v7a/libaosl.so",
+                            "lib/arm64-v8a/libaosl.so"
+                        ]
+                    }
+                }
+            }
+            ```
+
+</TabsContent>
+
+<TabsContent value="kotlin">
+
+* **Android Gradle Plugin < 7.x**
+
+            ```kotlin
+            android {
+                packagingOptions {
+                    pickFirst("lib/x86/libaosl.so")
+                    pickFirst("lib/x86_64/libaosl.so")
+                    pickFirst("lib/armeabi-v7a/libaosl.so")
+                    pickFirst("lib/arm64-v8a/libaosl.so")
+                }
+            }
+            ```
+
+        * **Android Gradle Plugin 7.x or later (Recommended)**
+
+            ```kotlin
+            android {
+                packaging {
+                    jniLibs {
+                        pickFirsts += setOf(
+                            "lib/x86/libaosl.so",
+                            "lib/x86_64/libaosl.so",
+                            "lib/armeabi-v7a/libaosl.so",
+                            "lib/arm64-v8a/libaosl.so"
+                        )
+                    }
+                }
+            }
+            ```
+
+</TabsContent>
+</Tabs>
+
+
+    1. After the Gradle files are synchronized, rebuild the project.
+
+- **iOS**
+
+    1. When integrating via CocoaPods, add the following script to the end of your project's `Podfile`:
+
+        ```ruby
+        pre_install do |installer|
+          # Define the path to the AgoraRtm framework
+          rtm_pod_path = File.join(installer.sandbox.root, 'AgoraRtm')
+
+          # The full path to `aosl.xcframework`
+          aosl_xcframework_path = File.join(rtm_pod_path, 'aosl.xcframework')
+
+          # Check if the file exists; delete it if it does.
+          if File.exist?(aosl_xcframework_path)
+            puts "Deleting aosl.xcframework from #{aosl_xcframework_path}"
+            FileUtils.rm_rf(aosl_xcframework_path)
+          else
+            puts "aosl.xcframework not found, skipping deletion."
+          end
+        end
+        ```
+    1. Run `pod install` to re-integrate the Signaling and Video/Voice SDK.
+
+    1. Rebuild the project.
+
+</TabsContent>
+</Tabs>

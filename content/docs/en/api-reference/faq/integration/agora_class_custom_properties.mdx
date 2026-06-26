@@ -1,0 +1,43 @@
+---
+title: "How can I set user properties and classroom properties?"
+---
+
+Flexible Classroom supports custom user properties and classroom properties. The property consists of a property name and a property value. Each property name has only one property value.
+
+You can modify the value of a custom user or classroom property through full modification or path modification:
+
+Suppose the current custom user or classroom property is as follows:
+
+```json
+{ "key1": { "subkey1": "a", "subkey2": "b" }, "key2": { "subkey3": "c", "subkey4": "d" } }
+```
+
+There are several scenarios:
+
+- If you want to capitalize all values of `subkey`, you can pass the following JSON array when calling the API through full modification:
+
+  ```json
+  { "key1": { "subkey1": "A", "subkey2": "B" }, "key2": { "subkey3": "C", "subkey4": "D" } }
+  ```
+
+- If you only want to capitalize the value in `subkey1`, changing `a` into `A`, for example, you can pass `{"key1.subkey1":"A"}` when calling the API through path modification.
+
+- If you want to add `subkey5` with the value of `E` to `key1`, you can pass `{"key1.subkey5":"E"}` when calling the API. The properties after modification are:
+
+  ```json
+  {
+    "key1": { "subkey1": "A", "subkey2": "B", "subkey5": "E" },
+    "key2": { "subkey3": "C", "subkey4": "D" }
+  }
+  ```
+
+  Please note that if you pass `{"key1": {"subkey5": "E"} }`, all the original properties are overwritten.
+
+- You can add multiple properties once. For example, pass `{"key1.subkey5":"E", "key2.subkey6":"F"}`. The properties after modification are:
+
+  ```json
+  {
+    "key1": { "subkey1": "A", "subkey2": "B", "subkey5": "E" },
+    "key2": { "subkey3": "C", "subkey4": "D", "subkey6": "F" }
+  }
+  ```

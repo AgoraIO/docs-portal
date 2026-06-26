@@ -1,0 +1,56 @@
+---
+title: "How can I set the mirror mode?"
+---
+
+Video SDK provides various interfaces to customize video display effects on local and remote devices during a real-time audio and video call, including the option to enable or disable mirror mode.
+
+## Configure the local view
+
+On the local device, the local user's video stream is linked to the local view. To enable the mirror effect for the local view, use the `mirrorMode` parameter in either `setupLocalVideo` or `setLocalRenderMode`. This setting only affects what the local user sees and does not impact the remote user’s view.
+
+
+:::info[info]
+Mirror mode is enabled by default for the front camera. the . It is disabled by default for the rear camera.
+:::
+
+
+## Configure the remote user's view
+
+The remote user’s video stream is linked to a corresponding view on the local device that displays the remote video. To enable the mirror effect for the remote view use the `mirrorMode` parameter in `setupRemoteVideo` or `setRemoteRenderMode`. Like the local view, this setting only affects what the local user sees and does not change the video display for the remote user.
+
+## Configuring the sent local video stream
+
+Once the local video stream is encoded, it is sent to the remote user. To apply the mirror effect to the video stream use the `config` parameter in `setVideoEncoderConfiguration`. This setting affects only the remote user’s view and does not alter the local user’s display.
+
+## API Reference
+
+For further details, refer to the following API documentation:
+
+<PlatformStructured platform="android">
+- [`setupLocalVideo`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setuplocalvideo)
+- [`setLocalRenderMode`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setlocalrendermode)
+- [`setupRemoteVideo`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setupremotevideo)
+- [`setRemoteRenderMode`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setremoterendermode2)
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration)
+</PlatformStructured>
+<PlatformStructured platform="ios">
+- [`setupLocalVideo`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setuplocalvideo(_:))
+- [`setLocalRenderMode`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setlocalrendermode(_:mirror:))
+- [`setupRemoteVideo`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setupremotevideo(_:))
+- [`setRemoteRenderMode`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setremoterendermode(_:mode:mirror:))
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setvideoencoderconfiguration(_:))
+</PlatformStructured>
+<PlatformStructured platform="cpp">
+- [`setupLocalVideo`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setuplocalvideo)
+- [`setLocalRenderMode`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setlocalrendermode)
+- [`setupRemoteVideo`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setupremotevideo)
+- [`setRemoteRenderMode`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setremoterendermode2)
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration)
+</PlatformStructured>
+<PlatformStructured platform="macos">
+- [`setupLocalVideo`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setuplocalvideo(_:))
+- [`setLocalRenderMode`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setlocalrendermode(_:mirror:))
+- [`setupRemoteVideo`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setupremotevideo(_:))
+- [`setRemoteRenderMode`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setremoterendermode(_:mode:mirror:))
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setvideoencoderconfiguration(_:))
+</PlatformStructured>

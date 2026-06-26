@@ -2,9 +2,9 @@ import {
   ActivityIcon,
   AppWindowIcon,
   ArrowDownToLineIcon,
-  ArrowUpRightIcon,
   ArrowRightIcon,
   ArrowUpFromLineIcon,
+  ArrowUpRightIcon,
   AudioLinesIcon,
   BarChart3Icon,
   BlocksIcon,
@@ -26,8 +26,8 @@ import {
   RadioTowerIcon,
   ServerCogIcon,
   SmartphoneChargingIcon,
-  TicketIcon,
   TerminalSquareIcon,
+  TicketIcon,
   TvIcon,
   VideoIcon,
   ZapIcon,
@@ -48,10 +48,17 @@ const SdksCatalog = lazy(() =>
   })),
 );
 
+const FaqCatalog = lazy(() =>
+  import('../faq/FaqCatalog').then((module) => ({
+    default: module.FaqCatalog,
+  })),
+);
+
 export function getOverviewMDXComponents(): MDXComponents {
   return {
     CardGrid,
     FeatureCard,
+    FaqCatalog,
     CapabilityGroupCard,
     CapabilityGroupGrid,
     CapabilityMatrix,
