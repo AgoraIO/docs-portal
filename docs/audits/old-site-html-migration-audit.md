@@ -129,3 +129,10 @@ These are the clearest content-loss candidates. The character counts compare new
 ## Notes
 
 This report intentionally does not include the full raw 3116-row traceability matrix. The raw matrix was useful for computation, but too noisy for review. This report keeps the human-actionable findings only.
+
+## Supplemental Artifacts
+
+The full raw audit outputs are committed separately for traceability:
+
+- `docs/audits/old-site-html-migration-audit-artifacts/html-audit-report-final.md`: complete Markdown tables, including the full row-level migration matrix.
+- `docs/audits/old-site-html-migration-audit-artifacts/html-audit-final.json`: machine-readable audit output.
