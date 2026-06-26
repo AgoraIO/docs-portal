@@ -8,15 +8,26 @@ import {
 import { type PageWithSource, source } from './source.server';
 
 vi.mock('./source.server', () => ({
-  getPageMarkdownUrl: (page: { path: string }) => ({
-    segments: page.path
+  getPageMarkdownUrl: (page: { path: string }, platform?: string) => {
+    const segments = page.path
       .split('/')
       .filter(Boolean)
       .map((segment, index, array) =>
         index === array.length - 1 ? segment.replace(/\.mdx$/, '.md') : segment,
-      ),
-    url: `/llms.mdx/docs/${page.path.replace(/\.mdx$/, '.md')}`,
-  }),
+      );
+    const markdownSegments = platform
+      ? [
+          ...segments.slice(0, -1),
+          segments.at(-1)?.replace(/\.md$/, '') ?? 'index',
+          `${platform}.md`,
+        ]
+      : segments;
+
+    return {
+      segments: markdownSegments,
+      url: `/llms.mdx/docs/${markdownSegments.join('/')}`,
+    };
+  },
   source: {
     getNodeMeta: vi.fn(),
     getPage: vi.fn(),
@@ -1141,6 +1152,63 @@ Web body
           depth: 2,
           title: 'Shared follow-up',
           url: '#shared-follow-up',
+        },
+      ],
+    });
+  });
+
+  it('resolves a trailing platform URL segment to the canonical docs page', async () => {
+    const page = createPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## Shared intro
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+## Android setup
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Web setup
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale === 'zh-CN') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'introduction', ['about-agora', 'android']),
+    ).resolves.toMatchObject({
+      activePath: '/en/introduction/about-agora',
+      body: {
+        kind: 'mdx',
+        platformTabs: {
+          canonicalPlatform: 'web',
+          initialPlatform: 'android',
+          platforms: '["android","web"]',
+        },
+      },
+      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/android.md',
+      toc: [
+        {
+          depth: 2,
+          title: 'Shared intro',
+          url: '#shared-intro',
+        },
+        {
+          depth: 2,
+          title: 'Web setup',
+          url: '#web-setup',
         },
       ],
     });

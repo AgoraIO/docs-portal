@@ -186,6 +186,7 @@ export function DocsContent({
           <PlatformHeaderTabs
             canonicalPlatform={platformTabs.canonicalPlatform}
             className="pt-1"
+            initialPlatform={platformTabs.initialPlatform}
             locale={currentLocale}
             platforms={platformTabs.platforms}
           />
@@ -201,6 +202,7 @@ export function DocsContent({
           {resolvedBody?.kind === 'mdx' ? (
             <Suspense fallback={<DocsContentSkeleton />}>
               <PlatformTabsPlacementProvider
+                initialPlatform={platformTabs?.initialPlatform}
                 value={platformTabs ? 'header' : 'inline'}
               >
                 <DocsContentBody contentPath={resolvedBody.contentPath} />
@@ -256,6 +258,7 @@ export type DocsContentBodyPayload =
       kind: 'mdx';
       platformTabs?: {
         canonicalPlatform: PlatformKey;
+        initialPlatform?: PlatformKey;
         platforms: string;
       };
     }
