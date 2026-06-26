@@ -17,6 +17,7 @@ import {
 import { type ComponentProps, type ReactNode, useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
+import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import { i18n } from '@/lib/i18n/i18n';
 import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
@@ -676,7 +677,7 @@ describe('DocsShell', () => {
     });
   });
 
-  it('resets desktop main-column scroll position when the active path changes', async () => {
+  it('delegates desktop main-column scroll restoration to the router', async () => {
     function ShellWithPathSwitcher() {
       const [activePath, setActivePath] = useState(
         '/en/introduction/about-agora',
@@ -727,16 +728,107 @@ describe('DocsShell', () => {
     renderWithRouter(<ShellWithPathSwitcher />);
 
     const mainScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    expect(mainScroll).toHaveAttribute(
+      'data-scroll-restoration-id',
+      DOCS_MAIN_SCROLL_RESTORATION_ID,
+    );
     mainScroll.scrollTop = 180;
 
     fireEvent.click(screen.getByRole('button', { name: 'Switch page' }));
 
     await waitFor(() => {
-      expect(mainScroll.scrollTop).toBe(0);
+      expect(mainScroll).toHaveAttribute(
+        'data-reset-key',
+        '/en/introduction/quick-start',
+      );
     });
-    expect(windowScrollTo).toHaveBeenCalledWith({
+    expect(mainScroll.scrollTop).toBe(180);
+    expect(windowScrollTo).not.toHaveBeenCalledWith({
       behavior: 'auto',
       top: 0,
+    });
+  });
+
+  it('restores the desktop main-column scroll position on browser back navigation', async () => {
+    const history = createMemoryHistory({
+      initialEntries: ['/en/introduction/about-agora'],
+    });
+    const rootRoute = createRootRoute({
+      component: () => <Outlet />,
+    });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$',
+      component: () => {
+        const params = docsRoute.useParams();
+        const activePath = `/${params.locale}/${params.tab}/${params._splat}`;
+
+        return (
+          <AppProviders>
+            <DocsShell
+              activePath={activePath}
+              activeTab="introduction"
+              localeLinks={[
+                {
+                  href: activePath,
+                  isActive: true,
+                  locale: 'en',
+                },
+                {
+                  href: `/zh-CN/${params.tab}/${params._splat}`,
+                  isActive: false,
+                  locale: 'zh-CN',
+                },
+              ]}
+              locale="en"
+              loadPages={loadSearchPages}
+              sidebar={sidebar}
+              tabs={tabs}
+              toc={[]}
+            >
+              <article>{activePath}</article>
+            </DocsShell>
+          </AppProviders>
+        );
+      },
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history,
+      scrollRestoration: true,
+      scrollToTopSelectors: [
+        `[data-scroll-restoration-id="${DOCS_MAIN_SCROLL_RESTORATION_ID}"]`,
+      ],
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const mainScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    mainScroll.scrollTop = 180;
+    fireEvent.scroll(mainScroll);
+
+    await act(async () => {
+      await router.navigate({ to: '/en/introduction/quick-start' as never });
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getAllByText('/en/introduction/quick-start').length,
+      ).toBeGreaterThan(0);
+    });
+    expect(mainScroll.scrollTop).toBe(0);
+
+    await act(async () => {
+      history.back();
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getAllByText('/en/introduction/about-agora').length,
+      ).toBeGreaterThan(0);
+    });
+    await waitFor(() => {
+      expect(mainScroll.scrollTop).toBe(180);
     });
   });
 
