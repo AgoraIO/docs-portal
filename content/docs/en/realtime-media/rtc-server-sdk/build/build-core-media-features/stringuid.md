@@ -46,7 +46,7 @@ The Agora Server Gateway supports both integer and string user IDs. This page sh
 
 - String user IDs can only communicate with other string user IDs. If a channel contains both string and integer user IDs, unknown errors may occur.
 
-- Unlike integer user IDs, you must specify the string `userId` parameter in the `connect` method. If you set it to null, you receive an error.
+- Unlike integer user IDs, you must specify the string `userId` parameter in the `connect` method. If you leave it unset, you receive an error.
 
 - A string user ID must be unique within each channel.
 
