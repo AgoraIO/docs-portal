@@ -9,7 +9,7 @@ Extend Agora Analytics with the Datadog integration to bring Agora Analytics dat
 
 ## Start building with
 
-- [SDK quickstart](build/call-search.md) - Customize your experience from the start with our flexible Video SDK.
+- [SDK quickstart](build/explore-and-analyze-data/call-search.md) - Customize your experience from the start with our flexible Video SDK.
 - [API reference](https://docs.agora.io/en/api-reference)
 
 ## Product Features

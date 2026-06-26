@@ -12,7 +12,7 @@ Built on Agora’s Software-Defined Real-Time Network (SDRTN®), the IoT SDK ens
 ## Start building with
 
 - [SDK quickstart](index.md) - Build and validate a basic IoT SDK integration path.
-- [Authentication](build/authentication-workflow.mdx)
+- [Authentication](build/set-up-authentication-and-security/authentication-workflow.mdx)
 - [API reference](https://docs.agora.io/en/api-reference)
 - [Samples](https://github.com/AgoraIO/API-Examples)
 
