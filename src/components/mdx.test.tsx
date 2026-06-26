@@ -71,6 +71,18 @@ type HeadingComponent = ComponentType<{
   children: ReactNode;
   id?: string;
 }>;
+type ParameterListComponent = ComponentType<{
+  children: ReactNode;
+  title?: ReactNode;
+}>;
+type ParameterComponent = ComponentType<{
+  children: ReactNode;
+  name?: ReactNode;
+  nullable?: boolean;
+  optional?: boolean;
+  required?: boolean;
+  type?: ReactNode;
+}>;
 
 function createStorageMock(): Storage {
   const values = new Map<string, string>();
@@ -307,11 +319,45 @@ describe('common MDX registry', () => {
     expect(components.TabsContent).not.toBe(fumadocsTabs.TabsContent);
   });
 
+  it('renders structured parameter lists with nested fields and badges', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const ParameterList = components.ParameterList as ParameterListComponent;
+    const Parameter = components.Parameter as ParameterComponent;
+
+    render(
+      <ParameterList title="params">
+        <Parameter name="language" required type="string">
+          Recognition language.
+        </Parameter>
+        <Parameter name="metadata" optional type="object">
+          <p>Provider-specific metadata.</p>
+          <ParameterList>
+            <Parameter name="metadata.request_id" nullable type="string">
+              Optional request identifier.
+            </Parameter>
+          </ParameterList>
+        </Parameter>
+      </ParameterList>,
+    );
+
+    expect(screen.getByText('params')).toBeVisible();
+    expect(screen.getByText('language')).toBeVisible();
+    expect(screen.getAllByText('string')).toHaveLength(2);
+    expect(screen.getByText('required')).toBeVisible();
+    expect(screen.getByText('metadata')).toBeVisible();
+    expect(screen.getByText('optional')).toBeVisible();
+    expect(screen.getByText('metadata.request_id')).toBeVisible();
+    expect(screen.getByText('nullable')).toBeVisible();
+    expect(screen.getByText('Optional request identifier.')).toBeVisible();
+  });
+
   it('registers platform sentinels and internal platform renderers', () => {
     const components = getMDXComponents() as Record<string, unknown>;
 
     expect(components.PlatformInline).toBeDefined();
     expect(components.PlatformStructured).toBeDefined();
+    expect(components.ParameterList).toBeDefined();
+    expect(components.Parameter).toBeDefined();
     expect(components._PlatformTabsGroup).toBeDefined();
     expect(components._PlatformPanel).toBeDefined();
     expect(components.Slot).toBeUndefined();

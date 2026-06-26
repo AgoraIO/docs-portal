@@ -90,6 +90,17 @@ type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   value?: string;
 };
 type PreProps = CodeBlockProps;
+type ParameterListProps = ComponentProps<'div'> & {
+  title?: ReactNode;
+};
+type ParameterProps = ComponentProps<'div'> & {
+  children?: ReactNode;
+  name?: ReactNode;
+  nullable?: boolean;
+  optional?: boolean;
+  required?: boolean;
+  type?: ReactNode;
+};
 type TabValueElement = ReactElement<{
   children?: ReactNode;
   value?: unknown;
@@ -519,6 +530,87 @@ function CommandBlock({
   );
 }
 
+function ParameterList({
+  children,
+  className,
+  title,
+  ...props
+}: ParameterListProps) {
+  return (
+    <section
+      className={cn(
+        'not-prose my-6 overflow-hidden rounded-lg border border-fd-border bg-fd-card text-sm shadow-sm',
+        className,
+      )}
+      data-parameter-list=""
+      {...props}
+    >
+      {title ? (
+        <div className="border-fd-border border-b bg-fd-muted/35 px-4 py-3 font-semibold text-fd-foreground">
+          {title}
+        </div>
+      ) : null}
+      <div className="divide-y divide-fd-border">{children}</div>
+    </section>
+  );
+}
+
+function Parameter({
+  children,
+  className,
+  name,
+  nullable,
+  optional,
+  required,
+  type,
+  ...props
+}: ParameterProps) {
+  const requiredState = required ? 'required' : optional ? 'optional' : null;
+
+  return (
+    <div className={cn('group/parameter', className)} {...props}>
+      <div className="grid gap-3 px-4 py-4 sm:grid-cols-[minmax(0,16rem)_1fr]">
+        <div className="min-w-0 space-y-2">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
+            {name ? (
+              <code className="rounded bg-fd-muted px-1.5 py-0.5 font-mono text-[0.82rem] text-fd-foreground">
+                {name}
+              </code>
+            ) : null}
+            {type ? (
+              <span className="rounded border border-fd-border bg-fd-background px-1.5 py-0.5 font-mono text-[0.75rem] text-fd-muted-foreground">
+                {type}
+              </span>
+            ) : null}
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {requiredState ? (
+              <span
+                className={cn(
+                  'rounded border px-1.5 py-0.5 text-[0.68rem] font-medium',
+                  required
+                    ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
+                    : 'border-fd-border bg-fd-muted/60 text-fd-muted-foreground',
+                )}
+              >
+                {requiredState}
+              </span>
+            ) : null}
+            {nullable ? (
+              <span className="rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 text-[0.68rem] font-medium text-fd-muted-foreground">
+                nullable
+              </span>
+            ) : null}
+          </div>
+        </div>
+        <div className="min-w-0 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0 [&_[data-parameter-list]]:mt-4">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function createDocsAnchor(contentPath?: string) {
   function DocsAnchor({
     href,
@@ -622,6 +714,8 @@ export function getMDXComponents(
     CodeBlockTabsList,
     CodeBlockTab,
     pre: Pre,
+    ParameterList,
+    Parameter,
     Accordion,
     Accordions,
     File,
