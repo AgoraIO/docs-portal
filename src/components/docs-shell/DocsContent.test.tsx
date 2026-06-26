@@ -894,6 +894,20 @@ describe('DocsMainColumn', () => {
     expect(feedback).toHaveClass('flex-col', 'sm:flex-row');
     expect(pager).toHaveClass('grid-cols-1', 'sm:grid-cols-2');
   });
+
+  it('keeps the site footer outside the page footer semantics', async () => {
+    renderWithRouter(
+      <DocsMainColumn>
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const pageFooter = within(desktopScroll).getByTestId('docs-page-footer');
+    const siteFooter = within(desktopScroll).getByTestId('docs-site-footer');
+
+    expect(pageFooter).not.toContainElement(siteFooter);
+  });
 });
 
 describe('DocsTocRail', () => {

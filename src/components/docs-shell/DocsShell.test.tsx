@@ -384,18 +384,127 @@ describe('DocsShell', () => {
     const tocRail = screen.getByTestId('docs-toc-rail');
     expect(tocRail).toBeInTheDocument();
     expect(screen.queryByTestId('docs-page-actions')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('docs-shell-footer')).not.toBeInTheDocument();
     expect(
       within(tocRail).queryByRole('button', { name: 'Copy Page' }),
     ).not.toBeInTheDocument();
 
     const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
+    const siteFooter = within(mainColumn).getByTestId('docs-site-footer');
     expect(
       within(mainColumn).getByRole('link', { name: /Next Next Page/i }),
     ).toBeInTheDocument();
     expect(
       within(mainColumn).getByRole('link', { name: /Previous Previous Page/i }),
     ).toBeInTheDocument();
+    expect(mainColumn).toContainElement(siteFooter);
+    expect(docsBodyShell).toContainElement(siteFooter);
+  });
+
+  it('renders the Agora site footer as a full-width break-out in the main scroll region', async () => {
+    renderDocsShell();
+
+    const docsBodyShell = await screen.findByTestId('docs-body-shell');
+    const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
+    const pageFooter = within(mainColumn).getByTestId('docs-page-footer');
+    const siteFooter = within(mainColumn).getByTestId('docs-site-footer');
+    const footerContent = within(siteFooter).getByTestId(
+      'docs-site-footer-content',
+    );
+
+    expect(docsBodyShell.getAttribute('style')).toContain(
+      '--docs-site-footer-width',
+    );
+    expect(docsBodyShell.getAttribute('style')).toContain(
+      '--docs-site-footer-offset',
+    );
+    expect(mainColumn).toContainElement(siteFooter);
+    expect(pageFooter).not.toContainElement(siteFooter);
+    expect(siteFooter).toHaveClass(
+      'w-screen',
+      '-ml-8',
+      'border-t',
+      'lg:w-[var(--docs-site-footer-width)]',
+    );
+    expect(siteFooter).toHaveStyle({
+      marginLeft: 'calc(-1 * var(--docs-site-footer-offset))',
+    });
+    expect(footerContent).toHaveClass('mx-auto', 'px-0');
+
+    expect(
+      within(siteFooter).getByRole('link', { name: 'LinkedIn' }),
+    ).toHaveAttribute(
+      'href',
+      'https://www.linkedin.com/company/agora-lab-inc/',
+    );
+    expect(within(siteFooter).getByRole('link', { name: 'X' })).toHaveAttribute(
+      'href',
+      'https://x.com/AgoraIO',
+    );
+    expect(
+      within(siteFooter).getByRole('link', { name: 'YouTube' }),
+    ).toHaveAttribute(
+      'href',
+      'https://www.youtube.com/channel/UCjPZukasIgWoB4HBHga5CGA',
+    );
+    expect(
+      within(siteFooter).getByRole('link', { name: 'GitHub' }),
+    ).toHaveAttribute('href', 'https://github.com/AgoraIO-Community');
+
+    expect(within(siteFooter).getByText('Contact Us')).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByText('+1 (408) 879-5885'),
+    ).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByText('2804 Mission College Blvd.'),
+    ).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByText('Santa Clara, CA, USA 95054'),
+    ).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByRole('link', { name: 'Agora Advantage' }),
+    ).toHaveAttribute(
+      'href',
+      'https://www.agora.io/en/the-agora-platform-advantage/',
+    );
+    expect(
+      within(siteFooter).getByRole('link', { name: 'Investor Relations' }),
+    ).toHaveAttribute('href', 'https://investor.agora.io/');
+    expect(
+      within(siteFooter).getByRole('link', { name: 'Documentation' }),
+    ).toHaveAttribute('href', 'https://docs.agora.io/en/');
+    expect(
+      within(siteFooter).getByRole('link', { name: 'Privacy Policy' }),
+    ).toHaveAttribute('href', 'https://www.agora.io/en/privacy-policy/');
+    expect(
+      within(siteFooter).getByRole('link', { name: 'Manage My Cookies' }),
+    ).toHaveAttribute('href', '#');
+    expect(
+      within(siteFooter).getByRole('img', { name: 'Agora' }),
+    ).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByText('Copyright © 2026 Agora'),
+    ).toBeInTheDocument();
+    expect(
+      within(siteFooter).getByText('All rights reserved'),
+    ).toBeInTheDocument();
+  });
+
+  it('keeps the shell footer responsive on mobile', async () => {
+    renderDocsShell();
+
+    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const siteFooter = within(mobileFlow).getByTestId('docs-site-footer');
+    const navGrid = within(siteFooter).getByText('Contact Us').closest('.grid');
+    const copyrightRow = within(siteFooter)
+      .getByText('Copyright © 2026 Agora')
+      .closest('div');
+
+    expect(navGrid).toHaveClass(
+      'grid-cols-1',
+      'sm:grid-cols-2',
+      'lg:grid-cols-4',
+    );
+    expect(copyrightRow).toHaveClass('flex-col', 'sm:flex-row');
   });
 
   it('uses the openapi layout without the generic toc rail', async () => {
