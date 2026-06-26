@@ -513,7 +513,13 @@ function resolveApiReferenceRedirect(
     locale === 'en' &&
     CONSOLE_API_REFERENCE_DUPLICATE_PATHS.has(normalizedPath)
   ) {
-    return '/en/api-reference/api-ref/solutions-agora-console-rest-api';
+    return '/en/api-reference/api-ref/console/solutions-agora-console-rest-api';
+  }
+
+  const legacyFlattenedApiRefRedirect =
+    LEGACY_FLATTENED_API_REF_REDIRECTS[normalizedPath];
+  if (locale === 'en' && legacyFlattenedApiRefRedirect) {
+    return legacyFlattenedApiRefRedirect;
   }
 
   if (
@@ -596,6 +602,17 @@ const CONSOLE_API_REFERENCE_DUPLICATE_PATHS = new Set([
   'api-ref/video/agora-console-rest-api',
   'api-ref/voice/agora-console-rest-api',
 ]);
+
+const LEGACY_FLATTENED_API_REF_REDIRECTS: Record<string, string> = {
+  'api-ref/analytics-rest-api':
+    '/en/api-reference/api-ref/agora-analytics/analytics-rest-api',
+  'api-ref/analytics-restful-authentication':
+    '/en/api-reference/api-ref/agora-analytics/analytics-restful-authentication',
+  'api-ref/classroom-rest-api':
+    '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
+  'api-ref/solutions-agora-console-rest-api':
+    '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
+};
 
 function resolveLegacyConversationalAiRestRedirect(
   locale: string,
@@ -691,7 +708,7 @@ function resolveRealtimeMediaApiReferenceRedirect(
   const normalizedPath = slugSegments.join('/');
   const exactRedirects: Record<string, string> = {
     'broadcast-streaming/reference/agora-console-rest-api':
-      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'broadcast-streaming/reference/api-sunset':
       '/en/api-reference/api-ref/broadcast-streaming/api-sunset',
     'broadcast-streaming/reference/restful-api':
@@ -727,10 +744,10 @@ function resolveRealtimeMediaApiReferenceRedirect(
     'speech-to-text/reference/restful-authentication':
       '/en/api-reference/api-ref/speech-to-text/restful-authentication',
     'video/reference/agora-console-rest-api':
-      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'video/reference/api-sunset': '/en/api-reference/api-ref/rtc',
     'voice/reference/agora-console-rest-api':
-      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'voice/reference/api-sunset': '/en/api-reference/api-ref/rtc',
     'whiteboard/reference/rest-api': '/en/api-reference/api-ref/whiteboard',
     'whiteboard/reference/rest-api/overview':
@@ -783,21 +800,21 @@ function resolveSolutionsApiReferenceRedirect(
 
   const redirects: Record<string, string> = {
     'agora-analytics/reference/agora-console-rest-api':
-      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'agora-analytics/reference/api':
-      '/en/api-reference/api-ref/analytics-rest-api',
+      '/en/api-reference/api-ref/agora-analytics/analytics-rest-api',
     'agora-analytics/reference/restful-authentication':
-      '/en/api-reference/api-ref/analytics-restful-authentication',
+      '/en/api-reference/api-ref/agora-analytics/analytics-restful-authentication',
     'flexible-classroom/reference/agora-console-rest-api':
-      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'flexible-classroom/reference/classroom-rest-api':
-      '/en/api-reference/api-ref/classroom-rest-api',
+      '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
     'interactive-live-streaming/reference/agora-console-rest-api':
-      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'interactive-live-streaming/reference/api-sunset':
       '/en/api-reference/api-ref/solutions-api-sunset',
     'iot/reference/agora-console-rest-api':
-      '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'iot/reference/channel-management-rest-api':
       '/en/api-reference/api-ref/iot-channel-management-rest-api',
   };

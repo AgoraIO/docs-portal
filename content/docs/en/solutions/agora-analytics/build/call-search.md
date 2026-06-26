@@ -270,4 +270,4 @@ All features related to the auto-diagnosis engine are currently in beta. Follow 
 ## See also
 
 - For a detailed explanation of the metrics and diagnosis checklist items used by Call Inspector, see [Call Inspector Glossary](../reference/call-search-terms.md).
-- Alternatively, you can use the Call Inspector service through the RESTful API. For details, see [Agora Analytics RESTful API](/en/api-reference/api-ref/analytics-rest-api).
+- Alternatively, you can use the Call Inspector service through the RESTful API. For details, see [Agora Analytics RESTful API](/en/api-reference/api-ref/agora-analytics/analytics-rest-api).

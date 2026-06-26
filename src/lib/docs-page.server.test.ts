@@ -2210,11 +2210,52 @@ Web body
     await expect(
       loadDocsPagePayload('en', 'api-reference', [
         'api-ref',
+        'solutions-agora-console-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', [
+        'api-ref',
+        'analytics-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/api-reference/api-ref/agora-analytics/analytics-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', [
+        'api-ref',
+        'analytics-restful-authentication',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/api-reference/api-ref/agora-analytics/analytics-restful-authentication',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', [
+        'api-ref',
+        'classroom-rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'api-reference', [
+        'api-ref',
         'broadcast-streaming',
         'agora-console-rest-api',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      redirectUrl:
+        '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     });
 
     await expect(
@@ -2224,7 +2265,8 @@ Web body
         'agora-console-rest-api',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      redirectUrl:
+        '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     });
 
     await expect(
@@ -2234,7 +2276,8 @@ Web body
         'agora-console-rest-api',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      redirectUrl:
+        '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     });
 
     await expect(
@@ -2244,7 +2287,8 @@ Web body
         'agora-console-rest-api',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      redirectUrl:
+        '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     });
 
     await expect(
@@ -2254,7 +2298,8 @@ Web body
         'agora-console-rest-api',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      redirectUrl:
+        '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     });
 
     await expect(
@@ -2264,7 +2309,8 @@ Web body
         'agora-console-rest-api',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      redirectUrl:
+        '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     });
 
     await expect(
@@ -2321,7 +2367,19 @@ Web body
         'api',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/api-reference/api-ref/analytics-rest-api',
+      redirectUrl:
+        '/en/api-reference/api-ref/agora-analytics/analytics-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'solutions', [
+        'agora-analytics',
+        'reference',
+        'restful-authentication',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/api-reference/api-ref/agora-analytics/analytics-restful-authentication',
     });
 
     await expect(
@@ -2331,7 +2389,8 @@ Web body
         'agora-console-rest-api',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/api-reference/api-ref/solutions-agora-console-rest-api',
+      redirectUrl:
+        '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     });
 
     await expect(
@@ -2341,7 +2400,8 @@ Web body
         'classroom-rest-api',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/api-reference/api-ref/classroom-rest-api',
+      redirectUrl:
+        '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
     });
 
     await expect(
