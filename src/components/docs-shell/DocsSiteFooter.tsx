@@ -14,7 +14,7 @@ export function DocsSiteFooter({
     <section
       aria-label="Agora footer"
       className={cn(
-        '-ml-8 w-screen border-t border-[color:var(--line-soft)] bg-background py-8',
+        'w-full border-t border-[color:var(--line-soft)] bg-background py-8',
         className,
       )}
       data-testid="docs-site-footer"

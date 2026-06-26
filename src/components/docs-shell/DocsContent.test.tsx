@@ -895,7 +895,7 @@ describe('DocsMainColumn', () => {
     expect(pager).toHaveClass('grid-cols-1', 'sm:grid-cols-2');
   });
 
-  it('keeps the site footer outside the page footer semantics', async () => {
+  it('keeps the mobile site footer outside the page footer semantics', async () => {
     renderWithRouter(
       <DocsMainColumn>
         <article>Body</article>
@@ -904,8 +904,12 @@ describe('DocsMainColumn', () => {
 
     const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
     const pageFooter = within(desktopScroll).getByTestId('docs-page-footer');
-    const siteFooter = within(desktopScroll).getByTestId('docs-site-footer');
+    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const siteFooter = within(mobileFlow).getByTestId('docs-site-footer');
 
+    expect(
+      within(desktopScroll).queryByTestId('docs-site-footer'),
+    ).not.toBeInTheDocument();
     expect(pageFooter).not.toContainElement(siteFooter);
   });
 });
