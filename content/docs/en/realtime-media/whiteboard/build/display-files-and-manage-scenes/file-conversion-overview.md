@@ -175,7 +175,7 @@ If some effects are missing in the converted PPT or are different from the origi
 
     Compare the PPT before and after conversion to find the problematic elements.
 
-1. Deal with problematic elements
+2. Deal with problematic elements
 
     Resolve the problem using one of the following methods:
 
@@ -183,7 +183,7 @@ If some effects are missing in the converted PPT or are different from the origi
     - Replace the effect that is already supported by other document transformations for the element in question.
     - Save the problematic element as a picture, delete the element, and then reinsert the picture to the original position. If there are many problematic elements, combine those elements first and convert them to pictures.
 
-1. Restart the conversion
+3. Restart the conversion
 
     Call the RESTful API again to restart the conversion. After the conversion is successful, compare the PPT effects before and after the conversion. If there are any remaining problems, repeat the previous steps.
 
@@ -198,14 +198,14 @@ To set up cloud storage and obtain configuration information for Google Cloud Pl
 1. Create an account on [Google Cloud](https://cloud.google.com/) and assign permissions on the settings page of Google Cloud storage.
     ![](/images/interactive-whiteboard/gcp-settings.png)
 
-1. After creation, click on the ![](/images/interactive-whiteboard/ellipses.png) button in the upper right corner and select **Project settings**.
+2. After creation, click on the ![](/images/interactive-whiteboard/ellipses.png) button in the upper right corner and select **Project settings**.
 
-1. Under **IAM and Admin**, select **Service Accounts**. In the service account list, click on the ![](/images/interactive-whiteboard/ellipses.png) button for the account just added, and select **Manage keys**.
+3. Under **IAM and Admin**, select **Service Accounts**. In the service account list, click on the ![](/images/interactive-whiteboard/ellipses.png) button for the account just added, and select **Manage keys**.
 
-1. Click **ADD KEY** > **Create new key**. Select **JSON** in the pop-up box and click **CREATE**. A `json` file is downloaded with the name format `projectId-xxxxxxxx.json`.
+4. Click **ADD KEY** > **Create new key**. Select **JSON** in the pop-up box and click **CREATE**. A `json` file is downloaded with the name format `projectId-xxxxxxxx.json`.
     ![](/images/interactive-whiteboard/gcp-create-private-key.png)
 
-1. Open the downloaded json file, which looks like the following example:
+5. Open the downloaded json file, which looks like the following example:
 
     ```json
     {
@@ -223,12 +223,12 @@ To set up cloud storage and obtain configuration information for Google Cloud Pl
     }
     ```
 
-1. Use the information in the json file to fill-in the Google Cloud Storage configuration:
+6. Use the information in the json file to fill-in the Google Cloud Storage configuration:
 
     The `project_id` in the json file corresponds to the `projectId` on Agora Console, `client_email` corresponds to `clientEmail`, `private_key` corresponds to `privateKey`, and `bucket` is filled with the name of the `bucket` to be used. The remaining parameters have the same meaning as for the AWS configuration.
     When copying the `private_key`, make sure that your text editor has not added any extra line breaks or `\n` after each `\n`.
 
-1. Ensure that the newly created service account has writable permission for the Google storage bucket.
+7. Ensure that the newly created service account has writable permission for the Google storage bucket.
 
 ### Supported fonts
 
