@@ -522,16 +522,15 @@ describe('DocsShell', () => {
     const mainHeaderRow = screen.getByTestId('docs-main-header-row');
     const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
 
-    expect(mainHeaderRow).toHaveClass(
-      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
-    );
+    expect(mainHeaderRow).toHaveClass('max-w-[min(100%,1600px)]');
     expect(docsTabsStrip.firstElementChild).toHaveClass(
-      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+      'max-w-[min(100%,1600px)]',
     );
+    expect(docsBodyShell).toHaveClass('max-w-[min(100%,1600px)]');
     expect(docsBodyShell).toHaveClass(
-      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+      'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
     );
-    expect(docsBodyShell).toHaveClass(
+    expect(docsBodyShell).not.toHaveClass(
       'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
@@ -555,10 +554,11 @@ describe('DocsShell', () => {
 
     const docsBodyShell = await screen.findByTestId('docs-body-shell');
 
+    expect(docsBodyShell).toHaveClass('max-w-[min(100%,1600px)]');
     expect(docsBodyShell).toHaveClass(
-      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+      'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
     );
-    expect(docsBodyShell).toHaveClass(
+    expect(docsBodyShell).not.toHaveClass(
       'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();

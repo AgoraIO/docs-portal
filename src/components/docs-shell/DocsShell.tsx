@@ -55,8 +55,11 @@ import { DocsTocRail } from './DocsTocRail';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
+const DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME = 'max-w-[min(100%,1600px)]';
 const DOCS_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
+const DOCS_WIDE_DESKTOP_GRID_CLASS_NAME =
+  'xl:grid-cols-[256px_minmax(0,1fr)_220px]';
 
 type LocaleLink = {
   href: string;
@@ -154,6 +157,12 @@ export function DocsShell({
     '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
   const isWideLayout = isWideDocsLayout(layoutMode);
+  const shellWidthClassName = isWideLayout
+    ? DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME
+    : DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
+  const desktopGridClassName = isWideLayout
+    ? DOCS_WIDE_DESKTOP_GRID_CLASS_NAME
+    : DOCS_DESKTOP_GRID_CLASS_NAME;
 
   return (
     <SidebarProvider
@@ -180,7 +189,7 @@ export function DocsShell({
           <div
             className={cn(
               'mx-auto flex h-[52px] w-full items-center gap-3 px-4 sm:px-7',
-              DOCS_SHELL_MAX_WIDTH_CLASS_NAME,
+              shellWidthClassName,
             )}
             data-testid="docs-main-header-row"
           >
@@ -315,7 +324,7 @@ export function DocsShell({
             <div
               className={cn(
                 'mx-auto flex h-10 w-full justify-start px-4 sm:px-6',
-                DOCS_SHELL_MAX_WIDTH_CLASS_NAME,
+                shellWidthClassName,
               )}
             >
               <Tabs className="w-auto max-w-full" value={activeTab}>
@@ -351,8 +360,8 @@ export function DocsShell({
         <div
           className={cn(
             'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden',
-            DOCS_SHELL_MAX_WIDTH_CLASS_NAME,
-            DOCS_DESKTOP_GRID_CLASS_NAME,
+            shellWidthClassName,
+            desktopGridClassName,
           )}
           data-testid="docs-body-shell"
         >
@@ -385,7 +394,7 @@ export function DocsShell({
         <DocsSiteFooter
           className={cn(
             'mx-auto hidden w-full shrink-0 lg:block',
-            DOCS_SHELL_MAX_WIDTH_CLASS_NAME,
+            shellWidthClassName,
           )}
           contentClassName="px-4 sm:px-6 lg:px-10"
         />
