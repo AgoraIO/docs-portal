@@ -59,4 +59,38 @@ describe('app prose CSS regressions', () => {
     expect(topLevel.sourceStart).toBeLessThan(secondLevel.sourceStart);
     expect(secondLevel.sourceStart).toBeLessThan(thirdLevel.sourceStart);
   });
+
+  it('keeps table image cells wide enough for readable thumbnails', () => {
+    const imageCell = getRuleBody(
+      '.prose :where(td:has(> img)):not(:where(.not-prose, .not-prose *))',
+    );
+    const image = getRuleBody(
+      '.prose :where(td > img):not(:where(.not-prose, .not-prose *))',
+    );
+
+    expect(imageCell.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'width',
+        value: '16rem',
+      }),
+    );
+    expect(imageCell.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'min-width',
+        value: '12rem',
+      }),
+    );
+    expect(image.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'max-width',
+        value: '100%',
+      }),
+    );
+    expect(image.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'height',
+        value: 'auto',
+      }),
+    );
+  });
 });
