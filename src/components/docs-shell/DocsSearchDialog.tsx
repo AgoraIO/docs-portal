@@ -21,6 +21,18 @@ import {
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
 
+type PagesState =
+  | {
+      locale: AppLocale;
+      pages: SearchEntry[];
+      status: 'loaded';
+    }
+  | {
+      locale: AppLocale;
+      pages: [];
+      status: 'error';
+    };
+
 export function DocsSearchDialog({
   loadPages,
   locale = DEFAULT_LOCALE,
@@ -37,15 +49,14 @@ export function DocsSearchDialog({
   const t = i18n.getFixedT(searchLocale, 'common');
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [pagesState, setPagesState] = useState<{
-    locale: AppLocale;
-    pages: SearchEntry[];
-  } | null>(null);
+  const [pagesState, setPagesState] = useState<PagesState | null>(null);
   const pagesPromiseRef = useRef<{
     locale: AppLocale;
     promise: Promise<SearchEntry[]>;
   } | null>(null);
   const pages = pagesState?.locale === searchLocale ? pagesState.pages : [];
+  const searchIndexFailed =
+    pagesState?.locale === searchLocale && pagesState.status === 'error';
 
   async function handleSelect(url: string) {
     setOpen(false);
@@ -68,12 +79,14 @@ export function DocsSearchDialog({
         setPagesState({
           locale: searchLocale,
           pages: await pagesPromiseRef.current.promise,
+          status: 'loaded',
         });
       } catch {
         pagesPromiseRef.current = null;
         setPagesState({
           locale: searchLocale,
           pages: [],
+          status: 'error',
         });
       }
     }
@@ -112,7 +125,11 @@ export function DocsSearchDialog({
       >
         <CommandInput placeholder={t('docs.searchPlaceholder')} />
         <CommandList>
-          <CommandEmpty>{t('docs.searchEmpty')}</CommandEmpty>
+          <CommandEmpty>
+            {searchIndexFailed
+              ? t('docs.searchUnavailable')
+              : t('docs.searchEmpty')}
+          </CommandEmpty>
           <CommandGroup heading={t('docs.tabsLabel')}>
             {tabs.map((tab) => (
               <CommandItem
@@ -131,21 +148,27 @@ export function DocsSearchDialog({
             ))}
           </CommandGroup>
           <CommandGroup heading={t('docs.pagesLabel')}>
-            {pages.map((page) => (
-              <CommandItem
-                key={page.url}
-                onSelect={() => void handleSelect(page.url)}
-              >
-                <div className="flex flex-col gap-1">
-                  <span>{page.title}</span>
-                  {page.description ? (
-                    <span className="text-xs text-muted-foreground">
-                      {page.description}
-                    </span>
-                  ) : null}
-                </div>
-              </CommandItem>
-            ))}
+            {searchIndexFailed ? (
+              <div className="px-2 py-3 text-sm text-muted-foreground">
+                {t('docs.searchUnavailable')}
+              </div>
+            ) : (
+              pages.map((page) => (
+                <CommandItem
+                  key={page.url}
+                  onSelect={() => void handleSelect(page.url)}
+                >
+                  <div className="flex flex-col gap-1">
+                    <span>{page.title}</span>
+                    {page.description ? (
+                      <span className="text-xs text-muted-foreground">
+                        {page.description}
+                      </span>
+                    ) : null}
+                  </div>
+                </CommandItem>
+              ))
+            )}
           </CommandGroup>
         </CommandList>
       </CommandDialog>

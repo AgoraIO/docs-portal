@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
+  DocsSearchIndexUnavailableError,
   getStaticDocsSearchIndexPath,
   readStaticDocsSearchIndex,
 } from './docs-search-index';
@@ -23,7 +24,7 @@ describe('docs-search-index', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('returns an empty list for missing search indexes', async () => {
+  it('raises an explicit error for missing search indexes', async () => {
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue({
@@ -33,7 +34,9 @@ describe('docs-search-index', () => {
       }),
     );
 
-    await expect(readStaticDocsSearchIndex('zh-Hans')).resolves.toEqual([]);
+    await expect(readStaticDocsSearchIndex('zh-Hans')).rejects.toThrow(
+      DocsSearchIndexUnavailableError,
+    );
     expect(fetch).toHaveBeenCalledWith('/__static/docs-search/zh-CN.json');
   });
 
