@@ -44,13 +44,13 @@ To view a list of historical events for selected products & services during the 
 
 1. Click the **Events** button in the health banner.
 
-  You see a list of events, in your browser.
+    You see a list of events, in your browser.
 
-  ![image](/images/status-page/status-historical-events.png)
+    ![image](/images/status-page/status-historical-events.png)
 
 1. Select a specific event from the list to view its details. 
 
-  ![image](/images/status-page/status-event-details.png)
+    ![image](/images/status-page/status-event-details.png)
 
 ### Product and service Filter
 
@@ -76,21 +76,21 @@ The status dashboard shows the following data:
 
 1. **Global comprehensive service quality**
 
-  This dashboard graphic shows the comprehensive service status over the past 24 hours. The quality columns are arranged in chronological order with one column for every 5 minutes. The height of the column represents the quality of the comprehensive service experience. The text on the right shows the latest real-time interactive service status and the update time. Hover the mouse over a quality column to view the corresponding time and status.
+    This dashboard graphic shows the comprehensive service status over the past 24 hours. The quality columns are arranged in chronological order with one column for every 5 minutes. The height of the column represents the quality of the comprehensive service experience. The text on the right shows the latest real-time interactive service status and the update time. Hover the mouse over a quality column to view the corresponding time and status.
 
-  ![image](/images/status-page/status-hover.png)
+    ![image](/images/status-page/status-hover.png)
 
 1. **24-hour real-time experience metrics**
 
-  Use the expand button to view detailed [quality metrics](#quality-metrics), which together constitute the comprehensive service experience quality index of real-time interaction. The quality columns, show the service quality based on each metric for the past 24 hours. There is a quality column every 5 minutes, and the height of the quality column represents the quality of the indicator.
+    Use the expand button to view detailed [quality metrics](#quality-metrics), which together constitute the comprehensive service experience quality index of real-time interaction. The quality columns, show the service quality based on each metric for the past 24 hours. There is a quality column every 5 minutes, and the height of the quality column represents the quality of the indicator.
 
-  ![image](/images/status-page/status-quality-metrics.png)
+    ![image](/images/status-page/status-quality-metrics.png)
 
 3. **90-day service status**
 
-  The quality columns show the availability data for the past 90 days. There is one quality column for each day. Hover the mouse over the quality column to view the corresponding date and event for the day.
+    The quality columns show the availability data for the past 90 days. There is one quality column for each day. Hover the mouse over the quality column to view the corresponding date and event for the day.
 
-  ![image](/images/status-page/status-event-popup.png)
+    ![image](/images/status-page/status-event-popup.png)
 
 Currently, the status dashboard provides information regarding the following Agora products and services.
 
@@ -114,6 +114,7 @@ The comprehensive QoE for real-time communication services is based on multiple 
 | End-to-end responsiveness | Measures responsiveness and smoothness of services    | Ratio of network delay to total audio and video duration   |
 | Audio fluency | Measures audio playback continuity  | Ratio of audio freeze duration to total audio duration    |
 | Video fluency | Measures video playback smoothness  | Ratio of video freeze duration to total video duration    |
+
 :::note
 Use the **Expand** button under the comprehensive Real-Time Communication QoE index to view the historical data for each metric.
 :::

@@ -39,54 +39,54 @@ Follow these steps to install, configure, and use the VAD plugin in your project
 
 1. Install the [VAD plugin](https://www.npmjs.com/package/agora-extension-vad) from npm.
 
-  1. Run the following command to install the VAD plugin:
+    1. Run the following command to install the VAD plugin:
 
-   ```shell
-   npm install agora-extension-vad
-   ```
+    ```shell
+    npm install agora-extension-vad
+    ```
 
-  1. Import the VAD module in your JavaScript or TypeScript file:
+    1. Import the VAD module in your JavaScript or TypeScript file:
 
-   ```ts
-   import { VADExtension } from "agora-extension-vad";
-   ```
+    ```ts
+    import { VADExtension } from "agora-extension-vad";
+    ```
 
 1. Deploy Wasm files
 
-  The VAD plugin requires WebAssembly files to function. Make these files accessible to your web application:
+    The VAD plugin requires WebAssembly files to function. Make these files accessible to your web application:
   
-  1. Copy the Wasm files from `node_modules/agora-extension-vad/wasm/` to your application's public assets folder, such as `public/wasm/` or `static/wasm/`. When you create the `VADExtension` object, specify this path so the plugin can load these files.
+    1. Copy the Wasm files from `node_modules/agora-extension-vad/wasm/` to your application's public assets folder, such as `public/wasm/` or `static/wasm/`. When you create the `VADExtension` object, specify this path so the plugin can load these files.
    
-   Sample file structure:
+    Sample file structure:
 
-   ```
-   your-project/
-   ├── public/
-   │  └── wasm/      // Copy Wasm files here
-   │    ├── file1.wasm
-   │    └── file2.wasm
-   └── src/
+    ```
+    your-project/
+    ├── public/
+    │  └── wasm/      // Copy Wasm files here
+    │    ├── file1.wasm
+    │    └── file2.wasm
+    └── src/
      └── app.js
-   ```
+    ```
   
-   :::warning[Important requirements]
-   - **HTTPS required**: Serve Wasm files over HTTPS in production.
+    :::warning[Important requirements]
+    - **HTTPS required**: Serve Wasm files over HTTPS in production.
       - **CORS configuration**: If you host Wasm files on a different domain than your app, enable CORS for that domain.
       - **Same-origin recommended**: For simplicity, host Wasm files on the same domain as your application.
-   :::
+    :::
    
-  1. Configure Content Security Policy (if applicable)
+    1. Configure Content Security Policy (if applicable)
   
-   If your application uses CSP headers, add the following permissions:
+    If your application uses CSP headers, add the following permissions:
 
-   - For Chrome 97+, Edge 97+, and modern browsers:
+    - For Chrome 97+, Edge 97+, and modern browsers:
 
      ```html
      <meta http-equiv="Content-Security-Policy" 
         content="script-src 'self' 'wasm-unsafe-eval' blob:">
      ```
 
-   - For older browsers (Chrome versions earlier than 97, Edge versions earlier than 97):
+    - For older browsers (Chrome versions earlier than 97, Edge versions earlier than 97):
    
      ```html
      <meta http-equiv="Content-Security-Policy" 
@@ -95,7 +95,7 @@ Follow these steps to install, configure, and use the VAD plugin in your project
 
 1. Register the plugin
 
-  Call the [`AgoraRTC.registerExtensions`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions) method and pass the created `VADExtension` instance to register the VAD plugin. You can also listen for events when the Wasm file fails to load.
+    Call the [`AgoraRTC.registerExtensions`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions) method and pass the created `VADExtension` instance to register the VAD plugin. You can also listen for events when the Wasm file fails to load.
 
 :::warning
 
@@ -129,59 +129,59 @@ Follow these steps to install, configure, and use the VAD plugin in your project
 
 1. Enable the plugin
 
-  To enable the VAD plugin:
+    To enable the VAD plugin:
 
-  1. Call the `createProcessor` method to create an instance of `IVADProcessor`. You can set the plugin to be enabled or disabled by default. If you don't specify a state, the plugin uses the last known state.
+    1. Call the `createProcessor` method to create an instance of `IVADProcessor`. You can set the plugin to be enabled or disabled by default. If you don't specify a state, the plugin uses the last known state.
 
-   ```ts
-   // Create an IVADProcessor instance
-   const processor = extension.createProcessor();
+    ```ts
+    // Create an IVADProcessor instance
+    const processor = extension.createProcessor();
    
-   // Enable the plugin by default
-   // await processor.enable();
+    // Enable the plugin by default
+    // await processor.enable();
    
-   // Disable the plugin by default
-   // await processor.disable();
+    // Disable the plugin by default
+    // await processor.disable();
    
-   // Optional: Listen for processor overload events
-   processor.on("overload", async () => {
+    // Optional: Listen for processor overload events
+    processor.on("overload", async () => {
     console.log("Processor overload detected");
     // Choose to disable the plugin
     // await processor.disable();
     // Or continue processing audio despite the overload
-   });
-   ```
+    });
+    ```
 
-  1. Inject the plugin into the audio processing pipeline by calling the SDK's [`pipe`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#pipe) method and specify the `processorDestination` property.
+    1. Inject the plugin into the audio processing pipeline by calling the SDK's [`pipe`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#pipe) method and specify the `processorDestination` property.
 
-   ```ts
-   // Create an audio track
-   const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-   // Inject the plugin into the audio processing pipeline
-   audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
-   ```
+    ```ts
+    // Create an audio track
+    const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+    // Inject the plugin into the audio processing pipeline
+    audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
+    ```
 
-  1. If the plugin is not enabled by default, call the `enable` method to enable the plugin.
+    1. If the plugin is not enabled by default, call the `enable` method to enable the plugin.
 
-   ```ts
-   await processor.enable();
-   ```
+    ```ts
+    await processor.enable();
+    ```
 
 1. Get detection results
 
-  After you enable the plugin, listen to the `result` event to get the detection results and process them as needed.
+    After you enable the plugin, listen to the `result` event to get the detection results and process them as needed.
 
-  ```ts
-  // Listen to the detection results of the VAD plugin
-  processor.on("result", handleResult);
+    ```ts
+    // Listen to the detection results of the VAD plugin
+    processor.on("result", handleResult);
   
-  function handleResult(result) {
-   // Output voiceProb, which indicates the probability that someone is speaking
-   console.info("voiceProb: ", result.voiceProb);
-   // Output musicProb, which indicates the probability that music is playing
-   console.info("musicProb: ", result.musicProb);
-  }
-  ```
+    function handleResult(result) {
+     // Output voiceProb, which indicates the probability that someone is speaking
+     console.info("voiceProb: ", result.voiceProb);
+     // Output musicProb, which indicates the probability that music is playing
+     console.info("musicProb: ", result.musicProb);
+    }
+    ```
 
 :::note
   `voiceProb` and `musicProb` are floating-point numbers from 0 to 1 that represent the probability that someone is speaking and that music is playing.
@@ -189,11 +189,11 @@ Follow these steps to install, configure, and use the VAD plugin in your project
 
 1. Disable the plugin
 
-  When you no longer need the VAD plugin, call the `disable` method to disable the plugin.
+    When you no longer need the VAD plugin, call the `disable` method to disable the plugin.
 
-  ```ts
-  await processor.disable();
-  ```
+    ```ts
+    await processor.disable();
+    ```
 
 ## Reference
 

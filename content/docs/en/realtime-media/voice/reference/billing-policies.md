@@ -31,9 +31,9 @@ To view billing information for your projects:
 
 2. Click **Billing**.
 
-  You see the detailed billing information for your projects, including billing period, due date, and amount.
+    You see the detailed billing information for your projects, including billing period, due date, and amount.
 
-  ![View bills](/images/video-sdk/bills.png)
+    ![View bills](/images/video-sdk/bills.png)
 
 #### Additional charges
 
@@ -227,7 +227,7 @@ Agora guarantees a minimum introduction period of 12 months from the release of 
 | Phase | Description |
 |-------|-------------|
 |Beta | During this phase, SDKs are intended solely for early access and feedback purposes. They are not recommended for use in production environments. Beta products fall outside of the EOL policy and are intended for evaluation purposes only. For more information, see the Beta Service Agreement.|
-|General Availability (GA)|SDKs in this phase are fully supported by Agora. Agora provides support for new services, API updates, feature enhancements, bug fixes, and security patches. Agora guarantees a minimum of 12 months of support for GA SDKs. For details on client SDK support periods, see [Client SDK support periods​](#client-sdk-support-periods).|
+|General Availability (GA)|SDKs in this phase are fully supported by Agora. Agora provides support for new services, API updates, feature enhancements, bug fixes, and security patches. Agora guarantees a minimum of 12 months of support for GA SDKs. For details on client SDK support periods, see [Client SDK support periods](#client-sdk-support-periods).|
 |Retirement (EOL) SDKs: (Maintenance)| When an SDK enters the Retirement phase, Agora announces its retirement with a minimum notice period of 60 days, which is approximately 2 months. This announcement will include crucial timelines and guidelines to assist developers in migrating to the latest recommended SDK version. Agora communicates retirement announcements through email, the Agora Console notifications center, and SDK documentation, and may also post announcements on social media or the [Agora blog](https://www.agora.io/en/blog/). When a product or service reaches the end-of-support or end-of-life stage, Agora stops providing security updates, non-security updates, and assisted support.
 
 ### Client SDK support periods
@@ -250,6 +250,7 @@ During the Retirement phase, products entering the EOS/EOL phase will continue t
 | Months 1–6 after EOL announcement | Agora provides bug fixes and security updates. New feature requests are not accepted. |
 | Months 7–12 after EOL announcement | Agora provides security updates only. |
 | After 12 months | Agora no longer supports the product or service, unless a support extension was arranged before the end of the 12-month period. |
+
 :::note
 Using an SDK beyond its maintenance support cycle is not recommended and is entirely at the developer's discretion and risk.
 :::

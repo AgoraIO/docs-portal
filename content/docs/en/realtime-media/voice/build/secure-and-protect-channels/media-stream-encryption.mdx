@@ -41,14 +41,14 @@ To add built-in media stream encryption to your app, refer to the following step
 
 1. Generate a key and salt on your server
 
-   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
+    - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
 
      ```shell
      # Generate a 32-byte hexadecimal key
      openssl rand -hex 32
      ```
 
-   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
+    - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
 
      ```shell
      # Generate a Base64-encoded, 32-byte salt
@@ -57,60 +57,60 @@ To add built-in media stream encryption to your app, refer to the following step
 
 2. Implement client-side logic
 
-  1. Obtain a String key and Base64-encoded salt from the server.
+    1. Obtain a String key and Base64-encoded salt from the server.
 
-  1. Before joining a channel, call `AgoraRTCClient.setEncryptionConfig` to select the encryption mode and specify the encryption key and salt.
+    1. Before joining a channel, call `AgoraRTCClient.setEncryptionConfig` to select the encryption mode and specify the encryption key and salt.
 
-  1. When you call `setEncryptionConfig`, the web client:
+    1. When you call `setEncryptionConfig`, the web client:
 
      * Converts the key from Hex to ASCII, before passing it to the Voice SDK.
 
      * Converts the salt from Base64 to Uint8Array, before passing it to the Voice SDK.
 
-  :::note
-  - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+    :::note
+    - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
     - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
-  :::
+    :::
 
-  To implement this logic, refer to the following code:
+    To implement this logic, refer to the following code:
 
-  ```javascript
-  // Declare a utility function to convert Base64 to Uint8Array
-  function base64ToUint8Array(base64Str: string): Uint8Array {
-    const raw = window.atob(base64Str);
-    const result = new Uint8Array(new ArrayBuffer(raw.length));
+    ```javascript
+    // Declare a utility function to convert Base64 to Uint8Array
+    function base64ToUint8Array(base64Str: string): Uint8Array {
+      const raw = window.atob(base64Str);
+      const result = new Uint8Array(new ArrayBuffer(raw.length));
 
-    for (let i = 0; i < raw.length; i += 1) {
-      result[i] = raw.charCodeAt(i);
+      for (let i = 0; i < raw.length; i += 1) {
+        result[i] = raw.charCodeAt(i);
+      }
+
+      return result;
     }
 
-    return result;
-  }
+    // Declare a utility function to convert Hex to ASCII
+    function hex2ascii(hexx) {
+      const hex = hexx.toString();//force conversion
+      let str = '';
+      for (let i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+      return str;
+    }
 
-  // Declare a utility function to convert Hex to ASCII
-  function hex2ascii(hexx) {
-    const hex = hexx.toString();//force conversion
-    let str = '';
-    for (let i = 0; i < hex.length; i += 2)
-      str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    return str;
-  }
+    async function getSecretAndSalt() {
+      // Retrieve the key and salt value from the server
+      let [secret, salt] = await getSecretAndSaltFromServer();
+      salt = base64ToUint8Array(salt);
+      secret = hex2ascii(secret);
+      return [secret, salt];
+    }
 
-  async function getSecretAndSalt() {
-    // Retrieve the key and salt value from the server
-    let [secret, salt] = await getSecretAndSaltFromServer();
-    salt = base64ToUint8Array(salt);
-    secret = hex2ascii(secret);
-    return [secret, salt];
-  }
+    let [secret, salt] = await getSecretAndSalt();
 
-  let [secret, salt] = await getSecretAndSalt();
+    // Set the encryption scheme to AES-256-GCM2 and pass in secret and salt
+    client.setEncryptionConfig("aes-256-gcm2", secret, salt);
+    ```
 
-  // Set the encryption scheme to AES-256-GCM2 and pass in secret and salt
-  client.setEncryptionConfig("aes-256-gcm2", secret, salt);
-  ```
-
-  The sample code refers to the local `client` object created using `AgoraRTC.createClient`
+    The sample code refers to the local `client` object created using `AgoraRTC.createClient`
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.

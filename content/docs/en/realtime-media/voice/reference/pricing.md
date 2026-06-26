@@ -40,6 +40,7 @@ Agora uses [standard minutes](#standard-minutes-calculator) to measure usage for
 | Broadcast Streaming Audience Video Full HD | 1 : 4.57 | $4.59 |
 | Broadcast Streaming Audience Video 2K | 1 : 8 | $7.99 |
 | Broadcast Streaming Audience Video 2K+ | 1 : 18 | $17.99 |
+
 :::note
 To estimate the standard minutes consumed for your use case, use the [Standard minutes calculator](#standard-minutes-calculator).
 :::
@@ -58,8 +59,8 @@ Agora deducts Standard minutes from the balance in your subscribed package. If y
 | **Analytics starter plan** | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | - |
 | **Advanced audio processing**<br/>(AGC, AEC and ANS) | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | - |
 
-\* The percentage is calculated based on the Standard minute (audio) rate ($0.99 per 1,000 minutes) and is already reflected in the package price. 
-\*\* Allows overage post-payment within the validity period of the package. 
+\* The percentage is calculated based on the Standard minute (audio) rate ($0.99 per 1,000 minutes) and is already reflected in the package price.
+\*\* Allows overage post-payment within the validity period of the package.
 **Note**: Agora reserves the right to suspend an account once the prepaid balance is fully consumed, even if the overage invoice has not yet been issued.
 :::warning
 
@@ -82,9 +83,9 @@ Agora offers the following top-up packages:
 
 | Top-up minutes | Price     | Discount\* |
 |----------------|----------------|------------|
-| 25,000	    | _**$23.50**_ |  5%   |
-| 250,000	    | _**$230.00**_	 |  7%   |
-| 1,000,000	   | _**$891.00**_	 |  10%   |
+| 25,000      | _**$23.50**_ |  5%   |
+| 250,000      | _**$230.00**_   |  7%   |
+| 1,000,000     | _**$891.00**_   |  10%   |
 
 \* The discount is calculated based on the Standard minute (audio) rate ($0.99 per 1,000 minutes) and is already reflected in the package price.
 
@@ -113,11 +114,11 @@ If your actual usage for the month exceeds both the subscribed package minutes a
 
 User A purchases the Premium Package on August 15.
 
-* **August 15**: On purchase, User A pays: 
+* **August 15**: On purchase, User A pays:
  *$339.99* for the month of August.
-* **August 25**: The package is automatically renewed for September. 
+* **August 25**: The package is automatically renewed for September.
  *$339.99* is deducted from the balance.
-* **September 1**: August usage exceeds the package minutes by 100,000. 
+* **September 1**: August usage exceeds the package minutes by 100,000.
  *100,000 ÷ 1,000 × $0.99 = $99* is automatically deducted from your account.
 
 ## Value-added services
@@ -155,14 +156,14 @@ A user subscribes to the following streams:
   * *1280 × 720*
   * *1920 × 1080*
 
-The aggregate resolution is: *(1280 × 720) + (1920 × 1080) = 2,995,200* 
+The aggregate resolution is: *(1280 × 720) + (1920 × 1080) = 2,995,200*
 This falls in the range 2,073,600 to 3,686,400, so Agora counts this usage as **2K video**.
 
 **Example 2**:
 
 Five users join an interactive live video streaming channel at the same time for 60 minutes. There are three video streaming hosts (A, B, and C), each with a video resolution set to 960 × 720. Two users subscribe as audience to the video streams from the hosts. Additionally, Host A shares their screen with all other users in the channel. The resolution of the screen-sharing stream is set to and received at 1920 × 1080.
 
-The following table shows the aggregate resolution for each user’s video stream subscriptions. 
+The following table shows the aggregate resolution for each user’s video stream subscriptions.
 
 | **User**        | **Video streams subscribed**   | **Aggregate video resolution** | **Total** | **Video type** |
 |-------------------------|-----------------------------------|---------------------------------|-----------|----------------|
@@ -170,7 +171,7 @@ The following table shows the aggregate resolution for each user’s video strea
 | Host B         | 2 hosts + Host A’s screen sharing | (960 × 720 × 2) + (1920 × 1080) | 3,456,000 | 2K       |
 | Host C         | 2 hosts + Host A’s screen sharing | (960 × 720 × 2) + (1920 × 1080) | 3,456,000 | 2K       |
 | Audience Member 1    | 3 hosts + Host A’s screen sharing | (960 × 720 × 3) + (1920 × 1080) | 4,147,200 | 2K+      |
-| Audience Member 2    | 3 hosts + Host A’s screen sharing | (960 × 720 × 3) + (1920 × 1080) | 4,147,200 | 2K+  
+| Audience Member 2    | 3 hosts + Host A’s screen sharing | (960 × 720 × 3) + (1920 × 1080) | 4,147,200 | 2K+
 
 ### Standard duration calculation
 
@@ -291,6 +292,7 @@ The resolution of a screen sharing video stream is determined by the video resol
 | Windows   | `ScreenCaptureParameters`         | 1920 × 1080      |
 | macOS    | `AgoraScreenCaptureParameters`       | 1920 × 1080      |
 | Web     | `ScreenVideoTrackInitConfig.encoderConfig` | 1920 × 1080      |
+
 :::note
 On the Web platform, some browsers may not support the resolution you set due to device and browser limitations. In such cases, billing is based on the actual captured resolution, not the configured value.
 :::
