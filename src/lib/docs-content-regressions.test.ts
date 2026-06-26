@@ -173,7 +173,7 @@ describe('docs content regressions', () => {
   it('keeps parameter table lists and callouts in the media push type definition page', async () => {
     const { source } = await import('./source.server');
     const page = source.getPage(
-      ['realtime-media', 'media-push', 'reference', 'restful-type-definition'],
+      ['api-reference', 'api-ref', 'media-push', 'restful-type-definition'],
       'en',
     );
 
@@ -188,6 +188,11 @@ describe('docs content regressions', () => {
 
     const processed = await page.data.getText('processed');
 
+    expect(processed).toContain('| Field');
+    expect(processed).toContain('| Type');
+    expect(processed).toContain('| Descriptions');
+    expect(processed).not.toContain('<ParamTable>');
+    expect(processed).not.toContain('<Slot');
     expect(processed).toContain('`LC-AAC` (Default): MPEG-4 AAC LC');
     expect(processed).toContain('<CalloutContainer type="info">');
     expect(processed).toContain(
