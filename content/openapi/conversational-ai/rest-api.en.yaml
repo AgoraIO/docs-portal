@@ -964,6 +964,75 @@ paths:
                           description: |-
                             Conversation turn detection mode:
                             - `default`: Uses standard conversation turn detection configuration.
+                        type:
+                          type: string
+                          default: agora_vad
+                          enum:
+                            - agora_vad
+                            - server_vad
+                            - semantic_vad
+                          deprecated: true
+                          description: >-
+                            Deprecated turn detection mechanism. `agora_vad` uses Agora VAD,
+                            `server_vad` lets the model detect speech start and end based on audio
+                            volume, and `semantic_vad` uses semantic estimation with VAD.
+                        interrupt_mode:
+                          type: string
+                          default: interrupt
+                          enum:
+                            - interrupt
+                            - append
+                            - ignore
+                            - keywords
+                            - adaptive
+                          deprecated: true
+                          description: >-
+                            Deprecated interruption behavior when human voice interrupts the agent
+                            while it is speaking or thinking.
+                        interrupt_duration_ms:
+                          type: number
+                          default: 160
+                          deprecated: true
+                          description: >-
+                            The amount of time in milliseconds that the user's voice must exceed the
+                            VAD threshold before an interruption is triggered.
+                        interrupt_keywords:
+                          type: array
+                          deprecated: true
+                          description: >-
+                            Keywords that trigger an interruption when
+                            `turn_detection.interrupt_mode` is set to `keyword`.
+                          items:
+                            type: string
+                        prefix_padding_ms:
+                          type: integer
+                          default: 800
+                          deprecated: true
+                          description: >-
+                            The extra forward padding time in milliseconds before processing starts.
+                        silence_duration_ms:
+                          type: integer
+                          default: 640
+                          deprecated: true
+                          description: >-
+                            The duration of audio silence in milliseconds after which the agent
+                            assumes the user has stopped speaking.
+                        threshold:
+                          type: number
+                          default: 0.5
+                          deprecated: true
+                          description: >-
+                            Voice activity detection sensitivity. The valid range is `(0.0, 1.0)`.
+                        eagerness:
+                          type: string
+                          default: auto
+                          enum:
+                            - auto
+                            - low
+                            - high
+                          description: >-
+                            The eagerness of the model to respond. Only available in `semantic_vad`
+                            mode when using OpenAI Realtime API.
                         config:
                           type: object
                           additionalProperties: true
@@ -1797,6 +1866,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request POST \
+              --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave \
+              --header 'Authorization: Basic <your_base64_encoded_credentials>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+            url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave"
+
+            headers = {
+                "Authorization": "Basic <your_base64_encoded_credentials>",
+                "Content-Type": "application/json"
+            }
+
+            response = requests.post(url, headers=headers)
+            print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const url = 'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave';
+
+            const options = {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Basic <your_base64_encoded_credentials>',
+                'Content-Type': 'application/json'
+              }
+            };
+
+            fetch(url, options)
+              .then(res => res.json())
+              .then(json => console.log(json))
+              .catch(err => console.error(err));
   /v2/projects/{appid}/agents/{agentId}/update:
     post:
       summary: Update agent configuration
@@ -2031,15 +2138,15 @@ paths:
           required: false
           schema:
             type: number
-            default: 2
-          description: The start timestamp (in seconds) for the query.
+          description: >-
+            The start timestamp (in seconds) for the query. Defaults to `2 hours ago`.
         - name: to_time
           in: query
           required: false
           schema:
             type: number
-            default: Current time
-          description: The end timestamp (in seconds) for the query.
+          description: >-
+            The end timestamp (in seconds) for the query. Defaults to the current time.
         - name: state
           in: query
           required: false
@@ -2283,6 +2390,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request POST \
+              --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt \
+              --header 'Authorization: Basic <credentials>' \
+              --data '{}'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+            url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt"
+
+            payload = {}
+            headers = {"Authorization": "Basic <credentials>"}
+
+            response = requests.request("POST", url, json=payload, headers=headers)
+
+            print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const url = 'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt';
+            const options = {
+              method: 'POST',
+              headers: {Authorization: 'Basic <credentials>'},
+              body: JSON.stringify({})
+            };
+
+            fetch(url, options)
+              .then(res => res.json())
+              .then(json => console.log(json))
+              .catch(err => console.error(err));
   /v2/projects/{appid}/agents/{agentId}/think:
     post:
       summary: Send a custom instruction
