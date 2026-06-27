@@ -10,9 +10,9 @@ This page tracks Android release notes for the Whiteboard SDK.
 
 ## Reference
 
-::::info[Note]
+:::info[Note]
 To ensure a consistent user experience across different platforms while enabling native access on each platform, the Whiteboard SDK for Android is implemented by creating a wrapper for the Whiteboard SDK for Web, rather than being a completely native SDK. Therefore, each Android SDK version by default includes the updates of the Web SDK version that it is built upon. The corresponding Web SDK version is provided in each Android release note, so that you can refer to the relevant Web SDK release note for updates.
-::::
+:::
 
 ## v2.16.100
 
@@ -24,11 +24,11 @@ Released on July 28, 2025.
 
 This release adds the `appliance-plugin`, a plugin that provides a set of high-performance whiteboard drawing tools. To use it, install `@netless/appliance-plugin` and enable it using the `WhiteSdkConfiguration.enableAppliancePlugin` option. For more details, see the [`appliance-plugin` documentation](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md).
 
-::::info
+:::info
 - `@netless/appliance-plugin` is an external dependency and must be installed separately.
 - To ensure correct rendering of strokes, enable the plugin on all platforms (Web, Android, and iOS). If a platform does not enable it, strokes drawn on other platforms will not be visible.
 - After enabling the plugin, historical content remains visible but cannot be modified or upgraded. To avoid affecting the user experience, use the plugin on a new whiteboard. Disabling the plugin removes the content drawn with it.
-::::
+:::
 
 Once enabled, you can:
 
@@ -58,9 +58,9 @@ This release adds the `SlideListener.onSlideError` method to listen for PPT rend
 
 Released on July 28, 2025.
 
-::::info[Note]
+:::info[Note]
 The wrapped Web SDK has been upgraded to v2.16.51.
-::::
+:::
 
 #### New features
 
@@ -79,9 +79,9 @@ This version adds the `prepareWhiteConnection` method to preselect an optimal ac
 
 Released on July 28, 2025.
 
-::::info[Note]
+:::info[Note]
 The wrapped Web SDK has been upgraded to v2.16.48.
-::::
+:::
 
 #### New features
 
@@ -174,9 +174,9 @@ This version fixes the following issues:
 
 v2.16.59 was released on January 19, 2024.
 
-::::info[Note]
+:::info[Note]
 The wrapped Web SDK has been upgraded to v2.16.42.
-::::
+:::
 
 #### Compatibility changes
 
@@ -251,9 +251,9 @@ Added
 
 v2.16.42 was released on December 2, 2022.
 
-::::info[Note]
+:::info[Note]
 The wrapped Web SDK has been upgraded to v2.16.37.
-::::
+:::
 
 #### New features
 
@@ -836,9 +836,9 @@ This page tracks iOS release notes for the Whiteboard SDK.
 
 ## Reference
 
-::::info[Note]
+:::info[Note]
 To ensure a consistent user experience across different platforms while enabling native access on each platform, the Whiteboard SDK for iOS is implemented by creating a wrapper for the Whiteboard SDK for Web, rather than being a completely native SDK. Therefore, each iOS SDK version by default includes the updates of the Web SDK version that it is built upon. The corresponding Web SDK version is provided in each iOS release note, so that you can refer to the relevant Web SDK release note for updates.
-::::
+:::
 
 ## v2.16.112
 
@@ -850,11 +850,11 @@ Released on July 28, 2025.
 
 This release introduces the `appliance-plugin` that provides a set of high-performance whiteboard drawing tools. To use it, install `@netless/appliance-plugin` and enable it with the `WhiteSdkConfiguration.enableAppliancePlugin` configuration option. For details, see the [`appliance-plugin` documentation](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md).
 
-::::info
+:::info
 - `@netless/appliance-plugin` is an external dependency and must be installed separately.
 - To ensure consistent rendering of strokes, enable the plugin on all platforms (Web, Android, and iOS). Strokes drawn with the plugin will not appear on platforms where it is not enabled.
 - After enabling the plugin, historical whiteboard content is still visible but cannot be edited or upgraded. To avoid affecting the user experience, we recommend enabling the plugin on a new whiteboard. Disabling the plugin will remove content drawn with it.
-::::
+:::
 
 Once the plugin is enabled, you can:
 
@@ -889,9 +889,9 @@ This release adds the `WhiteSdkConfiguration.useWebKeyboardInjection` property, 
 
 Released on July 28, 2025.
 
-::::info[Note]
+:::info[Note]
 The wrapped Web SDK has been upgraded to v2.16.51.
-::::
+:::
 
 #### New features
 
@@ -920,9 +920,9 @@ This version fixes the following issue:
 
 Released on July 28, 2025.
 
-::::info[Note]
+:::info[Note]
 The wrapped Web SDK has been upgraded to v2.16.48.
-::::
+:::
 
 #### New features
 
@@ -996,9 +996,9 @@ This version fixes the following issues:
 
 v2.16.62 was released on January 19, 2024.
 
-::::info[Note]
+:::info[Note]
 The wrapped Web SDK has been upgraded to v2.16.42.
-::::
+:::
 
 #### Compatibility changes
 
@@ -1063,9 +1063,9 @@ A new property, `WindowParams.fullscreen`, is added to control whether the windo
 
 v2.16.46 was released on December 2, 2022.
 
-::::info[Note]
+:::info[Note]
 The wrapped Web SDK has been upgraded to v2.16.35.
-::::
+:::
 
 #### New features
 
@@ -1862,9 +1862,9 @@ You can use these APIs to customize the text input box and editing toolbar.
 
 This release also adds the `textColor`, `bold`, `italic`, `underline`, and `lineThrough` properties to `MemberState` to provide richer text editing options. When you use the `text` tool provided by the Whiteboard SDK but want to customize the text editing toolbar, you can set the `floatBar` property in `JoinRoomParams` as `false` and edit the text using the new properties in `MemberState`.
 
-::::info
+:::info
 This release deletes the `updateTextFontSize` method. Instead, you can use `updateSelectedText` or `textSize` in `MemberState`.
-::::
+:::
 
 **2. Image rotation**
 
@@ -1876,17 +1876,17 @@ This release adds the tween animation feature for the `pencil` tool. When a user
 
 This release also adds the `disableCurveAnimes` property to `WhiteWebSdkConfiguration` for enabling or disabling the the tween animation feature. The tween animation feature is enabled in the SDK by default. To disable it, you can set `disableCurveAnimes(true)`.
 
-::::info
+:::info
 Tween animations take effect only when `disableNewPencil` is set as `false`.
-::::
+:::
 
 **4. Disabling the stroke effect**
 
 This release adds the `disableNewPencilStroke` property to `WhiteWebSdkConfiguration` to enable or disable the stroke effect of the pencil. The default value of `disableNewPencilStroke` is `true`, and the SDK enables the stroke effect immediately when you set `disableNewPencil(false)` to enable the new pencil. To disable the stroke effect after setting `disableNewPencil(false)`, you can call `disableNewPencilStroke(true)`.
 
-::::info
+:::info
 The stroke effect takes effect only when `disableNewPencil` is set as `false`.
-::::
+:::
 
 **5. Getting the scene information**
 

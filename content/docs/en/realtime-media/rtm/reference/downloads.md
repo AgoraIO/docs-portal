@@ -5,7 +5,20 @@ description: "Links to the manual downloads for this product, and explanations o
 
 **Supported platforms:** Web, Android, iOS, macOS, Linux Java, Linux C++, Windows, Unity, and Flutter.
 
-<PlatformStructured platform="web">
+<Tabs defaultValue="web" groupId="platform">
+<TabsList>
+  <TabsTrigger value="web">Web</TabsTrigger>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+  <TabsTrigger value="linux-java">Linux Java</TabsTrigger>
+  <TabsTrigger value="linux-cpp">Linux C++</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+  <TabsTrigger value="unity">Unity</TabsTrigger>
+  <TabsTrigger value="flutter">Flutter</TabsTrigger>
+</TabsList>
+
+<TabsContent value="web">
 To manually install the Signaling SDK for Web, do one of the following:
 
 ## Through the Agora website
@@ -75,9 +88,9 @@ To manually install the Signaling SDK for Web, do one of the following:
       console.log({ err }, 'error occurs at publish message');
     }
     ```
-</PlatformStructured>
+</TabsContent>
 
-<PlatformStructured platform="android">
+<TabsContent value="android">
 To manually install the Signaling SDK for Android, do one of the following:
 
 ## Automatically integrate the SDK with JitPack
@@ -116,9 +129,9 @@ To manually install the Signaling SDK for Android from a downloaded package:
 | `/armeabi-v7a/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/armeabi-v7a/` |
 | `/x86/libagora-rtm-jni.so` | `~/app/src/main/jniLibs/x86/` |
 | `/x86_64/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/x86_64/` |
-</PlatformStructured>
+</TabsContent>
 
-<PlatformStructured platform="ios">
+<TabsContent value="ios">
 To manually install the Signaling SDK for iOS, do one of the following:
 
 ## Automatically integrate the SDK with CocoaPods
@@ -187,9 +200,9 @@ The steps to execute these scripts are as follows:
     - `libresolv.tbd`
     - `SystemConfiguration.framework`
     - `CoreTelephony.framework`
-</PlatformStructured>
+</TabsContent>
 
-<PlatformStructured platform="macos">
+<TabsContent value="macos">
 To manually install the Signaling SDK for macOS, do one of the following:
 
 ## Automatically integrate the SDK with CocoaPods
@@ -258,9 +271,9 @@ The steps to execute these scripts are as follows:
     - `libresolv.tbd`
     - `SystemConfiguration.framework`
     - `CoreTelephony.framework`
-</PlatformStructured>
+</TabsContent>
 
-<PlatformStructured platform="linux-java">
+<TabsContent value="linux-java">
 To manually install the Signaling SDK for Linux Java:
 
 1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder.
@@ -321,9 +334,9 @@ To manually install the Signaling SDK for Linux Java:
         </build>
     </project>
     ```
-</PlatformStructured>
+</TabsContent>
 
-<PlatformStructured platform="linux-cpp">
+<TabsContent value="linux-cpp">
 To manually install the Signaling SDK for Linux C++:
 
 1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder.
@@ -349,9 +362,9 @@ To manually install the Signaling SDK for Linux C++:
     add_executable(${TARGET_NAME} ${SOURCES} ${HEADERS})
     target_link_libraries(${TARGET_NAME} agora_rtm_sdk pthread)
     ```
-</PlatformStructured>
+</TabsContent>
 
-<PlatformStructured platform="windows">
+<TabsContent value="windows">
 To manually install the Signaling SDK for Windows:
 
 1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder.
@@ -375,9 +388,9 @@ To manually install the Signaling SDK for Windows:
     1. Select **Linker > Input > Additional Dependencies**, then click **Edit**.
 
     1. In the window, input `agora_rtm_sdk.lib`.
-</PlatformStructured>
+</TabsContent>
 
-<PlatformStructured platform="unity">
+<TabsContent value="unity">
 To manually install the Signaling SDK for Unity, do one of the following:
 
 ## Import the asset package
@@ -405,9 +418,9 @@ To manually install the Signaling SDK for Unity, do one of the following:
 | macOS | `Plugins/macOS` | `/Assets/Plugins/macOS` |
 | Windows | `Plugins/x86` | `/Assets/Plugins/x86` |
 | Windows | `Plugins/x86_64` | `/Assets/Plugins/x86_64` |
-</PlatformStructured>
+</TabsContent>
 
-<PlatformStructured platform="flutter">
+<TabsContent value="flutter">
 To manually install the Signaling SDK for Flutter:
 
 1. Open a terminal and execute the following command to create a new Flutter project:
@@ -433,4 +446,5 @@ To integrate Signaling SDK version 2.2.1 or above and Video SDK version 4.3.0 or
     ```bash
     flutter pub get
     ```
-</PlatformStructured>
+</TabsContent>
+</Tabs>
