@@ -27,7 +27,7 @@ restructure.
   back to a primary Download button (no command box).
 - **Use only existing design tokens** — `primary`/`primary-foreground`
   (the neutral brand token, not blue), `border`, `muted-foreground`, and the
-  site's dark code-block surface for the command box. No new colors.
+  site's code-block surface (`bg-fd-card`) for the command box. No new colors.
 
 ## Layout
 
@@ -46,8 +46,8 @@ Within the existing `SdksCatalog` (a `not-prose` section on the page):
    - Product name + one-line description on the left; **version selector** on
      the top-right (latest selected by default).
    - **Derivable command:** a labeled command box (tool label such as "Gradle"
-     / "npm" / "Flutter" + the command + a Copy button) using the dark
-     code-block surface. Secondary row: "Direct download (.zip)" and the
+     / "npm" / "Flutter" + the command + a Copy button) using the site's
+     code-block surface (`bg-fd-card`). Secondary row: "Direct download (.zip)" and the
      registry link (e.g. "Maven Central ↗"). The copy control is a small local
      button using `navigator.clipboard.writeText` with a transient "Copied"
      state (the same pattern as `docs-copy-menu.tsx`) — not the fumadocs MDX
