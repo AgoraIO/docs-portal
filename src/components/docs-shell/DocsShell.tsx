@@ -349,7 +349,7 @@ export function DocsShell({
                   {tabs.map((tab) => (
                     <TabsTrigger asChild key={tab.id} value={tab.id}>
                       <Link
-                        className="h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px] data-[state=active]:font-semibold"
+                        className="group/tab h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px]"
                         params={{}}
                         search={{}}
                         to={tab.url}
@@ -362,7 +362,17 @@ export function DocsShell({
                             />
                           </span>
                         ) : null}
-                        {tab.title}
+                        <span className="grid">
+                          <span
+                            aria-hidden
+                            className="invisible col-start-1 row-start-1 font-semibold"
+                          >
+                            {tab.title}
+                          </span>
+                          <span className="col-start-1 row-start-1 group-data-[state=active]/tab:font-semibold">
+                            {tab.title}
+                          </span>
+                        </span>
                       </Link>
                     </TabsTrigger>
                   ))}
