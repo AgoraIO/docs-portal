@@ -34,7 +34,7 @@ describe('FaqLanding', () => {
     );
     expect(
       screen.queryByRole('link', {
-        name: /Build, packaging, permissions/,
+        name: /Build, package, permissions/,
       }),
     ).toBeNull();
   });
