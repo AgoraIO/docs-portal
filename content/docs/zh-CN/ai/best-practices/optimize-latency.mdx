@@ -223,7 +223,13 @@ RTC 延迟包括音频采集、编码、网络传输、解码、播放等环节�
 - 更低的音频采集和播放延迟
 - 针对 AI 语音特征的音频处理
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 ```kotlin
 // 方式一：使用客户端组件 API（推荐）
@@ -244,8 +250,9 @@ val config = RtcEngineConfig()
 config.mAudioScenario = Constants.AUDIO_SCENARIO_AI_CLIENT
 rtcEngine = RtcEngine.create(config)
 ```
+</CodeBlockTab>
 
-#### iOS
+<CodeBlockTab value="ios">
 
 ```swift
 // 方式一：使用客户端组件 API（推荐）
@@ -266,6 +273,8 @@ let config = AgoraRtcEngineConfig()
 config.audioScenario = .aiClient
 rtcEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: delegate)
 ```
+</CodeBlockTab>
+</CodeBlockTabs>
 
 详细的优化音频设置请见[优化音频设置](./audio-settings.md)。
 

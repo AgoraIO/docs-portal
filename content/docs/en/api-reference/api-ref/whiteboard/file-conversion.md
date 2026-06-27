@@ -41,16 +41,10 @@ You can specify the following parameters:
 | Parameter         | Category | Required/Optional | Description           |
 | :---------------- | :------- | :---------------- |:----------------------|
 | `resource`        | string   | Required          | The URL of the file you want to convert.       |
-| `type`            | string   | Required          | The conversion type:
-
-- `dynamic`: Dynamic-file conversion, converting the file to web pages.<br />- `static`: Static-file conversion, converting the file to images.<br /> |
-| `preview`         | boolean  | Optional          | Whether to generate a preview of the generated files:
-
-- `true`: Generate a preview.<br />- `false`: Do not generate a preview.<br />              |
+| `type`            | string   | Required          | The conversion type:<br />- `dynamic`: Dynamic-file conversion, converting the file to web pages.<br />- `static`: Static-file conversion, converting the file to images. |
+| `preview`         | boolean  | Optional          | Whether to generate a preview of the generated files:<br />- `true`: Generate a preview.<br />- `false`: Do not generate a preview. |
 | `scale`           | number   | Optional          | The scale factor of an image. The range is [0.1,3.0], and the default value is `1.2`. The higher the value, the clearer the generated image. This parameter only takes effect when `type` is set to `static`.                 |
-| `outputFormat`    | string   | Optional          | The format of the generated image:
-
-- `png`<br />- `jpg`<br /> - `jpeg`<br />The default value is `png`. This parameter only takes effect when `type` is set to `static`.        |
+| `outputFormat`    | string   | Optional          | The format of the generated image:<br />- `png`<br />- `jpg`<br />- `jpeg`<br />The default value is `png`. This parameter only takes effect when `type` is set to `static`. |
 | `webhookEndpoint` | string   | Optional          | The address of the Webhook callback, generally the app server address, is used to receive information sent by the server, such as the progress of tasks. See [webhook callback](#webhook-callback). |
 | `webhookRetry`    | number   | Optional          | The number of retries the system attempts when the Webhook callback fails. The default value is `3`, and the maximum is `10`.                      |
 | `imageCompressionLevel` | number | Optional | <Slot name="imagecompressionlevel" /> |

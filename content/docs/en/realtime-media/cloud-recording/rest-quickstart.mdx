@@ -47,33 +47,33 @@ To implement Cloud Recording, ensure that you have:
     - Secret key
 
     <Accordions>
-  <Accordion title="Supported third-party cloud storage services">
-    - [Alibaba Cloud](https://www.alibabacloud.com/product/object-storage-service)
-          - [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls)
-          - [Baidu AI Cloud](https://intl.cloud.baidu.com/product/bos.html)
-          - [Google Cloud](https://cloud.google.com/storage)
-          - [Huawei Cloud](https://www.huaweicloud.com/intl/en-us/product/obs)
-          - [Kingsoft Cloud](https://en.ksyun.com/nv/product/KS3)
-          - [Microsoft Azure](https://azure.microsoft.com/en-us/services/storage/blobs/)
-          - [Qiniu Cloud](https://www.qiniu.com/en/products/kodo)
-          - [Tencent Cloud](https://intl.cloud.tencent.com/product/cos)
-  </Accordion>
-</Accordions>
+      <Accordion title="Supported third-party cloud storage services">
+        - [Alibaba Cloud](https://www.alibabacloud.com/product/object-storage-service)
+        - [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls)
+        - [Baidu AI Cloud](https://intl.cloud.baidu.com/product/bos.html)
+        - [Google Cloud](https://cloud.google.com/storage)
+        - [Huawei Cloud](https://www.huaweicloud.com/intl/en-us/product/obs)
+        - [Kingsoft Cloud](https://en.ksyun.com/nv/product/KS3)
+        - [Microsoft Azure](https://azure.microsoft.com/en-us/services/storage/blobs/)
+        - [Qiniu Cloud](https://www.qiniu.com/en/products/kodo)
+        - [Tencent Cloud](https://intl.cloud.tencent.com/product/cos)
+      </Accordion>
+    </Accordions>
 
 - Enabled the Agora Cloud Recording service for your project.
 
     <Accordions>
-  <Accordion title="Steps to enable cloud recording">
-    1. Log in to [Agora Console](https://console.agora.io/v2), and click the **Project Management** icon on the left navigation panel.
+      <Accordion title="Steps to enable cloud recording">
+        1. Log in to [Agora Console](https://console.agora.io/v2), and click the **Project Management** icon on the left navigation panel.
         2. On the **Project Management** page, find the project for which you want to enable the cloud recording service, and click the edit icon.
         3. On the **Edit Project** page, find **Cloud Recording**, and click **Enable**.
-            ![](https://web-cdn.agora.io/docs-files/1638866909361)
-            On the following screen, click **Enable Cloud Recording**.
-            ![](https://web-cdn.agora.io/docs-files/1636367386978)
+           ![](https://web-cdn.agora.io/docs-files/1638866909361)
+           On the following screen, click **Enable Cloud Recording**.
+           ![](https://web-cdn.agora.io/docs-files/1636367386978)
         4. Click **Apply**.
-            Now, you can use Agora Cloud Recording and see the usage statistics in the **Usage** page.
-  </Accordion>
-</Accordions>
+           Now, you can use Agora Cloud Recording and see the usage statistics in the **Usage** page.
+      </Accordion>
+    </Accordions>
 
 - If your network has a firewall, follow the instructions in [Firewall Requirements](/en/realtime-media/cloud-recording/reference/firewall).
 
@@ -93,7 +93,7 @@ The following APIs are optional and can be called multiple times. However, they 
 
 The Cloud Recording RESTful APIs require basic HTTP authentication. You need to set the `Authorization` parameter in every HTTP request header. For details, see [Basic HTTP authentication](../reference/restful-authentication).
 
-### Get a resource ID {#acquire}
+### Get a resource ID [#acquire]
 
 Call the [`acquire`](/en/api-reference/api-ref/cloud-recording#acquire) method to request a resource ID for Cloud Recording.
 
@@ -121,7 +121,7 @@ curl --location --request POST 'https://api.agora.io/v1/apps/<appid>/cloud_recor
 }'
 ```
 
-### Start recording {#start}
+### Start recording [#start]
 
 Call the [`start`](/en/api-reference/api-ref/cloud-recording#start) method within five minutes of getting a resource ID to join a channel and start recording. You can choose either [individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode) or [composite recording](/en/realtime-media/cloud-recording/build/start-a-recording/composite-mode) as the recording mode.
 
@@ -167,7 +167,7 @@ curl --location --request POST  'https://api.agora.io/v1/apps/<appid>/cloud_reco
 }'
 ```
 
-### Query recording status {#query}
+### Query recording status [#query]
 
 During a recording session, can call the [`query`](/en/api-reference/api-ref/cloud-recording#query) method to query the recording status. You can call this API multiple times.
 
@@ -187,7 +187,7 @@ curl --location --request GET 'https://api.agora.io/v1/apps/<appid>/cloud_record
 --header 'Content-Type: application/json'
 ```
 
-### Stop recording {#stop}
+### Stop recording [#stop]
 
 Call the [`stop`](/en/api-reference/api-ref/cloud-recording#stop) API to end the recording session.
 

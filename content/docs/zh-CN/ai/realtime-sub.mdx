@@ -184,7 +184,14 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.TRANSCRIPT_UPDATED, onTextChan
 
 你需要自行实现字幕处理逻辑，根据转录内容更新 UI 显示。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 将你实现的字幕 UI 模块继承自 `IConversationalAIAPIEventHandler` 接口, 并实现 `onTranscriptUpdated` 方法, 在该方法内处理字幕渲染至 UI 的逻辑。
 
@@ -195,8 +202,9 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.TRANSCRIPT_UPDATED, onTextChan
     }
 }
 ```
+</CodeBlockTab>
 
-#### iOS
+<CodeBlockTab value="ios">
 
 将你实现的字幕 UI 模块实现 `ConversationalAIAPIEventHandler` 协议, 并实现 `onTranscriptUpdated` 方法, 在该方法内处理字幕渲染至 UI 的逻辑：
 
@@ -207,8 +215,9 @@ extension ChatViewController: ConversationalAIAPIEventHandler {
     }
 }
 ```
+</CodeBlockTab>
 
-#### Web
+<CodeBlockTab value="web">
 
 将你实现的字幕 UI 模块接收客户端组件的字幕数据回调，并实现一个简单的 React JS 组件来展示这些消息:
 
@@ -249,12 +258,21 @@ export const ChatHistory = () => {
   )
 }
 ```
+</CodeBlockTab>
+</CodeBlockTabs>
 
 ### 订阅频道消息
 
 字幕转录内容通过 RTM 频道消息传递，你需要在开始智能体会话前订阅频道消息，以接收字幕数据。
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 在开始智能体会话前调用 `subscribeMessage` 订阅频道消息：
 
@@ -265,8 +283,9 @@ api.subscribeMessage("channelName") { error ->
     }
 }
 ```
+</CodeBlockTab>
 
-#### iOS
+<CodeBlockTab value="ios">
 
 在开始智能体会话前调用 `subscribeMessage` 订阅频道消息：
 
@@ -279,12 +298,15 @@ convoAIAPI.subscribeMessage(channelName: channelName) { error in
     }
 }
 ```
+</CodeBlockTab>
 
-#### Web
+<CodeBlockTab value="web">
 
 ```typescript
 conversationalAIAPI.subscribeMessage(channel_name)
 ```
+</CodeBlockTab>
+</CodeBlockTabs>
 
 ### 智能体加入频道
 

@@ -102,23 +102,32 @@ const conversationalAIAPI = ConversationalAIAPI.getInstance()
 </CodeBlockTabs>
 ### 注册回调
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 调用 `addHandler` 方法注册回调：
 
 ```kotlin
 api.addHandler(covEventHandler)
 ```
+</CodeBlockTab>
 
-#### iOS
+<CodeBlockTab value="ios">
 
 调用 `addHandler` 方法注册回调：
 
 ```swift
 convoAIAPI.addHandler(handler: self)
 ```
+</CodeBlockTab>
 
-#### Web
+<CodeBlockTab value="web">
 
 ```typescript
 // 监听消息回执更新
@@ -126,6 +135,8 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_RECEIPT_UPDATED, handl
 // 监听智能体错误事件
 conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_ERROR, onMessageError)
 ```
+</CodeBlockTab>
+</CodeBlockTabs>
 
 ### 订阅频道消息
 

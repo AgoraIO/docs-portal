@@ -103,7 +103,14 @@ const conversationalAIAPI = ConversationalAIAPI.getInstance()
 </CodeBlockTabs>
 ### 注册回调
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 调用 `addHandler` 方法，注册并实现智能体相关事件回调：
 
@@ -183,8 +190,9 @@ api.addHandler(object : IConversationalAIAPIEventHandler {
     }
 })
 ```
+</CodeBlockTab>
 
-#### iOS
+<CodeBlockTab value="ios">
 
 调用 `addHandler` 方法，注册并实现智能体相关事件回调：
 
@@ -282,8 +290,9 @@ class ConversationViewController: UIViewController, ConversationalAIAPIEventHand
 // 注册事件回调
 convoAIAPI.addHandler(handler: self)
 ```
+</CodeBlockTab>
 
-#### Web
+<CodeBlockTab value="web">
 
 ```typescript
 // 监听智能体状态变化
@@ -293,6 +302,8 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.AGENT_METRICS, onAgentMetricsC
 // 监听智能体错误事件
 conversationalAIAPI.on(EConversationalAIAPIEvents.AGENT_ERROR, onAgentError)
 ```
+</CodeBlockTab>
+</CodeBlockTabs>
 
 ### 订阅频道消息
 
