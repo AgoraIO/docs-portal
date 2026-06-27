@@ -217,9 +217,10 @@ The following implementation steps apply to the latest version of the AI Noise S
 
     1. Publish the files located in the `node_modules/agora-extension-ai-denoiser/external` directory to the CDN or static resource server, and put them under one public path. In subsequent steps, you need to pass in the public path URL to create an` AIDenoiserExtension` instance. The extension then dynamically loads these files.
 
-    Note:
-      - If the host URL of the Wasm files is not the same as that of the web application, enable the CORS policy.
-      - Do not put the Wasm files in an HTTP service, loading HTTP resources in the HTTPS domain is blocked by the browsers' security policy.
+        :::note
+        - If the host URL of the Wasm files is not the same as that of the web application, enable the CORS policy.
+        - Do not put the Wasm files in an HTTP service, loading HTTP resources in the HTTPS domain is blocked by the browsers' security policy.
+        :::
 
     2. If you have enabled the Content Security Policy (CSP), because Wasm files are not allowed to load in Chrome and Edge by default, you need to configure the CSP as follows:
 
