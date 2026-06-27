@@ -65,7 +65,6 @@ The canvas information. It contains the following properties:
 The layout information of the host. It corresponds to the `transcodingUsers` member in the `LiveTranscoding` class. It contains the following properties:
 
 - `suid`: (**Optional**)The string user account of the host in this region. This parameter applies to use-cases where string user accounts are used to identify the host.
--
 - `uid`: UID of the host in this region. It corresponds to the `uid` member in the `TranscodingUser` class.
 - `alpha`: The transparency of the video frame of the host. The value range is [0.0, 1.0]. It corresponds to the `alpha` member in `TranscodingUser` .
 - `zorder`: The layout position of the video frame of the host. The value range is [0, 100]. It corresponds to the `zOrder` member in `TranscodingUser`.

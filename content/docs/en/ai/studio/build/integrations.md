@@ -26,7 +26,7 @@ You can edit and delete credentials using the **Actions** column in the credenti
 > **Caution**
 > Deleting a credential affects all agents that use it. Verify that no active agents depend on the credential before deleting, or update those agents to use a different credential first.
 
-#### Credential security
+### Credential security
 
 Credentials stored in **Integrations** are:
 

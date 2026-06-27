@@ -11,7 +11,7 @@ Your billing details may differ if you have signed a contract with Agora.
 
 ## Billing components
 
-Media Pull billing comprises transcoding charges and RTC channel usage charges​ charges:
+Media Pull billing comprises transcoding charges and RTC channel usage charges:
 
 - **Transcoding charges**: Charges for injecting an online media stream into an RTC channel. This charge is not included in Agora's policy of granting 10,000 minutes of free usage per month.
 
