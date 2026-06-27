@@ -45,9 +45,11 @@ To implement cross-channel media stream relay in your app, take the following st
   engine.startOrUpdateChannelMediaRelay(mediaRelayConfiguration);
   ```
 
-  > * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
-  >   * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
-  >   * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::note
+  * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
+    * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
+    * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::
 
 2. Update media stream relay channels
 
@@ -87,7 +89,9 @@ The updated configuration completely **replaces** the previous configuration.
   mediaRelaying = false;
   ```
 
-  > If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::note
+  If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::
 
 5. Monitor cross-channel media stream status
 
@@ -186,9 +190,11 @@ To implement cross-channel media stream relay in your app, take the following st
   agoraKit.startOrUpdateChannelMediaRelay(config)
   ```
 
-  > * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
-  >   * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
-  >   * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::note
+  * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
+    * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
+    * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::
 
 2. Update media stream relay channels
 
@@ -329,9 +335,11 @@ To implement cross-channel media stream relay in your app, take the following st
   agoraKit.startOrUpdateChannelMediaRelay(config)
   ```
 
-  > * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
-  >   * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
-  >   * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::note
+  * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
+    * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
+    * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::
 
 2. Update media stream relay channels
 
@@ -592,9 +600,11 @@ To implement cross-channel media stream relay in your app, take the following st
 	ret = m_rtcEngine->startOrUpdateChannelMediaRelay(cmrc);
 	```
 
-	> * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
-	>   * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
-	>   * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all uids in the target channel.
+	:::note
+	* Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
+	  * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
+	  * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all uids in the target channel.
+	:::
 	
 2. Update media stream relay channels
 
@@ -764,7 +774,9 @@ The updated configuration completely **replaces** the previous configuration.
   rtcEngine.stopChannelMediaRelay();
   ```
 
-  > If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::note
+  If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::
 
 5. Monitor cross-channel media stream status
 
@@ -862,9 +874,11 @@ To implement cross-channel media stream relay in your app, take the following st
   await engine.startOrUpdateChannelMediaRelay(mediaRelayConfiguration);
   ```
 
-  > * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
-  >   * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
-  >   * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::note
+  * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
+    * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
+    * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::
 
 2. Update media stream relay channels
 
@@ -899,7 +913,9 @@ The updated configuration completely **replaces** the previous configuration.
   mediaRelaying = false;
   ```
 
-  > If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::note
+  If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::
 
 5. Monitor cross-channel media stream status
 
@@ -1037,7 +1053,9 @@ The updated configuration completely **replaces** the previous configuration.
   rtcEngine.stopChannelMediaRelay();
   ```
 
-  > If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::note
+  If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::
 
 5. Monitor cross-channel media stream status
 
@@ -1181,7 +1199,9 @@ The updated configuration completely **replaces** the previous configuration.
   }
   ```
 
-  > If this method fails, call `LeaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::note
+  If this method fails, call `LeaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::
 
 5. Monitor cross-channel media stream status
 

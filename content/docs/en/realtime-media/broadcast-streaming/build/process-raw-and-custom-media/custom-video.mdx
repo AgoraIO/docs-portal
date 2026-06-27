@@ -1218,7 +1218,9 @@ Take the following steps to implement this workflow:
 
   Capture frames from Unreal Engine's rendering pipeline on the render thread, convert them to raw BGRA pixel format, and send them to the Agora SDK as external video frames.
 
-  > To synchronize audio and video streams, use system timestamp for the `timestamp` field in the `ExternalVideoFrame`.
+  :::note
+  To synchronize audio and video streams, use system timestamp for the `timestamp` field in the `ExternalVideoFrame`.
+  :::
 
   ```cpp
   void OnBackBufferReady_RenderThread(SWindow& window, const FTexture2DRHIRef& BackBuffer)
