@@ -1,9 +1,553 @@
-This paragraph comes from an included MDX file.
+---
+title: "TEN tools"
+description: "Use TEN Designer and TEN Manager to build TEN Framework applications."
+---
 
-<Callout type="tip" title="Included tip">
-Include content can also contain supported directive callouts.
-</Callout>
+<PlatformStructured platform="web">
+
+TEN Designer is a browser-based visual development environment that provides the graphical interface for TEN Manager. It simplifies building and debugging applications with the TEN Framework. Instead of working solely with command-line tools and configuration files, TEN Designer provides an intuitive graphical interface for creating, editing, and managing TEN applications and extensions. Following are the key benefits of the TEN Designer:
+
+- **Visual graph editing**: See and modify extension connections through an interactive diagram
+- **Simplified dependency management**: Install and manage TEN packages through a user-friendly interface
+- **Integrated development workflow**: Build, run, and debug applications without leaving the designer
+- **Cloud Store integration**: Browse and install extensions directly from the TEN Cloud Store
+- **Cross-platform support**: Works on Windows, Linux, and macOS through your web browser
+
+TEN Designer provides an accessible entry point for developers who prefer visual tools while preserving the full power and flexibility of the TEN Framework.
+
+## Prerequisites
+
+Before starting, ensure that you have:
+
+- One of the following operating systems and architectures:
+    - **Windows**: x86_64
+    - **Linux**: x86_64
+    - **macOS**: x86_64, arm64
+
+- A modern web browser to access the TEN Designer interface.
+
+## Install and run
+
+1. Start TEN Designer:
+
+    ```bash
+    tman designer
+    ```
+
+    You see output similar to:
+
+    ```text
+    🏆  Starting server at http://0.0.0.0:49483
+    ```
+
+    :::info
+    You can run `tman designer` from the root directory of an existing TEN app to automatically load the app in the designer. You can also start TEN Designer from any location and manually load an app later.
+    :::
+
+2. Open your browser and go to `http://127.0.0.1:49483/` to access the interface.
+
+    :::info
+    If TEN Designer is running on a remote machine, replace `127.0.0.1` with the IP address of that machine.
+    :::
+
+## Interface overview
+
+The TEN Designer interface provides easy access to development tools. The upper left corner shows the following dropdown menus:
+
+- **Designer**: Set preferences such as language, theme, and logs
+- **App**: Create, load, and manage apps
+- **Graph**: Load and manage graphs
+- **Extensions**: Install extensions from the extensions store
+
+![TEN Designer Overview](/images/ten-framework/ten_designer_interface.png)
+
+The upper right corner contains the following function buttons:
+
+- **Version button** (rightmost): Displays the current version and automatically checks for updates. When an update is available, an up arrow appears. Click to open the download page.
+- **TEN Agent button**: Opens the [TEN Agent](https://agent.theten.ai/) page, which showcases a complete AI agent implementation built with TEN Framework
+- **GitHub button**: Links to the [TEN Framework repository](https://github.com/TEN-framework/ten_framework) where you can view source code, documentation, and submit issues
+- **Theme and language toggles**: Switch between light and dark modes and select your preferred language
+
+## Working with TEN apps
+
+This section guides you through working with TEN apps in the TEN Designer.
+
+### Load an existing app
+
+To load an existing app, use the **Load App** button in the **App** menu. You see the following interface:
+
+![Loading an Existing TEN app](/images/ten-framework/ten_designer_load_app.png)
+
+Use the file browser to select the app's root directory. TEN Designer automatically loads the app.
+
+### Manage loaded apps
+
+To manage loaded TEN apps, click the **Manage Loaded App(s)** button in the **App** menu. You see the following **Apps Manager** interface:
+
+![Managing Loaded TEN apps](/images/ten-framework/ten_designer_manage_loaded_apps.png)
+
+Use the Apps Manager dialog to perform various operations on your loaded applications:
+
+- Unload loaded apps
+- Reload specified apps
+- Reload all loaded apps
+- Install dependencies for specified apps
+- Execute predefined scripts for specific apps
+
+### Install app dependencies
+
+To install all dependencies for your app using the **Apps Manager**:
+
+1. Open the **Apps Manager** interface in TEN Designer
+2. Click **Install All** for your target application
+3. Monitor the installation progress in the interface shown below:
+
+![Installing All Dependencies for an App](/images/ten-framework/ten_designer_app_install_all.png)
+
+The app's `manifest.json` file defines these dependencies. Following is an example of a `manifest.json` file:
+
+```json
+{
+  "type": "app",
+  "name": "aaa",
+  "version": "0.8.18",
+  "dependencies": [
+    {
+      "type": "system",
+      "name": "ten_runtime",
+      "version": "0.8.18"
+    },
+    {
+      "type": "extension",
+      "name": "ffmpeg_muxer",
+      "version": "^0.1.0"
+    },
+    {
+      "type": "extension",
+      "name": "ffmpeg_demuxer",
+      "version": "^0.1.0"
+    },
+    {
+      "type": "extension",
+      "name": "ffmpeg_client",
+      "version": "^0.1.0"
+    },
+    {
+      "type": "protocol",
+      "name": "msgpack",
+      "version": "^0.8.18"
+    }
+  ],
+  "scripts": {
+    "start": "python3 tools/run_script.py start",
+    "build": "python3 tools/run_script.py build"
+  }
+}
+```
+
+This configuration specifies the following TEN package dependencies:
+
+- `ten_runtime`: The system package of TEN Framework
+- `ffmpeg_demuxer`: A TEN Extension package for decoding audio and video
+- `ffmpeg_muxer`: A TEN Extension package for encoding audio and video
+- `ffmpeg_client`: A TEN Extension package for processing audio and video using the other two ffmpeg extension packages
+- `msgpack`: A TEN Protocol package for message serialization and deserialization using the MessagePack protocol
+
+After installing the dependencies, TEN Manager organizes the packages in the following directory structure:
+
+```text
+├── ten_packages
+│   ├── extension
+│   │   ├── ffmpeg_client
+│   │   ├── ffmpeg_demuxer
+│   │   └── ffmpeg_muxer
+│   ├── protocol
+│   │   └── msgpack
+│   └── system
+│       ├── ffmpeg
+│       └── ten_runtime
+```
+
+Note that the `ffmpeg` system package appears even though it's not listed in `manifest.json`. TEN Manager automatically detects and installs transitive dependencies when `ffmpeg_demuxer` and `ffmpeg_muxer` require the `ffmpeg` package.
+
+### Install TEN extensions
+
+To install extensions from the TEN Cloud Store:
+
+1. Click **Open Extension Store** in the **Extensions** menu
+2. Search for the required extension in the store interface
+3. Click **Install** to add the extension to your current app
+
+After installation, the new extension appears in your current TEN app and is available for use in your graphs.
+
+![TEN Cloud Store](/images/ten-framework/ten_designer_extension_store.png)
+
+
+### Run a TEN app
+
+Use the **Apps Manager** to execute preset runtime operations on the selected app. Click the **Run** button in the **Apps Manager** to open the following interface:
+
+![Run a TEN app](/images/ten-framework/ten_designer_app_run.png)
+
+In the dialog, select the preset operation to execute from the dropdown menu. The menu typically includes the following operations:
+
+- **Run App**: Start the app and display output in the TEN Designer message window
+- **Build App**: Compile the app, if required. Since TEN Framework supports multiple programming languages, compilation requirements vary by language. For example, C++ apps require compilation, while Python apps run directly without a build step.
+
+Following is the build interface for a TEN app developed in C++:
+
+![Building a TEN app](/images/ten-framework/ten_designer_app_build.png)
+
+After the build is complete, continue with the startup operation. The system displays a window showing the TEN app's runtime logs in real-time:
+
+![Starting a TEN app](/images/ten-framework/ten_designer_app_start.png)
+
+## Working with TEN graphs
+
+TEN graphs define how extensions connect and communicate within your application, providing a visual representation of your app's data flow and processing pipeline.
+
+### Load an existing graph
+
+To load an existing TEN graph, click the **Load Graph** option in the **Graph** menu. After the graph loads, you see an interface similar to the following:
+
+![TEN Graph](/images/ten-framework/ten_designer_graph_overview.png)
+
+This sample graph contains three TEN extensions:
+
+- **ffmpeg_demuxer**: Decodes audio and video
+- **ffmpeg_muxer**: Encodes audio and video
+- **ffmpeg_client**: Processes audio and video
+
+Each TEN extension has defined inputs and outputs. For example, the `ffmpeg_demuxer` extension includes:
+
+- 2 command inputs
+- 1 command output
+- 1 audio frame output
+- 1 video frame output
+
+Click the numbered input or output buttons on any extension to open a connection management dialog:
+
+![TEN Message Input/Output Dialog](/images/ten-framework/ten_designer_msg_info_dialog.png)
+
+Use this dialog to view and manage connections between extensions in your graph.
+
+### Organize graph layout
+
+You can organize your graph layout as follows:
+
+1. **Manual positioning**: Drag extensions to desired locations
+2. **Automatic layout**: Click **Auto Layout** in the **Graph** menu to automatically arrange all extensions
+
+The auto-layout feature is particularly helpful when your graph becomes cluttered or after adding multiple new extensions.
+
+### Access extension files and tools
+
+Right-click any extension in the graph to open its context menu:
+
+![TEN Extension Context Menu](/images/ten-framework/ten_designer_extension_context_menu.png)
+
+The context menu provides quick access to extension files and tools:
+
+- **Edit manifest.json**: Edit the extension's configuration and API definitions
+- **Edit property.json**: Modify the extension's runtime properties
+- **Launch terminal**: Launch a terminal in the extension's root directory
+- **View logs**: Display the extension's runtime logs and debug information
+- **Delete**: Remove the extension from the current graph
+
+![Opening Manifest](/images/ten-framework/ten_designer_context_menu_effect.png)
+
+## Documentation window
+
+TEN Designer has integrated documentation that allows you to view TEN Framework concepts and terminology. For example, select **About App** from the **App** dropdown menu to open the documentation window and display general information about TEN Apps and their structure.
+
+![TEN Designer Doc Window](/images/ten-framework/ten_designer_doc_window.png)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-cpp">
+
+In the TEN ecosystem, almost everything is a component. A TEN app, a TEN extension, and a TEN protocol are all components. To help developers manage operations related to these components, the TEN Framework provides a tool called TEN Manager.
+
+## Understand the tech
+
+TEN Manager is the command-line package manager for the TEN Framework ecosystem. It provides essential tools for creating, installing, and managing TEN packages throughout your development workflow.
+
+TEN Manager provides the following key functionalities:
+
+- **Package creation**: Generate new apps, extensions, and protocol packages from templates
+- **Dependency management**: Automatically resolve, fetch, and install required packages
+- **Cloud Store integration**: Browse and install packages from the TEN Cloud Store
+- **Development tools**: Launch the visual designer and run custom build scripts
+- **Validation**: Check application graphs and package configurations for errors
+
+TEN Manager handles the complexity of package dependencies and installations, allowing you to focus on building your applications rather than managing infrastructure.
+
+:::info
+
+`tman` is the command-line abbreviation for TEN Manager.
+
+:::
+
+
+## Set up TEN Manager
+
+
+## Package management
+
+TEN Manager provides the following package management commands.
+
+### Create packages
+
+Use `tman create` to generate new apps, extensions, protocols, and other package types using predefined templates. The command sets up proper directory structure, creates `manifest.json` and `property.json` configuration files, and provides template code to get you started quickly.
+
+#### Usage
+
+```
+tman create [OPTIONS] --template <TEMPLATE> <PACKAGE_TYPE> <PACKAGE_NAME>
+```
+
+See supported [Package types](#package-types).
+
+#### Examples
 
 ```bash
-agora project doctor
+# Create a new TEN application
+tman create app my_app --template default_app_python
+
+# Create a new extension
+tman create extension my_extension --template default_extension_go
+
+# Create a protocol package
+tman create protocol my_protocol --template custom_protocol
 ```
+
+### Fetch packages
+
+Use `tman fetch` to download packages from the TEN Cloud Store registry. The command allows you to specify target directories and control extraction behavior.
+
+#### Usage
+
+```bash
+tman fetch [OPTIONS] <PACKAGE_TYPE> <PACKAGE_NAME>
+```
+
+See supported [Package types](#package-types).
+
+#### Examples
+
+```bash
+# Fetch and extract an extension package
+tman fetch extension speech_recognition
+
+# Fetch a specific version of an app
+tman fetch app ai_agent@1.2.0
+
+# Download package file only (no extraction) to specific directory
+tman fetch protocol websocket --output-dir ./downloads --no-extract
+
+# Fetch system package for specific platform
+tman fetch system ten_runtime --os linux --arch x64
+```
+
+### Uninstall packages
+
+Use `tman uninstall` to remove packages from your TEN application. This removes the package files and cleans up the local package directory structure.
+
+#### Usage
+
+```bash
+tman uninstall <PACKAGE_TYPE> <PACKAGE_NAME>
+```
+
+See supported [Package types](#package-types).addon_loader`: Specialized loaders for different programming languages
+
+#### Examples
+
+```bash
+# Uninstall an extension package
+tman uninstall extension speech_recognition
+
+# Remove a protocol package
+tman uninstall protocol websocket
+
+# Uninstall a system component
+tman uninstall system ten_runtime
+```
+
+### Package TEN components
+
+Use `tman package` to create distributable package files from your TEN packages. Run this command from the base directory of the package you want to distribute.
+
+#### Usage
+
+```bash
+tman package [OPTIONS]
+```
+
+#### Examples
+
+```bash
+# Create a package file from current directory
+cd my_extension
+tman package
+
+# Create package file with custom output path
+tman package --output-path ./dist/my_extension.zip
+
+# Package an app for distribution
+cd my_ten_app
+tman package --output-path ../releases/my_app_v1.0.zip
+```
+
+### Publish packages
+
+Use `tman publish` to publish your TEN packages to the TEN Cloud Store. Run this command from the base directory of the package you want to publish.
+
+#### Usage
+
+```bash
+tman publish
+```
+
+#### Examples
+
+```bash
+# Publish an extension to the Cloud Store
+cd my_extension
+tman publish
+
+# Publish an app package
+cd my_ten_app
+tman publish
+
+# Publish a protocol package
+cd my_custom_protocol
+tman publish
+```
+
+## Development tools
+
+TEN Manager provides the following development tools.
+
+### TEN designer
+
+Use `tman designer` to start the TEN Designer visual development environment. This opens a browser-based interface for creating, editing, and managing TEN applications and extensions. See [Ten Designer](/en/ai/get-started/_shared-mdx-fixture) for details.
+
+#### Usage
+
+```bash
+tman designer [OPTIONS]
+```
+
+#### Examples
+
+```bash
+# Launch designer with default settings
+tman designer
+
+# Launch on a specific port
+tman designer --port 8080
+
+# Launch with custom IP and port
+tman designer --ip 127.0.0.1 --port 3000
+
+# Launch from a specific app directory
+cd my_ten_app
+tman designer --base-dir .
+```
+
+### Check consistency
+
+Use `tman check` to validate various aspects of your TEN packages and configurations. This helps ensure your packages are properly configured before deployment.
+
+#### Usage
+
+```bash
+tman check <COMMAND>
+```
+
+The following commands are available:
+
+- `manifest-json`: Validate manifest.json files against JSON schema
+- `property-json`: Validate property.json files against JSON schema
+
+#### Examples
+
+```bash
+# Check manifest.json validity
+tman check manifest-json
+
+# Check property.json validity
+tman check property-json
+```
+
+### Modify framework components
+
+Use `tman modify` to modify various components and configurations within the TEN framework. This allows you to update existing configurations without manually editing files.
+
+#### Usage
+
+```bash
+tman modify <COMMAND>
+```
+
+The following modify commands are available:
+
+- `graph`: Modify predefined graphs in property.json files
+
+### Run custom scripts
+
+Use `tman run` to execute custom scripts defined in your package's manifest.json file. This allows you to run predefined build, start, test, or other custom commands for your TEN packages.
+
+#### Usage
+
+```bash
+tman run <SCRIPT_NAME> [-- <EXTRA_ARGS>]
+```
+
+#### Examples
+
+```bash
+# Run the start script
+tman run start
+
+# Run the build script
+tman run build
+
+# Run a custom script with additional arguments
+tman run test -- --verbose
+
+# Run stop script
+tman run stop
+```
+
+## Reference
+
+### Package types
+
+The following package types are supported:
+
+- `app`: Main application containers
+- `extension`: Functional components that implement specific features
+- `protocol`: Communication protocol handlers
+- `system`: Core framework components
+- `addon_loader`: Specialized loaders for different programming languages
+
+### Common options
+
+TEN Manager supports the following global options:
+
+- **`--verbose`** - Enable detailed output for debugging
+- **`-y, --yes`** - Automatically confirm all prompts
+- **`-c, --config-file <CONFIG_FILE>`** - Specify custom configuration file
+- **`--user-token <USER_TOKEN>`** - Provide authentication token
+- **`-h, --help`** - Display help information
+
+### Get help
+
+Use the following options with `tman` to get help:
+
+- **`help`** - Display help information for each command
+- **`--version`** - Show version information and check for updates
+
+</PlatformStructured>
