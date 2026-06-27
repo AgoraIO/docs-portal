@@ -230,6 +230,53 @@ describe('docs content regressions', () => {
     expect(whiteboard).toContain(
       '| Query the progress of a specific file-conversion task | Yes | Yes | Yes |',
     );
+
+    const whiteboardStatus = readDoc(
+      'realtime-media/whiteboard/reference/status-page.md',
+    );
+
+    expect(whiteboardStatus).toContain(
+      '| Metric   | Description | Calculation method   |',
+    );
+    expect(whiteboardStatus).toContain(
+      '| Video fluency | Measures video playback smoothness',
+    );
+    expect(whiteboardStatus).toContain(
+      'Interactive Whiteboard reliability and user experience status',
+    );
+
+    const srtStreaming = readDoc(
+      'realtime-media/rtmp-gateway/reference/srt-streaming.md',
+    );
+
+    expect(srtStreaming).toContain('`srtlive-rtcpush-prod-{region}.agoramdn.com`');
+    expect(srtStreaming).toContain('- `na`: North America');
+    expect(srtStreaming).toContain(
+      '[Get streaming key](../build/set-up-and-authenticate/quickstart-best-practices#get-streaming-key)',
+    );
+
+    const simulcasting = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/simulcasting.mdx',
+    );
+
+    expect(simulcasting).toContain(
+      '| Feature | Simulcasting | Dual-stream video |',
+    );
+    expect(simulcasting).toContain(
+      '| Small stream automatically adapts video attributes | No | Yes |',
+    );
+
+    const htAvatar = readDoc(
+      'realtime-media/marketplace/build/add-video-and-ar-effects/ht-3d-avatar.mdx',
+    );
+
+    expect(htAvatar).toContain('| Key | Description |');
+    expect(htAvatar).toContain(
+      '| [`htARRenderEnable`](#htarrenderenable) | Turns AR special effects on or off. |',
+    );
+    expect(htAvatar).toContain(
+      '| `maxFaces` | Integer. The maximum number of supported faces. The value range is `[1, 5]`. |',
+    );
   });
 
   it('keeps agora analytics call inspector headings free of inline raw anchors', () => {

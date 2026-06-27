@@ -116,6 +116,21 @@ Compared with dual-stream video, simulcasting offers:
 - Smoother switching between bitrate levels
 - Better flexibility for different business scenarios
 
+To better balance simulcasting performance and network consumption, Agora applies the following strategies:
+
+- When the sender device is performance-limited, upstream configurations are automatically disabled, and subscribers adapt to the remaining streams.
+- When the uplink bandwidth is limited, additional configurations are disabled first. Then, the previous dual-stream rate control strategy is applied to ensure smooth publishing and subscription.
+
+In terms of functionality, the differences between simulcasting and dual-stream video are summarized in the following table. Agora will continue to close the feature gap in future releases.
+
+| Feature | Simulcasting | Dual-stream video |
+|---------|:------------:|:-----------------:|
+| Supports multi-channel scenarios | Yes | Yes |
+| Small stream automatically adapts video attributes | No | Yes |
+| Publisher sends video streams based on subscriber's chosen configuration | Yes. Contact technical support to enable. | Yes |
+| When the sender is performance-limited, video streams other than the source stream can be disabled | Yes | No |
+| When the downlink network is limited, the upstream small stream can be enabled automatically | No | Yes |
+
 ### API reference
 
 <PlatformStructured platform="android">

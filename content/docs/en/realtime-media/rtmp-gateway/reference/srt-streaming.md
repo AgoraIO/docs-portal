@@ -29,13 +29,21 @@ srt://{streaming_domain_name}:6001
 
 You can use the Agora unified domain name or bind your own domain name.
 
-- To use the unified domain name, use `srtlive-rtcpush-prod-{region}.agoramdn.com`.
-- To use your own domain name, contact Agora [technical support](mailto:support@agora.io) before use.
+- To use the unified domain name, use `srtlive-rtcpush-prod-{region}.agoramdn.com`. Replace `{region}` with your actual region. Supported regions are:
+  - `na`: North America
+  - `eu`: Europe
+  - `ap`: Asia, except Mainland China
+  - `cn`: Mainland China
+- To use your own domain name, contact Agora [technical support](mailto:support@agora.io) for configuration before use.
 
-2. In the **Stream Key** field, enter the streaming key. To obtain a key, see [Media Gateway quickstart](../build/set-up-and-authenticate/quickstart-best-practices.md).
+2. In the **Stream Key** field, enter the streaming key. To obtain a key, see [Get streaming key](../build/set-up-and-authenticate/quickstart-best-practices#get-streaming-key).
 
     :::note
-    When using a custom domain name, you must add domain parameters to your stream key using the format `{streaming_code}?h={streaming_domain_name}` because the SRT protocol does not transmit domain name information to the server by default.
+    When using a custom domain name, you must add domain parameters to your stream key using the format:
+
+    `{streaming_code}?h={streaming_domain_name}`
+
+    This is required because the SRT protocol does not transmit domain name information to the server by default.
     :::
 
 ## Configure with FFmpeg

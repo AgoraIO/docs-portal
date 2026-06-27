@@ -118,3 +118,105 @@ Run the sample project from [AgoraHTAvatarExtensionDemo](https://github.com/Texe
 - [enableExtensionWithVendor](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableextension(withvendor:extension:enabled:)?language=objc)
 - [setExtensionPropertyWithVendor](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setextensionpropertywithvendor(_:extension:extensioninfo:key:value:)?language=objc)
 </PlatformStructured>
+
+## Interface description
+
+When calling `setExtensionProperty` on Android or `setExtensionPropertyWithVendor` on iOS, use the following keys to call the corresponding HTAvatar functions.
+
+### Initialization
+
+| Key | Description |
+| :---- | :---- |
+| [`htARInitOffline`](#htarinitoffline) | Initializes offline authentication. |
+
+### Destroy
+
+| Key | Description |
+| :---- | :---- |
+| [`htARReleaseBufferRenderer`](#htarreleasebufferrenderer) | Releases resources. |
+
+### Functional interface
+
+| Key | Description |
+| :---- | :---- |
+| [`htARRenderEnable`](#htarrenderenable) | Turns AR special effects on or off. |
+| [`htARSetModel`](#htarsetmodel) | Switches the AR model. |
+| [`htARMirror`](#htarmirror) | Sets whether the image uses mirroring. |
+| [`htARImageFormat`](#htarimageformat) | Sets the image format. |
+| [`htARRotation`](#htarrotation) | Sets the image rotation angle. |
+| [`htARMaxFaces`](#htarmaxfaces) | Sets the maximum number of supported faces. |
+| [`htARCopyResource`](#htarcopyresource) | Copies the resource path to the sandbox. |
+
+## Value description of method keys
+
+### htARInitOffline
+
+`value` contains the following parameter:
+
+| Value parameter | Description |
+| :------- | :---- |
+| `license` | String. The AR offline authentication key. |
+
+### htARReleaseBufferRenderer
+
+`value` contains the following parameter:
+
+| Value parameter | Description |
+| :------- | :---- |
+| `enable` | Boolean. Whether to confirm resource release. |
+
+### htARRenderEnable
+
+`value` contains the following parameter:
+
+| Value parameter | Description |
+| :------- | :---- |
+| `enable` | Boolean. Whether to enable AR. |
+
+### htARSetModel
+
+`value` contains the following parameter:
+
+| Value parameter | Description |
+| :------- | :---- |
+| `name` | String. The model name. |
+
+### htARMirror
+
+`value` contains the following parameter:
+
+| Value parameter | Description |
+| :------- | :---- |
+| `isMirror` | Boolean. Whether to mirror prop effects. The default value is `true`. |
+
+### htARImageFormat
+
+`value` contains the following parameter:
+
+| Value parameter | Description |
+| :------- | :---- |
+| `imageFormat` | Integer. The image format enumeration value. For specific values, see [HTEARImageFormat](https://gitee.com/htai-open/agora-htavatar-extension/blob/master/iOS/ALL_ARCHITECTURE/Release/HTEffectAR.framework/Headers/HTEffectARInterface.h). |
+
+### htARRotation
+
+`value` contains the following parameter:
+
+| Value parameter | Description |
+| :------- | :---- |
+| `rotation` | Integer. The image rotation angle enumeration value. For specific values, see [HTEAROrientation](https://gitee.com/htai-open/agora-htavatar-extension/blob/master/iOS/ALL_ARCHITECTURE/Release/HTEffectAR.framework/Headers/HTEffectARInterface.h). |
+
+### htARMaxFaces
+
+`value` contains the following parameter:
+
+| Value parameter | Description |
+| :------- | :---- |
+| `maxFaces` | Integer. The maximum number of supported faces. The value range is `[1, 5]`. |
+
+### htARCopyResource
+
+`value` contains the following parameter:
+
+| Value parameter | Description |
+| :------- | :---- |
+| `path` | String. The path to copy to the sandbox. |
