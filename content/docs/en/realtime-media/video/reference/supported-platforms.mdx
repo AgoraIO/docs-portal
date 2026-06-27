@@ -9,10 +9,18 @@ This section lists the platforms and products you use to develop apps that inter
 
     | Target Platform | Operating system version | IDE version     |
     |:-----------------|:-------|:-----|
-    | Android         | Android 4.1 or later.  Video SDK supports the following ABIs. - armeabi-v7a
-- arm64-v8a
-- x86
-- x86-64    | Android Studio 3.0 or later|
+    | Android | <Slot name="video-supported-android-abis" /> | Android Studio 3.0 or later |
+
+    <Slot for="video-supported-android-abis">
+
+    Android 4.1 or later.  Video SDK supports the following ABIs.
+
+    - armeabi-v7a
+    - arm64-v8a
+    - x86
+    - x86-64
+
+    </Slot>
 
 - *Browsers supported on Android*:
 
@@ -56,8 +64,16 @@ This section lists the platforms and products you use to develop apps that inter
 
     | Target Platform | Operating system version | IDE version     |
     |:-----------------|:-------|:-----|
-    | macOS| macOS 10.11 or later. Video SDK supports the following: - x86-64
-- arm64 | Xcode 9.0 or later         |
+    | macOS | <Slot name="video-supported-macos-architectures" /> | Xcode 9.0 or later |
+
+    <Slot for="video-supported-macos-architectures">
+
+    macOS 10.11 or later. Video SDK supports the following:
+
+    - x86-64
+    - arm64
+
+    </Slot>
 
 - *MediaPlayer Kit*:
 
@@ -165,8 +181,16 @@ console.log(result);
 - *Platforms*:
     | Target Platform | Operating system version | IDE version     |
     |:-----------------|:-------|:-----|
-    | Windows         | Windows 7 or later. Video SDK supports the following: - x86
-- x86-64  | Microsoft Visual Studio 2017 or later |
+    | Windows | <Slot name="video-supported-windows-architectures" /> | Microsoft Visual Studio 2017 or later |
+
+    <Slot for="video-supported-windows-architectures">
+
+    Windows 7 or later. Video SDK supports the following:
+
+    - x86
+    - x86-64
+
+    </Slot>
 
 - *MediaPlayer Kit*:
 
@@ -180,8 +204,14 @@ console.log(result);
 
     | Target Platform | Supported version |
     |:----------------|:------------------|
-    | Electron        | Electron ≥ 1.8.3, < 25 - Windows (x86, x86-64)
-- macOS |
+    | Electron | <Slot name="video-supported-electron-platforms" /> |
+
+    <Slot for="video-supported-electron-platforms">
+
+    Electron ≥ 1.8.3, < 25 - Windows (x86, x86-64)
+    - macOS
+
+    </Slot>
 </PlatformStructured>
 <PlatformStructured platform="flutter">
 - [Flutter](https://docs.flutter.dev/get-started/install) 2.10.5 or later
@@ -192,19 +222,43 @@ console.log(result);
 
     | Target platform | Environment requirements |
     |:----------------|:-------------------------|
-    | Android | - macOS 10.15 or later
-- Windows 10 or higher
-- Latest version of Android Studio
-- Two Android devices |
-    | iOS | - macOS 10.15 or later
-- Latest version of Xcode
-- Two iOS devices |
-    | macOS | - macOS 10.15 or later
-- Latest version of Xcode
-- Two macOS devices |
-    | Windows | - Windows 10 or higher
-- Latest version of Visual Studio
-- Two Windows devices |
+    | Android | <Slot name="video-supported-flutter-android" /> |
+    | iOS | <Slot name="video-supported-flutter-ios" /> |
+    | macOS | <Slot name="video-supported-flutter-macos" /> |
+    | Windows | <Slot name="video-supported-flutter-windows" /> |
+
+    <Slot for="video-supported-flutter-android">
+
+    - macOS 10.15 or later
+    - Windows 10 or higher
+    - Latest version of Android Studio
+    - Two Android devices
+
+    </Slot>
+
+    <Slot for="video-supported-flutter-ios">
+
+    - macOS 10.15 or later
+    - Latest version of Xcode
+    - Two iOS devices
+
+    </Slot>
+
+    <Slot for="video-supported-flutter-macos">
+
+    - macOS 10.15 or later
+    - Latest version of Xcode
+    - Two macOS devices
+
+    </Slot>
+
+    <Slot for="video-supported-flutter-windows">
+
+    - Windows 10 or higher
+    - Latest version of Visual Studio
+    - Two Windows devices
+
+    </Slot>
 </PlatformStructured>
 <PlatformStructured platform="react-native">
 - *Platforms*:
@@ -225,10 +279,18 @@ To ensure the best user experience, best practice is to use the latest version o
 - *Platforms*:
     | Target Platform | Supported version |
     |:-----------------|:-------|
-    | Unity| Unity 2017 or later. Video SDK supports the following: - Android (armeabi-v7a, arm64-v8a, x86)
-- iOS
-- Windows (x86, x86-64)
-- macOS    |
+    | Unity | <Slot name="video-supported-unity-platforms" /> |
+
+    <Slot for="video-supported-unity-platforms">
+
+    Unity 2017 or later. Video SDK supports the following:
+
+    - Android (armeabi-v7a, arm64-v8a, x86)
+    - iOS
+    - Windows (x86, x86-64)
+    - macOS
+
+    </Slot>
 </PlatformStructured>
 <PlatformStructured platform="unreal">
 | Platform | IDE  | OS | Architecture|Note|
