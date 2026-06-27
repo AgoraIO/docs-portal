@@ -19,12 +19,12 @@ To enable Media Pull, take the following steps:
 
 1. Log in to [Agora Console](https://console.agora.io/v2), and click **Projects** in the left navigation panel.
 
-1. On the **My Projects** page, find the project for which you want to enable Media Pull and click **Edit**.
+2. On the **My Projects** page, find the project for which you want to enable Media Pull and click **Edit**.
 
     ![](/images/console/console-edit-project.png)
 
-1. Under **All Features**, select **Media Pull**.
-1. Click **Enable**. If you do not see the **Enable** button, [contact support](mailto:support@agora.io).
+3. Under **All Features**, select **Media Pull**.
+4. Click **Enable**. If you do not see the **Enable** button, [contact support](mailto:support@agora.io).
 
 You can view usage statistics on the Agora Console **Usage** page.
 
@@ -56,8 +56,8 @@ Refer to the [RESTful API Reference](../reference/restful-api) to update player 
 To retrieve a list of cloud players under a project, use the [List RESTful API](../reference/restful-api#list-api). Refer to the following points when calling the API:
 
 1. For the first query, omit the `pageToken` parameter. The response includes the current page and a `nextPageToken`.
-1. Use the `nextPageToken` in subsequent queries to retrieve the next page from the list of of cloud players.
-1. When `nextPageToken` is `0`, all cloud players under the project have been listed.
+2. Use the `nextPageToken` in subsequent queries to retrieve the next page from the list of of cloud players.
+3. When `nextPageToken` is `0`, all cloud players under the project have been listed.
 
 Cloud players are returned in ascending order based on their creation time (`createTs`).
 

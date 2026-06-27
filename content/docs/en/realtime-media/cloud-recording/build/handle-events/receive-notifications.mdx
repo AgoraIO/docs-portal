@@ -13,8 +13,8 @@ The following figure illustrates the workflow when Notifications is enabled for 
 ![cloud-recording](/images/notification-center-service/ncs-cloud-recording-workflow.svg)
 
 1. A user commits an action that creates an event.
-1. Notifications sends an HTTPS POST request to your webhook.
-1. Your server validates the request signature, then sends a response to Notifications within 10 seconds. The response body must be in JSON.
+2. Notifications sends an HTTPS POST request to your webhook.
+3. Your server validates the request signature, then sends a response to Notifications within 10 seconds. The response body must be in JSON.
 
 If Notifications receives `200 OK` within 10 seconds of sending the initial notification, the callback is considered successful. If these conditions are not met, Notifications immediately resends the notification. The interval between notification attempts gradually increases. Notifications stops sending notifications after three retries.
 
@@ -123,7 +123,7 @@ To do this, take the following steps:
     }
     ```
 
-1. **Run your Go server**
+3. **Run your Go server**
 
     Run the server using the following command:
 
@@ -131,7 +131,7 @@ To do this, take the following steps:
     go run main.go
     ```
 
-1. **Create a public URL for your server**
+4. **Create a public URL for your server**
 
     In this example you use `ngrok` to create a public URL for your server.
 
@@ -141,7 +141,7 @@ To do this, take the following steps:
         choco install ngrok
         ```
 
-    1. Add an `authtoken` to ngrok:
+    2. Add an `authtoken` to ngrok:
 
         ```bash
         ngrok config add-authtoken <authToken>
@@ -149,14 +149,14 @@ To do this, take the following steps:
 
         To obtain an `authToken`, [sign up](https://dashboard.ngrok.com/signup) with ngrok.
 
-    1. Start a tunnel to your local server using the following command:
+    3. Start a tunnel to your local server using the following command:
 
         ```bash
         ngrok http 127.0.0.1:8080
         ```
         You see a **Forwarding** URL and a **Web Interface** URL in the console. Open the web interface URL in your browser.
 
-1. **Test the server**
+5. **Test the server**
 
     Open a web browser and navigate to the public URL provided by `ngrok` to see the root handler response.
 
@@ -205,11 +205,11 @@ To enable Notifications:
 
     ![Project tab](/images/video-sdk/enable-ncs-project-tabs.png)
 
-1. In the **All Features** section, open the **Notifications** tab and click on the service for which you want to enable notifications. The section expands to show configuration options.
+2. In the **All Features** section, open the **Notifications** tab and click on the service for which you want to enable notifications. The section expands to show configuration options.
 
     ![Notification tab](/images/video-sdk/enable-ncs-notification-tab.png)
 
-1. Fill in the following information:
+3. Fill in the following information:
 
     * **Event**: Select all the events that you want to subscribe to.
 
@@ -232,15 +232,15 @@ For enhanced security, Notifications no longer supports `HTTP` addresses.
 
     ![Notification tab](/images/video-sdk/enable-ncs-configuration-tab.png)
 
-1. Copy the **Secret** displayed against the product name by clicking the copy icon. You use this secret to [Add signature verification](#add-signature-verification).
+4. Copy the **Secret** displayed against the product name by clicking the copy icon. You use this secret to [Add signature verification](#add-signature-verification).
 
-1. Press **Check**. Agora performs a health test for your configuration as follows:
+5. Press **Check**. Agora performs a health test for your configuration as follows:
 
     1. The Notifications health test generates test events that correspond to your subscribed events, and then sends test event callbacks to your server.
 
-    1. After receiving each test event callback, your server must respond within 10 seconds with a status code of `200`. The response body must be in JSON format.
+    2. After receiving each test event callback, your server must respond within 10 seconds with a status code of `200`. The response body must be in JSON format.
 
-    1. When the Notifications health test succeeds, read the prompt and press **Apply Settings**. After your configuration is saved, the **Status** of Notifications shows **Enabled**.
+    3. When the Notifications health test succeeds, read the prompt and press **Apply Settings**. After your configuration is saved, the **Status** of Notifications shows **Enabled**.
 
         ![Apply Settings](/images/video-sdk/enable-ncs-apply-settings.png)
 
@@ -267,8 +267,8 @@ For enhanced security, Notifications no longer supports `HTTP` addresses.
 To communicate securely between Notifications and your webhook,  Agora SDRTN®  uses signatures for identity verification as follows:
 
 1. When you configure Notifications in Agora Console,  Agora SDRTN®  generates a secret you use for verification.
-1. When sending a notification,  Notifications generates two signature values from the secret using `HMAC/SHA1` and `HMAC/SHA256` algorithms. These signatures are added as `Agora-Signature` and `Agora-Signature-V2` to the `HTTPS` request header.
-1. When your server receives a callback, you can verify `Agora-Signature` or `Agora-Signature-V2`:
+2. When sending a notification,  Notifications generates two signature values from the secret using `HMAC/SHA1` and `HMAC/SHA256` algorithms. These signatures are added as `Agora-Signature` and `Agora-Signature-V2` to the `HTTPS` request header.
+3. When your server receives a callback, you can verify `Agora-Signature` or `Agora-Signature-V2`:
 
     * To verify `Agora-Signature`, use the secret, the raw request body, and the `crypto/sha1` algorithm.
     * To verify `Agora-Signature-V2`, use the secret, the raw request body, and the `crypto/sha256` algorithm.
@@ -292,7 +292,7 @@ To add signature verification to your server, take the following steps:
     )
     ```
 
-1. Add the following code after the list of imports:
+2. Add the following code after the list of imports:
 
     ```go
     // Replace with your NCS secret
@@ -314,7 +314,7 @@ To add signature verification to your server, take the following steps:
     }
     ```
 
-1. In `main.go`, add the following code after you read the request body:
+3. In `main.go`, add the following code after you read the request body:
 
     ```go
     // Verify the signature
@@ -324,9 +324,9 @@ To add signature verification to your server, take the following steps:
     }
     ```
 
-1. To test the server, follow the steps given in the [Enable notifications](#enable-notifications) section.
+4. To test the server, follow the steps given in the [Enable notifications](#enable-notifications) section.
 
-1. When you receive an event from the console, and if the signature matches, the event details are displayed in your browser.
+5. When you receive an event from the console, and if the signature matches, the event details are displayed in your browser.
 
 ## Reference
 

@@ -706,7 +706,7 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
   npm install agora-token
   ```
 
-1. Add your App ID and App certificate
+2. Add your App ID and App certificate
 
   Open the file `node_modules/agora-token/server/DemoServer.js` and update the following variables:
 
@@ -716,7 +716,7 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
   var appCertificate = "<YOUR APP CERTIFICATE>";
   ```
 
-1. Install the dependencies and run the server
+3. Install the dependencies and run the server
 
   Navigate to the `server` directory and run the following commands:
 
@@ -725,7 +725,7 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
   node DemoServer.js
   ```
 
-1. Test your server
+4. Test your server
 
   Use a `curl` request to generate a sample token:
 
@@ -747,13 +747,13 @@ Refer to the following steps to deploy a Docker-based token generator locally:
 
 1. Install [Docker](https://www.docker.com/).
 
-1. Open a terminal and run the following command to start the token generator. Replace `[YOUR_APP_ID]` and `[YOUR_APP_CERTIFICATE]` with the App ID and App certificate you obtained from Agora Console.
+2. Open a terminal and run the following command to start the token generator. Replace `[YOUR_APP_ID]` and `[YOUR_APP_CERTIFICATE]` with the App ID and App certificate you obtained from Agora Console.
 
   ```shell
   docker run -d -it -p 8080:8080 -e APP_ID=[YOUR_APP_ID] -e APP_CERTIFICATE=[YOUR_APP_CERTIFICATE] --name agora-token-service agoracn/token:0.1.2023053011
   ```
 
-1. Run the following command to request a token from the token generator you just deployed:
+3. Run the following command to request a token from the token generator you just deployed:
 
   ```shell
   curl --location 'http://localhost:8080/token/generate' \
@@ -904,19 +904,19 @@ Refer to the following steps to build and run a token generator:
     }
   ```
 
-1. Open the terminal, go to the `token-server` folder path, and run the following command line to create a `go.mod` file for your token generator. This file defines the import path and dependencies:
+2. Open the terminal, go to the `token-server` folder path, and run the following command line to create a `go.mod` file for your token generator. This file defines the import path and dependencies:
 
   ```go
   go mod init sampleServer
   ```
 
-1. Run the following command to install dependencies. 
+3. Run the following command to install dependencies.
  
   ```go
   go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
   ```
 
-1. Run the following command to start the token generator:
+4. Run the following command to start the token generator:
 
   ```go
   go run server.go

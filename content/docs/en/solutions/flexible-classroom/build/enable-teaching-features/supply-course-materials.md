@@ -17,11 +17,11 @@ If you want to upload the courseware to third-party cloud storage or to your own
 
 1. In Agora Console, [enable and configure the Whiteboard](https://docs.agora.io/en/interactive-whiteboard/get-started/enable-whiteboard) feature to store the courseware used in Flexible Classroom.
 
-1. In Agora Console, enable the file-conversion feature of the Whiteboard service, and add a storage configuration for storing the converted courseware. For details, see [How to enable the file-conversion feature](https://docs.agora.io/en/interactive-whiteboard/develop/file-conversion-overview).
+2. In Agora Console, enable the file-conversion feature of the Whiteboard service, and add a storage configuration for storing the converted courseware. For details, see [How to enable the file-conversion feature](https://docs.agora.io/en/interactive-whiteboard/develop/file-conversion-overview).
 
-1. On your app server, call this [RESTful API](https://docs.agora.io/en/interactive-whiteboard/reference/whiteboard-api/file-conversion) to start a file-conversion task. The Agora Interactive Whiteboard service uploads the converted files to the third-party cloud storage that you have configured in Agora Console.
+3. On your app server, call this [RESTful API](https://docs.agora.io/en/interactive-whiteboard/reference/whiteboard-api/file-conversion) to start a file-conversion task. The Agora Interactive Whiteboard service uploads the converted files to the third-party cloud storage that you have configured in Agora Console.
 
-1. On your app server, poll this [RESTful API](https://docs.agora.io/en/interactive-whiteboard/reference/whiteboard-api/file-conversion) to query the progress of a file-conversion task. According to the different types of converted resources, it can be divided into two types, static and dynamic, corresponding to static and dynamic resources, respectively. After a static resource is successfully converted, the structure needs to be converted first and then passed into the launch method.
+4. On your app server, poll this [RESTful API](https://docs.agora.io/en/interactive-whiteboard/reference/whiteboard-api/file-conversion) to query the progress of a file-conversion task. According to the different types of converted resources, it can be divided into two types, static and dynamic, corresponding to static and dynamic resources, respectively. After a static resource is successfully converted, the structure needs to be converted first and then passed into the launch method.
 
     Query results returned by the whiteboard resource conversion service:
 

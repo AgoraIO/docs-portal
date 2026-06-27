@@ -47,14 +47,10 @@ const PlatformTabsPlacementContext = createContext<{
 }>({
   placement: 'inline',
 });
-const HEADER_PRIMARY_PLATFORMS: PlatformKey[] = [
-  'android',
-  'ios',
-  'macos',
-  'web',
-  'windows',
-];
+const HEADER_PRIMARY_PLATFORMS: PlatformKey[] = ['android', 'ios', 'web'];
 const HEADER_OVERFLOW_PLATFORMS: PlatformKey[] = [
+  'macos',
+  'windows',
   'flutter',
   'react-native',
   'unity',

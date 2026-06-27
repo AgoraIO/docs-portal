@@ -103,23 +103,25 @@ Use the following `llm` configuration in your request:
 
 ### Key parameters
 
-    
+<ParameterList title="llm" required={true}>
+  <Parameter name="url" type="string" required={true}>  
   The Amazon Bedrock runtime endpoint for the target region and model. See [Amazon Bedrock endpoints and quotas](https://docs.aws.amazon.com/general/latest/gr/bedrock.html#bedrock_region) for the correct endpoint format.
-  
-    
+  </Parameter>
+  <Parameter name="api_key" type="string" required={false}>  
   Your Bedrock API key for authentication. Use either `api_key` alone, or both `access_key` and `secret_key` together for authentication.
-  
-    
+  </Parameter>
+  <Parameter name="access_key" type="string" required={false}>  
   Your AWS Access Key ID for authenticating Bedrock API calls. Required if not using `api_key`. Must be used together with `secret_key`. Get your access key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
-  
-    
+  </Parameter>
+  <Parameter name="secret_key" type="string" required={false}>  
   Your AWS Secret Access Key for authenticating Bedrock API calls. Required if not using `api_key`. Must be used together with `access_key`. Get your secret key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
-  
-    
+  </Parameter>
+  <Parameter name="region" type="string" required={true}>  
   The AWS region hosting the Bedrock model, for example, `us-east-1` or `us-west-2`. See [Supported Regions and models](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html) for available regions.
-  
-    
+  </Parameter>
+  <Parameter name="style" type="string" required={true}>  
   The API style to use. Set to `bedrock` for Amazon Bedrock models.
-  
+  </Parameter>
+</ParameterList>
 
 For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Amazon Bedrock documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html).

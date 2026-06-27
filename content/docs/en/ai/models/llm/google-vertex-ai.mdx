@@ -114,14 +114,24 @@ Use the following `llm` configuration in your request:
 
 ### Key parameters
 
-Refer to Google Cloud [REST authentication](https://cloud.google.com/docs/authentication/rest) to get your GCP credentials.
-
-Use the Vertex AI endpoint with your Google Cloud project ID and region in the URL path. Refer to the [Google Vertex AI API documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/locations) for details.
-
-Use a `parts` array with `text` objects instead of a simple `content` string.
-
-Set to `gemini` to use Gemini's message format.
-
-Refer to [Vertex AI models](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models) for available models.
+<ParameterList title="llm" required={true}>
+  <Parameter name="api_key" type="string" required={true}>  
+  Refer to Google Cloud [REST authentication](https://cloud.google.com/docs/authentication/rest) to get your GCP credentials.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>  
+  Use the Vertex AI endpoint with your Google Cloud project ID and region in the URL path. Refer to [Google Vertex AI API documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/locations) for details.
+  </Parameter>
+  <Parameter name="system_messages" type="array[object]" required={false}>  
+  Use `parts` array with `text` objects instead of simple `content` string.
+  </Parameter>
+  <Parameter name="style" type="string" required={true}>  
+  Set to `gemini` to use Gemini's message format.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>  
+    <Parameter name="model" type="string" required={true}>  
+    Refer to [Vertex AI models](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models) for available models.
+    </Parameter>
+  </Parameter>
+</ParameterList>
 
 For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Google Vertex AI API documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/system-instructions).

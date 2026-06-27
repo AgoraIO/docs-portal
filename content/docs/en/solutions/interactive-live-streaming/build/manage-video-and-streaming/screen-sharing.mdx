@@ -94,15 +94,15 @@ dependencies {
 **Manual integration**
 1. Copy the `AgoraScreenShareExtension.aar` file from the downloaded SDK to the `/app/libs/` directory.
 
-1. Add the following line to the `dependencies` node of the `/app/build.gradle` file to support importing `aar` files:
+2. Add the following line to the `dependencies` node of the `/app/build.gradle` file to support importing `aar` files:
 
   ```java
   implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
   ```
 
-1. Ensure that the file `libagora_screen_capture_extension.so` exists in the `jniLibs` folder of your project. If it does not, copy it manually from the downloaded SDK folder.
+3. Ensure that the file `libagora_screen_capture_extension.so` exists in the `jniLibs` folder of your project. If it does not, copy it manually from the downloaded SDK folder.
 
-1. Add the following code to the `/Gradle Scripts/build.gradle(Module: <projectname>.app` file to specify the location of the JNI library:
+4. Add the following code to the `/Gradle Scripts/build.gradle(Module: <projectname>.app` file to specify the location of the JNI library:
 
   ```java
   android {
@@ -399,14 +399,14 @@ Since Apple does not support capturing the screen in the main process of the app
 Take the following steps to set up your screen sharing project:
 
 1. Go to your project folder and open the `.xcodeproj` file with Xcode.
-1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
+2. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
   ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
-1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.swift` files.
-1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
+3. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.swift` files.
+4. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
 
-1. Modify project settings to implement the screen sharing code logic, and choose one of the following three methods according to your business needs:
+5. Modify project settings to implement the screen sharing code logic, and choose one of the following three methods according to your business needs:
 
    - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **SampleHandler** to **AgoraReplayKitHandler**:
 
@@ -1097,13 +1097,13 @@ To customize the selection interface, refer to the following steps:
   })
   ```
 
-1. Based on the attributes of `source`, draw a selection interface using HTML and CSS to allow the user to select the screen source to be shared. The corresponding relationship between the properties of `source` and the screen sharing selection interface is as follows:
+2. Based on the attributes of `source`, draw a selection interface using HTML and CSS to allow the user to select the screen source to be shared. The corresponding relationship between the properties of `source` and the screen sharing selection interface is as follows:
 
   ![Electron Screen Share Custom Interface Thumbnail Name Relationship](/images/video-sdk/tmp_screen-sharing-web-electron-custom-interface-thumbnail-name.jpg)
 
-1. Get the `sourceId` selected by the user.
+3. Get the `sourceId` selected by the user.
 
-1. Call the `createScreenVideoTrack` method and fill in `sourceId` with `electronScreenSourceId` to create the corresponding screen share stream.
+4. Call the `createScreenVideoTrack` method and fill in `sourceId` with `electronScreenSourceId` to create the corresponding screen share stream.
 
   ``` javascript
   AgoraRTC.createScreenVideoTrack({
@@ -1673,15 +1673,15 @@ Since Apple does not support capturing the screen in the main process of the app
 Take the following steps to set up your screen sharing project:
 
 1. Go to your project folder and open the `ios/.xcodeproj` file with Xcode.
-1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
+2. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
   ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
-1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
-1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
+3. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
+4. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
 The memory usage of **Broadcast Upload Extension** is limited to 50 MB. Make sure that the memory usage of **Screen Sharing Extension** does not exceed 50 MB.
 
-1. Modify project settings to implement the screen sharing code logic, and choose one of the following two methods according to your business needs:
+5. Modify project settings to implement the screen sharing code logic, and choose one of the following two methods according to your business needs:
 
    - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **SampleHandler** to **AgoraReplayKitHandler**:
 
@@ -1810,7 +1810,7 @@ When enabling screen sharing on Android, you only need to call the `startScreenC
         thumbSize: thumbSize, iconSize: iconSize, includeScreen: true);
     ```
 
-1. Share a specified screen or window
+2. Share a specified screen or window
 
   To share a specified screen on macOS or Windows using **Display ID**, refer to the following code:
 
@@ -1837,7 +1837,7 @@ When enabling screen sharing on Android, you only need to call the `startScreenC
     );
     ```
 
-1. Join the channel and publish a screen sharing stream
+3. Join the channel and publish a screen sharing stream
 
   To publish only the screen sharing stream, refer to the following code:
 
@@ -2024,9 +2024,9 @@ Take the following steps to set up your screen sharing project:
 
     ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
-  1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.h` files.
-  1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
-  1. Modify project settings to implement the screen sharing code logic, and choose one of the following methods according to your business needs:
+  2. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.h` files.
+  3. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
+  4. Modify project settings to implement the screen sharing code logic, and choose one of the following methods according to your business needs:
 
      - To use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **$(PRODUCT_MODULE_NAME}.SampleHandler** to **AgoraReplayKitHandler**:
 
@@ -2288,9 +2288,9 @@ Take the following steps to set up your screen sharing project:
 
     ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
-  1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
-  1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
-  1. Modify project settings to implement the screen sharing code logic, and choose one of the following two methods according to your business needs:
+  2. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
+  3. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
+  4. Modify project settings to implement the screen sharing code logic, and choose one of the following two methods according to your business needs:
 
      - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **$(PRODUCT_MODULE_NAME}.SampleHandler** to **AgoraReplayKitHandler**:
 
@@ -2364,7 +2364,7 @@ Take the following steps to set up your screen sharing project:
        ```
 
 1. Select the extension you created in **TARGETS** and add all frameworks under the path **Frameworks/Agora-RTC-Plugin/Agora-Unity-RTC-SDK/Plugins/iOS/** in **General/Frameworks and Libraries**.
-1. To start screen sharing, call `StartScreenCapture` combined with the user's action. For example, prompt the user to press and hold the **Screen Recording** button in the Control Center on iOS, and select the extension you created to start recording.
+2. To start screen sharing, call `StartScreenCapture` combined with the user's action. For example, prompt the user to press and hold the **Screen Recording** button in the Control Center on iOS, and select the extension you created to start recording.
 :::note
 <ul><li>Make sure your app and extension have the same **TARGETS/Deployment/iOS** version. The memory usage of **Broadcast Upload Extension** is limited to 50 MB. </li><li>Make sure that the memory usage of **Screen Sharing Extension** does not exceed 50 MB.</li></ul>
 :::
@@ -2380,7 +2380,7 @@ Windows and macOS systems assign a unique **Display ID** to each screen and a un
 
 Take the following steps to implement screen sharing on macOS and Windows:
 
-1. Get a list of screens and windows that can be shared. Call `GetScreenCaptureSources` method to get the **Display ID** of the screen or the **Window ID** of the window to be shared:
+3. Get a list of screens and windows that can be shared. Call `GetScreenCaptureSources` method to get the **Display ID** of the screen or the **Window ID** of the window to be shared:
 
   ``` csharp
   SIZE thumbSize = new SIZE(360,240);
@@ -2388,7 +2388,7 @@ Take the following steps to implement screen sharing on macOS and Windows:
   ScreenCaptureSourceInfo[] screenCaptureSourceInfos = RtcEngine.GetScreenCaptureSources(thumbSize, iconSize, true);
   ```
 
-1. Share the specified screen or window. Depending on the sharing object, call the `StartScreenCaptureByDisplayId` or `StartScreenCaptureByWindowId` method to start screen sharing:
+4. Share the specified screen or window. Depending on the sharing object, call the `StartScreenCaptureByDisplayId` or `StartScreenCaptureByWindowId` method to start screen sharing:
 
   ``` csharp
   ScreenCaptureSourceInfo info = screenCaptureSourceInfos[0];
@@ -2404,7 +2404,7 @@ Take the following steps to implement screen sharing on macOS and Windows:
   }
   ```
 
-1. Join a channel and publish screen sharing stream.
+5. Join a channel and publish screen sharing stream.
 
    - To publish only the screen sharing stream, add the following code to your project:
 
@@ -2940,12 +2940,12 @@ Save this configuration for subsequent use when starting screen capture. Refer t
 
 1. Create and implement the `OnStartScreenShareClicked` callback. When the callback is triggered, the following process is executed:
   1. Call the **Stop Screen Capture** method to pause the ongoing screen sharing process.
-  1. Based on the list of available screens and windows saved in the previous steps, find the element that corresponds to the option and determine whether the option is a `ScreenCaptureSourceType_Screen` (screen) or a `ScreenCaptureSourceType_Window` (window) by using the **Type** in the element.
+  2. Based on the list of available screens and windows saved in the previous steps, find the element that corresponds to the option and determine whether the option is a `ScreenCaptureSourceType_Screen` (screen) or a `ScreenCaptureSourceType_Window` (window) by using the **Type** in the element.
 
     ![OnStartScreenShareClicked callback](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-start-screen-share-clicked.png)
 
-  1. If the shared target is a screen, call **Start Screen Capture by Display Id** to pass in the screen ID and the parameter configuration saved in the previous steps to start capturing the video stream of the specified screen. If the shared target is a window, call **Start Screen Capture by Window Id** to pass in the window ID and the parameter configuration to start capturing the video stream of the specified window. To share a specific region of a screen or window, set the **Region Rect** parameter to the position of the region you want to share relative to the entire screen or window.
-  1. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the captured screen sharing stream:
+  3. If the shared target is a screen, call **Start Screen Capture by Display Id** to pass in the screen ID and the parameter configuration saved in the previous steps to start capturing the video stream of the specified screen. If the shared target is a window, call **Start Screen Capture by Window Id** to pass in the window ID and the parameter configuration to start capturing the video stream of the specified window. To share a specific region of a screen or window, set the **Region Rect** parameter to the position of the region you want to share relative to the entire screen or window.
+  4. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the captured screen sharing stream:
      - Set **Publish Camera Track** to `AGORA FALSE VALUE` to cancel publishing camera-captured video streams.
      - Set **Publish Screen Track** to `AGORA TRUE VALUE` to publish screen-captured video streams.
      - Set **Auto Subscribe Video** to `AGORA TRUE VALUE` to automatically subscribe to all video streams.

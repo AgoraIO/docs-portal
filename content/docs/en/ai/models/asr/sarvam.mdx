@@ -90,8 +90,11 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-    
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>  
   Your Sarvam API key. Get your API key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
-  
-    
+  </Parameter>
+  <Parameter name="language" type="string" required={true}>  
   The language code for transcription. Set to `unknown` for automatic language detection.
+  </Parameter>
+</ParameterList>

@@ -59,7 +59,7 @@ To implement media stream encryption, do the following:
     private String encryptionSaltBase64 = "<Base64-encoded, salt generated through OpenSSL>";
     ```
 
-1. **Enable encryption**
+2. **Enable encryption**
 
     To enable encryption, you set `enableAutEncryption` to `true` in `channelOptions`. Add the following line after `channelOptions.autoSubscribeVideo = true;` in `joinChannel`:
 
@@ -67,7 +67,7 @@ To implement media stream encryption, do the following:
     channelOptions.enableAutEncryption = true;
     ```
 
-1. **Set encryption parameters**
+3. **Set encryption parameters**
 
     You specify the media stream encryption mode and the related parameters in JSON format by calling `setParams`. Depending on your choice of an encryption method, add **one** of the following pieces of code to `joinChannel` before `agoraEngine.joinChannel(...)`:
 
@@ -96,7 +96,7 @@ To implement media stream encryption, do the following:
                 + "\", \"salt\": \"" + encryptionSaltBase64 + "\", \"salt_type\": \"BASE64\"}}");
         ```
 
-1. **Disable encryption**
+4. **Disable encryption**
 
     To disable encryption, use the following code:
 

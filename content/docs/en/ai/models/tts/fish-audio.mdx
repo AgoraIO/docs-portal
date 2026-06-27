@@ -96,11 +96,14 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-  
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
     The Fish Audio API key used to authenticate requests. You must provide a valid key for the service to function.
-  
-  
+  </Parameter>
+  <Parameter name="reference_id" type="string" required={true}>
     The identifier of the voice model to use for speech synthesis.
-  
-  
+  </Parameter>
+  <Parameter name="backend" type="string" required={true}>
     The backend model version to use. For example, `speech-1.5`.
+  </Parameter>
+</ParameterList>

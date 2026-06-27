@@ -46,7 +46,7 @@ These channels are independent of each other.
 Additional services provided by Agora, such as Cloud Recording and Speech to Text, join the Real-Time STT channel to provide real-time recording, transmission acceleration, media playback, and content moderation.
 ### User ID
 
-In Real-Time STT, the UID is an integer value that uniquely identifies a user within the context of a channel. When joining a channel, you have the option to either assign a specific UID to the user or pass `0` or `null` and allow Agora to automatically generate and assign a UID to the user. If two users attempt to join the same channel with the same UID, it can lead to unexpected behavior.
+In Real-Time STT, the UID is an integer value that uniquely identifies a user within the context of a channel. When joining a channel, you have the option to either assign a specific UID to the user or pass `0` or the JSON `null` value and allow Agora to automatically generate and assign a UID to the user. If two users attempt to join the same channel with the same UID, it can lead to unexpected behavior.
 
 The UID is used by Agora's services and components to identify and manage users within a channel. Ensure that UIDs are properly assigned to prevent conflicts.
 

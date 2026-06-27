@@ -77,7 +77,7 @@ Use either of the following methods to add Video SDK to your project.
   If your Android project uses <a href="https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration">dependencyResolutionManagement</a>, the method of adding the Maven Central dependency may differ.
 :::
 
-1. To integrate the Video SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
+2. To integrate the Video SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
 
    - Groovy `build.gradle`
 
@@ -97,7 +97,7 @@ Use either of the following methods to add Video SDK to your project.
    To get the latest version number, check the [Release notes](reference/release-notes). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
 :::
 
-1. Prevent code obfuscation
+3. Prevent code obfuscation
 
   Open the `/app/proguard-rules.pro` file and add the following lines to prevent the Video SDK code from being obfuscated:
 
@@ -107,9 +107,9 @@ Use either of the following methods to add Video SDK to your project.
   ```
 
 **Manual integration**
-1. Download the latest version of Video SDK from the the [SDKs](../../../sdks.md) page and unzip it.
+4. Download the latest version of Video SDK from the the [SDKs](../../../sdks.md) page and unzip it.
 
-1. Open the unzipped file and copy the following files or subfolders to your project path.
+5. Open the unzipped file and copy the following files or subfolders to your project path.
 
   | File or folder        | Project path    |
   | :---------------------------- | :----------------------- |
@@ -120,9 +120,9 @@ Use either of the following methods to add Video SDK to your project.
   | `x86_64` folder        | `/app/src/main/jniLibs/` |
   | `high_level_api` in `include` folder | `/app/src/main/jniLibs/` |
 
-1. Select the file `/app/libs/agora-rtc-sdk.jar` in the left navigation bar of Android Studio project files, right-click, and select **add as a library** from the drop-down menu.
+6. Select the file `/app/libs/agora-rtc-sdk.jar` in the left navigation bar of Android Studio project files, right-click, and select **add as a library** from the drop-down menu.
 
-1. Prevent code obfuscation
+7. Prevent code obfuscation
 
   Open the `/app/proguard-rules.pro` file and add the following lines to prevent the Video SDK code from being obfuscated:
 
@@ -1092,11 +1092,11 @@ Take the following steps to test the sample code:
 
 1. In `MainActivity` update the values for `myAppId`, and `token` with values from Agora Console. Fill in the same `channelName` you used to generate the token.
 
-1. Enable developer options on your Android test device. Turn on USB debugging, connect the Android device to your development machine through a USB cable, and check that your device appears in the Android device options.
+2. Enable developer options on your Android test device. Turn on USB debugging, connect the Android device to your development machine through a USB cable, and check that your device appears in the Android device options.
 
-1. In Android Studio, click ![image](/images/video-sdk/icon_android_gradle_sync.png) **Sync Project with Gradle Files** to resolve project dependencies and update the configuration.
+3. In Android Studio, click ![image](/images/video-sdk/icon_android_gradle_sync.png) **Sync Project with Gradle Files** to resolve project dependencies and update the configuration.
 
-1. After synchronization is successful, click ![image](/images/video-sdk/icon_android_run.png) **Run app**. Android Studio starts compilation. After a few moments, the app is installed on your Android device.
+4. After synchronization is successful, click ![image](/images/video-sdk/icon_android_run.png) **Run app**. Android Studio starts compilation. After a few moments, the app is installed on your Android device.
 
 5. Launch the App, grant recording and camera permissions. If you set the user role to host, you will see yourself in the local view.
 
@@ -1220,26 +1220,26 @@ Use one of the following methods to install Video SDK.
 
 **Swift Package Manager**
 1. In Xcode, go to **File** > **Add Package Dependencies**.
-1. In the search bar, past the following URL:
+2. In the search bar, past the following URL:
 
   ```
   {`https://github.com/AgoraIO/AgoraRtcEngine_iOS.git`}
   ```
 
-1. Click **Add Package**, select the latest version, and click **Next**.
-1. For basic Interactive Live Streaming, select **RtcBasic**.
+3. Click **Add Package**, select the latest version, and click **Next**.
+4. For basic Interactive Live Streaming, select **RtcBasic**.
 
   If needed, also select:
   - **`SpatialAudio`** for spatial audio effects.
   - **`VirtualBackground`** for virtual background.
-1. Under **Add to Target**, select your project and click **Add Package**.
+5. Under **Add to Target**, select your project and click **Add Package**.
 
   For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
 **CocoaPods**
-1. Go to the project root directory in the terminal and run the `pod init` command. A text file named `Podfile` is generated in the project folder.
+6. Go to the project root directory in the terminal and run the `pod init` command. A text file named `Podfile` is generated in the project folder.
 
-1. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
+7. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
 
   ```ruby
   platform :ios, '9.0'
@@ -1255,16 +1255,16 @@ Use one of the following methods to install Video SDK.
 
   Obtain the latest version number from the [release notes](reference/release-notes).
 
-1. Run the `pod install` command in the terminal to install the Video SDK. After successful installation, the terminal shows **Pod installation complete!**.
+8. Run the `pod install` command in the terminal to install the Video SDK. After successful installation, the terminal shows **Pod installation complete!**.
 
-1. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file through Xcode for subsequent operations.
+9. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file through Xcode for subsequent operations.
 
 **Manual integration**
-1. Download the latest version of the SDK from [SDKs download](../../../sdks.md) and extract the contents.
+10. Download the latest version of the SDK from [SDKs download](../../../sdks.md) and extract the contents.
 
-1. Copy the files in the `libs` folder of the SDK package to your project directory.
+11. Copy the files in the `libs` folder of the SDK package to your project directory.
 
-1. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
+12. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
   :::note
   Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
@@ -1654,9 +1654,9 @@ Take the following steps to test the sample code:
 
 1. In your code update the `appId` and `token`, with the app ID and temporary token you obtained from Agora Console. Use the same `channelName` you filled in when generating the temporary token.
 
-1. Connect your iOS device to your computer.
+2. Connect your iOS device to your computer.
 
-1. Click **Build** to run your project and wait a few seconds for the app installation to complete.
+3. Click **Build** to run your project and wait a few seconds for the app installation to complete.
 
 4. Allow the app to access the device's microphone and camera.
 
@@ -1691,13 +1691,13 @@ Agora provides an open source sample project on [GitHub](https://github.com/Agor
 
   1. Choose **File > New File**.
 
-  1. Scroll down to the **Resource** section and select **App Privacy File** type.
+  2. Scroll down to the **Resource** section and select **App Privacy File** type.
 
-  1. Click **Next**.
+  3. Click **Next**.
 
-  1. Check your app in the **Targets** list.
+  4. Check your app in the **Targets** list.
 
-  1. Click **Create**.
+  5. Click **Create**.
 
   The default file name is `PrivacyInfo.xcprivacy` which is also the required file name for bundled privacy manifests.
 
@@ -1842,26 +1842,26 @@ Use one of the following methods to install Video SDK.
 
 **Swift Package Manager**
 1. In Xcode, go to **File** > **Add Package Dependencies**.
-1. In the search bar, past the following URL:
+2. In the search bar, past the following URL:
 
   ```
   {`https://github.com/AgoraIO/AgoraRtcEngine_macOS.git`}
   ```
 
-1. Click **Add Package**, select the latest version, and click **Next**.
-1. For basic Interactive Live Streaming, select **RtcBasic**.
+3. Click **Add Package**, select the latest version, and click **Next**.
+4. For basic Interactive Live Streaming, select **RtcBasic**.
 
   If needed, also select:
   - **`SpatialAudio`** for spatial audio effects.
   - **`VirtualBackground`** for virtual background.
-1. Under **Add to Target**, select your project and click **Add Package**.
+5. Under **Add to Target**, select your project and click **Add Package**.
 
   For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
 **CocoaPods**
-1. Go to the project root directory in the terminal and run the `pod init` command. A text file named `Podfile` is generated in the project folder.
+6. Go to the project root directory in the terminal and run the `pod init` command. A text file named `Podfile` is generated in the project folder.
 
-1. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
+7. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
 
   ```ruby
   platform :macos, '10.11'
@@ -1873,16 +1873,16 @@ Use one of the following methods to install Video SDK.
 
   Obtain the latest version number from the [release notes](reference/release-notes).
 
-1. Run the `pod install` command in the terminal to install the Video SDK. After successful installation, the terminal shows **Pod installation complete!**.
+8. Run the `pod install` command in the terminal to install the Video SDK. After successful installation, the terminal shows **Pod installation complete!**.
 
-1. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file through Xcode for subsequent operations.
+9. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file through Xcode for subsequent operations.
 
 **Manual integration**
-1. Download the latest version of the SDK from [SDKs download](../../../sdks.md) and extract the contents.
+10. Download the latest version of the SDK from [SDKs download](../../../sdks.md) and extract the contents.
 
-1. Copy the files in the `libs` folder of the SDK package to your project directory.
+11. Copy the files in the `libs` folder of the SDK package to your project directory.
 
-1. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
+12. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
   :::note
   Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
@@ -2405,11 +2405,11 @@ To initialize a new Vite project, take the following steps:
 **Add to an existing project**
 To add Interactive Live Streaming to your existing project, take the following steps:
 
- 1. Create a JavaScript file in your project's `src` folder to add `AgoraRTCClient` code that implements specific application logic.
+ 2. Create a JavaScript file in your project's `src` folder to add `AgoraRTCClient` code that implements specific application logic.
 
- 1. Add an HTML file to your project to create a user interface. The UI consists of buttons to join and leave a channel. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones HTML layout.
+ 3. Add an HTML file to your project to create a user interface. The UI consists of buttons to join and leave a channel. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones HTML layout.
 
- 1. Include the JavaScript file in your HTML file.
+ 4. Include the JavaScript file in your HTML file.
 
   ```html
   <script type="module" src="/src/main.js"></script>
@@ -2807,19 +2807,19 @@ Take the following steps to run and test the sample code:
 
 1. In your `.js` file, update the values for `appId`, and `token` with values from Agora Console. Use the same `channel` name you used to generate the token.
 
-1. To start the development server, use the following command:
+2. To start the development server, use the following command:
 
   ```shell
   npm run dev
   ```
 
-1. Open your browser and navigate to the URL displayed in your terminal, for example, `http://localhost:5173`.
+3. Open your browser and navigate to the URL displayed in your terminal, for example, `http://localhost:5173`.
 
   You see the following page:
 
   ![image](/images/video-sdk/quickstart-ui-web-ils.png)
 
-1. On a second device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) or clone the [sample project on Github](https://github.com/AgoraIO/API-Examples-Web) to join the same channel and test the following use-cases:
+4. On a second device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) or clone the [sample project on Github](https://github.com/AgoraIO/API-Examples-Web) to join the same channel and test the following use-cases:
 
    * If users on both devices join the channel as hosts, they can see and hear each other.
    * If one user joins as host and the other as audience, the host can see themselves; the audience can see the host in the remote video view and hear the host.
@@ -2989,14 +2989,14 @@ The following steps outline the process to set up a new Visual Studio 2022 proje
 
 1. In Visual Studio, select **File > New > Project** to create a new project. In the pop-up window, select **MFC application** as the project template, click **Next**, update the project name to `AgoraQuickStart`, set the project storage location, and then click **Create**.
 
-1. In the pop-up MFC application window, set the application type to **Dialog-based** , and set **Use MFC** to **Use MFC in a shared DLL**. Enter the generated class, set the generated class to **Dlg**, set the base class to **CDialog**, and click **Finish**.
+2. In the pop-up MFC application window, set the application type to **Dialog-based** , and set **Use MFC** to **Use MFC in a shared DLL**. Enter the generated class, set the generated class to **Dlg**, set the base class to **CDialog**, and click **Finish**.
 
 **Add to an existing project**
 To integrate real-time audio and video interaction into your project:
 
-1. Launch Visual Studio 2022 and open your existing project by selecting **File > Open > Project/Solution**.
+3. Launch Visual Studio 2022 and open your existing project by selecting **File > Open > Project/Solution**.
 
-1. Navigate to your project directory and open the `.sln` file.
+4. Navigate to your project directory and open the `.sln` file.
 
 3. Create a user-interface for your app based on your application use-case.
 
@@ -3022,15 +3022,15 @@ Install the Agora Video SDK:
 In the Solution Explorer window, right-click the project name and click **Properties** to configure the following:
 
 1. Go to the **C/C++ > General > Additional Include Directory** menu, click **Edit**, and in the pop-up window enter `$(SolutionDir)sdk\high_level_api\include`.
-1. Go to the **Linker > General > Additional Library Directory** menu, click **Edit**, and in the pop-up window:
+2. Go to the **Linker > General > Additional Library Directory** menu, click **Edit**, and in the pop-up window:
    * for 64 bit Windows, enter `$(SolutionDir)sdk\x86_64`.
    * for x86 Windows, enter `$(SolutionDir)sdk\x86`.
-1. Go to the **Linker > Input > Additional Dependencies** menu, click **Edit**, and in the pop-up window:
+3. Go to the **Linker > Input > Additional Dependencies** menu, click **Edit**, and in the pop-up window:
    * for 64 bit Windows, enter `$(SolutionDir)sdk\x86_64\agora_rtc_sdk.dll.lib`.
    * for x86 Windows, enter `$(SolutionDir)sdk\x86\agora_rtc_sdk.dll.lib`.
-1. Enter the **Advanced** menu, and in **Advanced Properties**, set **Copy contents to OutDir** and **Copy C++ runtime to output directory** to `Yes`.
-1. Go to the **Build Events > Post-Build Events > Command Line** menu and enter `copy $(SolutionDir)sdk\x86_64\*.dll $(SolutionDir)$(Platform)\$(Configuration)`.
-1. Click **Apply** to save the configuration.
+4. Enter the **Advanced** menu, and in **Advanced Properties**, set **Copy contents to OutDir** and **Copy C++ runtime to output directory** to `Yes`.
+5. Go to the **Build Events > Post-Build Events > Command Line** menu and enter `copy $(SolutionDir)sdk\x86_64\*.dll $(SolutionDir)$(Platform)\$(Configuration)`.
+6. Click **Apply** to save the configuration.
 
 ## Implement Interactive Live Streaming
 
@@ -3660,13 +3660,13 @@ Alternatively, follow these steps to create a bare-bones UI for your project.
 
 1. Switch the project to resource view in the right menu bar, and then open the `.Dialog` file.
 
-1. From **View > Toolbox**, select Add **Picture Control**, and in **Properties > Miscellaneous**, set the ID of the control to `IDC_STATIC_REMOTE`.
+2. From **View > Toolbox**, select Add **Picture Control**, and in **Properties > Miscellaneous**, set the ID of the control to `IDC_STATIC_REMOTE`.
 
-1. From **View > Toolbox** , select Add **Picture Control** , and in **Properties > Miscellaneous** , set the control's ID to `IDC_STATIC_LOCAL`.
+3. From **View > Toolbox** , select Add **Picture Control** , and in **Properties > Miscellaneous** , set the control's ID to `IDC_STATIC_LOCAL`.
 
-1. To set up an input box for entering the channel name, from **View > Toolbox** , select add **Static Text** control, and change the description text to `Channel name` in the properties. Add an **Edit Control** as an input box, and in **Properties > Miscellaneous**, set the control's ID to `IDC_EDIT_CHANNEL`.
+4. To set up an input box for entering the channel name, from **View > Toolbox** , select add **Static Text** control, and change the description text to `Channel name` in the properties. Add an **Edit Control** as an input box, and in **Properties > Miscellaneous**, set the control's ID to `IDC_EDIT_CHANNEL`.
 
-1. To add join and leave channel buttons, open **View > Toolbox** and add two **Button** controls. In **Properties > Miscellaneous** , set the IDs to `ID_BTN_JOIN` and `ID_BTN_LEAVE`, and set the description text to **Join** and **Leave** respectively. Your user interface looks similar to the following:
+5. To add join and leave channel buttons, open **View > Toolbox** and add two **Button** controls. In **Properties > Miscellaneous** , set the IDs to `ID_BTN_JOIN` and `ID_BTN_LEAVE`, and set the description text to **Join** and **Leave** respectively. Your user interface looks similar to the following:
 
   ![image](/images/video-sdk/windows-quickstart-ui.png)
 
@@ -3678,11 +3678,11 @@ To test your app, follow these steps:
 
 1. In Visual Studio, select local Windows debugger to start compiling the application.
 
-1. Enter the name of the channel you want to join in the input box and click the **Join** button to join the channel.
+2. Enter the name of the channel you want to join in the input box and click the **Join** button to join the channel.
 
   You see yourself in the local view.
 
-1. Use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
+3. Use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
    * If users on both devices join the channel as hosts, they can see and hear each other.
    * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
@@ -4403,7 +4403,7 @@ Take the following steps to test the sample code:
 
 1. Update the `APPID`, `token`, and `channel` parameter values in your code.
 
-1. To run the app, execute the following command in the project root directory:
+2. To run the app, execute the following command in the project root directory:
 
   ```bash
   npm start
@@ -4411,7 +4411,7 @@ Take the following steps to test the sample code:
 
   You see a window pop up showing the local video.
 
-1. Invite a friend to run the demo app on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel.
+3. Invite a friend to run the demo app on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel.
 
    * If users on both devices join the channel as hosts, they can see and hear each other.
    * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
@@ -4979,9 +4979,9 @@ Take the following steps to test the sample code:
 
 1. In `main.dart` update the values for `appId`, and `token` with values from Agora Console. Fill in the same `channel` name you used to generate the token.
 
-1. Connect a target device to your development computer.
+2. Connect a target device to your development computer.
 
-1. Open Terminal and execute the following command in the project folder to run the sample project:
+3. Open Terminal and execute the following command in the project folder to run the sample project:
 
   ```bash
   flutter run
@@ -5736,7 +5736,7 @@ Take the following steps to test the sample code:
 
 1. Update the values for `appId`, `token`, and `channelName` in your code.
 
-1. Run the app.
+2. Run the app.
 
   :::warning
 
@@ -5754,9 +5754,9 @@ Take the following steps to test the sample code:
 
 To run the app on an Android device:
 
-1. Turn on the developer options of the Android device and connect the Android device to the computer through a USB cable.
+3. Turn on the developer options of the Android device and connect the Android device to the computer through a USB cable.
 
-1. In the project root directory, execute `npx react-native run-android`.
+4. In the project root directory, execute `npx react-native run-android`.
 
 </CodeBlockTab>
 
@@ -5764,11 +5764,11 @@ To run the app on an Android device:
 
 To run on the app on an iOS device:
 
-1. Open the `ProjectName/ios/ProjectName.xcworkspace` folder using Xcode.
+5. Open the `ProjectName/ios/ProjectName.xcworkspace` folder using Xcode.
 
-1. Connect the iOS device to your computer through a USB cable.
+6. Connect the iOS device to your computer through a USB cable.
 
-1. In Xcode, click the **Build and Run** button.
+7. In Xcode, click the **Build and Run** button.
 
 </CodeBlockTab>
 
@@ -5779,7 +5779,7 @@ To run on the app on an iOS device:
 :::
 
 
-1. Launch the app and click the **Join channel** button to join a channel.
+8. Launch the app and click the **Join channel** button to join a channel.
 
 4. Invite a friend to install and run the app on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel. Once your friend joins the channel, you can see and hear each other.
 
@@ -6253,21 +6253,21 @@ This section shows you how to set up your Unity project and install the Agora Vi
 Refer to the following steps or the [Official Unity documentation](https://docs.unity3d.com/hub/manual/AddProject.html#add-projects) to create a Unity project.
 
 1. Open Unity and click **New**.
-1. Enter the following details:
+2. Enter the following details:
    * **Project name** : The name of the project.
    * **Location** : Project storage path.
    * **Template** : The project type. Select **3D**.
 
-1. Click **Create project**.
+3. Click **Create project**.
 
 **Add to an existing project**
 To open your existing project:
 
-1. In the **Projects** window, click the **Open** button in the top-right corner.
+4. In the **Projects** window, click the **Open** button in the top-right corner.
 
-1. Browse your file manager and select the folder of the project you want to open.
+5. Browse your file manager and select the folder of the project you want to open.
 
-1. Confirm your selection to add the project to the **Projects** window and open it in the Unity Editor.
+6. Confirm your selection to add the project to the **Projects** window and open it in the Unity Editor.
 
 ### Install the SDK
 
@@ -6296,9 +6296,9 @@ Before proceeding, create and set up a script to implement Interactive Live Stre
 
   1. In the **Project** tab, navigate to **Assets > Agora-Unity-RTC-SDK > Code > Rtc**, right-click and select **Create > C# Script**. A new file named `NewBehaviourScript.cs` appears in your Assets.
 
-  1. Rename the file to `JoinChannel.cs` and open it.
+  2. Rename the file to `JoinChannel.cs` and open it.
 
-  1. Import the Unity namespaces to access UI components by adding the following code at the top of the file:
+  3. Import the Unity namespaces to access UI components by adding the following code at the top of the file:
 
     ```c#
     using UnityEngine;
@@ -6531,7 +6531,7 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
   }
   ```
 
-1. To start Interactive Live Streaming, initialize the engine and set up the event handler.
+2. To start Interactive Live Streaming, initialize the engine and set up the event handler.
 
   ```c#
   void Start()
@@ -6542,7 +6542,7 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
   }
   ```
 
-1. To clean up all session-related resources when a user exits the game, call the `Dispose` method of the `IRtcEngine`.
+3. To clean up all session-related resources when a user exits the game, call the `Dispose` method of the `IRtcEngine`.
 
   ```c#
   void OnApplicationQuit() {
@@ -6760,14 +6760,14 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
   1. In your Unity project, right-click the **Sample Scene** and select **Game Object > UI > Button**. You see a button on the scene canvas.
 
-  1. In the **Inspector** panel, rename the button to `Join` and adjust the position coordinates as needed. For example:
+  2. In the **Inspector** panel, rename the button to `Join` and adjust the position coordinates as needed. For example:
 
      * **Pos X**：`-329`
      * **Pos Y**: `-172`
 
-  1. Select the **Text** control of the **Join** button , and change the text to `Join` in the **Inspector** panel.
+  3. Select the **Text** control of the **Join** button , and change the text to `Join` in the **Inspector** panel.
 
-  1. Repeat the steps to create a **Leave** button, using the following positions:
+  4. Repeat the steps to create a **Leave** button, using the following positions:
 
      * **Pos X**：`329`
      * **Pos Y**: `-172`
@@ -6776,14 +6776,14 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
   1. Right-click the Canvas and select **UI > Raw Image**.
 
-  1. In the **Inspector** panel, rename `Raw Image` to `LocalView` and adjust its size and position on the canvas. For example:
+  2. In the **Inspector** panel, rename `Raw Image` to `LocalView` and adjust its size and position on the canvas. For example:
 
      * **PosX**：`-250`
      * **Pos Y**: `0`
      * **Width**: `250`
      * **Height**: `250`
 
-  1. Repeat the above steps to create a remote view window, name it `RemoteView` , and adjust its position on the canvas:
+  3. Repeat the above steps to create a remote view window, name it `RemoteView` , and adjust its position on the canvas:
 
      * **PosX**：`250`
      * **Pos Y**: `0`
@@ -6802,13 +6802,13 @@ Take the following steps to test the sample code:
 
 1. Obtain a temporary token from Agora Console.
 
-1. In `JoinChannel.cs`, update `_appID`, `_channelName`, and `_token` with the app ID, channel name, and temporary token for your project.
+2. In `JoinChannel.cs`, update `_appID`, `_channelName`, and `_token` with the app ID, channel name, and temporary token for your project.
 
-1. In Unity Editor, click **Play** to run your project.
+3. In Unity Editor, click **Play** to run your project.
 
-1. Click **Join** to join a channel.
+4. Click **Join** to join a channel.
 
-1. Invite a friend to run the demo game on a second device. Use the same `_appID_`, `_token`, and `_channelName` to join. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel.
+5. Invite a friend to run the demo game on a second device. Use the same `_appID_`, `_token`, and `_channelName` to join. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel.
 
   After your friend joins successfully, you can hear and see each other.
 
@@ -6943,7 +6943,7 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
   In the Unreal Editor, select **Tools > New C++ Class**, then select **All Classes**, find **UserWidget** and name it `AgoraWidget`. Click **Create Class**. A new C++ class is added to your project and you see `AgoraWidget.h` and `AgoraWidget.cpp` files.
 
-1. Initialize custom Widget
+2. Initialize custom Widget
 
   Add the following code to your widget header file:
 
@@ -6953,13 +6953,13 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
   void NativeConstruct() override;
   ```
 
-1. Associate C++ classes and Widgets
+3. Associate C++ classes and Widgets
 
   In Unreal Editor, click **Content Drawer**, select **Class Settings > Graph**, and set the **Parent Class** under **Class Options** to **AgoraWidget**.
 
     ![image](/images/video-sdk/associate-classes-unreal.png)
 
-1. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI. A basic user interface consists of the following elements:
+4. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI. A basic user interface consists of the following elements:
 
    * Local user video window
    * Remote user video window
@@ -7185,7 +7185,7 @@ Add the `AndroidPermission` library to obtain device and network permissions:
     #endif
   ```
 
-1. Add the `AndroidPermission` library to the `Project/Source/Project/Project.Build.cs` file:
+2. Add the `AndroidPermission` library to the `Project/Source/Project/Project.Build.cs` file:
 
   ```cpp
   if (Target.Platform == UnrealTargetPlatform.Android)
@@ -7194,7 +7194,7 @@ Add the `AndroidPermission` library to obtain device and network permissions:
     }
   ```
 
-1. To check whether Android permissions have been granted, add the `CheckAndroidPermission` method and its implementation to the `AgoraWidget.h` and `AgoraWidget.cpp` files.
+3. To check whether Android permissions have been granted, add the `CheckAndroidPermission` method and its implementation to the `AgoraWidget.h` and `AgoraWidget.cpp` files.
 
    * `AgoraWidget.h`
 
@@ -7235,9 +7235,9 @@ Add the `AndroidPermission` library to obtain device and network permissions:
      ```
 
 **iOS and macOS**
-1. Refer to [How to add the permissions required for real-time interaction to an Unreal Engine project?](https://docs-md.agora.io/en/interactive-live-streaming/get-started.md)
+4. Refer to [How to add the permissions required for real-time interaction to an Unreal Engine project?](https://docs-md.agora.io/en/interactive-live-streaming/get-started.md)
 
-1. In `Project/Source/Project.Target.cs`, add the following code:
+5. In `Project/Source/Project.Target.cs`, add the following code:
 
   ```cpp
   public class unrealstartTarget : TargetRules
@@ -7575,13 +7575,13 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
   ![image](/images/video-sdk/unreal-setup-ui-1.png)
 
-1. Create a view canvas.
+2. Create a view canvas.
 
   Select **Palette > PANEL > Canvas Panel** and drag it to **AgoraWidget**.
 
   ![image](/images/video-sdk/unreal-setup-ui-2.png)
 
-1. Create join and leave channel buttons in Widget Blueprint
+3. Create join and leave channel buttons in Widget Blueprint
 
   1. In **AgoraWidget**, select **COMMON > Button**, drag it to the **Canvas Panel**, and rename it to **JoinBtn**. Adjust the button's size and position on the canvas or use the following sample settings:
 
@@ -7590,9 +7590,9 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
      * **Size X**：`240`
      * **Size Y**: `120`
 
-  1. Select **COMMON > Text** and drag it to **JoinBtn**. Select the **Text** control of **JoinBtn**, and change the text content of **Text** to **Join** in the **Details** panel.
+  2. Select **COMMON > Text** and drag it to **JoinBtn**. Select the **Text** control of **JoinBtn**, and change the text content of **Text** to **Join** in the **Details** panel.
 
-  1. Repeat the above steps to create a **LeaveBtn**. Adjust the button size and position according to your layout design.
+  3. Repeat the above steps to create a **LeaveBtn**. Adjust the button size and position according to your layout design.
 
 4. Create local and remote views in the Widget Blueprint
 
@@ -7618,11 +7618,11 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
   1. In **Unreal Editor**, click **Content Drawer**, right-click to select **Level**, and name it **agoraLevel**.
 
-  1. Double-click to open **agoraLevel** and click **Open Level Blueprint**.
+  2. Double-click to open **agoraLevel** and click **Open Level Blueprint**.
 
     ![image](/images/video-sdk/unreal-setup-ui-4.png)
 
-  1. Right-click and enter **Create Widget** in the search box. Select the created **AgoraWidget**, create **Event BeginPlay** and **Add to Viewport** in the same way. Connect them as follows:
+  3. Right-click and enter **Create Widget** in the search box. Select the created **AgoraWidget**, create **Event BeginPlay** and **Add to Viewport** in the same way. Connect them as follows:
 
     ![image](/images/video-sdk/unreal-setup-ui-5.png)
 
@@ -7636,11 +7636,11 @@ Take the following steps to test the sample code:
 
 1. Obtain a temporary token from Agora Console.
 
-1. In `AgoraWidget.h`, update `_appID`, `_channelName`, and `_token` with the app ID, channel name, and temporary token for your project.
+2. In `AgoraWidget.h`, update `_appID`, `_channelName`, and `_token` with the app ID, channel name, and temporary token for your project.
 
-1. In the Unreal Editor, click the play button to run your project, then click **Join** to join a channel.
+3. In the Unreal Editor, click the play button to run your project, then click **Join** to join a channel.
 
-1. Invite a friend to run the demo game on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel.
+4. Invite a friend to run the demo game on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel.
 
   After your friend joins successfully, you can hear and see each other.
 
@@ -7980,9 +7980,9 @@ Take the following steps to test the sample code:
 
 1. In the **Load Agora Config** function, fill in the app ID, channel name, and temporary token for your project.
 
-1. In the Unreal Editor, click Play to run your project. Click **JoinChannel** to join a channel.
+2. In the Unreal Editor, click Play to run your project. Click **JoinChannel** to join a channel.
 
-1. Invite a friend to run the demo game on a second device. Use the same same app ID, channel name, and token to join. After your friend joins successfully, you can hear and see each other.
+3. Invite a friend to run the demo game on a second device. Use the same same app ID, channel name, and token to join. After your friend joins successfully, you can hear and see each other.
 
 ## Reference
 
@@ -8049,13 +8049,13 @@ This section shows you how to set up your Python project and install the Agora V
   sudo apt install build-essential python3-dev
   ```
 
-1. To implement structured, asynchronous event handling in Python, install the `pyee` library.
+2. To implement structured, asynchronous event handling in Python, install the `pyee` library.
 
   ```
   pip3 install pyee
   ```
 
-1. Install the Agora server side Python SDK.
+3. Install the Agora server side Python SDK.
 
   ```
   pip3 install agora-python-server-sdk
@@ -9039,7 +9039,7 @@ Follow these steps to test the demo code:
 
 1. Create a file named `rtc.py` and paste the [complete source code](#complete-code) into this file.
 
-1. Create a file named `main.py` in the same folder as `rtc.py` and copy the following code to the file:
+2. Create a file named `main.py` in the same folder as `rtc.py` and copy the following code to the file:
 
   ```python
   import asyncio
@@ -9060,7 +9060,7 @@ Follow these steps to test the demo code:
     asyncio.run(main())
   ```
 
-1. To specify the audio parameters, create a folder named `realtimeapi` and add a file `util.py` containing the following code:
+3. To specify the audio parameters, create a folder named `realtimeapi` and add a file `util.py` containing the following code:
 
   ```python
   # Number of audio channels (1 for mono, 2 for stereo)
@@ -9070,7 +9070,7 @@ Follow these steps to test the demo code:
   SAMPLE_RATE = 44100 # Common sample rates include 8000, 16000, 44100, 48000
   ```
 
-1. To run the app, execute the following command in your terminal:
+4. To run the app, execute the following command in your terminal:
 
   ```bash
   python3 main.py

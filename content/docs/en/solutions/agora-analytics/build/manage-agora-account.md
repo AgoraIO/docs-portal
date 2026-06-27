@@ -77,7 +77,7 @@ To get an App Certificate, do the following:
 
     ![Console project management page](/images/common/console-project-management-page.png)
 
-1.  Click the copy icon under **Primary Certificate**.
+2.  Click the copy icon under **Primary Certificate**.
 
     ![Console primary certificate](/images/common/console-primary-certificate.png)
 
@@ -95,8 +95,7 @@ To generate a token for other Agora products:
 
 1. In your browser, navigate to the [Agora token builder](https://agora-token-generator-demo.vercel.app/).
 
-2. Choose the Agora product your user wants to log in to. Fill in **App ID** and **App Certificate** with the
-details of your project in Agora Console.
+2. Choose the Agora product your user wants to log in to. Fill in **App ID** and **App Certificate** with the details of your project in Agora Console.
 
 3. Customize the token for each user. The required fields are visible in the Agora token builder.
 
