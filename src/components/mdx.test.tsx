@@ -334,6 +334,9 @@ describe('common MDX registry', () => {
         <Parameter name="language" required type="string">
           Recognition language.
         </Parameter>
+        <Parameter name="model" required={false} type="string">
+          Recognition model.
+        </Parameter>
         <Parameter
           defaultValue="{}"
           name="metadata"
@@ -353,10 +356,11 @@ describe('common MDX registry', () => {
 
     expect(screen.getByText('params')).toBeVisible();
     expect(screen.getByText('language')).toBeVisible();
-    expect(screen.getAllByText('string')).toHaveLength(2);
+    expect(screen.getAllByText('string')).toHaveLength(3);
     expect(screen.getAllByText('required')).toHaveLength(2);
+    expect(screen.getByText('model')).toBeVisible();
     expect(screen.getByText('metadata')).toBeVisible();
-    expect(screen.getByText('optional')).toBeVisible();
+    expect(screen.getAllByText('optional')).toHaveLength(2);
     expect(screen.getByText('Default value')).toBeVisible();
     expect(screen.getByText('{}')).toBeVisible();
     expect(screen.getByText('Possible values')).toBeVisible();

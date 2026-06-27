@@ -544,7 +544,7 @@ function ParameterList({
   title,
   ...props
 }: ParameterListProps) {
-  const requiredState = required ? 'required' : optional ? 'optional' : null;
+  const requiredState = getRequiredState({ optional, required });
 
   return (
     <section
@@ -612,7 +612,7 @@ function Parameter({
   type,
   ...props
 }: ParameterProps) {
-  const requiredState = required ? 'required' : optional ? 'optional' : null;
+  const requiredState = getRequiredState({ optional, required });
 
   return (
     <div className={cn('group/parameter', className)} {...props}>
@@ -662,6 +662,24 @@ function Parameter({
       </div>
     </div>
   );
+}
+
+function getRequiredState({
+  optional,
+  required,
+}: {
+  optional?: boolean;
+  required?: boolean;
+}) {
+  if (required) {
+    return 'required';
+  }
+
+  if (optional || required === false) {
+    return 'optional';
+  }
+
+  return null;
 }
 
 function createDocsAnchor(contentPath?: string) {
