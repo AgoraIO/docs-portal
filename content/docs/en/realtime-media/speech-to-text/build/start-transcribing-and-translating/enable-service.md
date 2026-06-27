@@ -33,9 +33,9 @@ Take the following steps:
 1. Refer to [Deploy a token server](https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server) to generate RTC tokens.
 You will need to use AccessToken2. For example, `"007eJxTYLj64d/9y/N6FnXGZ4nWvZ9TcL7O2u7XrrCdnPe4p1QIbZ2pwGCaZGppkmxsZGaWZmRibmlkmWRiZmBikGpsZGBkaJyY9KCqIFWAj4FBI/gaMyMDEwMjEIL4PAwlqcUl8aXFqUXxxxxxxxxxxx=="`
 
-1. Use this token to replace the value of `"Authorization"` in HTTP headers: `"Authorization: agora token="007eJxTYLj64d/9y/N6FnXGZ4nWvZ9TcL7O2u7XrrCdnPe4p1QIbZ2pwGCaZGppkmxsZGaWZmRibmlkmWRiZmBikGpsZGBkaJyY9KCqIFWAj4FBI/gaMyMDEwMjEIL4PAwlqcUl8aXFqUXxxxxxxxxxxx=="`.
+2. Use this token to replace the value of `"Authorization"` in HTTP headers: `"Authorization: agora token="007eJxTYLj64d/9y/N6FnXGZ4nWvZ9TcL7O2u7XrrCdnPe4p1QIbZ2pwGCaZGppkmxsZGaWZmRibmlkmWRiZmBikGpsZGBkaJyY9KCqIFWAj4FBI/gaMyMDEwMjEIL4PAwlqcUl8aXFqUXxxxxxxxxxxx=="`.
 
-1. Use this header to call RESTful APIs.
+3. Use this header to call RESTful APIs.
 
 **Examples**
 
