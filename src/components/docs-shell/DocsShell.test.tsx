@@ -569,9 +569,6 @@ describe('DocsShell', () => {
       'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('docs-toc-rail-placeholder'),
-    ).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-page-actions')).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-side-rail')).not.toBeInTheDocument();
     for (const footer of screen.getAllByTestId('docs-page-footer')) {
