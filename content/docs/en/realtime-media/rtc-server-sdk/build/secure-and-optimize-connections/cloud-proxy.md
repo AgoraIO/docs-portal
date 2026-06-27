@@ -45,7 +45,7 @@ To enable Force UDP or Force TCP Cloud proxy mode, take the following steps:
 
 3. Test the audio and video call functionality.
 
-#### Considerations
+### Considerations
 
 - Agora recommends that you enable Cloud proxy before connecting to the channel or after disconnecting from the channel.
 - Force UDP Cloud proxy mode does not support pushing streams to the CDN or relaying streams across channels.

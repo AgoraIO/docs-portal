@@ -20,12 +20,12 @@ By default, a new account is assigned the Free package when the first project is
 :::note
 - For non-contracted customers, all packages, except the Enterprise package can be purchased directly from the Agora Console. To upgrade to the Enterprise package, contact [Agora sales](mailto:sales@agora.io).
 - You can upgrade sequentially or skip levels. For example, you may upgrade from Starter to Business Plus directly.
-- Package upgrades take effect immediately and apply to the entire calender month. If you make multiple upgrades on the same day, only the last upgrade is applied.
+- Package upgrades take effect immediately and apply to the entire calendar month. If you make multiple upgrades on the same day, only the last upgrade is applied.
 - If your account has a negative balance, purchasing a prepaid package first charges your credit card for the outstanding balance, then for the package fee.
 :::
 #### Upgrade rules
 
-When you upgrade to a paid package, it becomes effective for the entire calender month, regardless of the purchase date. You receive the full monthly allocation of included minutes. The cost of the previous package is deducted from the new package price, so you only pay the difference. If you request an upgrade after auto-renewal has triggered, you may upgrade for the next month as well.
+When you upgrade to a paid package, it becomes effective for the entire calendar month, regardless of the purchase date. You receive the full monthly allocation of included minutes. The cost of the previous package is deducted from the new package price, so you only pay the difference. If you request an upgrade after auto-renewal has triggered, you may upgrade for the next month as well.
 
 ### Renewal
 
