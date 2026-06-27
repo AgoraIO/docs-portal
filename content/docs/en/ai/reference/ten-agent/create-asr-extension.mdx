@@ -1,5 +1,5 @@
 ---
-title: Create an ASR extension project
+title: Create an ASR extension
 description: Generate a TEN Agent ASR extension project and install its development dependencies
 ---
 
@@ -9,11 +9,11 @@ In a TEN Agent graph, an ASR extension receives real-time audio frames and emits
 
 ## When to use this guide
 
-Use this guide when you are starting a new Python ASR extension from the default template. For the complete extension lifecycle, see [Development workflow](./development-workflow). For metadata and schema concepts, see [Schema system](../architecture/schema-system).
+Use this guide when you are starting a new Python ASR extension from the default template. For the complete extension lifecycle, see [Development workflow](../../ten-agent/develop/development-workflow). For metadata and schema concepts, see [Schema system](../../ten-agent/architecture/schema-system).
 
 ## Prerequisites
 
-- Understand the development and testing process of TEN extensions. See [Development workflow](./development-workflow).
+- Understand the development and testing process of TEN extensions. See [Development workflow](../../ten-agent/develop/development-workflow).
 - Master Python asynchronous programming (`asyncio`, `async/await`).
 - Have the `tman` command-line tool installed and be familiar with its basic usage.
 - Have an API key from an ASR vendor ready (for testing).
@@ -90,7 +90,7 @@ my_asr_extension/
 - `property.json`: Defines the extension's **default property values**.
 
 :::info
-For details about TEN Framework metadata and schemas, see [Schema system](../architecture/schema-system).
+For details about TEN Framework metadata and schemas, see [Schema system](../../ten-agent/architecture/schema-system).
 :::
 
 **requirements.txt** is unique to Python extensions and is used to declare the extension's **dependencies on third-party pip packages**.
