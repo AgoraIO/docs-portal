@@ -58,7 +58,7 @@ To receive the HTTP callbacks, you need to configure rules for the pre- or post-
 2. Find **Chat** on the project editing page, and click **Configure**.
 3. Choose **Features** > **Callback** and click **Add Callback Address** on the **Callback** page.
    
-	  ![](/images/im/callback_addr_list.png)
+    ![](/images/im/callback_addr_list.png)
 		
 4. To add a rule for pre-delivery callbacks, fill the following fields under the **Pre Send** tab and then click **Save**:
 
@@ -202,9 +202,9 @@ As shown in the figure, the workflow of post-delivery callbacks is as follows:
 2. The Chat server sends an HTTP request that contains the information of the message or event to your app server.
 3. Your app server sends an HTTP response to the Chat server to indicate that the callback is received.
 
-:::warning
-If you have set both pre- and post-delivery callbacks, and a message is rejected after the pre-delivery callback returns, the post-delivery callbacks are not triggered.If you want to use strong encryption, you can encrypt the data yourself and enable your app server to decrypt the data included in the post-delivery callback requests received from the Chat server.
-:::
+    :::warning
+    If you have set both pre- and post-delivery callbacks, and a message is rejected after the pre-delivery callback returns, the post-delivery callbacks are not triggered.If you want to use strong encryption, you can encrypt the data yourself and enable your app server to decrypt the data included in the post-delivery callback requests received from the Chat server.
+    :::
 
 The Chat server places full trust in callback responses received from your app server without verifying them. As long as the returned HTTP status code is 200, the Chat server regards that the callback succeeds.
 

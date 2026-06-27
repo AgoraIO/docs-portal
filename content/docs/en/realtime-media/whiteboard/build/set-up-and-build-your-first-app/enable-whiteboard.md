@@ -18,10 +18,10 @@ Follow these steps to enable the Interactive Whiteboard in Agora Console:
 1. Log in to [Agora Console](https://console.agora.io/v2), and click the **Projects** in the navigation panel.
 
 2. On the **My Projects** page, click the **Edit** ✎ icon against the project for which you want to enable Interactive Whiteboard.
- ![](/images/common/console-configure-project.png)
+    ![](/images/common/console-configure-project.png)
 
 3. Under **ALL FEATURES**, select **Whiteboard**, and then toggle the **Enable Whiteboard** button.
- ![Enable Whiteboard](/images/interactive-whiteboard/console-enable-whiteboard.png)
+    ![Enable Whiteboard](/images/interactive-whiteboard/console-enable-whiteboard.png)
 
 ## Get security credentials for your whiteboard project
 
@@ -43,13 +43,13 @@ To get the security credentials:
 
 4. Click **Generate**, to generate an SDK token. Read the prompt carefully, and then click **Copy** ⧉. Save the SDK Token to a secure location.
 
-:::warning
-Exposing security credentials can lead to serious risks. To improve security, Agora recommends the following best practices:
+    :::warning
+    Exposing security credentials can lead to serious risks. To improve security, Agora recommends the following best practices:
 
-- Avoid sending the Access Key (AK) and Secret Key (SK) to app clients or hard-coding them in the application. Ensure only the app server can read the keys from a secure configuration file.
+    - Avoid sending the Access Key (AK) and Secret Key (SK) to app clients or hard-coding them in the application. Ensure only the app server can read the keys from a secure configuration file.
 
-- Since SDK tokens generated through the Agora Console have high level permissions, do not send these tokens to app clients to prevent potential security risks.
-:::
+    - Since SDK tokens generated through the Agora Console have high level permissions, do not send these tokens to app clients to prevent potential security risks.
+    :::
 
 ## Enable whiteboard server-side features
 

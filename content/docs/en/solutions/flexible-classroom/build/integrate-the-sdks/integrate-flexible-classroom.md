@@ -81,9 +81,9 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
 
 3. To launch a classroom, call [AgoraEduSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) and [AgoraEduSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) in the JavaScript code of the project.
 
-   :::tip
-   Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
-   :::
+    :::tip
+    Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
+    :::
 
 #### Through CDN
 
@@ -254,9 +254,9 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
 
 3. To launch a classroom, call [AgoraProctorSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) and [AgoraProctorSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) in the JavaScript code of the project.
 
-   :::tip
-   Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
-   :::
+    :::tip
+    Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
+    :::
 
 #### Through CDN
 

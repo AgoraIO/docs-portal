@@ -163,7 +163,7 @@ To upload courseware during a class, perform the following steps:
 
 1. Click **Cloud Drive** in the tool bar, and then click **Upload** as shown in the following screenshot:
 
-   ![](https://web-cdn.agora.io/docs-files/1663562311451)
+    ![](https://web-cdn.agora.io/docs-files/1663562311451)
 
    You can delete your personal resources by selecting the option icon and clicking **Delete**, as shown in the following screenshot:
 

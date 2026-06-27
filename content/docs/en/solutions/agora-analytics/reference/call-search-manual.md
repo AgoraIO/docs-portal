@@ -16,7 +16,7 @@ If a user says the received video is black, stuttering, or blurry, you can troub
 Refer to the following steps:
 
 1. Check whether the sender stopped the local video: Go to the [Call details homepage](../build/explore-and-analyze-data/call-search.md), find the **Key events** of the sender, and switch to the list view. Look for the **user stopped local video** event under the **Video sending** category. If you find such an event, contact the sender to confirm the operation.
- ![](https://web-cdn.agora.io/docs-files/1658831859143)
+    ![](https://web-cdn.agora.io/docs-files/1658831859143)
 
 2. Check the sender's network conditions: Go to the [Sender details page](../build/explore-and-analyze-data/call-search.md), and find the network status and device status metrics.
 
@@ -29,7 +29,7 @@ Refer to the following steps:
 If no issue is found when checking the video sender, follow these steps to check the video receiver:
 
 1. Check whether the receiver stopped the sender's video: On the Call Details homepage, find the **Key events** of the receiver, and switch to the list view. Look for the **Stopped xxx's video** event under the **Video receiving** category. If you find such an event, contact the receiver to confirm the operation.
- ![](https://web-cdn.agora.io/docs-files/1658832861834)
+    ![](https://web-cdn.agora.io/docs-files/1658832861834)
 
 2. Check the receiver's network conditions: Go to the [End-to-end details page](../build/explore-and-analyze-data/call-search.md), and find the network status and device status metrics.
 
@@ -49,7 +49,7 @@ If no issue is found when checking the video sender, follow these steps to check
 1. On the End-to-end details page, check the video receiving frame rate.
 2. If the metric is abnormal, continue to check the **CPU usage** metrics. If the CPU usage is high, Agora recommends that the receiver clear any background tasks or restart the app.
 
-![](https://web-cdn.agora.io/docs-files/1658832895138)
+    ![](https://web-cdn.agora.io/docs-files/1658832895138)
 
 ## Case 2: Receiver reports silent or stuttering audio
 
@@ -60,7 +60,7 @@ If a user says the received audio is silent or stuttering, you can troubleshoot 
 Refer to the following steps:
 
 1. Check whether the sender muted the local audio: Go to the [Call details homepage](../build/explore-and-analyze-data/call-search.md), find the **Key events** of the sender, and switch to the list view. Look for the **user muted local audio** event under the **Audio sending** category. If you find such an event, contact the sender to confirm the operation.
- ![](https://web-cdn.agora.io/docs-files/1658832926530)
+    ![](https://web-cdn.agora.io/docs-files/1658832926530)
 
 2. Check the sender's network conditions: Go to the [Sender details page](../build/explore-and-analyze-data/call-search.md), and find the network status metrics.
 
@@ -73,7 +73,7 @@ Refer to the following steps:
 If no issue is found when checking the audio sender, follow these steps to check the audio receiver:
 
 1. Check whether the receiver stopped the sender's audio: On the Call Details homepage, find the **Key events** of the receiver, and switch to the list view. Look for the **Stopped xxx's audio** event under the **Audio receiving** category. If you find such an event, contact the receiver to confirm the operation.
- ![](https://web-cdn.agora.io/docs-files/1658832962166)
+    ![](https://web-cdn.agora.io/docs-files/1658832962166)
 
 2. Check the receiver's network condition: Go to the [End-to-end details page](../build/explore-and-analyze-data/call-search.md), and find the network status and audio freezing metrics.
 
@@ -93,4 +93,4 @@ If no issue is found when checking the audio sender, follow these steps to check
 1. On the End-to-end details page, check the audio playback signal strength.
 2. If the metric is abnormal, continue to check the **CPU usage** metrics. If the CPU usage is high, Agora recommends that the receiver clear any background tasks or restart the app.
 
- ![](https://web-cdn.agora.io/docs-files/1658833061820)
+    ![](https://web-cdn.agora.io/docs-files/1658833061820)

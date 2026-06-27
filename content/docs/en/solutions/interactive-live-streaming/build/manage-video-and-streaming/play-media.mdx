@@ -1424,13 +1424,13 @@ this.Log.UpdateLog($"JoinChannel returns: {ret}");
 
 3. To play from a specific position, use `Seek`. Ensure `Seek` is called after receiving the `PLAYER_STATE_OPEN_COMPLETED` state in the `OnPlayerSourceStateChanged` callback.
 
-  :::warning
+    :::warning
 
-  If you call `Seek` while playback is paused, the media remains paused after the call. Call `Resume` or `Play` to continue playback.
+    If you call `Seek` while playback is paused, the media remains paused after the call. Call `Resume` or `Play` to continue playback.
 
-4. Call `SetPlaybackSpeed` to control the playback speed.
+    4. Call `SetPlaybackSpeed` to control the playback speed.
 
-  :::
+    :::
   ```csharp
   public void OnSetPlaybackSpeedButtonPress()
   {

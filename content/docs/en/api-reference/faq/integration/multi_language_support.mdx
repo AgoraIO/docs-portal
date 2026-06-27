@@ -12,11 +12,11 @@ In the source code, the Classroom SDK and Proctor SDK, referred to as main SDKs,
 
   1. Add the corresponding language file in the TypeScript format under `packages/agora-classroom-sdk/src/infra/translate`. The file name must be unique. For example:
 
-     ![1680084679972](https://web-cdn.agora.io/docs-files/1680084679972)
+      ![1680084679972](https://web-cdn.agora.io/docs-files/1680084679972)
 
   1. Add the corresponding code in `packages/agora-classroom-sdk/src/infra/api/index.tsx`:
 
-     ![1680084689520](https://web-cdn.agora.io/docs-files/1680084689520)
+      ![1680084689520](https://web-cdn.agora.io/docs-files/1680084689520)
 
      For example, if you want to add Japanese, add a `jpn.ts` file under `packages/agora-classroom-sdk/src/infra/translate` and `addResourceBundle('jp', jp);` to `packages/agora-classroom-sdk/src/infra/api/index.tsx` file.
 
@@ -26,11 +26,11 @@ In the source code, the Classroom SDK and Proctor SDK, referred to as main SDKs,
 
   1. Add a folder with an `index.ts` language file to `packages/agora-plugin-gallery/src/gallery/answer/i18n`. The folder name must be unique. For example:
 
-     ![1680084701486](https://web-cdn.agora.io/docs-files/1680084701486)
+      ![1680084701486](https://web-cdn.agora.io/docs-files/1680084701486)
 
   1. Add a line of declaration and a line of corresponding code in `packages/agora-plugin-gallery/src/gallery/answer/i18n/config.ts`:
 
-     ![1680084710288](https://web-cdn.agora.io/docs-files/1680084710288)
+      ![1680084710288](https://web-cdn.agora.io/docs-files/1680084710288)
 
      For example, if you need to add Japanese, add a `jp` folder with the `index.ts` file under `packages/agora-plugin-gallery/src/gallery/answer/i18n` and then `import jp from './jp';` declaration and `addResourceBundle(jp", jp);` to `packages/agora-plugin-gallery/src/gallery/answer/i18n/config.ts`.
 

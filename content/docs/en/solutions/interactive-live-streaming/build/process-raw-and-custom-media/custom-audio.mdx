@@ -84,9 +84,9 @@ Follow these steps to implement custom audio capture in your project:
 </CodeBlockTabs>
 2. Call `joinChannel` to join the channel. In `ChannelMediaOptions`, set `publishCustomAudioTrackId` to the audio track ID obtained in step 1, and set `publishCustomAudioTrack` to `true` to publish the custom audio track.
 
-  :::note
-  To use `enableCustomAudioLocalPlayback` for local playback of an external audio source, or to adjust the volume of a custom audio track with `adjustCustomAudioPlayoutVolume`, set `enableAudioRecordingOrPlayout` to `true` in `ChannelMediaOptions`.
-:::
+    :::note
+    To use `enableCustomAudioLocalPlayback` for local playback of an external audio source, or to adjust the volume of a custom audio track with `adjustCustomAudioPlayoutVolume`, set `enableAudioRecordingOrPlayout` to `true` in `ChannelMediaOptions`.
+    :::
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -136,9 +136,9 @@ Follow these steps to implement custom audio capture in your project:
 
 4. Call `pushExternalAudioFrame` to send the captured audio frame to the SDK through the custom audio track. Ensure that the `trackId` matches the audio track ID you obtained by calling `createCustomAudioTrack`. Set `sampleRate`, `channels`, and `bytesPerSample` to define the sampling rate, number of channels, and bytes per sample of the external audio frame.
 
-  :::note
-  For audio and video synchronization, Agora recommends calling `getCurrentMonotonicTimeInMs` to get the system’s current monotonic time and setting the `timestamp` accordingly.
-:::
+    :::note
+    For audio and video synchronization, Agora recommends calling `getCurrentMonotonicTimeInMs` to get the system’s current monotonic time and setting the `timestamp` accordingly.
+    :::
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -400,11 +400,11 @@ Follow these steps to implement custom audio capture in your project:
 
 1. Use `joinChannelByToken` to join the channel. In `AgoraRtcChannelMediaOptions`, set the `publishCustomAudioTrackId` parameter to the audio track ID you obtained. Set `publishCustomAudioTrack` to `YES` to publish the custom audio track in the channel.
 
-  :::warning
+    :::warning
 
-  To play an external audio source locally using `enableCustomAudioLocalPlayback`, or to adjust the local playback volume of a custom audio track using `adjustCustomAudioPlayoutVolume`, set `enableAudioRecordingOrPlayout` to `YES` in `AgoraRtcChannelMediaOptions`.
+    To play an external audio source locally using `enableCustomAudioLocalPlayback`, or to adjust the local playback volume of a custom audio track using `adjustCustomAudioPlayoutVolume`, set `enableAudioRecordingOrPlayout` to `YES` in `AgoraRtcChannelMediaOptions`.
 
-  :::
+    :::
   ```swift
   let option = AgoraRtcChannelMediaOptions()
   // Disable microphone track
@@ -429,10 +429,10 @@ Follow these steps to implement custom audio capture in your project:
 
 4. Call `pushExternalAudioFrameRawData` to send captured audio frames to the SDK via the custom audio track. Ensure `trackId` matches the one used when joining the channel in step 2. Set `sampleRate`, `channels`, and `samples` to configure the external audio frame.
 
-  :::note
-  - For audio-video synchronization, Agora recommends using `getCurrentMonotonicTimeInMs` to obtain the system’s monotonic time and set the `timestamp`.
+    :::note
+    - For audio-video synchronization, Agora recommends using `getCurrentMonotonicTimeInMs` to obtain the system’s monotonic time and set the `timestamp`.
     - To push audio frames in `CMSampleBuffer` format, use `pushExternalAudioFrameSampleBuffer`.
-:::
+    :::
 
   ```swift
   extension CustomAudioSource: AgoraPcmSourcePushDelegate {
@@ -547,11 +547,11 @@ Follow these steps to implement custom audio capture in your project:
 
 1. Use `joinChannelByToken` to join the channel. In `AgoraRtcChannelMediaOptions`, set the `publishCustomAudioTrackId` parameter to the audio track ID you obtained. Set `publishCustomAudioTrack` to `YES` to publish the custom audio track in the channel.
 
-  :::warning
+    :::warning
 
-  To play an external audio source locally using `enableCustomAudioLocalPlayback`, or to adjust the local playback volume of a custom audio track using `adjustCustomAudioPlayoutVolume`, set `enableAudioRecordingOrPlayout` to `YES` in `AgoraRtcChannelMediaOptions`.
+    To play an external audio source locally using `enableCustomAudioLocalPlayback`, or to adjust the local playback volume of a custom audio track using `adjustCustomAudioPlayoutVolume`, set `enableAudioRecordingOrPlayout` to `YES` in `AgoraRtcChannelMediaOptions`.
 
-  :::
+    :::
   ```swift
   let option = AgoraRtcChannelMediaOptions()
   // Disable microphone track
@@ -576,10 +576,10 @@ Follow these steps to implement custom audio capture in your project:
 
 4. Call `pushExternalAudioFrameRawData` to send captured audio frames to the SDK via the custom audio track. Ensure `trackId` matches the one used when joining the channel in step 2. Set `sampleRate`, `channels`, and `samples` to configure the external audio frame.
 
-  :::note
-  - For audio-video synchronization, Agora recommends using `getCurrentMonotonicTimeInMs` to obtain the system’s monotonic time and set the `timestamp`.
+    :::note
+    - For audio-video synchronization, Agora recommends using `getCurrentMonotonicTimeInMs` to obtain the system’s monotonic time and set the `timestamp`.
     - To push audio frames in `CMSampleBuffer` format, use `pushExternalAudioFrameSampleBuffer`.
-:::
+    :::
 
   ```swift
   extension CustomAudioSource: AgoraPcmSourcePushDelegate {

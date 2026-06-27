@@ -99,7 +99,7 @@ The following example shows how to add a functional component `agora-demo`:
 
 1. A new folder is created under the `packages/agora-classroom-sdk/src/ui-kit/components` directory containing the corresponding files:
 
-   ![](https://web-cdn.agora.io/docs-files/1649913888493)
+    ![](https://web-cdn.agora.io/docs-files/1649913888493)
 
    ```tsx
     // index.css

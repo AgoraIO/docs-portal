@@ -37,11 +37,11 @@ description: 体验声网对话式 AI 引擎前，你需要先在[声网控制�
 2. 在左侧导航栏依次访问**全部产品**-**对话式 AI 引擎**。
 3. 在弹出的**对话式 AI 引擎**页面，选择**功能配置**，之后点击右侧**服务开通状态**的按钮启用对话式 AI 引擎服务。
 
-![image](https://doc.shengwang.cn/img/convoai/enable-1.png)
+    ![image](https://doc.shengwang.cn/img/convoai/enable-1.png)
 
 4. 启用后，在**功能配置**下看到如下页面，即代表该项目的对话式 AI 引擎服务已成功开通：
 
-![image](https://doc.shengwang.cn/img/convoai/enable-2.png)
+    ![image](https://doc.shengwang.cn/img/convoai/enable-2.png)
 
 ## 获取客户 ID 和客户密钥
 

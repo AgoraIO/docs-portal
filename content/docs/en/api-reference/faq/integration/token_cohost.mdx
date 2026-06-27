@@ -101,11 +101,11 @@ Refer to the following steps to authenticate whether a user has the publishing p
 5. The app client calls `setClientRole` to change the user role from an audience member to a host. The Agora server authenticates the token when the app client calls `setClientRole`. If the token is generated with the privilege of `kRolePublisher`, the app client can publish streams.
 
 
-:::warning[Note]
-* If the user wants to switch from a host to an audience member, repeat steps 3 to 5. Apply for a token with the privilege of `kRoleSubscriber`, call `renewToken` on the app client, and then call `setClientRole`.
+    :::warning[Note]
+    * If the user wants to switch from a host to an audience member, repeat steps 3 to 5. Apply for a token with the privilege of `kRoleSubscriber`, call `renewToken` on the app client, and then call `setClientRole`.
 
-* When the token expires, you generate a new token on the app server and call `renewToken` to pass the fresh token to the SDK. The new token also has a service validity period.
-:::
+    * When the token expires, you generate a new token on the app server and call `renewToken` to pass the fresh token to the SDK. The new token also has a service validity period.
+    :::
 
 
 ### Enable co-host authentication

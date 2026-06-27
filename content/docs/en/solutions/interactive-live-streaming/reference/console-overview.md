@@ -165,24 +165,24 @@ To switch to a new Certificate, follow these steps:
 
 3. Turn off the switch next to the **Secondary Certificate** to disable it.
 
-  ![Enable Secondary Certificate](/images/common/console-enable-secondary-certificate.png)
+    ![Enable Secondary Certificate](/images/common/console-enable-secondary-certificate.png)
 
 4. Follow the on-screen instructions to complete verification. If verified successfully, the status of the Secondary Certificate is updated to **Disabled**, and the **Delete** icon appears.
 
-  ![Delete Certificate](/images/common/console-delete-certificate.png)
+    ![Delete Certificate](/images/common/console-delete-certificate.png)
 
 5. Click the **Delete** icon.
 
 6. Follow the on-screen instructions to complete verification. If verified successfully, the **Delete** button disappears, and the current Secondary Certificate (the original Primary Certificate) is deleted.
 
-  :::warning
+    :::warning
 
-  Once a certificate is deleted, it cannot be restored. Before deleting the secondary certificate, make sure that most users have switched to the new certificate to avoid the following consequences:
+    Once a certificate is deleted, it cannot be restored. Before deleting the secondary certificate, make sure that most users have switched to the new certificate to avoid the following consequences:
 
     - All tokens generated using the deleted certificate become invalid, and users can no longer use these tokens to join channels.
     - Users who have joined the channel cannot specify new tokens through `renewToken`.
 
-  :::
+    :::
 ## Check usage
 
 This section explains how to check your usage of Agora products in Agora Console, such as Interactive Live Streaming, Broadcast Streaming, Media Push, On-Premise Recording, Cloud Recording, and Interactive Whiteboard.
@@ -227,7 +227,7 @@ Follow these steps to add a member to your account:
 
 3. Click the **Add New Member** button, fill in the email address of the new member, and choose a team from the dropdown menu. Then click **OK**.
 
-  ![Add new member](/images/common/console-add-new-member.png)
+    ![Add new member](/images/common/console-add-new-member.png)
 
 4. Agora sends a confirmation email to this address. The new member should follow the instructions in the email to finish joining the project.
 
@@ -263,7 +263,7 @@ Follow these steps to add a custom team:
 
 1. On the **Teams and Members** page, **Teams** tab, click **Add New Team**.
 
-  ![Add new team](/images/common/console-add-team.png)
+    ![Add new team](/images/common/console-add-team.png)
 
 2. Fill in the team name, and select the permissions of this team in the **Usage**, **Finance**, **Teams and Members**, **Project**, **Agora Analytics**, and **Data** columns.
 
@@ -295,11 +295,11 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
 
   1. Log in to your Okta developer account as a user with administrative privileges and click **Admin** in the upper right corner.
 
-   ![okta-admin](/images/common/okta-admin.png)
+      ![okta-admin](/images/common/okta-admin.png)
 
   2. Go to **Applications** > **Applications** and click **Create App Integration**.
 
-   ![okta-create-app-integration](/images/common/okta-create-app-integration.png)
+      ![okta-create-app-integration](/images/common/okta-create-app-integration.png)
 
   3. In the **Sign-in method** section, select **SAML 2.0** and click **Next**.
 
@@ -319,7 +319,7 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
 
   6. On the **Feedback** tab, select **I'm an Okta customer adding an internal app** and tick **This is an internal app that we have created**, then click **Finish**.
 
-   ![okta-feedback](/images/common/okta-feedback.png)
+      ![okta-feedback](/images/common/okta-feedback.png)
 
 1. View IdP information in Okta Console
 
@@ -359,7 +359,7 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
   - Automated management with SCIM
 
    6. In Agora Console, enable **SCIM API Basic Auth** on the **SSO Management** page. A set of username and password is generated, along with the SCIM connector base URL.
-    ![scim-enabled](/images/common/scim-enabled.png)
+       ![scim-enabled](/images/common/scim-enabled.png)
    7. In Okta Console, select the **General** tab under **Agora integration** and click **Edit**.
    8. In the **Provisioning** section, select **SCIM** and click **Save**.
    9. Select the **Provisioning** tab under **Agora integration**, then under **Settings** > **Integration** click **Edit**. Make the following changes:
@@ -400,7 +400,7 @@ To add money to your account with a credit card, follow these steps:
 
   1. Click **Add New Card**.
 
-    ![Add new card](/images/common/console-add-new-card.png)
+      ![Add new card](/images/common/console-add-new-card.png)
 
   2. Enter the card number, card holder name, expiration date, and CVC.
 
@@ -416,7 +416,7 @@ To add money to your account via bank transfer, follow these steps:
 
 1. In [Billing](https://console.agora.io/v2/billing), select the **Bank Transfer** tab.
 
-  ![Bank transfer](/images/common/console-bank-transfer.png)
+    ![Bank transfer](/images/common/console-bank-transfer.png)
 
 2. Follow the on-screen instructions to complete.
 
@@ -434,11 +434,11 @@ To ask Agora support a question, follow these steps:
 
 2. Click **Get Support** > **Create Support Ticket**
 
-  ![Create a support ticket](/images/common/console-create-support-ticket.png)
+    ![Create a support ticket](/images/common/console-create-support-ticket.png)
 
 3. Type in your question or keywords to see if the question has been answered. If you cannot find your answer, select a category and submit a ticket to Agora’s customer support.
 
-  ![https://web-cdn.agora.io/docs-files/1658716858508)
+    ![Submit a support ticket](https://web-cdn.agora.io/docs-files/1658716858508)
 
 You can track the status of your ticket under **Tickets**.
 
@@ -478,7 +478,7 @@ Follow these steps to delete your Agora account:
 
 2. In the left navigation panel, click **Account**.
 
-  ![Delete an account](/images/common/console-delete-account.png)
+    ![Delete an account](/images/common/console-delete-account.png)
 
 3. Ensure that you meet all the prerequisites, and click **Delete Account** at the bottom of the page.
 

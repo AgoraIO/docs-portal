@@ -68,7 +68,7 @@ The following steps are required for both inbound and outbound calling:
         - **Disabled**: Choose **TCP** or **UDP** in Agent Studio configuration.
     4. Save any changes.
 
-    ![](/images/conversational-ai/twilio/general-settings.png)
+        ![](/images/conversational-ai/twilio/general-settings.png)
 
 > **Caution**
 > The transport setting in Agent Studio must match SIP trunk’s Secure Trunking setting. A mismatch causes calls to fail silently.

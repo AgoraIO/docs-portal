@@ -82,9 +82,9 @@ Follow these steps to view the Chat quality insights page:
 
 3. (Optional) In the upper right corner, select a unit and duration to view the end-user and server-side API data. The default is to view the last 30 minutes of data by minute.
 
- :::info
-You can query any data within the last 7 days. If you view the data by hour, the time range of a single query cannot exceed 24 hours; if you view the data by minute, the time range of a single query cannot exceed 30 minutes.
-:::
+    :::info
+    You can query any data within the last 7 days. If you view the data by hour, the time range of a single query cannot exceed 24 hours; if you view the data by minute, the time range of a single query cannot exceed 30 minutes.
+    :::
 
 4. Click the **End-user Data** or **Server API Data** tab at the top of the page.
 
