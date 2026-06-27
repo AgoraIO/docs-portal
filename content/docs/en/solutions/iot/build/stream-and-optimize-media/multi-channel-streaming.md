@@ -88,7 +88,7 @@ To send multiple audio and video streams to a single channel, take the following
     private VideoSendThread videoThread2 = null; // A second video thread
     ```
 
-1. **Create multiple connections**
+2. **Create multiple connections**
 
     When the app starts, you create multiple connections. You can use each connection to send an audio and a video stream. To create two connections, in `setupAgoraRtcService` **replace** the code after `// Create a connection` with the following:
 
@@ -109,7 +109,7 @@ To send multiple audio and video streams to a single channel, take the following
     }
     ```
 
-1. **Join the same channel multiple times**
+3. **Join the same channel multiple times**
 
     When a user presses the **Join** button, you join the same channel twice with different user Ids and different connection Ids. To join the channel a second time, add the following code at the end of `joinChannel(View view)`:
 
@@ -125,7 +125,7 @@ To send multiple audio and video streams to a single channel, take the following
     }
     ```
 
-1. **Set joined status**
+4. **Set joined status**
 
     When your call to `agoraEngine.joinChannel` succeeds, you receive a notification through the `onJoinChannelSuccess` callback. You use connection Id to identify the connection and set the corresponding `isJoined` variable to true. To do this, **replace** the `onJoinChannelSuccess` method under `agoraRtcEvents` with the following: 
 
@@ -144,7 +144,7 @@ To send multiple audio and video streams to a single channel, take the following
     }
     ```
 
-1. **Stream video over the first connection**
+5. **Stream video over the first connection**
 
     In this example, you start a video stream over the first connection and a second video stream over the second connection to the same channel. To start or stop the first stream when a user taps the **Start stream 1** button, add the following method to the `MainActivity` class:
 
@@ -171,7 +171,7 @@ To send multiple audio and video streams to a single channel, take the following
     }
     ```
 
-1. **Stream video over the second connection**
+6. **Stream video over the second connection**
 
     To push another video stream to the same channel when a user taps the **Start stream 2** button, add the following method to the `MainActivity` class:
 
@@ -198,7 +198,7 @@ To send multiple audio and video streams to a single channel, take the following
     }
     ```
 
-1. **Leave all connections to a channel**
+7. **Leave all connections to a channel**
 
     To leave the channel on the second connection when a user taps **Leave**, add the following lines to `leaveChannel(View view)` after `int ret = agoraEngine.leaveChannel(connectionId);`:
 
@@ -207,7 +207,7 @@ To send multiple audio and video streams to a single channel, take the following
     isJoined2 = false;
     ```
 
-1. **Destroy all connections**
+8. **Destroy all connections**
 
     To close all connections when a user exits the app, add the following lines to `onDestroy` after `agoraEngine.destroyConnection(connectionId);`
 
@@ -231,7 +231,7 @@ To send audio and video streams to multiple channels, take the following steps:
     private boolean isJoined2 = false;
     ```
 
-1. **Create multiple connections**
+2. **Create multiple connections**
 
     When the app starts, you create multiple connections. You can use each connection to send an audio and a video stream. To create two connections, in `setupAgoraEngine` **replace** the code after `// Create a connection` with the following:
 
@@ -252,7 +252,7 @@ To send audio and video streams to multiple channels, take the following steps:
     }
     ```
 
-1. **Join multiple channels**
+3. **Join multiple channels**
 
     When a user presses the **Join** button, you join two channels. To join a second channel, add the following code at the end of `joinChannel(View view)`:
 
@@ -268,7 +268,7 @@ To send audio and video streams to multiple channels, take the following steps:
     }
     ```
 
-1. **Set joined status**
+4. **Set joined status**
 
     When your call to `agoraEngine.joinChannel` succeeds, you receive a notification through the `onJoinChannelSuccess` callback. You use connection Id to identify the channel and set the corresponding `isJoined` variable to true. To do this, **replace** the `onJoinChannelSuccess` method under `agoraRtcEvents` with the following: 
 
@@ -287,7 +287,7 @@ To send audio and video streams to multiple channels, take the following steps:
     }
     ```
 
-1. **Stream audio to the first channel**
+5. **Stream audio to the first channel**
 
     In this example, you stream audio to the first channel and video to the second channel. To start or stop the audio stream when a user taps the **Start stream 1** button, add the following method to the `MainActivity` class:
 
@@ -314,7 +314,7 @@ To send audio and video streams to multiple channels, take the following steps:
     }
     ```
 
-1. **Stream video to the second channel**
+6. **Stream video to the second channel**
 
     To stream video to the second channel when a user taps the **Start stream 2** button, add the following method to the `MainActivity` class:
 
@@ -342,7 +342,7 @@ To send audio and video streams to multiple channels, take the following steps:
     }
     ```
 
-1. **Leave all channels**
+7. **Leave all channels**
 
     To leave both channels when a user taps **Leave**, add the following lines to `leaveChannel(View view)` after `int ret = agoraEngine.leaveChannel(connectionId);`:
 
@@ -351,7 +351,7 @@ To send audio and video streams to multiple channels, take the following steps:
     isJoined2 = false;
     ```
 
-1. **Destroy all connections**
+8. **Destroy all connections**
 
     To close all connections when a user exits the app, add the following lines to `onDestroy` after `agoraEngine.destroyConnection(connectionId);`
 
@@ -368,35 +368,35 @@ To ensure that you have implemented multi-streaming into your app, follow the re
 
 1. [Generate a temporary token](../manage-agora-account.md) in Agora Console.
 
-1. In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update _App ID_, _Channel_, and _Token_ with the values for your temporary token, then click **Join**.
+2. In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update _App ID_, _Channel_, and _Token_ with the values for your temporary token, then click **Join**.
 
-1.  In Android Studio, in `app/java/com.example.<projectname>/MainActivity`, update `appId`, `channelName` and `token` with the values for your temporary token.
+3.  In Android Studio, in `app/java/com.example.<projectname>/MainActivity`, update `appId`, `channelName` and `token` with the values for your temporary token.
 
-1. Update `uid` and `uid2` with distinct positive-integer values.
+4. Update `uid` and `uid2` with distinct positive-integer values.
 
-1.  Connect a physical Android device to your development device.
+5.  Connect a physical Android device to your development device.
 
-1.  In Android Studio, click **Run app**. A moment later you see the project installed on your device. If this is the first time you run the project, you need to grant microphone and camera access to your app.
+6.  In Android Studio, click **Run app**. A moment later you see the project installed on your device. If this is the first time you run the project, you need to grant microphone and camera access to your app.
 
     You see notifications confirming creation of two connections.
 
-1. Click **Join** to join a channel over each connection. 
+7. Click **Join** to join a channel over each connection.
     
     You see notifications confirming joining success over each connection.
 
-1. Click **Start steam 1**.
+8. Click **Start steam 1**.
 
     You see a video stream playing in the browser.
 
-1. Click **Start steam 2**.
+9. Click **Start steam 2**.
 
     You see a second video stream playing in the same channel.
 
-1. Try starting and stopping the two streams.
+10. Try starting and stopping the two streams.
 
     You see that the streams are independent of each other.
 
-1. Click **Leave** to stop the two streams and exit the channel.
+11. Click **Leave** to stop the two streams and exit the channel.
 
 ### Test streaming to multiple channels​
 
@@ -409,31 +409,31 @@ To ensure that you have implemented multi-streaming into your app, follow the re
 1. In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and join a channel using
 `appId`, `channelName` and `token`.
 
-1. In another browser tab, join the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) using `appId`, `channelName2` and `token2`.
+2. In another browser tab, join the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) using `appId`, `channelName2` and `token2`.
 
-1.  In Android Studio, open `app/java/com.example.<projectname>/MainActivity`, and update `appId`, `channelName`, `channelName2`, `token` and `token2` with the values for your temporary tokens.
+3.  In Android Studio, open `app/java/com.example.<projectname>/MainActivity`, and update `appId`, `channelName`, `channelName2`, `token` and `token2` with the values for your temporary tokens.
 
-1.  Connect a physical Android device to your development device.
+4.  Connect a physical Android device to your development device.
 
-1.  In Android Studio, click **Run app**. A moment later you see the project installed on your device. If this is the first time you run the project, you need to grant microphone and camera access to your app.
+5.  In Android Studio, click **Run app**. A moment later you see the project installed on your device. If this is the first time you run the project, you need to grant microphone and camera access to your app.
 
     You see notifications confirming creation of two connections.
 
-1. Click **Join** to join two channels. 
+6. Click **Join** to join two channels.
     
     You see notifications confirming success in joining each channel.
 
-1. Click **Start steam 1**.
+7. Click **Start steam 1**.
 
     You hear an audio stream playing in the web demo connected to `channelName`.
 
-1. Click **Start steam 2**.
+8. Click **Start steam 2**.
 
     You see a video stream playing in the web demo connected to `channelName2`.
 
-1. Click the buttons to stop stream 1 and stream 2.
+9. Click the buttons to stop stream 1 and stream 2.
 
-1. Click **Leave** to stop the two streams and exit the channel.
+10. Click **Leave** to stop the two streams and exit the channel.
 
 ## Reference
 

@@ -137,7 +137,7 @@ To implement channel quality features, take the following steps:
     options.logCfg.logLevel = AgoraRtcService.LogLevel.RTC_LOG_WARNING;
     ```
 
-1. **Specify the audio codec, sampling rate and the number of channels**
+2. **Specify the audio codec, sampling rate and the number of channels**
 
     You set the audio codec, sampling rate, and the number of channels in `ChannelOptions` that you pass to the `agoraEngine.joinChannel` method. To set these parameters, modify the following lines in the `joinChannel(View view)` method according to your requirements:
 
@@ -152,7 +152,7 @@ To implement channel quality features, take the following steps:
     
     To use your own audio codec, set `channelOptions.audioCodecOpt.audioCodecType` to `AUDIO_CODEC_DISABLED`. When you call `agoraEngine.sendAudioData`, set the `dataType` parameter of `AudioFrameInfo` to your encoding format. This setting transmits the audio encoding format as is to the receiving end. When you disable use of a built-in audio codec, IoT SDK does not process the audio. The receiving end obtains the encoded audio data and the encoding format through the `onAudioData` callback and decodes it using a custom decoder.
     
-1. **Configure bandwidth estimation parameters**  
+3. **Configure bandwidth estimation parameters**
 
     You configure bandWidth estimation parameters before joining a channel. For example, based on the [definition levels of a webcam](#definition-levels-of-a-webcam), the minimum value can be set to 400 kbps, and the maximum value can be set to 4200 kbps. The starting value is between the minimum and the maximum value. If the initial encoding is SD, the initial bit rate can be set to 500 kbps, based on the table.
 
@@ -163,7 +163,7 @@ To implement channel quality features, take the following steps:
     agoraEngine.setBweParam(connectionId, 400000, 4200000, 500000);
     ```
 
-1. **Respond to target bit rate changes**
+4. **Respond to target bit rate changes**
 
     When network bandwidth changes, IoT SDK triggers the `onTargetBitrateChanged` callback to prompt the app to adjust the sending bit rate. The `targetBps` value returned by the callback is the maximum recommended encoding bit rate of the video encoder.
 
@@ -208,7 +208,7 @@ To implement channel quality features, take the following steps:
     }
     ```
 
-1. **Manage audio and video streaming status**
+5. **Manage audio and video streaming status**
 
     When a user taps a `Checkbox`, you pause or resume sending local audio and video streams. To do this, add the following code to the `onCreate` method in the `MainActivity` class:
     
@@ -236,7 +236,7 @@ To implement channel quality features, take the following steps:
     ```
     To pause and resume playing remote audio or video streams call `agoraEngine.muteRemoteAudio(connectionId, remoteUid, isMuted)` or `agoraEngine.muteRemoteVideo(connectionId, remoteUid, isMuted)`.
 
-1. **Handle muting and unmuting notifications of remote streams**
+6. **Handle muting and unmuting notifications of remote streams**
 
     When a remote user mutes or unmutes their audio or video stream, you receive notification of these changes. In this example, you inform the user of these events by displaying a message. To do this, replace the `onUserMuteAudio` and `onUserMuteVideo` methods under `agoraRtcEvents` with the following:
 
@@ -254,7 +254,7 @@ To implement channel quality features, take the following steps:
     }
     ```
 
-1. **Request and send key frames**
+7. **Request and send key frames**
 
     When you call `agoraEngine.sendVideoData` to send a video frame, you specify if this frame is a key frame by setting the `frameType` parameter of `VideoFrameInfo`.
 
@@ -282,11 +282,11 @@ To ensure that you have implemented channel quality features into your app:
 
 1. Connect a physical Android device to your development device.
 
-1. In Android Studio, click **Run app**. A moment later you see the project installed on your device. If this is the first time you run the project, grant microphone and camera access to your app.
+2. In Android Studio, click **Run app**. A moment later you see the project installed on your device. If this is the first time you run the project, grant microphone and camera access to your app.
 
     When the app starts, it sets the log file location and logging level according to your preference.
 
-1. Press **Join**. Your app does the following:
+3. Press **Join**. Your app does the following:
 
     * Sets the audio codec, sampling rate and the number of channels
     * Sets bandwidth estimation parameters
@@ -294,11 +294,11 @@ To ensure that you have implemented channel quality features into your app:
     * Listens for notification of changes in network bandwidth to adjust video resolution and bit rate accordingly
     * Listens for key frame request to notify the encoder to send a key frame
 
-1. Check and uncheck **Mute local audio** and **Mute local video** boxes.
+4. Check and uncheck **Mute local audio** and **Mute local video** boxes.
 
     Audio and video are muted/unmuted in the web demo app.
 
-1. Press **Mute Audio** and **Mute Video** buttons in the web demo app. You see messages in your Android app informing you of these events.
+5. Press **Mute Audio** and **Mute Video** buttons in the web demo app. You see messages in your Android app informing you of these events.
 
 ## Reference
 

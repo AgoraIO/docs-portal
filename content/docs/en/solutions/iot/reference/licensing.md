@@ -137,10 +137,10 @@ The following is a response example for a successful activation request:
 After successfully activating a license, you write the license to the device and use it in the SDK. Take the following steps to use the license:
 
 1. Receive an activated license from the server.
-1. Write the license to the device. Ensure that the license written to each device is correct and unique. There are two common methods to write the license information to your device:
+2. Write the license to the device. Ensure that the license written to each device is correct and unique. There are two common methods to write the license information to your device:
     * The license is written to a file on the device that the device reads through a program.
     * The license is burnt into the device by the manufacturer during production and the device reads it directly.
-1. Device reads license:
+3. Device reads license:
     * If the device successfully reads the license, proceed to the next step.
     * If the device fails to read the license, troubleshoot the problem and write the license again.
 
