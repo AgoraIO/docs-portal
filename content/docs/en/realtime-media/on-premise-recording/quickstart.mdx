@@ -45,7 +45,13 @@ Before you begin, complete the following steps and ensure your environment meets
 
 This section shows how to integrate the On-Premise Recording SDK into your app.
 
-**C++**
+<CodeBlockTabs defaultValue="cpp">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="cpp">
 
 ### Integrate the SDK
 
@@ -83,7 +89,9 @@ This section shows how to integrate the On-Premise Recording SDK into your app.
 :::info
 The `example` directory contains a complete sample project for local recording. To run it, see [Test the project](#test-the-project).
 :::
-**Java**
+</CodeBlockTab>
+
+<CodeBlockTab value="java">
 
 <Tabs defaultValue="maven">
 <Tabs defaultValue="maven">
@@ -295,6 +303,8 @@ chmod +x run.sh
 ```
 </TabsContent>
 </Tabs></Tabs>
+</CodeBlockTab>
+</CodeBlockTabs>
 
 ## Implement On-Premise Recording
 
@@ -306,7 +316,13 @@ The following figure illustrates the essential steps:
 
 ![](/images/on-premise-recording/on-premise-recording-quickstart-logic-cpp.svg)
 
-**C++**
+<CodeBlockTabs defaultValue="cpp">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="cpp">
 
 ### Initialize the service
 
@@ -471,7 +487,9 @@ recorder = nullptr;
 
 service->release();
 ```
-**Java**
+</CodeBlockTab>
+
+<CodeBlockTab value="java">
 
 ### Initialize the service
 
@@ -669,10 +687,18 @@ agoraMediaRtcRecorder.leaveChannel();
 agoraMediaRtcRecorder.release();
 agoraService.release();
 ```
+</CodeBlockTab>
+</CodeBlockTabs>
 
 ## Test the project
 
-**C++**
+<CodeBlockTabs defaultValue="cpp">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="cpp">
 
 Agora provides a complete sample project in the SDK download package. After downloading and extracting the package, follow these steps to build and run it:
 
@@ -709,7 +735,9 @@ For more information on the differences between mixed and individual recording m
     # Example: Run individual recording
     ./out/sample_recorder singleVideo.json
     ```
-**Java**
+</CodeBlockTab>
+
+<CodeBlockTab value="java">
 
 Agora provides an open source sample project on GitHub for your reference. Download or view the [Agora Recording Java SDK](https://github.com/AgoraIO-Extensions/Agora-Recording-Java-SDK) project for a more detailed example.
 
@@ -781,6 +809,8 @@ These libraries must be available at runtime. If any are missing, the applicatio
 :::info[info]
 Place all configuration files (such as `mix_stream_recorder_audio_video_water_marks.json`) in the `Examples-Mvn/src/main/resources/` directory.
 :::
+</CodeBlockTab>
+</CodeBlockTabs>
 
 ## Reference
 
@@ -788,7 +818,13 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-**C++**
+<CodeBlockTabs defaultValue="cpp">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="cpp">
 
 - [`createAgoraService`](/on-premise-recording/reference/api-reference#createagoraservice)
 - [`initialize`](/on-premise-recording/reference/api-reference#initialize)
@@ -806,7 +842,9 @@ This section contains content that completes the information on this page, or po
 - [`unregisterRecorderEventHandle`](/on-premise-recording/reference/api-reference#unregisterrecordereventhandle)
 - [`leaveChannel`](/on-premise-recording/reference/api-reference#leavechannel)
 - [`release`](/on-premise-recording/reference/api-reference#release)
-**Java**
+</CodeBlockTab>
+
+<CodeBlockTab value="java">
 
 - [`AgoraService`](/on-premise-recording/reference/api-reference#agoraservice)
 - [`AgoraServiceConfiguration`](/on-premise-recording/reference/api-reference#agoraserviceconfiguration)
@@ -825,3 +863,6 @@ This section contains content that completes the information on this page, or po
 - [`unregisterRecorderEventHandler`](/on-premise-recording/reference/api-reference#unregisterrecordereventhandler)
 - [`leaveChannel`](/on-premise-recording/reference/api-reference#leavechannel)
 - [`release`](/on-premise-recording/reference/api-reference#release)
+
+</CodeBlockTab>
+</CodeBlockTabs>

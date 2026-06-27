@@ -20,7 +20,13 @@ Before using layouts, complete the steps in the [Quickstart](/en/realtime-media/
 
 ## Implementation
 
-**C++**
+<CodeBlockTabs defaultValue="cpp">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="cpp">
 
 To configure the layout, call the `setVideoMixingLayout` method and pass a `VideoMixingLayout` object that defines:
 
@@ -53,7 +59,9 @@ recorder->setVideoMixingLayout(recorderLayout);
 
 The sample code creates the following composite layout:
 ![](/images/on-premise-recording/composite-layout.svg)
-**Java**
+</CodeBlockTab>
+
+<CodeBlockTab value="java">
 
 To configure the layout, call the `setVideoMixingLayout` method and pass a `VideoMixingLayout` object that defines:
 
@@ -96,6 +104,8 @@ agoraMediaRtcRecorder.setVideoMixingLayout(recorderLayout);
 
 The sample code creates the following composite layout:
 ![](/images/on-premise-recording/composite-layout.svg)
+</CodeBlockTab>
+</CodeBlockTabs>
 
 ## API reference
 

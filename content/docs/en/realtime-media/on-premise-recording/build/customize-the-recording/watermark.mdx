@@ -20,7 +20,13 @@ Before adding watermarks, integrate the On-Premise Recording SDK and complete th
 
 To add watermarks to your recordings, follow the platform-specific implementation instructions:
 
-**C++**
+<CodeBlockTabs defaultValue="cpp">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="cpp">
 
 To add or update a watermark in composite recording mode, call `enableAndUpdateVideoWatermarks` and pass an array of watermark configuration objects. Each object defines one watermark, including its type, content, position, and appearance. To remove all watermarks, call `disableVideoWatermarks`.
 
@@ -178,7 +184,9 @@ This section contains content that completes the information on this page, or po
 - [`WatermarkOptions`](/on-premise-recording/reference/api-reference#watermarkoptions)
 - [`Rectangle`](/on-premise-recording/reference/api-reference#rectangle)
 - [`WatermarkRatio`](/on-premise-recording/reference/api-reference#watermarkratio)
-**Java**
+</CodeBlockTab>
+
+<CodeBlockTab value="java">
 
 To apply or update a watermark in composite recording mode, call `enableAndUpdateVideoWatermarks` and pass an array of watermark configuration objects. Each object defines one watermark, including its type, content, position, and appearance. To remove all watermarks, call `disableVideoWatermarks`.
 
@@ -366,3 +374,6 @@ This section contains content that completes the information on this page, or po
 - [`WatermarkOptions`](/on-premise-recording/reference/api-reference#watermarkoptions)
 - [`Rectangle`](/on-premise-recording/reference/api-reference#rectangle)
 - [`WatermarkRatio`](/on-premise-recording/reference/api-reference#watermarkratio)
+
+</CodeBlockTab>
+</CodeBlockTabs>
