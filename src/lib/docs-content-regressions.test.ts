@@ -219,6 +219,20 @@ describe('docs content regressions', () => {
     );
     expect(cloudRecording).toContain('`GET /v1/ncs/ip`');
 
+    const cloudRecordingApiOverview = readDoc(
+      'api-reference/api-ref/cloud-recording/index.mdx',
+    );
+
+    expect(cloudRecordingApiOverview).not.toMatch(
+      /\]\((?:authentication|acquire|start|update|update-layout|query|stop|get-ncs-ip)\)/,
+    );
+    expect(cloudRecordingApiOverview).toContain(
+      '[Acquire a cloud recording resource](/en/api-reference/api-ref/cloud-recording/acquire)',
+    );
+    expect(cloudRecordingApiOverview).toContain(
+      '[Query message notification server IP addresses](/en/api-reference/api-ref/cloud-recording/get-ncs-ip)',
+    );
+
     const whiteboard = readDoc(
       'realtime-media/whiteboard/overview/core-concepts.md',
     );
