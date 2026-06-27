@@ -567,7 +567,7 @@ function SolutionCardGrid({
   );
 }
 
-type SolutionCardIconKind =
+export type SolutionCardIconKind =
   | 'ai'
   | 'analytics'
   | 'broadcast'
@@ -1096,7 +1096,7 @@ function getSolutionToneClasses(_tone: SolutionCardTone) {
   return 'bg-muted text-foreground';
 }
 
-function SolutionCardIcon({ kind }: { kind: SolutionCardIconKind }) {
+export function SolutionCardIcon({ kind }: { kind: SolutionCardIconKind }) {
   const iconMap: Record<SolutionCardIconKind, ReactNode> = {
     ai: <BotIcon className="size-5" />,
     analytics: <BarChart3Icon className="size-5" />,

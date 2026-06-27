@@ -1,18 +1,7 @@
-import {
-  BoxesIcon,
-  ChevronDownIcon,
-  DownloadIcon,
-  MessageSquareIcon,
-  MicIcon,
-  MonitorPlayIcon,
-  RadioTowerIcon,
-  ServerCogIcon,
-  SmartphoneIcon,
-  VideoIcon,
-} from 'lucide-react';
-import type { ReactNode } from 'react';
+import { ChevronDownIcon, DownloadIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { cn } from '@/lib/cn';
+import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import {
   type SdkDownloadProduct,
   type SdkDownloadVersion,
@@ -120,10 +109,7 @@ function ProductCard({ group }: { group: ProductGroup }) {
     >
       <div className="flex items-start gap-3">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
-          <SdkProductIcon
-            productId={group.defaultProduct.id}
-            productLabel={group.label}
-          />
+          <SolutionCardIcon kind={productIconKind(group.label)} />
         </span>
         <div className="min-w-0">
           <h3
@@ -294,39 +280,37 @@ function CopyButton({ value }: { value: string }) {
   );
 }
 
-function SdkProductIcon({
-  productId,
-  productLabel,
-}: {
-  productId: string;
-  productLabel: string;
-}) {
-  const normalized = `${productId} ${productLabel}`.toLowerCase();
-  const iconClassName = 'size-5';
-  let icon: ReactNode;
+// Map an SDK product to the same canonical icon the api-reference overview uses
+// (the SolutionCard registry), so product icons stay consistent across pages.
+function productIconKind(productLabel: string): SolutionCardIconKind {
+  const normalized = productLabel.toLowerCase();
 
   if (normalized.includes('voice')) {
-    icon = <MicIcon className={iconClassName} />;
-  } else if (normalized.includes('video')) {
-    icon = <VideoIcon className={iconClassName} />;
-  } else if (normalized.includes('chat')) {
-    icon = <MessageSquareIcon className={iconClassName} />;
-  } else if (normalized.includes('signaling') || normalized.includes('rtm')) {
-    icon = <RadioTowerIcon className={iconClassName} />;
-  } else if (normalized.includes('iot')) {
-    icon = <SmartphoneIcon className={iconClassName} />;
-  } else if (
-    normalized.includes('recording') ||
-    normalized.includes('gateway')
-  ) {
-    icon = <ServerCogIcon className={iconClassName} />;
-  } else if (normalized.includes('media')) {
-    icon = <MonitorPlayIcon className={iconClassName} />;
-  } else {
-    icon = <BoxesIcon className={iconClassName} />;
+    return 'voice-calling';
   }
-
-  return icon;
+  if (normalized.includes('video')) {
+    return 'video-calling';
+  }
+  if (normalized.includes('signaling')) {
+    return 'signaling';
+  }
+  if (normalized.includes('chat')) {
+    return 'chat';
+  }
+  if (normalized.includes('iot')) {
+    return 'iot';
+  }
+  if (normalized.includes('whiteboard') || normalized.includes('fastboard')) {
+    return 'whiteboard';
+  }
+  if (normalized.includes('gateway')) {
+    return 'server-sdk';
+  }
+  if (normalized.includes('recording')) {
+    return 'on-premise-recording';
+  }
+  // Media Player Kit and anything else fall back to the overview's "tools" icon.
+  return 'tools';
 }
 
 function getVersionMeta(version: SdkDownloadVersion, index: number) {
