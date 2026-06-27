@@ -1,18 +1,20 @@
 import { describe, expect, it } from 'vitest';
+import { faqCategories, faqItems } from './faq-data';
 import {
-  FAQ_CATEGORY_FOLDER,
   categoryHref,
   countByCategory,
+  FAQ_CATEGORY_FOLDER,
   filterFaqs,
   searchAll,
 } from './faq-filter';
-import { faqCategories, faqItems } from './faq-data';
 
 describe('faq-filter', () => {
   it('filters by category', () => {
     const result = filterFaqs(faqItems, { category: 'quality-issues' });
     expect(result.length).toBeGreaterThan(0);
-    expect(result.every((item) => item.category === 'quality-issues')).toBe(true);
+    expect(result.every((item) => item.category === 'quality-issues')).toBe(
+      true,
+    );
   });
 
   it('filters by product facet, honoring the "all" sentinel', () => {
@@ -34,9 +36,7 @@ describe('faq-filter', () => {
 
   it('filters by case-insensitive query over title and summary', () => {
     const result = filterFaqs(faqItems, { query: 'CHROME 81' });
-    expect(
-      result.some((item) => item.title.includes('Chrome 81')),
-    ).toBe(true);
+    expect(result.some((item) => item.title.includes('Chrome 81'))).toBe(true);
   });
 
   it('counts every category, including zero', () => {

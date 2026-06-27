@@ -37,7 +37,10 @@ function categoryLabel(id: FaqCategoryId): string {
   return faqCategories.find((category) => category.id === id)?.label ?? 'FAQ';
 }
 
-export function filterFaqs(items: FaqItem[], filter: FaqFilter = {}): FaqItem[] {
+export function filterFaqs(
+  items: FaqItem[],
+  filter: FaqFilter = {},
+): FaqItem[] {
   const product = filter.product ?? FAQ_ALL_PRODUCTS;
   const platform = filter.platform ?? FAQ_ALL_PLATFORMS;
   const query = normalize(filter.query ?? '');
