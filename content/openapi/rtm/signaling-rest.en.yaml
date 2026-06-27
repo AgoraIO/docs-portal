@@ -3,17 +3,14 @@ info:
   version: ""
   title: Signaling RESTful API Overview
   description: >-
-    The Signaling REST APIs provide server-side messaging capabilities that
-    complement the Signaling SDK. Send messages to users and channels, retrieve
-    conversation history, and track user events from your backend without
-    requiring recipients to be actively connected.
-
+    The Signaling REST APIs provide server-side messaging capabilities that complement
+    the Signaling SDK. Send messages to users and channels, retrieve conversation
+    history, and track user events from your backend without requiring recipients to be
+    actively connected.
 
     ## API basics
 
-
     All requests are sent to the host `api.agora.io`.
-
 
     - **Authentication**: All APIs require Basic Auth for authentication.
 
@@ -21,14 +18,17 @@ info:
 
     - **Response**: The response content is in JSON format.
 
-    - **Base URL**: `https://api.agora.io/dev/v2/project/<appid>`, where
-      `<appid>` is the Agora app ID for your project.
+    - **Base URL**: `https://api.agora.io/dev/v2/project/<appid>`, where `<appid>` is
+    the Agora app ID for your project.
+  x-docs-callouts:
+    - type: info
+      title: Note
+      position: after-description
+      markdown: |
+        - All the request URLs and request bodies are case-sensitive.
 
-
-    > - All the request URLs and request bodies are case-sensitive.
-
-    > - For each app ID, the maximum combined frequency of the peer-to-peer
-    >   message and channel message APIs is 500 calls per second.
+        - For each app ID, the maximum combined frequency of the peer-to-peer
+        message and channel message APIs is 500 calls per second.
 servers:
   - url: https://api.agora.io/dev/v2/project
     description: Base host for messaging and event APIs.
@@ -53,8 +53,8 @@ paths:
     post:
       summary: Send peer-to-peer message
       description: >-
-        Sends a peer-to-peer message from the server. The user sending the
-        message does not have to log in to Signaling.
+        Sends a peer-to-peer message from the server. The user sending the message does
+        not have to log in to Signaling.
 
 
         - You can send peer-to-peer or channel messages with any user ID when
@@ -63,7 +63,89 @@ paths:
         - When you use token authentication, you may send peer-to-peer or
           channel messages using only the user ID you used to generate the
           Signaling token.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful. The response body contains the result of the request.
+
+            - If the returned status code is not `200`, the request failed. The response body includes the error code and description. Refer to [status codes](/signaling/reference/status-codes) to understand the possible reasons for failure.
       operationId: send-peer-message
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: >-
+            curl -X POST
+            'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/users/userA/peer_messages?wait_for_ack=true'
+            \
+                  -H 'Content-Type: application/json;charset=utf-8' \
+                  -H 'Authorization: Basic <your_base64_encoded_credentials>' \
+                  -d '{
+                    "destination": "userB",
+                    "enable_offline_messaging": false,
+                    "enable_historical_messaging": false,
+                    "payload": "Hello"
+                  }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+                import json
+
+                url = 'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/users/userA/peer_messages?wait_for_ack=true'
+
+                headers = {
+                  'Content-Type': 'application/json;charset=utf-8',
+                  'Authorization': 'Basic <your_base64_encoded_credentials>'
+                }
+
+                data = {
+                  "destination": "userB",
+                  "enable_offline_messaging": False,
+                  "enable_historical_messaging": False,
+                  "payload": "Hello"
+                }
+
+                try:
+                  response = requests.post(url, headers=headers, data=json.dumps(data))
+                  print("Status:", response.status_code)
+                  print("Response:", response.json())
+                except Exception as error:
+                  print("Error:", error)
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+                const url = 'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/users/userA/peer_messages?wait_for_ack=true';
+
+                const headers = {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': 'Basic <your_base64_encoded_credentials>'
+                };
+
+                const data = {
+                destination: "userB",
+                enable_offline_messaging: false,
+                enable_historical_messaging: false,
+                payload: "Hello"
+                };
+
+                axios.post(url, data, { headers })
+                .then(response => {
+                  console.log("Status:", response.status);
+                  console.log("Response:", response.data);
+                })
+                .catch(error => {
+                  console.error("Error:", error.response ? error.response.data : error.message);
+                });
+      x-docs-callouts:
+        - type: warning
+          title: Important
+          position: after-description
+          markdown: >
+            The offline message feature is deprecated and will be removed in a future
+            version. Agora recommends that you do not use it.
       parameters:
         - $ref: "#/components/parameters/appid"
         - name: user_id
@@ -72,9 +154,15 @@ paths:
           schema:
             type: string
           description: >-
-            Signaling user ID to send a peer-to-peer message. It must not exceed
-            64 characters in length or be an empty string. Since `user_id` is a
-            URL parameter, the first and last characters must not be a space.
+            Signaling user ID to send a peer-to-peer message. It must not exceed 64
+            characters in length or be an empty string. Since `user_id` is a URL
+            parameter, the first and last characters must not be a space.
+          x-docs-callouts:
+            - type: info
+              title: Note
+              markdown: >
+                Since `user_id` is a URL parameter, the first character and the last
+                characters must not be a space.
         - name: wait_for_ack
           in: query
           required: false
@@ -82,8 +170,8 @@ paths:
             type: boolean
             default: false
           description: >-
-            Whether the API returns the HTTP response after Signaling receives
-            the acknowledgement from the receiver.
+            Whether the API returns the HTTP response after Signaling receives the
+            acknowledgement from the receiver.
 
 
             - `true`: The API waits for the receiver to acknowledge receipt of
@@ -105,41 +193,40 @@ paths:
                 destination:
                   type: string
                   description: >-
-                    Signaling user ID to receive a peer-to-peer message. It must
-                    not exceed 64 characters in length or be an empty string.
+                    Signaling user ID to receive a peer-to-peer message. It must not
+                    exceed 64 characters in length or be an empty string.
                 enable_offline_messaging:
                   type: boolean
                   default: false
                   description: >-
                     Whether to enable offline messages.
 
-
-                    > The offline message feature is deprecated and will be
-                    removed in a future version. Agora recommends that you do
-                    not use it.
-
-
-                    - `true`: Enable offline messages. If the receiver is
-                      offline when you send a peer-to-peer message, Signaling
-                      saves the message (maximum 200 per receiver) and delivers
-                      it when the receiver is online.
+                    - `true`: Enable offline messages. If the receiver is offline when
+                    you send a peer-to-peer message, Signaling saves the message
+                    (maximum 200 per receiver) and delivers it when the receiver is
+                    online.
 
                     - `false`: Disable offline messages.
+                  x-docs-callouts:
+                    - type: warning
+                      title: Caution
+                      position: after-description
+                      markdown: >
+                        The offline message feature is deprecated and will be removed in
+                        a future version. Agora recommends that you do not use it.
                 enable_historical_messaging:
                   type: boolean
                   default: false
-                  description: >-
+                  description: |-
                     Whether to save as a historical message.
 
-
                     - `true`: Save as a historical message.
-
                     - `false`: Do not save as a historical message.
                 payload:
                   type: string
                   description: >-
-                    Content of the peer-to-peer message. It must not be an empty
-                    string or exceed 32 KB in length.
+                    Content of the peer-to-peer message. It must not be an empty string
+                    or exceed 32 KB in length.
             example:
               destination: userB
               enable_offline_messaging: false
@@ -148,8 +235,8 @@ paths:
       responses:
         "200":
           description: >-
-            The request was successful. The response body contains the result of
-            the request.
+            The request was successful. The response body contains the result of the
+            request.
           content:
             application/json:
               schema:
@@ -158,8 +245,8 @@ paths:
                   result:
                     type: string
                     description: >-
-                      Request result. `success` if the request succeeds,
-                      `failed` if it fails.
+                      Request result. `success` if the request succeeds, `failed` if it
+                      fails.
                   request_id:
                     type: string
                     description: Unique ID to identify this request.
@@ -180,9 +267,81 @@ paths:
     post:
       summary: Send channel message
       description: >-
-        Sends a channel message from the server. You can send a message to a
-        channel without joining it first.
+        Sends a channel message from the server. You can send a message to a channel
+        without joining it first.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful. The response body contains the result of the request.
+
+            - If the returned status code is not `200`, the request failed. The response body includes the error code and description. Refer to [status codes](/signaling/reference/status-codes) to understand the possible reasons for failure.
       operationId: send-channel-message
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: >-
+            curl -X POST
+            'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/users/userA/channel_messages'
+            \
+                 -H 'Content-Type: application/json;charset=utf-8' \
+                 -H 'Authorization: Basic <your_base64_encoded_credentials>' \
+                 -d '{
+                   "channel_name": "channelA",
+                   "enable_historical_messaging": false,
+                   "payload": "Hello"
+                 }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+               import json
+
+               url = 'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/users/userA/channel_messages'
+
+               headers = {
+                 'Content-Type': 'application/json;charset=utf-8',
+                 'Authorization': 'Basic <your_base64_encoded_credentials>'
+               }
+
+               data = {
+                 "channel_name": "channelA",
+                 "enable_historical_messaging": False,
+                 "payload": "Hello"
+               }
+
+               try:
+                 response = requests.post(url, headers=headers, data=json.dumps(data))
+                 print("Status:", response.status_code)
+                 print("Response:", response.json())
+               except Exception as error:
+                 print("Error:", error)
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+               const url = 'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/users/userA/channel_messages';
+
+               const headers = {
+               'Content-Type': 'application/json;charset=utf-8',
+               'Authorization': 'Basic <your_base64_encoded_credentials>'
+               };
+
+               const data = {
+               channel_name: "channelA",
+               enable_historical_messaging: false,
+               payload: "Hello"
+               };
+
+               axios.post(url, data, { headers })
+               .then(response => {
+                 console.log("Status:", response.status);
+                 console.log("Response:", response.data);
+               })
+               .catch(error => {
+                 console.error("Error:", error.response ? error.response.data : error.message);
+               });
       parameters:
         - $ref: "#/components/parameters/appid"
         - name: user_id
@@ -194,6 +353,12 @@ paths:
             Signaling user ID to send a channel message. It must not exceed 64
             characters in length or be an empty string. Since `user_id` is a URL
             parameter, the first and last characters must not be a space.
+          x-docs-callouts:
+            - type: info
+              title: Note
+              markdown: >
+                Since `user_id` is a URL parameter, the first character and the last
+                characters must not be a space.
       requestBody:
         required: true
         content:
@@ -207,23 +372,21 @@ paths:
                 channel_name:
                   type: string
                   description: >-
-                    Signaling channel name to receive a channel message. It must
-                    not exceed 64 characters in length or be an empty string.
+                    Signaling channel name to receive a channel message. It must not
+                    exceed 64 characters in length or be an empty string.
                 enable_historical_messaging:
                   type: boolean
                   default: false
-                  description: >-
+                  description: |-
                     Whether to save as a historical message.
 
-
                     - `true`: Save as a historical message.
-
                     - `false`: Do not save as a historical message.
                 payload:
                   type: string
                   description: >-
-                    Content of the channel message. It must not be an empty
-                    string or exceed 32 KB in length.
+                    Content of the channel message. It must not be an empty string or
+                    exceed 32 KB in length.
             example:
               channel_name: channelA
               enable_historical_messaging: false
@@ -231,8 +394,8 @@ paths:
       responses:
         "200":
           description: >-
-            The request was successful. The response body contains the result of
-            the request.
+            The request was successful. The response body contains the result of the
+            request.
           content:
             application/json:
               schema:
@@ -241,8 +404,8 @@ paths:
                   result:
                     type: string
                     description: >-
-                      Request result. `success` if the request succeeds,
-                      `failed` if it fails.
+                      Request result. `success` if the request succeeds, `failed` if it
+                      fails.
                   request_id:
                     type: string
                     description: Unique ID to identify this request.
@@ -261,28 +424,88 @@ paths:
     get:
       summary: Get user events
       description: >-
-        Gets the user login and logout events from the address specified by the
-        Agora Signaling server. Events you acquire using this API are removed
-        from the server; you cannot retrieve the same event twice.
+        Gets the user login and logout events from the address specified by the Agora
+        Signaling server. Events you acquire using this API are removed from the server;
+        you cannot retrieve the same event twice.
 
+        The Signaling backend stores a maximum of 2,000 events, with the latest event
+        replacing the oldest when this limit is exceeded. The backend returns a maximum
+        of 1,000 events per request, and the number of requests for each app ID must not
+        exceed 10 per second.
+      x-docs-callouts:
+        - type: warning
+          title: Important
+          position: after-description
+          markdown: >
+            Agora does not guarantee event time sequence across geographical regions.
+            Events pulled from different regions may contain duplicates since
+            synchronization only occurs within regions, not across them.
+      x-docs-sections:
+        - title: Request
+          position: after-parameters
+          markdown: This endpoint does not require any query parameters or a request body.
+        - title: Response
+          position: before-response-body
+          markdown: >
+            - If the returned status code is `200`, the request was successful. The
+            response body contains the result of the request.
 
-        The Signaling backend stores a maximum of 2,000 events, with the latest
-        event replacing the oldest when this limit is exceeded. The backend
-        returns a maximum of 1,000 events per request, and the number of
-        requests for each app ID must not exceed 10 per second.
-
-
-        > Agora does not guarantee event time sequence across geographical
-        regions. Events pulled from different regions may contain duplicates
-        since synchronization only occurs within regions, not across them.
+            - If the returned status code is not `200`, the request failed. The response
+            body includes the error code and description. Refer to [status
+            codes](/api-reference/api-ref/signaling/status-codes) to understand the
+            possible reasons for failure.
       operationId: get-user-events
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: >-
+            curl -X GET
+            'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/vendor/user_events'
+            \
+                 -H 'Authorization: Basic <your_base64_encoded_credentials>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+               url = 'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/vendor/user_events'
+
+               headers = {
+                 'Authorization': 'Basic <your_base64_encoded_credentials>'
+               }
+
+               try:
+                 response = requests.get(url, headers=headers)
+                 print("Status:", response.status_code)
+                 print("Response:", response.json())
+               except Exception as error:
+                 print("Error:", error)
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+               const url = 'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/vendor/user_events';
+
+               const headers = {
+                 'Authorization': 'Basic <your_base64_encoded_credentials>'
+               };
+
+               axios.get(url, { headers })
+               .then(response => {
+                 console.log("Status:", response.status);
+                 console.log("Response:", response.data);
+               })
+               .catch(error => {
+                 console.error("Error:", error.response ? error.response.data : error.message);
+               });
       parameters:
         - $ref: "#/components/parameters/appid"
       responses:
         "200":
           description: >-
-            The request was successful. The response body contains the result of
-            the request.
+            The request was successful. The response body contains the result of the
+            request.
           content:
             application/json:
               schema:
@@ -291,8 +514,8 @@ paths:
                   result:
                     type: string
                     description: >-
-                      The result of this request. `success` if it succeeds,
-                      `failed` if it fails.
+                      The result of this request. `success` if it succeeds, `failed` if
+                      it fails.
                   request_id:
                     type: string
                     description: The unique ID of this request.
@@ -308,13 +531,13 @@ paths:
                         type:
                           type: string
                           description: >-
-                            Event type: `Login` when the user logged in to
-                            Signaling, `Logout` when the user logged out.
+                            Event type: `Login` when the user logged in to Signaling,
+                            `Logout` when the user logged out.
                         ms:
                           type: integer
                           description: >-
-                            Number of milliseconds since January 1, 1970 (UTC) to
-                            the UTC time when the server receives the message.
+                            Number of milliseconds since January 1, 1970 (UTC) to the
+                            UTC time when the server receives the message.
               example:
                 result: success
                 request_id: "10116762670167749259"
@@ -330,28 +553,88 @@ paths:
     get:
       summary: Get channel events
       description: >-
-        Gets the channel join and leave events from the address specified by the
-        Agora Signaling server. Events you acquire using this API are removed
-        from the server; you cannot retrieve the same event twice.
+        Gets the channel join and leave events from the address specified by the Agora
+        Signaling server. Events you acquire using this API are removed from the server;
+        you cannot retrieve the same event twice.
 
+        The Signaling server stores a maximum of 2,000 events, with the latest event
+        replacing the oldest when this limit is exceeded. The backend returns a maximum
+        of 1,000 events per request, and the number of requests for each app ID must not
+        exceed 10 per second.
+      x-docs-callouts:
+        - type: warning
+          title: Important
+          position: after-description
+          markdown: >
+            Agora does not guarantee event time sequence across geographical regions.
+            Events pulled from different regions may contain duplicates since
+            synchronization only occurs within regions, not across them.
+      x-docs-sections:
+        - title: Request
+          position: after-parameters
+          markdown: This endpoint does not require any query parameters or a request body.
+        - title: Response
+          position: before-response-body
+          markdown: >
+            - If the returned status code is `200`, the request was successful. The
+            response body contains the result of the request.
 
-        The Signaling server stores a maximum of 2,000 events, with the latest
-        event replacing the oldest when this limit is exceeded. The backend
-        returns a maximum of 1,000 events per request, and the number of
-        requests for each app ID must not exceed 10 per second.
-
-
-        > Agora does not guarantee event time sequence across geographical
-        regions. Events pulled from different regions may contain duplicates
-        since synchronization only occurs within regions, not across them.
+            - If the returned status code is not `200`, the request failed. The response
+            body includes the error code and description. Refer to [status
+            codes](/api-reference/api-ref/signaling/status-codes) to understand the
+            possible reasons for failure.
       operationId: get-channel-events
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: >-
+            curl -X GET
+            'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/vendor/channel_events'
+            \
+                 -H 'Authorization: Basic <your_base64_encoded_credentials>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+               url = 'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/vendor/channel_events'
+
+               headers = {
+                 'Authorization': 'Basic <your_base64_encoded_credentials>'
+               }
+
+               try:
+                 response = requests.get(url, headers=headers)
+                 print("Status:", response.status_code)
+                 print("Response:", response.json())
+               except Exception as error:
+                 print("Error:", error)
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+               const url = 'https://api.agora.io/dev/v2/project/876922cbca0098dff4323566daa89675/rtm/vendor/channel_events';
+
+               const headers = {
+                 'Authorization': 'Basic <your_base64_encoded_credentials>'
+               };
+
+               axios.get(url, { headers })
+               .then(response => {
+                 console.log("Status:", response.status);
+                 console.log("Response:", response.data);
+               })
+               .catch(error => {
+                 console.error("Error:", error.response ? error.response.data : error.message);
+               });
       parameters:
         - $ref: "#/components/parameters/appid"
       responses:
         "200":
           description: >-
-            The request was successful. The response body contains the result of
-            the request.
+            The request was successful. The response body contains the result of the
+            request.
           content:
             application/json:
               schema:
@@ -360,8 +643,8 @@ paths:
                   result:
                     type: string
                     description: >-
-                      The result of this request. `success` if it succeeds,
-                      `failed` if it fails.
+                      The result of this request. `success` if it succeeds, `failed` if
+                      it fails.
                   request_id:
                     type: string
                     description: The unique ID of this request.
@@ -380,13 +663,13 @@ paths:
                         type:
                           type: string
                           description: >-
-                            Event type: `Join` when a user has joined the
-                            channel, `Leave` when a user has left the channel.
+                            Event type: `Join` when a user has joined the channel,
+                            `Leave` when a user has left the channel.
                         ms:
                           type: integer
                           description: >-
-                            Number of milliseconds since January 1, 1970 (UTC) to
-                            the UTC time when the server receives the message.
+                            Number of milliseconds since January 1, 1970 (UTC) to the
+                            UTC time when the server receives the message.
               example:
                 result: success
                 request_id: "10116762670167749259"
@@ -406,7 +689,67 @@ paths:
     get:
       summary: Get message history
       description: Retrieves historical messages from the specified channel.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful. The response body contains the result of the request.
+
+            - If the returned status code is not `200`, the request failed. The response body includes the error code and description. Refer to [status codes](/signaling/reference/status-codes) to understand the possible reasons for failure.
       operationId: get-message-history
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: >-
+            curl -L
+            'https://api.sd-rtn.com/rtm/v2/history/{appId}/userId/Tony/channelType/message/channel/chatroom?start=17809876
+            & end = 1781000 & messageCount = 100' \
+                  -H 'Accept: application/json'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+                url = "https://api.sd-rtn.com/rtm/v2/history/{:appId}/userId/Tony/channelType/message/channel/chatroom"
+
+                params = {
+                  'start': 17809876,
+                  'end': 1781000,
+                  'messageCount': 100
+                }
+
+                headers = {
+                  'Accept': 'application/json',
+                  'Authorization': 'agora token=007xxxxx'
+                }
+
+                try:
+                  response = requests.get(url, params=params, headers=headers)
+                  print(response.json())
+                except Exception as error:
+                  print(error)
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+                let config = {
+                    method: 'get',
+                    maxBodyLength: Infinity,
+                    url: 'https://api.sd-rtn.com/rtm/v2/history/{:appId}/userId/Tony/channelType/message/channel/chatroom?start=17809876 & end = 1781000 & messageCount = 100',
+                    headers: {
+                        'Accept': 'application/json'
+                        'Authorization': 'agora token=007xxxxx'
+                        }
+                    };
+
+                axios.request(config)
+                .then((response) => {
+                  console.log(JSON.stringify(response.data));
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
       parameters:
         - name: appId
           in: path
@@ -419,9 +762,7 @@ paths:
           required: true
           schema:
             type: string
-          description: >-
-            The user ID for the operation. Character length must be between 1
-            and 64.
+          description: The user ID for the operation. Character length must be between 1 and 64.
         - name: channelType
           in: path
           required: true
@@ -431,15 +772,14 @@ paths:
               - message
               - user
           description: >-
-            The type of channel to retrieve messages from. `message` for a
-            message channel, `user` for a user channel.
+            The type of channel to retrieve messages from. `message` for a message
+            channel, `user` for a user channel.
         - name: channelName
           in: path
           required: true
           schema:
             type: string
-          description: >-
-            The name of the channel. Character length must be between 1 and 64.
+          description: The name of the channel. Character length must be between 1 and 64.
         - name: start
           in: query
           required: false
@@ -448,8 +788,8 @@ paths:
             format: int64
             default: 0
           description: >-
-            The start timestamp of the historical message query. Defaults to `0`
-            if not specified.
+            The start timestamp of the historical message query. Defaults to `0` if not
+            specified.
         - name: end
           in: query
           required: false
@@ -458,8 +798,8 @@ paths:
             format: int64
             default: 0
           description: >-
-            The end timestamp of the historical message query. Defaults to `0`
-            if not specified.
+            The end timestamp of the historical message query. Defaults to `0` if not
+            specified.
         - name: messageCount
           in: query
           required: false
@@ -468,13 +808,13 @@ paths:
             format: int32
             default: 100
           description: >-
-            The maximum number of messages to return in a single query. The
-            value must be in the range `(0, 100]`. Defaults to `100`.
+            The maximum number of messages to return in a single query. The value must
+            be in the range `(0, 100]`. Defaults to `100`.
       responses:
         "200":
           description: >-
-            The request was successful. The response body contains the result of
-            the request.
+            The request was successful. The response body contains the result of the
+            request.
           content:
             application/json:
               schema:
@@ -486,8 +826,8 @@ paths:
                   error:
                     type: boolean
                     description: >-
-                      Indicates whether the request failed. `false` if it
-                      succeeded, `true` if it failed.
+                      Indicates whether the request failed. `false` if it succeeded,
+                      `true` if it failed.
                   requestId:
                     type: string
                     description: The unique ID associated with the request.
@@ -515,9 +855,9 @@ paths:
                             messageType:
                               type: string
                               description: >-
-                                The type of message content. `STRING` uses the
-                                `message` field directly; `BINARY` is
-                                base64-encoded in the `message` field.
+                                The type of message content. `STRING` uses the `message`
+                                field directly; `BINARY` is base64-encoded in the
+                                `message` field.
                             message:
                               type: string
                               description: The content of the message.
