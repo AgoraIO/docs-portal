@@ -58,7 +58,7 @@ const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
 const DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME = 'max-w-[min(100%,1600px)]';
 const DOCS_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
-const DOCS_OPENAPI_DESKTOP_GRID_CLASS_NAME =
+const DOCS_FILL_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_minmax(0,1fr)]';
 const mobileSidebarGroupLabelClassName =
   'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
@@ -106,12 +106,14 @@ export function DocsShell({
   tabs,
   toc,
   layoutMode = 'docs',
+  hideToc = false,
 }: {
   activePath: string;
   activeTab: string;
   children: React.ReactNode;
   loadPages: () => Promise<SearchEntry[]>;
   layoutMode?: DocsLayoutMode;
+  hideToc?: boolean;
   localeLinks: LocaleLink[];
   locale: string;
   next?: { title: string; url: string };
@@ -166,11 +168,14 @@ export function DocsShell({
     '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
   const isOpenApiLayout = layoutMode === 'openapi';
+  // Both openapi and hideToc drop the toc rail and let content fill the grid;
+  // only openapi widens the overall shell.
+  const contentFillsWidth = isOpenApiLayout || hideToc;
   const shellWidthClassName = isOpenApiLayout
     ? DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME
     : DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
-  const desktopGridClassName = isOpenApiLayout
-    ? DOCS_OPENAPI_DESKTOP_GRID_CLASS_NAME
+  const desktopGridClassName = contentFillsWidth
+    ? DOCS_FILL_DESKTOP_GRID_CLASS_NAME
     : DOCS_DESKTOP_GRID_CLASS_NAME;
 
   return (
@@ -400,7 +405,7 @@ export function DocsShell({
           >
             {children}
           </DocsMainColumn>
-          {isOpenApiLayout ? null : (
+          {contentFillsWidth ? null : (
             <DocsTocRail locale={currentLocale} toc={toc} />
           )}
         </div>

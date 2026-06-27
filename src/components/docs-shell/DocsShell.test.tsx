@@ -1194,6 +1194,22 @@ describe('DocsShell', () => {
     expect(within(mobileFlow).getByText('Body')).toBeInTheDocument();
   });
 
+  it('hides the toc rail and fills the grid when hideToc is set, keeping the docs footprint', async () => {
+    renderDocsShell({ layoutMode: 'docs', hideToc: true });
+
+    const docsBodyShell = await screen.findByTestId('docs-body-shell');
+
+    expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
+    expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
+    expect(docsBodyShell).not.toHaveClass(
+      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
+    );
+    expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).not.toHaveClass('max-w-[min(100%,1600px)]');
+  });
+
   it('renders the split docs body shell regions and keeps pagination in the main column', async () => {
     renderDocsShell({
       children: <article>Body copy</article>,
