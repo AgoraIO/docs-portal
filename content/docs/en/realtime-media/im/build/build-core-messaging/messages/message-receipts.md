@@ -5,8 +5,8 @@ description: "Introduces how to use the Agora Chat SDK to implement message rece
 
 The Chat SDK provides the message read receipt feature that allows the user, after sending a message, to know whether the message is read. The feature is available to both one-to-one chats and group chats.
 
-- Message delivery receipt: Available only to s.
-- Message read receipt: Available to both s and s.
+- Message delivery receipt: Available only to one-to-one chats.
+- Message read receipt: Available to both one-to-one chats and group chats.
 
 ## Understand the tech
 

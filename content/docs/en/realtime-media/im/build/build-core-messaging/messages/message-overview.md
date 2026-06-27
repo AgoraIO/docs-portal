@@ -53,11 +53,11 @@ You can implement the following features with the chat APIs.
 ### Send and receive messages
 
 All chat users can send and receive messages.
-- In s, two users send messages to each other. 
-- In s, group members send and receive messages in the . 
-- In s,  members send and receive messages in the .
+- In one-to-one chats, two users send messages to each other.
+- In group chats, group members send and receive messages in the group.
+- In chat rooms, members send and receive messages in the chat room.
 
-In the use-cases above, the messages between the two users, in each , and in each  are also known as a conversation.
+In the use-cases above, the messages between the two users, in each group, and in each chat room are also known as a conversation.
 
 ### Retrieve all local conversations
 
@@ -115,7 +115,7 @@ The SDK supports sending a message delivery receipt when the message is successf
 
 ### Message read receipt
 
-In s and s, the SDK supports sending a message read receipt when the message receiver has read the message.
+In one-to-one chats and group chats, the SDK supports sending a message read receipt when the message receiver has read the message.
 
 ## Limitations of message storage duration
 
