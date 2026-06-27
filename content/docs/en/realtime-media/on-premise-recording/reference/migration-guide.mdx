@@ -46,7 +46,13 @@ You must implement service management and failover handling in your own infrastr
 
 The following table compares key APIs between version 4.x and 3.x:
 
-**Java**
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="cpp">C++</TabsTrigger>
+</TabsList>
+
+<TabsContent value="java">
 
 | Functional module        | 4.x        | 3.x           |
 |--------------------------|------------|---------------|
@@ -87,8 +93,9 @@ Use with `isMixingEnabled` in `RecordingConfig`       |
  - `disableVideoWatermarks`
  - `enableAndUpdateVideoWatermarksByUid`
  - `disableVideoWatermarksByUid`       | `updateWatermarkConfigs`    |
+</TabsContent>
 
-**C++**
+<TabsContent value="cpp">
 
 | Functional module        | 4.x API | Older versions   |
 |--------------------------|------------|---------------|
@@ -129,6 +136,8 @@ Use with `isMixingEnabled` in `RecordingConfig` |
 - `disableVideoWatermarks`
 - `enableAndUpdateVideoWatermarksByUid`
 - `disableVideoWatermarksByUid` | Use `updateWatermarkConfigs` with `wm_num` and `wm_configs` in `VideoMixingLayout`       |
+</TabsContent>
+</Tabs>
 
 ## Callback comparison
 
