@@ -3,36 +3,6 @@ title: "Start an audio and video call"
 description: "Shows how to implement real-time audio and video communications using the AgoraChatCallKit."
 ---
 
-### All except Android
-
-### All except iOS
-
-### All except Web
-
-### Unity
-
-**Currently, there is no CallKit for this platform.**
-
-### Flutter
-
-**Currently, there is no CallKit for this platform.**
-
-### Windows
-
-**Currently, there is no CallKit for this platform.**
-
-### React Native
-
-**Currently, there is no CallKit for this platform.**
-
-### All except Unity
-
-### All except Windows
-
-### All except Flutter
-
-### All except React Native
-
 `AgoraChatCallKit` is an open-source audio and video UI library developed based on Agora's real-time communications and signaling services. With this library, you can implement audio and video calling functionalities with enhanced synchronization between multiple devices. In use-cases where a user ID is logged in to multiple devices, once the user deals with an incoming call that is ringing on one device, all the other devices stop ringing simultaneously.
 
 This page describes how to implement real-time audio and video communications using the `AgoraChatCallKit`.
