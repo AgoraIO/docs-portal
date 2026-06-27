@@ -254,7 +254,7 @@ This release fixed the following issues:
 
 - During a disconnection with the Signaling system under poor network conditions, the user experienced errors when unsubscribing from a message channel.
 - Under poor network conditions, the user occasionally failed to receive callbacks after a successful login.
-- After reconnecting from a disconnection, the user occasionally could not receive the `{config.onstorageevent[props .ag_platform]}` event notification.
+- After reconnecting from a disconnection, the user occasionally could not receive the `onStorageEvent` event notification.
 - After reconnecting from a disconnection, the SDK occasionally failed to restore subscription relationships in the stream channel.
 - Occasional failure to receive topic messages from web clients.
 
