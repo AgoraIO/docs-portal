@@ -41,6 +41,7 @@ export function DocsContent({
   locale = DEFAULT_LOCALE,
   markdownUrl,
   layoutMode = 'docs',
+  hideToc = false,
   sidebarHeader,
   slug,
   title,
@@ -52,6 +53,7 @@ export function DocsContent({
   description?: string;
   locale?: AppLocale | string;
   layoutMode?: DocsLayoutMode;
+  hideToc?: boolean;
   markdownUrl?: string;
   sidebarHeader?: DocsSidebarHeader;
   slug?: string;
@@ -72,6 +74,8 @@ export function DocsContent({
   const isOpenApiBody = resolvedBody?.kind === 'openapi';
   const effectiveLayoutMode = isOpenApiBody ? 'openapi' : layoutMode;
   const isOpenApiLayout = effectiveLayoutMode === 'openapi';
+  // openapi and hideToc both let the article fill the width and hide the toc.
+  const contentFillsWidth = isOpenApiLayout || hideToc;
   const platformTabs =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group'
       ? resolvedBody.platformTabs
@@ -102,7 +106,7 @@ export function DocsContent({
       className={cn(
         'flex min-w-0 flex-col',
         platformTabs ? 'gap-6' : 'gap-9',
-        isOpenApiLayout ? 'max-w-none' : 'max-w-[var(--content-max)]',
+        contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
       <header
@@ -250,7 +254,7 @@ export function DocsContent({
           ) : null}
         </div>
       )}
-      {isOpenApiLayout ? null : (
+      {contentFillsWidth ? null : (
         <DocsTableOfContents
           className="xl:hidden"
           locale={currentLocale}

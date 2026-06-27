@@ -250,6 +250,25 @@ describe('DocsContent', () => {
     expect(screen.queryByText('On this page')).not.toBeInTheDocument();
   });
 
+  it('drops the article max-width and mobile TOC when hideToc is set in docs layout', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/api-reference/recipes/index.mdx"
+        hideToc
+        layoutMode="docs"
+        slug="recipes"
+        title="Recipes"
+        toc={[{ depth: 2, title: 'Browse all recipes', url: '#browse' }]}
+      />,
+    );
+
+    const article = await screen.findByRole('article');
+
+    expect(article).toHaveClass('max-w-none');
+    expect(article).not.toHaveClass('max-w-[var(--content-max)]');
+    expect(screen.queryByText('On this page')).not.toBeInTheDocument();
+  });
+
   it('derives TOC items from rendered headings when the payload TOC is empty', async () => {
     renderWithRouter(
       <AppProviders>
