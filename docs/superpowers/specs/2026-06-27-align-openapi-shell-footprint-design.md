@@ -80,6 +80,11 @@ The OpenAPI schema/parameter UI renders within ~940px instead of up to 1600px �
 narrower, but not squeezed to 720px, and no TOC rail is added. Wide tables fall
 back to their existing overflow behavior.
 
+fumadocs-openapi's two-column "operation + code sample" split is a container
+query at `@4xl` (896px). The narrowed content column (~970px) stays above that
+threshold, so the two-column layout is preserved — but the ~74px margin is
+small, so the manual check below must confirm it empirically.
+
 ## Testing
 
 - `src/components/docs-shell/DocsShell.test.tsx`: the openapi-layout test
@@ -91,10 +96,15 @@ back to their existing overflow behavior.
 - The catalog/`hideToc` tests already assert the body shell is NOT
   `max-w-[min(100%,1600px)]`; they remain valid.
 
-Manual check (once): navigate between a normal docs page, a catalog page, and an
-api-ref page (both an MDX overview like `/en/api-reference/api-ref/rtc` and a
-generated operation page); confirm the sidebar, top nav, and content area do not
-shift — same outer footprint throughout.
+Manual check (once):
+- Navigate between a normal docs page, a catalog page, and an api-ref page (both
+  an MDX overview like `/en/api-reference/api-ref/rtc` and a generated operation
+  page); confirm the sidebar, top nav, and content area do not shift — same
+  outer footprint throughout.
+- Open a generated operation page (e.g.
+  `/en/api-reference/api-ref/rtc/query-channel-list`) and confirm its OpenAPI UI
+  still renders the code-sample panel **side by side** with the operation
+  details (the `@4xl` two-column layout), not stacked, at the new narrower width.
 
 ## Out of scope
 
