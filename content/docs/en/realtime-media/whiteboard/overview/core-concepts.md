@@ -31,88 +31,54 @@ Whiteboard supports `admin`, `writer`, and `reader` roles across SDK tokens, roo
 
 ### SDK token permissions
 
+An SDK token is bound to a specific Interactive Whiteboard project and is the highest-level token. Users holding an SDK token can operate all rooms and file-conversion tasks under the bound project.
+
 | Permission | `admin` | `writer` | `reader` |
-| --- | :---: | :---: | :---: |
-| Create a room | ✔ | ✔ | ✘ |
-| Join a room in interactive mode | ✔ | ✔ | ✘ |
-| Join a room in subscription mode | ✘ | ✘ | ✔ |
-| Get room list | ✔ | ✔ | ✘ |
-| Get room information | ✔ | ✔ | ✘ |
-| Ban a room | ✔ | ✘ | ✘ |
-| Take a screenshot of the specified scene | ✔ | ✔ | ✘ |
-| Take screenshots of all scenes under a scene directory | ✔ | ✔ | ✘ |
-| Get scene address lists | ✔ | ✔ | ✘ |
-| Insert scenes | ✔ | ✔ | ✘ |
-| Jump between scenes | ✔ | ✔ | ✘ |
-| Start a file-conversion task | ✔ | ✔ | ✘ |
-| Generate room tokens of the same or lower role | ✔ | ✔ | ✔ |
-| Generate task tokens of the same or lower role | ✔ | ✔ | ✔ |
+|:-----------|:-------:|:--------:|:--------:|
+| Create a room | Yes | Yes | No |
+| Join a room in interactive mode | Yes | Yes | No |
+| Join a room in read-only mode | No | No | Yes |
+| Get room list | Yes | Yes | No |
+| Get room information | Yes | Yes | No |
+| Ban a room | Yes | No | No |
+| Take a screenshot of the specified scene | Yes | Yes | No |
+| Take screenshots of all scenes under the scene group | Yes | Yes | No |
+| Get the scene address list of the room | Yes | Yes | No |
+| Insert a new scene | Yes | Yes | No |
+| Jump to a scene | Yes | Yes | No |
+| Initiate a file-conversion task | Yes | Yes | No |
+| Generate a room token of an equal or lower role | Yes | Yes | Yes |
+| Generate a task token of an equal or lower role | Yes | Yes | Yes |
+
+:::caution
+
+An SDK token has the highest level of permissions. If leaked, it can compromise your business security. Do not expose the SDK token to the client, store it in a database, or write it to a configuration file. Retrieve the SDK token from the business server when needed and set an expiration time based on your business requirements.
+
+:::
 
 ### Room token permissions
 
+A room token is tied to a specific room within a particular Interactive Whiteboard project. Users with a room token can interact with the associated room.
+
 | Permission | `admin` | `writer` | `reader` |
-| --- | :---: | :---: | :---: |
-| Join the specified room in interactive mode | ✔ | ✔ | ✘ |
-| Join the specified room in subscription mode | ✘ | ✘ | ✔ |
-| Get room information | ✔ | ✔ | ✘ |
-| Ban the room | ✔ | ✘ | ✘ |
-| Take a screenshot of the specified scene | ✔ | ✔ | ✘ |
-| Take screenshots of all scenes under a scene directory | ✔ | ✔ | ✘ |
-| Get scene address lists | ✔ | ✔ | ✘ |
-| Insert scenes | ✔ | ✔ | ✘ |
-| Jump between scenes | ✔ | ✔ | ✘ |
+|:-----------|:-------:|:--------:|:--------:|
+| Join a specific room in interactive mode | Yes | Yes | No |
+| Join a specific room in subscription mode | No | No | Yes |
+| Get specific room information | Yes | Yes | No |
+| Block specific rooms | Yes | No | No |
+| Take a screenshot of the specified scene | Yes | Yes | No |
+| Take screenshots of all scenes under the scene group | Yes | Yes | No |
+| Get a list of scene addresses for a specific room | Yes | Yes | No |
+| Insert a new scene in a specific room | Yes | Yes | No |
+| Jump to a specific room | Yes | Yes | No |
 
 ### Task token permissions
 
+A task token is linked to a specific file-conversion task within a project.
+
 | Permission | `admin` | `writer` | `reader` |
-| --- | :---: | :---: | :---: |
-| Query a file-conversion task | ✔ | ✔ | ✔ |
-
-### Token-related APIs
-
-Use the following flows depending on your environment:
-
-- Generate SDK, room, or task tokens on your app server. See [Secure authentication with tokens](../build/authenticate-users/authentication-workflow.md).
-- Create rooms and receive a `Room UUID` from the room-creation API.
-- Start file conversion and receive a `Task UUID` from the conversion API.
-
-Relevant REST APIs:
-
-- Generate an SDK token
-- Generate a room token
-- Generate a task token
-- Create a room
-- Start a file-conversion task
-
-```ts
-type WhiteboardRole = 'admin' | 'writer' | 'reader';
-
-interface RoomTokenPayload {
-  role: WhiteboardRole;
-  roomUUID: string;
-}
-
-interface TaskTokenPayload {
-  role: WhiteboardRole;
-  taskUUID: string;
-}
-```
-
-```ts
-const sdkTokenPayload = {
-  role: 'writer' as const,
-};
-
-const roomTokenPayload = {
-  role: 'writer' as const,
-  roomUUID: 'your-room-uuid',
-};
-
-const taskTokenPayload = {
-  role: 'reader' as const,
-  taskUUID: 'your-task-uuid',
-};
-```
+|:-----------|:-------:|:--------:|:--------:|
+| Query the progress of a specific file-conversion task | Yes | Yes | Yes |
 
 ## File conversion
 

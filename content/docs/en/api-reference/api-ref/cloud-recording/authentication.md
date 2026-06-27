@@ -331,6 +331,6 @@ namespace Examples.System.Net
 
 ## Related pages
 
-- [Overview](index)
-- [Acquire a cloud recording resource](acquire)
-- [Start cloud recording](start)
+- [Overview](/en/api-reference/api-ref/cloud-recording)
+- [Acquire a cloud recording resource](/en/api-reference/api-ref/cloud-recording/acquire)
+- [Start cloud recording](/en/api-reference/api-ref/cloud-recording/start)
