@@ -315,13 +315,10 @@ function SidebarLinkedSection({
 
   return (
     <SidebarMenuItem>
-      <div className="flex items-stretch gap-1">
+      <div className="relative">
         <SidebarMenuButton
           asChild
-          className={cn(
-            sidebarToggleClassName,
-            'min-w-0 flex-1 justify-start overflow-visible',
-          )}
+          className={cn(sidebarToggleClassName, 'overflow-visible')}
           isActive={url === activePath}
         >
           <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
@@ -329,14 +326,13 @@ function SidebarLinkedSection({
               <SidebarConfiguredIcon icon={icon} />
               <span className={sidebarSectionTitleClassName}>{title}</span>
             </span>
+            <span aria-hidden="true" className="size-4 shrink-0" />
           </Link>
         </SidebarMenuButton>
-        <SidebarMenuButton
+        <button
           aria-expanded={isOpen}
-          className={cn(
-            sidebarToggleClassName,
-            'w-10 shrink-0 justify-center px-0',
-          )}
+          aria-label={`Toggle ${title}`}
+          className="absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded-md text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
           onClick={() => setIsOpen((value) => !value)}
           type="button"
         >
@@ -346,7 +342,7 @@ function SidebarLinkedSection({
               isOpen ? 'rotate-0' : '-rotate-90',
             )}
           />
-        </SidebarMenuButton>
+        </button>
       </div>
       {isOpen ? (
         <SidebarMenuSub className={expandedSidebarChildrenClassName}>
@@ -650,7 +646,7 @@ function normalizeRootSections(
   nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
 ) {
   return nodes.map((node) =>
-    node.type === 'section'
+    node.type === 'section' && !node.url
       ? {
           ...node,
           collapsible: false,

@@ -719,6 +719,49 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
+  it('renders a linked section with children as a label link plus an inline toggle', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/api-reference/faq/integration',
+            title: 'Integration',
+            type: 'page',
+            url: '/en/api-reference/faq/integration',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-faq',
+        title: 'FAQ',
+        type: 'section',
+        url: '/en/api-reference/faq',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/api-reference/other');
+
+    const label = await screen.findByRole('link', { name: 'FAQ' });
+    expect(label).toHaveAttribute('href', '/en/api-reference/faq');
+
+    const toggle = screen.getByRole('button', { name: /toggle faq/i });
+    expect(label).not.toContainElement(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+
+    expect(
+      screen.queryByRole('link', { name: 'Integration' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(toggle);
+
+    expect(
+      await screen.findByRole('link', { name: 'Integration' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /toggle faq/i })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+  });
+
   it('renders full sidebar labels for long Build document titles', async () => {
     const tree: DocsSidebarNode[] = [
       {
