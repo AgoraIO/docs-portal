@@ -350,14 +350,14 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `l
 
   Additionally, due to this adjustment, to achieve the best low-light enhancement effect with a focus on image quality, you need to enable video noise suppression first and use specific settings as detailed in [`setLowlightEnhanceOptions [1/2]`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setlowlightenhanceoptions).
 
-1. **Changes in video encoding preferences**
+2. **Changes in video encoding preferences**
 
   To enhance the user’s video interaction experience, this version optimizes the default preferences for video encoding:
 
   - In the [`COMPRESSION_PREFERENCE`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/enum_compressionpreference.html) enumeration class, a new `PREFER_COMPRESSION_AUTO` (-1) enumeration is added, replacing the original `PREFER_QUALITY` (1) as the default value. In this mode, the SDK will automatically choose between `PREFER_LOW_LATENCY` or `PREFER_QUALITY` based on your video scene settings to achieve the best user experience.
   - In the [`DEGRADATION_PREFERENCE`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/enum_degradationpreference.html) enumeration class, a new `MAINTAIN_AUTO` (-1) enumeration is added, replacing the original `MAINTAIN_QUALITY` (1) as the default value. In this mode, the SDK will automatically choose between `MAINTAIN_FRAMERATE`, `MAINTAIN_BALANCED`, or `MAINTAIN_RESOLUTION` based on your video scene settings to achieve the optimal overall quality of experience (QoE).
 
-1. **16 KB memory page size**
+3. **16 KB memory page size**
 
   Starting from Android 15, the system adds support for 16 KB memory page size, as detailed in [Support 16 KB page sizes](https://developer.android.com/guide/practices/page-sizes). To ensure the stability and performance of the app, starting from this version, the SDK supports 16 KB memory page size, ensuring seamless operation on devices with both 4 KB and 16 KB memory page sizes, enhancing compatibility and preventing crashes.
 
@@ -367,17 +367,17 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `l
 
   This version adds the `APPLICATION_SCENARIO_LIVESHOW(3)` (Live Show) enumeration to [`VideoScenario`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/enum_videoapplicationscenariotype.html). You can call [`setVideoScenario`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setvideoscenario) to set the video business scenario to show room. In this scenario, fast video rendering and high image quality are crucial. The SDK implements several performance optimizations, such as enabling accelerated audio and video frame rendering to minimize first-frame latency (no need to call `enableInstantMediaRendering`) for better image quality and bandwidth efficiency.
 
-1. **Maximum frame rate for video rendering**
+2. **Maximum frame rate for video rendering**
 
   This version adds the [`setLocalRenderTargetFps`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setlocalrendertargetfps) and [`setRemoteRenderTargetFps`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setremoterendertargetfps) methods, which support setting the maximum frame rate for video rendering locally and remotely. The actual frame rate for video rendering by the SDK will be as close to this value as possible.
 
   In use-cases where the frame rate requirement for video rendering is not high (for example, screen sharing, online education) or when the remote end uses mid-to-low-end devices, you can use this set of methods to limit the video rendering frame rate, thereby reducing CPU consumption and improving system performance.
 
-1. **Filter effects**
+3. **Filter effects**
 
   This version introduces the [`setFilterEffectOptions [1/2]`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setfiltereffectoptions) method. You can pass a cube map file (`.cube`) in the `config` parameter to apply custom filter effects such as whitening, vivid, cool, black and white, and others. Additionally, the SDK provides a built-in `built_in_whiten_filter.cube` file to quickly apply a whitening filter effect.
 
-1. **Local audio mixing**
+4. **Local audio mixing**
 
   This version introduces the local audio mixing feature. You can call the `startLocalAudioMixer` method to mix the audio streams from the local microphone, media player, sound card, and remote audio streams into a single audio stream, which can then be published to the channel. When you no longer need audio mixing, you can call the `stopLocalAudioMixer` method to stop local audio mixing. During the mixing process, you can call the `updateLocalAudioMixerConfiguration` method to update the configuration of the audio streams being mixed.
 
@@ -387,17 +387,17 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `l
   - In live streaming use-cases, users can receive audio streams within the channel, mix multiple audio streams locally, and then forward the mixed audio stream to other channels.
   - In educational use-cases, teachers can mix the audio from interactions with students locally and then forward the mixed audio stream to other channels.
 
-1. **External MediaProjection**
+5. **External MediaProjection**
 
   This version introduces the [`setExternalMediaProjection`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setexternalmediaprojection) method, which allows you to set an external `MediaProjection` and replace the `MediaProjection` applied by the SDK.
 
   If you have the capability to apply for `MediaProjection` on your own, you can use this feature to achieve more flexible screen capture.
 
-1. **EGL context**
+6. **EGL context**
 
   This version introduces the [`setExternalRemoteEglContext`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setexternalremoteeglcontext) method, which is used to set the EGL context for rendering remote video streams. When using the Texture format video data for remote video self-rendering, you can use this method to replace the SDK's default remote EGL context, resulting in unified EGL context management.
 
-1. **Color space settings**
+7. **Color space settings**
 
   This version adds `getColorSpace` and `setColorSpace` to [`VideoFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_videoframe.html). You can use `getColorSpace` to obtain the color space properties of the video frame and use `setColorSpace` to customize the settings. By default, the color space uses Full Range and BT.709 standard configuration. Developers can flexibly adjust according to their own capture or rendering needs, further enhancing the customization capabilities of video processing.
 
@@ -407,15 +407,15 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `l
 
   This version upgrades the virtual background algorithm, making the segmentation between the portrait and the background more accurate. There is no background exposure, the body contour of the portrait is complete, and the detail recognition of fingers is significantly improved. Additionally, the edges between the portrait and the background are more stable, reducing edge jumping and flickering in continuous video frames.
 
-1. **Snapshot at specified video observation points**
+2. **Snapshot at specified video observation points**
 
   This version introduces the [`takeSnapshot [2/2]`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_takesnapshot2) and [`takeSnapshotEx [2/2]`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineex.html#api_irtcengineex_takesnapshotex2) methods. You can use the `config` parameter when calling these methods to take snapshots at specified video observation points, such as before encoding, after encoding, or before rendering, to achieve more flexible snapshot effects.
 
-1. **Custom audio capture improvements**
+3. **Custom audio capture improvements**
 
   This version adds the `enableAudioProcessing`member parameter to [`AudioTrackConfig`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_audiotrackconfig.html), which is used to control whether to enable 3A audio processing for custom audio capture tracks of the `AUDIO_TRACK_DIRECT` type. The default value of this parameter is `false`, meaning that audio processing is not enabled. Users can enable it as needed, enhancing the flexibility of custom audio processing.
 
-1. **Other improvements**
+4. **Other improvements**
 
    - In use-cases where Alpha transparency effects are achieved by stitching video frames and Alpha data, the rendering performance on the receiving end has been improved, effectively reducing stuttering and latency.
    - This version optimizes the logic for calling `queryDeviceScore` to obtain device score levels, improving the accuracy of the score results.
@@ -475,7 +475,7 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
   - For the list of APIs supported by Lite SDK, see [Lite SDK API](https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_lite_api.html).
   - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](https://docs-md.agora.io/en/help/general-product-inquiry/audio_format.md)
 
-1. **Alpha transparency effects**
+2. **Alpha transparency effects**
 
   This version introduces the Alpha transparency effects feature, supporting the transmission and rendering of Alpha channel data in video frames for SDK capture and custom capture use-cases, enabling transparent gift effects, custom backgrounds on the receiver end, and so on:
 
@@ -485,7 +485,7 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
 
   Additionally, `AdvanceOptions` adds a new member `encodeAlpha`, which is used to set whether to encode and send Alpha information to the remote end. By default, the SDK does not encode and send Alpha information; if you need to encode and send Alpha information to the remote end (for example, when virtual background is enabled), explicitly call `setVideoEncoderConfiguration` to set the video encoding properties and set `encodeAlpha` to `true`.
 
-1. **Voice AI tuner**
+3. **Voice AI tuner**
 
   This version introduces the voice AI tuner feature, which can enhance the sound quality and tone, similar to a physical sound card. You can enable the voice AI tuner feature by calling the `enableVoiceAITuner` method and passing in the sound effect types supported in the `VOICE_AI_TUNER_TYPE` enum to achieve effects like deep voice, cute voice, husky singing voice, and so on.
 
@@ -495,11 +495,11 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
 
   This release introduces adaptive hardware decoding support, enhancing rendering smoothness on low-end devices and effectively reducing system load.
 
-1. **Facial region beautification**
+2. **Facial region beautification**
 
   To avoid losing details in non-facial areas during heavy skin smoothing, this version improves the skin smoothing algorithm. The SDK now recognizes various parts of the face, applying smoothing to facial skin areas excluding the mouth, eyes, and eyebrows. In addition, the SDK supports smoothing up to two faces simultaneously.
 
-1. **Other improvements**
+3. **Other improvements**
 
   This version also includes the following improvements:
 
@@ -523,9 +523,9 @@ v4.3.2 was released on June 4, 2024.
 
 1. This release enhances the usability of the [setRemoteSubscribeFallbackOption](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setremotesubscribefallbackoption) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
 
-1. The Agora media player now supports playing MP4 files with an Alpha channel.
+2. The Agora media player now supports playing MP4 files with an Alpha channel.
 
-1. The Agora media player now fully supports playing music files located in the `/assets/` directory or from URI starting with `content://`.
+3. The Agora media player now fully supports playing music files located in the `/assets/` directory or from URI starting with `content://`.
 
 #### Issues fixed
 
@@ -568,27 +568,27 @@ To ensure parameter naming consistency, this version renames `channelName` to `c
 
   This version adds `datastreamEncryptionEnabled` to [EncryptionConfig](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_encryptionconfig.html) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption). If there are issues causing failures in data stream encryption or decryption, these can be identified by the newly added `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE` and `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE` enumerations.
 
-1. **Local video rendering**
+2. **Local video rendering**
 
   This version adds the following members to [VideoCanvas](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_videocanvas.html) to support more local rendering capabilities:
 
   - `surfaceTexture`: Set a native Android `SurfaceTexture` object as the container providing video imagery, then use SDK external methods to perform OpenGL texture rendering.
   - `enableAlphaMask`: This member enables the receiving end to initiate Alpha mask rendering. Alpha mask rendering can create images with transparent effects or extract human figures from video content.
 
-1. **Adaptive configuration for low-quality video streams**
+3. **Adaptive configuration for low-quality video streams**
 
   This version introduces adaptive configuration for low-quality video streams. When you activate dual-stream mode and set up low-quality video streams on the sending side using [setDualStreamMode](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setdualstreammode2), the SDK defaults to the following behaviors:
 
   - The default encoding resolution for low-quality video streams is set to 50% of the original video encoding resolution.
   - The bitrate for the small streams is automatically matched based on the video resolution and frame rate, eliminating the need for manual specification.
 
-1. **Other features**
+4. **Other features**
 
    - A new method [enableEncryptionEx](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineex.html#api_irtcengineex_enableencryptionex) is added for enabling media stream or data stream encryption in multi-channel use-cases.
    - A new method [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed) is introduced for setting the playback speed of audio files.
    - A new method [getCallIdEx](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineex.html#api_irtcengineex_getcallidex) is introduced for retrieving call IDs in multi-channel use-cases.
 
-1. **Beta features**
+5. **Beta features**
 
    - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/realtime-media/video/reference/release-notes) for details.
 
@@ -601,11 +601,11 @@ To ensure parameter naming consistency, this version renames `channelName` to `c
   - `LOCAL_VIDEO_STREAM_REASON_DEVICE_INTERRUPT` (14): Video capture is interrupted due to the camera being occupied by another app or the app moving to the background.
   - `LOCAL_VIDEO_STREAM_REASON_DEVICE_FATAL_ERROR` (15): Video capture device errors, possibly due to camera equipment failure.
 
-1. **Camera capture improvements**
+2. **Camera capture improvements**
 
   Improvements have been made to the video processing mechanism of camera capture, reducing noise, enhancing brightness, and improving color, making the captured images clearer, brighter, and more realistic.
 
-1. **Virtual background algorithm optimization**
+3. **Virtual background algorithm optimization**
 
   To enhance the accuracy and stability of human segmentation when activating virtual backgrounds against solid colors, this version optimizes the green screen segmentation algorithm:
 
@@ -613,11 +613,11 @@ To ensure parameter naming consistency, this version renames `channelName` to `c
   - Improves accuracy in recognizing background colors and reduces the background exposure during human segmentation.
   - After segmentation, the edges of the human figure, especially around the fingers, are more stable, significantly reducing flickering at the edges.
 
-1. **CPU consumption reduction of in-ear monitoring**
+4. **CPU consumption reduction of in-ear monitoring**
 
   This release adds an enumerator `EAR_MONITORING_FILTER_REUSE_POST_PROCESSING_FILTER`. For complex audio processing use-cases, you can specify this option to reuse the audio filter post sender-side processing in in-ear monitoring, thereby reducing CPU consumption. Note that this option may increase the latency of in-ear monitoring, which is suitable for latency-tolerant use-cases requiring low CPU consumption.
 
-1. **Other improvements**
+5. **Other improvements**
 
   This version also includes the following improvements:
 
@@ -812,16 +812,16 @@ This release has optimized the implementation of some functions, which involved 
   - The SDK's parallel processing capability significantly improves, delivering higher video quality (720P, 24 FPS) even on lower-end devices. Additionally, image processing remains more stable in use-cases involving high resolutions and frame rates.
   - The stability of the SDK is further enhanced, leading to a noticeable decrease in the crash rate across various specific use-cases.
 
-1. **In-ear monitoring volume boost**
+2. **In-ear monitoring volume boost**
 
   This release provides users with more flexible in-ear monitoring audio adjustment options, supporting the ability to set the in-ear monitoring volume to four times the original volume by calling [setInEarMonitoringVolume](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setinearmonitoringvolume).
 
-1. **Spatial audio effects usability improvement**
+3. **Spatial audio effects usability improvement**
 
    - This release optimizes the design of the [setZones](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ibasespatialaudioengine.html#api_ibasespatialaudioengine_setzones) method, supporting the ability to set the `zones` parameter to `NULL`, indicating the clearing of all echo cancellation zones.
    - As of this release, it is no longer necessary to unsubscribe from the audio streams of all remote users within the channel before calling the [ILocalSpatialAudioEngine](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_ilocalspatialaudioengine.html#class_ilocalspatialaudioengine) method.
 
-1. **Optimization of video pre-processing methods**
+4. **Optimization of video pre-processing methods**
 
   This release adds overloaded methods with the `sourceType` parameter for the following 5 video preprocessing methods, which support specifying the media source type for applying video preprocessing effects by passing in `sourceType` (for example, applying on a custom video capture media source):
 
@@ -831,7 +831,7 @@ This release has optimized the implementation of some functions, which involved 
   - [setColorEnhanceOptions [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setcolorenhanceoptions2)
   - [enableVirtualBackground [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_enablevirtualbackground2)
 
-1. **Other improvements**
+5. **Other improvements**
 
   This release also includes the following improvements:
 
@@ -2180,17 +2180,17 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
 
   This version adds the `AgoraApplicationLiveShowScenario`(3) (Live Show) enumeration to [`AgoraApplicationScenarioType`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraapplicationscenariotype). You can call `setVideoScenario:` to set the video business scenario to show room. In this scenario, fast video rendering and high image quality are crucial. The SDK implements several performance optimizations, such as enabling accelerated audio and video frame rendering to minimize first-frame latency for better image quality and bandwidth efficiency.
 
-1. **Maximum frame rate for video rendering**
+2. **Maximum frame rate for video rendering**
 
   This version adds the `setLocalRenderTargetFps` and `setRemoteRenderTargetFps` methods, which support setting the maximum frame rate for video rendering locally and remotely. The actual frame rate for video rendering by the SDK will be as close to this value as possible.
 
   In use-cases where the frame rate requirement for video rendering is not high (for example, screen sharing, online education) or when the remote end uses mid-to-low-end devices, you can use this set of methods to limit the video rendering frame rate, thereby reducing CPU consumption and improving system performance.
 
-1. **Filter effects**
+3. **Filter effects**
 
   This version introduces the `setFilterEffectOptions:options:sourceType:` method. You can pass a cube map file (`.cube`) in the `config` parameter to apply custom filter effects such as whitening, vivid, cool, black and white, and others. Additionally, the SDK provides a built-in `built_in_whiten_filter.cube` file to quickly apply a whitening filter effect.
 
-1. **Local audio mixing**
+4. **Local audio mixing**
 
   This version introduces the local audio mixing feature. You can call the `startLocalAudioMixer` method to mix the audio streams from the local microphone, media player, sound card, and remote audio streams into a single audio stream, which can then be published to the channel. When you no longer need audio mixing, you can call the `stopLocalAudioMixer` method to stop local audio mixing. During the mixing process, you can call the `updateLocalAudioMixerConfiguration` method to update the configuration of the audio streams being mixed.
 
@@ -2200,7 +2200,7 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
   - In live streaming use-cases, users can receive audio streams within the channel, mix multiple audio streams locally, and then forward the mixed audio stream to other channels.
   - In educational use-cases, teachers can mix the audio from interactions with students locally and then forward the mixed audio stream to other channels.
 
-1. **Color space settings**
+5. **Color space settings**
 
   This version adds the `colorSpace` parameter to [`AgoraOutputVideoFrame`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraoutputvideoframe) and [`AgoraVideoFrame`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoravideoframe). You can use this parameter to set the color space properties of the video frame. By default, the color space uses Full Range and BT.709 standard configuration. You can flexibly adjust according to your own capture or rendering needs, further enhancing the customization capabilities of video processing.
 
@@ -2210,15 +2210,15 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
 
   This version upgrades the virtual background algorithm, making the segmentation between the portrait and the background more accurate. There is no background exposure, the body contour of the portrait is complete, and the detail recognition of fingers is significantly improved. Additionally, the edges between the portrait and the background are more stable, reducing edge jumping and flickering in continuous video frames.
 
-1. **Snapshot at specified video observation points**
+2. **Snapshot at specified video observation points**
 
   This version introduces the `takeSnapshotWithConfig:config:` and `takeSnapshotExWithConfig:uid:config:` methods. You can use the `config` parameter when calling these methods to take snapshots at specified video observation points, such as before encoding, after encoding, or before rendering, to achieve more flexible snapshot effects.
 
-1. **Custom audio capture improvements**
+3. **Custom audio capture improvements**
 
   This version adds the `enableAudioProcessing` member parameter to [`AgoraAudioTrackConfig`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraaudiotrackconfig), which is used to control whether to enable 3A audio processing for custom audio capture tracks of the `AUDIO_TRACK_DIRECT` type. The default value of this parameter is `NO`, meaning that audio processing is not enabled. Users can enable it as needed, enhancing the flexibility of custom audio processing.
 
-1. **Other improvements**
+4. **Other improvements**
 
    - In use-cases where Alpha transparency effects are achieved by stitching video frames and Alpha data, the rendering performance on the receiving end has been improved, effectively reducing stuttering and latency.
    - This version optimizes the logic for calling `queryDeviceScore` to obtain device score levels, improving the accuracy of the score results.
@@ -2259,10 +2259,10 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
   | `onExtensionStopped` | `onExtensionStoppedWithContext` |
   | `onExtensionError`  | `onExtensionErrorWithContext`  |
 
-1. Prior to v4.4.0, when a user was set to the audience role and `setAudioScenario` was called with `AgoraAudioScenarioChatRoom`, the system displayed the microphone-in-use indicator.
+2. Prior to v4.4.0, when a user was set to the audience role and `setAudioScenario` was called with `AgoraAudioScenarioChatRoom`, the system displayed the microphone-in-use indicator.
 Starting with v4.4.0, the SDK uses native iOS APIs to manage the microphone. As a result, audience users in a chatroom scenario no longer see the indicator.
 
-1. This version renames the `receiveMetadata` callback to `didMetadataReceived` and removes the `data` and `timeStamp` parameters. You can get metadata-related information, including `timeStamp` (timestamp of the sent data), `uid` (user ID), and `channelId` (channel name) through the newly-added `metadata` parameter.
+3. This version renames the `receiveMetadata` callback to `didMetadataReceived` and removes the `data` and `timeStamp` parameters. You can get metadata-related information, including `timeStamp` (timestamp of the sent data), `uid` (user ID), and `channelId` (channel name) through the newly-added `metadata` parameter.
 
 #### New features
 
@@ -2275,7 +2275,7 @@ Starting with v4.4.0, the SDK uses native iOS APIs to manage the microphone. As 
   - For the list of APIs supported by Lite SDK, see [API reference](https://api-ref.agora.io/en/lite-sdk/ios/4.x/documentation/agorartckit).
   - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](https://docs-md.agora.io/en/help/general-product-inquiry/audio_format.md)
 
-1. **Alpha transparency effects**
+2. **Alpha transparency effects**
 
   This version introduces the Alpha transparency effects feature, supporting the transmission and rendering of Alpha channel data in video frames for SDK capture and custom capture use-cases, enabling transparent gift effects, custom backgrounds on the receiver end, and so on:
 
@@ -2285,7 +2285,7 @@ Starting with v4.4.0, the SDK uses native iOS APIs to manage the microphone. As 
 
   Additionally, `AgoraAdvancedVideoOptions` adds a new member `encodeAlpha`, which is used to set whether to encode and send Alpha information to the remote end. By default, the SDK does not encode and send Alpha information; if you need to encode and send Alpha information to the remote end (for example, when virtual background is enabled), explicitly call `setVideoEncoderConfiguration` to set the video encoding properties and set `encodeAlpha` to `YES`.
 
-1. **Voice AI tuner**
+3. **Voice AI tuner**
 
   This version introduces the voice AI tuner feature, which can enhance the sound quality and tone, similar to a physical sound card. You can enable the voice AI tuner feature by calling the `enableVoiceAITuner` method and passing in the sound effect types supported in the `AgoraVoiceAITunerType` enum to achieve effects like deep voice, cute voice, husky singing voice, and so on.
 
@@ -2348,44 +2348,44 @@ v4.3.1 was released on April 29, 2024.
   If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project. For more details, see [How can I add a privacy manifest to my iOS app?](https://docs-md.agora.io/en/help/other-issues/ios_privacy_manifest.md)
   :::
 
-1. **Portrait center stage**
+2. **Portrait center stage**
 
   To enhance the presentation effect in online meetings, shows, and online education use-cases, this version introduces the [enableCameraCenterStage](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enablecameracenterstage(_:)) method to activate the Portrait center stage. This ensures that presenters, regardless of movement, always remain centered in the video frame, achieving better presentation effects.
 
   Before enabling portrait center stage, it is recommended to verify whether your current device supports this feature by calling [isCameraCenterStageSupported](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/iscameracenterstagesupported()). A list of supported devices can be found in the API documentation at [enableCameraCenterStage](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enablecameracenterstage(_:)).
 
-1. **Camera stabilization**
+3. **Camera stabilization**
 
   To improve video stability in mobile filming, low-light environments, and hand-held shooting use-cases, this version introduces a camera stabilization feature. You can activate this feature and select an appropriate stabilization mode by calling [setCameraStabilizationMode](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setcamerastabilizationmode(_:)), achieving more stable and clearer video footage.
 
-1. **Wide and ultra-wide cameras**
+4. **Wide and ultra-wide cameras**
 
   To allow users to capture a broader field of view and more complete scene content, this release introduces support for wide and ultra-wide cameras. You can first call [queryCameraFocalLengthCapability](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/querycamerafocallengthcapability()) to check the device's focal length capabilities, and then call [setCameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setcameracapturerconfiguration(_:)) and set `cameraFocalLengthType` to the supported focal length types, including wide and ultra-wide.
 
-1. **Data stream encryption**
+5. **Data stream encryption**
 
   This version adds `datastreamEncryptionEnabled` to [AgoraEncryptionConfig](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraencryptionconfig) for enabling data stream encryption. You can set this when you activate encryption with [enableEncryption](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableencryption(_:encryptionconfig:)). If there are issues causing failures in data stream encryption or decryption, these can be identified by the newly added `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE` and `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE` enumerations.
 
-1. **Local video rendering**
+6. **Local video rendering**
 
   This version adds the following member to [AgoraRtcVideoCanvas](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcvideocanvas) to support more local rendering capabilities:
 
   - `enableAlphaMask`: This member enables the receiving end to initiate Alpha mask rendering. Alpha mask rendering can create images with transparent effects or extract human figures from video content.
 
-1. **Adaptive configuration for low-quality video streams**
+7. **Adaptive configuration for low-quality video streams**
 
   This version introduces adaptive configuration for low-quality video streams. When you activate the dual-stream mode and set up low-quality video streams on the sending side using [setDualStreamMode [2/2]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setdualstreammode(_:streamconfig:)), the SDK defaults to the following behaviors:
 
   - The default encoding resolution for low-quality video streams is set to 50% of the original video encoding resolution.
   - The bitrate for the small streams is automatically matched based on the video resolution and frame rate, eliminating the need for manual specification.
 
-1. **Other features**
+8. **Other features**
 
    - A new method [enableEncryptionEx](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableencryptionex(_:encryptionconfig:connection:)) is added for enabling media stream or data stream encryption in multi-channel use-cases.
    - A new method [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudiomixingplaybackspeed(_:)) is introduced for setting the playback speed of audio files.
    - A new method [getCallIdEx](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/getcallidex(_:)) is introduced for retrieving call IDs in multi-channel use-cases.
 
-1. **Beta features**
+9. **Beta features**
 
    - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/realtime-media/video/reference/release-notes) for details.
 
@@ -2399,15 +2399,15 @@ v4.3.1 was released on April 29, 2024.
   - Improves accuracy in recognizing background colors and reduces the background exposure during human segmentation.
   - After segmentation, the edges of the human figure, especially around the fingers, are more stable, significantly reducing flickering at the edges.
 
-1. **Custom audio capture optimization**
+2. **Custom audio capture optimization**
 
   To enhance the flexibility of custom audio capture, this release deprecates [pushExternalAudioFrameSampleBuffer [1/2]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:)) and introduces [pushExternalAudioFrameSampleBuffer [2/2]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:samplerate:channels:trackid:)). Compared to the deprecated method, the new method adds parameters such as `sampleRate`, `channels`, and `trackId`. These support pushing external CMSampleBuffer audio data to the channel via custom audio tracks, and allow for the setting of sample rates and channel counts for external audio sources.
 
-1. **CPU consumption reduction of in-ear monitoring**
+3. **CPU consumption reduction of in-ear monitoring**
 
   This release adds an enumerator `AgoraEarMonitoringFilterReusePostProcessingFilter` in `AgoraEarMonitoringFilterType`. For complex audio processing use-cases, you can specify this option to reuse the audio filter post sender-side processing in in-ear monitoring, thereby reducing CPU consumption. Note that this option may increase the latency of in-ear monitoring, which is suitable for latency-tolerant use-cases requiring low CPU consumption.
 
-1. **Other improvements**
+4. **Other improvements**
 
   This version also includes the following improvements:
 
@@ -4560,15 +4560,15 @@ This release modified the calculation of [`freezeRate`](https://api-ref.agora.io
 
   This release improves the media reconnection strategy, which in turn increases the reconnection and media login success rate under poor network conditions. For enterprise networks with firewalls, the improvement is particularly noticeable. Contact support@agora.io to try this new strategy.
 
-1. **Improved virtual background algorithm**
+2. **Improved virtual background algorithm**
 
   This release upgrades the [Virtual Background extension](https://www.npmjs.com/package/agora-extension-virtual-background/v/2.0.0) to version 2.0.0. The updated algorithm provides a more distinct face edge and clearer and more stable video images.
 
-1. **Reduced package size**
+3. **Reduced package size**
 
   To further reduce the package size, this release separates the Plan-B feature, which is compatible with WebRTC, from the ESM-bundle package into an independent service module. Users can integrate them manually based on actual needs. For details, see [Use tree shaking](../../../build/optimize-quality-and-connection/app-size-optimization.mdx).
 
-1. **Other improvements**
+4. **Other improvements**
 
    - Optimized login duration under complex network conditions.
    - Optimized layer switching algorithm of VP9, which can reduce latency and improve video smoothness.

@@ -1,0 +1,1331 @@
+---
+title: "Channel Management REST API"
+description: "Use Channel Management REST APIs for Agora IoT channel operations."
+---
+
+In addition to the SDK that you integrate into the app client, Agora provides a set of simple, secure, and reliable server-side RESTful APIs to manage real-time audio and video channels.
+
+This page provides detailed documentation for the Agora Channel Management RESTful APIs.
+
+### Key features and use-cases
+
+| Key features | Description | Typical application use-cases |
+|---|---|---|
+| Manage user privileges | Includes removing specified users from channels and preventing them from sending audio and video streams. | Unauthorized users appear in a live broadcast.<br />Users disrupt the room during a live broadcast.<br />The signaling message sent to the client is hijacked.<br />The user is offline abnormally, which interferes with timely user list updates. |
+| Query channel information | Query the list of online channels, users in a channel, and the status of a specified user. | In a use-case where the number of concurrent channels is not large, directly query the channel list to sync the channel status. In a use-case where real-time sync performance is not required, query and sync the user list and status in the channel. |
+
+### Authorization
+
+
+### Domain
+
+All requests are sent to the following domain name: `api.agora.io`.
+
+:::caution
+
+The Agora RESTful API supports only HTTPS with TLS 1.0, 1.1, or 1.2. Requests over plain HTTP are not supported.
+
+:::
+
+
+For example, after implementing basic HTTP authentication, use the following code to send a simple request to obtain the total number of channels and the number of users in each channel:
+
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="go">Go</TabsTrigger>
+</TabsList>
+<TabsContent value="java">
+
+
+```java
+public class Base64Encoding {
+
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+        // Customer ID
+        // Set the AGORA_CUSTOMER_KEY environment variable
+        final String customerKey = System.getenv("AGORA_CUSTOMER_KEY");
+        // Customer key
+        // Set the AGORA_CUSTOMER_SECRET environment variable
+        final String customerSecret = System.getenv("AGORA_CUSTOMER_SECRET");
+
+        // Set the AGORA_APP_ID variable
+        final String appid = System.getenv("AGORA_APP_ID");
+
+        // Concatenate the customer ID and customer secret and encode them using base64
+        String plainCredentials = customerKey + ":" + customerSecret;
+        String base64Credentials = new String(Base64.getEncoder().encode(plainCredentials.getBytes()));
+        // Create the authorization header
+        String authorizationHeader = "Basic :" + base64Credentials
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Create an HTTP request object
+        HttpRequest request = HttpRequest.newBuilder()
+               .uri(URI.create("https://api.sd-rtn.com/dev/v1/channel/" + appid))
+               .GET()
+               .header("Authorization", authorizationHeader)
+               .header("Content-Type", "application/json")
+               .build();
+        // Send an HTTP request
+        HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+
+        System.out.println(response.body());
+        // Add the subsequent processing logic for the response content
+   }
+}
+```
+
+
+</TabsContent>
+<TabsContent value="go">
+
+
+```go
+package main
+
+	"encoding/base64"
+	"fmt"
+	"net/http"
+	"os"
+	"io/ioutil"
+)
+
+func main() {
+	// Retrieve environment variables
+	customerKey := os.Getenv("AGORA_CUSTOMER_KEY")
+	customerSecret := os.Getenv("AGORA_CUSTOMER_SECRET")
+	appID := os.Getenv("AGORA_APP_ID")
+
+	if customerKey == "" || customerSecret == "" || appID == "" {
+		fmt.Println("Environment variables AGORA_CUSTOMER_KEY, AGORA_CUSTOMER_SECRET, and AGORA_APP_ID must be set.")
+		return
+	}
+
+	// Concatenate the customer ID and secret, then encode them using Base64
+	plainCredentials := customerKey + ":" + customerSecret
+	base64Credentials := base64.StdEncoding.EncodeToString([]byte(plainCredentials))
+
+	// Create the authorization header
+	authorizationHeader := "Basic " + base64Credentials
+
+	// Build the request
+	req, err := http.NewRequest("GET", "https://api.sd-rtn.com/dev/v1/channel/"+appID, nil)
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return
+	}
+
+	// Add headers
+	req.Header.Add("Authorization", authorizationHeader)
+	req.Header.Add("Content-Type", "application/json")
+
+	// Create an HTTP client and send the request
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Read the response body
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+		return
+	}
+
+	// Print the response body
+	fmt.Println(string(body))
+
+	// Add any subsequent processing logic for the response content here
+}
+```
+
+
+</TabsContent>
+</Tabs>
+
+Use the channel management RESTful API along with the [Agora Notifications](/en/realtime-media/video/build/optimize-and-operate/receive-notifications) service for reliable and effective channel management and status synchronization.
+
+### Call frequency limit
+
+For each Agora account (not each App ID), the maximum call frequency of every online channel statistics query API is 20 queries per second. The maximum call frequency of every other API is 10 queries per second. If you are frequency limited when calling the APIs, see [How can I avoid being frequency limited when calling Agora Server RESTful APIs](/en/api-reference/faq/integration/restful_api_call_frequency) to optimize API call frequency.
+
+### Response status codes
+
+For a description of the response status codes, refer to [Response status codes](/en/api-reference/api-ref/rtc/response-status-codes).
+
+
+## Authentication
+
+The `Content-Type` field in all HTTP request headers is `application/json`. All requests and responses are in JSON format. All request URLs and request bodies are case-sensitive.
+
+The Agora Channel Management RESTful APIs only support HTTPS. Before sending HTTP requests, you must generate a Base64-encoded credential with the **Customer ID** and **Customer Secret** provided by Agora, and pass the credential to the `Authorization` field in the HTTP request header. See [RESTful authentication](/en/api-reference/api-ref/rtc/authentication) for details.
+
+
+## Call the API
+
+This page explains the structure of the channel management RESTful API and how to call it correctly.
+
+## Prerequisites
+
+Before calling the API, make sure you have the following:
+
+- An Agora app ID
+- Customer ID
+- Customer key
+
+## Request URL
+
+Following is a sample request URL:
+
+```
+https://api.agora.io/dev/v1/kicking-rule
+```
+
+- `https`: The communication protocol. Agora uses HTTPS.
+- `api.agora.io`: The domain name of the Agora server.
+- `dev/v1/kicking-rule`: The resource path, including the API version and the resource name.
+
+The above example is for reference only. Refer to the documentation of the API you want to call, select the method (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`) in the code source file or debug application, and then configure the actual request URL according to your needs. The request URL is case-sensitive.
+
+## Request structure
+
+A request consists of two parts: The request header and the request body.
+
+The following example shows how to create a privilege banning rule by sending a `POST` request containing the app ID, channel name, user ID, user IP, ban duration, and the privilege list to the specified API address:
+
+```shell
+curl --location --request POST 'https://api.agora.io/dev/v1/kicking-rule' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: <http_basic_auth>' \
+--data '{
+  "appid": "4855xxxxxxxxxxxxxxxxxxxxxxxxeae2",
+  "cname": "channel1",
+  "uid": 589517928,
+  "ip": "123",
+  "time": 60,
+  "privileges": [
+    "join_channel"
+  ]
+}'
+```
+
+### Request header
+
+The request header contains the following information needed to process the request:
+
+- `Accept`: Tells the server what types of responses the client can handle, such as `application/json`.
+- `Authorization`: The Agora RESTful API requires HTTP authentication. Every time you send an HTTP request, fill in the `Authorization` field in the request header. See [RESTful authentication](/en/api-reference/api-ref/rtc/authentication) for details.
+- `Content-Type`: Specifies the type of the request body, such as `application/json`.
+
+### Request body (optional)
+
+The request body contains the information to be sent to the server. For example, to create a new rule to ban user privileges, include the relevant information, such as the app ID, channel name, user ID, user IP, ban duration, and the banned privileges. The request body is case-sensitive.
+
+## Response
+
+After you send the request, the Agora server sends a response that includes a response status code and a response body. The channel management RESTful API does not have a response header.
+
+### Response status code
+
+The HTTP response status code can be one of the following:
+
+- `200`: The request is successful.
+- Other than `200`: Refer to [Response status codes](/en/api-reference/api-ref/rtc/response-status-codes) to troubleshoot the problem.
+
+### Response body
+
+The response body contains the information returned by the server. For example, the response body of creating a banning rule includes the request status and the rule ID.
+
+The following is a response example for creating a banning rule:
+
+```json
+{
+  "status": "success",
+  "id": 1953
+}
+```
+
+## Error handling
+
+If you encounter a problem, use developer tools to view the request and response, and troubleshoot based on the response status code. If the problem persists, contact [technical support](mailto:support@agora.io).
+
+
+## Query channel list
+
+### `GET` `https://api.agora.io/dev/v1/channel/{appid}`
+
+
+Use this endpoint to get the list of all channels under a specified project. The channel list is returned by page; specify the page number and page size in the request URL.
+
+:::info
+
+If the number of users in a channel changes frequently, the query results may be inaccurate. The following situations may occur:
+- A channel appears repeatedly on different pages.
+- A channel does not appear on any page.
+
+:::
+
+
+## Request
+
+The request URL and request body is case-sensitive. All requests must use HTTPS.
+
+### Request header
+
+- `Content-Type`: `application/json`
+- The request header must contain the `Authorization` field. For details, see [RESTful authentication](/en/api-reference/api-ref/rtc/authentication).
+
+### Path parameters
+
+<Parameter name="appid" type="string" required={true}>
+  The App ID of the project. You can get it through one of the following methods:
+  - Copy from the [Agora Console](https://console.agora.io)
+  - Call the [Get all projects](/en/api-reference/api-ref/console/solutions-agora-console-rest-api#get-all-projects) API, and read the value of the `vendor_key` field in the response body.
+</Parameter>
+
+### Query parameters
+
+<ParameterList title="QUERY">
+  <Parameter name="page_no" type="number" required={false}>
+    The page number to query. The default value is `0`, which is the first page. The value of `page_no` cannot exceed `(total number of channels / page_size) - 1`; otherwise, the specified page contains no channels.
+  </Parameter>
+
+  <Parameter name="page_size" type="number" required={false}>
+    The number of channels per page.
+  </Parameter>
+</ParameterList>
+
+## Response
+
+A `200` status code indicates success. The response body contains the following parameters:
+
+<ParameterList title="OK">
+  <Parameter name="success" type="boolean">
+    The state of this request:
+    - `true`: Success.
+    - `false`: Reserved for future use.
+  </Parameter>
+
+  <Parameter name="data" type="object">
+    Channel statistics.
+
+    <Parameter name="channels" type="array">
+      The list of channels. Each object in the array represents one channel and contains the following fields. If the specified page contains no channels, this field is empty.
+
+      <Parameter name="channel_name" type="string">
+        The channel name.
+      </Parameter>
+
+      <Parameter name="user_count" type="number">
+        The total number of users in the channel.
+      </Parameter>
+    </Parameter>
+
+    <Parameter name="total_size" type="number">
+      The total number of channels under the specified project.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](/en/api-reference/api-ref/rtc/response-status-codes) for details.
+
+
+### Authorization
+
+  This endpoint requires [Basic authentication](/en/api-reference/api-ref/rtc/authentication).
+
+
+### Request example
+
+
+Test this request in [Postman](https://documenter.getpostman.com/view/6319646/SVSLr9AM#080ffa91-0c31-42ab-9177-7942f8691ea2) or use one of the following code examples:
+
+<Tabs defaultValue="curl">
+<TabsList>
+  <TabsTrigger value="curl">cURL</TabsTrigger>
+  <TabsTrigger value="node">Node</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+</TabsList>
+<TabsContent value="curl">
+
+
+```bash
+curl --request GET \
+  --url 'https://api.sd-rtn.com/dev/v1/channel/<appid>?page_no=0&page_size=100' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+
+</TabsContent>
+
+<TabsContent value="node">
+
+
+```js
+const http = require('http');
+
+const options = {
+  method: 'GET',
+  hostname: 'api.sd-rtn.com',
+  port: null,
+  path: '/dev/v1/channel/<appid>?page_no=0&page_size=100',
+  headers: {
+    Authorization: 'Basic <your_base64_encoded_credentials>',
+    Accept: 'application/json'
+  }
+};
+
+const req = http.request(options, function (res) {
+  const chunks = [];
+
+  res.on('data', function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on('end', function () {
+    const body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+});
+
+req.end();
+```
+
+
+</TabsContent>
+
+<TabsContent value="python">
+
+
+```python
+
+conn = http.client.HTTPConnection("api.sd-rtn.com")
+
+headers = {
+    'Authorization': "Basic <your_base64_encoded_credentials>",
+    'Accept': "application/json"
+}
+
+conn.request("GET", "/dev/v1/channel/<appid>?page_no=0&page_size=100", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+
+</TabsContent>
+</Tabs>
+
+
+### Response example
+
+
+```json
+{
+  "success": true,
+  "data": {
+    "channels": [
+      {
+        "channel_name": "lkj144",
+        "user_count": 3
+      }
+    ],
+    "total_size": 1
+  }
+}
+```
+
+
+## Query host list
+
+### `GET` `https://api.agora.io/dev/v1/channel/user/{appid}/{channelName}/hosts_only`
+
+
+Use this endpoint to get the list of hosts in a specified channel. This endpoint is only available in the `LIVE_BROADCASTING` profile (`mode = 2`); all users in the channel must use the same profile, otherwise query results may be inaccurate.
+
+## Request
+
+The request URL and request body is case-sensitive. All requests must use HTTPS.
+
+### Request header
+
+- `Content-Type`: `application/json`
+- The request header must contain the `Authorization` field. For details, see [RESTful authentication](/en/api-reference/api-ref/rtc/authentication).
+
+### Path parameters
+
+<Parameter name="appid" type="string" required={true}>
+  The App ID of the project. You can get it through one of the following methods:
+  - Copy from the [Agora Console](https://console.agora.io)
+  - Call the [Get all projects](/en/api-reference/api-ref/console/solutions-agora-console-rest-api#get-all-projects) API, and read the value of the `vendor_key` field in the response body.
+</Parameter>
+
+<Parameter name="channelName" type="string" required={true}>
+  The channel name.
+</Parameter>
+
+## Response
+
+A `200` status code indicates success. The response body contains the following parameters:
+
+<ParameterList title="OK">
+  <Parameter name="success" type="boolean">
+    The state of this request:
+    - `true`: Success.
+    - `false`: Reserved for future use.
+  </Parameter>
+
+  <Parameter name="data" type="object">
+    User information.
+
+    <Parameter name="channel_exist" type="boolean">
+      Whether the specified channel exists:
+      - `true`: The channel exists.
+      - `false`: The channel does not exist. When this is `false`, no other fields are returned.
+    </Parameter>
+
+    <Parameter name="mode" type="number">
+      The channel profile:
+      - `1`: The `COMMUNICATION` profile.
+      - `2`: The `LIVE_BROADCASTING` profile.
+    </Parameter>
+
+    <Parameter name="broadcasters" type="array">
+      User IDs of all hosts in the channel. Returned only when `mode` is `2`.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](/en/api-reference/api-ref/rtc/response-status-codes) for details.
+
+## Reference
+
+### Synchronizing host online status
+
+To synchronize the online status of hosts, you can use this endpoint or the [query user status](#query-user-status) endpoint. This endpoint requires a lower call frequency and offers higher efficiency, so Agora recommends it for this purpose.
+
+
+### Authorization
+
+  This endpoint requires [Basic authentication](/en/api-reference/api-ref/rtc/authentication).
+
+
+### Request example
+
+
+<Tabs defaultValue="curl">
+<TabsList>
+  <TabsTrigger value="curl">cURL</TabsTrigger>
+  <TabsTrigger value="node">Node</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+</TabsList>
+<TabsContent value="curl">
+
+
+```bash
+curl --request GET \
+  --url https://api.sd-rtn.com/dev/v1/channel/user/<appid>/<channelName>/hosts_only \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+
+</TabsContent>
+
+<TabsContent value="node">
+
+
+```js
+const https = require('https');
+
+const options = {
+  method: 'GET',
+  hostname: 'api.sd-rtn.com',
+  port: null,
+  path: '/dev/v1/channel/user/<appid>/<channelName>/hosts_only',
+  headers: {
+    Accept: 'application/json',
+    Authorization: 'Basic <your_base64_encoded_credentials>'
+  }
+};
+
+const req = https.request(options, function (res) {
+  const chunks = [];
+
+  res.on('data', function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on('end', function () {
+    const body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+});
+
+req.end();
+```
+
+
+</TabsContent>
+
+<TabsContent value="python">
+
+
+```python
+
+conn = http.client.HTTPSConnection("api.sd-rtn.com")
+
+headers = {
+    'Accept': "application/json",
+    'Authorization': "Basic <your_base64_encoded_credentials>"
+}
+
+conn.request("GET", "/dev/v1/channel/user/<appid>/<channelName>/hosts_only", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+
+</TabsContent>
+</Tabs>
+
+
+### Response example
+
+
+```json
+{
+  "success": true,
+  "data": {
+    "channel_exist": true,
+    "mode": 2,
+    "broadcasters": [
+      574332,
+      1347839
+    ]
+  }
+}
+```
+
+
+## Query user list
+
+### `GET` `https://api.agora.io/dev/v1/channel/user/{appid}/{channelName}`
+
+
+Use this endpoint to get the list of all users in a specified channel. All users in the channel must use the same channel profile; otherwise, the query results may be inaccurate.
+
+The returned list differs based on the channel profile:
+- `COMMUNICATION` profile: Returns the list of all users in the channel.
+- `LIVE_BROADCASTING` profile: Returns the list of all hosts and audience members in the channel.
+
+## Request
+
+The request URL and request body is case-sensitive. All requests must use HTTPS.
+
+### Request header
+
+- `Content-Type`: `application/json`
+- The request header must contain the `Authorization` field. For details, see [RESTful authentication](/en/api-reference/api-ref/rtc/authentication).
+
+### Path parameters
+
+<Parameter name="appid" type="string" required={true}>
+  The App ID of the project. You can get it through one of the following methods:
+  - Copy from the [Agora Console](https://console.agora.io)
+  - Call the [Get all projects](/en/api-reference/api-ref/console/solutions-agora-console-rest-api#get-all-projects) API, and read the value of the `vendor_key` field in the response body.
+</Parameter>
+
+<Parameter name="channelName" type="string" required={true}>
+  The channel name.
+</Parameter>
+
+### Query parameters
+
+<ParameterList title="QUERY">
+  <Parameter name="hosts_only" type="string" required={false}>
+    When specified, only the host list is returned. Applicable to the `LIVE_BROADCASTING` profile only.
+  </Parameter>
+</ParameterList>
+
+## Response
+
+A `200` status code indicates success. The response body contains the following parameters:
+
+<ParameterList title="OK">
+  <Parameter name="success" type="boolean">
+    The state of this request:
+    - `true`: Success.
+    - `false`: Reserved for future use.
+  </Parameter>
+
+  <Parameter name="data" type="object">
+    User information.
+
+    <Parameter name="channel_exist" type="boolean">
+      Whether the specified channel exists:
+      - `true`: The channel exists.
+      - `false`: The channel does not exist. When this is `false`, no other fields are returned.
+    </Parameter>
+
+    <Parameter name="mode" type="number">
+      The channel profile:
+      - `1`: The `COMMUNICATION` profile.
+      - `2`: The `LIVE_BROADCASTING` profile.
+    </Parameter>
+
+    <Parameter name="total" type="number">
+      The total number of users in the channel. Returned only when `mode` is `1`.
+    </Parameter>
+
+    <Parameter name="users" type="array">
+      User IDs of all users in the channel. Returned only when `mode` is `1`.
+    </Parameter>
+
+    <Parameter name="broadcasters" type="array">
+      User IDs of all hosts in the channel. Returned only when `mode` is `2`.
+    </Parameter>
+
+    <Parameter name="audience" type="array">
+      User IDs of the first 10,000 audience members in the channel. Returned only when `mode` is `2` and `hosts_only` is not specified.
+    </Parameter>
+
+    <Parameter name="audience_total" type="number">
+      The total number of audience members in the channel. Returned only when `mode` is `2` and `hosts_only` is not specified.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](/en/api-reference/api-ref/rtc/response-status-codes) for details.
+
+## Reference
+
+### Synchronizing channel online statistics
+
+To synchronize online channel statistics, you can use this endpoint or the [query user status](#query-user-status) endpoint. This endpoint requires a lower call frequency and offers higher efficiency, so Agora recommends it for this purpose.
+
+
+### Authorization
+
+  This endpoint requires [Basic authentication](/en/api-reference/api-ref/rtc/authentication).
+
+
+### Request example
+
+
+Test this request in [Postman](https://documenter.getpostman.com/view/6319646/SVSLr9AM#85067b69-dbde-4dca-bd54-2413221844cf) or use one of the following code examples:
+
+<Tabs defaultValue="curl">
+<TabsList>
+  <TabsTrigger value="curl">cURL</TabsTrigger>
+  <TabsTrigger value="node">Node</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+</TabsList>
+<TabsContent value="curl">
+
+
+```bash
+curl --request GET \
+  --url https://api.sd-rtn.com/dev/v1/channel/user/<appid>/<channelName> \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+
+</TabsContent>
+
+<TabsContent value="node">
+
+
+```js
+const https = require('https');
+
+const options = {
+  method: 'GET',
+  hostname: 'api.sd-rtn.com',
+  port: null,
+  path: '/dev/v1/channel/user/<appid>/<channelName>',
+  headers: {
+    Authorization: 'Basic <your_base64_encoded_credentials>',
+    Accept: 'application/json'
+  }
+};
+
+const req = https.request(options, function (res) {
+  const chunks = [];
+
+  res.on('data', function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on('end', function () {
+    const body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+});
+
+req.end();
+```
+
+
+</TabsContent>
+
+<TabsContent value="python">
+
+
+```python
+
+conn = http.client.HTTPSConnection("api.sd-rtn.com")
+
+headers = {
+    'Authorization': "Basic <your_base64_encoded_credentials>",
+    'Accept': "application/json"
+}
+
+conn.request("GET", "/dev/v1/channel/user/<appid>/<channelName>", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+
+</TabsContent>
+</Tabs>
+
+
+### Response example
+
+
+**In `COMMUNICATION` profile:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "channel_exist": true,
+    "mode": 1,
+    "total": 1,
+    "users": [
+      906218805
+    ]
+  }
+}
+```
+
+**In `LIVE_BROADCASTING` profile:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "channel_exist": true,
+    "mode": 2,
+    "broadcasters": [
+      2206227541,
+      2845863044
+    ],
+    "audience": [
+      906219905
+    ],
+    "audience_total": 1
+  }
+}
+```
+
+
+## Query user status
+
+### `GET` `https://api.agora.io/dev/v1/channel/user/property/{appid}/{uid}/{channelName}`
+
+
+Use this endpoint to get the status of a specified user. It checks whether the user is in the specified channel and, if present, returns the user's role and the time they joined.
+
+## Request
+
+The request URL and request body is case-sensitive. All requests must use HTTPS.
+
+### Request header
+
+- `Content-Type`: `application/json`
+- The request header must contain the `Authorization` field. For details, see [RESTful authentication](/en/api-reference/api-ref/rtc/authentication).
+
+### Path parameters
+
+<Parameter name="appid" type="string" required={true}>
+  The App ID of the project. You can get it through one of the following methods:
+  - Copy from the [Agora Console](https://console.agora.io)
+  - Call the [Get all projects](/en/api-reference/api-ref/console/solutions-agora-console-rest-api#get-all-projects) API, and read the value of the `vendor_key` field in the response body.
+</Parameter>
+
+<Parameter name="uid" type="number" required={true}>
+  The user ID. This parameter does not support string user accounts; use the integer user ID only.
+</Parameter>
+
+<Parameter name="channelName" type="string" required={true}>
+  The channel name.
+</Parameter>
+
+## Response
+
+A `200` status code indicates success. The response body contains the following parameters:
+
+<ParameterList title="OK">
+  <Parameter name="success" type="boolean">
+    The state of this request:
+    - `true`: Success.
+    - `false`: Reserved for future use.
+  </Parameter>
+
+  <Parameter name="data" type="object">
+    User statistics.
+
+    <Parameter name="in_channel" type="boolean">
+      Whether the user is in the channel. When `false`, no other fields are returned.
+    </Parameter>
+
+    <Parameter name="uid" type="number">
+      The user ID.
+    </Parameter>
+
+    <Parameter name="join" type="number">
+      The Unix timestamp (in seconds) of when the user joined the channel.
+    </Parameter>
+
+    <Parameter name="role" type="number">
+      The role of the user in the channel:
+      - `0`: Unknown user role.
+      - `1`: User, in a communication channel.
+      - `2`: Host, in a live broadcast channel.
+      - `3`: Audience, in a live broadcast channel.
+    </Parameter>
+
+    <Parameter name="platform" type="number">
+      The platform of the user's device. Common values include:
+      - `1`: Android
+      - `2`: iOS
+      - `5`: Windows
+      - `6`: Linux
+      - `7`: Web
+      - `8`: macOS
+      - `0`: Others
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](/en/api-reference/api-ref/rtc/response-status-codes) for details.
+
+
+### Authorization
+
+  This endpoint requires [Basic authentication](/en/api-reference/api-ref/rtc/authentication).
+
+
+### Request example
+
+
+Test this request in [Postman](https://documenter.getpostman.com/view/6319646/SVSLr9AM#6d8e52b7-3273-4dd5-94ee-389448429d96) or use one of the following code examples:
+
+<Tabs defaultValue="curl">
+<TabsList>
+  <TabsTrigger value="curl">cURL</TabsTrigger>
+  <TabsTrigger value="node">Node</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+</TabsList>
+<TabsContent value="curl">
+
+
+```bash
+curl --request GET \
+  --url https://api.sd-rtn.com/dev/v1/channel/user/property/<appid>/<uid>/<channelName> \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+
+</TabsContent>
+
+<TabsContent value="node">
+
+
+```js
+const https = require('https');
+
+const options = {
+  method: 'GET',
+  hostname: 'api.sd-rtn.com',
+  port: null,
+  path: '/dev/v1/channel/user/property/<appid>/<uid>/<channelName>',
+  headers: {
+    Authorization: 'Basic <your_base64_encoded_credentials>',
+    Accept: 'application/json'
+  }
+};
+
+const req = https.request(options, function (res) {
+  const chunks = [];
+
+  res.on('data', function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on('end', function () {
+    const body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+});
+
+req.end();
+```
+
+
+</TabsContent>
+
+<TabsContent value="python">
+
+
+```python
+
+conn = http.client.HTTPSConnection("api.sd-rtn.com")
+
+headers = {
+    'Authorization': "Basic <your_base64_encoded_credentials>",
+    'Accept': "application/json"
+}
+
+conn.request("GET", "/dev/v1/channel/user/property/<appid>/<uid>/<channelName>", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+
+</TabsContent>
+</Tabs>
+
+
+### Response example
+
+
+```json
+{
+  "success": true,
+  "data": {
+    "join": 1640330382,
+    "uid": 2845863044,
+    "in_channel": true,
+    "platform": 7,
+    "role": 2
+  }
+}
+```
+
+
+## Manage user privileges
+
+This page illustrates the usage of the privilege banning API, including usage principles, applicable use-cases, inapplicable use-cases, and best practices for the exception handling.
+
+For the API reference, see [Create rule](#create-a-rule-to-ban-user-privileges).
+
+## Usage principles
+
+Follow these principles when using the API:
+
+- Prevent the main business processes from relying too heavily on the privilege banning API.
+- Prevent a RESTful call failure from affecting the main business processes.
+
+## Applicable use-cases
+
+### Ban violating users
+
+Revoke the user's right to join the channel based on UID: Set `privileges` to `join_channel`, fill in `uid`, leave `cname` and `ip` blank, and set `time` to a value other than `0`.
+
+For example, when it is impossible to completely ban a violating user through your business signaling, you can ban them with this API by their UID.
+
+Note that the banning API can be used as a fallback for your business signaling system, but you should consider whether there is a need to unban. Unbanning users is usually not integrated into the main service process to prevent possible call failures from affecting its operation.
+
+- Correct usage example: A user files a complaint and their account is manually unbanned.
+- Incorrect usage example: A user is automatically unbanned the next time they join the channel. This might result in the user being unable to join because of an API call failure.
+
+### Ban user audio and video privileges
+
+Ban the user's audio and video streaming privileges based on UID: Set `privileges` to `publish_audio` or `publish_video`, fill in `uid`, leave `cname` and `ip` blank, and set `time` to a value other than `0`.
+
+For example, you can prevent a microphone from being used after it was left unattended by the streaming user.
+
+Note that banning a user's streaming privileges through this API is a dangerous operation. It should be used as a backup measure after the user was notified of a failure to disconnect.
+
+Take into full consideration the impact that a delay or failure to unban might have on the user's ability to use the microphone again, and set the ban time to be as short as possible.
+
+### Kick a user out of a channel
+
+Kick the user out of the channel based on the channel name and UID. This means taking the user offline, after which they can log in again. Set `privileges` to `join_channel`, fill in `cname` and `uid`, leave `ip` blank, and set `time` to `0`.
+
+For example, if the host logs in from 2 devices simultaneously, these two devices will stream with the same `uid`, causing an exception. This API can be used to kick both devices offline, after which one of them can reconnect.
+
+This API can be used as a backup if the leave channel signal sent by your own business server is invalid.
+
+Note that a one-time kick with `time` set to `0` is a safer way to use this API. When the kick request reaches the edge node, if the SDK is disconnected from the edge node, the one-time kick will fail. If you find that the SDK is reconnected to the edge node after kicking the user, you can call this API again.
+
+### Disband a channel
+
+When streaming ends, kick all users out of the channel by the channel name: set `privileges` to `join_channel`, fill in `cname`, leave `uid` and `ip` blank, and set `time` to `0`.
+
+Use this API to disband a channel. Set `time` to the time that the channel should not be restarted.
+
+:::caution[Caution]
+
+Using `cname` for a banning rule is equivalent to destroying a channel. Make sure that doing so meets your business requirements.
+
+:::
+
+
+In this use-case, use your own signaling to notify the SDK to call `leave channel` after the streaming ends. If the business signaling cannot meet the needs, you can use forced disbanding as a fallback. If you rely entirely on RESTful requests, the impact caused by request failures might be too heavy.
+
+If the channel will not be reused, you can set the ban for a longer period of time. If the channel will be reused after a certain period, make sure that the end time of the channel ban is not later than the next channel creation time. If the channel will be reused in an unknown period of time, it is recommended to kick the user from the channel or set the ban time to 1 minute.
+
+It is not recommended to ban for a longer time and call the unbanning API when the channel starts. If unbanning fails, the users will not be able to join the channel.
+
+### Ban illegal IPs
+
+Prevent the user from joining a channel based on IP: Set `privileges` to `join_channel`, fill in `ip`, leave `cname` and `uid` blank, and set `time` to a value other than `0`.
+
+For example, when a business is attacked and the IP of the attack source is identified, the `ip` field can be used to ban it.
+
+Note that using the IP as the banning rule may accidentally affect other users, such as when multiple people share it.
+
+## Non-applicable use-cases
+
+The following table summarizes the use-cases where this API should not be used and provides the reasons why.
+
+| Use-case | Details | Reason |
+|---|---|---|
+| Use the banning API for user microphone management | Ban the streaming privilege when the user is off the microphone, and restore it when the user is back on. | The real-time communication logic depends on the availability of the banning API. If the unbanning fails, the user cannot send streams.|
+|Use the banning API for user channel permission management | Ban the user's privilege to join the channel when the user leaves it, and restore it when they attempt to rejoin.| The real-time communication logic depends on the availability of the banning API. If the unbanning fails, the user cannot join the channel. It is recommended to use a one-time kick to ensure that the user leaves the channel.|
+
+:::info[Note]
+
+To better manage microphone positions, Agora provides a channel status API and a Notifications service. You can use them to obtain the real-time status of a channel and design the subsequent business logic. For details, see [Receive notifications about channel events](/en/realtime-media/video/build/optimize-and-operate/receive-notifications).
+
+:::
+
+
+## Best practices for handling call exceptions
+
+- Timeout settings
+
+    It is recommended to set the client request timeout to a value of more than 20s (minimum 5s) to mitigate network fluctuations. When retrying a timed-out request, increase the timeout accordingly to improve the request success rate.
+
+- Retry the request
+
+    Decide whether to retry the request after failure and determine the number of retries based on your own business logic.
+
+    When a request returns an error code greater than or equal to `500` or the request times out, you can continue to retry and increase the waiting interval between multiple retries in a gradual manner.
+
+
+## Query Agora Notifications IP addresses
+
+### `GET` `https://api.agora.io/v2/ncs/ip`
+
+
+Use this endpoint to retrieve the IP addresses of the Agora Notifications server. If your server is behind a firewall, add these IP addresses to your allowlist to receive channel event notifications.
+
+:::tip
+
+Agora occasionally adjusts the Agora Notifications IP addresses. Call this endpoint at least every 24 hours and automatically update your firewall configuration with the latest addresses.
+
+:::
+
+
+## Request
+
+The request URL and request body is case-sensitive. All requests must use HTTPS.
+
+### Request header
+
+- `Content-Type`: `application/json`
+- The request header must contain the `Authorization` field. For details, see [RESTful authentication](/en/api-reference/api-ref/rtc/authentication).
+
+## Response
+
+A `200` status code indicates success. The response body contains the following parameters:
+
+<ParameterList title="OK">
+  <Parameter name="data" type="object">
+    <Parameter name="service" type="object">
+      <Parameter name="hosts" type="array">
+        A list of Agora Notifications server host objects.
+
+        <Parameter name="primaryIP" type="string">
+          The IP address of the Agora Notifications server. Add all IP addresses returned in this field to your firewall allowlist.
+        </Parameter>
+      </Parameter>
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+If the status code is not `200`, the request fails. See the `message` field in the response body for the reason for this failure. Refer to [Response status codes](/en/api-reference/api-ref/rtc/response-status-codes) for details.
+
+
+### Authorization
+
+  This endpoint requires [Basic authentication](/en/api-reference/api-ref/rtc/authentication).
+
+
+### Request example
+
+
+Use one of the following code examples to test this request:
+
+<Tabs defaultValue="curl">
+<TabsList>
+  <TabsTrigger value="curl">cURL</TabsTrigger>
+  <TabsTrigger value="node">Node</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+</TabsList>
+<TabsContent value="curl">
+
+
+```bash
+curl --request GET \
+  --url https://api.sd-rtn.com/v2/ncs/ip \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+
+</TabsContent>
+
+<TabsContent value="node">
+
+
+```js
+const https = require('https');
+
+const options = {
+  method: 'GET',
+  hostname: 'api.sd-rtn.com',
+  port: null,
+  path: '/v2/ncs/ip',
+  headers: {
+    Authorization: 'Basic <your_base64_encoded_credentials>',
+    Accept: 'application/json'
+  }
+};
+
+const req = https.request(options, function (res) {
+  const chunks = [];
+
+  res.on('data', function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on('end', function () {
+    const body = Buffer.concat(chunks);
+    console.log(body.toString());
+  });
+});
+
+req.end();
+```
+
+
+</TabsContent>
+
+<TabsContent value="python">
+
+
+```python
+
+conn = http.client.HTTPSConnection("api.sd-rtn.com")
+
+headers = {
+    'Authorization': "Basic <your_base64_encoded_credentials>",
+    'Accept': "application/json"
+}
+
+conn.request("GET", "/v2/ncs/ip", headers=headers)
+
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
+```
+
+
+</TabsContent>
+</Tabs>
+
+
+### Response example
+
+
+```json
+{
+  "data": {
+    "service": {
+      "hosts": [
+        {
+          "primaryIP": "xxx.xxx.xxx.xxx"
+        },
+        {
+          "primaryIP": "xxx.xxx.xxx.xxx"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+## Response status codes
+
+This page describes all response status codes returned when calling the channel management RESTful API.
+
+If the status code is `200`, the request is successful. If not, troubleshoot the problem based on the `message` and `reason` fields that may appear in the corresponding response body.
+
+For example, when a request fails, you might receive the following response:
+
+```json
+# 400 Bad Request
+{
+  "message": "invalid appid"
+}
+```
+
+### Status codes
+
+The following table summarizes all response status codes, their meanings, and recommended actions:
+
+| Response status code | Description | Recommended actions |
+| :------------------- | :------------ ------------------- |
+| 200        | The operation is successful.   | No troubleshooting required. |
+| 400        | Bad request.         | Troubleshoot based on the `message` field in the response body. |
+| 401        | Unauthorized.        | Check and confirm that your authentication information is correct. Possible reasons include: App ID does not exist.<br />Non-matching customer ID and secret. |
+| 403        | Access is forbidden. | The authorization information is incorrect. Contact [Agora technical support](mailto:support@agora.io). |
+| 404        | The requested resource could not be found. | Confirm that the requested URL and resource are correct. |
+| 415        | Unsupported media type.  | Make sure you have set `Content-Type` in the request header as `application/json`. |
+| 429        | Too many requests.   | Wait and retry. |
+| 500        | Internal server error.    | Use a backoff strategy for query requests or contact [Agora technical support](mailto:support@agora.io) |
+
+:::info[Note]
+If the problem is not solved after taking the recommended action, print out the `X-Request-ID` and `X-Resource-ID` response header values and contact [technical support](mailto:support@agora.io).
+:::
+
+
+### Troubleshooting example
+
+A call to create a privilege banning rule returns `400 Bad Request` and the `message` filed value is `invalid appid`.
+
+This means that the App ID is invalid and the rule creation has failed. Obtain the App ID in [Agora Console](https://console.agora.io/v2) and call the API again.
