@@ -45,13 +45,13 @@ Before you begin, complete the following steps and ensure your environment meets
 
 This section shows how to integrate the On-Premise Recording SDK into your app.
 
-<CodeBlockTabs defaultValue="cpp">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="cpp">
+<TabsList>
+  <TabsTrigger value="cpp">C++</TabsTrigger>
+  <TabsTrigger value="java">Java</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="cpp">
+<TabsContent value="cpp">
 
 ### Integrate the SDK
 
@@ -89,11 +89,10 @@ This section shows how to integrate the On-Premise Recording SDK into your app.
 :::info
 The `example` directory contains a complete sample project for local recording. To run it, see [Test the project](#test-the-project).
 :::
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="java">
+<TabsContent value="java">
 
-<Tabs defaultValue="maven">
 <Tabs defaultValue="maven">
 <TabsList>
   <TabsTrigger value="maven">Add using Maven</TabsTrigger>
@@ -302,9 +301,9 @@ chmod +x run.sh
 ./run.sh
 ```
 </TabsContent>
-</Tabs></Tabs>
-</CodeBlockTab>
-</CodeBlockTabs>
+</Tabs>
+</TabsContent>
+</Tabs>
 
 ## Implement On-Premise Recording
 
@@ -316,13 +315,13 @@ The following figure illustrates the essential steps:
 
 ![](/images/on-premise-recording/on-premise-recording-quickstart-logic-cpp.svg)
 
-<CodeBlockTabs defaultValue="cpp">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="cpp">
+<TabsList>
+  <TabsTrigger value="cpp">C++</TabsTrigger>
+  <TabsTrigger value="java">Java</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="cpp">
+<TabsContent value="cpp">
 
 ### Initialize the service
 
@@ -487,9 +486,9 @@ recorder = nullptr;
 
 service->release();
 ```
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="java">
+<TabsContent value="java">
 
 ### Initialize the service
 
@@ -687,18 +686,18 @@ agoraMediaRtcRecorder.leaveChannel();
 agoraMediaRtcRecorder.release();
 agoraService.release();
 ```
-</CodeBlockTab>
-</CodeBlockTabs>
+</TabsContent>
+</Tabs>
 
 ## Test the project
 
-<CodeBlockTabs defaultValue="cpp">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="cpp">
+<TabsList>
+  <TabsTrigger value="cpp">C++</TabsTrigger>
+  <TabsTrigger value="java">Java</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="cpp">
+<TabsContent value="cpp">
 
 Agora provides a complete sample project in the SDK download package. After downloading and extracting the package, follow these steps to build and run it:
 
@@ -735,9 +734,9 @@ For more information on the differences between mixed and individual recording m
     # Example: Run individual recording
     ./out/sample_recorder singleVideo.json
     ```
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="java">
+<TabsContent value="java">
 
 Agora provides an open source sample project on GitHub for your reference. Download or view the [Agora Recording Java SDK](https://github.com/AgoraIO-Extensions/Agora-Recording-Java-SDK) project for a more detailed example.
 
@@ -809,8 +808,8 @@ These libraries must be available at runtime. If any are missing, the applicatio
 :::info[info]
 Place all configuration files (such as `mix_stream_recorder_audio_video_water_marks.json`) in the `Examples-Mvn/src/main/resources/` directory.
 :::
-</CodeBlockTab>
-</CodeBlockTabs>
+</TabsContent>
+</Tabs>
 
 ## Reference
 
@@ -818,13 +817,13 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-<CodeBlockTabs defaultValue="cpp">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="cpp">
+<TabsList>
+  <TabsTrigger value="cpp">C++</TabsTrigger>
+  <TabsTrigger value="java">Java</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="cpp">
+<TabsContent value="cpp">
 
 - [`createAgoraService`](/on-premise-recording/reference/api-reference#createagoraservice)
 - [`initialize`](/on-premise-recording/reference/api-reference#initialize)
@@ -842,9 +841,9 @@ This section contains content that completes the information on this page, or po
 - [`unregisterRecorderEventHandle`](/on-premise-recording/reference/api-reference#unregisterrecordereventhandle)
 - [`leaveChannel`](/on-premise-recording/reference/api-reference#leavechannel)
 - [`release`](/on-premise-recording/reference/api-reference#release)
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="java">
+<TabsContent value="java">
 
 - [`AgoraService`](/on-premise-recording/reference/api-reference#agoraservice)
 - [`AgoraServiceConfiguration`](/on-premise-recording/reference/api-reference#agoraserviceconfiguration)
@@ -864,5 +863,5 @@ This section contains content that completes the information on this page, or po
 - [`leaveChannel`](/on-premise-recording/reference/api-reference#leavechannel)
 - [`release`](/on-premise-recording/reference/api-reference#release)
 
-</CodeBlockTab>
-</CodeBlockTabs>
+</TabsContent>
+</Tabs>

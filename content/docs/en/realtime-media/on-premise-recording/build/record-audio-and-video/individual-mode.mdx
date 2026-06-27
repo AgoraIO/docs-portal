@@ -23,13 +23,13 @@ Refer to the following call sequence diagram to understand the recording workflo
 
 ![Sequence diagram](/images/on-premise-recording/individual-recording-logic-cpp.svg)
 
-<CodeBlockTabs defaultValue="cpp">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="cpp">
+<TabsList>
+  <TabsTrigger value="cpp">C++</TabsTrigger>
+  <TabsTrigger value="java">Java</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="cpp">
+<TabsContent value="cpp">
 
 To implement individual recording in your app, follow these steps:
 
@@ -85,9 +85,9 @@ recorder_->startSingleRecordingByUid(uid);
 // Stop recording for the user
 recorder_->stopSingleRecordingByUid(uid);
 ```
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="java">
+<TabsContent value="java">
 
 To implement individual recording mode, configure the recorder and use the appropriate APIs as follows:
 
@@ -149,8 +149,8 @@ agoraMediaRtcRecorder.startSingleRecordingByUid(uid);
 // Stop recording for the specific UID
 agoraMediaRtcRecorder.stopSingleRecordingByUid(uid);
 ```
-</CodeBlockTab>
-</CodeBlockTabs>
+</TabsContent>
+</Tabs>
 
 ## Reference
 
