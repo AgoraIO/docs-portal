@@ -120,7 +120,7 @@ In individual recording, audio transcoding and non-transcoding modes have differ
 
 | Feature | Individual recording with transcoding | Individual recording without transcoding |
 |:---------|:-------------------------------------------|:----------------------------------|
-| Transcoding  during audio encoding | Yes | Yes |
+| Transcoding  during audio encoding | Yes | No |
 | Raw audio data | The sampling rate, number of channels, and bitrate are fixed at 48 kHz, mono, and 48 Kbps respectively. | The bitrate, sampling rate and number of channels are determined by the audio encoding parameters of the streaming end `AudioProfile`. |
 | Audio encoding format	| LC-AAC | Determined by the configuration of the source end `AudioProfile` |
 | Generated recording files | Each UID generates an audio file in `M3U8` format and multiple audio files in `TS` format. | Same as transcoding recording. If the user stops streaming using `muteLocalAudioStream` or `leaveChannel` audio recording stops immediately, and there is no 15 seconds of silent data. |
