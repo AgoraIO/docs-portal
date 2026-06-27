@@ -31,42 +31,42 @@ The following steps are required for both inbound and outbound calling:
     To confirm your phone number is ready for SIP trunk configuration:
 
     1. Log in to [Twilio Console](https://console.twilio.com/).
-    1. Navigate to **Phone Numbers → Manage → Active Numbers**.
-    1. Check that the number you want to use is active and supports SIP Trunking.
-    1. If you do not have a number, click **Buy a number** and select a number from the list.
+    2. Navigate to **Phone Numbers → Manage → Active Numbers**.
+    3. Check that the number you want to use is active and supports SIP Trunking.
+    4. If you do not have a number, click **Buy a number** and select a number from the list.
 
 2. **Create or select an Elastic SIP Trunk**
 
     To set up a trunk that handles inbound and outbound calls:
 
     1. Go to **Elastic SIP Trunking → Manage → Trunks** in Twilio Console.
-    1. Click **Create a new SIP Trunk** (or select an existing one).
-    1. Give it a descriptive name. For example, “Agora Studio – Production”
+    2. Click **Create a new SIP Trunk** (or select an existing one).
+    3. Give it a descriptive name. For example, “Agora Studio – Production”
 
         ![](/images/conversational-ai/twilio/select-sip-trunk.png)
 
     > **Info**
-> You can use the same trunk for both inbound and outbound calling or create separate trunks for easier management. Agora recommends using separate trunks if you have different security requirements for inbound and outbound.
+    > You can use the same trunk for both inbound and outbound calling or create separate trunks for easier management. Agora recommends using separate trunks if you have different security requirements for inbound and outbound.
 
-1. **Assign the phone number to the Elastic SIP Trunk**
+3. **Assign the phone number to the Elastic SIP Trunk**
 
     To link your phone number with the SIP trunk:
 
     1. Go to **Phone Numbers → Manage → Active Numbers**.
-    1. Select the phone number.
-    1. Under **Voice Calling** settings, set the number to use your Elastic SIP Trunk.
-    1. Save changes.
+    2. Select the phone number.
+    3. Under **Voice Calling** settings, set the number to use your Elastic SIP Trunk.
+    4. Save changes.
 
-1. **Check secure trunking setting**
+4. **Check secure trunking setting**
 
     To determine which transport protocol to use in Agent Studio:
 
     1. Open **SIP Trunk → General Settings**.
-    1. Locate **Secure Trunking**.
-    1. Check whether it is enabled or disabled:
+    2. Locate **Secure Trunking**.
+    3. Check whether it is enabled or disabled:
         - **Enabled**: Choose **TLS** when in Agent Studio configuration.
         - **Disabled**: Choose **TCP** or **UDP** in Agent Studio configuration.
-    1. Save any changes.
+    4. Save any changes.
 
     ![](/images/conversational-ai/twilio/general-settings.png)
 
@@ -82,19 +82,19 @@ Complete the following steps to enable your agent to make outbound calls through
     To set up the domain that Agora will use to reach your SIP trunk trunk:
 
     1. In your SIP Trunk, go to **Termination**.
-    1. Set a custom **Termination SIP URI**. For example: `yourcompany.pstn.twilio.com`.
-    1. This domain is required later in Agent Studio as the **SIP Trunk Address**.
+    2. Set a custom **Termination SIP URI**. For example: `yourcompany.pstn.twilio.com`.
+    3. This domain is required later in Agent Studio as the **SIP Trunk Address**.
 
         ![](/images/conversational-ai/twilio/termination-uri.png)
 
-1. **Create an IP Access Control List** (Whitelist)
+2. **Create an IP Access Control List** (Whitelist)
 
     Without correct IP whitelisting, SIP trunk blocks Agora traffic. To allow Agora's traffic through Twilio create an Access Control List (ACL):
 
     1. Go to **Elastic SIP Trunking → Manage → IP Access Control Lists**.
-    1. Click **+ Create new Access Control List**.
-    1. Give your ACL a descriptive name.
-    1. Depending on the country code for your phone number, add the corresponding Agora SIP outgoing IPs to the ACL:
+    2. Click **+ Create new Access Control List**.
+    3. Give your ACL a descriptive name.
+    4. Depending on the country code for your phone number, add the corresponding Agora SIP outgoing IPs to the ACL:
 
         <details>
         <summary>+1 (United States)</summary>
@@ -143,23 +143,23 @@ Complete the following steps to enable your agent to make outbound calls through
         ```
         </details>
 
-    1. Save the Access Control List.
+    5. Save the Access Control List.
 
         ![](/images/conversational-ai/twilio/access-control-list.png)
 
         ![](/images/conversational-ai/twilio/access-list-configuration.png)
 
-1. **Add IP Access Control List** 
+3. **Add IP Access Control List**
 
     1. In your SIP Trunk, go to **Termination → Authentication**
-    1. Under **IP Access Control Lists**, select the authentication list you just created. If you do not see the list you created, access the list by clicking **View all Authentication lists**.
-    1. Click **Save**.
+    2. Under **IP Access Control Lists**, select the authentication list you just created. If you do not see the list you created, access the list by clicking **View all Authentication lists**.
+    3. Click **Save**.
 
         ![](/images/conversational-ai/twilio/ip-access-control-list.png)
 
         ![](/images/conversational-ai/twilio/authentication.png)
 
-1. **Credential Lists** (Optional)
+4. **Credential Lists** (Optional)
 
     You can create username and password authentication if required.
 
@@ -169,12 +169,12 @@ Complete the following steps to enable your agent to make outbound calls through
     To set up a credential list:
 
     1. Under **Authentication**, find **Credential Lists**. 
-    1. Use the `+` button to create a new list.
-    1. Give your list a descriptive name.
-    1. Specify a username and password.
-    1. Click **Save**.
+    2. Use the `+` button to create a new list.
+    3. Give your list a descriptive name.
+    4. Specify a username and password.
+    5. Click **Save**.
 
-1. **Import the number in Agent Studio**
+5. **Import the number in Agent Studio**
 
     Once your SIP trunk trunk is configured, import the number into Studio. See [Import a phone number](import) for step-by-step instructions. Use your Termination URI as the SIP Domain and match the Transport protocol to your Secure Trunking setting.
 
@@ -185,8 +185,8 @@ Complete the following steps to enable customers to call your agent through your
 1. **Configure Origination URI**
 
     1. In your SIP Trunk, go to **Origination**
-    1. Click **Add new Origination URI**
-    1. Enter the Agora SIP Origination URI for your region:
+    2. Click **Add new Origination URI**
+    3. Enter the Agora SIP Origination URI for your region:
 
         The Origination URI depends on the country code of your phone number. Select the URI for your region and enter it in SIP trunk.
 
@@ -217,18 +217,18 @@ Complete the following steps to enable customers to call your agent through your
 
             **Supported country codes**: +82 (South Korea), +65 (Singapore), +81 (Japan), +91 (India), +886 (Taiwan), +27 (South Africa), +20 (Egypt), +254 (Kenya)
 
-    1. Set Priority to `10` and Weight to `10` (default).
-    1. Click **Add**.
+    4. Set Priority to `10` and Weight to `10` (default).
+    5. Click **Add**.
 
-1. **Configure number routing**
+2. **Configure number routing**
 
     1. Go to **Phone Numbers → Manage → Active numbers**
-    1. Select the number you want to use for inbound calling.
-    1. Under **Voice Configuration → Configure with**, select **SIP Trunk**
-    1. Choose the trunk you created in [Basic setup](#basic-setup).
-    1. Click **Save configuration**.
+    2. Select the number you want to use for inbound calling.
+    3. Under **Voice Configuration → Configure with**, select **SIP Trunk**
+    4. Choose the trunk you created in [Basic setup](#basic-setup).
+    5. Click **Save configuration**.
 
-1. **Import the number in Agent Studio**
+3. **Import the number in Agent Studio**
 
     Once SIP trunk origination and routing is configured, import the number in Agent Studio and associate it with an agent to answer inbound calls. See [Handle inbound calls](inbound) for step-by-step instructions.
 

@@ -176,11 +176,11 @@ To ensure high availability of REST services, Agora enables you to switch domain
 
     1. **Primary domain retry**: Retry using the same primary domain name.
 
-    1. **Alternate domain retry**:
+    2. **Alternate domain retry**:
         - If the current primary domain name is `api.sd-rtn.com`, use `api.agora.io` as the  alternate domain name.
         - If the current primary domain name is `api.agora.io`, use `api.sd-rtn.com` as the alternate domain name.
 
-    1. **Adjacent domain retry**: If alternate domain retry fails, retry using the domain name adjacent to the current region.
+    3. **Adjacent domain retry**: If alternate domain retry fails, retry using the domain name adjacent to the current region.
 
         For example, suppose your business server is located in Europe. You set the primary domain name to `api.agora.io`, and the business server resolves the primary domain name to Germany. Germany is located in central Europe (`api-eu-central-1.agora.io`). The [domain name table](#domain-name-table) shows that the adjacent area is West Europe. Use the `api-eu-west-1.agora.io` or `api-eu-west-1.sd-rtn.com` domain name to retry.
 
@@ -231,7 +231,7 @@ When creating a converter with a `create` call, pay attention to the following:
 - `audioOption` and `videoOptions` are set as follows for audio only or video only use-cases:
     - In a video only use-case, you do not need to set `audioOptions` and its related fields.
     - In an audio-only use-case, you do not need to set `videoOptions` and its related fields by default. For special cases, see [Output SEI in audio-only use-cases](#output-sei-in-audio-only-use-cases).
-    - In audio plus video use-cases, `videoOptions` and `audioOptions` are required and cannot be left blank. If you do not need to configure `audioOptions` set it to `null`.
+    - In audio plus video use-cases, `videoOptions` and `audioOptions` are required and cannot be left blank. If you do not need to configure `audioOptions`, set the field to the JSON `null` value.
 
 - Set an appropriate value for `idleTimeout`. The default value of 300 seconds is recommended. It means that the converter is automatically destroyed, 300 seconds after all subscribers leave the channel.
 
@@ -242,8 +242,8 @@ In an audio-only use-case, by default, you do not need to set `videoOptions` and
 If you want to output SEI information in Metadata or DataStream type carried by the user in an audio-only use-case and avoid video transcoding fees, follow these steps:
 
 1. Pass the SEI information to be output in `videoOptions.seiOptions`.
-1. Ensure that the `width` and `height` in `videoOptions.canvas` are set to `16` to avoid video transcoding fees.
-1. Pass the UID of the user who carries the SEI information in `rtcStreamUid` field in `videoOptions.layout`.
+2. Ensure that the `width` and `height` in `videoOptions.canvas` are set to `16` to avoid video transcoding fees.
+3. Pass the UID of the user who carries the SEI information in `rtcStreamUid` field in `videoOptions.layout`.
 
 ## Update RTMP converter
 
@@ -281,7 +281,7 @@ If you receive `404`, `429`, or `5xx` error codes, use a backoff strategy. For e
 
 |Status code               |Possible error message | Possible reason of failure                                                             |Measures to take|
 |:-------------------------|:------------------------|:---------------------------------------------------------------------------------------|:----------|
-|`400` Bad Request         |Invalid parameter: `rtmpUrl`. Replace and retry. Invalid parameter: `idleTimeout`. Replace and retry.	| Wrong parameters. Check by referring to the `reason` field in the HTTP response body. |
+|`400` Bad Request         |Invalid parameter: `rtmpUrl`. Replace and retry. Invalid parameter: `idleTimeout`. Replace and retry.	| Wrong parameters. | Check by referring to the `reason` field in the HTTP response body. |
 |`401` Unauthorized        |Invalid authentication credentials.	| RESTful API authentication failed.	                                                    |See [RESTful Authentication](../reference/restful-authentication)|
 |`403` Forbidden           |No valid permission to use this function. Contact us.	| Service is not enabled.	                                                               |Enable the service.|
 |`404` Not Found           |Resource is not found and destroyed. | The task was not started or is in the process of failover or deletion.                 |Retry following the retreat strategy.|

@@ -9,7 +9,7 @@ sharing their screens during online exams. This can be useful in the following c
 - Professional/certification exams
 - Recruitment
 
-Flexible Classroom provides Proctor SDK to implement such supervision. Agora recommends one examiner proctoring 25 to 50 examinees simultaneously. This page illustrates how the proctoring feature works for an examiner and an examinee using the [Flexible Classroom web demo](https://docs.agora.io/en/flexible-classroom/develop/overview/downloads_web).
+Flexible Classroom provides Proctor SDK to implement such supervision. Agora recommends one examiner proctoring 25 to 50 examinees simultaneously. This page illustrates how the proctoring feature works for an examiner and an examinee using the [Flexible Classroom web demo](/en/solutions/flexible-classroom/quickstart).
 
 ## Prerequisites
 
@@ -63,7 +63,7 @@ screen sharing.
 
 Take the following steps to join and proctor an exam:
 
-1. Open the [Flexible Classroom web demo](https://docs.agora.io/en/flexible-classroom/develop/overview/downloads_web) and click **Create** to create a room.
+1. Open the [Flexible Classroom web demo](/en/solutions/flexible-classroom/quickstart) and click **Create** to create a room.
 
    ![flexible_classroom_web_demo](/images/flexible-classroom/fc_web_demo.png)
 
@@ -109,7 +109,7 @@ The test ends automatically when the test time is over, or you can manually clic
 
 Take the following steps to join and take an exam in a supervised environment:
 
-1. Open the [Flexible Classroom web demo](https://docs.agora.io/en/flexible-classroom/develop/overview/downloads_web) and click **Join**.
+1. Open the [Flexible Classroom web demo](/en/solutions/flexible-classroom/quickstart) and click **Join**.
 
    ![join_classroom](/images/flexible-classroom/join_classroom.png)
 

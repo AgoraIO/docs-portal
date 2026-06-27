@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "source": {
+    "repository": "AgoraIO/Doc-Source-Private",
+    "defaultRef": "staging"
+  },
+  "sourceRootHints": [
+    "$DOC_SOURCE_PRIVATE_ROOT",
+    "/Users/gaolinjie/.codex/cache/docs-portal/Doc-Source-Private",
+    "/Users/czhen/Documents/GitHub/AgoraIO/Doc-Source-Private"
+  ],
+  "defaults": {
+    "product": "video-calling",
+    "platform": "android",
+    "migrationMode": "expanded-shared-source-to-platform-projected-target"
+  },
+  "variables": {
+    "Vg": {
+      "COMPANY": "Agora",
+      "CONSOLE": "Agora Console",
+      "CP": "Cloud Proxy",
+      "VSDK": "Video SDK"
+    },
+    "Vpd": {
+      "NAME": "Video Calling",
+      "SDK": "Video SDK"
+    },
+    "Vpl": {
+      "CLIENT": "app"
+    }
+  },
+  "linkVariables": {
+    "{{Global.API_REF_ANDROID_ROOT}}": "https://api-ref.agora.io/en/video-sdk/android/4.x/API",
+    "{{global.API_REF_ANDROID_ROOT}}": "https://api-ref.agora.io/en/video-sdk/android/4.x/API",
+    "{{Global.AGORA_CONSOLE_URL}}": "https://console.agora.io/",
+    "{{global.AGORA_CONSOLE_URL}}": "https://console.agora.io/"
+  },
+  "pages": [
+    {
+      "id": "video-calling-custom-video-android",
+      "targetPath": "content/docs/en/realtime-media/video/build/capture-and-render-video/custom-video.mdx",
+      "sourceFiles": ["video-calling/advanced-features/custom-video.mdx"],
+      "product": "video-calling",
+      "platform": "android",
+      "migrationMode": "shared-fragment-expanded-android-projection",
+      "ignoreRules": [
+        {
+          "id": "target-supported-platforms-summary",
+          "side": "target",
+          "kind": "paragraph",
+          "contains": "Supported platforms: Android, iOS, macOS, Web, Windows, and Unreal Engine.",
+          "reason": "Target IA adds a compact supported-platforms summary outside the legacy page body."
+        },
+        {
+          "id": "target-relative-quickstart-link",
+          "side": "both",
+          "kind": "link",
+          "regex": "^SDK quickstart -> ",
+          "reason": "Target uses route-local relative links after IA normalization."
+        }
+      ]
+    }
+  ]
+}

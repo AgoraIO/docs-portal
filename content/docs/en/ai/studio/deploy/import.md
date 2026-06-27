@@ -27,11 +27,11 @@ To import a phone number from your Twilio SIP trunk:
 
     ![Import phone number](/images/conversational-ai/studio/import-phone-number-1.png)
 
-1. Click **Add Phone Number**.
+2. Click **Add Phone Number**.
 
     ![Import phone number](/images/conversational-ai/studio/import-phone-number-2.png)
 
-1. Fill in the required information:
+3. Fill in the required information:
 
    - **Phone Number**: Enter the phone number in E.164 format (for example, `+1234567890`)
    - **Vendor**: Select **Twilio** (currently the only supported vendor)
@@ -41,7 +41,7 @@ To import a phone number from your Twilio SIP trunk:
    - **SIP Trunk Password**: Enter your Twilio SIP password.
    - **Transport Protocol**: Select the protocol for SIP communication. Choose **TLS** if Secure Trunking is enabled in your Twilio SIP trunk, otherwise choose **TCP** or **UDP**.
 
-1. Click **Add Phone Number** to import the phone number.
+4. Click **Add Phone Number** to import the phone number.
 
 Your imported phone number is now available for use in inbound and outbound calls.
 
@@ -55,19 +55,19 @@ To update the configuration of an imported phone number:
 
    ![Import phone number](/images/conversational-ai/studio/import-phone-number-1.png)
 
-1. Locate the phone number you want to edit.
-1. From the action menu, select **Edit**.
-1. Update the phone number details as needed.
-1. Click **Save** to apply your changes.
+2. Locate the phone number you want to edit.
+3. From the action menu, select **Edit**.
+4. Update the phone number details as needed.
+5. Click **Save** to apply your changes.
 
 ### Delete a phone number
 
 To remove an imported phone number:
 
 1. In Agent Studio, select **Phone Numbers** from the sidebar.
-1. Locate the phone number you want to delete.
-1. From the action menu, select **Delete**.
-1. Confirm the deletion.
+2. Locate the phone number you want to delete.
+3. From the action menu, select **Delete**.
+4. Confirm the deletion.
 
 > **Caution**
 > Deleting a phone number removes it from all agents and campaigns that use it. Ensure no active inbound agents or outbound campaigns depend on this number before deleting.

@@ -1,0 +1,63 @@
+---
+title: TEN Framework overview
+description: Build real-time multimodal AI agents with native support for voice, video, and data processing across multiple programming languages.
+---
+
+The TEN Framework, or Transformative Extensions Network, is an open-source framework for building real-time multimodal AI agents. It helps you create applications that process voice, video, data streams, images, and text at the same time.
+
+TEN is designed for agents that need to think, listen, see, and respond in real time. It provides a graph-based runtime, reusable extensions, and multi-language development support so you can assemble complex AI systems without rebuilding every capability from scratch.
+
+## What you can build
+
+Use the TEN Framework to build real-time AI applications such as:
+
+- Voice and video AI agents
+- Simultaneous interpretation systems
+- Speech-to-text and text-to-speech pipelines
+- Multilingual communication experiences
+- Audio-visual assistants and virtual companions
+- AI-generated meeting minutes
+- Language tutoring and coaching applications
+
+## Key capabilities
+
+### Real-time multimodal interactions
+
+TEN optimizes interaction between extensions to support low-latency AI applications. A graph can process multiple data types, including audio, video, commands, structured data, images, and text.
+
+### Multi-language and cross-platform development
+
+You can build modular extensions in C++, Go, and Python. TEN applications can run across Windows, macOS, Linux, and mobile environments, which gives you flexibility when choosing where each capability should execute.
+
+### Modular extension architecture
+
+TEN applications are composed from extensions. Each extension owns a focused capability, such as audio capture, ASR, LLM processing, TTS, tool calling, or output rendering. This modular architecture makes it easier to prototype, replace providers, and add new capabilities over time.
+
+### Edge-cloud integration
+
+TEN supports applications that combine edge and cloud components. You can run latency-sensitive or privacy-sensitive work near the user while using cloud-based models for heavier reasoning or generation tasks.
+
+### Flexible orchestration beyond model limits
+
+TEN lets you combine AI models with databases, retrieval systems, monitoring tools, and external services. Instead of depending on one model to handle the whole workflow, you can orchestrate multiple specialized components through the graph.
+
+### Real-time agent state management
+
+TEN graphs can manage changing agent state so applications can adapt behavior during a session. This is useful for interactive agents that need to respond to user context, media state, or tool results while the conversation is still running.
+
+## How it relates to TEN Agent
+
+TEN Agent is built on the TEN Framework. The framework provides the runtime, graph model, extension system, schema system, and package mechanics. TEN Agent applies those framework capabilities to conversational AI workflows.
+
+Start with [Project overview](./project-overview) when you want to understand the TEN Agent repository layout, runtime configuration, extension folders, and local server API.
+
+For implementation details, see:
+
+- [Subgraphs](./architecture/subgraphs)
+- [Schema system](./architecture/schema-system)
+- [Type system](./architecture/type-system)
+- [Development workflow](./develop/development-workflow)
+
+## Samples
+
+Explore TEN Framework examples in the [TEN Framework repository](https://github.com/TEN-framework/ten-framework/tree/main/ai_agents/agents/examples).

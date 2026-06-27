@@ -19,6 +19,7 @@ import { Route as ApiRefSplatRouteImport } from './routes/api-ref/$'
 import { Route as LocaleTabRouteRouteImport } from './routes/$locale/$tab/route'
 import { Route as LocaleTabIndexRouteImport } from './routes/$locale/$tab/index'
 import { Route as LlmsDotmdxDocsSplatRouteImport } from './routes/llms[.]mdx.docs.$'
+import { Route as Char91__staticChar93DocsSearchSplatRouteImport } from './routes/[__static]/docs-search/$'
 import { Route as LocaleTabSplatRouteImport } from './routes/$locale/$tab/$'
 
 const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
@@ -71,6 +72,12 @@ const LlmsDotmdxDocsSplatRoute = LlmsDotmdxDocsSplatRouteImport.update({
   path: '/llms.mdx/docs/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91__staticChar93DocsSearchSplatRoute =
+  Char91__staticChar93DocsSearchSplatRouteImport.update({
+    id: '/__static/docs-search/$',
+    path: '/__static/docs-search/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LocaleTabSplatRoute = LocaleTabSplatRouteImport.update({
   id: '/$',
   path: '/$',
@@ -87,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/doc/$': typeof DocSplatRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
+  '/__static/docs-search/$': typeof Char91__staticChar93DocsSearchSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
   '/$locale/$tab/': typeof LocaleTabIndexRoute
 }
@@ -99,6 +107,7 @@ export interface FileRoutesByTo {
   '/doc/$': typeof DocSplatRoute
   '/$locale': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
+  '/__static/docs-search/$': typeof Char91__staticChar93DocsSearchSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
   '/$locale/$tab': typeof LocaleTabIndexRoute
 }
@@ -113,6 +122,7 @@ export interface FileRoutesById {
   '/doc/$': typeof DocSplatRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
+  '/__static/docs-search/$': typeof Char91__staticChar93DocsSearchSplatRoute
   '/llms.mdx/docs/$': typeof LlmsDotmdxDocsSplatRoute
   '/$locale/$tab/': typeof LocaleTabIndexRoute
 }
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/doc/$'
     | '/$locale/'
     | '/$locale/$tab/$'
+    | '/__static/docs-search/$'
     | '/llms.mdx/docs/$'
     | '/$locale/$tab/'
   fileRoutesByTo: FileRoutesByTo
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/doc/$'
     | '/$locale'
     | '/$locale/$tab/$'
+    | '/__static/docs-search/$'
     | '/llms.mdx/docs/$'
     | '/$locale/$tab'
   id:
@@ -153,6 +165,7 @@ export interface FileRouteTypes {
     | '/doc/$'
     | '/$locale/'
     | '/$locale/$tab/$'
+    | '/__static/docs-search/$'
     | '/llms.mdx/docs/$'
     | '/$locale/$tab/'
   fileRoutesById: FileRoutesById
@@ -166,6 +179,7 @@ export interface RootRouteChildren {
   ApiSearchRoute: typeof ApiSearchRoute
   DocSplatRoute: typeof DocSplatRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
+  Char91__staticChar93DocsSearchSplatRoute: typeof Char91__staticChar93DocsSearchSplatRoute
   LlmsDotmdxDocsSplatRoute: typeof LlmsDotmdxDocsSplatRoute
 }
 
@@ -241,6 +255,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsDotmdxDocsSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/__static/docs-search/$': {
+      id: '/__static/docs-search/$'
+      path: '/__static/docs-search/$'
+      fullPath: '/__static/docs-search/$'
+      preLoaderRoute: typeof Char91__staticChar93DocsSearchSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$locale/$tab/$': {
       id: '/$locale/$tab/$'
       path: '/$'
@@ -274,6 +295,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSearchRoute: ApiSearchRoute,
   DocSplatRoute: DocSplatRoute,
   LocaleIndexRoute: LocaleIndexRoute,
+  Char91__staticChar93DocsSearchSplatRoute:
+    Char91__staticChar93DocsSearchSplatRoute,
   LlmsDotmdxDocsSplatRoute: LlmsDotmdxDocsSplatRoute,
 }
 export const routeTree = rootRouteImport

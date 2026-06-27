@@ -1,4 +1,4 @@
-import type { List, ListItem, Root, Table, TableCell } from 'mdast';
+import type { Html, List, ListItem, Root, Table, TableCell } from 'mdast';
 import type {
   MdxJsxAttribute,
   MdxJsxFlowElement,
@@ -9,12 +9,13 @@ import { visit } from 'unist-util-visit';
 const SLOT_COMPONENT_NAME = 'Slot';
 
 type SlotDefinition = {
+  children: FlowChild[];
   consumed: boolean;
-  node: MdxJsxFlowElement;
 };
 
 type SlotPlaceholder = {
   cell: TableCell;
+  syntax: 'html' | 'mdx';
   name: string;
 };
 
@@ -27,6 +28,14 @@ type FlowContainer = {
   children: FlowChild[];
 };
 
+type ParsedHtmlSlot = {
+  kind: 'closing' | 'opening' | 'selfClosing';
+  name: string | null;
+  target: string | null;
+};
+
+class UnsupportedRawSlotDefinitionError extends Error {}
+
 export function remarkTableSlots() {
   return (tree: Root) => {
     validateSlotUsage(tree);
@@ -36,12 +45,12 @@ export function remarkTableSlots() {
 
 function validateSlotUsage(tree: Root) {
   visit(tree, (node, _index, parent) => {
-    if (!isSlotNode(node)) {
+    if (!isMdxJsxSlotNode(node)) {
       return;
     }
 
-    const name = getStringAttribute(node.attributes, 'name');
-    const target = getStringAttribute(node.attributes, 'for');
+    const name = getSlotAttribute(node, 'name');
+    const target = getSlotAttribute(node, 'for');
 
     if (name && target) {
       throw new Error(
@@ -55,7 +64,7 @@ function validateSlotUsage(tree: Root) {
       );
     }
 
-    if (name && node.type !== 'mdxJsxTextElement') {
+    if (name && !isInlineSlotPlaceholderNode(node)) {
       throw new Error(
         '<Slot name="..."> is only supported as an inline table cell placeholder.',
       );
@@ -65,7 +74,7 @@ function validateSlotUsage(tree: Root) {
       throw new Error('<Slot name="..."> must be used inside a table cell.');
     }
 
-    if (target && node.type !== 'mdxJsxFlowElement') {
+    if (target && !isFlowSlotDefinitionStartNode(node)) {
       throw new Error(
         '<Slot for="..."> must be a block definition placed immediately after a table.',
       );
@@ -105,10 +114,34 @@ function processFlowContainer(container: FlowContainer) {
       continue;
     }
 
-    const { definitions, endIndex } = collectAdjacentDefinitions(
-      container.children,
-      index + 1,
+    const rawHtmlOnly = placeholders.every(
+      (placeholder) => placeholder.syntax === 'html',
     );
+    let collectedDefinitions: ReturnType<typeof collectAdjacentDefinitions>;
+
+    try {
+      collectedDefinitions = collectAdjacentDefinitions(
+        container.children,
+        index + 1,
+      );
+    } catch (error) {
+      if (rawHtmlOnly && error instanceof UnsupportedRawSlotDefinitionError) {
+        nextChildren.push(node);
+        continue;
+      }
+
+      throw error;
+    }
+
+    const { definitions, endIndex } = collectedDefinitions;
+
+    if (
+      rawHtmlOnly &&
+      !hasDefinitionsForEveryPlaceholder(placeholders, definitions)
+    ) {
+      nextChildren.push(node);
+      continue;
+    }
 
     applySlotDefinitions(placeholders, definitions);
     ensureNoUnusedDefinitions(definitions);
@@ -117,11 +150,11 @@ function processFlowContainer(container: FlowContainer) {
     index = endIndex - 1;
   }
 
-  const orphanDefinition = nextChildren.find(isSlotDefinition);
+  const orphanDefinition = nextChildren.find(isMdxJsxSlotDefinitionStart);
 
   if (orphanDefinition) {
     throw new Error(
-      `Slot definition "${getRequiredStringAttribute(
+      `Slot definition "${getRequiredSlotAttribute(
         orphanDefinition,
         'for',
       )}" must appear immediately after the table that references it.`,
@@ -150,7 +183,8 @@ function collectTablePlaceholders(table: Table) {
 
       placeholders.push({
         cell,
-        name: getRequiredStringAttribute(slotNodes[0], 'name'),
+        name: getRequiredSlotAttribute(slotNodes[0], 'name'),
+        syntax: isMdxJsxSlotNode(slotNodes[0]) ? 'mdx' : 'html',
       });
     }
   }
@@ -166,13 +200,13 @@ function collectAdjacentDefinitions(
   let index = startIndex;
 
   while (index < children.length) {
-    const node = children[index];
+    const definition = readSlotDefinition(children, index);
 
-    if (!isSlotDefinition(node)) {
+    if (!definition) {
       break;
     }
 
-    const name = getRequiredStringAttribute(node, 'for');
+    const { children: definitionChildren, endIndex, name } = definition;
 
     if (definitions.has(name)) {
       throw new Error(
@@ -181,16 +215,76 @@ function collectAdjacentDefinitions(
     }
 
     definitions.set(name, {
+      children: definitionChildren,
       consumed: false,
-      node,
     });
-    index += 1;
+    index = endIndex;
   }
 
   return {
     definitions,
     endIndex: index,
   };
+}
+
+function readSlotDefinition(
+  children: FlowContainer['children'],
+  index: number,
+) {
+  const node = children[index];
+
+  if (!isSlotDefinitionStart(node)) {
+    return null;
+  }
+
+  const name = getRequiredSlotAttribute(node, 'for');
+
+  if (isMdxJsxSlotNode(node)) {
+    return {
+      children: node.children,
+      endIndex: index + 1,
+      name,
+    };
+  }
+
+  const definitionChildren: FlowChild[] = [];
+  let cursor = index + 1;
+
+  while (cursor < children.length && !isSlotHtmlClosingNode(children[cursor])) {
+    if (isUnsafeSlotHtmlClosingNode(children[cursor])) {
+      throw new UnsupportedRawSlotDefinitionError(
+        `Slot definition "${name}" has unsupported raw Markdown after its closing </Slot> tag.`,
+      );
+    }
+
+    if (isSlotDefinitionStart(children[cursor])) {
+      throw new Error(
+        `Slot definition "${name}" is missing a closing </Slot> tag.`,
+      );
+    }
+
+    definitionChildren.push(children[cursor]);
+    cursor += 1;
+  }
+
+  if (cursor >= children.length) {
+    throw new Error(
+      `Slot definition "${name}" is missing a closing </Slot> tag.`,
+    );
+  }
+
+  return {
+    children: definitionChildren,
+    endIndex: cursor + 1,
+    name,
+  };
+}
+
+function hasDefinitionsForEveryPlaceholder(
+  placeholders: SlotPlaceholder[],
+  definitions: Map<string, SlotDefinition>,
+) {
+  return placeholders.every((placeholder) => definitions.has(placeholder.name));
 }
 
 function applySlotDefinitions(
@@ -206,7 +300,7 @@ function applySlotDefinitions(
       );
     }
 
-    placeholder.cell.children = cloneChildren(definition.node.children);
+    placeholder.cell.children = cloneChildren(definition.children);
     definition.consumed = true;
   }
 }
@@ -221,7 +315,7 @@ function ensureNoUnusedDefinitions(definitions: Map<string, SlotDefinition>) {
   }
 }
 
-function cloneChildren(children: MdxJsxFlowElement['children']) {
+function cloneChildren(children: FlowChild[]) {
   return children.map((child) =>
     structuredClone(child),
   ) as TableCell['children'];
@@ -229,23 +323,41 @@ function cloneChildren(children: MdxJsxFlowElement['children']) {
 
 function isSlotPlaceholder(
   node: TableCell['children'][number],
-): node is MdxJsxTextElement {
+): node is Html | MdxJsxTextElement {
   return (
-    node.type === 'mdxJsxTextElement' &&
-    node.name === SLOT_COMPONENT_NAME &&
-    getStringAttribute(node.attributes, 'name') !== null
+    isInlineSlotPlaceholderNode(node) && getSlotAttribute(node, 'name') !== null
   );
 }
 
-function isSlotDefinition(node: FlowChild): node is MdxJsxFlowElement {
+function isSlotDefinitionStart(
+  node: FlowChild,
+): node is Html | MdxJsxFlowElement {
   return (
+    isFlowSlotDefinitionStartNode(node) &&
+    getSlotAttribute(node, 'for') !== null
+  );
+}
+
+function isMdxJsxSlotDefinitionStart(
+  node: FlowChild,
+): node is MdxJsxFlowElement {
+  return (
+    isMdxJsxSlotNode(node) &&
     node.type === 'mdxJsxFlowElement' &&
-    node.name === SLOT_COMPONENT_NAME &&
-    getStringAttribute(node.attributes, 'for') !== null
+    getSlotAttribute(node, 'for') !== null
   );
 }
 
-function isSlotNode(
+function isFlowSlotDefinitionStartNode(
+  node: unknown,
+): node is Html | MdxJsxFlowElement {
+  return (
+    (isMdxJsxSlotNode(node) && node.type === 'mdxJsxFlowElement') ||
+    isSlotHtmlOpeningNode(node)
+  );
+}
+
+function isMdxJsxSlotNode(
   node: unknown,
 ): node is MdxJsxFlowElement | MdxJsxTextElement {
   if (typeof node !== 'object' || node === null) {
@@ -260,6 +372,40 @@ function isSlotNode(
     (node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') &&
     node.name === SLOT_COMPONENT_NAME
   );
+}
+
+function isSlotHtmlOpeningNode(node: unknown): node is Html {
+  const parsed = parseSlotHtml(node);
+
+  return parsed?.kind === 'opening';
+}
+
+function isSlotHtmlClosingNode(node: unknown): node is Html {
+  const parsed = parseSlotHtml(node);
+
+  return parsed?.kind === 'closing';
+}
+
+function isUnsafeSlotHtmlClosingNode(node: unknown): node is Html {
+  if (!isHtml(node)) {
+    return false;
+  }
+
+  const value = node.value.trim();
+
+  return value.startsWith('</Slot>') && !/^<\/Slot\s*>$/.test(value);
+}
+
+function isInlineSlotPlaceholderNode(
+  node: unknown,
+): node is Html | MdxJsxTextElement {
+  if (isMdxJsxSlotNode(node)) {
+    return node.type === 'mdxJsxTextElement';
+  }
+
+  const parsed = parseSlotHtml(node);
+
+  return parsed?.kind === 'selfClosing';
 }
 
 function isTableCell(node: unknown): node is TableCell {
@@ -292,17 +438,34 @@ function isFlowContainer(node: unknown): node is FlowContainer {
   );
 }
 
-function getRequiredStringAttribute(
-  node: MdxJsxFlowElement | MdxJsxTextElement,
+function getRequiredSlotAttribute(
+  node: Html | MdxJsxFlowElement | MdxJsxTextElement,
   name: string,
 ) {
-  const value = getStringAttribute(node.attributes, name);
+  const value = getSlotAttribute(node, name);
 
   if (value === null) {
     throw new Error(`Slot requires a string "${name}" attribute.`);
   }
 
   return value;
+}
+
+function getSlotAttribute(
+  node: Html | MdxJsxFlowElement | MdxJsxTextElement,
+  name: string,
+) {
+  if (isMdxJsxSlotNode(node)) {
+    return getStringAttribute(node.attributes, name);
+  }
+
+  const parsed = parseSlotHtml(node);
+
+  if (!parsed) {
+    return null;
+  }
+
+  return name === 'name' ? parsed.name : parsed.target;
 }
 
 function getStringAttribute(
@@ -325,4 +488,53 @@ function getStringAttribute(
   }
 
   return null;
+}
+
+function parseSlotHtml(node: unknown): ParsedHtmlSlot | null {
+  if (!isHtml(node)) {
+    return null;
+  }
+
+  const value = node.value.trim();
+
+  if (/^<\/Slot\s*>$/.test(value)) {
+    return {
+      kind: 'closing',
+      name: null,
+      target: null,
+    };
+  }
+
+  const match = /^<Slot\b([\s\S]*?)(\/?)>$/.exec(value);
+
+  if (!match) {
+    return null;
+  }
+
+  const attributes = match[1];
+
+  return {
+    kind: match[2] === '/' ? 'selfClosing' : 'opening',
+    name: getHtmlStringAttribute(attributes, 'name'),
+    target: getHtmlStringAttribute(attributes, 'for'),
+  };
+}
+
+function isHtml(node: unknown): node is Html {
+  return (
+    typeof node === 'object' &&
+    node !== null &&
+    'type' in node &&
+    node.type === 'html' &&
+    'value' in node &&
+    typeof node.value === 'string'
+  );
+}
+
+function getHtmlStringAttribute(attributes: string, name: string) {
+  const match = new RegExp(
+    String.raw`(?:^|\s)${name}\s*=\s*(["'])(.*?)\1`,
+  ).exec(attributes);
+
+  return match?.[2] ?? null;
 }

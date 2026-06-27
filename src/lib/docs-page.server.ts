@@ -30,8 +30,17 @@ import {
   isOpenApiTab,
   type OpenApiLane,
   resolveOpenApiEndpointRoute,
+  resolveOpenApiLaneRoute,
 } from './openapi/lanes';
 import { getOpenApiOperation } from './openapi/source.server';
+import {
+  filterPlatformGroupPanelNodes,
+  getCanonicalSourcePages,
+  getPlatformGroupPanelUrls,
+  isPlatformGroupPanelPage,
+  resolvePlatformGroupDefinition,
+  resolvePlatformGroupParentPage,
+} from './platforms/platform-group-pages';
 import {
   buildCanonicalPlatformTocText,
   extractStructuredPlatformTabs,
@@ -98,7 +107,7 @@ export async function loadDocsTabIndex(locale: string, tab: string) {
   }
 
   const { source } = await import('./source.server');
-  const pageTree = source.getPageTree(locale);
+  const pageTree = getCanonicalPageTree(source, locale);
   const tabSummaries = getTabSummaries(pageTree);
   const tabSummary = tabSummaries.find((item) => item.id === tab);
 
@@ -254,7 +263,7 @@ export async function loadDocsPagePayload(
   }
 
   if (!page) {
-    const pageTree = source.getPageTree(locale);
+    const pageTree = getCanonicalPageTree(source, locale);
     const fallbackUrl = getFirstChildPageUrl(pageTree, tab, slugSegments);
 
     if (fallbackUrl) {
@@ -266,13 +275,26 @@ export async function loadDocsPagePayload(
     return null;
   }
 
-  const pageTree = source.getPageTree(locale);
+  const localePages = source.getPages(locale);
+  const platformGroupParent = resolvePlatformGroupParentPage(page, localePages);
+
+  if (platformGroupParent) {
+    return {
+      redirectUrl: platformGroupParent.url,
+    };
+  }
+
+  const pageTree = getCanonicalPageTree(source, locale);
   const supportedLocale = toSupportedLocale(locale);
   const openApiPage = isOpenApiPageWithClientProps(page) ? page : null;
   const isOpenApiPage = openApiPage !== null;
   const openApiRoute =
     isOpenApiPage && supportedLocale
       ? resolveOpenApiEndpointRoute(supportedLocale, tab, resolvedSlugSegments)
+      : null;
+  const openApiLaneRoute =
+    supportedLocale && isOpenApiTab(tab)
+      ? resolveOpenApiLaneRoute(supportedLocale, tab, resolvedSlugSegments)
       : null;
   const processedText = isOpenApiPage
     ? ''
@@ -281,7 +303,10 @@ export async function loadDocsPagePayload(
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText);
-  const layoutMode = resolveDocsLayoutMode(page, isOpenApiPage);
+  const layoutMode = resolveDocsLayoutMode(
+    page,
+    isOpenApiPage || openApiLaneRoute !== null,
+  );
   const sidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,
@@ -309,19 +334,32 @@ export async function loadDocsPagePayload(
     tab,
   });
   const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
-  const mdxBody = {
-    contentPath: page.path,
-    kind: 'mdx' as const,
-    ...(structuredPlatformTabs
-      ? {
-          platformTabs: {
-            canonicalPlatform: structuredPlatformTabs.canonicalPlatform,
-            initialPlatform: requestedPlatform,
-            platforms: JSON.stringify(structuredPlatformTabs.platforms),
-          },
-        }
-      : {}),
-  };
+  const platformGroup = resolvePlatformGroupDefinition(page, localePages);
+  const mdxBody = platformGroup
+    ? {
+        canonicalPlatform: platformGroup.canonicalPlatform,
+        contentPath: page.path,
+        kind: 'platform-group' as const,
+        panels: platformGroup.panels,
+        platformTabs: {
+          canonicalPlatform: platformGroup.canonicalPlatform,
+          platforms: JSON.stringify(platformGroup.platforms),
+        },
+        platforms: platformGroup.platforms,
+      }
+    : {
+        contentPath: page.path,
+        kind: 'mdx' as const,
+        ...(structuredPlatformTabs
+          ? {
+              platformTabs: {
+                canonicalPlatform: structuredPlatformTabs.canonicalPlatform,
+                initialPlatform: requestedPlatform,
+                platforms: JSON.stringify(structuredPlatformTabs.platforms),
+              },
+            }
+          : {}),
+      };
   const body = isOpenApiPage
     ? {
         kind: 'openapi' as const,
@@ -357,7 +395,7 @@ export async function loadDocsPagePayload(
     localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
       const targetPage = source.getPage(page.slugs.slice(1), targetLocale);
       const targetTabEntry = getFirstTabPageUrl(
-        source.getPageTree(targetLocale),
+        getCanonicalPageTree(source, targetLocale),
         tab,
       );
       const targetUrl =
@@ -398,16 +436,27 @@ export async function loadDocsSearchIndex(locale: string) {
   }
 
   const { source } = await import('./source.server');
-  const pages = source.getPages(locale).map((item) => ({
-    description: item.data.description,
-    title: item.data.title ?? item.slugs.at(-1) ?? item.url,
-    url: item.url,
-  }));
+  const pages = getCanonicalSourcePages(source.getPages(locale)).map(
+    (item) => ({
+      description: item.data.description,
+      title: item.data.title ?? item.slugs.at(-1) ?? item.url,
+      url: item.url,
+    }),
+  );
 
   return getDocsPages({
     locale: supportedLocale,
     pages,
   });
+}
+
+function getCanonicalPageTree(source: typeof docsSource, locale?: string) {
+  const pages = source.getPages(locale);
+
+  return filterPlatformGroupPanelNodes(
+    source.getPageTree(locale),
+    getPlatformGroupPanelUrls(pages),
+  );
 }
 
 function resolveLegacyBestPracticesRedirect(
@@ -698,6 +747,14 @@ function resolveLegacyProductRedirect(
 
   const normalizedPath = slugSegments.join('/');
   const redirects: Record<string, string> = {
+    'flexible-classroom/client-api/classroom-sdk':
+      '/en/api-reference/api-ref/flexible-classroom/classroom-sdk',
+    'flexible-classroom/client-api/edu-context-sdk':
+      '/en/api-reference/api-ref/flexible-classroom/classroom-sdk',
+    'flexible-classroom/client-api/proctor-sdk':
+      '/en/api-reference/api-ref/flexible-classroom/proctor-sdk',
+    'flexible-classroom/client-api/ui-scene':
+      '/en/api-reference/api-ref/flexible-classroom/ui-scene',
     'flexible-classroom/reference/restful-authentication':
       '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
     'interactive-whiteboard/develop/generate-token-rest':
@@ -869,16 +926,18 @@ function hasDocsPageForUrl(source: typeof docsSource, url: string) {
     return false;
   }
 
-  return Boolean(
-    source.getPage(
-      getSourceSlugs({
-        locale,
-        slug,
-        slugSegments,
-        tab,
-      }),
+  const page = source.getPage(
+    getSourceSlugs({
       locale,
-    ),
+      slug,
+      slugSegments,
+      tab,
+    }),
+    locale,
+  );
+
+  return Boolean(
+    page && !isPlatformGroupPanelPage(page, source.getPages(locale)),
   );
 }
 
@@ -1475,7 +1534,7 @@ function buildAiProductSidebar(
           children: tenAgentPages,
         } satisfies DocsSidebarSectionNode)
       : null;
-  const deviceKitTopLevelSection = findTopLevelSidebarSection(nodes, [
+  const _deviceKitTopLevelSection = findTopLevelSidebarSection(nodes, [
     'Convo AI Device Kit',
   ]);
 

@@ -192,36 +192,36 @@ Ensure that you have implemented the [SDK quickstart](../index.mdx) in your proj
 This section shows you how to integrate AI Noise Suppression into your app.
 
 :::note
-The following implementation steps apply to the latest version of the AI Noise Suppression extension. Refer to the [extension release notes](https://docs.agora.io/en/video-calling/overview/release-notes) for details.
+The following implementation steps apply to the latest version of the AI Noise Suppression extension. Refer to the [extension release notes](/en/realtime-media/video/reference/release-notes) for details.
 :::
 
 1. Integrate AI Noise Suppression into your app
 
-  To install the AI Noise Suppression extension ([agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser)), in the root of your project run the following command:
+    To install the AI Noise Suppression extension ([agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser)), in the root of your project run the following command:
 
-   ```javascript
-   npm install agora-extension-ai-denoiser
-   ```
+    ```javascript
+    npm install agora-extension-ai-denoiser
+    ```
 
 1. Import AI Noise Suppression
 
-  Add the following code to your `.js` file.
+    Add the following code to your `.js` file.
 
-   ```javascript
-   import {AIDenoiserExtension} from "agora-extension-ai-denoiser";
-   ```
+    ```javascript
+    import {AIDenoiserExtension} from "agora-extension-ai-denoiser";
+    ```
 
 3. Dynamically load the Wasm dependencies
 
-  The AI Noise Suppression extension depends on a few Wasm files. To ensure that the browser can load and execute these files, do the following:
+    The AI Noise Suppression extension depends on a few Wasm files. To ensure that the browser can load and execute these files, do the following:
 
-  1. Publish the files located in the `node_modules/agora-extension-ai-denoiser/external` directory to the CDN or static resource server, and put them under one public path. In subsequent steps, you need to pass in the public path URL to create an` AIDenoiserExtension` instance. The extension then dynamically loads these files.
+    1. Publish the files located in the `node_modules/agora-extension-ai-denoiser/external` directory to the CDN or static resource server, and put them under one public path. In subsequent steps, you need to pass in the public path URL to create an` AIDenoiserExtension` instance. The extension then dynamically loads these files.
 
     Note:
       - If the host URL of the Wasm files is not the same as that of the web application, enable the CORS policy.
       - Do not put the Wasm files in an HTTP service, loading HTTP resources in the HTTPS domain is blocked by the browsers' security policy.
 
-  2. If you have enabled the Content Security Policy (CSP), because Wasm files are not allowed to load in Chrome and Edge by default, you need to configure the CSP as follows:
+    2. If you have enabled the Content Security Policy (CSP), because Wasm files are not allowed to load in Chrome and Edge by default, you need to configure the CSP as follows:
 
      - For versions later than Chrome 97 and Edge 97 (Chrome 97 and Edge 97 included): Add `'wasm-unsafe-eval'` and `blob:` in the [`script-src`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src) options. For example:
        ```xml
@@ -232,99 +232,99 @@ The following implementation steps apply to the latest version of the AI Noise S
 
 4. Register the AI Noise Suppression extension
 
-  Call [AgoraRTC.registerExtensions](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions), and pass in the created `AIDenoiserExtension` instance. Optionally, listen for the callback reporting that the Wasm and JS files fail to load.
+    Call [AgoraRTC.registerExtensions](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions), and pass in the created `AIDenoiserExtension` instance. Optionally, listen for the callback reporting that the Wasm and JS files fail to load.
 
-  ```typescript
-  // Create an AIDenoiserExtension instance, and pass in the host URL of the Wasm files
-  const denoiser = new AIDenoiserExtension({assetsPath:'./external'});
-  // Check compatibility
-  if (!denoiser.checkCompatibility()) {
-   // The extension might not be supported in the current browser. You can stop executing further code logic
-   console.error("Does not support AI Denoiser!");
-  }
-  // Register the extension
-  AgoraRTC.registerExtensions([denoiser]);
-  // (Optional) Listen for the callback reporting that the Wasm files fail to load
-  denoiser.onloaderror = (e) => {
-   // If the Wasm files fail to load, you can disable the extension, for example:
-   // openDenoiserButton.enabled = false;
-   console.log(e);
-  }
-  ```
-  Best practice is to create one `AIDenoiserExtension` instance only.
+    ```typescript
+    // Create an AIDenoiserExtension instance, and pass in the host URL of the Wasm files
+    const denoiser = new AIDenoiserExtension({assetsPath:'./external'});
+    // Check compatibility
+    if (!denoiser.checkCompatibility()) {
+     // The extension might not be supported in the current browser. You can stop executing further code logic
+     console.error("Does not support AI Denoiser!");
+    }
+    // Register the extension
+    AgoraRTC.registerExtensions([denoiser]);
+    // (Optional) Listen for the callback reporting that the Wasm files fail to load
+    denoiser.onloaderror = (e) => {
+     // If the Wasm files fail to load, you can disable the extension, for example:
+     // openDenoiserButton.enabled = false;
+     console.log(e);
+    }
+    ```
+    Best practice is to create one `AIDenoiserExtension` instance only.
 
 5. Create an `IAIDenoiserProcessor` instance
 
-  Call the `createProcessor` method to create a `processor`, and set whether to enable the extension by default. If you do not set the default state, the extension inherits the previous state.
+    Call the `createProcessor` method to create a `processor`, and set whether to enable the extension by default. If you do not set the default state, the extension inherits the previous state.
 
-  ```typescript
-  // Create a processor
-  const processor = denoiser.createProcessor();
-  // Enable the extension by default
-  processor.enable();
-  // Disable the extension by default
-  // processor.disable();
-  ```
+    ```typescript
+    // Create a processor
+    const processor = denoiser.createProcessor();
+    // Enable the extension by default
+    processor.enable();
+    // Disable the extension by default
+    // processor.disable();
+    ```
 
 6. Inject the extension to the audio processing pipeline
 
-  Call [pipe](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#pipe) and specify the [processorDestination](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#processordestination) property.
+    Call [pipe](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#pipe) and specify the [processorDestination](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#processordestination) property.
 
-  ```typescript
-  // Create a local video track
-  const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-  // Inject the extension to the audio processing pipeline
-  audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
-  await processor.enable();
-  ```
+    ```typescript
+    // Create a local video track
+    const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+    // Inject the extension to the audio processing pipeline
+    audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
+    await processor.enable();
+    ```
 
 7. Enable or disable the extension
 
-  Call the `enable` or `disable` methods as needed.
+    Call the `enable` or `disable` methods as needed.
 
-   ```typescript
-   () => {
+    ```typescript
+    () => {
     if (processor.enabled) {
      await processor.disable();
     } else {
      await processor.enable();
     }
-   }
-   ```
+    }
+    ```
 8. Set the noise suppression mode and level
 
-  ```javascript
-  // Listen for the callback reporting that the noise suppression process takes too long
-  processor.on("overload", async (elapsedTime) => {
-   console.log("overload!!!");
-   // Switch to steady-state noise reduction mode, temporarily disable AI noise reduction.
-   await processor.setMode("STATIONARY_NS");
-   // Completely disable AI noise reduction and use the browser's built-in noise reduction.
-   // await processor.disable()
-  });
-  ```
+    ```javascript
+    // Listen for the callback reporting that the noise suppression process takes too long
+    processor.on("overload", async (elapsedTime) => {
+     console.log("overload!!!");
+     // Switch to steady-state noise reduction mode, temporarily disable AI noise reduction.
+     await processor.setMode("STATIONARY_NS");
+     // Completely disable AI noise reduction and use the browser's built-in noise reduction.
+     // await processor.disable()
+    });
+    ```
 
 9. Dump audio data
 
-  Best practice for logging is to dump audio data. This significantly improves the efficiency of troubleshooting. To do this, call the `dump` method and listen for the `dump` and `dumpend` events to dump the audio data during the noise suppression process.
+    Best practice for logging is to dump audio data. This significantly improves the efficiency of troubleshooting. To do this, call the `dump` method and listen for the `dump` and `dumpend` events to dump the audio data during the noise suppression process.
 
-  ```typescript
-  processor.on("dump", (blob, name) => {
-   // Dump the audio data files generated during the noise suppression process to your local machine in .pcm format.
-   const objectURL = URL.createObjectURL(blob);
-   const tag = document.createElement("a");
-   tag.download = name;
-   tag.href = objectURL;
-   tag.click();
-   setTimeout(() => {URL.revokeObjectURL(objectURL);}, 0);
-  });
+    ```typescript
+    processor.on("dump", (blob, name) => {
+     // Dump the audio data files generated during the noise suppression process to your local machine in .pcm format.
+     const objectURL = URL.createObjectURL(blob);
+     const tag = document.createElement("a");
+     tag.download = name;
+     tag.href = objectURL;
+     tag.click();
+     setTimeout(() => {URL.revokeObjectURL(objectURL);}, 0);
+    });
 
-  processor.on("dumpend", () => {
-   console.log("dump ended!!");
-  });
+    processor.on("dumpend", () => {
+     console.log("dump ended!!");
+    });
 
-  processor.dump();
-  ```
+    processor.dump();
+    ```
 
 ## Reference
 

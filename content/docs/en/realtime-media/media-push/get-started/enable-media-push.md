@@ -7,15 +7,15 @@ Media Push enables you to stream audio and video from Agora channels to CDNs and
 
 1. Log in to [Agora Console](https://console.agora.io/v2), and click **Projects** in the left navigation panel.
 
-1. Under **My Projects**, find the project for which you want to enable the Media Push service, and click the edit icon.
+2. Under **My Projects**, find the project for which you want to enable the Media Push service, and click the edit icon.
 
     ![](/images/media-push/project-list.png)
 
-1. Under **All Features**, find Media Push, and click **Enable Server Side RESTful API**.
+3. Under **All Features**, find Media Push, and click **Enable Server Side RESTful API**.
 
     ![](/images/media-push/enable-media-push.png)
 
-1. Read the pop-up prompt carefully, and then click **Confirm**.
+4. Read the pop-up prompt carefully, and then click **Confirm**.
 
 
 

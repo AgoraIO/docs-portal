@@ -932,6 +932,49 @@
   .openapi-operation :where(pre, code) {
     font-family: var(--font-mono);
   }
+
+  @media (max-width: 48rem) {
+    .openapi-operation figure.shiki:has(> .fd-scroll-container) {
+      isolation: isolate;
+    }
+
+    .openapi-operation figure.shiki:has(> .fd-scroll-container)::after {
+      position: absolute;
+      top: 2.75rem;
+      right: 0;
+      bottom: 0.875rem;
+      z-index: 1;
+      width: 2.75rem;
+      pointer-events: none;
+      background: linear-gradient(
+        to left,
+        color-mix(in srgb, var(--fd-secondary) 94%, transparent),
+        color-mix(in srgb, var(--fd-secondary) 68%, transparent) 54%,
+        transparent
+      );
+      box-shadow: inset -14px 0 18px -18px
+        color-mix(in srgb, var(--ink-1) 58%, transparent);
+      content: "";
+    }
+
+    .openapi-operation figure.shiki > .fd-scroll-container {
+      scrollbar-color: color-mix(in srgb, var(--ink-1) 40%, transparent)
+        transparent;
+      scrollbar-width: thin;
+    }
+
+    .openapi-operation figure.shiki > .fd-scroll-container::-webkit-scrollbar {
+      height: 12px;
+    }
+
+    .openapi-operation
+      figure.shiki
+      > .fd-scroll-container::-webkit-scrollbar-thumb {
+      border: 3px solid transparent;
+      background: color-mix(in srgb, var(--ink-1) 38%, transparent);
+      background-clip: padding-box;
+    }
+  }
 }
 
 :root {

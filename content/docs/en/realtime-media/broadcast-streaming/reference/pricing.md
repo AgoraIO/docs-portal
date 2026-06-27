@@ -124,11 +124,11 @@ User A purchases the Premium Package on August 15.
 
 Use of Video SDK value-added services may incur costs in addition to basic service charges. For billing details, refer to the corresponding pricing page:
 
-* [Cloud Recording](https://docs-md.agora.io/en/cloud-recording/overview/pricing)
-* [Cloud Transcoding](https://docs-md.agora.io/en/cloud-transcoding/overview/pricing)
+* [Cloud Recording](/en/realtime-media/cloud-recording/reference/pricing)
+* [Cloud Transcoding](/en/realtime-media/transcoding/reference/pricing)
 * [Local screenshot upload](https://docs-md.agora.io/en/video-calling/advanced-features/screenshot-upload_ios)
-* [Media Push](https://docs-md.agora.io/en/media-push/overview/pricing)
-* [Media Pull](https://docs-md.agora.io/en/media-pull/overview/pricing)
+* [Media Push](/en/realtime-media/media-push/reference/pricing)
+* [Media Pull](/en/realtime-media/media-pull/reference/pricing)
 * [RTC associated features](pricing-legacy)
 
 ## Reference

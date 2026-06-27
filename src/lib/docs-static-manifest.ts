@@ -64,6 +64,7 @@ export async function readStaticDocsPayload<T>({
 }
 
 type PlatformStaticPayload = {
+  activePath?: string;
   body: {
     kind: string;
     platformTabs?: {
@@ -111,10 +112,21 @@ export async function resolvePlatformStaticDocsPayload<
   if (
     !canonicalPayload ||
     'redirectUrl' in canonicalPayload ||
-    canonicalPayload.body.kind !== 'mdx' ||
     !canonicalPayload.body.platformTabs ||
     !platformsInclude(canonicalPayload.body.platformTabs.platforms, platform)
   ) {
+    return null;
+  }
+
+  if (canonicalPayload.body.kind === 'platform-group') {
+    return canonicalPayload.activePath
+      ? {
+          redirectUrl: canonicalPayload.activePath,
+        }
+      : null;
+  }
+
+  if (canonicalPayload.body.kind !== 'mdx') {
     return null;
   }
 

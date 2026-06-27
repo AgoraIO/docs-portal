@@ -11,7 +11,7 @@ Recording audio and video in a channel using the On-Premise Recording SDK works 
 ![](/images/on-premise-recording/quickstart.svg)
 
 :::info
-Integrate the On-Premise Recording SDK into your Linux server, not your client app. To record audio and video without deploying a Linux server, use Agora [Cloud Recording](/cloud-recording/overview/product-overview).
+Integrate the On-Premise Recording SDK into your Linux server, not your client app. To record audio and video without deploying a Linux server, use Agora [Cloud Recording](/en/realtime-media/cloud-recording).
 :::
 
 ## Prerequisites

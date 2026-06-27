@@ -227,19 +227,19 @@ Once you've completed testing, use a phased approach to implement the new Cloud 
 - Begin with non-production environments
 - Update firewall rules based on your region
 
-### Post-migration validation​
+### Post-migration validation
 
 After implementing the changes, verify your new configuration and check the connectivity.
 
 1. **Test connectivity**
 
-  Configure your client to use UDP Cloud Proxy mode and enable connectivity testing.
+    Configure your client to use UDP Cloud Proxy mode and enable connectivity testing.
 
 1. **Prepare fallback strategy**
 
-   - Maintain complete documentation of original configuration
-   - Create rollback procedures for quickly reverting changes if needed
-   - Keep support contact information readily available
+    - Maintain complete documentation of original configuration
+    - Create rollback procedures for quickly reverting changes if needed
+    - Keep support contact information readily available
 
 ### Get support
 

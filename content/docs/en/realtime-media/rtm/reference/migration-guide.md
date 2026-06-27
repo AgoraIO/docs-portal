@@ -27,7 +27,7 @@ To activate Signaling `2.x`, take the following steps:
 1. Copy the App ID for your project for use in your code.
 
 :::info
-Signaling version `2.x` differs from `1.x` in the support of naming character sets. For example, `2.x` does not support channel names, user names, or topic names that start with `_` or contain `.` characters. When upgrading from `1.x` to `2.x` or using both versions together, be aware of possible incompatibilities caused by character set differences. Best practice is to use the character set supported by `2.x` when migrating. See [Channel naming ](../build/work-with-channels/channels/channel-basics.md) for the character set supported by `2.x`.
+Signaling version `2.x` differs from `1.x` in the support of naming character sets. For example, `2.x` does not support channel names, user names, or topic names that start with `_` or contain `.` characters. When upgrading from `1.x` to `2.x` or using both versions together, be aware of possible incompatibilities caused by character set differences. Best practice is to use the character set supported by `2.x` when migrating. See [Channel naming ](../build/work-with-channels/channel-basics.md) for the character set supported by `2.x`.
 
 :::
 
@@ -594,7 +594,7 @@ Signaling supports the restricted access area feature to comply with the laws an
 
 ## Call invitation
 
-Call Invitation is no longer available in Signaling `2.x`. Use [CallAPI](../build/connect-and-authenticate/connection/connection-management.md) as an alternate approach.
+Call Invitation is no longer available in Signaling `2.x`. Use [CallAPI](../build/connect-and-authenticate/connection/connection-management.mdx) as an alternate approach.
 
 ## Other new features
 

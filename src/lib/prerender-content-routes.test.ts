@@ -32,10 +32,40 @@ describe('getContentDocsPrerenderPaths', () => {
       '/zh-CN/ai/domain-overview',
     ]);
   });
+
+  it('excludes implicit platform panel files from prerender paths', () => {
+    const root = join(
+      import.meta.dirname,
+      `../../tmp/prerender-content-routes-${randomUUID()}`,
+    );
+    tempRoots.push(root);
+
+    writeDoc(
+      root,
+      'en/ai/get-started/platform-split/index.mdx',
+      `---
+layout: platform-group
+platforms:
+  - ios
+  - android
+---
+
+# Split platform page
+`,
+    );
+    writeDoc(root, 'en/ai/get-started/platform-split/ios.mdx');
+    writeDoc(root, 'en/ai/get-started/platform-split/android.mdx');
+    writeDoc(root, 'en/ai/get-started/platform-split/notes.mdx');
+
+    expect(getContentDocsPrerenderPaths(root)).toEqual([
+      '/en/ai/get-started/platform-split',
+      '/en/ai/get-started/platform-split/notes',
+    ]);
+  });
 });
 
-function writeDoc(root: string, relativePath: string) {
+function writeDoc(root: string, relativePath: string, content = '# Test\n') {
   const filePath = join(root, relativePath);
   mkdirSync(dirname(filePath), { recursive: true });
-  writeFileSync(filePath, '# Test\n');
+  writeFileSync(filePath, content);
 }

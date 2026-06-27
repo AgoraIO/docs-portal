@@ -43,7 +43,7 @@ Before starting, ensure that you have:
 
 ## Token generation code
 
-Agora provides an open source token generator code repository on [GitHub](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey). The repository provides code in the following languages ​​to generate tokens on your own server using the `HMAC-SHA256` algorithm:
+Agora provides an open source token generator code repository on [GitHub](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey). The repository provides code in the following languages to generate tokens on your own server using the `HMAC-SHA256` algorithm:
 
 | Language | Core Method     | Sample Code     |
 |:---------|:--------------------|:---------------------|
@@ -65,6 +65,8 @@ Refer to the following code samples to generate a token with basic permissions:
   <CodeBlockTabsTrigger value="nodejs">Node.js</CodeBlockTabsTrigger>
   <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
   <CodeBlockTabsTrigger value="python">Python/Python3</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
 </CodeBlockTabsList>
 
 <CodeBlockTab value="go">
@@ -144,7 +146,7 @@ console.log("Token with int uid:", tokenWithUid);
 </CodeBlockTab>
 
 <CodeBlockTab value="php">
-```js
+```php
 <?php
 include("../src/RtcTokenBuilder2.php");
 
@@ -211,12 +213,6 @@ if __name__ == "__main__":
 main()
 ```
 </CodeBlockTab>
-</CodeBlockTabs>
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
 
 <CodeBlockTab value="java">
 ```java
@@ -315,11 +311,11 @@ The code samples presented on this page use an integer user ID to generate a tok
 ### Advanced authentication features
 This section presents advanced functions related to token authentication.
 
-- [Wildcard token​s](#generate-wildcard-tokens): Allow users to join multiple channels or switch channels without frequently requesting new tokens.
+- [Wildcard tokens](#generate-wildcard-tokens): Allow users to join multiple channels or switch channels without frequently requesting new tokens.
 
 - [Co-host token authentication](#co-host-token-authentication): Enable fine-grained control to ensure only authorized users can publish streams.
 
-#### Generate wildcard token​s
+#### Generate wildcard tokens
 In use-cases where users need to join multiple channels, or frequently switch between channels, they need to request a new token from the token server, each time they join a channel. To solve the problem of frequently requesting tokens when switching channels, Agora enables you to generate wildcard tokens that set the user ID or channel name as a wildcard. Users reuse the same wildcard token to join different channels, which speeds up the process of switching and joining channels. It also helps reduce the pressure on your token server. 
 :::note
 To generate wildcard tokens, deploy an `AccessToken2` server. If you are still using `AccessToken`, see the [AccessToken upgrade guide](integrate-token-generation.md) to upgrade to `AccessToken2`.
@@ -369,7 +365,7 @@ See the [API reference](#api-reference) for detailed parameter descriptions.
 
 #### Generate a token with advanced permissions
 
-Use the following methods from the token generation [Github repository](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey) ​​to generate tokens with advanced permissions:
+Use the following methods from the token generation [Github repository](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey) to generate tokens with advanced permissions:
 
 | Language | Core Method     | Sample Code     |
 |:---------|:--------------------|:---------------------|
@@ -389,6 +385,8 @@ Refer to the following code samples to generate a token with advanced permission
   <CodeBlockTabsTrigger value="nodejs">Node.js</CodeBlockTabsTrigger>
   <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
   <CodeBlockTabsTrigger value="python">Python/Python3</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
 </CodeBlockTabsList>
 
 <CodeBlockTab value="go">
@@ -500,7 +498,7 @@ console.log("Token with int uid and privilege:", tokenWithUidAndPrivilege);
 </CodeBlockTab>
 
 <CodeBlockTab value="php">
-```js
+```php
 <?php
 include("../src/RtcTokenBuilder2.php");
 
@@ -583,12 +581,6 @@ if __name__ == "__main__":
 main()
 ```
 </CodeBlockTab>
-</CodeBlockTabs>
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
 
 <CodeBlockTab value="java">
 ```java
@@ -710,46 +702,46 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
 
 1. Install the NPM package
 
-  ```bash
-  npm install agora-token
-  ```
+    ```bash
+    npm install agora-token
+    ```
 
 1. Add your App ID and App certificate
 
-  Open the file `node_modules/agora-token/server/DemoServer.js` and update the following variables:
+    Open the file `node_modules/agora-token/server/DemoServer.js` and update the following variables:
 
-  ```js
-  // Replace with your Agora credentials
-  var appID = "<YOUR APP ID>";
-  var appCertificate = "<YOUR APP CERTIFICATE>";
-  ```
+    ```js
+    // Replace with your Agora credentials
+    var appID = "<YOUR APP ID>";
+    var appCertificate = "<YOUR APP CERTIFICATE>";
+    ```
 
 1. Install the dependencies and run the server
 
-  Navigate to the `server` directory and run the following commands:
+    Navigate to the `server` directory and run the following commands:
 
-  ```shell
-  npm i
-  node DemoServer.js
-  ```
+    ```shell
+    npm i
+    node DemoServer.js
+    ```
 
 1. Test your server
 
-  Use a `curl` request to generate a sample token:
+    Use a `curl` request to generate a sample token:
 
-  ```bash
-  curl http://localhost:8080/rtcToken?channelName=test
-  ```
+    ```bash
+    curl http://localhost:8080/rtcToken?channelName=test
+    ```
 
-  You receive a response like the following:
+    You receive a response like the following:
 
-  ```json
-  {
-    "key": "YOUR_GENERATED_TOKEN"
-  }
-  ```
+    ```json
+    {
+      "key": "YOUR_GENERATED_TOKEN"
+    }
+    ```
 
-### Deploy with Docker​
+### Deploy with Docker
 
 Refer to the following steps to deploy a Docker-based token generator locally:
 
@@ -757,28 +749,28 @@ Refer to the following steps to deploy a Docker-based token generator locally:
 
 1. Open a terminal and run the following command to start the token generator. Replace `[YOUR_APP_ID]` and `[YOUR_APP_CERTIFICATE]` with the App ID and App certificate you obtained from Agora Console.
 
-  ```shell
-  docker run -d -it -p 8080:8080 -e APP_ID=[YOUR_APP_ID] -e APP_CERTIFICATE=[YOUR_APP_CERTIFICATE] --name agora-token-service agoracn/token:0.1.2023053011
-  ```
+    ```shell
+    docker run -d -it -p 8080:8080 -e APP_ID=[YOUR_APP_ID] -e APP_CERTIFICATE=[YOUR_APP_CERTIFICATE] --name agora-token-service agoracn/token:0.1.2023053011
+    ```
 
 1. Run the following command to request a token from the token generator you just deployed:
 
-  ```shell
-  curl --location 'http://localhost:8080/token/generate' \
-  --header 'Content-Type: application/json' \
-  --data '{
-    "channelName": "channel_name_test",
-    "uid": "12345678",
-    "tokenExpireTs": 3600,
-    "privilegeExpireTs": 3600,
-    "serviceRtc": {
-      "enable": true,
-      "role": 1
-    }
-  }'
-  ```
+    ```shell
+    curl --location 'http://localhost:8080/token/generate' \
+    --header 'Content-Type: application/json' \
+    --data '{
+      "channelName": "channel_name_test",
+      "uid": "12345678",
+      "tokenExpireTs": 3600,
+      "privilegeExpireTs": 3600,
+      "serviceRtc": {
+        "enable": true,
+        "role": 1
+      }
+    }'
+    ```
 
-  After the request is successful, your terminal displays the generated token.
+    After the request is successful, your terminal displays the generated token.
 
 ### Manual local deployment
 
@@ -788,147 +780,147 @@ Refer to the following steps to build and run a token generator:
 
 1. Create a new `token-server` folder. Add a `server.go` file inside the folder and paste the following Golang sample code into the file. Replace the values for `appID` and `appCertificate` with your App ID and App certificate.
 
-  **Sample code for a token server**
+    **Sample code for a token server**
 
-```go
-  package main
-  
-    import (
-      rtctokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2"
-      "fmt"
-      "log"
-      "net/http"
-      "encoding/json"
-      "errors"
-      "strconv"
-    )
-  
-    type rtc_int_token_struct struct{
-      Uid_rtc_int uint32 `json:"uid"`
-      Channel_name string `json:"ChannelName"`
-      Role uint32 `json:"role"`
-    }
-  
-    var rtc_token string
-    var int_uid uint32
-    var channel_name string
-  
-    var role_num uint32
-    var role rtctokenbuilder.Role
-  
-    // Use RtcTokenBuilder to generate RTC Token
-    func generateRtcToken(int_uid uint32, channelName string, role rtctokenbuilder.Role){
-      appID := "<Your App ID>"
-      appCertificate := "<Your App Certificate>"
-      // Ensure that the expiration time of the token is later than the permission expiration time. Permission expiration time, unit is seconds
-      tokenExpireTimeInSeconds := uint32(40)
-      // The token-privilege-will-expire callback is triggered 30 seconds before the permission expires.
-      // For demonstration purposes, set the expiration time to 40 seconds. You can see the process of the client automatically updating the Token
-      privilegeExpireTimeInSeconds := uint32(40)
-  
-      result, err := rtctokenbuilder.BuildTokenWithUid(appID, appCertificate, channelName, int_uid, role, tokenExpireTimeInSeconds, privilegeExpireTimeInSeconds)
-      if err != nil {
-        fmt.Println(err)
-      } else {
-        fmt.Printf("Token with uid: %s
-  ", result)
-        fmt.Printf("uid is %d
-  ", int_uid )
-        fmt.Printf("ChannelName is %s
-  ", channelName)
-        fmt.Printf("Role is %d
-  ", role)
-      }
-      rtc_token = result
-    }
-  
-    func rtcTokenHandler(w http.ResponseWriter, r *http.Request){
-      w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-      w.Header().Set("Access-Control-Allow-Origin", "*")
-      w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS");
-      w.Header().Set("Access-Control-Allow-Headers", "*");
-  
-      if r.Method == "OPTIONS" {
-        w.WriteHeader(http.StatusOK)
-        return
-      }
-  
-      if r.Method != "POST" && r.Method != "OPTIONS" {
-        http.Error(w, "Unsupported method. Please check.", http.StatusNotFound)
-        return
-      }
-  
-      var t_int rtc_int_token_struct
-      var unmarshalErr *json.UnmarshalTypeError
-      int_decoder := json.NewDecoder(r.Body)
-      int_err := int_decoder.Decode(&t_int)
-      if (int_err == nil) {
-  
-            int_uid = t_int.Uid_rtc_int
-            channel_name = t_int.Channel_name
-            role_num = t_int.Role
-            switch role_num {
-              case 1:
-                role = rtctokenbuilder.RolePublisher
-              case 2:
-                role = rtctokenbuilder.RoleSubscriber
-            }
-      }
-      if (int_err != nil) {
-  
-        if errors.As(int_err, &unmarshalErr){
-            errorResponse(w, "Bad request. Wrong type provided for field " + unmarshalErr.Value + unmarshalErr.Field + unmarshalErr.Struct, http.StatusBadRequest)
-            } else {
-            errorResponse(w, "Bad request.", http.StatusBadRequest)
+    ```go
+      package main
+      
+        import (
+          rtctokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2"
+          "fmt"
+          "log"
+          "net/http"
+          "encoding/json"
+          "errors"
+          "strconv"
+        )
+      
+        type rtc_int_token_struct struct{
+          Uid_rtc_int uint32 `json:"uid"`
+          Channel_name string `json:"ChannelName"`
+          Role uint32 `json:"role"`
+        }
+      
+        var rtc_token string
+        var int_uid uint32
+        var channel_name string
+      
+        var role_num uint32
+        var role rtctokenbuilder.Role
+      
+        // Use RtcTokenBuilder to generate RTC Token
+        func generateRtcToken(int_uid uint32, channelName string, role rtctokenbuilder.Role){
+          appID := "<Your App ID>"
+          appCertificate := "<Your App Certificate>"
+          // Ensure that the expiration time of the token is later than the permission expiration time. Permission expiration time, unit is seconds
+          tokenExpireTimeInSeconds := uint32(40)
+          // The token-privilege-will-expire callback is triggered 30 seconds before the permission expires.
+          // For demonstration purposes, set the expiration time to 40 seconds. You can see the process of the client automatically updating the Token
+          privilegeExpireTimeInSeconds := uint32(40)
+      
+          result, err := rtctokenbuilder.BuildTokenWithUid(appID, appCertificate, channelName, int_uid, role, tokenExpireTimeInSeconds, privilegeExpireTimeInSeconds)
+          if err != nil {
+            fmt.Println(err)
+          } else {
+            fmt.Printf("Token with uid: %s
+      ", result)
+            fmt.Printf("uid is %d
+      ", int_uid )
+            fmt.Printf("ChannelName is %s
+      ", channelName)
+            fmt.Printf("Role is %d
+      ", role)
           }
-        return
-      }
-  
-      generateRtcToken(int_uid, channel_name, role)
-      errorResponse(w, rtc_token, http.StatusOK)
-      log.Println(w, r)
-    }
-  
-    func errorResponse(w http.ResponseWriter, message string, httpStatusCode int){
-      w.Header().Set("Content-Type", "application/json")
-      w.Header().Set("Access-Control-Allow-Origin", "*")
-      w.WriteHeader(httpStatusCode)
-      resp := make(map[string]string)
-      resp["token"] = message
-      resp["code"] = strconv.Itoa(httpStatusCode)
-      jsonResp, _ := json.Marshal(resp)
-      w.Write(jsonResp)
-    }
-  
-    func main(){
-      // Use int type uid to generate RTC Token
-      http.HandleFunc("/fetch_rtc_token", rtcTokenHandler)
-      fmt.Printf("Starting server at port 8082
-  ")
-  
-      if err := http.ListenAndServe(":8082", nil); err != nil {
-        log.Fatal(err)
-      }
-    }
-  ```
+          rtc_token = result
+        }
+      
+        func rtcTokenHandler(w http.ResponseWriter, r *http.Request){
+          w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+          w.Header().Set("Access-Control-Allow-Origin", "*")
+          w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS");
+          w.Header().Set("Access-Control-Allow-Headers", "*");
+      
+          if r.Method == "OPTIONS" {
+            w.WriteHeader(http.StatusOK)
+            return
+          }
+      
+          if r.Method != "POST" && r.Method != "OPTIONS" {
+            http.Error(w, "Unsupported method. Please check.", http.StatusNotFound)
+            return
+          }
+      
+          var t_int rtc_int_token_struct
+          var unmarshalErr *json.UnmarshalTypeError
+          int_decoder := json.NewDecoder(r.Body)
+          int_err := int_decoder.Decode(&t_int)
+          if (int_err == nil) {
+      
+                int_uid = t_int.Uid_rtc_int
+                channel_name = t_int.Channel_name
+                role_num = t_int.Role
+                switch role_num {
+                  case 1:
+                    role = rtctokenbuilder.RolePublisher
+                  case 2:
+                    role = rtctokenbuilder.RoleSubscriber
+                }
+          }
+          if (int_err != nil) {
+      
+            if errors.As(int_err, &unmarshalErr){
+                errorResponse(w, "Bad request. Wrong type provided for field " + unmarshalErr.Value + unmarshalErr.Field + unmarshalErr.Struct, http.StatusBadRequest)
+                } else {
+                errorResponse(w, "Bad request.", http.StatusBadRequest)
+              }
+            return
+          }
+      
+          generateRtcToken(int_uid, channel_name, role)
+          errorResponse(w, rtc_token, http.StatusOK)
+          log.Println(w, r)
+        }
+      
+        func errorResponse(w http.ResponseWriter, message string, httpStatusCode int){
+          w.Header().Set("Content-Type", "application/json")
+          w.Header().Set("Access-Control-Allow-Origin", "*")
+          w.WriteHeader(httpStatusCode)
+          resp := make(map[string]string)
+          resp["token"] = message
+          resp["code"] = strconv.Itoa(httpStatusCode)
+          jsonResp, _ := json.Marshal(resp)
+          w.Write(jsonResp)
+        }
+      
+        func main(){
+          // Use int type uid to generate RTC Token
+          http.HandleFunc("/fetch_rtc_token", rtcTokenHandler)
+          fmt.Printf("Starting server at port 8082
+      ")
+      
+          if err := http.ListenAndServe(":8082", nil); err != nil {
+            log.Fatal(err)
+          }
+        }
+      ```
 
 1. Open the terminal, go to the `token-server` folder path, and run the following command line to create a `go.mod` file for your token generator. This file defines the import path and dependencies:
 
-  ```go
-  go mod init sampleServer
-  ```
+    ```shell
+    go mod init sampleServer
+    ```
 
 1. Run the following command to install dependencies. 
  
-  ```go
-  go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
-  ```
+    ```shell
+    go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
+    ```
 
 1. Run the following command to start the token generator:
 
-  ```go
-  go run server.go
-  ```
+    ```shell
+    go run server.go
+    ```
 
 After the token generator is deployed successfully, your terminal returns the token generated based on the App ID and App certificate you filled in.
 
@@ -936,7 +928,7 @@ After the token generator is deployed successfully, your terminal returns the to
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
-### API Reference​
+### API Reference
 
 This section documents the core methods you use to generate tokens, using the Golang code as an example.
 

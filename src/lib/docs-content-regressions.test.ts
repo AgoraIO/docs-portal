@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 
 const docsRoot = resolve(process.cwd(), 'content/docs/en');
 const allDocsRoot = resolve(process.cwd(), 'content/docs');
+const voiceDocsRoot = resolve(docsRoot, 'realtime-media/voice');
 
 describe('docs content regressions', () => {
   function expectListItemToContainNestedOrderedList(
@@ -19,6 +20,80 @@ describe('docs content regressions', () => {
 
     expect(nestedListIndex).toBeGreaterThan(markerIndex);
     expect(nestedListIndex).toBeLessThan(itemCloseIndex);
+  }
+
+  function expectCompiledSectionToHaveSingleOrderedList(
+    compiled: string,
+    startMarker: string,
+    endMarker: string,
+    itemCount: number,
+  ) {
+    const startIndex = compiled.indexOf(startMarker);
+    const endIndex = compiled.indexOf(endMarker, startIndex + 1);
+
+    expect(startIndex).toBeGreaterThanOrEqual(0);
+    expect(endIndex).toBeGreaterThan(startIndex);
+
+    const section = compiled.slice(startIndex, endIndex);
+
+    expect(section.match(/<_components\.ol>/g) ?? []).toHaveLength(1);
+    expect(section.match(/<_components\.li>/g) ?? []).toHaveLength(itemCount);
+  }
+
+  function expectMarkersToStayInSameOrderedList(
+    compiled: string,
+    markers: string[],
+  ) {
+    const markerIndexes = markers.map((marker) => {
+      const markerIndex = compiled.indexOf(marker);
+      expect(markerIndex).toBeGreaterThanOrEqual(0);
+
+      return markerIndex;
+    });
+    const listRanges: Array<{ start: number; end: number }> = [];
+    const openListIndexes: number[] = [];
+
+    for (const match of compiled.matchAll(/<\/?_components\.ol>/g)) {
+      const token = match[0];
+      const index = match.index ?? 0;
+
+      if (token === '<_components.ol>') {
+        openListIndexes.push(index);
+      } else {
+        const start = openListIndexes.pop();
+
+        if (start !== undefined) {
+          listRanges.push({ start, end: index });
+        }
+      }
+    }
+
+    const containingList = listRanges.find(({ start, end }) => {
+      return markerIndexes.every((markerIndex) => {
+        return markerIndex > start && markerIndex < end;
+      });
+    });
+
+    expect(containingList).toBeDefined();
+  }
+
+  function expectListItemToContainMarkers(
+    compiled: string,
+    startMarker: string,
+    containedMarkers: string[],
+  ) {
+    const startIndex = compiled.indexOf(startMarker);
+    expect(startIndex).toBeGreaterThanOrEqual(0);
+
+    const itemCloseIndex = compiled.indexOf('</_components.li>', startIndex);
+    expect(itemCloseIndex).toBeGreaterThan(startIndex);
+
+    for (const marker of containedMarkers) {
+      const markerIndex = compiled.indexOf(marker, startIndex);
+
+      expect(markerIndex).toBeGreaterThan(startIndex);
+      expect(markerIndex).toBeLessThan(itemCloseIndex);
+    }
   }
 
   function listMarkdownFiles(root: string): string[] {
@@ -38,6 +113,10 @@ describe('docs content regressions', () => {
     }
 
     return files;
+  }
+
+  function readVoiceDoc(relativePath: string) {
+    return readFileSync(resolve(voiceDocsRoot, relativePath), 'utf8');
   }
 
   it('keeps block-style lists and notes out of GFM table cells', () => {
@@ -195,6 +274,140 @@ describe('docs content regressions', () => {
     ).toBeUndefined();
   });
 
+  it('uses specific titles for English top-level overview pages', async () => {
+    const { source } = await import('./source.server');
+
+    const overviewPages = [
+      {
+        expectedTitle: 'Voice Agent overview',
+        slugs: ['ai'],
+      },
+      {
+        expectedTitle: 'Realtime Media overview',
+        slugs: ['realtime-media', 'overview'],
+      },
+      {
+        expectedTitle: 'Solutions overview',
+        slugs: ['solutions'],
+      },
+      {
+        expectedTitle: 'Reference overview',
+        slugs: ['api-reference'],
+      },
+    ];
+
+    for (const { expectedTitle, slugs } of overviewPages) {
+      expect(source.getPage(slugs, 'en')?.data.title).toBe(expectedTitle);
+    }
+  });
+
+  it('keeps voice token server deployment steps in continuous ordered lists', async () => {
+    const source = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/voice/build/set-up-token-authentication/deploy-token-server.mdx',
+      ),
+      'utf8',
+    );
+
+    const compiled = String(
+      await compile(source, {
+        jsx: true,
+      }),
+    );
+
+    expectCompiledSectionToHaveSingleOrderedList(
+      compiled,
+      'Use the NPM package',
+      'Deploy with Docker',
+      4,
+    );
+    expectCompiledSectionToHaveSingleOrderedList(
+      compiled,
+      'Deploy with Docker',
+      'Manual local deployment',
+      3,
+    );
+    expectCompiledSectionToHaveSingleOrderedList(
+      compiled,
+      'Manual local deployment',
+      'Reference',
+      4,
+    );
+  });
+
+  it('keeps representative voice calling steps in continuous ordered lists', async () => {
+    const releaseNotes = String(
+      await compile(readVoiceDoc('reference/release-notes.mdx'), {
+        jsx: true,
+      }),
+    );
+    const notifications = String(
+      await compile(
+        readVoiceDoc('build/optimize-and-operate/receive-notifications.mdx'),
+        {
+          jsx: true,
+        },
+      ),
+    );
+    const quickstart = String(
+      await compile(readVoiceDoc('quickstart.mdx'), {
+        jsx: true,
+      }),
+    );
+
+    expectListItemToContainMarkers(releaseNotes, 'Local audio mixing', [
+      'startLocalAudioMixer',
+      'local video mixing feature',
+    ]);
+    expectListItemToContainMarkers(releaseNotes, 'External MediaProjection', [
+      'setExternalMediaProjection',
+      'more flexible screen capture',
+    ]);
+    expectMarkersToStayInSameOrderedList(notifications, [
+      'Set up Go',
+      'Create a Go project for your server',
+      'Run your Go server',
+      'Create a public URL for your server',
+      'Test the server',
+    ]);
+    expectListItemToContainNestedOrderedList(
+      quickstart,
+      'href="https://developer.android.com/studio/projects/create-project"',
+    );
+  });
+
+  it('keeps voice calling markdown free of hidden and ambiguous rendering syntax', () => {
+    const offenders: string[] = [];
+
+    for (const file of listMarkdownFiles(voiceDocsRoot)) {
+      const relativePath = relative(process.cwd(), file);
+      const source = readFileSync(file, 'utf8');
+
+      if (/[\u200B\u200C\u200D\uFEFF]/.test(source)) {
+        offenders.push(`${relativePath}: contains zero-width characters`);
+      }
+
+      if (/<CodeBlockTab value="php">\n\s*```js/.test(source)) {
+        offenders.push(`${relativePath}: PHP code block is labeled as js`);
+      }
+
+      if (
+        /^\s*```go\n\s*(?:go|npm|curl|docker|choco|ngrok|mkdir|cd)\b/m.test(
+          source,
+        )
+      ) {
+        offenders.push(`${relativePath}: shell command is labeled as go`);
+      }
+    }
+
+    const securitySource = readVoiceDoc('reference/security.md');
+    expect(securitySource).not.toContain(
+      '|Log |Media server logs generated by the Agora servers when accessing the Agora SDRTN®.| Media server logs do not contain text messages or personal information.|',
+    );
+    expect(offenders).toEqual([]);
+  });
+
   it('does not leave legacy videoURL placeholders in MDX content', () => {
     const sources = [
       'realtime-media/cloud-recording/build/receive-notifications.mdx',
@@ -322,6 +535,38 @@ describe('docs content regressions', () => {
     expect(processed).toContain('<CalloutContainer type="info">');
     expect(processed).toContain(
       '`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array',
+    );
+  });
+
+  it('keeps console REST API table slot callout content in processed markdown', async () => {
+    const { source } = await import('./source.server');
+    const page = source.getPage(
+      [
+        'api-reference',
+        'api-ref',
+        'console',
+        'solutions-agora-console-rest-api',
+      ],
+      'en',
+    );
+
+    expect(page).toBeDefined();
+    expect(page?.type).toBe('docs');
+
+    if (!page || !('getText' in page.data)) {
+      throw new Error(
+        'Expected console REST API page to expose processed markdown.',
+      );
+    }
+
+    const processed = await page.data.getText('processed');
+
+    expect(processed).toContain('| `enable_sign_key`');
+    expect(processed).not.toContain('<Slot name="enablesignkey"');
+    expect(processed).toContain('<CalloutContainer type="info">');
+    expect(processed).toMatch(/<CalloutTitle>\s*Note\s*<\/CalloutTitle>/);
+    expect(processed).toContain(
+      'After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey`',
     );
   });
 

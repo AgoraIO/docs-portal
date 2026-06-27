@@ -83,12 +83,12 @@ After account suspension, none of your projects can access Agora services. To 
 
 1. Add a credit card to your account or top up your balance using a bank account. This unfreezes your account and upgrades it to a paid account.
 
-2. Purchase a [pre-paid monthly package](https://docs.agora.io/en/agora-analytics/overview/subscription-packages) or [top-up package](https://docs.agora.io/en/agora-analytics/overview/subscription-packages). This option is highly recommended.
+2. Purchase a [pre-paid monthly package](/en/introduction/billing/subscription-packages) or [top-up package](/en/introduction/billing/subscription-packages). This option is highly recommended.
 
 ## Free-of-charge policy
 
 :::info
-> Agora offers a new [pricing](https://docs.agora.io/en/video-calling/overview/pricing) model. If your account uses this model, you receive a monthly free usage package by default instead of the 10,000 free minutes described below.
+> Agora offers a new [pricing](/en/realtime-media/video/reference/pricing) model. If your account uses this model, you receive a monthly free usage package by default instead of the 10,000 free minutes described below.
 
 Agora provides each account with 10,000 free minutes per month and deducts them in the following order:
 

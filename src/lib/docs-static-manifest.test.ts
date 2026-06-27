@@ -169,4 +169,44 @@ describe('docs-static-manifest', () => {
       }),
     ).resolves.toBeNull();
   });
+
+  it('redirects static platform group panel paths to the canonical payload path', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+        })
+        .mockResolvedValueOnce({
+          json: async () => ({
+            activePath: '/en/ai/get-started/platform-split',
+            body: {
+              kind: 'platform-group',
+              platformTabs: {
+                canonicalPlatform: 'ios',
+                platforms: '["ios","android"]',
+              },
+            },
+            markdownUrl:
+              '/llms.mdx/docs/en/ai/get-started/platform-split/index.md',
+          }),
+          ok: true,
+          status: 200,
+          statusText: 'OK',
+        }),
+    );
+
+    await expect(
+      resolvePlatformStaticDocsPayload({
+        locale: 'en',
+        slugSegments: ['get-started', 'platform-split', 'ios'],
+        tab: 'ai',
+      }),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/get-started/platform-split',
+    });
+  });
 });

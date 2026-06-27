@@ -153,7 +153,7 @@ describe('DocsSearchDialog', () => {
     });
   });
 
-  it('keeps the search dialog usable when lazy page loading fails', async () => {
+  it('keeps tabs usable and explains that page search is unavailable when lazy page loading fails', async () => {
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
@@ -194,6 +194,8 @@ describe('DocsSearchDialog', () => {
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
     ).toBeInTheDocument();
     expect(screen.getByText('AI')).toBeInTheDocument();
+    expect(screen.getByText('Search index unavailable.')).toBeInTheDocument();
+    expect(screen.queryByText('No matching pages found.')).toBeNull();
 
     fireEvent.click(screen.getByText('AI'));
 

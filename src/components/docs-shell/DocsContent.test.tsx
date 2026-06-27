@@ -192,6 +192,46 @@ describe('DocsContent', () => {
     ).toHaveTextContent('/v2/projects/{appid}/join');
   });
 
+  it('renders split-file platform group pages with tabbed panels', async () => {
+    renderWithRouter(
+      <DocsContent
+        body={{
+          canonicalPlatform: 'ios',
+          contentPath: 'en/ai/get-started/platform-split/index.mdx',
+          kind: 'platform-group',
+          panels: [
+            {
+              contentPath: 'en/ai/get-started/platform-split/ios.mdx',
+              platform: 'ios',
+            },
+            {
+              contentPath: 'en/ai/get-started/platform-split/android.mdx',
+              platform: 'android',
+            },
+          ],
+          platformTabs: {
+            canonicalPlatform: 'ios',
+            platforms: '["ios","android"]',
+          },
+          platforms: ['ios', 'android'],
+        }}
+        locale="en"
+        slug="platform-split"
+        title="Split platform page"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Split platform page' }),
+    ).toBeInTheDocument();
+    expect(await screen.findByTestId('platform-header-tabs')).toHaveTextContent(
+      '["ios","android"]',
+    );
+    expect(screen.getByText('en/ai/get-started/platform-split/index.mdx'));
+    expect(screen.getByText('en/ai/get-started/platform-split/ios.mdx'));
+  });
+
   it('renders full-page MDX content without the article max-width or mobile TOC', async () => {
     renderWithRouter(
       <DocsContent
@@ -520,6 +560,125 @@ describe('DocsTableOfContents', () => {
 
     expect(scrollTo).toHaveBeenCalledWith({ behavior: 'smooth', top: 126 });
     expect(link).toHaveAttribute('aria-current', 'location');
+  });
+
+  it('renders the mobile table of contents as a collapsed disclosure by default', async () => {
+    render(
+      <AppProviders>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 200, overflow: 'auto' }}
+        >
+          <h2 id="overview">Overview</h2>
+          <h3 id="details">Details</h3>
+        </div>
+        <DocsTableOfContents
+          toc={[
+            { depth: 2, title: 'Overview', url: '#overview' },
+            { depth: 3, title: 'Details', url: '#details' },
+          ]}
+          variant="mobile"
+        />
+      </AppProviders>,
+    );
+
+    const toggle = await screen.findByRole('button', {
+      name: 'On this page',
+    });
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: 'Overview' })).toBeNull();
+    expect(screen.queryByRole('link', { name: 'Edit this page' })).toBeNull();
+    expect(screen.queryByRole('link', { name: 'View on GitHub' })).toBeNull();
+
+    fireEvent.click(toggle);
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('link', { name: 'Overview' })).toHaveAttribute(
+      'href',
+      '#overview',
+    );
+    expect(screen.getByRole('link', { name: 'Details' })).toHaveAttribute(
+      'href',
+      '#details',
+    );
+    expect(
+      screen.getByRole('link', { name: 'Edit this page' }),
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/Shengwang-Community/docs-portal/tree/main/content/docs',
+    );
+    expect(
+      screen.getByRole('link', { name: 'View on GitHub' }),
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/Shengwang-Community/docs-portal',
+    );
+  });
+
+  it('keeps mobile heading links interactive and collapses after a selection', async () => {
+    render(
+      <AppProviders>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 200, overflow: 'auto' }}
+        >
+          <h2 id="target-heading">Target heading</h2>
+        </div>
+        <DocsTableOfContents
+          toc={[{ depth: 2, title: 'Target heading', url: '#target-heading' }]}
+          variant="mobile"
+        />
+      </AppProviders>,
+    );
+
+    const scrollContainer = screen.getByTestId('docs-main-desktop-scroll');
+    const heading = document.getElementById('target-heading');
+    const scrollTo = vi.fn();
+
+    expect(heading).toBeInstanceOf(HTMLElement);
+    Object.defineProperty(scrollContainer, 'scrollTop', {
+      configurable: true,
+      value: 10,
+      writable: true,
+    });
+    Object.defineProperty(scrollContainer, 'scrollTo', {
+      configurable: true,
+      value: scrollTo,
+    });
+    vi.spyOn(scrollContainer, 'getBoundingClientRect').mockReturnValue({
+      bottom: 300,
+      height: 200,
+      left: 0,
+      right: 800,
+      top: 100,
+      width: 800,
+      x: 0,
+      y: 100,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(heading as HTMLElement, 'getBoundingClientRect').mockReturnValue({
+      bottom: 260,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 240,
+      width: 800,
+      x: 0,
+      y: 240,
+      toJSON: () => ({}),
+    });
+
+    const toggle = await screen.findByRole('button', {
+      name: 'On this page',
+    });
+
+    fireEvent.click(toggle);
+    fireEvent.click(screen.getByRole('link', { name: 'Target heading' }));
+
+    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'smooth', top: 126 });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: 'Target heading' })).toBeNull();
   });
 
   it('updates the active item from the desktop container scroll position', async () => {

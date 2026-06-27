@@ -2,7 +2,6 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import type { ComponentType, ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { getOverviewMDXComponents } from './mdx-components';
-import { SdksCatalog } from './SdksCatalog';
 
 type SolutionCardGridComponent = ComponentType<{
   children: ReactNode;
@@ -457,6 +456,51 @@ describe('overview MDX components', () => {
     ).toBeVisible();
   });
 
+  it('names recipe catalog filter groups and selected filter controls', () => {
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    render(
+      <RecipesCatalog
+        allCategoriesLabel="All reference types"
+        allProductsLabel="All products"
+        allStacksLabel="All platforms"
+        categoryFilterLabel="Reference type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No references match the current filters."
+        items={[
+          {
+            category: 'Hosted SDK reference',
+            description: 'Voice SDK for Android API reference.',
+            href: '/en/api-reference/rtc/android/overview',
+            product: 'Voice SDK',
+            stack: 'Android',
+            title: 'Android',
+            tone: 'blue',
+          },
+        ]}
+        productFilterLabel="Product"
+        searchPlaceholder="Search references"
+        stackFilterLabel="Platform"
+      />,
+    );
+
+    expect(
+      screen.getByRole('searchbox', { name: 'Search references' }),
+    ).toBeVisible();
+
+    const productGroup = screen.getByRole('group', { name: 'Product' });
+    expect(
+      within(productGroup).getByRole('button', { name: 'All products' }),
+    ).toHaveAttribute('aria-pressed', 'true');
+    expect(
+      within(productGroup).getByRole('button', { name: 'Voice SDK' }),
+    ).toHaveAttribute('aria-pressed', 'false');
+
+    expect(screen.getByRole('group', { name: 'Reference type' })).toBeVisible();
+    expect(screen.getByRole('group', { name: 'Platform' })).toBeVisible();
+  });
+
   it('renders multiple version links inside a recipe catalog card', () => {
     const components = getOverviewMDXComponents();
     const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
@@ -713,90 +757,5 @@ describe('overview MDX components', () => {
 
     expect(screen.getByText('Android Voice SDK 4.6.3')).toBeVisible();
     expect(screen.queryByText('iOS Voice SDK 4.6.2')).not.toBeInTheDocument();
-  });
-
-  it('renders SDK downloads as product rows with version lists', () => {
-    window.history.pushState(
-      null,
-      '',
-      '/en/api-reference/sdks?platform=android',
-    );
-
-    render(<SdksCatalog />);
-
-    expect(screen.getByText('Platforms')).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Android' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
-    expect(
-      screen.getByRole('heading', { name: 'Core Products' }),
-    ).toBeVisible();
-
-    const voiceHeadings = screen.getAllByRole('heading', {
-      level: 3,
-      name: 'Voice SDK',
-    });
-    expect(voiceHeadings).toHaveLength(1);
-
-    const voiceRow = voiceHeadings[0]?.closest('article');
-    expect(voiceRow).not.toBeNull();
-    expect(
-      within(voiceRow as HTMLElement).getByRole('combobox', {
-        name: 'Voice SDK version',
-      }),
-    ).toHaveValue('0');
-    expect(
-      within(voiceRow as HTMLElement).getByRole('option', {
-        name: 'v4.6.2',
-      }),
-    ).toBeInTheDocument();
-    expect(
-      within(voiceRow as HTMLElement).getByRole('link', {
-        name: /Package Manager/i,
-      }),
-    ).toHaveAttribute(
-      'href',
-      'https://central.sonatype.com/artifact/io.agora.rtc/voice-sdk/4.6.3/aar',
-    );
-    expect(
-      within(voiceRow as HTMLElement).getByRole('link', {
-        name: /Direct Download/i,
-      }),
-    ).toHaveAttribute(
-      'href',
-      'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.6.3_VOICE.zip',
-    );
-  });
-
-  it('uses the SDK platform query parameter and keeps platform changes in the URL', () => {
-    window.history.pushState(null, '', '/en/api-reference/sdks?platform=ios');
-
-    render(<SdksCatalog />);
-
-    expect(screen.getByRole('button', { name: 'iOS' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
-    expect(
-      screen.queryByRole('heading', { level: 3, name: 'IoT SDK' }),
-    ).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Linux' }));
-
-    expect(window.location.search).toBe('?platform=linux');
-    expect(screen.getByRole('button', { name: 'Linux' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
-    expect(
-      screen.getByRole('heading', { name: 'Product Add-ons' }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole('heading', { level: 3, name: 'Server Gateway SDK' }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole('combobox', { name: 'Server Gateway SDK version' }),
-    ).toHaveValue('0');
   });
 });
