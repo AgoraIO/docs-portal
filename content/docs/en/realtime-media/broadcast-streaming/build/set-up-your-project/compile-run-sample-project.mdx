@@ -971,5 +971,76 @@ This page shows how to compile, configure, and run the Video SDK Python sample p
 
 ## Project setup
 
+### Get the sample project
+
+Run the following command to clone the Python Server SDK sample project:
+
+```bash
+git clone git@github.com:AgoraIO-Extensions/Agora-Python-Server-SDK.git
+cd Agora-Python-Server-SDK
+```
+
+The RTC examples are in the `agora_rtc/examples` directory. This page uses `example_audio_pcm_send.py` to send PCM audio from the server to a Broadcast Streaming channel.
+
+:::note
+The Python SDK is a server-side SDK. The sample project runs on Linux or macOS and sends or receives media streams as a server process.
+:::
+
+### Install dependencies
+
+1. Install the build tools required to compile the Python SDK:
+
+  ```bash
+  sudo apt install build-essential python3-dev
+  ```
+
+1. Install the Python package used by the sample project:
+
+  ```bash
+  pip3 install agora-python-server-sdk
+  ```
+
+1. On Linux, add the Agora native library directory from the installed Python package to `LD_LIBRARY_PATH`. Replace `<site-packages>` with the site-packages path for your Python environment:
+
+  ```bash
+  export LD_LIBRARY_PATH=<site-packages>/agora/agora_sdk:$LD_LIBRARY_PATH
+  ```
+
+  To find the site-packages path, run:
+
+  ```bash
+  python3 -c "import site; print(site.getsitepackages()[0])"
+  ```
+
+### Configure the sample project
+
+1. Download the test audio data and unzip it into the `Agora-Python-Server-SDK` directory:
+
+  ```bash
+  curl -L -o test_data.zip https://download.agora.io/demo/test/test_data_202408221437.zip
+  unzip test_data.zip
+  ```
+
+1. Prepare the App ID, channel name, user ID, and temporary token for your Agora project. If your project uses tokens, generate the token with the same channel name and user ID that you pass to the sample command.
+
 ## Run the sample project
+
+Run the `example_audio_pcm_send.py` sample from the `Agora-Python-Server-SDK` directory. Replace the placeholder values with the values for your project:
+
+```bash
+python3 agora_rtc/examples/example_audio_pcm_send.py \
+  --appId=<Your app ID> \
+  --token=<Your temporary token> \
+  --channelId=<Your channel name> \
+  --userId=6 \
+  --audioFile=./test_data/demo.pcm \
+  --sampleRate=16000 \
+  --numOfChannels=1
+```
+
+If your project allows joining a channel with only an App ID, omit the `--token` option.
+
+When the server successfully connects to the channel and starts sending PCM audio, the terminal prints connection logs and repeated `send pcm` log lines.
+
+To verify the stream, open the [Agora Web Demo](https://webdemo-global.agora.io/index.html), use the same App ID, token, and channel name, then join the channel as another client and subscribe to the server user's audio stream.
 </PlatformStructured>
