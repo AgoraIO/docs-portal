@@ -1324,6 +1324,34 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('maps an external page-tree item to an external sidebar node', () => {
+    const folder = {
+      $id: 'voice-video-group',
+      type: 'folder',
+      name: 'Voice & Video',
+      children: [
+        {
+          $id: 'vv-android',
+          type: 'page',
+          name: 'Android',
+          url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/index.html',
+          external: true,
+        },
+      ],
+    } as unknown as Parameters<typeof pageTreeNodeToSidebarNodes>[0];
+
+    const nodes = pageTreeNodeToSidebarNodes(folder);
+    const section = nodes.find((node) => node.type === 'section');
+    const child = section && 'children' in section ? section.children[0] : undefined;
+
+    expect(child).toMatchObject({
+      type: 'page',
+      external: true,
+      href: 'https://api-ref.agora.io/en/video-sdk/android/4.x/index.html',
+      title: 'Android',
+    });
+  });
+
   it('treats an unnamed separator as a section boundary without creating an empty section', () => {
     expect(
       mapSidebarEntriesToTree([
