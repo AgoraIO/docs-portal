@@ -190,4 +190,107 @@ describe('normalizeDocsHref', () => {
       kind: 'root',
     });
   });
+
+  it('normalizes legacy RTC and support links used by migrated Voice and Video docs', () => {
+    expect(normalizeDocsHref('/api-reference')).toEqual({
+      href: '/en/api-reference',
+      kind: 'root',
+    });
+
+    expect(normalizeDocsHref('/en/api-reference/rtc')).toEqual({
+      href: '/en/api-reference/api-ref/rtc',
+      kind: 'root',
+    });
+
+    expect(normalizeDocsHref('/media-push/product-overview')).toEqual({
+      href: '/en/api-reference/api-ref/rtc',
+      kind: 'root',
+    });
+
+    expect(
+      normalizeDocsHref(
+        '/help/integration-issues/token_cohost#enable-co-host-authentication',
+      ),
+    ).toEqual({
+      href: '/en/realtime-media/video/build/authenticate-users/deploy-token-server#enable-co-host-authentication',
+      kind: 'root',
+    });
+
+    expect(
+      normalizeDocsHref(
+        '/extensions-marketplace/get-started/quickstart-implement',
+      ),
+    ).toEqual({
+      href: '/en/api-reference/api-ref/extensions-marketplace/provisioning',
+      kind: 'root',
+    });
+  });
+
+  it('normalizes common moved Voice and Video source routes', () => {
+    expect(
+      normalizeDocsHref('../index.mdx', {
+        contentPath:
+          'en/realtime-media/voice/build/control-audio-and-devices/configure-audio-encoding.mdx',
+      }),
+    ).toEqual({
+      href: '/en/realtime-media/voice/quickstart',
+      kind: 'internal-doc',
+    });
+
+    expect(
+      normalizeDocsHref('../manage-agora-account.mdx', {
+        contentPath:
+          'en/realtime-media/video/build/customize-audio-processing/use-an-extension.mdx',
+      }),
+    ).toEqual({
+      href: '/en/realtime-media/video/manage-agora-account',
+      kind: 'internal-doc',
+    });
+
+    expect(
+      normalizeDocsHref('screen-sharing.mdx', {
+        contentPath:
+          'en/realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx',
+      }),
+    ).toEqual({
+      href: '/en/realtime-media/video/build/capture-and-render-video/screen-sharing',
+      kind: 'internal-doc',
+    });
+  });
+
+  it('normalizes index-suffixed docs routes', () => {
+    expect(
+      normalizeDocsHref('/en/realtime-media/video/index#quickstart'),
+    ).toEqual({
+      href: '/en/realtime-media/video#quickstart',
+      kind: 'root',
+    });
+  });
+
+  it('normalizes legacy Video Calling links from imported content', () => {
+    expect(
+      normalizeDocsHref(
+        '/video-calling/token-authentication/deploy-token-server#generate-wildcard-tokens',
+      ),
+    ).toEqual({
+      href: '/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens',
+      kind: 'root',
+    });
+
+    expect(
+      normalizeDocsHref('/video-calling/get-started/get-started-sdk'),
+    ).toEqual({
+      href: '/en/realtime-media/video/quickstart',
+      kind: 'root',
+    });
+  });
+
+  it('normalizes the legacy managed mode link to current presets docs', () => {
+    expect(
+      normalizeDocsHref('/conversational-ai/develop/managed-mode'),
+    ).toEqual({
+      href: '/en/ai/build/custom-model-integration/presets',
+      kind: 'root',
+    });
+  });
 });

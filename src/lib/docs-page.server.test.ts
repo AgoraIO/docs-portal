@@ -1347,6 +1347,63 @@ Web body
     });
   });
 
+  it('resolves platform alias URL segments to their canonical platform tabs', async () => {
+    const page = createPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## Shared intro
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="javascript" platform="javascript" />
+## React setup
+React body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="javascript" platform="web" />
+## Web setup
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale === 'zh-CN') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'introduction', ['about-agora', 'react-js']),
+    ).resolves.toMatchObject({
+      activePath: '/en/introduction/about-agora',
+      body: {
+        kind: 'mdx',
+        platformTabs: {
+          canonicalPlatform: 'javascript',
+          initialPlatform: 'javascript',
+          platforms: '["javascript","web"]',
+        },
+      },
+      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/javascript.md',
+      toc: [
+        {
+          depth: 2,
+          title: 'Shared intro',
+          url: '#shared-intro',
+        },
+        {
+          depth: 2,
+          title: 'React setup',
+          url: '#react-setup',
+        },
+      ],
+    });
+  });
+
   it('builds split-file platform group body payloads and hides panel pages', async () => {
     const parentPage = createPlatformGroupPage();
     const iosPage = createPlatformPanelPage('ios');

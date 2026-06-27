@@ -1233,8 +1233,12 @@ function toCalloutType(type: string | undefined) {
 }
 
 function isDisplayableParameter(
-  parameter: OpenApiRecord,
+  parameter: unknown,
 ): parameter is OpenApiParameter {
+  if (!isRecord(parameter)) {
+    return false;
+  }
+
   return (
     typeof parameter.name === 'string' &&
     typeof parameter.in === 'string' &&
