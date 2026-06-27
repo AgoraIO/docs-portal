@@ -45,13 +45,18 @@ ProductGroup = {
 ```
 
 - **Grouping key:** product `label`.
-- **Order of the flat list:** first appearance while scanning platforms in data
-  order, `core` before `addOns` within each platform. This naturally lists the
-  core products first and the two Linux-only add-ons last — without section
-  headings.
-- **Default platform** for a product: the first entry in its `platforms` list
-  (the platform where it first appeared).
-- **`info`/`productId`/icon:** taken from the default platform's product entry.
+- **Order of the flat product list:** first appearance while scanning platforms
+  in data order, `core` before `addOns` within each platform. This naturally
+  lists the core products first and the two Linux-only add-ons last — without
+  section headings.
+- **Order of a product's platform tabs:** the canonical `platformGroups` order
+  (android, ios, react-native, flutter, web, react-js, electron, windows, macos,
+  linux, unity, unreal-engine), filtered to the platforms that offer the
+  product — not raw data order. (All 12 platforms are covered by the groups.)
+- **Default platform** for a product: the **first available platform in that
+  canonical order** (Android for the core products), which is the first tab.
+- **`info`/`productId`/icon:** taken from the default platform's product entry
+  (fixed per product; the header does not change when switching tabs).
 
 ## Layout
 
@@ -62,8 +67,11 @@ Each product panel (`article`, labelled by the product name):
 - **Header:** the product icon (the existing `SdkProductIcon`, kept) + product
   name (`h3`) + one-line description.
 - **Platform tabs:** underline-style tabs listing only the platforms that offer
-  this product. The active tab uses the brand token; tabs are buttons with
-  `aria-selected`/pressed state. Default = the product's first platform.
+  this product, ordered by the canonical platform grouping. The active tab uses
+  the brand token; tabs are buttons with `aria-selected`/pressed state. Default
+  = the product's first (canonical-order) platform. Products available on a
+  single platform still render one tab (always selected) — no special-casing,
+  for consistency.
 - **Per selected platform:**
   - A **version selector** (the existing `getVersionMeta` option labels), latest
     default.
