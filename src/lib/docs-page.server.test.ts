@@ -3365,6 +3365,7 @@ Web body
           fullPath: '/virtual/content/docs/en/api-reference/recipes/index.md',
           path: 'en/api-reference/recipes/index.md',
         },
+        hideToc: true,
         title: 'Recipes',
       },
     });
@@ -3394,6 +3395,7 @@ Web body
       title: 'Recipes',
     });
     expect(payload.layoutMode).toBe('docs');
+    expect(payload.hideToc).toBe(true);
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
       expect.arrayContaining([
         '/en/api-reference/recipes',

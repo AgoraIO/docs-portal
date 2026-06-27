@@ -390,6 +390,7 @@ export async function loadDocsPagePayload(
     description: page.data.description,
     markdownUrl: getPageMarkdownUrl(page, requestedPlatform).url,
     layoutMode,
+    hideToc: page.data.hideToc ?? false,
     localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
       const targetPage = source.getPage(page.slugs.slice(1), targetLocale);
       const targetTabEntry = getFirstTabPageUrl(
