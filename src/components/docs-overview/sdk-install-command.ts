@@ -55,11 +55,21 @@ export function deriveInstallCommand(
       return spec ? { tool: 'npm', command: `npm i ${spec}` } : null;
     }
     case 'www.npmjs.com': {
-      // /package/<name>
-      if (segments[0] === 'package' && segments[1]) {
-        return { tool: 'npm', command: `npm i ${segments[1]}` };
+      // /package/<name> or /package/@scope/name, optionally followed by /v/<version>
+      if (segments[0] !== 'package' || !segments[1]) {
+        return null;
       }
-      return null;
+      const scoped = segments[1].startsWith('@');
+      if (scoped && !segments[2]) {
+        return null;
+      }
+      const name = scoped ? `${segments[1]}/${segments[2]}` : segments[1];
+      const versionIndex = scoped ? 3 : 2;
+      const pinned =
+        segments[versionIndex] === 'v' && segments[versionIndex + 1]
+          ? `@${segments[versionIndex + 1]}`
+          : '';
+      return { tool: 'npm', command: `npm i ${name}${pinned}` };
     }
     case 'swiftpackageindex.com': {
       // /<owner>/<repo>

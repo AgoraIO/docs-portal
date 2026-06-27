@@ -11,7 +11,9 @@ describe('deriveInstallCommand', () => {
   it('derives a Gradle command from a Maven Central URL', () => {
     expect(
       deriveInstallCommand(
-        v('https://central.sonatype.com/artifact/io.agora.rtc/voice-sdk/4.6.3/aar'),
+        v(
+          'https://central.sonatype.com/artifact/io.agora.rtc/voice-sdk/4.6.3/aar',
+        ),
       ),
     ).toEqual({
       tool: 'Gradle',
@@ -35,7 +37,10 @@ describe('deriveInstallCommand', () => {
       deriveInstallCommand(
         v('https://pub.dev/packages/agora_rtc_engine/versions/6.6.2'),
       ),
-    ).toEqual({ tool: 'Flutter', command: 'flutter pub add agora_rtc_engine:6.6.2' });
+    ).toEqual({
+      tool: 'Flutter',
+      command: 'flutter pub add agora_rtc_engine:6.6.2',
+    });
   });
 
   it('derives an unpinned Flutter command from a pub.dev package URL', () => {
@@ -56,9 +61,27 @@ describe('deriveInstallCommand', () => {
     ).toEqual({ tool: 'npm', command: 'npm i agora-chat' });
   });
 
+  it('pins the version from a versioned npmjs URL', () => {
+    expect(
+      deriveInstallCommand(
+        v('https://www.npmjs.com/package/agora-electron-sdk/v/4.1.0'),
+      ),
+    ).toEqual({ tool: 'npm', command: 'npm i agora-electron-sdk@4.1.0' });
+  });
+
+  it('handles a scoped, versioned npmjs package', () => {
+    expect(
+      deriveInstallCommand(
+        v('https://www.npmjs.com/package/@netless/fastboard/v/1.1.0'),
+      ),
+    ).toEqual({ tool: 'npm', command: 'npm i @netless/fastboard@1.1.0' });
+  });
+
   it('derives a Swift Package URL from a Swift Package Index URL', () => {
     expect(
-      deriveInstallCommand(v('https://swiftpackageindex.com/AgoraIO/AgoraAudio_iOS')),
+      deriveInstallCommand(
+        v('https://swiftpackageindex.com/AgoraIO/AgoraAudio_iOS'),
+      ),
     ).toEqual({
       tool: 'Swift Package Manager',
       command: 'https://github.com/AgoraIO/AgoraAudio_iOS',
@@ -67,15 +90,15 @@ describe('deriveInstallCommand', () => {
 
   it('derives a pip command from a pypi URL', () => {
     expect(
-      deriveInstallCommand(v('https://pypi.org/project/agora-python-server-sdk/')),
+      deriveInstallCommand(
+        v('https://pypi.org/project/agora-python-server-sdk/'),
+      ),
     ).toEqual({ tool: 'pip', command: 'pip install agora-python-server-sdk' });
   });
 
   it('returns null for github release/source pages', () => {
     expect(
-      deriveInstallCommand(
-        v('https://github.com/AgoraIO/AgoraChat_iOS.git'),
-      ),
+      deriveInstallCommand(v('https://github.com/AgoraIO/AgoraChat_iOS.git')),
     ).toBeNull();
   });
 

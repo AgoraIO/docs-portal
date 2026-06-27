@@ -230,7 +230,6 @@ function SdkProductCard({
             {`${product.label} version`}
           </label>
           <select
-            aria-label={`${product.label} version`}
             className="h-9 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
             id={productVersionId}
             onChange={(event) => setActiveVersionIndex(event.target.value)}
@@ -272,7 +271,7 @@ function SdkGetSection({
         <span className="text-[0.66rem] font-semibold uppercase tracking-[0.05em] text-muted-foreground">
           {command.tool}
         </span>
-        <div className="flex items-center justify-between gap-3 rounded-lg border border-fd-border bg-fd-card px-3.5 py-2.5">
+        <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card px-3.5 py-2.5">
           <code className="min-w-0 truncate font-mono text-[0.82rem] text-foreground">
             {command.command}
           </code>
@@ -336,6 +335,7 @@ function CopyButton({ value }: { value: string }) {
 
   return (
     <button
+      aria-label="Copy install command"
       className="shrink-0 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
       onClick={async () => {
         await navigator.clipboard.writeText(value);
@@ -427,12 +427,12 @@ function getVersionMeta(version: SdkDownloadVersion, index: number) {
   const isLatest = /\(Latest\)|\bLatest\b/i.test(compactLabel);
   const isLite = /\bLite\b/i.test(compactLabel);
   const isLegacy = /\bLegacy\b/i.test(compactLabel);
-  const states = [
+  const tags = [
     isLatest ? 'Latest' : null,
     isLite ? 'Lite' : null,
     isLegacy ? 'Legacy' : null,
     !isLatest && !isLegacy && index > 0 ? 'Previous' : null,
-  ].filter((state): state is VersionState => Boolean(state));
+  ].filter(Boolean);
   const displayLabel = compactLabel
     .replace(/^version\s+/i, 'v')
     .replace(/^vVersion\s+/i, 'v')
@@ -440,12 +440,8 @@ function getVersionMeta(version: SdkDownloadVersion, index: number) {
     .trim();
 
   return {
-    displayLabel,
-    optionLabel: states.length
-      ? `${displayLabel} - ${states.join(', ')}`
+    optionLabel: tags.length
+      ? `${displayLabel} - ${tags.join(', ')}`
       : displayLabel,
-    states: states.length ? states : (['Previous'] satisfies VersionState[]),
   };
 }
-
-type VersionState = 'Latest' | 'Lite' | 'Legacy' | 'Previous';
