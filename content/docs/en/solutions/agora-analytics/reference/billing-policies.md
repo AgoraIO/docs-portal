@@ -10,7 +10,7 @@ This page explains billing, account settlement, end-of-life policies, and any ap
 Agora Console provides billing information, fee deduction details, and account suspension notices based on your account type.
 
 :::info
-> If you have signed a contract with Agora, the contract terms override all billing, deduction, and suspension details described on this page.
+If you have signed a contract with Agora, the contract terms override all billing, deduction, and suspension details described on this page.
 :::
 
 ### Paid accounts
@@ -88,7 +88,8 @@ After account suspension, none of your projects can access Agora services. To 
 ## Free-of-charge policy
 
 :::info
-> Agora offers a new [pricing](/en/realtime-media/video/reference/pricing) model. If your account uses this model, you receive a monthly free usage package by default instead of the 10,000 free minutes described below.
+Agora offers a new [pricing](/en/realtime-media/video/reference/pricing) model. If your account uses this model, you receive a monthly free usage package by default instead of the 10,000 free minutes described below.
+:::
 
 Agora provides each account with 10,000 free minutes per month and deducts them in the following order:
 
@@ -126,7 +127,8 @@ Agora provides each account with 10,000 free minutes per month and deducts them 
 If your total service minutes do not exceed 10,000 minutes, the service is free-of-charge. After the 10,000 free-of-charge minutes are fully deducted, Agora charges you for the additional service minutes. Agora clears any remaining free-of-charge minutes at the end of each calendar month.
 
 :::info
-> The 10,000 free-of-charge minutes policy does not apply to the Signaling SDK, the Chat SDK, or the IoT SDK.
+The 10,000 free-of-charge minutes policy does not apply to the Signaling SDK, the Chat SDK, or the IoT SDK.
+:::
 
 ### How service minutes are calculated
 
@@ -177,9 +179,11 @@ Agora calculates service minutes **by the number of users**. Service minutes are
 To ensure billing transparency and smooth service continuity, Agora implements real-time account balance reservation based on estimated usage across all Agora products for SSP customers. This does not apply to customers with a signed contract.
 
 :::info
-> For uninterrupted access to Agora's products and services, ensure at least one of the following:
-> - Add a valid credit card for auto-recharge to your Agora account, **or**
-> - Maintain sufficient funds in your Agora Console balance to cover your estimated usage.
+For uninterrupted access to Agora's products and services, ensure at least one of the following:
+
+- Add a valid credit card for auto-recharge to your Agora account, **or**
+- Maintain sufficient funds in your Agora Console balance to cover your estimated usage.
+:::
 
 Agora employs the following policies to manage your account balance and ensure uninterrupted access to its products and services.
 
@@ -257,9 +261,10 @@ During the Retirement phase, products entering the EOS/EOL phase will continue t
 | After 12 months | Agora no longer supports the product or service, unless a support extension was arranged before the end of the 12-month period. |
 
 :::info
-> Using an SDK beyond its maintenance support cycle is not recommended and is entirely at the developer's discretion and risk.
+Using an SDK beyond its maintenance support cycle is not recommended and is entirely at the developer's discretion and risk.
 
 Agora is committed to delivering the best SDK experience to its developers. This policy ensures that you have access to the latest features and security updates with clear guidance on the support timelines.
+:::
 
 ### Support extensions
 

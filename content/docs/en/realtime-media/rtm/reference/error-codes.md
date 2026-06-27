@@ -1,11 +1,9 @@
 ---
 title: "Error codes"
-description: "Error codes returned by the Signaling RESTful APIs, with causes and suggested actions."
+description: "Error codes returned by the Signaling SDK and RESTful APIs."
 ---
 
-This page lists the error codes returned by the Signaling RESTful APIs. Use these codes to help debug issues when developing applications with the Agora Signaling RESTful APIs.
-
-For SDK error codes across each platform, see [Troubleshooting](./troubleshooting).
+This page lists the error codes returned by the Signaling SDK and RESTful APIs. Use these codes to help debug issues when developing applications with Agora Signaling.
 
 ## RESTful API error codes
 
@@ -28,3 +26,16 @@ This section describes the meaning of each error code, provides possible causes,
 | `435` | Invalid payload | The message payload contains illegal or unsupported content. | Modify the payload and resend the request. |
 | `500` | Internal server error | An unexpected error occurred on the server. | Retry the request. |
 | `503` | Timeout | The request took too long to process. | Retry the request. |
+
+## SDK error codes
+
+When calling Signaling SDK APIs, failures are typically returned through the SDK callback result or error object for the current platform. The payload usually includes:
+
+- `errorCode`: The SDK error code for the current operation.
+- `reason`: A description of the error.
+- `operation`: The operation that triggered the error, when available.
+
+For currently maintained SDK-side error handling details, see:
+
+- [Troubleshooting](./troubleshooting) for logging setup and the SDK error payload structure available in this portal.
+- [Signaling API reference](https://docs.agora.io/en/signaling/reference/api) for platform-specific SDK enumerations, callback contracts, and error-related data structures.

@@ -22,7 +22,8 @@ To enable  Agora Analytics integration with Datadog:
     ![](/images/analytics/apply-datadog-package.png)
 
     :::info
-    > You can use Datadog with Agora Analytics only if Datadog integration is included in your Datadog package.
+    You can use Datadog with Agora Analytics only if Datadog integration is included in your Datadog package.
+    :::
 
 4. On the configuration page, select the **Metrics** you want to monitor with Datadog.
 
@@ -43,7 +44,8 @@ To enable  Agora Analytics integration with Datadog:
     ![](/images/analytics/datadog-integration-step-4.png)
 
     :::info
-    > It can take up to five minutes before data push is resumed or stopped after you change the status.
+    It can take up to five minutes before data push is resumed or stopped after you change the status.
+    :::
 
 You are now ready to use Datadog to analyze use of your Agora products.
 

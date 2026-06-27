@@ -26,11 +26,43 @@ ABR layers are independent. Enabling ABR does not automatically create a low str
 
 Configure ABR encoding in stream configuration templates using the `settings.transcoding.video.simulcastStreamLayers` parameter.
 
+### API endpoint
+
+Use the **Create or reset template** API to configure ABR layers:
+
+- Method: `PUT`
+- Endpoint: `https://api.agora.io/{region}/v1/projects/{appId}/rtls/ingress/stream-templates/{templateId}`
+- Authentication: HTTP Basic authentication or HMAC authentication
+
+Path parameters:
+
+| Parameter | Required | Description |
+| --- | --- | --- |
+| `region` | Yes | Region for the streaming template. Supported values are `na`, `eu`, `ap`, and `cn`. Use the same region as the input source stream. |
+| `appId` | Yes | The App ID of your Agora project. |
+| `templateId` | Yes | The flow configuration template ID. The value can contain only letters and numbers and cannot exceed 12 bytes. |
+
+Relevant request fields:
+
+| Field | Required | Description |
+| --- | --- | --- |
+| `settings.transcoding.video.enabled` | Yes | Enables video transcoding. Set this field to `true` when you configure ABR layers. |
+| `settings.transcoding.video.width` | Yes | Encoding width of the main stream in pixels. Required when adaptive bitrate is enabled. |
+| `settings.transcoding.video.height` | Yes | Encoding height of the main stream in pixels. Required when adaptive bitrate is enabled. |
+| `settings.transcoding.video.fps` | No | Video encoding frame rate in fps. If omitted or set to `0`, the source stream frame rate is used. |
+| `settings.transcoding.video.bitrate` | No | Encoding bitrate of the main stream in Kbps. If omitted, the source stream bitrate is used. If set to `0`, Agora automatically chooses a bitrate based on width and height. |
+| `settings.transcoding.video.simulcastStreamLayers` | Yes | Array of layer transcoding parameters. If specified, ABR is enabled. |
+| `settings.transcoding.video.simulcastStreamLayers[].id` | Yes | Layer ID. Supported values range from `1` to `7`. |
+| `settings.transcoding.video.simulcastStreamLayers[].width` | No | Encoding width of the layer in pixels. If specified, it must be smaller than `video.width` and decrease monotonically as the layer ID increases. |
+| `settings.transcoding.video.simulcastStreamLayers[].height` | No | Encoding height of the layer in pixels. If specified, it must be smaller than `video.height` and decrease monotonically as the layer ID increases. |
+| `settings.transcoding.video.simulcastStreamLayers[].fps` | No | Encoding frame rate of the layer in fps. If specified, it must be smaller than `video.fps`. If omitted or set to `0`, the main stream frame rate is used. |
+| `settings.transcoding.video.simulcastStreamLayers[].bitrate` | Yes | Encoding bitrate of the layer in Kbps. It must be smaller than `video.bitrate` and decrease monotonically by layer ID. |
+
 ### Request example
 
 ```bash
 curl --request PUT \
-  --url http://${host}/${region}/v1/projects/${appid}/rtls/ingress/stream-templates/${templateId} \
+  --url https://api.agora.io/${region}/v1/projects/${appId}/rtls/ingress/stream-templates/${templateId} \
   --header 'Content-Type: application/json' \
   --header 'Authorization: Basic XXXXXX' \
   --data '{
@@ -64,6 +96,8 @@ curl --request PUT \
 - Specify at least one dimension for the main stream when ABR is enabled
 - Specify at least one dimension for each ABR layer
 - Specify bitrates in decreasing order by Layer ID
+- If specified, layer width and height must decrease monotonically as the Layer ID increases
+- If specified, each layer FPS must be lower than the main stream FPS
 - Clients must specify the Layer ID when subscribing to receive the corresponding quality layer
 
 ### Layer ID selection
