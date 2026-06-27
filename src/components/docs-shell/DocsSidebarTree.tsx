@@ -315,35 +315,23 @@ function SidebarLinkedSection({
 
   return (
     <SidebarMenuItem>
-      <div className="relative">
-        <SidebarMenuButton
-          asChild
-          className={cn(sidebarToggleClassName, 'overflow-visible')}
-          isActive={url === activePath}
-        >
-          <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
-            <span className="flex min-w-0 items-center gap-2">
-              <SidebarConfiguredIcon icon={icon} />
-              <span className={sidebarSectionTitleClassName}>{title}</span>
-            </span>
-            <span aria-hidden="true" className="size-4 shrink-0" />
-          </Link>
-        </SidebarMenuButton>
-        <button
-          aria-expanded={isOpen}
-          aria-label={`Toggle ${title}`}
-          className="absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded-md text-[color:var(--ink-3)] outline-hidden ring-sidebar-ring hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:ring-2"
-          onClick={() => setIsOpen((value) => !value)}
-          type="button"
-        >
-          <ChevronDownIcon
-            className={cn(
-              'size-4 shrink-0 transition-transform',
-              isOpen ? 'rotate-0' : '-rotate-90',
-            )}
-          />
-        </button>
-      </div>
+      <SidebarMenuButton
+        aria-expanded={isOpen}
+        className={cn(sidebarToggleClassName, 'overflow-visible')}
+        onClick={() => setIsOpen((value) => !value)}
+        type="button"
+      >
+        <span className="flex min-w-0 items-center gap-2">
+          <SidebarConfiguredIcon icon={icon} />
+          <span className={sidebarSectionTitleClassName}>{title}</span>
+        </span>
+        <ChevronDownIcon
+          className={cn(
+            'size-4 shrink-0 transition-transform',
+            isOpen ? 'rotate-0' : '-rotate-90',
+          )}
+        />
+      </SidebarMenuButton>
       {isOpen ? (
         <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {items.map((child) =>
