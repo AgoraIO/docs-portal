@@ -48,17 +48,17 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
     To integrate the extension in your project:
 
         1. Enter the [Extensions Marketplace](https://console.agora.io/v2/extensions-marketplace) and download the **Dubbing AI Voice Changer** extension package. After unzipping, save all `.aar` files to the project folder `/app/libs`.
-        1. Get the following resource files and save them in the same directory of the project folder. For example, a new `vc_model` directory:
+        2. Get the following resource files and save them in the same directory of the project folder. For example, a new `vc_model` directory:
             - License file and tone files: Contact Agora to obtain these files. The suffix of the tone file is `.dat`, and the tone file is issued according to the license.
             - Model file: Download the required resources.
             ![Resource Files](/images/extensions-marketplace/resource-files.png)
-        1. Open the `app/build.gradle` file and add the following lines under `dependencies`:
+        3. Open the `app/build.gradle` file and add the following lines under `dependencies`:
 
             ```java
             implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
             ```
 
-1. **Enable the plugin**
+2. **Enable the plugin**
 
     After creating and initializing `RtcEngine`, call `enableExtension` to enable the plug-in, before you call other APIs such as `enableVideo` and `joinChannel`.
 
@@ -87,7 +87,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
         mRtcEngine.enableExtension(EXTENSION_VENDOR_NAME, EXTENSION_AUDIO_FILTER, enable)
         ```
 
-1. **Set the resource file path**
+3. **Set the resource file path**
 
     When you download and integrate the plug-in, the license, sound, and model files are saved to the specified directory. In this step, you specify the path where these resource files are located.
 
@@ -95,7 +95,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
         val modelPath: String = "${context.filesDir}${File.separator}vc_model"
         ```
 
-1. **Get the tone list**
+4. **Get the tone list**
 
     After receiving the `onExtensionStarted` callback from Agora SDK, call `getExtensionProperty` passing in the `getSpeakersInfo` key to get the timbre list:
 
@@ -111,7 +111,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
 
     The timbre list is returned as JSON data that you parse yourself.
 
-1. **Start changing**
+5. **Start changing**
 
     Call `setExtensionProperty` and pass in the corresponding `key` and `value`:
 
@@ -124,7 +124,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
         )
         ```
 
-1. **Select timbre**
+6. **Select timbre**
 
     Pass in the timbre ID from the obtained timbre list to set the corresponding timbre:
 
@@ -137,7 +137,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
         )
         ```
 
-1. **Stop changing**
+7. **Stop changing**
 
     Call the API to stop the voice changer:
 
@@ -150,7 +150,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
         )
         ```
 
-1. **Release resources**
+8. **Release resources**
 
      Close the plug-in and release the resources used by the plug-in:
 
@@ -166,14 +166,14 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
     To integrate the extension in your project:
 
         1. Enter the [Extensions Marketplace](https://console.agora.io/v2/extensions-marketplace) page and download the plug-in package for **Extensions** plug-in.
-        1. Unzip the folder, import all `.framework` files into the project, and modify `Embed` to `Embed & Sign`.
-        1. Get the following resource files and save them in the same directory of the project folder (For example, Resource path):
+        2. Unzip the folder, import all `.framework` files into the project, and modify `Embed` to `Embed & Sign`.
+        3. Get the following resource files and save them in the same directory of the project folder (For example, Resource path):
             - License file and tone files: Contact Agora to obtain these files. The suffix of the tone file is named `.dat`, and the tone file is issued according to the license.
             - Model file: Download the required resources.
             ![Resource Files](/images/extensions-marketplace/resource-files.png)
-        1. Import the `libc++` system library and third-party dynamic libraries into the project `MJExtension`.
+        4. Import the `libc++` system library and third-party dynamic libraries into the project `MJExtension`.
 
-1. **Enable the plugin**
+2. **Enable the plugin**
 
         After creating and initializing `RtcEngine`, call `enableExtensionWithVendor` to enable the plug-in, before you call other APIs such as `enableVideo`, and `joinChannelByToken`
 
@@ -189,7 +189,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
         [self.agoraKit enableExtensionWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" enabled:YES];
         ```
 
-1. **Set the resource file path**
+3. **Set the resource file path**
 
     When you download and integrate the plug-in, the license, sound, and model files are saved to the specified directory. In this step, you specify the path where these resource files are located.
 
@@ -198,7 +198,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
         [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"setResourcesFilePath" value:sourcePath];
         ```
 
-1. **Get the tone list**
+4. **Get the tone list**
 
     After receiving the `onExtensionStarted` callback from Agora SDK, call `getExtensionPropertyWithVendor` passing in the `getSpeakersInfo` key to get the timbre list:
 
@@ -211,7 +211,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
 
     The timbre list is returned as JSON data that you parse yourself.
 
-1. **Start changing**
+5. **Start changing**
 
     Call `setExtensionPropertyWithVendor` and pass in the corresponding `key` and `value`:
 
@@ -219,7 +219,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
         [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"startRealTimeTranscribe" value:@"startRealTimeTranscribe"];
         ```
 
-1. **Select timbre**
+6. **Select timbre**
 
     Pass in the timbre ID from the obtained timbre list to set the corresponding timbre:
 
@@ -227,7 +227,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
         [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"changeSpeaker" value:@“”];
         ```
 
-1. **Stop changing**
+7. **Stop changing**
 
     Call the API to stop the voice changer:
 
@@ -235,7 +235,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
         [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"stopRealTimeTranscribe" value:@"stopRealTimeTranscribe"];
         ```
 
-1. **Release resources**
+8. **Release resources**
 
     Close the plug-in and release the resources used by the plug-in:
 
