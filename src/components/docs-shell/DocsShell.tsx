@@ -55,7 +55,6 @@ import { DocsTocRail } from './DocsTocRail';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
-const DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME = 'max-w-[min(100%,1600px)]';
 const DOCS_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
 const DOCS_FILL_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)]';
@@ -167,12 +166,11 @@ export function DocsShell({
     '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
   const isOpenApiLayout = layoutMode === 'openapi';
-  // Both openapi and hideToc drop the toc rail and let content fill the grid;
-  // only openapi widens the overall shell.
+  // openapi and hideToc drop the toc rail and let content fill the grid; every
+  // layout shares the same outer shell footprint so the sidebar/nav/content
+  // align across page types.
   const contentFillsWidth = isOpenApiLayout || hideToc;
-  const shellWidthClassName = isOpenApiLayout
-    ? DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME
-    : DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
+  const shellWidthClassName = DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
   const desktopGridClassName = contentFillsWidth
     ? DOCS_FILL_DESKTOP_GRID_CLASS_NAME
     : DOCS_DESKTOP_GRID_CLASS_NAME;
