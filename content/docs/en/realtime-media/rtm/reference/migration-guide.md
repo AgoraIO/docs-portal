@@ -450,8 +450,6 @@ rtmClient.getPresence().setState("channelName", RtmChannelType.MESSAGE, stateIte
     }
 
     @Override
-    can someone please explain this to me
-
     public void onFailure(ErrorInfo errorInfo) {
         // Handle errors
     }
