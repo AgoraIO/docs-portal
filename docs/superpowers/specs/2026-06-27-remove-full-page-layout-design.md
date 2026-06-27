@@ -14,8 +14,11 @@ width:
 - `/en/api-reference/api-ref`
 
 Each sets `full: true` in frontmatter, which resolves to the `full-page` layout
-mode. `full-page` is one of three layout modes (`docs | full-page | openapi`)
-and is treated as a "wide" layout: the shell expands to `min(100%, 1600px)`, the
+mode. `full-page` here is one of three layout modes (`docs | full-page | openapi`) —
+not to be confused with `CONTEXT.md`'s "full-page" migration-fidelity term,
+which is about how completely a migrated page reproduces its source and is
+unrelated to and unaffected by this change. The layout mode
+is treated as a "wide" layout: the shell expands to `min(100%, 1600px)`, the
 content column becomes `minmax(0, 1fr)`, the content wrapper drops its max-width
 (`max-w-none`), and the table-of-contents rail is replaced by an empty 220px
 placeholder. The result is sprawling content (~1100px) with a dead right gutter.
@@ -50,6 +53,11 @@ The catalog components are built for width — `FaqCatalog` has a 2-pane (`lg`) 
 `sdks` and `faq` have no markdown headings, so their TOC rail will be empty —
 identical to any other heading-less docs page. Accepted as consistent.
 
+The mobile table of contents is also re-enabled (`DocsContent.tsx:253` suppresses
+it only in wide layouts): on mobile, `recipes` and `api-ref` show a single-item
+TOC for their `## Browse all recipes` heading, while `sdks`/`faq` render nothing.
+Accepted as normal-docs-consistent.
+
 ## Why openapi is unaffected
 
 A page resolves to `openapi` only when `isOpenApiPage` (`page.type === 'openapi'`)
@@ -79,11 +87,12 @@ Delete the `full: true` frontmatter line from:
 - `src/lib/docs-layout.ts`:
   - `DocsLayoutMode` becomes `'docs' | 'openapi'`.
   - Delete `isWideDocsLayout` (every caller collapses to `=== 'openapi'`).
-- `src/lib/docs-page.server.ts` (`resolveDocsLayoutMode`, ~line 949):
-  - Returns `'openapi'` when `isOpenApiPage` is true, else `'docs'`. Drop the
-    `'full' in page.data && page.data.full ? 'full-page'` branch. The
-    `isOpenApiPage` parameter already incorporates `openApiLaneRoute !== null`
-    at the call site (line 306-309); that wiring is unchanged.
+- `src/lib/docs-page.server.ts`:
+  - Delete the `resolveDocsLayoutMode` helper (~line 949) entirely. Its `page`
+    argument becomes unused once the `full` branch is gone, leaving only
+    `isOpenApiPage ? 'openapi' : 'docs'`. Inline that expression at the call
+    site (line 306-309): `const layoutMode = isOpenApiPage || openApiLaneRoute !== null ? 'openapi' : 'docs'`.
+    The `openApiLaneRoute !== null` wiring is unchanged.
 
 ### Components
 Replace `isWideLayout` / `isWideDocsLayout(...)` with explicit
@@ -113,16 +122,25 @@ Update existing tests to the two-mode world, then add a regression guard.
     to `layoutMode="openapi"` — the remaining wide mode with the same
     `max-w-none` behavior. Rename the test titles to reference openapi.
 - `src/components/docs-shell/DocsShell.test.tsx`:
-  - Remove the `keeps the full-page layout …` test (~line 584) and the
-    `docs-toc-rail-placeholder` assertions (~line 573, 599). The placeholder no
-    longer exists; catalog pages now render the real TOC rail.
+  - Delete the entire `keeps the full-page layout …` test (lines 584-605); it
+    asserts the placeholder is present (line 599), which no longer exists.
+  - Leave the adjacent openapi test (lines 558-582) untouched — its
+    `expect(queryByTestId('docs-toc-rail-placeholder')).not.toBeInTheDocument()`
+    at line 573 stays true and meaningful after the placeholder div is removed.
+  - Catalog pages now render the real TOC rail (docs mode); this is covered by
+    existing docs-layout tests, not by the deleted full-page test.
 - `src/lib/docs-page.server.test.ts`:
   - The assertion `expect(payload.layoutMode).toBe('full-page')` for
     `loadDocsPagePayload('en', 'api-reference', ['recipes'])` (~line 3397)
     becomes `toBe('docs')`.
-- Add a regression test (new or in an existing content-invariant suite)
-  asserting none of the four catalog MDX files set `full: true`, locking the
-  fix against reintroduction.
+  - Extend this behavioral guard to the other three catalog routes — assert
+    `layoutMode === 'docs'` for `loadDocsPagePayload('en', 'api-reference', ['sdks'])`,
+    `['faq']`, and `['api-ref']` — so all four are locked to docs layout. Reuse
+    the existing test's payload setup/fixtures.
+  - Do **not** add a frontmatter-grep test for `full: true`. Once `full` is
+    removed from the schema and the resolver, that key is inert (zod strips it),
+    so such a test would guard against an impossible regression and give false
+    confidence. The behavioral `layoutMode === 'docs'` assertions are the guard.
 
 Manual check (once): load the four URLs and confirm the content band matches a
 normal docs page (720px), and spot-check one real openapi endpoint page
