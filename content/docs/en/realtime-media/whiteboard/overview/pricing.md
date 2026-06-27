@@ -121,7 +121,7 @@ You can check your usage of Interactive Whiteboard in Agora Console. Perform the
 
 3. Click **Duration** under **Whiteboard**, select a time frame, and check the usage duration.
 
- ![](https://web-cdn.agora.io/docs-files/1620288770652)
+    ![](https://web-cdn.agora.io/docs-files/1620288770652)
 
 - The time frame cannot exceed 12 months.
 - Only Agora accounts that are assigned with the role of Admin or Finance have access to the usage statistics.

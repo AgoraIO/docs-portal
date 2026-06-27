@@ -19,19 +19,19 @@ Follow these steps to enable the Flexible Classroom service in Agora Console:
 1. Log into Agora Console and navigate to the [Project Management](https://console.agora.io/v2/project-management) page.
 2. On the **Project Management** page, find the project for which you want to enable the Flexible Classroom service, and click **Edit**.
 
-   ![](https://web-cdn.agora.io/docs-files/1641364355621)
+    ![](https://web-cdn.agora.io/docs-files/1641364355621)
 
 3. Under **Extensions**, find **Flexible Classroom** and click **Enable**.
 
-   ![](https://web-cdn.agora.io/docs-files/1641364671472)
+    ![](https://web-cdn.agora.io/docs-files/1641364671472)
 
 4. Read the pop-up prompt carefully, and click **Enable**.
 
-   ![](https://web-cdn.agora.io/docs-files/1641364770765)
+    ![](https://web-cdn.agora.io/docs-files/1641364770765)
 
 5. After you successfully enable the Flexible Classroom service, the status changes to **Enabled**:
 
-   ![](https://web-cdn.agora.io/docs-files/1641364962001)
+    ![](https://web-cdn.agora.io/docs-files/1641364962001)
 
 ## Configure the whiteboard feature
 
@@ -41,7 +41,7 @@ To configure the whiteboard feature, take the following steps:
 
 1. On the Flexible Classroom configuration page in Agora Console, find the whiteboard module:
 
-   ![configure-whiteboard-feature](/images/flexible-classroom/configure-whiteboard-feature.png)
+    ![configure-whiteboard-feature](/images/flexible-classroom/configure-whiteboard-feature.png)
 
 2. To use PPT, Word, PDF and other courseware, you need to enable advanced services. Go to Configuration under Advanced Services to enable and configure the document-to-webpage, document-to-picture, and screenshot services for Smart Classroom. For details, see [Enable whiteboard server-side features](https://docs.agora.io/en/interactive-whiteboard/get-started/enable-whiteboard).
 
@@ -84,7 +84,7 @@ To setup and configure storage and recording in for your classrooms:
 
      1. Find the cloud recording module on the **Flexible Classroom configuration** page in Agora Console:
 
-        ![](https://web-cdn.agora.io/docs-files/1641368314262)
+         ![](https://web-cdn.agora.io/docs-files/1641368314262)
 
         :::note
         The recording config can be set to default. Set the storage config to customized; otherwise, the recording cannot be stored in your OSS account.
@@ -165,11 +165,11 @@ To enable and configure Chat:
 
 3. In the **Features** section of the **Edit Project** page, click **Enable/Configure** next to **Chat**.
 
-   ![](/images/flexible-classroom/enable-chat.png)
+    ![](/images/flexible-classroom/enable-chat.png)
 
 4. Select the data center location.
 
-   ![](/images/flexible-classroom/select-data-center.png)
+    ![](/images/flexible-classroom/select-data-center.png)
 
     Agora generates the Chat-related `AppKey`, `OrgName`, `AppName`, and API access information.
 
@@ -177,7 +177,7 @@ To enable and configure Chat:
 
 6. In the **Chat** section, complete the required fields:
 
-   ![](/images/flexible-classroom/synchronize-chat.png)
+    ![](/images/flexible-classroom/synchronize-chat.png)
 
    - **API host**: The REST API access address generated when enabling Chat.
    - **orgName**: The unique identifier of the enterprise generated when enabling Chat.

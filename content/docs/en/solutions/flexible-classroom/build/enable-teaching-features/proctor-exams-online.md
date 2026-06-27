@@ -65,17 +65,17 @@ Take the following steps to join and proctor an exam:
 
 1. Open the [Flexible Classroom web demo](/en/solutions/flexible-classroom/quickstart) and click **Create** to create a room.
 
-   ![flexible_classroom_web_demo](/images/flexible-classroom/fc_web_demo.png)
+    ![flexible_classroom_web_demo](/images/flexible-classroom/fc_web_demo.png)
 
 2. Enter the classroom name, class start and end time, then select **Online Proctoring** in **Class mode** and click **Create**.
 
-   ![create_classroom_web_demo](/images/flexible-classroom/create_classroom_web_demo.png)
+    ![create_classroom_web_demo](/images/flexible-classroom/create_classroom_web_demo.png)
 
     In the Flexible Classroom demo, the room creator holds the examiner role by default. You have now successfully created a classroom under the proctoring use-case.
 
 3. Test your hardware before entering the room to ensure that you can monitor the exam.
 
-   ![online_proctoring](/images/flexible-classroom/online_proctoring.png)
+    ![online_proctoring](/images/flexible-classroom/online_proctoring.png)
 
 4. Once hardware is successfully tested, click **Next step** to enter the room. After you enter the room, the exam starts
 automatically at the preset time. You can also click **Start Exam** to start the exam manually.
@@ -111,17 +111,17 @@ Take the following steps to join and take an exam in a supervised environment:
 
 1. Open the [Flexible Classroom web demo](/en/solutions/flexible-classroom/quickstart) and click **Join**.
 
-   ![join_classroom](/images/flexible-classroom/join_classroom.png)
+    ![join_classroom](/images/flexible-classroom/join_classroom.png)
 
 2. Enter the room ID, select the **Student** role, and click **Join**.
 
-   ![enter_name](/images/flexible-classroom/enter_name.png)
+    ![enter_name](/images/flexible-classroom/enter_name.png)
 
    In the Flexible Classroom demo, a room joiner holds the examinee role by default.
 
 3. Test your device capabilities before entering the room.
 
-   ![join_exam](/images/flexible-classroom/join_exam.png)
+    ![join_exam](/images/flexible-classroom/join_exam.png)
 
 4. Once your hardware is successfully tested, click **Join Exam**. After entering the classroom, you see the exam paper,
 the video from your main and secondary camera, and the video of your shared screen. You also see the examiner's video

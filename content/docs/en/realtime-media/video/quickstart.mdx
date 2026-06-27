@@ -40,9 +40,9 @@ This section shows you how to set up your Android project and install the Agora 
   1. Set the project name and storage path.
   1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
 
-:::note
-  After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
-:::
+      :::note
+      After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+      :::
 
 **Add to an existing project**
 1. Add a new activity to your project.
@@ -952,9 +952,9 @@ Follow these steps to create a project in Xcode:
 
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application** select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
 
-:::note
-  If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
-:::
+    :::note
+    If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+    :::
 
 2. [Set up automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your projects.
 
@@ -1019,9 +1019,9 @@ Use one of the following methods to install Voice SDK.
 
 1. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
-:::note
-  Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
-:::
+    :::note
+    Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
+    :::
 :::note
 The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
 :::
@@ -1481,9 +1481,9 @@ Follow these steps to create a project in Xcode:
 
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application** select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
 
-:::note
-  If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
-:::
+    :::note
+    If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+    :::
 
 2. [Set up automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your projects.
 
@@ -1548,9 +1548,9 @@ Use one of the following methods to install Voice SDK.
 
 1. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
-:::note
-  Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
-:::
+    :::note
+    Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
+    :::
 :::note
 The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
 :::
@@ -4586,10 +4586,10 @@ Take the following steps to test the sample code:
 
 1. Run the app.
 
-:::warning
+    :::warning
 
-  Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
-:::
+    Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
+    :::
 <CodeBlockTabs defaultValue="android">
 <CodeBlockTabsList>
   <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
@@ -6196,11 +6196,11 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
   1. Double-click to open **agoraLevel** and click **Open Level Blueprint**.
 
-    ![image](/images/video-sdk/unreal-setup-ui-4.png)
+      ![image](/images/video-sdk/unreal-setup-ui-4.png)
 
   1. Right-click and enter **Create Widget** in the search box. Select the created **AgoraWidget**, create **Event BeginPlay** and **Add to Viewport** in the same way. Connect them as follows:
 
-    ![image](/images/video-sdk/unreal-setup-ui-5.png)
+      ![image](/images/video-sdk/unreal-setup-ui-5.png)
 
   3. Save your changes and run the project.
 
@@ -6337,7 +6337,7 @@ This section guides you through the implementation of basic real-time audio inte
 
 1. Double-click **BasicAudioCallScene** and click **Blueprints > Open Level Blueprint** above the editor to open the level blueprint.
 
-  ![image](/images/video-sdk/quickstart-implementation-blueprint-1.png)
+    ![image](/images/video-sdk/quickstart-implementation-blueprint-1.png)
 
 ### Implement basic processes​
 In the **My Blueprint** panel, double-click **Graphs > EventGraph** to open the event graph. You see two event nodes: **Event BeginPlay** (game starts) and **Event End Play** (game ends). Create event nodes with the corresponding functions and variables, and connect them as shown in the following figure to implement the Voice Calling logic:
@@ -6388,13 +6388,13 @@ Add variables to create an engine instance and join a channel.
 
 1. In the **Load Agora Config** function, add the **Sequence** node, and then connect **Set Token**, **Set Channel Id**, and **Set App Id** respectively. Fill in the token, channel name, and app ID values obtained from Agora Console.
 
-  ![image](/images/video-sdk/quickstart-implementation-blueprint-4.png)
+    ![image](/images/video-sdk/quickstart-implementation-blueprint-4.png)
 
 ### Initialize RTC engine​
 
 1. If your target platform is Android, check whether system permissions have been granted before initializing the RTC engine. Refer to the following figure to create nodes for adding permissions to access the microphone and camera in the **CheckPermission** function.
 
-  ![image](/images/video-sdk/quickstart-implementation-blueprint-5.png)
+    ![image](/images/video-sdk/quickstart-implementation-blueprint-5.png)
 
 :::note
   If your target platform is macOS or iOS, please refer to [How do I add the permissions needed for real-time interaction to my Unreal Engine project?](https://docs.agora.io/en/help/integration-issues/unreal_permissions)
@@ -6402,7 +6402,7 @@ Add variables to create an engine instance and join a channel.
 
 1. To initialize the RTC engine, in the **InitRtcEngine** function, create and connect nodes as shown in the following figure:
 
-  ![image](/images/video-sdk/quickstart-implementation-blueprint-6-voice-sdk.png)
+    ![image](/images/video-sdk/quickstart-implementation-blueprint-6-voice-sdk.png)
 
  1. Create `IRtcEngine` and `IRtcEngineEventHandler`.
 
@@ -6451,7 +6451,7 @@ Add variables to create an engine instance and join a channel.
 
     1. Create a **Bind Event** function. In this function, add a **Sequence** node, and then bind the `onJoinChannelSuccess`, `onLeaveChannel`, `onUserJoined`, and `onUserOffline` callback events.
 
-      ![image](/images/video-sdk/quickstart-implementation-blueprint-7.png)
+        ![image](/images/video-sdk/quickstart-implementation-blueprint-7.png)
 
   1. `IRtcEngine` initialization
 
@@ -6465,7 +6465,7 @@ To bind UI events:
 
 1. Create and implement the `OnJoinChannelClicked` event callback.
 
-  ![Join Channel Clicked](/images/video-sdk/quickstart-implementation-blueprint-8-voice-sdk.png)
+    ![Join Channel Clicked](/images/video-sdk/quickstart-implementation-blueprint-8-voice-sdk.png)
 
   1. Call **Enable Audio** to enable the audio modules.
   2. Call **Join Channel** to join the channel.
@@ -6477,11 +6477,11 @@ To bind UI events:
 
 1. Create and implement the `OnLeaveChannelClicked` event callback. When the event is triggered, call **Leave Channel** to leave the channel.
 
-  ![Leave Channel Clicked](/images/video-sdk/quickstart-implementation-blueprint-9.png)
+    ![Leave Channel Clicked](/images/video-sdk/quickstart-implementation-blueprint-9.png)
 
 1. In the **Bind UIEvent** function, refer to the figure below to bind the `OnJoinChannelClicked` and `OnLeaveChannelClicked` callback functions to the **Join Channel** and **Leave Channel** buttons respectively. When the button is clicked, the corresponding event callback is triggered.
 
-  ![Bind Join Leave Callbacks](/images/video-sdk/quickstart-implementation-blueprint-10-voice-sdk.png)
+    ![Bind Join Leave Callbacks](/images/video-sdk/quickstart-implementation-blueprint-10-voice-sdk.png)
 :::note
 You can also bind UI events in Unreal Motion Graphics (UMG). This document only shows binding using the **Bind UIEvent Function**.
 :::
@@ -6491,19 +6491,19 @@ Configure the previously created `onJoinChannelSuccess`, `onLeaveChannel`, `onUs
 
 1. After the local user successfully joins the channel, the `onJoinChannelSuccess` callback is triggered and the local view is created. The `uid` is set to `0` by default, but it is assigned a random value by the SDK. The video source type is `VIDEO_SOURCE_CAMERA_PRIMARY` (first camera):
 
-  ![Join Channel Success Callback](/images/video-sdk/quickstart-implementation-blueprint-13-voice-sdk.png)
+    ![Join Channel Success Callback](/images/video-sdk/quickstart-implementation-blueprint-13-voice-sdk.png)
 
 2. After the local user leaves the channel, the `onLeaveChannel` callback is triggered which releases the local view:
 
-  ![Leave Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-14-voice-sdk.png)
+    ![Leave Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-14-voice-sdk.png)
 
 3. When a remote user joins the channel, the `onUserJoined` callback is triggeredd to create a remote view. `uid` is the uid sent from the remote end, and the video source type is `VIDEO_SOURCE_REMOTE` (remote video obtained from the network):
 
-  ![Remote User Join Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-15-voice-sdk.png)
+    ![Remote User Join Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-15-voice-sdk.png)
 
 4. When a remote user leaves the channel, the `onUserOffline` callback is triggered to release the remote view:
 
-  ![Remote User Leave Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-16-voice-sdk.png)
+    ![Remote User Leave Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-16-voice-sdk.png)
 
 ### Leave the channel and release resources​
 

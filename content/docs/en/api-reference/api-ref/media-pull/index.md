@@ -407,9 +407,9 @@ After using the above parameters, Agora's server queries and lists the cloud pla
 2. Set the space size of each page.
 3. List the cloud players in the specified page.
 
-:::info
-Agora's server lists the cloud players in ascending order by `createTs`.
-:::
+    :::info
+    Agora's server lists the cloud players in ascending order by `createTs`.
+    :::
 
 #### Request header
 

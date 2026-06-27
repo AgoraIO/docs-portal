@@ -35,9 +35,9 @@ To use the RSS feed in an feed reader:
 1. Copy the URL from the address bar.
 1. Paste the URL into your feed reader's **Add subscription** or **Add feed** section.
 1. Save and view your subscription. 
-:::note
-After you subscribe to the RSS feed, you start receiving the latest updates about the status of Agora's products and services. Check your RSS reader regularly to stay aware of product and service events.
-:::
+    :::note
+    After you subscribe to the RSS feed, you start receiving the latest updates about the status of Agora's products and services. Check your RSS reader regularly to stay aware of product and service events.
+    :::
 #### Historical events
 
 To view a list of historical events for selected products & services during the past year:

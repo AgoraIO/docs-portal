@@ -78,19 +78,19 @@ To register a user, do the following:
 
 1. On the **Project Management** page, click **Config** for the project that you want to use.
 
-	![](https://web-cdn.agora.io/docs-files/1664531061644)
+    ![](https://web-cdn.agora.io/docs-files/1664531061644)
 
 2. On the **Edit Project** page, click **Config** next to **Chat** below **Features**.
 
-	![](https://web-cdn.agora.io/docs-files/1664531091562)
+    ![](https://web-cdn.agora.io/docs-files/1664531091562)
 
 3. In the left-navigation pane, select **Operation Management** > **User** and click **Create User**.
 
-	![](https://web-cdn.agora.io/docs-files/1664531141100)
+    ![](https://web-cdn.agora.io/docs-files/1664531141100)
 
 4. In the **Create User** dialog box, fill in the **User ID**, **Nickname**, and **Password**, and click **Save** to create a user.
 
-	![](https://web-cdn.agora.io/docs-files/1664531162872)
+    ![](https://web-cdn.agora.io/docs-files/1664531162872)
 
 ### Generate an app token
 
@@ -106,15 +106,15 @@ For testing purposes, Agora Console supports generating temporary tokens for Cha
 
 1. On the **Project Management** page, click **Config** for the project that you want to use.
 
-	![](https://web-cdn.agora.io/docs-files/1664531061644)
+    ![](https://web-cdn.agora.io/docs-files/1664531061644)
 
 2. On the **Edit Project** page, click **Config** next to **Chat** below **Features**.
 
-	![](https://web-cdn.agora.io/docs-files/1664531091562)
+    ![](https://web-cdn.agora.io/docs-files/1664531091562)
 
 3. In the **Data Center** section of the **Application Information** page, enter the [user ID](#userid) in the **Chat User Temp Token** box and click **Generate** to generate a token with user privileges.
 
-	![](https://web-cdn.agora.io/docs-files/1664531214169)
+    ![](https://web-cdn.agora.io/docs-files/1664531214169)
 
 ## Change the Chat plan
 
@@ -124,7 +124,7 @@ For testing purposes, Agora Console supports generating temporary tokens for Cha
 
 3. On the **Subscribe** tab, you can change your Chat plan by clicking **Subscribe** next to the desired plan.
 
-   ![img](https://web-cdn.agora.io/docs-files/1665389469534)
+    ![img](https://web-cdn.agora.io/docs-files/1665389469534)
 
    **Note:** 
    - The plan change takes effect immediately.
@@ -154,7 +154,7 @@ Before unsubscribing Chat, disable all projects that have Chat enabled.
 
 3. On the **Subscribe** tab, scroll down to the bottom and click **Unsubscribe**.
 
-   ![img](https://web-cdn.agora.io/docs-files/1665389814916)
+    ![img](https://web-cdn.agora.io/docs-files/1665389814916)
 
     **Note:**
 

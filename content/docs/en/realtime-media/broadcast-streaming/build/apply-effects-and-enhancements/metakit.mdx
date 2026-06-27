@@ -869,8 +869,8 @@ To enable the MetaKit extension, follow these steps:
 
 1. Call `setExtensionProperty` to request texture and render the virtual human scene. Set `key` to `requestTexture` and `value` to include the scene configuration information. To experience the virtual human feature, set `avatarMode` to `0` for the virtual human scene mode and specify the avatar as your desired virtual human image, such as girl or huamulan.
 
-:::info
-:::
+    :::info
+    :::
   > In addition to the default avatars, `girl` and `huamulan`, the Agora MetaKit extension offers an open artistic ecosystem. It supports **one-click import** of virtual human models created according to Agora's art standards, providing users with more flexible creation and integration options. Contact Agora [technical support](mailto:extensions.marketplace@agora.io) to use this feature.
 
 <CodeBlockTabs defaultValue="java">
@@ -2333,7 +2333,7 @@ Agora provides extension support in the XCFramework format for the `arm64` archi
 :::
 1. Open your project in Xcode and [add the required dynamic libraries](https://help.apple.com/xcode/mac/current/#/dev51a648b07), ensuring that the **Embed** attribute of the added dynamic libraries is set to **Embed & Sign**.
 
-  ![Dynamic libraries](/images/extensions-marketplace/metakit-extension-ios-step2.png)
+    ![Dynamic libraries](/images/extensions-marketplace/metakit-extension-ios-step2.png)
 
 ### Configure MetaKit
 
@@ -2453,9 +2453,9 @@ To enable the Face Capture extension, follow these steps:
   1. Call `registerExtensionWithVendor` and `enableExtensionWithVendor` to register and enable the extension, specifying the extension service provider name (`agora_video_filters_face_capture`) and extension name (`face_capture`).
   1. Call `setExtensionPropertyWithVendor` to authenticate and authorize the AI module of the extension, where `key` is `authentication_information`, and `value` includes the company name (`company_id`) and face capture license (`license`).
 
-:::note
-Contact [Agora](mailto:extensions.marketplace@agora.io) to obtain the company name and face capture license.
-:::
+      :::note
+      Contact [Agora](mailto:extensions.marketplace@agora.io) to obtain the company name and face capture license.
+      :::
   ```swift
   // Register Face Capture extension
   agoraEngine?.registerExtension(withVendor: "agora_video_filters_face_capture", extension: "face_capture", sourceType: AgoraMediaSourceType.primaryCamera)

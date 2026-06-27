@@ -175,13 +175,13 @@ To switch to a new Certificate, follow these steps:
 
 1.  Follow the on-screen instructions to complete verification. If verified successfully, the **Delete** button disappears, and the current Secondary Certificate (the original Primary Certificate) is deleted.
 
-:::warning
+    :::warning
     Once a certificate is deleted, it cannot be restored. Before deleting the secondary certificate, make sure that most users have switched to the new certificate to avoid the following consequences:
 
         - All tokens generated using the deleted certificate become invalid, and users can no longer use these tokens to join channels.
         - Users who have joined the channel cannot specify new tokens through `renewToken`.
 
-:::
+    :::
 
 ## Check usage
 
@@ -295,11 +295,11 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
 
    1. Log in to your Okta developer account as a user with administrative privileges and click **Admin** in the upper right corner.
 
-      ![okta-admin](/images/common/okta-admin.png)
+       ![okta-admin](/images/common/okta-admin.png)
 
    1. Go to **Applications** > **Applications** and click **Create App Integration**.
 
-      ![okta-create-app-integration](/images/common/okta-create-app-integration.png)
+       ![okta-create-app-integration](/images/common/okta-create-app-integration.png)
 
    1. In the **Sign-in method** section, select **SAML 2.0** and click **Next**.
 
@@ -319,7 +319,7 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
 
    1. On the **Feedback** tab, select **I'm an Okta customer adding an internal app** and tick **This is an internal app that we have created**, then click **Finish**.
 
-      ![okta-feedback](/images/common/okta-feedback.png)
+       ![okta-feedback](/images/common/okta-feedback.png)
 
 1. View IdP information in Okta Console
 
@@ -359,7 +359,7 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
    - Automated management with SCIM
 
      1. In Agora Console, enable **SCIM API Basic Auth** on the **SSO Management** page. A set of username and password is generated, along with the SCIM connector base URL.
-        ![scim-enabled](/images/common/scim-enabled.png)
+         ![scim-enabled](/images/common/scim-enabled.png)
      1. In Okta Console, select the **General** tab under **Agora integration** and click **Edit**.
      1. In the **Provisioning** section, select **SCIM** and click **Save**.
      1. Select the **Provisioning** tab under **Agora integration**, then under **Settings** > **Integration** click **Edit**. Make the following changes:

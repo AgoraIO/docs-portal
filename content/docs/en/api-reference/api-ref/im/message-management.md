@@ -71,10 +71,10 @@ Follow the instructions below to implement sending messages:
    1. Call the [upload-file](#upload) method to upload images, voice messages, videos, or other types of files, and get the file `file_uuid` from the response body.
    2. Call the send-message method, and pass the `file_uuid` in the request body.
 
-:::info
-When calling the RESTful APIs to send a message, you can use the `from` field to specify the message sender.
-The maximum data length of the request body and extension fields is 5 KB, or the error 413 will be returned.
-:::
+       :::info
+       When calling the RESTful APIs to send a message, you can use the `from` field to specify the message sender.
+       The maximum data length of the request body and extension fields is 5 KB, or the error 413 will be returned.
+       :::
 
 ### Send a one-to-one message
 

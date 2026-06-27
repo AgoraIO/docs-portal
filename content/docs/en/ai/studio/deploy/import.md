@@ -53,7 +53,7 @@ To update the configuration of an imported phone number:
 
 1. In Agent Studio, select **Phone Numbers** from the sidebar.
 
-   ![Import phone number](/images/conversational-ai/studio/import-phone-number-1.png)
+    ![Import phone number](/images/conversational-ai/studio/import-phone-number-1.png)
 
 2. Locate the phone number you want to edit.
 3. From the action menu, select **Edit**.

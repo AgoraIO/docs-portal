@@ -19,9 +19,9 @@ Media Push enables you to stream audio and video from Agora channels to CDNs and
 
 
 
-:::info
-You cannot disable the service once you enable it.
-:::
+    :::info
+    You cannot disable the service once you enable it.
+    :::
 
 The Media Push panel shows an **Active** label. You have now enabled Media Push.
 

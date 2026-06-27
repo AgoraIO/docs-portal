@@ -142,7 +142,7 @@ The following example shows how to add a functional component `agora-demo`:
 
 1. Create a new folder `packages/agora-classroom-sdk/src/ui-kit/components` under the directory, containing the corresponding files `.agora-demo`, `index.tsx`, `index.css`, and `index.stories.tsx`:
 
-   ![](https://web-cdn.agora.io/docs-files/1649913888493)
+    ![](https://web-cdn.agora.io/docs-files/1649913888493)
 
     ```tsx
     // index.css
@@ -179,7 +179,7 @@ The following example shows how to add a functional component `agora-demo`:
 
 2. Add `export * from './agora-demo';` to `packages/agora-classroom-sdk/src/ui-kit/components/index.ts`. You can see this function component in Storybook, as follows:
 
-  [](https://web-cdn.agora.io/docs-files/1649914019254)
+    ![Storybook component preview](https://web-cdn.agora.io/docs-files/1649914019254)
 
 ### Edit an existing functional component
 

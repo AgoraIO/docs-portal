@@ -352,11 +352,11 @@ After successfully logging in to the Chat SDK, you can configure the push policy
 1. On the project configuration page, select **Features** > **Push Certificate**.
 1. On the Push Certificate page, click **Add Push Certificate**. In the dialog box that pops up, select the **Apple** tab and configure the fields.
 
-:::info
-If you use FCM push, select the **Google** tab and configure the FCM push parameters.
-:::
+    :::info
+    If you use FCM push, select the **Google** tab and configure the FCM push parameters.
+    :::
 
-![push_apns_add_certificate](/images/im/push_apns_add_certificate.png)
+    ![push_apns_add_certificate](/images/im/push_apns_add_certificate.png)
 
 | Parameter        | Type    | Required (Yes/No) | Description         |
 | :--------- | :----- | :------- | :----------------------- |

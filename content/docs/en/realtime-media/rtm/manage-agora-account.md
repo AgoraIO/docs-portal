@@ -77,11 +77,11 @@ The following steps apply to the new version of Agora Console. If you are using 
 
 1. Select your project on the [Projects](https://console.agora.io/v2) page and click the corresponding pencil icon to configure it.
 
-   ![configure_project](/images/signaling/configure_project.png)
+    ![configure_project](/images/signaling/configure_project.png)
 
 1. Go to **All features** > **Signaling** > **Basic information** and select a data center in the dropdown.
 
-   ![project_settings_signaling](/images/signaling/project_settings_signaling.png)
+    ![project_settings_signaling](/images/signaling/project_settings_signaling.png)
 
 :::info
    The data center setting determines the storage location for user state data, channel metadata, and user metadata for your application. Once you select a data center, this setting cannot be changed.
@@ -90,7 +90,7 @@ The following steps apply to the new version of Agora Console. If you are using 
 
 1. Go to **Subscriptions** > **Signaling** and subscribe to a plan.
 
-   ![signaling-pricing-page](/images/signaling/signaling-pricing-plans.png)
+    ![signaling-pricing-page](/images/signaling/signaling-pricing-plans.png)
 
    Once subscribed, you will be able to unsubscribe from the same page.
 

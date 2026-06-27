@@ -120,11 +120,11 @@ Taking OBS as an example, configure it as shown below:
 
 1. On the **Settings > Output > Live** page, configure the video profile, keyframe interval, and x264 options.
 
-![Encoder settings](/images/media-gateway/obs-encoder-settings.png)
+    ![Encoder settings](/images/media-gateway/obs-encoder-settings.png)
 
 2. On the **Settings > Video** page, configure common frame rates.
 
-![FPS settings](/images/media-gateway/obs-fps-setting.png)
+    ![FPS settings](/images/media-gateway/obs-fps-setting.png)
 
 ## Next steps
 

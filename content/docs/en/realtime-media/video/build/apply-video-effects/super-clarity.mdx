@@ -88,10 +88,10 @@ When subscribing to a remote video track, follow these steps to enable the Super
 1. Call the extension's `createProcessor` method to create the extension's processor and listen to related events.
 1. Call the SDK's `IRemoteVideoTrack.pipe` method to connect the pipeline between the Super Clarity extension and the video track.
 1. Call the `enable` method of the extension to activate it. After enabling, play the video track to see the effect of the Super Clarity extension.
-:::warning
+    :::warning
 
-To avoid performance issues caused by multiple processors working simultaneously, you can create a maximum of two processors. As a result, the Super Clarity extension can only be applied to a maximum of two video tracks at the same time.
-:::
+    To avoid performance issues caused by multiple processors working simultaneously, you can create a maximum of two processors. As a result, the Super Clarity extension can only be applied to a maximum of two video tracks at the same time.
+    :::
 ```typescript
 async function onUserPublished(user, mediaType) {
  if (!context.client || mediaType !== "video" || !!context.uid) {
