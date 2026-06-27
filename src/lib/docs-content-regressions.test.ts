@@ -182,6 +182,90 @@ describe('docs content regressions', () => {
     expect(offenders).toEqual([]);
   });
 
+  it('does not leave standalone Note labels unconverted in docs content', () => {
+    const offenders: string[] = [];
+
+    for (const file of listMarkdownFiles(allDocsRoot)) {
+      const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+
+      for (let index = 0; index < lines.length; index += 1) {
+        if (/^\s*Note:\s*$/.test(lines[index])) {
+          offenders.push(
+            `${relative(process.cwd(), file)}:${index + 1}: ${lines[index]}`,
+          );
+        }
+      }
+    }
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('renders AI Noise Suppression Wasm notes as callouts', async () => {
+    const { source } = await import('./source.server');
+    const pages = [
+      [
+        'solutions',
+        'interactive-live-streaming',
+        'build',
+        'apply-effects-and-enhancements',
+        'ai-noise-suppression',
+      ],
+      [
+        'realtime-media',
+        'marketplace',
+        'build',
+        'add-audio-effects',
+        'ains',
+      ],
+      [
+        'realtime-media',
+        'broadcast-streaming',
+        'build',
+        'apply-effects-and-enhancements',
+        'ai-noise-suppression',
+      ],
+      [
+        'realtime-media',
+        'voice',
+        'build',
+        'enhance-the-audio-experience',
+        'ai-noise-suppression',
+      ],
+      [
+        'realtime-media',
+        'video',
+        'build',
+        'enhance-the-audio-experience',
+        'ai-noise-suppression',
+      ],
+    ];
+
+    for (const slugs of pages) {
+      const page = source.getPage(slugs, 'en');
+
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
+
+      if (!page || !('getText' in page.data)) {
+        throw new Error(
+          `Expected page ${slugs.join('/')} to expose processed markdown.`,
+        );
+      }
+
+      const processed = await page.data.getText('processed');
+      const corsIndex = processed.indexOf('CORS policy');
+      const noteStart = processed.lastIndexOf(
+        '<CalloutContainer type="info">',
+        corsIndex,
+      );
+      const noteEnd = processed.indexOf('</CalloutContainer>', noteStart);
+
+      expect(noteStart).toBeGreaterThanOrEqual(0);
+      expect(corsIndex).toBeGreaterThan(noteStart);
+      expect(corsIndex).toBeLessThan(noteEnd);
+    }
+  });
+
   it('keeps agora analytics call inspector headings free of inline raw anchors', () => {
     const source = readFileSync(
       resolve(
