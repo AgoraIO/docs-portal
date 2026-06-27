@@ -12,8 +12,9 @@ Starting from version 3.8.200, Agora recommends using the `AES_128_GCM2` or `AES
 Agora recommends using the `AES_128_GCM2` or `AES_256_GCM2` encryption mode and setting the key and salt.
 
 :::info
-> - Ensure all users in a channel use the same encryption mode, key, and salt.
-> - The `GCM2` encryption modes offer enhanced security with a stronger Key Derivation Function (KDF) and support for setting a salt. For other encryption modes, you only need to configure the encryption mode and key.
+- Ensure all users in a channel use the same encryption mode, key, and salt.
+- The `GCM2` encryption modes offer enhanced security with a stronger Key Derivation Function (KDF) and support for setting a salt. For other encryption modes, you only need to configure the encryption mode and key.
+:::
 
 ### Generate and set the key
 To generate and set the encryption `key`, refer to the following steps.

@@ -42,7 +42,8 @@ Run the following command to execute the `sample_send_h264_pcm` sample project.
 Replace the parameter value of `--token`, with your Video SDK temporary token. Replace the parameter value of `--channelId` with the value of your Video SDK channel ID. 
 
 :::info
-> Use the same Video SDK channel ID that you used to generate the temporary token.
+Use the same Video SDK channel ID that you used to generate the temporary token.
+:::
 
 ### Use the web demo to receive streams sent from the server
 

@@ -2951,6 +2951,25 @@ Web body
                       url: '/en/ai/reference/event-types',
                     },
                     {
+                      $id: 'ai-reference-ten-agent',
+                      children: [
+                        {
+                          $id: 'ai-reference-ten-agent-create-asr-extension',
+                          name: 'Create an ASR extension',
+                          type: 'page',
+                          url: '/en/ai/reference/ten-agent/create-asr-extension',
+                        },
+                        {
+                          $id: 'ai-reference-ten-agent-create-tts-extension',
+                          name: 'Create a TTS extension',
+                          type: 'page',
+                          url: '/en/ai/reference/ten-agent/create-tts-extension',
+                        },
+                      ],
+                      name: 'TEN Agent',
+                      type: 'folder',
+                    },
+                    {
                       $id: 'ai-reference-release-notes',
                       name: 'Release notes',
                       type: 'page',
@@ -2965,24 +2984,6 @@ Web body
                   ],
                   name: 'Reference',
                   type: 'folder',
-                },
-                {
-                  $id: 'ai-ten-agent-separator',
-                  icon: 'Wrench',
-                  name: 'TEN Agent',
-                  type: 'separator',
-                },
-                {
-                  $id: 'ai-create-asr-extension',
-                  name: 'Create ASR extension',
-                  type: 'page',
-                  url: '/en/ai/create_asr_extension',
-                },
-                {
-                  $id: 'ai-create-tts-extension',
-                  name: 'Create TTS extension',
-                  type: 'page',
-                  url: '/en/ai/create_tts_extension',
                 },
                 {
                   $id: 'ai-device-kit-folder',
@@ -3106,10 +3107,10 @@ Web body
         '/en/ai/get-started/quickstart',
         '/en/api-reference/api-ref/server-sdk/typescript',
         '/en/ai/reference/event-types',
+        '/en/ai/reference/ten-agent/create-asr-extension',
+        '/en/ai/reference/ten-agent/create-tts-extension',
         '/en/ai/reference/release-notes',
         '/en/ai/reference/pricing',
-        '/en/ai/create_asr_extension',
-        '/en/ai/create_tts_extension',
         '/en/ai/device-kit/start-here/quickstart',
         '/en/ai/device-kit/build/run-the-r1-demo',
         '/en/ai/device-kit/build/device-controls',
@@ -3124,6 +3125,12 @@ Web body
         '/en/ai/choose-your-path/quickstart-coding',
         '/en/ai/choose-your-path/quickstart-device-kit',
         '/en/ai/device-kit/reference/enable-services',
+        '/en/ai/create_asr_extension',
+        '/en/ai/create_tts_extension',
+        '/en/ai/reference/ten-agent/build-dependencies',
+        '/en/ai/reference/ten-agent/package-and-runtime-architecture',
+        '/en/ai/reference/ten-agent/debug-ten-applications',
+        '/en/ai/reference/ten-agent/test-ten-extensions-and-apps',
       ]),
     );
     expect(payload.sidebar.map((node) => node.title)).toEqual([
@@ -3241,35 +3248,67 @@ Web body
       dedicatedDevicesSection.children.some(
         (node) => node.type === 'section' && node.title === 'TEN Agent',
       ),
-    ).toBe(true);
-
-    const tenAgentSection = dedicatedDevicesSection.children.find(
-      (node) => node.type === 'section' && node.title === 'TEN Agent',
-    );
-
-    if (!tenAgentSection || tenAgentSection.type !== 'section') {
-      throw new Error('expected the TEN Agent section');
-    }
-
-    expect(tenAgentSection.icon).toBe('Wrench');
-    expect(
-      tenAgentSection.children.some(
-        (node) =>
-          node.type === 'page' && node.url === '/en/ai/create_asr_extension',
-      ),
-    ).toBe(true);
-    expect(
-      tenAgentSection.children.some(
-        (node) =>
-          node.type === 'page' && node.url === '/en/ai/create_tts_extension',
-      ),
-    ).toBe(true);
+    ).toBe(false);
     expect(
       softwareReferenceSection.children.some(
         (node) =>
           node.type === 'page' && node.url === '/en/ai/reference/event-types',
       ),
     ).toBe(true);
+    const tenAgentSection = softwareReferenceSection.children.find(
+      (node) =>
+        node.type === 'section' &&
+        node.title === 'TEN Agent',
+    );
+
+    if (!tenAgentSection || tenAgentSection.type !== 'section') {
+      throw new Error('expected TEN Agent section');
+    }
+
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/reference/ten-agent/create-asr-extension',
+      ),
+    ).toBe(true);
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/reference/ten-agent/create-tts-extension',
+      ),
+    ).toBe(true);
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/reference/ten-agent/build-dependencies',
+      ),
+    ).toBe(false);
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url ===
+            '/en/ai/reference/ten-agent/package-and-runtime-architecture',
+      ),
+    ).toBe(false);
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/reference/ten-agent/debug-ten-applications',
+      ),
+    ).toBe(false);
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url ===
+            '/en/ai/reference/ten-agent/test-ten-extensions-and-apps',
+      ),
+    ).toBe(false);
     expect(
       softwareSection.children.some(
         (node) => node.type === 'section' && node.title === 'Models',

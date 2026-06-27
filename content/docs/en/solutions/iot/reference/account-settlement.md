@@ -5,13 +5,14 @@ description: "Agora's policy of account settlement."
 To ensure billing transparency and smooth service continuity, Agora implements real-time account balance reservation based on estimated usage across all Agora products for SSP customers. This does not apply to customers with a signed contract.
 
 :::info
-> For uninterrupted access to Agora's products and services, ensure at least one of the following:
-> - Add a valid credit card for auto-recharge to your Agora account, **or**
-> - Maintain sufficient funds in your Agora Console balance to cover your estimated usage.
+For uninterrupted access to Agora's products and services, ensure at least one of the following:
+
+- Add a valid credit card for auto-recharge to your Agora account, **or**
+- Maintain sufficient funds in your Agora Console balance to cover your estimated usage.
+:::
 
 Agora employs the following policies to manage your account balance and ensure uninterrupted access to its products and services.
 
-:::
 ### Real-time usage and estimated bill
  
 You can view your real-time usage and estimated monthly bill at any time directly in the Agora Console.
