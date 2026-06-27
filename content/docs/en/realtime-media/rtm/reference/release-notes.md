@@ -14,7 +14,7 @@ Starting from v2.2.0, the Signaling SDK and Video/Voice SDK (version 4.3.0 or la
 - If you manually integrate the SDK through CDN, manually delete the older version of the `libaosl.so` library;
 - If you integrate the SDK using a dependency management tool, such as Maven or CocoaPods, ensure that the newer version of the `libaosl.so` library is included in your project.
 
-For more information, see [How do I handle issues when integrating the Signaling SDK and Video/Voice SDK simultaneously?](https://docs.agora.io/en/help/integration-issues/rtm2_rtc_integration_issue)
+For more information, see [How do I handle issues when integrating the Signaling SDK and Video/Voice SDK simultaneously?](/en/api-reference/faq/integration/rtm2_rtc_integration_issue)
 
 - Signaling SDK v2.2.8 `libaosl.so` version: 1.3.0.
 - Signaling SDK v2.2.6 `libaosl.so` version: 1.2.13.
@@ -37,7 +37,7 @@ Included in this release:
     implementation 'io.agora.rtm:rtm-sdk:x.y.z'
     ```
     
-- A lite version to resolve integration issues when co-integrating with the Video SDK. For details, see [Handle issues when integrating the Signaling SDK and Video/Voice SDK simultaneously](https://docs.agora.io/en/help/integration-issues/rtm2_rtc_integration_issue).
+- A lite version to resolve integration issues when co-integrating with the Video SDK. For details, see [Handle issues when integrating the Signaling SDK and Video/Voice SDK simultaneously](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
     
     ```groovy
     implementation 'io.agora.rtm:rtm-sdk-lite:2.2.8'
@@ -59,13 +59,13 @@ Released on November 15, 2025.
 
 **Support for IoT device domain allowlist**
 
-In IoT scenarios, devices may be restricted by Internet Service Providers (ISPs). To address this limitation, this version adds the `ispPolicyEnabled` field to [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api). When you set this field to `true`, the SDK connects only to servers whose domain names or IP addresses have been registered with the ISP and are included in the allowlist.
+In IoT scenarios, devices may be restricted by Internet Service Providers (ISPs). To address this limitation, this version adds the `ispPolicyEnabled` field to [`RtmConfig`](/en/api-reference/api-ref/signaling). When you set this field to `true`, the SDK connects only to servers whose domain names or IP addresses have been registered with the ISP and are included in the allowlist.
 
 #### Improvements
 
 **New reconnection timeout configuration**
 
-This version adds the `reconnectTimeout` field to [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api). Use this field to configure the timeout period in seconds for the SDK to return a timeout error during login or reconnection. When the login or reconnection exceeds the configured duration, the SDK reports the current connection state and reason through a callback.
+This version adds the `reconnectTimeout` field to [`RtmConfig`](/en/api-reference/api-ref/signaling). Use this field to configure the timeout period in seconds for the SDK to return a timeout error during login or reconnection. When the login or reconnection exceeds the configured duration, the SDK reports the current connection state and reason through a callback.
 
 #### Issues fixed
 
@@ -123,7 +123,7 @@ v2.2.2 was released on December 13, 2024.
 
 1. SDK connection state change reason
 
-    This release adds the [`RtmLinkStateChangeReason`](https://docs.agora.io/en/signaling/reference/api) enumeration class to the SDK connection state `LinkStateEvent` to report the reason for the connection state change.
+    This release adds the [`RtmLinkStateChangeReason`](/en/api-reference/api-ref/signaling) enumeration class to the SDK connection state `LinkStateEvent` to report the reason for the connection state change.
 
 1. Support 16 KB page size
 
@@ -164,39 +164,39 @@ This release optimizes the implementation of the following features, which invol
   ```
 
 - Removes the `StateItem` class, and changes the type of the following parameters from `ArrayList<StateItem>` to `HashMap<String, String>`:
-  - The `items` parameter of the [`setState`](https://docs.agora.io/en/signaling/reference/api) method.
-  - The `stateItems` parameter of the [`PresenceEvent`](https://docs.agora.io/en/signaling/reference/api) class.
-  - The `states` parameter of the [`UserState`](https://docs.agora.io/en/signaling/reference/api) class.
+  - The `items` parameter of the [`setState`](/en/api-reference/api-ref/signaling) method.
+  - The `stateItems` parameter of the [`PresenceEvent`](/en/api-reference/api-ref/signaling) class.
+  - The `states` parameter of the [`UserState`](/en/api-reference/api-ref/signaling) class.
 
-- Adds `CERTIFICATION_VERIFY_FAILURE(22)` in [`RtmConnectionChangeReason`](https://docs.agora.io/en/signaling/reference/api). The values of `STREAM_CHANNEL_NOT_AVAILABLE` and `INCONSISTENT_APPID` change to 23 and 24, respectively.
+- Adds `CERTIFICATION_VERIFY_FAILURE(22)` in [`RtmConnectionChangeReason`](/en/api-reference/api-ref/signaling). The values of `STREAM_CHANNEL_NOT_AVAILABLE` and `INCONSISTENT_APPID` change to 23 and 24, respectively.
 
 #### New features
 
 1. Private deployment capability
 
-    This release adds the `privateConfig` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set private deployment. See [Private deployment configuration](../build/connect-and-authenticate/client-configuration.mdx).
+    This release adds the `privateConfig` parameter in [`RtmConfig`](/en/api-reference/api-ref/signaling) to set private deployment. See [Private deployment configuration](../build/connect-and-authenticate/client-configuration.mdx).
 
 1. Heartbeat interval configuration
 
-    This release adds the `heartbeatInterval` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set the interval at which the SDK sends heartbeat packets to the server. See [Heartbeat interval and presence timeout parameters](../build/connect-and-authenticate/connection/connection-management.mdx).
+    This release adds the `heartbeatInterval` parameter in [`RtmConfig`](/en/api-reference/api-ref/signaling) to set the interval at which the SDK sends heartbeat packets to the server. See [Heartbeat interval and presence timeout parameters](../build/connect-and-authenticate/connection/connection-management.mdx).
 
 1. Dual environment configuration
 
-    This release adds the `protocolType` parameter in [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) to set the network transport protocol. See [Connection protocol](../build/connect-and-authenticate/client-configuration.mdx).
+    This release adds the `protocolType` parameter in [`RtmConfig`](/en/api-reference/api-ref/signaling) to set the network transport protocol. See [Connection protocol](../build/connect-and-authenticate/client-configuration.mdx).
 
 1. User channel
 
-    This release adds the `USER` type in [`RtmChannelType`](https://docs.agora.io/en/signaling/reference/api) for sending messages to specific users. This feature can replace the peer-to-peer messaging feature in v1.
+    This release adds the `USER` type in [`RtmChannelType`](/en/api-reference/api-ref/signaling) for sending messages to specific users. This feature can replace the peer-to-peer messaging feature in v1.
 
 1. Quiet mode configuration
 
-    This release adds the `beQuiet` property in [`SubscribeOptions`](https://docs.agora.io/en/signaling/reference/api) and [`JoinChannelOptions`](https://docs.agora.io/en/signaling/reference/api) to enable quiet mode when subscribing or joining a channel. Once you enable the quiet mode, other users in the channel cannot receive your presence event notifications.
+    This release adds the `beQuiet` property in [`SubscribeOptions`](/en/api-reference/api-ref/signaling) and [`JoinChannelOptions`](/en/api-reference/api-ref/signaling) to enable quiet mode when subscribing or joining a channel. Once you enable the quiet mode, other users in the channel cannot receive your presence event notifications.
 
 #### Improvements
 
 1. Connection state management
 
-    This release deprecates the `onConnectionStateChanged` callback and adds the [`onLinkStateEvent`](https://docs.agora.io/en/signaling/reference/api) callback instead. See [Connection management](../build/connect-and-authenticate/connection/connection-management.mdx) for details.
+    This release deprecates the `onConnectionStateChanged` callback and adds the [`onLinkStateEvent`](/en/api-reference/api-ref/signaling) callback instead. See [Connection management](../build/connect-and-authenticate/connection/connection-management.mdx) for details.
 
 1. `REMOTE_STATE_CHANGED` event notification logic
 
@@ -206,28 +206,28 @@ This release optimizes the implementation of the following features, which invol
 
     This release adds a new `timestamp` parameter in the following data structures to report the timestamp of the triggered event notification:
 
-        - [`MessageEvent`](https://docs.agora.io/en/signaling/reference/api)
-        - [`PresenceEvent`](https://docs.agora.io/en/signaling/reference/api)
-        - [`TopicEvent`](https://docs.agora.io/en/signaling/reference/api)
-        - [`StorageEvent`](https://docs.agora.io/en/signaling/reference/api)
-        - [`LockEvent`](https://docs.agora.io/en/signaling/reference/api)
+        - [`MessageEvent`](/en/api-reference/api-ref/signaling)
+        - [`PresenceEvent`](/en/api-reference/api-ref/signaling)
+        - [`TopicEvent`](/en/api-reference/api-ref/signaling)
+        - [`StorageEvent`](/en/api-reference/api-ref/signaling)
+        - [`LockEvent`](/en/api-reference/api-ref/signaling)
 
 1. Optimized API behavior
 
     This release improves the behavior of the following APIs:
-    - [`login`](https://docs.agora.io/en/signaling/reference/api)
+    - [`login`](/en/api-reference/api-ref/signaling)
       - Before v2.2.1: The SDK does not support multiple consecutive calls to this method, or passing an empty string in the `token` parameter.
       - v2.2.1 or later: The SDK supports multiple consecutive calls to this method without the need for additional calls to `logout` in between. Additionally, when the `token` parameter is an empty string, the SDK uses the app ID you provided during initialization as a replacement for the token.
-    - [`subscribe`](https://docs.agora.io/en/signaling/reference/api)
+    - [`subscribe`](/en/api-reference/api-ref/signaling)
       - Before v2.2.1: The SDK does not support multiple consecutive calls to this method.
       - v2.2.1 or later: The SDK supports multiple consecutive calls to this method.
-    - [`join`](https://docs.agora.io/en/signaling/reference/api)
+    - [`join`](/en/api-reference/api-ref/signaling)
       - Before v2.2.1: The SDK does not support multiple consecutive calls to this method, or passing an empty string in the `token` parameter.
       - v2.2.1 or later: The SDK supports multiple consecutive calls to this method. Additionally, when the `token` parameter is an empty string, the SDK uses the app ID you provided during initialization as a replacement for the token.
 
 1. Range of `presenceTimeout`
 
-    This release changes the range of the `presenceTimeout` parameter in the [`RtmConfig`](https://docs.agora.io/en/signaling/reference/api) from [10, 300] to [5, 300].
+    This release changes the range of the `presenceTimeout` parameter in the [`RtmConfig`](/en/api-reference/api-ref/signaling) from [10, 300] to [5, 300].
 
 1. Other improvements
 
@@ -293,8 +293,8 @@ v2.1.9 was released on February 22, 2024.
 
 This release improves message publishing options as follows:
 
-- Removes the `sendTs` parameter and adds the `channelType` parameter in `PublishOptions`. See details in [`PublishOptions`](https://docs.agora.io/en/signaling/reference/api/).
-- Modifies the type of the `options` parameter in the `publishTopicMessage` method from `PublishOptions` to `TopicMessageOptions`. See details in [`TopicMessageOptions`](https://docs.agora.io/en/signaling/reference/api/).
+- Removes the `sendTs` parameter and adds the `channelType` parameter in `PublishOptions`. See details in [`PublishOptions`](/en/api-reference/api-ref/signaling).
+- Modifies the type of the `options` parameter in the `publishTopicMessage` method from `PublishOptions` to `TopicMessageOptions`. See details in [`TopicMessageOptions`](/en/api-reference/api-ref/signaling).
 
 Make sure to modify the implementation of the relevant features after upgrading the SDK.
 
@@ -302,7 +302,7 @@ Make sure to modify the implementation of the relevant features after upgrading 
 
 This release adds the following improvements:
 
-- Adds error codes: `INVALID_CHANNEL_TYPE`, `RTM_ERROR_INVALID_ENCRYPTION_PARAMETER`, and `RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION`. For error code descriptions and solutions, see [Error Codes](https://docs.agora.io/en/signaling/reference/error-codes).
+- Adds error codes: `INVALID_CHANNEL_TYPE`, `RTM_ERROR_INVALID_ENCRYPTION_PARAMETER`, and `RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
 - Optimizes the handling logic for expired user status data during reconnection.
 
 #### Fixed issues
@@ -337,7 +337,7 @@ v2.1.7 was released on January 22, 2024.
 
 6. Interval Mode
 
-    This release supports the interval mode of presence function. When the number of online users in a channel exceeds the specified Announce Max value, the channel enters the interval mode. The SDK triggers the presence event notification at regular intervals and provides aggregated incremental information about user join, leave, timeout, and state changes in the interval property. For more details, see [Interval Mode](https://docs.agora.io/en/signaling/reference/api).
+    This release supports the interval mode of presence function. When the number of online users in a channel exceeds the specified Announce Max value, the channel enters the interval mode. The SDK triggers the presence event notification at regular intervals and provides aggregated incremental information about user join, leave, timeout, and state changes in the interval property. For more details, see [Interval Mode](/en/api-reference/api-ref/signaling).
 
 7. Locks
 

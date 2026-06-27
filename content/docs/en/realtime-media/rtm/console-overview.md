@@ -489,5 +489,5 @@ Follow these steps to delete your Agora account:
 <!-- BEGIN Signaling-specific tail — product-specific; split out when globalizing this page across products -->
 ## Reference
 
-For information on using Agora REST authentication, see [RESTful authentication](https://docs.agora.io/en/signaling/reference/restful-authentication).
+For information on using Agora REST authentication, see [RESTful authentication](/en/api-reference/api-ref/signaling/authentication).
 <!-- END Signaling-specific tail -->

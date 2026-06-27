@@ -469,7 +469,7 @@ describe('DocsContent', () => {
 
     await waitFor(() => {
       expect(clipboardWriteText).toHaveBeenCalledWith(
-        'https://docs.agora.io/llms.mdx/docs/en/introduction/about-agora.md',
+        `${window.location.origin}/llms.mdx/docs/en/introduction/about-agora.md`,
       );
     });
   });

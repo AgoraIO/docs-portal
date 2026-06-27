@@ -2521,9 +2521,23 @@ This release has optimized the implementation of some functions, which involved 
 
    | Deleted methods and callbacks                         | Alternative methods and callbacks  |
    | ----------------------------------------------------- | ---------------------------------- |
-   | - `startChannelMediaRelay`<br />2. `updateChannelMediaRelay`     | `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx` | `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-4-4-0-deleted" />     | `startOrUpdateChannelMediaRelay`   |
+   | <Slot name="release-channel-relay-4-4-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `onChannelMediaRelayEvent`                            | `onChannelMediaRelayStateChanged`  |
+
+   <Slot for="release-channel-relay-4-4-0-deleted">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="release-channel-relay-4-4-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 4. **Custom video source**
 
@@ -4234,9 +4248,23 @@ This release has optimized the implementation of some functions, involving renam
 
    | Deleted methods and callbacks | Alternative methods and callbacks  |
    | ----------------------------- | ---------------------------------- |
-   | - `startChannelMediaRelay`<br />2. `updateChannelMediaRelay`| `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx`| `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-ios-4-4-0-deleted" /> | `startOrUpdateChannelMediaRelay`   |
+   | <Slot name="release-channel-relay-ios-4-4-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `didReceiveChannelMediaRelayEvent`| `channelMediaRelayStateDidChange`  |
+
+   <Slot for="release-channel-relay-ios-4-4-0-deleted">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="release-channel-relay-ios-4-4-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 3. **Custom video source**
 
@@ -6268,8 +6296,15 @@ This release has optimized the implementation of some functions, involving renam
    | Deleted methods and callbacks | Alternative methods and callbacks  |
    | ----------------------------- | ---------------------------------- |
    | `startChannelMediaRelay`<br />`updateChannelMediaRelay` | `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx`| `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-macos-4-4-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `didReceiveChannelMediaRelayEvent` | `channelMediaRelayStateDidChange`  |
+
+   <Slot for="release-channel-relay-macos-4-4-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 3. **Reasons for local video state changes**
 
@@ -7566,8 +7601,36 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
    | ------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
    | `startScreenCaptureByDisplayId` | **displayId**                                              | Changed from `uint32_t` to `int64_t`                             |
    | `startScreenCaptureByWindowId`  | **windowId**                                               | Changed from `view_t` to `int64_t`                               |
-   | `ScreenCaptureConfiguration`    | - **displayId**<br />2. **windowId**       | - **displayId**: Changed from `uint32_t` to `int64_t`<br />2. **windowId**: Changed from `view_t` to `int64_t` |
-   | `ScreenCaptureSourceInfo`       | - **sourceDisplayId**<br />2. **sourceId** | - **sourceDisplayId**： Changed from `view_t` to `int64_t`<br />2. **sourceId**：Default value changed from `nullptr` to `0` |
+   | `ScreenCaptureConfiguration`    | <Slot name="release-cpp-screen-capture-configuration-members" /> | <Slot name="release-cpp-screen-capture-configuration-change" /> |
+   | `ScreenCaptureSourceInfo`       | <Slot name="release-cpp-screen-capture-source-info-members" /> | <Slot name="release-cpp-screen-capture-source-info-change" /> |
+
+   <Slot for="release-cpp-screen-capture-configuration-members">
+
+   - **displayId**
+   - **windowId**
+
+   </Slot>
+
+   <Slot for="release-cpp-screen-capture-configuration-change">
+
+   - **displayId**: Changed from `uint32_t` to `int64_t`
+   - **windowId**: Changed from `view_t` to `int64_t`
+
+   </Slot>
+
+   <Slot for="release-cpp-screen-capture-source-info-members">
+
+   - **sourceDisplayId**
+   - **sourceId**
+
+   </Slot>
+
+   <Slot for="release-cpp-screen-capture-source-info-change">
+
+   - **sourceDisplayId**： Changed from `view_t` to `int64_t`
+   - **sourceId**：Default value changed from `nullptr` to `0`
+
+   </Slot>
 
 1. **Changes in strong video noise suppression**
 
@@ -7864,9 +7927,23 @@ This release has optimized the implementation of some functions, involving renam
 
    | Deleted methods and callbacks                                | Alternative methods and callbacks  |
    | ------------------------------------------------------------ | ---------------------------------- |
-   | - `startChannelMediaRelay`<br />2. `updateChannelMediaRelay` | `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx` | `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-cpp-4-3-0-deleted" /> | `startOrUpdateChannelMediaRelay`   |
+   | <Slot name="release-channel-relay-cpp-4-3-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `onChannelMediaRelayEvent`                                   | `onChannelMediaRelayStateChanged`  |
+
+   <Slot for="release-channel-relay-cpp-4-3-0-deleted">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="release-channel-relay-cpp-4-3-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 3. **Reasons for local video state changes**
 
@@ -11231,9 +11308,23 @@ This release has optimized the implementation of some functions, involving renam
 
    | Deleted methods and callbacks                         | Alternative methods and callbacks  |
    | ----------------------------------------------------- | ---------------------------------- |
-   | - `startChannelMediaRelay`<br />2. `updateChannelMediaRelay`     | `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx` | `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-flutter-6-1-0-deleted" />     | `startOrUpdateChannelMediaRelay`   |
+   | <Slot name="release-channel-relay-flutter-6-1-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `onChannelMediaRelayEvent`                            | `onChannelMediaRelayStateChanged`  |
+
+   <Slot for="release-channel-relay-flutter-6-1-0-deleted">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="release-channel-relay-flutter-6-1-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 1. **Audio route**
 
@@ -14376,8 +14467,22 @@ This version includes optimizations to some features, including changes to SDK b
    | API                            | Members/Parameters                                         | Change                       |
    | ------------------------------ | ---------------------------------------------------------- | ---------------------------- |
    | `StartScreenCaptureByWindowId` | `windowId`                                               | Changed from `view_t` to `long`  |
-   | `ScreenCaptureConfiguration`   | - `displayId`<br />2. `windowId`        | Changed from `unit` to  `long`   |
-   | `ScreenCaptureSourceInfo`      | - `sourceDisplayId`<br />2. `sourceId` | Changed from `view_t` to  `long` |
+   | `ScreenCaptureConfiguration`   | <Slot name="release-unity-screen-capture-configuration-members" /> | Changed from `unit` to  `long`   |
+   | `ScreenCaptureSourceInfo`      | <Slot name="release-unity-screen-capture-source-info-members" /> | Changed from `view_t` to  `long` |
+
+   <Slot for="release-unity-screen-capture-configuration-members">
+
+   - `displayId`
+   - `windowId`
+
+   </Slot>
+
+   <Slot for="release-unity-screen-capture-source-info-members">
+
+   - `sourceDisplayId`
+   - `sourceId`
+
+   </Slot>
 
 1. **Changes in strong video noise suppression implementation**
 
@@ -14787,9 +14892,23 @@ This release has optimized the implementation of some functions, involving renam
 
    | Deleted methods and callbacks                                | Alternative methods and callbacks  |
    | ------------------------------------------------------------ | ---------------------------------- |
-   | - `startChannelMediaRelay`<br />2. `updateChannelMediaRelay` | `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx` | `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-unity-4-3-0-deleted" /> | `startOrUpdateChannelMediaRelay`   |
+   | <Slot name="release-channel-relay-unity-4-3-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `onChannelMediaRelayEvent`                                   | `onChannelMediaRelayStateChanged`  |
+
+   <Slot for="release-channel-relay-unity-4-3-0-deleted">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="release-channel-relay-unity-4-3-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 3. **Reasons for local video state changes**
 

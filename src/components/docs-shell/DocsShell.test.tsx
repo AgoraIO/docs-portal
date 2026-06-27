@@ -471,7 +471,7 @@ describe('DocsShell', () => {
     ).toHaveAttribute('href', 'https://investor.agora.io/');
     expect(
       within(siteFooter).getByRole('link', { name: 'Documentation' }),
-    ).toHaveAttribute('href', 'https://docs.agora.io/en/');
+    ).toHaveAttribute('href', '/en/');
     expect(
       within(siteFooter).getByRole('link', { name: 'Privacy Policy' }),
     ).toHaveAttribute('href', 'https://www.agora.io/en/privacy-policy/');

@@ -46,89 +46,206 @@ You must implement service management and failover handling in your own infrastr
 
 The following table compares key APIs between version 4.x and 3.x:
 
-**Java**
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="cpp">C++</TabsTrigger>
+</TabsList>
+
+<TabsContent value="java">
 
 | Functional module        | 4.x        | 3.x           |
 |--------------------------|------------|---------------|
-| Create and initialize a recording instance | - `AgoraService`
- - `AgoraService.initialize`
- - `createAgoraMediaComponentFactory`
- - `createMediaRtcRecorder`
- - `AgoraMediaRtcRecorder.initialize`          | `RecordingSDK`|
-| Join a channel          | `joinChannel`
-If the String UID function is enabled, you can directly use the String UID to pass parameters when calling `joinChannel`, without calling other APIs.           |  - `createChannel`
- - `createChannelWithUserAccount`
- - `getUidByUserAccount`
- - `getUserAccountByUid`  |
-| Implement subscription logic        | - `subscribeAllAudio`
- - `unsubscribeAllAudio`
- - `subscribeAllVideo`
- - `unsubscribeAllVideo`
- - `subscribeAudio`
- - `unsubscribeAudio`
- - `subscribeVideo`
- - `unsubscribeVideo`     | The following fields of the `RecordingConfig` object in the `create` method:
- - `autoSubscribe`
- - `subscribeVideoUids`
- - `subscribeAudioUids`|
-| Start or stop recording| **Individual recording:**
- - `startSingleRecordingByUid`
- - `stopSingleRecordingByUid`
- - `setRecorderConfigByUid`
+| Create and initialize a recording instance | <Slot name="on-prem-java-create-initialize" /> | `RecordingSDK` |
+| Join a channel | <Slot name="on-prem-java-join-channel" /> | <Slot name="on-prem-java-join-channel-legacy" /> |
+| Implement subscription logic | <Slot name="on-prem-java-subscription" /> | <Slot name="on-prem-java-subscription-legacy" /> |
+| Start or stop recording | <Slot name="on-prem-java-recording" /> | <Slot name="on-prem-java-recording-legacy" /> |
+| Watermark | <Slot name="on-prem-java-watermark" /> | `updateWatermarkConfigs` |
 
-**Composite recording:**
- - `startRecording`
- - `stopRecording`
- - `setRecordingConfig`
-Use with `enableMix` set to `true` when calling `initialize` |  - `startService`
- - `stopService`
-Use with `isMixingEnabled` in `RecordingConfig`       |
-| Watermark | - `enableAndUpdateVideoWatermarks`
- - `disableVideoWatermarks`
- - `enableAndUpdateVideoWatermarksByUid`
- - `disableVideoWatermarksByUid`       | `updateWatermarkConfigs`    |
+<Slot for="on-prem-java-create-initialize">
 
-**C++**
-
-| Functional module        | 4.x API | Older versions   |
-|--------------------------|------------|---------------|
-| Create and initialize a recording instance | - `createAgoraService`
-- `IAgoraService::initialize`
+- `AgoraService`
+- `AgoraService.initialize`
 - `createAgoraMediaComponentFactory`
 - `createMediaRtcRecorder`
-- `IAgoraMediaRtcRecorder::initialize` | `createAgoraRecordingEngine`                                                             |
-| Join a channel                         | `joinChannel`
-If the String UID function is enabled, you can directly use the String UID to pass parameters when calling `joinChannel`, without calling other APIs.         | - `joinChannel`
-- `joinChannelWithUserAccount`
-- `getUserInfoByUserAccount`
-- `getUserInfoByUid` |
-| Implement subscription logic           | - `subscribeAllAudio`
+- `AgoraMediaRtcRecorder.initialize`
+
+</Slot>
+
+<Slot for="on-prem-java-join-channel">
+
+`joinChannel`
+If the String UID function is enabled, you can directly use the String UID to pass parameters when calling `joinChannel`, without calling other APIs.
+
+</Slot>
+
+<Slot for="on-prem-java-join-channel-legacy">
+
+- `createChannel`
+- `createChannelWithUserAccount`
+- `getUidByUserAccount`
+- `getUserAccountByUid`
+
+</Slot>
+
+<Slot for="on-prem-java-subscription">
+
+- `subscribeAllAudio`
 - `unsubscribeAllAudio`
 - `subscribeAllVideo`
 - `unsubscribeAllVideo`
 - `subscribeAudio`
 - `unsubscribeAudio`
 - `subscribeVideo`
-- `unsubscribeVideo` | Use the following fields in `RecordingConfig` when calling `joinChannel`:
+- `unsubscribeVideo`
+
+</Slot>
+
+<Slot for="on-prem-java-subscription-legacy">
+
+The following fields of the `RecordingConfig` object in the `create` method:
+
 - `autoSubscribe`
 - `subscribeVideoUids`
-- `subscribeAudioUids` |
-| Start or stop recording                | **Individual recording:**
+- `subscribeAudioUids`
+
+</Slot>
+
+<Slot for="on-prem-java-recording">
+
+**Individual recording:**
+
 - `startSingleRecordingByUid`
 - `stopSingleRecordingByUid`
 - `setRecorderConfigByUid`
 
 **Composite recording:**
+
 - `startRecording`
 - `stopRecording`
 - `setRecordingConfig`
-Use with `enable_mix` set in `initialize` | - `startService`
+
+Use with `enableMix` set to `true` when calling `initialize`
+
+</Slot>
+
+<Slot for="on-prem-java-recording-legacy">
+
+- `startService`
 - `stopService`
-Use with `isMixingEnabled` in `RecordingConfig` |
-| Watermark                              | - `enableAndUpdateVideoWatermarks`
+
+Use with `isMixingEnabled` in `RecordingConfig`
+
+</Slot>
+
+<Slot for="on-prem-java-watermark">
+
+- `enableAndUpdateVideoWatermarks`
 - `disableVideoWatermarks`
 - `enableAndUpdateVideoWatermarksByUid`
-- `disableVideoWatermarksByUid` | Use `updateWatermarkConfigs` with `wm_num` and `wm_configs` in `VideoMixingLayout`       |
+- `disableVideoWatermarksByUid`
+
+</Slot>
+
+</TabsContent>
+
+<TabsContent value="cpp">
+
+| Functional module        | 4.x API | Older versions   |
+|--------------------------|------------|---------------|
+| Create and initialize a recording instance | <Slot name="on-prem-cpp-create-initialize" /> | `createAgoraRecordingEngine` |
+| Join a channel | <Slot name="on-prem-cpp-join-channel" /> | <Slot name="on-prem-cpp-join-channel-legacy" /> |
+| Implement subscription logic | <Slot name="on-prem-cpp-subscription" /> | <Slot name="on-prem-cpp-subscription-legacy" /> |
+| Start or stop recording | <Slot name="on-prem-cpp-recording" /> | <Slot name="on-prem-cpp-recording-legacy" /> |
+| Watermark | <Slot name="on-prem-cpp-watermark" /> | Use `updateWatermarkConfigs` with `wm_num` and `wm_configs` in `VideoMixingLayout` |
+
+<Slot for="on-prem-cpp-create-initialize">
+
+- `createAgoraService`
+- `IAgoraService::initialize`
+- `createAgoraMediaComponentFactory`
+- `createMediaRtcRecorder`
+- `IAgoraMediaRtcRecorder::initialize`
+
+</Slot>
+
+<Slot for="on-prem-cpp-join-channel">
+
+`joinChannel`
+If the String UID function is enabled, you can directly use the String UID to pass parameters when calling `joinChannel`, without calling other APIs.
+
+</Slot>
+
+<Slot for="on-prem-cpp-join-channel-legacy">
+
+- `joinChannel`
+- `joinChannelWithUserAccount`
+- `getUserInfoByUserAccount`
+- `getUserInfoByUid`
+
+</Slot>
+
+<Slot for="on-prem-cpp-subscription">
+
+- `subscribeAllAudio`
+- `unsubscribeAllAudio`
+- `subscribeAllVideo`
+- `unsubscribeAllVideo`
+- `subscribeAudio`
+- `unsubscribeAudio`
+- `subscribeVideo`
+- `unsubscribeVideo`
+
+</Slot>
+
+<Slot for="on-prem-cpp-subscription-legacy">
+
+Use the following fields in `RecordingConfig` when calling `joinChannel`:
+
+- `autoSubscribe`
+- `subscribeVideoUids`
+- `subscribeAudioUids`
+
+</Slot>
+
+<Slot for="on-prem-cpp-recording">
+
+**Individual recording:**
+
+- `startSingleRecordingByUid`
+- `stopSingleRecordingByUid`
+- `setRecorderConfigByUid`
+
+**Composite recording:**
+
+- `startRecording`
+- `stopRecording`
+- `setRecordingConfig`
+
+Use with `enable_mix` set in `initialize`
+
+</Slot>
+
+<Slot for="on-prem-cpp-recording-legacy">
+
+- `startService`
+- `stopService`
+
+Use with `isMixingEnabled` in `RecordingConfig`
+
+</Slot>
+
+<Slot for="on-prem-cpp-watermark">
+
+- `enableAndUpdateVideoWatermarks`
+- `disableVideoWatermarks`
+- `enableAndUpdateVideoWatermarksByUid`
+- `disableVideoWatermarksByUid`
+
+</Slot>
+
+</TabsContent>
+</Tabs>
 
 ## Callback comparison
 

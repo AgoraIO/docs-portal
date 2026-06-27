@@ -29,7 +29,7 @@ Tokens are generated on your server and passed to the client for use in Real-Tim
 
 During development and testing, use the Agora Console to generate temporary tokens. For production environments, implement a token server as part of your security infrastructure to control access to your channels.
 
-For information on setting up a token server for generating and managing tokens, refer to [Deploy a token server](https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server).
+For information on setting up a token server for generating and managing tokens, refer to [Deploy a token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server).
 
 ### Channel
 

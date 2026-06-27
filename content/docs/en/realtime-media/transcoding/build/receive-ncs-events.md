@@ -419,4 +419,4 @@ Each primary IP field shows an IP address of Notifications server. When you rece
 
 ### FAQs
 
-- [What's the difference between the query method and message notification service?](https://docs.agora.io/en/help/general-product-inquiry/query_vs_notifications)
+- [What's the difference between the query method and message notification service?](/en/api-reference/faq/integration/ncs_vs_query)

@@ -140,4 +140,4 @@ This section contains content that completes the information on this page, or po
 
 ### API Reference
 
-- [Proctor SDK](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk)
+- [Proctor SDK](/en/api-reference/api-ref/flexible-classroom/proctor-sdk)

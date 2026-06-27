@@ -105,4 +105,4 @@ To generate a token for other Agora products:
 
 5. Copy the token and use it in your app.
 
-For more information on managing other aspects of your Agora account, see [Agora console overview](https://docs.agora.io/en/video-calling/reference/console-overview).
+For more information on managing other aspects of your Agora account, see [Agora console overview](/en/realtime-media/video/reference/console-overview).

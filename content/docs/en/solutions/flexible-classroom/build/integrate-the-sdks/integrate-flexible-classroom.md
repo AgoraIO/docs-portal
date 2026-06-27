@@ -5,7 +5,7 @@ description: "Integrate the Classroom SDK or Proctor SDK into your app with the 
 This page introduces how to add Flexible Classroom into your app.
 
 :::note
-The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](https://docs.agora.io/en/flexible-classroom/develop/integrate/integrate-flexible-classroom/integrate-flexible-classroom/integrate-flexible-classroom-fcr).
+The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](/en/solutions/flexible-classroom/build/integrate-the-sdks/integrate-flexible-classroom-fcr).
 :::
 
 ## Understand the tech
@@ -79,7 +79,7 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
     } from 'agora-plugin-gallery/classroom'
     ```
 
-3. To launch a classroom, call [AgoraEduSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) and [AgoraEduSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) in the JavaScript code of the project.
+3. To launch a classroom, call [AgoraEduSDK.config](/en/api-reference/api-ref/flexible-classroom/classroom-sdk) and [AgoraEduSDK.launch](/en/api-reference/api-ref/flexible-classroom/classroom-sdk) in the JavaScript code of the project.
 
     :::tip
     Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
@@ -96,7 +96,7 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
     <script src="https://download.agora.io/edu-apaas/release/edu_widget@X.Y.Z.bundle.js"></script>
     ```
 
-2. To launch a classroom, call [AgoraEduSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) and [AgoraEduSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) in the JavaScript code of the project.
+2. To launch a classroom, call [AgoraEduSDK.config](/en/api-reference/api-ref/flexible-classroom/classroom-sdk) and [AgoraEduSDK.launch](/en/api-reference/api-ref/flexible-classroom/classroom-sdk) in the JavaScript code of the project.
 
 #### Sample code
 
@@ -163,7 +163,7 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
 
 The sample code requires passing in `rtmToken`. You can refer to [Generate a Signaling token](../manage-agora-account.md) to learn what a Signaling token is, how to get a temporary Signaling token for testing purposes, and how to generate a Signaling token from the server. The generated token passed in `userId` must be consistent with the `userUuid` parameters passed in the `launch` method; otherwise, the generated token will be invalid.
 
-For details on the values of other parameters, see [LaunchOption](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk).
+For details on the values of other parameters, see [LaunchOption](/en/api-reference/api-ref/flexible-classroom/classroom-sdk).
 
 :::note
 Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
@@ -252,7 +252,7 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
     } from 'agora-plugin-gallery/proctor'
     ```
 
-3. To launch a classroom, call [AgoraProctorSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) and [AgoraProctorSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) in the JavaScript code of the project.
+3. To launch a classroom, call [AgoraProctorSDK.config](/en/api-reference/api-ref/flexible-classroom/proctor-sdk) and [AgoraProctorSDK.launch](/en/api-reference/api-ref/flexible-classroom/proctor-sdk) in the JavaScript code of the project.
 
     :::tip
     Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
@@ -268,7 +268,7 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
     <script src="https://download.agora.io/edu-apaas/release/proctor_sdk@X.Y.Z.bundle.js"></script>
     ```
 
-2. To launch a classroom, call [AgoraProctorSDK.config](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) and [AgoraProctorSDK.launch](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk) in the JavaScript code of the project.
+2. To launch a classroom, call [AgoraProctorSDK.config](/en/api-reference/api-ref/flexible-classroom/proctor-sdk) and [AgoraProctorSDK.launch](/en/api-reference/api-ref/flexible-classroom/proctor-sdk) in the JavaScript code of the project.
 
 #### Sample code
 
@@ -330,7 +330,7 @@ When being proctored online, students need to use the primary and secondary devi
 
 The sample code requires passing in `rtmToken`. You can refer to [Generate a Signaling token](../manage-agora-account.md) to learn what a Signaling token is, how to get a temporary Signaling token for testing purposes, and how to generate a Signaling token from the server. The generated token passed in `userId` must be consistent with the `launch` parameters passed in the `userUuid` method; otherwise, the generated token will be invalid.
 
-For details on the values of other parameters, see [LaunchOption](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk).
+For details on the values of other parameters, see [LaunchOption](/en/api-reference/api-ref/flexible-classroom/classroom-sdk).
 
 ### Customize the classroom UI
 

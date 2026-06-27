@@ -276,161 +276,138 @@ Before you begin, make sure you:
   <TabsTrigger value="android">Android</TabsTrigger>
   <TabsTrigger value="ios">iOS</TabsTrigger>
   <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
 </TabsList>
 
 <TabsContent value="android">
 
-Copy the [`convoaiApi`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi) folder to your project and import it before calling API methods. Refer to the [component structure](#component-structure) to understand the role of each file.
+1. Copy the [`convoaiApi`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi) folder to your project and import it before calling API methods. Refer to the [component structure](#component-structure) to understand the role of each file.
+
+2. Create a configuration object for the RTC engine and SIG client instances, then use it to initialize the component instance.
+
+   ```kotlin
+   // Create a configuration object for the RTC and RTM instances
+   val config = ConversationalAIAPIConfig(
+       rtcEngine = rtcEngineInstance,
+       rtmClient = rtmClientInstance,
+       enableLog = true
+   )
+
+   // Create the component instance
+   val api = ConversationalAIAPIImpl(config)
+   ```
+
+3. Call [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) using the following parameter settings:
+
+   - `advanced_features.enable_rtm: true`: Start the SIG service (Required)
+   - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
+   - `parameters.enable_metrics: true`: Receive agent performance data (Enabled on demand)
+   - `parameters.enable_error_message: true`: Receive agent error events (Enable on demand)
+
+   After the call is successful, the agent joins the specified RTC channel and the user can start interacting with the agent.
+
+4. Call the `interrupt` method to interrupt the agent.
+
+   ```kotlin
+   api.interrupt("agentId") { error -> /* ... */ }
+   ```
+
+5. When the agent interaction ends, destroy the component instance to release all resources.
+
+   ```kotlin
+   api.destroy()
+   ```
 
 </TabsContent>
 
 <TabsContent value="ios">
 
-Copy the [`ConversationalAIAPI`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI) folder to your project and import it before calling API methods. Refer to the [component structure](#component-structure) to understand the role of each file.
+1. Copy the [`ConversationalAIAPI`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI) folder to your project and import it before calling API methods. Refer to the [component structure](#component-structure) to understand the role of each file.
+
+2. Create a configuration object for the RTC engine and SIG client instances, then use it to initialize the component instance.
+
+   ```swift
+   // Create a configuration object for the RTC and RTM instances
+   let config = ConversationalAIAPIConfig(
+       rtcEngine: rtcEngine,
+       rtmEngine: rtmEngine,
+       enableLog: true
+   )
+
+   // Create the component instance
+   convoAIAPI = ConversationalAIAPIImpl(config: config)
+   ```
+
+3. Call [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) using the following parameter settings:
+
+   - `advanced_features.enable_rtm: true`: Start the SIG service (Required)
+   - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
+   - `parameters.enable_metrics: true`: Receive agent performance data (Enabled on demand)
+   - `parameters.enable_error_message: true`: Receive agent error events (Enable on demand)
+
+   After the call is successful, the agent joins the specified RTC channel and the user can start interacting with the agent.
+
+4. Call the `interrupt` method to interrupt the agent.
+
+   ```swift
+   convoAIAPI.interrupt(agentUserId: "\(agentUid)") { error in
+       if let error = error {
+           print("Interruption failed: \(error.message)")
+       } else {
+           print("Interruption succeeded")
+       }
+   }
+   ```
+
+5. When the agent interaction ends, destroy the component instance to release all resources.
+
+   ```swift
+   convoAIAPI.destroy()
+   ```
 
 </TabsContent>
 
 <TabsContent value="web">
 
-Copy the [`conversational-ai-api`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api) file to your project and import it before calling API methods.. Refer to the [component structure](#component-structure) to understand the role of each file.     
+1. Copy the [`conversational-ai-api`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api) file to your project and import it before calling API methods. Refer to the [component structure](#component-structure) to understand the role of each file.
 
-#### Initialize the component
+2. Create a configuration object for the RTC engine and SIG client instances, then use it to initialize the component instance.
 
-Create a configuration object for the RTC engine and SIG client instances, then use it to initialize the component instance.
+   ```ts
+   // Create a configuration object for the RTC and RTM instances
+   ConversationalAIAPI.init({
+       rtcEngine,
+       rtmEngine,
+   })
 
+   // Get the API instance (singleton)
+   const conversationalAIAPI = ConversationalAIAPI.getInstance()
+   ```
+
+3. Call [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) using the following parameter settings:
+
+   - `advanced_features.enable_rtm: true`: Start the SIG service (Required)
+   - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
+   - `parameters.enable_metrics: true`: Receive agent performance data (Enabled on demand)
+   - `parameters.enable_error_message: true`: Receive agent error events (Enable on demand)
+
+   After the call is successful, the agent joins the specified RTC channel and the user can start interacting with the agent.
+
+4. Call the `interrupt` method to interrupt the agent.
+
+   ```ts
+   await conversationalAIAPI.interrupt(`${agent_rtc_uid}`)
+   ```
+
+5. When the agent interaction ends, destroy the component instance to release all resources.
+
+   ```ts
+   conversationalAIAPI.destroy()
+   ```
 </TabsContent>
-
-<TabsContent value="android">
-
-```kotlin
-// Create a configuration object for the RTC and RTM instances
-val config = ConversationalAIAPIConfig(
-    rtcEngine = rtcEngineInstance,
-    rtmClient = rtmClientInstance,
-    enableLog = true
-)
-
-// Create the component instance
-val api = ConversationalAIAPIImpl(config)
-```
-
-</TabsContent>
-
-<TabsContent value="ios">
-
-```swift
-// Create a configuration object for the RTC and RTM instances
-let config = ConversationalAIAPIConfig(
-    rtcEngine: rtcEngine, 
-    rtmEngine: rtmEngine,
-    enableLog: true
-)
-
-// Create the component instance
-convoAIAPI = ConversationalAIAPIImpl(config: config)
-```
-
-</TabsContent>
-
-<TabsContent value="web">
-
-```ts
-// Create a configuration object for the RTC and RTM instances
-ConversationalAIAPI.init({
-    rtcEngine,
-    rtmEngine,
-})
-
-// Get the API instance (singleton)
-const conversationalAIAPI = ConversationalAIAPI.getInstance()
-```
-
-#### Configure the conversational AI agent
-
-Call [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) using the following parameter settings:
-
-- `advanced_features.enable_rtm: true`: Start the SIG service (Required)
-- `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
-- `parameters.enable_metrics: true`: Receive agent performance data (Enabled on demand)
-- `parameters.enable_error_message: true`: Receive agent error events (Enable on demand)
-
-After the call is successful, the agent joins the specified RTC channel and the user can start interacting with the agent.
-
-#### Interrupt the agent
-
-Call the `interrupt` method to interrupt the agent.
-
-</TabsContent>
-
-<TabsContent value="android">
-
-```kotlin
-api.interrupt("agentId") { error -> /* ... */ }
-```
-
-</TabsContent>
-
-<TabsContent value="ios">
-
-```swift
-convoAIAPI.interrupt(agentUserId: "\(agentUid)") { error in
-    if let error = error {
-        print("Interruption failed: \(error.message)")
-    } else {
-        print("Interruption succeeded")
-    }
-}
-```
-
-</TabsContent>
-
-<TabsContent value="web">
-
-```ts
-await conversationalAIAPI.interrupt(`${agent_rtc_uid}`)
-```
-
-#### Destroy the component
-
-When the agent interaction ends, destroy the component instance to release all resources.
-
-</TabsContent>
-
-<TabsContent value="android">
-
-```kotlin
-api.destroy()
-```
-
-</TabsContent>
-
-<TabsContent value="ios">
-
-```swift
-convoAIAPI.destroy()
-```
-
-</TabsContent>
-
-<TabsContent value="web">
-
-```ts
-conversationalAIAPI.destroy()
-```
+</Tabs>
 
 ## Reference
 
-</TabsContent>
-</Tabs>
 ### Sample project
 
 Agora provides a [sample project](https://github.com/AgoraIO-Community/Conversational-AI-Demo/) for your reference. Download or view the source code for a complete example.

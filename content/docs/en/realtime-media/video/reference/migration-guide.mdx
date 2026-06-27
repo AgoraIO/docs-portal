@@ -21,9 +21,9 @@ This section introduces the main steps to upgrade the SDK from v2.x or v3.7.x to
 
   After successfully integrating the SDK, you need to update the codes of imported classes from the `io.agora.rtc` prefix to the `io.agora.rtc2` prefix in the `/app/java/com.example.<projectname>/MainActivity` file of your project.
   
-:::info
-:::
-  > The location of `AgoraRtcChannelMediaOptions.java` in the 4.x SDK is also changed from `/models` to the root directory.
+  :::note
+  The location of `AgoraRtcChannelMediaOptions.java` in the 4.x SDK is also changed from `/models` to the root directory.
+  :::
 
 3. Update the Agora code in your app
 
@@ -289,7 +289,7 @@ In 4.x, the video bitrate in the `CHANNEL_PROFILE_COMMUNICATION` profile is the 
 
 #### Virtual background
 
-See [Virtual Background](https://docs-md.agora.io/en/video-calling/advanced-features/virtual-background_android) to update the code in your app.
+See [Virtual Background](/en/realtime-media/video/build/apply-video-effects/virtual-background) to update the code in your app.
 
 #### Image enhancement
 
@@ -438,9 +438,9 @@ This section introduces the main steps to upgrade the SDK from v2.x or 3.7.x to 
 
 This section introduces the main changes of v4.x compared to v3.7.x in the following categories. You need to update the code of your app according to your business use-case.
   
-:::info
-:::
-  > If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](https://docs-md.agora.io/en/3.x/video-calling/introduction/release-notes_ios) to obtain the changes between this version and v3.7.0.
+  :::note
+  If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](/en/realtime-media/video/reference/release-notes) to obtain the changes between this version and v3.7.0.
+  :::
 
 -  [Breaking changes](#breaking-changes): Introduces API compatibility changes that have a big impact. You need to spend significant time modifying the related implementation.
 
@@ -727,7 +727,7 @@ In v4.x, the video bitrate in the `AgoraChannelProfileCommunication` profile is 
 
 #### Virtual background
 
-See [Virtual Background](https://docs-md.agora.io/en/video-calling/advanced-features/virtual-background_android) to update the code in your app.
+See [Virtual Background](/en/realtime-media/video/build/apply-video-effects/virtual-background) to update the code in your app.
 
 #### Image enhancement
 
@@ -960,11 +960,11 @@ Web SDK v4.x represents a complete overhaul of Web SDK v3.x, featuring optimized
 - Clear and comprehensive error code system to facilitate troubleshooting.
 
 This version provides a clearer and more concise overview of the improvements in Web SDK v4.x while maintaining focus on the key advantages for users.
-:::info
-:::
-  > - Agora has ceased support for Web SDK v3.x. To upgrade to version v4.x, refer to the provided documentation and migration guides.
-  >   - Note that Web SDK v4.x introduces major changes in API and product behavior, and is not backward compatible with version 3.x.
-  >   - In Web SDK v4.x, user role switching in live broadcast use-cases is decoupled from track release. Calling `publish` and `unpublish` will no longer automatically switch user roles. Refer to the [Migration steps](#migration-steps) for detailed instructions.
+  :::note
+  - Agora has ceased support for Web SDK v3.x. To upgrade to version v4.x, refer to the provided documentation and migration guides.
+    - Note that Web SDK v4.x introduces major changes in API and product behavior, and is not backward compatible with version 3.x.
+    - In Web SDK v4.x, user role switching in live broadcast use-cases is decoupled from track release. Calling `publish` and `unpublish` will no longer automatically switch user roles. Refer to the [Migration steps](#migration-steps) for detailed instructions.
+  :::
 
 This page tells you about:
 
