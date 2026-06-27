@@ -9,15 +9,15 @@ Agent Studio provides centralized management of credentials, MCP servers, and kn
 To save your credentials for a vendor:
 
 1. From the left sidebar, select **Integration**.
-1. At the top of the page, select **Credentials**
-1. Click **`+ Add Credential`**.  
+2. At the top of the page, select **Credentials**.
+3. Click **`+ Add Credential`**.
     ![Add credential](/images/conversational-ai/studio/create-credential.png)
 
-1. From the **Type** dropdown, select **ASR**, **LLM**, or **TTS**.
-1. Select the **Vendor** from the dropdown for which you want to add the credential.
-1. Enter a descriptive name for your credential.
-1. Paste your provider API key and fill in other related parameters, if any.
-1. Click **Save**.
+4. From the **Type** dropdown, select **ASR**, **LLM**, or **TTS**.
+5. Select the **Vendor** from the dropdown for which you want to add the credential.
+6. Enter a descriptive name for your credential.
+7. Paste your provider API key and fill in other related parameters, if any.
+8. Click **Save**.
 
 After you add a credential, you can select it from the **Credential** dropdown when customizing your ASR, LLM, or TTS configuration for any agent. 
 
@@ -46,13 +46,13 @@ A knowledge base provides your agent with additional context by supplying refere
 To create a knowledge base:
 
 1. From the left sidebar, select **Integration**.
-1. At the top of the page, select **Knowledge Bases**.
-1. Click **+ Add Knowledge Base**.
+2. At the top of the page, select **Knowledge Bases**.
+3. Click **+ Add Knowledge Base**.
     ![Create knowledge base](/images/conversational-ai/studio/create-knowledge-base.png)
-1. Enter a **Knowledge Base Name**.
-1. Enter a **Description**.
-1. Upload one or more files by clicking **Browse files** or dragging and dropping files into the upload area.
-1. Click **Create**.
+4. Enter a **Knowledge Base Name**.
+5. Enter a **Description**.
+6. Upload one or more files by clicking **Browse files** or dragging and dropping files into the upload area.
+7. Click **Create**.
 
 > **Info**
 > Supported file formats: PDF, DOCX. Maximum file size: 20 MB per file.
@@ -66,15 +66,15 @@ MCP (Model Context Protocol) servers extend your agent's capabilities by enablin
 To add an MCP server:
 
 1. From the left sidebar, select **Integration**.
-1. At the top of the page, select **MCPs**.
-1. Click **+ Add Server**.
+2. At the top of the page, select **MCPs**.
+3. Click **+ Add Server**.
     ![Add MCP server](/images/conversational-ai/studio/create-mcp.png)
-1. Enter a descriptive **Name** for the MCP server.
-1. Enter the **Server URL**.
-1. Set the **Timeout (ms)**. If the server does not respond within this duration, the agent stops waiting and continues executing.
-1. Select the **Server Protocol**: **SSE**, **HTTP**, or **Streamable HTTP**.
-1. Add **HTTP Headers** for authentication or additional configuration. (Optional)
-1. Add **Query Parameters** to append to the server URL. (Optional)
-1. Click **Add**.
+4. Enter a descriptive **Name** for the MCP server.
+5. Enter the **Server URL**.
+6. Set the **Timeout (ms)**. If the server does not respond within this duration, the agent stops waiting and continues executing.
+7. Select the **Server Protocol**: **SSE**, **HTTP**, or **Streamable HTTP**.
+8. Add **HTTP Headers** for authentication or additional configuration. (Optional)
+9. Add **Query Parameters** to append to the server URL. (Optional)
+10. Click **Add**.
 
 You can edit, delete or check the status of an MCP server using the **Actions** column in the MCP server list.

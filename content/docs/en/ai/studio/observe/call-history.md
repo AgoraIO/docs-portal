@@ -7,8 +7,8 @@ The Call History page provides a detailed log of all inbound and outbound calls 
 To view detailed information for specific calls:
 
 1. In Agent Studio, select **Call History** from the sidebar.
-1. Use the filter options to find specific calls.
-1. The Call History page displays the following information for each call:
+2. Use the filter options to find specific calls.
+3. The Call History page displays the following information for each call:
    - **Direction**: Inbound or Outbound
    - **Timestamp**: Date and time of the call
    - **Agent name**: The agent that handled the call
@@ -29,7 +29,7 @@ To view detailed information for specific calls:
       | **Busy** | The line was busy or engaged. |
       | **Voicemail** | The call reached a voicemail system. |
 
-1. Click a call in the list to view its full transcript.
+4. Click a call in the list to view its full transcript.
 
 ## See also
 
