@@ -4,17 +4,17 @@ description: Transmit custom information to the Conversational AI agent to guide
 ---
 When interacting with a conversational AI agent, you can transmit custom context information from the client, such as the user's speaking status, selected text, personal signature, or score, enabling the agent to generate responses tailored to the user's needs.
 
-This document explains how to use the capabilities of the [Signaling SDK](../../realtime-media/rtm/index) to include custom information in interactions with the conversational AI agent.
+This document explains how to use the capabilities of the [Signaling SDK](/en/realtime-media/rtm) to include custom information in interactions with the conversational AI agent.
 
 ## Understand the tech
-[Agora Signaling SDK](../../realtime-media/rtm/index) allows users in a channel to set custom temporary status information and notifies other online users in the channel through event notifications.
+[Agora Signaling SDK](/en/realtime-media/rtm) allows users in a channel to set custom temporary status information and notifies other online users in the channel through event notifications.
 
 If your app integrates both ASDK and SIG services, you can leverage the SIG features when creating a conversational AI agent. This allows the agent to retrieve temporary status information from the SIG channel before invoking the LLM. The information is used as context to guide the agent in generating responses that better align with user needs.
 
 ## Prerequisites
 
 - Implemented the basic logic for interacting with a conversational AI agent by following the [REST Quickstart](../get-started/quickstart).
-- Integrated the Signaling SDK into your app and implemented basic messaging functionality by following the [SIG SDK Quickstart](../../realtime-media/rtm/index).
+- Integrated the Signaling SDK into your app and implemented basic messaging functionality by following the [SIG SDK Quickstart](/en/realtime-media/rtm/quickstart).
 
 ## Implementation
 Take the following steps to transmit custom context information from the client to the LLM.
@@ -105,7 +105,7 @@ curl --request post \
 </Tabs>
 
 ### Set Custom Information
-Refer to SIG [User status management](../../realtime-media/rtm/index#user-status-management) to set status information for users in the channel.
+Refer to SIG [User status management](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence#user-status-management) to set status information for users in the channel.
 
 ### Transmit Custom Information
 Before invoking the LLM, the agent automatically retrieves the active user's temporary status information and transmits it as context to the model. This temporary status information is stored in the `context.presence` field.

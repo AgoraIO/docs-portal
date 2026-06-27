@@ -97,7 +97,7 @@ Use either of the following methods to add Video SDK to your project.
 
         If your Android project uses [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration), the method of adding the Maven Central dependency may differ.
 
-:::
+        :::
 
 
     1. To integrate the Video SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
@@ -127,7 +127,7 @@ Use either of the following methods to add Video SDK to your project.
 
         To get the latest version number, check the [Release notes](/en/realtime-media/video/reference/release-notes). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
 
-:::
+        :::
 
 
     1. Prevent code obfuscation
@@ -147,7 +147,7 @@ Use either of the following methods to add Video SDK to your project.
   <TabsContent value="manual">
 
 
-    1. Download the latest version of Video SDK from the  the [SDKs](/en/api-reference/sdks?platform=android) page and unzip it.
+    1. Download the latest version of Video SDK from the [SDKs](/en/api-reference/sdks?platform=android) page and unzip it.
 
     1. Open the unzipped file and copy the following files or subfolders to your project path.
 
@@ -204,6 +204,12 @@ Import the relevant Agora classes and interfaces:
 
 
 ```java
+import io.agora.rtc2.Constants;
+import io.agora.rtc2.IRtcEngineEventHandler;
+import io.agora.rtc2.RtcEngine;
+import io.agora.rtc2.RtcEngineConfig;
+import io.agora.rtc2.video.VideoCanvas;
+import io.agora.rtc2.ChannelMediaOptions;
 ```
 
 
@@ -213,6 +219,12 @@ Import the relevant Agora classes and interfaces:
 
 
 ```kotlin
+import io.agora.rtc2.Constants
+import io.agora.rtc2.IRtcEngineEventHandler
+import io.agora.rtc2.RtcEngine
+import io.agora.rtc2.RtcEngineConfig
+import io.agora.rtc2.video.VideoCanvas
+import io.agora.rtc2.ChannelMediaOptions
 ```
 
 
@@ -270,7 +282,7 @@ private fun initializeRtcEngine() {
         }
         mRtcEngine = RtcEngine.create(config)
     } catch (e: Exception) {
-        throw RuntimeException("Error initializing RTC engine: ${e.message\}")
+        throw RuntimeException("Error initializing RTC engine: ${e.message}")
     }
 }
 ```
@@ -1093,7 +1105,7 @@ class MainActivity : AppCompatActivity() {
             }
             mRtcEngine = RtcEngine.create(config)
         } catch (e: Exception) {
-            throw RuntimeException("Error initializing RTC engine: ${\e.message\}")
+            throw RuntimeException("Error initializing RTC engine: ${e.message}")
         }
     }
 
@@ -1308,6 +1320,8 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 Add the following import to your swift file:
 
 ```swift
+import UIKit
+import AgoraRtcKit
 ```
 
 ### Initialize the engine
@@ -1693,6 +1707,8 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 Add the following import to your swift file:
 
 ```swift
+import UIKit
+import AgoraRtcKit
 ```
 
 ### Initialize the engine
@@ -2101,6 +2117,8 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 Add the following import to your swift file:
 
 ```swift
+import UIKit
+import AgoraRtcKit
 ```
 
 ### Initialize the engine
@@ -2510,6 +2528,8 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 Add the following import to your swift file:
 
 ```swift
+import Cocoa
+import AgoraRtcKit
 ```
 
 ### Initialize the engine
@@ -2931,6 +2951,8 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 Add the following import to your swift file:
 
 ```swift
+import Cocoa
+import AgoraRtcKit
 ```
 
 ### Initialize the engine
@@ -3371,6 +3393,8 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 Add the following import to your swift file:
 
 ```swift
+import Cocoa
+import AgoraRtcKit
 ```
 
 ### Initialize the engine
@@ -3875,6 +3899,7 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 ### Import the `AgoraRTC` SDK
 
 ```js
+import AgoraRTC from "agora-rtc-sdk-ng";
 ```
 
 ### Initialize an instance of `AgoraRTCClient`
@@ -5319,7 +5344,7 @@ Add the Video SDK to your project using `npm`:
 
     Different versions of Electron have different environment requirements. If you see errors due to a mismatched environment when running the project, refer to the official [Electron documentation](https://releases.electronjs.org/releases/stable) to choose the appropriate Electron and Node.js versions.
 
-:::
+    :::
 
 
 1. To install the dependencies, open a terminal in your project root directory and run the following commands::
@@ -5690,7 +5715,7 @@ When a user launches your app, start Video Calling. When a user closes the app, 
 
     :::caution[caution]
 After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine instance. See [Initialize the engine](#initialize-the-engine) for details.
-:::
+    :::
 
 
 ### Complete sample code
@@ -6085,7 +6110,11 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 Import the following package​s in your dart file.
 
 ```dart
+import 'dart:async';
 
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 ```
 
 ### Initialize the engine
@@ -7271,7 +7300,7 @@ Take the following steps to test the sample code:
 
     :::caution[Caution]
 Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
-:::
+    :::
 
 
 <Tabs defaultValue="android">
@@ -7309,7 +7338,7 @@ Some simulators may not support all the functions of this project. Best practice
 
     :::info[Information]
 For detailed steps on running the app on a real Android or iOS device, please refer to [Running On Device](https://reactnative.dev/docs/running-on-device).
-:::
+    :::
 
 
 1. Launch the app and click the **Join channel** button to join a channel.
@@ -8120,7 +8149,7 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
 
     After calling `Dispose`, you can no longer use any methods or callbacks of the SDK. To use Video Calling features again, create a new engine instance.
 
-:::
+    :::
 
 
 ### Complete sample code
@@ -9335,7 +9364,7 @@ Add variables to create an engine instance and join a channel.
 
     :::info[Information]
 If your target platform is macOS or iOS, please refer to [How do I add the permissions needed for real-time interaction to my Unreal Engine project?](/en/api-reference/faq/integration/unreal_permissions)
-:::
+    :::
 
 
 1. To initialize the RTC engine, in the **InitRtcEngine** function, create and connect nodes as shown in the following figure:
@@ -9561,7 +9590,7 @@ To start a Video Calling session, implement the following steps in your app:
 
     The Python SDK is a server side SDK.
 
-:::
+    :::
 
 
 ## Implement Video Calling
@@ -10594,6 +10623,6 @@ Congratulations! You have successfully connected to the Agora backend and joined
 
 ### API reference
 
-- [`rtc.py`](https://api-ref.agora.io/en/voice-sdk/python/rtc-py-api.html)
+- [`rtc.py`](https://api-ref.agora.io/en/video-sdk/python/rtc-py-api.html)
 
 </PlatformStructured>

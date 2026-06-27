@@ -74,6 +74,12 @@ function normalizeRootDocsHref(
   href: string,
   context: { contentPath?: string } = {},
 ) {
+  const indexHref = normalizeIndexDocsHref(href);
+
+  if (indexHref !== href) {
+    return indexHref;
+  }
+
   const legacyHref = normalizeLegacyRootDocsHref(href);
 
   if (legacyHref !== href) {
@@ -125,6 +131,18 @@ function normalizeLegacyRootDocsHref(href: string) {
   }
 
   return href;
+}
+
+function normalizeIndexDocsHref(href: string) {
+  const parsed = splitHref(href);
+
+  if (!parsed.path.endsWith('/index')) {
+    return href;
+  }
+
+  const path = parsed.path.slice(0, -'/index'.length) || '/';
+
+  return `${path}${parsed.search}${parsed.hash}`;
 }
 
 function getLegacyConversationalAiRestPath(segments: string[]) {
@@ -228,7 +246,48 @@ const LEGACY_GET_STARTED_PATHS: Record<string, (locale: string) => string> = {
 const LEGACY_ABSOLUTE_PATHS: Record<string, string> = {
   '/doc/convoai/restful/webhook/ncs-events': '/zh-CN/api-reference/ncs-events',
   '/en/sdks': '/en/api-reference/sdks',
+  '/api-reference': '/en/api-reference',
+  '/conversational-ai/develop/managed-mode':
+    '/en/ai/build/custom-model-integration/presets',
+  '/extensions-marketplace/get-started/quickstart-implement':
+    '/en/api-reference/api-ref/extensions-marketplace/provisioning',
+  '/help/account-and-billing/billing_account':
+    '/en/realtime-media/video/account-settlement',
+  '/help/integration-issues/token_cohost':
+    '/en/realtime-media/video/build/authenticate-users/deploy-token-server',
+  '/help/integration-issues/token_related_issues':
+    '/en/realtime-media/video/build/authenticate-users/deploy-token-server',
+  '/en/api-reference/media-push': '/en/api-reference/api-ref/media-push',
+  '/en/api-reference/rtc': '/en/api-reference/api-ref/rtc',
+  '/en/realtime-media/sdks': '/en/api-reference/sdks',
+  '/en/realtime-media/voice/build': '/en/realtime-media/voice/quickstart',
+  '/en/realtime-media/voice/build/core-concepts':
+    '/en/realtime-media/voice/core-concepts',
+  '/en/realtime-media/voice/build/control-audio-and-devices/custom-audio':
+    '/en/realtime-media/voice/build/customize-audio-processing/custom-audio',
+  '/en/realtime-media/voice/build/secure-and-protect-channels/use-tokens':
+    '/en/realtime-media/voice/build/set-up-token-authentication/use-tokens',
+  '/en/realtime-media/voice/product-overview': '/en/realtime-media/voice',
+  '/en/realtime-media/video/build/add-advanced-video-features/app-size-optimization':
+    '/en/realtime-media/video/build/optimize-and-operate/app-size-optimization',
+  '/en/realtime-media/video/build/core-concepts':
+    '/en/realtime-media/video/core-concepts',
+  '/en/realtime-media/video/build/manage-agora-account':
+    '/en/realtime-media/video/manage-agora-account',
+  '/en/realtime-media/video/build/optimize-and-operate/screen-sharing':
+    '/en/realtime-media/video/build/capture-and-render-video/screen-sharing',
+  '/en/realtime-media/video/build/secure-and-protect-channels/authentication-workflow':
+    '/en/realtime-media/video/build/authenticate-users/authentication-workflow',
+  '/en/3.x/video-calling/introduction/release-notes':
+    '/en/realtime-media/video/reference/release-notes',
+  '/media-push/product-overview': '/en/api-reference/api-ref/rtc',
   '/sdks': '/en/api-reference/sdks',
+  '/video-calling/get-started/get-started-sdk':
+    '/en/realtime-media/video/quickstart',
+  '/video-calling/token-authentication/authentication-workflow':
+    '/en/realtime-media/video/build/authenticate-users/authentication-workflow',
+  '/video-calling/token-authentication/deploy-token-server':
+    '/en/realtime-media/video/build/authenticate-users/deploy-token-server',
 };
 
 function getRtcAndroidVersionScope(contentPath?: string) {
