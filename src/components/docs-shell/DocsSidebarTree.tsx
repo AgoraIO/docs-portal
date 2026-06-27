@@ -332,7 +332,7 @@ function SidebarLinkedSection({
         <button
           aria-expanded={isOpen}
           aria-label={`Toggle ${title}`}
-          className="absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded-md text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
+          className="absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded-md text-[color:var(--ink-3)] outline-hidden ring-sidebar-ring hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:ring-2"
           onClick={() => setIsOpen((value) => !value)}
           type="button"
         >
@@ -645,6 +645,8 @@ function mergeBestPracticesIntoBuild(
 function normalizeRootSections(
   nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
 ) {
+  // Linked sections (those with a url) manage their own collapsible state, so
+  // don't force them always-open here — only plain root sections are flattened.
   return nodes.map((node) =>
     node.type === 'section' && !node.url
       ? {
