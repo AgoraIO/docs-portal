@@ -121,6 +121,7 @@ function createPayload(
     breadcrumb: [],
     contentPath: 'docs/en/about.mdx',
     description: undefined,
+    hideToc: false,
     layoutMode: overrides.body.kind === 'openapi' ? 'openapi' : 'docs',
     localeLinks: [],
     markdownUrl: '/llms.mdx/docs/en/about.mdx',

@@ -30,6 +30,7 @@ function DocsTabLayout() {
     activeTab,
     localeLinks,
     layoutMode,
+    hideToc,
     navigation,
     sidebar,
     sidebarHeader,
@@ -44,6 +45,7 @@ function DocsTabLayout() {
       loadPages={() => readStaticDocsSearchIndex(params.locale)}
       localeLinks={localeLinks}
       layoutMode={layoutMode}
+      hideToc={hideToc}
       locale={params.locale}
       next={navigation.next}
       previous={navigation.previous}
