@@ -232,11 +232,30 @@ describe('DocsContent', () => {
     expect(screen.getByText('en/ai/get-started/platform-split/ios.mdx'));
   });
 
-  it('renders full-page MDX content without the article max-width or mobile TOC', async () => {
+  it('renders openapi-layout content without the article max-width or mobile TOC', async () => {
     renderWithRouter(
       <DocsContent
         contentPath="en/api-reference/recipes/index.mdx"
-        layoutMode="full-page"
+        layoutMode="openapi"
+        slug="recipes"
+        title="Recipes"
+        toc={[{ depth: 2, title: 'Browse all recipes', url: '#browse' }]}
+      />,
+    );
+
+    const article = await screen.findByRole('article');
+
+    expect(article).toHaveClass('max-w-none');
+    expect(article).not.toHaveClass('max-w-[var(--content-max)]');
+    expect(screen.queryByText('On this page')).not.toBeInTheDocument();
+  });
+
+  it('drops the article max-width and mobile TOC when hideToc is set in docs layout', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/api-reference/recipes/index.mdx"
+        hideToc
+        layoutMode="docs"
         slug="recipes"
         title="Recipes"
         toc={[{ depth: 2, title: 'Browse all recipes', url: '#browse' }]}
@@ -1032,9 +1051,9 @@ describe('DocsMainColumn', () => {
     ).toHaveAttribute('href', '/en/introduction/next-page');
   });
 
-  it('widens footer content in full-page layout', async () => {
+  it('widens footer content in openapi layout', async () => {
     renderWithRouter(
-      <DocsMainColumn layoutMode="full-page">
+      <DocsMainColumn layoutMode="openapi">
         <article>Body</article>
       </DocsMainColumn>,
     );

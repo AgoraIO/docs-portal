@@ -11,7 +11,7 @@ import {
   scrollDocsHashTarget,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
-import { type DocsLayoutMode, isWideDocsLayout } from '@/lib/docs-layout';
+import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import {
@@ -41,6 +41,7 @@ export function DocsContent({
   locale = DEFAULT_LOCALE,
   markdownUrl,
   layoutMode = 'docs',
+  hideToc = false,
   sidebarHeader,
   slug,
   title,
@@ -52,6 +53,7 @@ export function DocsContent({
   description?: string;
   locale?: AppLocale | string;
   layoutMode?: DocsLayoutMode;
+  hideToc?: boolean;
   markdownUrl?: string;
   sidebarHeader?: DocsSidebarHeader;
   slug?: string;
@@ -71,7 +73,9 @@ export function DocsContent({
       : undefined);
   const isOpenApiBody = resolvedBody?.kind === 'openapi';
   const effectiveLayoutMode = isOpenApiBody ? 'openapi' : layoutMode;
-  const isWideLayout = isWideDocsLayout(effectiveLayoutMode);
+  const isOpenApiLayout = effectiveLayoutMode === 'openapi';
+  // openapi and hideToc both let the article fill the width and hide the toc.
+  const contentFillsWidth = isOpenApiLayout || hideToc;
   const platformTabs =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group'
       ? resolvedBody.platformTabs
@@ -102,7 +106,7 @@ export function DocsContent({
       className={cn(
         'flex min-w-0 flex-col',
         platformTabs ? 'gap-6' : 'gap-9',
-        isWideLayout ? 'max-w-none' : 'max-w-[var(--content-max)]',
+        contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
       <header
@@ -157,9 +161,7 @@ export function DocsContent({
         <div
           className={cn(
             'flex flex-col gap-3',
-            markdownUrl &&
-              !isOpenApiBody &&
-              'xl:flex-row xl:items-start xl:gap-6',
+            markdownUrl && 'xl:flex-row xl:items-start xl:gap-6',
           )}
         >
           <div className="min-w-0 flex-1">
@@ -174,10 +176,7 @@ export function DocsContent({
           </div>
           {markdownUrl ? (
             <DocsCopyMenu
-              className={cn(
-                'self-start',
-                !isOpenApiBody && 'xl:ml-auto xl:shrink-0 xl:translate-y-1',
-              )}
+              className="self-start xl:ml-auto xl:shrink-0 xl:translate-y-1"
               locale={currentLocale}
               markdownUrl={markdownUrl}
               slug={slug ?? ''}
@@ -250,7 +249,7 @@ export function DocsContent({
           ) : null}
         </div>
       )}
-      {isWideLayout ? null : (
+      {contentFillsWidth ? null : (
         <DocsTableOfContents
           className="xl:hidden"
           locale={currentLocale}

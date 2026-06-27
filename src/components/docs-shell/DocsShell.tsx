@@ -33,7 +33,7 @@ import {
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
-import { type DocsLayoutMode, isWideDocsLayout } from '@/lib/docs-layout';
+import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import { replaceDocLocale } from '@/lib/docs-routing';
 import type { SearchEntry } from '@/lib/docs-search';
@@ -55,13 +55,9 @@ import { DocsTocRail } from './DocsTocRail';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
-const DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME = 'max-w-[min(100%,1600px)]';
 const DOCS_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
-const DOCS_WIDE_DESKTOP_GRID_CLASS_NAME =
-  'xl:grid-cols-[256px_minmax(0,1fr)_220px]';
-const DOCS_OPENAPI_DESKTOP_GRID_CLASS_NAME =
-  'xl:grid-cols-[256px_minmax(0,1fr)]';
+const DOCS_FILL_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)]';
 const mobileSidebarGroupLabelClassName =
   'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
 const mobileTabLinkClassName =
@@ -108,12 +104,14 @@ export function DocsShell({
   tabs,
   toc,
   layoutMode = 'docs',
+  hideToc = false,
 }: {
   activePath: string;
   activeTab: string;
   children: React.ReactNode;
   loadPages: () => Promise<SearchEntry[]>;
   layoutMode?: DocsLayoutMode;
+  hideToc?: boolean;
   localeLinks: LocaleLink[];
   locale: string;
   next?: { title: string; url: string };
@@ -167,16 +165,15 @@ export function DocsShell({
     '--docs-shell-header-offset': `${headerOffset}px`,
     '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
-  const isWideLayout = isWideDocsLayout(layoutMode);
-  const shellWidthClassName = isWideLayout
-    ? DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME
-    : DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
-  const desktopGridClassName =
-    layoutMode === 'openapi'
-      ? DOCS_OPENAPI_DESKTOP_GRID_CLASS_NAME
-      : isWideLayout
-        ? DOCS_WIDE_DESKTOP_GRID_CLASS_NAME
-        : DOCS_DESKTOP_GRID_CLASS_NAME;
+  const isOpenApiLayout = layoutMode === 'openapi';
+  // openapi and hideToc drop the toc rail and let content fill the grid; every
+  // layout shares the same outer shell footprint so the sidebar/nav/content
+  // align across page types.
+  const contentFillsWidth = isOpenApiLayout || hideToc;
+  const shellWidthClassName = DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
+  const desktopGridClassName = contentFillsWidth
+    ? DOCS_FILL_DESKTOP_GRID_CLASS_NAME
+    : DOCS_DESKTOP_GRID_CLASS_NAME;
 
   return (
     <SidebarProvider
@@ -405,13 +402,7 @@ export function DocsShell({
           >
             {children}
           </DocsMainColumn>
-          {layoutMode === 'openapi' ? null : isWideLayout ? (
-            <div
-              aria-hidden="true"
-              className="hidden h-full min-h-0 w-[220px] shrink-0 xl:block"
-              data-testid="docs-toc-rail-placeholder"
-            />
-          ) : (
+          {contentFillsWidth ? null : (
             <DocsTocRail locale={currentLocale} toc={toc} />
           )}
         </div>

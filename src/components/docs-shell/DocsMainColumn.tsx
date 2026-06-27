@@ -4,7 +4,7 @@ import { Link } from '@tanstack/react-router';
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
-import { type DocsLayoutMode, isWideDocsLayout } from '@/lib/docs-layout';
+import type { DocsLayoutMode } from '@/lib/docs-layout';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import {
   type AppLocale,
@@ -96,9 +96,7 @@ function DocsPageFooter({
     <footer
       className={cn(
         'mt-10 flex flex-col gap-5 border-t border-[color:var(--line-soft)] pt-6',
-        isWideDocsLayout(layoutMode)
-          ? 'max-w-none'
-          : 'max-w-[var(--content-max)]',
+        layoutMode === 'openapi' ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
       data-testid="docs-page-footer"
     >

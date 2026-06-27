@@ -5,6 +5,7 @@ import {
   getOpenApiOperationIds,
   getOpenApiPrerenderPaths,
   resolveOpenApiEndpointRoute,
+  resolveOpenApiLaneRoute,
 } from './lanes';
 
 describe('openapi lanes', () => {
@@ -215,5 +216,11 @@ describe('openapi lanes', () => {
       routeLeaf: 'create-streaming-key',
       url: '/en/api-reference/api-ref/rtmp-gateway/create-streaming-key',
     });
+  });
+
+  it('does not match the api-reference catalog routes to any lane', () => {
+    for (const slug of [['recipes'], ['sdks'], ['faq'], ['api-ref']]) {
+      expect(resolveOpenApiLaneRoute('en', 'api-reference', slug)).toBeNull();
+    }
   });
 });

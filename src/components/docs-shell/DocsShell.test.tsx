@@ -559,44 +559,22 @@ describe('DocsShell', () => {
     const mainHeaderRow = screen.getByTestId('docs-main-header-row');
     const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
 
-    expect(mainHeaderRow).toHaveClass('max-w-[min(100%,1600px)]');
-    expect(docsTabsStrip.firstElementChild).toHaveClass(
-      'max-w-[min(100%,1600px)]',
+    expect(mainHeaderRow).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
     );
-    expect(docsBodyShell).toHaveClass('max-w-[min(100%,1600px)]');
+    expect(docsTabsStrip.firstElementChild).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
     expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
     expect(docsBodyShell).not.toHaveClass(
       'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('docs-toc-rail-placeholder'),
-    ).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-page-actions')).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-side-rail')).not.toBeInTheDocument();
-    for (const footer of screen.getAllByTestId('docs-page-footer')) {
-      expect(footer).toHaveClass('max-w-none');
-      expect(footer).not.toHaveClass('max-w-[var(--content-max)]');
-    }
-    expect(screen.queryByText('On this page')).not.toBeInTheDocument();
-  });
-
-  it('keeps the full-page layout on the stable docs shell without the generic toc rail', async () => {
-    renderDocsShell({
-      layoutMode: 'full-page',
-    });
-
-    const docsBodyShell = await screen.findByTestId('docs-body-shell');
-
-    expect(docsBodyShell).toHaveClass('max-w-[min(100%,1600px)]');
-    expect(docsBodyShell).toHaveClass(
-      'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
-    );
-    expect(docsBodyShell).not.toHaveClass(
-      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
-    );
-    expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
-    expect(screen.getByTestId('docs-toc-rail-placeholder')).toBeInTheDocument();
     for (const footer of screen.getAllByTestId('docs-page-footer')) {
       expect(footer).toHaveClass('max-w-none');
       expect(footer).not.toHaveClass('max-w-[var(--content-max)]');
@@ -1218,6 +1196,22 @@ describe('DocsShell', () => {
 
     expect(mobileScrollViewport).toBeNull();
     expect(within(mobileFlow).getByText('Body')).toBeInTheDocument();
+  });
+
+  it('hides the toc rail and fills the grid when hideToc is set, keeping the docs footprint', async () => {
+    renderDocsShell({ layoutMode: 'docs', hideToc: true });
+
+    const docsBodyShell = await screen.findByTestId('docs-body-shell');
+
+    expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
+    expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
+    expect(docsBodyShell).not.toHaveClass(
+      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
+    );
+    expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).not.toHaveClass('max-w-[min(100%,1600px)]');
   });
 
   it('renders the split docs body shell regions and keeps pagination in the main column', async () => {

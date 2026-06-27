@@ -81,6 +81,7 @@ function TabIndexPage() {
     contentPath,
     description,
     layoutMode,
+    hideToc,
     markdownUrl,
     sidebarHeader,
     slug,
@@ -95,6 +96,7 @@ function TabIndexPage() {
       contentPath={contentPath}
       description={description}
       layoutMode={layoutMode}
+      hideToc={hideToc}
       locale={params.locale}
       markdownUrl={markdownUrl}
       sidebarHeader={sidebarHeader}
