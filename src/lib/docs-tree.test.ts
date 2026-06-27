@@ -559,7 +559,19 @@ describe('docs tree helpers', () => {
       {
         children: [
           {
+            id: '/en/realtime-media/online-ktv',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/realtime-media/online-ktv',
+          },
+          {
             children: [
+              {
+                id: '/en/realtime-media/online-ktv/uikit',
+                title: 'Overview',
+                type: 'page',
+                url: '/en/realtime-media/online-ktv/uikit',
+              },
               {
                 children: [
                   {
@@ -655,6 +667,12 @@ describe('docs tree helpers', () => {
       },
       {
         children: [
+          {
+            id: '/zh-CN/realtime-media/rtm2',
+            title: '总览',
+            type: 'page',
+            url: '/zh-CN/realtime-media/rtm2',
+          },
           {
             id: '/zh-CN/realtime-media/rtm2/android',
             title: 'Android',
@@ -1363,7 +1381,7 @@ describe('docs tree helpers', () => {
     ]);
   });
 
-  it('links a folder header to its matching index instead of duplicating it', () => {
+  it('shows a matching-index folder index as an Overview child and keeps the section url', () => {
     expect(
       pageTreeNodeToSidebarNodes({
         $id: 'faq-folder',
@@ -1393,6 +1411,12 @@ describe('docs tree helpers', () => {
     ).toEqual([
       {
         children: [
+          {
+            id: '/en/api-reference/faq',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/api-reference/faq',
+          },
           {
             id: '/en/api-reference/faq/integration',
             title: 'Integration',

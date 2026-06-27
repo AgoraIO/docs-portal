@@ -312,8 +312,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     return [];
   }
 
-  // A folder whose index shares the folder's title links its header to that
-  // index instead of repeating it as a child ("Overview") row.
+  // A folder whose index shares the folder's title keeps a `url` on its section
+  // (so it stays a collapsible toggle at the root) while still showing the index
+  // as an "Overview" child so the landing page remains reachable.
   const indexLinksHeader = Boolean(
     node.index &&
       normalizeLabel(node.index.name, '') === normalizeLabel(node.name, ''),
@@ -322,7 +323,6 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
   const children: DocsSidebarNode[] = [];
   let pendingIndexNode: DocsSidebarPageNode | null =
     node.index &&
-    !indexLinksHeader &&
     !shouldHideFolderIndexInSidebar(node.index, node.name, node.children)
       ? pageTreeItemToSidebarPageNode(node.index, undefined, {
           title: getFolderIndexTitle(node.index, node.name),
