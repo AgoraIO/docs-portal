@@ -1,10 +1,14 @@
 ---
 title: Deepgram
-description: Integrate Deepgram TTS into Conversational AI Engine.
+description: >
+  Integrate Deepgram TTS into Conversational AI Engine.
 ---
+
 Deepgram provides low-latency text-to-speech with a wide range of voices, optimized for real-time conversational AI applications.
 
+:::info[Info]
 This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
 
 ### Sample configuration
 
@@ -36,6 +40,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -52,6 +57,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -69,6 +75,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `tts` configuration in your request:
@@ -105,6 +112,6 @@ The parameters listed on this page are validated for use with Conversational AI 
     The WebSocket URL for the Deepgram streaming API. Defaults to `wss://api.deepgram.com/v1/speak`.
   </Parameter>
   <Parameter name="sample_rate" type="number" required={false}>
-    The audio sampling rate in Hz. 
+    The audio sampling rate in Hz.
   </Parameter>
 </ParameterList>

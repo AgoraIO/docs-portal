@@ -1,10 +1,14 @@
 ---
 title: Sarvam
-description: Configure Sarvam as an ASR provider for Voice Agent.
+description: >
+ Integrate Sarvam ASR with the Conversational AI Engine.
 ---
+
 Sarvam ASR provides real-time speech-to-text with low latency and reliable performance for Indian languages.
 
+:::info[Info]
 This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
 
 ### Sample configuration
 
@@ -35,6 +39,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -51,6 +56,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -67,6 +73,7 @@ agent := agentkit.NewAgent(client).WithStt(
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `asr` configuration in your request:
@@ -74,6 +81,7 @@ Use the following `asr` configuration in your request:
 ```json
 "asr": {
   "vendor": "sarvam",
+  "language": "en-US",
   "params": {
     "api_key": "SARVAM_KEY",
     "language": "hi-IN"
@@ -91,10 +99,10 @@ The parameters listed on this page are validated for use with Conversational AI 
 ### Key parameters
 
 <ParameterList title="params" required={true}>
-  <Parameter name="api_key" type="string" required={true}>  
+  <Parameter name="api_key" type="string" required={true}>
   Your Sarvam API key. Get your API key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
   </Parameter>
-  <Parameter name="language" type="string" required={true}>  
+  <Parameter name="language" type="string" required={true}>
   The language code for transcription. Set to `unknown` for automatic language detection.
   </Parameter>
 </ParameterList>

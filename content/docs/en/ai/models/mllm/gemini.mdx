@@ -1,7 +1,9 @@
 ---
 title: Google Gemini Live
-description: Configure Google Gemini Live as an MLLM provider for Voice Agent.
+description: >
+ Integrate Google Gemini Live with the Conversational AI Engine using the Gemini Developer API.
 ---
+
 Google Gemini Live provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components. This page covers integration using the Gemini Developer API, authenticated with a Gemini API key obtained from Google AI Studio.
 
 :::info[Info]
@@ -40,6 +42,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -58,6 +61,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -77,6 +81,7 @@ agent := agentkit.NewAgent(client).WithMllm(
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `mllm` configuration in your request:
@@ -84,11 +89,11 @@ Use the following `mllm` configuration in your request:
 ```json
 "mllm": {
   "enable": true,
-  "api_key": "",
+  "api_key": "<GOOGLE_GEMINI_API_KEY>",
   "messages": [
     {
       "role": "user",
-      "content": ""
+      "content": "<HISTORY_CONTENT>"
     }
   ],
   "params": {
@@ -105,7 +110,7 @@ Use the following `mllm` configuration in your request:
   },
   "turn_detection": {
     // see details below
-  },  
+  },
   "input_modalities": [
     "audio"
   ],
@@ -123,7 +128,13 @@ Use the following `mllm` configuration in your request:
 
 ### Turn detection
 
-For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../../../api-reference/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection). The following examples show the supported configurations for Google Gemini Live. To set up turn detection, add a `turn_detection` block inside the `mllm` object when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+To set up turn detection, add a `turn_detection` block inside the `mllm` object when you [Start a conversational AI agent](/en/api-reference/conversational-ai/rest-api/agent/join).
+
+:::info[Info]
+When `mllm.turn_detection` is defined, the top-level `turn_detection` object has no effect.
+:::
+
+The following examples show the supported configurations for Google Gemini Live.
 
 * **Server VAD**
 
@@ -173,9 +184,9 @@ For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../.
     </Parameter>
   </Parameter>
   <Parameter name="params" type="object" required={true}>
-     Configuration object for the Gemini Live model. 
+     Configuration object for the Gemini Live model.
     <Parameter name="model" type="string" required={true}>
-      The Gemini Live model identifier. 
+      The Gemini Live model identifier.
     </Parameter>
     <Parameter name="instructions" type="string" required={false}>
       System instructions that define the agent's behavior or tone.
@@ -204,11 +215,11 @@ For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../.
     </Parameter>
   </Parameter>
   <Parameter name="turn_detection" type="object" required={false}>
-    Turn detection configuration for the MLLM module. For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection). 
+    Turn detection configuration for the MLLM module. For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](/en/api-reference/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection).
 
     <Parameter name="mode" type="string" required={false} possibleValues="agora_vad, server_vad">
-      - `agora_vad`: Agora VAD-based detection. 
-      - `server_vad`: Vendor-side VAD-based detection. 
+      - `agora_vad`: Agora VAD-based detection.
+      - `server_vad`: Vendor-side VAD-based detection.
     </Parameter>
 
     <Parameter name="agora_vad_config" type="object" required={false}>
@@ -238,10 +249,10 @@ For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../.
         Duration of silence in milliseconds required to determine end of speech.
       </Parameter>
       <Parameter name="start_of_speech_sensitivity" type="string" required={false} possibleValues="START_SENSITIVITY_HIGH,START_SENSITIVITY_LOW">
-        Sensitivity for start of speech detection. 
+        Sensitivity for start of speech detection.
       </Parameter>
       <Parameter name="end_of_speech_sensitivity" type="string" required={false} possibleValues="END_SENSITIVITY_HIGH,END_SENSITIVITY_LOW">
-        Sensitivity for end of speech detection. 
+        Sensitivity for end of speech detection.
       </Parameter>
     </Parameter>
   </Parameter>
@@ -258,15 +269,14 @@ For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../.
     - `["text", "audio"]`: Combined text and audio output
   </Parameter>
   <Parameter name="greeting_message" type="string" required={false}>
-    The message the agent speaks when a user joins the channel. 
+    The message the agent speaks when a user joins the channel.
   </Parameter>
   <Parameter name="failure_message" type="string" required={false}>
     The message the agent speaks when an error occurs.
   </Parameter>
   <Parameter name="vendor" type="string" required={true}>
-    The MLLM provider identifier. Set to `"gemini"` to use Google Gemini Live with the Gemini Developer API. 
+    The MLLM provider identifier. Set to `"gemini"` to use Google Gemini Live with the Gemini Developer API.
   </Parameter>
 </ParameterList>
-
 
 For comprehensive API reference, real-time capabilities, and detailed parameter descriptions, see the [Google Gemini Live API](https://ai.google.dev/api/live).

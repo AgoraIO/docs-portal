@@ -1,7 +1,9 @@
 ---
 title: Groq
-description: Integrate Groq LLM into Conversational AI Engine.
+description: >
+  Integrate Groq LLM into Conversational AI Engine.
 ---
+
 Groq provides state-of-the-art language models optimized for different use cases.
 
 ### Sample configuration
@@ -38,6 +40,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -59,6 +62,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -82,12 +86,23 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `llm` configuration in your request:
 
 ```json
 "llm": {
+    "url": "https://api.groq.com/openai/v1/chat/completions",
+    "api_key": "<your_llm_key>",
+    "system_messages": [
+      {
+        "role": "system",
+        "content": "You are a helpful chatbot."
+      }
+    ],
+    "max_history": 32,
+    "greeting_message": "Hello, how can I assist you?",
     "failure_message": "Please hold on a second.",
     "params": {
       "model": "llama-3.3-70b-versatile"
@@ -101,14 +116,14 @@ Use the following `llm` configuration in your request:
 ### Key parameters
 
 <ParameterList title="llm" required={true}>
-  <Parameter name="api_key" type="string" required={true}>  
+  <Parameter name="api_key" type="string" required={true}>
   Create and manage your API key from [Groq console](https://console.groq.com/keys).
   </Parameter>
-  <Parameter name="url" type="string" required={true}>  
+  <Parameter name="url" type="string" required={true}>
   Use the completions endpoint.
   </Parameter>
-  <Parameter name="params" type="object" required={true}>  
-    <Parameter name="model" type="string" required={true}>  
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="model" type="string" required={true}>
     Refer to [Groq models](https://console.groq.com/docs/models) for available models.
     </Parameter>
   </Parameter>

@@ -88,9 +88,12 @@ export const docs = defineDocs({
           remarkDirectiveAdmonition,
           {
             types: {
+              caution: 'warning',
               danger: 'error',
+              error: 'error',
               info: 'info',
               note: 'info',
+              ok: 'ok',
               success: 'ok',
               tip: 'ok',
               warn: 'warning',

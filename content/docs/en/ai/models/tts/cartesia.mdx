@@ -1,10 +1,14 @@
 ---
 title: Cartesia
-description: Integrate Cartesia TTS into Conversational AI Engine.
+description: >
+  Integrate Cartesia TTS into Conversational AI Engine.
 ---
+
 Cartesia provides ultra-fast, low-latency text-to-speech with real-time streaming capabilities, optimized for interactive conversational AI applications.
 
+:::info[Info]
 This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
 
 ### Sample configuration
 
@@ -37,6 +41,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -54,6 +59,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -72,6 +78,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `tts` configuration in your request:
@@ -106,38 +113,38 @@ The parameters listed on this page are validated for use with Conversational AI 
 ### Key parameters
 
 <ParameterList title="params" required={true}>
-  <Parameter name="api_key" type="string" required={true}>  
+  <Parameter name="api_key" type="string" required={true}>
     The Cartesia API key used to authenticate requests. Get your API key from the [Cartesia Console](https://play.cartesia.ai/sign-up).
   </Parameter>
   <Parameter name="model_id" type="string" required={true}>
     The identifier of the TTS model to use. For example, `sonic-2`.
   </Parameter>
-  <Parameter name="base_url" type="string" required={false}>  
+  <Parameter name="base_url" type="string" required={false}>
     The WebSocket URL for the Cartesia streaming API. For example, `wss://api.cartesia.ai`.
   </Parameter>
-  <Parameter name="voice" type="object" required={true}>  
+  <Parameter name="voice" type="object" required={true}>
     Voice configuration object.
- 
+
     <Parameter name="mode" type="string" required={true}>
       Voice selection mode. Use `id` to select by voice identifier.
     </Parameter>
-   
+
     <Parameter name="id" type="string" required={true}>
-      The identifier of the selected voice for speech synthesis. 
+      The identifier of the selected voice for speech synthesis.
     </Parameter>
  </Parameter>
- <Parameter name="output_format" type="object" required={false}>  
+ <Parameter name="output_format" type="object" required={false}>
   Audio output format configuration
- 
+
    <Parameter name="container" type="string" required={false}>
    Audio container format for the output stream.
    </Parameter>
-   
+
    <Parameter name="sample_rate" type="number" defaultValue="16000" possibleValues="8000, 16000, 22050, 24000, 44100, 48000" required={false}>
    Audio sampling rate in Hz
-   </Parameter> 
+   </Parameter>
  </Parameter>
  <Parameter name="language" type="string" required={false}>
   Target language for speech synthesis.
- </Parameter> 
+ </Parameter>
 </ParameterList>

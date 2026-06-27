@@ -1,9 +1,14 @@
 ---
-title: Generic avatar provider
-description: Integrate a custom avatar provider into Voice Agent through the generic avatar interface.
+title: Generic avatar
+description: >
+  Integrate a generic avatar provider into Conversational AI Engine.
 ---
 
-The `generic` avatar vendor lets you connect a custom avatar provider to Voice Agent when a built-in vendor integration does not fit your use case.
+The `generic` avatar vendor allows you to integrate a custom avatar provider into the Conversational AI Engine.
+
+:::info[Info]
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
 
 ### Sample configuration
 
@@ -38,6 +43,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -57,6 +63,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -77,6 +84,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `avatar` configuration in your request:
@@ -85,11 +93,11 @@ Use the following `avatar` configuration in your request:
 "avatar": {
   "vendor": "generic",
   "params": {
-    "api_key": "<avatar_api_key>",
-    "api_base_url": "<avatar_api_base_url>",
-    "avatar_id": "<avatar_id>",
-    "agora_token": "<agora_token>",
-    "agora_uid": "<agora_uid>"
+    "api_key": "<AVATAR_API_KEY>",
+    "api_base_url": "<AVATAR_API_BASE_URL>",
+    "avatar_id": "<AVATAR_ID>",
+    "agora_token": "<AGORA_TOKEN>",
+    "agora_uid": "<AGORA_UID>"
   }
 }
 ```
@@ -97,13 +105,22 @@ Use the following `avatar` configuration in your request:
 </TabsContent>
 </Tabs>
 
-## Key parameters
+### Key parameters
 
-- `vendor`: Set to `generic`.
-- `params.api_key`: API key used to authenticate with the avatar provider.
-- `params.api_base_url`: Base URL for the avatar provider API.
-- `params.avatar_id`: Unique identifier of the avatar to render.
-- `params.agora_token`: RTC token that allows the avatar endpoint to join the channel.
-- `params.agora_uid`: Unique RTC UID used by the avatar participant. It must differ from every other participant in the channel.
-
-Use this option when your team already has an avatar backend or when you need a vendor that is not yet covered by a built-in integration.
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The API key used for authentication with the avatar provider.
+  </Parameter>
+  <Parameter name="api_base_url" type="string" required={true}>
+    The base URL of the avatar provider's API endpoint.
+  </Parameter>
+  <Parameter name="avatar_id" type="string" required={true}>
+    The unique identifier for the avatar to use.
+  </Parameter>
+  <Parameter name="agora_token" type="string" required={false}>
+    The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+  </Parameter>
+  <Parameter name="agora_uid" type="string" required={true}>
+    The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+  </Parameter>
+</ParameterList>

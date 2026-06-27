@@ -1,10 +1,14 @@
 ---
 title: Rime
-description: Configure Rime as a TTS provider for Voice Agent.
+description: >
+ Integrate Rime TTS with the Conversational AI Engine.
 ---
+
 Rime provides high-quality text-to-speech (TTS) with low latency, supporting multiple speakers and models.
 
+:::info[Info]
 This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
 
 ### Sample configuration
 
@@ -37,6 +41,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -54,6 +59,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -72,6 +78,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `tts` configuration in your request:
@@ -97,17 +104,17 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-<ParameterList title="params" required>
-  <Parameter name="api_key" type="string" required>
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
     The Rime API key used to authenticate requests. You must provide a valid key for the service to function.
   </Parameter>
-  <Parameter name="speaker" type="string" required>
+  <Parameter name="speaker" type="string" required={true}>
     The speaker voice to use for TTS output. For example, `cove`.
   </Parameter>
-  <Parameter name="modelId" type="string" required>
+  <Parameter name="modelId" type="string" required={true}>
     The Rime TTS model to use. For example, `mistv2`. Different models provide different voice qualities and capabilities.
   </Parameter>
-  <Parameter name="base_url" type="string" optional>
+  <Parameter name="base_url" type="string" required={false}>
     The WebSocket URL for the Rime streaming API. For example, `wss://users.rime.ai/ws2`.
   </Parameter>
 </ParameterList>

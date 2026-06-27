@@ -1,10 +1,14 @@
 ---
 title: Anam
-description: Integrate Anam AI avatars into Conversational AI Engine.
+description: >
+  Integrate Anam AI avatars into Conversational AI Engine.
 ---
+
 Anam provides AI-powered avatars with real-time video rendering, enabling natural video conversations with your AI agents.
 
+:::info[Info]
 This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
 
 ### Sample configuration
 
@@ -37,6 +41,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -54,6 +59,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -72,6 +78,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `avatar` configuration in your request:
@@ -118,5 +125,5 @@ Use the following `avatar` configuration in your request:
   </Parameter>
   <Parameter name="video_encoding" type="string" defaultValue="H264" possibleValues="H264, AV1" required={false}>
     The video encoding format.
-  </Parameter>  
+  </Parameter>
 </ParameterList>

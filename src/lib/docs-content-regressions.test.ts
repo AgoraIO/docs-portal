@@ -119,6 +119,18 @@ describe('docs content regressions', () => {
     return readFileSync(resolve(voiceDocsRoot, relativePath), 'utf8');
   }
 
+  function aiModelsDocSlugs(file: string) {
+    const relativePath = relative(docsRoot, file).replace(/\\/g, '/');
+    const withoutExtension = relativePath.replace(/\.mdx?$/, '');
+    const segments = withoutExtension.split('/');
+
+    if (segments.at(-1) === 'index') {
+      return segments.slice(0, -1);
+    }
+
+    return segments;
+  }
+
   it('keeps block-style lists and notes out of GFM table cells', () => {
     const blockSyntaxPattern =
       /(?:<\/?(?:ul|ol|li)\b|\*\*Note\*\*|<Note\b|:::note|:::info|:::warning|:::caution|\[!NOTE\])/i;
@@ -568,6 +580,76 @@ describe('docs content regressions', () => {
     expect(processed).toContain(
       'After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey`',
     );
+  });
+
+  it('renders AI model callout directives through the processed markdown pipeline', async () => {
+    const { source } = await import('./source.server');
+    const modelDocsRoot = resolve(docsRoot, 'ai/models');
+    const filesWithCallouts = listMarkdownFiles(modelDocsRoot).filter((file) => {
+      const sourceText = readFileSync(file, 'utf8');
+      return /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m.test(
+        sourceText,
+      );
+    });
+
+    for (const file of filesWithCallouts) {
+      const page = source.getPage(aiModelsDocSlugs(file), 'en');
+
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
+
+      if (!page || !('getText' in page.data)) {
+        throw new Error(
+          `Expected AI model page ${relative(process.cwd(), file)} to expose processed markdown.`,
+        );
+      }
+
+      const processed = await page.data.getText('processed');
+
+      expect(processed).not.toMatch(
+        /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m,
+      );
+      expect(processed).toContain('<CalloutContainer');
+    }
+  });
+
+  it('keeps nested and repeated AI model callouts rendered as callout containers', async () => {
+    const { source } = await import('./source.server');
+    const akool = source.getPage(['ai', 'models', 'avatar', 'akool'], 'en');
+    const deepgram = source.getPage(['ai', 'models', 'asr', 'deepgram'], 'en');
+    const elevenLabs = source.getPage(
+      ['ai', 'models', 'tts', 'elevenlabs'],
+      'en',
+    );
+
+    for (const page of [akool, deepgram, elevenLabs]) {
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
+    }
+
+    if (
+      !akool ||
+      !deepgram ||
+      !elevenLabs ||
+      !('getText' in akool.data) ||
+      !('getText' in deepgram.data) ||
+      !('getText' in elevenLabs.data)
+    ) {
+      throw new Error('Expected AI model regression pages to expose processed markdown.');
+    }
+
+    const akoolProcessed = await akool.data.getText('processed');
+    const deepgramProcessed = await deepgram.data.getText('processed');
+    const elevenLabsProcessed = await elevenLabs.data.getText('processed');
+
+    expect(akoolProcessed.match(/<CalloutContainer type="info">/g) ?? []).toHaveLength(3);
+    expect(akoolProcessed).toContain('sales@agora.io');
+    expect(deepgramProcessed).toContain('<CalloutContainer type="warning">');
+    expect(deepgramProcessed).toContain('callback_method');
+    expect(
+      elevenLabsProcessed.match(/<CalloutContainer type="warning">/g) ?? [],
+    ).toHaveLength(2);
+    expect(elevenLabsProcessed).toContain('Paid plan required');
   });
 
   it('renders IoT authentication code tabs as MDX components', async () => {

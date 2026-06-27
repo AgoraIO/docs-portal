@@ -1,10 +1,14 @@
 ---
 title: Murf
-description: Configure Murf as a TTS provider for Voice Agent.
+description: >
+ Integrate Murf TTS with the Conversational AI Engine.
 ---
+
 Murf provides enterprise-grade AI voice generation with text-to-speech (TTS) models.
 
+:::info[Info]
 This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
 
 ### Sample configuration
 
@@ -42,6 +46,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -64,6 +69,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -87,6 +93,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `tts` configuration in your request:
@@ -116,29 +123,29 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-<ParameterList title="params" required>
-  <Parameter name="api_key" type="string" required>
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
     The Murf API key used to authenticate requests. You must provide a valid key for the service to function.
   </Parameter>
-  <Parameter name="base_url" type="string" optional>
+  <Parameter name="base_url" type="string" required={false}>
     The WebSocket endpoint for streaming TTS output. For example, `wss://global.api.murf.ai/v1/speech/stream-input`.
   </Parameter>
-  <Parameter name="voiceId" type="string" required>
+  <Parameter name="voiceId" type="string" required={false}>
     The voice identifier to use. For example, `Matthew`.
   </Parameter>
-  <Parameter name="locale" type="string" optional>
+  <Parameter name="locale" type="string" required={false}>
     The locale for the selected voice. For example, `en-US`.
   </Parameter>
-  <Parameter name="rate" type="number" optional>
+  <Parameter name="rate" type="number" required={false}>
     The speech rate adjustment. A value of `0` applies the default rate.
   </Parameter>
-  <Parameter name="pitch" type="number" optional>
+  <Parameter name="pitch" type="number" required={false}>
     The pitch adjustment. A value of `0` applies the default pitch.
   </Parameter>
-  <Parameter name="model" type="string" optional>
+  <Parameter name="model" type="string" required={false}>
     The TTS model to use. For example, `FALCON`.
   </Parameter>
-  <Parameter name="sample_rate" type="number" optional>
+  <Parameter name="sample_rate" type="number" required={false}>
     The audio sample rate in Hz. For example, `24000`.
   </Parameter>
 </ParameterList>

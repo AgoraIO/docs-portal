@@ -1,7 +1,9 @@
 ---
 title: MiniMax
-description: Configure MiniMax as a TTS provider for Voice Agent.
+description: >
+ Integrate MiniMax TTS with the Conversational AI Engine.
 ---
+
 MiniMax provides text-to-speech (TTS) with multiple voice styles and low-latency streaming output.
 
 ### Sample configuration
@@ -37,6 +39,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -56,6 +59,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -76,11 +80,12 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 - **Managed mode**
 
-  To use MiniMax TTS with an Agora-managed key, specify one of the following presets in the [`preset`](/conversational-ai/rest-api/agent/join#preset) field when starting an agent:
+  To use MiniMax TTS with an Agora-managed key, specify one of the following presets in the [`preset`](/en/api-reference/conversational-ai/rest-api/agent/join#preset) field when starting an agent:
 
   - `minimax_speech_2_6_turbo`
   - `minimax_speech_2_8_turbo`
@@ -117,6 +122,9 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
       "voice_setting": {
         "voice_id": "English_captivating_female1",
         "speed": 1.0
+      },
+      "audio_setting": {
+        "sample_rate": 44100
       }
     }
   }
@@ -134,37 +142,22 @@ The parameters listed on this page are validated for use with Conversational AI 
 The following parameters are required when using your own API key (BYOK). They are not required when using a preset.
 
 <ParameterList title="params">
-  <Parameter name="key" type="string" optional>
+  <Parameter name="key" type="string" required={false}>
     The MiniMax API key used to authenticate requests. Required when using your own API key (BYOK).
   </Parameter>
-  <Parameter name="group_id" type="string" optional>
+  <Parameter name="group_id" type="string" required={false}>
     The MiniMax group identifier. Required when using your own API key (BYOK).
   </Parameter>
-  <Parameter name="model" type="string" optional>
-    The TTS model to use. Required when using your own API key (BYOK). For example, `speech-02-turbo`.
+  <Parameter name="url" type="string" required={true}>
+    The WebSocket endpoint for streaming TTS output. For example, `wss://api-uw.minimax.io/ws/v1/t2a_v2`.
   </Parameter>
-  <Parameter name="voice_setting" type="object" required>
-    Voice configuration object.
-
-    <ParameterList>
-      <Parameter name="voice_setting.voice_id" type="string" required>
-        The voice style identifier to use. For example, `English_captivating_female1`.
-      </Parameter>
-      <Parameter name="voice_setting.speed" type="number" optional>
-        Speaking rate multiplier. `1.0` is the normal speed.
-      </Parameter>
-    </ParameterList>
+  <Parameter name="model" type="string" required={true}>
+    The TTS model to use. For example, `speech-02-turbo`.
   </Parameter>
-  <Parameter name="audio_setting" type="object" optional>
-    Audio output configuration.
-
-    <ParameterList>
-      <Parameter name="audio_setting.sample_rate" type="number" optional>
-        The audio sampling rate in Hz.
-      </Parameter>
-    </ParameterList>
+  <Parameter name="voice_setting.voice_id" type="string" required={true}>
+    The voice style identifier to use. For example, `English_captivating_female1`.
   </Parameter>
-  <Parameter name="url" type="string" optional>
-    The WebSocket endpoint for streaming TTS output. Required when using your own API key (BYOK). For example, `wss://api-uw.minimax.io/ws/v1/t2a_v2`.
+  <Parameter name="audio_setting.sample_rate" type="number" required={true}>
+    The audio sampling rate in Hz.
   </Parameter>
 </ParameterList>

@@ -1,10 +1,14 @@
 ---
 title: OpenAI
-description: Configure OpenAI as a TTS provider for Voice Agent.
+description: >
+ Integrate OpenAI TTS into Conversational AI Engine.
 ---
+
 OpenAI provides natural-sounding text-to-speech with customizable voice instructions and multiple voice options.
 
+:::info[Info]
 This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
 
 ### Sample configuration
 
@@ -40,6 +44,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -60,6 +65,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -81,11 +87,12 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 - **Managed mode**
 
-  To use OpenAI TTS with an Agora-managed key, specify the following preset in the [`preset`](/conversational-ai/rest-api/agent/join#preset) field when starting an agent:
+  To use OpenAI TTS with an Agora-managed key, specify the following preset in the [`preset`](/en/api-reference/conversational-ai/rest-api/agent/join#preset) field when starting an agent:
 
   - `openai_tts_1`
 
@@ -129,18 +136,20 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-<ParameterList title="params" required={true}>
-  <Parameter name="base_url" type="string" required={true}>  
-  The endpoint URL for the OpenAI TTS service. See [How to use data residency](https://platform.openai.com/docs/guides/your-data#how-to-use-data-residency).
+The following parameters are required when using your own API key (BYOK). They are not required when using a preset.
+
+<ParameterList title="params">
+  <Parameter name="base_url" type="string" required={true}>
+  The endpoint URL for the OpenAI TTS service. Required when using your own API key (BYOK). See [How to use data residency](https://platform.openai.com/docs/guides/your-data#how-to-use-data-residency).
   </Parameter>
-  <Parameter name="api_key" type="string" required={true}>  
-  The API key used for authentication. Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
+  <Parameter name="api_key" type="string" required={false}>
+  The API key used for authentication. Required when using your own API key (BYOK). Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
   </Parameter>
   <Parameter name="model" type="string" required={true}>
-  Identifier of the model to be used. 
+  Identifier of the model to be used. Required when using your own API key (BYOK).
   </Parameter>
-  <Parameter name="voice" type="string" required={true}>  
-  The voice identifier for speech synthesis. 
+  <Parameter name="voice" type="string" required={true}>
+  The voice identifier for speech synthesis.
   </Parameter>
   <Parameter name="instructions" type="string" required={false}>
   Custom instructions for voice style, accent, pace, and tone. Helps fine-tune the speech characteristics.

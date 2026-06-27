@@ -1,7 +1,9 @@
 ---
 title: Google Gemini
-description: Integrate a Google Gemini LLM into Conversational AI Engine.
+description: >
+  Integrate a Google Gemini LLM into Conversational AI Engine.
 ---
+
 Google Gemini provides advanced multimodal AI capabilities with fast performance and efficient processing for conversational AI applications.
 
 ### Sample configuration
@@ -37,6 +39,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -57,6 +60,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -79,12 +83,25 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `llm` configuration in your request:
 
 ```json
 "llm": {
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=<api_key>",
+   "system_messages": [
+       {
+           "parts": [
+               {
+                   "text": "You are a helpful chatbot"
+               }
+           ],
+           "role": "user"
+       }
+   ],
+   "max_history": 32,
    "greeting_message": "Good to see you!",
    "failure_message": "Hold on a second.",
    "params": {
@@ -100,20 +117,20 @@ Use the following `llm` configuration in your request:
 ### Key parameters
 
 <ParameterList title="llm" required={true}>
-  <Parameter name="url" type="string" required={true}>  
+  <Parameter name="url" type="string" required={true}>
   Note that the API key is passed in the URL query parameter. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
   </Parameter>
-  <Parameter name="system_messages" type="array[object]" required={false}>  
+  <Parameter name="system_messages" type="array[object]" required={false}>
   Use `parts` array with `text` objects instead of simple `content` string.
   </Parameter>
-  <Parameter name="style" type="string" required={true}>  
+  <Parameter name="style" type="string" required={true}>
   Set to `gemini` to use Gemini's message format.
   </Parameter>
-  <Parameter name="ignore_empty" type="boolean" required={false}>  
+  <Parameter name="ignore_empty" type="boolean" required={false}>
   Set to `true` to handle empty responses appropriately.
   </Parameter>
-  <Parameter name="params" type="object" required={true}>  
-    <Parameter name="model" type="string" required={true}>  
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="model" type="string" required={true}>
     Refer to [Gemini models](https://ai.google.dev/gemini-api/docs/models/gemini) for available models.
     </Parameter>
   </Parameter>

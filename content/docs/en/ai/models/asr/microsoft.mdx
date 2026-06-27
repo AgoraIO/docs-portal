@@ -1,7 +1,9 @@
 ---
 title: Microsoft Azure
-description: Configure Microsoft Azure Speech as an ASR provider for Voice Agent.
+description: >
+ Integrate Microsoft Azure ASR into Conversational AI Engine.
 ---
+
 Microsoft Azure provides enterprise-grade automatic speech recognition with support for multiple languages and robust noise handling capabilities, optimized for real-time conversational applications.
 
 ### Sample configuration
@@ -34,6 +36,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -51,6 +54,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -68,6 +72,7 @@ agent := agentkit.NewAgent(client).WithStt(
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `asr` configuration in your request:
@@ -75,6 +80,7 @@ Use the following `asr` configuration in your request:
 ```json
 "asr": {
   "vendor": "microsoft",
+  "language": "en-US",
   "params": {
     "key": "<microsoft_key>",
     "region": "eastus",
@@ -94,13 +100,13 @@ The parameters listed on this page are validated for use with Conversational AI 
 ### Key parameters
 
 <ParameterList title="params" required={true}>
- <Parameter name="key" type="string" required={true}>  
+ <Parameter name="key" type="string" required={true}>
  The API key used for authentication. Get your API key from the [Azure Portal](https://portal.azure.com/).
  </Parameter>
  <Parameter name="region" type="string" required={true}>
  The Azure region where the speech service is hosted (For example, `eastus`, `westus2`).
  </Parameter>
- <Parameter name="language" type="string" required={true}>  
+ <Parameter name="language" type="string" required={true}>
  The language code for speech recognition (For example, `en-US`, `es-ES`, `fr-FR`). See [supported languages](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt) for language codes.
  </Parameter>
  <Parameter name="phrase_list" type="array[string]" required={false}>

@@ -1,7 +1,9 @@
 ---
 title: Deepgram
-description: Configure Deepgram as an ASR provider for Voice Agent.
+description: >
+ Integrate Deepgram ASR into Conversational AI Engine.
 ---
+
 Deepgram provides fast, accurate automatic speech recognition with advanced AI models optimized for real-time streaming and conversational applications across multiple languages.
 
 ### Sample configuration
@@ -34,6 +36,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -51,6 +54,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -68,6 +72,7 @@ agent := agentkit.NewAgent(client).WithStt(
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 - **Preset**
@@ -77,7 +82,7 @@ agent := agentkit.NewAgent(client).WithStt(
     - `deepgram_nova_2`
     - `deepgram_nova_3`
 
-  When using a `preset`, you do not need to provide the API key, endpoint URL, or model. You can still use the `asr` field to configure additional settings such as `language` and `keyterm`. 
+  When using a `preset`, you do not need to provide the API key, endpoint URL, or model. You can still use the `asr` field to configure additional settings such as `language` and `keyterm`.
 
     ```json
     "name": "unique_name",
@@ -114,19 +119,19 @@ agent := agentkit.NewAgent(client).WithStt(
 ### Key parameters
 
 <ParameterList title="params" required={true}>
- <Parameter name="url" type="string" required={false}>  
- The WebSocket URL for Deepgram's streaming API. 
+ <Parameter name="url" type="string" required={false}>
+ The WebSocket URL for Deepgram's streaming API.
  </Parameter>
- <Parameter name="key" type="string" required={true}>
- The API key used for authentication. Get your API key from the [Deepgram Console](https://console.deepgram.com/).
+ <Parameter name="key" type="string" required={false}>
+ The API key used for authentication. Required when using your own API key (BYOK). Get your API key from the [Deepgram Console](https://console.deepgram.com/).
  </Parameter>
  <Parameter name="model" type="string" required={false}>
- The speech recognition model to use. 
+ The speech recognition model to use.
  </Parameter>
- <Parameter name="language" type="string" required={false}>  
+ <Parameter name="language" type="string" required={false}>
  The language code for speech recognition (For example, `en`, `es`, `fr`). See [supported languages](https://developers.deepgram.com/docs/models-languages-overview) for language codes.
  </Parameter>
- <Parameter name="keyterm" type="string" required={false}>  
+ <Parameter name="keyterm" type="string" required={false}>
  Boost specialized terms and brands. Only compatible with the `nova-3` model.
  </Parameter>
 </ParameterList>
@@ -135,10 +140,5 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 :::caution[Caution]
 The following parameters are not passed through and instead use default values set by Agora:
-- `callback`
-- `callback_method`
-- `channels`
-- `encoding`
-- `multichannel`
-- `sample_rate`
+`callback`, `callback_method`, `channels`, `encoding`, `multichannel`, `sample_rate`
 :::

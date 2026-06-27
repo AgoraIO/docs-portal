@@ -1,7 +1,9 @@
 ---
 title: OpenAI Realtime API
-description: Configure OpenAI Realtime as an MLLM provider for Voice Agent.
+description: >
+ Integrate OpenAI Realtime MLLM into Conversational AI Engine.
 ---
+
 OpenAI Realtime provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components.
 
 :::info[Info]
@@ -39,6 +41,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -56,6 +59,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -74,6 +78,7 @@ agent := agentkit.NewAgent(client).WithMllm(
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `mllm` configuration in your request:
@@ -107,8 +112,13 @@ Use the following `mllm` configuration in your request:
 
 ### Turn detection
 
-For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../../../api-reference/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection).
-The following examples show the supported `turn_detection` configurations for OpenAI Realtime API. To set up turn detection, add a `turn_detection` block inside the `mllm` object when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+To set up turn detection, add a `turn_detection` block inside the `mllm` object when you [Start a conversational AI agent](/en/api-reference/conversational-ai/rest-api/agent/join).
+
+:::info[Info]
+When `mllm.turn_detection` is defined, the top-level `turn_detection` object has no effect.
+:::
+
+The following examples show the supported `turn_detection` configurations for OpenAI Realtime API.
 
 * **Server VAD**
 
@@ -154,8 +164,8 @@ The following examples show the supported `turn_detection` configurations for Op
   <Parameter name="enable" type="boolean" required={false}>
     Enables the MLLM module. Replaces the deprecated `advanced_features.enable_mllm`.
   </Parameter>
-  <Parameter name="url" type="string" required={true}>  
-  The WebSocket URL for OpenAI Realtime API. 
+  <Parameter name="url" type="string" required={true}>
+  The WebSocket URL for OpenAI Realtime API.
   </Parameter>
   <Parameter name="api_key" type="string" required={true}>
   The API key used for authentication. Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
@@ -173,12 +183,12 @@ The following examples show the supported `turn_detection` configurations for Op
   <Parameter name="params" type="object" required={false}>
     Additional MLLM configuration parameters. See [MLLM Overview](overview) for details.
     - **Modalities override**: The `modalities` setting in params is overridden by `input_modalities` and `output_modalities`.
-    - **Turn detection override**: The `turn_detection` setting in `params` is overridden by [`mllm.turn_detection`](/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection). 
+    - **Turn detection override**: The `turn_detection` setting in `params` is overridden by [`mllm.turn_detection`](/en/api-reference/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection).
     <Parameter name="model" type="string" required={false}>
-    The model identifier. 
-    </Parameter>  
+    The model identifier.
+    </Parameter>
     <Parameter name="voice" type="string" required={false}>
-    The voice identifier for audio output. 
+    The voice identifier for audio output.
     </Parameter>
     <Parameter name="instructions" type="string" required={false}>
     System instructions that define the assistant's behavior and personality.
@@ -197,12 +207,12 @@ The following examples show the supported `turn_detection` configurations for Op
     </Parameter>
   </Parameter>
   <Parameter name="turn_detection" type="object" required={false}>
-    Turn detection configuration for the MLLM module. For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection). 
+    Turn detection configuration for the MLLM module. For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](/en/api-reference/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection).
 
     <Parameter name="mode" type="string" required={false} possibleValues="agora_vad, server_vad, semantic_vad">
-      - `agora_vad`: Agora VAD-based detection. 
-      - `server_vad`: Vendor-side VAD-based detection. 
-      - `semantic_vad`: Semantic-based detection. 
+      - `agora_vad`: Agora VAD-based detection.
+      - `server_vad`: Vendor-side VAD-based detection.
+      - `semantic_vad`: Semantic-based detection.
     </Parameter>
 
     <Parameter name="agora_vad_config" type="object" required={false}>
@@ -232,32 +242,32 @@ The following examples show the supported `turn_detection` configurations for Op
         Duration of silence in milliseconds required to determine end of speech.
       </Parameter>
       <Parameter name="threshold" type="number" required={false}>
-        VAD sensitivity threshold. 
+        VAD sensitivity threshold.
       </Parameter>
       <Parameter name="idle_timeout_ms" type="integer" required={false}>
-        Idle timeout in milliseconds. 
+        Idle timeout in milliseconds.
       </Parameter>
     </Parameter>
 
     <Parameter name="semantic_vad_config" type="object" required={false}>
-      Configuration for semantic-based turn detection. Applicable when `mode` is `semantic_vad`. 
+      Configuration for semantic-based turn detection. Applicable when `mode` is `semantic_vad`.
 
       <Parameter name="eagerness" type="string" required={false} possibleValues="auto, low, medium, high">
         Controls how eagerly the model ends its turn.
       </Parameter>
     </Parameter>
-  </Parameter>  
+  </Parameter>
   <Parameter name="input_modalities" type="array[string]" defaultValue='["audio"]' required={false}>
     MLLM input modalities:
     - `["audio"]`: Audio only
     - `["audio", "text"]`: Audio plus text
-  </Parameter>  
+  </Parameter>
   <Parameter name="output_modalities" type="array[string]" defaultValue='["text", "audio"]' required={false}>
   Output format options: `["text", "audio"]` for both text and voice responses.
   </Parameter>
   <Parameter name="greeting_message" type="string" required={false}>
   Initial message the agent speaks when a user joins the channel.
-  </Parameter>  
+  </Parameter>
   <Parameter name="vendor" type="string" required={false}>
   MLLM provider identifier. Set to `openai` for OpenAI Realtime API.
   </Parameter>

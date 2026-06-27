@@ -1,7 +1,9 @@
 ---
 title: Speechmatics
-description: Configure Speechmatics as an ASR provider for Voice Agent.
+description: >
+ Integrate Speechmatics ASR with the Conversational AI Engine.
 ---
+
 Speechmatics provides real-time automatic speech recognition (ASR) with flexible language support and reliable performance for conversational AI applications.
 
 ### Sample configuration
@@ -34,6 +36,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -51,6 +54,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -68,6 +72,7 @@ agent := agentkit.NewAgent(client).WithStt(
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `asr` configuration in your request:
@@ -75,6 +80,7 @@ Use the following `asr` configuration in your request:
 ```json
 "asr": {
   "vendor": "speechmatics",
+  "language": "en-US",
   "params": {
     "api_key": "<speechmatics_key>",
     "language": "en",
@@ -92,14 +98,14 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-<ParameterList title="params" required={true}> 
-  <Parameter name="api_key" type="string" required={true}> 
-    The Speechmatics API key used to authenticate requests. You must provide a valid key for the service to function. 
-  </Parameter> 
-  <Parameter name="language" type="string" required={true}> 
-    The language code to use for transcription. For example, use `en` for English. 
-  </Parameter> 
-  <Parameter name="uri" type="string" required={false}>  
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The Speechmatics API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="language" type="string" required={true}>
+    The language code to use for transcription. For example, use `en` for English.
+  </Parameter>
+  <Parameter name="uri" type="string" required={false}>
     The WebSocket URL for the Speechmatics streaming API. Specify this to target a particular region. For example, `wss://eu2.rt.speechmatics.com/v2`.
   </Parameter>
 </ParameterList>

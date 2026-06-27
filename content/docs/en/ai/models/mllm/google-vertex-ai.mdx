@@ -1,7 +1,9 @@
 ---
 title: Google Gemini Live (Vertex AI)
-description: Configure Gemini Live on Vertex AI as an MLLM provider for Voice Agent.
+description: >
+ Integrate Google Gemini Live with the Conversational AI Engine using Google Cloud Vertex AI.
 ---
+
 Google Gemini Live provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components. This page covers integration using Vertex AI, authenticated with Google Cloud Application Default Credentials (ADC).
 
 :::info[Info]
@@ -42,6 +44,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -62,6 +65,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -83,6 +87,7 @@ agent := agentkit.NewAgent(client).WithMllm(
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `mllm` configuration in your request:
@@ -90,25 +95,25 @@ Use the following `mllm` configuration in your request:
 ```json
 "mllm": {
   "enable": true,
-  "adc_credentials_string": "",
-  "project_id": "",
-  "location": "",
+  "adc_credentials_string": "<GOOGLE_APPLICATION_CREDENTIALS_STRING>",
+  "project_id": "<GOOGLE_CLOUD_PROJECT_ID>",
+  "location": "<GOOGLE_CLOUD_REGION>",
   "messages": [
     {
       "role": "user",
-      "content": ""
+      "content": "<HISTORY_CONTENT>"
     }
   ],
   "params": {
-    "model": "gemini-3.1-flash-live-preview",
-    "instructions": "",
+    "model": "gemini-live-2.5-flash-native-audio",
+    "instructions": "<YOUR_SYSTEM_PROMPT>",
     "voice": "Aoede",
     "transcribe_agent": true,
     "transcribe_user": true
   },
   "turn_detection": {
     // see details below
-  },  
+  },
   "greeting_message": "Hi, how can I assist you today?",
   "input_modalities": [
     "audio"
@@ -125,7 +130,13 @@ Use the following `mllm` configuration in your request:
 
 ### Turn detection
 
-For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../../../api-reference/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection). The following examples show the supported configurations for Google Gemini Live (Vertex AI). To set up turn detection, add a `turn_detection` block inside the `mllm` object when you [Start a conversational AI agent](../../../api-reference/conversational-ai/rest-api/agent/join).
+To set up turn detection, add a `turn_detection` block inside the `mllm` object when you [Start a conversational AI agent](/en/api-reference/conversational-ai/rest-api/agent/join).
+
+:::info[Info]
+When `mllm.turn_detection` is defined, the top-level `turn_detection` object has no effect.
+:::
+
+The following examples show the supported configurations for Google Gemini Live (Vertex AI).
 
 * **Server VAD**
 
@@ -162,14 +173,14 @@ For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../.
     Enables the MLLM module. Replaces the deprecated `advanced_features.enable_mllm`.
   </Parameter>
   <Parameter name="adc_credentials_string" type="string" required={true}>
-  Base64-encoded Google Cloud Application Default Credentials (ADC).  
+  Base64-encoded Google Cloud Application Default Credentials (ADC).
   </Parameter>
   <Parameter name="project_id" type="string" required={true}>
   Your Google Cloud project ID for Vertex AI access.
   </Parameter>
   <Parameter name="location" type="string" required={true}>
   The Google Cloud region hosting the Gemini Live model. Check the Google Cloud documentation for the full list of available regions.
-  </Parameter>  
+  </Parameter>
   <Parameter name="messages" type="array[object]" required={false}>
     An array of conversation history items passed to the model as context. Each item represents a single message in the conversation history.
     <Parameter name="role" type="string" required={true}>
@@ -185,7 +196,7 @@ For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../.
     The Gemini Live model identifier. See [supported models](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/live-api#supported-models).
     </Parameter>
     <Parameter name="instructions" type="string" required={false}>
-    System instructions that define the agent’s behavior or tone. 
+    System instructions that define the agent’s behavior or tone.
     </Parameter>
     <Parameter name="voice" type="string" required={false}>
     The voice identifier for audio output. For example, `Aoede`, `Puck`, `Charon`, `Kore`, `Fenrir`, `Leda`, `Orus`, or `Zephyr`.
@@ -198,10 +209,10 @@ For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../.
     </Parameter>
   </Parameter>
   <Parameter name="turn_detection" type="object" required={false}>
-    Turn detection configuration for the MLLM module. For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection). 
+    Turn detection configuration for the MLLM module. For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](/en/api-reference/conversational-ai/rest-api/agent/join#properties-mllm-turn-detection).
 
     <Parameter name="mode" type="string" required={false} possibleValues="agora_vad, server_vad">
-      - `agora_vad`: Agora VAD-based detection. 
+      - `agora_vad`: Agora VAD-based detection.
       - `server_vad`: Vendor-side VAD-based detection.
     </Parameter>
 
@@ -240,23 +251,23 @@ For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](../.
     </Parameter>
   </Parameter>
   <Parameter name="input_modalities" type="array[string]" defaultValue='["audio"]' required={false}>
-  Input modalities for the MLLM.  
-  - `["audio"]`: Audio-only input  
+  Input modalities for the MLLM.
+  - `["audio"]`: Audio-only input
   - `["audio", "text"]`: Accept both audio and text input
   </Parameter>
 
   <Parameter name="output_modalities" type="array[string]" defaultValue='["audio"]' required={false}>
-  Output modalities for the MLLM.  
-  - `["audio"]`: Audio-only response  
+  Output modalities for the MLLM.
+  - `["audio"]`: Audio-only response
   - `["text", "audio"]`: Combined text and audio output
   </Parameter>
 
   <Parameter name="greeting_message" type="string" required={false}>
-  The message the agent speaks when a user joins the channel. 
+  The message the agent speaks when a user joins the channel.
   </Parameter>
 
   <Parameter name="vendor" type="string" required={true}>
-  The MLLM provider identifier. Set to `"vertexai"` to use Google Gemini Live with Vertex AI. 
+  The MLLM provider identifier. Set to `"vertexai"` to use Google Gemini Live with Vertex AI.
   </Parameter>
 
 </ParameterList>

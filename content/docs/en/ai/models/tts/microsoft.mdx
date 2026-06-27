@@ -1,7 +1,9 @@
 ---
 title: Microsoft Azure
-description: Configure Microsoft Azure Speech as a TTS provider for Voice Agent.
+description: >
+ Integrate Microsoft Azure TTS into Conversational AI Engine.
 ---
+
 Microsoft Azure offers neural voices in multiple languages with options for different speaking styles and emotions, providing enterprise-grade text-to-speech capabilities with high-quality audio output.
 
 ### Sample configuration
@@ -37,6 +39,7 @@ agent = (
 ```
 
 </TabsContent>
+
 <TabsContent value="typescript">
 
 ```typescript
@@ -56,6 +59,7 @@ const agent = new Agent({ client })
 ```
 
 </TabsContent>
+
 <TabsContent value="go">
 
 ```go
@@ -76,6 +80,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 ```
 
 </TabsContent>
+
 <TabsContent value="rest-api">
 
 Use the following `tts` configuration in your request:
@@ -104,19 +109,19 @@ The parameters listed on this page are validated for use with Conversational AI 
 ### Key parameters
 
 <ParameterList title="params" required={true}>
- <Parameter name="key" type="string" required={true}>  
+ <Parameter name="key" type="string" required={true}>
  The API key used for authentication. Get your API key from the [Azure Portal](https://portal.azure.com/).
  </Parameter>
  <Parameter name="region" type="string" required={true}>
  The Azure region where the speech service is hosted (For example, `eastus`, `westus2`).
  </Parameter>
- <Parameter name="voice_name" type="string" required={true}>  
+ <Parameter name="voice_name" type="string" required={true}>
  The identifier for the selected voice for speech synthesis. See [available voices](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=tts) for options.
  </Parameter>
  <Parameter name="speed" type="number" defaultValue="1.0" required={false}>
  Speaking rate of the text. Values between `0.5` and `2.0` times the original audio speed.
  </Parameter>
- <Parameter name="volume" type="number" defaultValue="100" required={false}>  
+ <Parameter name="volume" type="number" defaultValue="100" required={false}>
  Audio volume as a number between `0.0` and `100.0`, where `0.0` is quietest and `100.0` is loudest.
  </Parameter>
  <Parameter name="sample_rate" type="integer" defaultValue="24000" required={false}>
