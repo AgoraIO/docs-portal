@@ -48,7 +48,10 @@ Within the existing `SdksCatalog` (a `not-prose` section on the page):
    - **Derivable command:** a labeled command box (tool label such as "Gradle"
      / "npm" / "Flutter" + the command + a Copy button) using the dark
      code-block surface. Secondary row: "Direct download (.zip)" and the
-     registry link (e.g. "Maven Central ↗").
+     registry link (e.g. "Maven Central ↗"). The copy control is a small local
+     button using `navigator.clipboard.writeText` with a transient "Copied"
+     state (the same pattern as `docs-copy-menu.tsx`) — not the fumadocs MDX
+     `CodeBlock`, which expects pre-highlighted content.
    - **Non-derivable (download-only):** no command box; a primary Download
      (.zip) button, with any secondary link (e.g. checksum) below.
    - Switching the version updates both the command (version-pinned where
@@ -62,21 +65,33 @@ model is unchanged; the command is derived from the version's existing
 
 `deriveInstallCommand(version: SdkDownloadVersion): { tool: string; command: string } | null`
 
-Rules, keyed by the `packageManager` URL host (version pinned where the version
-is cleanly available from the URL or the version label):
+The command is derived **only from the version's `packageManager` URL** — no
+parsing of the version `label`/`id`. The version is pinned **only when it is
+present in the URL itself** (Maven, pub, and unpkg URLs embed it; npmjs, Swift
+Package Index, and pypi URLs do not, so those commands are unpinned). No
+dedicated version-number field exists, and that is acceptable.
 
-- `www.npmjs.com`, `unpkg.com` → `{ tool: 'npm', command: 'npm i <package>' }`
-  (package name from `/package/<name>`). Covers Web / React JS / Electron.
-- `central.sonatype.com`, `search.maven.org`, `mvnrepository.com` →
-  `{ tool: 'Gradle', command: "implementation '<group>:<artifact>:<version>'" }`
-  (coordinate parsed from the URL path). Covers Android.
-- `pub.dev` → `{ tool: 'Flutter', command: 'flutter pub add <package>' }`
-  (`/packages/<name>`). Covers Flutter.
-- `swiftpackageindex.com` →
-  `{ tool: 'Swift Package Manager', command: 'https://github.com/<owner>/<repo>' }`
-  (the package URL to add in Xcode; `<owner>/<repo>` from the path). Covers iOS.
-- `pypi.org` → `{ tool: 'pip', command: 'pip install <package>' }`.
-- `github.com`, `downloadsdk.easemob.com`, any other/unknown host, or a missing
+Rules, keyed by the `packageManager` URL host (with the real path shapes
+verified against the data):
+
+- `central.sonatype.com`, `search.maven.org` (path `/artifact/<group>/<artifact>/<version>/...`)
+  → `{ tool: 'Gradle', command: "implementation '<group>:<artifact>:<version>'" }`.
+  Covers Android. Version from the URL.
+- `pub.dev` (path `/packages/<name>/versions/<version>`)
+  → `{ tool: 'Flutter', command: 'flutter pub add <name>:<version>' }`. If the
+  URL has no `/versions/<version>` segment, omit the version. Covers Flutter.
+- `unpkg.com` (path `/<name>@<version>/...`)
+  → `{ tool: 'npm', command: 'npm i <name>@<version>' }`.
+- `www.npmjs.com` (path `/package/<name>`, no version)
+  → `{ tool: 'npm', command: 'npm i <name>' }` (unpinned). Covers Web / React JS
+  / Electron. (npmjs and unpkg are both npm but parse differently — two cases.)
+- `swiftpackageindex.com` (path `/<owner>/<repo>`)
+  → `{ tool: 'Swift Package Manager', command: 'https://github.com/<owner>/<repo>' }`
+  (the package URL to add in Xcode; unpinned). Covers iOS.
+- `pypi.org` (path `/project/<name>/`)
+  → `{ tool: 'pip', command: 'pip install <name>' }` (unpinned).
+- `github.com` (these point at third-party release pages, e.g. netless
+  whiteboard), `downloadsdk.easemob.com`, any other/unknown host, or a missing
   `packageManager` → `null` (download-only panel).
 
 When the function returns `null`, the panel renders the download-first variant.
