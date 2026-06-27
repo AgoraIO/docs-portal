@@ -236,6 +236,7 @@ Since Web SDK v4.3.0, Agora has optimized the Cloud proxy architecture, enhanced
 Depending on the Web SDK version you are using, refer to the corresponding implementation method:
 
 **v4.3.0 or above**
+
 1. Enable Cloud Proxy in [Agora Console](https://console.agora.io/):
 
   1. Log in to the console.
@@ -279,7 +280,8 @@ Depending on the Web SDK version you are using, refer to the corresponding imple
   ```
 
 **v4.0.0-v4.2.1**
-5. Enable Cloud Proxy in [Agora Console](https://console.agora.io/):
+
+1. Enable Cloud Proxy in [Agora Console](https://console.agora.io/):
 
   1. Log in to the console.
   2. Under **Projects**, locate the project that you want to edit, then click **Configure**.
@@ -288,7 +290,7 @@ Depending on the Web SDK version you are using, refer to the corresponding imple
 
   ![Enable Cloud Proxy](/images/video-sdk/enable-cloud-proxy.png)
 
-1. Configure the firewall whitelist
+2. Configure the firewall whitelist
 
   Add the following test IP addresses and ports to your corporate firewall whitelist. The source address is the client integrated with the Web SDK.
 
@@ -320,11 +322,11 @@ Depending on the Web SDK version you are using, refer to the corresponding imple
   The above IPs are only meant for debugging during the test phase. Before official launch, apply for custom cloud proxy service resources from Agora.
   :::
 
-2. To turn on cloud proxy server before joining the channel, call:
+3. To turn on cloud proxy server before joining the channel, call:
 
   `client.startProxyServer();`
 
-3. To turn off cloud proxy server after leaving the channel, call:
+4. To turn off cloud proxy server after leaving the channel, call:
 
   `client.stopProxyServer();`
 
@@ -739,4 +741,3 @@ To use Agora Cloud Proxy, your end users must first configure their firewalls to
 
 - [`SetCloudProxy`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setcloudproxy)
 </PlatformStructured>
-

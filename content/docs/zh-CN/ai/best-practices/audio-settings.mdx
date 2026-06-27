@@ -117,7 +117,13 @@ convoAIAPI = ConversationalAIAPIImpl(config: config)
 </CodeBlockTabs>
 ##### 设置最佳音频参数
 
-#### Android
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
 
 加入 RTC 频道前，调用 `loadAudioSettings` 方法设置最佳音频参数。组件内部会监听 RTC 音频路由改变回调，并在音频路由发生变化时再次调用该方法设置最佳音频参数。
 
@@ -125,8 +131,9 @@ convoAIAPI = ConversationalAIAPIImpl(config: config)
 api.loadAudioSettings()
 rtcEngine.joinChannel(token, channelName, null, userId)
 ```
+</CodeBlockTab>
 
-#### iOS
+<CodeBlockTab value="ios">
 
 加入 RTC 频道前，调用 `loadAudioSettings` 方法设置最佳音频参数。组件内部会监听 RTC 音频路由改变回调，并在音频路由发生变化时再次调用该方法设置最佳音频参数。
 
@@ -134,6 +141,8 @@ rtcEngine.joinChannel(token, channelName, null, userId)
 convoAIAPI.loadAudioSettings()
 rtcEngine.joinChannel(rtcToken: token, channelName: channelName, uid: uid, isIndependent: independent)
 ```
+</CodeBlockTab>
+</CodeBlockTabs>
 
 ##### 智能体加入频道
 

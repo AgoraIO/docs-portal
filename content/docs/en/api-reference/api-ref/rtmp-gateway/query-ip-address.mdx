@@ -32,10 +32,30 @@ Agora adjusts the Agora Notifications IP addresses every 24 hours. Best practice
 
 Use one of the following code examples to test this request:
 
-### Shell
+<CodeBlockTabs defaultValue="shell">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="shell">Shell</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="javascript">Javascript</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="node">Node</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="go">Go</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="c">C</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="objective-c">Objective-C</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ocaml">OCaml</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="csharp">C#</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="http-1-1">Http 1.1</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="clojure">Clojure</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="php">PHP</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="powershell">PowerShell</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="r">R</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ruby">Ruby</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
 
-
-  - ### curl
+<CodeBlockTab value="shell">
+- ### curl
 
 
 
@@ -72,14 +92,10 @@ wget --quiet \\
       --output-document \\
       - https://api.sd-rtn.com/v2/ncs/ip
 ```
+</CodeBlockTab>
 
-
-
-
-### Javascript
-
-
-  - ### Fetch
+<CodeBlockTab value="javascript">
+- ### Fetch
 
 
 
@@ -165,14 +181,10 @@ const settings = {
       console.error(error);
     }
 ```
+</CodeBlockTab>
 
-
-
-
-### Node
-
-
-  - ### Native
+<CodeBlockTab value="node">
+- ### Native
 
 
 
@@ -293,14 +305,10 @@ const axios = require('axios').default;
       console.error(error);
     }
 ```
+</CodeBlockTab>
 
-
-
-
-### Python
-
-
-  - ### Python 3
+<CodeBlockTab value="python">
+- ### Python 3
 
 
 
@@ -340,14 +348,9 @@ const axios = require('axios').default;
 
     print(response.json())
 ```
+</CodeBlockTab>
 
-
-
-
-### Go
-
-
-
+<CodeBlockTab value="go">
 ```go
 package main
 
@@ -376,12 +379,9 @@ package main
 
     }
 ```
+</CodeBlockTab>
 
-
-
-### C
-
-
+<CodeBlockTab value="c">
 ```c
 CURL *hnd = curl_easy_init();
 
@@ -395,11 +395,9 @@ curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
 CURLcode ret = curl_easy_perform(hnd);
 ```
+</CodeBlockTab>
 
-
-### Objective-C
-
-
+<CodeBlockTab value="objective-c">
 ```objc
 #import <Foundation/Foundation.h>
 
@@ -424,11 +422,9 @@ NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
                                             }];
 [dataTask resume];
 ```
+</CodeBlockTab>
 
-
-### OCaml
-
-
+<CodeBlockTab value="ocaml">
 ```text
 open Cohttp_lwt_unix
 open Cohttp
@@ -444,11 +440,10 @@ Client.call ~headers `GET uri
 \>\>= fun (res, body_stream) -\>
   (* Do stuff with the result *)
 ```
+</CodeBlockTab>
 
-
-### C#
-
-  - ### HTTPClient
+<CodeBlockTab value="csharp">
+- ### HTTPClient
 
 
 
@@ -486,13 +481,10 @@ var client = new RestClient("http://api.sd-rtn.com/v2/ncs/ip");
     request.AddHeader("Accept", "application/json");
     IRestResponse response = client.Execute(request);
 ```
+</CodeBlockTab>
 
-
-
-
-### Java
-
-  - ### AsyncHttp
+<CodeBlockTab value="java">
+- ### AsyncHttp
 
 
 
@@ -557,35 +549,27 @@ HttpResponse<String> response = Unirest.get("http://api.sd-rtn.com/v2/ncs/ip")
       .header("Accept", "application/json")
       .asString();
 ```
+</CodeBlockTab>
 
-
-
-
-### Http 1.1
-
-
+<CodeBlockTab value="http-1-1">
 ```text
 GET /v2/ncs/ip HTTP/1.1
 Authorization:
 Accept: application/json
 Host: api.sd-rtn.com
 ```
+</CodeBlockTab>
 
-
-### Clojure
-
-
+<CodeBlockTab value="clojure">
 ```text
 (require '[clj-http.client :as client])
 
 (client/get "http://api.sd-rtn.com/v2/ncs/ip" {:headers {:Authorization ""}
                                                :accept :json})
 ```
+</CodeBlockTab>
 
-
-### Kotlin
-
-
+<CodeBlockTab value="kotlin">
 ```kotlin
 val client = OkHttpClient()
 
@@ -598,11 +582,10 @@ val request = Request.Builder()
 
 val response = client.newCall(request).execute()
 ```
+</CodeBlockTab>
 
-
-### PHP
-
-  - ### cURL
+<CodeBlockTab value="php">
+- ### cURL
 
 
 
@@ -657,13 +640,10 @@ val response = client.newCall(request).execute()
 
     echo $response->getBody();
 ```
+</CodeBlockTab>
 
-
-
-
-### PowerShell
-
-  - ### WebRequest
+<CodeBlockTab value="powershell">
+- ### WebRequest
 
 
 
@@ -686,13 +666,9 @@ $headers=@{}
     $headers.Add("Accept", "application/json")
     $response = Invoke-RestMethod -Uri 'http://api.sd-rtn.com/v2/ncs/ip' -Method GET -Headers $headers
 ```
+</CodeBlockTab>
 
-
-
-
-### R
-
-
+<CodeBlockTab value="r">
 ```text
 library(httr)
 
@@ -702,11 +678,9 @@ response <- VERB("GET", url, add_headers('Authorization' = ''), content_type("ap
 
 content(response, "text")
 ```
+</CodeBlockTab>
 
-
-### Ruby
-
-
+<CodeBlockTab value="ruby">
 ```ruby
 require 'uri'
 require 'net/http'
@@ -722,11 +696,9 @@ request["Accept"] = 'application/json'
 response = http.request(request)
 puts response.read_body
 ```
+</CodeBlockTab>
 
-
-### Swift
-
-
+<CodeBlockTab value="swift">
 ```swift
 
 let headers = [
@@ -752,7 +724,8 @@ let dataTask = session.dataTask(with: request as URLRequest, completionHandler: 
 
 dataTask.resume()
 ```
-
+</CodeBlockTab>
+</CodeBlockTabs>
 
 ### Response parameters
 
