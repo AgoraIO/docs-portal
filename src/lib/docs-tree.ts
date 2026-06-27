@@ -330,7 +330,38 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
       : null;
   let currentSection: DocsSidebarSectionNode | null = null;
 
-  for (const child of node.children) {
+  // A folder's own index can also appear in its `children` (e.g. when meta lists
+  // `pages: ["index"]`). Skip that duplicate so the index is only represented once
+  // (as the section's "Overview" child or, for index-only folders, as a leaf).
+  const indexUrl = node.index?.url;
+  const visibleChildren = node.children.filter(
+    (child) => !(child.type === 'page' && child.url === indexUrl),
+  );
+
+  // An index-only folder whose index is exposed as its single page child (Fumadocs
+  // does this for `pages: ["index"]`) collapses to one leaf link carrying the
+  // folder's title — e.g. an FAQ category folder becomes a flat "Integration" link.
+  // The child is the folder's own index (not a deeper sub-page) only when its last
+  // URL segment matches the folder slug, so a folder holding a single unrelated
+  // sub-page is left as a section.
+  const nonSeparatorChildren = visibleChildren.filter(
+    (child) => child.type !== 'separator',
+  );
+  const onlyChild = nonSeparatorChildren[0];
+  if (
+    !node.index &&
+    nonSeparatorChildren.length === 1 &&
+    onlyChild.type === 'page' &&
+    lastUrlSegment(onlyChild.url) === folderSlug(node.name)
+  ) {
+    return [
+      pageTreeItemToSidebarPageNode(onlyChild, undefined, {
+        title: normalizeLabel(node.name, onlyChild.url),
+      }),
+    ];
+  }
+
+  for (const child of visibleChildren) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
@@ -373,7 +404,7 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
   // Rule: an index-only folder collapses to a single leaf link.
   // Fires before flushing the pending index so that children.length reflects
   // only real built children (not the index itself).
-  const hasRealChildren = node.children.some((c) => c.type !== 'separator');
+  const hasRealChildren = visibleChildren.some((c) => c.type !== 'separator');
   if (!hasRealChildren && node.index) {
     return [
       pageTreeItemToSidebarPageNode(node.index, undefined, {
@@ -741,6 +772,14 @@ function normalizeLabel(value: ReactNode, fallback: string) {
   }
 
   return fallback;
+}
+
+function lastUrlSegment(url: string): string {
+  return url.split('/').filter(Boolean).at(-1)?.toLowerCase() ?? '';
+}
+
+function folderSlug(name: ReactNode): string {
+  return normalizeLabel(name, '').toLowerCase().replace(/\s+/g, '-');
 }
 
 export function getConfiguredIconName(node: Node, fallback?: Item) {

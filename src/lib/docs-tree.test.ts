@@ -1433,6 +1433,31 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('collapses an index-only folder (index exposed as a single page child) into a leaf', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'faq-integration-folder',
+        children: [
+          {
+            $id: 'faq-integration-index-child',
+            name: 'Integration Issues',
+            type: 'page',
+            url: '/en/api-reference/faq/integration',
+          },
+        ],
+        name: 'Integration',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        id: '/en/api-reference/faq/integration',
+        title: 'Integration',
+        type: 'page',
+        url: '/en/api-reference/faq/integration',
+      },
+    ]);
+  });
+
   it('leaves a normal folder (distinct visible index) as a plain section', () => {
     expect(
       pageTreeNodeToSidebarNodes({
