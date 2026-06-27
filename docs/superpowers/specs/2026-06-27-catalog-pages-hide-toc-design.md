@@ -71,15 +71,27 @@ is what keeps `hideToc` pages at the docs footprint rather than sprawling.
 
 ## Data flow
 
+`DocsShell` and `DocsContent` are rendered by **different** routes:
+`DocsShell` is the layout route (`route.tsx`) and renders `<Outlet />`, while
+`DocsContent` is rendered by the nested page routes (`index.tsx` and `$.tsx`).
+Each route loads its own payload. So `hideToc` is read once on the server and
+destructured in all three route files — `DocsShell` does **not** forward it to
+`DocsContent`.
+
 1. `source.config.ts` — add `hideToc: z.boolean().optional()` to `rawDocSchema`.
 2. `src/lib/docs-page.server.ts` — read `page.data.hideToc` and add it to the
    payload object (alongside `layoutMode`). Default to `false`/`undefined` when
    absent.
 3. `src/routes/$locale/$tab/route.tsx` — destructure `hideToc` from the payload
    and pass it to `<DocsShell hideToc={hideToc} … />`.
-4. `src/components/docs-shell/DocsShell.tsx` — accept the `hideToc` prop; use it
-   for the rail and grid; thread it to `DocsContent`.
-5. `src/components/docs-shell/DocsContent.tsx` — accept `hideToc`; use it for the
+4. `src/routes/$locale/$tab/index.tsx` — destructure `hideToc` and pass it to
+   `<DocsContent hideToc={hideToc} … />`.
+5. `src/routes/$locale/$tab/$.tsx` — destructure `hideToc` and pass it to
+   `<DocsContent hideToc={hideToc} … />`.
+6. `src/components/docs-shell/DocsShell.tsx` — accept the `hideToc` prop; use it
+   for the rail and grid. It does not forward `hideToc` to `DocsContent` (its
+   child is `<Outlet />`).
+7. `src/components/docs-shell/DocsContent.tsx` — accept `hideToc`; use it for the
    article max-width and the mobile TOC.
 
 ## Content
