@@ -1,83 +1,132 @@
 ---
 title: Reference overview
-description: Browse API references across Agora products, then drill into platform-specific and version-specific surfaces where they are already available in the portal.
+description: Browse Agora's SDK and REST API references by product.
 ---
 
-## AI & agents
+## SDK API reference
+
+<SolutionCardGrid size="small">
+  <SolutionCard
+    title="Agora Agents"
+    href="/en/api-reference/api-ref/server-sdk/typescript"
+    icon="ai"
+    tone="blue"
+    size="small"
+    description="Conversational AI server SDK for building and running agents."
+    tags={['TypeScript', 'Python', 'Go']}
+  />
+  <SolutionCard
+    title="Voice & Video"
+    href="https://api-ref.agora.io/en/video-sdk/android/4.x/index.html"
+    icon="rtc"
+    tone="blue"
+    size="small"
+    description="RTC SDK class reference for calling and live streaming."
+    tags={['Android', 'iOS', 'Web', 'Flutter', 'Unity', '+more']}
+  />
+  <SolutionCard
+    title="Signaling"
+    href="https://api-ref.agora.io/en/signaling-sdk/android/2.x/index.html"
+    icon="signaling"
+    tone="blue"
+    size="small"
+    description="Real-time messaging (RTM) SDK reference."
+    tags={['Android', 'iOS', 'Web', 'Unity', '+more']}
+  />
+  <SolutionCard
+    title="Chat"
+    href="https://api-ref.agora.io/en/chat-sdk/android/1.x/index.html"
+    icon="chat"
+    tone="blue"
+    size="small"
+    description="Chat SDK reference for in-app messaging."
+    tags={['Android', 'iOS', 'Web', 'Flutter', '+more']}
+  />
+  <SolutionCard
+    title="Interactive Whiteboard"
+    href="https://api-ref.agora.io/en/interactive-whiteboard-sdk/android/2.x/index.html"
+    icon="whiteboard"
+    tone="blue"
+    size="small"
+    description="Collaborative whiteboard SDK reference."
+    tags={['Android', 'iOS', 'Web']}
+  />
+  <SolutionCard
+    title="Media Player Kit"
+    href="https://api-ref.agora.io/en/mediaplayer-kit/android/1.x/index.html"
+    icon="tools"
+    tone="blue"
+    size="small"
+    description="Media playback SDK reference."
+    tags={['Android', 'iOS', 'macOS', 'Windows']}
+  />
+  <SolutionCard
+    title="IoT"
+    href="https://api-ref.agora.io/en/iot-sdk/android/1.x/index.html"
+    icon="iot"
+    tone="blue"
+    size="small"
+    description="Embedded/device SDK reference."
+    tags={['Android', 'Linux']}
+  />
+  <SolutionCard
+    title="Flexible Classroom"
+    href="https://api-ref.agora.io/en/flexible-classroom-sdk/android/2.x/index.html"
+    icon="classroom"
+    tone="blue"
+    size="small"
+    description="Flexible Classroom SDK reference."
+    tags={['Android', 'iOS', 'Web', 'Electron']}
+  />
+  <SolutionCard
+    title="Server Gateway"
+    href="https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/index.html"
+    icon="server-sdk"
+    tone="purple"
+    size="small"
+    description="Server-side media gateway SDK reference."
+    tags={['Linux C++', 'Linux Java']}
+  />
+  <SolutionCard
+    title="On-Premise Recording"
+    href="https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/index.html"
+    icon="on-premise-recording"
+    tone="purple"
+    size="small"
+    description="Self-hosted recording SDK reference."
+    tags={['Linux C++', 'Linux Java']}
+  />
+</SolutionCardGrid>
+
+## REST API reference
 
 <SolutionCardGrid size="small">
   <SolutionCard
     title="Conversational AI"
     href="/en/api-reference/api-ref/conversational-ai"
     icon="ai"
-    tone="blue"
+    tone="green"
     size="small"
-    description="REST API reference entry point for Conversational AI agent lifecycle and control APIs."
+    description="RESTful API reference for Conversational AI agent lifecycle and control."
     tags={['REST API']}
   />
-</SolutionCardGrid>
-
-## Realtime calling & streaming
-
-<SolutionCardGrid size="small">
   <SolutionCard
-    title="Voice & Video Calling"
+    title="RTC"
     href="/en/api-reference/api-ref/rtc"
     icon="rtc"
-    tone="blue"
+    tone="green"
     size="small"
-    description="Voice and Video Calling use the shared RTC REST API reference for channel, user, banning, and notification operations."
-    tags={['RTC REST API', 'Voice', 'Video']}
+    description="RESTful API reference for RTC channel, user, and notification operations."
+    tags={['REST API']}
   />
-  <SolutionCard
-    title="Interactive Live Streaming"
-    href="/en/solutions/interactive-live-streaming/reference/console-overview"
-    icon="live-streaming"
-    tone="blue"
-    size="small"
-    description="Platform SDK references anchored in the live-streaming product lane, plus channel management REST API entry points."
-    tags={['Android', 'iOS', 'Web', 'React Native', 'Channel Management API']}
-  />
-  <SolutionCard
-    title="Broadcast Streaming"
-    href="/en/api-reference/api-ref/rtc"
-    icon="broadcast"
-    tone="blue"
-    size="small"
-    description="Broadcast-oriented SDK reference entry points with RESTful channel management and operational API surfaces."
-    tags={['Android', 'iOS', 'Web', 'React Native', 'Channel Management API']}
-  />
-  <SolutionCard
-    title="IoT SDK"
-    href="/en/solutions/iot/reference/supported-platforms"
-    icon="iot"
-    tone="purple"
-    size="small"
-    description="Reference entry points for device-oriented SDK integrations, including current Android and Linux C surfaces."
-    tags={['Android', 'Linux C']}
-  />
-  <SolutionCard
-    title="Media Player Kit"
-    href="/en/api-reference/rtc/android/overview"
-    icon="tools"
-    tone="sand"
-    size="small"
-    description="Hosted SDK references for Media Player Kit across Android, iOS, macOS, and Windows C++."
-    tags={['Android', 'iOS', 'macOS', 'Windows C++', 'Hosted']}
-  />
-</SolutionCardGrid>
-
-## Messaging, whiteboard, and classrooms
-
-<SolutionCardGrid size="small">
   <SolutionCard
     title="Signaling"
     href="/en/api-reference/api-ref/signaling"
     icon="signaling"
     tone="green"
     size="small"
-    description="Signaling SDK platform entry points and messaging/events REST API references. Deep per-platform migration remains in progress."
-    tags={['Android', 'iOS', 'Web', 'Flutter', 'Unity', 'REST API']}
+    description="RESTful API reference for Signaling messaging and event operations."
+    tags={['REST API']}
   />
   <SolutionCard
     title="Chat"
@@ -85,57 +134,7 @@ description: Browse API references across Agora products, then drill into platfo
     icon="chat"
     tone="green"
     size="small"
-    description="Chat SDK and REST API reference entry points across mobile, web, desktop, and cross-platform stacks."
-    tags={['Android', 'iOS', 'Web', 'React Native', 'Flutter', 'REST API']}
-  />
-  <SolutionCard
-    title="Interactive Whiteboard"
-    href="/en/api-reference/whiteboard"
-    icon="whiteboard"
-    tone="green"
-    size="small"
-    description="Whiteboard SDK and REST API reference entry points, including room, scene, file conversion, and screenshot APIs."
-    tags={['Android', 'iOS', 'Web', 'REST API']}
-  />
-  <SolutionCard
-    title="Flexible Classroom"
-    href="/en/solutions/flexible-classroom/reference/supported-platforms"
-    icon="classroom"
-    tone="green"
-    size="small"
-    description="Flexible Classroom reference entry points across Edu Context and Edu Store SDKs, plus classroom REST APIs."
-    tags={['Android', 'iOS', 'Web', 'Electron', 'REST API']}
-  />
-</SolutionCardGrid>
-
-## Media services & infrastructure
-
-<SolutionCardGrid size="small">
-  <SolutionCard
-    title="Server Gateway"
-    href="https://api-ref.agora.io/en/server-gateway-sdk/linux-cpp/4.x/index.html"
-    icon="server-sdk"
-    tone="purple"
-    size="small"
-    description="Server Gateway SDK API references for Linux C++ and Linux Java hosted references."
-    tags={['Linux C++', 'Linux Java']}
-  />
-  <SolutionCard
-    title="On-Premise Recording"
-    href="/en/api-reference/api-ref/on-premise-recording"
-    icon="on-premise-recording"
-    tone="purple"
-    size="small"
-    description="On-Premise Recording reference entry points for Linux C++ and Linux Java, with shared in-portal API reference source material."
-    tags={['Linux C++', 'Linux Java']}
-  />
-  <SolutionCard
-    title="Media Gateway"
-    href="/en/api-reference/api-ref/rtmp-gateway"
-    icon="rtmp-gateway"
-    tone="purple"
-    size="small"
-    description="Reference entry points for Media Gateway REST APIs and related streaming gateway capabilities."
+    description="RESTful API reference for Chat in-app messaging operations."
     tags={['REST API']}
   />
   <SolutionCard
@@ -144,7 +143,7 @@ description: Browse API references across Agora products, then drill into platfo
     icon="cloud-recording"
     tone="purple"
     size="small"
-    description="RESTful API reference entry point for cloud recording lifecycle, storage, callbacks, and related operations."
+    description="RESTful API reference for cloud recording lifecycle and storage."
     tags={['REST API']}
   />
   <SolutionCard
@@ -153,16 +152,16 @@ description: Browse API references across Agora products, then drill into platfo
     icon="transcoding"
     tone="purple"
     size="small"
-    description="REST API reference entry point for cloud transcoding task management and output workflows."
+    description="RESTful API reference for cloud transcoding task management."
     tags={['REST API']}
   />
   <SolutionCard
-    title="Real-Time Speech-To-Text"
-    href="/en/api-reference/api-ref/speech-to-text"
-    icon="transcription"
+    title="Media Gateway"
+    href="/en/api-reference/api-ref/rtmp-gateway"
+    icon="rtmp-gateway"
     tone="purple"
     size="small"
-    description="Speech-to-text REST API reference entry point with current local reference coverage for the supported API family."
+    description="RESTful API reference for Media Gateway streaming operations."
     tags={['REST API']}
   />
   <SolutionCard
@@ -171,7 +170,7 @@ description: Browse API references across Agora products, then drill into platfo
     icon="media-pull"
     tone="purple"
     size="small"
-    description="RESTful API reference entry point for pulling external media into Agora-powered realtime sessions."
+    description="RESTful API reference for pulling external media into Agora sessions."
     tags={['REST API']}
   />
   <SolutionCard
@@ -180,30 +179,88 @@ description: Browse API references across Agora products, then drill into platfo
     icon="media-push"
     tone="purple"
     size="small"
-    description="RESTful API reference entry point for pushing Agora channel media into downstream destinations."
+    description="RESTful API reference for pushing Agora channel media to downstream destinations."
     tags={['REST API']}
   />
-</SolutionCardGrid>
-
-## Operations & ecosystem
-
-<SolutionCardGrid size="small">
+  <SolutionCard
+    title="Speech-to-Text"
+    href="/en/api-reference/api-ref/speech-to-text"
+    icon="transcription"
+    tone="purple"
+    size="small"
+    description="RESTful API reference for real-time speech-to-text transcription."
+    tags={['REST API']}
+  />
   <SolutionCard
     title="Analytics"
-    href="/en/api-reference/api-ref/agora-analytics/analytics-rest-api"
+    href="/en/api-reference/api-ref/agora-analytics"
     icon="analytics"
     tone="sand"
     size="small"
-    description="Analytics REST API reference entry point for usage, quality, and operational insight queries."
+    description="RESTful API reference for usage, quality, and operational analytics."
+    tags={['REST API']}
+  />
+  <SolutionCard
+    title="Interactive Whiteboard"
+    href="/en/api-reference/api-ref/whiteboard"
+    icon="whiteboard"
+    tone="green"
+    size="small"
+    description="RESTful API reference for whiteboard room, scene, and file operations."
+    tags={['REST API']}
+  />
+  <SolutionCard
+    title="Flexible Classroom"
+    href="/en/api-reference/api-ref/flexible-classroom"
+    icon="classroom"
+    tone="green"
+    size="small"
+    description="RESTful API reference for Flexible Classroom management and configuration."
+    tags={['REST API']}
+  />
+  <SolutionCard
+    title="Broadcast Streaming"
+    href="/en/api-reference/api-ref/broadcast-streaming"
+    icon="broadcast"
+    tone="green"
+    size="small"
+    description="RESTful API reference for broadcast streaming channel and content operations."
+    tags={['REST API']}
+  />
+  <SolutionCard
+    title="Console"
+    href="/en/api-reference/api-ref/console"
+    icon="analytics"
+    tone="sand"
+    size="small"
+    description="RESTful API reference for Agora Console project and account management."
     tags={['REST API']}
   />
   <SolutionCard
     title="Extensions Marketplace"
-    href="/en/extensions-marketplace/develop/implement/provisioning"
+    href="/en/api-reference/api-ref/extensions-marketplace"
     icon="tools"
     tone="sand"
     size="small"
-    description="Provisioning and usage API entry points for the Extensions Marketplace ecosystem."
-    tags={['Provisioning API', 'Usage API']}
+    description="RESTful API reference for Extensions Marketplace provisioning and usage."
+    tags={['REST API']}
+  />
+  <SolutionCard
+    title="On-Premise Recording"
+    href="/en/api-reference/api-ref/on-premise-recording"
+    icon="on-premise-recording"
+    tone="purple"
+    size="small"
+    description="RESTful API reference for on-premise recording operations."
+    tags={['REST API']}
+  />
+  <SolutionCard
+    title="IoT Channel Management"
+    href="/en/api-reference/api-ref/iot-channel-management-rest-api"
+    icon="iot"
+    tone="purple"
+    size="small"
+    description="RESTful API reference for IoT channel management operations."
+    tags={['REST API']}
   />
 </SolutionCardGrid>
