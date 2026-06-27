@@ -93,6 +93,35 @@ describe('DocsContent', () => {
     },
   });
 
+  it('hides a single-item breadcrumb that just repeats the page title', async () => {
+    renderWithRouter(
+      <DocsContent
+        breadcrumb={[{ title: 'SDKs', url: '/en/api-reference/sdks' }]}
+        contentPath="en/api-reference/sdks/index.mdx"
+        slug="sdks"
+        title="SDKs"
+        toc={[]}
+      />,
+    );
+
+    await screen.findByRole('heading', { level: 1, name: 'SDKs' });
+    expect(screen.queryByLabelText('Breadcrumb')).not.toBeInTheDocument();
+  });
+
+  it('keeps a single-item breadcrumb that differs from the page title', async () => {
+    renderWithRouter(
+      <DocsContent
+        breadcrumb={[{ title: 'API Reference', url: '/en/api-reference' }]}
+        contentPath="en/api-reference/sdks/index.mdx"
+        slug="sdks"
+        title="SDKs"
+        toc={[]}
+      />,
+    );
+
+    expect(await screen.findByLabelText('Breadcrumb')).toBeInTheDocument();
+  });
+
   it('renders page breadcrumb, LLM markdown link, title, and description', async () => {
     renderWithRouter(
       <DocsContent

@@ -63,6 +63,11 @@ export function DocsContent({
   useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const displayTitle = title ?? slug;
+  // A single crumb that just repeats the page title (the H1 right below) adds no
+  // wayfinding — suppress it. Multi-item breadcrumbs always render.
+  const showBreadcrumb =
+    breadcrumb.length > 1 ||
+    (breadcrumb.length === 1 && breadcrumb[0].title !== displayTitle);
   const resolvedBody =
     body ??
     (contentPath
@@ -115,7 +120,7 @@ export function DocsContent({
           platformTabs ? 'pb-0' : 'pb-7',
         )}
       >
-        {breadcrumb.length > 0 ? (
+        {showBreadcrumb ? (
           <nav aria-label="Breadcrumb" className="min-w-0">
             <ol className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[13px] leading-5 text-[color:var(--ink-4)]">
               {breadcrumb.map((item, index) => {
