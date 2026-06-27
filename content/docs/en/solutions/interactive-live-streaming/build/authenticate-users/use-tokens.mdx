@@ -1107,7 +1107,7 @@ This section shows you how to integrate token authentication in your app.
 
 1. Open the [Quickstart](../../index.mdx) project you created earlier.
 
-1. In `index.html`, include an HTTP client library such as `axios` for sending token requests to the authentication server.
+2. In `index.html`, include an HTTP client library such as `axios` for sending token requests to the authentication server.
 
   ```html
   <html>
@@ -1123,7 +1123,7 @@ This section shows you how to integrate token authentication in your app.
   </html>
   ```
 
-1. Add a `fetchToken` method to retrieve a token from your token server to join a channel. 
+3. Add a `fetchToken` method to retrieve a token from your token server to join a channel.
 
   ```js
   // Retrieve a token from your token server
@@ -1150,7 +1150,7 @@ This section shows you how to integrate token authentication in your app.
   }
   ```
 
-1. Use the token to join a channel
+4. Use the token to join a channel
 
   ```js
   // Assign the obtained token to the token parameter in the join method
@@ -2223,7 +2223,7 @@ This section shows you how to implement basic authentication by acquiring a toke
   import { useClientEvent, useRTCClient } from "agora-rtc-react";
   ```
 
-1. **Retrieve a token from the authentication server**:
+2. **Retrieve a token from the authentication server**:
 
   ```typescript
   async function fetchRTCToken(channelName: string) {
@@ -2245,7 +2245,7 @@ This section shows you how to implement basic authentication by acquiring a toke
   }
   ```
 
-1. **Handle the event triggered by Agora SDRTN® when the token is about to expire**:
+3. **Handle the event triggered by Agora SDRTN® when the token is about to expire**:
 
   A token expires after the `tokenExpiryTime` specified in the call to the token server or after 24 hours, if the time is not specified. The `useTokenWillExpire` method receives a callback when the current token is about to expire so that a fresh token may be retrieved and used.
 
