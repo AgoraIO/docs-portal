@@ -1,16 +1,4 @@
-import {
-  BoxesIcon,
-  ChevronDownIcon,
-  DownloadIcon,
-  MessageSquareIcon,
-  MicIcon,
-  MonitorPlayIcon,
-  RadioTowerIcon,
-  ServerCogIcon,
-  SmartphoneIcon,
-  VideoIcon,
-} from 'lucide-react';
-import type { ReactNode } from 'react';
+import { ChevronDownIcon, DownloadIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { cn } from '@/lib/cn';
 import {
@@ -205,24 +193,16 @@ function SdkProductCard({
       className="rounded-xl border border-border p-5"
     >
       <div className="flex items-start justify-between gap-4">
-        <div className="flex min-w-0 items-start gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
-            <SdkProductIcon
-              productId={product.id}
-              productLabel={product.label}
-            />
-          </span>
-          <div className="min-w-0">
-            <h3
-              className="m-0 text-base font-semibold text-foreground"
-              id={productTitleId}
-            >
-              {product.label}
-            </h3>
-            <p className="m-0 mt-1 text-sm leading-6 text-muted-foreground">
-              {product.info}
-            </p>
-          </div>
+        <div className="min-w-0">
+          <h3
+            className="m-0 text-base font-semibold text-foreground"
+            id={productTitleId}
+          >
+            {product.label}
+          </h3>
+          <p className="m-0 mt-1 text-sm leading-6 text-muted-foreground">
+            {product.info}
+          </p>
         </div>
 
         <span className="relative shrink-0">
@@ -347,41 +327,6 @@ function CopyButton({ value }: { value: string }) {
       {copied ? 'Copied' : 'Copy'}
     </button>
   );
-}
-
-function SdkProductIcon({
-  productId,
-  productLabel,
-}: {
-  productId: string;
-  productLabel: string;
-}) {
-  const normalized = `${productId} ${productLabel}`.toLowerCase();
-  const iconClassName = 'size-7';
-  let icon: ReactNode;
-
-  if (normalized.includes('voice')) {
-    icon = <MicIcon className={iconClassName} />;
-  } else if (normalized.includes('video')) {
-    icon = <VideoIcon className={iconClassName} />;
-  } else if (normalized.includes('chat')) {
-    icon = <MessageSquareIcon className={iconClassName} />;
-  } else if (normalized.includes('signaling') || normalized.includes('rtm')) {
-    icon = <RadioTowerIcon className={iconClassName} />;
-  } else if (normalized.includes('iot')) {
-    icon = <SmartphoneIcon className={iconClassName} />;
-  } else if (
-    normalized.includes('recording') ||
-    normalized.includes('gateway')
-  ) {
-    icon = <ServerCogIcon className={iconClassName} />;
-  } else if (normalized.includes('media')) {
-    icon = <MonitorPlayIcon className={iconClassName} />;
-  } else {
-    icon = <BoxesIcon className={iconClassName} />;
-  }
-
-  return icon;
 }
 
 function getInitialPlatformId() {
