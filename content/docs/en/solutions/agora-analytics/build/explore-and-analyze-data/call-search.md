@@ -149,7 +149,7 @@ To view the Call Details homepage, follow these steps:
 
 4.  Select the time range you want to inspect. If the time range changes, the audio and video quality metrics data is updated.
 
-![1650430027822](https://web-cdn.agora.io/docs-files/1650430027822)
+    ![1650430027822](https://web-cdn.agora.io/docs-files/1650430027822)
 
 #### Key events
 

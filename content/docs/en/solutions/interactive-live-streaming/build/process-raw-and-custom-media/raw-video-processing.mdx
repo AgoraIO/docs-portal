@@ -258,11 +258,11 @@ To implement raw video data functionality in your project, refer to the followin
 
 2. Implement the `onCaptureVideoFrame` and `onRenderVideoFrame` callbacks to handle the capture and rendering of video frames.
 
-  :::warning
+    :::warning
 
-  When modifying parameters in a `videoFrame`, ensure that the updated parameters match the actual video frame in the buffer. Failure to do so may result in unexpected rotation or distortion in both the local preview and the remote video.
+    When modifying parameters in a `videoFrame`, ensure that the updated parameters match the actual video frame in the buffer. Failure to do so may result in unexpected rotation or distortion in both the local preview and the remote video.
 
-  :::
+    :::
   ```swift
   class RawVideoDataMain: BaseViewController {
     var localVideo = Bundle.loadVideoView(type: .local, audioOnly: false)
@@ -344,11 +344,11 @@ To implement raw video data functionality in your project, refer to the followin
 
 2. Implement the `onCaptureVideoFrame` and `onRenderVideoFrame` callbacks to handle the capture and rendering of video frames.
 
-  :::warning
+    :::warning
 
-  When modifying parameters in a `videoFrame`, ensure that the updated parameters match the actual video frame in the buffer. Failure to do so may result in unexpected rotation or distortion in both the local preview and the remote video.
+    When modifying parameters in a `videoFrame`, ensure that the updated parameters match the actual video frame in the buffer. Failure to do so may result in unexpected rotation or distortion in both the local preview and the remote video.
 
-  :::
+    :::
   ```swift
   class RawVideoDataMain: BaseViewController {
     var localVideo = Bundle.loadVideoView(type: .local, audioOnly: false)
@@ -428,11 +428,11 @@ To implement raw video data functionality in your project, refer to the followin
 
 1. Before joining the channel, create an instance of `IVideoFrameObserver` and call `registerVideoFrameObserver` to register the video observer.
 
-  :::warning
+    :::warning
 
-  When modifying parameters in a `VideoFrame`, ensure that the updated parameters match the actual video frame in the buffer. Failure to do so may result in unexpected rotation or distortion in both the local preview and the remote video.
+    When modifying parameters in a `VideoFrame`, ensure that the updated parameters match the actual video frame in the buffer. Failure to do so may result in unexpected rotation or distortion in both the local preview and the remote video.
 
-  :::
+    :::
   ```cpp
   // Register or unregister the video observer
   BOOL CGrayVideoProcFrameObserver::RegisterVideoFrameObserver(

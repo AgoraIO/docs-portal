@@ -30,79 +30,97 @@ export function remarkPlatformContent() {
       }
     });
 
-    const nextChildren: Root['children'] = [];
+    groupPlatformBlocks(tree);
+  };
+}
 
-    for (let index = 0; index < tree.children.length; ) {
-      const node = tree.children[index];
-      const firstLeaf = toPlatformLeaf(node);
+// Groups consecutive Platform* blocks among a root's direct children into a
+// single `_PlatformTabsGroup`. fumadocs `remarkInclude` runs before this plugin
+// and splices an `<include>`d file in as a nested `{ type: 'root', children }`
+// node; platform blocks are top-level within that included file, so we recurse
+// into embedded roots first, otherwise their blocks survive untransformed and
+// the runtime stub component crashes the whole page.
+function groupPlatformBlocks(root: Root): void {
+  for (const child of root.children) {
+    // `remarkInclude` splices included files in as nested `root` nodes, which
+    // are not part of mdast's `RootContent` union — hence the cast.
+    if ((child as { type: string }).type === 'root') {
+      groupPlatformBlocks(child as unknown as Root);
+    }
+  }
 
-      if (!firstLeaf) {
-        nextChildren.push(node);
-        index += 1;
-        continue;
-      }
+  const nextChildren: Root['children'] = [];
 
-      const run: Array<{
-        leaf: PlatformLeaf<PlatformContentNode>;
-        node: PlatformContentNode;
-      }> = [{ leaf: firstLeaf, node: firstLeaf.value }];
+  for (let index = 0; index < root.children.length; ) {
+    const node = root.children[index];
+    const firstLeaf = toPlatformLeaf(node);
 
-      let lookahead = index + 1;
-
-      while (lookahead < tree.children.length) {
-        const candidate = tree.children[lookahead];
-        const leaf = toPlatformLeaf(candidate);
-
-        if (!leaf) {
-          break;
-        }
-
-        run.push({ leaf, node: leaf.value });
-        lookahead += 1;
-      }
-
-      const group = createPlatformGroup(run.map((entry) => entry.leaf));
-
-      nextChildren.push({
-        type: 'mdxJsxFlowElement',
-        name: '_PlatformTabsGroup',
-        attributes: [
-          createAttribute('groupMode', group.mode),
-          createAttribute('canonicalPlatform', group.canonicalPlatform),
-          createAttribute('platforms', JSON.stringify(group.platforms)),
-          createAttribute('showTabs', group.showTabs ? 'true' : 'false'),
-        ],
-        children: run.map(({ leaf, node }) => ({
-          type: 'mdxJsxFlowElement',
-          name: '_PlatformPanel',
-          attributes: [createAttribute('platform', leaf.platform)],
-          children: [
-            {
-              type: 'mdxJsxFlowElement',
-              name: '_PlatformProcessedMarker',
-              attributes: [
-                createAttribute('groupMode', group.mode),
-                createAttribute('canonicalPlatform', group.canonicalPlatform),
-                createAttribute('platform', leaf.platform),
-              ],
-              children: [],
-            },
-            ...node.children,
-            {
-              type: 'mdxJsxFlowElement',
-              name: '_PlatformProcessedMarker',
-              attributes: [createAttribute('close', 'true')],
-              children: [],
-            },
-          ],
-        })),
-      });
-
-      index = lookahead;
+    if (!firstLeaf) {
+      nextChildren.push(node);
+      index += 1;
+      continue;
     }
 
-    tree.children = nextChildren;
-  };
+    const run: Array<{
+      leaf: PlatformLeaf<PlatformContentNode>;
+      node: PlatformContentNode;
+    }> = [{ leaf: firstLeaf, node: firstLeaf.value }];
+
+    let lookahead = index + 1;
+
+    while (lookahead < root.children.length) {
+      const candidate = root.children[lookahead];
+      const leaf = toPlatformLeaf(candidate);
+
+      if (!leaf) {
+        break;
+      }
+
+      run.push({ leaf, node: leaf.value });
+      lookahead += 1;
+    }
+
+    const group = createPlatformGroup(run.map((entry) => entry.leaf));
+
+    nextChildren.push({
+      type: 'mdxJsxFlowElement',
+      name: '_PlatformTabsGroup',
+      attributes: [
+        createAttribute('groupMode', group.mode),
+        createAttribute('canonicalPlatform', group.canonicalPlatform),
+        createAttribute('platforms', JSON.stringify(group.platforms)),
+        createAttribute('showTabs', group.showTabs ? 'true' : 'false'),
+      ],
+      children: run.map(({ leaf, node }) => ({
+        type: 'mdxJsxFlowElement',
+        name: '_PlatformPanel',
+        attributes: [createAttribute('platform', leaf.platform)],
+        children: [
+          {
+            type: 'mdxJsxFlowElement',
+            name: '_PlatformProcessedMarker',
+            attributes: [
+              createAttribute('groupMode', group.mode),
+              createAttribute('canonicalPlatform', group.canonicalPlatform),
+              createAttribute('platform', leaf.platform),
+            ],
+            children: [],
+          },
+          ...node.children,
+          {
+            type: 'mdxJsxFlowElement',
+            name: '_PlatformProcessedMarker',
+            attributes: [createAttribute('close', 'true')],
+            children: [],
+          },
+        ],
+      })),
+    });
+
+    index = lookahead;
+  }
+
+  root.children = nextChildren;
 }
 
 function createAttribute(name: string, value: string): MdxJsxAttribute {

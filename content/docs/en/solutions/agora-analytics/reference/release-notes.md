@@ -9,7 +9,7 @@ Agora Analytics is a tool that tracks and analyzes the usage and quality of call
 
 **New features**
 
-[Data Insights Plus](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/data-insight-plus) provides valuable insights into indicators,
+[Data Insights Plus](/en/solutions/agora-analytics/build/explore-and-analyze-data/data-insight-plus) provides valuable insights into indicators,
 dimensions, and trends. Users can analyze data, view time series changes, examine distribution patterns, and compare data across different periods.
 
 Data Insights Plus helps businesses make better decisions by providing deeper insights into their data. With Data Insights Plus, businesses can:

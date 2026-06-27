@@ -324,7 +324,7 @@ engine.stopScreenCapture()
 
 Be aware of the following limitations:
 
-- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](../../reference/pricing.mdxx) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
+- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](/en/realtime-media/video/reference/pricing) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
 
 - Due to Android performance limitations, screen sharing does not support Android TV.
 
@@ -402,7 +402,7 @@ Take the following steps to set up your screen sharing project:
 1. Go to your project folder and open the `.xcodeproj` file with Xcode.
 1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
-  ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+    ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
 1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.swift` files.
 1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
@@ -571,9 +571,9 @@ Call the `setAudioScenario` method and set the audio scenario to `AgoraAudioScen
     systemBroadcastPicker?.preferredExtension = "\(bundleId).Agora-ScreenShare-Extension"
     ```
 
-:::warning
-:::
-    > `RPSystemBroadcastPickerView` has some usage limitations and may become invalid in subsequent versions of iOS.
+    :::note
+    `RPSystemBroadcastPickerView` has some usage limitations and may become invalid in subsequent versions of iOS.
+    :::
 
 ### Publish a screen sharing video stream in a channel
 
@@ -638,7 +638,7 @@ agoraKit.updateChannel(with: option)
 
 Be aware of the following limitations:
 
-- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](../../reference/pricing.mdxx) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
+- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](/en/realtime-media/video/reference/pricing) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
 - Due to system limitations, screen sharing is only supported on iOS 12.0 and above.
 - This feature requires a high level of device performance. Agora recommends that you use an iPhone X or above.
 - After the user turns on screen sharing on an iOS device, the audio routing automatically switches to the earpiece due to system limitations.
@@ -1086,7 +1086,7 @@ To customize the selection interface, refer to the following steps:
 
 1. Call the `AgoraRTC.getElectronScreenSources` method provided by the SDK to get information about the screens that can be shared. `sources` is a list of `source` objects that contain information about the sharing source and `sourceId`. Its `source` properties are as follows:
 
-  ![Electron Screen Share Custom Interface Source Properties](/images/video-sdk/screen-sharing-web-electron-custom-interface-source-properties.png)
+    ![Electron Screen Share Custom Interface Source Properties](/images/video-sdk/screen-sharing-web-electron-custom-interface-source-properties.png)
 
   - **`id`**: The `sourceId`.
   - **`name`**: The name of the screen source.
@@ -1100,7 +1100,7 @@ To customize the selection interface, refer to the following steps:
 
 1. Based on the attributes of `source`, draw a selection interface using HTML and CSS to allow the user to select the screen source to be shared. The corresponding relationship between the properties of `source` and the screen sharing selection interface is as follows:
 
-  ![Electron Screen Share Custom Interface Thumbnail Name Relationship](/images/video-sdk/tmp_screen-sharing-web-electron-custom-interface-thumbnail-name.jpg)
+    ![Electron Screen Share Custom Interface Thumbnail Name Relationship](/images/video-sdk/tmp_screen-sharing-web-electron-custom-interface-thumbnail-name.jpg)
 
 1. Get the `sourceId` selected by the user.
 
@@ -1412,7 +1412,7 @@ ret = m_rtcEngine->stopScreenCapture();
 
 Be aware of the following limitations:
 
-- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](../../reference/pricing.mdxx) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
+- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](/en/realtime-media/video/reference/pricing) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
 
 - To share 4K resolution Ultra-HD video during screen sharing, your device needs to meet certain requirements. The minimum device specifications recommended by Agora are: intel(R) Core(TM) i7-9750H CPU @ 2.60GHZ.
 
@@ -1593,7 +1593,7 @@ To share captured audio during screen sharing, call `enableLoopbackRecording` to
 
 Be aware of the following limitations:
 
-- The video unit price for a screen-shared stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you for the default resolution of 1920 x 1080 (2,073,600). See [Pricing](../../reference/pricing.mdxx) for details.
+- The video unit price for a screen-shared stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you for the default resolution of 1920 x 1080 (2,073,600). See [Pricing](/en/realtime-media/video/reference/pricing) for details.
 
 ## Reference
 
@@ -1676,7 +1676,7 @@ Take the following steps to set up your screen sharing project:
 1. Go to your project folder and open the `ios/.xcodeproj` file with Xcode.
 1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
-  ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+    ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
 1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
 1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
@@ -1898,7 +1898,7 @@ When enabling screen sharing on Android, you only need to call the `startScreenC
 
 Be aware of the following limitations:
 
-- The video unit price for a screen sharing stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](../../reference/pricing.mdxx) for details.
+- The video unit price for a screen sharing stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](/en/realtime-media/video/reference/pricing) for details.
 
 <CodeBlockTabs defaultValue="ios">
 <CodeBlockTabsList>
@@ -2023,7 +2023,7 @@ Take the following steps to set up your screen sharing project:
 1. Create a **Broadcast Upload Extension** to enable the process of screen sharing:
   1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
-    ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+      ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
   1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.h` files.
   1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
@@ -2139,7 +2139,7 @@ Be aware of the following limitations:
 
 - Due to system limitations, screen sharing is only supported on iOS 12.0 and above.
 - This feature requires a high level of device performance. Agora recommends that you use an iPhone X or above.
-- The video unit price for a screen-sharing stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](../../reference/pricing.mdxx) for details.
+- The video unit price for a screen-sharing stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](/en/realtime-media/video/reference/pricing) for details.
 
 ## Reference
 
@@ -2287,7 +2287,7 @@ Take the following steps to set up your screen sharing project:
 1. Create a **Broadcast Upload Extension** to enable the process of screen sharing:
   1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
-    ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+      ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
   1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
   1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
@@ -2366,9 +2366,9 @@ Take the following steps to set up your screen sharing project:
 
 1. Select the extension you created in **TARGETS** and add all frameworks under the path **Frameworks/Agora-RTC-Plugin/Agora-Unity-RTC-SDK/Plugins/iOS/** in **General/Frameworks and Libraries**.
 1. To start screen sharing, call `StartScreenCapture` combined with the user's action. For example, prompt the user to press and hold the **Screen Recording** button in the Control Center on iOS, and select the extension you created to start recording.
-:::note
-<ul><li>Make sure your app and extension have the same **TARGETS/Deployment/iOS** version. The memory usage of **Broadcast Upload Extension** is limited to 50 MB. </li><li>Make sure that the memory usage of **Screen Sharing Extension** does not exceed 50 MB.</li></ul>
-:::
+    :::note
+    <ul><li>Make sure your app and extension have the same **TARGETS/Deployment/iOS** version. The memory usage of **Broadcast Upload Extension** is limited to 50 MB. </li><li>Make sure that the memory usage of **Screen Sharing Extension** does not exceed 50 MB.</li></ul>
+    :::
 
 </CodeBlockTab>
 
@@ -2462,7 +2462,7 @@ Take the following steps to implement screen sharing on macOS and Windows:
 
 Be aware of the following limitations:
 
-- The video unit price for a screen-sharing stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](../../reference/pricing.mdxx) for details.
+- The video unit price for a screen-sharing stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](/en/realtime-media/video/reference/pricing) for details.
 - Due to system limitations, screen sharing is only supported on iOS 12.0 and above.
 - This feature requires a high level of device performance. Agora recommends that you use an iPhone X or above.
 
@@ -2740,7 +2740,7 @@ ret = m_rtcEngine->stopScreenCapture();
 
 Be aware of the following limitations:
 
-- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](../../reference/pricing.mdxx) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
+- After turning on screen sharing, Agora uses the resolution of the screen sharing video stream as the billing standard. Please see [Pricing](/en/realtime-media/video/reference/pricing) for details. The default resolution is 1280 × 720, but you can adjust it according to your business needs.
 - To share 4K Ultra-HD resolution video during screen sharing, your device needs to meet certain requirements. The minimum device specifications recommended by Agora are: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHZ.
 
 ## Reference
@@ -2843,7 +2843,7 @@ Refer to the following steps to join a channel and publish a screen sharing stre
 
 1. In **Bind UIEvent**, bind the UI event of clicking the **Start Screen Share** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StartScreenShare` button control and the `OnStartScreenShareClicked` callback functions respectively. This callback is triggered when the user clicks the **Start Screen Share** button as shown in the following figure:
 
-  ![Bind UI Start](/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-start.png)
+    ![Bind UI Start](/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-start.png)
 
 1. Create and implement the `OnStartScreenShareClicked` callback. When a button click triggers this callback, execute the following flow:
 
@@ -2866,11 +2866,11 @@ Follow the steps below to stop screen capture:
 
 1. In **Bind UIEvent**, bind the UI event of clicking the **Stop Screen Sharing** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StopScreenShare` button control and the `OnStopScreenShareClicked` callback function respectively. This callback is triggered when the user clicks the **Stop Screen Share** button.
 
-  ![Bind UI Event for Stop Button Click](/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-stop.png)
+    ![Bind UI Event for Stop Button Click](/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-stop.png)
 
 1. Create and implement the `OnStopScreenShareClicked` callback. When a button click triggers this callback, **Stop Screen Capture** is called to stop screen sharing as shown in the following image:
 
-  ![Bind UI Event for Stop Button Click](/images/video-sdk/screen-sharing-blueprint-android-ios-stop.png)
+    ![Bind UI Event for Stop Button Click](/images/video-sdk/screen-sharing-blueprint-android-ios-stop.png)
 
 ### Windows and macOS platforms
 
@@ -2884,7 +2884,7 @@ Refer to the following steps to create a UMG:
 
 1. Create two **Button** controls named `Btn_StartScreenCapture` and `Btn_StopScreenCapture`, for the user to start or stop screen sharing.
 
-  ![Windows macOS UMG](/images/video-sdk/screen-sharing-blueprint-windows-macos-umg.png)
+    ![Windows macOS UMG](/images/video-sdk/screen-sharing-blueprint-windows-macos-umg.png)
 
 #### Add the basic process
 
@@ -2907,19 +2907,19 @@ Follow the steps below to obtain and add available screens and windows:
 
   1. Call the **Get Screen Capture Sources** method to return a list of shareable screens and windows, and call **Get Count** to get the number of shareable screens and windows, as shown in the following figure:
 
-    ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-screen-capture-sources.png)
+      ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-screen-capture-sources.png)
 
   1. Traverse the list, call **Get Source Info** to get information about a specific screen or window, and add the **Source Name** to each of the options in the drop-down list for the users to choose from. Call **Release** to release the list of shareable screens and windows. Refer to the following figure:
 
-    ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-source-info.png)
+      ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-source-info.png)
 
 1. In **Bind UIEvent**, bind the UI event of the dropdown list selection change. Create a **Bind Event to On Selection Changed** node that connects the `CBS_DisplayID` drop-down list control and the `OnCBDisplayIDSelectionChanged` callback function, respectively. This callback is triggered when the user selects the specified screen or window in the drop-down list as shown in the following figure:
 
-  ![Bind Event On Selection Changed](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-event-to-on-selection-changed.png)
+    ![Bind Event On Selection Changed](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-event-to-on-selection-changed.png)
 
 1. Create and implement the `OnCBDisplayIDSelectionChanged` callback. When an option change triggers this callback, it looks up the index of the option and sets the option by index as shown below:
 
-  ![OnCBDisplayIDSelectionChanged](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-cbdisplay-id-selection-changed.png)
+    ![OnCBDisplayIDSelectionChanged](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-cbdisplay-id-selection-changed.png)
 
 #### Configure screen sharing parameters
 
@@ -2937,13 +2937,13 @@ Save this configuration for subsequent use when starting screen capture. Refer t
 
 1. In **Bind UIEvent**, bind the event of clicking the **Start Screen Share** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StartScreenShare` button control and the `OnStartScreenShareClicked` callback functions, respectively. This callback is triggered when the user clicks the **Start Screen Share** button as shown below:
 
-  ![Bind Event to On Clicked](/images/video-sdk/screen-sharing-blueprint-windows-macos-create-bind-event-to-on-clicked-node.png)
+    ![Bind Event to On Clicked](/images/video-sdk/screen-sharing-blueprint-windows-macos-create-bind-event-to-on-clicked-node.png)
 
 1. Create and implement the `OnStartScreenShareClicked` callback. When the callback is triggered, the following process is executed:
   1. Call the **Stop Screen Capture** method to pause the ongoing screen sharing process.
   1. Based on the list of available screens and windows saved in the previous steps, find the element that corresponds to the option and determine whether the option is a `ScreenCaptureSourceType_Screen` (screen) or a `ScreenCaptureSourceType_Window` (window) by using the **Type** in the element.
 
-    ![OnStartScreenShareClicked callback](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-start-screen-share-clicked.png)
+      ![OnStartScreenShareClicked callback](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-start-screen-share-clicked.png)
 
   1. If the shared target is a screen, call **Start Screen Capture by Display Id** to pass in the screen ID and the parameter configuration saved in the previous steps to start capturing the video stream of the specified screen. If the shared target is a window, call **Start Screen Capture by Window Id** to pass in the window ID and the parameter configuration to start capturing the video stream of the specified window. To share a specific region of a screen or window, set the **Region Rect** parameter to the position of the region you want to share relative to the entire screen or window.
   1. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the captured screen sharing stream:
@@ -2960,17 +2960,17 @@ Save this configuration for subsequent use when starting screen capture. Refer t
 
 1. In **Bind UIEvent**, bind the event of clicking the **Stop Screen Sharing** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StopScreenShare` button control and the `OnStopScreenShareClicked` callback functions respectively. This callback is triggered when the user clicks the **Stop Screen Share** button. Refer to the following figure:
 
-  ![Bind UI Event of Stop Button Click](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-ui-stop.png)
+    ![Bind UI Event of Stop Button Click](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-ui-stop.png)
 
 1. Create and implement the `OnStopScreenShareClicked` callback. When a button click triggers this callback, **Stop Screen Capture** is called to stop screen sharing as shown below:
 
-  ![OnStopScreenShareClicked callback](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-stop-screen-share-clicked.png)
+    ![OnStopScreenShareClicked callback](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-stop-screen-share-clicked.png)
 
 ### Limitations
 
 Be aware of the following limitations:
 
-- The video unit price for a screen-shared stream is based on the **video resolution** you set in `FScreenCaptureParameters`. If you do not pass dimensions in `FScreenCaptureParameters`, Agora bills at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](../../reference/pricing.mdxx) for details.
+- The video unit price for a screen-shared stream is based on the **video resolution** you set in `FScreenCaptureParameters`. If you do not pass dimensions in `FScreenCaptureParameters`, Agora bills at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](/en/realtime-media/video/reference/pricing) for details.
 
 #### Android and iOS platforms
 

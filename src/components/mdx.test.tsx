@@ -73,13 +73,18 @@ type HeadingComponent = ComponentType<{
 }>;
 type ParameterListComponent = ComponentType<{
   children: ReactNode;
+  nullable?: boolean;
+  optional?: boolean;
+  required?: boolean;
   title?: ReactNode;
 }>;
 type ParameterComponent = ComponentType<{
   children: ReactNode;
+  defaultValue?: ReactNode;
   name?: ReactNode;
   nullable?: boolean;
   optional?: boolean;
+  possibleValues?: ReactNode;
   required?: boolean;
   type?: ReactNode;
 }>;
@@ -325,13 +330,22 @@ describe('common MDX registry', () => {
     const Parameter = components.Parameter as ParameterComponent;
 
     render(
-      <ParameterList title="params">
+      <ParameterList title="params" required>
         <Parameter name="language" required type="string">
           Recognition language.
         </Parameter>
-        <Parameter name="metadata" optional type="object">
+        <Parameter name="model" required={false} type="string">
+          Recognition model.
+        </Parameter>
+        <Parameter
+          defaultValue="{}"
+          name="metadata"
+          optional
+          possibleValues="provider-specific object"
+          type="object"
+        >
           <p>Provider-specific metadata.</p>
-          <ParameterList>
+          <ParameterList nullable>
             <Parameter name="metadata.request_id" nullable type="string">
               Optional request identifier.
             </Parameter>
@@ -342,12 +356,17 @@ describe('common MDX registry', () => {
 
     expect(screen.getByText('params')).toBeVisible();
     expect(screen.getByText('language')).toBeVisible();
-    expect(screen.getAllByText('string')).toHaveLength(2);
-    expect(screen.getByText('required')).toBeVisible();
+    expect(screen.getAllByText('string')).toHaveLength(3);
+    expect(screen.getAllByText('required')).toHaveLength(2);
+    expect(screen.getByText('model')).toBeVisible();
     expect(screen.getByText('metadata')).toBeVisible();
-    expect(screen.getByText('optional')).toBeVisible();
+    expect(screen.getAllByText('optional')).toHaveLength(2);
+    expect(screen.getByText('Default value')).toBeVisible();
+    expect(screen.getByText('{}')).toBeVisible();
+    expect(screen.getByText('Possible values')).toBeVisible();
+    expect(screen.getByText('provider-specific object')).toBeVisible();
     expect(screen.getByText('metadata.request_id')).toBeVisible();
-    expect(screen.getByText('nullable')).toBeVisible();
+    expect(screen.getAllByText('nullable')).toHaveLength(2);
     expect(screen.getByText('Optional request identifier.')).toBeVisible();
   });
 

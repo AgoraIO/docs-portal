@@ -58,13 +58,13 @@ The SDK provides the `startEchoTest` [3/3] method to test the network connection
 
 1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
 
-:::warning[Note]
-Using `startEchoTest` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
-:::
+    :::warning[Note]
+    Using `startEchoTest` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
+    :::
 
 To implement running an echo test in your app, refer to the following code:
 
-<Tabs defaultValue="tab1">
+<Tabs defaultValue="java">
 <TabsList>
   <TabsTrigger value="java">Java</TabsTrigger>
   <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
@@ -165,7 +165,7 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 
 To implement network quality testing in your app, refer to the following code:
 
-<Tabs defaultValue="tab1">
+<Tabs defaultValue="java">
 <TabsList>
   <TabsTrigger value="java">Java</TabsTrigger>
   <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
@@ -264,9 +264,9 @@ To test whether a local audio recording device, such as a microphone, is working
 
 1. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
 
-:::info[Information]
-Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
-:::
+    :::info[Information]
+    Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+    :::
 
 To implement running a recording device test in your app, refer to the following code:
 ``` typescript
@@ -310,9 +310,9 @@ To test if the local audio device loop is working properly, refer to the followi
 
 1. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
 
-:::info[Information]
-Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
-:::
+    :::info[Information]
+    Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+    :::
 
 To implement an audio loopback device test in your app, refer to the following code:
 ``` typescript
@@ -390,9 +390,9 @@ To test whether a local audio recording device, such as a microphone, is working
 
 1. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
 
-:::info[Information]
-Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
-:::
+    :::info[Information]
+    Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+    :::
 
 To implement running a recording device test in your app, refer to the following code:
 ``` dart
@@ -444,9 +444,9 @@ To test if the local audio device loop is working properly, refer to the followi
 
 1. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
 
-:::info[Information]
-Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
-:::
+    :::info[Information]
+    Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+    :::
 
 To implement an audio loopback device test in your app, refer to the following code:
 ``` dart
@@ -497,9 +497,9 @@ The SDK provides the `startEchoTest(withConfig:)` method to test the network con
 
 1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
 
-:::warning[Note]
-Using `startEchoTest(withConfig:)` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
-:::
+    :::warning[Note]
+    Using `startEchoTest(withConfig:)` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
+    :::
 
 To implement running an echo test in your app, refer to the following code:
 ``` swift
@@ -679,9 +679,9 @@ To test whether a local audio recording device, such as a microphone, is working
 
 1. When you are done testing, call `StopRecordingDeviceTest` to stop the test.
 
-:::info[Information]
-Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `OnAudioVolumeIndication` callback may not be received.
-:::
+    :::info[Information]
+    Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `OnAudioVolumeIndication` callback may not be received.
+    :::
 
 To implement running a recording device test in your app, refer to the following code:
 ``` csharp
@@ -754,9 +754,9 @@ To test if the local audio device loop is working properly, refer to the followi
 
 1. When you are done testing, call `StopAudioDeviceLoopbackTest` to stop the recording device test.
 
-:::info[Information]
-Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
-:::
+    :::info[Information]
+    Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+    :::
 
 To implement an audio loopback device test in your app, refer to the following code:
 ``` csharp
@@ -866,9 +866,9 @@ To test whether a local audio recording device, such as a microphone, is working
 
 1. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
 
-:::info[Information]
-Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
-:::
+    :::info[Information]
+    Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+    :::
 
 To implement running a recording device test in your app, refer to the following code:
 ``` cpp
@@ -923,9 +923,9 @@ To test if the local audio device loop is working properly, refer to the followi
 
 1. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
 
-:::info[Information]
-Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
-:::
+    :::info[Information]
+    Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+    :::
 
 ### Network quality analysis
 
@@ -1091,9 +1091,9 @@ The SDK provides the `startEchoTest` [3/3] method to test the network connection
 
 1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
 
-:::warning[Note]
-Using `startEchoTest` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
-:::
+    :::warning[Note]
+    Using `startEchoTest` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
+    :::
 
 To implement running an echo test in your app, refer to the following code:
 ``` cpp
@@ -1229,9 +1229,9 @@ To test whether a local audio recording device, such as a microphone, is working
 
 1. When you are done testing, call `StopRecordingDeviceTest` to stop the test.
 
-:::info[Information]
-Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `FOnAudioVolumeIndication` callback may not be received.
-:::
+    :::info[Information]
+    Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `FOnAudioVolumeIndication` callback may not be received.
+    :::
 
 #### Audio playback device test
 
@@ -1253,9 +1253,9 @@ To test if the local audio device loop is working properly, refer to the followi
 
 1. When you are done testing, call `StopAudioDeviceLoopbackTest` to stop the recording device test.
 
-:::info[Information]
-Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
-:::
+    :::info[Information]
+    Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
+    :::
 
 ### Network quality analysis
 

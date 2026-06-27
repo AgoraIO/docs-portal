@@ -152,6 +152,7 @@ _Avoid_: types-only verification, unit-test-only completion
 - Apple-shared legacy content such as `platform="ios, macos"` may render under both iOS and macOS page-level tabs without being split into separately rewritten prose sources.
 - Shared legacy content must be expanded into the migrated target page rather than preserved as a runtime dependency on the source repo, while retaining original paragraphs, headings, code samples, and tab structure unless the target runtime has been proven unable to carry them.
 - **Platform-run normalization** must preserve platform-local semantics and group boundaries rather than collapsing all platform content into one global page-level switcher.
+- A **Platform group** reached through a one-level shared `<include>` renders as **Page-level platform tabs** and is a supported shape, not an **Unsupported migration case**; shared-content expansion depth beyond one level remains a migration blocker (`spec.md:485`).
 - A **Shared-bundle container page** must undergo **Product-scope extraction** before page-fatal evaluation or final promotion.
 - After **Product-scope extraction**, the default unit of a **High-fidelity migration** remains the full source prose page rather than a reduced subset.
 - **Reference narrowing** is an exception path and must not be triggered only because a shared prose page is broad, cross-product, or larger than a preferred product-local reference page.

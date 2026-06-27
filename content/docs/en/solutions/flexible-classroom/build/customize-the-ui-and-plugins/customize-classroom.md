@@ -7,7 +7,7 @@ This page explains the way UI components work in Classroom and Proctor SDK.
     ## Introduction to UI components
 
 :::note
-The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](https://docs.agora.io/en/flexible-classroom/develop/integrate/customize-ui/customize-ui/customize-ui-scene-sdk).
+The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk).
 :::
 
 The UI components in Flexible Classroom can be divided into three types: function components, business components, and scenario components.
@@ -142,7 +142,7 @@ The following example shows how to add a functional component `agora-demo`:
 
 1. Create a new folder `packages/agora-classroom-sdk/src/ui-kit/components` under the directory, containing the corresponding files `.agora-demo`, `index.tsx`, `index.css`, and `index.stories.tsx`:
 
-   ![](https://web-cdn.agora.io/docs-files/1649913888493)
+    ![](https://web-cdn.agora.io/docs-files/1649913888493)
 
     ```tsx
     // index.css
@@ -179,7 +179,7 @@ The following example shows how to add a functional component `agora-demo`:
 
 2. Add `export * from './agora-demo';` to `packages/agora-classroom-sdk/src/ui-kit/components/index.ts`. You can see this function component in Storybook, as follows:
 
-  [](https://web-cdn.agora.io/docs-files/1649914019254)
+    ![Storybook component preview](https://web-cdn.agora.io/docs-files/1649914019254)
 
 ### Edit an existing functional component
 

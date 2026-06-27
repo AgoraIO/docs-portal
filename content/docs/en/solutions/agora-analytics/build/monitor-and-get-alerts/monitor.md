@@ -9,7 +9,7 @@ Real-time Monitoring provides the following features:
 
 -   Intuitive diagrams that help you grasp data in multiple dimensions, such as line charts, heat maps, bubble charts, and ranking lists.
 
--   Data synchronization with [Call Search](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/video-voice-sdk/call-search) and [Data Insights](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/video-voice-sdk/data-insight), so that you can easily dive into problem analysis.
+-   Data synchronization with [Call Search](/en/solutions/agora-analytics/build/explore-and-analyze-data/call-search) and [Data Insights](/en/solutions/agora-analytics/build/explore-and-analyze-data/data-insight), so that you can easily dive into problem analysis.
 
 ## Getting started
 
@@ -61,12 +61,12 @@ Each heat map chart refreshes every 60 seconds. The color of each cell represent
 
 Additionally, the heat map charts provide the data sampling feature:
 
--   Channel data sampling: On the chart for **Audio Freeze Rate**, **Video Freeze Rate**, or **Network delay rate**, click a data point to see its ranked channel list. The list is ranked in descending order of the metric value, and includes a maximum of 20 channels. To get more details about a channel, click **Call Details** to use [Call Inspector](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/video-voice-sdk/call-search).
--   User data sampling: On the chart for **Average login time**, click a data point to see its ranked user list. The list is ranked in descending order of the metric value, and includes a maximum of 50 users. To get more details about a user, click **Call Details** to use [Call Inspector](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/video-voice-sdk/call-search).
+-   Channel data sampling: On the chart for **Audio Freeze Rate**, **Video Freeze Rate**, or **Network delay rate**, click a data point to see its ranked channel list. The list is ranked in descending order of the metric value, and includes a maximum of 20 channels. To get more details about a channel, click **Call Details** to use [Call Inspector](/en/solutions/agora-analytics/build/explore-and-analyze-data/call-search).
+-   User data sampling: On the chart for **Average login time**, click a data point to see its ranked user list. The list is ranked in descending order of the metric value, and includes a maximum of 50 users. To get more details about a user, click **Call Details** to use [Call Inspector](/en/solutions/agora-analytics/build/explore-and-analyze-data/call-search).
 
 ### Alert notification
 
-If you have enabled the [Alert Notification](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/video-voice-sdk/alarm) service, the **Alert Notifications** panel displays the latest three notifications.
+If you have enabled the [Alert Notification](/en/solutions/agora-analytics/build/monitor-and-get-alerts/alarm) service, the **Alert Notifications** panel displays the latest three notifications.
 
 ![1640934517935](https://web-cdn.agora.io/docs-files/1640934517935)
 
@@ -74,9 +74,9 @@ In this panel, you can do the following:
 
 -   Jump to Alert Notification: The upper-right corner shows the number of notifications in the last three hours. Click it to jump to the **Alert Notification** page.
 
--   Jump to Call Search: For each displayed alert notification, click **Call Details** to analyze the call using the [Call Inspector](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/video-voice-sdk/call-search) service.
+-   Jump to Call Search: For each displayed alert notification, click **Call Details** to analyze the call using the [Call Inspector](/en/solutions/agora-analytics/build/explore-and-analyze-data/call-search) service.
 
-To enable and configure the Alert Notification service, see [Alert Notification](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/video-voice-sdk/alarm).
+To enable and configure the Alert Notification service, see [Alert Notification](/en/solutions/agora-analytics/build/monitor-and-get-alerts/alarm).
 
 ### Region
 
@@ -92,7 +92,7 @@ You can refer to the following tips when navigating through the heat map:
 
 -   To see the metric value in a country or region, hover your mouse on the map.
 
--   Channel data sampling: Click a country or region or a bubble to see its ranked channel list. The list is ranked in descending order of the metric value, and includes a maximum of 20 channels. To further analyze a channel, click **Call details** to use [Call Inspector](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/video-voice-sdk/call-search).
+-   Channel data sampling: Click a country or region or a bubble to see its ranked channel list. The list is ranked in descending order of the metric value, and includes a maximum of 20 channels. To further analyze a channel, click **Call details** to use [Call Inspector](/en/solutions/agora-analytics/build/explore-and-analyze-data/call-search).
 
 ### Ranked channel lists
 

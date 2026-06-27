@@ -39,7 +39,7 @@ Use these tables to identify the configurations applicable to your regions.
 
 :::info
 When adding IP addresses:
-- If you use cloud proxy with [Restricted media zones](https://docs.agora.io/en/signaling/advanced-features/geofencing), add only the IP addresses dedicated to your specified region.
+- If you use cloud proxy with [Restricted media zones](/en/realtime-media/rtm/build/secure-your-app-and-data/geofencing), add only the IP addresses dedicated to your specified region.
 - If you do not restrict media zones, add all IP addresses to ensure connectivity.
 
 :::

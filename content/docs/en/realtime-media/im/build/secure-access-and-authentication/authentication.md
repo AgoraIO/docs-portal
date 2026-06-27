@@ -124,4 +124,4 @@ For more examples and source code in other development languages, explore the [A
 
 ### Tokens for Agora RTC products
 
-If you use Agora Chat together with the [Agora RTC SDK](https://docs.agora.io/cn/Agora%20Platform/term_agora_rtc_sdk), Agora recommends upgrading to [AccessToken 2](/en/realtime-media/im/build/secure-access-and-authentication/access-token-2).
+If you use Agora Chat together with the [Agora RTC SDK](/en/realtime-media/video/core-concepts), Agora recommends upgrading to [AccessToken 2](/en/realtime-media/im/build/secure-access-and-authentication/access-token-2).

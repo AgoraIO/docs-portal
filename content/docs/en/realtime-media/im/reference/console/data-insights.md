@@ -33,7 +33,7 @@ The Scale Statistics page shows the scale of users, s, and s on the current day 
 
 || Description | Notes |
 | :----------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| Today's Overview | Values of key usage metrics as of today. For a detailed description of each metric, see [Scale Metrics](https://docs.agora.io/en/agora-analytics/data-metrics).
+| Today's Overview | Values of key usage metrics as of today. For a detailed description of each metric, see [Scale Metrics](/en/realtime-media/im/reference/console/data-metrics).
  [Scale Metrics](./data-metrics).
   | N/A |
 | Historical Data | Line charts and bar charts showing how the metric values change in a certain time range. | The maximum time range to query is the past 30 days.Each metric in this section is calculated at an interval of a day, and the data has a one-minute delay (except for Daily  PCU, which has a delay of 10 minutes). |
@@ -56,10 +56,10 @@ The Message Statistics page shows the historical numbers of messages and distrib
 
 || Description | Notes |
 | :----------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| Message Count Trends | Line charts showing how the total numbers of messages change within a certain time range. For a detailed description of each metric, see [Message metrics](https://docs.agora.io/en/agora-analytics/data-metrics).
+| Message Count Trends | Line charts showing how the total numbers of messages change within a certain time range. For a detailed description of each metric, see [Message metrics](/en/realtime-media/im/reference/console/data-metrics).
  [Message metrics](./data-metrics).
  | The maximum time range to query is the past 6 months.Each metric in this section is calculated at an interval of a day, and the data has a one minute delay. |
-| Message Type Trends | Line charts showing the number of messages by type in a certain time range, and pie charts showing the message type breakdown (the percentage of each type of messages). For a detailed description of each metric, see [Message metrics](https://docs.agora.io/en/agora-analytics/data-metrics).
+| Message Type Trends | Line charts showing the number of messages by type in a certain time range, and pie charts showing the message type breakdown (the percentage of each type of messages). For a detailed description of each metric, see [Message metrics](/en/realtime-media/im/reference/console/data-metrics).
  [Message metrics](./data-metrics).
  | See Message Count Trends |
 
@@ -82,15 +82,15 @@ Follow these steps to view the Chat quality insights page:
 
 3. (Optional) In the upper right corner, select a unit and duration to view the end-user and server-side API data. The default is to view the last 30 minutes of data by minute.
 
- :::info
-You can query any data within the last 7 days. If you view the data by hour, the time range of a single query cannot exceed 24 hours; if you view the data by minute, the time range of a single query cannot exceed 30 minutes.
-:::
+    :::info
+    You can query any data within the last 7 days. If you view the data by hour, the time range of a single query cannot exceed 24 hours; if you view the data by minute, the time range of a single query cannot exceed 30 minutes.
+    :::
 
 4. Click the **End-user Data** or **Server API Data** tab at the top of the page.
 
 ### End-user Data
 
-The End-user Data section shows the number of request attempts, request success rate, and average request delay of client-side APIs. For details on the metric types and definitions, see [End-user API metrics](https://docs.agora.io/en/agora-analytics/data-metrics).
+The End-user Data section shows the number of request attempts, request success rate, and average request delay of client-side APIs. For details on the metric types and definitions, see [End-user API metrics](/en/realtime-media/im/reference/console/data-metrics).
  [End-user API metrics](./data-metrics).
 
 To present the data more intuitively, different metrics use different charts:
@@ -109,7 +109,7 @@ When entering the page for the first time, the chart shows the aggregated metric
 
 ### Server API Data
 
-The Server API Data section shows the number of request attempts, request success rate, and average request delay of server-side RESTful APIs. For details on the metric types and definitions, see [Server API metrics](https://docs.agora.io/en/agora-analytics/data-metrics).
+The Server API Data section shows the number of request attempts, request success rate, and average request delay of server-side RESTful APIs. For details on the metric types and definitions, see [Server API metrics](/en/realtime-media/im/reference/console/data-metrics).
  [Server API metrics](./data-metrics).
 
 :::info

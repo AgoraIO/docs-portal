@@ -114,6 +114,51 @@ C++ content
     ).rejects.toThrow('Duplicate platform key "android" in the same group.');
   });
 
+  it('transforms platform blocks nested inside an embedded root (e.g. from <include>)', () => {
+    // fumadocs `remarkInclude` runs before this plugin and replaces an
+    // `<include>` node with a nested `{ type: 'root', children }` holding the
+    // included file's children. Platform blocks in an included file are
+    // top-level there, so the transform must descend into embedded roots
+    // instead of leaving them untransformed (which crashes the page at runtime).
+    const platformNode = (platform: string) => ({
+      type: 'mdxJsxFlowElement' as const,
+      name: 'PlatformStructured',
+      attributes: [
+        { type: 'mdxJsxAttribute' as const, name: 'platform', value: platform },
+      ],
+      children: [
+        {
+          type: 'paragraph' as const,
+          children: [{ type: 'text' as const, value: `${platform} body` }],
+        },
+      ],
+    });
+
+    const tree = {
+      type: 'root' as const,
+      children: [
+        {
+          type: 'paragraph' as const,
+          children: [{ type: 'text' as const, value: 'intro' }],
+        },
+        {
+          type: 'root' as const,
+          children: [platformNode('web'), platformNode('cpp')],
+        },
+      ],
+    };
+
+    // biome-ignore lint/suspicious/noExplicitAny: hand-built mdast fixture
+    remarkPlatformContent()(tree as any);
+
+    // biome-ignore lint/suspicious/noExplicitAny: hand-built mdast fixture
+    const embedded = tree.children[1] as any;
+    expect(embedded.type).toBe('root');
+    expect(embedded.children).toHaveLength(1);
+    expect(embedded.children[0].name).toBe('_PlatformTabsGroup');
+    expect(embedded.children[0].children).toHaveLength(2);
+  });
+
   it('throws a readable error for nested platform content blocks', async () => {
     const source = `
 > quoted intro

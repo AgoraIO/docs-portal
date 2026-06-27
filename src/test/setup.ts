@@ -16,7 +16,9 @@ if (!window.matchMedia) {
   });
 }
 
-if (!window.localStorage) {
+// happy-dom can expose a `localStorage` object whose methods are not callable,
+// so guard on a working `setItem` rather than mere presence.
+if (typeof window.localStorage?.setItem !== 'function') {
   const storage = new Map<string, string>();
 
   Object.defineProperty(window, 'localStorage', {

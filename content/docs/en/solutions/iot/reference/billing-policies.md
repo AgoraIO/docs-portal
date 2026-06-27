@@ -9,7 +9,7 @@ This page explains billing, account settlement, end-of-life policies, and any ap
 Agora Console provides billing information, fee deduction details, and account suspension notices based on your account type.
 
 :::info
-> If you have signed a contract with Agora, the contract terms override all billing, deduction, and suspension details described on this page.
+If you have signed a contract with Agora, the contract terms override all billing, deduction, and suspension details described on this page.
 
 :::
 ### Paid accounts
@@ -85,13 +85,14 @@ After account suspension, none of your projects can access Agora services. To 
 To ensure billing transparency and smooth service continuity, Agora implements real-time account balance reservation based on estimated usage across all Agora products for SSP customers. This does not apply to customers with a signed contract.
 
 :::info
-> For uninterrupted access to Agora's products and services, ensure at least one of the following:
-> - Add a valid credit card for auto-recharge to your Agora account, **or**
-> - Maintain sufficient funds in your Agora Console balance to cover your estimated usage.
+For uninterrupted access to Agora's products and services, ensure at least one of the following:
+
+- Add a valid credit card for auto-recharge to your Agora account, **or**
+- Maintain sufficient funds in your Agora Console balance to cover your estimated usage.
+:::
 
 Agora employs the following policies to manage your account balance and ensure uninterrupted access to its products and services.
 
-:::
 ### Real-time usage and estimated bill
  
 You can view your real-time usage and estimated monthly bill at any time directly in the Agora Console.
@@ -134,7 +135,7 @@ This section outlines the stages that an Agora product or service moves through,
 
 ### Default introduction period
 
-Agora guarantees a minimum introduction period of 12 months from the release of a product on the [Agora Developer Center](https://docs.agora.io/en/). During this period, Agora does not initiate any end-of-support or end-of-life actions. After the 12-month period, Agora may transition a product into the Maintenance phase, which marks the beginning of the end-of-support phase.
+Agora guarantees a minimum introduction period of 12 months from the release of a product on the Agora Developer Center. During this period, Agora does not initiate any end-of-support or end-of-life actions. After the 12-month period, Agora may transition a product into the Maintenance phase, which marks the beginning of the end-of-support phase.
 
 ### SDK lifecycle
 
@@ -166,7 +167,7 @@ During the Retirement phase, products entering the EOS/EOL phase will continue t
 | After 12 months | Agora no longer supports the product or service, unless a support extension was arranged before the end of the 12-month period. |
 
 :::info
-> Using an SDK beyond its maintenance support cycle is not recommended and is entirely at the developer's discretion and risk.
+Using an SDK beyond its maintenance support cycle is not recommended and is entirely at the developer's discretion and risk.
 
 Agora is committed to delivering the best SDK experience to its developers. This policy ensures that you have access to the latest features and security updates with clear guidance on the support timelines.
 

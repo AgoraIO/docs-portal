@@ -49,7 +49,7 @@ Use one or more of the following volume control methods to adjust volume setting
 
 To mute or unmute the local audio stream, call `muteLocalAudioStream`:
 
-<Tabs defaultValue="tab1">
+<Tabs defaultValue="java">
 <TabsList>
   <TabsTrigger value="java">Java</TabsTrigger>
   <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
@@ -78,7 +78,7 @@ mRtcEngine.muteLocalAudioStream(false)
 
 To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
 
-<Tabs defaultValue="tab1">
+<Tabs defaultValue="java">
 <TabsList>
   <TabsTrigger value="java">Java</TabsTrigger>
   <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
@@ -112,7 +112,7 @@ To mute remote users without unsubscribing, set their [playback volume](#adjust-
 ### Adjust the playback volume
 Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
 
-<Tabs defaultValue="tab1">
+<Tabs defaultValue="java">
 <TabsList>
   <TabsTrigger value="java">Java</TabsTrigger>
   <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
@@ -146,7 +146,7 @@ mRtcEngine.adjustUserPlaybackSignalVolume(uid, volume)
 ### Adjust the in-ear monitoring volume
 During the process of audio capture, mixing, and playback, Agora enables you to adjust the in-ear monitoring volume. Enable and set the volume using `enableInEarMonitoring` and `setInEarMonitoringVolume`.
 
-<Tabs defaultValue="tab1">
+<Tabs defaultValue="java">
 <TabsList>
   <TabsTrigger value="java">Java</TabsTrigger>
   <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
@@ -177,7 +177,7 @@ mRtcEngine.setInEarMonitoringVolume(volume)
 ### Adjust the recording volume
 Call `adjustRecordingSignalVolume` to adjust the volume of the audio recording signal.
 
-<Tabs defaultValue="tab1">
+<Tabs defaultValue="java">
 <TabsList>
   <TabsTrigger value="java">Java</TabsTrigger>
   <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
@@ -223,7 +223,7 @@ When configuring audio settings, it's essential to understand the default behavi
 
 Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
 
-<Tabs defaultValue="tab1">
+<Tabs defaultValue="java">
 <TabsList>
   <TabsTrigger value="java">Java</TabsTrigger>
   <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
@@ -260,7 +260,7 @@ private val mRtcEventHandler = object : IRtcEngineEventHandler() {
 Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
 :::
 
-<Tabs defaultValue="tab1">
+<Tabs defaultValue="java">
 <TabsList>
   <TabsTrigger value="java">Java</TabsTrigger>
   <TabsTrigger value="kotlin">Kotlin</TabsTrigger>

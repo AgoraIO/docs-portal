@@ -1,16 +1,9 @@
 ---
 title: Agora account management
 description: Create, manage and update your Agora account.
-sidebar_position: 2
 platform: android
-exported_from: 'https://docs.agora.io/en/iot/get-started/manage-agora-account?platform=android'
-exported_on: '2026-06-14T10:08:30.706557Z'
-exported_file: manage-agora-account.md
 ---
 
-> For a complete site index fetch https://docs.agora.io/llms.txt. For all pages in this product fetch https://docs.agora.io/en/iot/overview/product-overview.md
-
-[HTML Version](https://docs.agora.io/en/iot/get-started/manage-agora-account?platform=android)
 
 This page shows you how to sign up for an Agora account, create a new project, and get the app ID and app certificate to generate a temporary token. 
 
@@ -24,6 +17,7 @@ To join a IoT SDK session, you need an Agora App ID. This section shows you how 
 To use Agora products and services, create an Agora account with your email, phone number, or a third-party account.
 
 **Sign up with email**
+
 1. Go to the [signup page](https://sso.agora.io/en/signup).
 
 2. Fill in the required fields.
@@ -37,15 +31,16 @@ To use Agora products and services, create an Agora account with your email, pho
 6. Follow the on-screen instructions to provide your name, company name, and phone number, set a password, and click **Continue**.
 
 **Sign up with a third-party account**
-7. On the [Agora Console](https://console.agora.io/v2) login page, select the third-party account you want to use.
 
-8. Follow the on-screen instructions to complete verification.
+1. On the [Agora Console](https://console.agora.io/v2) login page, select the third-party account you want to use.
 
-9. Click **Create a new account**.
+2. Follow the on-screen instructions to complete verification.
 
-10. Carefully read the **Terms of Service**, **Privacy Policy**, and **Acceptable Use Policy**, and select the checkbox.
+3. Click **Create a new account**.
 
-11. Click **Continue**.
+4. Carefully read the **Terms of Service**, **Privacy Policy**, and **Acceptable Use Policy**, and select the checkbox.
+
+5. Click **Continue**.
 
 
 Once you sign up successfully, your account is automatically logged in. Follow the on-screen instructions to create your first project and test out real-time communications.
@@ -104,17 +99,17 @@ To generate a temporary RTC token for use in your Video SDK projects:
 
 To generate a token for other Agora products:
 
-3. In your browser, navigate to the [Agora token builder](https://agora-token-generator-demo.vercel.app/).
+1. In your browser, navigate to the [Agora token builder](https://agora-token-generator-demo.vercel.app/).
 
-4. Choose the Agora product your user wants to log in to. Fill in **App ID** and **App Certificate** with the
+2. Choose the Agora product your user wants to log in to. Fill in **App ID** and **App Certificate** with the
 details of your project in Agora Console.
 
-5. Customize the token for each user. The required fields are visible in the Agora token builder.
+3. Customize the token for each user. The required fields are visible in the Agora token builder.
 
-6. Click **Generate Token**.
+4. Click **Generate Token**.
 
     The token appears in Token Builder.
 
-7. Copy the token and use it in your app.
+5. Copy the token and use it in your app.
 
 For more information on managing other aspects of your Agora account, see [Agora console overview](../reference/console-overview.md).

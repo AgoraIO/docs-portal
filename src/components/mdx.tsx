@@ -91,13 +91,18 @@ type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
 };
 type PreProps = CodeBlockProps;
 type ParameterListProps = ComponentProps<'div'> & {
+  nullable?: boolean;
+  optional?: boolean;
+  required?: boolean;
   title?: ReactNode;
 };
 type ParameterProps = ComponentProps<'div'> & {
   children?: ReactNode;
+  defaultValue?: ReactNode;
   name?: ReactNode;
   nullable?: boolean;
   optional?: boolean;
+  possibleValues?: ReactNode;
   required?: boolean;
   type?: ReactNode;
 };
@@ -533,9 +538,14 @@ function CommandBlock({
 function ParameterList({
   children,
   className,
+  nullable,
+  optional,
+  required,
   title,
   ...props
 }: ParameterListProps) {
+  const requiredState = getRequiredState({ optional, required });
+
   return (
     <section
       className={cn(
@@ -545,9 +555,10 @@ function ParameterList({
       data-parameter-list=""
       {...props}
     >
-      {title ? (
-        <div className="border-fd-border border-b bg-fd-muted/35 px-4 py-3 font-semibold text-fd-foreground">
-          {title}
+      {title || requiredState || nullable ? (
+        <div className="flex flex-wrap items-center gap-2 border-fd-border border-b bg-fd-muted/35 px-4 py-3 font-semibold text-fd-foreground">
+          {title ? <span>{title}</span> : null}
+          <ParameterBadges requiredState={requiredState} nullable={nullable} />
         </div>
       ) : null}
       <div className="divide-y divide-fd-border">{children}</div>
@@ -555,17 +566,53 @@ function ParameterList({
   );
 }
 
+function ParameterBadges({
+  nullable,
+  requiredState,
+}: {
+  nullable?: boolean;
+  requiredState: 'required' | 'optional' | null;
+}) {
+  if (!requiredState && !nullable) {
+    return null;
+  }
+
+  return (
+    <span className="flex flex-wrap gap-1.5">
+      {requiredState ? (
+        <span
+          className={cn(
+            'rounded border px-1.5 py-0.5 text-[0.68rem] font-medium',
+            requiredState === 'required'
+              ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
+              : 'border-fd-border bg-fd-muted/60 text-fd-muted-foreground',
+          )}
+        >
+          {requiredState}
+        </span>
+      ) : null}
+      {nullable ? (
+        <span className="rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 text-[0.68rem] font-medium text-fd-muted-foreground">
+          nullable
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
 function Parameter({
   children,
   className,
+  defaultValue,
   name,
   nullable,
   optional,
+  possibleValues,
   required,
   type,
   ...props
 }: ParameterProps) {
-  const requiredState = required ? 'required' : optional ? 'optional' : null;
+  const requiredState = getRequiredState({ optional, required });
 
   return (
     <div className={cn('group/parameter', className)} {...props}>
@@ -583,32 +630,56 @@ function Parameter({
               </span>
             ) : null}
           </div>
-          <div className="flex flex-wrap gap-1.5">
-            {requiredState ? (
-              <span
-                className={cn(
-                  'rounded border px-1.5 py-0.5 text-[0.68rem] font-medium',
-                  required
-                    ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
-                    : 'border-fd-border bg-fd-muted/60 text-fd-muted-foreground',
-                )}
-              >
-                {requiredState}
-              </span>
-            ) : null}
-            {nullable ? (
-              <span className="rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 text-[0.68rem] font-medium text-fd-muted-foreground">
-                nullable
-              </span>
-            ) : null}
-          </div>
+          <ParameterBadges requiredState={requiredState} nullable={nullable} />
         </div>
-        <div className="min-w-0 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0 [&_[data-parameter-list]]:mt-4">
+        <div className="min-w-0 space-y-3 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0 [&_[data-parameter-list]]:mt-4">
+          {defaultValue || possibleValues ? (
+            <dl className="grid gap-2 text-xs sm:grid-cols-[max-content_1fr]">
+              {defaultValue ? (
+                <>
+                  <dt className="font-medium text-fd-foreground">
+                    Default value
+                  </dt>
+                  <dd className="min-w-0 break-words font-mono">
+                    {defaultValue}
+                  </dd>
+                </>
+              ) : null}
+              {possibleValues ? (
+                <>
+                  <dt className="font-medium text-fd-foreground">
+                    Possible values
+                  </dt>
+                  <dd className="min-w-0 break-words font-mono">
+                    {possibleValues}
+                  </dd>
+                </>
+              ) : null}
+            </dl>
+          ) : null}
           {children}
         </div>
       </div>
     </div>
   );
+}
+
+function getRequiredState({
+  optional,
+  required,
+}: {
+  optional?: boolean;
+  required?: boolean;
+}) {
+  if (required) {
+    return 'required';
+  }
+
+  if (optional || required === false) {
+    return 'optional';
+  }
+
+  return null;
 }
 
 function createDocsAnchor(contentPath?: string) {

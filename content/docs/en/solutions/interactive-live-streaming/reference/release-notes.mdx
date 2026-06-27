@@ -313,7 +313,7 @@ The `libaosl.so` library version in Video SDK v4.5.1 is 1.2.13.
 
 **AI conversation scenario**
 
-This version introduces the `AUDIO_SCENARIO_AI_CLIENT` audio scenario option, specifically designed for interacting with conversational AI agents powered by the [Conversational AI Engine](https://docs-md.agora.io/en/en/ai.md).
+This version introduces the `AUDIO_SCENARIO_AI_CLIENT` audio scenario option, specifically designed for interacting with conversational AI agents powered by the [Conversational AI Engine](/en/ai).
 
 This scenario optimizes audio transmission algorithms based on the characteristics of AI-generated voices, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. The optimization enhances conversation continuity and reliability across various network environments.
 
@@ -473,7 +473,7 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
   - Lite SDK supports manual integration or third-party repository integration.
   - For information on dynamic libraries included in the Lite SDK, see [App size optimization](../../../build/optimize-quality-and-connection/app-size-optimization.mdx).
   - For the list of APIs supported by Lite SDK, see [Lite SDK API](https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_lite_api.html).
-  - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](https://docs-md.agora.io/en/help/general-product-inquiry/audio_format.md)
+  - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](/en/api-reference/faq/product/audio_format)
 
 2. **Alpha transparency effects**
 
@@ -1700,7 +1700,7 @@ In order to enhance the real-time audio and video interactive activities based o
 - Easy to integrate: The integration of modular functions can be achieved simply by calling an API, and the integration efficiency is improved by nearly 95%.
 - Extensibility design: The modular and extensible SDK design style endows the Agora SDK with good extensibility, which enables developers to quickly build real-time interactive apps based on the Agora extensions marketplace ecosystem.
 - Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../../../build/apply-effects-and-enhancements/use-an-extension.mdx).
-- Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](https://docs-md.agora.io/en/extensions-marketplace/get-started/quickstart-implement.md).
+- Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](/en/realtime-media/marketplace/quickstart-implement).
 
 **8. Enhanced channel management**
 
@@ -1803,14 +1803,14 @@ v2.1.0 was released on March 6, 2024.
 
 #### Improvements
 
-This update optimizes the performance of the MetaKit extension and adds support for two new `keys` in `setExtensionProperty`: [`requestTexture`](https://docs-md.agora.io/en/interactive-live-streaming/develop/integrate/metakit.md) and [`switchTextureAvatarMode`](https://docs-md.agora.io/en/interactive-live-streaming/develop/integrate/metakit.md). These replace the original `addSceneView` and `switchAvatarMode` functions, respectively. The new interface supports automatic generation and return of texture data, which is then directly rendered, previewed, encoded, and transmitted through the SDK. This enhancement improves rendering performance, reduces latency, and ensures more efficient operation and a better user experience.
+This update optimizes the performance of the MetaKit extension and adds support for two new `keys` in `setExtensionProperty`: [`requestTexture`](/en/solutions/interactive-live-streaming/build/apply-effects-and-enhancements/metakit) and [`switchTextureAvatarMode`](/en/solutions/interactive-live-streaming/build/apply-effects-and-enhancements/metakit). These replace the original `addSceneView` and `switchAvatarMode` functions, respectively. The new interface supports automatic generation and return of texture data, which is then directly rendered, previewed, encoded, and transmitted through the SDK. This enhancement improves rendering performance, reduces latency, and ensures more efficient operation and a better user experience.
 
 #### API changes
 
 **Added**
 
-- [`requestTexture`](https://docs-md.agora.io/en/interactive-live-streaming/develop/integrate/metakit.md)
-- [`switchTextureAvatarMode`](https://docs-md.agora.io/en/interactive-live-streaming/develop/integrate/metakit.md)
+- [`requestTexture`](/en/solutions/interactive-live-streaming/build/apply-effects-and-enhancements/metakit)
+- [`switchTextureAvatarMode`](/en/solutions/interactive-live-streaming/build/apply-effects-and-enhancements/metakit)
 
 ### v2.0.0
 
@@ -1875,7 +1875,7 @@ Included in this release:
 
 * **Support for multitasking camera capture on iOS**
 
-  Starting with iOS 16, the system supports multitasking, allowing users to use multiple apps in parallel. Common multitasking modes include Split views, Slide over, Picture in picture, and Stage manager. Starting from this version, the SDK supports iOS camera multitasking capture capabilities, allowing continuous audio and video capture in multitasking scenarios. In real-time audio and video interaction scenarios, enabling this feature allows use cases such as referencing materials during video calls, displaying courseware side-by-side in interactive teaching, or managing product backends during live streaming. For details, refer to [How can I enable multitasking camera capture on iOS?](https://docs-md.agora.io/en/help/integration-issues/multitasking.md).
+  Starting with iOS 16, the system supports multitasking, allowing users to use multiple apps in parallel. Common multitasking modes include Split views, Slide over, Picture in picture, and Stage manager. Starting from this version, the SDK supports iOS camera multitasking capture capabilities, allowing continuous audio and video capture in multitasking scenarios. In real-time audio and video interaction scenarios, enabling this feature allows use cases such as referencing materials during video calls, displaying courseware side-by-side in interactive teaching, or managing product backends during live streaming. For details, refer to [How can I enable multitasking camera capture on iOS?](/en/api-reference/faq/integration/multitasking).
 
   Based on Agora Lab testing, the following device models and OS versions support this feature:
 
@@ -1963,7 +1963,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of direct CDN streaming APIs**
 
-  Deprecates the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](https://docs-md.agora.io/en/media-push/product-overview.md) instead.
+  Deprecates the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](/en/realtime-media/media-push) instead.
 
   - `setDirectCdnStreamingAudioConfiguration:`
   - `setDirectCdnStreamingVideoConfiguration:`
@@ -2132,7 +2132,7 @@ The `aosl.xcframework` library version in Video SDK v4.5.1 is 1.2.13. You can ch
 
 1. **AI Conversation Scenario**
 
-  This version introduces the `AgoraAudioScenarioAiClient` audio scenario, specifically designed for interacting with the conversational AI agent created by [Conversational AI Engine](https://docs-md.agora.io/en/en/ai.md). This scenario optimizes the audio transmission algorithm based on the characteristics of AI-generated voices, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. The optimization enhances conversation continuity and reliability, adapting to various challenging network environments.
+  This version introduces the `AgoraAudioScenarioAiClient` audio scenario, specifically designed for interacting with the conversational AI agent created by [Conversational AI Engine](/en/ai). This scenario optimizes the audio transmission algorithm based on the characteristics of AI-generated voices, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. The optimization enhances conversation continuity and reliability, adapting to various challenging network environments.
 
 #### Improvements
 
@@ -2273,7 +2273,7 @@ Starting with v4.4.0, the SDK uses native iOS APIs to manage the microphone. As 
   - Lite SDK supports manual integration or third-party repository integration.
   - For information on dynamic libraries included in the Lite SDK, see [App size optimization](../../../build/optimize-quality-and-connection/app-size-optimization.mdx).
   - For the list of APIs supported by Lite SDK, see [API reference](https://api-ref.agora.io/en/lite-sdk/ios/4.x/documentation/agorartckit).
-  - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](https://docs-md.agora.io/en/help/general-product-inquiry/audio_format.md)
+  - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](/en/api-reference/faq/product/audio_format)
 
 2. **Alpha transparency effects**
 
@@ -2345,7 +2345,7 @@ v4.3.1 was released on April 29, 2024.
   To meet Apple's safety compliance requirements for app publication, the SDK now includes a privacy manifest file, `PrivacyInfo.xcprivacy`, detailing the SDK's API calls that access or use user data, along with a description of the types of data collected.
 
   :::note
-  If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project. For more details, see [How can I add a privacy manifest to my iOS app?](https://docs-md.agora.io/en/help/other-issues/ios_privacy_manifest.md)
+  If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project. For more details, see [How can I add a privacy manifest to my iOS app?](/en/api-reference/faq/other/ios_privacy_manifest)
   :::
 
 2. **Portrait center stage**
@@ -3150,7 +3150,7 @@ For more information about registering video observers and subscription options,
 
 As of this release, the SDK supports MPUDP protocol, which enables you to connect and use multiple paths to maximize the use of channel resources based on the UDP protocol. You can use different physical NICs on both mobile and desktop and aggregate them to effectively combat network jitter and improve transmission quality.
 
-> To enable this feature, contact [support@agora.io](https://docs.agora.io/cn/video-call-4.x/support@agora.io).
+> To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
 **5. Camera capture options**
 
@@ -3884,7 +3884,7 @@ In order to enhance the real-time audio and video interactive activities based o
 - Easy to integrate: The integration of modular functions can be achieved simply by calling an API, and the integration efficiency is improved by nearly 95%.
 - Extensibility design: The modular and extensible SDK design style endows the Agora SDK with good extensibility, which enables developers to quickly build real-time interactive apps based on the Agora extensions marketplace ecosystem.
 - Build an ecosystem: A community of real-time audio and video apps has developed that can accommodate a wide range of developers, offering a variety of extension combinations. After integrating the extensions, developers can build richer real-time interactive functions. For details, see [Use an Extension](../../../build/apply-effects-and-enhancements/use-an-extension.mdx).
-- Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](https://docs-md.agora.io/en/extensions-marketplace/get-started/quickstart-implement.md).
+- Become a vendor: Vendors can integrate their products with Agora SDK in the form of extensions, display and publish them in the Agora extensions marketplace, and build a real-time interactive ecosystem for developers together with Agora. For details on how to develop and publish extensions, see [Become a Vendor](/en/realtime-media/marketplace/quickstart-implement).
 
 **8. Enhanced channel management**
 
@@ -4100,7 +4100,7 @@ The list of known issues page is continuously updated as the systems evolve. Ago
   - The `setOptimizationMode` method and the `optimizationMode` parameter in `CameraVideoTrackInitConfig`, `ScreenVideoTrackInitConfig`, and `CustomVideoTrackInitConfig` are only supported on Chrome.
 
   - Calling `createScreenVideoTrack` to enable screen sharing has the following restrictions:
-    - The Web SDK supports screen sharing on Chrome 58 or later. If the Chrome version is earlier than 72, you need to add the [Google Chrome Extension for Screen Sharing](https://docs-md.agora.io/en/interactive-live-streaming/basic-features/screensharing.md) provided by Agora, get the `extensionId`, and set the `extensionId` parameter when you create a video track for screen sharing. If the Chrome version is 72 or later, simply call `createScreenVideoTrack`.
+    - The Web SDK supports screen sharing on Chrome 58 or later. If the Chrome version is earlier than 72, you need to add the [Google Chrome Extension for Screen Sharing](/en/solutions/interactive-live-streaming/build/manage-video-and-streaming/screen-sharing) provided by Agora, get the `extensionId`, and set the `extensionId` parameter when you create a video track for screen sharing. If the Chrome version is 72 or later, simply call `createScreenVideoTrack`.
     - The Web SDK supports screen sharing on Firefox 56 or later. Firefox on Windows does not support the `application` mode.
     - The Web SDK supports screen sharing on Edge 80 or later on Windows 10+.
     - The Web SDK supports screen sharing on macOS Safari 13 or later. The end-user can only share the whole screen on Safari.
@@ -4429,7 +4429,7 @@ Released on November 26, 2025.
 - **Watermark extension (BETA)**
  This version adds the Watermark extension [`agora-extension-video-watermark`](https://www.npmjs.com/package/agora-extension-video-watermark) v1.0.0, which enables you to add image watermarks to real-time interactive video streams through an extension.
 
- The Watermark extension supports customizing the watermark's position, size, opacity, and other properties. It can be applied to both local and remote video tracks. For integration and usage steps, refer to Using the [Watermark extension guide](https://docs-md.agora.io/en/video-calling/advanced-features/watermark.md).
+ The Watermark extension supports customizing the watermark's position, size, opacity, and other properties. It can be applied to both local and remote video tracks. For integration and usage steps, refer to Using the [Watermark extension guide](/en/realtime-media/video/build/apply-video-effects/watermark).
 
 - **Other New Features**
 
@@ -4522,7 +4522,7 @@ Released on March 4, 2025.
 
 This release includes the following improvements:
 
-- Internal optimizations to support [Agora Conversational AI Engine](https://docs-md.agora.io/en/en/ai.md).
+- Internal optimizations to support [Agora Conversational AI Engine](/en/ai).
   - Enable audio metadata transmission
   - Get presentation timestamp from the audio stream
 
@@ -4845,7 +4845,7 @@ As of this release, you can call `setLowStreamParameter` after `publish` to dyna
 
 **Tree shaking support**
 
-As of this release, the SDK supports [tree shaking](https://webpack.js.org/guides/tree-shaking/), which removes unused code during the build process, reducing your app's size after integrating the SDK. To use this feature, see [App size optimization](https://docs-md.agora.io/en/interactive-live-streaming/reference/downloads_web.md).
+As of this release, the SDK supports [tree shaking](https://webpack.js.org/guides/tree-shaking/), which removes unused code during the build process, reducing your app's size after integrating the SDK. To use this feature, see [App size optimization](/en/api-reference/sdks).
 
 **Dual display of video stream**
 
@@ -5051,7 +5051,7 @@ v4.18.0 also includes the following improvements:
 
 v4.18.0 fixes the following issues:
 
-- Mobile devices experienced delays in receiving notifications for the [broadcaster leave channel event](https://docs-md.agora.io/en/interactive-live-streaming/advanced-features/receive-notifications_web.md).
+- Mobile devices experienced delays in receiving notifications for the [broadcaster leave channel event](/en/solutions/interactive-live-streaming/build/connect-across-channels/receive-notifications).
 - Users experienced a black screen while watching video streams encoded with H.264 in older browser versions.
 - Memory usage increased when using the SDK with the Virtual Background or Image Enhancer extension.
 - The SDK continued to use the expired token during reconnection attempts after generating a new token using the `renewToken` method.
@@ -5086,7 +5086,7 @@ For detailed explanations of these properties, see [ScreenVideoTrackInitConfig](
 This release improves the flexibility in setting video profiles for different types of video tracks:
 
 - You can now specify the resolution and the frame rate when calling `createCustomVideoTrack` to create a custom video track, by passing in values for the `width`, `height`, and `frameRate` parameters.
-- After creating a screen track or a custom video track, you can dynamically adjust the video profile using `LocalVideoTrack.setEncoderConfiguration`. Please note that there is a known issue with calling this method on a screen track in certain versions of macOS Safari. [See issue details](https://docs-md.agora.io/en/known-issues.md).
+- After creating a screen track or a custom video track, you can dynamically adjust the video profile using `LocalVideoTrack.setEncoderConfiguration`. Please note that there is a known issue with calling this method on a screen track in certain versions of macOS Safari. [See issue details](/en/realtime-media/video/reference/common-problems).
 
 For details, see more about [Configure video encoding](../../../build/manage-video-and-streaming/configure-video-encoding.mdx).
 
@@ -5144,7 +5144,7 @@ which prevents a black screen during the reconnection process. This optimization
 
 This release also includes the following improvements:
 
-- The accuracy of SDK-related quality metrics on [Analytics](https://docs-md.agora.io/en/solutions/agora-analytics/product-overview.md) is improved.
+- The accuracy of SDK-related quality metrics on [Analytics](/en/solutions/agora-analytics/product-overview) is improved.
 - The time required to join a channel is reduced. This optimization is not available on Firefox due to Firefox's limitations.
 
 #### API changes
@@ -5323,7 +5323,7 @@ The SDK has the following improvements:
 
 #### Compatibility changes
 
-Cloud Proxy default mode has changed. In Video SDK for Web v4.15.0, the `mode` parameter in `startProxyServer` defaults to `3`. This represents the Force UDP cloud proxy mode. In this mode, Video SDK always transmits data over UDP. For details, see [Restricted network connection with Cloud Proxy](https://docs-md.agora.io/en/video-calling/advanced-features/cloud-proxy.md).
+Cloud Proxy default mode has changed. In Video SDK for Web v4.15.0, the `mode` parameter in `startProxyServer` defaults to `3`. This represents the Force UDP cloud proxy mode. In this mode, Video SDK always transmits data over UDP. For details, see [Restricted network connection with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy).
 
 ### v4.14.2
 
@@ -5764,7 +5764,7 @@ To strengthen the security of the key, v4.5.0 adds two encryption modes, `"aes-1
 
 **Restrict media zones**
 
-As of v4.5.0, when calling `setArea` to specify the media zone for connection, you can use the `areaCode` parameter to specify a large zone and use the `excludedArea` parameter to specify a small zone. The region for connection is the large zone excluding the small zone. You can only specify the large zone as `"GLOBAL"`. For details, see [Restrict media zones](https://docs-md.agora.io/en/video-calling/advanced-features/geofencing.md).
+As of v4.5.0, when calling `setArea` to specify the media zone for connection, you can use the `areaCode` parameter to specify a large zone and use the `excludedArea` parameter to specify a small zone. The region for connection is the large zone excluding the small zone. You can only specify the large zone as `"GLOBAL"`. For details, see [Restrict media zones](/en/realtime-media/video/build/manage-connection-and-quality/geofencing).
 
 **The preset video encoder configurations for screen sharing**
 
@@ -6153,7 +6153,7 @@ v4.0.0 fixed the following issues:
 
 ## AI Noise Suppression
 :::note
-Agora charges additionally for this extension. See [Pricing](https://docs-md.agora.io/en/en/realtime-media/video/reference/pricing.md).
+Agora charges additionally for this extension. See [Pricing](/en/realtime-media/video/reference/pricing).
 :::
 ### v2.0.1
 
@@ -6195,14 +6195,14 @@ This release adds the following APIs and parameters:
 - **Parameters**:
   - `elapsedTime` in `onoverload`: Reports the time in ms that the extension needs to process one audio frame.
 
-For API details, see [AI Noise Suppression](https://docs-md.agora.io/en/video-calling/advanced-features/ai-noise-suppression.md).
+For API details, see [AI Noise Suppression](/en/realtime-media/video/build/enhance-the-audio-experience/ai-noise-suppression).
 
 #### Compatibility changes
 
 This release brings the following changes:
 
 - AI Noise Suppression supports Agora Video SDK for Web v4.15.0 or later.
-- The extension has Wasm dependencies only. Because JS dependencies are removed, you need to publish the Wasm files located in the `node_modules/agora-extension-ai-denoiser/external` directory again. If you have enabled the Content Security Policy (CSP), you need to modify the CSP configuration. See [AI Noise Suppression](https://docs-md.agora.io/en/interactive-live-streaming/advanced/ai-noise-suppression.md) for details.
+- The extension has Wasm dependencies only. Because JS dependencies are removed, you need to publish the Wasm files located in the `node_modules/agora-extension-ai-denoiser/external` directory again. If you have enabled the Content Security Policy (CSP), you need to modify the CSP configuration. See [AI Noise Suppression](/en/solutions/interactive-live-streaming/build/apply-effects-and-enhancements/ai-noise-suppression) for details.
 - The audio data is dumped in PCM format instead of WAV format.
 - To adjust the intensity of noise suppression, best practice is to call `setLevel`.
 
@@ -6214,7 +6214,7 @@ First release.
 
 ### v1.0.0-beta2
 
-[`agora-conversational-ai-denoiser`](https://www.npmjs.com/package/agora-conversational-ai-denoiser) v1.0.0-beta2 was released on March 5, 2025, to enhance the user experience in applications powered by [Agora Conversational AI Engine](https://docs-md.agora.io/en/en/ai.md).
+[`agora-conversational-ai-denoiser`](https://www.npmjs.com/package/agora-conversational-ai-denoiser) v1.0.0-beta2 was released on March 5, 2025, to enhance the user experience in applications powered by [Agora Conversational AI Engine](/en/ai).
 :::warning
 
 The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommend using it only for AI-related use cases.
@@ -6334,7 +6334,7 @@ This release fixes the occasional issue of jagged background images on Chrome fo
 
 #### New features
 
-You can now specify the `fit` property when calling `setOptions`. This sets how the background is resized to fit the container. For API details, see [Virtual background](https://docs-md.agora.io/en/interactive-live-streaming/advanced/virtual-background.md).
+You can now specify the `fit` property when calling `setOptions`. This sets how the background is resized to fit the container. For API details, see [Virtual background](/en/solutions/interactive-live-streaming/build/apply-effects-and-enhancements/virtual-background).
 
 #### Compatibility changes
 
@@ -6344,7 +6344,7 @@ Virtual Background supports Agora Video SDK for Web v4.15.0 or later.
 
 #### New features
 
-You can now call `checkCompatibility` and test if AI Noise Suppression extension is supported on the current browser. For API details, see [Virtual background](https://docs-md.agora.io/en/interactive-live-streaming/advanced/virtual-background.md).
+You can now call `checkCompatibility` and test if AI Noise Suppression extension is supported on the current browser. For API details, see [Virtual background](/en/solutions/interactive-live-streaming/build/apply-effects-and-enhancements/virtual-background).
 
 #### Fixed issues
 
@@ -6362,7 +6362,7 @@ First release.
 
 ## Super clarity extension
 
-This extension leverages Agora's AI quality enhancement algorithm to intelligently improves video quality without altering the resolution, thereby optimizing the viewing experience at the receiving end. For detailed integration steps, refer to the [Super Clarity integration guide](https://docs-md.agora.io/en/video-calling/advanced-features/super-clarity_web.md).
+This extension leverages Agora's AI quality enhancement algorithm to intelligently improves video quality without altering the resolution, thereby optimizing the viewing experience at the receiving end. For detailed integration steps, refer to the [Super Clarity integration guide](/en/realtime-media/video/build/apply-video-effects/super-clarity).
 
 ### v2.0.1
 
@@ -6402,7 +6402,7 @@ This extension enables local users to seamlessly merge multiple video streams an
 
 Released on October 25, 2022.
 
-This is the first version of `agora-extension-videp-compositor`. For detailed integration steps, refer to [Video Compositor](https://docs-md.agora.io/en/advanced-features/video-compositor_web.md).
+This is the first version of `agora-extension-videp-compositor`. For detailed integration steps, refer to [Video Compositor](/en/realtime-media/video/build/apply-video-effects/video-compositor).
 
 ## Beauty Effect extension
 
@@ -6411,7 +6411,7 @@ This extension enables your users to apply beauty effects to their videos. They 
 ### v1.0.2-beta
 Released on November 26, 2022.
 
-This is the first version of `agora-extension-beauty-effect`. For detailed integration steps, refer to [Beauty Effect](https://docs-md.agora.io/en/video-calling/advanced-features/beauty-effect.md).
+This is the first version of `agora-extension-beauty-effect`. For detailed integration steps, refer to [Beauty Effect](/en/realtime-media/video/build/apply-video-effects/beauty-effect).
 
 ## Notifications
 

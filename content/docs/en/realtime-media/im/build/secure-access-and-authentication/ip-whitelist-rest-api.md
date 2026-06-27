@@ -13,9 +13,9 @@ For added security, Agora Chat provides the IP whitelist function. If only certa
 
 3. On the **Security Setting** page, click **Add** and enter the IP address in the **Add IP Address** dialog box that is displayed.
 
-:::info
-You can add at most eight IP addresses, with only one each time.The new IP addresses take effect 10 minutes after addition. When the IP whitelist is empty, all IP addresses can send messages via the RESTful APIs.
-:::
+    :::info
+    You can add at most eight IP addresses, with only one each time.The new IP addresses take effect 10 minutes after addition. When the IP whitelist is empty, all IP addresses can send messages via the RESTful APIs.
+    :::
 
 4. Click **OK** to complete the configuration.
 

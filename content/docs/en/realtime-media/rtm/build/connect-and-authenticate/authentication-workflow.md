@@ -53,7 +53,7 @@ Agora provides an open source token generator repository on [GitHub](https://git
 
 ### Generate a token
 
-This example uses Go to generate an RTM token. To generate an RTC token instead, see [Secure authentication with tokens](https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server).
+This example uses Go to generate an RTM token. To generate an RTC token instead, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/deploy-token-server).
 
 Before proceeding, make sure that you have:
 
@@ -207,7 +207,7 @@ rtmClient.login("your_token", object : ResultCallback<Void> {
 
 ### Join a stream channel using a token
 
-To join a stream channel, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For API details, see [API reference](https://docs.agora.io/en/signaling/reference/api).
+To join a stream channel, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For API details, see [API reference](/en/api-reference/api-ref/signaling).
 
 ### Token expiration and renewal
 

@@ -13,7 +13,7 @@ Alert Notifications provides the following features:
 
 -   Automatic storage of the alert records for the last 7 days.
 
--   Data synchronization with [Call Inspector](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/video-voice-sdk/call-search) and [Data Insights](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/video-voice-sdk/data-insight), so that you can easily dive into problem analysis.
+-   Data synchronization with [Call Inspector](/en/solutions/agora-analytics/build/explore-and-analyze-data/call-search) and [Data Insights](/en/solutions/agora-analytics/build/explore-and-analyze-data/data-insight), so that you can easily dive into problem analysis.
 
 ## Getting started
 
@@ -244,7 +244,7 @@ To manage an alert record, do the following:
 
     -   If the issue does not require action, select **Ignored**.
 
-3.  (Optional) To further analyze an alert record, click **Call details** to use the [Call Inspector](https://docs.agora.io/en/agora-analytics/analyze/video-voice-sdk/video-voice-sdk/call-search) service.
+3.  (Optional) To further analyze an alert record, click **Call details** to use the [Call Inspector](/en/solutions/agora-analytics/build/explore-and-analyze-data/call-search) service.
 
 4.  (Optional) To adjust the rule corresponding to an alert record, click **Edit Alert Rule**, and make changes in the pop-up window.
 

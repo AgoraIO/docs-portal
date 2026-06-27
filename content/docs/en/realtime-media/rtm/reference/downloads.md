@@ -9,7 +9,7 @@ To manually install Signaling SDK, do one of the following:
 
 ## Through the Agora website
 
-1. Extract the files in Agora [Signaling SDK](https://docs.agora.io/en/sdks) to a local folder. In the SDK folder, find the JS file in the libs folder, and save it to your project directory.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder. In the SDK folder, find the JS file in the libs folder, and save it to your project directory.
 
 1. Open the HTML file in your project directory, and add the following code to refer to the JS file:
 

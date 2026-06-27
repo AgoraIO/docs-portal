@@ -7,7 +7,7 @@ The On-Premise Recording SDK supports two recording modes:
 - Individual recording mode: This is the default recording mode. The SDK generates one audio and/or video file for each UID.
 - Composite recording mode: Generates a single mixed audio and video file for all UIDs in a channel, or mixes the audio of all UIDs in the channel into an audio file and the video of all UIDs into a video file.
 
-See [Differences between individual recording mode and composite recording mode](https://docs.agora.io/en/help/integration-issues/recording_mode) to decide which mode you should use.
+See [Differences between individual recording mode and composite recording mode](/en/api-reference/faq/integration/recording_mode) to decide which mode you should use.
 
 ## Prerequisites
 
@@ -23,7 +23,13 @@ Refer to the following call sequence diagram to understand the recording workflo
 
 ![Sequence diagram](/images/on-premise-recording/individual-recording-logic-cpp.svg)
 
-**C++**
+<Tabs defaultValue="cpp">
+<TabsList>
+  <TabsTrigger value="cpp">C++</TabsTrigger>
+  <TabsTrigger value="java">Java</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cpp">
 
 To implement individual recording in your app, follow these steps:
 
@@ -79,7 +85,9 @@ recorder_->startSingleRecordingByUid(uid);
 // Stop recording for the user
 recorder_->stopSingleRecordingByUid(uid);
 ```
-**Java**
+</TabsContent>
+
+<TabsContent value="java">
 
 To implement individual recording mode, configure the recorder and use the appropriate APIs as follows:
 
@@ -141,6 +149,8 @@ agoraMediaRtcRecorder.startSingleRecordingByUid(uid);
 // Stop recording for the specific UID
 agoraMediaRtcRecorder.stopSingleRecordingByUid(uid);
 ```
+</TabsContent>
+</Tabs>
 
 ## Reference
 

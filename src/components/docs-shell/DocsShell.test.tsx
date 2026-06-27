@@ -268,6 +268,43 @@ describe('DocsShell', () => {
     expect(screen.getByText('On this page')).toBeInTheDocument();
   });
 
+  it('reserves bold width on top tabs so the menu does not shift on activation', async () => {
+    renderDocsShell();
+
+    const docsTabsStrip = await screen.findByTestId('docs-tabs-strip');
+    const introTab = within(docsTabsStrip).getByRole('tab', {
+      name: 'Introduction',
+    });
+
+    // Weight no longer toggles on the Link itself (that would shift siblings);
+    // the Link exposes its active state as a named group instead.
+    expect(introTab.className).not.toContain(
+      'data-[state=active]:font-semibold',
+    );
+    expect(introTab.className).toContain('group/tab');
+
+    // The title is rendered twice: an aria-hidden semibold ghost that reserves
+    // width, and a visible copy whose weight follows the group's active state.
+    const titles = within(introTab).getAllByText('Introduction');
+    expect(titles).toHaveLength(2);
+
+    const ghost = titles.find(
+      (el) => el.getAttribute('aria-hidden') === 'true',
+    );
+    const visible = titles.find(
+      (el) => el.getAttribute('aria-hidden') !== 'true',
+    );
+
+    expect(ghost).toBeDefined();
+    expect(ghost?.className).toContain('invisible');
+    expect(ghost?.className).toContain('font-semibold');
+
+    expect(visible).toBeDefined();
+    expect(visible?.className).toContain(
+      'group-data-[state=active]/tab:font-semibold',
+    );
+  });
+
   it('renders scoped version selectors in desktop and mobile sidebars for non-tab scopes', async () => {
     renderDocsShell({
       activePath: '/en/api-reference/rtc/android/overview',
@@ -471,7 +508,7 @@ describe('DocsShell', () => {
     ).toHaveAttribute('href', 'https://investor.agora.io/');
     expect(
       within(siteFooter).getByRole('link', { name: 'Documentation' }),
-    ).toHaveAttribute('href', 'https://docs.agora.io/en/');
+    ).toHaveAttribute('href', '/en/');
     expect(
       within(siteFooter).getByRole('link', { name: 'Privacy Policy' }),
     ).toHaveAttribute('href', 'https://www.agora.io/en/privacy-policy/');

@@ -20,4 +20,4 @@ To enable Media Gateway, take the following steps:
 2. Open **My Projects** and click to edit the project for which you need Media Gateway.
 3. Under **All Features**, select **Media Gateway** and toggle to enable it.
 
-![Enable Media Gateway](/images/media-gateway/enable-media-gateway.png)
+    ![Enable Media Gateway](/images/media-gateway/enable-media-gateway.png)

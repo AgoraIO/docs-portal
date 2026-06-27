@@ -59,7 +59,7 @@ class MainActivity : AgoraPIPActivity() {
 }
 ```
 
-If you need audio or video capture and playback to continue after the app moves to the background or enters PiP, also complete the foreground service configuration. For the required permissions, manifest declarations, and integration steps, see [Android background restrictions](https://docs-md.agora.io/en/faq/quality-issues/android-background.md).
+If you need audio or video capture and playback to continue after the app moves to the background or enters PiP, also complete the foreground service configuration. For the required permissions, manifest declarations, and integration steps, see [Android background restrictions](/en/api-reference/faq/quality/android_background).
 
 :::note
 The way PiP is triggered differs by Android version:
@@ -79,11 +79,11 @@ Add the background playback capability to your app in Xcode:
 3. Add **Background Modes**.
 4. Select **Audio, AirPlay, and Picture in Picture**.
 
-:::note
-If your use case requires capturing local camera video in multi-tasking mode, contact [support@agora.io](mailto:support@agora.io) for guidance on enabling iOS multi-tasking capture.
-The React Native SDK does not directly expose the `multitaskingCameraAccessEnabled` configuration. If your use case requires local camera capture during PiP, additional native-side adaptation is needed.
+    :::note
+    If your use case requires capturing local camera video in multi-tasking mode, contact [support@agora.io](mailto:support@agora.io) for guidance on enabling iOS multi-tasking capture.
+    The React Native SDK does not directly expose the `multitaskingCameraAccessEnabled` configuration. If your use case requires local camera capture during PiP, additional native-side adaptation is needed.
 
-:::
+    :::
 
 </CodeBlockTab>
 </CodeBlockTabs>
@@ -318,7 +318,7 @@ This section covers platform-specific behavior and best practices to keep in min
 
 - After entering PiP on Android, you typically need to update the app UI to match the PiP state. 
 - Android 12 and later support automatic PiP entry when the app moves to the background. On earlier versions, you must trigger PiP entry explicitly, for example by calling `pipStart` in response to a user action. Extending `AgoraPIPActivity` simplifies this adaptation.
-- PiP does not bypass Android background restrictions. If you need to continue capturing or playing audio and video in the background, combine PiP with a foreground service. For details, see [Android background restrictions](https://docs-md.agora.io/en/help/quality-issues/android_background.md).
+- PiP does not bypass Android background restrictions. If you need to continue capturing or playing audio and video in the background, combine PiP with a foreground service. For details, see [Android background restrictions](/en/api-reference/faq/quality/android_background).
 - On Android, `pipStop` moves the task to the background rather than exiting PiP and restoring the foreground page. Full-screen restoration is typically handled by the user through the system PiP window controls.
 - Distinguish between session-level and controller-level release: call `pipDispose` to end the current PiP session, and call `release` only when the page is destroyed or the controller is no longer needed.
 

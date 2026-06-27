@@ -35,5 +35,5 @@ To create and set up a project for Signaling in Agora Console, see [Agora accoun
 * [SDK quickstart](./index.mdx)
 * [Message channels](./build/work-with-channels/message-channel.mdx)
 * [Stream channels](./build/work-with-channels/stream-channel.mdx)
-* [API reference](https://docs.agora.io/en/signaling/reference/api)
+* [API reference](/en/api-reference/api-ref/signaling)
 * [Pricing](./reference/pricing.md)

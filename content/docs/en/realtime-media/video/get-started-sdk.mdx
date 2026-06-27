@@ -30,8 +30,8 @@ To start a Video Calling session, implement the following steps in your app:
 
 <Tabs defaultValue="new">
 <TabsList>
-  <TabsTrigger value="new">New</TabsTrigger>
-  <TabsTrigger value="existing">Existing</TabsTrigger>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
 </TabsList>
 <TabsContent value="new">
 
@@ -43,9 +43,9 @@ To start a Video Calling session, implement the following steps in your app:
     1. Set the project name and storage path.
     1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
 
-    :::caution[Note]
-After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
-:::
+        :::caution[Note]
+        After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+        :::
 
 
 </TabsContent>
@@ -2673,11 +2673,30 @@ Configure your macOS project settings by navigating to **TARGETS > Project Name 
 
 | Capability | Category | Permission      |
 |:-----------|:---------|:----------------|
-| App Sandbox | Network | - Incoming Connections (Server)<br />2. Outgoing Connections (Client) |
-| App Sandbox | Hardware | - Camera
-2. Audio Input |
-| Hardened Runtime | Resource Access | - Camera
-2. Audio Input |
+| App Sandbox | Network | <Slot name="macos-permissions-1-app-sandbox-network" /> |
+| App Sandbox | Hardware | <Slot name="macos-permissions-1-app-sandbox-hardware" /> |
+| Hardened Runtime | Resource Access | <Slot name="macos-permissions-1-hardened-runtime-resource-access" /> |
+
+<Slot for="macos-permissions-1-app-sandbox-network">
+
+- Incoming Connections (Server)
+- Outgoing Connections (Client)
+
+</Slot>
+
+<Slot for="macos-permissions-1-app-sandbox-hardware">
+
+- Camera
+- Audio Input
+
+</Slot>
+
+<Slot for="macos-permissions-1-hardened-runtime-resource-access">
+
+- Camera
+- Audio Input
+
+</Slot>
 
 
 ### Start and close the app
@@ -3075,11 +3094,30 @@ Configure your macOS project settings by navigating to **TARGETS > Project Name 
 
 | Capability | Category | Permission      |
 |:-----------|:---------|:----------------|
-| App Sandbox | Network | - Incoming Connections (Server)<br />2. Outgoing Connections (Client) |
-| App Sandbox | Hardware | - Camera
-2. Audio Input |
-| Hardened Runtime | Resource Access | - Camera
-2. Audio Input |
+| App Sandbox | Network | <Slot name="macos-permissions-2-app-sandbox-network" /> |
+| App Sandbox | Hardware | <Slot name="macos-permissions-2-app-sandbox-hardware" /> |
+| Hardened Runtime | Resource Access | <Slot name="macos-permissions-2-hardened-runtime-resource-access" /> |
+
+<Slot for="macos-permissions-2-app-sandbox-network">
+
+- Incoming Connections (Server)
+- Outgoing Connections (Client)
+
+</Slot>
+
+<Slot for="macos-permissions-2-app-sandbox-hardware">
+
+- Camera
+- Audio Input
+
+</Slot>
+
+<Slot for="macos-permissions-2-hardened-runtime-resource-access">
+
+- Camera
+- Audio Input
+
+</Slot>
 
 
 ### Start and close the app
@@ -3496,11 +3534,30 @@ Configure your macOS project settings by navigating to **TARGETS > Project Name 
 
 | Capability | Category | Permission      |
 |:-----------|:---------|:----------------|
-| App Sandbox | Network | - Incoming Connections (Server)<br />2. Outgoing Connections (Client) |
-| App Sandbox | Hardware | - Camera
-2. Audio Input |
-| Hardened Runtime | Resource Access | - Camera
-2. Audio Input |
+| App Sandbox | Network | <Slot name="macos-permissions-3-app-sandbox-network" /> |
+| App Sandbox | Hardware | <Slot name="macos-permissions-3-app-sandbox-hardware" /> |
+| Hardened Runtime | Resource Access | <Slot name="macos-permissions-3-hardened-runtime-resource-access" /> |
+
+<Slot for="macos-permissions-3-app-sandbox-network">
+
+- Incoming Connections (Server)
+- Outgoing Connections (Client)
+
+</Slot>
+
+<Slot for="macos-permissions-3-app-sandbox-hardware">
+
+- Camera
+- Audio Input
+
+</Slot>
+
+<Slot for="macos-permissions-3-hardened-runtime-resource-access">
+
+- Camera
+- Audio Input
+
+</Slot>
 
 
 ### Start and close the app
@@ -3745,8 +3802,8 @@ To start a Video Calling session, implement the following steps in your app:
 
 <Tabs defaultValue="new">
 <TabsList>
-  <TabsTrigger value="new">New</TabsTrigger>
-  <TabsTrigger value="existing">Existing</TabsTrigger>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
 </TabsList>
 <TabsContent value="new">
 
@@ -4192,12 +4249,12 @@ Take the following steps to run and test the sample code:
 
 
 
-:::info[Information]
+        :::info[Information]
 
- - Run the web app on a local server (localhost) for testing purposes only. When deploying to a production environment, use the HTTPS protocol.
- - Due to browser security policies that restrict HTTP addresses to 127.0.0.1, the Agora Web SDK only supports HTTPS protocol and `http://localhost` (`http://127.0.0.1`). Please do not use the HTTP protocol to access your project, except for `http://localhost` (`http://127.0.0.1`).
+        - Run the web app on a local server (localhost) for testing purposes only. When deploying to a production environment, use the HTTPS protocol.
+        - Due to browser security policies that restrict HTTP addresses to 127.0.0.1, the Agora Web SDK only supports HTTPS protocol and `http://localhost` (`http://127.0.0.1`). Please do not use the HTTP protocol to access your project, except for `http://localhost` (`http://127.0.0.1`).
 
-:::
+        :::
 
 
 ## Reference
@@ -4346,8 +4403,8 @@ To start a Video Calling session, implement the following steps in your app:
 
 <Tabs defaultValue="new">
 <TabsList>
-  <TabsTrigger value="new">New</TabsTrigger>
-  <TabsTrigger value="existing">Existing</TabsTrigger>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
 </TabsList>
 <TabsContent value="new">
 
@@ -5192,8 +5249,8 @@ To start a Video Calling session, implement the following steps in your app:
 
 <Tabs defaultValue="new">
 <TabsList>
-  <TabsTrigger value="new">New</TabsTrigger>
-  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="new">npm integration</TabsTrigger>
+  <TabsTrigger value="manual">Manual Integration</TabsTrigger>
 </TabsList>
 <TabsContent value="new">
 
@@ -5948,8 +6005,8 @@ To start a Video Calling session, implement the following steps in your app:
 
 <Tabs defaultValue="new">
 <TabsList>
-  <TabsTrigger value="new">New</TabsTrigger>
-  <TabsTrigger value="existing">Existing</TabsTrigger>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
 </TabsList>
 <TabsContent value="new">
 
@@ -7697,8 +7754,8 @@ To start a Video Calling session, implement the following steps in your app:
 
 <Tabs defaultValue="new">
 <TabsList>
-  <TabsTrigger value="new">New</TabsTrigger>
-  <TabsTrigger value="existing">Existing</TabsTrigger>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
 </TabsList>
 <TabsContent value="new">
 
@@ -9147,8 +9204,8 @@ To start a Video Calling session, implement the following steps in your app:
 
 <Tabs defaultValue="new">
 <TabsList>
-  <TabsTrigger value="new">New</TabsTrigger>
-  <TabsTrigger value="existing">Existing</TabsTrigger>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
 </TabsList>
 <TabsContent value="new">
 
@@ -9206,21 +9263,54 @@ The following table lists the main nodes:
 
 | # | Node | Type | Description |
 |:--|:-----|:-----|:------------|
-| 1 | **Set Show Mouse Cursor** | Native* | (Optional) Set whether to display the mouse cursor. Check to display it. :::info[Information]
-- This node is available on Windows and macOS only.<br />2. If the node is not retrieved at creation time, uncheck **Context Sensitive**. ![](/images/video-sdk/quickstart-implementation-blueprint-3.png)
-:::
- |
+| 1 | **Set Show Mouse Cursor** | Native* | <Slot name="blueprint-set-show-mouse-cursor" /> |
 | 2 | **Load Agora Config** | Custom** | Loads Agora configuration. Used to verify user identity when creating and joining channels. |
-| 3 | **Create BP Video Widget** | Native | Create user interface: 1. Add **Create Widget** node.<br />2. Select the node's **Class** as **BP_VideoWidget** and associate the node with the already created user interface. |
-| 4 | **Set Basic Video Call Widget** | Custom | Set up the user interface:1. Create the **BasicVideoCallWidget** variable and select the **Variable Type** of the variable as **BP_VideoWidget**, which is the user interface created to store a reference to the user interface in the blueprint.<br />2. After dragging the created variables to **EventGraph**, two options, **Set BasicVideoCallWidget** and **Get BasicVideoCallWidget**, appear. Select **Set BasicVideoCallWidget** to create a node for accessing and setting the user interface. |
+| 3 | **Create BP Video Widget** | Native | <Slot name="blueprint-create-bp-video-widget" /> |
+| 4 | **Set Basic Video Call Widget** | Custom | <Slot name="blueprint-set-basic-video-call-widget" /> |
 | 5 | **BindUIEvent** | Custom | Use Bind UI events to handle event logic after clicking the **Join Channel** and **Leave Channel** buttons. |
 | 6 | **Add to Viewport** | Native | Add user interface to the viewport. |
-| 7 | **Check Permission** | Custom | (Optional) Check whether you have obtained the system permissions required for real-time audio and video interaction, such as access to the camera and microphone. :::caution[Note]
-If your target platform is Android, create this node to check system permissions.
-:::
- |
+| 7 | **Check Permission** | Custom | <Slot name="blueprint-check-permission" /> |
 | 8 | **Init Rtc Engine** | Custom | Create and initialize the RTC engine. |
 | 9 | **Un Init Rtc Engine** | Custom | Leave the channel and release resources. |
+
+<Slot for="blueprint-create-bp-video-widget">
+
+Create user interface:
+
+1. Add **Create Widget** node.
+2. Select the node's **Class** as **BP_VideoWidget** and associate the node with the already created user interface.
+
+</Slot>
+
+<Slot for="blueprint-set-basic-video-call-widget">
+
+Set up the user interface:
+
+1. Create the **BasicVideoCallWidget** variable and select the **Variable Type** of the variable as **BP_VideoWidget**, which is the user interface created to store a reference to the user interface in the blueprint.
+2. After dragging the created variables to **EventGraph**, two options, **Set BasicVideoCallWidget** and **Get BasicVideoCallWidget**, appear. Select **Set BasicVideoCallWidget** to create a node for accessing and setting the user interface.
+
+</Slot>
+
+<Slot for="blueprint-set-show-mouse-cursor">
+
+(Optional) Set whether to display the mouse cursor. Check to display it.
+
+:::info[Information]
+- This node is available on Windows and macOS only.
+- If the node is not retrieved at creation time, uncheck **Context Sensitive**. ![](/images/video-sdk/quickstart-implementation-blueprint-3.png)
+:::
+
+</Slot>
+
+<Slot for="blueprint-check-permission">
+
+(Optional) Check whether you have obtained the system permissions required for real-time audio and video interaction, such as access to the camera and microphone.
+
+:::caution[Note]
+If your target platform is Android, create this node to check system permissions.
+:::
+
+</Slot>
 
 
 \* Native nodes are nodes that come with the blueprint and can be added and called directly.<br />
@@ -9265,10 +9355,32 @@ If your target platform is macOS or iOS, please refer to [How do I add the permi
 
             | Callback | Description | Input parameters |
             |:--------|:------------------|:------------|
-            | `FOnJoinChannelSuccess` | The local user successfully joined a channel. | - `channel`: (String) Channel name.<br />2. `uid`: (Integer64) The ID of the user joining the channel.<br />2. `elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event. |
+            | `FOnJoinChannelSuccess` | The local user successfully joined a channel. | <Slot name="blueprint-fonjoinchannelsuccess" /> |
             | `FOnLeaveChannel` | The local user left the channel. | - `stats`: Call statistics. |
-            | `FOnUserJoined` | A remote user joined the current channel. | - `uid`: (Integer64) The user ID of the remote user joining the channel.<br />2. `elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event. |
-            | `FOnUserOffline` | A remote user left the current channel. | - `uid`: (Integer64) The ID of the user going offline.<br />2. `reason`: Offline reason. For details, see  `EUSER_OFFLINE_REASON_TYPE`. |
+            | `FOnUserJoined` | A remote user joined the current channel. | <Slot name="blueprint-fonuserjoined" /> |
+            | `FOnUserOffline` | A remote user left the current channel. | <Slot name="blueprint-fonuseroffline" /> |
+
+            <Slot for="blueprint-fonjoinchannelsuccess">
+
+            - `channel`: (String) Channel name.
+            - `uid`: (Integer64) The ID of the user joining the channel.
+            - `elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event.
+
+            </Slot>
+
+            <Slot for="blueprint-fonuserjoined">
+
+            - `uid`: (Integer64) The user ID of the remote user joining the channel.
+            - `elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event.
+
+            </Slot>
+
+            <Slot for="blueprint-fonuseroffline">
+
+            - `uid`: (Integer64) The ID of the user going offline.
+            - `reason`: Offline reason. For details, see  `EUSER_OFFLINE_REASON_TYPE`.
+
+            </Slot>
 
         1. Create a **Bind Event** function. In this function, add a **Sequence** node, and then bind the `onJoinChannelSuccess`, `onLeaveChannel`, `onUserJoined`, and `onUserOffline` callback events.
 

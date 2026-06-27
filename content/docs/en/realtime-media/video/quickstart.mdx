@@ -40,9 +40,9 @@ This section shows you how to set up your Android project and install the Agora 
   1. Set the project name and storage path.
   1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
 
-:::note
-  After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
-:::
+      :::note
+      After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+      :::
 
 **Add to an existing project**
 1. Add a new activity to your project.
@@ -905,10 +905,10 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I listen for audience joining or leaving a channel?](https://docs.agora.io/en/help/integration-issues/audience_event)
-* [How can I solve channel-related issues?](https://docs.agora.io/en/help/integration-issues/channel)
-* [How can I set the log file?](https://docs.agora.io/en/help/integration-issues/log)
-* [Why do apps on some Android versions fail to capture audio and video after screen locking or switching to the background?](https://docs.agora.io/en/help/quality-issues/android_background)
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
+* [Why do apps on some Android versions fail to capture audio and video after screen locking or switching to the background?](/en/api-reference/faq/quality/android_background)
 
 ### See also
 
@@ -952,9 +952,9 @@ Follow these steps to create a project in Xcode:
 
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application** select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
 
-:::note
-  If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
-:::
+    :::note
+    If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+    :::
 
 2. [Set up automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your projects.
 
@@ -979,34 +979,34 @@ Use one of the following methods to install Voice SDK.
 1. In Xcode, go to **File** > **Add Package Dependencies**.
 1. In the search bar, past the following URL:
 
-  ```
-  {`https://github.com/AgoraIO/AgoraRtcEngine_iOS.git`}
-  ```
+    ```
+    {`https://github.com/AgoraIO/AgoraRtcEngine_iOS.git`}
+    ```
 
 1. Click **Add Package**, select the latest version, and click **Next**.
 1. For basic Voice Calling, select **RtcBasic**.
 
-  If needed, also select:
-  - **`SpatialAudio`** for spatial audio effects.
-  - **`VirtualBackground`** for virtual background.
+    If needed, also select:
+    - **`SpatialAudio`** for spatial audio effects.
+    - **`VirtualBackground`** for virtual background.
 1. Under **Add to Target**, select your project and click **Add Package**.
 
-  For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
+    For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
 **CocoaPods**
 1. Go to the project root directory in the terminal and run the `pod init` command. A text file named `Podfile` is generated in the project folder.
 
 1. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
 
-  ```ruby
-  platform :ios, '9.0'
-    target 'Your App' do
-     # For x.y.z fill in the specific SDK version number, such as 4.4.0.
-     pod 'AgoraAudio_iOS', 'x.y.z'
-    end
-  ```
+    ```ruby
+    platform :ios, '9.0'
+      target 'Your App' do
+       # For x.y.z fill in the specific SDK version number, such as 4.4.0.
+       pod 'AgoraAudio_iOS', 'x.y.z'
+      end
+    ```
 
-  Obtain the latest version number from the [release notes](reference/release-notes.mdx).
+    Obtain the latest version number from the [release notes](reference/release-notes.mdx).
 
 1. Run the `pod install` command in the terminal to install the Voice SDK. After successful installation, the terminal shows **Pod installation complete!**.
 
@@ -1019,9 +1019,9 @@ Use one of the following methods to install Voice SDK.
 
 1. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
-:::note
-  Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
-:::
+    :::note
+    Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
+    :::
 :::note
 The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
 :::
@@ -1432,12 +1432,12 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I listen for audience joining or leaving a channel?](https://docs.agora.io/en/help/integration-issues/audience_event)
-* [How can I solve channel-related issues?](https://docs.agora.io/en/help/integration-issues/channel)
-* [How can I set the log file?](https://docs.agora.io/en/help/integration-issues/log)
-* [How can I troubleshoot the issue of no sound?](https://docs.agora.io/en/help/quality-issues/audio_noaudio)
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
+* [How can I troubleshoot the issue of no sound?](/en/api-reference/faq/quality/audio_noaudio)
 * [What can I do if I get a pop-up warning saying 'the framework cannot be opened' when compiling an Xcode project?](/en/api-reference/faq/integration/framework_cannot_be_opened)
-* [How can I add a privacy manifest to my iOS app?](https://docs.agora.io/en/help/other-issues/ios_privacy_manifest)
+* [How can I add a privacy manifest to my iOS app?](/en/api-reference/faq/other/ios_privacy_manifest)
 
 ### See also
 
@@ -1481,9 +1481,9 @@ Follow these steps to create a project in Xcode:
 
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application** select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
 
-:::note
-  If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
-:::
+    :::note
+    If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+    :::
 
 2. [Set up automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your projects.
 
@@ -1508,34 +1508,34 @@ Use one of the following methods to install Voice SDK.
 1. In Xcode, go to **File** > **Add Package Dependencies**.
 1. In the search bar, past the following URL:
 
-  ```
-  {`https://github.com/AgoraIO/AgoraRtcEngine_macOS.git`}
-  ```
+    ```
+    {`https://github.com/AgoraIO/AgoraRtcEngine_macOS.git`}
+    ```
 
 1. Click **Add Package**, select the latest version, and click **Next**.
 1. For basic Voice Calling, select **RtcBasic**.
 
-  If needed, also select:
-  - **`SpatialAudio`** for spatial audio effects.
-  - **`VirtualBackground`** for virtual background.
+    If needed, also select:
+    - **`SpatialAudio`** for spatial audio effects.
+    - **`VirtualBackground`** for virtual background.
 1. Under **Add to Target**, select your project and click **Add Package**.
 
-  For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
+    For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
 **CocoaPods**
 1. Go to the project root directory in the terminal and run the `pod init` command. A text file named `Podfile` is generated in the project folder.
 
 1. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
 
-  ```ruby
-  platform :macos, '10.11'
-    target 'Your App' do
-     # For x.y.z fill in the specific SDK version number, such as 4.4.0.
-     pod 'AgoraRtcEngine_macOS', 'x.y.z'
-    end
-  ```
+    ```ruby
+    platform :macos, '10.11'
+      target 'Your App' do
+       # For x.y.z fill in the specific SDK version number, such as 4.4.0.
+       pod 'AgoraRtcEngine_macOS', 'x.y.z'
+      end
+    ```
 
-  Obtain the latest version number from the [release notes](reference/release-notes.mdx).
+    Obtain the latest version number from the [release notes](reference/release-notes.mdx).
 
 1. Run the `pod install` command in the terminal to install the Voice SDK. After successful installation, the terminal shows **Pod installation complete!**.
 
@@ -1548,9 +1548,9 @@ Use one of the following methods to install Voice SDK.
 
 1. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
-:::note
-  Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
-:::
+    :::note
+    Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
+    :::
 :::note
 The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
 :::
@@ -2980,9 +2980,9 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I listen for audience joining or leaving a channel?](https://docs.agora.io/en/help/integration-issues/audience_event)
-* [How can I solve channel-related issues?](https://docs.agora.io/en/help/integration-issues/channel)
-* [How can I set the log file?](https://docs.agora.io/en/help/integration-issues/log)
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 
 ### See also
 
@@ -3531,9 +3531,9 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I listen for audience joining or leaving a channel?](https://docs.agora.io/en/help/integration-issues/audience_event)
-* [How can I solve channel-related issues?](https://docs.agora.io/en/help/integration-issues/channel)
-* [How can I set the log file?](https://docs.agora.io/en/help/integration-issues/log)
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 
 ### See also
 
@@ -3616,11 +3616,11 @@ Install the Agora Voice SDK and other dependencies.
 
 1. Install the dependencies.
 
-  Execute the following command in the project path:
+    Execute the following command in the project path:
 
-  ```bash
-  flutter pub get
-  ```
+    ```bash
+    flutter pub get
+    ```
 
 ## Implement Voice Calling
 
@@ -3993,9 +3993,9 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I listen for audience joining or leaving a channel?](https://docs.agora.io/en/help/integration-issues/audience_event)
-* [How can I solve channel-related issues?](https://docs.agora.io/en/help/integration-issues/channel)
-* [How can I set the log file?](https://docs.agora.io/en/help/integration-issues/log)
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 
 ### See also
 
@@ -4586,10 +4586,10 @@ Take the following steps to test the sample code:
 
 1. Run the app.
 
-:::warning
+    :::warning
 
-  Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
-:::
+    Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
+    :::
 <CodeBlockTabs defaultValue="android">
 <CodeBlockTabsList>
   <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
@@ -4661,9 +4661,9 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I listen for audience joining or leaving a channel?](https://docs.agora.io/en/help/integration-issues/audience_event)
-* [How can I solve channel-related issues?](https://docs.agora.io/en/help/integration-issues/channel)
-* [How can I set the log file?](https://docs.agora.io/en/help/integration-issues/log)
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 
 ### See also
 
@@ -5523,8 +5523,8 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I listen for audience joining or leaving a channel?](https://docs.agora.io/en/help/integration-issues/audience_event)
-* [How can I solve channel-related issues?](https://docs.agora.io/en/help/integration-issues/channel)
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
 
 ### See also
 
@@ -5865,7 +5865,7 @@ Add the `AndroidPermission` library to obtain device and network permissions:
        ```
 
 **iOS and macOS**
-1. Refer to [How to add the permissions required for real-time interaction to an Unreal Engine project?](https://docs.agora.io/en/voice-calling/get-started)
+1. Refer to [How to add the permissions required for real-time interaction to an Unreal Engine project?](/en/realtime-media/voice/quickstart)
 
 1. In `Project/Source/Project.Target.cs`, add the following code:
 
@@ -6196,11 +6196,11 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
   1. Double-click to open **agoraLevel** and click **Open Level Blueprint**.
 
-    ![image](/images/video-sdk/unreal-setup-ui-4.png)
+      ![image](/images/video-sdk/unreal-setup-ui-4.png)
 
   1. Right-click and enter **Create Widget** in the search box. Select the created **AgoraWidget**, create **Event BeginPlay** and **Add to Viewport** in the same way. Connect them as follows:
 
-    ![image](/images/video-sdk/unreal-setup-ui-5.png)
+      ![image](/images/video-sdk/unreal-setup-ui-5.png)
 
   3. Save your changes and run the project.
 
@@ -6248,9 +6248,9 @@ To learn about Agora Unreal Blueprint development, refer to the [Unreal (Bluepri
 
 ### Frequently asked questions
 
-* [How can I listen for audience joining or leaving a channel?](https://docs.agora.io/en/help/integration-issues/audience_event)
-* [How can I solve channel-related issues?](https://docs.agora.io/en/help/integration-issues/channel)
-* [How can I set the log file?](https://docs.agora.io/en/help/integration-issues/log)
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 
 ### See also
 
@@ -6337,7 +6337,7 @@ This section guides you through the implementation of basic real-time audio inte
 
 1. Double-click **BasicAudioCallScene** and click **Blueprints > Open Level Blueprint** above the editor to open the level blueprint.
 
-  ![image](/images/video-sdk/quickstart-implementation-blueprint-1.png)
+    ![image](/images/video-sdk/quickstart-implementation-blueprint-1.png)
 
 ### Implement basic processes​
 In the **My Blueprint** panel, double-click **Graphs > EventGraph** to open the event graph. You see two event nodes: **Event BeginPlay** (game starts) and **Event End Play** (game ends). Create event nodes with the corresponding functions and variables, and connect them as shown in the following figure to implement the Voice Calling logic:
@@ -6388,21 +6388,21 @@ Add variables to create an engine instance and join a channel.
 
 1. In the **Load Agora Config** function, add the **Sequence** node, and then connect **Set Token**, **Set Channel Id**, and **Set App Id** respectively. Fill in the token, channel name, and app ID values obtained from Agora Console.
 
-  ![image](/images/video-sdk/quickstart-implementation-blueprint-4.png)
+    ![image](/images/video-sdk/quickstart-implementation-blueprint-4.png)
 
 ### Initialize RTC engine​
 
 1. If your target platform is Android, check whether system permissions have been granted before initializing the RTC engine. Refer to the following figure to create nodes for adding permissions to access the microphone and camera in the **CheckPermission** function.
 
-  ![image](/images/video-sdk/quickstart-implementation-blueprint-5.png)
+    ![image](/images/video-sdk/quickstart-implementation-blueprint-5.png)
 
 :::note
-  If your target platform is macOS or iOS, please refer to [How do I add the permissions needed for real-time interaction to my Unreal Engine project?](https://docs.agora.io/en/help/integration-issues/unreal_permissions)
+  If your target platform is macOS or iOS, please refer to [How do I add the permissions needed for real-time interaction to my Unreal Engine project?](/en/api-reference/faq/integration/unreal_permissions)
 :::
 
 1. To initialize the RTC engine, in the **InitRtcEngine** function, create and connect nodes as shown in the following figure:
 
-  ![image](/images/video-sdk/quickstart-implementation-blueprint-6-voice-sdk.png)
+    ![image](/images/video-sdk/quickstart-implementation-blueprint-6-voice-sdk.png)
 
  1. Create `IRtcEngine` and `IRtcEngineEventHandler`.
 
@@ -6451,7 +6451,7 @@ Add variables to create an engine instance and join a channel.
 
     1. Create a **Bind Event** function. In this function, add a **Sequence** node, and then bind the `onJoinChannelSuccess`, `onLeaveChannel`, `onUserJoined`, and `onUserOffline` callback events.
 
-      ![image](/images/video-sdk/quickstart-implementation-blueprint-7.png)
+        ![image](/images/video-sdk/quickstart-implementation-blueprint-7.png)
 
   1. `IRtcEngine` initialization
 
@@ -6465,7 +6465,7 @@ To bind UI events:
 
 1. Create and implement the `OnJoinChannelClicked` event callback.
 
-  ![Join Channel Clicked](/images/video-sdk/quickstart-implementation-blueprint-8-voice-sdk.png)
+    ![Join Channel Clicked](/images/video-sdk/quickstart-implementation-blueprint-8-voice-sdk.png)
 
   1. Call **Enable Audio** to enable the audio modules.
   2. Call **Join Channel** to join the channel.
@@ -6477,11 +6477,11 @@ To bind UI events:
 
 1. Create and implement the `OnLeaveChannelClicked` event callback. When the event is triggered, call **Leave Channel** to leave the channel.
 
-  ![Leave Channel Clicked](/images/video-sdk/quickstart-implementation-blueprint-9.png)
+    ![Leave Channel Clicked](/images/video-sdk/quickstart-implementation-blueprint-9.png)
 
 1. In the **Bind UIEvent** function, refer to the figure below to bind the `OnJoinChannelClicked` and `OnLeaveChannelClicked` callback functions to the **Join Channel** and **Leave Channel** buttons respectively. When the button is clicked, the corresponding event callback is triggered.
 
-  ![Bind Join Leave Callbacks](/images/video-sdk/quickstart-implementation-blueprint-10-voice-sdk.png)
+    ![Bind Join Leave Callbacks](/images/video-sdk/quickstart-implementation-blueprint-10-voice-sdk.png)
 :::note
 You can also bind UI events in Unreal Motion Graphics (UMG). This document only shows binding using the **Bind UIEvent Function**.
 :::
@@ -6491,19 +6491,19 @@ Configure the previously created `onJoinChannelSuccess`, `onLeaveChannel`, `onUs
 
 1. After the local user successfully joins the channel, the `onJoinChannelSuccess` callback is triggered and the local view is created. The `uid` is set to `0` by default, but it is assigned a random value by the SDK. The video source type is `VIDEO_SOURCE_CAMERA_PRIMARY` (first camera):
 
-  ![Join Channel Success Callback](/images/video-sdk/quickstart-implementation-blueprint-13-voice-sdk.png)
+    ![Join Channel Success Callback](/images/video-sdk/quickstart-implementation-blueprint-13-voice-sdk.png)
 
 2. After the local user leaves the channel, the `onLeaveChannel` callback is triggered which releases the local view:
 
-  ![Leave Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-14-voice-sdk.png)
+    ![Leave Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-14-voice-sdk.png)
 
 3. When a remote user joins the channel, the `onUserJoined` callback is triggeredd to create a remote view. `uid` is the uid sent from the remote end, and the video source type is `VIDEO_SOURCE_REMOTE` (remote video obtained from the network):
 
-  ![Remote User Join Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-15-voice-sdk.png)
+    ![Remote User Join Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-15-voice-sdk.png)
 
 4. When a remote user leaves the channel, the `onUserOffline` callback is triggered to release the remote view:
 
-  ![Remote User Leave Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-16-voice-sdk.png)
+    ![Remote User Leave Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-16-voice-sdk.png)
 
 ### Leave the channel and release resources​
 
@@ -6544,11 +6544,11 @@ After implementing the quickstart sample, read the following documents to learn 
 Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic/JoinChannelVideo) project for a more detailed example.
 
 ### Frequently asked questions
-* [How can I listen for audience joining or leaving a channel?](https://docs.agora.io/en/help/integration-issues/audience_event)
-* [How can I fix black screen issues?](https://docs.agora.io/en/help/quality-issues/video_blank)
-* [Why can't I turn on the camera?](https://docs.agora.io/en/help/quality-issues/video_camera)
-* [How can I solve channel-related issues?](https://docs.agora.io/en/help/integration-issues/channel)
-* [How can I set the log file?](https://docs.agora.io/en/help/integration-issues/log)
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank)
+* [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 
 ### See also
 

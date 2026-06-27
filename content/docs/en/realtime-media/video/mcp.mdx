@@ -15,22 +15,41 @@ https://mcp.agora.io
 
 Refer to the setup guide for your coding assistant.
 
-**Codex**
+<Tabs defaultValue="codex">
+<TabsList>
+  <TabsTrigger value="codex">Codex</TabsTrigger>
+  <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
+  <TabsTrigger value="gemini-cli">Gemini CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual installation</TabsTrigger>
+</TabsList>
+
+<TabsContent value="codex">
 
 ```shell
 codex mcp add --url https://mcp.agora.io agora-docs
 ```
 
-**Claude Code**
+</TabsContent>
+
+<TabsContent value="claude-code">
 
 ```shell
 claude mcp add --transport http agora-docs https://mcp.agora.io
 ```
 
-**Gemini CLI**
+</TabsContent>
+
+<TabsContent value="gemini-cli">
 
 ```shell
 gemini mcp add --transport http agora-docs https://mcp.agora.io
 ```
 
+</TabsContent>
+
+<TabsContent value="manual">
+
 For Cursor and other tools, add `https://mcp.agora.io` as a remote MCP server and use `http` or Streamable HTTP transport when prompted.
+
+</TabsContent>
+</Tabs>

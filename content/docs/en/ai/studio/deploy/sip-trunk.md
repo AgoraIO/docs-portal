@@ -68,7 +68,7 @@ The following steps are required for both inbound and outbound calling:
         - **Disabled**: Choose **TCP** or **UDP** in Agent Studio configuration.
     4. Save any changes.
 
-    ![](/images/conversational-ai/twilio/general-settings.png)
+        ![](/images/conversational-ai/twilio/general-settings.png)
 
 > **Caution**
 > The transport setting in Agent Studio must match SIP trunk’s Secure Trunking setting. A mismatch causes calls to fail silently.
@@ -79,7 +79,7 @@ Complete the following steps to enable your agent to make outbound calls through
 
 1. **Configure the Termination URI**
 
-    To set up the domain that Agora will use to reach your SIP trunk trunk:
+    To set up the domain that Agora will use to reach your SIP trunk:
 
     1. In your SIP Trunk, go to **Termination**.
     2. Set a custom **Termination SIP URI**. For example: `yourcompany.pstn.twilio.com`.
@@ -176,7 +176,7 @@ Complete the following steps to enable your agent to make outbound calls through
 
 5. **Import the number in Agent Studio**
 
-    Once your SIP trunk trunk is configured, import the number into Studio. See [Import a phone number](import) for step-by-step instructions. Use your Termination URI as the SIP Domain and match the Transport protocol to your Secure Trunking setting.
+    Once your SIP trunk is configured, import the number into Studio. See [Import a phone number](import) for step-by-step instructions. Use your Termination URI as the SIP Domain and match the Transport protocol to your Secure Trunking setting.
 
 ## Inbound calling setup
 
