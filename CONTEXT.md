@@ -237,3 +237,4 @@ _Avoid_: types-only verification, unit-test-only completion
 - "schema table" sounded like a shallow or horizontally wide table; resolved: render nested contracts as a **Schema tree** with guarded recursion.
 - "public YAML" sounded like another maintained file; resolved: `/openapi/**` is a **Published OpenAPI asset** derived at build time.
 - "done" was too narrow when it meant only typecheck or unit tests; resolved: use the **OpenAPI lane acceptance gate** for completion.
+- "Server SDK" was used as a generic label for the in-portal `api-ref/server-sdk` references; resolved: this is **Agora Agents** — the named Conversational AI server SDK (TypeScript/Python/Go) for integrating Agora's Conversational AI server-side, a distinct DevX product. Avoid the generic "Server SDK" name for it.

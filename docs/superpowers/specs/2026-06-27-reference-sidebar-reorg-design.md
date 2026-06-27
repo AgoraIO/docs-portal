@@ -80,60 +80,82 @@ Decisions baked in (from review):
 
 ## Mechanism
 
-Three independent pieces:
+**Pure meta.json — no new nav code.** The sidebar is already built entirely from
+meta.json, and the existing schema (`src/lib/docs-meta-schema.ts`) already
+supports the three primitives this needs:
 
-1. **Group labels + regrouping (meta.json).** The Reference nav gains three
-   section separators — `SDK API reference`, `REST API reference`, `Guides`. The
-   existing REST lanes move under `REST API reference`; `Recipes`/`FAQ` move under
-   `Guides`; `Overview`/`Download SDKs` stay at the top. This is meta.json
-   editing only (`content/docs/en/api-reference/meta.json` and the `api-ref`
-   grouping), no content moves.
+- **Section separators** — `"---SDK API reference---"` etc. (widely used today).
+- **Collapsible groups** — `{ "type": "group", "title": …, "icon"?: …, "collapsible": true, "pages": [...] }`.
+- **External page links** — `{ "external": true, "title": …, "href": "https://…" }`,
+  which the schema transforms to the fumadocs external-link form; the page tree
+  then yields `item.external = true`, and `DocsSidebarTree` already renders such
+  nodes as `↗` links.
 
-2. **Agora Agents elevation (meta.json + rename).** Rename the
-   `api-ref/server-sdk/` group title from "Server SDK" to **"Agora Agents"** and
-   place it first within `SDK API reference`. Its `typescript`/`python`/`go`
-   pages are unchanged in-portal content. (The Conversational AI **REST** API
-   stays under `REST API reference`.)
+So the entire reorg is meta.json editing — **no content files move** (meta.json
+`pages` support nested-path references like `api-ref/server-sdk/typescript`,
+confirmed in existing content) — no data module, no nav-injection code, no empty
+folder stubs (external links live directly in a group's `pages`). The top-level
+`content/docs/en/api-reference/meta.json` becomes the single composition point
+for the Reference nav. Because the existing `api-ref/meta.json` also lists the
+lanes, the plan must reconcile double-listing (reference the lanes individually
+from the top-level meta and drop/restructure the `api-ref` folder reference) —
+sorted out during the spike.
 
-3. **SDK API reference matrix (data-driven nav).** The per-product external
-   platform links are driven by a new typed data module — a
-   **product × platform → api-ref URL** matrix (priority-ordered), e.g.
-   `src/lib/sdk-api-references.ts`:
+1. **Regroup + separators.** In `content/docs/en/api-reference/meta.json`, order
+   the Reference nav as `Overview · Download SDKs · ---SDK API reference--- · …SDK
+   product groups… · ---REST API reference--- · …existing lanes… · ---Guides--- ·
+   Recipes · FAQ`.
 
-   ```ts
-   type SdkApiProduct = {
-     label: string;            // "Voice & Video"
-     iconKind: SolutionCardIconKind; // reuse the shared icon registry
-     platforms: { label: string; url: string }[]; // url = hosted api-ref (latest major)
-   };
-   ```
+2. **Agora Agents elevation.** Rename the `api-ref/server-sdk/` group title from
+   "Server SDK" to **"Agora Agents"** and place it first within `SDK API
+   reference`. Its `typescript`/`python`/`go` pages stay as in-portal content
+   (referenced from the SDK section). The Conversational AI **REST** API stays
+   under `REST API reference`.
 
-   The Reference sidebar composes the `SDK API reference` section from this matrix
-   (Agora Agents' in-portal pages first, then the external-link products),
-   rendered as collapsible product groups with `external` platform leaves. The
-   matrix is the single source of truth for the URLs, assembled from the
-   `api-ref.agora.io` links already present in content plus the known SDK set;
-   each link targets the current major version.
+3. **SDK product groups.** Each client/server SDK product is a `type:'group'`
+   (collapsible, reusing the shared product icon kinds) whose `pages` are the
+   per-platform `external` links to `api-ref.agora.io`, priority-ordered: Agora
+   Agents, Voice & Video, then the rest. Sourcing rules for the matrix:
+   - **Verified-only:** include a platform leaf only when a real hosted api-ref
+     URL exists (sourced from the `api-ref.agora.io` links already in content,
+     confirmed live). Never invent or guess a URL.
+   - **Major-version index:** each leaf points at the major-version index
+     (`…/N.x/index.html`), which differs per product, so links survive patch
+     releases.
+   - **Gaps allowed, flagged:** a product simply omits platforms with no hosted
+     ref (incomplete beats broken links); the plan lists any product×platform
+     that was expected but had no findable URL, rather than dropping it silently.
 
-   This keeps ~50 external links in one maintainable, typed file rather than
-   scattered meta.json external entries or empty folder stubs. The exact
-   injection point (extend the nav builder in `docs-tree.ts` / the Reference
-   payload vs. a dedicated sidebar section component) is a plan-level decision;
-   the sidebar already renders `external`/`href` nodes
-   (`DocsSidebarTree.tsx`, `docs-tree.ts`).
+**Full inventory required.** The plan must enumerate **every** current `api-ref`
+child and give each a destination, so nothing is orphaned — the clean OpenAPI
+lanes go under `REST API reference`; `server-sdk` becomes Agora Agents under `SDK
+API reference`; and the loose pages (`uikit-sdk` = the Fastboard/Whiteboard SDK
+reference, `iot-channel-management-rest-api`, `console`, the `index`) are each
+explicitly placed or dropped, not silently lost.
+
+**Caveat → verification spike (Task 1).** `type:'group'` and `external` meta
+entries are schema-defined but used by **zero** content files today, so that
+round-trip is unexercised. The plan must therefore start with a one-product spike
+— author **Voice & Video** as a group with a couple of external platform links,
+render the sidebar, and assert the tree contains `external` nodes with the correct
+`href` and that the group/separator render. If the unused path has a bug, fix it
+in `docs-meta-schema.ts`/`docs-tree.ts` (small) rather than building a parallel
+data-driven nav. Only after the spike passes do we author the full matrix.
 
 ## Testing
 
-- **Matrix data test:** every product has ≥1 platform; every `url` is an absolute
-  `https://api-ref.agora.io/...` (Agora Agents excepted — in-portal); the order
-  leads with Agora Agents then Voice & Video.
+- **Spike test (Task 1):** building the sidebar tree from a meta.json that has a
+  `type:'group'` whose `pages` include `{external,title,href}` entries yields a
+  group node with `external`/`href` children carrying the exact `href` — proving
+  the unused meta path works (or pinpointing the fix).
 - **Nav composition test:** the Reference sidebar tree contains the three section
-  separators in order; `Agora Agents` is the first SDK product with in-portal
-  (non-external) children `TypeScript/Python/Go`; `Voice & Video` is second with
-  `external` children whose `href` matches the matrix; the REST lanes appear
-  under `REST API reference`; `Recipes`/`FAQ` under `Guides`.
+  separators (`SDK API reference`, `REST API reference`, `Guides`) in order;
+  `Agora Agents` is the first SDK product with in-portal (non-external) children
+  `TypeScript/Python/Go`; `Voice & Video` is second with `external` children; the
+  REST lanes appear under `REST API reference`; `Recipes`/`FAQ` under `Guides`.
 - **Render test (`DocsSidebarTree`):** an external platform leaf renders an
-  external link (e.g. `target`/`rel`/`↗` affordance) with the correct `href`.
+  external link (`target`/`rel`/`↗` affordance) with the correct `href`; an
+  in-portal Agora Agents leaf renders an internal link.
 
 Manual check (once): load a Reference page; confirm the new grouped sidebar,
 Agora Agents first expanding to TS/Python/Go (in-portal), Voice & Video second
