@@ -312,9 +312,17 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     return [];
   }
 
+  // A folder whose index shares the folder's title links its header to that
+  // index instead of repeating it as a child ("Overview") row.
+  const indexLinksHeader = Boolean(
+    node.index &&
+      normalizeLabel(node.index.name, '') === normalizeLabel(node.name, ''),
+  );
+
   const children: DocsSidebarNode[] = [];
   let pendingIndexNode: DocsSidebarPageNode | null =
     node.index &&
+    !indexLinksHeader &&
     !shouldHideFolderIndexInSidebar(node.index, node.name, node.children)
       ? pageTreeItemToSidebarPageNode(node.index, undefined, {
           title: getFolderIndexTitle(node.index, node.name),
@@ -362,6 +370,18 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     }
   }
 
+  // Rule: an index-only folder collapses to a single leaf link.
+  // Fires before flushing the pending index so that children.length reflects
+  // only real built children (not the index itself).
+  const hasRealChildren = node.children.some((c) => c.type !== 'separator');
+  if (!hasRealChildren && node.index) {
+    return [
+      pageTreeItemToSidebarPageNode(node.index, undefined, {
+        title: normalizeLabel(node.name, node.index.url),
+      }),
+    ];
+  }
+
   if (pendingIndexNode) {
     if (currentSection) {
       currentSection.children.push(pendingIndexNode);
@@ -377,6 +397,8 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
       children,
       collapsible: true,
       ...(icon ? { icon } : {}),
+      // Rule: a folder whose index matches its title links the header to it.
+      ...(indexLinksHeader && node.index ? { url: node.index.url } : {}),
       id: `folder-${String(node.$id ?? node.name ?? 'folder')}`,
       title: normalizeLabel(node.name, node.index?.url ?? 'Folder'),
       type: 'section',

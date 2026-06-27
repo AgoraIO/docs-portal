@@ -559,19 +559,7 @@ describe('docs tree helpers', () => {
       {
         children: [
           {
-            id: '/en/realtime-media/online-ktv',
-            title: 'Overview',
-            type: 'page',
-            url: '/en/realtime-media/online-ktv',
-          },
-          {
             children: [
-              {
-                id: '/en/realtime-media/online-ktv/uikit',
-                title: 'Overview',
-                type: 'page',
-                url: '/en/realtime-media/online-ktv/uikit',
-              },
               {
                 children: [
                   {
@@ -591,12 +579,14 @@ describe('docs tree helpers', () => {
             id: 'folder-uikit-folder',
             title: 'UIKit Open Source',
             type: 'section',
+            url: '/en/realtime-media/online-ktv/uikit',
           },
         ],
         collapsible: true,
         id: 'folder-online-ktv-folder',
         title: 'Online KTV',
         type: 'section',
+        url: '/en/realtime-media/online-ktv',
       },
     ]);
   });
@@ -666,12 +656,6 @@ describe('docs tree helpers', () => {
       {
         children: [
           {
-            id: '/zh-CN/realtime-media/rtm2',
-            title: '总览',
-            type: 'page',
-            url: '/zh-CN/realtime-media/rtm2',
-          },
-          {
             id: '/zh-CN/realtime-media/rtm2/android',
             title: 'Android',
             type: 'page',
@@ -682,6 +666,7 @@ describe('docs tree helpers', () => {
         id: 'folder-rtm2-folder',
         title: '实时消息 RTM',
         type: 'section',
+        url: '/zh-CN/realtime-media/rtm2',
       },
     ]);
   });
@@ -1350,6 +1335,121 @@ describe('docs tree helpers', () => {
         title: '实时协作白板',
         type: 'page',
         url: '/zh-CN/introduction/whiteboard',
+      },
+    ]);
+  });
+
+  it('collapses an index-only folder into a single leaf link', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'faq-integration-folder',
+        children: [],
+        index: {
+          $id: 'faq-integration-index',
+          name: 'Integration Issues',
+          type: 'page',
+          url: '/en/api-reference/faq/integration',
+        },
+        name: 'Integration',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        id: '/en/api-reference/faq/integration',
+        title: 'Integration',
+        type: 'page',
+        url: '/en/api-reference/faq/integration',
+      },
+    ]);
+  });
+
+  it('links a folder header to its matching index instead of duplicating it', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'faq-folder',
+        children: [
+          {
+            $id: 'faq-integration-folder',
+            children: [],
+            index: {
+              $id: 'faq-integration-index',
+              name: 'Integration Issues',
+              type: 'page',
+              url: '/en/api-reference/faq/integration',
+            },
+            name: 'Integration',
+            type: 'folder',
+          },
+        ],
+        index: {
+          $id: 'faq-index',
+          name: 'FAQ',
+          type: 'page',
+          url: '/en/api-reference/faq',
+        },
+        name: 'FAQ',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/en/api-reference/faq/integration',
+            title: 'Integration',
+            type: 'page',
+            url: '/en/api-reference/faq/integration',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-faq-folder',
+        title: 'FAQ',
+        type: 'section',
+        url: '/en/api-reference/faq',
+      },
+    ]);
+  });
+
+  it('leaves a normal folder (distinct visible index) as a plain section', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'build-folder',
+        children: [
+          {
+            $id: 'build-start-stop',
+            name: 'Start and stop an agent',
+            type: 'page',
+            url: '/en/ai/build/start-stop-agent',
+          },
+        ],
+        index: {
+          $id: 'build-index',
+          name: 'Overview',
+          type: 'page',
+          url: '/en/ai/build',
+        },
+        name: 'Build',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/en/ai/build',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/ai/build',
+          },
+          {
+            id: '/en/ai/build/start-stop-agent',
+            title: 'Start and stop an agent',
+            type: 'page',
+            url: '/en/ai/build/start-stop-agent',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-build-folder',
+        title: 'Build',
+        type: 'section',
       },
     ]);
   });

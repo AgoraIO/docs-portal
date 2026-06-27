@@ -2072,10 +2072,13 @@ async function appendEndpointPagesToOpenApiParent(
     (item) =>
       item.tab === tab &&
       getOpenApiLaneLocales(item).includes(locale) &&
-      children.some(
-        (child) =>
-          child.type === 'page' && child.url === item.parentUrl[locale],
-      ),
+      // A linked-header section (rule 2 from docs-tree) carries the parent URL
+      // on node.url instead of emitting it as a child page.
+      (node.url === item.parentUrl[locale] ||
+        children.some(
+          (child) =>
+            child.type === 'page' && child.url === item.parentUrl[locale],
+        )),
   );
 
   if (lane) {
