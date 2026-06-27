@@ -82,9 +82,11 @@ verified against the data):
   URL has no `/versions/<version>` segment, omit the version. Covers Flutter.
 - `unpkg.com` (path `/<name>@<version>/...`)
   → `{ tool: 'npm', command: 'npm i <name>@<version>' }`.
-- `www.npmjs.com` (path `/package/<name>`, no version)
-  → `{ tool: 'npm', command: 'npm i <name>' }` (unpinned). Covers Web / React JS
-  / Electron. (npmjs and unpkg are both npm but parse differently — two cases.)
+- `www.npmjs.com` (path `/package/<name>` or `/package/@scope/name`, optionally
+  followed by `/v/<version>`) → `{ tool: 'npm', command: 'npm i <name>[@<version>]' }`
+  — pinned when the URL carries `/v/<version>`, and scoped packages keep their
+  `@scope/name`. Covers Web / React JS / Electron. (npmjs and unpkg are both npm
+  but parse differently — two cases.)
 - `swiftpackageindex.com` (path `/<owner>/<repo>`)
   → `{ tool: 'Swift Package Manager', command: 'https://github.com/<owner>/<repo>' }`
   (the package URL to add in Xcode; unpinned). Covers iOS.
