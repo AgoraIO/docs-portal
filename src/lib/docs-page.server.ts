@@ -303,10 +303,8 @@ export async function loadDocsPagePayload(
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText);
-  const layoutMode = resolveDocsLayoutMode(
-    page,
-    isOpenApiPage || openApiLaneRoute !== null,
-  );
+  const layoutMode: DocsLayoutMode =
+    isOpenApiPage || openApiLaneRoute !== null ? 'openapi' : 'docs';
   const sidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,
@@ -945,17 +943,6 @@ export type DocsPagePayload = Exclude<
   Awaited<ReturnType<typeof loadDocsPagePayload>>,
   null | { redirectUrl: string }
 >;
-
-function resolveDocsLayoutMode(
-  page: PageWithSource,
-  isOpenApiPage: boolean,
-): DocsLayoutMode {
-  if (isOpenApiPage) {
-    return 'openapi';
-  }
-
-  return 'full' in page.data && page.data.full ? 'full-page' : 'docs';
-}
 
 async function readProcessedText(page: PageWithSource) {
   try {
