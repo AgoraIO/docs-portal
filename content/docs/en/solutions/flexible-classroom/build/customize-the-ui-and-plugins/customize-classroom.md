@@ -7,7 +7,7 @@ This page explains the way UI components work in Classroom and Proctor SDK.
     ## Introduction to UI components
 
 :::note
-The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](https://docs.agora.io/en/flexible-classroom/develop/integrate/customize-ui/customize-ui/customize-ui-scene-sdk).
+The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk).
 :::
 
 The UI components in Flexible Classroom can be divided into three types: function components, business components, and scenario components.

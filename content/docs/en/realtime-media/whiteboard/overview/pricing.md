@@ -129,4 +129,4 @@ You can check your usage of Interactive Whiteboard in Agora Console. Perform the
 
 ## See also
 
-- [Billing policies and free-of-charge policy](https://docs.agora.io/en/realtime-media/im/reference/billing-policies)
+- [Billing policies and free-of-charge policy](/en/realtime-media/im/reference/billing-policies)

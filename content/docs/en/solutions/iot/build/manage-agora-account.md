@@ -1,16 +1,9 @@
 ---
 title: Agora account management
 description: Create, manage and update your Agora account.
-sidebar_position: 2
 platform: android
-exported_from: 'https://docs.agora.io/en/iot/get-started/manage-agora-account?platform=android'
-exported_on: '2026-06-14T10:08:30.706557Z'
-exported_file: manage-agora-account.md
 ---
 
-> For a complete site index fetch https://docs.agora.io/llms.txt. For all pages in this product fetch https://docs.agora.io/en/iot/overview/product-overview.md
-
-[HTML Version](https://docs.agora.io/en/iot/get-started/manage-agora-account?platform=android)
 
 This page shows you how to sign up for an Agora account, create a new project, and get the app ID and app certificate to generate a temporary token. 
 

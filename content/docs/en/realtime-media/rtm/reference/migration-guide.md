@@ -58,7 +58,7 @@ You can integrate the Signaling `2.x` SDK into your app either using a CDN or th
 
 ## Initialize an RTM Client instance
 
-Signaling `2.x` makes adjustments to initialization parameters. It introduces new features such as end-to-end encryption, and cloud proxy. Refer to the [API Reference](https://docs.agora.io/en/signaling/reference/api) for details. Additionally, `2.x` provides richer error information when invoking interfaces, allowing you to quickly identify issues. Look up [Error Codes](https://docs.agora.io/en/signaling/reference/api) for efficient troubleshooting.
+Signaling `2.x` makes adjustments to initialization parameters. It introduces new features such as end-to-end encryption, and cloud proxy. Refer to the [API Reference](/en/api-reference/api-ref/signaling) for details. Additionally, `2.x` provides richer error information when invoking interfaces, allowing you to quickly identify issues. Look up [Error Codes](/en/api-reference/api-ref/signaling) for efficient troubleshooting.
 
 - Sample code for `1.x`:
     ```java
@@ -154,7 +154,7 @@ Signaling `2.x` has redesigned the system event notification mechanism and API i
 | `onLinkStateEvent` | Receives notifications of changes in the client's network connection state, including information such as the connection state before and after the change, service type, operation type that caused the change, reason for the change, and channel list. |
 | `onTokenPrivilegeWillExpire`| Receives notifications when the client's token is about to expire.  |
 
-For more information on event notifications and payload data structures, see [Event listeners](https://docs.agora.io/en/signaling/reference/api).
+For more information on event notifications and payload data structures, see [Event listeners](/en/api-reference/api-ref/signaling).
 
 Consider the example of listening to channel message events:
 
@@ -318,7 +318,7 @@ rtmClient.sendMessageToPeer("Tony", message, options, new ResultCallback<Void>()
 });
 ```
 
-Starting from v2.2.1, Signaling `2.x` supports User Channels for peer-to-peer messaging. Use the `publish()` method with `channelType` set to `RtmChannelType.USER` to send messages to a specific user, and handle incoming messages in the `onMessageEvent` callback. For more information, see [User channels](https://docs.agora.io/en/signaling/core-functionality/user-channel).
+Starting from v2.2.1, Signaling `2.x` supports User Channels for peer-to-peer messaging. Use the `publish()` method with `channelType` set to `RtmChannelType.USER` to send messages to a specific user, and handle incoming messages in the `onMessageEvent` callback. For more information, see [User channels](/en/realtime-media/rtm/build/work-with-channels/user-channel).
 
 ```java
 // 2.x (v2.2.1 or later)
@@ -458,7 +458,7 @@ rtmClient.getPresence().setState("channelName", RtmChannelType.MESSAGE, stateIte
 });
 ```
 
-You can retrieve a user's online state at any time by using the `getState` method, or remove your own state by using the `removeState` method. Signaling triggers a `presence` event notification of type `REMOTE_STATE_CHANGED` when a user's temporary state is changed. See the [Presence](https://docs.agora.io/en/signaling/develop/presence) guide for details on how to use this feature.
+You can retrieve a user's online state at any time by using the `getState` method, or remove your own state by using the `removeState` method. Signaling triggers a `presence` event notification of type `REMOTE_STATE_CHANGED` when a user's temporary state is changed. See the [Presence](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence) guide for details on how to use this feature.
 
 Signaling `2.x` makes it very simple to listen to the real-time notification of users entry, exit, timeout and temporary status changes in a channel. To do this, implement the following steps:
 
@@ -499,7 +499,7 @@ In Signaling `2.x` real-time notifications have been redesigned. The presence ev
 1. Real-time notification mode (Announce)
 1. Scheduled notification mode (Interval)
 
-You can determine the conditions for switching between the two modes through the **Announce Max** parameter in the project settings of the Agora Console. The interval notification mode can prevent noisy events caused by too many online users in the channel. For details, see [Event Listeners](https://docs.agora.io/en/signaling/reference/api).
+You can determine the conditions for switching between the two modes through the **Announce Max** parameter in the project settings of the Agora Console. The interval notification mode can prevent noisy events caused by too many online users in the channel. For details, see [Event Listeners](/en/api-reference/api-ref/signaling).
 
 ## User metadata and channel metadata
 
@@ -535,7 +535,7 @@ rtmClient.getStorage().setChannelMetadata("channelName", RtmChannelType.MESSAGE,
 });
 ```
 
-To learn more about how to get, update, and delete channel attributes, how to use version control and lock control, refer to the [Storage](https://docs.agora.io/en/signaling/develop/storage) guide. The use of user attributes is similar to that of channel attributes. 
+To learn more about how to get, update, and delete channel attributes, how to use version control and lock control, refer to the [Storage](/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata) guide. The use of user attributes is similar to that of channel attributes.
 
 Events for channel attributes and user attributes are distributed to users through `onStorageEvent` type event notifications. To listen to these events:
 

@@ -61,4 +61,4 @@ Automatic encryption and decryption may impact some use-cases. For example, if y
 
 ### API reference
 
-- [API reference](https://docs.agora.io/en/signaling/reference/api)
+- [API reference](/en/api-reference/api-ref/signaling)

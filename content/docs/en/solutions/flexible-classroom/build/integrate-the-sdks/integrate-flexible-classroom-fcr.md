@@ -68,7 +68,7 @@ If you are satisfied with the default UI of Cloud Classroom and do not want to c
     } from 'agora-plugin-gallery/scene'
     ```
 
-3. To launch a classroom, call [FcrUIScene.launch](https://docs.agora.io/en/flexible-classroom/client-api/ui-scene).
+3. To launch a classroom, call [FcrUIScene.launch](/en/api-reference/api-ref/flexible-classroom/ui-scene).
 
     ```javascript
     import { FcrUIScene } from 'fcr-ui-scene'
@@ -119,7 +119,7 @@ If you are satisfied with the default UI of Cloud Classroom and do not want to c
     <script src="https://download.agora.io/edu-apaas/release/scene_widget@X.Y.Z.bundle.js"></script>
     ```
 
-2. To launch a classroom, call [FcrUIScene.launch](https://docs.agora.io/en/flexible-classroom/client-api/ui-scene).
+2. To launch a classroom, call [FcrUIScene.launch](/en/api-reference/api-ref/flexible-classroom/ui-scene).
 
 #### Sample code
 

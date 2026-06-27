@@ -61,4 +61,4 @@ See [Manage your Agora account](build/manage-agora-account.md) to learn how to g
 
 ## Get the SDK
 
-[Download](https://docs.agora.io/en/sdks) the latest x86-64 SDK package and decompress the file. If you need the SDK build for other architectures, [submit a ticket](https://agora-ticket.agora.io/) to technical support.
+[Download](/en/api-reference/sdks) the latest x86-64 SDK package and decompress the file. If you need the SDK build for other architectures, [submit a ticket](https://agora-ticket.agora.io/) to technical support.

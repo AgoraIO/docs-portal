@@ -374,9 +374,9 @@ Use this list to quickly check what measures you have or have not taken to best 
 
 1. [Enable token-based authentication](../manage-agora-account) on [Agora Console](https://console.agora.io/v2).
 2. Disable *No certificate* in your project management page. Once it is done your app authenticates users with tokens only.
-3. [Deploy a token server](https://docs-md.agora.io/en/video-calling/token-authentication/deploy-token-server) in your backend services.
+3. [Deploy a token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your backend services.
 4. Protect the token server and only allow the app backend server to connect to the token server.
-5. Set the token expiration date to a reasonable time. See [Deploy a token server](https://docs-md.agora.io/en/video-calling/token-authentication/deploy-token-server).
+5. Set the token expiration date to a reasonable time. See [Deploy a token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server).
 6. If needed, contact support@agora.io to enable token privilege and set token per role.
 7. For additional security if needed work with the Agora SA team to customize the token server and modify the token join privilege to a low time, like 5 min. This is more advance and recommended after app development is completed.
 8. Channel encryption key management – generate a random key (secret) per channel at the time of creating the channel, do not reuse encryption keys.
@@ -402,7 +402,7 @@ The following table shows system importance classifications (in descending order
 |Classification |Asset Examples| 
 |---|---|
 |Core system |Agora SDRTN®, the mail system, and official websites such as [www.agora.io](http://www.agora.io/), [sso.agora.io](http://sso.agora.io/), and `api.agora.io`|
-|General system |Forums and the Developer Portal ([docs.agora.io](https://docs.agora.io/))| 
+|General system |Forums and the Developer Portal|
 |Fringe system |Test sites |
 
 ### Vulnerability severity classifications
