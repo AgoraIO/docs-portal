@@ -2677,10 +2677,8 @@ Configure your macOS project settings by navigating to **TARGETS > Project Name 
 | Capability | Category | Permission      |
 |:-----------|:---------|:----------------|
 | App Sandbox | Network | - Incoming Connections (Server)<br />2. Outgoing Connections (Client) |
-| App Sandbox | Hardware | - Camera
-2. Audio Input |
-| Hardened Runtime | Resource Access | - Camera
-2. Audio Input |
+| App Sandbox | Hardware | - Camera<br />2. Audio Input |
+| Hardened Runtime | Resource Access | - Camera<br />2. Audio Input |
 
 
 ### Start and close the app
@@ -3079,10 +3077,8 @@ Configure your macOS project settings by navigating to **TARGETS > Project Name 
 | Capability | Category | Permission      |
 |:-----------|:---------|:----------------|
 | App Sandbox | Network | - Incoming Connections (Server)<br />2. Outgoing Connections (Client) |
-| App Sandbox | Hardware | - Camera
-2. Audio Input |
-| Hardened Runtime | Resource Access | - Camera
-2. Audio Input |
+| App Sandbox | Hardware | - Camera<br />2. Audio Input |
+| Hardened Runtime | Resource Access | - Camera<br />2. Audio Input |
 
 
 ### Start and close the app
@@ -3500,10 +3496,8 @@ Configure your macOS project settings by navigating to **TARGETS > Project Name 
 | Capability | Category | Permission      |
 |:-----------|:---------|:----------------|
 | App Sandbox | Network | - Incoming Connections (Server)<br />2. Outgoing Connections (Client) |
-| App Sandbox | Hardware | - Camera
-2. Audio Input |
-| Hardened Runtime | Resource Access | - Camera
-2. Audio Input |
+| App Sandbox | Hardware | - Camera<br />2. Audio Input |
+| Hardened Runtime | Resource Access | - Camera<br />2. Audio Input |
 
 
 ### Start and close the app
@@ -9209,19 +9203,13 @@ The following table lists the main nodes:
 
 | # | Node | Type | Description |
 |:--|:-----|:-----|:------------|
-| 1 | **Set Show Mouse Cursor** | Native* | (Optional) Set whether to display the mouse cursor. Check to display it. :::info[Information]
-- This node is available on Windows and macOS only.<br />2. If the node is not retrieved at creation time, uncheck **Context Sensitive**. ![](/images/video-sdk/quickstart-implementation-blueprint-3.png)
-:::
- |
+| 1 | **Set Show Mouse Cursor** | Native* | (Optional) Set whether to display the mouse cursor. Check to display it.<br />**Information:**<br />- This node is available on Windows and macOS only.<br />2. If the node is not retrieved at creation time, uncheck **Context Sensitive**. ![](/images/video-sdk/quickstart-implementation-blueprint-3.png) |
 | 2 | **Load Agora Config** | Custom** | Loads Agora configuration. Used to verify user identity when creating and joining channels. |
 | 3 | **Create BP Video Widget** | Native | Create user interface: 1. Add **Create Widget** node.<br />2. Select the node's **Class** as **BP_VideoWidget** and associate the node with the already created user interface. |
 | 4 | **Set Basic Video Call Widget** | Custom | Set up the user interface:1. Create the **BasicVideoCallWidget** variable and select the **Variable Type** of the variable as **BP_VideoWidget**, which is the user interface created to store a reference to the user interface in the blueprint.<br />2. After dragging the created variables to **EventGraph**, two options, **Set BasicVideoCallWidget** and **Get BasicVideoCallWidget**, appear. Select **Set BasicVideoCallWidget** to create a node for accessing and setting the user interface. |
 | 5 | **BindUIEvent** | Custom | Use Bind UI events to handle event logic after clicking the **Join Channel** and **Leave Channel** buttons. |
 | 6 | **Add to Viewport** | Native | Add user interface to the viewport. |
-| 7 | **Check Permission** | Custom | (Optional) Check whether you have obtained the system permissions required for real-time audio and video interaction, such as access to the camera and microphone. :::caution[Note]
-If your target platform is Android, create this node to check system permissions.
-:::
- |
+| 7 | **Check Permission** | Custom | (Optional) Check whether you have obtained the system permissions required for real-time audio and video interaction, such as access to the camera and microphone.<br />**Note:** If your target platform is Android, create this node to check system permissions. |
 | 8 | **Init Rtc Engine** | Custom | Create and initialize the RTC engine. |
 | 9 | **Un Init Rtc Engine** | Custom | Leave the channel and release resources. |
 
