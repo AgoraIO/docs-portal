@@ -278,7 +278,9 @@ describe('DocsShell', () => {
 
     // Weight no longer toggles on the Link itself (that would shift siblings);
     // the Link exposes its active state as a named group instead.
-    expect(introTab.className).not.toContain('data-[state=active]:font-semibold');
+    expect(introTab.className).not.toContain(
+      'data-[state=active]:font-semibold',
+    );
     expect(introTab.className).toContain('group/tab');
 
     // The title is rendered twice: an aria-hidden semibold ghost that reserves
@@ -286,7 +288,9 @@ describe('DocsShell', () => {
     const titles = within(introTab).getAllByText('Introduction');
     expect(titles).toHaveLength(2);
 
-    const ghost = titles.find((el) => el.getAttribute('aria-hidden') === 'true');
+    const ghost = titles.find(
+      (el) => el.getAttribute('aria-hidden') === 'true',
+    );
     const visible = titles.find(
       (el) => el.getAttribute('aria-hidden') !== 'true',
     );
