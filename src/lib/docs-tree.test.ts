@@ -1453,4 +1453,22 @@ describe('docs tree helpers', () => {
       },
     ]);
   });
+
+  it('builds a breadcrumb for a linked section index page', () => {
+    expect(
+      getSidebarBreadcrumb(
+        [
+          {
+            children: [{ id: '/x/a', title: 'A', type: 'page', url: '/x/a' }],
+            collapsible: true,
+            id: 'folder-x',
+            title: 'X',
+            type: 'section',
+            url: '/x',
+          },
+        ],
+        '/x',
+      ),
+    ).toEqual([{ title: 'X', url: '/x' }]);
+  });
 });

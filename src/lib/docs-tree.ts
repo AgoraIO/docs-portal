@@ -678,6 +678,15 @@ function findSidebarBreadcrumb(
     ];
   }
 
+  if (node.url === activePath) {
+    return [
+      {
+        title: node.title,
+        url: node.url,
+      },
+    ];
+  }
+
   for (const child of node.children) {
     const childBreadcrumb = findSidebarBreadcrumb(child, activePath);
 
