@@ -11,7 +11,7 @@ Agora services provide built-in encryption and customized encryption. You can us
 
 ![Encrypted data transmission process](/images/common/encrypted-data-transmission-process.svg)
 
-#### Purpose
+### Purpose
 
 Agora is committed to safeguarding the confidentiality, integrity, and availability of all users' physical and electronic information assets.
 
@@ -19,7 +19,7 @@ Agora is committed to safeguarding the confidentiality, integrity, and availabil
 - Integrity against tampering and forgery
 - Availability of data transmission through the Agora SDRTN(R)
 
-#### Scope
+### Scope
 
 This article describes how Agora protects customer data with security controls.
 

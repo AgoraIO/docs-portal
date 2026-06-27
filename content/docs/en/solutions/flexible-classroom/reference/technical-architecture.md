@@ -17,7 +17,7 @@ The following figure shows the overall technical architecture of Flexible Classr
 ### Pluggable widgets
 
 - Pluggable widgets are independent of the Classroom SDK.
-- Agora provides several ready-to-use widgets, including Interactive Whiteboard, Instant Messaging, Polle, Pop-up Quiz, and Countdown Timer.
+- Agora provides several ready-to-use widgets, including Interactive Whiteboard, Instant Messaging, Poll, Pop-up Quiz, and Countdown Timer.
 - Developers are free to customize pluggable widgets based on their own business requirements.
 
 ### The Edu UI layer

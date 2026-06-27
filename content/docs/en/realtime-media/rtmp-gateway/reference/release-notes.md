@@ -7,7 +7,7 @@ This page provides the release notes for Media Gateway.
 
 ## 2025.5.28
 
-#### New features
+### New features
 
 - **Low-bitrate high-quality streaming**
 
@@ -26,7 +26,7 @@ This page provides the release notes for Media Gateway.
 
   For configuration details, see [SRT streaming](srt-streaming.md).
 
-#### Improvements
+### Improvements
 
 - **NCS callback configuration by VID**
 
