@@ -43,9 +43,9 @@ To configure the whiteboard feature, take the following steps:
 
    ![configure-whiteboard-feature](/images/flexible-classroom/configure-whiteboard-feature.png)
 
-1. To use PPT, Word, PDF and other courseware, you need to enable advanced services. Go to Configuration under Advanced Services to enable and configure the document-to-webpage, document-to-picture, and screenshot services for Smart Classroom. For details, see [Enable whiteboard server-side features](https://docs.agora.io/en/interactive-whiteboard/get-started/enable-whiteboard).
+2. To use PPT, Word, PDF and other courseware, you need to enable advanced services. Go to Configuration under Advanced Services to enable and configure the document-to-webpage, document-to-picture, and screenshot services for Smart Classroom. For details, see [Enable whiteboard server-side features](https://docs.agora.io/en/interactive-whiteboard/get-started/enable-whiteboard).
 
-1. Configure a third-party cloud storage service for storing files uploaded in a classroom. Fill in the following information:
+3. Configure a third-party cloud storage service for storing files uploaded in a classroom. Fill in the following information:
 
    * `region`: The location of the data center you specified when creating a bucket in Amazon S3.
    * `endpoint`: The domain name used to access the Amazon S3 service, such as s3.us-east-2.amazonaws.com.
@@ -66,9 +66,9 @@ To setup and configure storage and recording in for your classrooms:
 
         ![](https://web-cdn.agora.io/docs-files/1641366278596)
 
-    1. Enable the advanced services. See [Enable whiteboard server-side features](https://docs.agora.io/en/interactive-whiteboard/get-started/enable-whiteboard).
+    2. Enable the advanced services. See [Enable whiteboard server-side features](https://docs.agora.io/en/interactive-whiteboard/get-started/enable-whiteboard).
 
-    1. Configure a third-party cloud storage service for storing files uploaded in a classroom. Fill in the following information:
+    3. Configure a third-party cloud storage service for storing files uploaded in a classroom. Fill in the following information:
           - `region`: The location of the data center you specified when creating a bucket in Amazon S3.
           - `endpoint`: The domain name used to access the Amazon S3 service, such as `s3.us-east-2.amazonaws.com`.
           - `Bucket`: The bucket name in Amazon S3.
@@ -80,7 +80,7 @@ To setup and configure storage and recording in for your classrooms:
        For how to get these parameters, see the [Amazon S3 document](https://docs.aws.amazon.com/general/latest/gr/s3.html).
        :::
 
-1. **Configure your classroom**
+2. **Configure your classroom**
 
      1. Find the cloud recording module on the **Flexible Classroom configuration** page in Agora Console:
 
@@ -90,7 +90,7 @@ To setup and configure storage and recording in for your classrooms:
         The recording config can be set to default. Set the storage config to customized; otherwise, the recording cannot be stored in your OSS account.
         :::
 
-    1. Configure storage
+    2. Configure storage
 
         Pass in the `storageConfig` JSON object for storing recorded files. Use the following fields to specify the url and storage location of the recording file.
         
@@ -141,7 +141,7 @@ To setup and configure storage and recording in for your classrooms:
 
          For complete parameter descriptions, see [storageConfig](https://docs.agora.io/en/cloud-recording/reference/restful-api).
 
-    1. Configure recording.
+    3. Configure recording.
 
        By default, you record teacher audio and video in [composite recording mode](https://docs.agora.io/en/cloud-recording/develop/composite-mode). Your recorded files are stored in Agora's Amazon S3 account. To change the default behavior, Pass in the `recordingConfig` JSON object:
 
@@ -161,21 +161,21 @@ To enable and configure Chat:
 
 1. In Agora Console, navigate to [Project Management](https://console.agora.io/v2/project-management).
 
-1. Click **Config** next to the project for which you want to enable Chat.
+2. Click **Config** next to the project for which you want to enable Chat.
 
-1. In the **Features** section of the **Edit Project** page, click **Enable/Configure** next to **Chat**.
+3. In the **Features** section of the **Edit Project** page, click **Enable/Configure** next to **Chat**.
 
    ![](/images/flexible-classroom/enable-chat.png)
 
-1. Select the data center location.
+4. Select the data center location.
 
    ![](/images/flexible-classroom/select-data-center.png)
 
     Agora generates the Chat-related `AppKey`, `OrgName`, `AppName`, and API access information.
 
-1. In the **Features** section of the **Edit Project** page, click **Config** next to **Flexible Classroom**.
+5. In the **Features** section of the **Edit Project** page, click **Config** next to **Flexible Classroom**.
 
-1. In the **Chat** section, complete the required fields:
+6. In the **Chat** section, complete the required fields:
 
    ![](/images/flexible-classroom/synchronize-chat.png)
 

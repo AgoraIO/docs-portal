@@ -11,9 +11,9 @@ In Flexible Classroom, users normally start recording manually. The process is a
 
     ![start recording confirm](/images/flexible-classroom/flexible-classroom-start-recording.png)
 
-1. The client notifies the server to start recording.
-1. The server opens a browser window and navigates to the address specified in `recordURL` configured in `launchOption`.
-1. The server starts recording.
+2. The client notifies the server to start recording.
+3. The server opens a browser window and navigates to the address specified in `recordURL` configured in `launchOption`.
+4. The server starts recording.
 
 If you want the recording to start automatically, you can listen for the event of class starting on the server side, and call [Set the recording state](https://docs.agora.io/en/flexible-classroom/restful-api/classroom-api) to start automatic recording.
 
