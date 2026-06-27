@@ -321,6 +321,7 @@ describe('docs content regressions', () => {
 
       expect(content).toMatch(/\|\s*Customer Account Data\s*\|/);
       expect(content).toMatch(/\|\s*Information Security Sub-Committee\s*\|/);
+      expect(content).not.toMatch(/<\/?(details|summary)>/);
     }
 
     const activeFence = readDoc(
