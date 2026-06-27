@@ -3,10 +3,10 @@ title: "Manage chat room attributes"
 description: "Shows how to use the Agora Chat SDK to manage the attributes of a chat room in your app."
 ---
 
-attributes consist of basic attributes (such as room subject, room description, and room announcement) and custom attributes. When basic attributes cannot satisfy the business requirements, users can add custom attributes that are synchronized with all chat room members.
+Chat room attributes consist of basic attributes (such as room subject, room description, and room announcement) and custom attributes. When basic attributes cannot satisfy the business requirements, users can add custom attributes that are synchronized with all chat room members.
 Custom attributes can be used to store information such as chat room type, game roles, game status, and host positions. They are stored as key-value maps, and the updates of custom attributes are synchronized with all chat room members.
 
-This page shows how to use the Agora Chat SDK to manage basic and custom attributes of  in your app.
+This page shows how to use the Agora Chat SDK to manage basic and custom attributes of a chat room in your app.
 
 ## Understand the tech
 
