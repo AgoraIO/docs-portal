@@ -13,17 +13,17 @@ The command-line examples are for demonstration purposes only. In a production e
 
 The following diagram outlines the process of implementing Real-Time STT:
 
-    ![real-time-stt-flow](/images/real-time-stt/real-time-stt-flow.png)
+![real-time-stt-flow](/images/real-time-stt/real-time-stt-flow.png)
 
 This process includes calling the following RESTful API methods:
 
 1. `start`: Call this method to join the channel and start transcription. If the request is successful, you receive an `agent_id` in the response body that identifies the current transcription session.
 
-1. `update`: While a transcription agent is running, use the `update` method to modify transcription or translation languages or update the hosts for which transcription is enabled.
+2. `update`: While a transcription agent is running, use the `update` method to modify transcription or translation languages or update the hosts for which transcription is enabled.
 
-1. `query`: Use this method to query the agent status between `start` and `stop` calls.
+3. `query`: Use this method to query the agent status between `start` and `stop` calls.
 
-1. `stop`: Call this method to stop transcription.
+4. `stop`: Call this method to stop transcription.
 
 ## Prerequisites
 
@@ -43,9 +43,9 @@ server. For details, see [Agora account management](https://docs.agora.io/en/voi
 To enable Real-Time STT before using it for the first time, take the following steps:
 
 1. Log in to [Agora Console](https://console.agora.io/v2) and open the **Projects** page.
-1. Find the project for which you want to enable Real-Time STT and click the ✏️ icon.
-1. On the **Edit Project** page, find **Real-Time Speech-to-Text** and click **Enable Real-Time-STT**.
-1. Click **Enable Real-Time STT** and **Confirm**.
+2. Find the project for which you want to enable Real-Time STT and click the ✏️ icon.
+3. On the **Edit Project** page, find **Real-Time Speech-to-Text** and click **Enable Real-Time-STT**.
+4. Click **Enable Real-Time STT** and **Confirm**.
 
 Now you can use Agora Real-Time STT and see the usage statistics on the **Usage** page.
 
@@ -121,7 +121,7 @@ curl --request post \
     ```json
     {
       "agent_id": "Agent ID.",
-      "create_ts": null,
+      "create_ts": 1730974708,
       "status": "RUNNING"
     }
     ```
@@ -175,7 +175,7 @@ curl --request get \
     {
       "message": "Details of the request result.",
       "agent_id": "Agent ID.",
-      "create_ts": null,
+      "create_ts": 1730974708,
       "status": "RUNNING"
     }
     ```
@@ -186,7 +186,7 @@ curl --request get \
     {
       "message": "Details of the failed request.",
       "agent_id": "Agent ID.",
-      "create_ts": null,
+      "create_ts": 1730974708,
       "status": "FAILED"
     }
     ```
