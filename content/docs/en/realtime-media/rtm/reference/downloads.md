@@ -68,3 +68,34 @@ To manually install Signaling SDK, do one of the following:
         console.log({ err }, 'error occurs at publish message');
       }
     ```
+
+## Android
+
+To manually install the Signaling SDK for Android from a downloaded package:
+
+1. Extract [Signaling SDK](/en/api-reference/sdks) to a local directory, such as `<unzipped_package>`.
+2. Copy the following files or folders from the `libs` folder to your Android project.
+
+| File or folder | Path in your project |
+| --- | --- |
+| `agora-rtm_sdk.jar` | `/app/libs/` |
+| `/arm64-v8a/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/arm64-v8a/` |
+| `/armeabi-v7a/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/armeabi-v7a/` |
+| `/x86/libagora-rtm-jni.so` | `~/app/src/main/jniLibs/x86/` |
+| `/x86_64/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/x86_64/` |
+
+## Unity
+
+To manually add the Signaling SDK files for Unity:
+
+1. Extract [Signaling SDK for Unity](https://github.com/AgoraIO-Community/Agora-Unity-RTM-SDK/releases) to a local folder.
+2. Copy the `Rtm-Scripts` folder under the SDK package `libs` folder to the project `Assets` folder.
+3. Copy the following files under `libs/Plugins` to the corresponding project paths.
+
+| Development platform | File or folder | Project directory |
+| --- | --- | --- |
+| Android | `Plugins/Android` | `/Assets/Plugins/Android/` |
+| iOS | `Plugins/iOS` | `/Assets/Plugins/iOS` |
+| macOS | `Plugins/macOS` | `/Assets/Plugins/macOS` |
+| Windows | `Plugins/x86` | `/Assets/Plugins/x86` |
+| Windows | `Plugins/x86_64` | `/Assets/Plugins/x86_64` |

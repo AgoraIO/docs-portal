@@ -291,6 +291,80 @@ describe('docs content regressions', () => {
     expect(htAvatar).toContain(
       '| `maxFaces` | Integer. The maximum number of supported faces. The value range is `[1, 5]`. |',
     );
+
+    const geofencingDocs = [
+      'realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'realtime-media/video/build/manage-connection-and-quality/geofencing.mdx',
+      'solutions/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'realtime-media/voice/build/manage-connection-and-quality/geofencing.mdx',
+    ];
+
+    for (const relativePath of geofencingDocs) {
+      const content = readDoc(relativePath);
+
+      expect(content).toContain(
+        "| Designated access zone | User's location | Zone actually accessed by the SDK | User experience |",
+      );
+      expect(content).not.toContain('<thead>');
+      expect(content).not.toContain('<td rowspan="2">');
+    }
+
+    const securityDocs = [
+      'realtime-media/cloud-recording/reference/security.mdx',
+      'realtime-media/video/reference/security.mdx',
+      'realtime-media/marketplace/reference/security.mdx',
+      'realtime-media/rtmp-gateway/reference/security.md',
+    ];
+
+    for (const relativePath of securityDocs) {
+      const content = readDoc(relativePath);
+
+      expect(content).toMatch(/\|\s*Customer Account Data\s*\|/);
+      expect(content).toMatch(/\|\s*Information Security Sub-Committee\s*\|/);
+    }
+
+    const activeFence = readDoc(
+      'realtime-media/marketplace/build/add-moderation-and-intelligence/activefence.mdx',
+    );
+
+    expect(activeFence).toContain('| Title and key | Type | Meaning |');
+    expect(activeFence).toContain('| `requestId` | Text | Request ID of the screenshot |');
+
+    const rtmDownloads = readDoc('realtime-media/rtm/reference/downloads.md');
+
+    expect(rtmDownloads).toContain('| `agora-rtm_sdk.jar` | `/app/libs/` |');
+    expect(rtmDownloads).toContain('| Android | `Plugins/Android` | `/Assets/Plugins/Android/` |');
+
+    const rtmpCoreConcepts = readDoc(
+      'realtime-media/rtmp-gateway/reference/core-concepts.md',
+    );
+
+    expect(rtmpCoreConcepts).toContain('| Channel profile | Description |');
+    expect(rtmpCoreConcepts).toContain('| `LIVE_BROADCASTING` |');
+
+    const rtmpNotifications = readDoc(
+      'realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications.md',
+    );
+
+    expect(rtmpNotifications).toContain('| `eventType` | Event name | Description |');
+    expect(rtmpNotifications).toContain('| `3` | `live_stream_aborted` |');
+
+    const whiteboardReleaseNotes = readDoc(
+      'realtime-media/whiteboard/overview/release-notes.mdx',
+    );
+
+    expect(whiteboardReleaseNotes).toContain(
+      '|Domain                      |Covered region       |',
+    );
+    expect(whiteboardReleaseNotes).toContain(
+      "implementation 'com.github.netless-io:whiteboard-android:<version>'",
+    );
+    expect(whiteboardReleaseNotes).toContain("pod 'Whiteboard/Whiteboard-YYKit'");
+    expect(whiteboardReleaseNotes).not.toContain('<Admonition');
+    expect(whiteboardReleaseNotes).not.toContain('<Link to="{{Global.');
+    expect(whiteboardReleaseNotes).not.toContain(
+      '/interactive-whiteboard/get-started/get-started-sdk',
+    );
   });
 
   it('keeps agora analytics call inspector headings free of inline raw anchors', () => {

@@ -41,6 +41,11 @@ Agora uses the channel name to identify a channel. Users who specify the same ch
 
 Agora supports multiple channel profiles, including `COMMUNICATION` and `LIVE_BROADCASTING`.
 
+| Channel profile | Description |
+| --- | --- |
+| `COMMUNICATION` | Suitable for one-on-one or group calls, where all users in the channel talk freely. |
+| `LIVE_BROADCASTING` | In a live streaming channel, users have two client roles: host and audience. Hosts send and receive audio or video, while audience members only receive audio or video with sending disabled. |
+
 ### Stream
 
 A stream is a sequence of digitally encoded coherent signals that contains audio or video data.
