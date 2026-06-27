@@ -97,14 +97,15 @@ The Agora RESTful API only supports HTTPS with TLS 1.0, 1.1, or 1.2 for encrypte
 ```go
 package main
 
-  "fmt"
-  "strings"
-  "net/http"
-  "io/ioutil"
+import (
   "encoding/base64"
+  "fmt"
+  "io/ioutil"
+  "net/http"
+  "strings"
 )
 
-// HTTPS basic authentication example in Golang using the Video SDK Server RESTful API
+// HTTPS basic authentication example in Golang using the Agora Server RESTful API
 func main() {
 
   // Customer ID
@@ -157,7 +158,7 @@ func main() {
 
 
 ```javascript
-// HTTP basic authentication example in node.js using the Video SDK Server RESTful API
+// HTTP basic authentication example in Node.js using the Agora Server RESTful API
 const https = require('https')
 // Customer ID
 const customerKey = "Your customer ID"
@@ -264,7 +265,9 @@ curl_close($curl);
 ```python
 # -- coding utf-8 --
 # Python 3
-# HTTP basic authentication example in python using the Video SDK Server RESTful API
+# HTTP basic authentication example in Python using the Agora Server RESTful API
+import base64
+import http.client
 
 # Customer ID
 customer_key = "Your customer ID"
@@ -303,9 +306,14 @@ print(data.decode("utf-8"))
 
 
 ```java
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Base64;
 
-
-// HTTP basic authentication example in Java using the Video SDK Server RESTful API
+// HTTP basic authentication example in Java using the Agora Server RESTful API
 public class Base64Encoding {
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -351,7 +359,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-// HTTP basic authentication example in C# using the Video SDK Server RESTful API
+// HTTP basic authentication example in C# using the Agora Server RESTful API
 namespace Examples.System.Net
 {
     public class WebRequestPostExample

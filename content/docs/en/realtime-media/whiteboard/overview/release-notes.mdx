@@ -36,8 +36,17 @@ This version adds the `WhiteWindowParams.overwriteStyles` method to override whi
 
 **Added**
 
-- `prepareWhiteConnectionForAppId`
-- `overwriteStyles`
+- `WhiteSDK.prepareWhiteConnectionForAppId`
+- `WhiteWindowParams.overwriteStyles`
+
+```swift
+WhiteSDK.prepareWhiteConnectionForAppId(appIdentifier)
+
+let params = WhiteWindowParams()
+params.overwriteStyles = [
+  "backgroundColor": "#f7f8fa",
+]
+```
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
@@ -61,6 +70,13 @@ Released on July 28, 2025.
 
 This release introduces the `appliance-plugin` that provides a set of high-performance whiteboard drawing tools. To use it, install `@netless/appliance-plugin` and enable it with the `WhiteSdkConfiguration.enableAppliancePlugin` configuration option.
 
+Once the plugin is enabled, you can:
+
+- Use the `LASER_PENCIL` tool.
+- Use `WhiteMemberState.strokeOpacity` to control stroke opacity.
+- Use `WhiteMemberState.fillOpacity` to control fill opacity.
+- Use `WhiteMemberState.fillColor` to set fill color.
+
 **PPT rendering error handling**
 
 This version adds the `SlideListener.onSlideError` method for listening to PPT rendering errors. If an error occurs, you can call `WhiteSdk.recoverSlide` to recover rendering.
@@ -78,8 +94,16 @@ This release adds the `WhiteSdkConfiguration.useWebKeyboardInjection` property, 
 - `WhiteMemberState.strokeOpacity`
 - `WhiteMemberState.fillOpacity`
 - `WhiteMemberState.fillColor`
-- `onSlideError`
-- `recoverSlide`
+- `SlideListener.onSlideError`
+- `WhiteSdk.recoverSlide`
+
+```swift
+let config = WhiteSdkConfiguration(
+  app: appIdentifier,
+  enableAppliancePlugin: true,
+  useWebKeyboardInjection: false
+)
+```
 </PlatformStructured>
 
 <PlatformStructured platform="web">
@@ -88,6 +112,15 @@ This release adds the `WhiteSdkConfiguration.useWebKeyboardInjection` property, 
 This page tracks Web release notes for the Whiteboard SDK.
 
 ## Reference
+
+## v2.16.53
+
+Released on May 10, 2025.
+
+#### Improvements
+
+- For security and compliance, the `regions` parameter used when joining a whiteboard room now distinguishes between domestic and international data centers.
+- To prevent memory overflows caused by image uploads in formats such as `base64`, the `src` path for inserted images must now be a URL that starts with `http` or `https`.
 
 ## v2.16.112
 
@@ -111,7 +144,65 @@ This release improves whiteboard tool interactions in multi-window and presentat
 
 **Added**
 
-- `enableAppliancePlugin`
+- `WhiteWebSdkConfiguration.enableAppliancePlugin`
 - Slide rendering error callbacks
 - Recovery support for failed slide rendering
+
+```ts
+import { WhiteWebSdk } from 'white-web-sdk';
+
+const sdk = new WhiteWebSdk({
+  appIdentifier,
+  useMobXState: true,
+  enableAppliancePlugin: true,
+});
+```
+
+## v2.16.51
+
+Released on July 28, 2025.
+
+#### New features
+
+**Alternative API domains**
+
+| Domain | Covered region |
+| --- | --- |
+| `api.whiteboard.sd-rtn.com` | CN, India, Singapore |
+| `api.baiban.shengwang.cn` | CN |
+| `api.whiteboard.rtelink.com` | US, EU |
+| `api.netless.link` | CN, India, Singapore |
+| `api.whiteboard.agora.io` | US, EU |
+
+#### Improvements
+
+- Added `onConnection` to indicate that WebSocket is connected and the room snapshot is loading.
+- Added the `timeout` parameter to `screenshotToCanvasAsync`.
+- Added `commandWheelToZoom` in `ConstructRoomParams` for macOS zoom interaction.
+
+#### Fixed issues
+
+- Fixed the console error `AkkoSocket can't emit when phase is connecting` when WebSocket connection setup takes longer than 2 seconds.
+
+#### API changes
+
+**Added**
+
+- `onConnection`
+- The `timeout` parameter in `screenshotToCanvasAsync`
+- The `commandWheelToZoom` parameter in `ConstructRoomParams`
+
+```ts
+room.callbacks.onConnection = () => {
+  console.log('WebSocket connected, room snapshot is loading.');
+};
+
+await room.screenshotToCanvasAsync(context, scenePath, width, height, 5000);
+
+const room = await sdk.joinRoom({
+  uuid,
+  roomToken,
+  commandWheelToZoom: true,
+});
+```
 </PlatformStructured>
