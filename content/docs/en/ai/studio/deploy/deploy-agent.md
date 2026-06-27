@@ -17,13 +17,13 @@ To publish your agent:
 
    ![Publish agent panel](/images/conversational-ai/studio/publish-agent.png)
 
-1. Review and configure the deployment settings:
+2. Review and configure the deployment settings:
 
    - **Project**: Check the Agora project the agent will be published to. Billing and usage are tracked under this project. You can duplicate the agent into another project using the button at the bottom of the panel.
    - **Note**: Add a note for this deployment for your reference. This helps you identify the purpose or version of the deployment.
    - **Cost Overview**: Review the billing breakdown for ASR, LLM, TTS, and agent hosting services. This shows how agent use is billed.
 
-1. Click the **Publish** button to continue.
+3. Click the **Publish** button to continue.
 
 Your agent is now published and available to handle inbound and outbound calls.
 
@@ -32,7 +32,7 @@ Your agent is now published and available to handle inbound and outbound calls.
 To view and manage your deployed agents:
 
 1. In Agent Studio, select **Agents** from the sidebar.
-1. The Agents page displays all your deployed agents with their Agent ID, Project Name, App ID, and current Status.
+2. The Agents page displays all your deployed agents with their Agent ID, Project Name, App ID, and current Status.
 
 From the Agents page, you can:
 
@@ -50,10 +50,10 @@ From the Agents page, you can:
 
 To update a deployed agent with changes:
 
-1. From the **Actions** menu, select **Edit Agent**
-1. Make your desired changes in the agent editor.
-1. Click **Re-Publish**.
-1. Confirm the deployment.
+1. From the **Actions** menu, select **Edit Agent**.
+2. Make your desired changes in the agent editor.
+3. Click **Re-Publish**.
+4. Confirm the deployment.
 
 The updated configuration replaces the existing deployment in the selected projects.
 
