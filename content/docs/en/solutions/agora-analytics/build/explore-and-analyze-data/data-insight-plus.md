@@ -24,13 +24,13 @@ To set up Agora Analytics for your account, take the following steps:
 
     Data Insights Plus is activated as soon as you are subscribed.
 
-1. **Open Data Insights Plus**
+2. **Open Data Insights Plus**
 
     1. log in to [Agora Console](https://console.agora.io/v2).
-    1. In the left menu, click **Agora Analytics**
-    1. Select **Data Insights Plus**
+    2. In the left menu, click **Agora Analytics**
+    3. Select **Data Insights Plus**
 
-1. **Select metrics to analyze**
+3. **Select metrics to analyze**
 
     The indicator selection area is located on the left side of the Data Insights page. You click the button in the upper left corner of the page to expand the indicator selection area. Indicator selection is divided into Core indicators and All indicators:
 
@@ -47,7 +47,7 @@ To set up Agora Analytics for your account, take the following steps:
 
       ![](/images/analytics/diplus-metrics-selection.png)
 
-1. **Set global filters**
+4. **Set global filters**
 
     At the top of the Data Studio page is the global filter area. The filter conditions in this area affect the global data on the page.
 
@@ -57,7 +57,7 @@ To set up Agora Analytics for your account, take the following steps:
     
     * **Time filtering**: Use the right side of the global filter area to customize the time range, time granularity (by day/hour) and time zone (local/UTC time). It supports querying data within 90 days. The long query range is 30 days. The time series thumbnail in the indicator selection area depends on the time filter conditions in the global filter.
 
-1. **Start the analysis**
+5. **Start the analysis**
 
     After selecting the indicators to be analyzed and setting the global filter conditions, you view the indicator
     data in the analysis area on the right and start the analysis. You click the collapse button in the upper right

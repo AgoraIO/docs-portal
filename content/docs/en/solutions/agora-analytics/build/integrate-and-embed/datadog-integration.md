@@ -13,26 +13,26 @@ To enable  Agora Analytics integration with Datadog:
 
 1. In Agora Console, subscribe to the **Premium** or **Enterprise** [pricing plan](https://console.agora.io/aa/pricing).
 
-1.  In [Agora Analytics](https://analytics-lab.agora.io/), navigate to **Integration > Datadog**.
+2.  In [Agora Analytics](https://analytics-lab.agora.io/), navigate to **Integration > Datadog**.
     
     ![](/images/analytics/datadog-integration-step-1.png)
 
-1. Press **Apply** to initiate a request to enable Datadog. The Agora support team will contact you once the feature is enabled.
+3. Press **Apply** to initiate a request to enable Datadog. The Agora support team will contact you once the feature is enabled.
 
     ![](/images/analytics/apply-datadog-package.png)
 
     :::info
     > You can use Datadog with Agora Analytics only if Datadog integration is included in your Datadog package.
 
-1. On the configuration page, select the **Metrics** you want to monitor with Datadog.
+4. On the configuration page, select the **Metrics** you want to monitor with Datadog.
 
     ![](/images/analytics/datadog-integration-step-2.png)
 
-1. Enter your Datadog API key and press **Save**.  An API key is required to submit metrics and events to Datadog. 
+5. Enter your Datadog API key and press **Save**.  An API key is required to submit metrics and events to Datadog.
     
     ![](/images/analytics/datadog-integration-step-3.png)
 
-1. When configuration is successful, the **Configuration Status** updates to **Online**.
+6. When configuration is successful, the **Configuration Status** updates to **Online**.
 
     The following information is displayed on the configuration page: 
 
@@ -55,11 +55,11 @@ To display Agora Analytics metrics on your Datadog dashboard:
     
     ![](/images/analytics/datadog-integration-step-5.png)
 
-1. Select **Agora Analytics** and add it to your Datadog dashboard.
+2. Select **Agora Analytics** and add it to your Datadog dashboard.
 
     ![](/images/analytics/datadog-integration-step-6.png)
 
-1. Open the Datadog dash board. You see statistics from Agora Analytics displayed on your Datadog dashboard.
+3. Open the Datadog dash board. You see statistics from Agora Analytics displayed on your Datadog dashboard.
     
     ![](/images/analytics/datadog-integration-step-7.png)
 

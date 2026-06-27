@@ -35,7 +35,7 @@ The steps to develop, test and publish an extension to Extensions Marketplace:
 
     Agora reviews your application in 7 working days and sends you the result through an email.
 
-1. **Develop your extension**
+2. **Develop your extension**
 
     Once your application to become a partner is approved, develop your functionality as an audio or video extension using the following documentation:
 
@@ -44,16 +44,16 @@ The steps to develop, test and publish an extension to Extensions Marketplace:
 
     When you have developed and tested your extension, You also need to validate the user interface of your extension in a test environment. To test your extension, submit an application for testing. Agora processes your application in 7 working days and informs you through an email when it's done.
 
-1. **Help developers easily integrate your extension into their app**.
+3. **Help developers easily integrate your extension into their app**.
 
     Write the [Implementation guide](build/publish-and-document/implementation-guide.md) for your extension
 
-1. **Share provisioning, usage, and billing information with Agora**
+4. **Share provisioning, usage, and billing information with Agora**
 
     - [Provisioning API](build/connect-to-agora-services/provisioning.md)
     - [Usage and billing API](build/connect-to-agora-services/usage.md)
 
-1. **Publish your extension**
+5. **Publish your extension**
 
     When your extension is thoroughly developed and tested, you need to submit it for Agora review and provide the finalized version of your extension listing assets. For details, see [Publish your extension](build/publish-and-document/publish-extension.md).
 

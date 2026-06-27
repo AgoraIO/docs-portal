@@ -200,7 +200,7 @@ This sample server is for demonstration purposes only. Do not use it in a produc
 This section uses the Web client as an example to show how to use a token for client-side user authentication.
 The following reference code comes from the [Flexible Classroom web source code](https://github.com/AgoraIO-Community/flexible-classroom-desktop/blob/release/2.8.30/packages/agora-demo-app/src/pages/home/index.tsx).
 
-1.  Initiate a token request to the server integrated with the Agora token generator:
+1. Initiate a token request to the server integrated with the Agora token generator:
 
     ```typescript
     const { token, appId } = await roomApi.getCredentialNoAuth({
@@ -210,7 +210,7 @@ The following reference code comes from the [Flexible Classroom web source code]
     });
     ```
 
-2.  Use the token obtained in this request to create a `launchOption` object:
+2. Use the token obtained in this request to create a `launchOption` object:
 
     ```typescript
     const launchOption = {

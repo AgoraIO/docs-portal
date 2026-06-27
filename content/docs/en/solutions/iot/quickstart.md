@@ -200,7 +200,7 @@ To start Agora engine and join a channel, take the following steps:
         import io.agora.rtc.AgoraRtcEvents;
         ```
 
-1.  **Declare the variables that you use to join a channel and stream Audio/Video**
+2.  **Declare the variables that you use to join a channel and stream Audio/Video**
 
     In `/app/java/com.example.<projectname>/MainActivity`, add the following lines to the `MainActivity` class:
 
@@ -218,7 +218,7 @@ To start Agora engine and join a channel, take the following steps:
         private VideoSendThread videoThread = null;
         ```
 
-1.  **Setup Agora engine**
+3.  **Setup Agora engine**
 
     To use IoT features, you use the IoT SDK to create an `AgoraRtcService` instance. You then use this instance to open a connection. In `/app/java/com.example.<projectname>/MainActivity`, add the following code before the `onCreate` method:
 
@@ -251,7 +251,7 @@ To start Agora engine and join a channel, take the following steps:
     }
     ```
 
-1.  **At startup, ensure necessary permissions and initialize the engine**
+4.  **At startup, ensure necessary permissions and initialize the engine**
     
     In order to send video and audio streams, you need to ensure that the local user gives permission to access the camera and microphone at startup. After the permissions are granted, you setup the IoT SDK engine.
 
@@ -271,7 +271,7 @@ To start Agora engine and join a channel, take the following steps:
         }
         ```
 
-1.  **Receive and handle engine events**
+5.  **Receive and handle engine events**
 
     The `AgoraRtcService` provides a number of callbacks that enable you to respond to important events. To add an event handler to your app, in `/app/java/com.example.<projectname>/MainActivity`, add the following lines before `setupAgoraEngine`:
 
@@ -381,7 +381,7 @@ To start Agora engine and join a channel, take the following steps:
         };
         ```
 
-1.  **Join a channel**
+6.  **Join a channel**
 
     When a local user initiates a connection, call `joinChannel`. This method securely connects the local user to a channel using the authentication token. In `/app/java/com.example.<projectname>/MainActivity`, add the following code after `setupAgoraEngine`:
 
@@ -501,7 +501,7 @@ To stream audio and video data:
         }
         ```
     
-1. **Add a thread class to send audio**
+2. **Add a thread class to send audio**
 
     In Android Studio, select **File > New > Java Class**. Name the class `AudioSendThread` and replace the contents of the file with the following code:
 
@@ -616,7 +616,7 @@ To stream audio and video data:
         }
         ```
     
-1. **Add a thread class to send video**
+3. **Add a thread class to send video**
 
     In Android Studio, select **File > New > Java Class**. Name the class `VideoSendThread` and replace the contents of the file with the following code:
 
@@ -822,15 +822,15 @@ To test your implementation, take the following steps:
 
     1.  Connect a physical Android device to your development device.
 
-    1.  In Android Studio, click **Run app**. A moment later you see the project installed on your device.
+    2.  In Android Studio, click **Run app**. A moment later you see the project installed on your device.
 
         If this is the first time you run the project, you need to grant microphone and camera access to your app.
 
-    1. Click **Join** to join a channel. 
+    3. Click **Join** to join a channel.
         
         You hear audio and see a video playing in the web demo app, pushed from the IoT SDK demo project.
 
-    1. Click **Leave**.
+    4. Click **Leave**.
 
         Audio and video streaming stops and you exit the channel.
 

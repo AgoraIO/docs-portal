@@ -44,9 +44,9 @@ Take the following steps to use Cloud proxy in your app:
 
 1. Test if you can initiate audio and video calls or live broadcasts normally.
 
-1. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `TRANSPORT_TYPE_NONE_PROXY`.
+2. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `TRANSPORT_TYPE_NONE_PROXY`.
 
-1. To update the current `proxyType`, call `setCloudProxy(TRANSPORT_TYPE_NONE_PROXY)` first, then call `setCloudProxy` again with the new `proxyType`.
+3. To update the current `proxyType`, call `setCloudProxy(TRANSPORT_TYPE_NONE_PROXY)` first, then call `setCloudProxy` again with the new `proxyType`.
 
 Call `setCloudProxy` outside the channel. Its settings are valid within the `RtcEngine` life cycle.
 
@@ -112,9 +112,9 @@ Take the following steps to use Cloud proxy in your app:
 
 1. Test if you can initiate audio and video calls or live broadcasts normally.
 
-1. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `noneProxy`.
+2. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `noneProxy`.
 
-1. To update the current cloud proxy type, call `setCloudProxy(noneProxy)` first, then call `setCloudProxy` again and set the cloud proxy type.
+3. To update the current cloud proxy type, call `setCloudProxy(noneProxy)` first, then call `setCloudProxy` again and set the cloud proxy type.
 
 Call `setCloudProxy` outside the channel. Its settings are valid within the `AgoraRtcEngineKit` life cycle.
 
@@ -180,9 +180,9 @@ Take the following steps to use Cloud proxy in your app:
 
 1. Test if you can initiate audio and video calls or live broadcasts normally.
 
-1. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `noneProxy`.
+2. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `noneProxy`.
 
-1. To update the current cloud proxy type, call `setCloudProxy(noneProxy)` first, then call `setCloudProxy` again and set the cloud proxy type.
+3. To update the current cloud proxy type, call `setCloudProxy(noneProxy)` first, then call `setCloudProxy` again and set the cloud proxy type.
 
 Call `setCloudProxy` outside the channel. Its settings are valid within the `AgoraRtcEngineKit` life cycle.
 
@@ -251,9 +251,9 @@ Depending on the Web SDK version you are using, refer to the corresponding imple
 
    * **Force TCP cloud proxy mode: Set `mode` to `5`**. (Supported since v4.9.0) Cloud proxy using TCP (encryption) protocol. In this mode, the SDK always transmits data over TLS 443.
 
-1. Test if you can initiate audio and video calls or live broadcasts normally.
+2. Test if you can initiate audio and video calls or live broadcasts normally.
 
-1. Video SDK provides a `client.on("is-using-cloud-proxy")` event that triggers the callback after the media stream is successfully published locally, to inform whether the current media stream is forwarded by the cloud proxy service.
+3. Video SDK provides a `client.on("is-using-cloud-proxy")` event that triggers the callback after the media stream is successfully published locally, to inform whether the current media stream is forwarded by the cloud proxy service.
 
   ```javascript
   const client = AgoraRTC.createClient({mode: 'live',codec: 'vp8'});
@@ -264,7 +264,7 @@ Depending on the Web SDK version you are using, refer to the corresponding imple
 
   ```
 
-1. To stop using the proxy server, call `stopProxyServer` after leaving the channel.
+4. To stop using the proxy server, call `stopProxyServer` after leaving the channel.
 
   ```javascript
   // Leave channel
@@ -279,7 +279,7 @@ Depending on the Web SDK version you are using, refer to the corresponding imple
   ```
 
 **v4.0.0-v4.2.1**
-1. Enable Cloud Proxy in [Agora Console](https://console.agora.io/):
+5. Enable Cloud Proxy in [Agora Console](https://console.agora.io/):
 
   1. Log in to the console.
   2. Under **Projects**, locate the project that you want to edit, then click **Configure**.
@@ -320,11 +320,11 @@ Depending on the Web SDK version you are using, refer to the corresponding imple
   The above IPs are only meant for debugging during the test phase. Before official launch, apply for custom cloud proxy service resources from Agora.
   :::
 
-1. To turn on cloud proxy server before joining the channel, call:
+2. To turn on cloud proxy server before joining the channel, call:
 
   `client.startProxyServer();`
 
-1. To turn off cloud proxy server after leaving the channel, call:
+3. To turn off cloud proxy server after leaving the channel, call:
 
   `client.stopProxyServer();`
 
@@ -418,9 +418,9 @@ Take the following steps to use Cloud proxy in your app:
 
 1. Test if you can initiate audio and video calls or live broadcasts normally.
 
-1. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `NONE_PROXY`.
+2. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `NONE_PROXY`.
 
-1. To update the current cloud proxy type, call `setCloudProxy(NONE_PROXY)` first, then call `setCloudProxy` again and set the cloud proxy type.
+3. To update the current cloud proxy type, call `setCloudProxy(NONE_PROXY)` first, then call `setCloudProxy` again and set the cloud proxy type.
 
 Call `setCloudProxy` outside the channel. Its settings are valid within the `RtcEngine` life cycle.
 
@@ -486,9 +486,9 @@ Take the following steps to use Cloud proxy in your app:
 
 1. Test if you can initiate audio and video calls or live broadcasts normally.
 
-1. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `NoneProxy`.
+2. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `NoneProxy`.
 
-1. To update the current cloud proxy type, call `setCloudProxy(NoneProxy)` first, then call `setCloudProxy` again and set the cloud proxy type.
+3. To update the current cloud proxy type, call `setCloudProxy(NoneProxy)` first, then call `setCloudProxy` again and set the cloud proxy type.
 
 Call `setCloudProxy` outside the channel. Its settings are valid within the `RtcEngine` life cycle.
 
@@ -554,9 +554,9 @@ Take the following steps to use Cloud proxy in your app:
 
 1. Test if you can initiate audio and video calls or live broadcasts normally.
 
-1. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `noneProxy`.
+2. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `noneProxy`.
 
-1. To update the current cloud proxy type, call `setCloudProxy(noneProxy)` first, then call `setCloudProxy` again and set the cloud proxy type.
+3. To update the current cloud proxy type, call `setCloudProxy(noneProxy)` first, then call `setCloudProxy` again and set the cloud proxy type.
 
 Call `setCloudProxy` outside the channel. Its settings are valid within the `RtcEngine` life cycle.
 
@@ -622,9 +622,9 @@ Take the following steps to use Cloud proxy in your app:
 
 1. Test if you can initiate audio and video calls or live broadcasts normally.
 
-1. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `NoneProxy`.
+2. To stop using Cloud proxy, call `setCloudProxy` and set `proxyType` to `NoneProxy`.
 
-1. To update the current cloud proxy type, call `setCloudProxy(NoneProxy)` first, then call `setCloudProxy` again and set the cloud proxy type.
+3. To update the current cloud proxy type, call `setCloudProxy(NoneProxy)` first, then call `setCloudProxy` again and set the cloud proxy type.
 
 Call `setCloudProxy` outside the channel. Its settings are valid within the `RtcEngine` life cycle.
 
@@ -690,9 +690,9 @@ Take the following steps to use Cloud proxy in your game:
 
 1. Test if you can initiate audio and video calls or live broadcasts normally.
 
-1. To stop using Cloud proxy, call `SetCloudProxy` and set `proxyType` to `NONE_PROXY`.
+2. To stop using Cloud proxy, call `SetCloudProxy` and set `proxyType` to `NONE_PROXY`.
 
-1. To update the current cloud proxy type, call `SetCloudProxy(NONE_PROXY)` first, then call `SetCloudProxy` again and set the cloud proxy type.
+3. To update the current cloud proxy type, call `SetCloudProxy(NONE_PROXY)` first, then call `SetCloudProxy` again and set the cloud proxy type.
 
 Call `SetCloudProxy` outside the channel. Its settings are valid within the `RtcEngine` life cycle.
 

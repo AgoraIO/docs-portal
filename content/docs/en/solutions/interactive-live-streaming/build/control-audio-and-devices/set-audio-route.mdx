@@ -39,10 +39,10 @@ Regardless of the method used to make changes to audio routing, the priority for
 1. User behavior has the highest priority for audio routing changes.
 When a user connects an external device such as a wired headset, or a Bluetooth headset, audio routing automatically switches to the external device. If the user connects multiple external devices successively, audio routing will automatically switch to the last connected device.
 
-1. When no external device is connected, the SDK uses the default audio routing.
+2. When no external device is connected, the SDK uses the default audio routing.
 Call `{props.setAudioRouteAPI}` to change this default setting. If the current audio route is the device itself, `{props.setAudioRouteAPI}` modifies the current audio route.
 
-1. Without system limitations, calling `{props.setEnableSpeakerphoneAPI}` switches the current audio routing regardless of whether the current audio routing is an external device, a speaker, or an earpiece.
+3. Without system limitations, calling `{props.setEnableSpeakerphoneAPI}` switches the current audio routing regardless of whether the current audio routing is an external device, a speaker, or an earpiece.
 However, this method only works for the current channel, it does not change the default audio routing of the device. If the user leaves the current channel and joins a new channel, the SDK still uses the default audio route.
 
 Any changes to the audio route trigger the `{props.onAudioRouteChangedAPI}` callback. Use this callback to get the current audio route.
@@ -55,11 +55,11 @@ Refer to the following example to see how plugging and unplugging a device chang
 
 1. A user joins the channel. Audio is routed to speakers.
 
-1. The user plugs in headphones. Audio routing changes to headphones.
+2. The user plugs in headphones. Audio routing changes to headphones.
 
-1. The user connects the mobile device to a Bluetooth audio device without unplugging the headset. Audio routing changes to the Bluetooth audio device.
+3. The user connects the mobile device to a Bluetooth audio device without unplugging the headset. Audio routing changes to the Bluetooth audio device.
 
-1. The user disconnects the Bluetooth audio device from the mobile device. Audio routing changes back to headphones.
+4. The user disconnects the Bluetooth audio device from the mobile device. Audio routing changes back to headphones.
 
 ### Change the default audio routing
 
@@ -69,15 +69,15 @@ Refer to the following example to understand how to change the default audio rou
 
 1. The user plugs in the headset. Audio is routed to the headset.
 
-1. The user unplugs the headset. Audio routing is changed to the default audio routing of the mobile device, depending on your usage scenario.
+2. The user unplugs the headset. Audio routing is changed to the default audio routing of the mobile device, depending on your usage scenario.
 
-1. Call `{props.setAudioRouteAPI}(true)` in the app. Audio routing is changed to speakerphone.
+3. Call `{props.setAudioRouteAPI}(true)` in the app. Audio routing is changed to speakerphone.
 
-1. User plugs in headphones. Audio routing changes to headphones.
+4. User plugs in headphones. Audio routing changes to headphones.
 
-1. Call `{props.setAudioRouteAPI}(true)`. The audio is still routed to the headset because `{props.setAudioRouteAPI}` only works for the audio routing of the device.
+5. Call `{props.setAudioRouteAPI}(true)`. The audio is still routed to the headset because `{props.setAudioRouteAPI}` only works for the audio routing of the device.
 
-1. The user unplugs the headphones. The audio routing is changed to speakerphone.
+6. The user unplugs the headphones. The audio routing is changed to speakerphone.
 
 ### Changing the current audio routing
 
@@ -87,14 +87,14 @@ Refer to the following example to understand how to change the current audio rou
 
 - Example 1:
   1. User joins a channel. Audio is routed to the speaker.
-  1. User plugs in headphones. Audio routing is changed to headphones.
-  1. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio is still routed to headphones.
+  2. User plugs in headphones. Audio routing is changed to headphones.
+  3. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio is still routed to headphones.
 
 - Example 2:
-  1. A user joins a voice call channel. Audio is routed to the speakerphone.
-  1. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio routing is changed to speakerphone.
-  1. User plugs in headset. Audio routing changes to headset.
-  1. User unplugs the headset. Audio routing changes to earpiece.
+  4. A user joins a voice call channel. Audio is routed to the speakerphone.
+  5. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio routing is changed to speakerphone.
+  6. User plugs in headset. Audio routing changes to headset.
+  7. User unplugs the headset. Audio routing changes to earpiece.
 :::note
 If the user uses an external audio playback device, such as a Bluetooth headset or a wired headset, setting `{props.setEnableSpeakerphoneAPI}(true)` is invalid and the audio is played through the external device.
 :::
@@ -144,10 +144,10 @@ Regardless of the method used to make changes to audio routing, the priority for
 1. User behavior has the highest priority for audio routing changes.
 When a user connects an external device such as a wired headset, or a Bluetooth headset, audio routing automatically switches to the external device. If the user connects multiple external devices successively, audio routing will automatically switch to the last connected device.
 
-1. When no external device is connected, the SDK uses the default audio routing.
+2. When no external device is connected, the SDK uses the default audio routing.
 Call `{props.setAudioRouteAPI}` to change this default setting. If the current audio route is the device itself, `{props.setAudioRouteAPI}` modifies the current audio route.
 
-1. Without system limitations, calling `{props.setEnableSpeakerphoneAPI}` switches the current audio routing regardless of whether the current audio routing is an external device, a speaker, or an earpiece.
+3. Without system limitations, calling `{props.setEnableSpeakerphoneAPI}` switches the current audio routing regardless of whether the current audio routing is an external device, a speaker, or an earpiece.
 However, this method only works for the current channel, it does not change the default audio routing of the device. If the user leaves the current channel and joins a new channel, the SDK still uses the default audio route.
 :::note
 Due to iOS system limitations, some audio routing is not recognized when using **in-call volume** mode. To use an external sound card or microphone, set the **audio application** scenario to the **high quality** scenario `{props.audioScenario}`. In this scenario, the SDK switches to **media volume** to work around this issue.
@@ -162,11 +162,11 @@ Refer to the following example to see how plugging and unplugging a device chang
 
 1. A user joins the channel. Audio is routed to speakers.
 
-1. The user plugs in headphones. Audio routing changes to headphones.
+2. The user plugs in headphones. Audio routing changes to headphones.
 
-1. The user connects the mobile device to a Bluetooth audio device without unplugging the headset. Audio routing changes to the Bluetooth audio device.
+3. The user connects the mobile device to a Bluetooth audio device without unplugging the headset. Audio routing changes to the Bluetooth audio device.
 
-1. The user disconnects the Bluetooth audio device from the mobile device. Audio routing changes back to headphones.
+4. The user disconnects the Bluetooth audio device from the mobile device. Audio routing changes back to headphones.
 
 ### Change the default audio routing
 
@@ -176,15 +176,15 @@ Refer to the following example to understand how to change the default audio rou
 
 1. The user plugs in the headset. Audio is routed to the headset.
 
-1. The user unplugs the headset. Audio routing is changed to the default audio routing of the mobile device, depending on your usage scenario.
+2. The user unplugs the headset. Audio routing is changed to the default audio routing of the mobile device, depending on your usage scenario.
 
-1. Call `{props.setAudioRouteAPI}(true)` in the app. Audio routing is changed to speakerphone.
+3. Call `{props.setAudioRouteAPI}(true)` in the app. Audio routing is changed to speakerphone.
 
-1. User plugs in headphones. Audio routing changes to headphones.
+4. User plugs in headphones. Audio routing changes to headphones.
 
-1. Call `{props.setAudioRouteAPI}(true)`. The audio is still routed to the headset because `{props.setAudioRouteAPI}` only works for the audio routing of the device.
+5. Call `{props.setAudioRouteAPI}(true)`. The audio is still routed to the headset because `{props.setAudioRouteAPI}` only works for the audio routing of the device.
 
-1. The user unplugs the headphones. The audio routing is changed to speakerphone.
+6. The user unplugs the headphones. The audio routing is changed to speakerphone.
 
 ### Changing the current audio routing
 
@@ -194,14 +194,14 @@ Refer to the following example to understand how to change the current audio rou
 
 - Example 1:
   1. User joins a channel. Audio is routed to the speaker.
-  1. User plugs in headphones. Audio routing is changed to headphones.
-  1. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio is still routed to headphones.
+  2. User plugs in headphones. Audio routing is changed to headphones.
+  3. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio is still routed to headphones.
 
 - Example 2:
-  1. A user joins a voice call channel. Audio is routed to the speakerphone.
-  1. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio routing is changed to speakerphone.
-  1. User plugs in headset. Audio routing changes to headset.
-  1. User unplugs the headset. Audio routing changes to earpiece.
+  4. A user joins a voice call channel. Audio is routed to the speakerphone.
+  5. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio routing is changed to speakerphone.
+  6. User plugs in headset. Audio routing changes to headset.
+  7. User unplugs the headset. Audio routing changes to earpiece.
 :::note
 If the user uses an external audio playback device, such as a Bluetooth headset or a wired headset, setting `{props.setEnableSpeakerphoneAPI}(true)` is invalid and the audio is played through the external device.
 :::
@@ -350,10 +350,10 @@ Regardless of the method used to make changes to audio routing, the priority for
 1. User behavior has the highest priority for audio routing changes.
 When a user connects an external device such as a wired headset, or a Bluetooth headset, audio routing automatically switches to the external device. If the user connects multiple external devices successively, audio routing will automatically switch to the last connected device.
 
-1. When no external device is connected, the SDK uses the default audio routing.
+2. When no external device is connected, the SDK uses the default audio routing.
 Call `{props.setAudioRouteAPI}` to change this default setting. If the current audio route is the device itself, `{props.setAudioRouteAPI}` modifies the current audio route.
 
-1. Without system limitations, calling `{props.setEnableSpeakerphoneAPI}` switches the current audio routing regardless of whether the current audio routing is an external device, a speaker, or an earpiece.
+3. Without system limitations, calling `{props.setEnableSpeakerphoneAPI}` switches the current audio routing regardless of whether the current audio routing is an external device, a speaker, or an earpiece.
 However, this method only works for the current channel, it does not change the default audio routing of the device. If the user leaves the current channel and joins a new channel, the SDK still uses the default audio route.
 :::note
 Due to iOS system limitations, some audio routing is not recognized when using **in-call volume** mode. To use an external sound card or microphone, set the **audio application** scenario to the **high quality** scenario `{props.audioScenario}`. In this scenario, the SDK switches to **media volume** to work around this issue.
@@ -368,11 +368,11 @@ Refer to the following example to see how plugging and unplugging a device chang
 
 1. A user joins the channel. Audio is routed to speakers.
 
-1. The user plugs in headphones. Audio routing changes to headphones.
+2. The user plugs in headphones. Audio routing changes to headphones.
 
-1. The user connects the mobile device to a Bluetooth audio device without unplugging the headset. Audio routing changes to the Bluetooth audio device.
+3. The user connects the mobile device to a Bluetooth audio device without unplugging the headset. Audio routing changes to the Bluetooth audio device.
 
-1. The user disconnects the Bluetooth audio device from the mobile device. Audio routing changes back to headphones.
+4. The user disconnects the Bluetooth audio device from the mobile device. Audio routing changes back to headphones.
 
 ### Change the default audio routing
 
@@ -382,15 +382,15 @@ Refer to the following example to understand how to change the default audio rou
 
 1. The user plugs in the headset. Audio is routed to the headset.
 
-1. The user unplugs the headset. Audio routing is changed to the default audio routing of the mobile device, depending on your usage scenario.
+2. The user unplugs the headset. Audio routing is changed to the default audio routing of the mobile device, depending on your usage scenario.
 
-1. Call `{props.setAudioRouteAPI}(true)` in the app. Audio routing is changed to speakerphone.
+3. Call `{props.setAudioRouteAPI}(true)` in the app. Audio routing is changed to speakerphone.
 
-1. User plugs in headphones. Audio routing changes to headphones.
+4. User plugs in headphones. Audio routing changes to headphones.
 
-1. Call `{props.setAudioRouteAPI}(true)`. The audio is still routed to the headset because `{props.setAudioRouteAPI}` only works for the audio routing of the device.
+5. Call `{props.setAudioRouteAPI}(true)`. The audio is still routed to the headset because `{props.setAudioRouteAPI}` only works for the audio routing of the device.
 
-1. The user unplugs the headphones. The audio routing is changed to speakerphone.
+6. The user unplugs the headphones. The audio routing is changed to speakerphone.
 
 ### Changing the current audio routing
 
@@ -400,14 +400,14 @@ Refer to the following example to understand how to change the current audio rou
 
 - Example 1:
   1. User joins a channel. Audio is routed to the speaker.
-  1. User plugs in headphones. Audio routing is changed to headphones.
-  1. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio is still routed to headphones.
+  2. User plugs in headphones. Audio routing is changed to headphones.
+  3. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio is still routed to headphones.
 
 - Example 2:
-  1. A user joins a voice call channel. Audio is routed to the speakerphone.
-  1. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio routing is changed to speakerphone.
-  1. User plugs in headset. Audio routing changes to headset.
-  1. User unplugs the headset. Audio routing changes to earpiece.
+  4. A user joins a voice call channel. Audio is routed to the speakerphone.
+  5. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio routing is changed to speakerphone.
+  6. User plugs in headset. Audio routing changes to headset.
+  7. User unplugs the headset. Audio routing changes to earpiece.
 :::note
 If the user uses an external audio playback device, such as a Bluetooth headset or a wired headset, setting `{props.setEnableSpeakerphoneAPI}(true)` is invalid and the audio is played through the external device.
 :::
@@ -463,10 +463,10 @@ Regardless of the method used to make changes to audio routing, the priority for
 1. User behavior has the highest priority for audio routing changes.
 When a user connects an external device such as a wired headset, or a Bluetooth headset, audio routing automatically switches to the external device. If the user connects multiple external devices successively, audio routing will automatically switch to the last connected device.
 
-1. When no external device is connected, the SDK uses the default audio routing.
+2. When no external device is connected, the SDK uses the default audio routing.
 Call `{props.setAudioRouteAPI}` to change this default setting. If the current audio route is the device itself, `{props.setAudioRouteAPI}` modifies the current audio route.
 
-1. Without system limitations, calling `{props.setEnableSpeakerphoneAPI}` switches the current audio routing regardless of whether the current audio routing is an external device, a speaker, or an earpiece.
+3. Without system limitations, calling `{props.setEnableSpeakerphoneAPI}` switches the current audio routing regardless of whether the current audio routing is an external device, a speaker, or an earpiece.
 However, this method only works for the current channel, it does not change the default audio routing of the device. If the user leaves the current channel and joins a new channel, the SDK still uses the default audio route.
 :::note
 Due to iOS system limitations, some audio routing is not recognized when using **in-call volume** mode. To use an external sound card or microphone, set the **audio application** scenario to the **high quality** scenario `{props.audioScenario}`. In this scenario, the SDK switches to **media volume** to work around this issue.
@@ -481,11 +481,11 @@ Refer to the following example to see how plugging and unplugging a device chang
 
 1. A user joins the channel. Audio is routed to speakers.
 
-1. The user plugs in headphones. Audio routing changes to headphones.
+2. The user plugs in headphones. Audio routing changes to headphones.
 
-1. The user connects the mobile device to a Bluetooth audio device without unplugging the headset. Audio routing changes to the Bluetooth audio device.
+3. The user connects the mobile device to a Bluetooth audio device without unplugging the headset. Audio routing changes to the Bluetooth audio device.
 
-1. The user disconnects the Bluetooth audio device from the mobile device. Audio routing changes back to headphones.
+4. The user disconnects the Bluetooth audio device from the mobile device. Audio routing changes back to headphones.
 
 ### Change the default audio routing
 
@@ -495,15 +495,15 @@ Refer to the following example to understand how to change the default audio rou
 
 1. The user plugs in the headset. Audio is routed to the headset.
 
-1. The user unplugs the headset. Audio routing is changed to the default audio routing of the mobile device, depending on your usage scenario.
+2. The user unplugs the headset. Audio routing is changed to the default audio routing of the mobile device, depending on your usage scenario.
 
-1. Call `{props.setAudioRouteAPI}(true)` in the game. Audio routing is changed to speakerphone.
+3. Call `{props.setAudioRouteAPI}(true)` in the game. Audio routing is changed to speakerphone.
 
-1. User plugs in headphones. Audio routing changes to headphones.
+4. User plugs in headphones. Audio routing changes to headphones.
 
-1. Call `{props.setAudioRouteAPI}(true)`. The audio is still routed to the headset because `{props.setAudioRouteAPI}` only works for the audio routing of the device.
+5. Call `{props.setAudioRouteAPI}(true)`. The audio is still routed to the headset because `{props.setAudioRouteAPI}` only works for the audio routing of the device.
 
-1. The user unplugs the headphones. The audio routing is changed to speakerphone.
+6. The user unplugs the headphones. The audio routing is changed to speakerphone.
 
 ### Changing the current audio routing
 
@@ -513,14 +513,14 @@ Refer to the following example to understand how to change the current audio rou
 
 - Example 1:
   1. User joins a channel. Audio is routed to the speaker.
-  1. User plugs in headphones. Audio routing is changed to headphones.
-  1. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio is still routed to headphones.
+  2. User plugs in headphones. Audio routing is changed to headphones.
+  3. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio is still routed to headphones.
 
 - Example 2:
-  1. A user joins a voice call channel. Audio is routed to the speakerphone.
-  1. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio routing is changed to speakerphone.
-  1. User plugs in headset. Audio routing changes to headset.
-  1. User unplugs the headset. Audio routing changes to earpiece.
+  4. A user joins a voice call channel. Audio is routed to the speakerphone.
+  5. App calls `{props.setEnableSpeakerphoneAPI}(true)`. Audio routing is changed to speakerphone.
+  6. User plugs in headset. Audio routing changes to headset.
+  7. User unplugs the headset. Audio routing changes to earpiece.
 :::note
 If the user uses an external audio playback device, such as a Bluetooth headset or a wired headset, setting `{props.setEnableSpeakerphoneAPI}(true)` is invalid and the audio is played through the external device.
 :::

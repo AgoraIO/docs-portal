@@ -99,37 +99,37 @@ The following example shows how to add a functional component `agora-demo`:
 
 1. A new folder is created under the `packages/agora-classroom-sdk/src/ui-kit/components` directory containing the corresponding files:
 
-![](https://web-cdn.agora.io/docs-files/1649913888493)
+   ![](https://web-cdn.agora.io/docs-files/1649913888493)
 
-```tsx
- // index.css
-    .agora-demo {
-        color: red
-    }
-    // index.tsx
-    import React from 'react'
-    import './index.css'
+   ```tsx
+    // index.css
+       .agora-demo {
+           color: red
+       }
+       // index.tsx
+       import React from 'react'
+       import './index.css'
 
-    export const AgoraDemo = () => {
-      return (
-        <div className="agora-demo">AgoraDemo</div>
-      )
-    }
-    // index.stories.tsx
-    import React from 'react';
-    import { Meta } from '@storybook/react';
-    import { AgoraDemo } from './index';
+       export const AgoraDemo = () => {
+         return (
+           <div className="agora-demo">AgoraDemo</div>
+         )
+       }
+       // index.stories.tsx
+       import React from 'react';
+       import { Meta } from '@storybook/react';
+       import { AgoraDemo } from './index';
 
-    const meta: Meta = {
-        title: 'Components/AgoraDemo',
-        component: AgoraDemo,
-    };
-    export default meta;
+       const meta: Meta = {
+           title: 'Components/AgoraDemo',
+           component: AgoraDemo,
+       };
+       export default meta;
 
-    export const Docs = () => (
-        <AgoraDemo />
-    )
-```
+       export const Docs = () => (
+           <AgoraDemo />
+       )
+   ```
 
 You can see this function component in Storybook, as follows:
 
@@ -177,71 +177,71 @@ The following example shows how to add a business component that displays the cl
 
 1. Create a new folder `agora-demo` under `packages/fcr-ui-scene/src/containers`, containing the `index.tsx` and `index.css` files.
 
-```tsx
-// index.css
-.agora-demo {
-    width: 50%;
-    height: 50%;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: auto;
-    border: 1px solid black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999999;
-    background: #fff;
-}
-.agora-demo-title {
-    color: red;
-}
-// index.tsx
-import React from 'react';
-import { observer } from 'mobx-react';
-import './index.css';
-import { useStore } from '@ui-scene/utils/hooks/use-store';
+   ```tsx
+   // index.css
+   .agora-demo {
+       width: 50%;
+       height: 50%;
+       position: fixed;
+       top: 0;
+       right: 0;
+       bottom: 0;
+       left: 0;
+       margin: auto;
+       border: 1px solid black;
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+       z-index: 99999999;
+       background: #fff;
+   }
+   .agora-demo-title {
+       color: red;
+   }
+   // index.tsx
+   import React from 'react';
+   import { observer } from 'mobx-react';
+   import './index.css';
+   import { useStore } from '@ui-scene/utils/hooks/use-store';
 
-export default observer(function AgoraDemo() {
-const { statusBarUIStore } = useStore();
-return (
-    <div className="agora-demo">
-    <h1 className="agora-demo-title">This is our new business component</h1>
-    <h2>This component is used to display the network status and class status</h2>
-    <div>
-        Network status: {statusBarUIStore.networkQuality} Network Delay: {statusBarUIStore.delay} Packet loss：
-        {statusBarUIStore.packetLoss}
-    </div>
-    <div>Class status: {statusBarUIStore.classStatusText}</div>
-    </div>
-);
-});
-```
+   export default observer(function AgoraDemo() {
+   const { statusBarUIStore } = useStore();
+   return (
+       <div className="agora-demo">
+       <h1 className="agora-demo-title">This is our new business component</h1>
+       <h2>This component is used to display the network status and class status</h2>
+       <div>
+           Network status: {statusBarUIStore.networkQuality} Network Delay: {statusBarUIStore.delay} Packet loss：
+           {statusBarUIStore.packetLoss}
+       </div>
+       <div>Class status: {statusBarUIStore.classStatusText}</div>
+       </div>
+   );
+   });
+   ```
 
 2. Import this component in the interactive small class scene `packages/fcr-ui-scene/src/scenarios/classroom.tsx` file:
 
-```tsx
-...
-import AgoraDemo from '@ui-scene/containers/agora-demo';
+   ```tsx
+   ...
+   import AgoraDemo from '@ui-scene/containers/agora-demo';
 
-    const {
-        join,
-        layoutUIStore: { classroomViewportClassName },
-    } = useStore();
-    useEffect(() => {
-        join();
-    }, []);
-    return (
-        <div className={classroomViewportClassName}>
-            ...
-            <AgoraDemo />
-        </div>
-    );
-});
-```
+       const {
+           join,
+           layoutUIStore: { classroomViewportClassName },
+       } = useStore();
+       useEffect(() => {
+           join();
+       }, []);
+       return (
+           <div className={classroomViewportClassName}>
+               ...
+               <AgoraDemo />
+           </div>
+       );
+   });
+   ```
 
 The effect of this business component in Flexible Classroom is as follows:
 
@@ -356,42 +356,42 @@ Flexible Classroom has two built-in languages: English `en` and Chinese `zh`. If
 
 1. Modify the `packages/fcr-ui-scene/src/type.ts` file to add Spanish to the Language type:
 
-```tsx
-// Add Spanish es
-export type Language = 'en' | 'zh' | 'es';
-```
+   ```tsx
+   // Add Spanish es
+   export type Language = 'en' | 'zh' | 'es';
+   ```
 
 2. Create a `esAr.ts` language pack file in `packages/fcr-ui-scene/src/resources/translations` with the following content:
 
-```tsx
-// You can copy the content from the enUs.ts file here and modify the corresponding language text
+   ```tsx
+   // You can copy the content from the enUs.ts file here and modify the corresponding language text
 
-    // Language pack Key: Value
-    ...
-}
-```
+       // Language pack Key: Value
+       ...
+   }
+   ```
 
 3. Load the language pack corresponding to the language when the launch method is called:
 
-```tsx
-// Introduce language pack
-import { esAr } from './resources/translations/esAr.ts';
-...
+   ```tsx
+   // Introduce language pack
+   import { esAr } from './resources/translations/esAr.ts';
+   ...
 
-static launch(dom: HTMLElement, launchOptions: LaunchOptions) {
-    ...
-    // Load the language pack corresponding to es
-    Promise.all([addResourceBundle('zh', zhCn), addResourceBundle('en', enUs), addResourceBundle('es', esAr)])
-    ...
-}
-```
+   static launch(dom: HTMLElement, launchOptions: LaunchOptions) {
+       ...
+       // Load the language pack corresponding to es
+       Promise.all([addResourceBundle('zh', zhCn), addResourceBundle('en', enUs), addResourceBundle('es', esAr)])
+       ...
+   }
+   ```
 
 4. Pass in the corresponding language when calling the launch method:
 
-```tsx
-FcrUIScene.launch(document.querySelector('#root'), {
-    ...
-    language: 'es',
-    ...
-});
-```
+   ```tsx
+   FcrUIScene.launch(document.querySelector('#root'), {
+       ...
+       language: 'es',
+       ...
+   });
+   ```

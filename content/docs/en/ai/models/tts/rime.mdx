@@ -97,10 +97,17 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-The Rime API key used to authenticate requests. You must provide a valid key for the service to function.
-
-The speaker voice to use for TTS output. For example, `cove`.
-
-The Rime TTS model to use. For example, `mistv2`. Different models provide different voice qualities and capabilities.
-
-The WebSocket URL for the Rime streaming API. For example, `wss://users.rime.ai/ws2`.
+<ParameterList title="params" required>
+  <Parameter name="api_key" type="string" required>
+    The Rime API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="speaker" type="string" required>
+    The speaker voice to use for TTS output. For example, `cove`.
+  </Parameter>
+  <Parameter name="modelId" type="string" required>
+    The Rime TTS model to use. For example, `mistv2`. Different models provide different voice qualities and capabilities.
+  </Parameter>
+  <Parameter name="base_url" type="string" optional>
+    The WebSocket URL for the Rime streaming API. For example, `wss://users.rime.ai/ws2`.
+  </Parameter>
+</ParameterList>

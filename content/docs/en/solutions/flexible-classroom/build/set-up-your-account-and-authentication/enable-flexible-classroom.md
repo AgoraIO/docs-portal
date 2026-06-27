@@ -80,7 +80,7 @@ To setup and configure storage and recording in for your classrooms:
        For how to get these parameters, see the [Amazon S3 document](https://docs.aws.amazon.com/general/latest/gr/s3.html).
        :::
 
-1. **Configure your classroom**
+2. **Configure your classroom**
 
      1. Find the cloud recording module on the **Flexible Classroom configuration** page in Agora Console:
 
@@ -90,7 +90,7 @@ To setup and configure storage and recording in for your classrooms:
         The recording config can be set to default. Set the storage config to customized; otherwise, the recording cannot be stored in your OSS account.
         :::
 
-    1. Configure storage
+    2. Configure storage
 
         Pass in the `storageConfig` JSON object for storing recorded files. Use the following fields to specify the url and storage location of the recording file.
         
@@ -141,7 +141,7 @@ To setup and configure storage and recording in for your classrooms:
 
          For complete parameter descriptions, see [storageConfig](https://docs.agora.io/en/cloud-recording/reference/restful-api).
 
-    1. Configure recording.
+    3. Configure recording.
 
        By default, you record teacher audio and video in [composite recording mode](https://docs.agora.io/en/cloud-recording/develop/composite-mode). Your recorded files are stored in Agora's Amazon S3 account. To change the default behavior, Pass in the `recordingConfig` JSON object:
 
