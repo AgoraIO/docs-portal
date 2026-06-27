@@ -780,6 +780,61 @@ describe('docs content regressions', () => {
     );
   });
 
+  it('renders broadcast streaming storage region notes as callouts', async () => {
+    const { source } = await import('./source.server');
+    const regionNoteMarker =
+      'make sure that the region of the third-party cloud storage corresponds to the same geographical region';
+    const pages = [
+      source.getPage(
+        [
+          'api-reference',
+          'api-ref',
+          'broadcast-streaming',
+          'custom-recording',
+          'configuration',
+        ],
+        'en',
+      ),
+      source.getPage(
+        [
+          'api-reference',
+          'api-ref',
+          'broadcast-streaming',
+          'snapshot-moderation',
+          'custom',
+        ],
+        'en',
+      ),
+    ];
+
+    for (const page of pages) {
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
+
+      if (!page || !('getText' in page.data)) {
+        throw new Error(
+          'Expected broadcast streaming API page to expose processed markdown.',
+        );
+      }
+
+      const processed = await page.data.getText('processed');
+      const markerIndex = processed.indexOf(regionNoteMarker);
+      const calloutStartIndex = processed.lastIndexOf(
+        '<CalloutContainer type="info">',
+        markerIndex,
+      );
+      const calloutEndIndex = processed.indexOf(
+        '</CalloutContainer>',
+        markerIndex,
+      );
+
+      expect(markerIndex).toBeGreaterThanOrEqual(0);
+      expect(calloutStartIndex).toBeGreaterThanOrEqual(0);
+      expect(calloutEndIndex).toBeGreaterThan(markerIndex);
+      expect(processed).not.toContain(':::\n');
+    }
+  }, 20_000);
+
   it('renders AI model callout directives through the processed markdown pipeline', async () => {
     const { source } = await import('./source.server');
     const modelDocsRoot = resolve(docsRoot, 'ai/models');

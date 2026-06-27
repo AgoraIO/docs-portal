@@ -173,9 +173,10 @@ The storage configuration of the recording files, including the following fields
 
 	
 - `region`: Number. The region information specified for the third-party cloud storage. The recording service only supports regions in the following lists:
-  :::info
+
+::::info
 In order to improve the success rate and real-time performance when uploading recording files, if you set the `region` of the cloud recording service in the `acquire` method, make sure that the region of the third-party cloud storage corresponds to the same geographical region. For example, if the region of the cloud recording service is set to `NA` (North America), the third-party cloud storage needs to be set to a location within North America.
-:::
+::::
 	
 <details>
 		<summary>When the third-party cloud storage is Qiniu Cloud (<code>vendor</code> = 0):</summary>
