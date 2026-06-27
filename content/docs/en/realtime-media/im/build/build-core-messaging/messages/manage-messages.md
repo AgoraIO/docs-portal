@@ -983,18 +983,18 @@ You can call the `ChatManager#getMsgsWithKeyword` method to search in all conver
 ```typescript
 ChatClient.getInstance()
   .chatManager.getMsgsWithKeyword({
-    keywords, // 搜索关键字
-    direction, // 搜索方向
-    timestamp, // 搜索消息的时间戳，从该时间戳开始按照搜索方向 `direction` 搜索。
-    maxCount: 20, // 请求的消息数量
-    from: "", // 消息发送者
-    searchScope: ChatMessageSearchScope.All, // 搜索范围，详见 `ChatMessageSearchScope` 类型。
+    keywords, // Search keyword
+    direction, // Search direction
+    timestamp, // Message timestamp. Search starts from this timestamp in the specified direction.
+    maxCount: 20, // Number of messages to request
+    from: "", // Message sender
+    searchScope: ChatMessageSearchScope.All, // Search scope. See the ChatMessageSearchScope type.
   })
   .then((res) => {
-    // todo: 操作成功, 处理返回的结果
+    // Operation succeeded. Handle the returned result.
   })
   .catch((error) => {
-    // todo: 发生错误
+    // An error occurred.
   });
 ```
 
