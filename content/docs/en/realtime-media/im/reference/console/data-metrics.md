@@ -23,45 +23,45 @@ The number of users who log in or send or receive messages today (00:00 – curr
 
 The highest number of DAU from 00:00 on the first day of this month to the current time.
 
-### Total s
+### Total chat groups
 
-The number of created s under this project as of the current time (disbanded s are excluded).
+The number of created chat groups under this project as of the current time (disbanded chat groups are excluded).
 
-### Daily new s
+### Daily new chat groups
 
-The number of newly created s under this project today (00:00 – current time).
+The number of newly created chat groups under this project today (00:00 – current time).
 
-### Daily disbanded s
+### Daily disbanded chat groups
 
-The number of disbanded s under this project today (00:00 – current time).
+The number of disbanded chat groups under this project today (00:00 – current time).
 
-### Daily active s
+### Daily active chat groups
 
-The number of s that send uplink messages or receive downlink messages today (00:00 – current time).
+The number of chat groups that send uplink messages or receive downlink messages today (00:00 – current time).
 
-### Total s
+### Total chat rooms
 
-The number of created s under this project as of the current time (disbanded s are excluded).
+The number of created chat rooms under this project as of the current time (disbanded chat rooms are excluded).
 
-### Daily new s
+### Daily new chat rooms
 
-The number of newly created s under this project today (00:00 – current time).
+The number of newly created chat rooms under this project today (00:00 – current time).
 
-### Daily disbanded s
+### Daily disbanded chat rooms
 
-The number of disbanded s under this project today (00:00 – current time).
+The number of disbanded chat rooms under this project today (00:00 – current time).
 
-### Daily active s
+### Daily active chat rooms
 
-The number of s that send uplink messages or receive downlink messages today (00:00 – current time).
+The number of chat rooms that send uplink messages or receive downlink messages today (00:00 – current time).
 
-### Daily  PCU
+### Daily chat room PCU
 
-The highest number of users connected to servers at the same time in s under this project today (00:00 - current time). Note that the displayed data has a 10-minute delay.
+The highest number of users connected to servers at the same time in chat rooms under this project today (00:00 - current time). Note that the displayed data has a 10-minute delay.
 
 ## Message count metrics
 
-The following metrics apply to s, s, and s, as well as all message types.
+The following metrics apply to chat groups, chat rooms, and one-to-one chats, as well as all message types.
 
 ### Total dispatched messages
 
@@ -86,12 +86,12 @@ The number of messages sent from the Chat server to offline users as of yesterda
 | Metric type | Description |
 | :--------- | :----------------------------------------------- |
 | Manual login | Users log in through a password or token. |
-| Automatic login | Users log in automatically (TODO). |
+| Automatic login | Users log in automatically through a persistent token. |
 | Message sending | Users send messages. |
 | Friends management | User operations such as adding or removing friends from their contacts. |
 | User management | User operations such as creating and updating a profile. |
-|  management | User operations such as creating and deleting s. |
-|  management | User operations such as creating and deleting s. |
+| Chat group management | User operations such as creating and deleting chat groups. |
+| Chat room management | User operations such as creating and deleting chat rooms. |
 
 ### Metric
 
@@ -107,8 +107,8 @@ The number of messages sent from the Chat server to offline users as of yesterda
 - The password is invalid.
 - Ths user cannot perform the operation without an admin permission.
 - The user does not exist.
-- The  does not exist.
-- The user is not found in the .
+- The chat group does not exist.
+- The user is not found in the chat group.
 
 ## Server API metrics
 
@@ -120,8 +120,8 @@ The number of messages sent from the Chat server to offline users as of yesterda
 | User system registration | User registration and retrieving, modifying, and deleting user information through the RESTful API. |
 | File upload / download | Uploading and downloading audio, image, and other files through the RESTful API. |
 | Message sending | Sending a message through the RESTful API. |
-|  management | Functions such as creating and deleting s through the RESTful API. |
-|  management | Functions such as creating and deleting s through the RESTful API. |
+| Chat group management | Functions such as creating and deleting chat groups through the RESTful API. |
+| Chat room management | Functions such as creating and deleting chat rooms through the RESTful API. |
 | User attributes | Functions such as setting and deleting user attributes through the RESTful API. |
 
 ### Metric
