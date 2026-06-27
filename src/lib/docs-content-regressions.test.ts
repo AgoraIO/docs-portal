@@ -119,6 +119,10 @@ describe('docs content regressions', () => {
     return readFileSync(resolve(voiceDocsRoot, relativePath), 'utf8');
   }
 
+  function readDoc(relativePath: string) {
+    return readFileSync(resolve(docsRoot, relativePath), 'utf8');
+  }
+
   function aiModelsDocSlugs(file: string) {
     const relativePath = relative(docsRoot, file).replace(/\\/g, '/');
     const withoutExtension = relativePath.replace(/\.mdx?$/, '');
@@ -180,6 +184,52 @@ describe('docs content regressions', () => {
     }
 
     expect(offenders).toEqual([]);
+  });
+
+  it('keeps PR 285 code and table recovery pages from regressing to placeholders', () => {
+    const multihostDocs = [
+      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
+      'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
+      'solutions/interactive-live-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
+    ];
+
+    for (const relativePath of multihostDocs) {
+      const content = readDoc(relativePath);
+
+      expect(content).not.toContain('not available yet');
+      expect(content.match(/<PlatformStructured platform=/g) ?? []).toHaveLength(
+        3,
+      );
+      expect(content).toContain('```java');
+      expect(content).toContain('```swift');
+      expect(content).toContain('```dart');
+      expect(content).toContain('onTranscodedStreamLayoutInfo');
+      expect(content).toContain('didTranscodedStreamLayoutInfoUpdatedWithUserId');
+    }
+
+    const cloudRecording = readDoc(
+      'realtime-media/cloud-recording/reference/restful-api.mdx',
+    );
+
+    expect(cloudRecording).toContain(
+      '`POST /v1/apps/{appid}/cloud_recording/acquire`',
+    );
+    expect(cloudRecording).toContain(
+      '`GET /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/query`',
+    );
+    expect(cloudRecording).toContain('`GET /v1/ncs/ip`');
+
+    const whiteboard = readDoc(
+      'realtime-media/whiteboard/overview/core-concepts.md',
+    );
+
+    expect(whiteboard).toContain(
+      '| Permission | `admin` | `writer` | `reader` |',
+    );
+    expect(whiteboard.match(/^\|:-----------\|/gm) ?? []).toHaveLength(3);
+    expect(whiteboard).toContain(
+      '| Query the progress of a specific file-conversion task | Yes | Yes | Yes |',
+    );
   });
 
   it('keeps agora analytics call inspector headings free of inline raw anchors', () => {
