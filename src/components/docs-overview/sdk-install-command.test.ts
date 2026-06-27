@@ -55,6 +55,12 @@ describe('deriveInstallCommand', () => {
     ).toEqual({ tool: 'npm', command: 'npm i agora-rtc-react@2.3.0' });
   });
 
+  it('handles a scoped unpkg package', () => {
+    expect(
+      deriveInstallCommand(v('https://unpkg.com/@agora/sdk@1.0.0/dist/')),
+    ).toEqual({ tool: 'npm', command: 'npm i @agora/sdk@1.0.0' });
+  });
+
   it('derives an unpinned npm command from an npmjs URL', () => {
     expect(
       deriveInstallCommand(v('https://www.npmjs.com/package/agora-chat')),

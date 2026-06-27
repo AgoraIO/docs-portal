@@ -50,9 +50,15 @@ export function deriveInstallCommand(
       return null;
     }
     case 'unpkg.com': {
-      // /<name>@<version>/...
-      const spec = segments[0];
-      return spec ? { tool: 'npm', command: `npm i ${spec}` } : null;
+      // /<name>@<version>/... or /@scope/<name>@<version>/...
+      if (!segments[0]) {
+        return null;
+      }
+      const spec =
+        segments[0].startsWith('@') && segments[1]
+          ? `${segments[0]}/${segments[1]}`
+          : segments[0];
+      return { tool: 'npm', command: `npm i ${spec}` };
     }
     case 'www.npmjs.com': {
       // /package/<name> or /package/@scope/name, optionally followed by /v/<version>

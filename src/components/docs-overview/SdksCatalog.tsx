@@ -280,7 +280,7 @@ function CopyButton({ value }: { value: string }) {
 
   return (
     <button
-      aria-label="Copy install command"
+      aria-label={copied ? 'Copied' : 'Copy install command'}
       className="shrink-0 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
       onClick={async () => {
         await navigator.clipboard.writeText(value);
