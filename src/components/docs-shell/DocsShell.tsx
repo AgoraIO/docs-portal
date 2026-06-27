@@ -58,8 +58,7 @@ const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
 const DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME = 'max-w-[min(100%,1600px)]';
 const DOCS_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
-const DOCS_FILL_DESKTOP_GRID_CLASS_NAME =
-  'xl:grid-cols-[256px_minmax(0,1fr)]';
+const DOCS_FILL_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)]';
 const mobileSidebarGroupLabelClassName =
   'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
 const mobileTabLinkClassName =
