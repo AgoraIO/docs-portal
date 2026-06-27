@@ -3,7 +3,7 @@ title: "Manage chat groups"
 description: "Introduces chat group functionalities."
 ---
 
-s enable real-time messaging among multiple users.
+Chat groups enable real-time messaging among multiple users.
 
 This page shows how to use the Chat SDK to create and manage a chat group in your app.
 
@@ -104,7 +104,7 @@ This section describes how to call the APIs provided by the Chat SDK to implemen
 
 Users can create a chat group and set the chat group attributes such as the name, description, group members, and reasons for creating the group. Users can also set the `GroupOptions` parameter to specify the size and type of the chat group. Once a chat group is created, the creator of the chat group automatically becomes the chat group owner.
 
-Only chat group owners can disband s. Once a chat group is disbanded, all members of that chat group receive the `onGroupDestroyed` callback and are immediately removed from the chat group. All local data for the chat group is also removed from the database and memory.
+Only chat group owners can disband chat groups. Once a chat group is disbanded, all members of that chat group receive the `onGroupDestroyed` callback and are immediately removed from the chat group. All local data for the chat group is also removed from the database and memory.
 
 Refer to the following sample code to create and destroy a chat group:
 
@@ -401,7 +401,7 @@ ChatClient.getInstance().groupManager().removeGroupChangeListener(groupListener)
 
 Users can create a chat group and set the chat group attributes such as the name, description, group members, and reasons for creating the group. Users can also specify the size and type of a chat group. Once a chat group is created, the creator of the chat group automatically becomes the chat group owner.
 
-Only chat group owners can disband s. Once a chat group is disbanded, all members of that chat group are immediately removed from the chat group. All local data for the chat group is also removed from the database and memory.
+Only chat group owners can disband chat groups. Once a chat group is disbanded, all members of that chat group are immediately removed from the chat group. All local data for the chat group is also removed from the database and memory.
 
 Refer to the following sample code to create and destroy a chat group:
 
@@ -1973,7 +1973,7 @@ SDKClient.Instance.GroupManager.RemoveGroupManagerDelegate(adelegate);
 
 Users can create a chat group and set the chat group attributes such as the name, description, group members, and reasons for creating the group. Users can also set the `GroupOptions` parameter to specify the size and type of the chat group. Once a chat group is created, the creator of the chat group automatically becomes the chat group owner.
 
-Only chat group owners can disband s. Once a chat group is disbanded, all members of that chat group receive the `destroy` callback and are immediately removed from the chat group. All local data for the chat group is also removed from the database and memory.
+Only chat group owners can disband chat groups. Once a chat group is disbanded, all members of that chat group receive the `destroy` callback and are immediately removed from the chat group. All local data for the chat group is also removed from the database and memory.
 
 Refer to the following sample code to create and destroy a chat group:
 

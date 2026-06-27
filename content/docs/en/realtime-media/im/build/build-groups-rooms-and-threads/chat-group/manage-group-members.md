@@ -3,7 +3,7 @@ title: "Manage chat group members"
 description: "Introduces chat group functionalities."
 ---
 
-s enable real-time messaging among multiple users.
+Chat groups enable real-time messaging among multiple users.
 
 This page shows how to use the Chat SDK to manage the members of a chat group in your app.
 
