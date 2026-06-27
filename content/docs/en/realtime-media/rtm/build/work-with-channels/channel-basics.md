@@ -11,7 +11,7 @@ Conceptually, a channel is a conduit that controls the flow of messages. Signali
 
 - **Message channel**
 
-    A message channel uses a communication method similar to the MQTT protocol. It follows the pub/sub (publish-subscriber) model to deliver messages. In message channels, instead of creating a channel in advance, you simply publish messages to a specified channel or subscribe to receive messages from a channel. Due to the flexibility of the model, you can easily implement different topologies such as one-to-one channels, group channels, broadcast channels, and unicast channels. Since the number of subscribers can be larger, this channel type does not guarantee sending delivery receipts from all subscribers after receipt of a message. See [Message channels](message-channel.md) for implementation details.
+    A message channel uses a communication method similar to the MQTT protocol. It follows the pub/sub (publish-subscriber) model to deliver messages. In message channels, instead of creating a channel in advance, you simply publish messages to a specified channel or subscribe to receive messages from a channel. Due to the flexibility of the model, you can easily implement different topologies such as one-to-one channels, group channels, broadcast channels, and unicast channels. Since the number of subscribers can be larger, this channel type does not guarantee sending delivery receipts from all subscribers after receipt of a message. See [Message channels](message-channel.mdx) for implementation details.
     
 - **User channel** 
 

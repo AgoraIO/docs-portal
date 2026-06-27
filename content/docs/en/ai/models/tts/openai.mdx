@@ -129,19 +129,26 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-The following parameters are required when using your own API key (BYOK). They are not required when using a preset.
-
-The endpoint URL for the OpenAI TTS service. Required when using your own API key (BYOK). See [How to use data residency](https://platform.openai.com/docs/guides/your-data#how-to-use-data-residency).
-
-The API key used for authentication. Required when using your own API key (BYOK). Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
-
-Identifier of the model to be used. Required when using your own API key (BYOK).
-
-The voice identifier for speech synthesis.
-
-Custom instructions for voice style, accent, pace, and tone. Helps fine-tune the speech characteristics.
-
-Speaking rate multiplier. Values between `0.25` and `4.0`, where `1.0` is normal speed.
+<ParameterList title="params" required={true}>
+  <Parameter name="base_url" type="string" required={true}>  
+  The endpoint URL for the OpenAI TTS service. See [How to use data residency](https://platform.openai.com/docs/guides/your-data#how-to-use-data-residency).
+  </Parameter>
+  <Parameter name="api_key" type="string" required={true}>  
+  The API key used for authentication. Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+  Identifier of the model to be used. 
+  </Parameter>
+  <Parameter name="voice" type="string" required={true}>  
+  The voice identifier for speech synthesis. 
+  </Parameter>
+  <Parameter name="instructions" type="string" required={false}>
+  Custom instructions for voice style, accent, pace, and tone. Helps fine-tune the speech characteristics.
+  </Parameter>
+  <Parameter name="speed" type="number" defaultValue="1.0" required={false}>
+  Speaking rate multiplier. Values between `0.25` and `4.0`, where `1.0` is normal speed.
+  </Parameter>
+</ParameterList>
 
 :::info[Info]
 OpenAI TTS models do not support changing the sample rate. The audio output is fixed at 24,000 Hz.

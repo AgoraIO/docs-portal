@@ -8,15 +8,15 @@ The Agent Studio test interface allows you to test your agent configuration and 
 
 1. Make sure the models selected on the **Models** tab use an **Agora Managed Key**. If you are using your own API keys, verify that your credentials are valid.
 
-1. Select the **Test Call** tab in the right panel. The agent visualizer shows **Agent Disconnected** status.
+2. Select the **Test Call** tab in the right panel. The agent visualizer shows **Agent Disconnected** status.
 
    ![Test agent panel](/images/conversational-ai/studio/test-agent-panel.png)
 
-1. Click **Start Call**. The agent status changes to "Joining" to "Connecting Agent" to "Talking" and then to "Listening", indicating the agent is ready to hear you.
+3. Click **Start Call**. The agent status changes to "Joining" to "Connecting Agent" to "Talking" and then to "Listening", indicating the agent is ready to hear you.
 
    ![Test agent connected](/images/conversational-ai/studio/test-agent-connected.png)
 
-1. Speak to your agent and confirm it responds correctly and maintains a conversation without errors.
+4. Speak to your agent and confirm it responds correctly and maintains a conversation without errors.
 
 ## What to test
 

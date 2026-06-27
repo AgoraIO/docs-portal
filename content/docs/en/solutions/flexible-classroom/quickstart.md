@@ -53,9 +53,9 @@ To prepare your development environment:
 
 1. [Download](https://git-scm.com/downloads) Git.
 
-1. [Download](https://nodejs.org/en) and install Node.js. It is recommended to use Node.js 16. Node.js 18 and above versions are not supported yet.
+2. [Download](https://nodejs.org/en) and install Node.js. It is recommended to use Node.js 16. Node.js 18 and above versions are not supported yet.
 
-1. Install Yarn:
+3. Install Yarn:
 
    - If you have `Node.js` `16.10` or later, you can directly enable `yarn` with the following command:
 
@@ -69,13 +69,13 @@ To prepare your development environment:
       npm i -g corepack enable
       ```
 
-1. (Optional) To install `nvm`, run the following command:
+4. (Optional) To install `nvm`, run the following command:
 
    ```bash
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
    ```
 
-1. (Optional) When Electron installation fails, you can install it by setting the Electron mirror address:
+5. (Optional) When Electron installation fails, you can install it by setting the Electron mirror address:
 
     ```bash
     export ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/
@@ -93,13 +93,13 @@ To prepare your development environment:
    git clone https://github.com/AgoraIO-Community/flexible-classroom-desktop.git
    ```
 
-1. After the download is complete, navigate to the folder:
+2. After the download is complete, navigate to the folder:
 
    ```bash
    cd flexible-classroom-desktop
    ```
 
-1. Best practice is to switch to the latest release.
+3. Best practice is to switch to the latest release.
 
     To switch to the branch for version `2.9.0`, run the command:
 
@@ -126,7 +126,7 @@ Follow these steps to launch a Flexible Classroom:
    yarn install:packages
    ```
 
-1. Copy the App ID and App Certificate from Agora Console and update the corresponding parameters in the `.env` file:
+2. Copy the App ID and App Certificate from Agora Console and update the corresponding parameters in the `.env` file:
 
    ```javascript
    REACT_APP_AGORA_APP_ID={your appid}
@@ -135,7 +135,7 @@ Follow these steps to launch a Flexible Classroom:
 
    To facilitate your testing, the `Flexible-Classroom-Desktop` project contains a Signaling Token generator, which can generate a temporary Signaling Token with the App ID and App Certificate you provide. When your project goes live, you must deploy a Signaling Token generator on your server to ensure security.
 
-1. Run the following command to launch the web client in different development modes:
+3. Run the following command to launch the web client in different development modes:
 
    ```bash
    # Start Flexible Classroom Demo debugging
@@ -181,13 +181,13 @@ Follow these steps to launch a Flexible Classroom:
 
 1. Open the browser and navigate to `http://localhost:3000`. You see the login page of Flexible Classroom. 
 
-1. To join a classroom, type in a room name and user name. Select a class type, set the user role to `Teacher` and then press **Enter**. 
+2. To join a classroom, type in a room name and user name. Select a class type, set the user role to `Teacher` and then press **Enter**.
 
    You are logged in to Flexible Classroom.
 
-1. Install Flexible Classroom on a second device. Login with the same credentials but this time set the user role to `Student`.
+3. Install Flexible Classroom on a second device. Login with the same credentials but this time set the user role to `Student`.
 
-1. The `Teacher` and `Student` can now interact and communicate using Flexible Classroom features.
+4. The `Teacher` and `Student` can now interact and communicate using Flexible Classroom features.
 
 ## References
 

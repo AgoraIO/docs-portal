@@ -93,14 +93,17 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-   
+<ParameterList title="params" required={true}>
+ <Parameter name="key" type="string" required={true}>  
  The API key used for authentication. Get your API key from the [Azure Portal](https://portal.azure.com/).
- 
- 
+ </Parameter>
+ <Parameter name="region" type="string" required={true}>
  The Azure region where the speech service is hosted (For example, `eastus`, `westus2`).
- 
-   
+ </Parameter>
+ <Parameter name="language" type="string" required={true}>  
  The language code for speech recognition (For example, `en-US`, `es-ES`, `fr-FR`). See [supported languages](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt) for language codes.
- 
- 
+ </Parameter>
+ <Parameter name="phrase_list" type="array[string]" required={false}>
  A list of words or phrases provided in advance to improve recognition accuracy.
+ </Parameter>
+</ParameterList>

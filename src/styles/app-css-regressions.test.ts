@@ -9,11 +9,16 @@ const appCss = readFileSync(
 );
 const appCssRoot = postcss.parse(appCss);
 
+function normalizeSelector(selector: string) {
+  return selector.replace(/\s+/g, ' ').trim();
+}
+
 function getRuleBody(selector: string) {
   let rule: postcss.Rule | undefined;
+  const normalizedSelector = normalizeSelector(selector);
 
   appCssRoot.walkRules((candidate) => {
-    if (candidate.selector === selector) {
+    if (normalizeSelector(candidate.selector) === normalizedSelector) {
       rule = candidate;
     }
   });
@@ -90,6 +95,56 @@ describe('app prose CSS regressions', () => {
       expect.objectContaining({
         prop: 'height',
         value: 'auto',
+      }),
+    );
+  });
+
+  it('adds a mobile scroll affordance to wide OpenAPI code examples', () => {
+    const codeFigure = getRuleBody(
+      '.openapi-operation figure.shiki:has(> .fd-scroll-container)::after',
+    );
+    const scrollContainer = getRuleBody(
+      '.openapi-operation figure.shiki > .fd-scroll-container',
+    );
+    const webkitScrollbar = getRuleBody(
+      '.openapi-operation figure.shiki > .fd-scroll-container::-webkit-scrollbar',
+    );
+    const webkitThumb = getRuleBody(
+      '.openapi-operation figure.shiki > .fd-scroll-container::-webkit-scrollbar-thumb',
+    );
+
+    expect(codeFigure.rule.parent?.type).toBe('atrule');
+    expect((codeFigure.rule.parent as postcss.AtRule).params).toBe(
+      '(max-width: 48rem)',
+    );
+    expect(codeFigure.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'pointer-events',
+        value: 'none',
+      }),
+    );
+    expect(codeFigure.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'background',
+        value: expect.stringContaining('linear-gradient'),
+      }),
+    );
+    expect(scrollContainer.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'scrollbar-width',
+        value: 'thin',
+      }),
+    );
+    expect(webkitScrollbar.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'height',
+        value: '12px',
+      }),
+    );
+    expect(webkitThumb.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'background',
+        value: 'color-mix(in srgb, var(--ink-1) 38%, transparent)',
       }),
     );
   });

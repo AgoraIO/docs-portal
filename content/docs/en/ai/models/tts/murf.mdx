@@ -116,18 +116,29 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-The Murf API key used to authenticate requests. You must provide a valid key for the service to function.
-
-The WebSocket endpoint for streaming TTS output. For example, `wss://global.api.murf.ai/v1/speech/stream-input`.
-
-The voice identifier to use. For example, `Matthew`.
-
-The locale for the selected voice. For example, `en-US`.
-
-The speech rate adjustment. A value of `0` applies the default rate.
-
-The pitch adjustment. A value of `0` applies the default pitch.
-
-The TTS model to use. For example, `FALCON`.
-
-The audio sample rate in Hz. For example, `24000`.
+<ParameterList title="params" required>
+  <Parameter name="api_key" type="string" required>
+    The Murf API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="base_url" type="string" optional>
+    The WebSocket endpoint for streaming TTS output. For example, `wss://global.api.murf.ai/v1/speech/stream-input`.
+  </Parameter>
+  <Parameter name="voiceId" type="string" required>
+    The voice identifier to use. For example, `Matthew`.
+  </Parameter>
+  <Parameter name="locale" type="string" optional>
+    The locale for the selected voice. For example, `en-US`.
+  </Parameter>
+  <Parameter name="rate" type="number" optional>
+    The speech rate adjustment. A value of `0` applies the default rate.
+  </Parameter>
+  <Parameter name="pitch" type="number" optional>
+    The pitch adjustment. A value of `0` applies the default pitch.
+  </Parameter>
+  <Parameter name="model" type="string" optional>
+    The TTS model to use. For example, `FALCON`.
+  </Parameter>
+  <Parameter name="sample_rate" type="number" optional>
+    The audio sample rate in Hz. For example, `24000`.
+  </Parameter>
+</ParameterList>

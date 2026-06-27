@@ -151,7 +151,7 @@ Follow these steps to install, configure, and use the VAD plugin in your project
    });
    ```
 
-  1. Inject the plugin into the audio processing pipeline by calling the SDK's [`pipe`]({{global.API_REF_WEB_ROOT}}/interfaces/imicrophoneaudiotrack.html#pipe) method and specify the `processorDestination` property.
+  2. Inject the plugin into the audio processing pipeline by calling the SDK's [`pipe`]({{global.API_REF_WEB_ROOT}}/interfaces/imicrophoneaudiotrack.html#pipe) method and specify the `processorDestination` property.
 
    ```ts
    // Create an audio track
@@ -160,7 +160,7 @@ Follow these steps to install, configure, and use the VAD plugin in your project
    audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
    ```
 
-  1. If the plugin is not enabled by default, call the `enable` method to enable the plugin.
+  3. If the plugin is not enabled by default, call the `enable` method to enable the plugin.
 
    ```ts
    await processor.enable();

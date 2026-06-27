@@ -211,7 +211,7 @@ in your Agora project:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. **Enable the extension**
+2. **Enable the extension**
 
   Call `enableExtension` to enable the extension. To enable multiple extensions, call `enableExtension` as many times. The sequence of enabling multiple extensions determines the order of these extensions in the transmission pipeline. For example, if you enable extension A before extension B, extension A processes data from the SDK before extension B.
 
@@ -240,7 +240,7 @@ in your Agora project:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. **Set extension properties**
+3. **Set extension properties**
 
   In the `joinChannel(View view)` method, add the following code after `agoraEngine.joinChannel`:
 
@@ -587,11 +587,11 @@ To ensure that you have integrated the extension in your app:
 
 1. [Generate a temporary token](../../manage-agora-account.md) in Agora Console.
 
-1. In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update _App ID_, _Channel_, and _Token_ with the values for your temporary token, then click **Join**.
+2. In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update _App ID_, _Channel_, and _Token_ with the values for your temporary token, then click **Join**.
 
-1. In **main.js**, update `appID`, `channel` and `token` with your values.
+3. In **main.js**, update `appID`, `channel` and `token` with your values.
 
-1. Start the dev server
+4. Start the dev server
 
   Execute the following command in the terminal:
 
@@ -601,7 +601,7 @@ To ensure that you have integrated the extension in your app:
 
   Use the URL displayed in the terminal to open the app in your browser.
 
-1. Try out the extension that you have integrated.
+5. Try out the extension that you have integrated.
 
 ## Reference
 
@@ -766,14 +766,14 @@ Integrating an extension into your project involves a few important steps to ens
         // Function to load, register and enable the extension. Here you also set the extension propertties for your specific extension
         void setupMarketExtension(IRtcEngine* agoraEngine);
         ```
-      1. In `AgoraImplementationDlg.cpp`, put the following in the `setupVideoSDKEngine` function just after
+      2. In `AgoraImplementationDlg.cpp`, put the following in the `setupVideoSDKEngine` function just after
      initializing Agora Engine `agoraEngine->initialize(context);`:
 
         ```cpp
         // Integrate extension to the Agora SDK.
         setupMarketExtension(agoraEngine);
         ```
-      1. Define `setupMarketExtension()`:
+      3. Define `setupMarketExtension()`:
 
         ```cpp
         void CAgoraImplementationDlg::setupMarketExtension(IRtcEngine* agoraEngine)
@@ -1097,11 +1097,11 @@ In order to integrate an extension into your project:
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
-1. Open your Flutter project
+2. Open your Flutter project
 
   Load the [SDK quickstart](../../index.mdx) Interactive Live Streaming project you created previously.
 
-1. Get the extension
+3. Get the extension
 
   Visit the [Agora Extensions Marketplace](https://www.agora.io/en/agora-extensions-marketplace/) and follow the procedure to download and install the desired extension.
 
@@ -1119,7 +1119,7 @@ This section presents the framework code you add to your Flutter project to inte
   agoraEngine.loadExtensionProvider("<extensionLibraryPath>");
   ````
 
-1. **Enable the extension**
+2. **Enable the extension**
 
   To enable the extension, add the following code to the `setupVideoSDKEngine` method before `await agoraEngine.enableVideo();`:
 
@@ -1136,7 +1136,7 @@ This section presents the framework code you add to your Flutter project to inte
 
   To enable multiple extensions, call `enableExtension` for each extension. The calls to `enableExtension` determines the order of each extension in the transmission pipeline. For example, if you enable extension A before extension B, extension A processes data from Video SDK before extension B.
 
-1. **Set extension properties**
+3. **Set extension properties**
 
   To customize the extension for your particular app, set suitable values for the extension properties. Refer to the extension documentation for a list of available property names and allowable values. To set a property, add the following code to the `setupVideoSDKEngine` method after `agoraEngine.enableExtension`:
 
@@ -1154,17 +1154,17 @@ To ensure that you have integrated the extension in your app:
 
 1. Set the variables and properties in the framework code to values suitable for your chosen extension.
 
-1. In your IDE, open `/lib/main.dart` and update `appId`, `channelName` and `token` with the values from Agora Console.
+2. In your IDE, open `/lib/main.dart` and update `appId`, `channelName` and `token` with the values from Agora Console.
 
-1. Connect a test device to your development device.
+3. Connect a test device to your development device.
 
-1. In your IDE, click **Run app** or execute the `flutter run` command in the terminal. A moment later, you see the project installed on your device.
+4. In your IDE, click **Run app** or execute the `flutter run` command in the terminal. A moment later, you see the project installed on your device.
 
   If this is the first time you run the app, grant camera and microphone permissions.
 
-1. Join the same channel from another test device or the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html).
+5. Join the same channel from another test device or the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html).
 
-1. Experience the features of your new extension.
+6. Experience the features of your new extension.
 
 ## Reference
 
@@ -1251,11 +1251,11 @@ In order to integrate an extension into your project:
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
-1. Open your React-native project
+2. Open your React-native project
 
   Load the [SDK quickstart](../../index.mdx) Interactive Live Streaming project you created previously.
 
-1. Get the extension
+3. Get the extension
 
   Visit the [Agora Extensions Marketplace](https://www.agora.io/en/agora-extensions-marketplace/) and follow the procedure to download and install the desired extension.
 
@@ -1312,7 +1312,7 @@ You can use a `switch` to enable and disable the extension you wish to integrate
   const [enable_extension, setEnableExtension] = useState(false);
   ```
 
-1. **Enable the extension**
+2. **Enable the extension**
 
   You call `enableExtension` to enable your extension. To do this using the `switch`, add the following code after the `leave` function:
 
@@ -1326,7 +1326,7 @@ You can use a `switch` to enable and disable the extension you wish to integrate
   };
   ```
 
-1. **Disable the extension**
+3. **Disable the extension**
 
   You call `disableExtension` to disable your extension. To do this using the `switch`, add the following code after the `enableExtension` function:
 
@@ -1337,7 +1337,7 @@ You can use a `switch` to enable and disable the extension you wish to integrate
   };
   ````
 
-1. **Add the necessary callbacks**
+4. **Add the necessary callbacks**
 
   To get notified of important events, add the following callbacks to `agoraEngine.registerEventHandler({`:
 
@@ -1409,11 +1409,11 @@ To ensure that you have integrated the extension in your app:
    - *Android*
 
      1. Enable Developer options on your Android device, and then connect it to your computer using a USB cable.
-     1. Run `npx react-native run-android` in the project root directory.
+     2. Run `npx react-native run-android` in the project root directory.
 
    - *iOS:*
 
-     1. Run your app with Xcode.
+     3. Run your app with Xcode.
 
    If this is the first time you run the project, you need to grant microphone and camera access to your app.
 
@@ -1483,11 +1483,11 @@ In order to integrate an extension into your project:
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
-1. Open your Unity project
+2. Open your Unity project
 
   Load the [SDK quickstart](../../index.mdx) Interactive Live Streaming project you created previously.
 
-1. Get the extension
+3. Get the extension
 
   Visit the [Agora Extensions Marketplace](https://www.agora.io/en/agora-extensions-marketplace/) and follow the procedure to download and install the desired extension.
 
@@ -1505,7 +1505,7 @@ This section presents the framework code you add to your Unity project to integr
   RtcEngine.LoadExtensionProvider("<extensionLibraryPath>");
   ```
 
-1. **Enable the extension**
+2. **Enable the extension**
 
   To enable the extension, add the following code to the `Join` method before `RtcEngine.EnableVideo();`:
 
@@ -1524,7 +1524,7 @@ This section presents the framework code you add to your Unity project to integr
 
   To enable multiple extensions, call `EnableExtension` for each extension. The calls to `EnableExtension` determines the order of each extension in the transmission pipeline. For example, if you enable extension A before extension B, Video SDK processes data from extension A before extension B.
 
-1. **Set extension properties**
+3. **Set extension properties**
 
   To customize the extension for your particular game, set suitable values for the extension properties. Refer to the extension documentation for a list of available property names and allowable values. To set a property, add the following code to the `Join` method after `RtcEngine.EnableExtension`:
 

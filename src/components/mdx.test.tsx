@@ -497,7 +497,7 @@ describe('common MDX registry', () => {
     ).not.toBeVisible();
   });
 
-  it('keeps common header platforms visible and moves the rest into More', async () => {
+  it('keeps mobile-safe header platforms visible and moves the rest into More', async () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
     const Panel = components._PlatformPanel as PlatformPanelComponent;
@@ -522,9 +522,9 @@ describe('common MDX registry', () => {
 
     expect(screen.getByRole('tab', { name: 'Android' })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'iOS' })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'macOS' })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Web' })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'Windows' })).toBeInTheDocument();
+    expect(screen.queryByRole('tab', { name: 'macOS' })).toBeNull();
+    expect(screen.queryByRole('tab', { name: 'Windows' })).toBeNull();
     expect(screen.queryByRole('tab', { name: 'Flutter' })).toBeNull();
 
     fireEvent.click(screen.getByRole('button', { name: 'More platforms' }));
@@ -534,6 +534,8 @@ describe('common MDX registry', () => {
     });
 
     expect(screen.getByRole('menu')).toBeVisible();
+    expect(screen.getByRole('menuitem', { name: 'macOS' })).toBeVisible();
+    expect(screen.getByRole('menuitem', { name: 'Windows' })).toBeVisible();
     expect(
       screen.getByRole('menuitem', { name: 'React Native' }),
     ).toBeVisible();

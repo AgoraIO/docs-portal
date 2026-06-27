@@ -30,6 +30,7 @@ import {
   isOpenApiTab,
   type OpenApiLane,
   resolveOpenApiEndpointRoute,
+  resolveOpenApiLaneRoute,
 } from './openapi/lanes';
 import { getOpenApiOperation } from './openapi/source.server';
 import {
@@ -291,6 +292,10 @@ export async function loadDocsPagePayload(
     isOpenApiPage && supportedLocale
       ? resolveOpenApiEndpointRoute(supportedLocale, tab, resolvedSlugSegments)
       : null;
+  const openApiLaneRoute =
+    supportedLocale && isOpenApiTab(tab)
+      ? resolveOpenApiLaneRoute(supportedLocale, tab, resolvedSlugSegments)
+      : null;
   const processedText = isOpenApiPage
     ? ''
     : (platformResolvedProcessedText ?? (await readProcessedText(page)));
@@ -298,7 +303,10 @@ export async function loadDocsPagePayload(
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText);
-  const layoutMode = resolveDocsLayoutMode(page, isOpenApiPage);
+  const layoutMode = resolveDocsLayoutMode(
+    page,
+    isOpenApiPage || openApiLaneRoute !== null,
+  );
   const sidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,

@@ -4,6 +4,14 @@ import { normalizeLocale } from './i18n/i18n-config';
 const STATIC_DOCS_SEARCH_BASE = '/__static/docs-search';
 const STATIC_DOCS_SEARCH_PUBLIC_DIR = '__static/docs-search';
 
+export class DocsSearchIndexUnavailableError extends Error {
+  constructor(locale: string, cause?: unknown) {
+    super(`Docs search index is unavailable for locale: ${locale}`);
+    this.name = 'DocsSearchIndexUnavailableError';
+    this.cause = cause;
+  }
+}
+
 export function getStaticDocsSearchIndexPath(locale: string) {
   const normalizedLocale = normalizeLocale(locale);
 
@@ -14,8 +22,9 @@ export function getStaticDocsSearchIndexPath(locale: string) {
 
 export async function readStaticDocsSearchIndex(locale: string) {
   const staticIndexPath = getStaticDocsSearchIndexPath(locale);
+  const normalizedLocale = normalizeLocale(locale);
 
-  if (!staticIndexPath) {
+  if (!staticIndexPath || !normalizedLocale) {
     return [];
   }
 
@@ -26,7 +35,7 @@ export async function readStaticDocsSearchIndex(locale: string) {
   const response = await fetch(staticIndexPath);
 
   if (response.status === 404) {
-    return [];
+    throw new DocsSearchIndexUnavailableError(normalizedLocale);
   }
 
   if (!response.ok) {
@@ -63,7 +72,7 @@ async function readStaticDocsSearchIndexFromDisk(locale: string) {
       'code' in error &&
       error.code === 'ENOENT'
     ) {
-      return [];
+      throw new DocsSearchIndexUnavailableError(normalizedLocale, error);
     }
 
     throw error;

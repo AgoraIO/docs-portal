@@ -33,7 +33,7 @@ To learn more about specific use-cases, [contact](mailto:rtm-support@agora.io.md
 To create and set up a project for Signaling in Agora Console, see [Agora account management](./manage-agora-account.md). Browse the following documents to get started with Signaling:
 
 * [SDK quickstart](./index.mdx)
-* [Message channels](./build/work-with-channels/message-channel.md)
+* [Message channels](./build/work-with-channels/message-channel.mdx)
 * [Stream channels](./build/work-with-channels/stream-channel.mdx)
 * [API reference](https://docs.agora.io/en/signaling/reference/api)
 * [Pricing](./reference/pricing.md)

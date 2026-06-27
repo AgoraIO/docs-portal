@@ -1,6 +1,71 @@
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import path from 'node:path';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { FaqCatalog } from './FaqCatalog';
+import { faqItems } from './faq-data';
+
+const faqRoot = path.join(process.cwd(), 'content/docs/en/api-reference/faq');
+
+function listFaqPages(dir = faqRoot): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const entryPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      return listFaqPages(entryPath);
+    }
+
+    if (!entry.name.endsWith('.mdx')) {
+      return [];
+    }
+
+    return [
+      `/en/${path
+        .relative(path.join(process.cwd(), 'content/docs/en'), entryPath)
+        .replace(/\.mdx$/, '')
+        .split(path.sep)
+        .join('/')}`,
+    ];
+  });
+}
+
+function listFaqMetaFiles(dir = faqRoot): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const entryPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      return listFaqMetaFiles(entryPath);
+    }
+
+    return entry.name === 'meta.json' ? [entryPath] : [];
+  });
+}
+
+function resolvePageEntry(dir: string, page: string) {
+  return (
+    existsSync(path.join(dir, `${page}.mdx`)) ||
+    existsSync(path.join(dir, page))
+  );
+}
+
+function listFaqLocalImageRefs(dir = faqRoot): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const entryPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      return listFaqLocalImageRefs(entryPath);
+    }
+
+    if (!entry.name.endsWith('.mdx')) {
+      return [];
+    }
+
+    const content = readFileSync(entryPath, 'utf8');
+    return Array.from(
+      content.matchAll(/!\[[^\]]*\]\((\/images\/faq\/[^)]+)\)/g),
+    ).map((match) => match[1]);
+  });
+}
 
 describe('FaqCatalog', () => {
   beforeEach(() => {
@@ -132,5 +197,34 @@ describe('FaqCatalog', () => {
         name: /What's the difference between on-premise recording and cloud recording\?/,
       }),
     ).not.toBeInTheDocument();
+  });
+
+  it('keeps generated FAQ links, content pages, navigation, and local assets in sync', () => {
+    const faqPages = listFaqPages();
+    const faqContentPages = faqPages.filter(
+      (page) => page !== '/en/api-reference/faq/index',
+    );
+    const faqHrefs = faqItems.map((item) => item.href);
+
+    expect(new Set(faqHrefs)).toHaveLength(faqHrefs.length);
+    expect([...faqHrefs].sort()).toEqual([...faqContentPages].sort());
+
+    for (const metaFile of listFaqMetaFiles()) {
+      const meta = JSON.parse(readFileSync(metaFile, 'utf8')) as {
+        pages?: string[];
+      };
+      const dir = path.dirname(metaFile);
+
+      for (const page of meta.pages ?? []) {
+        expect(resolvePageEntry(dir, page), `${metaFile}: ${page}`).toBe(true);
+      }
+    }
+
+    for (const imageRef of listFaqLocalImageRefs()) {
+      expect(
+        existsSync(path.join(process.cwd(), 'public', imageRef)),
+        imageRef,
+      ).toBe(true);
+    }
   });
 });

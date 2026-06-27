@@ -72,7 +72,7 @@ To integrate the MetaKit extension, take the following steps:
 
 1. Download and unzip the [MetaKit](https://download.agora.io/sdk/release/Agora_MetaKit_SDK_for_Android_v2_2_0.zip?_gl=1*dh5j1*_ga*MjA0NDUxNTUwLjE2ODM3MTkwNzY.*_ga_BFVGG7E02W*MTcyNjIxOTY4OS4yODAuMS4xNzI2MjIwMTA3LjAuMC4w) Android extension.
 
-1. Open the folder and copy the `/sdk` files in the path to the corresponding project path.
+2. Open the folder and copy the `/sdk` files in the path to the corresponding project path.
 
   | Library             | Function         | Integration path                            |
   |:--------------------------------|:--------------------------|:------------------------------------------------------------------------|
@@ -80,7 +80,7 @@ To integrate the MetaKit extension, take the following steps:
   | `metakit.jar`          | Wrapper layer Java package| `/app/libs`                               |
   | `libagora_metakit_extension.so` | Wrapper layer       | `/app/src/main/jniLibs/arm64-v8a` or `/app/src/main/jniLibs/armeabi-v7a`|
 
-1. In the project's `/app` directory, add dependencies for all `.jar` and `.aar` files located under the `libs` path in the dependencies section of the `build.gradle` file.
+3. In the project's `/app` directory, add dependencies for all `.jar` and `.aar` files located under the `libs` path in the dependencies section of the `build.gradle` file.
 
   ```java
   implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
@@ -954,7 +954,7 @@ To enable the MetaKit extension, follow these steps:
 </CodeBlockTabs>
   After the scene rendering is complete, a Blendshape-driven virtual human image will be displayed, capturing your facial expressions and making corresponding facial changes, following your head movements.
 
-1. Call `setExtensionProperty` to perform face pinching operations on the virtual human. Set `key` to `updateFace` and value to support passing multiple sets of resource IDs for face pinching parts and their corresponding adjustment ranges. See [face pinching](#face-pinching-resources) for details.
+2. Call `setExtensionProperty` to perform face pinching operations on the virtual human. Set `key` to `updateFace` and value to support passing multiple sets of resource IDs for face pinching parts and their corresponding adjustment ranges. See [face pinching](#face-pinching-resources) for details.
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -1005,7 +1005,7 @@ To enable the MetaKit extension, follow these steps:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. Call `setExtensionProperty` to perform dress-up operations on the virtual human. Set `key` to `updateDress` and value to support passing an array of integers containing multiple resource IDs for dressing parts. See [dressing resources](#dress-up-resources) for details.
+3. Call `setExtensionProperty` to perform dress-up operations on the virtual human. Set `key` to `updateDress` and value to support passing an array of integers containing multiple resource IDs for dressing parts. See [dressing resources](#dress-up-resources) for details.
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -2327,7 +2327,7 @@ To integrate the MetaKit extension, take the following steps:
 
 1. Download and unzip the [MetaKit](https://download.agora.io/sdk/release/Agora_MetaKit_SDK_for_iOS_v2_2_0.zip?_gl=1*vq9rt*_ga*MjA0NDUxNTUwLjE2ODM3MTkwNzY.*_ga_BFVGG7E02W*MTcyNjIxOTY4OS4yODAuMS4xNzI2MjIwMjg1LjAuMC4w) iOS extension.
 
-1. Open the folder and copy the files from the `/SDK` path to the corresponding project path.
+2. Open the folder and copy the files from the `/SDK` path to the corresponding project path.
 
   | Library               | Integration path  |
   |:------------------------------------|:-------------------|
@@ -2338,7 +2338,7 @@ To integrate the MetaKit extension, take the following steps:
   Agora provides extension support in the XCFramework format for the `arm64` architecture but not for the `armv7` architecture.
 :::
 
-1. Open your project in Xcode and [add the required dynamic libraries](https://help.apple.com/xcode/mac/current/#/dev51a648b07), ensuring that the **Embed** attribute of the added dynamic libraries is set to **Embed & Sign**.
+3. Open your project in Xcode and [add the required dynamic libraries](https://help.apple.com/xcode/mac/current/#/dev51a648b07), ensuring that the **Embed** attribute of the added dynamic libraries is set to **Embed & Sign**.
 
   ![Dynamic libraries](/images/extensions-marketplace/metakit-extension-ios-step2.png)
 
@@ -2573,7 +2573,7 @@ agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
 ```
 When the `onEvent` callback captures the `addSceneViewResp` event, the scene view has been successfully added. It will display a Blendshape-driven virtual human character that mimics your facial expressions and follows head movements.
 
-1. Use `setExtensionPropertyWithVendor` to manipulate the virtual human's facial features, with key set to `updateFace` and value supporting multiple sets of resource `IDs` and corresponding adjustment amplitudes. See [Facial pinching resources](#face-pinching-resources) for details.
+2. Use `setExtensionPropertyWithVendor` to manipulate the virtual human's facial features, with key set to `updateFace` and value supporting multiple sets of resource `IDs` and corresponding adjustment amplitudes. See [Facial pinching resources](#face-pinching-resources) for details.
 
 ```swift
 let parts = [
@@ -2594,7 +2594,7 @@ agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
                     value: str!)
 ```
 
-1. Use `setExtensionPropertyWithVendor` to change the virtual human's outfit, with `key` set to `updateDress` and `value` supporting an array of integers representing the resource IDs for different outfit parts. See [Dress-up resources](##dress-up-resources) for details.
+3. Use `setExtensionPropertyWithVendor` to change the virtual human's outfit, with `key` set to `updateDress` and `value` supporting an array of integers representing the resource IDs for different outfit parts. See [Dress-up resources](##dress-up-resources) for details.
 
   ```swift
   // Set the ID to an array of resource IDs

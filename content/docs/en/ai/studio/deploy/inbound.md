@@ -14,16 +14,15 @@ After configuring your Twilio SIP trunk for inbound calling, import your phone n
 
 Follow the steps in [Import a phone number](import) to add your Twilio number. After importing, Studio displays the Origination URI for your number. Copy this back to your Twilio SIP trunk. See [Set up SIP trunk](sip-trunk#inbound-calling-setup).
 
-    
 ## Assign the number to an agent 
 
 Follow these steps to associate the number with an agent and configure call handling.
 
-1. In Agent Studio, navigate to **Deploy → Phone Numbers** 
-1. Find the number you imported in the list.
-1. Under the **Associated Agent** column, click **Associate Agent**.
-1. Under **Inbound Settings**, select an agent that you want to associate with the number.
-1. Configure the following options:
+1. In Agent Studio, navigate to **Deploy → Phone Numbers**.
+2. Find the number you imported in the list.
+3. Under the **Associated Agent** column, click **Associate Agent**.
+4. Under **Inbound Settings**, select an agent that you want to associate with the number.
+5. Configure the following options:
     - **Call Recording**: Enable automatic call recording.
     - **Call Transcript**: Enable automatic call transcription.
     - **Transfer to Number**: Configure a phone number destination for call transfers.
@@ -36,7 +35,7 @@ Follow these steps to associate the number with an agent and configure call hand
         - **Silence Timeout** (seconds): If there is no response, the call ends after the timeout duration.
     - **Post Call Analysis**
         - **Post Call Data Extraction**: Enable automatic extraction of structured output from calls according to business needs.
-1. Click **Save**.
+6. Click **Save**.
 
 ## Next steps
 

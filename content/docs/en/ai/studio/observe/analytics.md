@@ -7,12 +7,12 @@ The Analytics dashboard provides performance metrics and insights for your agent
 To view analytics:
 
 1. In Agent Studio, select **Analytics** from the sidebar.
-1. Configure the filter criteria:
+2. Configure the filter criteria:
    - **Period**: Select the date range to analyze.
    - **Agents**: Choose all agents or filter by specific agents.
    - **Inbound/Outbound**: Filter by call direction.
    - **Campaigns**: Choose all campaigns or filter by specific campaigns.
-1. Review the analytics dashboard, which displays:
+3. Review the analytics dashboard, which displays:
    - **Total Calls**: Number of calls made during the selected period.
    - **Call Duration (Total)**: Total duration of all calls in the selected period.
    - **Answered Calls (Total)**: Number of successfully connected calls.

@@ -28,8 +28,8 @@ Follow these steps to enable the Interactive Whiteboard in Agora Console:
 After you enable Interactive Whiteboard for your project, you can obtain the following security credentials:
 
 - **App Identifier**: The unique App Identifier required for initializing the Whiteboard SDK.
-- **Access Key (AK)** and **Secret Key (SK)**: A pair of keys you use to generate whiteboard tokens. See [Generate token using an app server](../authenticate-users/generate-token-app-server.md).
-- **SDK Token**: An SDK token is a dynamic key. You can generate an [SDK Token](../authenticate-users/authentication-workflow.md) here for development and testing purposes. In a production environment, you generate an SDK Token at your app server either by using the [code samples](../authenticate-users/generate-token-app-server.md) or calling the [RESTful API](../authenticate-users/generate-token-rest.md).
+- **Access Key (AK)** and **Secret Key (SK)**: A pair of keys you use to generate whiteboard tokens. See [Generate token using an app server](../authenticate-users/generate-token-app-server.mdx).
+- **SDK Token**: An SDK token is a dynamic key. You can generate an [SDK Token](../authenticate-users/authentication-workflow.md) here for development and testing purposes. In a production environment, you generate an SDK Token at your app server either by using the [code samples](../authenticate-users/generate-token-app-server.mdx) or calling the [RESTful API](../authenticate-users/generate-token-rest.md).
 
 To get the security credentials:
 
