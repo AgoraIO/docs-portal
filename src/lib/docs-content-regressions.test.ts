@@ -333,8 +333,39 @@ describe('docs content regressions', () => {
 
     const rtmDownloads = readDoc('realtime-media/rtm/reference/downloads.md');
 
+    const rtmDownloadPlatforms = [
+      'web',
+      'android',
+      'ios',
+      'macos',
+      'linux-java',
+      'linux-cpp',
+      'windows',
+      'unity',
+      'flutter',
+    ];
+
+    expect(
+      rtmDownloads.match(/<PlatformStructured platform=/g) ?? [],
+    ).toHaveLength(rtmDownloadPlatforms.length);
+    for (const platform of rtmDownloadPlatforms) {
+      expect(rtmDownloads).toContain(
+        `<PlatformStructured platform="${platform}">`,
+      );
+    }
     expect(rtmDownloads).toContain('| `agora-rtm_sdk.jar` | `/app/libs/` |');
-    expect(rtmDownloads).toContain('| Android | `Plugins/Android` | `/Assets/Plugins/Android/` |');
+    expect(rtmDownloads).toContain("pod 'AgoraRtm_iOS'");
+    expect(rtmDownloads).toContain("pod 'AgoraRtm_macOS'");
+    expect(rtmDownloads).toContain('<artifactId>agora-rtm-sdk</artifactId>');
+    expect(rtmDownloads).toContain(
+      'target_link_libraries(${TARGET_NAME} agora_rtm_sdk pthread)',
+    );
+    expect(rtmDownloads).toContain('`agora_rtm_sdk.lib`');
+    expect(rtmDownloads).toContain(
+      '| Android | `Plugins/Android` | `/Assets/Plugins/Android/` |',
+    );
+    expect(rtmDownloads).toContain('agora_rtm: ^2.2.1');
+    expect(rtmDownloads).not.toMatch(/<\/?(details|summary|PlatformWrapper)>/);
 
     const rtmpCoreConcepts = readDoc(
       'realtime-media/rtmp-gateway/reference/core-concepts.md',
