@@ -4,7 +4,7 @@ description: "Easily update the look and feel of your classrooms."
 ---
 This page explains the way UI components work in Classroom and Proctor SDK.
 
-    ## Introduction to UI components
+## Introduction to UI components
 
 :::note
 The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk).
