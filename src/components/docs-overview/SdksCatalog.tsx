@@ -1,5 +1,4 @@
 import {
-  ArrowUpRightIcon,
   BoxesIcon,
   ChevronDownIcon,
   DownloadIcon,
@@ -13,9 +12,6 @@ import {
 } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useMemo, useState } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { cn } from '@/lib/cn';
 import {
   type SdkDownloadPlatform,
@@ -23,6 +19,10 @@ import {
   type SdkDownloadVersion,
   sdkDownloadPlatforms,
 } from './sdk-downloads-data';
+import {
+  deriveInstallCommand,
+  type InstallCommand,
+} from './sdk-install-command';
 
 const platformGroups = [
   {
@@ -52,7 +52,7 @@ export function SdksCatalog() {
 
   return (
     <section className="not-prose my-8 flex flex-col gap-8">
-      <PlatformMatrix
+      <PlatformSelector
         activePlatform={activePlatform}
         onPlatformChange={(platformId) => {
           setActivePlatformId(platformId);
@@ -60,26 +60,17 @@ export function SdksCatalog() {
         }}
       />
 
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-1">
-          <h2 className="m-0 text-2xl font-semibold text-foreground">
-            {activePlatform.label} SDKs
-          </h2>
-          <p className="m-0 text-sm leading-6 text-muted-foreground">
-            Latest versions are selected by default.
-          </p>
-        </div>
-
+      <div className="flex flex-col gap-8">
         <SdkProductSection
           products={activePlatform.core}
           platform={activePlatform}
-          title="Core Products"
+          title="Core products"
         />
         {activePlatform.addOns?.length ? (
           <SdkProductSection
             products={activePlatform.addOns}
             platform={activePlatform}
-            title="Product Add-ons"
+            title="Add-ons"
           />
         ) : null}
       </div>
@@ -87,7 +78,7 @@ export function SdksCatalog() {
   );
 }
 
-function PlatformMatrix({
+function PlatformSelector({
   activePlatform,
   onPlatformChange,
 }: {
@@ -124,58 +115,44 @@ function PlatformMatrix({
     : resolvedGroups;
 
   return (
-    <section
-      aria-labelledby="sdk-platforms-heading"
-      className="rounded-lg border border-border bg-card/80 p-4 shadow-sm sm:p-5"
-    >
-      <div className="mb-4 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h2
-          className="m-0 text-sm font-semibold text-foreground"
-          id="sdk-platforms-heading"
+    <div className="flex flex-wrap items-baseline gap-x-5 gap-y-3">
+      {allGroups.map((group) => (
+        <fieldset
+          className="m-0 flex min-w-0 items-center gap-2 border-0 p-0"
+          key={group.label}
         >
-          Platforms
-        </h2>
-        <Badge variant="outline">{activePlatform.label}</Badge>
-      </div>
+          <legend className="sr-only">{`${group.label} platforms`}</legend>
+          <span
+            aria-hidden="true"
+            className="text-[0.66rem] font-semibold uppercase tracking-[0.06em] text-muted-foreground"
+          >
+            {group.label}
+          </span>
+          <span className="flex flex-wrap gap-1.5">
+            {group.platforms.map((platform) => {
+              const isActive = platform.id === activePlatform.id;
 
-      <div className="grid gap-3">
-        {allGroups.map((group) => (
-          <fieldset className="m-0 min-w-0 border-0 p-0" key={group.label}>
-            <legend className="sr-only">{`${group.label} platforms`}</legend>
-            <div className="grid gap-2 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:items-start">
-              <div
-                aria-hidden="true"
-                className="pt-1 text-xs font-semibold uppercase text-muted-foreground"
-              >
-                {group.label}
-              </div>
-              <div className="flex min-w-0 flex-wrap gap-2">
-                {group.platforms.map((platform) => {
-                  const isActive = platform.id === activePlatform.id;
-
-                  return (
-                    <button
-                      aria-pressed={isActive}
-                      className={cn(
-                        'inline-flex h-8 items-center rounded-md border px-3 text-sm font-medium transition-colors',
-                        isActive
-                          ? 'border-primary bg-primary text-primary-foreground shadow-xs'
-                          : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:bg-accent hover:text-accent-foreground',
-                      )}
-                      key={platform.id}
-                      onClick={() => onPlatformChange(platform.id)}
-                      type="button"
-                    >
-                      {platform.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </fieldset>
-        ))}
-      </div>
-    </section>
+              return (
+                <button
+                  aria-pressed={isActive}
+                  className={cn(
+                    'inline-flex h-8 items-center rounded-full border px-3 text-sm font-medium transition-colors',
+                    isActive
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground',
+                  )}
+                  key={platform.id}
+                  onClick={() => onPlatformChange(platform.id)}
+                  type="button"
+                >
+                  {platform.label}
+                </button>
+              );
+            })}
+          </span>
+        </fieldset>
+      ))}
+    </div>
   );
 }
 
@@ -189,9 +166,11 @@ function SdkProductSection({
   title: string;
 }) {
   return (
-    <section className="flex flex-col gap-4">
-      <h2 className="m-0 text-xl font-semibold text-foreground">{title}</h2>
-      <div className="grid gap-4">
+    <section className="flex flex-col gap-3">
+      <h2 className="m-0 text-[1.05rem] font-semibold text-foreground">
+        {title}
+      </h2>
+      <div className="flex flex-col gap-3">
         {products.map((product) => (
           <SdkProductCard
             key={`${platform.id}-${product.id}`}
@@ -214,20 +193,20 @@ function SdkProductCard({
   const [activeVersionIndex, setActiveVersionIndex] = useState('0');
   const activeVersion =
     product.versions[Number(activeVersionIndex)] ?? product.versions[0];
-  const selectedVersionIndex = Number(activeVersionIndex);
-  const activeVersionMeta = getVersionMeta(activeVersion, selectedVersionIndex);
   const productTitleId = `${platformId}-${product.id}-title`;
   const productVersionId = `${platformId}-${product.id}-version`;
+  const installCommand = activeVersion
+    ? deriveInstallCommand(activeVersion)
+    : null;
 
   return (
-    <Card
+    <article
       aria-labelledby={productTitleId}
-      className="flex min-h-[18rem] flex-col rounded-lg shadow-sm"
-      role="article"
+      className="rounded-xl border border-border p-5"
     >
-      <CardHeader className="p-5 sm:p-6">
-        <div className="flex items-start gap-4">
-          <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground sm:size-14">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
             <SdkProductIcon
               productId={product.id}
               productLabel={product.label}
@@ -235,103 +214,138 @@ function SdkProductCard({
           </span>
           <div className="min-w-0">
             <h3
-              className="m-0 text-lg font-semibold text-foreground"
+              className="m-0 text-base font-semibold text-foreground"
               id={productTitleId}
             >
               {product.label}
             </h3>
-            <p className="m-0 mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+            <p className="m-0 mt-1 text-sm leading-6 text-muted-foreground">
               {product.info}
             </p>
           </div>
         </div>
-      </CardHeader>
 
-      <CardContent className="flex flex-1 flex-col gap-5 px-5 pb-5 sm:px-6 sm:pb-6">
-        <div className="grid gap-3 md:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] md:items-end">
-          <div className="flex min-w-0 flex-col gap-2">
-            <label
-              className="text-xs font-semibold uppercase text-muted-foreground"
-              htmlFor={productVersionId}
-            >
-              Selected version
-            </label>
-            <span className="relative">
-              <select
-                aria-label={`${product.label} version`}
-                className="h-11 w-full appearance-none rounded-md border border-border bg-background px-3 pr-10 text-sm font-medium text-foreground shadow-xs outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-                id={productVersionId}
-                onChange={(event) => setActiveVersionIndex(event.target.value)}
-                value={activeVersionIndex}
+        <span className="relative shrink-0">
+          <label className="sr-only" htmlFor={productVersionId}>
+            {`${product.label} version`}
+          </label>
+          <select
+            aria-label={`${product.label} version`}
+            className="h-9 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+            id={productVersionId}
+            onChange={(event) => setActiveVersionIndex(event.target.value)}
+            value={activeVersionIndex}
+          >
+            {product.versions.map((version, index) => (
+              <option
+                key={`${platformId}-${product.id}-${version.id}`}
+                value={String(index)}
               >
-                {product.versions.map((version, index) => {
-                  const versionMeta = getVersionMeta(version, index);
-
-                  return (
-                    <option
-                      key={`${platformId}-${product.id}-${version.id}-${version.downloadLink ?? version.packageManager ?? version.label}`}
-                      value={String(index)}
-                    >
-                      {versionMeta.optionLabel}
-                    </option>
-                  );
-                })}
-              </select>
-              <ChevronDownIcon
-                aria-hidden="true"
-                className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
-              />
-            </span>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {activeVersionMeta.states.map((state) => (
-              <Badge key={state} variant={getVersionStateVariant(state)}>
-                {state}
-              </Badge>
+                {getVersionMeta(version, index).optionLabel}
+              </option>
             ))}
-          </div>
-        </div>
+          </select>
+          <ChevronDownIcon
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+          />
+        </span>
+      </div>
 
-        {activeVersion ? <SdkDownloadActions version={activeVersion} /> : null}
-      </CardContent>
-    </Card>
+      {activeVersion ? (
+        <SdkGetSection command={installCommand} version={activeVersion} />
+      ) : null}
+    </article>
   );
 }
 
-function SdkDownloadActions({ version }: { version: SdkDownloadVersion }) {
-  return (
-    <div className="mt-auto border-border border-t pt-4">
-      <p className="m-0 text-xs font-semibold uppercase text-muted-foreground">
-        Download options
-      </p>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {version.downloadLink ? (
-          <Button asChild size="sm">
+function SdkGetSection({
+  command,
+  version,
+}: {
+  command: InstallCommand | null;
+  version: SdkDownloadVersion;
+}) {
+  if (command) {
+    return (
+      <div className="mt-4 flex flex-col gap-2">
+        <span className="text-[0.66rem] font-semibold uppercase tracking-[0.05em] text-muted-foreground">
+          {command.tool}
+        </span>
+        <div className="flex items-center justify-between gap-3 rounded-lg border border-fd-border bg-fd-card px-3.5 py-2.5">
+          <code className="min-w-0 truncate font-mono text-[0.82rem] text-foreground">
+            {command.command}
+          </code>
+          <CopyButton value={command.command} />
+        </div>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+          {version.downloadLink ? (
             <a
+              className="underline underline-offset-2 hover:text-foreground"
               href={version.downloadLink}
               rel="noreferrer noopener"
               target="_blank"
             >
-              <DownloadIcon data-icon="inline-start" />
-              <span>Download SDK</span>
+              Direct download (.zip)
             </a>
-          </Button>
-        ) : null}
-        {version.packageManager ? (
-          <Button asChild size="sm" variant="outline">
+          ) : null}
+          {version.packageManager ? (
             <a
+              className="underline underline-offset-2 hover:text-foreground"
               href={version.packageManager}
               rel="noreferrer noopener"
               target="_blank"
             >
-              <span>Package Manager</span>
-              <ArrowUpRightIcon data-icon="inline-end" />
+              Package manager ↗
             </a>
-          </Button>
-        ) : null}
+          ) : null}
+        </div>
       </div>
+    );
+  }
+
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+      {version.downloadLink ? (
+        <a
+          className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          href={version.downloadLink}
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          <DownloadIcon className="size-4" />
+          <span>Download SDK</span>
+        </a>
+      ) : null}
+      {version.packageManager ? (
+        <a
+          className="text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
+          href={version.packageManager}
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          Package manager ↗
+        </a>
+      ) : null}
     </div>
+  );
+}
+
+function CopyButton({ value }: { value: string }) {
+  const [copied, setCopied] = useState(false);
+
+  return (
+    <button
+      className="shrink-0 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+      onClick={async () => {
+        await navigator.clipboard.writeText(value);
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1500);
+      }}
+      type="button"
+    >
+      {copied ? 'Copied' : 'Copy'}
+    </button>
   );
 }
 
@@ -435,15 +449,3 @@ function getVersionMeta(version: SdkDownloadVersion, index: number) {
 }
 
 type VersionState = 'Latest' | 'Lite' | 'Legacy' | 'Previous';
-
-function getVersionStateVariant(state: VersionState) {
-  if (state === 'Latest') {
-    return 'default';
-  }
-
-  if (state === 'Previous') {
-    return 'outline';
-  }
-
-  return 'secondary';
-}
