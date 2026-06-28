@@ -8,7 +8,7 @@ This page introduces how to enable and configure Flexible Classroom in Agora Con
 
 In order to follow this procedure you must have:
 
-* An Agora [account](../manage-agora-account.md) and [project](../manage-agora-account.md).
+* An Agora [account](../manage-agora-account.mdx) and [project](../manage-agora-account.mdx).
 
 * The whiteboard feature in Flexible Classroom requires third-party cloud storage. Currently, Flexible Classroom supports [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls).
 
@@ -93,7 +93,7 @@ To setup and configure storage and recording in for your classrooms:
     2. Configure storage
 
         Pass in the `storageConfig` JSON object for storing recorded files. Use the following fields to specify the url and storage location of the recording file.
-        
+
         * `endpoint`: (required) String. The full path composed of the Bucket name and the access domain name. For example, if your Bucket name is "agora-recording", and the OSS access domain name is "oss-cn-shanghai.aliyuncs.com", then the `endpoint` field is set to `https:// agora-recording.oss-cn-shanghai.aliyuncs.com`
 
          * `fileNamePrefix`: (Optional) JSONArray. An array of strings that specifies the storage location of the recording file in the third-party cloud storage. The prefix length, including slashes, cannot exceed 128 characters. The string supports 26 uppercase and lowercase English letters az, AZ, and 10 numbers 0-9. Slashes, underscores, brackets, and other symbol characters are not allowed. You can use variables to specify a dynamic path. When you initiate recording, Flexible Classroom will replace variables with real values.
@@ -130,7 +130,7 @@ To setup and configure storage and recording in for your classrooms:
 
          ```json
             "fileNamePrefix": [
-            "scenario", 
+            "scenario",
             "recording",
             "${appId}",
             "${yyyyMM}",
@@ -228,7 +228,7 @@ Configure your AWS S3 account as follows:
             "*"
          ],
          "ExposeHeaders":[
-            
+
          ]
       }
    ]
