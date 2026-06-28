@@ -1103,9 +1103,17 @@ async function getDocsSidebarNodes({
         root: pageTree,
         tab,
       });
+  const scopedReferenceProductSidebar =
+    Boolean(navScope) && isReferenceProductSidebarPath(activePath ?? pageUrl);
+  const sidebarWithoutReferenceProductIcons = scopedReferenceProductSidebar
+    ? stripSidebarSectionIcons(sidebar)
+    : sidebar;
 
   const sidebarWithRealtimeMediaApiReference =
-    addRealtimeMediaApiReferenceSidebarItem(sidebar, activePath);
+    addRealtimeMediaApiReferenceSidebarItem(
+      sidebarWithoutReferenceProductIcons,
+      activePath,
+    );
 
   if (!isOpenApiTab(tab) || !locale) {
     return sidebarWithRealtimeMediaApiReference;
@@ -1303,6 +1311,32 @@ function isRecipesApiReferencePath(path?: string) {
     path?.startsWith('/zh-CN/api-reference/recipes') ||
     false
   );
+}
+
+function isReferenceProductSidebarPath(path?: string) {
+  const [, locale, tab, scopeRoot] = path?.split('/') ?? [];
+
+  return (
+    SUPPORTED_LOCALES.includes(locale as AppLocale) &&
+    tab === OPENAPI_TAB &&
+    Boolean(scopeRoot) &&
+    !['faq', 'recipes', 'sdks'].includes(scopeRoot)
+  );
+}
+
+function stripSidebarSectionIcons(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
+  return nodes.map((node) => {
+    if (node.type === 'page') {
+      return node;
+    }
+
+    const { icon: _icon, ...section } = node;
+
+    return {
+      ...section,
+      children: stripSidebarSectionIcons(node.children),
+    };
+  });
 }
 
 function restoreRecipesSidebarSections(

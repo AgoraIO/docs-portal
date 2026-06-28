@@ -493,6 +493,97 @@ const apiReferencePageTree: Root = {
   name: 'Docs',
 };
 
+function createChatApiReferencePageTree(): Root {
+  return {
+    children: [
+      {
+        $id: 'en-root',
+        children: [
+          {
+            $id: 'api-reference-folder',
+            children: [
+              {
+                $id: 'api-reference-api-ref-folder',
+                children: [
+                  {
+                    $id: 'api-reference-api-ref-im-folder',
+                    children: [
+                      {
+                        $id: 'api-reference-api-ref-im-model-separator',
+                        icon: 'Play',
+                        name: 'Understand the server-side model',
+                        type: 'separator',
+                      },
+                      {
+                        $id: 'api-reference-api-ref-im-limitations',
+                        name: 'Limitations',
+                        type: 'page',
+                        url: '/en/api-reference/api-ref/im/limitations',
+                      },
+                      {
+                        $id: 'api-reference-api-ref-im-messaging-separator',
+                        icon: 'MessageSquare',
+                        name: 'Manage messaging and users',
+                        type: 'separator',
+                      },
+                      {
+                        $id: 'api-reference-api-ref-im-message-management',
+                        name: 'Message management',
+                        type: 'page',
+                        url: '/en/api-reference/api-ref/im/message-management',
+                      },
+                      {
+                        $id: 'api-reference-api-ref-im-groups-separator',
+                        icon: 'Users',
+                        name: 'Manage groups, rooms, and threads',
+                        type: 'separator',
+                      },
+                      {
+                        $id: 'api-reference-api-ref-im-chat-group-management',
+                        name: 'Chat group management',
+                        type: 'page',
+                        url: '/en/api-reference/api-ref/im/chat-group-management',
+                      },
+                    ],
+                    index: {
+                      $id: 'api-reference-api-ref-im-index',
+                      name: 'Chat',
+                      type: 'page',
+                      url: '/en/api-reference/api-ref/im',
+                    },
+                    name: 'Chat',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'api-reference-api-ref-index',
+                  name: 'API reference',
+                  type: 'page',
+                  url: '/en/api-reference/api-ref',
+                },
+                name: 'API Reference',
+                type: 'folder',
+              },
+            ],
+            index: {
+              $id: 'api-reference-index',
+              name: 'API Reference',
+              type: 'page',
+              url: '/en/api-reference',
+            },
+            name: 'API Reference',
+            root: true,
+            type: 'folder',
+          },
+        ],
+        name: 'English',
+        type: 'folder',
+      },
+    ],
+    name: 'Docs',
+  };
+}
+
 const realtimeMediaPageTree: Root = {
   children: [
     {
@@ -1573,6 +1664,69 @@ Web body
       },
       previous: undefined,
     });
+  });
+
+  it('removes category icons from scoped Chat Reference sidebars', async () => {
+    const page = createPage();
+    const chatPage = {
+      ...page,
+      data: {
+        ...page.data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/api-reference/api-ref/im/index.mdx',
+          path: 'en/api-reference/api-ref/im/index.mdx',
+        },
+        title: 'Chat',
+      },
+      path: 'en/api-reference/api-ref/im/index.mdx',
+      slugs: ['en', 'api-reference', 'api-ref', 'im', 'index'],
+      url: '/en/api-reference/api-ref/im',
+    };
+
+    mockedGetPage.mockReturnValue(chatPage);
+    mockedGetPages.mockReturnValue([chatPage]);
+    mockedGetPageTree.mockReturnValue(createChatApiReferencePageTree());
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'api-reference-api-ref-im-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Chat',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = await loadDocsPagePayload('en', 'api-reference', [
+      'api-ref',
+      'im',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    const sidebarSections = flattenSidebarSections(payload.sidebar);
+    const categoryTitles = [
+      'Understand the server-side model',
+      'Manage messaging and users',
+      'Manage groups, rooms, and threads',
+    ];
+
+    for (const title of categoryTitles) {
+      const section = sidebarSections.find((node) => node.title === title);
+
+      expect(section).toBeDefined();
+      expect(section).not.toHaveProperty('icon');
+    }
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+      expect.arrayContaining([
+        '/en/api-reference/api-ref/im',
+        '/en/api-reference/api-ref/im/message-management',
+        '/en/api-reference/api-ref/im/chat-group-management',
+      ]),
+    );
   });
 
   it('keeps static pages inside OpenAPI lanes on the same wide layout as generated operations', async () => {
@@ -3507,6 +3661,25 @@ function findSidebarPage(
   }
 
   return undefined;
+}
+
+function flattenSidebarSections(
+  nodes: Exclude<
+    Awaited<ReturnType<typeof loadDocsPagePayload>>,
+    null | { redirectUrl: string }
+  >['sidebar'],
+): Extract<
+  Exclude<
+    Awaited<ReturnType<typeof loadDocsPagePayload>>,
+    null | { redirectUrl: string }
+  >['sidebar'][number],
+  { type: 'section' }
+>[] {
+  return nodes.flatMap((node) =>
+    node.type === 'section'
+      ? [node, ...flattenSidebarSections(node.children)]
+      : [],
+  );
 }
 
 function unwrapPayload(
