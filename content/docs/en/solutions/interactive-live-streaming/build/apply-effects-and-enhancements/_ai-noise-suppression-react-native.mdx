@@ -1,0 +1,18 @@
+<include>./_ai-noise-suppression-shared.mdx</include>
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```typescript
+const setAINSMode = () => {
+  const enabled = true;
+  const mode = AgoraRtcEngine.AudioAinsMode.AINS_MODE_ULTRALOWLATENCY;
+
+  return rtcEngine.setAINSMode(enabled, mode);
+};
+```
+
+## Reference
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/api_irtcengine_setainsmode.html)

@@ -1,0 +1,62 @@
+Room bombing refers to one or more users maliciously disrupting the order of a channel. It usually occurs in chat rooms and other multi-user interactive use cases. Common patterns include intercepting a token, repeatedly joining with a long-lived token, continuously making noise or sending illegal audio or video content, hijacking signaling messages, or reconnecting after a network interruption.
+
+This page describes measures that help maintain room order and improve business security.
+
+## Basic security solutions
+
+### Use the latest SDK version
+
+To ensure that you have the latest security updates, upgrade to the latest version of Video SDK for Web. Visit the [SDKs](../../../sdks.md) page and download the latest SDK.
+
+### Use token authentication
+
+Agora strongly recommends token authentication for your app. Token authentication ensures that only authorized users can join a channel and controls the user's streaming privileges. To use token authentication, integrate token generation into your business server and enable token verification on the Agora server. See [Secure authentication with tokens](../../authenticate-users/use-tokens.mdx) for details.
+
+#### Set an appropriate validity period for tokens and permissions
+
+To prevent unauthorized users from joining a channel by taking advantage of long token validity, set a suitable validity period with `tokenExpirationInSeconds` and `privilegeExpirationInSeconds`.
+
+#### Update tokens regularly
+
+When a token is about to expire, Video SDK for Web triggers the `token-privilege-will-expire` callback. When you receive this callback, obtain a fresh token from the token server and call `renewToken` to pass the new token to the SDK.
+
+:::note
+Agora recommends setting `tokenExpirationInSeconds` and `privilegeExpirationInSeconds` to the same value.
+
+Store the app ID and app certificate securely on your app server. If you suspect leakage, [switch to a new primary certificate](../../manage-agora-account.md).
+:::
+
+### Use co-host token authentication
+
+For use cases where audience members frequently go on and off the microphone, Agora provides authentication for users who publish streams in a channel. This is known as co-host token authentication.
+
+:::warning
+Before using this feature, make sure you have enabled **Co-host token authentication** in Agora Console.
+:::
+
+| Role and use case | Authentication steps |
+| :--- | :--- |
+| Host joins the channel to send streams | Request a token with `role` set to `kRolePublisher`, call `setClientRole` to set the role as host, and call `join` with a token that has streaming privileges. |
+| Audience member joins the channel | Request a token with `role` set to `kRoleSubscriber`. Because a user's role is audience by default when joining a channel, call `join` directly with the token. |
+| Audience member gets the mic after joining | Request a token with `role` set to `kRolePublisher`, call `renewToken`, and call `setClientRole` to switch the role to host. |
+
+## Response plan
+
+### Locate illegal users
+
+Regularly call the Agora RESTful API `http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}` on the app server to query the Agora server's online channel user list, and compare it with the user list maintained on the app server to find illegal users.
+
+### Handle illegal users
+
+After you identify an illegal user, stop their disruptive behavior to restore order to the room. Use one or more of the following methods:
+
+- Ask the user's client to call `setMuted(true)` on the local audio track to stop publishing the audio stream.
+- Ask the user's client to call `setClientRole` to set the user's role as audience and cancel streaming privileges.
+- Call `http://api.sd-rtn.com/dev/v1/kicking-rule` from the app server to kick the user out of the channel.
+
+## Reference
+
+- [Channel Management RESTful API](../../reference/channel-management-api.md)
+- `token-privilege-will-expire`
+- `renewToken`
+- `setClientRole`

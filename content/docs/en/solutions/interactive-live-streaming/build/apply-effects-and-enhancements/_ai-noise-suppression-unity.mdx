@@ -1,0 +1,16 @@
+<include>./_ai-noise-suppression-shared.mdx</include>
+
+Call `SetAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```csharp
+bool enableAINS = true;
+AUDIO_AINS_MODE mode = AUDIO_AINS_MODE.AINS_MODE_BALANCED;
+
+int result = rtcEngine.SetAINSMode(enableAINS, mode);
+```
+
+## Reference
+
+### API reference
+
+- [`SetAINSMode`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setainsmode)

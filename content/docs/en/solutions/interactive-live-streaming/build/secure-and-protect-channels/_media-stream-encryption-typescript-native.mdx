@@ -1,0 +1,31 @@
+<include>./_media-stream-encryption-common.mdx</include>
+
+Obtain the string key and Base64-encoded salt from your server, convert the salt to a 32-byte array, and call `enableEncryption` before joining a channel. Set the encryption mode to `Aes128Gcm2` or `Aes256Gcm2` and pass the key and salt to the SDK.
+
+```typescript
+const encryptionMode = EncryptionMode.Aes128Gcm2;
+const encryptionKey = await getEncryptionKeyFromServer();
+const encryptionKdfSalt = await getEncryptionSaltBytesFromServer();
+
+if (!encryptionKey) {
+  throw new Error('encryptionKey is invalid');
+}
+
+rtcEngine.enableEncryption(true, {
+  encryptionMode,
+  encryptionKey,
+  encryptionKdfSalt,
+});
+```
+
+## Reference
+
+### Sample projects
+
+- [Electron encryption example](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/Encryption/Encryption.tsx)
+- [React Native encryption example](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/Encryption/Encryption.tsx)
+
+### API reference
+
+- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
+- [`EncryptionConfig`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_encryptionconfig.html)

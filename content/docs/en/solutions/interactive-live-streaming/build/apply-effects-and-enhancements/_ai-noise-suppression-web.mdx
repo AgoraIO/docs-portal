@@ -1,0 +1,96 @@
+Try the [AI Noise Suppression online demo](https://webdemo-global.agora.io/example/plugin/aiDenoiser/index.html).
+
+<include>./_ai-noise-suppression-shared.mdx</include>
+
+:::note
+The following implementation steps apply to the latest version of the AI Noise Suppression extension. Refer to the [extension release notes](../../reference/release-notes.mdx#ai-noise-suppression) for details.
+:::
+
+1. Install the AI Noise Suppression extension.
+
+   ```bash
+   npm install agora-extension-ai-denoiser
+   ```
+
+2. Import AI Noise Suppression in your JavaScript or TypeScript file.
+
+   ```typescript
+   import { AIDenoiserExtension } from 'agora-extension-ai-denoiser';
+   ```
+
+3. Dynamically load the Wasm dependencies.
+
+   Publish the files in `node_modules/agora-extension-ai-denoiser/external` to your CDN or static resource server, and pass the public path URL when creating an `AIDenoiserExtension` instance.
+
+   :::note
+   If the Wasm files are not hosted on the same origin as the web application, enable CORS.
+
+   Do not serve the Wasm files over HTTP when your page runs over HTTPS.
+   :::
+
+4. Register the AI Noise Suppression extension.
+
+   ```typescript
+   const denoiser = new AIDenoiserExtension({ assetsPath: './external' });
+
+   if (!denoiser.checkCompatibility()) {
+     console.error('This browser does not support AI Denoiser.');
+   }
+
+   AgoraRTC.registerExtensions([denoiser]);
+
+   denoiser.onloaderror = (error) => {
+     console.log(error);
+   };
+   ```
+
+5. Create an `IAIDenoiserProcessor` instance.
+
+   ```typescript
+   const processor = denoiser.createProcessor();
+   processor.enable();
+   ```
+
+6. Inject the extension into the audio processing pipeline.
+
+   ```typescript
+   const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+   audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
+   await processor.enable();
+   ```
+
+7. Enable or disable the extension as needed.
+
+   ```typescript
+   if (processor.enabled) {
+     await processor.disable();
+   } else {
+     await processor.enable();
+   }
+   ```
+
+8. Set the noise suppression mode and level.
+
+   ```typescript
+   processor.on('overload', async () => {
+     await processor.setMode('STATIONARY_NS');
+   });
+   ```
+
+## Reference
+
+### Considerations
+
+- If only some audio tracks on the current web page enable AI Noise Suppression, audio tracks that do not enable AI Noise Suppression may be affected because the extension turns on AEC and AGC and turns off browser NS.
+- Although AI Noise Suppression supports Safari 14.1 and later, Safari may have performance issues. Best practice is not to support Safari.
+- AI Noise Suppression does not support browsers on mobile devices.
+
+### Sample project
+
+- [AI Denoiser web demo](https://webdemo.agora.io/aiDenoiser/index.html)
+- [AI Denoiser source code](https://github.com/AgoraIO/API-Examples-Web/tree/main/Demo/aiDenoiser)
+
+### API reference
+
+- [`AgoraRTC.registerExtensions`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions)
+- [`IMicrophoneAudioTrack.pipe`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#pipe)

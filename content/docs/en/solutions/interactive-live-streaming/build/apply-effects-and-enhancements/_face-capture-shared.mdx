@@ -1,0 +1,73 @@
+## Prerequisites
+
+Ensure that you have:
+
+- Implemented the [SDK quickstart](../../index.mdx) in your project.
+- Integrated Video SDK version 4.3.0 or later with the Facial Capture extension dynamic library for your platform.
+- Obtained the face capture authentication parameters `authentication_information` and `company_id` by contacting [Agora technical support](mailto:extensions.marketplace@agora.io).
+
+## Implement the logic
+
+This section shows you how to integrate the Facial Capture extension in your app to capture facial data.
+
+### Use facial information to drive virtual humans
+
+The output facial data is in JSON format and includes quantitative information such as facial feature points, head rotation, and head translation. This data follows the Blend Shape (BS) format in compliance with the ARKit standard. You can use a third-party 3D rendering engine to further process the BS data. The key elements are:
+
+- `faces`: An array of objects, each representing recognized facial information for one face.
+  - `detected`: A float representing the confidence level of face recognition, ranging from `0.0` to `1.0`.
+  - `blendshapes`: An object containing the face capture coefficients. The keys follow the ARKit standard, with each key-value pair representing a blendshape coefficient, where the value is a float between `0.0` and `1.0`.
+  - `rotation`: An array of objects representing head rotation. It contains three key-value pairs. All values are floating points between `-180.0` and `180.0`.
+    - `pitch`: The pitch angle of the head. Positive values represent head lowering, negative values represent head raising.
+    - `yaw`: The angle of head rotation. Positive values represent left rotation, negative values represent right rotation.
+    - `roll`: The tilt angle of the head. Positive values represent right tilt, negative values represent left tilt.
+- `translation`: An object representing head translation, with three key-value pairs: `x`, `y`, and `z`. The values are floats between `0.0` and `1.0`.
+- `faceState`: An integer indicating the current face capture control state:
+  - `0`: The algorithm is in surface capture control.
+  - `1`: The algorithm control returns to the center.
+  - `2`: The algorithm is restored and not in control.
+- `timestamp`: A string representing the output result's timestamp, in milliseconds.
+
+This data can be used to animate virtual humans by applying the `blendshape` coefficients and head movement data to a 3D model.
+
+```json
+{
+  "faces": [
+    {
+      "detected": 0.98,
+      "blendshapes": {
+        "eyeBlinkLeft": 0.9,
+        "eyeLookDownLeft": 0.0,
+        "eyeLookInLeft": 0.0,
+        "eyeLookOutLeft": 0.0,
+        "eyeLookUpLeft": 0.0,
+        "eyeSquintLeft": 0.0,
+        "eyeWideLeft": 0.0,
+        "eyeBlinkRight": 0.0,
+        "eyeLookDownRight": 0.0,
+        "eyeLookInRight": 0.0,
+        "eyeLookOutRight": 0.0,
+        "eyeLookUpRight": 0.0,
+        "eyeSquintRight": 0.0,
+        "eyeWideRight": 0.0
+      },
+      "rotation": {
+        "pitch": 30.0,
+        "yaw": 25.5,
+        "roll": -15.5
+      },
+      "translation": {
+        "x": 0.5,
+        "y": 0.3,
+        "z": 0.5
+      },
+      "faceState": 1
+    }
+  ],
+  "timestamp": "654879876546"
+}
+```
+
+:::warning[Important]
+Currently, the facial capture function outputs data for only one face at a time. After the callback is triggered, allocate memory separately to store the facial data and process it in a separate thread. Otherwise, the raw data callback may lead to frame loss.
+:::

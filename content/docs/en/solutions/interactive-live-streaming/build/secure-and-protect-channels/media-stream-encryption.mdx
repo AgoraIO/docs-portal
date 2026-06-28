@@ -3,123 +3,58 @@ title: "Secure channel encryption"
 description: "Add Agora built-in media stream encryption method to your app."
 ---
 
-Media stream encryption refers to encrypting audio and video streams in an app using a unique [key](https://en.wikipedia.org/wiki/Public_key_certificate) and [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) controlled by the app developer. Encryption ensures that only the authorized users in a channel see and hear each other. Video SDK provides built-in encryption methods that you can use to guarantee data confidentiality during transmission.
+Media stream encryption encrypts audio and video streams with a unique [key](https://en.wikipedia.org/wiki/Public_key_certificate) and [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) controlled by your app server. Encryption ensures that only authorized users in a channel can see and hear each other.
 
-This article describes how to integrate Agora built-in media stream encryption into your app.
+<PlatformStructured platform="android">
 
-## Understand the tech
+<include>./_media-stream-encryption-android.mdx</include>
 
-The following figure illustrates the process of data transfer with media stream encryption enabled.
+</PlatformStructured>
 
-**Data transfer process**
+<PlatformStructured platform="ios">
 
-![EncryptMediaStream](/images/video-sdk/encrypt_media_streams_dataTransferProcess-web.svg)
+<include>./_media-stream-encryption-apple.mdx</include>
 
-## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+</PlatformStructured>
 
-## Implement media stream encryption
+<PlatformStructured platform="macos">
 
-This section shows you how to add built-in media stream encryption to your app.
+<include>./_media-stream-encryption-apple.mdx</include>
 
-Video SDK supports the following encryption modes:
+</PlatformStructured>
 
-- `"aes-128-xts"`: 128-bit AES encryption, XTS mode.
-- `"aes-256-xts"`: 256-bit AES encryption, XTS mode.
-- `"aes-128-gcm"`: 128-bit AES encryption, GCM mode.
-- `"aes-256-gcm"`: 256-bit AES encryption, GCM mode.
-- `"aes-128-ecb"`: 128-bit AES encryption, ECB mode.
-- `"sm4-128-ecb"`: 128-bit SM4 encryption, ECB mode.
+<PlatformStructured platform="web">
 
-Available only in Web SDK v4.5.0 and higher:
-- `"aes-128-gcm2"`: 128-bit AES encryption, GCM mode, salted.
-- `"aes-256-gcm2"`: 256-bit AES encryption, GCM mode, salted.
+<include>./_media-stream-encryption-web.mdx</include>
 
-For maximum security, best practice is to set the encryption mode to `"aes-128-gcm2"` or `"aes-256-gcm2"`, and specify an encryption key and salt. If you choose another encryption mode, you only need to specify the encryption key.
+</PlatformStructured>
 
-To add built-in media stream encryption to your app, refer to the following steps:
+<PlatformStructured platform="windows">
 
-1. Generate a key and salt on your server
+<include>./_media-stream-encryption-windows.mdx</include>
 
-   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
+</PlatformStructured>
 
-     ```shell
-     # Generate a 32-byte hexadecimal key
-     openssl rand -hex 32
-     ```
+<PlatformStructured platform="electron">
 
-   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
+<include>./_media-stream-encryption-typescript-native.mdx</include>
 
-     ```shell
-     # Generate a Base64-encoded, 32-byte salt
-     openssl rand -base64 32
-     ```
+</PlatformStructured>
 
-2. Implement client-side logic
+<PlatformStructured platform="flutter">
 
-  1. Obtain a String key and Base64-encoded salt from the server.
+<include>./_media-stream-encryption-flutter.mdx</include>
 
-  2. Before joining a channel, call `AgoraRTCClient.setEncryptionConfig` to select the encryption mode and specify the encryption key and salt.
+</PlatformStructured>
 
-  3. When you call `setEncryptionConfig`, the web client:
+<PlatformStructured platform="react-native">
 
-     * Converts the key from Hex to ASCII, before passing it to the Video SDK.
+<include>./_media-stream-encryption-typescript-native.mdx</include>
 
-     * Converts the salt from Base64 to Uint8Array, before passing it to the Video SDK.
+</PlatformStructured>
 
-  :::note
-  - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
-    - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
-  :::
+<PlatformStructured platform="unity">
 
-  To implement this logic, refer to the following code:
+<include>./_media-stream-encryption-unity.mdx</include>
 
-  ```javascript
-  // Declare a utility function to convert Base64 to Uint8Array
-  function base64ToUint8Array(base64Str: string): Uint8Array {
-    const raw = window.atob(base64Str);
-    const result = new Uint8Array(new ArrayBuffer(raw.length));
-
-    for (let i = 0; i < raw.length; i += 1) {
-      result[i] = raw.charCodeAt(i);
-    }
-
-    return result;
-  }
-
-  // Declare a utility function to convert Hex to ASCII
-  function hex2ascii(hexx) {
-    const hex = hexx.toString();//force conversion
-    let str = '';
-    for (let i = 0; i < hex.length; i += 2)
-      str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    return str;
-  }
-
-  async function getSecretAndSalt() {
-    // Retrieve the key and salt value from the server
-    let [secret, salt] = await getSecretAndSaltFromServer();
-    salt = base64ToUint8Array(salt);
-    secret = hex2ascii(secret);
-    return [secret, salt];
-  }
-
-  let [secret, salt] = await getSecretAndSalt();
-
-  // Set the encryption scheme to AES-256-GCM2 and pass in secret and salt
-  client.setEncryptionConfig("aes-256-gcm2", secret, salt);
-  ```
-
-  The sample code refers to the local `client` object created using `AgoraRTC.createClient`
-
-## Reference
-This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
-
-### Development considerations
-
-The media stream encryption feature is supported in both communication and live broadcasting use-cases. However, in the live broadcasting use-case, Agora does not support pushing the encrypted media stream to CDN.
-
-### API reference
-
-- [`setEncryptionConfig`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#setencryptionconfig)
-- [`EncryptionMode`](https://api-ref.agora.io/en/video-sdk/web/4.x/globals.html#encryptionmode)
+</PlatformStructured>

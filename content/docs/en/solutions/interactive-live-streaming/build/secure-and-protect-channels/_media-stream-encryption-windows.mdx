@@ -1,0 +1,28 @@
+<include>./_media-stream-encryption-common.mdx</include>
+
+Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `uint8_t`, and call `enableEncryption` before joining a channel. Set the encryption mode to `AES_128_GCM2` or `AES_256_GCM2` and pass the key and salt to the SDK.
+
+```cpp
+int enableEncryption() {
+  std::string secret = getEncryptionKeyFromServer();
+  std::vector<uint8_t> kdfSalt = getEncryptionSaltFromServer();
+
+  agora::rtc::EncryptionConfig config;
+  config.encryptionMode = AES_128_GCM2;
+  config.encryptionKey = secret.c_str();
+  memcpy(config.encryptionKdfSalt, kdfSalt.data(), sizeof(config.encryptionKdfSalt));
+
+  return rtcEngine->enableEncryption(true, config);
+}
+```
+
+## Reference
+
+### Sample project
+
+- [AgoraMediaEncryption](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/MediaEncrypt)
+
+### API reference
+
+- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/windows/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
+- [`EncryptionConfig`](https://api-ref.agora.io/en/video-sdk/windows/4.x/API/class_encryptionconfig.html)

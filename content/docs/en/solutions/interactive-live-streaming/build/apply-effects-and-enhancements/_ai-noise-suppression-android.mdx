@@ -1,0 +1,27 @@
+<include>./_ai-noise-suppression-shared.mdx</include>
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```java tab="Java" tabGroup="ains-android"
+// Noise reduction modes:
+// 0: Balanced mode
+// 1: Aggressive mode
+// 2: Aggressive mode with low latency
+int mode = 1;
+int result = rtcEngine.setAINSMode(true, mode);
+```
+
+```kotlin tab="Kotlin" tabGroup="ains-android"
+// Noise reduction modes:
+// 0: Balanced mode
+// 1: Aggressive mode
+// 2: Aggressive mode with low latency
+val mode = 1
+val result = rtcEngine.setAINSMode(true, mode)
+```
+
+## Reference
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setainsmode)

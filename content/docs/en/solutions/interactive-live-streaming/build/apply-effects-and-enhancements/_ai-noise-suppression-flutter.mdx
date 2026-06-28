@@ -1,0 +1,18 @@
+<include>./_ai-noise-suppression-shared.mdx</include>
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```dart
+Future<void> enableNoiseSuppression() async {
+  const enabled = true;
+  const mode = AudioAinsMode.AINS_MODE_ULTRALOWLATENCY;
+
+  await _engine.setAINSMode(enabled: enabled, mode: mode);
+}
+```
+
+## Reference
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/api_irtcengine_setainsmode.html)

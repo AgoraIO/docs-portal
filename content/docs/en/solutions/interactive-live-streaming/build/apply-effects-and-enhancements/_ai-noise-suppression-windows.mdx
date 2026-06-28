@@ -1,0 +1,16 @@
+<include>./_ai-noise-suppression-shared.mdx</include>
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```cpp
+bool enableAINS = true;
+AUDIO_AINS_MODE mode = AINS_MODE_BALANCED;
+
+int result = rtcEngine->setAINSMode(enableAINS, mode);
+```
+
+## Reference
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/windows/4.x/API/api_irtcengine_setainsmode.html)

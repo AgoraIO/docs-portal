@@ -1,0 +1,21 @@
+<include>./_ai-noise-suppression-shared.mdx</include>
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```javascript
+const enabled = true;
+const result = rtcEngine.setAINSMode(
+  enabled,
+  AudioAinsMode.AinsModeUltralowlatency,
+);
+
+if (result !== 0) {
+  console.error('Failed to enable AI Noise Suppression');
+}
+```
+
+## Reference
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/api_irtcengine_setainsmode.html)

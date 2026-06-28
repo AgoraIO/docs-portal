@@ -1,0 +1,32 @@
+<include>./_media-stream-encryption-common.mdx</include>
+
+Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `Uint8List`, and call `enableEncryption` before joining a channel. Set the encryption mode to `aes128Gcm2` or `aes256Gcm2` and pass the key and salt to the SDK.
+
+```dart
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+
+Future<void> enableEncryption(RtcEngine rtcEngine) async {
+  final String encryptionKdfSaltBase64 =
+      await Server.getEncryptionKdfSaltBase64();
+  final String encryptionSecret = await Server.getEncryptionSecret();
+  final Uint8List encryptionKdfSalt = base64Decode(encryptionKdfSaltBase64);
+
+  final config = EncryptionConfig(
+    encryptionMode: EncryptionMode.aes128Gcm2,
+    encryptionKey: encryptionSecret,
+    encryptionKdfSalt: encryptionKdfSalt,
+  );
+
+  await rtcEngine.enableEncryption(enabled: true, config: config);
+}
+```
+
+## Reference
+
+### API reference
+
+- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
+- [`EncryptionConfig`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_encryptionconfig.html)
+- [`EncryptionMode`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/enum_encryptionmode.html)
