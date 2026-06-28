@@ -219,6 +219,7 @@ function OpenApiOperationLayout({
       <div className="min-w-0 flex-1">
         {slots.header}
         <OpenApiEndpointBar operation={method} />
+        {slots.description}
         <OpenApiDocsSections operation={method} position="after-description" />
         <OpenApiDocsCallouts operation={method} position="after-description" />
         <OpenApiParameters operation={method} />
@@ -1370,8 +1371,14 @@ let openApiMarkdownProcessor:
 function renderOpenApiMarkdown(markdown: string): ReactNode {
   openApiMarkdownProcessor ??= createOpenApiMarkdownProcessor();
 
-  return openApiMarkdownProcessor.processSync({ value: markdown })
+  const content = openApiMarkdownProcessor.processSync({ value: markdown })
     .result as ReactNode;
+
+  return (
+    <div className="openapi-markdown prose-no-margin">
+      {content}
+    </div>
+  );
 }
 
 function createOpenApiMarkdownProcessor() {
