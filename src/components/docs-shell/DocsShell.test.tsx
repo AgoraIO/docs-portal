@@ -71,6 +71,14 @@ const loadSearchPages = async () => [
   },
 ];
 
+function expectNoZhCnLinks(container: ParentNode) {
+  const zhCnHrefs = Array.from(
+    container.querySelectorAll<HTMLAnchorElement>('a[href^="/zh-CN"]'),
+  ).map((link) => link.getAttribute('href'));
+
+  expect(zhCnHrefs).toEqual([]);
+}
+
 function renderDocsShell(
   overrides: Partial<DocsShellProps> = {},
   initialEntry = '/en/introduction/about-agora',
@@ -457,6 +465,9 @@ describe('DocsShell', () => {
     ).toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'Open navigation' }),
+    ).toBeNull();
+    expect(
+      screen.queryByRole('navigation', { name: 'Alternate languages' }),
     ).toBeNull();
   });
 
@@ -942,7 +953,7 @@ describe('DocsShell', () => {
     });
   });
 
-  it('renders alternate-language links as crawlable links for static discovery', async () => {
+  it('does not expose China site or alternate zh-CN navigation in desktop chrome', async () => {
     renderDocsShell({
       activePath: '/en/ai/get-started/quickstart',
       activeTab: 'ai',
@@ -960,18 +971,51 @@ describe('DocsShell', () => {
       ],
     });
 
-    const altNav = await screen.findByRole('navigation', {
-      name: 'Alternate languages',
+    const mainHeaderRow = await screen.findByTestId('docs-main-header-row');
+    const desktopHeaderActions = within(mainHeaderRow).getByTestId(
+      'docs-desktop-header-actions',
+    );
+
+    expect(
+      within(desktopHeaderActions).queryByRole('button', { name: 'Site' }),
+    ).toBeNull();
+    expect(
+      within(desktopHeaderActions).queryByText('China site'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('navigation', {
+        name: 'Alternate languages',
+      }),
+    ).toBeNull();
+    expect(
+      screen.queryByRole('link', { name: 'zh-CN' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', {
+        name: 'China site',
+      }),
+    ).not.toBeInTheDocument();
+    expectNoZhCnLinks(mainHeaderRow);
+  });
+
+  it('does not render alternate-language chrome when only one UI locale is enabled', async () => {
+    renderDocsShell({
+      activePath: '/en/ai/get-started/quickstart',
+      activeTab: 'ai',
+      localeLinks: [
+        {
+          href: '/en/ai/get-started/quickstart',
+          isActive: true,
+          locale: 'en',
+        },
+      ],
     });
 
-    const enLink = within(altNav).getByRole('link', { name: 'en' });
-    expect(enLink).toHaveAttribute('href', '/en/ai/get-started/quickstart');
-    expect(enLink).toHaveAttribute('hreflang', 'en');
-    expect(enLink).toHaveAttribute('aria-current', 'page');
-
-    const zhLink = within(altNav).getByRole('link', { name: 'zh-CN' });
-    expect(zhLink).toHaveAttribute('href', '/zh-CN/ai/get-started/quickstart');
-    expect(zhLink).toHaveAttribute('hreflang', 'zh-CN');
+    expect(
+      screen.queryByRole('navigation', {
+        name: 'Alternate languages',
+      }),
+    ).toBeNull();
   });
 
   it('keeps compact mobile header controls and exposes theme in the sheet', async () => {
@@ -1049,6 +1093,13 @@ describe('DocsShell', () => {
       within(mobileHeaderActions).queryByRole('button', { name: 'Site' }),
     ).toBeNull();
     expect(
+      within(desktopHeaderActions).queryByRole('button', { name: 'Site' }),
+    ).toBeNull();
+    expect(
+      within(mainHeaderRow).queryByText('China site'),
+    ).not.toBeInTheDocument();
+    expectNoZhCnLinks(mainHeaderRow);
+    expect(
       within(mobileHeaderActions).queryByRole('button', {
         name: 'Theme: Light',
       }),
@@ -1070,6 +1121,13 @@ describe('DocsShell', () => {
     expect(
       within(mobileSheet).queryByRole('button', { name: 'Site' }),
     ).toBeNull();
+    expect(
+      within(mobileSheet).queryByText('China site'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(mobileSheet).queryByRole('link', { name: 'zh-CN' }),
+    ).not.toBeInTheDocument();
+    expectNoZhCnLinks(mobileSheet);
     expect(
       within(mobileSheet).getByRole('button', { name: 'Theme: Light' }),
     ).toBeInTheDocument();
