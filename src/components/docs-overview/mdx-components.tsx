@@ -10,7 +10,6 @@ import {
   BlocksIcon,
   BotIcon,
   CaptionsIcon,
-  CheckIcon,
   ChevronDownIcon,
   CloudIcon,
   Code2Icon,
@@ -43,14 +42,6 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/cn';
 
 const SdksCatalog = lazy(() =>
@@ -1066,14 +1057,6 @@ function RecipesCatalogFilterGroup({
 
 const RECIPE_LEVELS = ['Beginner', 'Intermediate', 'Advanced'] as const;
 
-const recipeToneAccent: Record<SolutionCardTone, string> = {
-  blue: 'border-l-sky-400/70',
-  green: 'border-l-emerald-400/70',
-  pink: 'border-l-rose-400/70',
-  purple: 'border-l-violet-400/70',
-  sand: 'border-l-amber-400/70',
-};
-
 function getRecipeLevel(item: RecipeCatalogItem) {
   return item.tags?.find((tag) =>
     (RECIPE_LEVELS as readonly string[]).includes(tag),
@@ -1084,87 +1067,44 @@ function recipeKey(item: RecipeCatalogItem) {
   return item.href ?? `${item.product}-${item.stack ?? item.title}`;
 }
 
-function RecipeGalleryCard({ item }: { item: RecipeCatalogItem }) {
-  const level = getRecipeLevel(item);
-  const isExternal = Boolean(item.href?.startsWith('http'));
-
-  return (
-    <a
-      className={cn(
-        'group flex min-h-[9.5rem] flex-col gap-2.5 rounded-lg border border-l-[3px] border-border bg-card p-5 shadow-xs transition-colors hover:border-primary/35 hover:bg-accent/30',
-        recipeToneAccent[item.tone ?? 'blue'],
-      )}
-      href={item.href}
-      rel={isExternal ? 'noreferrer noopener' : undefined}
-      target={isExternal ? '_blank' : undefined}
-    >
-      <div className="flex items-center gap-2">
-        {item.stack ? (
-          <span className="min-w-0 truncate text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
-            {item.stack}
-          </span>
-        ) : null}
-        {level ? (
-          <span className="shrink-0 rounded-full border border-border px-2 py-0.5 text-[10.5px] font-medium text-muted-foreground">
-            {level}
-          </span>
-        ) : null}
-        <ArrowUpRightIcon className="ml-auto size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
-      </div>
-      <h4 className="m-0 text-[15px] leading-6 font-semibold text-foreground">
-        {item.title}
-      </h4>
-      <p className="m-0 line-clamp-3 text-sm leading-6 text-muted-foreground">
-        {item.description}
-      </p>
-    </a>
-  );
+function recipeTags(item: RecipeCatalogItem) {
+  return [item.stack, getRecipeLevel(item)].filter(Boolean) as string[];
 }
 
-function RecipeGalleryDropdown({
+function RecipeGallerySelect({
   allLabel,
   label,
-  onSelect,
+  onChange,
   options,
   value,
 }: {
   allLabel: string;
   label: string;
-  onSelect: (value: string) => void;
+  onChange: (value: string) => void;
   options: string[];
   value: string;
 }) {
+  const id = `recipe-filter-${label.toLowerCase().replace(/\s+/g, '-')}`;
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          className="h-9 justify-between gap-2 px-3 text-sm font-normal"
-          type="button"
-          variant="outline"
-        >
-          <span className="truncate">
-            <span className="text-muted-foreground">{label}:</span>{' '}
-            {value === allLabel ? 'All' : value}
-          </span>
-          <ChevronDownIcon data-icon="inline-end" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="start"
-        className="max-h-80 w-56 overflow-auto"
+    <span className="relative shrink-0">
+      <label className="sr-only" htmlFor={id}>
+        {label}
+      </label>
+      <select
+        className="h-9 appearance-none rounded-md border border-border bg-background pr-9 pl-3 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+        id={id}
+        onChange={(event) => onChange(event.target.value)}
+        value={value}
       >
         {options.map((option) => (
-          <DropdownMenuItem
-            className="justify-between"
-            key={option}
-            onSelect={() => onSelect(option)}
-          >
-            {option === allLabel ? `All ${label.toLowerCase()}` : option}
-            {option === value ? <CheckIcon /> : null}
-          </DropdownMenuItem>
+          <option key={option} value={option}>
+            {option === allLabel ? `${label}: All` : option}
+          </option>
         ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </select>
+      <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground" />
+    </span>
   );
 }
 
@@ -1328,68 +1268,71 @@ export function RecipesGallery({
         />
       </label>
 
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <fieldset className="m-0 flex min-w-0 flex-wrap gap-1.5 border-0 p-0">
-          <legend className="sr-only">{categoryFilterLabel}</legend>
+      <div className="flex flex-col gap-4">
+        <div
+          aria-label={categoryFilterLabel}
+          className="flex flex-wrap gap-1 border-border border-b"
+          role="tablist"
+        >
           {categories.map((category) => {
             const active = category === activeCategory;
             return (
               <button
-                aria-pressed={active}
+                aria-selected={active}
                 className={cn(
-                  'rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors',
+                  '-mb-px border-b-2 px-3 py-1.5 text-sm transition-colors',
                   active
-                    ? 'bg-foreground text-background'
-                    : 'text-muted-foreground hover:bg-accent hover:text-foreground',
+                    ? 'border-primary font-semibold text-foreground'
+                    : 'border-transparent text-muted-foreground hover:text-foreground',
                 )}
                 key={category}
                 onClick={() => setActiveCategory(category)}
+                role="tab"
                 type="button"
               >
                 {category === allCategoriesLabel ? 'All' : category}
               </button>
             );
           })}
-        </fieldset>
+        </div>
         <div className="flex flex-wrap items-center gap-2">
           {products.length > 2 ? (
-            <RecipeGalleryDropdown
+            <RecipeGallerySelect
               allLabel={allProductsLabel}
               label={productFilterLabel}
-              onSelect={setActiveProduct}
+              onChange={setActiveProduct}
               options={products}
               value={activeProduct}
             />
           ) : null}
-          <RecipeGalleryDropdown
+          <RecipeGallerySelect
             allLabel={allStacksLabel}
             label={stackFilterLabel}
-            onSelect={setActiveStack}
+            onChange={setActiveStack}
             options={stacks}
             value={activeStack}
           />
           {levels.length > 1 ? (
-            <RecipeGalleryDropdown
+            <RecipeGallerySelect
               allLabel={allLevelsLabel}
               label="Level"
-              onSelect={setActiveLevel}
+              onChange={setActiveLevel}
               options={levels}
               value={activeLevel}
             />
           ) : null}
           {hasActiveFilters ? (
-            <Button
+            <button
+              className="h-9 rounded-md px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               onClick={resetFilters}
-              size="sm"
               type="button"
-              variant="ghost"
             >
               {clearFiltersLabel}
-            </Button>
+            </button>
           ) : null}
-          <Badge className="whitespace-nowrap" variant="outline">
-            {filteredItems.length}
-          </Badge>
+          <span className="ml-auto text-sm text-muted-foreground">
+            {filteredItems.length} recipes
+          </span>
         </div>
       </div>
 
@@ -1411,7 +1354,14 @@ export function RecipesGallery({
               </div>
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {group.items.map((item) => (
-                  <RecipeGalleryCard item={item} key={recipeKey(item)} />
+                  <SolutionCard
+                    description={item.description}
+                    href={item.href}
+                    key={recipeKey(item)}
+                    size="small"
+                    tags={recipeTags(item)}
+                    title={item.title}
+                  />
                 ))}
               </div>
             </section>
@@ -1420,7 +1370,14 @@ export function RecipesGallery({
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {filteredItems.map((item) => (
-            <RecipeGalleryCard item={item} key={recipeKey(item)} />
+            <SolutionCard
+              description={item.description}
+              href={item.href}
+              key={recipeKey(item)}
+              size="small"
+              tags={recipeTags(item)}
+              title={item.title}
+            />
           ))}
         </div>
       )}
