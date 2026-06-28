@@ -28,6 +28,7 @@ const zhCnCommon = {
     pagesLabel: 'Pages',
     toc: '本页目录',
     tocEmpty: '当前页面没有标题。',
+    returnToSource: '返回 {{title}}',
     next: '下一页',
     previous: '上一页',
     copyPage: '复制页面',

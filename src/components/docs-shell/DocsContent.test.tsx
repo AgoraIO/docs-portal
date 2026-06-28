@@ -15,7 +15,7 @@ import {
 } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
@@ -26,9 +26,29 @@ import { DocsCopyMenu } from './docs-copy-menu';
 const clipboardWriteText = vi.fn();
 
 vi.mock('./DocsContentBody', () => ({
-  DocsContentBody: ({ contentPath }: { contentPath: string }) => (
-    <div data-testid="docs-content-body">{contentPath}</div>
-  ),
+  DocsContentBody: ({ contentPath }: { contentPath: string }) => {
+    const articleLink =
+      contentPath === 'en/introduction/source-with-docs-link.mdx'
+        ? {
+            href: '/en/api-reference/recipes',
+            label: 'Open recipes from article',
+          }
+        : contentPath === 'en/introduction/source-with-openapi-link.mdx'
+          ? {
+              href: '/en/api-reference/rtc',
+              label: 'Open RTC API from article',
+            }
+          : undefined;
+
+    return (
+      <div data-testid="docs-content-body">
+        {contentPath}
+        {articleLink ? (
+          <a href={articleLink.href}>{articleLink.label}</a>
+        ) : null}
+      </div>
+    );
+  },
 }));
 
 vi.mock('@/components/mdx/PlatformTabsGroup', async (importOriginal) => {
@@ -66,19 +86,30 @@ vi.mock('../openapi/FumadocsOpenApiContent', () => ({
   ),
 }));
 
-function renderWithRouter(children: ReactNode) {
+function renderWithRouter(
+  children: ReactNode,
+  initialEntry = `${window.location.pathname}${window.location.search}${window.location.hash}`,
+) {
+  window.history.replaceState(null, '', initialEntry);
+
   const rootRoute = createRootRoute({
     component: () => <Outlet />,
   });
+  const component = () => <AppProviders>{children}</AppProviders>;
   const docsRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/$locale/$tab/$slug',
-    component: () => <AppProviders>{children}</AppProviders>,
+    component,
+  });
+  const docsIndexRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab',
+    component,
   });
   const router = createRouter({
-    routeTree: rootRoute.addChildren([docsRoute]),
+    routeTree: rootRoute.addChildren([docsRoute, docsIndexRoute]),
     history: createMemoryHistory({
-      initialEntries: ['/en/introduction/about-agora'],
+      initialEntries: [initialEntry],
     }),
   });
 
@@ -91,6 +122,11 @@ describe('DocsContent', () => {
     value: {
       writeText: clipboardWriteText,
     },
+  });
+
+  beforeEach(() => {
+    window.sessionStorage.clear();
+    window.history.replaceState(null, '', '/en/introduction/about-agora');
   });
 
   it('hides a single-item breadcrumb that just repeats the page title', async () => {
@@ -491,6 +527,177 @@ describe('DocsContent', () => {
       tabs.compareDocumentPosition(body) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
   });
+
+  it('shows a return path on a docs page reached from a docs body link', async () => {
+    const source = renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/source-with-docs-link.mdx"
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+      '/en/introduction/about-agora',
+    );
+
+    fireEvent.click(
+      await screen.findByRole('link', {
+        name: 'Open recipes from article',
+      }),
+    );
+    source.unmount();
+
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/api-reference/recipes/index.mdx"
+        slug="recipes"
+        title="Recipes"
+        toc={[]}
+      />,
+      '/en/api-reference/recipes',
+    );
+
+    const returnLink = await screen.findByRole('link', {
+      name: 'Back to About Agora',
+    });
+
+    expect(returnLink).toHaveAttribute('href', '/en/introduction/about-agora');
+    expect(
+      await screen.findByRole('heading', { name: 'Recipes' }),
+    ).toBeInTheDocument();
+  });
+
+  it('shows a return path on an OpenAPI page reached from a docs body link', async () => {
+    const source = renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/source-with-openapi-link.mdx"
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+      '/en/introduction/about-agora',
+    );
+
+    fireEvent.click(
+      await screen.findByRole('link', {
+        name: 'Open RTC API from article',
+      }),
+    );
+    source.unmount();
+
+    renderWithRouter(
+      <DocsContent
+        body={{
+          kind: 'openapi',
+          pageProps: {
+            operations: [
+              {
+                method: 'post',
+                path: '/v1/rtc/channel',
+              },
+            ],
+            payload: {
+              bundled: {
+                info: {
+                  title: 'RTC REST API',
+                },
+                openapi: '3.2.0',
+                paths: {},
+              },
+            },
+          },
+        }}
+        slug="rtc"
+        title="RTC REST API"
+        toc={[]}
+      />,
+      '/en/api-reference/rtc',
+    );
+
+    expect(
+      await screen.findByTestId('fumadocs-openapi-content'),
+    ).toHaveTextContent('/v1/rtc/channel');
+    expect(
+      await screen.findByRole('link', { name: 'Back to About Agora' }),
+    ).toHaveAttribute('href', '/en/introduction/about-agora');
+  });
+
+  it('does not render a stored return path when the source href is not an internal docs path', async () => {
+    window.sessionStorage.setItem(
+      'docs-portal:article-return:v1',
+      JSON.stringify({
+        createdAt: Date.now(),
+        source: {
+          href: 'javascript:alert(1)',
+          title: 'Unsafe source',
+        },
+        targetPage: '/en/api-reference/recipes',
+      }),
+    );
+
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/api-reference/recipes/index.mdx"
+        slug="recipes"
+        title="Recipes"
+        toc={[]}
+      />,
+      '/en/api-reference/recipes',
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Recipes' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Back to Unsafe source' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not show a return path after clicking a header breadcrumb link', async () => {
+    const source = renderWithRouter(
+      <DocsContent
+        breadcrumb={[
+          {
+            title: 'API Reference',
+            url: '/en/api-reference/recipes',
+          },
+          {
+            title: 'About Agora',
+            url: '/en/introduction/about-agora',
+          },
+        ]}
+        contentPath="en/introduction/source-with-docs-link.mdx"
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+      '/en/introduction/about-agora',
+    );
+
+    fireEvent.click(
+      within(await screen.findByLabelText('Breadcrumb')).getByRole('link', {
+        name: 'API Reference',
+      }),
+    );
+    source.unmount();
+
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/api-reference/recipes/index.mdx"
+        slug="recipes"
+        title="Recipes"
+        toc={[]}
+      />,
+      '/en/api-reference/recipes',
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Recipes' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Back to About Agora' }),
+    ).not.toBeInTheDocument();
+  });
+
   it('renders copy page menu actions for AI tools, MCP, and markdown', async () => {
     renderWithRouter(
       <DocsCopyMenu
