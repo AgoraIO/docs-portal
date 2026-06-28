@@ -347,6 +347,9 @@ export async function loadDocsPagePayload(
       }
     : {
         contentPath: page.path,
+        ...('hidePlatformTabs' in page.data && page.data.hidePlatformTabs
+          ? { hidePlatformTabs: true }
+          : {}),
         kind: 'mdx' as const,
         ...(structuredPlatformTabs
           ? {

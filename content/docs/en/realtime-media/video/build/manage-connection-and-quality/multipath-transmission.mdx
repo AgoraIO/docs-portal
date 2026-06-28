@@ -53,6 +53,7 @@ Video SDK supports enabling and configuring Multipath through the following `Cha
 
 ```java
 public class ChannelMediaOptions {
+  // ...
   public Boolean enableMultipath;
   public Integer uplinkMultipathMode;
   public Integer downlinkMultipathMode;
@@ -60,15 +61,40 @@ public class ChannelMediaOptions {
 }
 ```
 
-- **Dynamic mode**: Selects the optimal path based on network conditions.
-- **Full redundancy mode**: Sends data simultaneously through all available network paths. This mode may incur additional fees; contact [support@agora.io](mailto:support@agora.io) to enable it.
+Use `enableMultipath` to enable multipath transmission. Once enabled, the SDK supports two transmission modes:
 
-You can configure uplink and downlink modes separately. When Multipath is enabled, the SDK reports per-path statistics through `onMultipathStats`.
+- **Dynamic mode** (default): Dynamically selects the optimal transmission path based on network conditions. This mode is suitable for traffic-sensitive scenarios with high user experience requirements, such as conferences and education. In this mode, you can use `preferMultipathType` to specify a preferred network path, such as Wi-Fi or mobile network.
+
+- **Full redundancy mode**: Sends data simultaneously across all available network paths. This mode is suitable for scenarios where traffic use is less sensitive but a highly reliable user experience is required, such as outdoor production, broadcasting, and parallel operation. This mode incurs additional fees. Contact [support@agora.io](mailto:support@agora.io) to enable it.
+
+You can configure the transmission mode separately for uplink (`uplinkMultipathMode`) and downlink (`downlinkMultipathMode`).
+
+When Multipath is enabled, the SDK reports transmission statistics for each path in real time through the `onMultipathStats` callback. These statistics include traffic consumption for each network type and real-time performance metrics for each path, making it easier to monitor and optimize network performance.
+
+```java
+public static class MultipathStats {
+  public int lanTxBytes;
+  public int lanRxBytes;
+  public int wifiTxBytes;
+  public int wifiRxBytes;
+  public int mobileTxBytes;
+  public int mobileRxBytes;
+  public int activePathNum;
+  public PathStats[] pathStats;
+}
+```
 
 ### Sample code
 
 ```java
+private String multipathModeStr = "";
+private int activePathNum = 0;
+
 mediaOptions.enableMultipath = true;
+
+multipathModeStr = spinner_multipath_mode.getSelectedItem().toString();
+Constants.MultipathMode multipathMode = Constants.MultipathMode.valueOf(multipathModeStr);
+
 mediaOptions.uplinkMultipathMode = Constants.MultipathMode.getValue(Constants.MultipathMode.DYNAMIC);
 mediaOptions.downlinkMultipathMode = Constants.MultipathMode.getValue(Constants.MultipathMode.DYNAMIC);
 mediaOptions.preferMultipathType = Constants.MultipathType.MULTIPATH_TYPE_WIFI.getValue();
@@ -76,6 +102,7 @@ mediaOptions.preferMultipathType = Constants.MultipathType.MULTIPATH_TYPE_WIFI.g
 @Override
 public void onMultipathStats(MultipathStats stats) {
   super.onMultipathStats(stats);
+  activePathNum = stats.activePathNum;
 }
 ```
 </PlatformStructured>
@@ -86,21 +113,54 @@ public void onMultipathStats(MultipathStats stats) {
 Video SDK supports enabling and configuring Multipath through the following `AgoraRtcChannelMediaOptions` fields:
 
 ```objc
+__attribute__((visibility("default"))) @interface AgoraRtcChannelMediaOptions : NSObject
+// ...
 @property(assign, nonatomic) BOOL enableMultipath;
 @property(assign, nonatomic) AgoraMultipathMode uplinkMultipathMode;
 @property(assign, nonatomic) AgoraMultipathMode downlinkMultipathMode;
 @property(assign, nonatomic) AgoraMultipathType preferMultipathType;
+@end
+```
+
+Use `enableMultipath` to enable multipath transmission. Once enabled, the SDK supports two transmission modes:
+
+- **Dynamic mode** (default): Dynamically selects the optimal transmission path based on network conditions. This mode is suitable for traffic-sensitive scenarios with high user experience requirements, such as conferences and education. In this mode, you can use `preferMultipathType` to specify a preferred network path, such as Wi-Fi or mobile network.
+
+- **Full redundancy mode**: Sends data simultaneously across all available network paths. This mode is suitable for scenarios where traffic use is less sensitive but a highly reliable user experience is required, such as outdoor production, broadcasting, and parallel operation. This mode incurs additional fees. Contact [support@agora.io](mailto:support@agora.io) to enable it.
+
+You can configure the transmission mode separately for uplink (`uplinkMultipathMode`) and downlink (`downlinkMultipathMode`).
+
+When Multipath is enabled, the SDK reports transmission statistics for each path in real time through the `multiPathStats` callback. These statistics include traffic consumption for each network type and real-time performance metrics for each path, making it easier to monitor and optimize network performance.
+
+```objc
+__attribute__((visibility("default"))) @interface AgoraMultipathStats : NSObject
+@property (assign, nonatomic) NSUInteger lanRxBytes;
+@property (assign, nonatomic) NSUInteger lanTxBytes;
+@property (assign, nonatomic) NSUInteger wifiRxBytes;
+@property (assign, nonatomic) NSUInteger wifiTxBytes;
+@property (assign, nonatomic) NSUInteger mobileRxBytes;
+@property (assign, nonatomic) NSUInteger mobileTxBytes;
+@property (assign, nonatomic) NSUInteger activePathNum;
+@property (copy, nonatomic) NSArray<AgoraPathStats *> *_Nullable pathStats NS_SWIFT_NAME(pathStats);
+@end
 ```
 
 ### Sample code
 
 ```swift
-channelMediaOption.enableMultipath = true
-channelMediaOption.uplinkMultipathMode = .dynamic
-channelMediaOption.downlinkMultipathMode = .dynamic
+@IBOutlet weak var selectModePicker: Picker!
+func initSelectModePicker() {
+  selectModePicker.label.stringValue = "Mode".localized
+  selectModePicker.picker.addItems(withTitles: ["dynamic", "duplicate"])
+  selectModePicker.picker.selectItem(at: 0)
+}
+
+channelMediaOption.enableMultipath = (multipathSwitch.state == .on)
+channelMediaOption.uplinkMultipathMode = (selectModePicker.picker.indexOfSelectedItem == 0) ? .dynamic : .duplicate
+channelMediaOption.downlinkMultipathMode = (selectModePicker.picker.indexOfSelectedItem == 0) ? .dynamic : .duplicate
 
 func rtcEngine(_ engine: AgoraRtcEngineKit, multiPathStats stats: AgoraMultipathStats) {
-  // Handle stats
+  videos[0].statsInfo?.updateMultipathStats(stats)
 }
 ```
 </PlatformStructured>
@@ -111,18 +171,51 @@ func rtcEngine(_ engine: AgoraRtcEngineKit, multiPathStats stats: AgoraMultipath
 Video SDK supports enabling and configuring Multipath through the following `AgoraRtcChannelMediaOptions` fields:
 
 ```objc
+__attribute__((visibility("default"))) @interface AgoraRtcChannelMediaOptions : NSObject
+// ...
 @property(assign, nonatomic) BOOL enableMultipath;
 @property(assign, nonatomic) AgoraMultipathMode uplinkMultipathMode;
 @property(assign, nonatomic) AgoraMultipathMode downlinkMultipathMode;
 @property(assign, nonatomic) AgoraMultipathType preferMultipathType;
+@end
+```
+
+Use `enableMultipath` to enable multipath transmission. Once enabled, the SDK supports two transmission modes:
+
+- **Dynamic mode** (default): Dynamically selects the optimal transmission path based on network conditions. This mode is suitable for traffic-sensitive scenarios with high user experience requirements, such as conferences and education. In this mode, you can use `preferMultipathType` to specify a preferred network path, such as Wi-Fi or mobile network.
+
+- **Full redundancy mode**: Sends data simultaneously across all available network paths. This mode is suitable for scenarios where traffic use is less sensitive but a highly reliable user experience is required, such as outdoor production, broadcasting, and parallel operation. This mode incurs additional fees. Contact [support@agora.io](mailto:support@agora.io) to enable it.
+
+You can configure the transmission mode separately for uplink (`uplinkMultipathMode`) and downlink (`downlinkMultipathMode`).
+
+When Multipath is enabled, the SDK reports transmission statistics for each path in real time through the `multiPathStats` callback. These statistics include traffic consumption for each network type and real-time performance metrics for each path, making it easier to monitor and optimize network performance.
+
+```objc
+__attribute__((visibility("default"))) @interface AgoraMultipathStats : NSObject
+@property (assign, nonatomic) NSUInteger lanRxBytes;
+@property (assign, nonatomic) NSUInteger lanTxBytes;
+@property (assign, nonatomic) NSUInteger wifiRxBytes;
+@property (assign, nonatomic) NSUInteger wifiTxBytes;
+@property (assign, nonatomic) NSUInteger mobileRxBytes;
+@property (assign, nonatomic) NSUInteger mobileTxBytes;
+@property (assign, nonatomic) NSUInteger activePathNum;
+@property (copy, nonatomic) NSArray<AgoraPathStats *> *_Nullable pathStats NS_SWIFT_NAME(pathStats);
+@end
 ```
 
 ### Sample code
 
 ```swift
-channelMediaOption.enableMultipath = true
-channelMediaOption.uplinkMultipathMode = .dynamic
-channelMediaOption.downlinkMultipathMode = .dynamic
+@IBOutlet weak var selectModePicker: Picker!
+func initSelectModePicker() {
+  selectModePicker.label.stringValue = "Mode".localized
+  selectModePicker.picker.addItems(withTitles: ["dynamic", "duplicate"])
+  selectModePicker.picker.selectItem(at: 0)
+}
+
+channelMediaOption.enableMultipath = (multipathSwitch.state == .on)
+channelMediaOption.uplinkMultipathMode = (selectModePicker.picker.indexOfSelectedItem == 0) ? .dynamic : .duplicate
+channelMediaOption.downlinkMultipathMode = (selectModePicker.picker.indexOfSelectedItem == 0) ? .dynamic : .duplicate
 ```
 </PlatformStructured>
 
@@ -133,6 +226,7 @@ Video SDK supports enabling and configuring Multipath through the following `Cha
 
 ```cpp
 struct ChannelMediaOptions {
+  // ...
   Optional<bool> enableMultipath;
   Optional<MultipathMode> uplinkMultipathMode;
   Optional<MultipathMode> downlinkMultipathMode;
@@ -140,23 +234,71 @@ struct ChannelMediaOptions {
 };
 ```
 
+Use `enableMultipath` to enable multipath transmission. Once enabled, the SDK supports two transmission modes:
+
+- **Dynamic mode** (default): Dynamically selects the optimal transmission path based on network conditions. This mode is suitable for traffic-sensitive scenarios with high user experience requirements, such as conferences and education. In this mode, you can use `preferMultipathType` to specify a preferred network path, such as Wi-Fi or mobile network.
+
+- **Full redundancy mode**: Sends data simultaneously across all available network paths. This mode is suitable for scenarios where traffic use is less sensitive but a highly reliable user experience is required, such as outdoor production, broadcasting, and parallel operation. This mode incurs additional fees. Contact [support@agora.io](mailto:support@agora.io) to enable it.
+
+You can configure the transmission mode separately for uplink (`uplinkMultipathMode`) and downlink (`downlinkMultipathMode`).
+
+When Multipath is enabled, the SDK reports transmission statistics for each path in real time through the `onMultipathStats` callback. These statistics include traffic consumption for each network type and real-time performance metrics for each path, making it easier to monitor and optimize network performance.
+
+```cpp
+struct MultipathStats {
+  uint32_t lanTxBytes;
+  uint32_t lanRxBytes;
+  uint32_t wifiTxBytes;
+  uint32_t wifiRxBytes;
+  uint32_t mobileTxBytes;
+  uint32_t mobileRxBytes;
+  int activePathNum;
+  const PathStats* pathStats;
+};
+```
+
 ### Sample code
 
 ```cpp
+// Initialize UI elements related to multipath transmission
+m_cmbMultipathMode.InsertString(0, _T("Duplicate"));
+m_cmbMultipathMode.InsertString(1, _T("Dynamic"));
+m_cmbMultipathMode.SetCurSel(0);
+
+// Initialize multipath transmission controls
+m_staEnableMultipath.SetWindowText(_T("Enable Multipath:"));
+m_chkEnableMultipath.SetCheck(BST_UNCHECKED);
+
 ChannelMediaOptions options;
-options.enableMultipath = true;
-options.uplinkMultipathMode = Dynamic;
-options.downlinkMultipathMode = Dynamic;
+options.enableMultipath = (m_chkEnableMultipath.GetCheck() == BST_CHECKED);
+
+int modeIndex = m_cmbMultipathMode.GetCurSel();
+MultipathMode mode = (modeIndex == 0) ? Duplicate : Dynamic;
+
+options.uplinkMultipathMode = mode;
+options.downlinkMultipathMode = mode;
 options.preferMultipathType = WIFI;
+
+void CMultipathRtcEngineEventHandler::onMultipathStats(const MultipathStats& stats)
+{
+  if (m_hMsgHanlder)
+  {
+    MultipathStats* statsPtr = new MultipathStats(stats);
+    ::PostMessage(m_hMsgHanlder, WM_MSGID(EID_MULTIPATH_STATS), (WPARAM)statsPtr, 0);
+  }
+}
 ```
 </PlatformStructured>
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this feature.
+
 <PlatformStructured platform="android">
 ### API reference
 
 - [`ChannelMediaOptions`](/en/api-reference/rtc/android/class-and-enum/classes/class-channelmediaoptions)
+- [MultipathStats](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_multipathstats.html)
 - [`onMultipathStats`](/en/api-reference/rtc/android/network-and-other#callback_irtcengineeventhandler_onmultipathstats)
 </PlatformStructured>
 
@@ -172,6 +314,8 @@ options.preferMultipathType = WIFI;
 ### API reference
 
 - [AgoraRtcChannelMediaOptions](https://api-ref.agora.io/en/video-sdk/macos/4.x/Classes/AgoraRtcChannelMediaOptions.html)
+- [rtcEngine(_:multiPathStats:)](https://api-ref.agora.io/en/video-sdk/macos/4.x/Protocols/AgoraRtcEngineDelegate.html)
+- [AgoraMultipathStats](https://api-ref.agora.io/en/video-sdk/macos/4.x/Classes/AgoraMultipathStats.html)
 </PlatformStructured>
 
 <PlatformStructured platform="windows">

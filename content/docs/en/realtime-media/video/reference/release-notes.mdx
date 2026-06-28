@@ -3,6 +3,19 @@ title: "Release notes"
 description: "Information about changes in each release of Video Calling."
 ---
 
+This page provides the release notes for the following:
+
+- [Video SDK](#video-sdk)
+- [AI Noise Suppression](#ai-noise-suppression)
+- [Virtual background](#virtual-background)
+- [Super Clarity extension](#super-clarity-extension)
+- [Watermark extension](#watermark-extension)
+- [Video Compositor extension](#video-compositor-extension)
+- [Beauty Effect extension](#beauty-effect-extension)
+- [MetaKit extension](#metakit-extension)
+- [Camera Movement extension](#camera-movement-extension)
+- [Notifications](#notifications)
+
 <PlatformStructured platform="web">
 
 This page provides the release notes for the Video SDK release streams used by Video Calling.
@@ -16747,6 +16760,431 @@ To integrate real-time engagement functionality into your app using Video SDK fo
 - [API reference](/en/api-reference/api-ref/rtc?platform=blueprint)
 
 Agora provides the open source [example project](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) on GitHub for your reference.
+
+</PlatformStructured>
+
+## Extensions
+
+<PlatformStructured platform="web">
+
+## AI Noise Suppression
+
+:::info
+Agora charges additionally for this extension. See [Pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
+:::
+
+### v2.0.1
+
+Released on April 1, 2026.
+
+#### Compatibility changes
+
+This version no longer supports calling the `disable` method before `pipe` to disable the processor. Ensure that you call `pipe` before invoking `disable`.
+
+#### New features
+
+- Added the `setLogLevel` method to the `IAIDenoiserExtension` interface class to set the log level for the plugin and WASM module.
+- Added the `setLatency` method to the `IAIDenoiserProcessor` interface class to configure latency for noise reduction processing.
+
+#### Improvements
+
+- Updated the noise reduction algorithm for improved noise suppression, voice fidelity, and overall robustness.
+- Significantly improved voice fidelity after AI noise suppression in scenarios with sampling rates of 16 kHz and above.
+- Optimized CPU resource allocation strategy to enhance runtime efficiency.
+
+#### API changes
+
+The implementation of callbacks has been revised in this version. The original callbacks `onloaderror`, `onoverload`, `ondump`, and `ondumpend` are deprecated. Use the `on` method with event names `"pipeerror"`, `"overload"`, `"dump"`, or `"dumpend"` to listen for the corresponding events instead.
+
+### v1.1.0
+
+#### Improvement
+
+This release improves the calculation performance of the AI-powered noise suppression algorithm.
+
+#### New features
+
+This release adds the following APIs and parameters:
+
+- APIs:
+  - `checkCompatibility`: Checks whether the AI Noise Suppression extension is supported on the current browser.
+  - `setMode`: Sets the noise suppression mode as AI noise suppression or stationary noise suppression.
+  - `setLevel`: Sets the AI noise suppression level.
+- Parameters:
+  - `elapsedTime` in `onoverload`: Reports the time in ms that the extension needs to process one audio frame.
+
+For API details, see [AI Noise Suppression](/en/realtime-media/video/build/enhance-the-audio-experience/ai-noise-suppression).
+
+#### Compatibility changes
+
+This release brings the following changes:
+
+- AI Noise Suppression supports Agora Video SDK for Web v4.15.0 or later.
+- The extension has Wasm dependencies only. Because JS dependencies are removed, you need to publish the Wasm files located in the `node_modules/agora-extension-ai-denoiser/external` directory again. If you have enabled the Content Security Policy (CSP), you need to modify the CSP configuration. See [AI Noise Suppression](/en/realtime-media/video/build/enhance-the-audio-experience/ai-noise-suppression) for details.
+- The audio data is dumped in PCM format instead of WAV format.
+- To adjust the intensity of noise suppression, best practice is to call `setLevel`.
+
+### v1.0.0
+
+First release.
+
+## Noise suppression for use cases involving AI
+
+### v1.0.0-beta2
+
+[`agora-conversational-ai-denoiser`](https://www.npmjs.com/package/agora-conversational-ai-denoiser) v1.0.0-beta2 was released on March 5, 2025, to enhance the user experience in applications powered by [Agora Conversational AI Engine](/en/introduction/conversational-ai).
+
+:::warning
+The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommends using it only for AI-related use cases.
+:::
+
+#### Key features
+
+- Significantly improved voice protection, especially for singing.
+- Reduced risk of audio capture and playback stuttering during operation.
+- When AI noise suppression is enabled, the default maximum AGC gain is reduced from 24dB to 12dB.
+
+## Virtual background
+
+### Key features
+
+- Seamless integration.
+  - Integrate directly through an HTML `<script>` tag or through npm using:
+
+    ```js
+    import VirtualBackgroundExtension from 'agora-extension-virtual-background';
+    ```
+
+  - Works within Agora WebRTC video processing pipelines.
+- Support for multiple background types.
+  - Blurred background: Users can blur their actual background with low, medium, or high blur intensity.
+  - Image background: Allows replacing the background with an image (`HTMLImageElement`).
+  - Video background: Supports setting a video as the virtual background.
+  - Solid color background: Allows setting a solid color as the background.
+
+### Browser support and limitations
+
+- Safari and Firefox: Limited support.
+
+  While the virtual background feature may work on Safari and Firefox, it is not officially supported due to performance limitations. Safari users may experience reduced performance due to browser-specific constraints, while Firefox users may encounter video freezing when minimizing the browser or switching tabs. For optimal performance and reliability, Agora recommends using the latest version of Chrome on desktop.
+
+- Mobile browsers: Not optimal.
+
+  The virtual background feature requires significant CPU and GPU processing power, which exceeds the capabilities of most mobile devices. Due to these hardware-intensive requirements, performance on mobile browsers is inconsistent and varies across devices.
+
+### v2.1.0
+
+v2.1.0 was released on April 29, 2025, with the following changes:
+
+- Optimizes memory and CPU usage.
+- Fixes black screen issues at specific resolutions.
+
+### v2.0.0
+
+v2.0.0 was released on December 18, 2024.
+
+This release upgrades the extension algorithm to version 2.0.0. [Virtual Background 2.0.0](https://www.npmjs.com/package/agora-extension-virtual-background/v/2.0.0) provides a more distinct face edge and clearer and more stable video images.
+
+#### New features
+
+- Support for VP9 codec, which provides better video compression and quality.
+
+#### Improvements
+
+- Dynamic background switching. Users can change backgrounds without restarting the video stream.
+- Ability to disable or re-enable virtual backgrounds dynamically.
+- Processor optimization for better real-time segmentation.
+
+#### Upgrading considerations
+
+Version 2.0.0 is suitable for users who prioritize quality over frame rate, especially in use-cases requiring:
+
+- Superior portrait edge detection
+- Complex background handling
+- Premium video quality
+
+It is recommended for high-end devices such as:
+
+- Apple M1 or M2
+- Latest iPhones (A13 Bionic and newer)
+- Premium Android devices (Snapdragon 865 or equivalent)
+
+Version 1.3.0 is suitable for mid-range devices and is recommended for users who prioritize smooth performance over edge precision, such as in standard video conferencing. It is recommended for use cases requiring:
+
+- Higher FPS
+- Lower resource consumption
+- Consistent performance
+
+Implementation guidelines:
+
+- For premium applications, implement device detection. Use 2.0.0 for capable devices and default to 1.3.0 for others.
+- For general applications, default to 1.3.0. Optionally, allow users to upgrade to 2.0.0 with a performance warning.
+
+### v1.2.0
+
+v1.2.0 was released on December 10, 2023.
+
+#### Compatibility changes
+
+As of this version, the Virtual Background extension incorporates the necessary Wasm module. You no longer need to publish the Wasm file separately, and pass the `wasmDir` parameter when calling the `init` method to initialize the extension.
+
+After upgrading to this version, please modify your code accordingly.
+
+#### Improvements
+
+This release upgrades the background segmentation algorithm of the extension, optimizing the segmentation effects on the subject, edges, and fingers in complex static and dynamic backgrounds.
+
+#### Fixed issues
+
+This release fixed the issue that `checkCompatibility` could return inaccurate results on specific devices.
+
+#### API changes
+
+The `wasmDir` parameter of the `init` method is now optional.
+
+### v1.1.3
+
+#### Fixed issues
+
+This release fixes the occasional issue of jagged background images on Chrome for Android.
+
+### v1.1.2
+
+#### New features
+
+You can now specify the `fit` property when calling `setOptions`. This sets how the background is resized to fit the container. For API details, see [Virtual background](/en/realtime-media/video/build/apply-video-effects/virtual-background).
+
+#### Compatibility changes
+
+Virtual Background supports Agora Video SDK for Web v4.15.0 or later.
+
+### v1.1.1
+
+#### New features
+
+You can now call `checkCompatibility` and test if the Virtual Background extension is supported on the current browser. For API details, see [Virtual background](/en/realtime-media/video/build/apply-video-effects/virtual-background).
+
+#### Fixed issues
+
+A black bar is no longer displayed to the left of the virtual background.
+
+### v1.1.0
+
+#### New features
+
+You can create multiple `VirtualBackgroundProcessor` instances to process multiple video streams.
+
+### v1.0.0
+
+First release.
+
+## Super Clarity extension
+
+This extension leverages Agora's AI quality enhancement algorithm to intelligently improve video quality without altering the resolution, thereby optimizing the viewing experience at the receiving end. For integration steps, see [Super Clarity](/en/realtime-media/video/build/apply-video-effects/super-clarity).
+
+### v2.0.1
+
+Released on April 1, 2026.
+
+This version optimizes the sharpening algorithm, improving video experience in some scenarios.
+
+### v2.0.0
+
+Released on November 18, 2025.
+
+#### Improvements
+
+This version includes the following improvements:
+
+- Reduces extension size by approximately 30%.
+- Handles WebGL context loss to improve video robustness.
+- Improves smoothness when the sender app goes to the background by aligning frame rates.
+- Expands compatibility with Safari browser.
+
+### v1.0.1
+
+Released on November 10, 2024. This is the first version of `agora-extension-super-clarity`.
+
+## Watermark extension
+
+### v1.0.0
+
+Released on November 18, 2025.
+
+This is the first version of `agora-extension-video-watermark`. For integration steps, see [Watermark](/en/realtime-media/video/build/apply-video-effects/watermark).
+
+## Video Compositor extension
+
+This extension enables local users to seamlessly merge multiple video streams and images into a single video track. This feature allows for the simultaneous display of multiple video feeds in the same video container.
+
+### v1.0.0-beta
+
+Released on October 25, 2022.
+
+This is the first version of `agora-extension-videp-compositor`. For integration steps, see [Video Compositor](/en/realtime-media/video/build/apply-video-effects/video-compositor).
+
+## Beauty Effect extension
+
+This extension enables your users to apply beauty effects to their videos. They can adjust settings for whitening, skin smoothing, acne removal, and redness to achieve a natural beauty effect.
+
+### v1.0.2-beta
+
+Released on November 26, 2022.
+
+This is the first version of `agora-extension-beauty-effect`. For integration steps, see [Beauty Effect](/en/realtime-media/video/build/apply-video-effects/beauty-effect).
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+## MetaKit extension
+
+### v2.2.0
+
+v2.2.0 was released on September 13, 2024.
+
+#### New features
+
+**Stickers**
+
+This version adds the sticker feature that uses the face capture driver and follows the character's head movements. The SDK provides subpackages for glasses (`material_sticker_glass`), masks (`material_sticker_facemask`), veils (`material_sticker_veil`), and dragon head hats (`material_sticker_dragonhat`). You can load the corresponding scene resources to quickly experience the effects of different stickers.
+
+**Portrait edge light**
+
+This release adds a new portrait edge light effect. To experience it, specify the subpackage resource as `material_effect_ray` when loading scene resources.
+
+**Advertising light text-to-image**
+
+This version adds a text-to-image feature for the advertising lights. When setting the advertising light effects, you can specify the text content through the `text` parameter and add animation effects through the `animation` parameter. This includes jumping, waving, or swaying, to make the text appear dynamically on the screen.
+
+#### Improvements
+
+This update adds support for `loadMaterial` and `unloadMaterial` in `setExtensionProperty`.
+
+- When using `loadMaterial` to load scene resources, you can specify the resource path of the required subpackage. The engine will automatically request the scene texture and render the scene.
+- If you need to switch to another scene, just use `loadMaterial` again to pass in another subpackage resource path. The engine will automatically switch to the new scene.
+- When you no longer need to experience the scene, use `unloadMaterial` to uninstall scene resources.
+
+This improvement significantly enhances the usability of the extension. You can quickly experience different functional use-cases by simply specifying different subpackage resource paths when loading.
+
+#### API changes
+
+**Added**
+
+- `loadMaterial`
+- `unloadMaterial`
+
+### v2.1.0
+
+v2.1.0 was released on March 6, 2024.
+
+#### Improvements
+
+This update optimizes the performance of the MetaKit extension and adds support for two new keys in `setExtensionProperty`: [`requestTexture`](/en/realtime-media/video/build/add-advanced-video-features/metakit#enable-texture-request) and [`switchTextureAvatarMode`](/en/realtime-media/video/build/add-advanced-video-features/metakit#switch-texture-scene). These replace the original `addSceneView` and `switchAvatarMode` functions, respectively. The new interface supports automatic generation and return of texture data, which is then directly rendered, previewed, encoded, and transmitted through the SDK. This enhancement improves rendering performance, reduces latency, and ensures more efficient operation and a better user experience.
+
+#### API changes
+
+**Added**
+
+- [`requestTexture`](/en/realtime-media/video/build/add-advanced-video-features/metakit#enable-texture-request)
+- [`switchTextureAvatarMode`](/en/realtime-media/video/build/add-advanced-video-features/metakit#switch-texture-scene)
+
+### v2.0.0
+
+v2.0.0 was released on February 23, 2024.
+
+This is the first release of the MetaKit extension. This extension integrates multiple AI technologies to provide users with diverse video enhancement functions in audio and video interaction use-cases.
+
+## Camera Movement extension
+
+### v1.2.0
+
+v1.2.0 was released on April 29, 2024.
+
+#### Improvements
+
+- Added support for Video SDK v4.3.x.
+- Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
+
+### v1.0.0
+
+v1.0.0 was released on February 23, 2024.
+
+This is the initial release of the Agora Camera Movement extension.
+
+The extension uses AI technology and intelligent camera movement algorithms to provide various features for audio and video interaction use-cases.
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+## MetaKit extension
+
+### v2.2.0
+
+v2.2.0 was released on September 13, 2024.
+
+#### New features
+
+**Stickers**
+
+This version adds the sticker feature that uses the face capture driver and follows the character's head movements. The SDK provides subpackages for glasses (`material_sticker_glass`), masks (`material_sticker_facemask`), veils (`material_sticker_veil`), and dragon head hats (`material_sticker_dragonhat`). You can load the corresponding scene resources to quickly experience the effects of different stickers.
+
+**Portrait edge light**
+
+This release adds a new portrait edge light effect. To experience it, specify the subpackage resource as `material_effect_ray` when loading scene resources.
+
+**Advertising light text-to-image**
+
+This version adds a text-to-image feature for the advertising lights. When setting the advertising light effects, you can specify the text content through the `text` parameter and add animation effects through the `animation` parameter. This includes jumping, waving, or swaying, to make the text appear dynamically on the screen.
+
+#### Improvements
+
+This update adds support for `loadMaterial` and `unloadMaterial` in `setExtensionPropertyWithVendor`.
+
+- When using `loadMaterial` to load scene resources, you can specify the resource path of the required subpackage. The engine will automatically request the scene texture and render the scene.
+- If you need to switch to another scene, just use `loadMaterial` again to pass in another subpackage resource path. The engine will automatically switch to the new scene.
+- When you no longer need to experience the scene, use `unloadMaterial` to uninstall scene resources.
+
+This improvement significantly enhances the usability of the extension. You can quickly experience different functional use-cases by simply specifying different subpackage resource paths when loading.
+
+#### API changes
+
+**Added**
+
+- `loadMaterial`
+- `unloadMaterial`
+
+### v2.1.0
+
+v2.1.0 was released on March 6, 2024.
+
+This update focuses on optimizing the performance of the MetaKit extension, ensuring more efficient operation and a better user experience.
+
+### v2.0.0
+
+v2.0.0 was released on February 23, 2024.
+
+This is the first release of the MetaKit extension. This extension integrates multiple AI technologies to provide users with diverse video enhancement functions in audio and video interaction use-cases.
+
+## Camera Movement extension
+
+### v1.2.0
+
+v1.2.0 was released on April 29, 2024.
+
+#### Improvements
+
+- Added support for Video SDK v4.3.x.
+- Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
+
+### v1.0.0
+
+v1.0.0 was released on February 23, 2024.
+
+This is the initial release of the Agora Camera Movement extension.
+
+The extension uses AI technology and intelligent camera movement algorithms to provide various features for audio and video interaction use-cases.
 
 </PlatformStructured>
 

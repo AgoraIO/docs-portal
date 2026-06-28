@@ -60,7 +60,9 @@ Agora deducts Standard minutes from the balance in your subscribed package. If y
 | **Advanced audio processing**<br/>(AGC, AEC and ANS) | ✔ | ✔ | ✔ | ✔ | ✔ | ✔ | - |
 
 \* The percentage is calculated based on the Standard minute (audio) rate ($0.99 per 1,000 minutes) and is already reflected in the package price.
+
 \*\* Allows overage post-payment within the validity period of the package.
+
 **Note**: Agora reserves the right to suspend an account once the prepaid balance is fully consumed, even if the overage invoice has not yet been issued.
 :::warning
 
@@ -202,13 +204,8 @@ This example is for illustrative purposes only. The actual billed duration is ba
 The Standard minutes calculator helps you estimate usage of Standard minutes based on the number of hosts, the resolution of their published streams, and the number of audience members subscribing to those streams. Standard minutes are consumed based on user subscriptions. Use this tool to understand the pricing policy and estimate your monthly usage.
 
 #### Standard Minutes Calculator
-
-<RTCMinutesCalculator/>
-
-<div style={{ height: '20px' }}></div>
-
 :::warning[Disclaimer]
-The Standard minutes estimated by this calculator are indicative and may not match actual usage billing. Accuracy in all cases is not guaranteed, and the calculations should be used as estimates only. Actual billing is based on Agora's official pricing policy and conversion ratios, which may vary. Please refer to Agora's [Pricing](pricing.md) policy for complete and up-to-date information on Standard minutes conversion and billing.
+The Standard minutes estimated by this calculator are indicative and may not match actual usage billing. Accuracy in all cases is not guaranteed, and the calculations should be used as estimates only. Actual billing is based on Agora's official pricing policy and conversion ratios, which may vary. Please refer to Agora's [Pricing](pricing.mdx) policy for complete and up-to-date information on Standard minutes conversion and billing.
 :::
 
 ### FAQs
@@ -217,22 +214,38 @@ This section answers common billing-related questions.
 
 #### Free minutes
 
-**If I purchase a paid package, do I still get 10,000 free minutes each month?**
+<Accordions>
+
+<Accordion title="If I purchase a paid package, do I still get 10,000 free minutes each month?">
 
 **Answer**: No. You won't get additional 10,000 free minutes
 
 When you purchase a paid package, the free minutes are reflected in the package price through discounts. Higher-tier packages offer more free minutes. The 10,000 free minutes per month do not apply to paid packages.
 
+</Accordion>
+
+</Accordions>
+
 #### Billing
-**If a user doesn’t publish or subscribe to any audio or video streams in a channel, will they still be charged?**
+
+<Accordions>
+
+<Accordion title="If a user doesn’t publish or subscribe to any audio or video streams in a channel, will they still be charged?">
 
 **Answer**:
 Yes. The audio subscription fees will apply.
 
 Even if a user does not actively subscribe to any streams, audio usage time is still generated in the channel, which results in audio subscription fees. Only audio usage is charged for publishing audio or video streams.
 
+</Accordion>
+
+</Accordions>
+
 #### Duration and usage
-**How is usage duration calculated in the bill?**
+
+<Accordions>
+
+<Accordion title="How is usage duration calculated in the bill?">
 
 **Answer**:
 
@@ -245,7 +258,9 @@ For example:
 
 The rounding error per month is within **1 minute**.
 
-**Can I view individual user usage in the bill?**
+</Accordion>
+
+<Accordion title="Can I view individual user usage in the bill?">
 
 **Answer**: No.
 
@@ -261,16 +276,26 @@ To check usage for an individual user, use the statistics reported by the SDK:
 If a client disconnects due to poor network connection, the call duration reported by the SDK might be inaccurate.
 To improve accuracy, implement a heartbeat mechanism using the Agora Signaling SDK or another signaling system. Subtract the disconnection time from the RTC-reported duration to get a more precise call duration for the user.
 :::
+
+</Accordion>
+
+</Accordions>
+
 #### Video resolution
 
-**Why is my applied billing rate for Ultra-HD when all users subscribe to 360 × 640 video streams?**
+<Accordions>
+
+<Accordion title="Why is my applied billing rate for Ultra-HD when all users subscribe to 360 × 640 video streams?">
 
 **Answer**:
 
 Billing is based on the aggregate resolution, which is the total resolution of all subscribed video streams combined.
 
 Even if each individual stream is 360 × 640, subscribing to multiple streams can cause the aggregate resolution to exceed 1,280 × 720, which may qualify as Full HD Video or higher under Agora’s billing rules.
-**How is video stream resolution calculated in dual-stream mode?**
+
+</Accordion>
+
+<Accordion title="How is video stream resolution calculated in dual-stream mode?">
 
 **Answer**:
 
@@ -279,7 +304,10 @@ In dual-stream mode, a user's video resolution is calculated based on the type o
 * If subscribed to the high-quality (large) stream, the aggregate resolution is based on the resolution set by the sender.
 * If subscribed to the low-quality (small) stream, the aggregate resolution is based on the actual resolution received.
 * If the high-quality stream is requested but the low-quality stream is delivered, for example, due to a poor network, the resolution is still calculated based on the actual resolution of the stream received.
-**How can I determine the resolution of a screen sharing video stream?**
+
+</Accordion>
+
+<Accordion title="How can I determine the resolution of a screen sharing video stream?">
 
 **Answer**:
 
@@ -296,7 +324,10 @@ The resolution of a screen sharing video stream is determined by the video resol
 :::note
 On the Web platform, some browsers may not support the resolution you set due to device and browser limitations. In such cases, billing is based on the actual captured resolution, not the configured value.
 :::
-**What is resolution calibration?**
+
+</Accordion>
+
+<Accordion title="What is resolution calibration?">
 
 **Answer**:
 
@@ -304,9 +335,15 @@ Resolution calibration refers to adjusting the resolution of a video stream to a
 
 For example, a video stream with a resolution of **640 × 352** (225,280 pixels) is rounded up and treated as **640 × 360** (230,400 pixels) for billing purposes.
 
+</Accordion>
+
+</Accordions>
+
 #### Arrears
 
-**What should I do if my account is frozen due to outstanding balance?**
+<Accordions>
+
+<Accordion title="What should I do if my account is frozen due to outstanding balance?">
 
 **Answer**:
 
@@ -315,6 +352,10 @@ If your account is frozen, recharge it promptly. Once your balance meets or exce
 To avoid service interruptions, Agora recommends monitoring deduction emails, recharge reminders, and account freeze warnings.
 
 For further details, see [What are Agora's policies on billing, fee deductions, and account suspension?](/en/api-reference/faq/account/billing_account)
+
+</Accordion>
+
+</Accordions>
 
 ### See also
 

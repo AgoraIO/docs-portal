@@ -121,6 +121,8 @@ export function DocsContent({
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group'
       ? resolvedBody.platformTabs
       : undefined;
+  const hidePlatformTabs =
+    resolvedBody?.kind === 'mdx' ? resolvedBody.hidePlatformTabs === true : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
 
@@ -239,7 +241,7 @@ export function DocsContent({
         {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
           <DocsHeaderScopeTabs header={sidebarHeader} />
         ) : null}
-        {platformTabs ? (
+        {platformTabs && !hidePlatformTabs ? (
           <PlatformHeaderTabs
             canonicalPlatform={platformTabs.canonicalPlatform}
             className="pt-1"
@@ -263,7 +265,7 @@ export function DocsContent({
             <Suspense fallback={<DocsContentSkeleton />}>
               <PlatformTabsPlacementProvider
                 initialPlatform={platformTabs?.initialPlatform}
-                value={platformTabs ? 'header' : 'inline'}
+                value={platformTabs || hidePlatformTabs ? 'header' : 'inline'}
               >
                 <DocsContentBody contentPath={resolvedBody.contentPath} />
               </PlatformTabsPlacementProvider>
@@ -601,6 +603,7 @@ function DocsHeaderScopeTabs({ header }: { header: DocsSidebarHeader }) {
 export type DocsContentBodyPayload =
   | {
       contentPath: string;
+      hidePlatformTabs?: boolean;
       kind: 'mdx';
       platformTabs?: {
         canonicalPlatform: PlatformKey;
