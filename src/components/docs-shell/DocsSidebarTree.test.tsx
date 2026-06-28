@@ -72,15 +72,15 @@ describe('DocsSidebarTree', () => {
 
     expect(activeButton).toBeInstanceOf(HTMLElement);
     expect(activeButton).toHaveClass(
-      'min-h-[24px]',
+      'min-h-[28px]',
       'h-auto',
       'items-center',
-      'py-0.5',
+      'py-1',
     );
     const sectionLabel = screen
       .getByText('Get Started')
       .closest('[data-slot="sidebar-group-label"]');
-    expect(sectionLabel).toHaveClass('mt-2', 'mb-0.5');
+    expect(sectionLabel).toHaveClass('mt-3', 'mb-1');
     expect(activeButton?.className).toContain(
       'data-[active=true]:font-semibold',
     );
@@ -242,7 +242,7 @@ describe('DocsSidebarTree', () => {
     expect(label).not.toHaveClass('[-webkit-line-clamp:2]');
     const linkClasses = link.className.split(/\s+/);
     expect(link.className).toContain('overflow-visible');
-    expect(link.className).toContain('min-h-[24px]');
+    expect(link.className).toContain('min-h-[28px]');
     expect(link.className).toContain('h-auto');
     expect(link.className).toContain('items-center');
     expect(linkClasses).not.toContain('overflow-hidden');
@@ -273,8 +273,8 @@ describe('DocsSidebarTree', () => {
     const activeLink = screen.getByRole('link', { name: 'About Agora' });
     const activeButton = activeLink.closest('[data-sidebar="menu-button"]');
 
-    expect(labelWrapper).toHaveClass('mt-2', 'mb-0.5', 'py-0.5');
-    expect(activeButton).toHaveClass('min-h-[24px]', 'py-0.5');
+    expect(labelWrapper).toHaveClass('mt-3', 'mb-1', 'py-0.5');
+    expect(activeButton).toHaveClass('min-h-[28px]', 'py-1');
   });
 
   it('supports collapsible sections', async () => {
