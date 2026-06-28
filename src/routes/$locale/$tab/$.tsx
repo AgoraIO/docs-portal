@@ -8,6 +8,11 @@ import {
   resolvePlatformStaticDocsPayload,
   shouldUseStaticDocsPayload,
 } from '@/lib/docs-static-manifest';
+import {
+  isKnownPlatform,
+  normalizePlatformKey,
+  type PlatformKey,
+} from '@/lib/platforms/registry';
 
 export const Route = createFileRoute('/$locale/$tab/$')({
   loader: async ({ location, params }) => {
@@ -17,21 +22,38 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
     const slugSegments = (params._splat ?? '').split('/').filter(Boolean);
 
-    const payload = shouldUseStaticDocsPayload()
-      ? await resolvePlatformStaticDocsPayload<
-          DocsPagePayload | { redirectUrl: string }
-        >({
-          locale: params.locale,
-          slugSegments,
-          tab: params.tab,
-        })
-      : await getDocsPagePayload({
-          data: {
+    const loadPayload = (segments: string[]) =>
+      shouldUseStaticDocsPayload()
+        ? resolvePlatformStaticDocsPayload<
+            DocsPagePayload | { redirectUrl: string }
+          >({
             locale: params.locale,
-            slugSegments,
+            slugSegments: segments,
             tab: params.tab,
-          },
-        });
+          })
+        : getDocsPagePayload({
+            data: {
+              locale: params.locale,
+              slugSegments: segments,
+              tab: params.tab,
+            },
+          });
+
+    let payload = await loadPayload(slugSegments);
+    const queryPlatform = getKnownPlatformSearchParam(location.searchStr);
+
+    if (
+      payload &&
+      queryPlatform &&
+      !slugAlreadyTargetsPlatform(slugSegments) &&
+      payloadSupportsPlatform(payload, queryPlatform)
+    ) {
+      const platformPayload = await loadPayload([...slugSegments, queryPlatform]);
+
+      if (platformPayload && !('redirectUrl' in platformPayload)) {
+        payload = platformPayload;
+      }
+    }
 
     if (!payload) {
       throw notFound();
@@ -101,4 +123,47 @@ function preserveRedirectSearch(
   }
 
   return `${href}${location.searchStr ?? ''}${location.hash ?? ''}`;
+}
+
+export function getKnownPlatformSearchParam(searchStr?: string) {
+  const platform = new URLSearchParams(searchStr ?? '').get('platform');
+  const normalizedPlatform = platform ? normalizePlatformKey(platform) : null;
+
+  return normalizedPlatform && isKnownPlatform(normalizedPlatform)
+    ? normalizedPlatform
+    : undefined;
+}
+
+export function payloadSupportsPlatform(
+  payload: DocsPagePayload | { redirectUrl: string },
+  platform: PlatformKey,
+) {
+  const platformTabs = getPayloadPlatformTabs(payload);
+
+  if (!platformTabs) {
+    return false;
+  }
+
+  try {
+    const platforms = JSON.parse(platformTabs.platforms) as unknown;
+    return Array.isArray(platforms) && platforms.includes(platform);
+  } catch {
+    return false;
+  }
+}
+
+function getPayloadPlatformTabs(
+  payload: DocsPagePayload | { redirectUrl: string },
+) {
+  if ('redirectUrl' in payload || payload.body.kind === 'openapi') {
+    return undefined;
+  }
+
+  return payload.body.platformTabs;
+}
+
+function slugAlreadyTargetsPlatform(slugSegments: string[]) {
+  const lastSegment = slugSegments.at(-1);
+
+  return lastSegment ? isKnownPlatform(lastSegment) : false;
 }

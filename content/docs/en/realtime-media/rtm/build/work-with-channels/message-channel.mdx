@@ -3,13 +3,15 @@ title: "Message channels"
 description: "Communicate using message channels."
 ---
 
-Signaling provides message channels for implementing publish-subscribe (pub/sub) messaging in your app. In a message channel, you subscribe to a channel to receive messages. However, you do not need to join the channel to publish messages. This page shows you how to use Signaling SDK pub/sub messaging to implement various communication model into your app. 
+<PlatformStructured platform="web">
+
+Signaling provides message channels for implementing publish-subscribe (pub/sub) messaging in your app. In a message channel, you subscribe to a channel to receive messages. However, you do not need to join the channel to publish messages. This page shows you how to use Signaling SDK pub/sub messaging to implement various communication model into your app.
 
 ## Understand the tech
 
 Pub/sub is the simplest form of messaging. Signaling creates a channel when a user subscribes to it. Your app listens for events which contain messages users publish to a channel.
 
-Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations.md).
+Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
 
 ### Communication models in message channels
 
@@ -25,7 +27,206 @@ Signaling SDK enables you to implement a variety of communication models using m
 
 ## Prerequisites
 
-Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement message channels
+
+This section shows you how to subscribe, unsubscribe, and send messages to a message channel.
+
+### Subscribe to a channel
+
+Use the `subscribe` method to subscribe to a message channel. After you subscribe, you receive `message` and other event notifications for the channel.
+
+```javascript
+const options = {
+    withMessage: true,
+    withPresence: true,
+    beQuiet : false,
+    withMetadata: true,
+    withLock: true,
+};
+const channelName = "test_channel";
+try {
+    const subscribeResult = await rtmClient.subscribe(channelName, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, due to: ${reason}.`);
+}
+```
+
+To subscribe to multiple channels, call `subscribe` multiple times:
+
+```javascript
+const options = {
+    withMessage: true,
+    withPresence: true,
+    beQuiet : false,
+    withMetadata: true,
+    withLock: true,
+};
+const channelName1 = "chats.room1";
+const channelName2 = "chats.room2";
+
+try {
+    const result1 = await rtmClient.subscribe(channelName1, options);
+    // your code
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, due to: ${reason}.`);
+}
+
+try {
+    const result2 = await rtmClient.subscribe(channelName2, options);
+    // your code
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, due to: ${reason}.`);
+}
+
+```
+
+:::info
+Signaling allows a single client to subscribe to up to 50 message channels simultaneously. However, to optimize client performance and bandwidth usage, best practice is to limit subscriptions to 30 channels. If you have very large or highly active channels, consider further reducing the number of simultaneous subscriptions.
+:::
+
+### Send a message
+
+To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends messages to one channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../../reference/limitations) for details.
+
+:::info[Info]
+The `publish` method can only be used with a message channel and a user channel; it does not apply to a stream channel.
+:::
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+    ```javascript
+    const payload = "Hello Agora!";
+    const channelName = "chat_room";
+    const options = {
+        customType: "PlainTxt",
+        channelType: "MESSAGE",
+    };
+    try {
+        const result = await rtm.publish(channelName, payload, options);
+    } catch (status) {
+        const { operation, reason, errorCode } = status;
+        console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+    }
+    ```
+
+* Binary message
+
+    ```javascript
+    // Send a binary message
+    const message = "Hello Agora!";
+    const payload = new TextEncoder().encode(message);
+    const channelName = "chat_room";
+    const options = { customType:"ByteArray", channelType: "MESSAGE" }
+    try {
+        const result = await rtm.publish(channelName, payload, options);
+    } catch (status) {
+        const { operation, reason, errorCode } = status;
+        console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+    }
+    ```
+
+:::info
+Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring).
+:::
+
+### Customize channel subscription
+
+By default, you receive message events for all channels you subscribe to. If you don't wish to receive messages from specific channels, while still receiving other types of event notifications from these channels, adjust the subscription settings accordingly. Refer to the following code snippet:
+
+```javascript
+const options = {
+    withMessage: false,
+    withPresence: true,
+    withMetadata: true,
+    withLock: true,
+};
+const channelName = "test_channel";
+try {
+    const subscribeResult = await rtmClient.subscribe(channelName, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+In this example, when you set `withMessage` to `false`, messages from `test_channel` do not trigger event notifications. However, you continue to receive notifications for other events, such as presence updates, metadata changes, and lock status alterations.
+
+### Unsubscribe from a channel
+
+To stop receiving message and all other event notifications from a channel, call `unsubscribe`.
+
+```csharp
+const channelName = "chats.room1";
+try {
+    const result = await rtmClient.unsubscribe(channelName);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+This method only unsubscribes from one channel at a time. To unsubscribe from multiple channels, call this method multiple times.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message payload size
+
+Signaling SDK imposes limits on the size of the message payload sent in message channels and stream channels. The limit is 32 KB for message channels and 1 KB for stream channels. The message payload size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
+
+```javascript
+// Status
+{
+    error = true;
+    errorCode = -11010;
+    Operation = "PublishTopicMessageOperation";   // Or "PublishOperation"
+    Reason = "Publish too long message.";
+}
+```
+
+To avoid sending failure due to message payload size exceeding the limit, check the size before sending.
+
+### API reference
+
+- [`subscribe`](/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+Signaling provides message channels for implementing publish-subscribe (pub/sub) messaging in your app. In a message channel, you subscribe to a channel to receive messages. However, you do not need to join the channel to publish messages. This page shows you how to use Signaling SDK pub/sub messaging to implement various communication model into your app.
+
+## Understand the tech
+
+Pub/sub is the simplest form of messaging. Signaling creates a channel when a user subscribes to it. Your app listens for events which contain messages users publish to a channel.
+
+Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+### Communication models in message channels
+
+Signaling SDK enables you to implement a variety of communication models using message channels. A communication model refers to the data flow relationship between the message sender and receiver within a channel. Using the pub/sub message distribution mechanism, you can seamlessly implement the following communication models:
+
+- **1-to-1 channel**: This model facilitates communication between two users. It is ideal for creating private chat channels, one-on-one customer service support, and personal interactions.
+
+- **Group channel**: A group channel facilitates many-to-many communication, making user groups within the channel visible to each other. This model is suitable for workgroups, family discussions, and community interactions. Access control options in Signaling SDK enable you to implement open or invitation-based participation.
+
+- **Broadcast channel**: A broadcast channel enables one-to-many communication, where a single sender broadcasts messages to multiple recipients. This model is useful for group announcements, surveys, and disseminating information to a large audience.
+
+- **Unicast channel**: This model allows many users to send messages to a single recipient. This model is beneficial for use-cases such as questionnaire feedback collection, IoT sensor data aggregation, and centralized data collection.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
 
 ## Implement message channels
 
@@ -35,15 +236,7 @@ This section shows you how to subscribe, unsubscribe, and send messages to a mes
 
 Use the `subscribe` method to subscribe to a message channel. After you subscribe, you receive `onMessageEvent` and other event notifications for the channel.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 // Subscribe to a channel with options
 String channelName = "test_channel";
 SubscribeOptions options = new SubscribeOptions();
@@ -64,11 +257,8 @@ mRtmClient.subscribe(channelName, options, new ResultCallback<Void>() {
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 // Subscribe to a channel with options
 val channelName = "test_channel"
 val options = SubscribeOptions().apply {
@@ -88,21 +278,10 @@ mRtmClient.subscribe(channelName, options, object : ResultCallback<Void> {
     }
 })
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 To subscribe to multiple channels, call `subscribe` multiple times:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 // Subscribe to multiple channels with options
 String channelName1 = "chats.room1";
 String channelName2 = "chats.room2";
@@ -136,11 +315,8 @@ mRtmClient.subscribe(channelName2, options, new ResultCallback<Void>() {
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 // Subscribe to multiple channels with options
 val channelName1 = "chats.room1"
 val channelName2 = "chats.room2"
@@ -171,146 +347,112 @@ mRtmClient.subscribe(channelName2, options, object : ResultCallback<Void> {
     }
 })
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 :::info
 Signaling allows a single client to subscribe to up to 50 message channels simultaneously. However, to optimize client performance and bandwidth usage, best practice is to limit subscriptions to 30 channels. If you have very large or highly active channels, consider further reducing the number of simultaneous subscriptions.
-
 :::
 
 ### Send a message
 
-To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends messages to one channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../../reference/limitations.md) for details.
+To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends messages to one channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../../reference/limitations) for details.
 
-:::info
+:::info[Info]
 The `publish` method can only be used with a message channel and a user channel; it does not apply to a stream channel.
-
 :::
 
 Refer to the following sample code for sending messages:
 
 * String message
 
-    <CodeBlockTabs defaultValue="java">
-    <CodeBlockTabsList>
-      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
-      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-    </CodeBlockTabsList>
+```java tab="Java"
+// Send a string message
+    String message = "Hello World"; // Declaring a string variable for the message content
+    String channelName = "my_channel"; // Specifying the name of the channel to which the message will be sent
+    var options = new PublishOptions(); // Creating options for publishing the message
+    options.customType = "PlainTxt"; // Setting the custom message type to "PlainTxt"
 
-    <CodeBlockTab value="java">
-    ```java
-    // Send a string message
-        String message = "Hello World"; // Declaring a string variable for the message content
-        String channelName = "my_channel"; // Specifying the name of the channel to which the message will be sent
-        var options = new PublishOptions(); // Creating options for publishing the message
-        options.customType = "PlainTxt"; // Setting the custom message type to "PlainTxt"
-    
-        mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() { // Publishing the message to the channel
-            @Override
-            public void onSuccess(Void responseInfo) {
-                log(CALLBACK, "send message success"); // Logging a success message upon successful message transmission
-            }
-    
-            @Override
-            public void onFailure(ErrorInfo errorInfo) {
-                log(ERROR, errorInfo.toString()); // Logging an error message in case of transmission failure
-            }
-        });
-    ```
-    </CodeBlockTab>
-
-    <CodeBlockTab value="kotlin">
-    ```kotlin
-    // Send a string message
-        val message = "Hello World" // Declaring a string variable for the message content
-        val channelName = "my_channel" // Specifying the name of the channel to which the message will be sent
-        val options = PublishOptions().apply {
-            customType = "PlainTxt" // Setting the custom message type to "PlainTxt"
+    mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() { // Publishing the message to the channel
+        @Override
+        public void onSuccess(Void responseInfo) {
+            log(CALLBACK, "send message success"); // Logging a success message upon successful message transmission
         }
-    
-        mRtmClient.publish(channelName, message, options, object : ResultCallback<Void> { // Publishing the message to the channel
-            override fun onSuccess(responseInfo: Void?) {
-                log(CALLBACK, "send message success") // Logging a success message upon successful message transmission
-            }
-    
-            override fun onFailure(errorInfo: ErrorInfo) {
-                log(ERROR, errorInfo.toString()) // Logging an error message in case of transmission failure
-            }
-        })
-    ```
-    </CodeBlockTab>
-    </CodeBlockTabs>
+
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            log(ERROR, errorInfo.toString()); // Logging an error message in case of transmission failure
+        }
+    });
+```
+
+```kotlin tab="Kotlin"
+// Send a string message
+    val message = "Hello World" // Declaring a string variable for the message content
+    val channelName = "my_channel" // Specifying the name of the channel to which the message will be sent
+    val options = PublishOptions().apply {
+        customType = "PlainTxt" // Setting the custom message type to "PlainTxt"
+    }
+
+    mRtmClient.publish(channelName, message, options, object : ResultCallback<Void> { // Publishing the message to the channel
+        override fun onSuccess(responseInfo: Void?) {
+            log(CALLBACK, "send message success") // Logging a success message upon successful message transmission
+        }
+
+        override fun onFailure(errorInfo: ErrorInfo) {
+            log(ERROR, errorInfo.toString()) // Logging an error message in case of transmission failure
+        }
+    })
+```
+
 * Binary message
 
-    <CodeBlockTabs defaultValue="java">
-    <CodeBlockTabsList>
-      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
-      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-    </CodeBlockTabsList>
+```java tab="Java"
+// Send a binary message
+    byte[] message = new byte[] { 00, 01, 35, (byte) 196 }; // Defining a byte array for the binary message
+    String channelName = "my_channel"; // Specifying the name of the channel to which the message will be sent
+    var options = new PublishOptions(); // Creating options for publishing the message
+    options.customType = "ByteArray"; // Setting the custom message type to "ByteArray"
 
-    <CodeBlockTab value="java">
-    ```java
-    // Send a binary message
-        byte[] message = new byte[] { 00, 01, 35, (byte) 196 }; // Defining a byte array for the binary message
-        String channelName = "my_channel"; // Specifying the name of the channel to which the message will be sent
-        var options = new PublishOptions(); // Creating options for publishing the message
-        options.customType = "ByteArray"; // Setting the custom message type to "ByteArray"
-    
-        mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() { // Publishing the message to the channel
-            @Override
-            public void onSuccess(Void responseInfo) {
-                log(CALLBACK, "send message success"); // Logging a success message upon successful message transmission
-            }
-    
-            @Override
-            public void onFailure(ErrorInfo errorInfo) {
-                log(ERROR, errorInfo.toString()); // Logging an error message in case of transmission failure
-            }
-        });
-    ```
-    </CodeBlockTab>
-
-    <CodeBlockTab value="kotlin">
-    ```kotlin
-    // Send a binary message
-        val message = byteArrayOf(0, 1, 35, 196.toByte()) // Defining a byte array for the binary message
-        val channelName = "my_channel" // Specifying the name of the channel to which the message will be sent
-        val options = PublishOptions().apply {
-            customType = "ByteArray" // Setting the custom message type to "ByteArray"
+    mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() { // Publishing the message to the channel
+        @Override
+        public void onSuccess(Void responseInfo) {
+            log(CALLBACK, "send message success"); // Logging a success message upon successful message transmission
         }
-    
-        mRtmClient.publish(channelName, message, options, object : ResultCallback<Void> { // Publishing the message to the channel
-            override fun onSuccess(responseInfo: Void?) {
-                log(CALLBACK, "send message success") // Logging a success message upon successful message transmission
-            }
-    
-            override fun onFailure(errorInfo: ErrorInfo) {
-                log(ERROR, errorInfo.toString()) // Logging an error message in case of transmission failure
-            }
-        })
-    ```
-    </CodeBlockTab>
-    </CodeBlockTabs>
-:::info
-Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring.mdx).
 
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            log(ERROR, errorInfo.toString()); // Logging an error message in case of transmission failure
+        }
+    });
+```
+
+```kotlin tab="Kotlin"
+// Send a binary message
+    val message = byteArrayOf(0, 1, 35, 196.toByte()) // Defining a byte array for the binary message
+    val channelName = "my_channel" // Specifying the name of the channel to which the message will be sent
+    val options = PublishOptions().apply {
+        customType = "ByteArray" // Setting the custom message type to "ByteArray"
+    }
+
+    mRtmClient.publish(channelName, message, options, object : ResultCallback<Void> { // Publishing the message to the channel
+        override fun onSuccess(responseInfo: Void?) {
+            log(CALLBACK, "send message success") // Logging a success message upon successful message transmission
+        }
+
+        override fun onFailure(errorInfo: ErrorInfo) {
+            log(ERROR, errorInfo.toString()) // Logging an error message in case of transmission failure
+        }
+    })
+```
+
+:::info
+Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring).
 :::
 
 ### Customize channel subscription
 
 By default, you receive message events for all channels you subscribe to. If you don't wish to receive messages from specific channels, while still receiving other types of event notifications from these channels, adjust the subscription settings accordingly. Refer to the following code snippet:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 // Subscribe to a channel with customized options
 String channelName = "test_channel";
 SubscribeOptions options = new SubscribeOptions();
@@ -331,11 +473,8 @@ mRtmClient.subscribe(channelName, options, new ResultCallback<Void>() {
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 // Subscribe to a channel with customized options
 val channelName = "test_channel"
 val options = SubscribeOptions().apply {
@@ -351,13 +490,10 @@ mRtmClient.subscribe(channelName, options, object : ResultCallback<Void> {
     }
 
     override fun onFailure(errorInfo: ErrorInfo) {
-        log(ERROR, "Failed to subscribe to channel: $channelName, Error: \${errorInfo.toString()\}")
+        log(ERROR, "Failed to subscribe to channel: $channelName, Error: $\{errorInfo.toString()\}")
     }
 })
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 In this example, setting `withMessage` to `false` ensures that messages from `test_channel` do not trigger event notifications. However, you continue to receive notifications for other events, such as presence updates, metadata changes, and lock status alterations.
 
@@ -365,15 +501,7 @@ In this example, setting `withMessage` to `false` ensures that messages from `te
 
 To stop receiving message and all other event notifications from a channel, call `unsubscribe`.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 // Unsubscribe from a channel
 String channelName = "chats.room1";
 mRtmClient.unsubscribe(channelName, new ResultCallback<Void>() {
@@ -388,11 +516,8 @@ mRtmClient.unsubscribe(channelName, new ResultCallback<Void>() {
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 // Unsubscribe from a channel
 val channelName = "chats.room1"
 mRtmClient.unsubscribe(channelName, object : ResultCallback<Void> {
@@ -405,9 +530,6 @@ mRtmClient.unsubscribe(channelName, object : ResultCallback<Void> {
     }
 })
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 This method only unsubscribes from one channel at a time. To unsubscribe from multiple channels, call this method multiple times.
 
@@ -431,6 +553,1310 @@ To avoid sending failure due to message payload size exceeding the limit, check 
 
 ### API reference
 
-- [`subscribe`](/en/api-reference/api-ref/signaling)
-- [`unsubscribe`](/en/api-reference/api-ref/signaling)
-- [`publish`](/en/api-reference/api-ref/signaling)
+- [`subscribe`](/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+Signaling provides message channels for implementing publish-subscribe (pub/sub) messaging in your app. In a message channel, you subscribe to a channel to receive messages. However, you do not need to join the channel to publish messages. This page shows you how to use Signaling SDK pub/sub messaging to implement various communication model into your app.
+
+## Understand the tech
+
+Pub/sub is the simplest form of messaging. Signaling creates a channel when a user subscribes to it. Your app listens for events which contain messages users publish to a channel.
+
+Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+### Communication models in message channels
+
+Signaling SDK enables you to implement a variety of communication models using message channels. A communication model refers to the data flow relationship between the message sender and receiver within a channel. Using the pub/sub message distribution mechanism, you can seamlessly implement the following communication models:
+
+- **1-to-1 channel**: This model facilitates communication between two users. It is ideal for creating private chat channels, one-on-one customer service support, and personal interactions.
+
+- **Group channel**: A group channel facilitates many-to-many communication, making user groups within the channel visible to each other. This model is suitable for workgroups, family discussions, and community interactions. Access control options in Signaling SDK enable you to implement open or invitation-based participation.
+
+- **Broadcast channel**: A broadcast channel enables one-to-many communication, where a single sender broadcasts messages to multiple recipients. This model is useful for group announcements, surveys, and disseminating information to a large audience.
+
+- **Unicast channel**: This model allows many users to send messages to a single recipient. This model is beneficial for use-cases such as questionnaire feedback collection, IoT sensor data aggregation, and centralized data collection.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement message channels
+
+This section shows you how to subscribe, unsubscribe, and send messages to a message channel.
+
+### Subscribe to a channel
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+Use the `subscribe` method to subscribe to a message channel. After you subscribe, you receive `didReceiveMessageEvent` and other event notifications for the channel.
+
+```swift
+rtm?.subscribe(channelName: channel, option: nil, completion: { res, error in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+Use the `subscribeWithChannel` method to subscribe to a message channel. After you subscribe, you receive `didReceiveMessageEvent` and other event notifications for the channel.
+
+```objc
+[rtm subscribeWithChannel:@"you_channel" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</TabsContent>
+</Tabs>
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+To subscribe to multiple channels, call `subscribe` multiple times:
+
+```swift
+rtm?.subscribe(channelName: channel1, option: nil, completion: { res, error in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+
+rtm?.subscribe(channelName: channel2, option: nil, completion: { res, error in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+To subscribe to multiple channels, call `subscribeWithChannel` multiple times:
+
+```objc
+[rtm subscribeWithChannel:@"chats.room1" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+
+[rtm subscribeWithChannel:@"chats.room2" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</TabsContent>
+</Tabs>
+
+:::info
+Signaling allows a single client to subscribe to up to 50 message channels simultaneously. However, to optimize client performance and bandwidth usage, best practice is to limit subscriptions to 30 channels. If you have very large or highly active channels, consider further reducing the number of simultaneous subscriptions.
+:::
+
+### Send a message
+
+To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends messages to one channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../../reference/limitations) for details.
+
+:::info[Info]
+The `publish` method can only be used with a message channel and a user channel; it does not apply to a stream channel.
+:::
+
+Refer to the following sample code for sending messages:
+
+* String message:
+
+```swift tab="Swift"
+let message = "Hello Agora!"
+    let channel = "your_channel"
+
+    rtm.publish(channelName: channel, message: message, option: nil, completion: { res, error in
+        if error != nil {
+            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        } else {
+            print("success")
+        }
+    })
+```
+
+```objc tab="Objective-C"
+NSString* message = @"Hello Agora!";
+    NSString* channel = @"your_channel";
+    AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+    publish_option.storeInHistory = YES;
+    [rtm publish:channel message:message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"publish success!!");
+        } else {
+            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+* Binary message:
+
+```swift tab="Swift"
+let byteArray: [UInt8] = [0x48, 0x65, 0x6C, 0x6C, 0x6F] // Represents the string "Hello"
+    let myDataFromBytes = Data(byteArray)
+    let channel = "your_channel"
+
+    // Publish the binary data to the specified channel
+    rtm.publish(channelName: channel, data: myDataFromBytes, option: nil, completion: { res, error in
+        if error != nil {
+            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        } else {
+            print("success")
+        }
+    })
+```
+
+```objc tab="Objective-C"
+unsigned char byte_array[5] = {0,1,2,3,4};
+    NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
+    NSString* channel = @"your_channel";
+    AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+    publish_option.storeInHistory = YES;
+    [rtm publish:channel data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"publish success!!");
+        } else {
+            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+:::info
+Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring).
+:::
+
+### Customize channel subscription
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+By default, you receive message events for all channels you subscribe to. If you do not wish to receive messages from specific channels, while still receiving other types of event notifications from these channels, avoid including `message` when setting the `features` parameter. Refer to the following code example:
+
+```swift
+let option = AgoraRtmSubscribeOptions();
+option.features = [.presence, .metadata, .lock]
+rtm?.subscribe(channelName: channel, option: option, completion: { res, error in
+        if error != nil {
+            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        } else {
+            print("success")
+        }
+    })
+```
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+By default, you receive message events for all channels you subscribe to. If you don't wish to receive messages from specific channels, while still receiving other types of event notifications from these channels, avoid setting the `features` parameter to include `AgoraRtmSubscribeChannelFeatureMessage`. Refer to the following code example:
+
+```objc
+AgoraRtmSubscribeOptions* opt = [[AgoraRtmSubscribeOptions alloc] init];
+opt.features = AgoraRtmSubscribeChannelFeaturePresence;
+
+[rtm subscribeWithChannel:@"you_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</TabsContent>
+</Tabs>
+
+### Unsubscribe from a channel
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+To stop receiving messages and other event notifications from a channel, call `unsubscribe`.
+
+```swift
+RtmClient?.unsubscribe(channel) { res, error in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+To stop receiving messages and other event notifications from a channel, call `unsubscribeWithChannel`.
+
+```objc
+[rtm unsubscribeWithChannel:@"chats.room1" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"unsubscribe success!!");
+    } else {
+        NSLog(@"unsubscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</TabsContent>
+</Tabs>
+
+This method only unsubscribes from one channel at a time. To unsubscribe from multiple channels, call this method for each channel.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message payload size
+
+Signaling SDK imposes limits on the size of the message payload sent in message channels and stream channels. The limit is 32 KB for message channels and 1 KB for stream channels. The message payload size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
+
+```objc tab="Swift"
+// errorInfo
+{
+    errorInfo.errorCode = rrorCode = .channelMessageLengthExceedLimitation
+    errorInfo.reason = "Publish too long message."
+    errorInfo.operation = "publish"; // or "publishTopicMessage
+}
+```
+
+```objc tab="Objective-C"
+// errorInfo
+{
+    errorInfo.errorCode = AgoraRtmErrorChannelMessageLengthExceedLimitation;
+    errorInfo.reason = @"Publish too long message.";
+    errorInfo.Operation = @"publish"; // or "publishTopicMessage"
+}
+```
+
+To avoid sending failure due to message payload size exceeding the limit, check the size before sending.
+
+### API reference
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+- [`subscribe`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelsubscribepropsag_platform)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelunsubscribepropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#messagepublishpropsag_platform)
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+- [`subscribeWithChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelsubscribepropsag_platform)
+- [`unsubscribeWithChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelunsubscribepropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#messagepublishpropsag_platform)
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+Signaling provides message channels for implementing publish-subscribe (pub/sub) messaging in your app. In a message channel, you subscribe to a channel to receive messages. However, you do not need to join the channel to publish messages. This page shows you how to use Signaling SDK pub/sub messaging to implement various communication model into your app.
+
+## Understand the tech
+
+Pub/sub is the simplest form of messaging. Signaling creates a channel when a user subscribes to it. Your app listens for events which contain messages users publish to a channel.
+
+Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+### Communication models in message channels
+
+Signaling SDK enables you to implement a variety of communication models using message channels. A communication model refers to the data flow relationship between the message sender and receiver within a channel. Using the pub/sub message distribution mechanism, you can seamlessly implement the following communication models:
+
+- **1-to-1 channel**: This model facilitates communication between two users. It is ideal for creating private chat channels, one-on-one customer service support, and personal interactions.
+
+- **Group channel**: A group channel facilitates many-to-many communication, making user groups within the channel visible to each other. This model is suitable for workgroups, family discussions, and community interactions. Access control options in Signaling SDK enable you to implement open or invitation-based participation.
+
+- **Broadcast channel**: A broadcast channel enables one-to-many communication, where a single sender broadcasts messages to multiple recipients. This model is useful for group announcements, surveys, and disseminating information to a large audience.
+
+- **Unicast channel**: This model allows many users to send messages to a single recipient. This model is beneficial for use-cases such as questionnaire feedback collection, IoT sensor data aggregation, and centralized data collection.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement message channels
+
+This section shows you how to subscribe, unsubscribe, and send messages to a message channel.
+
+### Subscribe to a channel
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+Use the `subscribe` method to subscribe to a message channel. After you subscribe, you receive `didReceiveMessageEvent` and other event notifications for the channel.
+
+```swift
+rtm?.subscribe(channelName: channel, option: nil, completion: { res, error in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+Use the `subscribeWithChannel` method to subscribe to a message channel. After you subscribe, you receive `didReceiveMessageEvent` and other event notifications for the channel.
+
+```objc
+[rtm subscribeWithChannel:@"you_channel" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</TabsContent>
+</Tabs>
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+To subscribe to multiple channels, call `subscribe` multiple times:
+
+```swift
+rtm?.subscribe(channelName: channel1, option: nil, completion: { res, error in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+
+rtm?.subscribe(channelName: channel2, option: nil, completion: { res, error in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+To subscribe to multiple channels, call `subscribeWithChannel` multiple times:
+
+```objc
+[rtm subscribeWithChannel:@"chats.room1" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+
+[rtm subscribeWithChannel:@"chats.room2" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</TabsContent>
+</Tabs>
+
+:::info
+Signaling allows a single client to subscribe to up to 50 message channels simultaneously. However, to optimize client performance and bandwidth usage, best practice is to limit subscriptions to 30 channels. If you have very large or highly active channels, consider further reducing the number of simultaneous subscriptions.
+:::
+
+### Send a message
+
+To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends messages to one channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../../reference/limitations) for details.
+
+:::info[Info]
+The `publish` method can only be used with a message channel and a user channel; it does not apply to a stream channel.
+:::
+
+Refer to the following sample code for sending messages:
+
+* String message:
+
+```swift tab="Swift"
+let message = "Hello Agora!"
+    let channel = "your_channel"
+
+    rtm.publish(channelName: channel, message: message, option: nil, completion: { res, error in
+        if error != nil {
+            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        } else {
+            print("success")
+        }
+    })
+```
+
+```objc tab="Objective-C"
+NSString* message = @"Hello Agora!";
+    NSString* channel = @"your_channel";
+    AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+    publish_option.storeInHistory = YES;
+    [rtm publish:channel message:message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"publish success!!");
+        } else {
+            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+* Binary message:
+
+```swift tab="Swift"
+let byteArray: [UInt8] = [0x48, 0x65, 0x6C, 0x6C, 0x6F] // Represents the string "Hello"
+    let myDataFromBytes = Data(byteArray)
+    let channel = "your_channel"
+
+    // Publish the binary data to the specified channel
+    rtm.publish(channelName: channel, data: myDataFromBytes, option: nil, completion: { res, error in
+        if error != nil {
+            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        } else {
+            print("success")
+        }
+    })
+```
+
+```objc tab="Objective-C"
+unsigned char byte_array[5] = {0,1,2,3,4};
+    NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
+    NSString* channel = @"your_channel";
+    AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+    publish_option.storeInHistory = YES;
+    [rtm publish:channel data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"publish success!!");
+        } else {
+            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+:::info
+Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring).
+:::
+
+### Customize channel subscription
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+By default, you receive message events for all channels you subscribe to. If you do not wish to receive messages from specific channels, while still receiving other types of event notifications from these channels, avoid including `message` when setting the `features` parameter. Refer to the following code example:
+
+```swift
+let option = AgoraRtmSubscribeOptions();
+option.features = [.presence, .metadata, .lock]
+rtm?.subscribe(channelName: channel, option: option, completion: { res, error in
+        if error != nil {
+            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        } else {
+            print("success")
+        }
+    })
+```
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+By default, you receive message events for all channels you subscribe to. If you don't wish to receive messages from specific channels, while still receiving other types of event notifications from these channels, avoid setting the `features` parameter to include `AgoraRtmSubscribeChannelFeatureMessage`. Refer to the following code example:
+
+```objc
+AgoraRtmSubscribeOptions* opt = [[AgoraRtmSubscribeOptions alloc] init];
+opt.features = AgoraRtmSubscribeChannelFeaturePresence;
+
+[rtm subscribeWithChannel:@"you_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</TabsContent>
+</Tabs>
+
+### Unsubscribe from a channel
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+To stop receiving messages and other event notifications from a channel, call `unsubscribe`.
+
+```swift
+RtmClient?.unsubscribe(channel) { res, error in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+To stop receiving messages and other event notifications from a channel, call `unsubscribeWithChannel`.
+
+```objc
+[rtm unsubscribeWithChannel:@"chats.room1" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"unsubscribe success!!");
+    } else {
+        NSLog(@"unsubscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</TabsContent>
+</Tabs>
+
+This method only unsubscribes from one channel at a time. To unsubscribe from multiple channels, call this method for each channel.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message payload size
+
+Signaling SDK imposes limits on the size of the message payload sent in message channels and stream channels. The limit is 32 KB for message channels and 1 KB for stream channels. The message payload size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
+
+```objc tab="Swift"
+// errorInfo
+{
+    errorInfo.errorCode = rrorCode = .channelMessageLengthExceedLimitation
+    errorInfo.reason = "Publish too long message."
+    errorInfo.operation = "publish"; // or "publishTopicMessage
+}
+```
+
+```objc tab="Objective-C"
+// errorInfo
+{
+    errorInfo.errorCode = AgoraRtmErrorChannelMessageLengthExceedLimitation;
+    errorInfo.reason = @"Publish too long message.";
+    errorInfo.Operation = @"publish"; // or "publishTopicMessage"
+}
+```
+
+To avoid sending failure due to message payload size exceeding the limit, check the size before sending.
+
+### API reference
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+- [`subscribe`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelsubscribepropsag_platform)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelunsubscribepropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#messagepublishpropsag_platform)
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+- [`subscribeWithChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelsubscribepropsag_platform)
+- [`unsubscribeWithChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelunsubscribepropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#messagepublishpropsag_platform)
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+Signaling provides message channels for implementing publish-subscribe (pub/sub) messaging in your app. In a message channel, you subscribe to a channel to receive messages. However, you do not need to join the channel to publish messages. This page shows you how to use Signaling SDK pub/sub messaging to implement various communication model into your app.
+
+## Understand the tech
+
+Pub/sub is the simplest form of messaging. Signaling creates a channel when a user subscribes to it. Your app listens for events which contain messages users publish to a channel.
+
+Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+### Communication models in message channels
+
+Signaling SDK enables you to implement a variety of communication models using message channels. A communication model refers to the data flow relationship between the message sender and receiver within a channel. Using the pub/sub message distribution mechanism, you can seamlessly implement the following communication models:
+
+- **1-to-1 channel**: This model facilitates communication between two users. It is ideal for creating private chat channels, one-on-one customer service support, and personal interactions.
+
+- **Group channel**: A group channel facilitates many-to-many communication, making user groups within the channel visible to each other. This model is suitable for workgroups, family discussions, and community interactions. Access control options in Signaling SDK enable you to implement open or invitation-based participation.
+
+- **Broadcast channel**: A broadcast channel enables one-to-many communication, where a single sender broadcasts messages to multiple recipients. This model is useful for group announcements, surveys, and disseminating information to a large audience.
+
+- **Unicast channel**: This model allows many users to send messages to a single recipient. This model is beneficial for use-cases such as questionnaire feedback collection, IoT sensor data aggregation, and centralized data collection.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement message channels
+
+This section shows you how to subscribe, unsubscribe, and send messages to a message channel.
+
+### Subscribe to a channel
+
+Use the `subscribe` method to subscribe to a message channel. After you subscribe, you receive `message` and other event notifications for the channel.
+
+```dart
+final channel = 'chat_room';
+try {
+    var (status, response) = await rtmClient.subscribe(
+        channel,
+        withMessage: true,
+        withPresence: true,
+        withMetadata: true,
+        withLock: true,
+        beQuite: false);
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+To subscribe to multiple channels, call `subscribe` multiple times:
+
+```dart
+final channel1 = 'chats.room1';
+final channel2 = 'chats.room2'
+try {
+    var (status, response) = await rtmClient.subscribe(
+        channel1,
+        withMessage: false,
+        withPresence: true,
+        withMetadata: true,
+        withLock: true,
+        beQuite: false);
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+
+try {
+    var (status, response) = await rtmClient.subscribe(
+        channel2,
+        withMessage: false,
+        withPresence: true,
+        withMetadata: true,
+        withLock: true,
+        beQuite: false);
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+:::info
+Signaling allows a single client to subscribe to up to 50 message channels simultaneously. However, to optimize client performance and bandwidth usage, best practice is to limit subscriptions to 30 channels. If you have very large or highly active channels, consider further reducing the number of simultaneous subscriptions.
+:::
+
+### Send a message
+
+To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends a message to a single channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../../reference/limitations) for details.
+
+:::info[Info]
+The `publish` method can only be used with a message channel and a user channel; it does not apply to a stream channel.
+:::
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+    ```dart
+    // Send a string message
+    final channelName = 'chat_room';
+    var payload = 'hello RTM';
+
+    try {
+        var (status, response) = await rtmClient.publish(
+            channelName,
+            payload,
+            channelType: RtmChannelType.message,
+            customType: 'PlainText');
+
+        if (status.error == true ){
+        print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+        } else {
+            print('${status.operation} success!');
+        }
+    } catch (e) {
+        print('something went wrong: $e');
+    }
+    ```
+
+* Binary message
+
+    ```dart
+    // Send a binary message
+    final channelName = 'chat_room';
+    var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
+
+    try {
+        var (status, response) = await rtmClient.publishBinaryMessage(
+            channelName,
+            payload,
+            channelType: RtmChannelType.message,
+            customType: 'Uint8List');
+
+        if (status.error == true ){
+        print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+        } else {
+            print('${status.operation} success!');
+        }
+    } catch (e) {
+        print('something went wrong: $e');
+    }
+    ```
+
+:::info
+Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring).
+:::
+
+### Customize channel subscription
+
+By default, you receive message events for all channels you subscribe to. If you do not wish to receive messages from specific channels, while still receiving other types of event notifications from these channels, set the `withMessage` parameter to `false` when calling `subscribe`. To adjust other subscription settings, refer to the following code:
+
+```dart
+try {
+    var (status, response) = await rtmClient.subscribe(
+        channel2,
+        withMessage: false, // Disable message notifications
+        withPresence: true, // Subscribe to the presence event notifications
+        withMetadata: true, // Subscribe to storage event notifications
+        withLock: true, // Subscribe to Lock event notifications in this channel
+        beQuiet: false); // Whether to subscribe to the channel silently
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+In this example, messages from the subscribed channel do not trigger event notifications. However, you continue to receive notifications for other events, such as presence updates, metadata changes, and lock status alterations.
+
+### Unsubscribe from a channel
+
+To stop receiving message and all other event notifications from a channel, call `unsubscribe`.
+
+```dart
+final channel = 'chat_room';
+try {
+    var (status, response) = await rtmClient.unsubscribe( channel );
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+This method only unsubscribes the user from one channel at a time. To unsubscribe from multiple channels, call the method multiple times.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message payload size
+
+Signaling SDK imposes limits on the size of the message payload sent in message channels and stream channels. The limit is 32 KB for message channels and 1 KB for stream channels. The message payload size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
+
+```dart
+{
+    error = true;
+    errorCode = -11010;
+    operation = "PublishTopicMessageOperation";   // Or "PublishOperation"
+    reason = "rtmErrorChannelMessageLengthExceedLimitation";
+}
+```
+
+To avoid sending failure due to message payload size exceeding the limit, check the size before sending.
+
+### API reference
+
+- [`subscribe`](/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+Signaling provides message channels for implementing publish-subscribe (pub/sub) messaging in your app. In a message channel, you subscribe to a channel to receive messages. However, you do not need to join the channel to publish messages. This page shows you how to use Signaling SDK pub/sub messaging to implement various communication model into your app.
+
+## Understand the tech
+
+Pub/sub is the simplest form of messaging. Signaling creates a channel when a user subscribes to it. Your app listens for events which contain messages users publish to a channel.
+
+Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+### Communication models in message channels
+
+Signaling SDK enables you to implement a variety of communication models using message channels. A communication model refers to the data flow relationship between the message sender and receiver within a channel. Using the pub/sub message distribution mechanism, you can seamlessly implement the following communication models:
+
+- **1-to-1 channel**: This model facilitates communication between two users. It is ideal for creating private chat channels, one-on-one customer service support, and personal interactions.
+
+- **Group channel**: A group channel facilitates many-to-many communication, making user groups within the channel visible to each other. This model is suitable for workgroups, family discussions, and community interactions. Access control options in Signaling SDK enable you to implement open or invitation-based participation.
+
+- **Broadcast channel**: A broadcast channel enables one-to-many communication, where a single sender broadcasts messages to multiple recipients. This model is useful for group announcements, surveys, and disseminating information to a large audience.
+
+- **Unicast channel**: This model allows many users to send messages to a single recipient. This model is beneficial for use-cases such as questionnaire feedback collection, IoT sensor data aggregation, and centralized data collection.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement message channels
+
+This section shows you how to subscribe, unsubscribe, and send messages to a message channel.
+
+### Subscribe to a channel
+
+Use the `subscribe` method to subscribe to a message channel. After you subscribe, you receive `onMessageEvent` and other event notifications for the channel.
+
+```cpp
+SubscribeOptions options;
+
+uint64_t requestId;
+rtm_client->subscribe("channelName", options, requestId);
+```
+
+When you call `subscribe`, the SDK triggers the `onSubscribeResult` callback.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onSubscribeResult(const uint64_t requestId, const char *channelName, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("subscribe rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("subscribe rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+To subscribe to multiple channels, call `subscribe` multiple times:
+
+```cpp
+SubscribeOptions options;
+
+uint64_t requestId;
+rtm_client->subscribe("chats.room1", options, requestId);
+rtm_client->subscribe("chats.room2", options, requestId);
+```
+
+:::info
+Signaling allows a single client to subscribe to up to 50 message channels simultaneously. However, to optimize client performance and bandwidth usage, best practice is to limit subscriptions to 30 channels. If you have very large or highly active channels, consider further reducing the number of simultaneous subscriptions.
+:::
+
+### Send a message
+
+To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends messages to one channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../../reference/limitations) for details.
+
+:::info[Info]
+The `publish` method can only be used with a message channel and a user channel; it does not apply to a stream channel.
+:::
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+    ```cpp
+    // Sending string message
+    PublishOptions options;
+    options.messageType = RTM_MESSAGE_TYPE_STRING;
+    options.customType = "PlainText";
+
+    std::string message = "hello world";
+    uint64_t requestId;
+    rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
+    ```
+
+* Binary message
+
+    ```cpp
+    // Sending a binary message
+    PublishOptions options;
+    options.messageType = RTM_MESSAGE_TYPE_BINARY;
+    options.customType = "ByteArray";
+    char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
+
+    uint64_t requestId;
+    rtm_client->publish("channelName", message, 5, options, requestId);
+    ```
+
+:::info
+Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring).
+:::
+
+When you call `publish`, the SDK triggers the `onPublishResult` callback and returns the API call result.
+
+```cpp
+class RtmEventHandler : public IRtmEventHandler {
+    void onPublishResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            // publish message failed
+        } else {
+            // publish message success
+        }
+    }
+};
+```
+
+### Customize channel subscription
+
+By default, you receive message events for all channels you subscribe to. If you don't wish to receive messages from specific channels, while still receiving other types of event notifications from these channels, adjust the subscription settings accordingly. Refer to the following code snippet:
+
+```cpp
+SubscribeOptions options;
+options.withMessage = false;
+options.withPresence = true;
+options.withMetadata = true;
+options.withLock = true;
+
+uint64_t requestId;
+rtmClient->subscribe("channelName", options, requestId);
+```
+
+When you set the `withMessage` property in the `SubscribeOptions` to `false`, messages from `channel_name` do not trigger event notifications. However, you continue to receive notifications for other events, such as presence updates, metadata changes, and lock status alterations.
+
+### Unsubscribe from a channel
+
+To stop receiving message and all other event notifications from a channel, call `unsubscribe`.
+
+```cpp
+uint64_t requestId;
+rtmClient->unsubscribe("chats.room1", requestId);
+```
+
+When you call this method, the SDK triggers the `onUnsubscribeResult` callback and returns the API call result.
+
+```cpp
+class RtmEventHandler : public IRtmEventHandler {
+    void onUnsubscribeResult(const uint64_t requestId, const char* channelName, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("unsubscribe rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("unsubscribe rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+This method only unsubscribes from one channel at a time. To unsubscribe from multiple channels, call this method multiple times.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message payload size
+
+Signaling SDK imposes limits on the size of the message payload sent in message channels and stream channels. The limit is 32 KB for message channels and 1 KB for stream channels. The message payload size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
+
+To avoid sending failure due to message payload size exceeding the limit, check the size before sending.
+
+### API reference
+
+- [`subscribe`](/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-cpp">
+
+Signaling provides message channels for implementing publish-subscribe (pub/sub) messaging in your app. In a message channel, you subscribe to a channel to receive messages. However, you do not need to join the channel to publish messages. This page shows you how to use Signaling SDK pub/sub messaging to implement various communication model into your app.
+
+## Understand the tech
+
+Pub/sub is the simplest form of messaging. Signaling creates a channel when a user subscribes to it. Your app listens for events which contain messages users publish to a channel.
+
+Signaling allows thousands of message channels to exist in your app at the same time. However, due to client-side performance and bandwidth limitations, a single client may only subscribe to a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+### Communication models in message channels
+
+Signaling SDK enables you to implement a variety of communication models using message channels. A communication model refers to the data flow relationship between the message sender and receiver within a channel. Using the pub/sub message distribution mechanism, you can seamlessly implement the following communication models:
+
+- **1-to-1 channel**: This model facilitates communication between two users. It is ideal for creating private chat channels, one-on-one customer service support, and personal interactions.
+
+- **Group channel**: A group channel facilitates many-to-many communication, making user groups within the channel visible to each other. This model is suitable for workgroups, family discussions, and community interactions. Access control options in Signaling SDK enable you to implement open or invitation-based participation.
+
+- **Broadcast channel**: A broadcast channel enables one-to-many communication, where a single sender broadcasts messages to multiple recipients. This model is useful for group announcements, surveys, and disseminating information to a large audience.
+
+- **Unicast channel**: This model allows many users to send messages to a single recipient. This model is beneficial for use-cases such as questionnaire feedback collection, IoT sensor data aggregation, and centralized data collection.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement message channels
+
+This section shows you how to subscribe, unsubscribe, and send messages to a message channel.
+
+### Subscribe to a channel
+
+Use the `subscribe` method to subscribe to a message channel. After you subscribe, you receive `onMessageEvent` and other event notifications for the channel.
+
+```cpp
+SubscribeOptions options;
+
+uint64_t requestId;
+rtm_client->subscribe("channelName", options, requestId);
+```
+
+When you call `subscribe`, the SDK triggers the `onSubscribeResult` callback.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onSubscribeResult(const uint64_t requestId, const char *channelName, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("subscribe rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("subscribe rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+To subscribe to multiple channels, call `subscribe` multiple times:
+
+```cpp
+SubscribeOptions options;
+
+uint64_t requestId;
+rtm_client->subscribe("chats.room1", options, requestId);
+rtm_client->subscribe("chats.room2", options, requestId);
+```
+
+:::info
+Signaling allows a single client to subscribe to up to 50 message channels simultaneously. However, to optimize client performance and bandwidth usage, best practice is to limit subscriptions to 30 channels. If you have very large or highly active channels, consider further reducing the number of simultaneous subscriptions.
+:::
+
+### Send a message
+
+To send messages in a message channel, simply call the `publish` method without subscribing to the channel. This method sends messages to one channel at a time. To send messages to multiple channels, call this method multiple times. Signaling SDK does not limit the number of channels to which you can send messages, or the number of users who can send messages to a channel. However, there are certain restrictions on the frequency at which you can send messages to a channel simultaneously. See [API usage restrictions](../../reference/limitations) for details.
+
+:::info[Info]
+The `publish` method can only be used with a message channel and a user channel; it does not apply to a stream channel.
+:::
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+    ```cpp
+    // Sending string message
+    PublishOptions options;
+    options.messageType = RTM_MESSAGE_TYPE_STRING;
+    options.customType = "PlainText";
+
+    std::string message = "hello world";
+    uint64_t requestId;
+    rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
+    ```
+
+* Binary message
+
+    ```cpp
+    // Sending a binary message
+    PublishOptions options;
+    options.messageType = RTM_MESSAGE_TYPE_BINARY;
+    options.customType = "ByteArray";
+    char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
+
+    uint64_t requestId;
+    rtm_client->publish("channelName", message, 5, options, requestId);
+    ```
+
+:::info
+Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring).
+:::
+
+When you call `publish`, the SDK triggers the `onPublishResult` callback and returns the API call result.
+
+```cpp
+class RtmEventHandler : public IRtmEventHandler {
+    void onPublishResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            // publish message failed
+        } else {
+            // publish message success
+        }
+    }
+};
+```
+
+### Customize channel subscription
+
+By default, you receive message events for all channels you subscribe to. If you don't wish to receive messages from specific channels, while still receiving other types of event notifications from these channels, adjust the subscription settings accordingly. Refer to the following code snippet:
+
+```cpp
+SubscribeOptions options;
+options.withMessage = false;
+options.withPresence = true;
+options.withMetadata = true;
+options.withLock = true;
+
+uint64_t requestId;
+rtmClient->subscribe("channelName", options, requestId);
+```
+
+When you set the `withMessage` property in the `SubscribeOptions` to `false`, messages from `channel_name` do not trigger event notifications. However, you continue to receive notifications for other events, such as presence updates, metadata changes, and lock status alterations.
+
+### Unsubscribe from a channel
+
+To stop receiving message and all other event notifications from a channel, call `unsubscribe`.
+
+```cpp
+uint64_t requestId;
+rtmClient->unsubscribe("chats.room1", requestId);
+```
+
+When you call this method, the SDK triggers the `onUnsubscribeResult` callback and returns the API call result.
+
+```cpp
+class RtmEventHandler : public IRtmEventHandler {
+    void onUnsubscribeResult(const uint64_t requestId, const char* channelName, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("unsubscribe rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("unsubscribe rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+This method only unsubscribes from one channel at a time. To unsubscribe from multiple channels, call this method multiple times.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message payload size
+
+Signaling SDK imposes limits on the size of the message payload sent in message channels and stream channels. The limit is 32 KB for message channels and 1 KB for stream channels. The message payload size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
+
+To avoid sending failure due to message payload size exceeding the limit, check the size before sending.
+
+### API reference
+
+- [`subscribe`](/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+
+</PlatformStructured>

@@ -3,27 +3,32 @@ title: "Client configuration"
 description: "Configure connection protocol, proxy, and log settings."
 ---
 
-Client configuration enables you to customize the behavior of your Signaling client instance according to your app's requirements. 
+<PlatformStructured platform="web">
+
+Client configuration enables you to customize the behavior of your Signaling client instance according to your app's requirements.
 
 ## Understand the tech
 
 When initializing a Signaling client instance, configure any or all of the following features:
 
-- **Geographical area access**  
+- **Geographical area access**
     When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
 
-- **Private deployment**  
+- **Enable proxy connection**
+    You use a proxy connection to ensure reliable connectivity for your users when they connect from an environment with a restricted network. This helps in maintaining a stable connection even in environments with network restrictions.
+
+- **Private deployment**
     Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
 
-- **Logging**  
+- **Logging**
     Logging enables you to output detailed information from the SDK for locating and fixing problems during the development and testing phases. By configuring logging settings, you can control the amount and type of information logged by the SDK.
 
-- **Data encryption**  
-    Enabling encryption ensures that only authorized users are able to read messages sent through Signaling. Signaling provides built-in encryption methods that guarantee data confidentiality during transmission. For implementation details, see [Data encryption](/en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption).
+- **Data encryption**
+    Enabling encryption ensures that only authorized users are able to read messages sent through Signaling. Signaling provides built-in encryption methods that guarantee data confidentiality during transmission. For implementation details, see [Data encryption](../secure-your-app-and-data/data-encryption).
 
 ## Prerequisites
 
-Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index) page.
 
 ## Configure the client instance
 
@@ -33,50 +38,142 @@ This section explains how to set up and customize various features when you init
 
 To specify a geographical area for Agora SDRTN® connections, refer to the following code:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+```js
+// Set whitelist and blacklist areas
+AgoraRTM.setArea({ areaCodes: ["GLOBAL"], excludedArea: "CHINA" })
+```
 
-<CodeBlockTab value="java">
+### Proxy configuration
 
-```java
+In some environments with restricted network services, you may need to set up a proxy service to access external resources. Signaling supports configuring a proxy service. You enable this feature during the the Signaling instance initialization.
+
+```javascript
+const { RTM } = AgoraRTM;
+const appId = "your_appId";
+const userId = "your_userId";
+const rtmConfig = { cloudProxy: true };
+const rtm = new RTM(appId, userId, rtmConfig);
+```
+
+:::info
+This feature is only available for Message channels and User channels.
+:::
+
+### Private deployment configuration
+
+Agora is committed to offering its customers flexible, secure, and customizable solutions. Since version `2.2.0`, Signaling supports private deployments. This feature enables you to deploy and manage the Signaling environment yourself, giving you more control over your data and systems.
+
+Signaling provides `MESSAGE` and `STREAM` services. Choose one or both services based on your needs and budget. The following code shows you how to configure a private environment that deploys both services simultaneously:
+
+```js
+const appId = "your_appId";
+const userId = "your_userId";
+const rtmConfig = {
+    privateConfig: {
+        serviceType: ["MESSAGE", "STREAM"], // Service type for private deployment
+        accessPointHosts: ["private.mynet.com"], // Private deployment server list, only domain name is supported
+        domainMode: 2,
+    }
+};
+const rtm = new RTM(appId, userId, rtmConfig);
+```
+
+:::warning[Note]
+To upgrade the privately deployed Signaling Web SDK to v2.2.4 or later, set `domainMode` to `2` for compatibility. If you omit this parameter or use the default value `1`, the SDK may fail to connect to the Signaling server.
+:::
+
+:::info
+To deploy a private environment, you need to set up the backend service. For assistance, please contact [technical support](mailto:support@agora.io).
+:::
+
+### Log configuration
+
+In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable log output of the SDK and set the log information level by configuring `logLevel` when initializing the Signaling client instance. You can view the log information in the browser console.
+
+```javascript
+const { RTM } = AgoraRTM;
+const appId = "your_appId";
+const userId = "your_userId";
+const rtmConfig = { logLevel : "debug" };
+const rtm = new RTM(appId, userId, rtmConfig);
+```
+
+Choose the log level from the following:
+
+| Enumeration Value       | Description      |
+|------------|-------|
+| `debug`   | Output all logs.      |
+| `info`    | Output logs of level `error`, `warn`, and `info`. |
+| `warn`    | Output logs of level `error`, and `warn`.         |
+| `error`   | Output logs of level `error`.      |
+| `none`    | No log output.   |
+
+:::info
+When your app is released to production, set the log level to `info`.
+:::
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+For firewall configuration, see [firewall requirements](../../reference/firewall)
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+Client configuration enables you to customize the behavior of your Signaling client instance according to your app's requirements.
+
+## Understand the tech
+
+When initializing a Signaling client instance, configure any or all of the following features:
+
+- **Geographical area access**
+    When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
+
+- **Private deployment**
+    Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
+
+- **Logging**
+    Logging enables you to output detailed information from the SDK for locating and fixing problems during the development and testing phases. By configuring logging settings, you can control the amount and type of information logged by the SDK.
+
+- **Data encryption**
+    Enabling encryption ensures that only authorized users are able to read messages sent through Signaling. Signaling provides built-in encryption methods that guarantee data confidentiality during transmission. For implementation details, see [Data encryption](../secure-your-app-and-data/data-encryption).
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index) page.
+
+## Configure the client instance
+
+This section explains how to set up and customize various features when you initialize a Signaling client instance.
+
+### Geographical area configuration
+
+To specify a geographical area for Agora SDRTN® connections, refer to the following code:
+
+```java tab="Java"
 RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
     .areaCode(EnumSet.of(RtmConstants.RtmAreaCode.AS, RtmConstants.RtmAreaCode.CN))
     .eventListener(eventListener)
     .build();
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val rtmConfig = RtmConfig.Builder("appid", "userId")
     .areaCode(EnumSet.of(RtmConstants.RtmAreaCode.AS, RtmConstants.RtmAreaCode.CN))
     .eventListener(eventListener)
     .build()
 ```
-</CodeBlockTab>
 
-</CodeBlockTabs>
 
 ### Private deployment configuration
 
-Agora is committed to offering its customers flexible, secure, and customizable solutions. Since version `2.2.0`, Signaling supports private deployments. This feature enables you to deploy and manage the Signaling environment yourself, giving you more control over your data and systems. 
+Agora is committed to offering its customers flexible, secure, and customizable solutions. Since version `2.2.0`, Signaling supports private deployments. This feature enables you to deploy and manage the Signaling environment yourself, giving you more control over your data and systems.
 
 Signaling provides `MESSAGE` and `STREAM` services. Choose one or both services based on your needs and budget. The following code shows you how to configure a private environment that deploys both services simultaneously:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
-ArrayList<String> hosts = new ArrayList<>();
+```java tab="Java"
+ArrayList<String> hosts = new ArrayList&lt;&gt;();
 hosts.add("x.x.x.x"); // your access point hosts list.
 RtmPrivateConfig privateConfig = new RtmPrivateConfig();
 privateConfig.serviceType = EnumSet.of(RtmServiceType.MESSAGE, RtmServiceType.STREAMING);
@@ -86,11 +183,8 @@ RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
     .privateConfig(privateConfig)
     .build();
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val hosts = arrayListOf("x.x.x.x") // your access point hosts list.
 val privateConfig = RtmPrivateConfig().apply {
     serviceType = EnumSet.of(RtmServiceType.MESSAGE, RtmServiceType.STREAMING)
@@ -101,13 +195,9 @@ val rtmConfig = RtmConfig.Builder("appid", "userId")
     .privateConfig(privateConfig)
     .build()
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 :::info
 To deploy a private environment, you need to set up the backend service. For assistance, please contact [technical support](mailto:support@agora.io).
-
 :::
 
 ### Connection protocol
@@ -116,50 +206,27 @@ To ensure connection stability and continuous service availability, the RTM clie
 
 In some cases, users may find that their network does not support UDP port transmission, either temporarily or permanently. To ensure the dual-link design operates effectively, the SDK allows users to configure both links to use the TCP protocol. This can be done by setting the `protocolType` field in the `RtmConfig`. Below is a code example that configures both links to use the TCP protocol:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
     .protocolType(RtmProtocolType.TCP_ONLY)
     .build();
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val rtmConfig = RtmConfig.Builder("appid", "userId")
     .protocolType(RtmProtocolType.TCP_ONLY)
     .build()
 ```
-</CodeBlockTab>
 
-</CodeBlockTabs>
-
-:::info
+:::info[Info]
 The SDK does not support configuring both links to use the UDP protocol simultaneously.
-
 :::
 
 ### Log configuration
 
-In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable log output of the SDK and set the log information level by configuring `RtmLogLevel` when initializing the Signaling client instance. 
+In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable log output of the SDK and set the log information level by configuring `RtmLogLevel` when initializing the Signaling client instance.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 RtmLogConfig logConfig = new RtmLogConfig();
 // Set log file path
 logConfig.filePath = "./logfile/";
@@ -180,11 +247,8 @@ try {
     log(INFO, "create rtm client failed with exception: " + e.toString());
 }
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val logConfig = RtmLogConfig().apply {
     filePath = "./logfile/" // Set log file path
     fileSizeInKB = 512 // Set log file size
@@ -204,11 +268,8 @@ try {
     log(INFO, "create rtm client failed with exception: " + e.toString())
 }
 ```
-</CodeBlockTab>
 
-</CodeBlockTabs>
-
-Choose the log level from the following: 
+Choose the log level from the following:
 
 | Enumeration value | Description   |
 |----------|------------------------|
@@ -220,10 +281,788 @@ Choose the log level from the following:
 
 :::info
 When your app is released to production, set the log level to `INFO`.
-
 :::
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
-For firewall configuration, see [firewall requirements](../../reference/firewall.md)
+For firewall configuration, see [firewall requirements](../../reference/firewall)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+Client configuration enables you to customize the behavior of your Signaling client instance according to your app's requirements.
+
+## Understand the tech
+
+When initializing a Signaling client instance, configure any or all of the following features:
+
+- **Geographical area access**
+    When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
+
+- **Private deployment**
+    Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
+
+- **Logging**
+    Logging enables you to output detailed information from the SDK for locating and fixing problems during the development and testing phases. By configuring logging settings, you can control the amount and type of information logged by the SDK.
+
+- **Data encryption**
+    Enabling encryption ensures that only authorized users are able to read messages sent through Signaling. Signaling provides built-in encryption methods that guarantee data confidentiality during transmission. For implementation details, see [Data encryption](../secure-your-app-and-data/data-encryption).
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index) page.
+
+## Configure the client instance
+
+This section explains how to set up and customize various features when you initialize a Signaling client instance.
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+For firewall configuration, see [firewall requirements](../../reference/firewall)
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+Client configuration enables you to customize the behavior of your Signaling client instance according to your app's requirements.
+
+## Understand the tech
+
+When initializing a Signaling client instance, configure any or all of the following features:
+
+- **Geographical area access**
+    When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
+
+- **Private deployment**
+    Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
+
+- **Logging**
+    Logging enables you to output detailed information from the SDK for locating and fixing problems during the development and testing phases. By configuring logging settings, you can control the amount and type of information logged by the SDK.
+
+- **Data encryption**
+    Enabling encryption ensures that only authorized users are able to read messages sent through Signaling. Signaling provides built-in encryption methods that guarantee data confidentiality during transmission. For implementation details, see [Data encryption](../secure-your-app-and-data/data-encryption).
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index) page.
+
+## Configure the client instance
+
+This section explains how to set up and customize various features when you initialize a Signaling client instance.
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+For firewall configuration, see [firewall requirements](../../reference/firewall)
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+Client configuration enables you to customize the behavior of your Signaling client instance according to your app's requirements.
+
+## Understand the tech
+
+When initializing a Signaling client instance, configure any or all of the following features:
+
+- **Geographical area access**
+    When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
+
+- **Private deployment**
+    Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
+
+- **Logging**
+    Logging enables you to output detailed information from the SDK for locating and fixing problems during the development and testing phases. By configuring logging settings, you can control the amount and type of information logged by the SDK.
+
+- **Data encryption**
+    Enabling encryption ensures that only authorized users are able to read messages sent through Signaling. Signaling provides built-in encryption methods that guarantee data confidentiality during transmission. For implementation details, see [Data encryption](../secure-your-app-and-data/data-encryption).
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index) page.
+
+## Configure the client instance
+
+This section explains how to set up and customize various features when you initialize a Signaling client instance.
+
+### Geographical area configuration
+
+To specify geographical areas for Agora SDRTN® connections, refer to the following code:
+
+```dart
+// Create a Set containing specific RtmAreaCode values
+Set<RtmAreaCode> areaCodes = {RtmAreaCode.na, RtmAreaCode.eu};
+
+// Use the areaCodes in RtmConfig
+RtmConfig config = RtmConfig(
+  areaCode: areaCodes
+);
+```
+
+
+### Private deployment configuration
+
+Agora is committed to offering its customers flexible, secure, and customizable solutions. Since version `2.2.0`, Signaling supports private deployments. This feature enables you to deploy and manage the Signaling environment yourself, giving you more control over your data and systems.
+
+Signaling provides `MESSAGE` and `STREAM` services. Choose one or both services based on your needs and budget. The following code shows you how to configure a private environment that deploys both services simultaneously:
+
+```dart
+final userId = 'your_userId';
+final appId = 'your_appId';
+late RtmClient rtmClient;
+
+var privateConfig = RtmPrivateConfig(
+    serviceType: { RtmServiceType.message, RtmServiceType.stream },
+    accessPointHosts: ['private.hostname.com']);
+
+var rtmConfig = RtmConfig( privateConfig:privateConfig );
+
+try {
+    final (status,client) = await RTM(appId, userId, rtmConfig:rtmConfig);
+    if (status.error == true) {
+        print(status);
+    } else {
+        rtmClient = client;
+        print('Initialize success!');
+    }
+} catch (e) {
+    print('Failed to create RTM client: $e');
+}
+```
+
+:::info
+To deploy a private environment, you need to set up the backend service. For assistance, please contact [technical support](mailto:support@agora.io).
+:::
+
+### Connection protocol
+
+To ensure connection stability and continuous service availability, the RTM client establishes two transmission links for each service (`MESSAGE` service and `STREAM` service) when connecting to the edge server. By default, these links use the TCP and UDP protocols, respectively. This design ensures that network issues on one link do not affect the overall transmission. Compared to other WebSocket-based message transmission solutions, RTM's redundant link design maximizes transmission stability and message delivery rate.
+
+In some cases, users may find that their network does not support UDP port transmission, either temporarily or permanently. To ensure the dual-link design operates effectively, the SDK allows users to configure both links to use the TCP protocol. This can be done by setting the `protocolType` field in the `RtmConfig`. Below is a code example that configures both links to use the TCP protocol:
+
+```dart
+late RtmClient rtmClient;
+const protocolType = RtmProtocolType.tcpOnly;
+const rtmConfig = RtmConfig(protocolType:protocolType);
+try {
+    final (status,client) = await RTM("myAppId", "Tony", rtmConfig:rtmConfig);
+    if (status.error == true) {
+        print(status);
+    } else {
+        rtmClient = client;
+        print('Initialization success!');
+    }
+} catch (e) {
+    print('Failed to create RTM client: $e');
+}
+```
+
+:::info[Info]
+The SDK does not support configuring both links to use the UDP protocol simultaneously.
+:::
+
+### Log configuration
+
+In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable log output of the SDK and set the log information level by configuring `level` when initializing the Signaling client instance.
+
+```dart
+const logConfig = RtmLogConfig(
+    filePath: './rtm_logfile/',
+    fileSizeInKB: 1024,
+    level: warn );
+
+const rtmConfig = RtmConfig( logConfig:logConfig );
+```
+
+Choose the log level from the following:
+
+| Enumeration value | Description   |
+|----------|------------------------|
+| `none`      | `0x0000`: Do not output any logs.    |
+| `info`      | `0x0001`: Output logs of levels `fatal`, `error`, `warn`, and `info`. Best practice is to set the log level to this option. |
+| `warn`      | `0x0002`: Only output logs of levels `fatal`, `error`, and `warn`.  |
+| `error`     | `0x0004`: Only output logs of levels `fatal` and `error`. |
+| `fatal`     | `0x0008`: Only output logs at the `fatal` level.   |
+
+:::info
+When your app is released to production, set the log level to `info`.
+:::
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+For firewall configuration, see [firewall requirements](../../reference/firewall)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+Client configuration enables you to customize the behavior of your Signaling client instance according to your app's requirements.
+
+## Understand the tech
+
+When initializing a Signaling client instance, configure any or all of the following features:
+
+- **Geographical area access**
+    When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
+
+- **Private deployment**
+    Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
+
+- **Logging**
+    Logging enables you to output detailed information from the SDK for locating and fixing problems during the development and testing phases. By configuring logging settings, you can control the amount and type of information logged by the SDK.
+
+- **Data encryption**
+    Enabling encryption ensures that only authorized users are able to read messages sent through Signaling. Signaling provides built-in encryption methods that guarantee data confidentiality during transmission. For implementation details, see [Data encryption](../secure-your-app-and-data/data-encryption).
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index) page.
+
+## Configure the client instance
+
+This section explains how to set up and customize various features when you initialize a Signaling client instance.
+
+### Geographical area configuration
+
+To specify a geographical area for Agora SDRTN® connections, refer to the following code:
+
+```tsx
+
+const client = createAgoraRtmClient(
+ new RtmConfig({
+   userId: 'your_userId',
+   appId: 'your_appId',
+   useStringUserId: true,
+   areaCode: RtmAreaCode.as | RtmAreaCode.cn, // Multiple areas using bitwise OR
+   // Or use a single area:
+   // areaCode: RtmAreaCode.as,
+ })
+);
+```
+
+Available area codes:
+
+| Area Code | Description |
+|-----------|-------------|
+| `RtmAreaCode.na` | North America |
+| `RtmAreaCode.eu` | Europe |
+| `RtmAreaCode.as` | Asia excluding Mainland China |
+| `RtmAreaCode.jp` | Japan |
+| `RtmAreaCode.in` | India |
+| `RtmAreaCode.cn` | Mainland China |
+| `RtmAreaCode.glob` | Global (default) |
+
+### Connection protocol
+
+To ensure connection stability and continuous service availability, the RTM client establishes two transmission links for each service (`MESSAGE` service and `STREAM` service) when connecting to the edge server. By default, these links use the TCP and UDP protocols, respectively. This design ensures that network issues on one link do not affect the overall transmission.
+
+In some cases, users may find that their network does not support UDP port transmission. To ensure the dual-link design operates effectively, the SDK allows users to configure both links to use the TCP protocol by setting the `protocolType` field in the `RtmConfig`:
+
+```tsx
+
+const client = createAgoraRtmClient(
+ new RtmConfig({
+   userId: 'your_userId',
+   appId: 'your_appId',
+   useStringUserId: true,
+   protocolType: RtmProtocolType.tcpOnly, // Use TCP only for both links
+ })
+);
+```
+
+Available protocol types:
+
+| Protocol Type | Description |
+|---------------|-------------|
+| `RtmProtocolType.tcpUdp` | Use both TCP and UDP (default) |
+| `RtmProtocolType.tcpOnly` | Use TCP only for both links |
+
+:::info[Info]
+The SDK does not support configuring both links to use the UDP protocol simultaneously.
+:::
+
+### Presence timeout configuration
+
+Configure the presence timeout to control how long the server waits before considering a client offline:
+
+```tsx
+
+const client = createAgoraRtmClient(
+ new RtmConfig({
+   userId: 'your_userId',
+   appId: 'your_appId',
+   useStringUserId: true,
+   presenceTimeout: 60, // Timeout in seconds (5-300 range)
+ })
+);
+```
+
+### User ID type configuration
+
+Configure whether to use string or numeric user IDs:
+
+```tsx
+
+// Using string user IDs (recommended)
+const clientString = createAgoraRtmClient(
+ new RtmConfig({
+   userId: 'user123',
+   appId: 'your_appId',
+   useStringUserId: true, // Use string user IDs
+ })
+);
+
+// Using numeric user IDs
+const clientNumeric = createAgoraRtmClient(
+ new RtmConfig({
+   userId: '1234567', // Must be numeric string when useStringUserId is false
+   appId: 'your_appId',
+   useStringUserId: false, // Use numeric user IDs
+ })
+);
+```
+
+:::info
+When using both Agora RTC and RTM, ensure the `userId` type is consistent across both SDKs.
+:::
+
+### Log configuration
+
+In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable log output of the SDK and set the log information level by configuring `RtmLogConfig` when initializing the Signaling client instance:
+
+```tsx
+
+const logConfig = {
+ filePath: './logfile/', // Log file path
+ fileSizeInKB: 512, // Log file size in KB (128-1024 range)
+ level: RtmLogLevel.info, // Log report level
+};
+
+const client = createAgoraRtmClient(
+ new RtmConfig({
+   userId: 'your_userId',
+   appId: 'your_appId',
+   useStringUserId: true,
+   logConfig: logConfig, // Set log configuration
+ })
+);
+```
+
+Choose the log level from the following:
+
+| Enumeration value | Description   |
+|----------|------------------------|
+| `RtmLogLevel.none`      | `0x0000`: Do not output any logs.    |
+| `RtmLogLevel.info`      | `0x0001`: Output logs of levels `FATAL`, `ERROR`, `WARN`, and `INFO`. Best practice is to set the log level to this option. |
+| `RtmLogLevel.warn`      | `0x0002`: Only output logs of levels `FATAL`, `ERROR`, and `WARN`.  |
+| `RtmLogLevel.error`     | `0x0004`: Only output logs of levels `FATAL` and `ERROR`. |
+| `RtmLogLevel.fatal`     | `0x0008`: Only output logs at the `FATAL` level.   |
+
+:::info[Info]
+When your app is released to production, set the log level to `RtmLogLevel.info`.
+:::
+
+### Encryption configuration
+
+For enhanced security, you can enable client-side encryption:
+
+```tsx
+
+const encryptionConfig = {
+ encryptionMode: RtmEncryptionMode.aes128Gcm, // or RtmEncryptionMode.aes256Gcm
+ encryptionKey: 'your_encryption_key', // 32-character string
+ encryptionSalt: new Uint8Array(32), // 32-byte salt
+};
+
+const client = createAgoraRtmClient(
+ new RtmConfig({
+   userId: 'your_userId',
+   appId: 'your_appId',
+   useStringUserId: true,
+   encryptionConfig: encryptionConfig, // Set encryption configuration
+ })
+);
+```
+
+Available encryption modes:
+
+| Encryption Mode | Description |
+|-----------------|-------------|
+| `RtmEncryptionMode.none` | No encryption (default) |
+| `RtmEncryptionMode.aes128Gcm` | AES 128-bit GCM encryption |
+| `RtmEncryptionMode.aes256Gcm` | AES 256-bit GCM encryption |
+
+### Complete configuration example
+
+Here's a comprehensive example showing all configuration options:
+
+```tsx
+
+ createAgoraRtmClient,
+ RtmConfig,
+ RtmAreaCode,
+ RtmProtocolType,
+ RtmLogLevel,
+ RtmEncryptionMode
+} from 'agora-react-native-rtm';
+
+const logConfig = {
+ filePath: './logs/',
+ fileSizeInKB: 1024,
+ level: RtmLogLevel.info,
+};
+
+const encryptionConfig = {
+ encryptionMode: RtmEncryptionMode.aes256Gcm,
+ encryptionKey: 'your_32_character_encryption_key',
+ encryptionSalt: new Uint8Array(32),
+};
+
+const client = createAgoraRtmClient(
+ new RtmConfig({
+   userId: 'your_userId',
+   appId: 'your_appId',
+   useStringUserId: true,
+   areaCode: RtmAreaCode.as,
+   protocolType: RtmProtocolType.tcpUdp,
+   presenceTimeout: 300,
+   logConfig: logConfig,
+   encryptionConfig: encryptionConfig,
+ })
+);
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+For firewall configuration, see [firewall requirements](../../reference/firewall)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+Client configuration enables you to customize the behavior of your Signaling client instance according to your app's requirements.
+
+## Understand the tech
+
+When initializing a Signaling client instance, configure any or all of the following features:
+
+- **Geographical area access**
+    When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
+
+- **Private deployment**
+    Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
+
+- **Logging**
+    Logging enables you to output detailed information from the SDK for locating and fixing problems during the development and testing phases. By configuring logging settings, you can control the amount and type of information logged by the SDK.
+
+- **Data encryption**
+    Enabling encryption ensures that only authorized users are able to read messages sent through Signaling. Signaling provides built-in encryption methods that guarantee data confidentiality during transmission. For implementation details, see [Data encryption](../secure-your-app-and-data/data-encryption).
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index) page.
+
+## Configure the client instance
+
+This section explains how to set up and customize various features when you initialize a Signaling client instance.
+
+### Geographical area configuration
+
+To specify a geographical area for Agora SDRTN® connections, refer to the following code:
+
+```cpp
+rtmConfig.areaCode = RTM_AREA_CODE_NA;
+int ret = signalingEngine->initialize(rtmConfig);
+```
+
+### Private deployment configuration
+
+Agora is committed to offering its customers flexible, secure, and customizable solutions. Since version `2.2.0`, Signaling supports private deployments. This feature enables you to deploy and manage the Signaling environment yourself, giving you more control over your data and systems.
+
+Signaling provides `MESSAGE` and `STREAM` services. Choose one or both services based on your needs and budget. The following code shows you how to configure a private environment that deploys both services simultaneously:
+
+```cpp
+std::vector<const char*> hosts;
+hosts.push_back("xxx");
+
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.privateConfig.serviceType = RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM;
+config.privateConfig.accessPointHosts = hosts.data();
+config.privateConfig.accessPointHostsCount = hosts.size();
+```
+
+:::info[Info]
+To deploy a private environment, you need to set up the backend service. For assistance, please contact [technical support](mailto:support@agora.io).
+:::
+
+### Connection protocol
+
+To ensure connection stability and continuous service availability, the RTM client establishes two transmission links for each service (`MESSAGE` service and `STREAM` service) when connecting to the edge server. By default, these links use the TCP and UDP protocols, respectively. This design ensures that network issues on one link do not affect the overall transmission. Compared to other WebSocket-based message transmission solutions, RTM's redundant link design maximizes transmission stability and message delivery rate.
+
+In some cases, users may find that their network does not support UDP port transmission, either temporarily or permanently. To ensure the dual-link design operates effectively, the SDK allows users to configure both links to use the TCP protocol. This can be done by setting the `protocolType` field in the `RtmConfig`. Below is a code example that configures both links to use the TCP protocol:
+
+```cpp
+RtmConfig config;
+config.appId = "appid";
+config.userId = "userId";
+config.protocolType = RTM_PROTOCOL_TYPE_TCP_ONLY;
+```
+
+:::info[Info]
+The SDK does not support configuring both links to use the UDP protocol simultaneously.
+:::
+
+### Log configuration
+
+In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable log output of the SDK and set the log information level by configuring `RTM_LOG_LEVEL` when initializing the Signaling client instance.
+
+```cpp
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.eventHandler = new RtmEventHandler();
+
+config.logConfig.level = RTM_LOG_LEVEL_INFO;
+config.logConfig.filePath = "your_path";
+config.logConfig.fileSizeInKB = 10 * 1024;
+
+int errorCode = 0;
+IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
+if (!rtmClient || errorCode != 0) {
+  // create rtm client failed
+}
+```
+
+Choose the log level from the following:
+
+| Enumeration value | Description   |
+|----------|------------------------|
+| `NONE`              | `0x0000`: Do not output any logs.          |
+| `INFO`              | `0x0001`: Output logs of levels `FATAL`, `ERROR`, `WARN`, and `INFO`. Best practice is to set the log level to this option. |
+| `WARN`              | `0x0002`: Only output logs of levels `FATAL`, `ERROR`, and `WARN`.  |
+| `ERROR`             | `0x0004`: Only output logs of levels `FATAL` and `ERROR`.         |
+| `FATAL`             | `0x0008`: Only output logs of levels `FATAL`. |
+
+:::info
+When your app is released to production, set the log level to `INFO`.
+:::
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+For firewall configuration, see [firewall requirements](../../reference/firewall)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-cpp">
+
+Client configuration enables you to customize the behavior of your Signaling client instance according to your app's requirements.
+
+## Understand the tech
+
+When initializing a Signaling client instance, configure any or all of the following features:
+
+- **Geographical area access**
+    When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
+
+- **Private deployment**
+    Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
+
+- **Logging**
+    Logging enables you to output detailed information from the SDK for locating and fixing problems during the development and testing phases. By configuring logging settings, you can control the amount and type of information logged by the SDK.
+
+- **Data encryption**
+    Enabling encryption ensures that only authorized users are able to read messages sent through Signaling. Signaling provides built-in encryption methods that guarantee data confidentiality during transmission. For implementation details, see [Data encryption](../secure-your-app-and-data/data-encryption).
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index) page.
+
+## Configure the client instance
+
+This section explains how to set up and customize various features when you initialize a Signaling client instance.
+
+### Geographical area configuration
+
+To specify a geographical area for Agora SDRTN® connections, refer to the following code:
+
+```cpp
+rtmConfig.areaCode = RTM_AREA_CODE_NA;
+int ret = signalingEngine->initialize(rtmConfig);
+```
+
+### Private deployment configuration
+
+Agora is committed to offering its customers flexible, secure, and customizable solutions. Since version `2.2.0`, Signaling supports private deployments. This feature enables you to deploy and manage the Signaling environment yourself, giving you more control over your data and systems.
+
+Signaling provides `MESSAGE` and `STREAM` services. Choose one or both services based on your needs and budget. The following code shows you how to configure a private environment that deploys both services simultaneously:
+
+```cpp
+std::vector<const char*> hosts;
+hosts.push_back("xxx");
+
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.privateConfig.serviceType = RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM;
+config.privateConfig.accessPointHosts = hosts.data();
+config.privateConfig.accessPointHostsCount = hosts.size();
+```
+
+:::info[Info]
+To deploy a private environment, you need to set up the backend service. For assistance, please contact [technical support](mailto:support@agora.io).
+:::
+
+### Connection protocol
+
+To ensure connection stability and continuous service availability, the RTM client establishes two transmission links for each service (`MESSAGE` service and `STREAM` service) when connecting to the edge server. By default, these links use the TCP and UDP protocols, respectively. This design ensures that network issues on one link do not affect the overall transmission. Compared to other WebSocket-based message transmission solutions, RTM's redundant link design maximizes transmission stability and message delivery rate.
+
+In some cases, users may find that their network does not support UDP port transmission, either temporarily or permanently. To ensure the dual-link design operates effectively, the SDK allows users to configure both links to use the TCP protocol. This can be done by setting the `protocolType` field in the `RtmConfig`. Below is a code example that configures both links to use the TCP protocol:
+
+```cpp
+RtmConfig config;
+config.appId = "appid";
+config.userId = "userId";
+config.protocolType = RTM_PROTOCOL_TYPE_TCP_ONLY;
+```
+
+:::info[Info]
+The SDK does not support configuring both links to use the UDP protocol simultaneously.
+:::
+
+### Log configuration
+
+In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable log output of the SDK and set the log information level by configuring `RTM_LOG_LEVEL` when initializing the Signaling client instance.
+
+```cpp
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.eventHandler = new RtmEventHandler();
+
+config.logConfig.level = RTM_LOG_LEVEL_INFO;
+config.logConfig.filePath = "your_path";
+config.logConfig.fileSizeInKB = 10 * 1024;
+
+int errorCode = 0;
+IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
+if (!rtmClient || errorCode != 0) {
+  // create rtm client failed
+}
+```
+
+Choose the log level from the following:
+
+| Enumeration value | Description   |
+|----------|------------------------|
+| `NONE`              | `0x0000`: Do not output any logs.          |
+| `INFO`              | `0x0001`: Output logs of levels `FATAL`, `ERROR`, `WARN`, and `INFO`. Best practice is to set the log level to this option. |
+| `WARN`              | `0x0002`: Only output logs of levels `FATAL`, `ERROR`, and `WARN`.  |
+| `ERROR`             | `0x0004`: Only output logs of levels `FATAL` and `ERROR`.         |
+| `FATAL`             | `0x0008`: Only output logs of levels `FATAL`. |
+
+:::info
+When your app is released to production, set the log level to `INFO`.
+:::
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+For firewall configuration, see [firewall requirements](../../reference/firewall)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+Client configuration enables you to customize the behavior of your Signaling client instance according to your app's requirements.
+
+## Understand the tech
+
+When initializing a Signaling client instance, configure any or all of the following features:
+
+- **Geographical area access**
+    When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
+
+- **Logging**
+    Logging enables you to output detailed information from the SDK for locating and fixing problems during the development and testing phases. By configuring logging settings, you can control the amount and type of information logged by the SDK.
+
+- **Data encryption**
+    Enabling encryption ensures that only authorized users are able to read messages sent through Signaling. Signaling provides built-in encryption methods that guarantee data confidentiality during transmission. For implementation details, see [Data encryption](../secure-your-app-and-data/data-encryption).
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index) page.
+
+## Configure the client instance
+
+This section explains how to set up and customize various features when you initialize a Signaling client instance.
+
+### Geographical area configuration
+
+To specify a geographical area for Agora SDRTN® connections, refer to the following code:
+
+```csharp
+rtmConfig.areaCode = Agora.Rtm.RTM_AREA_CODE.NA;
+```
+
+### Log configuration
+
+In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable log output of the SDK and set the log information `level` when initializing the Signaling client instance.
+
+```csharp
+using Agora.Rtm;
+
+private IRtmClient rtmClient;
+
+LogConfig logConfig = new LogConfig()
+// Set log file path.
+logConfig.filePath = "./logfile/";
+// Set log file size.
+logConfig.fileSizeInKB = 512;
+// Set log report level.
+logConfig.level = LOG_LEVEL.INFO;
+
+RtmConfig config = new RtmConfig();
+// Initialize logConfig.
+config.logConfig = logConfig;
+config.appId = "your_appId";
+config.userId = "your_userId";
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+    Debug.Log("RTM Client Initialize Sucessfull");
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed.", e.Status.Operation ));
+    Debug.Log(string.Format("Error code: {0}, due to: {1}", e.Status.ErrorCode, e.Status.Reason));
+}
+```
+
+Choose the log level from the following:
+
+| Enumeration Value       | Description  |
+|--------------|-----------------|
+| `NONE`    | `0x0000`: Do not output any logs.      |
+| `INFO`    | `0x0001`: Output logs of levels `FATAL`, `ERROR`, `WARN`, and `INFO`. Best practice is to set the log level to this option. |
+| `WARN`    | `0x0002`: Only output logs of levels `FATAL`, `ERROR`, and `WARN`.   |
+| `ERROR`   | `0x0004`: Only output logs of levels `FATAL` and `ERROR`.          |
+| `FATAL`   | `0x0008`: Only output logs at the `FATAL` level.     |
+
+:::info
+When your app is released to production, set the log level to `INFO`.
+:::
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+For firewall configuration, see [firewall requirements](../../reference/firewall)
+
+</PlatformStructured>
