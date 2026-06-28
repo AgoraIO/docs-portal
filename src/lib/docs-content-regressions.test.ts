@@ -186,6 +186,26 @@ describe('docs content regressions', () => {
     expect(offenders).toEqual([]);
   });
 
+  it('keeps docs free of four-colon directive fences', () => {
+    const offenders: string[] = [];
+
+    for (const file of listMarkdownFiles(allDocsRoot)) {
+      const lines = readFileSync(file, 'utf8').split('\n');
+
+      lines.forEach((line, index) => {
+        const match = line.match(/^\s*(:+)($|[^:])/);
+
+        if (match?.[1].length === 4) {
+          offenders.push(
+            `${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`,
+          );
+        }
+      });
+    }
+
+    expect(offenders).toEqual([]);
+  });
+
   it('keeps PR 285 code and table recovery pages from regressing to placeholders', () => {
     const multihostDocs = [
       'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
@@ -197,14 +217,18 @@ describe('docs content regressions', () => {
       const content = readDoc(relativePath);
 
       expect(content).not.toContain('not available yet');
-      expect(content.match(/<PlatformStructured platform=/g) ?? []).toHaveLength(
-        3,
+      expect(content).toContain(
+        '<Tabs defaultValue="android" groupId="platform">',
       );
+      expect(content).not.toContain('<PlatformStructured platform=');
+      expect(content.match(/<TabsContent value=/g) ?? []).toHaveLength(3);
       expect(content).toContain('```java');
       expect(content).toContain('```swift');
       expect(content).toContain('```dart');
       expect(content).toContain('onTranscodedStreamLayoutInfo');
-      expect(content).toContain('didTranscodedStreamLayoutInfoUpdatedWithUserId');
+      expect(content).toContain(
+        'didTranscodedStreamLayoutInfoUpdatedWithUserId',
+      );
     }
 
     const cloudRecording = readDoc(
@@ -345,20 +369,22 @@ describe('docs content regressions', () => {
       'flutter',
     ];
 
-    expect(
-      rtmDownloads.match(/<PlatformStructured platform=/g) ?? [],
-    ).toHaveLength(rtmDownloadPlatforms.length);
+    expect(rtmDownloads).toContain(
+      '<Tabs defaultValue="web" groupId="platform">',
+    );
+    expect(rtmDownloads).not.toContain('<PlatformStructured platform=');
+    expect(rtmDownloads.match(/<TabsContent value=/g) ?? []).toHaveLength(
+      rtmDownloadPlatforms.length,
+    );
     for (const platform of rtmDownloadPlatforms) {
-      expect(rtmDownloads).toContain(
-        `<PlatformStructured platform="${platform}">`,
-      );
+      expect(rtmDownloads).toContain(`<TabsContent value="${platform}">`);
     }
     expect(rtmDownloads).toContain('| `agora-rtm_sdk.jar` | `/app/libs/` |');
     expect(rtmDownloads).toContain("pod 'AgoraRtm_iOS'");
     expect(rtmDownloads).toContain("pod 'AgoraRtm_macOS'");
     expect(rtmDownloads).toContain('<artifactId>agora-rtm-sdk</artifactId>');
     expect(rtmDownloads).toContain(
-      'target_link_libraries(${TARGET_NAME} agora_rtm_sdk pthread)',
+      'target_link_libraries($' + '{TARGET_NAME} agora_rtm_sdk pthread)',
     );
     expect(rtmDownloads).toContain('`agora_rtm_sdk.lib`');
     expect(rtmDownloads).toContain(

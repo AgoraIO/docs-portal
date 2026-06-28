@@ -5,7 +5,13 @@ description: "Integrate and use HT Portrait 3D special effects in your Android o
 
 The HTEffect 3D Avatar extension enables you to quickly and seamlessly integrate 3D portrait special effects capabilities into your app. It encapsulates the Hongtu HTAvatar core API. You call API functions by setting the appropriate extension parameters.
 
-<PlatformStructured platform="android">
+<Tabs defaultValue="android" groupId="platform">
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 ## Understand the tech
 
 You use Video SDK methods to pass the appropriate `key` and `value` parameters to the extension. The `key` parameter corresponds exactly to the Hongtu API name, and the `value` parameter wraps some or all API parameters in JSON format.
@@ -171,9 +177,9 @@ When you call `setExtensionProperty`, the following keys and their corresponding
 | Value parameter | Description |
 | :---- | :---- |
 | `path` | String type, the path that needs to be copied to the sandbox. |
-</PlatformStructured>
+</TabsContent>
 
-<PlatformStructured platform="ios">
+<TabsContent value="ios">
 ## Understand the tech
 
 You use Video SDK methods to pass the appropriate `key` and `value` parameters to the extension. The `key` parameter corresponds exactly to the Hongtu API name, and the `value` parameter wraps some or all API parameters in JSON format.
@@ -321,7 +327,8 @@ When you call `setExtensionPropertyWithVendor`, the following keys and their cor
 | Value parameter | Description |
 | :---- | :---- |
 | `path` | String type, the path that needs to be copied to the sandbox. |
-</PlatformStructured>
+</TabsContent>
+</Tabs>
 
 ## Interface description
 
