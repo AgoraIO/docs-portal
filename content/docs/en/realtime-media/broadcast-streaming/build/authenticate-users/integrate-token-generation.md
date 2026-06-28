@@ -166,19 +166,19 @@ Follow these steps to build and run a token generator locally:
     }
   ```
 
-1. Open the terminal, go to the `token-server` folder path, and run the following command line to create a `go.mod` file for your token generator. This file defines the import path and dependencies:
+2. Open the terminal, go to the `token-server` folder path, and run the following command line to create a `go.mod` file for your token generator. This file defines the import path and dependencies:
 
   ```go
   go mod init sampleServer
   ```
 
-1. Run the following command to install dependencies. 
+3. Run the following command to install dependencies.
  
   ```go
   go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
   ```
 
-1. Run the following command to start the token generator:
+4. Run the following command to start the token generator:
 
   ```go
   go run server.go
@@ -212,7 +212,7 @@ If your current token server implementation uses `AccessToken`, follow these ste
   )
   ```
 
-1. Remove the statement that generates the timestamp and add `tokenExpireTimeInSeconds` and `privilegeExpireTimeInSeconds` related code:
+2. Remove the statement that generates the timestamp and add `tokenExpireTimeInSeconds` and `privilegeExpireTimeInSeconds` related code:
 
   ```go
   // expireTimeInSeconds := uint32(40)
@@ -224,7 +224,7 @@ If your current token server implementation uses `AccessToken`, follow these ste
   privilegeExpireTimeInSeconds := uint32(40)
   ```
 
-1. Update `tokenbuilder` method code:
+3. Update `tokenbuilder` method code:
 
   ```go
   // Code before updating
@@ -235,7 +235,7 @@ If your current token server implementation uses `AccessToken`, follow these ste
   result, err := rtctokenbuilder.BuildTokenWithUid(appID, appCertificate, channelName, int_uid, role, tokenExpireTimeInSeconds, privilegeExpireTimeInSeconds)
   ```
 
-1. Remove unsupported roles
+4. Remove unsupported roles
 
   ```go
   switch role_num {

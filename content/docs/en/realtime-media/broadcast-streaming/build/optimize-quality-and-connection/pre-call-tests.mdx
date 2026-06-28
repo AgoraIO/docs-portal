@@ -43,9 +43,9 @@ The SDK provides the `startEchoTest` [3/3] method to test the network connection
 
 1. Before joining a channel, call `startEchoTest` [3/3] with `EchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
 
-1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
+2. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
-1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+3. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
     :::note
     Using `startEchoTest` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
     :::
@@ -142,13 +142,13 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
-1. After you start the test, the SDK triggers the following callbacks:
+2. After you start the test, the SDK triggers the following callbacks:
 
    - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
    - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
-1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+3. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
 To implement network quality testing in your app, refer to the following code:
 
@@ -322,9 +322,9 @@ The SDK provides the `startEchoTest(withConfig:)` method to test the network con
 
 1. Before joining a channel, call `startEchoTest(withConfig:)` with `AgoraEchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
 
-1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
+2. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
-1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+3. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
     :::note
     Using `startEchoTest(withConfig:)` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
     :::
@@ -370,13 +370,13 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
-1. After calling this method, the SDK triggers the following callbacks:
+2. After calling this method, the SDK triggers the following callbacks:
 
    - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
    - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
-1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+3. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
 To implement network quality testing in your app, refer to the following code:
 
@@ -520,9 +520,9 @@ The SDK provides the `startEchoTest(withConfig:)` method to test the network con
 
 1. Before joining a channel, call `startEchoTest(withConfig:)` with `AgoraEchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
 
-1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
+2. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
-1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+3. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
     :::note
     Using `startEchoTest(withConfig:)` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
     :::
@@ -568,13 +568,13 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
-1. After calling this method, the SDK triggers the following callbacks:
+2. After calling this method, the SDK triggers the following callbacks:
 
    - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
    - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
-1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+3. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
 To implement network quality testing in your app, refer to the following code:
 
@@ -714,13 +714,13 @@ Refer to the following steps to test the local microphone and camera:
 
 1. Call `AgoraRTC.getDevices` to get the available devices and their IDs.
 
-1. When calling `AgoraRTC.createCameraVideoTrack` and `AgoraRTC.createMicrophoneAudioTrack` to create local audio and video track objects, pass in `cameraId` and `microphoneId` to specify the devices you want to test.
+2. When calling `AgoraRTC.createCameraVideoTrack` and `AgoraRTC.createMicrophoneAudioTrack` to create local audio and video track objects, pass in `cameraId` and `microphoneId` to specify the devices you want to test.
 
-1. After creating the local audio or video track object, call `CameraVideoTrack.play` to play the local video track:
+3. After creating the local audio or video track object, call `CameraVideoTrack.play` to play the local video track:
 
   1. If you are testing the microphone, call `MicrophoneAudioTrack.getVolumeLevel` to get the volume level. If the volume is greater than `0`, it means that the microphone is working normally.
 
-  1. When testing the camera, if you see the picture after playing the video track, it means that the camera is working normally.
+  2. When testing the camera, if you see the picture after playing the video track, it means that the camera is working normally.
 
 To implement recording equipment tests in your app, refer to the following code:
 
@@ -770,17 +770,17 @@ Refer to the following steps to perform a network quality test before a call or 
    - `uplinkClient`: To test the connection status of the uplink network.
    - `downlinkClient`: To test the connection status of the downlink network.
 
-1. Both clients call `join` to enter a channel for testing.
+2. Both clients call `join` to enter a channel for testing.
 
-1. Call `createMicrophoneAndCameraTracks` to create audio and video tracks.
+3. Call `createMicrophoneAndCameraTracks` to create audio and video tracks.
 
-1. Call `publish` on `uplinkClient` to publish audio and video tracks and `subscribe` on `downlinkClient` to subscribe to audio and video tracks.
+4. Call `publish` on `uplinkClient` to publish audio and video tracks and `subscribe` on `downlinkClient` to subscribe to audio and video tracks.
 
-1. Listen to the `uplinkClient.on("network-quality")` event to get the uplink network status between the local device and Agora server.
+5. Listen to the `uplinkClient.on("network-quality")` event to get the uplink network status between the local device and Agora server.
 
-1. Listen to `downlinkClient.on("network-quality")` event to get the downlink network status between the local device and the Agora server. The SDK triggers the `client.on("network-quality")` callback every two seconds.
+6. Listen to `downlinkClient.on("network-quality")` event to get the downlink network status between the local device and the Agora server. The SDK triggers the `client.on("network-quality")` callback every two seconds.
 
-1. To get specific statistics about the sent or received media tracks, such as send/receive bitrate, end-to-end latency, call `getLocalAudioStats` and `getLocalVideoStats` on `uplinkClient` to get the uplink statistics, and `getRemoteAudioStats` and `getRemoteVideoStats` on `downlinkClient` to get the downlink statistics.
+7. To get specific statistics about the sent or received media tracks, such as send/receive bitrate, end-to-end latency, call `getLocalAudioStats` and `getLocalVideoStats` on `uplinkClient` to get the uplink statistics, and `getRemoteAudioStats` and `getRemoteVideoStats` on `downlinkClient` to get the downlink statistics.
 
 The following figure summarizes the calling sequence of network quality tests:
 
@@ -919,9 +919,9 @@ The SDK provides the `startEchoTest` [3/3] method to test the network connection
 
 1. Before joining a channel, call `startEchoTest` [3/3] with `EchoTestConfiguration`. Specify the channel name, whether to test audio or video, and the time interval for the echo.
 
-1. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
+2. After starting the test, face the camera and speak into the microphone. The user's audio or video is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
-1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+3. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
     :::note
     Using `startEchoTest` [3/3] to test an audio device and a video device at the same time may result in a brief audio-video desynchronization of the test results.
     :::
@@ -967,13 +967,13 @@ Video SDK provides the `startLastmileProbeTest` method to probe the last-mile ne
 
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
-1. After you start the test, the SDK triggers the following callbacks:
+2. After you start the test, the SDK triggers the following callbacks:
 
    - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
    - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
-1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+3. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
 To implement network quality testing in your app, refer to the following code:
 
@@ -1101,9 +1101,9 @@ The SDK provides the `startEchoTest` method to test the network connection and w
 
 1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
 
-1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
+2. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
-1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+3. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
 
 To implement running an echo test in your app, refer to the following code:
 
@@ -1118,9 +1118,9 @@ To test whether a local audio recording device, such as a microphone, is working
 
 1. Call `startRecordingDeviceTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
 
-1. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `onAudioVolumeIndication` callback.
+2. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `onAudioVolumeIndication` callback.
 
-1. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
+3. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
     :::note
     Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
     :::
@@ -1146,9 +1146,9 @@ To test that the local audio playback device is working properly, refer to the f
 
 1. Call `startPlaybackDeviceTest` and set the `audioFileName` parameter to the absolute path of the audio file to be played.
 
-1. If the user hears the audio, the playback device is working properly. The SDK triggers the `onAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
+2. If the user hears the audio, the playback device is working properly. The SDK triggers the `onAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
 
-1. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
+3. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
 
 To implement running a playback device test in your app, refer to the following code:
 
@@ -1164,9 +1164,9 @@ To test if the local audio device loop is working properly, refer to the followi
 
 1. Call `startAudioDeviceLoopbackTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
 
-1. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `onAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
+2. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `onAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
 
-1. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
+3. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
     :::note
     Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
     :::
@@ -1190,13 +1190,13 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
-1. After you start the test, the SDK triggers the following callbacks:
+2. After you start the test, the SDK triggers the following callbacks:
 
    - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
    - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
-1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+3. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
 To implement network quality testing in your app, refer to the following code:
 
@@ -1307,9 +1307,9 @@ The SDK provides the `startEchoTest` method to test the network connection and w
 
 1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
 
-1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
+2. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
-1. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
+3. To stop the test, call `stopEchoTest`, and then call `joinChannel` to join a channel.
 
 To implement running an echo test in your app, refer to the following code:
 
@@ -1331,9 +1331,9 @@ To test whether a local audio recording device, such as a microphone, is working
 
 1. Call `startRecordingDeviceTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
 
-1. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `onAudioVolumeIndication` callback.
+2. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `onAudioVolumeIndication` callback.
 
-1. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
+3. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
     :::note
     Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
     :::
@@ -1362,9 +1362,9 @@ To test that the local audio playback device is working properly, refer to the f
 
 1. Call `startPlaybackDeviceTest` and set the `audioFileName` parameter to the absolute path of the audio file to be played.
 
-1. If the user hears the audio, the playback device is working properly. The SDK triggers the `onAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
+2. If the user hears the audio, the playback device is working properly. The SDK triggers the `onAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
 
-1. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
+3. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
 
 To implement running a playback device test in your app, refer to the following code:
 
@@ -1385,9 +1385,9 @@ To test if the local audio device loop is working properly, refer to the followi
 
 1. Call `startAudioDeviceLoopbackTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
 
-1. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `onAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
+2. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `onAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
 
-1. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
+3. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
     :::note
     Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
     :::
@@ -1405,13 +1405,13 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
-1. After you start the test, the SDK triggers the following callbacks:
+2. After you start the test, the SDK triggers the following callbacks:
 
    - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
    - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
-1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+3. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
 To implement network quality testing in your app, refer to the following code:
 
@@ -1531,9 +1531,9 @@ The SDK provides the `startEchoTest` method to test the network connection and w
 
 1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
 
-1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
+2. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
-1. To stop the test, call `stopEchoTest`, and then call `joinChannelByToken` to join a channel.
+3. To stop the test, call `stopEchoTest`, and then call `joinChannelByToken` to join a channel.
 
 To implement running an echo test in your app, refer to the following code:
 
@@ -1548,13 +1548,13 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
-1. After you start the test, the SDK triggers the following callbacks:
+2. After you start the test, the SDK triggers the following callbacks:
 
    - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
    - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
-1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+3. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
 To implement network quality testing in your app, refer to the following code:
 
@@ -1675,9 +1675,9 @@ The SDK provides the `StartEchoTest` method to test the network connection and w
 
 1. Before joining a channel, call `StartEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
 
-1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
+2. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
-1. To stop the test, call `StopEchoTest`, and then call `JoinChannel` to join a channel.
+3. To stop the test, call `StopEchoTest`, and then call `JoinChannel` to join a channel.
 
 To implement running an echo test in your game, refer to the following code:
 
@@ -1699,9 +1699,9 @@ To test whether a local audio recording device, such as a microphone, is working
 
 1. Call `StartRecordingDeviceTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
 
-1. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `OnAudioVolumeIndication` callback.
+2. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `OnAudioVolumeIndication` callback.
 
-1. When you are done testing, call `StopRecordingDeviceTest` to stop the test.
+3. When you are done testing, call `StopRecordingDeviceTest` to stop the test.
     :::note
     Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `OnAudioVolumeIndication` callback may not be received.
     :::
@@ -1739,9 +1739,9 @@ To test that the local audio playback device is working properly, refer to the f
 
 1. Call `StartPlaybackDeviceTest` and set the `testAudioFilePath` parameter to the absolute path of the audio file to be played.
 
-1. If the user hears the audio, the playback device is working properly. The SDK triggers the `OnAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
+2. If the user hears the audio, the playback device is working properly. The SDK triggers the `OnAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
 
-1. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
+3. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
 
 ``` csharp
 RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
@@ -1774,9 +1774,9 @@ To test if the local audio device loop is working properly, refer to the followi
 
 1. Call `StartAudioDeviceLoopbackTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
 
-1. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `oOnAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
+2. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `oOnAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
 
-1. When you are done testing, call `StopAudioDeviceLoopbackTest` to stop the recording device test.
+3. When you are done testing, call `StopAudioDeviceLoopbackTest` to stop the recording device test.
     :::note
     Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
     :::
@@ -1814,13 +1814,13 @@ The SDK provides the `StartLastmileProbeTest` method to probe the last-mile netw
 
 1. Before joining a channel or switching user roles, call `StartLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
-1. After you start the test, the SDK triggers the following callbacks:
+2. After you start the test, the SDK triggers the following callbacks:
 
    - `OnLastmileQuality`: This callback is triggered two seconds after `StartLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
    - `OnLastmileProbeResult`: This callback is triggered 30 seconds after `StartLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
-1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+3. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
 To implement network quality testing in your game, refer to the following code:
 
@@ -1956,9 +1956,9 @@ The SDK provides the `startEchoTest` method to test the network connection and w
 
 1. Before joining a channel, call `startEchoTest`. Specify the `intervalInSeconds` parameter to set the delay time for the echo test. The value range is 2-10 seconds and the default value is 10.
 
-1. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
+2. After starting the test, speak into the microphone. The user's audio is played back after a short delay. If the playback is normal, it means that the user's devices and upstream and downstream network are working normally.
 
-1. To stop the test, call `stopEchoTest`, and then call `joinChannelByToken` to join a channel.
+3. To stop the test, call `stopEchoTest`, and then call `joinChannelByToken` to join a channel.
 
 To implement running an echo test in your game, refer to the following code:
 
@@ -1980,9 +1980,9 @@ To test whether a local audio recording device, such as a microphone, is working
 
 1. Call `startRecordingDeviceTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
 
-1. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `onAudioVolumeIndication` callback.
+2. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `onAudioVolumeIndication` callback.
 
-1. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
+3. When you are done testing, call `stopRecordingDeviceTest` to stop the test.
     :::note
     Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
     :::
@@ -2014,9 +2014,9 @@ To test that the local audio playback device is working properly, refer to the f
 
 1. Call `startPlaybackDeviceTest` and set the `audioFileName` parameter to the absolute path of the audio file to be played.
 
-1. If the user hears the audio, the playback device is working properly. The SDK triggers the `onAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
+2. If the user hears the audio, the playback device is working properly. The SDK triggers the `onAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
 
-1. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
+3. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
 
 To implement running a playback device test in your game, refer to the following code:
 
@@ -2037,9 +2037,9 @@ To test if the local audio device loop is working properly, refer to the followi
 
 1. Call `startAudioDeviceLoopbackTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
 
-1. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `onAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
+2. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `onAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
 
-1. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
+3. When you are done testing, call `stopAudioDeviceLoopbackTest` to stop the recording device test.
     :::note
     Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
     :::
@@ -2049,13 +2049,13 @@ The SDK provides the `startLastmileProbeTest` method to probe the last-mile netw
 
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
-1. After you start the test, the SDK triggers the following callbacks:
+2. After you start the test, the SDK triggers the following callbacks:
 
    - `onLastmileQuality`: This callback is triggered two seconds after `startLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
    - `onLastmileProbeResult`: This callback is triggered 30 seconds after `startLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
-1. Call `stopLastmileProbeTest` to stop last-mile network testing.
+3. Call `stopLastmileProbeTest` to stop last-mile network testing.
 
 To implement network quality testing in your game, refer to the following code:
 
@@ -2198,13 +2198,13 @@ The SDK provides the `startEchoTest` method to test the network connection and w
 
   ![Create UMG](/images/video-sdk/connection-status-mng-blueprint-lastmile-quality-startechotest-umg.png)
 
-1. Bind UI events
+2. Bind UI events
 
   Create a **Bind Event to On Clicked** node that connects the **Btn_StartEchoTest** control and the `OnStartEchoTestClicked` callback. When you press the button to start the voice call test, the `OnStartEchoTestClicked` callback is triggered. This is shown in the following figure:
 
   ![Bind UI Events](/images/video-sdk/connection-status-mng-blueprint-lastmile-quality-startechotest-bind-ui-events.png)
 
-1. Implement the UI event
+3. Implement the UI event
 
   Create the `OnStartEchoTestClicked` callback function. When this callback is triggered, the **Start Echo Test** method is called to start the test. When the echo test starts, the user speaks into the microphone. If the recording is played back after the set time interval, it means that the audio device and network connection are working normally. In this example, configure the `Config` parameter of **Start Echo Test** as follows:
     - **Enable Audio** is checked by default, which means audio device detection is enabled.
@@ -2222,13 +2222,13 @@ The SDK provides the `startEchoTest` method to test the network connection and w
 
   ![Create UMG](/images/video-sdk/connection-status-mng-blueprint-lastmile-quality-stopechotest-umg.png)
 
-1. Bind UI events
+2. Bind UI events
 
   Create a **Bind Event to On Clicked** node that connects the **Btn_StopEchoTest** control and the `OnStopEchoTestClicked` callback. The `OnStopEchoTestClicked` callback is triggered when you press the button to stop the voice call test. This is shown in the following figure:
 
   ![Bind UI Events](/images/video-sdk/connection-status-mng-blueprint-lastmile-quality-stopechotest-bind-ui-events.png)
 
-1. Implement the UI event
+3. Implement the UI event
 
   Create `OnStoptEchoTestClicked` callback function. After getting the test result, you press the stop button to trigger this callback and call the **Stop Echo Test** method to stop the test.
 
@@ -2240,9 +2240,9 @@ To test whether a local audio recording device, such as a microphone, is working
 
 1. Call `StartRecordingDeviceTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
 
-1. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `FOnAudioVolumeIndication` callback.
+2. After starting the test, speak into the microphone. The SDK reports `uid = 0`, and the volume information of the device in the `FOnAudioVolumeIndication` callback.
 
-1. When you are done testing, call `StopRecordingDeviceTest` to stop the test.
+3. When you are done testing, call `StopRecordingDeviceTest` to stop the test.
     :::note
     Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `FOnAudioVolumeIndication` callback may not be received.
     :::
@@ -2252,9 +2252,9 @@ To test that the local audio playback device is working properly, refer to the f
 
 1. Call `StartPlaybackDeviceTest` and set the `testAudioFilePath` parameter to the absolute path of the audio file to be played.
 
-1. If the user hears the audio, the playback device is working properly. The SDK triggers the `FOnAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
+2. If the user hears the audio, the playback device is working properly. The SDK triggers the `FOnAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
 
-1. When you are done testing, call `StopPlaybackDeviceTest` to stop the test.
+3. When you are done testing, call `StopPlaybackDeviceTest` to stop the test.
 
 #### Audio device loopback test
 
@@ -2262,9 +2262,9 @@ To test if the local audio device loop is working properly, refer to the followi
 
 1. Call `StartAudioDeviceLoopbackTest` and set the `indicationInterval` parameter to the time interval after which the callback is triggered.
 
-1. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `FOnAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
+2. After starting the test, speak into the microphone. The microphone captures the sound and then plays it on the playback device. The SDK returns two `FOnAudioVolumeIndication` callbacks to report the volume information of the audio capture device with `uid= 0`, and the audio playback device with `uid= 1`, respectively.
 
-1. When you are done testing, call `StopAudioDeviceLoopbackTest` to stop the recording device test.
+3. When you are done testing, call `StopAudioDeviceLoopbackTest` to stop the recording device test.
     :::note
     Best practice is to set the `indicationInterval` parameter to more than `200` milliseconds and not less than `10` milliseconds, otherwise the `onAudioVolumeIndication` callback may not be received.
     :::
@@ -2274,13 +2274,13 @@ The SDK provides the `StartLastmileProbeTest` method to probe the last-mile netw
 
 1. Before joining a channel or switching user roles, call `StartLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 
-1. After you start the test, the SDK triggers the following callbacks:
+2. After you start the test, the SDK triggers the following callbacks:
 
    - `FOnLastmileQuality`: This callback is triggered two seconds after `StartLastmileProbeTest` is called. It provides feedback on the upstream and downstream network quality through a subjective `quality` score.
 
    - `FOnLastmileProbeResult`: This callback is triggered 30 seconds after `StartLastmileProbeTest` is called. It returns objective real-time network statistics, including `packetLossRate`, network `jitter`, and `availableBandwidth`.
 
-1. Call `StopLastmileProbeTest` to stop last-mile network testing.
+3. Call `StopLastmileProbeTest` to stop last-mile network testing.
 
 ## Reference
 

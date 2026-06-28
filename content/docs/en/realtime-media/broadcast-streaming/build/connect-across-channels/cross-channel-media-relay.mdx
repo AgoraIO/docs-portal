@@ -482,7 +482,7 @@ To implement cross-channel media stream relay in your app, take the following st
   });
   ```
 
-1. Start cross-channel media stream relay
+2. Start cross-channel media stream relay
 
   To start cross-channel media stream relay, call `startChannelMediaRelay` after calling `AgoraRTCClient.publish`.
 
@@ -496,11 +496,11 @@ To implement cross-channel media stream relay in your app, take the following st
 
   `client` refers to the local client object you create using `AgoraRTC.createClient`.
 
-1. Listen for cross-channel media stream status changes
+3. Listen for cross-channel media stream status changes
 
   During cross-channel media stream relay, the SDK reports the status of media stream relay through `AgoraRTCClient.on("channel-media-relay-state")` callback with state codes and error codes. Listen to the `AgoraRTCClient.on("channel-media-relay-event")` callback for relay events.
 
-1. Update media stream relay channels
+4. Update media stream relay channels
 
   To add or remove target channels after successfully calling `startChannelMediaRelay`, call `updateChannelMediaRelay`.
 
@@ -515,7 +515,7 @@ To implement cross-channel media stream relay in your app, take the following st
   });
   ```
 
-1. Stop cross-channel media stream relay
+5. Stop cross-channel media stream relay
 
   To stop cross-channel media stream relay, call `stopChannelMediaRelay`.
 

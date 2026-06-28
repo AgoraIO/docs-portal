@@ -48,14 +48,14 @@ To integrate Broadcast Streaming into your Magic Leap project, do the following:
  for your Agora Magic Leap app.
   - [Configure your app settings](https://developer-docs.magicleap.cloud/docs/guides/unity/getting-started/configure-unity-settings)
 
-1. **Configure your project**
+2. **Configure your project**
 
   In Unity Editor:
   1. Click **Edit** > **Project settings**.
-  1. In **XR Plug-in Management**, enable **Magic Leap**.
-  1. In **XR Plug-in Management** > **Magic Leap Settings**, enable **Use ML Audio**.
-  1. In **Player settings** > **Android** > **Publishing settings**, enable **Custom Main Manifest**.
-  1. In **Magic Leap** > **Permissions**, enable `android.permission.CAMERA` and `android.permission.RECORD_AUDIO`.
+  2. In **XR Plug-in Management**, enable **Magic Leap**.
+  3. In **XR Plug-in Management** > **Magic Leap Settings**, enable **Use ML Audio**.
+  4. In **Player settings** > **Android** > **Publishing settings**, enable **Custom Main Manifest**.
+  5. In **Magic Leap** > **Permissions**, enable `android.permission.CAMERA` and `android.permission.RECORD_AUDIO`.
 
 You are ready to add Broadcast Streaming features to your Magic Leap project
 
@@ -68,11 +68,11 @@ This section shows how to integrate the Video SDK to implement the Broadcast Str
 
 1. [Download](../../../sdks) the latest version of Video SDK for Magic Leap to a local folder.
 
-1. Double-click the download package.
+2. Double-click the download package.
 
   The Import dialog opens automatically in Unity Editor.
 
-1. Click **Import**.
+3. Click **Import**.
 
   In **Project** > **Assets** you see `Agora-RTC-Plugin` and `Agora_MagicLeap2_Plugin`.
 
@@ -84,24 +84,24 @@ Agora recommends you run this project on a physical mobile device, as some simul
 
 1. Obtain an App ID with token enabled.
 
-1. [Generate a temporary token](../manage-agora-account) in Agora Console.
+2. [Generate a temporary token](../manage-agora-account) in Agora Console.
 
-1. In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update `App ID`, `Channel`, and `Token` with the values for your temporary token, then click **Join**.
+3. In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update `App ID`, `Channel`, and `Token` with the values for your temporary token, then click **Join**.
 
-1. In Unity Editor, double-click **Agora_MagicLeap2_Plugin** > **AgoraEngine** > **ML2Support** > **Demo**.
+4. In Unity Editor, double-click **Agora_MagicLeap2_Plugin** > **AgoraEngine** > **ML2Support** > **Demo**.
 
   The demo scene opens.
 
-1. In **Project**, open **Agora_MagicLeap2_Plugin** > **AgoraEngine** > **ML2Support** > **Scripts** > **Agora
+5. In **Project**, open **Agora_MagicLeap2_Plugin** > **AgoraEngine** > **ML2Support** > **Scripts** > **Agora
  Controller**.
 
-1. Update `APP_ID`, `TOKEN`, and `CHANNEL_NAME` with the same values you used for the web demo.
+6. Update `APP_ID`, `TOKEN`, and `CHANNEL_NAME` with the same values you used for the web demo.
 
-1. Connect an ML2 device, then click **Build and Run**.
+7. Connect an ML2 device, then click **Build and Run**.
 
   The demo app opens.
 
-1. Click **Connect Camera**.
+8. Click **Connect Camera**.
 
   Video from your ML2 is streamed to the channel and is visible in the web demo. You see the video stream from the
  web demo.

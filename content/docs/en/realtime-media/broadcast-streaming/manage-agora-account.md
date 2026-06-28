@@ -16,26 +16,26 @@ To use Agora products and services, create an Agora account with your email, pho
 **Sign up with email**
 1. Go to the [signup page](https://sso.agora.io/en/signup).
 
-1. Fill in the required fields.
+2. Fill in the required fields.
 
-1. Carefully read the **Terms of Service**, **Privacy Policy**, and **Acceptable Use Policy**, and tick the checkbox.
+3. Carefully read the **Terms of Service**, **Privacy Policy**, and **Acceptable Use Policy**, and tick the checkbox.
 
-1. Click **Continue**.
+4. Click **Continue**.
 
-1. Enter your **verification code** and click **Confirm**.
+5. Enter your **verification code** and click **Confirm**.
 
-1. Follow the on-screen instructions to provide your name, company name, and phone number, set a password, and click **Continue**.
+6. Follow the on-screen instructions to provide your name, company name, and phone number, set a password, and click **Continue**.
 
 **Sign up with a third-party account**
 1. On the [Agora Console](https://console.agora.io/v2) login page, select the third-party account you want to use.
 
-1. Follow the on-screen instructions to complete verification.
+2. Follow the on-screen instructions to complete verification.
 
-1. Click **Create a new account**.
+3. Click **Create a new account**.
 
-1. Carefully read the **Terms of Service**, **Privacy Policy**, and **Acceptable Use Policy**, and select the checkbox.
+4. Carefully read the **Terms of Service**, **Privacy Policy**, and **Acceptable Use Policy**, and select the checkbox.
 
-1. Click **Continue**.
+5. Click **Continue**.
 
 Once you sign up successfully, your account is automatically logged in. Follow the on-screen instructions to create your first project and test out real-time communications.
 
@@ -47,13 +47,13 @@ To create an Agora project, do the following:
 
 1. In [Agora Console](https://console.agora.io/v2), open the [Projects](https://console.agora.io/v2/project-management) page.
 
-1. Click **Create New**.
+2. Click **Create New**.
 
-1. Follow the on-screen instructions to enter a project name and use case, and check **Secured mode: APP ID + Token (Recommended)** as the authentication mechanism.
+3. Follow the on-screen instructions to enter a project name and use case, and check **Secured mode: APP ID + Token (Recommended)** as the authentication mechanism.
 
     ![configure_project](/images/signaling/create_new_project.png)
 
-1. Click **Submit**. You see the new project on the **Projects** page.
+4. Click **Submit**. You see the new project on the **Projects** page.
 
 ### Get the App ID
 
@@ -77,7 +77,7 @@ To get an App Certificate, do the following:
 
     ![Console project management page](/images/common/console-project-management-page.png)
 
-1. Click the copy icon under **Primary Certificate**.
+2. Click the copy icon under **Primary Certificate**.
 
     ![Console primary certificate](/images/common/console-primary-certificate.png)
 
@@ -89,21 +89,21 @@ To generate a temporary RTC token for use in your Video SDK projects:
 
 1. On the [Projects](https://console.agora.io/v2/project-management) page, click the pencil icon next to your project.
 
-1. On the **Security** panel, click **Generate Temp Token**, enter a channel name in the pop-up box and click **Generate**. Copy the generated RTC token for use in your Broadcast Streaming projects.
+2. On the **Security** panel, click **Generate Temp Token**, enter a channel name in the pop-up box and click **Generate**. Copy the generated RTC token for use in your Broadcast Streaming projects.
 
 To generate a token for other Agora products:
 
 1. In your browser, navigate to the [Agora token builder](https://agora-token-generator-demo.vercel.app/).
 
-1. Choose the Agora product your user wants to log in to. Fill in **App ID** and **App Certificate** with the
+2. Choose the Agora product your user wants to log in to. Fill in **App ID** and **App Certificate** with the
 details of your project in Agora Console.
 
 1. Customize the token for each user. The required fields are visible in the Agora token builder.
 
-1. Click **Generate Token**.
+2. Click **Generate Token**.
 
   The token appears in Token Builder.
 
-1. Copy the token and use it in your app.
+3. Copy the token and use it in your app.
 
 For more information on managing other aspects of your Agora account, see [Agora console overview](reference/console-overview).

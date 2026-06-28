@@ -110,7 +110,7 @@ Take the following steps to implement this workflow:
 
   Agora provides the [VideoFileReader](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/utils/VideoFileReader.java) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
 
-1. Push video data to the SDK 
+2. Push video data to the SDK
 
   Before sending captured video frames to Video SDK, integrate your video module with the `VideoFrame`. To ensure audio-video synchronization, best practice is to obtain the current monotonic time from Video SDK and pass it as the timestamp parameter in the `VideoFrame`.
 
@@ -394,7 +394,7 @@ If the captured custom video format is Texture and remote users experience flick
 To implement custom video rendering in your app, refer to the following steps:
 
 1. Set up `onCaptureVideoFrame` or `onRenderVideoFrame` callback to obtain the video data to be played.
-1. Implement video rendering and playback yourself.
+2. Implement video rendering and playback yourself.
 
 ## Reference
 
@@ -493,7 +493,7 @@ Take the following steps to implement this workflow:
   customCamera?.trackId = agoraKit.createCustomVideoTrack()
   ```
 
-1. Join a channel and publish the custom video track
+2. Join a channel and publish the custom video track
   
   ```swift
   // Create an AgoraRtcChannelMediaOptions instance
@@ -518,7 +518,7 @@ Take the following steps to implement this workflow:
   })
   ```
 
-1. Implement your self-capture module
+3. Implement your self-capture module
 
   Agora provides the [ 
 CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoSourcePushMulti/CustomVideoSourcePushMulti.swift) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
@@ -563,7 +563,7 @@ If the captured custom video format is Texture and remote users experience flick
 To implement custom video rendering in your app, refer to the following steps:
 
 1. Set up `onCaptureVideoFrame` or `onRenderVideoFrame` callback to obtain the video data to be played.
-1. Implement video rendering and playback yourself.
+2. Implement video rendering and playback yourself.
     :::note
     In `renderPixelBuffer` or `renderRawData`, the `rotation` parameter of the video frame may not be 0. You need to set the rotation parameters yourself.
     :::
@@ -666,7 +666,7 @@ Take the following steps to implement this workflow:
   customCamera?.trackId = agoraKit.createCustomVideoTrack()
   ```
 
-1. Join a channel and publish the custom video track
+2. Join a channel and publish the custom video track
   
   ```swift
   // Create an AgoraRtcChannelMediaOptions instance
@@ -691,7 +691,7 @@ Take the following steps to implement this workflow:
   })
   ```
 
-1. Implement your self-capture module
+3. Implement your self-capture module
 
   Agora provides the [ 
 CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/macOS/APIExample/Examples/Advanced/CustomVideoSourcePushMulti/CustomVideoSourcePushMulti.swift) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
@@ -736,7 +736,7 @@ If the captured custom video format is Texture and remote users experience flick
 To implement custom video rendering in your app, refer to the following steps:
 
 1. Set up `onCaptureVideoFrame` or `onRenderVideoFrame` callback to obtain the video data to be played.
-1. Implement video rendering and playback yourself.
+2. Implement video rendering and playback yourself.
     :::note
     In `renderPixelBuffer` or `renderRawData`, the `rotation` parameter of the video frame may not be 0. You need to set the rotation parameters yourself.
     :::
@@ -858,10 +858,10 @@ The `MediaStreamTrack` object refers to the browser-native `MediaStreamTrack` AP
 To create and publish a custom video track generated from a canvas stream, follow these steps:
 
 1. Create a canvas element and set its dimensions.
-1. Continuously draw content on the canvas using [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame) to ensure the stream updates in real time.
-1. Capture a media stream from the canvas.
-1. Create a custom video track using the canvas stream.
-1. Publish the custom video track to the channel.
+2. Continuously draw content on the canvas using [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame) to ensure the stream updates in real time.
+3. Capture a media stream from the canvas.
+4. Create a custom video track using the canvas stream.
+5. Publish the custom video track to the channel.
 
 Refer to the following example:
 
@@ -1050,7 +1050,7 @@ If the captured custom video format is Texture and remote users experience flick
 To implement custom video rendering in your app, refer to the following steps:
 
 1. Set up `onCaptureVideoFrame` or `onRenderVideoFrame` callback to obtain the video data to be played.
-1. Implement video rendering and playback yourself.
+2. Implement video rendering and playback yourself.
 
 ## Reference
 
