@@ -110,23 +110,32 @@ function renderDocsShell(
   const rootRoute = createRootRoute({
     component: () => <Outlet />,
   });
+  const shellComponent = () => (
+    <AppProviders>
+      <DocsShell {...props} />
+    </AppProviders>
+  );
   const docsRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/$locale/$tab/$slug',
-    component: () => (
-      <AppProviders>
-        <DocsShell {...props} />
-      </AppProviders>
-    ),
+    component: shellComponent,
+  });
+  const docsIndexRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab',
+    component: shellComponent,
   });
   const router = createRouter({
-    routeTree: rootRoute.addChildren([docsRoute]),
+    routeTree: rootRoute.addChildren([docsRoute, docsIndexRoute]),
     history: createMemoryHistory({
       initialEntries: [initialEntry],
     }),
   });
 
-  return render(<RouterProvider router={router} />);
+  return {
+    router,
+    ...render(<RouterProvider router={router} />),
+  };
 }
 
 function renderWithRouter(
@@ -157,6 +166,82 @@ describe('DocsShell', () => {
     window.localStorage.removeItem(LOCALE_STORAGE_KEY);
     await i18n.changeLanguage('en');
     vi.restoreAllMocks();
+  });
+
+  it('links the desktop brand to the current-locale docs home', async () => {
+    const { router } = renderDocsShell();
+
+    const mainHeaderRow = await screen.findByTestId('docs-main-header-row');
+    const brandHomeLink = within(mainHeaderRow).getByRole('link', {
+      name: 'Agora Docs',
+    });
+
+    expect(brandHomeLink).toHaveAttribute('href', '/en/introduction');
+
+    fireEvent.click(brandHomeLink);
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/en/introduction');
+    });
+  });
+
+  it('uses the route locale when building the desktop brand home link', async () => {
+    const { router } = renderDocsShell(
+      {
+        activePath: '/zh-CN/introduction/about-agora',
+        locale: 'zh-CN',
+        localeLinks: [
+          {
+            href: '/en/introduction/about-agora',
+            isActive: false,
+            locale: 'en',
+          },
+          {
+            href: '/zh-CN/introduction/about-agora',
+            isActive: true,
+            locale: 'zh-CN',
+          },
+        ],
+      },
+      '/zh-CN/introduction/about-agora',
+    );
+
+    const mainHeaderRow = await screen.findByTestId('docs-main-header-row');
+    const brandHomeLink = within(mainHeaderRow).getByRole('link', {
+      name: 'Agora Docs',
+    });
+
+    expect(brandHomeLink).toHaveAttribute('href', '/zh-CN/introduction');
+
+    fireEvent.click(brandHomeLink);
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/zh-CN/introduction');
+    });
+  });
+
+  it('links the mobile sheet brand to the docs home and closes the sheet', async () => {
+    const { router } = renderDocsShell();
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Open navigation' }),
+    );
+
+    const mobileDialog = await screen.findByRole('dialog');
+    const mobileBrandHomeLink = within(mobileDialog).getByRole('link', {
+      name: 'Agora Docs',
+    });
+
+    expect(mobileBrandHomeLink).toHaveAttribute('href', '/en/introduction');
+
+    fireEvent.click(mobileBrandHomeLink);
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/en/introduction');
+    });
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
   });
 
   it('renders a separate desktop header row and docs tabs strip', async () => {
