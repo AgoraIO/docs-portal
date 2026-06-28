@@ -1233,9 +1233,10 @@ function toCalloutType(type: string | undefined) {
 }
 
 function isDisplayableParameter(
-  parameter: OpenApiRecord,
+  parameter: unknown,
 ): parameter is OpenApiParameter {
   return (
+    isRecord(parameter) &&
     typeof parameter.name === 'string' &&
     typeof parameter.in === 'string' &&
     ['cookie', 'header', 'path', 'query'].includes(parameter.in) &&
