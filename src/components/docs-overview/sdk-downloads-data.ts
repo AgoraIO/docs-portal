@@ -67,7 +67,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         versions: [
           {
             id: '2.3.1-agents-sdk-go',
-            label: 'Version v2.3.1 (Latest)',
+            label: 'Version 2.3.1 (Latest)',
             packageManager:
               'https://pkg.go.dev/github.com/AgoraIO/agora-agents-go/v2@v2.3.1',
           },

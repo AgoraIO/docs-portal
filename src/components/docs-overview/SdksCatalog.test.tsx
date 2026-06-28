@@ -115,5 +115,11 @@ describe('SdksCatalog', () => {
         'go get github.com/AgoraIO/agora-agents-go/v2@v2.3.1',
       ),
     ).toBeVisible();
+
+    // Switching to Python shows the pip command.
+    fireEvent.click(within(agentsCard).getByRole('tab', { name: 'Python' }));
+    expect(
+      within(agentsCard).getByText('pip install agora-agents'),
+    ).toBeVisible();
   });
 });
