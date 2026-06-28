@@ -3,11 +3,11 @@ title: "Manage chat rooms"
 description: "Shows how to use the Agora Chat SDK to create and manage a chat room in your app."
 ---
 
-s enable real-time messaging among multiple users.
+Chat rooms enable real-time messaging among multiple users.
 
- does not have a strict membership, and members do not retain any permanent relationship with each other. Once going offline, chat room members cannot receive any messages from the chat room and automatically leave the chat room after 2 minutes (members on the chat room allow list remain in the chat room even if they stay offline for 2 minutes or more).  is widely applied in live broadcast use cases such as stream chat in Twitch.
+A chat room does not have a strict membership, and members do not retain any permanent relationship with each other. Once going offline, chat room members cannot receive any messages from the chat room and automatically leave the chat room after 2 minutes (members on the chat room allow list remain in the chat room even if they stay offline for 2 minutes or more). A chat room is widely applied in live broadcast use cases such as stream chat in Twitch.
 
-This page shows how to use the Chat SDK to create and manage a  in your app.
+This page shows how to use the Chat SDK to create and manage a chat room in your app.
 
 ## Understand the tech
 

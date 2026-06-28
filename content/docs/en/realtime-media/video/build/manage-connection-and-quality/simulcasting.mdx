@@ -116,15 +116,20 @@ Compared with dual-stream video, simulcasting offers:
 - Smoother switching between bitrate levels
 - Better flexibility for different business scenarios
 
-The following table summarizes the main differences:
+To better balance simulcasting performance and network consumption, Agora applies the following strategies:
 
-| Item | Simulcasting | Dual-stream video |
-|:---|:---|:---|
-| Number of published stream layers | Up to four simultaneous layers from one video source | Two simultaneous layers: high stream and low stream |
-| Stream selection on the subscriber side | Subscribers can choose among more bitrate and resolution levels based on window size or business logic | Subscribers switch only between the high and low streams |
-| Flexibility for mixed device and network conditions | Better suited to multi-terminal and multi-screen adaptation scenarios | Suitable for simpler scenarios with one main stream and one fallback stream |
-| Switching experience | Smoother switching across more stream levels | Limited to switching between two predefined stream types |
-| API relationship | Mutually exclusive with dual-stream video; the later configuration takes effect | Mutually exclusive with simulcasting; the later configuration takes effect |
+- When the sender device is performance-limited, upstream configurations are automatically disabled, and subscribers adapt to the remaining streams.
+- When the uplink bandwidth is limited, additional configurations are disabled first. Then, the previous dual-stream rate control strategy is applied to ensure smooth publishing and subscription.
+
+In terms of functionality, the differences between simulcasting and dual-stream video are summarized in the following table. Agora will continue to close the feature gap in future releases.
+
+| Feature | Simulcasting | Dual-stream video |
+|---------|:------------:|:-----------------:|
+| Supports multi-channel scenarios | Yes | Yes |
+| Small stream automatically adapts video attributes | No | Yes |
+| Publisher sends video streams based on subscriber's chosen configuration | Yes. Contact technical support to enable. | Yes |
+| When the sender is performance-limited, video streams other than the source stream can be disabled | Yes | No |
+| When the downlink network is limited, the upstream small stream can be enabled automatically | No | Yes |
 
 ### API reference
 

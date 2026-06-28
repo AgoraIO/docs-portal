@@ -3,7 +3,7 @@ title: "Manage chat group attributes"
 description: "Introduces how to use the Agora Chat SDK to manage the attributes of a chat group in your app."
 ---
 
-s enable real-time messaging among multiple users.
+Chat groups enable real-time messaging among multiple users.
 
 This page shows how to use the Chat SDK to manage the attributes of a chat group in your app.
 

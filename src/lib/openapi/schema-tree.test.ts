@@ -129,6 +129,47 @@ describe('openapi schema tree', () => {
       ]),
     );
   });
+
+  it('preserves field-level callouts when merging composed schemas', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        startParameter: {
+          allOf: [
+            {
+              properties: {
+                recordingConfig: {
+                  type: 'object',
+                },
+              },
+              type: 'object',
+            },
+          ],
+          type: 'object',
+          'x-docs-callouts': [
+            {
+              markdown: 'Use values that match the following start request.',
+              title: 'Note',
+              type: 'info',
+            },
+          ],
+        },
+      },
+      type: 'object',
+    });
+
+    expect(rows).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          docsCallouts: [
+            expect.objectContaining({
+              markdown: 'Use values that match the following start request.',
+            }),
+          ],
+          path: 'startParameter',
+        }),
+      ]),
+    );
+  });
 });
 
 function flattenPaths(

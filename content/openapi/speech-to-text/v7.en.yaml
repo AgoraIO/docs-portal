@@ -20,6 +20,11 @@ paths:
         - Speech-to-Text
       summary: Start a Real-time STT agent
       description: Use this method to start subtitle recording and subtitle translation.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful. The response body contains the result of the request.
       operationId: join
       parameters:
         - $ref: '#/components/parameters/appid'
@@ -223,6 +228,11 @@ paths:
         - Speech-to-Text
       summary: Query the task status
       description: Use this method to query the status of a Real-time STT task.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful. The response body contains the result of the request.
       operationId: query
       security:
         - BasicAuth: []
@@ -362,6 +372,11 @@ paths:
         - Speech-to-Text
       summary: Update task configuration
       description: Use this method to update the configuration of a Real-time STT task.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful. The response body contains the result of the request.
       operationId: update
       security:
         - BasicAuth: []
@@ -513,6 +528,11 @@ paths:
       description: >-
         Use this method to retrieve a list of real-time transcription and
         translation agents that match specified criteria.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful. The response body contains the result of the request.
       operationId: list
       security:
         - BasicAuth: []
@@ -971,16 +991,16 @@ components:
       type: object
       description: The configuration for third-party cloud storage.
       required:
-        - accessKey
-        - secretKey
+        - accesskey
+        - secretkey
         - bucket
         - vendor
         - region
       properties:
-        accessKey:
+        accesskey:
           type: string
           description: The access key of the third-party cloud storage.
-        secretKey:
+        secretkey:
           type: string
           description: The secret key of the third-party cloud storage.
         bucket:

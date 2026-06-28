@@ -303,10 +303,8 @@ export async function loadDocsPagePayload(
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText);
-  const layoutMode = resolveDocsLayoutMode(
-    page,
-    isOpenApiPage || openApiLaneRoute !== null,
-  );
+  const layoutMode: DocsLayoutMode =
+    isOpenApiPage || openApiLaneRoute !== null ? 'openapi' : 'docs';
   const sidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,
@@ -392,6 +390,7 @@ export async function loadDocsPagePayload(
     description: page.data.description,
     markdownUrl: getPageMarkdownUrl(page, requestedPlatform).url,
     layoutMode,
+    hideToc: ('hideToc' in page.data ? page.data.hideToc : undefined) ?? false,
     localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
       const targetPage = source.getPage(page.slugs.slice(1), targetLocale);
       const targetTabEntry = getFirstTabPageUrl(
@@ -950,17 +949,6 @@ export type DocsPagePayload = Exclude<
   Awaited<ReturnType<typeof loadDocsPagePayload>>,
   null | { redirectUrl: string }
 >;
-
-function resolveDocsLayoutMode(
-  page: PageWithSource,
-  isOpenApiPage: boolean,
-): DocsLayoutMode {
-  if (isOpenApiPage) {
-    return 'openapi';
-  }
-
-  return 'full' in page.data && page.data.full ? 'full-page' : 'docs';
-}
 
 async function readProcessedText(page: PageWithSource) {
   try {
@@ -2085,10 +2073,13 @@ async function appendEndpointPagesToOpenApiParent(
     (item) =>
       item.tab === tab &&
       getOpenApiLaneLocales(item).includes(locale) &&
-      children.some(
-        (child) =>
-          child.type === 'page' && child.url === item.parentUrl[locale],
-      ),
+      // A linked-header section (rule 2 from docs-tree) carries the parent URL
+      // on node.url instead of emitting it as a child page.
+      (node.url === item.parentUrl[locale] ||
+        children.some(
+          (child) =>
+            child.type === 'page' && child.url === item.parentUrl[locale],
+        )),
   );
 
   if (lane) {

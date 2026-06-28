@@ -784,4 +784,4 @@ onError: (code, desc) =>
 
 ## Next steps
 
-Reactions are also supported in the [Chat ](../../get-started-uikit), which contains a wider range of emojis. You can also use the  to implement reactions in your project.
+Reactions are also supported in the [Chat UIKit](../../get-started-uikit), which contains a wider range of emojis. You can also use the Chat SDK to implement reactions in your project.

@@ -48,9 +48,15 @@ const SdksCatalog = lazy(() =>
   })),
 );
 
-const FaqCatalog = lazy(() =>
-  import('../faq/FaqCatalog').then((module) => ({
-    default: module.FaqCatalog,
+const FaqLanding = lazy(() =>
+  import('../faq/FaqLanding').then((module) => ({
+    default: module.FaqLanding,
+  })),
+);
+
+const FaqCategory = lazy(() =>
+  import('../faq/FaqCategory').then((module) => ({
+    default: module.FaqCategory,
   })),
 );
 
@@ -58,7 +64,8 @@ export function getOverviewMDXComponents(): MDXComponents {
   return {
     CardGrid,
     FeatureCard,
-    FaqCatalog,
+    FaqLanding,
+    FaqCategory,
     CapabilityGroupCard,
     CapabilityGroupGrid,
     CapabilityMatrix,
@@ -567,7 +574,7 @@ function SolutionCardGrid({
   );
 }
 
-type SolutionCardIconKind =
+export type SolutionCardIconKind =
   | 'ai'
   | 'analytics'
   | 'broadcast'
@@ -1096,7 +1103,7 @@ function getSolutionToneClasses(_tone: SolutionCardTone) {
   return 'bg-muted text-foreground';
 }
 
-function SolutionCardIcon({ kind }: { kind: SolutionCardIconKind }) {
+export function SolutionCardIcon({ kind }: { kind: SolutionCardIconKind }) {
   const iconMap: Record<SolutionCardIconKind, ReactNode> = {
     ai: <BotIcon className="size-5" />,
     analytics: <BarChart3Icon className="size-5" />,

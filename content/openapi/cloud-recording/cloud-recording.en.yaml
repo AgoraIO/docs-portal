@@ -3,11 +3,11 @@ info:
   version: ""
   title: Cloud Recording RESTful API
   description: >-
-    Agora Cloud Recording records and saves voice calls, video calls, and
-    interactive streaming sessions. Send HTTPS requests from your business
-    server to Agora to acquire recording resources, start recording, query
-    recording status, update recording settings, update composite layouts, stop
-    recording, and query message notification server IP addresses.
+    Agora Cloud Recording records and saves voice calls, video calls, and interactive
+    streaming sessions. Send HTTPS requests from your business server to Agora to
+    acquire recording resources, start recording, query recording status, update
+    recording settings, update composite layouts, stop recording, and query message
+    notification server IP addresses.
 
 
     ## Base URL
@@ -19,8 +19,8 @@ info:
     ## Data format
 
 
-    Use `Content-Type: application/json` for requests with bodies. Request and
-    response bodies are JSON.
+    Use `Content-Type: application/json` for requests with bodies. Request and response
+    bodies are JSON.
 servers:
   - url: https://api.sd-rtn.com
     description: Cloud Recording REST API host.
@@ -31,16 +31,104 @@ paths:
     post:
       summary: Acquire a cloud recording resource
       description: >-
-        Gets a cloud recording resource ID. Before starting cloud recording,
-        call `acquire` to get a resource ID. One resource ID can be used for
-        only one recording session.
+        Gets a cloud recording resource ID. Before starting cloud recording, call
+        `acquire` to get a resource ID. One resource ID can be used for only one
+        recording session.
 
 
-        To improve the success rate, call `acquire` and `start` in pairs and
-        call `start` within two seconds after receiving the resource ID. The
-        resource ID is valid for five minutes and should be used as soon as
-        possible.
+        To improve the success rate, call `acquire` and `start` in pairs and call
+        `start` within two seconds after receiving the resource ID. The resource ID is
+        valid for five minutes and should be used as soon as possible.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful.
+
+            - If the returned status code is not `200`, the request failed. See [Response status codes](../rest-api/status-codes) for troubleshooting.
       operationId: acquire-cloud-recording-resource
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request POST \
+                --url https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/acquire \
+                --header 'Authorization: Basic <credentials>' \
+                --header 'Content-Type: application/json' \
+                --data '{
+                "cname": "<your_channel_name>",
+                "uid": "527841",
+                "clientRequest": {
+                  "scene": 0,
+                  "resourceExpiredHour": 24
+                }
+              }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+              import json
+
+              url = "https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/acquire"
+              headers = {
+                  "Authorization": "Basic <credentials>",
+                  "Content-Type": "application/json"
+              }
+
+              data = {
+                  "cname": "<your_channel_name>",
+                  "uid": "527841",
+                  "clientRequest": {
+                      "scene": 0,
+                      "resourceExpiredHour": 24
+                  }
+              }
+
+              response = requests.post(url, headers=headers, data=json.dumps(data))
+
+              print(response.status_code)
+              print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+              const url = 'https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/acquire';
+              const headers = {
+                'Authorization': 'Basic <credentials>',
+                'Content-Type': 'application/json'
+              };
+
+              const data = {
+                cname: "<your_channel_name>",
+                uid: "527841",
+                clientRequest: {
+                  scene: 0,
+                  resourceExpiredHour: 24
+                }
+              };
+
+              axios.post(url, data, { headers })
+                .then(response => {
+                  console.log('Status:', response.status);
+                  console.log('Data:', response.data);
+                })
+                .catch(error => {
+                  console.error('Error:', error.response ? error.response.data : error.message);
+                });
+      x-docs-callouts:
+        - type: info
+          title: Note
+          position: after-description
+          markdown: >
+            - Call `acquire` and `start` requests in pairs.
+
+            - Call [`start`](start) within two seconds of receiving the resource ID.
+            Batch fetching resource IDs followed by batch `start` requests may cause
+            failures.
+
+            - The resource ID is valid for five minutes and should be used as soon as
+            possible.
       parameters:
         - $ref: "#/components/parameters/Content-Type"
         - $ref: "#/components/parameters/appid"
@@ -59,9 +147,9 @@ paths:
       responses:
         "200":
           description: >-
-            The request succeeded. If you set `startParameter` in the request
-            body and its value is invalid, the `acquire` request can still
-            succeed, but the following `start` request returns an error.
+            The request succeeded. If you set `startParameter` in the request body and
+            its value is invalid, the `acquire` request can still succeed, but the
+            following `start` request returns an error.
           content:
             application/json:
               schema:
@@ -76,10 +164,151 @@ paths:
     post:
       summary: Start cloud recording
       description: >-
-        Starts cloud recording by using a resource ID returned from `acquire`.
-        After calling `start`, check that the recording service has started
-        successfully before relying on the recording output.
+        Starts cloud recording by using a resource ID returned from `acquire`. After
+        calling `start`, check that the recording service has started successfully
+        before relying on the recording output.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful.
+
+            - If the returned status code is not `200`, the request failed. See [Response status codes](../rest-api/status-codes) for troubleshooting.
       operationId: start-cloud-recording
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request POST \
+                --url https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start \
+                --header 'Authorization: Basic <credentials>' \
+                --header 'Content-Type: application/json' \
+                --data '{
+                "cname": "<your_channel_name>",
+                "uid": "527841",
+                "clientRequest": {
+                  "recordingConfig": {
+                    "channelType": 1,
+                    "streamTypes": 2,
+                    "streamMode": "default",
+                    "videoStreamType": 0,
+                    "maxIdleTime": 30,
+                    "subscribeAudioUids": ["123", "456"],
+                    "subscribeVideoUids": ["123", "456"],
+                    "subscribeUidGroup": 0
+                  },
+                  "recordingFileConfig": {
+                    "avFileType": ["hls"]
+                  },
+                  "storageConfig": {
+                    "vendor": 2,
+                    "region": 3,
+                    "bucket": "xxxxx",
+                    "accessKey": "xxxxx",
+                    "secretKey": "xxxxx",
+                    "fileNamePrefix": ["directory1", "directory2"]
+                  }
+                }
+              }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+              import json
+
+              url = "https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start"
+              headers = {
+                  "Authorization": "Basic <credentials>",
+                  "Content-Type": "application/json"
+              }
+
+              data = {
+                  "cname": "<your_channel_name>",
+                  "uid": "527841",
+                  "clientRequest": {
+                      "recordingConfig": {
+                          "channelType": 1,
+                          "streamTypes": 2,
+                          "streamMode": "default",
+                          "videoStreamType": 0,
+                          "maxIdleTime": 30,
+                          "subscribeAudioUids": ["123", "456"],
+                          "subscribeVideoUids": ["123", "456"],
+                          "subscribeUidGroup": 0
+                      },
+                      "recordingFileConfig": {
+                          "avFileType": ["hls"]
+                      },
+                      "storageConfig": {
+                          "vendor": 2,
+                          "region": 3,
+                          "bucket": "xxxxx",
+                          "accessKey": "xxxxx",
+                          "secretKey": "xxxxx",
+                          "fileNamePrefix": ["directory1", "directory2"]
+                      }
+                  }
+              }
+
+              response = requests.post(url, headers=headers, data=json.dumps(data))
+
+              print(response.status_code)
+              print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+              const url = 'https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start';
+              const headers = {
+                'Authorization': 'Basic <credentials>',
+                'Content-Type': 'application/json'
+              };
+
+              const data = {
+                cname: "<your_channel_name>",
+                uid: "527841",
+                clientRequest: {
+                  recordingConfig: {
+                    channelType: 1,
+                    streamTypes: 2,
+                    streamMode: "default",
+                    videoStreamType: 0,
+                    maxIdleTime: 30,
+                    subscribeAudioUids: ["123", "456"],
+                    subscribeVideoUids: ["123", "456"],
+                    subscribeUidGroup: 0
+                  },
+                  recordingFileConfig: {
+                    avFileType: ["hls"]
+                  },
+                  storageConfig: {
+                    vendor: 2,
+                    region: 3,
+                    bucket: "xxxxx",
+                    accessKey: "xxxxx",
+                    secretKey: "xxxxx",
+                    fileNamePrefix: ["directory1", "directory2"]
+                  }
+                }
+              };
+
+              axios.post(url, data, { headers })
+                .then(response => {
+                  console.log('Status:', response.status);
+                  console.log('Data:', response.data);
+                })
+                .catch(error => {
+                  console.error('Error:', error.response ? error.response.data : error.message);
+                });
+      x-docs-callouts:
+        - type: info
+          title: Note
+          position: after-description
+          markdown: >
+            To ensure upload success and real-time performance, the cloud storage region
+            must match the region of the server where you initiate the request. See
+            [Third-party cloud storage regions](../reference/region-vendor).
       parameters:
         - $ref: "#/components/parameters/Content-Type"
         - $ref: "#/components/parameters/appid"
@@ -141,15 +370,126 @@ paths:
       summary: Update cloud recording settings
       description: >-
         Updates cloud recording settings during an active recording session. For
-        individual and composite recordings, use this endpoint to update
-        subscription lists. For web page recording, use it to pause or resume
-        recording or to update the CDN streaming address.
+        individual and composite recordings, use this endpoint to update subscription
+        lists. For web page recording, use it to pause or resume recording or to update
+        the CDN streaming address.
 
 
-        The request is valid only within a recording session. If you call
-        `update` successively, send the next request only after receiving the
-        previous response.
+        The request is valid only within a recording session. If you call `update`
+        successively, send the next request only after receiving the previous response.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful.
+
+            - If the returned status code is not `200`, the request failed. See [Response status codes](../rest-api/status-codes) for troubleshooting.
       operationId: update-cloud-recording
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request POST \
+                --url https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/update \
+                --header 'Authorization: Basic <credentials>' \
+                --header 'Content-Type: application/json' \
+                --data '{
+                "cname": "httpClient463224",
+                "uid": "527841",
+                "clientRequest": {
+                  "streamSubscribe": {
+                    "audioUidList": {
+                      "subscribeAudioUids": ["#allstream#"]
+                    },
+                    "videoUidList": {
+                      "unsubscribeVideoUids": ["444", "555", "666"]
+                    }
+                  }
+                }
+              }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+              import json
+
+              url = "https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/update"
+              headers = {
+                  "Authorization": "Basic <credentials>",
+                  "Content-Type": "application/json"
+              }
+
+              data = {
+                  "cname": "httpClient463224",
+                  "uid": "527841",
+                  "clientRequest": {
+                      "streamSubscribe": {
+                          "audioUidList": {
+                              "subscribeAudioUids": ["#allstream#"]
+                          },
+                          "videoUidList": {
+                              "unsubscribeVideoUids": ["444", "555", "666"]
+                          }
+                      }
+                  }
+              }
+
+              response = requests.post(url, headers=headers, data=json.dumps(data))
+
+              print(response.status_code)
+              print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+              const url = 'https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/update';
+              const headers = {
+                'Authorization': 'Basic <credentials>',
+                'Content-Type': 'application/json'
+              };
+
+              const data = {
+                cname: "httpClient463224",
+                uid: "527841",
+                clientRequest: {
+                  streamSubscribe: {
+                    audioUidList: {
+                      subscribeAudioUids: ["#allstream#"]
+                    },
+                    videoUidList: {
+                      unsubscribeVideoUids: ["444", "555", "666"]
+                    }
+                  }
+                }
+              };
+
+              axios.post(url, data, { headers })
+                .then(response => {
+                  console.log('Status:', response.status);
+                  console.log('Data:', response.data);
+                })
+                .catch(error => {
+                  console.error('Error:', error.response ? error.response.data : error.message);
+                });
+      x-docs-callouts:
+        - type: warning
+          title: Important
+          position: after-description
+          markdown: >
+            The Agora RESTful API supports HTTPS only, with TLS 1.0, 1.1, or 1.2. Plain
+            HTTP requests are not supported.
+        - type: info
+          title: Note
+          position: after-description
+          markdown: >
+            - This endpoint is only valid within an active recording session. If the
+            recording was not started successfully or has already ended, the request
+            returns `404`.
+
+            - If you need to call `update` multiple times in succession, wait for the
+            previous `update` response before sending the next request to avoid
+            unexpected results.
       parameters:
         - $ref: "#/components/parameters/Content-Type"
         - $ref: "#/components/parameters/appid"
@@ -193,15 +533,150 @@ paths:
     post:
       summary: Update the cloud recording layout
       description: >-
-        Updates the mixed video layout for composite recording. Each call
-        overrides the original layout settings. If you omit a field that was
-        previously set, the service uses that field's default value.
+        Updates the mixed video layout for composite recording. Each call overrides the
+        original layout settings. If you omit a field that was previously set, the
+        service uses that field's default value.
 
 
-        The request is valid only within a recording session. If you call
-        `updateLayout` successively, send the next request only after receiving
-        the previous response.
+        The request is valid only within a recording session. If you call `updateLayout`
+        successively, send the next request only after receiving the previous response.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful.
+
+            - If the returned status code is not `200`, the request failed. See [Response status codes](../rest-api/status-codes) for troubleshooting.
       operationId: update-cloud-recording-layout
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request POST \
+                --url https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/mix/updateLayout \
+                --header 'Authorization: Basic <credentials>' \
+                --header 'Content-Type: application/json' \
+                --data '{
+                "cname": "httpClient463224",
+                "uid": "527841",
+                "clientRequest": {
+                  "mixedVideoLayout": 3,
+                  "backgroundColor": "#FF0000",
+                  "layoutConfig": [
+                    {
+                      "uid": "1",
+                      "x_axis": 0.1,
+                      "y_axis": 0.1,
+                      "width": 0.1,
+                      "height": 0.1,
+                      "alpha": 1,
+                      "render_mode": 1
+                    },
+                    {
+                      "uid": "2",
+                      "x_axis": 0.2,
+                      "y_axis": 0.2,
+                      "width": 0.1,
+                      "height": 0.1,
+                      "alpha": 1,
+                      "render_mode": 1
+                    }
+                  ]
+                }
+              }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+              import json
+
+              url = "https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/mix/updateLayout"
+              headers = {
+                  "Authorization": "Basic <credentials>",
+                  "Content-Type": "application/json"
+              }
+
+              data = {
+                  "cname": "httpClient463224",
+                  "uid": "527841",
+                  "clientRequest": {
+                      "mixedVideoLayout": 3,
+                      "backgroundColor": "#FF0000",
+                      "layoutConfig": [
+                          {
+                              "uid": "1",
+                              "x_axis": 0.1,
+                              "y_axis": 0.1,
+                              "width": 0.1,
+                              "height": 0.1,
+                              "alpha": 1,
+                              "render_mode": 1
+                          },
+                          {
+                              "uid": "2",
+                              "x_axis": 0.2,
+                              "y_axis": 0.2,
+                              "width": 0.1,
+                              "height": 0.1,
+                              "alpha": 1,
+                              "render_mode": 1
+                          }
+                      ]
+                  }
+              }
+
+              response = requests.post(url, headers=headers, data=json.dumps(data))
+
+              print(response.status_code)
+              print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+              const url = 'https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/mix/updateLayout';
+              const headers = {
+                'Authorization': 'Basic <credentials>',
+                'Content-Type': 'application/json'
+              };
+
+              const data = {
+                cname: "httpClient463224",
+                uid: "527841",
+                clientRequest: {
+                  mixedVideoLayout: 3,
+                  backgroundColor: "#FF0000",
+                  layoutConfig: [
+                    {
+                      uid: "1",
+                      x_axis: 0.1,
+                      y_axis: 0.1,
+                      width: 0.1,
+                      height: 0.1,
+                      alpha: 1,
+                      render_mode: 1
+                    },
+                    {
+                      uid: "2",
+                      x_axis: 0.2,
+                      y_axis: 0.2,
+                      width: 0.1,
+                      height: 0.1,
+                      alpha: 1,
+                      render_mode: 1
+                    }
+                  ]
+                }
+              };
+
+              axios.post(url, data, { headers })
+                .then(response => {
+                  console.log('Status:', response.status);
+                  console.log('Data:', response.data);
+                })
+                .catch(error => {
+                  console.error('Error:', error.response ? error.response.data : error.message);
+                });
       parameters:
         - $ref: "#/components/parameters/Content-Type"
         - $ref: "#/components/parameters/appid"
@@ -260,10 +735,64 @@ paths:
     get:
       summary: Query cloud recording status
       description: >-
-        Queries the status of a cloud recording session. The request is valid
-        only within a recording session. If the recording was started
-        incorrectly or has ended, the request returns `404`.
+        Queries the status of a cloud recording session. The request is valid only
+        within a recording session. If the recording was started incorrectly or has
+        ended, the request returns `404`.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful.
+
+            - If the returned status code is not `200`, the request failed. See [Response status codes](../rest-api/status-codes) for troubleshooting.
       operationId: query-cloud-recording
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request GET \
+                --url https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/query \
+                --header 'Authorization: Basic <credentials>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+              url = "https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/query"
+              headers = {
+                  "Authorization": "Basic <credentials>"
+              }
+
+              response = requests.get(url, headers=headers)
+
+              print(response.status_code)
+              print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+              const url = 'https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/query';
+              const headers = {
+                'Authorization': 'Basic <credentials>'
+              };
+
+              axios.get(url, { headers })
+                .then(response => {
+                  console.log('Status:', response.status);
+                  console.log('Data:', response.data);
+                })
+                .catch(error => {
+                  console.error('Error:', error.response ? error.response.data : error.message);
+                });
+      x-docs-callouts:
+        - type: info
+          title: Note
+          position: after-description
+          markdown: >
+            This endpoint is only valid within an active recording session. If the
+            recording was not started successfully or has already ended, the request
+            returns `404`.
       parameters:
         - $ref: "#/components/parameters/Content-Type"
         - $ref: "#/components/parameters/appid"
@@ -298,16 +827,100 @@ paths:
     post:
       summary: Stop cloud recording
       description: >-
-        Stops a cloud recording session and makes the recording service leave
-        the channel. To start recording again after the recording stops, call
-        `acquire` again to request a new resource ID.
+        Stops a cloud recording session and makes the recording service leave the
+        channel. To start recording again after the recording stops, call `acquire`
+        again to request a new resource ID.
 
 
-        The request is valid only within a recording session. In non-web page
-        recording modes, if the channel is idle for longer than the configured
-        duration, Cloud Recording automatically leaves the channel and stops
-        recording.
+        The request is valid only within a recording session. In non-web page recording
+        modes, if the channel is idle for longer than the configured duration, Cloud
+        Recording automatically leaves the channel and stops recording.
+      x-docs-sections:
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful.
+
+            - If the returned status code is not `200`, the request failed. See [Response status codes](../rest-api/status-codes) for troubleshooting.
       operationId: stop-cloud-recording
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request POST \
+                --url https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/stop \
+                --header 'Authorization: Basic <credentials>' \
+                --header 'Content-Type: application/json' \
+                --data '{
+                "cname": "httpClient463224",
+                "uid": "527841",
+                "clientRequest": {
+                  "async_stop": false
+                }
+              }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+              import json
+
+              url = "https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/stop"
+              headers = {
+                  "Authorization": "Basic <credentials>",
+                  "Content-Type": "application/json"
+              }
+
+              data = {
+                  "cname": "httpClient463224",
+                  "uid": "527841",
+                  "clientRequest": {
+                      "async_stop": False
+                  }
+              }
+
+              response = requests.post(url, headers=headers, data=json.dumps(data))
+
+              print(response.status_code)
+              print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+              const url = 'https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/stop';
+              const headers = {
+                'Authorization': 'Basic <credentials>',
+                'Content-Type': 'application/json'
+              };
+
+              const data = {
+                cname: "httpClient463224",
+                uid: "527841",
+                clientRequest: {
+                  async_stop: false
+                }
+              };
+
+              axios.post(url, data, { headers })
+                .then(response => {
+                  console.log('Status:', response.status);
+                  console.log('Data:', response.data);
+                })
+                .catch(error => {
+                  console.error('Error:', error.response ? error.response.data : error.message);
+                });
+      x-docs-callouts:
+        - type: info
+          title: Note
+          position: after-description
+          markdown: >
+            - This endpoint is only valid within an active recording session. If the
+            recording was not started successfully or has already ended, the request
+            returns `404`.
+
+            - In non-web page recording modes, if the channel is idle for longer than
+            the `maxIdleTime` value set in [`start`](start) (default 30 seconds), cloud
+            recording automatically leaves the channel and stops.
       parameters:
         - $ref: "#/components/parameters/Content-Type"
         - $ref: "#/components/parameters/appid"
@@ -348,13 +961,69 @@ paths:
     get:
       summary: Query message notification server IP addresses
       description: >-
-        Queries the IP address or IP address list of the message notification
-        server. After you enable the message notification service, Agora can
-        notify your server of cloud recording events through HTTPS requests.
-        Agora dynamically adjusts notification server IP addresses every 24
-        hours. Query this endpoint at least once every 24 hours and update your
-        firewall whitelist.
+        Queries the IP address or IP address list of the message notification server.
+        After you enable the message notification service, Agora can notify your server
+        of cloud recording events through HTTPS requests. Agora dynamically adjusts
+        notification server IP addresses every 24 hours. Query this endpoint at least
+        once every 24 hours and update your firewall whitelist.
+      x-docs-sections:
+        - title: Request
+          position: after-parameters
+          markdown: |-
+            - This endpoint has no path parameters or request body.
+        - title: Response
+          position: before-response-body
+          markdown: |-
+            - If the returned status code is `200`, the request was successful. Only the `primaryIP` field in the response body is relevant; the response header and all other fields can be ignored.
+
+            - If the returned status code is not `200`, the request failed. See [Response status codes](../reference/common-errors#status-codes) for troubleshooting.
       operationId: get-ncs-ip
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request GET \
+                --url https://api.sd-rtn.com/v1/ncs/ip \
+                --header 'Authorization: Basic <credentials>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+              url = "https://api.sd-rtn.com/v1/ncs/ip"
+              headers = {
+                  "Authorization": "Basic <credentials>"
+              }
+
+              response = requests.get(url, headers=headers)
+
+              print(response.status_code)
+              print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+              const url = 'https://api.sd-rtn.com/v1/ncs/ip';
+              const headers = {
+                'Authorization': 'Basic <credentials>'
+              };
+
+              axios.get(url, { headers })
+                .then(response => {
+                  console.log('Status:', response.status);
+                  console.log('Data:', response.data);
+                })
+                .catch(error => {
+                  console.error('Error:', error.response ? error.response.data : error.message);
+                });
+      x-docs-callouts:
+        - type: info
+          title: Note
+          position: after-description
+          markdown: >
+            Query the IP addresses at least once every 24 hours and update your firewall
+            whitelist automatically to avoid interruptions in notification delivery.
       responses:
         "200":
           $ref: "#/components/responses/ncs-ip"
@@ -365,8 +1034,8 @@ components:
       scheme: basic
       description: >-
         Cloud Recording REST APIs use Basic HTTP authentication. Generate a
-        Base64-encoded credential from your customer ID and customer secret, and
-        send it in the `Authorization` header.
+        Base64-encoded credential from your customer ID and customer secret, and send it
+        in the `Authorization` header.
   parameters:
     Content-Type:
       name: Content-Type
@@ -383,9 +1052,9 @@ components:
       schema:
         type: string
       description: >-
-        The App ID for your project. For web page recording mode, use the App ID
-        for which Cloud Recording is enabled. For individual and composite
-        recording modes, use the same App ID as the channel to be recorded.
+        The App ID for your project. For web page recording mode, use the App ID for
+        which Cloud Recording is enabled. For individual and composite recording modes,
+        use the same App ID as the channel to be recorded.
     resourceid:
       name: resourceid
       in: path
@@ -411,8 +1080,8 @@ components:
           - mix
           - web
       description: >-
-        Recording mode: `individual` for individual recording, `mix` for
-        composite recording, or `web` for web page recording.
+        Recording mode: `individual` for individual recording, `mix` for composite
+        recording, or `web` for web page recording.
   responses:
     not-200:
       description: >-
@@ -451,34 +1120,52 @@ components:
               type: integer
               default: 0
               description: >-
-                Cloud Recording resource use case. `0` is real-time audio and
-                video recording. `1` is web page recording.
+                Cloud Recording resource use case. `0` is real-time audio and video
+                recording. `1` is web page recording.
             resourceExpiredHour:
               type: number
               default: 72
               minimum: 1
               maximum: 720
               description: >-
-                The validity period, in hours, for calling Cloud Recording REST
-                APIs after the service starts and returns a recording ID.
+                The validity period, in hours, for calling Cloud Recording REST APIs
+                after the service starts and returns a recording ID.
             startParameter:
-              $ref: "#/components/schemas/client-request"
+              $ref: "#/components/schemas/acquire-startParameter"
               description: >-
-                Optional start parameters that improve availability and load
-                balancing. Values must be valid and consistent with the
-                following `start` request.
+                Optional start parameters that improve availability and load balancing.
             excludeResourceIds:
               type: array
               description: >-
-                Resource IDs of other recording tasks to exclude so that a new
-                task can use resources from a new region.
+                Resource IDs of other recording tasks to exclude so that a new task can
+                use resources from a new region.
               items:
                 type: string
             region:
               type: string
               description: >-
-                Region that the recording service can access. Supported values
-                include `CN`, `AP`, `EU`, and `NA`.
+                Region that the recording service can access. Supported values include
+                `CN`, `AP`, `EU`, and `NA`.
+    acquire-startParameter:
+      allOf:
+        - $ref: "#/components/schemas/client-request"
+      x-docs-callouts:
+        - type: info
+          title: Note
+          markdown: >
+            Values must be valid and consistent with the `clientRequest` in the
+            subsequent [`start`](start) request body; otherwise the `start` request
+            returns an error.
+    start-clientRequest:
+      allOf:
+        - $ref: "#/components/schemas/client-request"
+      x-docs-callouts:
+        - type: info
+          title: Note
+          markdown: >
+            Values must be valid and consistent with the `startParameter` in the
+            [`acquire`](acquire) request body; otherwise the `start` request returns an
+            error.
     client-request:
       type: object
       required:
@@ -487,9 +1174,9 @@ components:
         token:
           type: string
           description: >-
-            Dynamic key for channel authentication. If your project has App
-            Certificate enabled, pass the token in this field for individual and
-            composite recording modes.
+            Dynamic key for channel authentication. If your project has App Certificate
+            enabled, pass the token in this field for individual and composite recording
+            modes.
         storageConfig:
           $ref: "#/components/schemas/storageConfig"
         recordingConfig:
@@ -513,16 +1200,23 @@ components:
         vendor:
           type: integer
           description: >-
-            Third-party cloud storage vendor. `1`: Amazon S3. `2`: Alibaba
-            Cloud. `3`: Tencent Cloud. `5`: Microsoft Azure. `6`: Google Cloud.
-            `7`: Huawei Cloud. `8`: Baidu Intelligent Cloud. `11`: S3
-            compatible storage.
+            Third-party cloud storage vendor. `1`: Amazon S3. `2`: Alibaba Cloud. `3`:
+            Tencent Cloud. `5`: Microsoft Azure. `6`: Google Cloud. `7`: Huawei Cloud.
+            `8`: Baidu Intelligent Cloud. `11`: S3 compatible storage.
         region:
           type: integer
           description: >-
-            Region of the third-party cloud storage. To improve upload success
-            rate and real-time performance, use a storage region that matches
-            the application server region where you initiate the request.
+            Region of the third-party cloud storage. To improve upload success rate and
+            real-time performance, use a storage region that matches the application
+            server region where you initiate the request.
+          x-docs-callouts:
+            - type: info
+              title: Note
+              markdown: >
+                To ensure upload success and real-time performance, the cloud storage
+                region must match the region of the server where you initiate the
+                request. See [Third-party cloud storage
+                regions](../reference/region-vendor).
         bucket:
           type: string
           description: Third-party cloud storage bucket.
@@ -541,9 +1235,8 @@ components:
         fileNamePrefix:
           type: array
           description: >-
-            Prefix path for recorded files in third-party cloud storage. For
-            example, `["directory1","directory2"]` stores files under
-            `directory1/directory2/`.
+            Prefix path for recorded files in third-party cloud storage. For example,
+            `["directory1","directory2"]` stores files under `directory1/directory2/`.
           items:
             type: string
         extensionParams:
@@ -557,9 +1250,7 @@ components:
       properties:
         sse:
           type: string
-          description: >-
-            Encryption mode for Amazon S3. Supported values include `kms` and
-            `aes256`.
+          description: Encryption mode for Amazon S3. Supported values include `kms` and `aes256`.
         tag:
           type: string
           description: Tag content for Alibaba Cloud and Amazon S3.
@@ -578,30 +1269,30 @@ components:
           type: integer
           default: 0
           description: >-
-            Channel profile. `0`: Communication. `1`: Live streaming. The
-            channel profile must match the RTC SDK setting.
+            Channel profile. `0`: Communication. `1`: Live streaming. The channel
+            profile must match the RTC SDK setting.
         decryptionMode:
           type: integer
           default: 0
           description: >-
-            Decryption mode. Use the same decryption mode as the SDK client if
-            the channel is encrypted. `0` means not encrypted.
+            Decryption mode. Use the same decryption mode as the SDK client if the
+            channel is encrypted. `0` means not encrypted.
         secret:
           type: string
           description: Encryption secret. Set this field when `decryptionMode` is not `0`.
         salt:
           type: string
           description: >-
-            Base64-encoded 32-byte salt. Set this field when `decryptionMode` is
-            `7` or `8`.
+            Base64-encoded 32-byte salt. Set this field when `decryptionMode` is `7` or
+            `8`.
         maxIdleTime:
           type: integer
           default: 30
           minimum: 5
           maximum: 2592000
           description: >-
-            Maximum channel idle time, in seconds. The recording service exits
-            after the channel is idle for longer than this value.
+            Maximum channel idle time, in seconds. The recording service exits after the
+            channel is idle for longer than this value.
         streamTypes:
           type: integer
           default: 2
@@ -613,8 +1304,8 @@ components:
         subscribeAudioUids:
           $ref: "#/components/schemas/uid-list"
           description: >-
-            Audio UIDs to subscribe to. Use `["#allstream#"]` to subscribe to
-            all audio streams. Do not set together with `unsubscribeAudioUids`.
+            Audio UIDs to subscribe to. Use `["#allstream#"]` to subscribe to all audio
+            streams. Do not set together with `unsubscribeAudioUids`.
         unsubscribeAudioUids:
           $ref: "#/components/schemas/uid-list"
           description: >-
@@ -623,8 +1314,8 @@ components:
         subscribeVideoUids:
           $ref: "#/components/schemas/uid-list"
           description: >-
-            Video UIDs to subscribe to. Use `["#allstream#"]` to subscribe to
-            all video streams. Do not set together with `unsubscribeVideoUids`.
+            Video UIDs to subscribe to. Use `["#allstream#"]` to subscribe to all video
+            streams. Do not set together with `unsubscribeVideoUids`.
         unsubscribeVideoUids:
           $ref: "#/components/schemas/uid-list"
           description: >-
@@ -632,22 +1323,19 @@ components:
             `subscribeVideoUids`.
         subscribeUidGroup:
           type: integer
-          description: >-
-            Estimated peak number of subscribers. Required in individual
-            recording mode.
+          description: Estimated peak number of subscribers. Required in individual recording mode.
         streamMode:
           type: string
           default: default
           description: >-
-            Media stream output mode. Supported values include `default`,
-            `standard`, and `original`.
+            Media stream output mode. Supported values include `default`, `standard`,
+            and `original`.
         audioProfile:
           type: integer
           default: 0
           description: >-
-            Output audio profile for composite recording. `0`, `1`, and `2`
-            map to different sample rates, bitrates, encoding modes, and
-            channel counts.
+            Output audio profile for composite recording. `0`, `1`, and `2` map to
+            different sample rates, bitrates, encoding modes, and channel counts.
         transcodingConfig:
           $ref: "#/components/schemas/transcodingConfig"
     transcodingConfig:
@@ -691,17 +1379,15 @@ components:
       type: integer
       default: 0
       description: >-
-        Composite video layout. `0`: floating layout. `1`: adaptive layout.
-        `2`: vertical layout. `3`: customized layout.
+        Composite video layout. `0`: floating layout. `1`: adaptive layout. `2`:
+        vertical layout. `3`: customized layout.
     backgroundColor:
       type: string
       default: "#000000"
       description: RGB background color of the video canvas, for example `#000000`.
     layoutConfig:
       type: array
-      description: >-
-        Custom mixed video layout settings for each user. Supports up to 17
-        users.
+      description: Custom mixed video layout settings for each user. Supports up to 17 users.
       items:
         type: object
         required:
@@ -768,14 +1454,22 @@ components:
         avFileType:
           type: array
           description: >-
-            Generated recording file types. `hls` generates M3U8 and TS files.
-            To generate MP4 files in composite or web page recording modes, use
+            Generated recording file types. `hls` generates M3U8 and TS files. To
+            generate MP4 files in composite or web page recording modes, use
             `["hls","mp4"]`.
           items:
             type: string
             enum:
               - hls
               - mp4
+      x-docs-callouts:
+        - type: info
+          title: Note
+          markdown: >
+            Cannot be set when taking screenshots only. Required in all other cases
+            including individual recording (without transcoding, with transcoding, or
+            simultaneous recording and screenshots), composite recording, and web page
+            recording.
     snapshotConfig:
       type: object
       required:
@@ -914,7 +1608,7 @@ components:
         uid:
           $ref: "#/components/schemas/uid"
         clientRequest:
-          $ref: "#/components/schemas/client-request"
+          $ref: "#/components/schemas/start-clientRequest"
     update-request:
       type: object
       required:
@@ -968,8 +1662,8 @@ components:
           type: boolean
           default: false
           description: >-
-            Whether to pause web page recording. `true` pauses recording and
-            file generation. `false` resumes recording.
+            Whether to pause web page recording. `true` pauses recording and file
+            generation. `false` resumes recording.
     rtmpPublishConfig:
       type: object
       properties:
@@ -1032,9 +1726,9 @@ components:
               type: boolean
               default: false
               description: >-
-                Response mode for `stop`. `true`: asynchronous response.
-                `false`: synchronous response after all recording files are
-                uploaded to third-party cloud storage.
+                Response mode for `stop`. `true`: asynchronous response. `false`:
+                synchronous response after all recording files are uploaded to
+                third-party cloud storage.
     acquire-response:
       allOf:
         - $ref: "#/components/schemas/base-session"
@@ -1231,9 +1925,8 @@ components:
     uid:
       type: string
       description: >-
-        UID used by the Cloud Recording service in the RTC channel. The value
-        must be an integer UID string from 1 to 2^32 - 1 and must be unique in
-        the channel.
+        UID used by the Cloud Recording service in the RTC channel. The value must be an
+        integer UID string from 1 to 2^32 - 1 and must be unique in the channel.
     uid-list:
       type: array
       items:

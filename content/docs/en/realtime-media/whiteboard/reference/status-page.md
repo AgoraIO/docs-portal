@@ -1,67 +1,135 @@
 ---
 title: "Product and service status"
-description: "Track status information for Agora services, including Interactive Whiteboard."
+description: "Track service performance and maintenance events."
 ---
+The Status Page provides up-to-date insights into the operational status and Quality of Experience (QoE) of Agora’s products and services. It displays historical service stability over the past 90 days and real-time quality data for the past 24 hours, enabling efficient monitoring of real-time interactions. You can access the Status Page directly at https://status.agora.io/ or at any time from the [Agora Support Center](https://agoraio.zendesk.com/hc/en-us) by selecting **System Status** from the profile menu.
 
-Use the [Agora Status Page](https://status.agora.io/) to monitor service health, historical incidents, and quality signals across Agora products, including Interactive Whiteboard.
+Use the Status Page to track service performance, maintenance events, and disruptions. The Status Page offers RSS push notifications for updates on ongoing events and combines multiple indicators to deliver comprehensive QoE data.
 
-## What you can check
+## Features
 
-- Current service health
-- Incident history
-- Product and service filters
-- Quality-of-experience trends
+The [Status Page](https://status.agora.io/) interface is divided into the following functional areas:
 
-## Status indicators
+- [Health banner](#health-banner)
+- [Product and service filter](#product-and-service-filter)
+- [Status dashboard](#status-dashboard)
 
-The status dashboard uses color-coded columns to represent operating state:
+The following image shows a snapshot of the Agora Status Page.
 
-| Color | Meaning |
-| --- | --- |
-| Green | Normal operation |
-| Yellow | Degraded performance |
-| Red | Abnormal |
+![](/images/status-page/status-page.png)
 
-The dashboard currently covers the following product groups:
+:::info
+The screenshots on this page were generated in a test environment for demonstration purposes and do not reflect actual historical availability data or events.
+:::
 
-| Product or service | What the dashboard highlights |
-| --- | --- |
-| Real-Time Communication | 24-hour QoE and 90-day service availability |
-| Cloud Recording | Service health and task-creation success trends |
-| Agora Chat | Messaging success rate and service availability |
-| Interactive Whiteboard | Service health and room-join success rate |
+### Health banner
 
-## Product-specific status
+The health banner at the top of the page provides buttons for event RSS subscription and viewing details of historical events. The following sections describe how to subscribe to the RSS feed and view historical events.
 
-| Product or service | Status basis |
-| --- | --- |
-| Real-Time Communication | Comprehensive QoE based on Agora backend login, SDK stability, end-to-end responsiveness, audio fluency, and video fluency |
-| Cloud Recording | Service operating status and recording-task creation success rate |
-| Agora Chat | Message sending success rate and service availability |
-| Interactive Whiteboard | Service operating status and whiteboard room join success rate |
+#### RSS subscription
+
+The RSS feed provides live updates on incidents and historical events related to Agora's services, such as service quality degradation and interruptions. Each incident includes details such as investigation, identification, resolution steps, and a summary.
+
+To use the RSS feed in an feed reader:
+
+1. Click the **Event RSS feed** button, the raw RSS feed opens in your browser.
+1. Copy the URL from the address bar.
+1. Paste the URL into your feed reader's **Add subscription** or **Add feed** section.
+1. Save and view your subscription.
+
+    :::info
+    After you subscribe to the RSS feed, you start receiving the latest updates about the status of Agora's products and services. Check your RSS reader regularly to stay aware of product and service events.
+    :::
+
+#### Historical events
+
+To view a list of historical events for selected products & services during the past year:
+
+1. Click the **Events** button in the health banner.
+
+    You see a list of events, in your browser.
+
+    ![](/images/status-page/status-historical-events.png)
+
+1. Select a specific event from the list to view its details.
+
+    ![](/images/status-page/status-event-details.png)
+
+### Product and service Filter
+
+Use the filter dropdown to select a product or service. By default, the page displays the status for all Agora products and services.
+
+![](/images/status-page/status-product-filter.png)
+
+The filter section also displays the time of the last update and the corresponding time zone for the dashboard data. The page updates the data automatically every 5 minutes. To view the latest status at any time, manually refresh the page.
+
+### Status dashboard
+
+The status dashboard section presents the operating status and event details. It uses quality columns to display the status of the selected product or service in chronological order.
+
+The color of each column indicates the operating state:
+
+- Green: Normal operation
+- Yellow: Degraded performance
+- Red: Abnormal
+
+The status dashboard shows the following data:
+
+![](/images/status-page/status-check-running.png)
+
+1. **Global comprehensive service quality**
+
+    This dashboard graphic shows the comprehensive service status over the past 24 hours. The quality columns are arranged in chronological order with one column for every 5 minutes. The height of the column represents the quality of the comprehensive service experience. The text on the right shows the latest real-time interactive service status and the update time. Hover the mouse over a quality column to view the corresponding time and status.
+
+    ![](/images/status-page/status-hover.png)
+
+1. **24-hour real-time experience metrics**
+
+    Use the expand button to view detailed [quality metrics](#quality-metrics), which together constitute the comprehensive service experience quality index of real-time interaction. The quality columns, show the service quality based on each metric for the past 24 hours. There is a quality column every 5 minutes, and the height of the quality column represents the quality of the indicator.
+
+    ![](/images/status-page/status-quality-metrics.png)
+
+3. **90-day service status**
+
+    The quality columns show the availability data for the past 90 days. There is one quality column for each day. Hover the mouse over the quality column to view the corresponding date and event for the day.
+
+    ![](/images/status-page/status-event-popup.png)
+
+Currently, the status dashboard provides information regarding the following Agora products and services.
+
+- Real-Time Communication (Video calling, Voice calling, Broadcast streaming, and Interactive live streaming)
+- Cloud Recording
+- Agora Chat
+- Interactive Whiteboard
 
 ## Quality metrics
 
-For Real-Time Communication, the status page computes QoE using the following metrics:
+The Status Page computes the quality metrics as follows:
 
-| Metric | Description | Calculation method |
-| --- | --- | --- |
-| Agora backend login | Measures accessibility of realtime audio and video services | Ratio of successful logins to total login attempts |
-| SDK stability | Measures realtime service stability | Ratio of service crashes to total services |
-| End-to-end responsiveness | Measures responsiveness and smoothness | Ratio of network delay to total audio and video duration |
-| Audio fluency | Measures audio playback continuity | Ratio of audio freeze duration to total audio duration |
-| Video fluency | Measures video playback smoothness | Ratio of video freeze duration to total video duration |
+### Real-Time Communication QoE
 
-## When to use it
+The comprehensive QoE for real-time communication services is based on multiple factors including the Agora SDRTN® login experience, SDK stability, end-to-end responsiveness, audio fluency, and video fluency.
 
-Check the status page when you need to:
+| Metric   | Description | Calculation method   |
+|:---------|:------------|:---------------------|
+| Agora SDRTN® login | Measures accessibility of real-time audio and video services      | Ratio of successful logins to total login attempts   |
+| SDK stability | Measures stability of real-time services      | Ratio of service crashes to total services  |
+| End-to-end responsiveness | Measures responsiveness and smoothness of services       | Ratio of network delay to total audio and video duration     |
+| Audio fluency | Measures audio playback continuity    | Ratio of audio freeze duration to total audio duration       |
+| Video fluency | Measures video playback smoothness    | Ratio of video freeze duration to total video duration       |
 
-- verify whether a whiteboard issue may be service-related
-- review ongoing incidents or maintenance events
-- confirm whether quality degradation is broader than your own deployment
+:::info
+Use the **Expand** button under the comprehensive Real-Time Communication QoE index to view the historical data for each metric.
+:::
 
-## Related resources
+### Cloud Recording status
 
-- [Security](security.md)
-- [Firewall requirements](firewall.md)
-- [Agora Support Center](https://agoraio.zendesk.com/hc/en-us)
+The Cloud Recording service status evaluates reliability and user experience based on the Cloud Recording service's running state and the recording task creation success rate.
+
+### Agora Chat status
+
+The Chat status indicates the success rate of message-sending requests and the availability of Agora Chat services.
+
+### Interactive Whiteboard status
+
+The Interactive Whiteboard reliability and user experience status is based on the service's operating status and the success rate of joining a whiteboard room.

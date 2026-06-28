@@ -7,6 +7,7 @@ export type OpenApiSchemaTreeNode = {
   defaultValue?: OpenApiJsonValue;
   deprecated?: boolean;
   description?: string;
+  docsCallouts?: OpenApiSchemaCallout[];
   enumValues?: OpenApiJsonValue[];
   example?: OpenApiJsonValue;
   format?: string;
@@ -23,6 +24,13 @@ export type OpenApiSchemaTreeNode = {
 
 export type OpenApiSchemaRow = Omit<OpenApiSchemaTreeNode, 'children'> & {
   depth: number;
+};
+
+export type OpenApiSchemaCallout = {
+  markdown: string;
+  position?: string;
+  title?: string;
+  type?: string;
 };
 
 export function buildOpenApiSchemaTree(
@@ -127,6 +135,9 @@ function buildSchemaNode(
     ...(typeof value.description === 'string'
       ? { description: value.description }
       : {}),
+    ...(getDocsCallouts(value).length > 0
+      ? { docsCallouts: getDocsCallouts(value) }
+      : {}),
     ...(Array.isArray(value.enum)
       ? { enumValues: value.enum.map(toOpenApiJsonValue) }
       : {}),
@@ -146,6 +157,28 @@ function buildSchemaNode(
   };
 }
 
+function getDocsCallouts(schema: Record<string, unknown>) {
+  const callouts = schema['x-docs-callouts'];
+
+  if (!Array.isArray(callouts)) {
+    return [];
+  }
+
+  return callouts
+    .filter(
+      (callout): callout is Record<string, unknown> =>
+        isRecord(callout) && typeof callout.markdown === 'string',
+    )
+    .map((callout) => ({
+      markdown: callout.markdown as string,
+      ...(typeof callout.position === 'string'
+        ? { position: callout.position }
+        : {}),
+      ...(typeof callout.title === 'string' ? { title: callout.title } : {}),
+      ...(typeof callout.type === 'string' ? { type: callout.type } : {}),
+    }));
+}
+
 function flattenSchemaTreeNode(
   node: OpenApiSchemaTreeNode,
   depth: number,
@@ -163,6 +196,9 @@ function flattenSchemaTreeNode(
 
 function mergeComposedSchemas(schema: Record<string, unknown>) {
   const merged = { ...schema };
+  delete merged.allOf;
+  delete merged.oneOf;
+  delete merged.anyOf;
 
   for (const key of ['allOf', 'oneOf', 'anyOf'] as const) {
     const items = schema[key];
@@ -176,16 +212,24 @@ function mergeComposedSchemas(schema: Record<string, unknown>) {
       }
 
       const child = mergeComposedSchemas(item);
-      Object.assign(merged, child, {
-        properties: {
-          ...(isRecord(merged.properties) ? merged.properties : {}),
-          ...(isRecord(child.properties) ? child.properties : {}),
-        },
-        required: [
-          ...arrayOfStrings(merged.required),
-          ...arrayOfStrings(child.required),
-        ],
-      });
+      for (const [childKey, childValue] of Object.entries(child)) {
+        if (
+          childKey === 'properties' ||
+          childKey === 'required' ||
+          childKey in merged
+        ) {
+          continue;
+        }
+        merged[childKey] = childValue;
+      }
+      merged.properties = {
+        ...(isRecord(child.properties) ? child.properties : {}),
+        ...(isRecord(merged.properties) ? merged.properties : {}),
+      };
+      merged.required = [
+        ...arrayOfStrings(child.required),
+        ...arrayOfStrings(merged.required),
+      ];
     }
   }
 

@@ -138,6 +138,24 @@ _Avoid_: source asset, committed public copy
 The full verification boundary for OpenAPI endpoint pages across build output, public YAML, rendered docs, llms exports, search, and browser layout.
 _Avoid_: types-only verification, unit-test-only completion
 
+### FAQ
+
+**FAQ hub**:
+The single FAQ landing page at `/faq` that offers category entry points and a search across all FAQ entries.
+_Avoid_: FAQ catalog, FAQ overview page
+
+**FAQ category page**:
+A per-category FAQ view that lists the FAQ entries in one category with category-scoped search and product/platform filtering.
+_Avoid_: catalog tab, category rail, FAQ catalog
+
+**FAQ category**:
+One of the five top-level FAQ groupings — Integration, Quality, Product, Account & billing, Other.
+_Avoid_: FAQ section, FAQ tag
+
+**FAQ entry**:
+A single question shown with a one-line summary that links out to its own troubleshooting article; FAQ answers are never inlined.
+_Avoid_: FAQ card, inline FAQ answer, FAQ accordion item
+
 ## Relationships
 
 - **Content staging** contains both **MDX-authored pages** and **OpenAPI sources**.
@@ -176,6 +194,9 @@ _Avoid_: types-only verification, unit-test-only completion
 - A **Static API reference** renders nested fields as a **Schema tree**, expanded by default only for shallow levels.
 - A **Published OpenAPI asset** is generated from an **OpenAPI source** during build and is not committed as a second source.
 - The **OpenAPI lane acceptance gate** must pass before OpenAPI rendering work is considered complete.
+- An **FAQ hub** links to **FAQ category pages**, one per **FAQ category**; the hub and the category pages are **MDX-authored pages**.
+- A **FAQ category page** lists **FAQ entries**; each **FAQ entry** links to its own troubleshooting **MDX-authored page** and is never expanded inline.
+- **FAQ entries** are trimmed out of the docs sidebar tree but remain routable; the sidebar shows only the **FAQ hub** and its **FAQ category pages**.
 
 ## Example dialogue
 

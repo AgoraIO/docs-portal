@@ -3,17 +3,9 @@ title: "Manage server-side messages"
 description: "Introduces how to use the Agora Chat SDK to retrieve messages from the server."
 ---
 
-### [Android, iOS, Web]
-
 The Chat SDK stores historical messages on the chat server. When a chat user logs in from a different device, you can retrieve the historical messages from the server, so that the user can also browse these messages on the new device. Additionally, the Chat SDK supports adding tags to conversation, with a maximum of 20 tags allowed per conversation.
 
-This page introduces how to use the Chat SDK to retrieve, delete, and tag messages messages and conversations.
-
-### All except [Android, Web], iOS
-
-The Chat SDK stores historical messages on the chat server. When a chat user logs in from a different device, you can retrieve the historical messages from the server, so that the user can also browse these messages on the new device.
-
-This page introduces how to use the Chat SDK to retrieve and delete messages from the server.
+This page introduces how to use the Chat SDK to retrieve, delete, and tag messages and conversations.
 
 ## Understand the tech
 

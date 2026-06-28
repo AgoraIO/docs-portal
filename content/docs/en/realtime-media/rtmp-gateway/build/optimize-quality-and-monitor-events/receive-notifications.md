@@ -259,6 +259,17 @@ For Media Gateway events, payload objects commonly include:
 
 The detailed REST and webhook field reference remains outside this prose migration scope.
 
+### Media Gateway event types
+
+Notifications can notify your server of the following Media Gateway events:
+
+| `eventType` | Event name | Description |
+| --- | --- | --- |
+| `1` | `live_stream_connected` | The gateway has received the RTMP or SRT stream and successfully entered the channel. |
+| `2` | `live_stream_disconnected` | The gateway has actively or passively disconnected and left the channel. |
+| `3` | `live_stream_aborted` | The gateway has received an RTMP or SRT stream but terminated it for some reason. |
+| `4` | `live_profile_updated` | Stream properties have been updated, such as the first audio or video frame, or an audio or video profile change. |
+
 ## IP address query API
 
 If your server that receives notification callbacks is behind a firewall, call the IP address query API to retrieve the IP addresses of Notifications and configure your firewall to trust those IP addresses.
