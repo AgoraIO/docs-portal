@@ -13,7 +13,7 @@ import {
 } from './sdk-install-command';
 
 const platformGroups = [
-  { label: 'Server', platformIds: ['typescript', 'python', 'go'] },
+  { label: 'Server', platformIds: ['python', 'typescript', 'go'] },
   {
     label: 'Mobile',
     platformIds: ['android', 'ios', 'react-native', 'flutter'],

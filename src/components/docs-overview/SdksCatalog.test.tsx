@@ -92,21 +92,27 @@ describe('SdksCatalog', () => {
 
     const agentsCard = screen.getByRole('article', { name: 'Agora Agents SDK' });
 
-    // Default tab is TypeScript → npm install command.
-    expect(
-      within(agentsCard).getByRole('tab', { name: 'TypeScript' }),
-    ).toHaveAttribute('aria-selected', 'true');
-    expect(
-      within(agentsCard).getByText('npm i agora-agents@2.3.1'),
-    ).toBeVisible();
-
-    // Python and Go tabs are present.
+    // Default tab is Python → pip install command.
     expect(
       within(agentsCard).getByRole('tab', { name: 'Python' }),
+    ).toHaveAttribute('aria-selected', 'true');
+    expect(
+      within(agentsCard).getByText('pip install agora-agents'),
+    ).toBeVisible();
+
+    // TypeScript and Go tabs are present.
+    expect(
+      within(agentsCard).getByRole('tab', { name: 'TypeScript' }),
     ).toBeInTheDocument();
     expect(
       within(agentsCard).getByRole('tab', { name: 'Go' }),
     ).toBeInTheDocument();
+
+    // Switching to TypeScript shows the npm command.
+    fireEvent.click(within(agentsCard).getByRole('tab', { name: 'TypeScript' }));
+    expect(
+      within(agentsCard).getByText('npm i agora-agents@2.3.1'),
+    ).toBeVisible();
 
     // Switching to Go shows the go get command.
     fireEvent.click(within(agentsCard).getByRole('tab', { name: 'Go' }));
@@ -114,12 +120,6 @@ describe('SdksCatalog', () => {
       within(agentsCard).getByText(
         'go get github.com/AgoraIO/agora-agents-go/v2@v2.3.1',
       ),
-    ).toBeVisible();
-
-    // Switching to Python shows the pip command.
-    fireEvent.click(within(agentsCard).getByRole('tab', { name: 'Python' }));
-    expect(
-      within(agentsCard).getByText('pip install agora-agents'),
     ).toBeVisible();
   });
 });
