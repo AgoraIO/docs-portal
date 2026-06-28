@@ -1,7 +1,10 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import type { Document } from 'fumadocs-openapi';
+import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import { describe, expect, it } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
+
+type ClientApiOperation = NonNullable<ClientApiPageProps['operations']>[number];
 
 describe('FumadocsOpenApiContent', () => {
   it('keeps generated language tabs when an operation does not define x-codeSamples', async () => {
@@ -141,9 +144,9 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       examplesScope.getByRole('tab', { name: 'Node.js' }),
     ).toBeInTheDocument();
-    expect(
-      examplesScope.getByText('curl --request POST https://example.com/join'),
-    ).toBeInTheDocument();
+    expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
+      'curl --request POST https://example.com/join',
+    );
     fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Python' }));
     expect(examplesScope.getByText('import requests')).toBeInTheDocument();
     fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Node.js' }));
@@ -1149,6 +1152,146 @@ describe('FumadocsOpenApiContent', () => {
     ).toHaveAttribute('href', 'https://example.com/postman');
   });
 
+  it('scopes OpenAPI markdown prose across descriptions, docs sections, schemas, and callouts', async () => {
+    const operationDescriptionMarkdown =
+      'Use this endpoint to send a custom instruction.\n\n- Pause the agent.\n- Resume the agent.\n\n1. Validate the agent ID.\n2. Send the instruction.';
+
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              description: operationDescriptionMarkdown,
+              method: 'post',
+              path: '/v2/projects/{appid}/agents/{agentId}/instructions',
+            } as ClientApiOperation,
+          ],
+          showDescription: true,
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/agents/{agentId}/instructions': {
+                  post: {
+                    description: operationDescriptionMarkdown,
+                    operationId: 'send-custom-instruction',
+                    parameters: [
+                      {
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: {
+                          type: 'string',
+                        },
+                      },
+                    ],
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              instruction: {
+                                description:
+                                  'Instruction text.\n\n- Use plain text.\n- See [schema guide](https://example.com/schema).',
+                                type: 'string',
+                              },
+                            },
+                            required: ['instruction'],
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Send a custom instruction',
+                    'x-docs-callouts': [
+                      {
+                        markdown:
+                          'Read the [instruction guide](https://example.com/instructions).\n\n- Check rate limits.',
+                        position: 'after-description',
+                        title: 'Note',
+                        type: 'info',
+                      },
+                    ],
+                    'x-docs-sections': [
+                      {
+                        markdown:
+                          'Before sending:\n\n1. Include a trace ID.\n2. Log the response.',
+                        position: 'after-parameters',
+                        title: 'Usage notes',
+                      },
+                    ],
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const operationDescription = await screen.findByText(
+      'Use this endpoint to send a custom instruction.',
+    );
+    const operationMarkdown = operationDescription.closest('.openapi-markdown');
+    expect(operationMarkdown).toBeInstanceOf(HTMLElement);
+    expect(operationMarkdown?.closest('.openapi-operation')).toHaveClass(
+      'not-prose',
+    );
+
+    const descriptionListItem = screen.getByText('Pause the agent.');
+    expect(descriptionListItem.tagName).toBe('LI');
+    expect(descriptionListItem.closest('ul')).toBeInstanceOf(HTMLUListElement);
+    expect(descriptionListItem.closest('.openapi-markdown')).toBe(
+      operationMarkdown,
+    );
+
+    const descriptionOrderedItem = screen.getByText('Validate the agent ID.');
+    expect(descriptionOrderedItem.tagName).toBe('LI');
+    expect(descriptionOrderedItem.closest('ol')).toBeInstanceOf(
+      HTMLOListElement,
+    );
+
+    const sectionListItem = screen.getByText('Include a trace ID.');
+    expect(sectionListItem.tagName).toBe('LI');
+    expect(sectionListItem.closest('ol')).toBeInstanceOf(HTMLOListElement);
+    expect(sectionListItem.closest('.openapi-markdown')).toBeInstanceOf(
+      HTMLElement,
+    );
+
+    const schemaListItem = screen.getByText('Use plain text.');
+    expect(schemaListItem.tagName).toBe('LI');
+    expect(schemaListItem.closest('ul')).toBeInstanceOf(HTMLUListElement);
+    expect(schemaListItem.closest('.openapi-markdown')).toBeInstanceOf(
+      HTMLElement,
+    );
+    expect(screen.getByRole('link', { name: 'schema guide' })).toHaveAttribute(
+      'href',
+      'https://example.com/schema',
+    );
+
+    const calloutListItem = screen.getByText('Check rate limits.');
+    expect(calloutListItem.tagName).toBe('LI');
+    expect(calloutListItem.closest('ul')).toBeInstanceOf(HTMLUListElement);
+    const calloutLink = screen.getByRole('link', {
+      name: 'instruction guide',
+    });
+    expect(calloutLink).toHaveAttribute(
+      'href',
+      'https://example.com/instructions',
+    );
+    expect(calloutLink.closest('.openapi-markdown')).toBeInstanceOf(
+      HTMLElement,
+    );
+  });
+
   it('renders structured docs code sample groups without mixing them into descriptions', async () => {
     render(
       <FumadocsOpenApiContent
@@ -1270,8 +1413,8 @@ describe('FumadocsOpenApiContent', () => {
       examplesScope.getByRole('tab', { name: 'Python' }),
     ).toBeInTheDocument();
     expect(
-      examplesScope.getByText('curl --request POST https://example.com/join'),
-    ).toBeInTheDocument();
+      examplesScope.getByRole('tabpanel'),
+    ).toHaveTextContent('curl --request POST https://example.com/join');
 
     fireEvent.change(examplesScope.getByLabelText('Request example scenario'), {
       target: {
@@ -1283,11 +1426,11 @@ describe('FumadocsOpenApiContent', () => {
       examplesScope.getByRole('tab', { name: 'Node.js' }),
     ).toBeInTheDocument();
     expect(
-      examplesScope.getByText('fetch("https://example.com/join")'),
-    ).toBeInTheDocument();
+      examplesScope.getByRole('tabpanel'),
+    ).toHaveTextContent('fetch("https://example.com/join")');
     expect(
-      examplesScope.queryByText('curl --request POST https://example.com/join'),
-    ).not.toBeInTheDocument();
+      examplesScope.getByRole('tabpanel'),
+    ).not.toHaveTextContent('curl --request POST https://example.com/join');
     expect(screen.getByRole('tab', { name: '200' })).toBeInTheDocument();
     expect(
       screen.queryByText('x-docs-code-sample-groups'),

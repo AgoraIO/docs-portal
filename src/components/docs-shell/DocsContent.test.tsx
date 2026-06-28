@@ -221,6 +221,64 @@ describe('DocsContent', () => {
     ).toHaveTextContent('/v2/projects/{appid}/join');
   });
 
+  it('does not render the generic header description for OpenAPI bodies', async () => {
+    renderWithRouter(
+      <DocsContent
+        body={{
+          kind: 'openapi',
+          pageProps: {
+            operations: [
+              {
+                method: 'post',
+                path: '/v2/projects/{appid}/agents/{agentId}/instructions',
+              },
+            ],
+            payload: {
+              bundled: {
+                info: {
+                  title: 'Conversational AI Agent API Overview',
+                },
+                openapi: '3.2.0',
+                paths: {},
+              },
+            },
+          },
+        }}
+        description="Use this endpoint for the following scenarios: - **Implicit instruction injection**"
+        slug="send-instruction"
+        title="Send a custom instruction"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Send a custom instruction' }),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByTestId('fumadocs-openapi-content'),
+    ).toHaveTextContent('/v2/projects/{appid}/agents/{agentId}/instructions');
+    expect(
+      screen.queryByText(/Implicit instruction injection/),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders the generic header description for MDX-authored pages', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.md"
+        description="Learn the platform basics."
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'About Agora' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Learn the platform basics.')).toBeInTheDocument();
+  });
+
   it('renders split-file platform group pages with tabbed panels', async () => {
     renderWithRouter(
       <DocsContent
