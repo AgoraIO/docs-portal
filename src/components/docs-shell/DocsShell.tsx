@@ -21,6 +21,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
 import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+import { buildDocPath } from '@/lib/docs-routing';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import {
@@ -116,6 +117,7 @@ export function DocsShell({
   const [headerOffset, setHeaderOffset] = useState(0);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
   const sidebarResetKey = getDocsSidebarResetKey(activeTab, sidebarHeader);
+  const homeHref = buildDocPath(currentLocale, 'introduction');
 
   useLayoutEffect(() => {
     const node = headerRef.current;
@@ -201,7 +203,17 @@ export function DocsShell({
                   side="left"
                 >
                   <SheetHeader className="border-b">
-                    <SheetTitle>{t('app.name')}</SheetTitle>
+                    <SheetTitle>
+                      <Link
+                        className="inline-flex min-w-0 items-center rounded-sm text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                        onClick={() => setIsMobileSheetOpen(false)}
+                        params={{}}
+                        search={{}}
+                        to={homeHref}
+                      >
+                        {t('app.name')}
+                      </Link>
+                    </SheetTitle>
                     <SheetDescription className="sr-only">
                       {t('docs.openMenu')}
                     </SheetDescription>
@@ -226,7 +238,9 @@ export function DocsShell({
               <div className="flex min-w-0 items-center gap-2.5">
                 <Link
                   className="flex min-w-0 items-center text-[15px] font-semibold text-[color:var(--ink-1)]"
-                  to="/"
+                  params={{}}
+                  search={{}}
+                  to={homeHref}
                 >
                   <span className="truncate">{t('app.name')}</span>
                 </Link>
