@@ -86,4 +86,40 @@ describe('SdksCatalog', () => {
     const videoCard = screen.getByRole('article', { name: 'Video SDK' });
     expect(videoCard.querySelector('svg')).toBeTruthy();
   });
+
+  it('lists the Agora Agents SDK with TypeScript, Python, and Go tabs', () => {
+    render(<SdksCatalog />);
+
+    const agentsCard = screen.getByRole('article', { name: 'Agora Agents SDK' });
+
+    // Default tab is Python → pip install command.
+    expect(
+      within(agentsCard).getByRole('tab', { name: 'Python' }),
+    ).toHaveAttribute('aria-selected', 'true');
+    expect(
+      within(agentsCard).getByText('pip install agora-agents'),
+    ).toBeVisible();
+
+    // TypeScript and Go tabs are present.
+    expect(
+      within(agentsCard).getByRole('tab', { name: 'TypeScript' }),
+    ).toBeInTheDocument();
+    expect(
+      within(agentsCard).getByRole('tab', { name: 'Go' }),
+    ).toBeInTheDocument();
+
+    // Switching to TypeScript shows the npm command.
+    fireEvent.click(within(agentsCard).getByRole('tab', { name: 'TypeScript' }));
+    expect(
+      within(agentsCard).getByText('npm i agora-agents@2.3.1'),
+    ).toBeVisible();
+
+    // Switching to Go shows the go get command.
+    fireEvent.click(within(agentsCard).getByRole('tab', { name: 'Go' }));
+    expect(
+      within(agentsCard).getByText(
+        'go get github.com/AgoraIO/agora-agents-go/v2@v2.3.1',
+      ),
+    ).toBeVisible();
+  });
 });
