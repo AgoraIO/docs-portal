@@ -618,15 +618,21 @@
   }
 
   .prose :where(table):not(:where(.not-prose, .not-prose *)) {
+    display: block;
     width: 100%;
+    max-width: 100%;
+    min-width: 100%;
     margin-block: 1.4rem 1.8rem;
+    overflow-x: auto;
+    overflow-y: hidden;
     border-collapse: separate;
     border-spacing: 0;
-    overflow: hidden;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--bg-card);
     box-shadow: var(--docs-shadow-sm);
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
   }
 
   .prose :where(thead):not(:where(.not-prose, .not-prose *)) {
@@ -634,12 +640,13 @@
   }
 
   .prose :where(th, td):not(:where(.not-prose, .not-prose *)) {
+    min-width: 7.5rem;
     border-bottom: 1px solid var(--line);
     padding: 0.85rem 1rem;
     text-align: left;
     vertical-align: top;
     word-break: normal;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 
   .prose :where(th):not(:where(.not-prose, .not-prose *)) {
@@ -647,7 +654,7 @@
     font-size: 0.92rem;
     font-weight: 600;
     line-height: 1.45;
-    white-space: normal;
+    white-space: nowrap;
   }
 
   .prose :where(td):not(:where(.not-prose, .not-prose *)) {
@@ -670,7 +677,7 @@
     :where(th:first-child, td:first-child):not(
       :where(.not-prose, .not-prose *)
     ) {
-    min-width: 5.5rem;
+    min-width: 9.5rem;
     white-space: normal;
   }
 
@@ -981,6 +988,14 @@
       background-clip: padding-box;
     }
   }
+}
+
+/* Fumadocs ships unlayered prose table styles with `overflow: hidden`.
+   Keep this unlayered override after the base layer so wide parameter
+   tables can scroll horizontally instead of squeezing narrow columns. */
+:where(html) .prose :where(table):not(:where(.not-prose, .not-prose *)) {
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 :root {
