@@ -32,7 +32,14 @@ To start a Voice Calling session, implement the following steps in your app:
 
 This section shows you how to set up your Android project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
 1. Create a [new project](https://developer.android.com/studio/projects/create-project).
 
     1. Open Android Studio and select **File > New > New Project...**.
@@ -44,7 +51,10 @@ This section shows you how to set up your Android project and install the Agora 
         After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
         :::
 
-**Add to an existing project**
+</TabsContent>
+
+<TabsContent value="existing-project">
+
 1. Add a new activity to your project.
 
     1. Open your project in Android Studio.
@@ -57,11 +67,21 @@ This section shows you how to set up your Android project and install the Agora 
 
     Set up a basic layout for your activity. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
 
+</TabsContent>
+</Tabs>
+
 ### Install the SDK
 
 Use either of the following methods to add Voice SDK to your project.
 
-**Maven Central**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="maven-central">Maven Central</TabsTrigger>
+  <TabsTrigger value="manual-integration">Manual integration</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven-central">
+
 1. Open the `settings.gradle` file in the project's root directory and add the Maven Central dependency, if it doesn't already exist:
 
     ```groovy
@@ -103,7 +123,10 @@ Use either of the following methods to add Voice SDK to your project.
       -dontwarn io.agora.**
     ```
 
-**Manual integration**
+</TabsContent>
+
+<TabsContent value="manual-integration">
+
 1. Download the latest version of Voice SDK from the [SDKs](/sdks) page and unzip it.
 
 1. Open the unzipped file and copy the following files or subfolders to your project path.
@@ -127,6 +150,9 @@ Use either of the following methods to add Voice SDK to your project.
     -keep class io.agora.** { *; }
       -dontwarn io.agora.**
     ```
+
+</TabsContent>
+</Tabs>
 
 ## Implement Voice Calling
 
@@ -947,7 +973,14 @@ To start a Voice Calling session, implement the following steps in your app:
 
 This section shows you how to set up your iOS project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
 Follow these steps to create a project in Xcode:
 
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application** select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
@@ -962,7 +995,10 @@ Follow these steps to create a project in Xcode:
 
 4. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.
 
-**Add to an existing project**
+</TabsContent>
+
+<TabsContent value="existing-project">
+
 Follow these steps to add Voice Calling to your Xcode project:
 
 1. Open your project in Xcode.
@@ -970,11 +1006,21 @@ Follow these steps to add Voice Calling to your Xcode project:
 2. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
 
 3. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.
+</TabsContent>
+</Tabs>
 ### Install the SDK
 
 Use one of the following methods to install Voice SDK.
 
-**Swift Package Manager**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="swift-package-manager">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="manual-integration">Manual integration</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift-package-manager">
+
 1. In Xcode, go to **File** > **Add Package Dependencies**.
 1. In the search bar, past the following URL:
 
@@ -992,7 +1038,10 @@ Use one of the following methods to install Voice SDK.
 
     For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
-**CocoaPods**
+</TabsContent>
+
+<TabsContent value="cocoapods">
+
 1. Go to the project root directory in the terminal and run the `pod init` command. A text file named `Podfile` is generated in the project folder.
 
 1. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
@@ -1011,7 +1060,10 @@ Use one of the following methods to install Voice SDK.
 
 1. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file through Xcode for subsequent operations.
 
-**Manual integration**
+</TabsContent>
+
+<TabsContent value="manual-integration">
+
 1. Download the latest version of the SDK from [SDKs download](/sdks) and extract the contents.
 
 1. Copy the files in the `libs` folder of the SDK package to your project directory.
@@ -1021,6 +1073,9 @@ Use one of the following methods to install Voice SDK.
     :::note
     Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
     :::
+</TabsContent>
+</Tabs>
+
 :::note
 The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
 :::
@@ -1476,7 +1531,14 @@ To start a Voice Calling session, implement the following steps in your app:
 
 This section shows you how to set up your macOS project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
 Follow these steps to create a project in Xcode:
 
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application** select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
@@ -1491,7 +1553,10 @@ Follow these steps to create a project in Xcode:
 
 4. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.
 
-**Add to an existing project**
+</TabsContent>
+
+<TabsContent value="existing-project">
+
 Follow these steps to add Voice Calling to your Xcode project:
 
 1. Open your project in Xcode.
@@ -1499,11 +1564,22 @@ Follow these steps to add Voice Calling to your Xcode project:
 2. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
 
 3. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.
+
+</TabsContent>
+</Tabs>
 ### Install the SDK
 
 Use one of the following methods to install Voice SDK.
 
-**Swift Package Manager**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="swift-package-manager">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="manual-integration">Manual integration</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift-package-manager">
+
 1. In Xcode, go to **File** > **Add Package Dependencies**.
 1. In the search bar, past the following URL:
 
@@ -1521,7 +1597,10 @@ Use one of the following methods to install Voice SDK.
 
     For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
-**CocoaPods**
+</TabsContent>
+
+<TabsContent value="cocoapods">
+
 1. Go to the project root directory in the terminal and run the `pod init` command. A text file named `Podfile` is generated in the project folder.
 
 1. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
@@ -1540,7 +1619,10 @@ Use one of the following methods to install Voice SDK.
 
 1. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file through Xcode for subsequent operations.
 
-**Manual integration**
+</TabsContent>
+
+<TabsContent value="manual-integration">
+
 1. Download the latest version of the SDK from [SDKs download](/sdks) and extract the contents.
 
 1. Copy the files in the `libs` folder of the SDK package to your project directory.
@@ -1550,6 +1632,9 @@ Use one of the following methods to install Voice SDK.
     :::note
     Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
     :::
+</TabsContent>
+</Tabs>
+
 :::note
 The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
 :::
@@ -1958,7 +2043,14 @@ To start a Voice Calling session, implement the following steps in your app:
 
 This section shows you how to set up your Web project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
 To initialize a new Vite project, take the following steps:
 
 1. Open a terminal and run the following command:
@@ -1978,7 +2070,10 @@ To initialize a new Vite project, take the following steps:
 
 1. Create a user interface for your project. The UI consists of buttons to join and leave a channel. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones html layout.
 
-**Add to an existing project**
+</TabsContent>
+
+<TabsContent value="existing-project">
+
 To add Voice Calling to your existing project, take the following steps:
 
 1. Create a JavaScript file in your project's `src` folder to add `AgoraRTCClient` code that implements specific application logic.
@@ -1990,6 +2085,9 @@ To add Voice Calling to your existing project, take the following steps:
   ```html
   <script type="module" src="/src/main.js"></script>
   ```
+
+</TabsContent>
+</Tabs>
 
 ### Install the SDK
 
@@ -2392,14 +2490,24 @@ To start a Voice Calling session, implement the following steps in your app:
 
 This section shows you how to set up your Windows project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
 The following steps outline the process to set up a new Visual Studio 2022 project on Windows 11 for implementing real-time audio and video interaction functions.
 
 1. In Visual Studio, select **File > New > Project** to create a new project. In the pop-up window, select **MFC application** as the project template, click **Next**, update the project name to `AgoraQuickStart`, set the project storage location, and then click **Create**.
 
 1. In the pop-up MFC application window, set the application type to **Dialog-based** , and set **Use MFC** to **Use MFC in a shared DLL**. Enter the generated class, set the generated class to **Dlg**, set the base class to **CDialog**, and click **Finish**.
 
-**Add to an existing project**
+</TabsContent>
+
+<TabsContent value="existing-project">
+
 To integrate real-time audio interaction into your project:
 
 1. Launch Visual Studio 2022 and open your existing project by selecting **File > Open > Project/Solution**.
@@ -2415,6 +2523,9 @@ To integrate real-time audio interaction into your project:
     * An Edit Control for entering a channel name
 
     Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
+
+</TabsContent>
+</Tabs>
 
 ### Install the SDK
 
@@ -3029,7 +3140,13 @@ This section shows you how to set up your Electron project and install the Agora
 
 ### Install the SDK
 
-**npm integration**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="npm-integration">npm integration</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm-integration">
+
 Add the Voice SDK to your project using `npm`:
 
 1. Configure `package.json`
@@ -3107,6 +3224,9 @@ Add the Voice SDK to your project using `npm`:
      npm install -D --arch=ia32 electron
      npm install
      ```
+</TabsContent>
+</Tabs>
+
 :::note
 - On Windows, you must first install the 32-bit version of Electron by running `npm install -D --arch=ia32 electron`, and then run `npm install`. Otherwise, you may encounter the error: “Not a valid Win32 application.”
 - If a `node_modules` folder exists in the project root directory, delete it before running `npm install` to avoid potential errors.
@@ -3571,7 +3691,14 @@ To start a Voice Calling session, implement the following steps in your app:
 
 This section shows you how to set up your Flutter project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
 From the Terminal, run the following commands to create a new project named `agora_project`, or follow the [steps for your IDE](https://docs.flutter.dev/get-started/test-drive?tab=vscode#choose-your-ide):
 
 ```bash
@@ -3579,11 +3706,17 @@ flutter create agora_project
 cd agora_project
 ```
 
-**Add to an existing project**
+</TabsContent>
+
+<TabsContent value="existing-project">
+
 To add Voice Calling to your existing project:
 
 1. Open your Flutter project and navigate to the `lib` folder.
 2. Add a new file to the `lib` folder and name it `agora_logic.dart`.
+
+</TabsContent>
+</Tabs>
 
 ### Install the SDK
 
@@ -4066,14 +4199,24 @@ To create a new application using [React Native Community CLI](https://github.co
 
 Download and add the Agora Voice SDK to your React Native project. Choose either of the following methods:
 
-**npm**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="npm">npm</TabsTrigger>
+  <TabsTrigger value="yarn">yarn</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm">
+
 In your project folder, execute the following command:
 
 ```bash
 npm i --save react-native-agora
 ```
 
-**yarn**
+</TabsContent>
+
+<TabsContent value="yarn">
+
 In your project folder, execute the following commands:
 
 ```bash
@@ -4083,6 +4226,9 @@ npm install -g yarn
 # Use yarn to download Agora React Native SDK
 yarn add react-native-agora
 ```
+
+</TabsContent>
+</Tabs>
 
 :::note
 React Native 0.60.0 and later support automatic linking of native modules. Manual linking is not recommended. See [Autolinking](https://github.com/react-native-community/cli/blob/master/docs/autolinking.md) for details
@@ -4714,14 +4860,24 @@ To create a new ReactJS project with the necessary dependencies:
 
 Use one of the following methods to install the project dependencies:
 
-**NPM**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="npm">NPM</TabsTrigger>
+  <TabsTrigger value="cdn">CDN</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm">
+
 Navigate to the project folder and run the following command to install the Voice SDK:
 
 ```bash
 npm i agora-rtc-react
 ```
 
-**CDN**
+</TabsContent>
+
+<TabsContent value="cdn">
+
 To integrate React JS dependencies and the Agora SDK using CDN, add the following code to your HTML file:
 
 ```html
@@ -4732,6 +4888,9 @@ To integrate React JS dependencies and the Agora SDK using CDN, add the followin
 <!-- If the above React libraries have already been integrated through npm, skip them and include only the Agora RTC React SDK -->
 <script src="https://download.agora.io/sdk/release/agora-rtc-react.2.3.0.js"></script>
 ```
+
+</TabsContent>
+</Tabs>
 
 ## Implement Voice Calling
 
@@ -5029,7 +5188,14 @@ To start a Voice Calling session, implement the following steps in your app:
 
 This section shows you how to set up your Unity project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
 Refer to the following steps or the [Official Unity documentation](https://docs.unity3d.com/hub/manual/AddProject.html#add-projects) to create a Unity project.
 
 1. Open Unity and click **New**.
@@ -5040,7 +5206,10 @@ Refer to the following steps or the [Official Unity documentation](https://docs.
 
 1. Click **Create project**.
 
-**Add to an existing project**
+</TabsContent>
+
+<TabsContent value="existing-project">
+
 To open your existing project:
 
 1. In the **Projects** window, click the **Open** button in the top-right corner.
@@ -5048,6 +5217,9 @@ To open your existing project:
 1. Browse your file manager and select the folder of the project you want to open.
 
 1. Confirm your selection to add the project to the **Projects** window and open it in the Unity Editor.
+
+</TabsContent>
+</Tabs>
 
 ### Install the SDK
 
@@ -5561,7 +5733,14 @@ To start a Voice Calling session, implement the following steps in your app:
 
 This section shows you how to set up your Unreal Engine project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
 Refer to the following steps or the [Unreal official guide](https://docs.unrealengine.com/4.27/us-EN/Basics/Projects/Browser/) to create a new project. If you already have an Unreal project, skip to the next section.
 
 1. Open Unreal Engine. Select **Games** under **New Project Categories**, and click **Next**.
@@ -5579,7 +5758,10 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
     ![create-project-unreal](/images/video-sdk/create-project-unreal.jpg)
 
-**Add to an existing project**
+</TabsContent>
+
+<TabsContent value="existing-project">
+
 1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.
 
 1. Select the project and click **Open**.
@@ -5624,6 +5806,9 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
     * A button to join a channel.
     * A button to leave the channel.
+
+</TabsContent>
+</Tabs>
 
 ### Install the SDK
 
@@ -6287,7 +6472,14 @@ To start a Voice Calling session, implement the following steps in your app:
 
 This section shows you how to set up your Unreal (Blueprint) project and install the Agora Voice SDK.
 
-**Create a new project**
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
 Refer to the following steps or the [Unreal official guide](https://docs.unrealengine.com/4.27/us-EN/Basics/Projects/Browser/) to create a new project. If you already have an Unreal project, skip to the next section.
 
 1. Open Unreal Engine. Select **Games** under **New Project Categories**, and click **Next**.
@@ -6305,10 +6497,16 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
     ![create-project-unreal](/images/video-sdk/create-project-unreal.jpg)
 
-**Add to an existing project**
+</TabsContent>
+
+<TabsContent value="existing-project">
+
 1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.
 
 1. Select the project and click **Open**.
+
+</TabsContent>
+</Tabs>
 
 ### Install the SDK
 
