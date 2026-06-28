@@ -35,7 +35,7 @@ export function DocsSidebar({
 
   return (
     <ShadcnSidebar
-      className="hidden h-full min-h-0 overflow-hidden bg-transparent text-[color:var(--ink-3)] lg:flex"
+      className="hidden overflow-hidden bg-transparent text-[color:var(--ink-3)] lg:sticky lg:top-[var(--docs-shell-header-offset)] lg:flex lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:self-start"
       collapsible="none"
       data-testid="docs-sidebar"
       style={

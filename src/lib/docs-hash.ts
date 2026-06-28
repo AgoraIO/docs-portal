@@ -1,6 +1,7 @@
 const DESKTOP_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
 const HASH_SCROLL_OFFSET = 24;
 const WINDOW_SCROLL_OFFSET = 96;
+const SCROLLABLE_OVERFLOW_VALUES = new Set(['auto', 'scroll', 'overlay']);
 
 export function scrollDocsHashTarget(
   url: string,
@@ -50,7 +51,9 @@ export function scrollDocsHashTarget(
   return true;
 }
 
-export function syncDocsHashTargetFromLocation(behavior: ScrollBehavior = 'auto') {
+export function syncDocsHashTargetFromLocation(
+  behavior: ScrollBehavior = 'auto',
+) {
   if (typeof window === 'undefined' || !window.location.hash) {
     return false;
   }
@@ -69,7 +72,7 @@ export function findDocsHeadingForHash(url: string) {
   return getHeadingForUrl(url);
 }
 
-function getActiveDocsScrollContainer() {
+export function getActiveDocsScrollContainer() {
   const scrollContainer = document.querySelector<HTMLElement>(
     DESKTOP_SCROLL_SELECTOR,
   );
@@ -79,8 +82,17 @@ function getActiveDocsScrollContainer() {
   }
 
   const styles = window.getComputedStyle(scrollContainer);
+  const overflowY =
+    styles.overflowY ||
+    styles.overflow ||
+    scrollContainer.style.overflowY ||
+    scrollContainer.style.overflow;
 
-  if (styles.display === 'none' || styles.visibility === 'hidden') {
+  if (
+    styles.display === 'none' ||
+    styles.visibility === 'hidden' ||
+    !SCROLLABLE_OVERFLOW_VALUES.has(overflowY)
+  ) {
     return null;
   }
 

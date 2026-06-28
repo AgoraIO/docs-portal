@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
 import {
   findDocsHeadingForHash,
+  getActiveDocsScrollContainer,
   scrollDocsHashTarget,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
@@ -478,7 +479,7 @@ export function DocsTableOfContents({
       });
     };
 
-    const scrollContainer = getDesktopDocsScrollContainer();
+    const scrollContainer = getActiveDocsScrollContainer();
     const observer = new MutationObserver(updateActiveUrl);
 
     scrollContainer?.addEventListener('scroll', updateActiveUrl, {
@@ -676,16 +677,6 @@ function isHiddenFromToc(element: HTMLElement) {
   }
 
   return false;
-}
-
-function getActiveDocsScrollContainer() {
-  return getDesktopDocsScrollContainer();
-}
-
-function getDesktopDocsScrollContainer() {
-  return document.querySelector<HTMLElement>(
-    '[data-testid="docs-main-desktop-scroll"]',
-  );
 }
 
 function getScrollViewportRect(scrollContainer: HTMLElement | null) {
