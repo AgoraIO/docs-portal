@@ -2,6 +2,9 @@
 title: Restrict where agent can run
 description: Configure regional access restrictions to ensure agents only access servers in designated regions.
 ---
+
+import { Parameter, ParameterList } from '@/components/mdx';
+
 To comply with laws and regulations in different countries and regions, the Conversational AI Engine supports regional access restrictions. When you enable regional access restrictions, the Conversational AI Engine only accesses Agora servers in the designated region, regardless of the user's location.
 
 For example, if you specify North America as the access region, two users who initiate calls from North America and Singapore have different experiences:
@@ -29,12 +32,24 @@ When regional access restrictions are disabled, the Conversational AI Engine aut
 
 To configure region access restrictions, set `properties.geofence` when you [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join).
 
-  
+<ParameterList title="properties.geofence">
+  <Parameter
+    name="area"
+    type="string"
+    required
+    possibleValues="GLOBAL, NORTH_AMERICA, EUROPE, ASIA, INDIA, JAPAN"
+  >
     The allowed region for server access.
-  
-  
+  </Parameter>
+  <Parameter
+    name="exclude_area"
+    type="string"
+    required={false}
+    possibleValues="NORTH_AMERICA, EUROPE, ASIA, INDIA, JAPAN"
+  >
     The excluded region. Only available when `area` is set to `GLOBAL`.
-  
+  </Parameter>
+</ParameterList>
 
 ### Configuration examples
 
