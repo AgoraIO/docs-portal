@@ -46,12 +46,19 @@ const ENABLED_DOCS_CHROME_LOCALES = new Set<AppLocale>([DEFAULT_LOCALE]);
 const mobileSidebarGroupLabelClassName =
   'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
 const mobileTabLinkClassName =
-  'min-h-9 w-full min-w-0 justify-start overflow-visible rounded-md border border-transparent px-3 py-2 text-sm whitespace-normal text-muted-foreground hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring data-[state=active]:border-[color:var(--accent-brand)] data-[state=active]:bg-[color:var(--accent-brand-soft)] data-[state=active]:font-semibold data-[state=active]:text-[color:var(--accent-brand)] data-[state=active]:shadow-[inset_3px_0_0_var(--accent-brand)] data-[state=active]:after:bg-[color:var(--accent-brand)]';
+  'h-auto min-h-10 w-full min-w-0 max-w-full items-start justify-start overflow-hidden rounded-md border border-transparent px-3 py-2.5 text-left text-sm leading-5 whitespace-normal text-muted-foreground [overflow-wrap:anywhere] after:hidden hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring data-[state=active]:border-[color:var(--accent-brand)] data-[state=active]:bg-[color:var(--accent-brand-soft)] data-[state=active]:font-semibold data-[state=active]:text-[color:var(--accent-brand)] data-[state=active]:shadow-[inset_3px_0_0_var(--accent-brand)]';
 const mobilePageLinkClassName =
-  'relative min-h-9 min-w-0 overflow-visible rounded-md px-3 py-2 text-sm transition-colors before:absolute before:left-1 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&>span]:break-words [&>span]:whitespace-normal';
+  'relative flex min-h-10 w-full min-w-0 max-w-full items-start gap-2 overflow-hidden rounded-md px-3 py-2.5 text-left text-sm leading-5 transition-colors before:absolute before:left-1 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&>span:first-child]:min-w-0 [&>span:first-child]:flex-1 [&>span:first-child]:break-words [&>span:first-child]:whitespace-normal [&>span:first-child]:[overflow-wrap:anywhere]';
 const mobileActivePageLinkClassName =
   'bg-[color:var(--accent-brand-soft)] font-semibold text-[color:var(--accent-brand)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] before:bg-[color:var(--accent-brand)]';
 const mobileInactivePageLinkClassName = 'text-muted-foreground';
+const mobileSectionLabelClassName =
+  'mt-4 flex min-w-0 max-w-full rounded-md px-2 py-1 text-xs font-semibold uppercase leading-4 tracking-[0.08em] text-muted-foreground [overflow-wrap:anywhere] data-[active=true]:text-[color:var(--ink-2)] [&>span]:min-w-0 [&>span]:break-words [&>span]:whitespace-normal [&>span]:[overflow-wrap:anywhere]';
+const mobileSidebarNestedListClassNames = [
+  'ml-2 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
+  'ml-1 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
+  'ml-0 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
+] as const;
 
 type LocaleLink = {
   href: string;
@@ -205,19 +212,20 @@ export function DocsShell({
                   </Button>
                 </SheetTrigger>
                 <SheetContent
-                  className="w-[88vw] max-w-sm gap-0 overflow-hidden p-0"
+                  className="w-[min(92vw,24rem)] max-w-[calc(100vw-1rem)] gap-0 overflow-hidden p-0 sm:max-w-sm"
+                  data-testid="docs-mobile-sidebar-sheet"
                   side="left"
                 >
-                  <SheetHeader className="border-b">
-                    <SheetTitle>
+                  <SheetHeader className="min-w-0 border-b pr-12">
+                    <SheetTitle className="min-w-0">
                       <Link
-                        className="inline-flex min-w-0 items-center rounded-sm text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                        className="inline-flex max-w-full min-w-0 items-center rounded-sm text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
                         onClick={() => setIsMobileSheetOpen(false)}
                         params={{}}
                         search={{}}
                         to={homeHref}
                       >
-                        {t('app.name')}
+                        <span className="truncate">{t('app.name')}</span>
                       </Link>
                     </SheetTitle>
                     <SheetDescription className="sr-only">
@@ -437,8 +445,11 @@ function MobileSidebar({
 
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-      <ScrollArea className="min-h-0 min-w-0 flex-1 overflow-x-hidden px-4 py-4">
-        <div className="flex min-w-0 flex-col gap-7 pb-6">
+      <ScrollArea
+        className="min-h-0 min-w-0 flex-1 overflow-hidden px-3 py-4 sm:px-4"
+        data-testid="docs-mobile-sidebar-scroll"
+      >
+        <div className="flex min-w-0 max-w-full flex-col gap-6 overflow-x-hidden pb-6">
           <div className="flex min-w-0 flex-col gap-2.5">
             <p className={mobileSidebarGroupLabelClassName}>
               {t('docs.tabsLabel')}
@@ -479,6 +490,7 @@ function MobileSidebar({
               {sidebar.map((node) => (
                 <MobileSidebarNode
                   activePath={activePath}
+                  depth={0}
                   key={node.id}
                   node={node}
                   onSelectPath={onSelectPath}
@@ -508,43 +520,82 @@ function MobileSidebar({
 
 function MobileSidebarNode({
   activePath,
+  depth,
   node,
   onSelectPath,
 }: {
   activePath: string;
+  depth: number;
   node: DocsSidebarNode;
   onSelectPath: () => void;
 }) {
   if (node.type === 'page') {
     const isActive = node.url === activePath;
+    const content = (
+      <>
+        <span className="block min-w-0 flex-1 break-words whitespace-normal [overflow-wrap:anywhere]">
+          {node.title}
+        </span>
+        {node.method ? (
+          <span className="mt-0.5 shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
+            {node.method}
+          </span>
+        ) : null}
+      </>
+    );
+    const className = cn(
+      mobilePageLinkClassName,
+      isActive
+        ? mobileActivePageLinkClassName
+        : mobileInactivePageLinkClassName,
+    );
+
+    if (node.external) {
+      return (
+        <a
+          aria-current={isActive ? 'page' : undefined}
+          className={className}
+          href={node.href ?? node.url}
+          onClick={onSelectPath}
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          {content}
+        </a>
+      );
+    }
 
     return (
       <Link
-        className={cn(
-          mobilePageLinkClassName,
-          isActive
-            ? mobileActivePageLinkClassName
-            : mobileInactivePageLinkClassName,
-        )}
+        aria-current={isActive ? 'page' : undefined}
+        className={className}
         onClick={onSelectPath}
         params={{}}
         search={{}}
         to={node.url}
       >
-        <span className="block min-w-0">{node.title}</span>
+        {content}
       </Link>
     );
   }
 
+  const hasActiveChild = node.children.some((child) =>
+    isMobileSidebarNodeActive(child, activePath),
+  );
+
   return (
-    <div className="flex min-w-0 flex-col gap-1">
-      <p className="mt-3 min-w-0 px-3 text-xs font-medium uppercase leading-4 tracking-[0.12em] text-muted-foreground">
-        {node.title.replaceAll('-', ' ')}
+    <div className="flex min-w-0 max-w-full flex-col gap-1">
+      <p
+        className={mobileSectionLabelClassName}
+        data-active={hasActiveChild ? 'true' : undefined}
+      >
+        <span>{node.title.replaceAll('-', ' ')}</span>
       </p>
-      <div className="flex min-w-0 flex-col gap-1 pl-2">
+      <div className={getMobileSidebarNestedListClassName(depth)}>
         {node.children.map((child) => (
           <MobileSidebarNode
             activePath={activePath}
+            depth={depth + 1}
             key={child.id}
             node={child}
             onSelectPath={onSelectPath}
@@ -552,5 +603,24 @@ function MobileSidebarNode({
         ))}
       </div>
     </div>
+  );
+}
+
+function getMobileSidebarNestedListClassName(depth: number) {
+  return mobileSidebarNestedListClassNames[
+    Math.min(depth, mobileSidebarNestedListClassNames.length - 1)
+  ];
+}
+
+function isMobileSidebarNodeActive(
+  node: DocsSidebarNode,
+  activePath: string,
+): boolean {
+  if (node.type === 'page') {
+    return node.url === activePath;
+  }
+
+  return node.children.some((child) =>
+    isMobileSidebarNodeActive(child, activePath),
   );
 }
