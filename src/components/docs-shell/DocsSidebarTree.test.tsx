@@ -7,6 +7,7 @@ import {
   RouterProvider,
 } from '@tanstack/react-router';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -565,6 +566,195 @@ describe('DocsSidebarTree', () => {
         .getByRole('link', { name: '场景化 API' })
         .closest('div[class*="border-l"]'),
     ).toHaveClass('border-[color:var(--line-strong)]', 'pl-3');
+  });
+
+  it('opens a collapsed nested section when activePath moves into it', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [
+              {
+                id: '/en/realtime-media/video/overview',
+                title: 'Voice overview',
+                type: 'page',
+                url: '/en/realtime-media/video/overview',
+              },
+            ],
+            collapsible: true,
+            id: 'voice-video',
+            title: 'Voice & Video',
+            type: 'section',
+          },
+          {
+            children: [
+              {
+                id: '/en/realtime-media/rtm/build/presence',
+                title: 'Presence',
+                type: 'page',
+                url: '/en/realtime-media/rtm/build/presence',
+              },
+              {
+                id: '/en/realtime-media/rtm/build/channels',
+                title: 'Stream channels',
+                type: 'page',
+                url: '/en/realtime-media/rtm/build/channels',
+              },
+            ],
+            collapsible: true,
+            id: 'signaling',
+            title: 'Signaling',
+            type: 'section',
+          },
+        ],
+        id: 'realtime-media',
+        title: 'Realtime Media',
+        type: 'section',
+      },
+    ];
+    function SidebarHarness() {
+      const [activePath, setActivePath] = useState(
+        '/en/realtime-media/video/overview',
+      );
+
+      return (
+        <>
+          <button
+            onClick={() =>
+              setActivePath('/en/realtime-media/rtm/build/presence')
+            }
+            type="button"
+          >
+            Go to presence
+          </button>
+          <button
+            onClick={() =>
+              setActivePath('/en/realtime-media/rtm/build/channels')
+            }
+            type="button"
+          >
+            Go to channels
+          </button>
+          <DocsSidebarTree
+            activePath={activePath}
+            nodes={tree}
+            onSelectPath={() => {}}
+          />
+        </>
+      );
+    }
+    const rootRoute = createRootRoute({
+      component: () => <Outlet />,
+    });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$',
+      component: () => (
+        <AppProviders>
+          <SidebarProvider>
+            <SidebarHarness />
+          </SidebarProvider>
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/realtime-media/video/overview'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const signalingToggle = await screen.findByRole('button', {
+      name: /Signaling/i,
+    });
+
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.queryByRole('link', { name: 'Presence' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Go to presence' }));
+
+    expect(
+      await screen.findByRole('link', { name: 'Presence' }),
+    ).toHaveAttribute('data-active', 'true');
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
+
+    fireEvent.click(signalingToggle);
+
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.queryByRole('link', { name: 'Presence' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Go to channels' }));
+
+    expect(
+      await screen.findByRole('link', { name: 'Stream channels' }),
+    ).toHaveAttribute('data-active', 'true');
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('keeps defaultOpen false sections collapsed even when a child is active', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/api-reference/faq',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/api-reference/faq',
+          },
+          {
+            id: '/en/api-reference/faq/integration',
+            title: 'Integration',
+            type: 'page',
+            url: '/en/api-reference/faq/integration',
+          },
+        ],
+        collapsible: true,
+        defaultOpen: false,
+        id: 'folder-faq-folder',
+        title: 'FAQ',
+        type: 'section',
+        url: '/en/api-reference/faq',
+      },
+    ];
+    const rootRoute = createRootRoute({
+      component: () => <Outlet />,
+    });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$',
+      component: () => (
+        <AppProviders>
+          <SidebarProvider>
+            <DocsSidebarTree
+              activePath="/en/api-reference/faq/integration"
+              nodes={tree}
+              onSelectPath={() => {}}
+            />
+          </SidebarProvider>
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/api-reference/faq/integration'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+
+    const faqToggle = await screen.findByRole('button', { name: /FAQ/i });
+
+    expect(faqToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.queryByRole('link', { name: 'Integration' }),
+    ).not.toBeInTheDocument();
   });
 
   it('keeps the Build subsection collapsed by default inside Get started', async () => {

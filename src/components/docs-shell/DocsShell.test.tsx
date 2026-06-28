@@ -62,6 +62,53 @@ const sidebar: DocsSidebarNode[] = [
   },
 ];
 
+const realtimeMediaSidebar: DocsSidebarNode[] = [
+  {
+    children: [
+      {
+        children: [
+          {
+            id: '/en/realtime-media/video/overview',
+            title: 'Voice overview',
+            type: 'page',
+            url: '/en/realtime-media/video/overview',
+          },
+        ],
+        collapsible: true,
+        id: 'voice-video',
+        title: 'Voice & Video',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            id: '/en/realtime-media/rtm/build/presence',
+            title: 'Presence',
+            type: 'page',
+            url: '/en/realtime-media/rtm/build/presence',
+          },
+        ],
+        collapsible: true,
+        id: 'signaling',
+        title: 'Signaling',
+        type: 'section',
+      },
+    ],
+    id: 'realtime-media',
+    title: 'Realtime Media',
+    type: 'section',
+  },
+];
+
+const realtimeMediaTabs: TabSummary[] = [
+  {
+    icon: 'Radio',
+    id: 'realtime-media',
+    title: 'Realtime Media',
+    url: '/en/realtime-media',
+  },
+];
+
 type DocsShellProps = ComponentProps<typeof DocsShell>;
 
 const loadSearchPages = async () => [
@@ -166,6 +213,76 @@ function renderWithRouter(
   });
 
   return render(<RouterProvider router={router} />);
+}
+
+function renderRealtimeMediaDocsShell(
+  initialEntry = '/en/realtime-media/video/overview',
+) {
+  const videoPath = '/en/realtime-media/video/overview';
+  const signalingPath = '/en/realtime-media/rtm/build/presence';
+  const history = createMemoryHistory({
+    initialEntries: [initialEntry],
+  });
+  const rootRoute = createRootRoute({
+    component: () => <Outlet />,
+  });
+  const docsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab/$',
+    component: () => {
+      const params = docsRoute.useParams();
+      const activePath = `/${params.locale}/${params.tab}/${params._splat}`;
+
+      return (
+        <AppProviders>
+          <DocsShell
+            activePath={activePath}
+            activeTab="realtime-media"
+            localeLinks={[
+              {
+                href: activePath,
+                isActive: true,
+                locale: 'en',
+              },
+            ]}
+            locale="en"
+            loadPages={loadSearchPages}
+            next={
+              activePath === videoPath
+                ? {
+                    title: 'Presence',
+                    url: signalingPath,
+                  }
+                : undefined
+            }
+            previous={
+              activePath === signalingPath
+                ? {
+                    title: 'Voice overview',
+                    url: videoPath,
+                  }
+                : undefined
+            }
+            sidebar={realtimeMediaSidebar}
+            tabs={realtimeMediaTabs}
+            toc={[]}
+          >
+            <article>{activePath}</article>
+          </DocsShell>
+        </AppProviders>
+      );
+    },
+  });
+  const router = createRouter({
+    routeTree: rootRoute.addChildren([docsRoute]),
+    history,
+  });
+
+  return {
+    history,
+    router,
+    ...render(<RouterProvider router={router} />),
+  };
 }
 
 describe('DocsShell', () => {
@@ -951,6 +1068,108 @@ describe('DocsShell', () => {
     await waitFor(() => {
       expect(mainScroll.scrollTop).toBe(180);
     });
+  });
+
+  it('reveals active nested sidebar sections after footer and history navigation', async () => {
+    const { history, router } = renderRealtimeMediaDocsShell();
+    const sidebarRegion = await screen.findByTestId('docs-sidebar');
+    const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
+    const voiceToggle = within(sidebarRegion).getByRole('button', {
+      name: /Voice & Video/i,
+    });
+    const signalingToggle = within(sidebarRegion).getByRole('button', {
+      name: /Signaling/i,
+    });
+
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      within(sidebarRegion).queryByRole('link', { name: 'Presence' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(
+      within(mainColumn).getByRole('link', { name: /Next Presence/i }),
+    );
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/rtm/build/presence',
+      );
+    });
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Presence' }),
+    ).toHaveAttribute('data-active', 'true');
+
+    fireEvent.click(voiceToggle);
+
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(
+      within(mainColumn).getByRole('link', {
+        name: /Previous Voice overview/i,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/video/overview',
+      );
+    });
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Voice overview' }),
+    ).toHaveAttribute('data-active', 'true');
+
+    fireEvent.click(signalingToggle);
+
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'false');
+
+    await act(async () => {
+      history.back();
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/rtm/build/presence',
+      );
+    });
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Presence' }),
+    ).toHaveAttribute('data-active', 'true');
+
+    fireEvent.click(voiceToggle);
+
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'false');
+
+    await act(async () => {
+      history.forward();
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/video/overview',
+      );
+    });
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Voice overview' }),
+    ).toHaveAttribute('data-active', 'true');
+  });
+
+  it('expands the active nested sidebar section on direct deep links', async () => {
+    renderRealtimeMediaDocsShell('/en/realtime-media/rtm/build/presence');
+
+    const sidebarRegion = await screen.findByTestId('docs-sidebar');
+    const signalingToggle = within(sidebarRegion).getByRole('button', {
+      name: /Signaling/i,
+    });
+
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Presence' }),
+    ).toHaveAttribute('data-active', 'true');
   });
 
   it('does not expose China site or alternate zh-CN navigation in desktop chrome', async () => {
