@@ -389,6 +389,92 @@ Agora provides an open-source example project [RawAudioData](https://github.com/
 - [`onMixedAudioFrame`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoraaudioframedelegate/onmixedaudioframe(_:channelid:))
 </PlatformStructured>
 
+<PlatformStructured platform="web">
+This article shows you how to pre-process and post-process collected raw audio data.
+
+## Understand the tech
+
+For use-cases that require self-processing of audio data, use the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) with Agora Voice SDK to enable raw audio data processing. The Web Audio API allows you to modify the captured audio signal before transmitting it to the channel.
+
+The following figure shows the basic processing of raw audio data:
+
+**Process raw audio**
+
+![Raw Audio Processing](/images/video-sdk/process-raw-audio-web.svg)
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
+
+## Implement raw audio processing
+
+To modify raw audio frames before publishing, follow these steps:
+
+1. Create a local audio track and publish it to the channel.
+1. Use the Web Audio API to create an `AudioContext` and connect the audio track to an `AnalyserNode`.
+1. Extract audio data using an `AnalyserNode` and process it.
+
+The following example extracts the audio data and logs it to the console.
+
+```js
+async function createAndProcessAudioTrack() {
+  try {
+    // Create a microphone audio track
+    localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+
+    // Publish the audio track to the RTC client
+    await client.publish([localAudioTrack]);
+
+    // Initialize the Web Audio API context for audio processing
+    audioContext = new AudioContext();
+
+    // Create a media stream source from the microphone track
+    const source = audioContext.createMediaStreamSource(
+      new MediaStream([localAudioTrack.getMediaStreamTrack()])
+    );
+
+    // Create an AnalyserNode to extract real-time audio frequency data
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 2048; // Higher FFT size improves frequency resolution but increases processing load
+
+    // Create a buffer to store the frequency data
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    // Connect the audio source to the analyser
+    source.connect(analyser);
+
+    // Start continuously processing audio frames
+    processAudioFrames();
+  } catch (error) {
+    console.error("Error creating or processing audio track:", error);
+  }
+}
+
+function processAudioFrames() {
+  if (!analyser) {
+    console.warn("Analyser not initialized.");
+    return;
+  }
+
+  // Retrieve frequency data from the analyser node
+  analyser.getByteFrequencyData(dataArray);
+  console.log("Audio Data:", dataArray); // Log real-time frequency data
+
+  // Schedule the next frame for continuous audio analysis
+  animationFrameId = requestAnimationFrame(processAudioFrames);
+}
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+* [Audio module](../core-concepts.mdx)
+
+### API reference
+
+- [`createMicrophoneAudioTrack`]({{global.API_REF_WEB_ROOT}}/interfaces/iagorartc.html#createcustomvideotrack)
+- [`publish`]({{global.API_REF_WEB_ROOT}}/interfaces/iagorartcclient.html#publish)
+</PlatformStructured>
+
 <PlatformStructured platform="windows">
 This article shows you how to pre-process and post-process collected raw audio data.
 
