@@ -2072,13 +2072,13 @@ async function appendEndpointPagesToOpenApiParent(
     (item) =>
       item.tab === tab &&
       getOpenApiLaneLocales(item).includes(locale) &&
-      // A linked-header section (rule 2 from docs-tree) carries the parent URL
-      // on node.url instead of emitting it as a child page.
-      (node.url === item.parentUrl[locale] ||
-        children.some(
-          (child) =>
-            child.type === 'page' && child.url === item.parentUrl[locale],
-        )),
+      // Only a section that genuinely REPRESENTS the lane gets its endpoint
+      // pages appended. A linked-header section (rule 2 from docs-tree) carries
+      // the lane's parent URL on node.url. We deliberately do NOT match a
+      // section that merely *links* to the lane via a child page (e.g. a
+      // product group whose "REST API" cross-link points at the lane landing),
+      // otherwise that group would absorb the whole lane's endpoints inline.
+      node.url === item.parentUrl[locale],
   );
 
   if (lane) {
