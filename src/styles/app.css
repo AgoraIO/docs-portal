@@ -639,6 +639,7 @@
     :where(.prose-no-margin > table):not(:where(.not-prose, .not-prose *)) {
     display: table;
     width: auto;
+    max-width: none;
     min-width: 0;
     overflow: visible;
   }
@@ -1136,6 +1137,10 @@
 :where(html)
   .prose
   :where(.prose-no-margin > table):not(:where(.not-prose, .not-prose *)) {
+  display: table;
+  width: auto;
+  max-width: none;
+  min-width: 0;
   overflow: visible;
 }
 

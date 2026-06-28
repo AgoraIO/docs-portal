@@ -148,6 +148,12 @@ describe('app prose CSS regressions', () => {
     );
     expect(wrappedTable.rule.nodes).toContainEqual(
       expect.objectContaining({
+        prop: 'max-width',
+        value: 'none',
+      }),
+    );
+    expect(wrappedTable.rule.nodes).toContainEqual(
+      expect.objectContaining({
         prop: 'min-width',
         value: '0',
       }),
@@ -168,6 +174,30 @@ describe('app prose CSS regressions', () => {
       expect.objectContaining({
         prop: 'overflow-y',
         value: 'hidden',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'display',
+        value: 'table',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'width',
+        value: 'auto',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'max-width',
+        value: 'none',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'min-width',
+        value: '0',
       }),
     );
     expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
