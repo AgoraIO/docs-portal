@@ -6,6 +6,8 @@ This is a TanStack Start documentation portal built with Fumadocs, React, Vite, 
 
 Documentation content is the source of truth under `content/docs/{en,zh-CN}`. Top-level content folders map to header tabs, and each section uses `meta.json` for navigation. Static assets live in `public`; OpenAPI sources are maintained in `content/openapi` and synced to `public/openapi`.
 
+For content syntax, follow `docs/agents/markdown-authoring-standard.md`. It is the minimum contract for callout fences, code tabs, platform variants, list continuations, images, and tables.
+
 ## Build, Test, and Development Commands
 
 - `bun run dev` starts the local Vite dev server on port 3000.
@@ -45,3 +47,7 @@ Triage uses the default five-label vocabulary: `needs-triage`, `needs-info`, `re
 ### Domain docs
 
 This is a single-context repo with root `CONTEXT.md` and optional ADRs under `docs/adr/`. See `docs/agents/domain.md`.
+
+### Markdown authoring
+
+Docs content uses the minimum Markdown/Fumadocs syntax standard in `docs/agents/markdown-authoring-standard.md`. Check it before editing or migrating `content/docs/**`.
