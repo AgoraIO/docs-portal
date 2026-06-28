@@ -1,0 +1,1451 @@
+---
+title: "UI Kit quickstart"
+description: "A highly reliable global communication platform where users can chat one-to-one, in groups or in chat rooms."
+---
+
+<PlatformStructured platform="windows">
+
+**Currently, there is no Chat UI Kit for this platform.**
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+**Currently, there is no Chat UI Kit for this platform.**
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+Instant messaging connects people wherever they are and allows them to communicate with others in real time. Agora offers an open-source Chat UI Kit project on GitHub. With built-in user interfaces for key Chat features, the Agora Chat UI Kit enables you to quickly embed real-time messaging into your app without requiring extra effort on the UI.
+
+:::info
+For the latest Agora Chat UIKit documentation, refer to the [UIKit 2.x Documentation](https://github.com/AgoraLab/agora-chat-uikit) GitHub repository.
+:::
+
+Legacy UIkit 1.x documentation
+
+This page shows sample code to add peer-to-peer messaging into your app by using the Agora Chat UI Kit.
+
+## Understand the tech
+
+The following figure shows the workflow of how clients send and receive peer-to-peer messages:
+
+Chat UI kit workflow
+
+![](/images/im/ui-kit-quickstart.png)
+
+1. Clients retrieve a token from your app server.
+2. Client A and Client B log in to Agora Chat.
+3. Client A sends a message to Client B. The message is sent to the Agora Chat server, and the server delivers the message to Client B. When Client B receives the message, the SDK triggers an event. Client B listens for the event and gets the message.
+
+## Prerequisites
+
+- An Android simulator or a physical Android device.
+- Android Studio 3.2 or higher.
+- Java Development Kit (JDK). You can refer to the [User Guide of Android](https://developer.android.com/studio/write/java8-support) for applicable versions.
+
+## Project setup
+
+Follow the steps to create the environment necessary to add video call into your app.
+
+1. For new projects, in **Android Studio**, create a **Phone and Tablet** [Android project](https://developer.android.com/studio/projects/create-project) with an **Empty Activity**.
+
+   After creating the project, Android Studio automatically starts gradle sync. Ensure that the sync succeeds before you continue.
+
+2. Integrate the Chat SDK into your project with Maven Central.
+
+    1. In `/Gradle Scripts/build.gradle(Project: )`, add the following lines to add the Maven Central dependency:
+
+        ```java
+        buildscript {
+            repositories {
+                ...
+                mavenCentral()
+            }
+        }
+        allprojects {
+            repositories {
+                ...
+                mavenCentral()
+            }
+        }
+        ```
+
+  1. In `/Gradle Scripts/build.gradle(Module: .app)`, add the following lines to integrate the Chat UI Samples into your Android project:
+
+        ```java
+        android {
+            defaultConfig {
+                    // The Android OS version should be 21 or higher.
+                    minSdkVersion 21
+            }
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+        }
+        dependencies {
+            ...
+            // Replace X.Y.Z with the latest version of the Chat UI Samples.
+            // For the latest version, go to https://search.maven.org/.
+            implementation 'io.agora.rtc:chat-uikit:X.Y.Z'
+        }
+        ```
+
+3. Add permissions for network and device access.
+
+   In `/app/Manifests/AndroidManifest.xml`, add the following permissions after ``:
+
+  ```xml
+
+
+
+
+
+
+
+
+
+  ```
+
+  These are the minimum permissions you need to add to start Chat. You can also add other permissions according to your use case.
+
+4. Prevent code obfuscation.
+
+   In `/Gradle Scripts/proguard-rules.pro`, add the following line:
+
+  ```java
+  -keep class io.agora.** {*;}
+  -dontwarn  io.agora.**
+  ```
+
+## Implementation
+
+## Implement peer-to-peer messaging
+
+This section shows how to use the Chat UI Samples to implement peer-to-peer messaging in your app step by step.
+
+### Create the UI
+
+1. To add the text strings used by the UI, open `app/res/values/strings.xml ` and  replace the content with the following:
+
+    ```xml
+
+        AgoraChatUIKitQuickstart
+
+        Username or password is empty
+        Sign up success!
+        Sign in success!
+        Sign out success!
+        Send message success!
+        Enter username
+        Enter password
+        Sign in
+        Sign out
+        Sign up
+        Enter to username
+        Start chat
+        Enter content
+        Show log area...
+        An account has been signed in, please sign out first and then sign in
+        Please sign in first
+        Please enter the username who you want to send first!
+
+        41117440#383391
+
+    ```
+
+2. To add the UI framework, open `app/res/layout/activity_main.xml` and replace the content with the following:
+
+    ```xml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ```
+
+### Implementation
+
+To enable your app to send and receive messages between individual users, do the following:
+
+1. Implement sending and receiving messages.
+
+   In  `app/java/io.agora.agorachatquickstart/MainActivity`, replace the code with the following:
+
+    ```java
+    package io.agora.chatuikitquickstart;
+
+    import android.Manifest;
+    import android.os.Bundle;
+    import android.text.TextUtils;
+    import android.text.method.ScrollingMovementMethod;
+    import android.view.MotionEvent;
+    import android.view.View;
+    import android.widget.EditText;
+    import android.widget.TextView;
+    import android.widget.Toast;
+
+    import androidx.appcompat.app.AppCompatActivity;
+    import androidx.core.content.ContextCompat;
+
+    import org.json.JSONObject;
+
+    import java.util.HashMap;
+    import java.util.Map;
+
+    import io.agora.CallBack;
+    import io.agora.ConnectionListener;
+    import io.agora.Error;
+    import io.agora.chat.ChatClient;
+    import io.agora.chat.ChatMessage;
+    import io.agora.chat.ChatOptions;
+    import io.agora.chat.uikit.EaseUIKit;
+    import io.agora.chat.uikit.chat.EaseChatFragment;
+    import io.agora.chat.uikit.chat.interfaces.OnChatExtendMenuItemClickListener;
+    import io.agora.chat.uikit.chat.interfaces.OnChatInputChangeListener;
+    import io.agora.chat.uikit.chat.interfaces.OnChatRecordTouchListener;
+    import io.agora.chat.uikit.chat.interfaces.OnMessageSendCallBack;
+    import io.agora.chatuikitquickstart.utils.LogUtils;
+    import io.agora.chatuikitquickstart.utils.PermissionsManager;
+    import io.agora.cloud.HttpClientManager;
+    import io.agora.cloud.HttpResponse;
+    import io.agora.util.EMLog;
+
+    import static io.agora.cloud.HttpClientManager.Method_POST;
+
+    public class MainActivity extends AppCompatActivity {
+        private static final String NEW_LOGIN = "NEW_LOGIN";
+        private static final String RENEW_TOKEN = "RENEW_TOKEN";
+        private static final String LOGIN_URL = "https://a41.chat.agora.io/app/chat/user/login";
+        private static final String REGISTER_URL = "https://a41.chat.agora.io/app/chat/user/register";
+        private EditText et_username;
+        private TextView tv_log;
+        private ConnectionListener connectionListener;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            initView();
+            requestPermissions();
+            initSDK();
+            addConnectionListener();
+        }
+
+        private void initView() {
+            et_username = findViewById(R.id.et_username);
+            tv_log = findViewById(R.id.tv_log);
+            tv_log.setMovementMethod(new ScrollingMovementMethod());
+        }
+
+        private void requestPermissions() {
+            checkPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, 110);
+        }
+
+    //=================== init SDK start ========================
+        private void initSDK() {
+            ChatOptions options = new ChatOptions();
+            // Set your appkey applied from Agora Console
+            String sdkAppkey = getString(R.string.app_key);
+            if(TextUtils.isEmpty(sdkAppkey)) {
+                Toast.makeText(MainActivity.this, "You should set your AppKey first!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Set your appkey to options
+            options.setAppKey(sdkAppkey);
+            // Set whether confirmation of delivery is required by the recipient. Default: false
+            options.setRequireDeliveryAck(true);
+            // Set not to log in automatically
+            options.setAutoLogin(false);
+            // Use UI Samples to initialize Chat SDK
+            EaseUIKit.getInstance().init(this, options);
+            // Make Chat SDK debuggable
+            ChatClient.getInstance().setDebugMode(true);
+        }
+    //=================== init SDK end ========================
+    //================= SDK listener start ====================
+        private void addConnectionListener() {
+            connectionListener = new ConnectionListener() {
+                @Override
+                public void onConnected() {
+                }
+
+                @Override
+                public void onDisconnected(int error) {
+                    if (error == Error.USER_REMOVED) {
+                        onUserException("account_removed");
+                    } else if (error == Error.USER_LOGIN_ANOTHER_DEVICE) {
+                        onUserException("account_conflict");
+                    } else if (error == Error.SERVER_SERVICE_RESTRICTED) {
+                        onUserException("account_forbidden");
+                    } else if (error == Error.USER_KICKED_BY_CHANGE_PASSWORD) {
+                        onUserException("account_kicked_by_change_password");
+                    } else if (error == Error.USER_KICKED_BY_OTHER_DEVICE) {
+                        onUserException("account_kicked_by_other_device");
+                    } else if(error == Error.USER_BIND_ANOTHER_DEVICE) {
+                        onUserException("user_bind_another_device");
+                    } else if(error == Error.USER_DEVICE_CHANGED) {
+                        onUserException("user_device_changed");
+                    } else if(error == Error.USER_LOGIN_TOO_MANY_DEVICES) {
+                        onUserException("user_login_too_many_devices");
+                    }
+                }
+
+                @Override
+                public void onTokenExpired() {
+                    //login again
+                    signInWithToken(null);
+                    LogUtils.showLog(tv_log,"ConnectionListener onTokenExpired");
+                }
+
+                @Override
+                public void onTokenWillExpire() {
+                    getTokenFromAppServer(RENEW_TOKEN);
+                    LogUtils.showLog(tv_log, "ConnectionListener onTokenWillExpire");
+                }
+            };
+            // Call removeConnectionListener(connectionListener) when the activity is destroyed
+            ChatClient.getInstance().addConnectionListener(connectionListener);
+        }
+
+    //================= SDK listener end ====================
+    //=================== click event start ========================
+
+        /**
+        * Sign up with username and password.
+        */
+        public void signUp(View view) {
+            String username = et_username.getText().toString().trim();
+            String pwd = ((EditText) findViewById(R.id.et_pwd)).getText().toString().trim();
+            if(TextUtils.isEmpty(username) || TextUtils.isEmpty(pwd)) {
+                LogUtils.showErrorToast(this, tv_log, getString(R.string.username_or_pwd_miss));
+                return;
+            }
+            execute(()-> {
+                try {
+                    Map headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+                    JSONObject request = new JSONObject();
+                    request.putOpt("userAccount", username);
+                    request.putOpt("userPassword", pwd);
+
+                    LogUtils.showErrorLog(tv_log,"begin to signUp...");
+
+                    HttpResponse response = HttpClientManager.httpExecute(REGISTER_URL, headers, request.toString(), Method_POST);
+                    int code=  response.code;
+                    String responseInfo = response.content;
+                    if (code == 200) {
+                        if (responseInfo != null && responseInfo.length() > 0) {
+                            JSONObject object = new JSONObject(responseInfo);
+                            String resultCode = object.getString("code");
+                            if(resultCode.equals("RES_OK")) {
+                                LogUtils.showToast(MainActivity.this, tv_log, getString(R.string.sign_up_success));
+                            }else{
+                                String errorInfo = object.getString("errorInfo");
+                                LogUtils.showErrorLog(tv_log,errorInfo);
+                            }
+                        } else {
+                            LogUtils.showErrorLog(tv_log,responseInfo);
+                        }
+                    } else {
+                        LogUtils.showErrorLog(tv_log,responseInfo);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.showErrorLog(tv_log, e.getMessage());
+                }
+            });
+        }
+
+        /**
+        * Log in with token.
+        */
+        public void signInWithToken(View view) {
+            getTokenFromAppServer(NEW_LOGIN);
+        }
+
+        /**
+        * Sign out.
+        */
+        public void signOut(View view) {
+            if(ChatClient.getInstance().isLoggedInBefore()) {
+                ChatClient.getInstance().logout(true, new CallBack() {
+                    @Override
+                    public void onSuccess() {
+                        LogUtils.showToast(MainActivity.this, tv_log, getString(R.string.sign_out_success));
+                    }
+
+                    @Override
+                    public void onError(int code, String error) {
+                        LogUtils.showErrorToast(MainActivity.this, tv_log, "Sign out failed! code: "+code + " error: "+error);
+                    }
+
+                    @Override
+                    public void onProgress(int progress, String status) {
+
+                    }
+                });
+            }
+        }
+
+        public void startChat(View view) {
+            EditText et_to_username = findViewById(R.id.et_to_username);
+            String toChatUsername = et_to_username.getText().toString().trim();
+            // check username
+            if(TextUtils.isEmpty(toChatUsername)) {
+                LogUtils.showErrorToast(this, tv_log, getString(R.string.not_find_send_name));
+                return;
+            }
+            // 1: single chat; 2: group chat; 3: chat room
+            EaseChatFragment fragment = new EaseChatFragment.Builder(toChatUsername, EaseChatType.SINGLE_CHAT)
+                    .useHeader(false)
+                    .setOnChatExtendMenuItemClickListener(new OnChatExtendMenuItemClickListener() {
+                        @Override
+                        public boolean onChatExtendMenuItemClick(View view, int itemId) {
+                            if(itemId == io.agora.chat.uikit.R.id.extend_item_take_picture) {
+                                return !checkPermissions(Manifest.permission.CAMERA, 111);
+                            }else if(itemId == io.agora.chat.uikit.R.id.extend_item_picture || itemId == io.agora.chat.uikit.R.id.extend_item_file || itemId == io.agora.chat.uikit.R.id.extend_item_video) {
+                                return !checkPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, 112);
+                            }
+                            return false;
+                        }
+                    })
+                    .setOnChatRecordTouchListener(new OnChatRecordTouchListener() {
+                        @Override
+                        public boolean onRecordTouch(View v, MotionEvent event) {
+                            return !checkPermissions(Manifest.permission.RECORD_AUDIO, 113);
+                        }
+                    })
+                    .setOnMessageSendCallBack(new OnMessageSendCallBack() {
+                        @Override
+                        public void onSuccess(ChatMessage message) {
+                            LogUtils.showLog(tv_log, "Send success: message type: " + message.getType().name());
+                        }
+
+                        @Override
+                        public void onError(int code, String errorMsg) {
+                            LogUtils.showErrorLog(tv_log, "Send failed: error code: "+code + " errorMsg: "+errorMsg);
+                        }
+                    })
+                    .build();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fl_fragment, fragment).commit();
+        }
+    //=================== click event end ========================
+    //=================== get token from server start ========================
+
+        private void getTokenFromAppServer(String requestType) {
+            if(ChatClient.getInstance().getOptions().getAutoLogin() && ChatClient.getInstance().isLoggedInBefore()) {
+                LogUtils.showErrorLog(tv_log, getString(R.string.has_login_before));
+                return;
+            }
+            String username = et_username.getText().toString().trim();
+            String pwd = ((EditText) findViewById(R.id.et_pwd)).getText().toString().trim();
+            if(TextUtils.isEmpty(username) || TextUtils.isEmpty(pwd)) {
+                LogUtils.showErrorToast(MainActivity.this, tv_log, getString(R.string.username_or_pwd_miss));
+                return;
+            }
+            execute(()-> {
+                try {
+                    Map headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+
+                    JSONObject request = new JSONObject();
+                    request.putOpt("userAccount", username);
+                    request.putOpt("userPassword", pwd);
+
+                    LogUtils.showErrorLog(tv_log,"begin to getTokenFromAppServer ...");
+
+                    HttpResponse response = HttpClientManager.httpExecute(LOGIN_URL, headers, request.toString(), Method_POST);
+                    int code = response.code;
+                    String responseInfo = response.content;
+                    if (code == 200) {
+                        if (responseInfo != null && responseInfo.length() > 0) {
+                            JSONObject object = new JSONObject(responseInfo);
+                            String token = object.getString("accessToken");
+                            if(TextUtils.equals(requestType, NEW_LOGIN)) {
+                                ChatClient.getInstance().loginWithAgoraToken(username, token, new CallBack() {
+                                    @Override
+                                    public void onSuccess() {
+                                        LogUtils.showToast(MainActivity.this, tv_log, getString(R.string.sign_in_success));
+                                    }
+
+                                    @Override
+                                    public void onError(int code, String error) {
+                                        LogUtils.showErrorToast(MainActivity.this, tv_log, "Login failed! code: " + code + " error: " + error);
+                                    }
+
+                                    @Override
+                                    public void onProgress(int progress, String status) {
+
+                                    }
+                                });
+                            }else if(TextUtils.equals(requestType, RENEW_TOKEN)) {
+                                ChatClient.getInstance().renewToken(token);
+                            }
+
+                        } else {
+                            LogUtils.showErrorToast(MainActivity.this, tv_log, "getTokenFromAppServer failed! code: " + code + " error: " + responseInfo);
+                        }
+                    } else {
+                        LogUtils.showErrorToast(MainActivity.this, tv_log, "getTokenFromAppServer failed! code: " + code + " error: " + responseInfo);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.showErrorToast(MainActivity.this, tv_log, "getTokenFromAppServer failed! code: " + 0 + " error: " + e.getMessage());
+
+                }
+            });
+        }
+    //=================== get token from server end ========================
+
+        /**
+        * Check and request permission
+        * @param permission
+        * @param requestCode
+        * @return
+        */
+        private boolean checkPermissions(String permission, int requestCode) {
+            if(!PermissionsManager.getInstance().hasPermission(this, permission)) {
+                PermissionsManager.getInstance().requestPermissions(this, new String[]{permission}, requestCode);
+                return false;
+            }
+            return true;
+        }
+        /**
+        * user met some exception: conflict, removed or forbidden， goto login activity
+        */
+        protected void onUserException(String exception) {
+            LogUtils.showLog(tv_log, "onUserException: " + exception);
+            ChatClient.getInstance().logout(false, null);
+        }
+
+        public void execute(Runnable runnable) {
+            new Thread(runnable).start();
+        }
+
+        @Override
+        protected void onDestroy() {
+            super.onDestroy();
+            if(connectionListener != null) {
+                ChatClient.getInstance().removeConnectionListener(connectionListener);
+            }
+        }
+    }
+    ```
+
+2. Add LogUtils and PermissionsManager.
+
+   To make troubleshooting less time-consuming, this quickstart also uses `LogUtils` class for logs. Navigate to `app/java/io.agora.agorachatquickstart/`, create a folder named `utils`. In this new folder, create a `.java` file, name it `LogUtils`, and copy the following codes into the file.
+
+    ```java
+    package io.agora.chatuikitquickstart.utils;
+
+    import android.app.Activity;
+    import android.text.TextUtils;
+    import android.util.Log;
+    import android.widget.TextView;
+    import android.widget.Toast;
+
+    import java.text.SimpleDateFormat;
+    import java.util.Date;
+    import java.util.Locale;
+
+    public class LogUtils {
+        private static final String TAG = LogUtils.class.getSimpleName();
+
+        public static void showErrorLog(TextView tvLog, String content) {
+            showLog(tvLog, content);
+        }
+
+        public static void showNormalLog(TextView tvLog, String content) {
+            showLog(tvLog, content);
+        }
+
+        public static void showLog(TextView tvLog, String content) {
+            if(TextUtils.isEmpty(content) || tvLog == null) {
+                return;
+            }
+            String preContent = tvLog.getText().toString().trim();
+            StringBuilder builder = new StringBuilder();
+            builder.append(formatCurrentTime())
+                    .append(" ")
+                    .append(content)
+                    .append("\n")
+                    .append(preContent);
+            tvLog.post(()-> {
+                tvLog.setText(builder);
+            });
+        }
+
+        public static void showErrorToast(Activity activity, TextView tvLog, String content) {
+            if(activity == null || activity.isFinishing()) {
+                Log.e(TAG, "Context is null...");
+                return;
+            }
+            if(TextUtils.isEmpty(content)) {
+                return;
+            }
+            activity.runOnUiThread(()-> {
+                Toast.makeText(activity, content, Toast.LENGTH_SHORT).show();
+                showErrorLog(tvLog,content);
+            });
+        }
+
+        public static void showToast(Activity activity, TextView tvLog, String content) {
+            if(TextUtils.isEmpty(content) || activity == null || activity.isFinishing()) {
+                return;
+            }
+            activity.runOnUiThread(()-> {
+                Toast.makeText(activity, content, Toast.LENGTH_SHORT).show();
+                showNormalLog(tvLog, content);
+            });
+        }
+
+        private static String formatCurrentTime() {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            return sdf.format(new Date());
+        }
+
+    }
+    ```
+
+    When your app launches, check if the permissions necessary to insert real-time chat into the app are granted. In the `utils` file, create a `.java` file, name it `PermissionsManager`, and copy the following codes into the file.
+
+    ```java
+    package io.agora.chatuikitquickstart.utils;
+
+    import android.app.Activity;
+    import android.content.Context;
+    import android.content.pm.PackageManager;
+
+    import androidx.annotation.NonNull;
+    import androidx.annotation.Nullable;
+    import androidx.core.app.ActivityCompat;
+
+    public class PermissionsManager {
+        private static PermissionsManager mInstance = null;
+
+        public static PermissionsManager getInstance() {
+            if (mInstance == null) {
+                mInstance = new PermissionsManager();
+            }
+            return mInstance;
+        }
+
+        private PermissionsManager() {}
+
+        /**
+        * Check if has permission
+        * @param context
+        * @param permission
+        * @return
+        */
+        @SuppressWarnings("unused")
+        public synchronized boolean hasPermission(@Nullable Context context, @NonNull String permission) {
+            return context != null && ActivityCompat.checkSelfPermission(context, permission)
+                    == PackageManager.PERMISSION_GRANTED;
+        }
+
+        /**
+        * Request permissions
+        * @param activity
+        * @param permissions
+        * @param requestCode
+        */
+        public synchronized void requestPermissions(Activity activity, String[] permissions, int requestCode) {
+            ActivityCompat.requestPermissions(activity, permissions, requestCode);
+        }
+    }
+    ```
+
+3. To send image and file messages, take the following configurations:
+
+   Under `/app/src/main/res/`, create a folder, name it `xml`, and create an xml file named `file_paths.xml` under `xml`. Open `file_paths.xml`, replace the code with the following:
+
+    ```xml
+
+
+
+
+
+    ```
+
+    In `/app/Manifests/AndroidManifest.xml`, add the following lines before ``:
+
+    ```xml
+
+
+
+
+    ```
+
+4. Click `Sync Project with Gradle Files` to sync your project. Now you are ready to test your app.
+
+## Test your app
+
+To validate the peer-to-peer messaging you have just integrated into your app using Chat:
+
+1. In Android Studio, click `Run 'app'`.
+
+   You see the following interface on your simulator or physical device:
+
+
+
+2. Create a user account and click **SIGN UP**. Click **Sign in** and you will see a log that says Sign in success.
+
+3. Run the app on another Android device or simulator and create another user account. Ensure that the usernames you created are unique.
+
+4. On the first device or simulator, enter the username you just created and click **START CHAT**. You can now start chatting between the two clients.
+
+
+
+## Next steps
+
+For demonstration purposes, Chat provides an app server that enables you to quickly retrieve a token using the App Key given in this guide. In a production context, the best practice is for you to deploy your own token server, use your own [App Key](./enable#get-the-information-of-the-agora-chat-project) to generate a token, and retrieve the token on the client side to log in to Agora. To see how to implement a server that generates and serves tokens on request, see [Authenticate your users with tokens](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
+
+## Reference
+
+Agora provides the fully featured [AgoraChat-Starter-Kit-Android](https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-android) demo app as an implementation reference.
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+Instant messaging connects people wherever they are and allows them to communicate with others in real time. Agora offers an open-source Chat UI Kit project on GitHub. With built-in user interfaces for key Chat features, the Agora Chat UI Kit enables you to quickly embed real-time messaging into your app without requiring extra effort on the UI.
+
+:::info
+For the latest Agora Chat UIKit documentation, refer to the [UIKit 2.x Documentation](https://github.com/AgoraLab/agora-chat-uikit) GitHub repository.
+:::
+
+Legacy UIkit 1.x documentation
+
+This page shows sample code to add peer-to-peer messaging into your app by using the Agora Chat UI Kit.
+
+## Understand the tech
+
+The following figure shows the workflow of how clients send and receive peer-to-peer messages:
+
+Chat UI kit workflow
+
+![](/images/im/ui-kit-quickstart.png)
+
+1. Clients retrieve a token from your app server.
+2. Client A and Client B log in to Agora Chat.
+3. Client A sends a message to Client B. The message is sent to the Agora Chat server, and the server delivers the message to Client B. When Client B receives the message, the SDK triggers an event. Client B listens for the event and gets the message.
+
+## Prerequisites
+
+- Xcode, preferably the latest version.
+- A simulator or a physical mobile device running iOS 11.0 or later.
+- CocoaPods. Refer to [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) if you have not installed CocoaPods.
+
+## Project setup
+
+In order to create the environment necessary to integrate Chat UI Samples into your app, do the following:
+
+1. [Create a new project](https://help.apple.com/xcode/mac/current/#/dev07db0e578) for an iOS app. Make sure you select **Storyboard** as the **Interface**.
+
+   If you have added any team information, you see the **Add account...** button. Click it, input your Apple ID, and click Next. Your team information is added to the project.
+
+2. [Enable automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your project.
+
+3. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) to deploy your iOS app.
+
+4. Add project permissions for microphone and camera usage.
+
+   Open **info** in the project navigation panel, and add the following properties to the [Property List](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6):
+
+   | Key | Type | Value |
+   | --- | --- | --- |
+   | `Privacy - Photo Library Usage Description` | String | For photo library access |
+   | `Privacy - Microphone Usage Description` | String | For microphone access |
+   | `Privacy - Camera Usage Description` | String | For camera access |
+   | `App Transport Security Settings > Allow Arbitrary Loads` | Boolean | YES |
+
+5. Integrate the UI Samples into your project.
+
+   1. Create a Podfile for your project.
+
+      In the Terminal, navigate to the root directory of your Xcode project and run the following command:
+
+      ```shell
+      pod init
+      ```
+   2. Add dependencies to the UI Samples in the Podfile.
+
+      Open Podfile and replace the content with the following:
+
+      ```shell
+      platform :ios, '11.0'
+      target 'EaseChatKitExample' do
+
+      # Pods for EaseChatKitExample
+      pod 'chat-uikit'
+      pod 'Masonry'
+
+      end
+      ```
+
+  3. Install the UI Samples.
+
+      In the Terminal, navigate to the root directory of your Xcode project and run the following command:
+
+       ```shell
+       pod install
+       ```
+
+  The Chat UI Samples is now added into your project.
+
+## Implementation
+
+## Implement peer-to-peer messaging
+
+This section shows how to use Chat UI Samples to rapidly implement peer-to-peer messaging in your app.
+
+### Initialize UI Samples
+
+Follow the steps to initialize the UI Samples.
+
+1. To import the header file, open `SceneDelegate.m` in **Xcode** and add the following lines to import the header file:
+
+    ```objc
+    #import
+    #import "AgoraLoginViewController.h"
+    #import
+    ```
+
+2. Initialize the UI Samples by calling the `initWithAgoraChatOptions` method. In `SceneDelegate.m`, replace the `willConnectToSession` method with the following code:
+
+    ```objc
+    - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
+        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
+        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
+        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+
+        AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"41117440#383391"];
+        options.enableConsoleLog = YES;
+        options.usingHttpsOnly = YES;
+        options.enableDeliveryAck = YES;
+        options.isAutoLogin = NO;
+        // Initialize chat-starter-kit
+        [EaseChatKitManager initWithAgoraChatOptions:options];
+
+        UIWindowScene *windowScene = (UIWindowScene *)scene;
+        self.window = [[UIWindow alloc] initWithWindowScene:windowScene];
+        self.window.frame = windowScene.coordinateSpace.bounds;
+        // Go to the login view
+        self.window.rootViewController = [[AgoraLoginViewController alloc]init];
+            [self.window makeKeyAndVisible];
+    }
+    ```
+
+### Log into Chat
+
+Take the following steps to log into Chat.
+
+1. In **Xcode**, go to **File** > **New** > **File**, and create a **Cocoa Touch Class** file named `AgoraChatHttpRequest`. Make sure to set **Subclass of** as `NSObject`. Save the file under **AgoraChatUIKit**.
+
+    ![1643335917066](https://web-cdn.agora.io/docs-files/1643335917066)
+
+2. Open `AgoraChatHttpRequest.h` and replace the code with the following:
+
+    ```objc
+    #import
+
+    NS_ASSUME_NONNULL_BEGIN
+
+    @interface AgoraChatHttpRequest : NSObject
+
+    + (instancetype)sharedManager;
+
+    - (void)registerToApperServer:(NSString *)uName
+                            pwd:(NSString *)pwd
+                    completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
+    - (void)loginToApperServer:(NSString *)uName
+                        pwd:(NSString *)pwd
+                    completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
+    @end
+
+    NS_ASSUME_NONNULL_END
+    ```
+
+    To register to the Chat app server, open `AgoraChatHttpRequest.m` and replace the code with the following:
+
+    ```objc
+    #import "AgoraChatHttpRequest.h"
+
+    @interface AgoraChatHttpRequest()
+    @property (readonly, nonatomic, strong) NSURLSession *session;
+    @end
+    @implementation AgoraChatHttpRequest
+
+    + (instancetype)sharedManager
+    {
+        static dispatch_once_t onceToken;
+        static AgoraChatHttpRequest *sharedInstance;
+        dispatch_once(&onceToken, ^{
+            sharedInstance = [[AgoraChatHttpRequest alloc] init];
+        });
+
+        return sharedInstance;
+    }
+
+    - (instancetype)init
+    {
+        if (self = [super init]) {
+            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+            configuration.timeoutIntervalForRequest = 120;
+            _session = [NSURLSession sessionWithConfiguration:configuration
+                                                    delegate:self
+                                                delegateQueue:[NSOperationQueue mainQueue]];
+        }
+        return self;
+    }
+
+    - (void)registerToApperServer:(NSString *)uName
+                            pwd:(NSString *)pwd
+                    completion:(void (^)(NSInteger statusCode, NSString *aUsername))aCompletionBlock
+    {
+        NSURL *url = [NSURL URLWithString:@"https://a41.chat.agora.io/app/chat/user/register"];
+        NSMutableURLRequest *request = [NSMutableURLRequest
+                                                    requestWithURL:url];
+        request.HTTPMethod = @"POST";
+
+        NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+        [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+        request.allHTTPHeaderFields = headerDict;
+
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        [dict setObject:uName forKey:@"userAccount"];
+        [dict setObject:pwd forKey:@"userPassword"];
+        request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+        NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+            if (aCompletionBlock) {
+                aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+            }
+        }];
+        [task resume];
+    }
+
+    - (void)loginToApperServer:(NSString *)uName
+                        pwd:(NSString *)pwd
+                    completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
+    {
+        NSURL *url = [NSURL URLWithString:@"https://a41.chat.agora.io/app/chat/user/login"];
+        NSMutableURLRequest *request = [NSMutableURLRequest
+                                                    requestWithURL:url];
+        request.HTTPMethod = @"POST";
+
+        NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+        [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+        request.allHTTPHeaderFields = headerDict;
+
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        [dict setObject:uName forKey:@"userAccount"];
+        [dict setObject:pwd forKey:@"userPassword"];
+        request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+        NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+            if (aCompletionBlock) {
+                aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+            }
+        }];
+        [task resume];
+    }
+
+    - (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler
+    {
+        if([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
+                NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+                if(completionHandler)
+                    completionHandler(NSURLSessionAuthChallengeUseCredential,credential);
+            }
+    }
+
+    @end
+    ```
+
+3. Go to **File** > **New** > **File** and create a **Cocoa Touch Class** file named `AgoraLoginViewController`. Make sure to set **Subclass of** as `UIViewController`.
+
+4. To import the header file, open `AgoraLoginViewController.m` and add the following lines:
+
+    ```objc
+    #import "AgoraChatHttpRequest.h" // To send request to the Appserver
+    #import  //Chat SDK
+    #import "ViewController.h"
+    ```
+
+   To sign up, add the following lines after `@implementation AgoraLoginViewController`:
+
+    ```objc
+    // Register to the AppServer
+    - (void)doSignUp {
+    // Set the chat ID as vvv
+    [[AgoraChatHttpRequest sharedManager] registerToApperServer:@"vvv" pwd:@"1" completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+            dispatch_async(dispatch_get_main_queue(),^{
+                if (response != nil) {
+                    NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+                    NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                    if (responsedict != nil) {
+                        NSString *result = [responsedict objectForKey:@"code"];
+                        if ([result isEqualToString:@"RES_OK"]) {
+                            // Sign in Chat if registration succeeds
+                            [self doSignIn];
+                        }
+                    }
+                }
+            });
+        }];
+    }
+
+    - (void)doSignIn {
+    // Sign in AppServer
+    [[AgoraChatHttpRequest sharedManager] loginToApperServer:@"vvv" pwd:@"1" completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (response && response.length > 0 && statusCode) {
+                    NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+                    NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                    NSString *token = [responsedict objectForKey:@"accessToken"];
+                    NSString *loginName = [responsedict objectForKey:@"chatUserName"];
+                    if (token && token.length > 0) {
+                        // Log into Chat SDK
+                        [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:^(NSString *aUsername, AgoraChatError *aError) {
+                            if (!aError) {
+                                ViewController *chatsVC = [[ViewController alloc] init];
+                                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:chatsVC];
+                                navigationController.navigationBarHidden = YES;
+                                UIWindow *window = [[[UIApplication sharedApplication] windows] lastObject];
+                                window.rootViewController = navigationController;
+
+        }
+    }];
+    }
+    }
+    });
+    }];
+    }
+    ```
+
+    Replace the `viewDidLoad` function with the following code:
+
+    ```objc
+    - (void)viewDidLoad {
+        [super viewDidLoad];
+        [self doSignIn];
+        // Do any additional setup after loading the view.
+    }
+    ```
+
+### Launch the chat storyboard
+
+In this section, add an input box for getting username of the peer user, and a **Chat** button that loads the chat storyboard.
+
+In `ViewController.m`, add the following code:
+
+```objc
+#define kIsBangsScreen ({\
+    BOOL isBangsScreen = NO; \
+    if (@available(iOS 11.0, *)) { \
+    UIWindow *window = [[UIApplication sharedApplication].windows firstObject]; \
+    isBangsScreen = window.safeAreaInsets.bottom > 0; \
+    } \
+    isBangsScreen; \
+})
+#define AgoraChatVIEWTOPMARGIN (kIsBangsScreen ? 34.f : 0.f)
+#import "ViewController.h"
+#import
+#import
+#import
+
+@interface ViewController ()
+@property (nonatomic, strong) EaseConversationModel *conversationModel;
+@property (nonatomic, strong) AgoraChatConversation *conversation;
+@property (nonatomic, strong) EaseChatViewController *chatController;
+@property (nonatomic, strong) UITextField *conversationIdField;
+@property (nonatomic, strong) UIButton *chatBtn;
+@property (nonatomic, strong) UIButton *logoutBtn;
+@end
+```
+
+In `ViewController.m`, replace the `viewDidLoad` method with the following code:
+
+```objc
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self _setupChatSubviews];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBarHidden = YES;
+}
+- (void)_setupChatSubviews
+{
+    self.conversationIdField = [[UITextField alloc] init];
+    self.conversationIdField.backgroundColor = [UIColor systemGrayColor];
+    self.conversationIdField.delegate = self;
+    self.conversationIdField.borderStyle = UITextBorderStyleNone;
+    NSAttributedString *convAttrStr = [[NSAttributedString alloc] initWithString:@"single chat ID" attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    self.conversationIdField.attributedPlaceholder = convAttrStr;
+    self.conversationIdField.font = [UIFont systemFontOfSize:17];
+    self.conversationIdField.textColor = [UIColor whiteColor];
+    self.conversationIdField.returnKeyType = UIReturnKeyDone;
+    self.conversationIdField.layer.cornerRadius = 5;
+    self.conversationIdField.layer.borderWidth = 1;
+    self.conversationIdField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    [self.view addSubview:self.conversationIdField];
+    [self.conversationIdField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(30);
+        make.top.equalTo(self.view).offset(30 + AgoraChatVIEWTOPMARGIN);
+        make.height.mas_equalTo(@50);
+        make.width.mas_equalTo(@320);
+    }];
+
+    self.chatBtn = [[UIButton alloc] init];
+    self.chatBtn.clipsToBounds = YES;
+    self.chatBtn.layer.cornerRadius = 5;
+    self.chatBtn.backgroundColor = [UIColor colorWithRed:((float) 78 / 255.0f) green:0 blue:((float) 234 / 255.0f) alpha:1];
+    self.chatBtn.titleLabel.font = [UIFont systemFontOfSize:19];
+    [self.chatBtn setTitle:@"chat" forState:UIControlStateNormal];
+    [self.chatBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.chatBtn addTarget:self action:@selector(chatAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.chatBtn];
+    [self.chatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).offset(30);
+        make.top.equalTo(self.conversationIdField.mas_bottom).offset(20);
+        make.height.mas_equalTo(@50);
+        make.width.mas_equalTo(@150);
+    }];
+
+    self.logoutBtn = [[UIButton alloc]init];
+    self.logoutBtn.backgroundColor = [UIColor redColor];
+    [self.logoutBtn setTitle:@"Log out" forState:UIControlStateNormal];
+    [self.logoutBtn addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.logoutBtn];
+    [self.logoutBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.view);
+        make.height.equalTo(@50);
+    }];
+
+    self.view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+}
+```
+
+Add the following code in `ViewController.m` to create the input box and **Chat** button:
+
+```objc
+- (void)chatAction
+{
+    [self.view endEditing:YES];
+    if (self.conversationIdField.text.length
+
+
+        );
+      }
+    }
+
+    export default App;
+   ```
+
+2. Set the layout for the conversation.
+
+   Open `my-app/src/App.css`, and replace the content with the following:
+
+   ```javascript
+    /** App.css */
+    .container {
+        height: 100%;
+        width: 100%
+    }
+   ```
+
+## Test your app
+
+When the app launches, you see the following interface and are logged into Chat.
+
+![1643336848167](https://web-cdn.agora.io/docs-files/1643336848167)
+
+To test the app, take the following steps:
+1. Enter the **single chat ID**. A single chat ID is the user ID of a peer user and for testing purposes, you can simply input `abc`.
+2. Click **chat**. An edit box pops up.
+3. Enter the message in the edit box and click **Enter**, the message is sent and displayed in the UI.
+4. You can also click **+** on the right of the edit box and try sending attachment messages.
+
+## Next steps
+
+## Reference
+
+Agora provides the fully featured [AgoraChat-ios](https://github.com/AgoraIO-Usecase/AgoraChat-ios) demo app as an implementation reference.
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+Instant messaging connects people wherever they are and allows them to communicate with others in real time. Agora offers an open-source Chat UI Kit project on GitHub. With built-in user interfaces for key Chat features, the Agora Chat UI Kit enables you to quickly embed real-time messaging into your app without requiring extra effort on the UI.
+
+:::info
+For the latest Agora Chat UIKit documentation, refer to the [UIKit 2.x Documentation](https://github.com/AgoraLab/agora-chat-uikit) GitHub repository.
+:::
+
+Legacy UIkit 1.x documentation
+
+This page shows sample code to add peer-to-peer messaging into your app by using the Agora Chat UI Kit.
+
+## Understand the tech
+
+The following figure shows the workflow of how clients send and receive peer-to-peer messages:
+
+Chat UI kit workflow
+
+![](/images/im/ui-kit-quickstart.png)
+
+1. Clients retrieve a token from your app server.
+2. Client A and Client B log in to Agora Chat.
+3. Client A sends a message to Client B. The message is sent to the Agora Chat server, and the server delivers the message to Client B. When Client B receives the message, the SDK triggers an event. Client B listens for the event and gets the message.
+
+## Prerequisites
+
+- React 16.8.0 or later.
+- React DOM 16.8.0 or later.
+- A Windows or macOS computer that has a browser supported by the Agora Chat SDK:
+  - Internet Explorer 11 or later
+  - Firefox 10 or later
+  - Chrome 54 or later
+  - Safari 11 or later
+- A valid [Agora Account](https://console.agora.io/v2).
+- An Agora project that has [enabled the Chat service](./enable#enable-the-agora-chat-service).
+- An [App key](./enable#get-the-information-of-the-agora-chat-project) and [a user token generated on your app server](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
+
+## Project setup
+
+This sections introduces how to create an app and add the Chat UI Samples to the project.
+
+1. In your terminal, run the following command to create an app:
+
+   ```shell
+   # Install CLI
+   npm install create-react-app
+   # Create an app named my-app
+   npx create-react-app my-app
+   cd my-app
+   ```
+
+   Once you successfully create the app, the project structure is as follows:
+
+   ```shell
+   my-app
+    ├── package.json
+    ├── public                  # The static directory for Webpack
+    │   ├── favicon.ico
+    │   ├── index.html          # The default one-page app
+    │   └── manifest.json
+    ├── src
+    │   ├── App.css             # The css file of the app
+    │   ├── App.js              # The code of the app
+    │   ├── App.test.js
+    │   ├── index.css           # The layout when launching the file
+    │   ├── index.js            # Launch the file
+    │   ├── logo.svg
+    │   └── serviceWorker.js
+    └── yarn.lock
+   ```
+
+2. Run one of the following commands to add the Chat UI Samples to your project.
+
+   To add the UI Samples using npm:
+
+   ```shell
+   npm install agora-chat-uikit --save
+   ```
+
+   To add the UI Samples using yarn
+
+   ```shell
+   yarn add agora-chat-uikit
+   ```
+
+## Implementation
+
+## Implement peer-to-peer messaging
+
+## Test your app
+
+In your terminal, run the following command to launch the app:
+
+```shell
+npm run start
+```
+
+You can see the app launch in your browser. Before you can send a message, refer to [Add a contact](/en/realtime-media/im/build/build-core-messaging/user-attributes#manage-contacts) or [Join a chat group](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#join-and-leave-a-chat-group) to add a contact or join a chat group.
+
+## Next steps
+
+This section includes more advanced features you can implement in your project.
+
+### Customizable attributes
+
+`EaseChat` provides the following attributes for customization. You can customize the features and layout by setting these attributes. To ensure the functionality of `EaseChat`, ensure that you set all the required parameters.
+
+| Attribute  |Type| Required | Description                                                 |
+| ---------- | ------ | ------ | ------------------------------------- |
+| `appkey`     |String| Yes  | The unique identifier that the Chat service assigns to each app. The rule is `$(OrgName)#{AppName}`. |
+| `username`   |String| Yes  | The user ID.                                                     |
+| `agoraToken` |String| Yes  | The Agora token.      |
+| `to`         |String| Yes  | In one-to-one messaging, it is the user ID of the recipient; in group chat, it is the group ID.|
+| `showByselfAvatar`|Boolean| No  | Whether to display the avatar of the current user.`true`: Yes(Default) `false`: No     |
+| `easeInputMenu`|String| No | The mode of the input menu.(Default) `all`: The complete mode.`noAudio`: No audio.`noEmoji`: No emoji.`noAudioAndEmoji`: No audio or emoji.`onlyText`: Only text.
+|`menuList`|Array| No  |The extensions of the input box on the right panel.(Default) `menuList`: `[ {name:'Send a pic', value:'img'},{name:'Send a file', value:'file'}]`  |
+|`handleMenuItem`|`function({item, key}`) | No | The callback event triggered by clicking on the right panel of the input box.|
+|`successLoginCallback`|function(res) | No | The callback event for a successful login. |
+|`failCallback`| function(err)| No | The callback event for a failed method call.  |
+
+### Add business logic
+
+In use-cases where you want to add your own business logic, you can use the various callback events provided by the Chat UI Samples, as shown in the following steps:
+
+1. Get the SDK instance
+
+    ```javascript
+    const WebIM = EaseApp.getSdk({ appkey: 'xxxx' })
+    ```
+
+2. Add callback events
+
+   Call `addEventHandler` to add the callback events.
+
+    ```javascript
+    // Use nameSpace to differentiate the different business logics. You can add multiple callback events according to your needs.。
+    WebIM.conn.addEventHandler('nameSpace'),{
+        onOpend:()=>{},
+        onTextMessage:()=>{},
+        .... })
+    ```
+
+    Refer to [EventHandlerType](https://api-ref.agora.io/en/chat-sdk/web/1.x/interfaces/Types.EventHandlerType.EventHandlerType.html) for the complete list of callback events you can add.
+
+## Reference
+
+Agora Chat provides an open-source [AgoraChat](https://github.com/AgoraIO-Usecase/AgoraChat-web) sample project on GitHub that has integrated the UI Samples. You can download the project to try it out or view the source code.
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+Instant messaging connects people wherever they are and allows them to communicate with others in real time. Agora offers an open-source Chat UI Kit project on GitHub. With built-in user interfaces for key Chat features, the Agora Chat UI Kit enables you to quickly embed real-time messaging into your app without requiring extra effort on the UI.
+
+:::info
+For the latest Agora Chat UIKit documentation, refer to the [UIKit 2.x Documentation](https://github.com/AgoraLab/agora-chat-uikit) GitHub repository.
+:::
+
+Legacy UIkit 1.x documentation
+
+This page shows sample code to add peer-to-peer messaging into your app by using the Agora Chat UI Kit.
+
+## Understand the tech
+
+The following figure shows the workflow of how clients send and receive peer-to-peer messages:
+
+Chat UI kit workflow
+
+![](/images/im/ui-kit-quickstart.png)
+
+1. Clients retrieve a token from your app server.
+2. Client A and Client B log in to Agora Chat.
+3. Client A sends a message to Client B. The message is sent to the Agora Chat server, and the server delivers the message to Client B. When Client B receives the message, the SDK triggers an event. Client B listens for the event and gets the message.
+
+## Prerequisites
+
+- Flutter 2.10 or higher.
+- Dart 2.16 or higher.
+
+- If your target platform is iOS:
+    - macOS
+    - Xcode 12.4 or higher with Xcode Command Line Tools
+    - CocoaPods
+    - An iOS emulator or a physical iOS device running iOS 10.0 or higher
+
+- If your target platform is Android:
+    - macOS or Windows
+    - Android Studio 4.0 or higher with JDK 1.8 or higher
+    - An Android emulator or a physical Android device running Android SDK API 21 or higher
+
+## Project setup
+
+## Implementation
+
+## Implement peer-to-peer messaging
+
+## Test your app
+
+## Next steps
+
+## Reference
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+Instant messaging connects people wherever they are and allows them to communicate with others in real time. Agora offers an open-source Chat UI Kit project on GitHub. With built-in user interfaces for key Chat features, the Agora Chat UI Kit enables you to quickly embed real-time messaging into your app without requiring extra effort on the UI.
+
+:::info
+For the latest Agora Chat UIKit documentation, refer to the [UIKit 2.x Documentation](https://github.com/AgoraLab/agora-chat-uikit) GitHub repository.
+:::
+
+Legacy UIkit 1.x documentation
+
+This page shows sample code to add peer-to-peer messaging into your app by using the Agora Chat UI Kit.
+
+## Understand the tech
+
+The following figure shows the workflow of how clients send and receive peer-to-peer messages:
+
+Chat UI kit workflow
+
+![](/images/im/ui-kit-quickstart.png)
+
+1. Clients retrieve a token from your app server.
+2. Client A and Client B log in to Agora Chat.
+3. Client A sends a message to Client B. The message is sent to the Agora Chat server, and the server delivers the message to Client B. When Client B receives the message, the SDK triggers an event. Client B listens for the event and gets the message.
+
+## Prerequisites
+
+For more information, see [Setting up the environment](https://reactnative.dev/docs/environment-setup).
+
+## Project setup
+
+## Implementation
+
+## Implement peer-to-peer messaging
+
+## Test your app
+
+## Next steps
+
+## Reference
+
+</PlatformStructured>

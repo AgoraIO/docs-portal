@@ -1,0 +1,589 @@
+---
+title: "Error codes"
+description: "Introduces the error codes and error messages that might be returned by the SDK when you call the Agora Chat APIs."
+---
+
+<PlatformStructured platform="android">
+
+This page lists the possible error codes and error messages returned by the SDK when you call Chat APIs.
+
+Possible reasons for these errors are provided to help you debug more efficiently. If you encounter an error code that is not listed here, contact support@agora.io for assistance.
+
+You may receive an error code and error message in one of the following ways:
+
+- As the return value when a method call fails.
+- As the error code reported through the `onError` callback.
+
+| Error code | Error message     |  Possible reason     | Fix       |
+| :--------- | :--------------- |  :------------------- |:----------|
+| `0`          | `EM_NO_ERROR`        | The operation succeeds.      |  No action required.  |
+| `1`          | `GENERAL_ERROR`  | Default error related to the SDK or API requests. Occurs when SDK isn't properly initialized or a request fails without specific reason. | Analyze logs and called APIs. |
+| `2`          | `NETWORK_ERROR`  | SDK disconnected from server due to network interruption. | Retry operation after network restoration. |
+| `3`      | `DATABASE_ERROR` | Database operation fails. | Analyze called API with logs. Error occurs when updating non-existent messages with `Conversation#updateMessage` or when database isn't open during operations. |
+| `4` | `EXCEED_SERVICE_LIMIT` | Usage exceeds service limit, such as registered users or contacts exceeding current pricing plan limits. | Check API parameters. Control `limit` parameter values. For rate limiting, retry after delay. |
+| `8` | `APP_ACTIVE_NUMBER_REACH_LIMITATION` | App reached maximum daily active users (DAU) or monthly active users (MAU). | Upgrade Chat service in the console. |
+| `100` | `INVALID_APP_KEY` | App Key is invalid. | Initialize with correct App Key. |
+| `101` | `INVALID_USER_NAME` | User ID is invalid, such as empty string when adding a contact. | Ensure user ID parameter is not null. |
+| `102` | `INVALID_PASSWORD` | Login password is empty or invalid. | Verify password parameter is correct. |
+| `103` | `INVALID_URL` | URL is incorrect. | Verify API parameters are correct. |
+| `104` | `INVALID_TOKEN` | User token is empty or invalid. | Verify token parameters are correct. |
+| `105` | `USER_NAME_TOO_LONG` | User ID exceeds 64 bytes limit. | Check user ID length. |
+| `108` | `TOKEN_EXPIRED` | Token has expired. | When callback received, regenerate token and call `loginWithToken` to log in again. |
+| `109` | `TOKEN_WILL_EXPIRE` | Token passed half of its validity period. | When callback received, regenerate token and call `ChatClient#renewToken` to update. |
+| `110` | `INVALID_PARAM` | Invalid parameter. | Verify API parameters are valid. |
+| `200` | `USER_ALREADY_LOGIN` | User already logged in. | Check if SDK has automatic login enabled or if login method was already called. |
+| `201` | `USER_NOT_LOGIN` | User not logged in. Session invalid or expired when attempting operations. | Ensure Chat login completes before calling API. |
+| `202` | `USER_AUTHENTICATION_FAILED` | User authentication fails due to invalid or expired token. | If logged out, log in again. Otherwise, regenerate token and call `ChatClient#renewToken`. |
+| `203` | `USER_ALREADY_EXIST` | User ID specified during registration already exists. | Register with a different user ID. |
+| `204` | `USER_NOT_FOUND` | User does not exist. | Verify user ID parameter is correct. |
+| `205` | `USER_ILLEGAL_ARGUMENT` | Incorrect user parameter. User ID invalid or empty during registration or attribute updates. | Verify API parameters are correct. |
+| `206` | `USER_LOGIN_ANOTHER_DEVICE` | User logged in on another device. Forces logout on current device if multi-device service isn't enabled. | When `ConnectionListener#onLogout` is triggered, log in again. |
+| `207` | `USER_REMOVED` | User account deleted in the console. | When `ConnectionListener#onLogout` is triggered, return to login page. Account no longer available. |
+| `209` | `PUSH_UPDATECONFIGS_FAILED` | Failed to update push configurations. | Check error-reporting API, wait, then retry. |
+| `210` | `USER_PERMISSION_DENIED` | User lacks permission for operation. User on block list attempts to send messageUser tries to modify another user's messageUser tries to modify custom group member attribute set by anotherUser attempts to destroy message thread without proper permissions | Verify user has operation permission. |
+| `211` | `USER_BINDDEVICETOKEN_FAILED` | Failed to bind push token to device. | Verify token for device push binding isn't empty. |
+| `212` | `USER_UNBIND_DEVICETOKEN_FAILED` | Failed to unbind push token from device. | Retry `ChatClient#logout`. For guaranteed exit, call with parameter set to `false` (unbind). |
+| `213` | `USER_BIND_ANOTHER_DEVICE` | User logged in to another device in single-device login configuration. | Configure for multiple device login or use `ChatClient#kickDeviceWithToken` before logging in. |
+| `214` | `USER_LOGIN_TOO_MANY_DEVICES` | User reached maximum number of login devices. | Increase allowed simultaneous devices or use `ChatClient#kickDeviceWithToken` before logging in. |
+| `215` | `USER_MUTED` | User is muted in group or chat room. | Restrict message sending in UI for users who are banned. |
+| `216` | `USER_KICKED_BY_CHANGE_PASSWORD` | User changed login password, ending current session. | When `ConnectionListener#onLogout` is received, call `ChatClient#logout` and return to login page. |
+| `217` | `USER_KICKED_BY_OTHER_DEVICE` | User kicked off device via console or API call from another device. | When `ConnectionListener#onLogout` is received, call `ChatClient#logout` and return to login page. |
+| `218` | `USER_ALREADY_LOGIN_ANOTHER` | Another user already logged in on device. | Call `ChatClient#logout` to log out current account before logging in with different account. |
+| `219` | `USER_MUTED_BY_ADMIN` | User cannot send message when all members are muted. | Restrict message sending in UI when full ban is active. |
+| `220` | `USER_DEVICE_CHANGED` | Login attempt on device that isn't the last used device in single-device configuration. | When `ConnectionListener#onLogout` is received, call `ChatClient#logout` and return to login page. |
+| `221` | `USER_NOT_ON_ROSTER` | User cannot send message to non-contact when contacts-only messaging enabled. | Call `ContactManager#addContact` first. Send messages after friend request is accepted. |
+| `300` | `SERVER_NOT_REACHABLE` | Server unreachable due to network issues. | For login errors, try switching networks or contacting support for TLS encryption in specific regions. For other operations, switch networks or retry after delay. |
+| `301` | `SERVER_TIMEOUT` | Request timeout when server doesn't respond within specified period. | Retry API after switching networks or waiting. |
+| `302` | `SERVER_BUSY` | Server currently busy. | Check for repeated API calls. May occur when calling again before previous result returned. |
+| `303` | `SERVER_UNKNOWN_ERROR` | Common server request error. | Provide logs and called APIs for troubleshooting. |
+| `304` | `SERVER_GET_DNSLIST_FAILED` | SDK fails to get server configuration. | If `ChatOptions#enableDNSConfig` is `false`, check server settings. Otherwise, likely network issue during `dnsConfig` request. |
+| `305` | `SERVER_SERVICE_RESTRICTED` | App is banned. | Enable Chat feature in console or contact support. |
+| `400` | `FILE_NOT_FOUND` | File not found. | For log files, retry. For attachments, file no longer exists and cannot be downloaded. |
+| `401` | `FILE_INVALID` | File invalid. | Select different file and retry upload. |
+| `402` | `FILE_UPLOAD_FAILED` | Failed to upload file. | Analyze with API calls and logs. |
+| `403` | `FILE_DOWNLOAD_FAILED` | Failed to download file. | Check network or message expiration in logs. |
+| `404` | `FILE_DELETE_FAILED` | Failed to delete existing log file. | Check permissions for app log files or chat logs. |
+| `405` | `FILE_TOO_LARGE` | File exceeds size limit. | Select file under 10 MB or contact support to increase limit. |
+| `406` | `FILE_CONTENT_IMPROPER` | File content inappropriate. | Select appropriate file and retry. |
+| `407` | `FILE_IS_EXPIRED` | File expired. Attachments stored for 7 days by default. | Contact support to increase storage time. |
+| `500` | `MESSAGE_INVALID` | Message invalid. Message object or ID empty, or sender ID inconsistent with login session. | Verify message construction, ID, sender, and body settings. |
+| `501` | `MESSAGE_INCLUDE_ILLEGAL_CONTENT` | Message contains inappropriate content. | View blocking logs in console. |
+| `504` | `MESSAGE_RECALL_TIME_LIMIT` | Message recall timeout. | Show UI error or contact support to extend the retractability time. |
+| `505` | `SERVICE_NOT_ENABLED` | Feature not enabled. | Enable required functions in console based on API and log analysis. |
+| `506` | `MESSAGE_EXPIRED` | Group message read receipt period expired. Default validity is 3 days. | Show UI error or contact support to extend the validity time. |
+| `507` | `MESSAGE_ILLEGAL_WHITELIST` | User not on allow list when all members are muted. | Show UI error or check if group-wide ban is enabled. |
+| `508` | `MESSAGE_EXTERNAL_LOGIC_BLOCKED` | Message blocked by app server filtering rule during pre-sending callback. | Show UI prompt or check the pre-sending callback logs. |
+| `510` | `MESSAGE_SIZE_LIMIT` | Message body exceeds limit. | Show UI prompt or reduce the message length (max 5 KB by default). |
+| `511` | `MESSAGE_EDIT_FAILED` | Failed to modify message. | Analyze with logs. |
+| `600` | `GROUP_INVALID_ID` | Invalid group ID. | Verify group ID parameter isn't null or disbanded. |
+| `601` | `GROUP_ALREADY_JOINED` | User already in chat group. | Handle as successful join. |
+| `602` | `GROUP_NOT_JOINED` | User not in chat group. | Verify group ID is for joined group that hasn't been disbanded. |
+| `603` | `GROUP_PERMISSION_DENIED` | User lacks permission for group operation. | Check API call permissions. |
+| `604` | `GROUP_MEMBERS_FULL` | Group member count reached limit. | Show UI prompt or check if the maximum member count exceeds limit (default 200). |
+| `605` | `GROUP_SHARED_FILE_INVALIDID` | Group shared file ID invalid. | Verify `sharedFileId` parameter isn't null. |
+| `606` | `GROUP_NOT_EXIST` | Chat group doesn't exist. | Verify group ID is correct or not from disbanded group. |
+| `607` | `GROUP_DISABLED` | Chat group is disabled. | Show UI prompt to request unblock from administrator. |
+| `608` | `GROUP_NAME_VIOLATION` | Chat group name invalid. | Check if group name contains sensitive information. |
+| `609` | `GROUP_MEMBER_ATTRIBUTES_REACH_LIMIT` | Custom attributes length reached limit. | Total length for single group member cannot exceed 4 KB. |
+| `610` | `GROUP_MEMBER_ATTRIBUTES_UPDATE_FAILED` | Failed to set custom attributes. | Analyze with API calls and logs. |
+| `611` | `GROUP_MEMBER_ATTRIBUTES_KEY_REACH_LIMIT` | Custom attribute key exceeds 16 bytes. | Check if attribute key exceeds limit. |
+| `612` | `GROUP_MEMBER_ATTRIBUTES_VALUE_REACH_LIMIT` | Custom attribute value exceeds 512 bytes. | Check if attribute value exceeds limit. |
+| `613` | `GROUP_USER_IN_BLOCKLIST` | User is in group blacklist. | Show UI prompt or check console for blacklist status. |
+| `700` | `CHATROOM_INVALID_ID` | Invalid chat room ID. | Check if chat room ID is empty. |
+| `701` | `CHATROOM_ALREADY_JOINED` | User already in chat room. | Handle as successful join. |
+| `702` | `CHATROOM_NOT_JOINED` | User not in chat room. | Verify chat room ID is correct, not disbanded, or previously joined. |
+| `703` | `CHATROOM_PERMISSION_DENIED` | User lacks permission for chat room operation. | Check API call permissions. |
+| `704` | `CHATROOM_MEMBERS_FULL` | Chat room member count reached limit. | Check maximum member count setting. |
+| `705` | `CHATROOM_NOT_EXIST` | Chat room doesn't exist. | Verify chat room ID is correct, not disbanded, or previously joined. |
+| `706` | `CHATROOM_OWNER_NOT_ALLOW_LEAVE` | Chat room owner not allowed to leave. | Check `ChatOptions#allowChatroomOwnerLeave` setting. |
+| `707` | `CHATROOM_USER_IN_BLOCKLIST` | User is in chat room blacklist. | Check console for chat room blacklist status. |
+| `900` | `USERINFO_USERCOUNT_EXCEED` | User attribute retrieval count exceeds 100. | Get attributes in batches of up to 100 users. |
+| `901` | `USERINFO_DATALENGTH_EXCEED` | User attributes too long. Maximum 2 KB per user or 10 GB per app. | Check attribute length limits. |
+| `1000` | `CONTACT_ADD_FAILED` | Failed to add contact. | Analyze with API calls and error description. |
+| `1001` | `CONTACT_REACH_LIMIT` | Inviter reached maximum contacts limit. | Show UI error or contact support to increase limit. |
+| `1002` | `CONTACT_REACH_LIMIT_PEER` | Invitee reached maximum contacts limit. | Show UI error or contact support to increase limit. |
+| `1100` | `PRESENCE_PARAM_LENGTH_EXCEED` | Presence parameter length exceeds limit. | Presence details cannot exceed 64 bytes. |
+| `1101` | `PRESENCE_CANNOT_SUBSCRIBE_YOURSELF` | User cannot subscribe to own presence status. | Check if subscribed user ID is own ID. |
+| `1110` | `TRANSLATE_PARAM_INVALID` | Translation parameter error. | Analyze with debug logs. |
+| `1111` | `TRANSLATE_SERVICE_NOT_ENABLE` | Translation service not enabled. | Enable translation service in console. |
+| `1112` | `TRANSLATE_USAGE_LIMIT` | Translation usage reached limit. | Contact support to renew translation usage. |
+| `1113` | `TRANSLATE_MESSAGE_FAIL` | Failed to translate message. | Analyze with debug logs. |
+| `1200` | `MODERATION_FAILED` | Third-party content moderation result is `Rejected`. | Check content audit configuration and logs in console. |
+| `1299` | `THIRD_SERVER_FAILED` | Non-third-party moderation service result is `Rejected`. | Check content audit configuration and logs in console. |
+| `1300` | `REACTION_REACH_LIMIT` | Message Reactions reached maximum allowed. | Show UI prompt or contact support to increase limit. |
+| `1301` | `REACTION_HAS_BEEN_OPERATED` | User already added this Reaction. | Handle as successful addition. |
+| `1302` | `REACTION_OPERATION_IS_ILLEGAL` | User lacks permission for Reaction operation. | Verify parameters with log analysis. |
+| `1400` | `THREAD_NOT_EXIST` | Thread doesn't exist. | Verify subzone ID is correct. |
+| `1401` | `THREAD_ALREADY_EXIST` | Thread already exists. | Check if subzone already created under incoming message. |
+| `1500` | `PUSH_NOT_SUPPORT` | Third-party push service not supported. | Check documentation for missing device vendors or contact support. |
+| `1501` | `PUSH_BIND_FAILED` | Failed to bind device with push token. | After `PushHelper#setPushListener` is registered, check network and retry binding with `PushManager#bindDeviceToken`. |
+| `1502` | `PUSH_UNBIND_FAILED` | Failed to unbind device from push token. | After `PushHelper#setPushListener` is registered, retry `ChatClient#logout` or call with parameter `false` (without unbinding). |
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+This page lists the possible error codes and error messages returned by the SDK when you call Chat APIs.
+
+Possible reasons for these errors are provided to help you debug more efficiently. If you encounter an error code that is not listed here, contact support@agora.io for assistance.
+
+During the runtime of the Chat SDK, if a method call succeeds, the SDK returns `nil`. If it fails, the SDK returns one of the following error codes and error messages:
+
+| Error code | Error message     |  Possible reason     | Fix       |
+| :--------- | :--------------- |  :------------------- |:----------|
+| `0` | `AgoraChatErrorNoError` | The operation succeeds. | No action required. |
+| `1` | `AgoraChatErrorGeneral` | Default error related to the SDK or API requests. Occurs when SDK isn't properly initialized or a request fails without specific reason. | Analyze logs and called APIs. |
+| `2` | `AgoraChatErrorNetworkUnavailable` | SDK disconnected from server due to network interruption. | Retry operation after network restoration. |
+| `3` | `AgoraChatErrorDatabaseOperationFailed` | Database operation fails. | Analyze called API with logs. Error occurs when updating non-existent messages with `EMConversation#updateMessage` or when database isn't open during operations. |
+| `4` | `AgoraChatErrorExceedServiceLimit` | Usage exceeds service limit, such as registered users or contacts exceeding current pricing plan limits. | Check API parameters. Control `limit` parameter values. For rate limiting, retry after delay. |
+| `8` | `AgoraChatAppActiveNumbersReachLimitation` | App reached maximum daily active users (DAU) or monthly active users (MAU). | Upgrade Chat service in the console. |
+| `100` | `AgoraChatErrorInvalidAppkey` | App Key is invalid. | Initialize with correct App Key. |
+| `101` | `AgoraChatErrorInvalidUsername` | User ID is invalid, such as empty string when adding a contact. | Ensure user ID parameter is not empty. |
+| `102` | `AgoraChatErrorInvalidPassword` | Login password is empty or invalid. | Verify password parameter is correct. |
+| `104` | `AgoraChatErrorUsernameTooLong` | User ID is too long. | Log in with valid user ID. Verify token parameters are correct. |
+| `105` | `AgoraChatErrorUsernameTooLong` | User ID exceeds 64 bytes limit. | Check user ID length. |
+| `108` | `AgoraChatErrorTokenExpire` | Token has expired. | When callback is received, regenerate token and call `login` to log in again. |
+| `109` | `AgoraChatErrorTokeWillExpire` | Token passed half of its validity period. | When callback is received, regenerate token and call `AgoraChatClient#renewToken` to update. |
+| `110` | `AgoraChatErrorInvalidParam` | Invalid parameter. | Verify API parameters are valid. |
+| `200` | `AgoraChatErrorUserAlreadyLoginSame` | User already logged in. | Check if SDK has automatic login enabled or if login method was already called. |
+| `201` | `AgoraChatErrorUserNotLogin` | User not logged in. Session invalid or expired when attempting operations. | Ensure Chat login completes before calling API. |
+| `202` | `AgoraChatErrorUserAuthenticationFailed` | User authentication fails due to invalid or expired token. | If logged out, log in again. Otherwise, regenerate token and call `AgoraChatClient#renewToken`. |
+| `203` | `AgoraChatErrorUserAlreadyExist` | User ID specified during registration already exists. | Register with a different user ID or consider registration successful. |
+| `204` | `AgoraChatErrorUserNotFound` | User does not exist. | Verify `userId` parameter is correct. |
+| `205` | `AgoraChatErrorUserIllegalArgument` | Incorrect user parameter. User ID invalid or empty during registration or attribute updates. | Verify API parameters are correct. |
+| `206` | `AgoraChatErrorUserLoginOnAnotherDevice` | User logged in on another device. Forces logout on current device if multi-device service isn't enabled. | When `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` is triggered, log in again. |
+| `207` | `AgoraChatErrorUserRemoved` | User account deleted in the console. | When `AgoraChatClientDelegate#userAccountDidRemoveFromServer` is triggered, return to login page. Account no longer available. |
+| `209` | `AgoraChatErrorUpdateApnsConfigsFailed` | Failed to update push configurations. | Check error-reporting API, wait, then retry. |
+| `210` | `AgoraChatErrorUserPermissionDenied` | User lacks permission for operation. User on block list attempts to send messageUser tries to modify another user's messageUser tries to modify custom group member attribute set by anotherUser attempts to destroy message thread without proper permissions | Check if user has operational privileges. |
+| `211` | `AgoraChatErrorUserBindDeviceTokenFailed` | Failed to bind push token to device. | Verify token for device push binding isn't empty. |
+| `213` | `AgoraChatErrorUserBindAnotherDevice` | User logged in to another device in single-device login configuration. | Configure for multiple device login or use `AgoraChatClient#kickDevice` before logging in. |
+| `214` | `AgoraChatErrorUserLoginTooManyDevices` | User reached maximum number of login devices. | Increase allowed simultaneous devices or use `AgoraChatClient#kickDevice` before logging in. |
+| `215` | `AgoraChatErrorUserMuted` | User is muted in group or chat room. | Restrict message sending in UI for users who are banned. |
+| `216` | `AgoraChatErrorUserKickedByChangePassword` | User changed login password, ending current session. | When `AgoraChatClientDelegate#userAccountDidForcedToLogout` is received, call `AgoraChatClient#logout` and return to login page. |
+| `217` | `AgoraChatErrorUserKickedByOtherDevice` | User kicked off device via console or API call from another device. | When `AgoraChatClientDelegate#userAccountDidForcedToLogout` is received, call `AgoraChatClient#logout` and return to login page. |
+| `218` | `AgoraChatErrorUserAlreadyLoginAnother` | Another user already logged in on device. | Call `AgoraChatClient#logout` to log out current account before logging in with different account. |
+| `219` | `AgoraChatErrorUserMutedByAdmin` | User cannot send message when all members are muted. | Restrict message sending in UI when full ban is active. |
+| `220` | `AgoraChatErrorUserDeviceChanged` | Login attempt on device that isn't the last used device in single-device configuration. | When `AgoraChatClientDelegate#userAccountDidLoginFromOtherDevice` is received, call `AgoraChatClient#logout` and return to login page. |
+| `221` | `AgoraChatErrorUserNotOnRoster` | User cannot send message to non-contact when contacts-only messaging is enabled. | Call `AgoraChatContactManager#addContact` first. Send messages after friend request is accepted. |
+| `300` | `AgoraChatErrorServerNotReachable` | Server unreachable due to network issues. | For login errors, try switching networks or contact support for TLS encryption in specific regions. For other operations, switch networks or retry after delay. |
+| `301` | `AgoraChatErrorServerTimeout` | Request timeout when server doesn't respond within specified period. | Retry API after switching networks or waiting. |
+| `302` | `AgoraChatErrorServerBusy` | Server currently busy. | Check for repeated API calls. May occur when calling again before previous result is returned. |
+| `303` | `AgoraChatErrorServerUnknownError` | Common server request error. | Provide logs and called APIs for troubleshooting. |
+| `304` | `AgoraChatErrorServerGetDNSConfigFailed` | SDK fails to get server configuration. | If `AgoraChatOptions#enableDnsConfig` is `No`, check server settings. Otherwise, likely network issue during `dnsConfig` request. |
+| `305` | `AgoraChatErrorServerServingForbidden` | App is banned. | Enable Chat feature in console or contact support. |
+| `400` | `AgoraChatErrorFileNotFound` | File not found. | For log files, retry. For attachments, file no longer exists and cannot be downloaded. |
+| `401` | `AgoraChatErrorFileInvalid` | File invalid. | Select different file and retry upload. |
+| `402` | `AgoraChatErrorFileUploadFailed` | Failed to upload file. | Analyze with API calls and logs. |
+| `403` | `AgoraChatErrorFileDownloadFailed` | Failed to download file. | Check network or message expiration in logs. |
+| `404` | `AgoraChatErrorFileDeleteFailed` | Failed to delete existing log file. | Check permissions for app log files or chat logs. |
+| `405` | `AgoraChatErrorFileTooLarge` | File exceeds size limit. | Select file under 10 MB or contact support to increase limit. |
+| `406` | `AgoraChatErrorFileContentImproper` | File content inappropriate. | Select appropriate file and retry. |
+| `407` | `AgoraChatErrorFileExpired` | File expired. Attachments stored for 7 days by default. | Contact support to increase storage time. |
+| `500` | `AgoraChatErrorMessageInvalid` | Message invalid. Message object or ID empty, or sender ID inconsistent with login session. | Verify message construction, ID, sender, and body settings meet requirements. |
+| `504` | `AgoraChatErrorMessageRecallTimeLimit` | Message recall timeout. | Show UI error or contact support to extend the retractability time. |
+| `505` | `AgoraChatErrorServiceNotEnable` | Feature not enabled. | Enable required features in console based on API and log analysis. |
+| `506` | `AgoraChatErrorMessageExpired` | Group message read receipt period expired. Default validity is 3 days. | Show UI error or contact support to extend the validity time. |
+| `507` | `AgoraChatErrorMessageIllegalWhiteList` | User not on allow list when all members are muted. | Show UI error or check if group-wide ban is enabled. |
+| `508` | `AgoraChatErrorMessageExternalLogicBlocked` | Message blocked by app server filtering rule during pre-sending callback. | Show UI prompt or check the pre-sending callback logs. |
+| `510` | `AgoraChatErrorMessageSizeLimit` | Message body exceeds limit. | Show UI prompt or reduce the message length (max 5 KB by default). |
+| `511` | `AgoraChatErrorEditFailed` | Failed to modify message. | Analyze with logs. |
+| `600` | `AgoraChatErrorGroupInvalidId` | Invalid group ID. | Verify group ID parameter isn't null or disbanded. |
+| `601` | `AgoraChatErrorGroupAlreadyJoined` | User already in chat group. | Handle as successful join. |
+| `602` | `AgoraChatErrorGroupNotJoined` | User not in chat group. | Verify group ID is for joined group that hasn't been disbanded. |
+| `603` | `AgoraChatErrorGroupPermissionDenied` | User lacks permission for group operation. | Check API call permissions. |
+| `604` | `AgoraChatErrorGroupMembersFull` | Group member count reached limit. | Show UI prompt or check if the maximum member count exceeds limit (default 200). |
+| `605` | `AgoraChatErrorGroupSharedFileInvalidId` | Group shared file ID is empty. | Verify `sharedFileId` parameter isn't null. |
+| `606` | `AgoraChatErrorGroupNotExist` | Chat group doesn't exist. | Verify group ID is correct or not from disbanded group. |
+| `607` | `AgoraChatErrorGroupDisabled` | Chat group is disabled. | Show UI prompt to request unblock from administrator. |
+| `608` | `AgoraChatErrorGroupNameViolation` | Chat group name is invalid. | Check if group name contains sensitive information. |
+| `609` | `AgoraChatErrorGroupMemberAttributesReachLimit` | Custom attributes size reached limit. | Total length for single group member cannot exceed 4 KB. |
+| `610` | `AgoraChatErrorGroupMemberAttributesUpdateFailed` | Failed to set custom attributes. | Analyze with API calls and logs. |
+| `611` | `AgoraChatErrorGroupMemberAttributesKeyReachLimit` | Custom attribute key exceeds 16 bytes. | Check if attribute key exceeds limit. |
+| `612` | `AgoraChatErrorGroupMemberAttributesValueReachLimit` | Custom attribute value exceeds 512 bytes. | Check if attribute value exceeds limit. |
+| `700` | `AgoraChatErrorChatroomInvalidId` | Invalid chat room ID. | Check if chat room ID is empty. |
+| `701` | `AgoraChatErrorChatroomAlreadyJoined` | User already in chat room. | Handle as successful join. |
+| `702` | `AgoraChatErrorChatroomNotJoined` | User not in chat room. | Verify chat room ID is correct, not disbanded, or previously joined. |
+| `703` | `AgoraChatErrorChatroomPermissionDenied` | User lacks permission for chat room operation. | Check API call permissions. |
+| `704` | `AgoraChatErrorChatroomMembersFull` | Chat room member count reached limit. | Check maximum member count setting. |
+| `705` | `AgoraChatErrorChatroomNotExist` | Chat room doesn't exist. | Verify chat room ID is correct, not disbanded, or previously joined. |
+| `706` | `AgoraChatErrorChatroomOwnerNotAllowLeave` | Chat room owner not allowed to leave. | Check `AgoraChatOptions#allowChatroomOwnerLeave` setting. |
+| `707` | `EMErrorChatroomUserInBlockList` | User is in chat room blacklist. | Check console for chat room blacklist status. |
+| `900` | `AgoraChatErrorUserCountExceed` | User attribute retrieval count exceeds 100. | Get attributes in batches of up to 100 users. |
+| `901` | `AgoraChatErrorUserInfoDataLengthExceed` | User attributes too long. Maximum 2 KB per user or 10 GB per app. | Check attribute length limits. |
+| `1000` | `AgoraChatErrorContactAddFailed` | Failed to add contact. | Analyze with API calls and error description. |
+| `1001` | `AgoraChatErrorContactReachLimit` | Inviter reached maximum contacts limit. | Show UI error or contact support to increase limit. |
+| `1002` | `AgoraChatErrorContactReachLimitPeer` | Invitee reached maximum contacts limit. | Show UI error or contact support to increase limit. |
+| `1100` | `AgoraChatErrorPresenceParamExceed` | Presence parameter length exceeds limit. | Online status details cannot exceed 64 bytes. |
+| `1101` | `AgoraChatErrorPresenceCannotSubscribeSelf` | User cannot subscribe to own presence status. | Check if subscribed user ID is own ID. |
+| `1110` | `AgoraChatErrorTranslateParamError` | Translation parameter error. | Analyze with debug logs. |
+| `1111` | `AgoraChatErrorTranslateServiceNotEnabled` | Translation service not enabled. | Enable translation service in console. |
+| `1112` | `AgoraChatErrorTranslateUsageLimit` | Translation usage reached limit. | Contact support to renew translation usage. |
+| `1113` | `AgoraChatErrorTranslateServiceFail` | Failed to translate message. | Analyze with debug logs. |
+| `1200` | `AgoraChatErrorModerationFailed` | Third-party content moderation result is `Rejected`. | Check content audit configuration and logs in console. |
+| `1299` | `AgoraChatErrorThirdServiceFailed` | Non-third-party moderation service result is `Rejected`. | Check content audit configuration and logs in console. |
+| `1300` | `AgoraChatErrorReactionReachLimit` | Message Reactions reached maximum allowed. | Show UI prompt or contact support to increase limit. |
+| `1301` | `AgoraChatErrorReactionHasBeenOperated` | User already added this Reaction. | Handle as successful addition. |
+| `1302` | `AgoraChatErrorReactionOperationIsIllegal` | User lacks permission for Reaction operation. | Verify parameters with log analysis. |
+| `1400` | `AgoraChatErrorThreadNotExist` | Thread doesn't exist. | Verify subzone ID is correct. |
+| `1401` | `AgoraChatErrorThreadAlreadyExist` | Thread already exists. | Check if subzone is already created under incoming message. |
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+This page lists the possible error codes and error messages returned by the SDK when you call Chat APIs.
+
+Possible reasons for these errors are provided to help you debug more efficiently. If you encounter an error code that is not listed here, contact support@agora.io for assistance.
+
+You may receive an error code and error message in one of the following ways:
+
+- As the return value when a method call fails.
+- As the error code reported through the `onError` callback. Register the callback using the `addEventListener` method.
+
+| Error code | Error message     |  Possible reason     | Fix       |
+| :--------- | :--------------- |  :------------------- |:----------|
+| `0` | `REQUEST_SUCCESS` | The operation succeeds. | No action required. |
+| `-1` | `REQUEST_TIMEOUT` | Request times out. | Retry or prompt for request timeout. |
+| `-2` | `REQUEST_UNKNOWN` | Unidentified error occurs. | Prompt that request failed. |
+| `-3` | `REQUEST_PARAMETER_ERROR` | Request parameters are invalid. | Verify parameters are correct. |
+| `-4` | `REQUEST_ABORT` | Request is aborted. | Cancel the request. |
+| `1` | `WEBIM_CONNCTION_OPEN_ERROR` | Request to retrieve token fails. | Check for parameter error, already logged in status, or import request failure based on error message. |
+| `2` | `WEBIM_CONNCTION_AUTH_ERROR` | App Key is invalid. SDK fails to verify App Key. | Verify App Key is initialized correctly, user is logged in, and login token is valid. |
+| `16` | `WEBIM_CONNCTION_DISCONNECTED` | WebSocket disconnected due to network issues. | Prompt that connection is disconnected. |
+| `17` | `WEBIM_CONNCTION_AJAX_ERROR` | Common error for server requests. | Determine cause of current operation failure from error message. |
+| `27` | `WEBIM_CONNCTION_APPKEY_NOT_ASSIGN_ERROR` | App Key incorrect or not set during login. | Set correct App Key. |
+| `28` | `WEBIM_CONNCTION_TOKEN_NOT_ASSIGN_ERROR` | User fails to pass user token for login. | Ensure successful login. |
+| `31` | `WEBIM_CONNCTION_CALLBACK_INNER_ERROR` | Internal error in message sending callback. | Check for errors in callback functions, such as in `onTextMessage` message processing. |
+| `39` | `WEBIM_CONNECTION_CLOSED` | User logged out or not logged in attempts to send message. | Log in before sending messages. |
+| `40` | `WEBIM_CONNECTION_ERROR` | User authentication fails. | Prompt that connection is disconnected. |
+| `50` | `MAX_LIMIT` | Usage exceeds service limit. Reactions, DAU, or MAU exceed upper limits. | Identify which service reached upper limit and limit accordingly. |
+| `51` | `MESSAGE_NOT_FOUND` | Message not found, such as when reporting. | Prompt that original message wasn't found. |
+| `52` | `NO_PERMISSION` | User lacks permission for operation. | Indicate user doesn't have permission for operation. |
+| `53` | `OPERATION_UNSUPPORTED` | Current operation not supported. | Prompt that operation isn't supported. |
+| `55` | `LOCAL_DB_OPERATION_FAILED` | Database operation fails. | Check database connection and permissions. |
+| `101` | `WEBIM_UPLOADFILE_ERROR` | Failed to upload file. File may exceed size limit. | Show "Send Failed" when attachment message upload fails. |
+| `102` | `WEBIM_UPLOADFILE_NO_LOGIN` | User token not included in file upload request. | Ensure user is logged in before uploading. |
+| `200` | `WEBIM_DOWNLOADFILE_ERROR` | Failed to download file due to timeout or network failure. | Prompt to retry. |
+| `204` | `USER_NOT_FOUND` | User not found, such as when inviting to join group. | Verify User ID parameter is correct. |
+| `205` | `MESSAGE_PARAMETER_ERROR` | Message parameter error, such as missing message ID during recall. | Ensure message contains message ID (`id`) and recipient's user ID (`to`). |
+| `206` | `WEBIM_CONNCTION_USER_LOGIN_ANOTHER_DEVICE` | User logged in on another device. Forces logout if multi-device service isn't enabled. | Enable multi-device function. See Multiple Device Login documentation. |
+| `207` | `WEBIM_CONNCTION_USER_REMOVED` | User account deleted in console. | Inform user that account has been canceled. |
+| `208` | `WEBIM_USER_ALREADY_LOGIN` | User already logged in and attempting to log in again. | Notify that repeated logins aren't possible. |
+| `216` | `WEBIM_CONNCTION_USER_KICKED_BY_CHANGE_PASSWORD` | User changed login password, ending current session. | Prompt that password has changed and user must log in again. |
+| `217` | `WEBIM_CONNCTION_USER_KICKED_BY_OTHER_DEVICE` | User kicked off device via console or API call from another device. | Notify user of being kicked offline. |
+| `219` | `USER_MUTED_BY_ADMIN` | User muted globally and cannot send messages. | Inform user they have been banned. |
+| `221` | `USER_NOT_FRIEND` | User cannot send message to non-contact when contacts-only messaging enabled. | Prompt that recipient isn't user's friend/contact. |
+| `500` | `SERVER_BUSY` | Server is busy. | Prompt that service is busy and to try again. |
+| `501` | `MESSAGE_INCLUDE_ILLEGAL_CONTENT` | Message contains inappropriate content detected by filtering system. | Alert that message failed to send due to non-compliant content or sensitive words. |
+| `502` | `MESSAGE_EXTERNAL_LOGIC_BLOCKED` | Message intercepted by anti-spam service. | Prompt that message failed to send. |
+| `503` | `SERVER_UNKNOWN_ERROR` | SDK fails to send message due to unknown error. | Prompt that message failed to send. |
+| `504` | `MESSAGE_RECALL_TIME_LIMIT` | Message recall timeout. | Notify user that retractable time limit has been exceeded. |
+| `505` | `SERVICE_NOT_ENABLED` | Feature not enabled. Requires console activation or support contact. | Enable function according to error message. |
+| `506` | `SERVICE_NOT_ALLOW_MESSAGING` | User not on group/chat room allow list when all members are muted. | Inform user that current group/chat room has message restrictions. |
+| `507` | `SERVICE_NOT_ALLOW_MESSAGING_MUTE` | User is muted in group or chat room. | Inform user they have been banned. |
+| `508` | `MESSAGE_MODERATION_BLOCKED` | Third-party content moderation service rejected message. | Prompt that message delivery failed due to non-compliant content. |
+| `510` | `MESSAGE_WEBSOCKET_DISCONNECTED` | Failed to send message due to network disconnection or reconnection failure. | Prompt that message failed to send. |
+| `511` | `MESSAGE_SIZE_LIMIT` | Message body exceeds upper limit. | Alert that message is too large. |
+| `512` | `MESSAGE_SEND_TIMEOUT` | Send message timeout. Connection disconnected while sending. | Notify of send timeout. |
+| `601` | `GROUP_ALREADY_JOINED` | User already in chat group. | Verify invited users aren't already in group to avoid duplicate invitations. |
+| `602` | `GROUP_NOT_JOINED` | User not in chat group when attempting operations. | Ensure user is in group before performing operations. |
+| `603` | `PERMISSION_DENIED` | User lacks permission for group operation. | Indicate user doesn't have required permission. |
+| `604` | `WEBIM_LOAD_MSG_ERROR` | Internal error in message callback. | Verify message is formatted correctly as parsing failed. |
+| `605` | `GROUP_NOT_EXIST` | Group ID doesn't exist. | Verify group or chat room ID is correct. |
+| `606` | `GROUP_MEMBERS_FULL` | Group member count reached upper limit. | Indicate maximum group size has been reached. |
+| `607` | `GROUP_MEMBERS_LIMIT` | Maximum group member count exceeds pricing plan limit. | Limit maximum members according to subscription package. |
+| `609` | `GROUP_MEMBER_ATTRIBUTES_SET_FAILED` | Failed to set custom attributes for group member. | Prompt that setup failed and to try again. |
+| `700` | `REST_PARAMS_STATUS` | Failed to call API due to missing/incorrect token or App Key. | Set App Key correctly. |
+| `702` | `CHATROOM_NOT_JOINED` | User not in chat room when attempting operations. | Indicate user isn't in current chat room. |
+| `704` | `CHATROOM_MEMBERS_FULL` | Chat room member count reached upper limit. | Indicate chat room is at capacity. |
+| `705` | `CHATROOM_NOT_EXIST` | Chat room doesn't exist. | Verify chat room ID is correct. |
+| `999` | `SDK_RUNTIME_ERROR` | WebSocket error during message sending. | Prompt login failure and suggest logging in again. |
+| `1100` | `PRESENCE_PARAM_EXCEED` | Presence parameter length exceeds limit. | Keep custom online status under 1024 bytes. |
+| `1101` | `REACTION_ALREADY_ADDED` | User already added this Reaction. | Avoid adding duplicate Reactions for same user. |
+| `1102` | `REACTION_CREATING` | Reaction being created by another user simultaneously. | Indicate another user is creating a Reaction. |
+| `1103` | `REACTION_OPERATION_IS_ILLEGAL` | User lacks permission for Reaction operation. | Ensure users operate Reactions correctly with proper permissions. |
+| `1200` | `TRANSLATION_NOT_VALID` | Language code is invalid. | Verify correct language code when using translation. |
+| `1201` | `TRANSLATION_TEXT_TOO_LONG` | Source text length exceeds translation limit. | Alert that file is too large for translation. |
+| `1204` | `TRANSLATION_FAILED` | Failed to translate message. | Notify of translation failure. |
+| `1300` | `THREAD_NOT_EXIST` | Thread doesn't exist. | Verify subzone ID is correct. |
+| `1301` | `THREAD_ALREADY_EXIST` | Thread already exists. | Notify that subdivision already exists and cannot be created again. |
+| `1302` | `MODIFY_MESSAGE_NOT_EXIST` | Message to modify doesn't exist. | Verify message ID is correct. |
+| `1304` | `MODIFY_MESSAGE_FAILED` | Failed to modify message. | Inform user that message modification failed. |
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+Refer to the error codes for Android and iOS.
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+This page lists the possible error codes and error messages returned by the SDK when you call Chat APIs.
+
+Possible reasons for these errors are provided to help you debug more efficiently. If you encounter an error code that is not listed here, contact support@agora.io for assistance.
+
+During runtime of the Agora Chat SDK, you may receive an error code and error message in one of the following ways:
+
+- As the return value when a method call fails.
+- As the error code reported through the `onError` callback.
+
+For example, when a user registration request fails because the username already exists, the `onError` callback returns the following error code and error message:
+
+```csharp
+SDKClient.Instance.Login(
+    username,
+    passwd,
+    callback: new CallBack(
+        onSuccess: () =>
+        {
+        },
+        onError: (code, desc) =>
+        {
+            // code: 203
+            // desc: USER_ALREADY_EXIST
+        }
+    )
+);
+```
+
+| Error code | Error message     |  Error description     | Fix       |
+| :--------- | :--------------- |  :------------------- |:----------|
+| `0` | `EM_NO_ERROR` | The operation succeeds. | No action required. |
+| `1` | `GENERAL_ERROR` | The SDK is not properly initialized, or the server cannot identify this error. | Analyze logs and called APIs. |
+| `2` | `NETWORK_ERROR` | SDK disconnected from server due to network interruption. | Retry operation after network restoration. |
+| `3` | `DATABASE_ERROR` | Database operation fails. | Analyze called API with logs. Error occurs when updating non-existent messages with `Conversation#UpdateMessage` or when database isn't open during operations. |
+| `4` | `EXCEED_SERVICE_LIMIT` | Usage exceeds service limit, such as registered users exceeding current pricing plan limits. | Check API parameters. Control `limit` parameter values. For rate limiting, retry after delay. |
+| `8` | `APP_ACTIVE_NUMBER_REACH_LIMITATION` | App reached maximum daily active users (DAU) or monthly active users (MAU). | Upgrade Chat service in the console. |
+| `100` | `INVALID_APP_KEY` | App Key is invalid. | Initialize with correct App Key. |
+| `101` | `INVALID_USER_NAME` | User ID is invalid, such as empty string when adding a contact. | Ensure user ID parameter is not null. |
+| `102` | `INVALID_PASSWORD` | Login password is empty or invalid. | Verify password parameter is correct. |
+| `103` | `INVALID_URL` | URL is incorrect. | Verify API parameters are correct. |
+| `104` | `INVALID_TOKEN` | Login token is empty or invalid. | Verify token parameters are correct. |
+| `105` | `USER_NAME_TOO_LONG` | User ID exceeds 64 bytes limit. | Check user ID length. |
+| `108` | `TOKEN_EXPIRED` | Token has expired. | When callback is received, regenerate token and call `login` to log in again. |
+| `109` | `TOKEN_WILL_EXPIRE` | Token passed half of its validity period. | When callback is received, regenerate token and call `SDKClient#RenewToken` to update. |
+| `200` | `USER_ALREADY_LOGIN` | User already logged in. | Check if SDK has automatic login enabled or if login method was already called. |
+| `201` | `USER_NOT_LOGIN` | Login session invalid or expired when attempting operations. | Ensure Chat login completes before calling API. |
+| `202` | `USER_AUTHENTICATION_FAILED` | User authentication fails due to invalid or expired token. | If logged out, log in again. Otherwise, regenerate token and call `SDKClient#RenewToken`. |
+| `203` | `USER_ALREADY_EXIST` | User ID specified during registration already exists. | Register with a different user ID or consider registration successful. |
+| `204` | `USER_NOT_FOUND` | User does not exist. | Verify user ID parameter is correct. |
+| `205` | `USER_ILLEGAL_ARGUMENT` | Incorrect user parameter. User ID invalid or empty during registration or attribute updates. | Verify API parameters are correct. |
+| `206` | `USER_LOGIN_ANOTHER_DEVICE` | User logged in on another device. Forces logout on current device if multi-device service isn't enabled. | When `IConnectionDelegate#OnLoggedOtherDevice` is triggered, log in again. |
+| `207` | `USER_REMOVED` | User account deleted in the backend. | When `IConnectionDelegate#OnRemovedFromServer` is triggered, return to login page. Account no longer available. |
+| `208` | `USER_REG_FAILED` | User account registration fails because registration is closed. | Register account with business server instead of using SDK. |
+| `210` | `USER_PERMISSION_DENIED` | User lacks permission for operation. User on block list attempts to send messageUser tries to modify another user's messageUser tries to modify custom group member attribute set by anotherUser attempts to destroy message thread without proper permissions | Check if user has operational privileges. |
+| `213` | `USER_BIND_ANOTHER_DEVICE` | User logged in to another device in single-device login configuration. | Configure for multiple device login or use `SDKClient#KickDevice` before logging in. |
+| `214` | `USER_LOGIN_TOO_MANY_DEVICES` | User reached maximum number of login devices. | Increase allowed simultaneous devices or use `SDKClient#KickDevice` before logging in. |
+| `215` | `USER_MUTED` | User is muted in group or chat room. | Restrict message sending in UI for users who are banned. |
+| `216` | `USER_KICKED_BY_CHANGE_PASSWORD` | User changed login password, ending current session. | When `IConnectionDelegate#OnChangedIMPwd` is received, call `SDKClient#Logout` and return to login page. |
+| `217` | `USER_KICKED_BY_OTHER_DEVICE` | User kicked off device via console or API call from another device. | When `IConnectionDelegate#OnKickedByOtherDevice` is received, call `SDKClient#Logout` and return to login page. |
+| `218` | `USER_ALREADY_LOGIN_ANOTHER` | Another user already logged in on device. | Call `SDKClient#Logout` to log out current account before logging in with different account. |
+| `219` | `USER_MUTED_BY_ADMIN` | User cannot send message when all members are muted. | Restrict message sending in UI when full ban is active. |
+| `220` | `USER_DEVICE_CHANGED` | Login attempt on device that isn't the last used device in single-device configuration. | When `IConnectionDelegate#OnLoggedOtherDevice` is received, call `Client#Logout` and return to login page. |
+| `221` | `USER_NOT_FRIEND` | User cannot send message to non-contact when contacts-only messaging is enabled. | Call `ContactManager#AddContact` first. Send messages after friend request is accepted. |
+| `300` | `SERVER_NOT_REACHABLE` | Server unreachable due to network issues. | For login errors, try switching networks or contact support for TLS encryption in specific regions. For other operations, switch networks or retry after delay. |
+| `301` | `SERVER_TIMEOUT` | Request timeout when server doesn't respond within specified period. | Retry API after switching networks or waiting. |
+| `302` | `SERVER_BUSY` | Server currently busy. | Check for repeated API calls. May occur when calling again before previous result is returned. |
+| `303` | `SERVER_UNKNOWN_ERROR` | Common server request error. | Provide logs and called APIs for troubleshooting. |
+| `304` | `SERVER_GET_DNSLIST_FAILED` | SDK fails to retrieve DNS server information. | If `Options#EnableDNSConfig` is `No`, check server settings. Otherwise, likely network issue during `dnsConfig` request. |
+| `305` | `SERVER_SERVICE_RESTRICTED` | App server is restricted. | Enable Chat feature in console or contact support. |
+| `400` | `FILE_NOT_FOUND` | File not found. | For log files, retry. For attachments, file no longer exists and cannot be downloaded. |
+| `401` | `FILE_INVALID` | File invalid. | Select different file and retry upload. |
+| `402` | `FILE_UPLOAD_FAILED` | Failed to upload file. | Analyze with API calls and logs. |
+| `403` | `FILE_DOWNLOAD_FAILED` | Failed to download file. | Check network or message expiration in logs. |
+| `404` | `FILE_DELETE_FAILED` | Failed to delete existing log file. | Check permissions for app log files. |
+| `405` | `FILE_TOO_LARGE` | File exceeds size limit. | Select file under 10 MB or contact support to increase limit. |
+| `406` | `FILE_CONTENT_IMPROPER` | File content inappropriate. | Select appropriate file and retry. |
+| `407` | `FILE_IS_EXPIRED` | File expired. Attachments stored for 7 days by default. | Contact support to increase storage time. |
+| `500` | `MESSAGE_INVALID` | Message invalid. Message body or ID empty, or sender ID inconsistent with login session. | Verify message construction, ID, sender, and body settings meet requirements. |
+| `501` | `MESSAGE_INCLUDE_ILLEGAL_CONTENT` | Message contains illegal content. | View blocking logs in console. |
+| `504` | `MESSAGE_RECALL_TIME_LIMIT` | Message recall timeout. | Show UI error or contact support to extend the retractability time. |
+| `505` | `SERVICE_NOT_ENABLED` | Feature not enabled. | Enable required features in console based on API and log analysis. |
+| `506` | `MESSAGE_EXPIRED` | Group receipt period expired. Default validity is 3 days. | Show UI error or contact support to extend the validity time. |
+| `507` | `MESSAGE_ILLEGAL_WHITELIST` | User not on allow list when all members are muted. | Show UI error or check if group-wide ban is enabled. |
+| `508` | `MESSAGE_EXTERNAL_LOGIC_BLOCKED` | Message blocked by app server filtering rule. | Show UI prompt or check the pre-sending callback logs. |
+| `510` | `MESSAGE_SIZE_LIMIT` | Message body exceeds limit. | Show UI prompt or reduce the message length (max 5 KB by default). |
+| `600` | `GROUP_INVALID_ID` | Group ID is invalid or empty. | Verify group ID parameter isn't empty or disbanded. |
+| `601` | `GROUP_ALREADY_JOINED` | User already in chat group. | Handle as successful join. |
+| `602` | `GROUP_NOT_JOINED` | User not in chat group. | Verify group ID is for joined group that hasn't been disbanded. |
+| `603` | `GROUP_PERMISSION_DENIED` | User lacks permission for group operation. | Check API call permissions. |
+| `604` | `GROUP_MEMBERS_FULL` | Group member count reached limit. | Show UI prompt or check if the maximum member count exceeds limit (default 200). |
+| `605` | `GROUP_NOT_EXIST` | Chat group doesn't exist. | Verify `sharedFileId` parameter isn't null. |
+| `606` | `GROUP_NOT_EXIST` | Group doesn't exist. Operation attempted on non-existing group. | Verify group ID is correct or not from disbanded group. |
+| `607` | `GROUP_DISABLED` | Groups are disabled. | Show UI prompt to request unblock from administrator. |
+| `608` | `GROUP_NAME_VIOLATION` | Group name is invalid. | Check if group name contains sensitive information. |
+| `609` | `GROUP_MEMBER_ATTRIBUTES_REACH_LIMIT` | Custom attributes count reached limit. | Total length for single group member cannot exceed 4 KB. |
+| `610` | `GROUP_MEMBER_ATTRIBUTES_UPDATE_FAILED` | Failed to set custom attributes. | Analyze with API calls and logs. |
+| `611` | `GROUP_MEMBER_ATTRIBUTES_KEY_REACH_LIMIT` | Custom attribute key exceeds 16 bytes. | Check if attribute key exceeds limit. |
+| `612` | `GROUP_MEMBER_ATTRIBUTES_VALUE_REACH_LIMIT` | Custom attribute value exceeds 512 bytes. | Check if attribute value exceeds limit. |
+| `613` | `GROUP_USER_IN_BLOCKLIST` | User is in group blacklist. | Show UI prompt or check console for blacklist status. |
+| `700` | `CHATROOM_INVALID_ID` | Chat room ID is invalid or empty. | Check if chat room ID is empty. |
+| `701` | `CHATROOM_ALREADY_JOINED` | User already in chat room. | Handle as successful join. |
+| `702` | `CHATROOM_NOT_JOINED` | User not in chat room. | Verify chat room ID is correct, not disbanded, or previously joined. |
+| `703` | `CHATROOM_PERMISSION_DENIED` | User lacks permission for chat room operation. | Check API call permissions. |
+| `704` | `CHATROOM_MEMBERS_FULL` | Chat room member count reached limit. | Check maximum member count setting. |
+| `705` | `CHATROOM_NOT_EXIST` | Chat room doesn't exist. | Verify chat room ID is correct, not disbanded, or previously joined. |
+| `706` | `CHATROOM_OWNER_NOT_ALLOW_LEAVE` | Chat room owner not allowed to leave. | Check `Options#IsRoomOwnerLeaveAllowed` setting when SDK is initialized. |
+| `707` | `CHATROOM_USER_IN_BLOCKLIST` | User is in chat room blacklist. | Check console for chat room blacklist status. |
+| `900` | `PUSH_NOT_SUPPORT` | Third-party push service not supported on current device. | Get user attributes in batches of up to 100 users. |
+| `901` | `PUSH_BIND_FAILED` | Failed to upload third-party push service token to server. | Check attribute length limits. |
+| `1000` | `CONTACT_ADD_FAILED` | Failed to add contact. | Analyze with API calls and error description. |
+| `1001` | `CONTACT_REACH_LIMIT` | Inviter reached maximum contacts limit. | Show UI error or contact support to increase limit. |
+| `1002` | `CONTACT_REACH_LIMIT_PEER` | Invitee reached maximum contacts limit. | Show UI error or contact support to increase limit. |
+| `1100` | `PRESENCE_PARAM_LENGTH_EXCEED` | Presence parameter length exceeds limit. | Online status details cannot exceed 64 bytes. |
+| `1101` | `PRESENCE_CANNOT_SUBSCRIBE_YOURSELF` | User cannot subscribe to own status. | Check if subscribed user ID is own ID. |
+| `1110` | `TRANSLATE_PARAM_INVALID` | Translation parameter error. | Analyze with debug logs. |
+| `1111` | `TRANSLATE_SERVICE_NOT_ENABLE` | Translation service not enabled. | Enable translation service in console. |
+| `1112` | `TRANSLATE_USAGE_LIMIT` | Translation usage reached limit. | Contact support to renew translation usage. |
+| `1113` | `TRANSLATE_MESSAGE_FAIL` | Failed to translate message. | Analyze with debug logs. |
+| `1200` | `THIRD_MODERATION_FAILED` | Third-party content moderation result is "Reject". | Check content audit configuration and logs in console. |
+| `1299` | `THIRD_DEFAULT_FAILED` | Non-third-party moderation service result is "Reject". | Check content audit configuration and logs in console. |
+| `1300` | `REACTION_REACH_LIMIT` | Message Reactions reached maximum allowed. | Show UI prompt or contact support to increase limit. |
+| `1301` | `REACTION_HAS_BEEN_OPERATED` | User already added this Reaction. | Handle as successful addition. |
+| `1302` | `REACTION_OPERATION_IS_ILLEGAL` | User lacks permission for Reaction operation. | Verify parameters with log analysis. |
+| `1400` | `THREAD_NOT_EXIST` | Thread doesn't exist. | Verify subzone ID is correct. |
+| `1401` | `THREAD_ALREADY_EXIST` | Thread already exists under this message ID. | Check if subzone already created under incoming message. |
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+This page lists the possible error codes and error messages returned by the SDK when you call Chat APIs.
+
+Possible reasons for these errors are provided to help you debug more efficiently. If you encounter an error code that is not listed here, contact support@agora.io for assistance.
+
+During runtime of the Agora Chat SDK, you may receive an error code and error message in one of the following ways:
+
+- As the return value when a method call fails.
+- As the error code reported through the `onError` callback.
+
+For example, when a user registration request fails because the username already exists, the `onError` callback returns the following error code and error message:
+
+```csharp
+SDKClient.Instance.Login(
+    username,
+    passwd,
+    callback: new CallBack(
+        onSuccess: () =>
+        {
+        },
+        onError: (code, desc) =>
+        {
+            // code: 203
+            // desc: USER_ALREADY_EXIST
+        }
+    )
+);
+```
+
+| Error code | Error message     |  Error description     | Fix       |
+| :--------- | :--------------- |  :------------------- |:----------|
+| `0` | `EM_NO_ERROR` | The operation succeeds. | No action required. |
+| `1` | `GENERAL_ERROR` | The SDK is not properly initialized, or the server cannot identify this error. | Analyze logs and called APIs. |
+| `2` | `NETWORK_ERROR` | SDK disconnected from server due to network interruption. | Retry operation after network restoration. |
+| `3` | `DATABASE_ERROR` | Database operation fails. | Analyze called API with logs. Error occurs when updating non-existent messages with `Conversation#UpdateMessage` or when database isn't open during operations. |
+| `4` | `EXCEED_SERVICE_LIMIT` | Usage exceeds service limit, such as registered users exceeding current pricing plan limits. | Check API parameters. Control `limit` parameter values. For rate limiting, retry after delay. |
+| `8` | `APP_ACTIVE_NUMBER_REACH_LIMITATION` | App reached maximum daily active users (DAU) or monthly active users (MAU). | Upgrade Chat service in the console. |
+| `100` | `INVALID_APP_KEY` | App Key is invalid. | Initialize with correct App Key. |
+| `101` | `INVALID_USER_NAME` | User ID is invalid, such as empty string when adding a contact. | Ensure user ID parameter is not null. |
+| `102` | `INVALID_PASSWORD` | Login password is empty or invalid. | Verify password parameter is correct. |
+| `103` | `INVALID_URL` | URL is incorrect. | Verify API parameters are correct. |
+| `104` | `INVALID_TOKEN` | Login token is empty or invalid. | Verify token parameters are correct. |
+| `105` | `USER_NAME_TOO_LONG` | User ID exceeds 64 bytes limit. | Check user ID length. |
+| `108` | `TOKEN_EXPIRED` | Token has expired. | When callback is received, regenerate token and call `login` to log in again. |
+| `109` | `TOKEN_WILL_EXPIRE` | Token passed half of its validity period. | When callback is received, regenerate token and call `SDKClient#RenewToken` to update. |
+| `200` | `USER_ALREADY_LOGIN` | User already logged in. | Check if SDK has automatic login enabled or if login method was already called. |
+| `201` | `USER_NOT_LOGIN` | Login session invalid or expired when attempting operations. | Ensure Chat login completes before calling API. |
+| `202` | `USER_AUTHENTICATION_FAILED` | User authentication fails due to invalid or expired token. | If logged out, log in again. Otherwise, regenerate token and call `SDKClient#RenewToken`. |
+| `203` | `USER_ALREADY_EXIST` | User ID specified during registration already exists. | Register with a different user ID or consider registration successful. |
+| `204` | `USER_NOT_FOUND` | User does not exist. | Verify user ID parameter is correct. |
+| `205` | `USER_ILLEGAL_ARGUMENT` | Incorrect user parameter. User ID invalid or empty during registration or attribute updates. | Verify API parameters are correct. |
+| `206` | `USER_LOGIN_ANOTHER_DEVICE` | User logged in on another device. Forces logout on current device if multi-device service isn't enabled. | When `IConnectionDelegate#OnLoggedOtherDevice` is triggered, log in again. |
+| `207` | `USER_REMOVED` | User account deleted in the backend. | When `IConnectionDelegate#OnRemovedFromServer` is triggered, return to login page. Account no longer available. |
+| `208` | `USER_REG_FAILED` | User account registration fails because registration is closed. | Register account with business server instead of using SDK. |
+| `210` | `USER_PERMISSION_DENIED` | User lacks permission for operation. User on block list attempts to send messageUser tries to modify another user's messageUser tries to modify custom group member attribute set by anotherUser attempts to destroy message thread without proper permissions | Check if user has operational privileges. |
+| `213` | `USER_BIND_ANOTHER_DEVICE` | User logged in to another device in single-device login configuration. | Configure for multiple device login or use `SDKClient#KickDevice` before logging in. |
+| `214` | `USER_LOGIN_TOO_MANY_DEVICES` | User reached maximum number of login devices. | Increase allowed simultaneous devices or use `SDKClient#KickDevice` before logging in. |
+| `215` | `USER_MUTED` | User is muted in group or chat room. | Restrict message sending in UI for users who are banned. |
+| `216` | `USER_KICKED_BY_CHANGE_PASSWORD` | User changed login password, ending current session. | When `IConnectionDelegate#OnChangedIMPwd` is received, call `SDKClient#Logout` and return to login page. |
+| `217` | `USER_KICKED_BY_OTHER_DEVICE` | User kicked off device via console or API call from another device. | When `IConnectionDelegate#OnKickedByOtherDevice` is received, call `SDKClient#Logout` and return to login page. |
+| `218` | `USER_ALREADY_LOGIN_ANOTHER` | Another user already logged in on device. | Call `SDKClient#Logout` to log out current account before logging in with different account. |
+| `219` | `USER_MUTED_BY_ADMIN` | User cannot send message when all members are muted. | Restrict message sending in UI when full ban is active. |
+| `220` | `USER_DEVICE_CHANGED` | Login attempt on device that isn't the last used device in single-device configuration. | When `IConnectionDelegate#OnLoggedOtherDevice` is received, call `Client#Logout` and return to login page. |
+| `221` | `USER_NOT_FRIEND` | User cannot send message to non-contact when contacts-only messaging is enabled. | Call `ContactManager#AddContact` first. Send messages after friend request is accepted. |
+| `300` | `SERVER_NOT_REACHABLE` | Server unreachable due to network issues. | For login errors, try switching networks or contact support for TLS encryption in specific regions. For other operations, switch networks or retry after delay. |
+| `301` | `SERVER_TIMEOUT` | Request timeout when server doesn't respond within specified period. | Retry API after switching networks or waiting. |
+| `302` | `SERVER_BUSY` | Server currently busy. | Check for repeated API calls. May occur when calling again before previous result is returned. |
+| `303` | `SERVER_UNKNOWN_ERROR` | Common server request error. | Provide logs and called APIs for troubleshooting. |
+| `304` | `SERVER_GET_DNSLIST_FAILED` | SDK fails to retrieve DNS server information. | If `Options#EnableDNSConfig` is `No`, check server settings. Otherwise, likely network issue during `dnsConfig` request. |
+| `305` | `SERVER_SERVICE_RESTRICTED` | App server is restricted. | Enable Chat feature in console or contact support. |
+| `400` | `FILE_NOT_FOUND` | File not found. | For log files, retry. For attachments, file no longer exists and cannot be downloaded. |
+| `401` | `FILE_INVALID` | File invalid. | Select different file and retry upload. |
+| `402` | `FILE_UPLOAD_FAILED` | Failed to upload file. | Analyze with API calls and logs. |
+| `403` | `FILE_DOWNLOAD_FAILED` | Failed to download file. | Check network or message expiration in logs. |
+| `404` | `FILE_DELETE_FAILED` | Failed to delete existing log file. | Check permissions for app log files. |
+| `405` | `FILE_TOO_LARGE` | File exceeds size limit. | Select file under 10 MB or contact support to increase limit. |
+| `406` | `FILE_CONTENT_IMPROPER` | File content inappropriate. | Select appropriate file and retry. |
+| `407` | `FILE_IS_EXPIRED` | File expired. Attachments stored for 7 days by default. | Contact support to increase storage time. |
+| `500` | `MESSAGE_INVALID` | Message invalid. Message body or ID empty, or sender ID inconsistent with login session. | Verify message construction, ID, sender, and body settings meet requirements. |
+| `501` | `MESSAGE_INCLUDE_ILLEGAL_CONTENT` | Message contains illegal content. | View blocking logs in console. |
+| `504` | `MESSAGE_RECALL_TIME_LIMIT` | Message recall timeout. | Show UI error or contact support to extend the retractability time. |
+| `505` | `SERVICE_NOT_ENABLED` | Feature not enabled. | Enable required features in console based on API and log analysis. |
+| `506` | `MESSAGE_EXPIRED` | Group receipt period expired. Default validity is 3 days. | Show UI error or contact support to extend the validity time. |
+| `507` | `MESSAGE_ILLEGAL_WHITELIST` | User not on allow list when all members are muted. | Show UI error or check if group-wide ban is enabled. |
+| `508` | `MESSAGE_EXTERNAL_LOGIC_BLOCKED` | Message blocked by app server filtering rule. | Show UI prompt or check the pre-sending callback logs. |
+| `510` | `MESSAGE_SIZE_LIMIT` | Message body exceeds limit. | Show UI prompt or reduce the message length (max 5 KB by default). |
+| `600` | `GROUP_INVALID_ID` | Group ID is invalid or empty. | Verify group ID parameter isn't empty or disbanded. |
+| `601` | `GROUP_ALREADY_JOINED` | User already in chat group. | Handle as successful join. |
+| `602` | `GROUP_NOT_JOINED` | User not in chat group. | Verify group ID is for joined group that hasn't been disbanded. |
+| `603` | `GROUP_PERMISSION_DENIED` | User lacks permission for group operation. | Check API call permissions. |
+| `604` | `GROUP_MEMBERS_FULL` | Group member count reached limit. | Show UI prompt or check if the maximum member count exceeds limit (default 200). |
+| `605` | `GROUP_NOT_EXIST` | Chat group doesn't exist. | Verify `sharedFileId` parameter isn't null. |
+| `606` | `GROUP_NOT_EXIST` | Group doesn't exist. Operation attempted on non-existing group. | Verify group ID is correct or not from disbanded group. |
+| `607` | `GROUP_DISABLED` | Groups are disabled. | Show UI prompt to request unblock from administrator. |
+| `608` | `GROUP_NAME_VIOLATION` | Group name is invalid. | Check if group name contains sensitive information. |
+| `609` | `GROUP_MEMBER_ATTRIBUTES_REACH_LIMIT` | Custom attributes count reached limit. | Total length for single group member cannot exceed 4 KB. |
+| `610` | `GROUP_MEMBER_ATTRIBUTES_UPDATE_FAILED` | Failed to set custom attributes. | Analyze with API calls and logs. |
+| `611` | `GROUP_MEMBER_ATTRIBUTES_KEY_REACH_LIMIT` | Custom attribute key exceeds 16 bytes. | Check if attribute key exceeds limit. |
+| `612` | `GROUP_MEMBER_ATTRIBUTES_VALUE_REACH_LIMIT` | Custom attribute value exceeds 512 bytes. | Check if attribute value exceeds limit. |
+| `613` | `GROUP_USER_IN_BLOCKLIST` | User is in group blacklist. | Show UI prompt or check console for blacklist status. |
+| `700` | `CHATROOM_INVALID_ID` | Chat room ID is invalid or empty. | Check if chat room ID is empty. |
+| `701` | `CHATROOM_ALREADY_JOINED` | User already in chat room. | Handle as successful join. |
+| `702` | `CHATROOM_NOT_JOINED` | User not in chat room. | Verify chat room ID is correct, not disbanded, or previously joined. |
+| `703` | `CHATROOM_PERMISSION_DENIED` | User lacks permission for chat room operation. | Check API call permissions. |
+| `704` | `CHATROOM_MEMBERS_FULL` | Chat room member count reached limit. | Check maximum member count setting. |
+| `705` | `CHATROOM_NOT_EXIST` | Chat room doesn't exist. | Verify chat room ID is correct, not disbanded, or previously joined. |
+| `706` | `CHATROOM_OWNER_NOT_ALLOW_LEAVE` | Chat room owner not allowed to leave. | Check `Options#IsRoomOwnerLeaveAllowed` setting when SDK is initialized. |
+| `707` | `CHATROOM_USER_IN_BLOCKLIST` | User is in chat room blacklist. | Check console for chat room blacklist status. |
+| `900` | `PUSH_NOT_SUPPORT` | Third-party push service not supported on current device. | Get user attributes in batches of up to 100 users. |
+| `901` | `PUSH_BIND_FAILED` | Failed to upload third-party push service token to server. | Check attribute length limits. |
+| `1000` | `CONTACT_ADD_FAILED` | Failed to add contact. | Analyze with API calls and error description. |
+| `1001` | `CONTACT_REACH_LIMIT` | Inviter reached maximum contacts limit. | Show UI error or contact support to increase limit. |
+| `1002` | `CONTACT_REACH_LIMIT_PEER` | Invitee reached maximum contacts limit. | Show UI error or contact support to increase limit. |
+| `1100` | `PRESENCE_PARAM_LENGTH_EXCEED` | Presence parameter length exceeds limit. | Online status details cannot exceed 64 bytes. |
+| `1101` | `PRESENCE_CANNOT_SUBSCRIBE_YOURSELF` | User cannot subscribe to own status. | Check if subscribed user ID is own ID. |
+| `1110` | `TRANSLATE_PARAM_INVALID` | Translation parameter error. | Analyze with debug logs. |
+| `1111` | `TRANSLATE_SERVICE_NOT_ENABLE` | Translation service not enabled. | Enable translation service in console. |
+| `1112` | `TRANSLATE_USAGE_LIMIT` | Translation usage reached limit. | Contact support to renew translation usage. |
+| `1113` | `TRANSLATE_MESSAGE_FAIL` | Failed to translate message. | Analyze with debug logs. |
+| `1200` | `THIRD_MODERATION_FAILED` | Third-party content moderation result is "Reject". | Check content audit configuration and logs in console. |
+| `1299` | `THIRD_DEFAULT_FAILED` | Non-third-party moderation service result is "Reject". | Check content audit configuration and logs in console. |
+| `1300` | `REACTION_REACH_LIMIT` | Message Reactions reached maximum allowed. | Show UI prompt or contact support to increase limit. |
+| `1301` | `REACTION_HAS_BEEN_OPERATED` | User already added this Reaction. | Handle as successful addition. |
+| `1302` | `REACTION_OPERATION_IS_ILLEGAL` | User lacks permission for Reaction operation. | Verify parameters with log analysis. |
+| `1400` | `THREAD_NOT_EXIST` | Thread doesn't exist. | Verify subzone ID is correct. |
+| `1401` | `THREAD_ALREADY_EXIST` | Thread already exists under this message ID. | Check if subzone already created under incoming message. |
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+This page lists the possible error codes and error messages returned by the SDK when you call Chat APIs.
+
+Possible reasons for these errors are provided to help you debug more efficiently. If you encounter an error code that is not listed here, contact support@agora.io for assistance.
+
+Refer to the error codes for Android and iOS.
+
+</PlatformStructured>

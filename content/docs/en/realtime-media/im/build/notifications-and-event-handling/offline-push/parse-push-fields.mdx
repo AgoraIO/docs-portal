@@ -3,16 +3,7 @@ title: "Parse push fields"
 description: "Parse push notifications fields."
 ---
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="react-native">React Native</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="android">
+<PlatformStructured platform="android">
 
 After receiving a push notification, you need to parse the data.
 
@@ -83,9 +74,9 @@ The data structure of the extension in the `RemoteMessage` object is as follows:
 }
 ```
 
-</CodeBlockTab>
+</PlatformStructured>
 
-<CodeBlockTab value="ios">
+<PlatformStructured platform="ios">
 
 When the device receives a push notification and a user clicks it, the system will pass the custom push content (JSON) to the app. This allows you to customize the behavior triggered by clicking the push notification according to the push content, such as page routing. When a push notification is received and clicked, the app obtains the push content as follows:
 
@@ -136,9 +127,9 @@ The data structure of the user-defined `userInfo` is as follows:
 |  `g`      | The group ID. This field exists only for group messages. |
 |  `m` |      The message ID.                |
 
-</CodeBlockTab>
+</PlatformStructured>
 
-<CodeBlockTab value="flutter">
+<PlatformStructured platform="flutter">
 
 After receiving a push notification, you need to parse the data.
 
@@ -190,9 +181,9 @@ The data structure of the extension in the `RemoteMessage.data` object is as fol
 }
 ```
 
-</CodeBlockTab>
+</PlatformStructured>
 
-<CodeBlockTab value="react-native">
+<PlatformStructured platform="react-native">
 
 After receiving a push notification, you need to parse the data.
 
@@ -242,16 +233,22 @@ The data structure of the extension in the `RemoteMessage` object is as follows:
 }
 ```
 
-</CodeBlockTab>
+</PlatformStructured>
 
-<CodeBlockTab value="web">
+<PlatformStructured platform="web">
 
 **This feature guide is not available yet.**
 
-</CodeBlockTab>
+</PlatformStructured>
 
-</CodeBlockTabs>
-
-### Windows, Unity
+<PlatformStructured platform="windows">
 
 **This feature is not supported for this platform.**
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+**This feature is not supported for this platform.**
+
+</PlatformStructured>
