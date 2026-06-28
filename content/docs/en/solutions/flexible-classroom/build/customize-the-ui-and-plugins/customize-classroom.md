@@ -192,40 +192,17 @@ To change the color of the placeholder text in the input component, edit the `pa
 **Before**
 
 ```css
-.fcr-input-wrapper input::-webkit-input-placeholder 
-      <AgoraDemo/>
-      <FixedAspectRatioRootBox trackMargin={{ top: shareUIStore.navHeight }}>
-        <SceneSwitch>
-          <Layout className={layoutCls} direction="col">
-            <NavigationBar />
-            <Layout
-              className="flex-grow items-stretch relative justify-center fcr-room-bg"
-              direction="col">
-              <RoomMidStreamsContainer />
-              <Whiteboard />
-              <ScreenShareContainer />
-              <RemoteControlContainer />
-              <StreamWindowsContainer />
-            </Layout>
-            <RemoteControlToolbar />
-            <WhiteboardToolbar />
-            <ScenesController />
-            <Float bottom={15} right={10} align="flex-end" gap={2}>
-              <HandsUpContainer />
-              <Chat />
-            </Float>
-            <DialogContainer />
-            <LoadingContainer />
-          </Layout>
-          <WidgetContainer />
-          <ToastContainer />
-          <Award />
-          <Watermark />
-        </SceneSwitch>
-      </FixedAspectRatioRootBox>
-    </Room>
-  );
-};
+.fcr-input-wrapper input::-webkit-input-placeholder {
+  color: #999;
+}
+```
+
+**After**
+
+```css
+.fcr-input-wrapper input::-webkit-input-placeholder {
+  color: #ff6600;
+}
 ```
 
 The effect of this business component in Flexible Classroom is as follows:
