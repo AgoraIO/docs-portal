@@ -28,6 +28,7 @@ const enCommon = {
     pagesLabel: 'Pages',
     toc: 'On this page',
     tocEmpty: 'No headings on this page.',
+    returnToSource: 'Back to {{title}}',
     next: 'Next',
     previous: 'Previous',
     copyPage: 'Copy Page',
