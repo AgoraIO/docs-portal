@@ -1115,6 +1115,27 @@ describe('DocsTableOfContents', () => {
 });
 
 describe('DocsMainColumn', () => {
+  it('keeps desktop content in normal page flow instead of a nested scroll viewport', async () => {
+    renderWithRouter(
+      <DocsMainColumn>
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const mainColumn = await screen.findByTestId('docs-main-column');
+    const desktopContent = screen.getByTestId('docs-main-desktop-scroll');
+
+    expect(mainColumn).toHaveClass('min-w-0', 'bg-background');
+    expect(mainColumn).not.toHaveClass('h-full', 'min-h-0', 'overflow-hidden');
+    expect(desktopContent).toHaveClass('hidden', 'lg:block');
+    expect(desktopContent).not.toHaveClass(
+      'docs-scrollbar',
+      'h-full',
+      'min-h-0',
+      'overflow-y-auto',
+    );
+  });
+
   it('renders reference-style pager cards in the footer', async () => {
     renderWithRouter(
       <DocsMainColumn

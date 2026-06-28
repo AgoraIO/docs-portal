@@ -457,6 +457,14 @@ describe('DocsShell', () => {
     expect(docsBodyShell).not.toContainElement(siteFooter);
     expect(mainColumn).not.toContainElement(siteFooter);
     expect(pageFooter).not.toContainElement(siteFooter);
+    expect(
+      docsBodyShell.compareDocumentPosition(siteFooter) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      pageFooter.compareDocumentPosition(siteFooter) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     expect(siteFooter.parentElement).toHaveClass('flex', 'min-h-screen');
     expect(siteFooter).toHaveClass(
       'w-full',
@@ -582,19 +590,26 @@ describe('DocsShell', () => {
     expect(screen.queryByText('On this page')).not.toBeInTheDocument();
   });
 
-  it('keeps desktop sidebar, content, and toc as independent scroll regions', async () => {
+  it('keeps desktop content in normal page flow while sidebar and toc own their scroll regions', async () => {
     renderDocsShell({
       next: { title: 'Next Page', url: '/en/introduction/next-page' },
       previous: { title: 'Previous Page', url: '/en/introduction/prev-page' },
     });
 
-    expect(await screen.findByTestId('docs-body-shell')).toHaveClass(
+    const docsBodyShell = await screen.findByTestId('docs-body-shell');
+    const mainColumn = screen.getByTestId('docs-main-column');
+    const desktopContent = screen.getByTestId('docs-main-desktop-scroll');
+
+    expect(docsBodyShell).toHaveClass('lg:items-start');
+    expect(docsBodyShell).not.toHaveClass(
+      'lg:h-[var(--docs-shell-body-height)]',
       'lg:min-h-0',
       'lg:overflow-hidden',
     );
     expect(screen.getByTestId('docs-sidebar')).toHaveClass(
-      'h-full',
-      'min-h-0',
+      'lg:sticky',
+      'lg:top-[var(--docs-shell-header-offset)]',
+      'lg:h-[var(--docs-shell-body-height)]',
       'overflow-hidden',
     );
     expect(screen.getByTestId('docs-sidebar-scroll')).toHaveClass(
@@ -603,12 +618,10 @@ describe('DocsShell', () => {
       'min-h-0',
       'overflow-y-auto',
     );
-    expect(screen.getByTestId('docs-main-column')).toHaveClass(
-      'h-full',
-      'min-h-0',
-      'overflow-hidden',
-    );
-    expect(screen.getByTestId('docs-main-desktop-scroll')).toHaveClass(
+    expect(mainColumn).toHaveClass('min-w-0', 'bg-background');
+    expect(mainColumn).not.toHaveClass('h-full', 'min-h-0', 'overflow-hidden');
+    expect(desktopContent).toHaveClass('hidden', 'lg:block');
+    expect(desktopContent).not.toHaveClass(
       'docs-scrollbar',
       'h-full',
       'min-h-0',
@@ -616,31 +629,32 @@ describe('DocsShell', () => {
     );
     expect(screen.getByTestId('docs-toc-rail')).toHaveClass(
       'docs-scrollbar',
-      'h-full',
-      'min-h-0',
+      'xl:sticky',
+      'xl:top-[var(--docs-shell-header-offset)]',
+      'xl:h-[var(--docs-shell-body-height)]',
       'overflow-y-auto',
     );
   });
 
-  it('shows docs scrollbars transiently while a region is scrolling', async () => {
+  it('shows docs scrollbars transiently while a sidebar region is scrolling', async () => {
     renderDocsShell();
 
-    const mainScrollRegion = await screen.findByTestId(
-      'docs-main-desktop-scroll',
+    const sidebarScrollRegion = await screen.findByTestId(
+      'docs-sidebar-scroll',
     );
     vi.useFakeTimers();
 
-    expect(mainScrollRegion).not.toHaveClass('docs-scrollbar-visible');
+    expect(sidebarScrollRegion).not.toHaveClass('docs-scrollbar-visible');
 
-    fireEvent.scroll(mainScrollRegion);
+    fireEvent.scroll(sidebarScrollRegion);
 
-    expect(mainScrollRegion).toHaveClass('docs-scrollbar-visible');
+    expect(sidebarScrollRegion).toHaveClass('docs-scrollbar-visible');
 
     await act(async () => {
       vi.advanceTimersByTime(900);
     });
 
-    expect(mainScrollRegion).not.toHaveClass('docs-scrollbar-visible');
+    expect(sidebarScrollRegion).not.toHaveClass('docs-scrollbar-visible');
   });
 
   it('resets desktop sidebar scroll position when the active tab changes', async () => {

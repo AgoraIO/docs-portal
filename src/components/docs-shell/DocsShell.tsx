@@ -380,7 +380,7 @@ export function DocsShell({
         </header>
         <div
           className={cn(
-            'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden',
+            'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:grid-cols-[256px_minmax(0,1fr)] lg:items-start',
             shellWidthClassName,
             desktopGridClassName,
           )}
