@@ -71,6 +71,7 @@ export const docsMetaSchema = metaSchema.extend({
     .array(docsMetaPageEntrySchema)
     .transform((entries) => entries.flat())
     .optional(),
+  sidebarHidden: z.boolean().optional(),
   sidebarIndexTitle: z.string().min(1).optional(),
 });
 

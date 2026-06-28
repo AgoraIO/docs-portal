@@ -4,22 +4,34 @@ import {
   getApiReferenceNodeMeta,
 } from './api-reference-sidebar.testkit';
 import { resolveDocsNavScope } from './docs-nav-scope';
+import { loadDocsPagePayload } from './docs-page.server';
+import type { DocsSidebarNode } from './docs-tree';
 import { source } from './source.server';
 
-describe('api reference archive entry (option a)', () => {
-  it('renders the api-ref catalog as a single collapsed "All SDK versions" entry', () => {
+function flattenSidebarNodes(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
+  return nodes.flatMap((node) =>
+    node.type === 'section'
+      ? [node, ...flattenSidebarNodes(node.children)]
+      : [node],
+  );
+}
+
+describe('api reference archive removed from sidebar', () => {
+  it('omits the "All SDK versions" archive entry from the rail', () => {
     const rail = buildApiReferenceRail();
-    const flat = rail.flatMap((n) =>
-      n.type === 'section' ? [n, ...n.children] : [n],
-    );
-    const archive = flat.find((n) => n.title === 'All SDK versions');
-    expect(archive).toBeDefined();
-    expect((archive as { url?: string }).url).toBe('/en/api-reference/api-ref');
-    expect((archive as { type?: string }).type).toBe('section');
-    expect((archive as { collapsible?: boolean }).collapsible).toBe(true);
-    expect((archive as { children?: unknown[] }).children ?? []).toHaveLength(
-      0,
-    );
+    const flat = flattenSidebarNodes(rail);
+
+    expect(flat.find((n) => n.title === 'All SDK versions')).toBeUndefined();
+    expect(
+      flat.find(
+        (n) => (n as { url?: string }).url === '/en/api-reference/api-ref',
+      ),
+    ).toBeUndefined();
+
+    // The api-ref folder must not be expanded inline as a scoped REST submenu:
+    // no "RESTful API" section and no lane leaves like "Conversational AI".
+    expect(flat.find((n) => n.title === 'RESTful API')).toBeUndefined();
+    expect(flat.find((n) => n.title === 'Conversational AI')).toBeUndefined();
   });
 
   it('keeps a lane navScope-resolvable (focused endpoint sidebar still works)', () => {
@@ -31,5 +43,17 @@ describe('api reference archive entry (option a)', () => {
       tab: 'api-reference',
     });
     expect(scope).not.toBeNull();
+  });
+
+  it('renders the catalog page with the unified product rail, not the scoped REST submenu', async () => {
+    const payload = await loadDocsPagePayload('en', 'api-reference', [
+      'api-ref',
+    ]);
+
+    const sidebar = (payload as { sidebar?: DocsSidebarNode[] }).sidebar ?? [];
+    const flat = flattenSidebarNodes(sidebar);
+
+    expect(flat.find((n) => n.title === 'Voice & Video')).toBeDefined();
+    expect(flat.find((n) => n.title === 'RESTful API')).toBeUndefined();
   });
 });
