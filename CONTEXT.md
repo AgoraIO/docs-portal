@@ -138,6 +138,12 @@ _Avoid_: source asset, committed public copy
 The full verification boundary for OpenAPI endpoint pages across build output, public YAML, rendered docs, llms exports, search, and browser layout.
 _Avoid_: types-only verification, unit-test-only completion
 
+### Reference navigation
+
+**Reference overview**:
+The global landing page for the Reference tab (`/api-reference`) — a hub that links to every Reference area (SDKs, API References, Recipes, FAQ). It is not a catalog of API-reference products; that depth lives on the **API reference** page and in the sidebar.
+_Avoid_: API reference index, product catalog landing, SDK/REST grid page
+
 ### FAQ
 
 **FAQ hub**:
@@ -197,6 +203,7 @@ _Avoid_: FAQ card, inline FAQ answer, FAQ accordion item
 - An **FAQ hub** links to **FAQ category pages**, one per **FAQ category**; the hub and the category pages are **MDX-authored pages**.
 - A **FAQ category page** lists **FAQ entries**; each **FAQ entry** links to its own troubleshooting **MDX-authored page** and is never expanded inline.
 - **FAQ entries** are trimmed out of the docs sidebar tree but remain routable; the sidebar shows only the **FAQ hub** and its **FAQ category pages**.
+- The **Reference overview** links to each Reference area (SDKs, **API reference**, recipes, **FAQ hub**) and does not duplicate their contents; the per-product SDK and REST references live on the **API reference** page and the sidebar.
 
 ## Example dialogue
 
