@@ -393,6 +393,46 @@ describe('docs content regressions', () => {
     expect(rtmDownloads).toContain('agora_rtm: ^2.2.1');
     expect(rtmDownloads).not.toMatch(/<\/?(details|summary|PlatformWrapper)>/);
 
+    const appSizeOptimizationDocs = [
+      'realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx',
+      'realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx',
+    ];
+
+    for (const relativePath of appSizeOptimizationDocs) {
+      const content = readDoc(relativePath);
+
+      expect(content).toContain('<Accordions>');
+      expect(content).toContain('<Accordion title="AI Noise Suppression">');
+      expect(content).toContain('<Accordion title="AI Echo Cancellation">');
+      expect(content).toContain('<Accordion title="Audio Beauty">');
+      expect(content).toContain('<Accordion title="Video Enhancement">');
+      expect(content).toContain('<Accordion title="Local Screenshot Upload">');
+    }
+
+    const voicePricing = readDoc('realtime-media/voice/reference/pricing.mdx');
+
+    expect(voicePricing).toContain('### FAQs');
+    expect(voicePricing).toContain('#### Free minutes');
+    expect(voicePricing).toContain('#### Billing');
+    expect(voicePricing).toContain('#### Duration and usage');
+    expect(voicePricing).toContain('#### Video resolution');
+    expect(voicePricing).toContain('#### Arrears');
+    expect(voicePricing).toContain(
+      '<Accordion title="If I purchase a paid package, do I still get 10,000 free minutes each month?">',
+    );
+    expect(voicePricing).toContain(
+      '<Accordion title="If a user doesn’t publish or subscribe to any audio or video streams in a channel, will they still be charged?">',
+    );
+    expect(voicePricing).toContain(
+      '<Accordion title="How is usage duration calculated in the bill?">',
+    );
+    expect(voicePricing).toContain(
+      '<Accordion title="Can I view individual user usage in the bill?">',
+    );
+    expect(voicePricing).toContain(
+      '<Accordion title="Why is my applied billing rate for Ultra-HD when all users subscribe to 360 × 640 video streams?">',
+    );
+
     const rtmpCoreConcepts = readDoc(
       'realtime-media/rtmp-gateway/reference/core-concepts.md',
     );
@@ -781,6 +821,24 @@ describe('docs content regressions', () => {
     }
   });
 
+  it('keeps shared geofencing pages with the web, react-js, and unreal platform sections', () => {
+    const pages = [
+      'realtime-media/video/build/manage-connection-and-quality/geofencing.mdx',
+      'realtime-media/voice/build/manage-connection-and-quality/geofencing.mdx',
+      'realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'solutions/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
+    ];
+
+    for (const relativePath of pages) {
+      const source = readFileSync(resolve(docsRoot, relativePath), 'utf8');
+
+      expect(source).toContain('<PlatformStructured platform="web">');
+      expect(source).toContain('<PlatformStructured platform="react-js">');
+      expect(source).toContain('<PlatformStructured platform="unreal">');
+    }
+  });
+
+
   it('does not leave multi-host optimization pages as placeholder stubs', () => {
     const pages = [
       'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
@@ -872,6 +930,38 @@ describe('docs content regressions', () => {
     );
   });
 
+  it('keeps simulcasting implementation details from the legacy shared Android content', () => {
+    const source = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/video/build/manage-connection-and-quality/simulcasting.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(source).toContain(
+      'The following snippet shows how `SimulcastConfig` and related classes are defined in the SDK:',
+    );
+    expect(source).toContain('public class SimulcastConfig {');
+    expect(source).toContain('STREAM_LAYER_6(5)');
+    expect(source).toContain('publishFallbackEnable');
+    expect(source).toContain(
+      'Constants.VideoStreamType videoStreamType = Constants.VideoStreamType.valueOf(videoStream);',
+    );
+    expect(source).toContain(
+      'Compared with dual-stream video, simulcasting offers the following improvements:',
+    );
+    expect(source).toContain(
+      '**More subscribed streams**: Simulcasting expands the number of subscribable streams from 2 to 8.',
+    );
+    expect(source).toContain(
+      'If bandwidth or device performance is limited, the sender automatically disables extra streams.',
+    );
+    expect(source).toContain(
+      'Simulcasting supports publishing video streams at specific tiers based on the subscriber\'s settings.',
+    );
+  });
+
   it('keeps video quickstart free of the broken gradle code fence structure', () => {
     const source = readFileSync(
       resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
@@ -913,6 +1003,78 @@ describe('docs content regressions', () => {
     expect(source).toContain('## Sample project repositories');
     expect(source).toContain('AgoraIO/API-Examples');
     expect(source).toContain('## Next steps');
+  });
+
+  it('keeps voice supported platforms expanded into the shared multi-platform structure', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/voice/reference/supported-platforms.mdx'),
+      'utf8',
+    );
+
+    expect(source).toContain('<PlatformStructured platform="android">');
+    expect(source).toContain('<PlatformStructured platform="ios">');
+    expect(source).toContain('<PlatformStructured platform="web">');
+    expect(source).toContain('<PlatformStructured platform="windows">');
+    expect(source).toContain('<PlatformStructured platform="unreal">');
+    expect(source).toContain('Voice SDK supports the following ABIs.');
+    expect(source).not.toContain('| Android | <Slot name="android" /> |');
+  });
+
+  it('keeps video migration guide expanded into the shared ten-platform structure from the legacy source', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/reference/migration-guide.mdx'),
+      'utf8',
+    );
+
+    expect(source).toContain('<PlatformStructured platform="android">');
+    expect(source).toContain('<PlatformStructured platform="ios">');
+    expect(source).toContain('<PlatformStructured platform="web">');
+    expect(source).toContain('<PlatformStructured platform="macos">');
+    expect(source).toContain('<PlatformStructured platform="windows">');
+    expect(source).toContain('<PlatformStructured platform="electron">');
+    expect(source).toContain('<PlatformStructured platform="flutter">');
+    expect(source).toContain('<PlatformStructured platform="react-native">');
+    expect(source).toContain('<PlatformStructured platform="unity">');
+    expect(source).toContain('<PlatformStructured platform="unreal">');
+    expect(source).not.toContain('<PlatformStructured platform="react-js">');
+    expect(source).not.toContain('<PlatformStructured platform="blueprint">');
+  });
+
+  it('keeps optimize-multihost-video fully split into android ios and flutter platform sections', () => {
+    const source = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(source).toContain('<PlatformStructured platform="android">');
+    expect(source).toContain('<PlatformStructured platform="ios">');
+    expect(source).toContain('<PlatformStructured platform="flutter">');
+    expect(source).not.toContain('<Tabs defaultValue="android"');
+    expect(source).not.toContain('<TabsList>');
+    expect(source).not.toContain('<TabsContent value="android">');
+    expect(source).not.toContain('<TabsContent value="ios">');
+    expect(source).not.toContain('<TabsContent value="flutter">');
+  });
+
+  it('keeps prevent-stream-bombing aligned with the legacy shared security guidance', () => {
+    const source = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/video/build/secure-and-protect-channels/prevent-stream-bombing.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(source).toContain('description: "Procedures to prevent and respond to room bombing."');
+    expect(source).toContain('This page describes a series of measures to deal with room bombing and disruptive behavior');
+    expect(source).toContain('[Secure authentication with tokens](../token-authentication/authentication-workflow)');
+    expect(source).toContain('[Channel Management RESTful API](/en/api-reference/api-ref/video)');
+    expect(source).toContain('`unsubscribe`');
+    expect(source).not.toContain('description: "Procedures to prevent and respond to housebreaking."');
+    expect(source).not.toContain('[Secure authentication with tokens](../../authenticate-users/use-tokens.mdx)');
   });
 
   it('keeps voice error codes page in the condensed reference format', () => {

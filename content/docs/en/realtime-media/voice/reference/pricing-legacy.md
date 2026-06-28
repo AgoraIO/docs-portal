@@ -5,7 +5,7 @@ description: "This page documents Agora's previous pricing model based on monthl
 
 This page documents Agora's previous pricing model based on monthly billing. It remains available for reference during the transition to the new prepaid packages.
 :::note
-You're viewing information about Agora's previous monthly billing model. For the latest prepaid packages, see [Pricing](pricing.md).
+You're viewing information about Agora's previous monthly billing model. For the latest prepaid packages, see [Pricing](pricing.mdx).
 :::
 If you have already signed a contract with Agora, the billing terms and conditions within that contract take precedence.
 
@@ -127,7 +127,7 @@ AI Noise Suppression is free for up to 10,000 minutes each month. Additional usa
 
 ### 3D Spatial Audio pricing
 
-[3D Spatial Audio](../build/enhance-the-audio-experience/spatial-audio.mdx) brings theater-like effects to virtual communication, making it seem as if the sound originates from all around the user.
+[3D Spatial Audio](../build/control-audio-and-devices/spatial-audio.mdx) brings theater-like effects to virtual communication, making it seem as if the sound originates from all around the user.
 
 The unit prices for this extension are as follows:
 

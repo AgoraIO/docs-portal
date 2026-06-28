@@ -95,7 +95,7 @@ Follow these steps to install, configure, and use the VAD plugin in your project
 
 1. Register the plugin
 
-  Call the <Link to = "{{global.API_REF_WEB_ROOT}}/interfaces/iagorartc.html#registerextensions">`AgoraRTC.registerExtensions`</Link> method and pass the created `VADExtension` instance to register the VAD plugin. You can also listen for events when the Wasm file fails to load.
+  Call the <Link to = "https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions">`AgoraRTC.registerExtensions`</Link> method and pass the created `VADExtension` instance to register the VAD plugin. You can also listen for events when the Wasm file fails to load.
 
 :::warning
 
@@ -151,7 +151,7 @@ Agora recommends that you create only one instance of `VADExtension`.
    });
    ```
 
-  1. Inject the plugin into the audio processing pipeline by calling the SDK's <Link to = "{{global.API_REF_WEB_ROOT}}/interfaces/imicrophoneaudiotrack.html#pipe">`pipe`</Link> method and specify the `processorDestination` property.
+  1. Inject the plugin into the audio processing pipeline by calling the SDK's <Link to = "https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#pipe">`pipe`</Link> method and specify the `processorDestination` property.
 
    ```ts
    // Create an audio track
@@ -286,4 +286,3 @@ export interface VADExtensionOptions {
 
 The plugin assembles the full path to the Wasm files from the `assetsPath`. If the path is incorrect and the Wasm files fail to load, you receive an `onloaderror` callback.
 </PlatformStructured>
-
