@@ -4,7 +4,12 @@ import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
-import { getMDXComponents, MDXAccordionProvider } from './mdx';
+import {
+  getMDXComponents,
+  MDXAccordionProvider,
+  Parameter,
+  ParameterList,
+} from './mdx';
 import {
   PlatformHeaderTabs,
   PlatformTabsPlacementProvider,
@@ -380,6 +385,13 @@ describe('common MDX registry', () => {
     expect(components._PlatformTabsGroup).toBeDefined();
     expect(components._PlatformPanel).toBeDefined();
     expect(components.Slot).toBeUndefined();
+  });
+
+  it('exports parameter components for direct MDX imports', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+
+    expect(ParameterList).toBe(components.ParameterList);
+    expect(Parameter).toBe(components.Parameter);
   });
 
   it('renders transformed platform groups with persisted preference fallback and hidden inactive panels', () => {

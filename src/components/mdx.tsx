@@ -777,6 +777,8 @@ function getPlainTextLabel(value: ReactNode) {
   return undefined;
 }
 
+export { Parameter, ParameterList };
+
 function getRequiredState({
   optional,
   required,
