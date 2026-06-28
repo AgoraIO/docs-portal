@@ -1,0 +1,767 @@
+---
+title: "Channel quality"
+description: "Adjust audio and video settings to optimize channel quality"
+---
+
+<PlatformStructured platform="android">
+
+Customer satisfaction for your IoT SDK integrated app depends on the quality of video and audio it provides. Quality of audiovisual communication through your app is affected by the following factors:
+
+* **Bandwidth of network connection**: Bandwidth is the volume of information that an Internet connection can handle per unit of time. When the available bandwidth is not sufficient to transmit the amount of data necessary to provide the desired video quality, your users see jerky or frozen video along with audio that cuts in and out.
+
+* **Stability of network connection**: Network connections are often unstable with the network quality going up and down. Users get temporarily disconnected and come back online after an interruption. These issues lead to a poor audiovisual experience for your users unless your app is configured to respond to these situations and take remedial actions.
+
+* **Hardware quality**: The camera and microphone used to capture video and audio must be of sufficiently good quality. If the user's hardware does not capture the audiovisual information in suitably high definition, it limits the quality of audio and video that is available to the remote user.
+
+* **Video and audio settings**: The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate and other video settings. Similarly, the audio quality depends on the sample rate, bitrate, number of channels and other audio parameters. If you do not choose proper settings, the audio and video transmitted are of poor quality. On the other hand, if the settings are too demanding, the available bandwidth quickly gets choked, leading to suboptimal experience for your users.
+
+* **Echo**: Echo is produced when your audio signal is played by a remote user through a speakerphone or an external device. This audio is captured by the remote user's microphone and sent back to you. Echo negatively affects audio quality, making speech difficult to understand.
+
+* **Multiple users in a channel**: When multiple users engage in real-time audio and video communication in a channel, the available bandwidth is quickly used up due to several incoming audio and video streams. The device performance also deteriorates due to the excessive workload required to decode and render multiple video streams.
+
+This page shows you how to use IoT SDK features to account for these factors and ensure optimal audio and video quality in your IoT SDK app.
+
+## Understand the tech
+
+To provide the best audio and video quality in your app:
+
+- **Choose an audio codec to optimize bit rate and quality**
+
+  In audio and video streaming, the choice of an encoding algorithm affects both quality and bit rate. Your goal is to lower the required bit rate while maintaining quality at the desired level. IoT SDK offers the following built-in audio codecs:
+
+  - Opus
+  - G722
+  - G711A (PCMU)
+  - G711U (PCMU)
+
+  You specify an audio codec when you join a channel. Depending on your audio quality requirements you also set the sampling rate and the number of channels. If your app needs a custom encoding algorithm, you disable use of a built-in codec and implement your own encoder.
+
+- **Adjust sending bit rate in real time**
+
+  In order to optimize data transmission and avoid network congestion, best practice is to adjust the sending bit rate in real-time according to changes in network conditions.
+
+  You configure BandWidth Estimation (BWE) before joining a channel to set the minimum, maximum, and starting bit rate values according to the actual bandwidth and bit rate needs. When the network bandwidth changes, IoT SDK triggers an event to prompt your app to adjust the sending bit rate in real time. The bit rate returned by the callback is the maximum recommended encoding bit rate of the video encoder.
+
+- **Change audio and video streaming status**
+
+  Network traffic can be reduced by suspending data transmission when audio or video feed is not required by the receiver. After a user successfully connects to a channel and starts audio and video streaming, they can suspend sending streams to a specific connection or to all connections to flexibly manage the transmission status of audio and video streams. Similarly, the user may suspend receiving a specific or all streams as required.
+
+  When a user changes the transmission status of the local audio or video stream, the IoT SDK triggers a corresponding callback to prompt the remote user to suspend or resume sending their audio or video stream.
+
+- **Request key frames**
+
+  In video transmission, a frame containing complete image information is known as a key frame. Subsequent frames, known as delta frames, only include modifications to the previous frame. When a video streaming client experiences network congestion, the data loss in delta frames leads to visual inconsistencies in subsequent frames. IoT SDK enables you to request a key frame from the sender to resolve such issues. A fresh key frame resets the video stream to a known state. This feature allows the client to resynchronize with the video stream and resume playback without visual artifacts or distortion.
+
+- **Log files**
+
+  IoT SDK provides configuration options that you use to customize the location, content and size of log files containing key data of IoT SDK operation. When you set up logging, IoT SDK writes information messages, warnings, and errors regarding activities such as initialization, configuration, connection and disconnection to log files. Log files are useful in detecting and resolving channel quality issues.
+
+The following figure shows the workflow you need to implement to ensure channel quality in your app:
+
+![Ensure Channel Quality](/images/iot/iot-channel-quality.svg)
+
+## Prerequisites
+
+In order to follow this procedure you must have:
+
+* Implemented the [SDK quickstart](../../index.md) project for IoT SDK.
+
+To test the code used in this page you need to have:
+* An Agora [account](../manage-agora-account.md) and [project](../manage-agora-account.md).
+* A computer with Internet access.
+    Ensure that no firewall is blocking your network communication.
+
+* Implemented the [SDK quickstart](../../index.md).
+
+## Project setup
+
+To create the environment necessary to implement channel quality best practices into your app, open the [SDK quickstart](../../index.md) for IoT SDK project you created previously.
+
+## Implement best practice to optimize channel quality
+
+This section shows you how to integrate channel quality optimization features of IoT SDK into your app, step-by-step.
+
+### Implement the user interface
+
+To enable app users to mute and unmute audio and video, add checkboxes to the user interface. To do this, open `/app/res/layout/activity_main.xml` and add the following lines before `</RelativeLayout>`:
+
+    ```xml
+    <CheckBox
+        android:id="@+id/MuteLocalAudio"
+        android:text="Mute local audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/JoinButton"
+        android:layout_alignStart="@id/JoinButton" />
+
+    <CheckBox
+        android:id="@+id/MuteLocalVideo"
+        android:text="Mute local video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/MuteLocalAudio"
+        android:layout_alignStart="@id/JoinButton" />
+    ```
+
+### Handle the system logic
+
+Import the necessary Android classes and access the UI elements.
+
+1. **Import supporting libraries**
+
+    In `MainActivity.java`, add the following to the list of `import` statements:
+
+    ```java
+    import java.lang.Math;
+    import android.widget.CheckBox;
+    import android.widget.CompoundButton;
+    ```
+
+1. **Define variables to access the checkboxes**
+
+    In `/app/java/com.example.<projectname>/MainActivity`, add the following declarations to the `MainActivity` class:
+
+    ```java
+    private CheckBox checkMuteLocalAudio;
+    private CheckBox checkMuteLocalVideo;
+    ```
+
+### Implement channel quality features
+
+To implement channel quality features, take the following steps:
+
+1. **Configure the IoT SDK log file**
+
+    To customize the location, and content of the log file, add the following code to `setupAgoraEngine()` before `agoraEngine.init(appId, agoraRtcEvents, options);`
+
+    ```java
+    // Configure log file location and logging level
+    options.logCfg.logPath = getExternalFilesDir(null).getPath() + "/iotlog";
+    options.logCfg.logLevel = AgoraRtcService.LogLevel.RTC_LOG_WARNING;
+    ```
+
+2. **Specify the audio codec, sampling rate and the number of channels**
+
+    You set the audio codec, sampling rate, and the number of channels in `ChannelOptions` that you pass to the `agoraEngine.joinChannel` method. To set these parameters, modify the following lines in the `joinChannel(View view)` method according to your requirements:
+
+    ```java
+    channelOptions.audioCodecOpt.audioCodecType
+            = AgoraRtcService.AudioCodecType.AUDIO_CODEC_TYPE_OPUS;
+    channelOptions.audioCodecOpt.pcmSampleRate = 16000;
+    channelOptions.audioCodecOpt.pcmChannelNum = 1;
+    ```
+
+    Choose from `OPUS`, `G722`, `G711A`, and `G711U` built-in audio codecs in the IoT SDK.
+
+    To use your own audio codec, set `channelOptions.audioCodecOpt.audioCodecType` to `AUDIO_CODEC_DISABLED`. When you call `agoraEngine.sendAudioData`, set the `dataType` parameter of `AudioFrameInfo` to your encoding format. This setting transmits the audio encoding format as is to the receiving end. When you disable use of a built-in audio codec, IoT SDK does not process the audio. The receiving end obtains the encoded audio data and the encoding format through the `onAudioData` callback and decodes it using a custom decoder.
+
+3. **Configure bandwidth estimation parameters**
+
+    You configure bandWidth estimation parameters before joining a channel. For example, based on the [definition levels of a webcam](#definition-levels-of-a-webcam), the minimum value can be set to 400 kbps, and the maximum value can be set to 4200 kbps. The starting value is between the minimum and the maximum value. If the initial encoding is SD, the initial bit rate can be set to 500 kbps, based on the table.
+
+    To specify these parameters, add the following code to the `joinChannel(View view)` method before `agoraEngine.joinChannel`.
+
+    ```java
+    // Configure Bandwidth Estimation. Min, max and starting bit rates in bps
+    agoraEngine.setBweParam(connectionId, 400000, 4200000, 500000);
+    ```
+
+4. **Respond to target bit rate changes**
+
+    When network bandwidth changes, IoT SDK triggers the `onTargetBitrateChanged` callback to prompt the app to adjust the sending bit rate. The `targetBps` value returned by the callback is the maximum recommended encoding bit rate of the video encoder.
+
+    In this example, you use [definition levels of a webcam](#definition-levels-of-a-webcam) to switch resolution depending on the reported target bit rate. To do this, replace the `onTargetBitrateChanged` method under `agoraRtcEvents` with the following:
+
+    ```java
+    int curTargetBitrate, diffTargetBitrate, lastTargetBitrate = 500;
+    int lowBitrateL1 = 400, highBitrateL1 = 800;
+    int lowBitrateL2 = 1130 , highBitrateL2 = 2260, highBitrateL3 = 4160;
+    int curResolutionLevel = 1 , lastResolutionLevel = 1;
+
+    @Override
+    public void onTargetBitrateChanged(int connId, int targetBps) {
+        // Adjust the sending code rate in real time
+        // The current code rate is graded according to 100 K, rounded down
+        curTargetBitrate = targetBps/100000 * 100;
+        diffTargetBitrate = Math.abs(curTargetBitrate - lastTargetBitrate);
+
+        // If the difference between the detected bandwidth and the
+        // current encoding rate is more than 100K, adjust the encoding parameters
+        if ((diffTargetBitrate >= 100) && ((lowBitrateL1 < curTargetBitrate)
+                && (curTargetBitrate < highBitrateL3))) {
+            if ((lowBitrateL1 < curTargetBitrate) && (curTargetBitrate < highBitrateL1)) {
+                curResolutionLevel = 1; // Set resolution to L1
+            } else if ((lowBitrateL2 < curTargetBitrate) && (curTargetBitrate < highBitrateL2)) {
+                curResolutionLevel = 2; // Set resolution to L2
+            } else {
+                curResolutionLevel = 3; // Set resolution to L3
+            }
+
+            // Adjust encoding resolution
+            if (curResolutionLevel != lastResolutionLevel) {
+                //setEncoderResolution(curResolutionLevel);
+            }
+
+            // Set the encoding bit rate
+            // setEncoderBitrate(curTargetBitrate);
+
+            lastResolutionLevel = curResolutionLevel;
+            lastTargetBitrate = curTargetBitrate;
+        }
+    }
+    ```
+
+5. **Manage audio and video streaming status**
+
+    When a user taps a `Checkbox`, you pause or resume sending local audio and video streams. To do this, add the following code to the `onCreate` method in the `MainActivity` class:
+
+    ```java
+    checkMuteLocalAudio = findViewById(R.id.MuteLocalAudio);
+    checkMuteLocalVideo = findViewById(R.id.MuteLocalVideo);
+
+    checkMuteLocalAudio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isJoined) {
+                agoraEngine.muteLocalAudio(connectionId, checkMuteLocalAudio.isChecked());
+            }
+        }
+    });
+
+    checkMuteLocalVideo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isJoined) {
+                agoraEngine.muteLocalVideo(connectionId, checkMuteLocalVideo.isChecked());
+            }
+        }
+    });
+    ```
+    To pause and resume playing remote audio or video streams call `agoraEngine.muteRemoteAudio(connectionId, remoteUid, isMuted)` or `agoraEngine.muteRemoteVideo(connectionId, remoteUid, isMuted)`.
+
+6. **Handle muting and unmuting notifications of remote streams**
+
+    When a remote user mutes or unmutes their audio or video stream, you receive notification of these changes. In this example, you inform the user of these events by displaying a message. To do this, replace the `onUserMuteAudio` and `onUserMuteVideo` methods under `agoraRtcEvents` with the following:
+
+    ```java
+    @Override
+    public void onUserMuteAudio(int connId, int uid, boolean muted) {
+        // A remote user paused or resumed sending the audio stream
+        showMessage("Remote user " + uid + (muted ? " muted" : " unmuted") + " audio");
+    }
+
+    @Override
+    public void onUserMuteVideo(int connId, int uid, boolean muted) {
+        // A remote user paused or resumed sending the video stream
+        showMessage("Remote user " + uid + (muted ? " muted" : " unmuted") + " video");
+    }
+    ```
+
+7. **Request and send key frames**
+
+    When you call `agoraEngine.sendVideoData` to send a video frame, you specify if this frame is a key frame by setting the `frameType` parameter of `VideoFrameInfo`.
+
+    When the sender does not send a key frame for a long time or the key frame is lost or damaged during transmission, IoT SDK triggers the `onKeyFrameGenReq` callback to advise the sender to generate a key frame. In this example, you show a message when you receive the `onKeyFrameGenReq` callback. Add the following code to the `MainActivity` class:
+
+    ```java
+    @Override
+    public void onKeyFrameGenReq(String channel, int remote_uid, byte stream_id) {
+        // Set a flag for the encoder to generate a key frame",
+        showMessage("Frame loss detected.");
+    }
+    ```
+
+    If the receiver encounters an error when decoding frames, it calls the `agoraEngine.requestVideoKeyFrame` method to request a remote user to generate a fresh key frame.
+
+## Test your implementation
+
+To ensure that you have implemented channel quality features into your app:
+
+1. [Generate a temporary token](../manage-agora-account.md) in Agora Console .
+
+2. In your browser, navigate to the [Agora Muting web demo](https://webdemo.agora.io/basicMute/index.html) and update _App ID_, _Channel_, and _Token_ with the values for your temporary token, then click **Join**.
+
+3. In Android Studio, open `app/java/com.example.<projectname>/MainActivity`, and update `appId`, `channelName` and `token` with the values for your temporary token.
+
+1. Connect a physical Android device to your development device.
+
+2. In Android Studio, click **Run app**. A moment later you see the project installed on your device. If this is the first time you run the project, grant microphone and camera access to your app.
+
+    When the app starts, it sets the log file location and logging level according to your preference.
+
+3. Press **Join**. Your app does the following:
+
+    * Sets the audio codec, sampling rate and the number of channels
+    * Sets bandwidth estimation parameters
+    * Starts streaming audio and video
+    * Listens for notification of changes in network bandwidth to adjust video resolution and bit rate accordingly
+    * Listens for key frame request to notify the encoder to send a key frame
+
+4. Check and uncheck **Mute local audio** and **Mute local video** boxes.
+
+    Audio and video are muted/unmuted in the web demo app.
+
+5. Press **Mute Audio** and **Mute Video** buttons in the web demo app. You see messages in your Android app informing you of these events.
+
+## Reference
+
+This section contains additional information that completes the content on this page, or points you to documentation that explains other aspects to this product.
+
+### Recommended sampling rates and data sizes for audio
+
+The table below shows the recommended sampling rates and corresponding data sizes for Opus, G722, and G711 audio data.
+
+| Audio format | Sampling rate (Hz) | Audio data size (Byte) |
+|------|------|-------|
+| G711 | 8000 | 320 |
+| G722 | 16000 | 640 |
+| OPUS | 16000 | 640 |
+| OPUS | 48000 | 1920 |
+
+### Definition levels of a webcam
+
+| Gear  | Resolution  | Frame rate  | Bit rate range (kbps) |
+|:---:|:---|:-:|:---:|
+| SD  | L1: 640*360  | 15 | 400 - 800 |
+| HD  | L2: 1280*720  | 15  | 1130 - 2260 |
+| Ultra HD  | L3: 1920*1080  | 15  | 1130 - 4160 |
+
+### API reference
+
+- [LogLevel](https://api-ref.agora.io/en/iot-sdk/android/1.x/classio_1_1agora_1_1rtc_1_1_agora_rtc_service_1_1_log_level.html)
+
+- [AudioCodecType](https://api-ref.agora.io/en/iot-sdk/android/1.x/classio_1_1agora_1_1rtc_1_1_agora_rtc_service_1_1_audio_codec_type.html)
+
+- [setBweParam](https://api-ref.agora.io/en/iot-sdk/android/1.x/classio_1_1agora_1_1rtc_1_1_agora_rtc_service.html#aaef5ac6c2de342b7999686b9c61ded44)
+
+- [onTargetBitrateChanged](https://api-ref.agora.io/en/iot-sdk/android/1.x/interfaceio_1_1agora_1_1rtc_1_1_agora_rtc_events.html#a1e4b25b017cdb624f1083d9a1d7a9f47)
+
+- [onUserMuteAudio](https://api-ref.agora.io/en/iot-sdk/android/1.x/interfaceio_1_1agora_1_1rtc_1_1_agora_rtc_events.html#acb31baf6018383eeedb6bb8c9aecc315)
+
+- [onUserMuteVideo](https://api-ref.agora.io/en/iot-sdk/android/1.x/interfaceio_1_1agora_1_1rtc_1_1_agora_rtc_events.html#a78a9ff37d58c5cc59c7becd01bacc71d)
+
+- [muteLocalAudio](https://api-ref.agora.io/en/iot-sdk/android/1.x/classio_1_1agora_1_1rtc_1_1_agora_rtc_service.html#af006e362e612bdb98adc95bdc08eefd9)
+
+- [muteLocalVideo](https://api-ref.agora.io/en/iot-sdk/android/1.x/classio_1_1agora_1_1rtc_1_1_agora_rtc_service.html#aabcc6ac3658ef50df7e947607c51e2f2)
+
+- [muteRemoteAudio](https://api-ref.agora.io/en/iot-sdk/android/1.x/classio_1_1agora_1_1rtc_1_1_agora_rtc_service.html#a47a7f426c467d93e03f3f51291fe85b4)
+
+- [muteRemoteVideo](https://api-ref.agora.io/en/iot-sdk/android/1.x/classio_1_1agora_1_1rtc_1_1_agora_rtc_service.html#a2a7361457f57b9673d217afa1f2d3fcc)
+
+ - [requestVideoKeyFrame](https://api-ref.agora.io/en/iot-sdk/android/1.x/classio_1_1agora_1_1rtc_1_1_agora_rtc_service.html#a55dd74d7f6a86ee7c03f9d7a1c97ddad)
+
+ - [onKeyFrameGenReq](https://api-ref.agora.io/en/iot-sdk/android/1.x/interfaceio_1_1agora_1_1rtc_1_1_agora_rtc_events.html#a059827878d261063fb6f93e2a04006d7)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-c">
+
+PlatformWrapper
+} from '../../../../src/mdx-components/PlatformWrapper';
+
+Customer satisfaction for your IoT SDK integrated app depends on the quality of video and audio it provides. Quality of audiovisual communication through your app is affected by the following factors:
+
+* **Bandwidth of network connection**: Bandwidth is the volume of information that an Internet connection can handle per unit of time. When the available bandwidth is not sufficient to transmit the amount of data necessary to provide the desired video quality, your users see jerky or frozen video along with audio that cuts in and out.
+
+* **Stability of network connection**: Network connections are often unstable with the network quality going up and down. Users get temporarily disconnected and come back online after an interruption. These issues lead to a poor audiovisual experience for your users unless your app is configured to respond to these situations and take remedial actions.
+
+* **Hardware quality**: The camera and microphone used to capture video and audio must be of sufficiently good quality. If the user's hardware does not capture the audiovisual information in suitably high definition, it limits the quality of audio and video that is available to the remote user.
+
+* **Video and audio settings**: The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate and other video settings. Similarly, the audio quality depends on the sample rate, bitrate, number of channels and other audio parameters. If you do not choose proper settings, the audio and video transmitted are of poor quality. On the other hand, if the settings are too demanding, the available bandwidth quickly gets choked, leading to suboptimal experience for your users.
+
+* **Echo**: Echo is produced when your audio signal is played by a remote user through a speakerphone or an external device. This audio is captured by the remote user's microphone and sent back to you. Echo negatively affects audio quality, making speech difficult to understand.
+
+* **Multiple users in a channel**: When multiple users engage in real-time audio and video communication in a channel, the available bandwidth is quickly used up due to several incoming audio and video streams. The device performance also deteriorates due to the excessive workload required to decode and render multiple video streams.
+
+This page shows you how to use IoT SDK features to account for these factors and ensure optimal audio and video quality in your IoT SDK app.
+
+## Understand the tech
+
+To provide the best audio and video quality in your app:
+
+- **Choose an audio codec to optimize bit rate and quality**
+
+  In audio and video streaming, the choice of an encoding algorithm affects both quality and bit rate. Your goal is to lower the required bit rate while maintaining quality at the desired level. IoT SDK offers the following built-in audio codecs:
+
+  - Opus
+  - G722
+  - G711A (PCMU)
+  - G711U (PCMU)
+
+  You specify an audio codec when you join a channel. Depending on your audio quality requirements you also set the sampling rate and the number of channels. If your app needs a custom encoding algorithm, you disable use of a built-in codec and implement your own encoder.
+
+- **Adjust sending bit rate in real time**
+
+  In order to optimize data transmission and avoid network congestion, best practice is to adjust the sending bit rate in real-time according to changes in network conditions.
+
+  You configure BandWidth Estimation (BWE) before joining a channel to set the minimum, maximum, and starting bit rate values according to the actual bandwidth and bit rate needs. When the network bandwidth changes, IoT SDK triggers an event to prompt your app to adjust the sending bit rate in real time. The bit rate returned by the callback is the maximum recommended encoding bit rate of the video encoder.
+
+- **Change audio and video streaming status**
+
+  Network traffic can be reduced by suspending data transmission when audio or video feed is not required by the receiver. After a user successfully connects to a channel and starts audio and video streaming, they can suspend sending streams to a specific connection or to all connections to flexibly manage the transmission status of audio and video streams. Similarly, the user may suspend receiving a specific or all streams as required.
+
+  When a user changes the transmission status of the local audio or video stream, the IoT SDK triggers a corresponding callback to prompt the remote user to suspend or resume sending their audio or video stream.
+
+- **Request key frames**
+
+  In video transmission, a frame containing complete image information is known as a key frame. Subsequent frames, known as delta frames, only include modifications to the previous frame. When a video streaming client experiences network congestion, the data loss in delta frames leads to visual inconsistencies in subsequent frames. IoT SDK enables you to request a key frame from the sender to resolve such issues. A fresh key frame resets the video stream to a known state. This feature allows the client to resynchronize with the video stream and resume playback without visual artifacts or distortion.
+
+- **Log files**
+
+  IoT SDK provides configuration options that you use to customize the location, content and size of log files containing key data of IoT SDK operation. When you set up logging, IoT SDK writes information messages, warnings, and errors regarding activities such as initialization, configuration, connection and disconnection to log files. Log files are useful in detecting and resolving channel quality issues.
+
+The following figure shows the workflow you need to implement to ensure channel quality in your app:
+
+![Ensure Channel Quality](/images/iot/iot-channel-quality.svg)
+
+## Prerequisites
+
+In order to follow this procedure you must have:
+
+* Implemented the [SDK quickstart](../get-started/get-started-sdk) project for IoT SDK.
+
+To test the code used in this page you need to have:
+* An Agora [account](../manage-agora-account.md) and [project](../manage-agora-account.md).
+* A computer with Internet access.
+    Ensure that no firewall is blocking your network communication.
+
+* Implemented the [SDK quickstart](../../index.md).
+
+## Project setup
+
+To create the environment necessary to implement channel quality best practices into your app, open the [SDK quickstart](../get-started/get-started-sdk) for IoT SDK project you created previously.
+
+In this example, you use terminal input to mute or unmute local audio and video streams. To set up your project to accept terminal input without blocking code execution, take the following steps:
+
+1. To configure the terminal add the following header to `hello_rtsa.c` after `#include "app_config.h":`
+
+    ```cpp
+    #include <termios.h>
+    ```
+
+1. The default terminal behaviour is to block code execution while waiting for user input and to process the input after a carriage return. To modify this blocking behaviour, add the following function to `hello_rtsa.c` before `app_signal_handler()`:
+
+    ```cpp
+    void nonblock(bool turn_off_canonical)
+    { // Enable or disable non-block mode and canonical mode to read input
+    struct termios ttystate;
+
+    // get the terminal state
+    tcgetattr(STDIN_FILENO, &ttystate);
+
+    if (turn_off_canonical)
+    {
+        // turn off canonical mode
+        ttystate.c_lflag &= ~ICANON;
+        // minimum of number input read.
+        ttystate.c_cc[VMIN] = 1;
+    }
+    else
+    {
+        // turn on canonical mode
+        ttystate.c_lflag |= ICANON;
+    }
+    // set the terminal attributes.
+    tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
+    }
+    ```
+
+1. To enable non-blocking mode, add the following line to the top of `main()`:
+
+    ```cpp
+    nonblock(true);
+    ```
+
+1. To disable non-blocking mode on exit, add the following line to `app_signal_handler` after `g_app.b_stop_flag = true;`:
+
+    ```cpp
+    nonblock(false);
+    ```
+
+1. To read non-blocking terminal input, add the following function to `hello_rtsa.c` before `main()`:
+
+    ```cpp
+    int kbhit()
+    { // Read input from the terminal without blocking code execution
+      struct timeval tv;
+      fd_set fds;
+      tv.tv_sec = 0;
+      tv.tv_usec = 0;
+      FD_ZERO(&fds);
+      FD_SET(STDIN_FILENO, &fds); // STDIN_FILENO is 0
+      select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv);
+      return FD_ISSET(STDIN_FILENO, &fds);
+    }
+    ```
+
+## Implement best practice to optimize channel quality
+
+This section shows you how to integrate channel quality optimization features of IoT SDK into your app, step-by-step.
+
+To implement channel quality features, take the following steps:
+
+1. **Configure the IoT SDK log file**
+
+    To customize the location, and content of the log file, add the following code to `main()` before `agora_rtc_init()`:
+
+    ```cpp
+    // Configure log file location and logging level
+    service_opt.log_cfg.log_path = config->p_sdk_log_dir;
+    service_opt.log_cfg.log_level = RTC_LOG_DEBUG;
+    ```
+
+1. **Specify the audio codec, sampling rate, and the number of channels**
+
+    You set the audio codec, sampling rate, and the number of channels in `channel_options` that you pass to `agora_rtc_join_channel`. To set these parameters according to your requirements, use the `config` object or modify the following lines in `main()`:
+
+    ```cpp
+    channel_options.audio_codec_opt.audio_codec_type = config->audio_codec_type;
+    channel_options.audio_codec_opt.pcm_sample_rate = config->pcm_sample_rate;
+    channel_options.audio_codec_opt.pcm_channel_num = config->pcm_channel_num;
+    ```
+
+    Choose from the following audio codecs built in to the IoT SDK.
+
+    * `AUDIO_CODEC_TYPE_OPUS`,
+    * `AUDIO_CODEC_TYPE_G722`
+    * `AUDIO_CODEC_TYPE_G711A`
+    * `AUDIO_CODEC_TYPE_G711U`
+
+    To use your own audio codec, set `channel_options.audio_codec_opt.audio_codec_type` to `AUDIO_CODEC_DISABLED`. When you call `agora_rtc_send_audio_data`, set the `data_type` parameter of `audio_frame_info` to your encoding format. This setting transmits the audio encoding format as is to the receiving end. When you disable use of a built-in audio codec, IoT SDK does not process the audio. The receiving end obtains the encoded audio data and the encoding format through the `on_audio_data` callback and decodes it using a custom decoder.
+
+1. **Configure bandwidth estimation parameters**
+
+    You configure bandwidth estimation parameters before joining a channel. For example, based on the [definition levels of a webcam](#definition-levels-of-a-webcam), the minimum bit rate value can be set to 400 kbps, and the maximum value can be set to 4200 kbps. The starting value is between the minimum and the maximum value. If the initial encoding is SD, the initial bit rate can be set to 500 kbps, based on the table.
+
+    To specify these parameters, replace the `agora_rtc_set_bwe_param` call in `main()` with the following:
+
+    ```cpp
+    // Configure bandwidth estimation parameters
+    // Min, max, and starting bit rates in bps
+    uint32_t min_bps = 400000;
+    uint32_t max_bps = 4200000;
+    uint32_t start_bps = 500000;
+    rval = agora_rtc_set_bwe_param(min_bps,  max_bps,  start_bps);
+    ```
+
+1. **Respond to target bit rate changes**
+
+    When network bandwidth changes, IoT SDK triggers the `on_target_bitrate_changed` callback to prompt the app to adjust the sending bit rate. The `target_bps` value returned by the callback is the maximum recommended encoding bit rate of the video encoder.
+
+    In this example, you use [definition levels of a webcam](#definition-levels-of-a-webcam) to switch resolution depending on the reported target bit rate. To do this, replace the `__on_target_bitrate_changed` handler with the following:
+
+    ```cpp
+    int curTargetBitrate, diffTargetBitrate, lastTargetBitrate = 500;
+    int lowBitrateL1 = 400, highBitrateL1 = 800;
+    int lowBitrateL2 = 1130 , highBitrateL2 = 2260, highBitrateL3 = 4160;
+    int curResolutionLevel = 1 , lastResolutionLevel = 1;
+
+    static void __on_target_bitrate_changed(const char *channel, uint32_t target_bps)
+    { // Adjust the sending code rate in real time
+        // The current code rate is graded according to 100 K, rounded down
+        curTargetBitrate = target_bps/100000 * 100;
+        diffTargetBitrate = abs(curTargetBitrate - lastTargetBitrate);
+
+        // If the difference between the detected bandwidth and the set
+        // encoding rate is more than 100K, adjust the encoding parameters
+        if ( (diffTargetBitrate >= 100 ) && (lowBitrateL1 < curTargetBitrate < highBitrateL3) )
+        {
+            if (lowBitrateL1 < curTargetBitrate < highBitrateL1)
+            {
+                curResolutionLevel = 1;
+            }
+            else if (lowBitrateL2 < curTargetBitrate < highBitrateL2)
+            {
+                curResolutionLevel = 2;
+            }
+            else
+            {
+                curResolutionLevel = 3;
+            }
+
+            if (curResolutionLevel != lastResolutionLevel)
+            {
+                // Adjust encoding resolution
+                // setEncodeResolution(curResolutionLevel);
+            }
+
+            // Set the encoding rate
+            // setEncodeBitrate(curTargetBitrate);
+
+            lastResolutionLevel = curResolutionLevel;
+            lastTargetBitrate = curTargetBitrate;
+        }
+    }
+    ```
+
+1. **Manage audio and video streaming status**
+
+    To pause or resume sending local audio and video streams when a key is pressed, add the following code to `main()` after `while (!g_app.b_stop_flag) {`:
+
+    ```cpp
+    char c; // Input character
+    int i = kbhit(); // Check if a key was pressed
+
+    if (i != 0) // A key was pressed
+    {
+      c = fgetc(stdin); // Get the input character
+      if (c == 'a')
+      { // mute/unmute audio
+        is_audio_muted = !is_audio_muted;
+        agora_rtc_mute_local_audio(g_app.conn_id, is_audio_muted);
+        if (is_audio_muted)
+          printf("\nAudio muted\n");
+        else
+          printf("\nAudio unmuted\n");
+      }
+      else if (c == 'v')
+      { // mute/unmute audio
+        is_video_muted = !is_video_muted;
+        agora_rtc_mute_local_video(g_app.conn_id, is_video_muted);
+        if (is_video_muted)
+          printf("\nVideo muted\n");
+        else
+          printf("\nVideo unmuted\n");
+      }
+      else
+      {
+        printf("\nPress <a> to mute/unmute audio \nPress <v> to mute/unmute video\n");
+      }
+      i = 0;
+    }
+    ```
+
+    To pause and resume playing remote audio or video streams use `agora_rtc_mute_local_audio` and `agora_rtc_mute_local_video`.
+
+1. **Handle muting and unmuting notifications for remote streams**
+
+    When a remote user mutes or unmutes their audio or video stream, you receive notification of these changes. In this example, you write log messages when you receive the `on_user_mute_audio` and `on_user_mute_video` callbacks. Add the following code to `main()`:
+
+    ```cpp
+    static void __on_user_mute_audio(connection_id_t conn_id, uint32_t uid, bool muted)
+    {
+    LOGI("[conn-%u] audio: uid=%u muted=%d", conn_id, uid, muted);
+    }
+
+    static void __on_user_mute_video(connection_id_t conn_id, uint32_t uid, bool muted)
+    {
+    LOGI("[conn-%u] video: uid=%u muted=%d", conn_id, uid, muted);
+    }
+    ```
+
+1. **Request and send key frames**
+
+    When you call `agora_rtc_send_video_data` to send a video frame, you specify if this frame is a key frame by setting the `is_key_frame` parameter.
+
+    When a sender does not send a key frame for a long time, or the key frame is lost or damaged during transmission, IoT SDK triggers the `on_key_frame_gen_req` callback to advise the sender to generate a key frame. In this example, you log a message when you receive the `on_key_frame_gen_req` callback. Add the following code to `main()`:
+
+    ```cpp
+    static void __on_key_frame_gen_req(connection_id_t conn_id, uint32_t uid,
+                                   video_stream_type_e stream_type)
+    {
+    LOGW("[conn-%u] Frame loss detected. Set a flag for the encoder to generate a key frame",
+        conn_id);
+    }
+    ```
+
+    If the receiver encounters an error when decoding frames, it calls the `agora_rtc_request_video_key_frame` method to request a remote user to generate a fresh key frame.
+
+## Test your implementation
+
+To ensure that you have implemented channel quality features into your app:
+
+1. [Generate a temporary token](../get-started/manage-agora-account#generate-a-temporary-token) in Agora Console .
+
+2. In your browser, navigate to the [Agora Muting web demo](https://webdemo.agora.io/basicMute/index.html) and update _App ID_, _Channel_, and _Token_ with the values for your temporary token, then click **Join**.
+
+3. Compile the sample project
+
+    In the terminal, execute the following commands:
+
+    ```bash
+    cd <project-root>/agora_rtsa_sdk/example
+
+    ./build-x86_64.sh
+    ```
+
+1. Launch the sample app:
+
+    1. In the terminal, navigate to the output folder:
+
+        ```bash
+        cd out/x86_64
+        ```
+
+    1. Launch the compiled app
+
+        ```bash
+        ./hello_rtsa --app-id <your-app-id> --channel-id <your-channel-name> --token <authentication-token>
+        ```
+
+        Remember to insert your app ID, channel name and token in the command.
+
+1. When the app starts, it does the following:
+
+    * Sets the log file location and logging level according to your preference
+    * Sets the audio codec, sampling rate and the number of channels
+    * Sets bandwidth estimation parameters
+    * Starts streaming audio and video
+    * Listens for notification of changes in network bandwidth to adjust video resolution and bit rate accordingly
+    * Listens for key frame request to notify the encoder to send a key frame
+
+1. Mute and unmute local audio and video
+
+    * Press `a` on the keyboard; the audio is muted in the web demo app. Press `a` again; the audio is unmuted.
+
+    * Press `v` on the keyboard; the video stops playing in the web demo app. Press `v` again; the video resumes playing.
+
+1. Press **Mute Audio** and **Mute Video** buttons in the web demo app. You see terminal messages informing you of these events.
+
+## Reference
+
+This section contains additional information that completes the content on this page, or points you to documentation that explains other aspects to this product.
+
+### Recommended sampling rates and data sizes for audio
+
+The table below shows the recommended sampling rates and corresponding data sizes for Opus, G722, and G711 audio data.
+
+| Audio format | Sampling rate (Hz) | Audio data size (Byte) |
+|------|------|-------|
+| G711 | 8000 | 320 |
+| G722 | 16000 | 640 |
+| OPUS | 16000 | 640 |
+| OPUS | 48000 | 1920 |
+
+### Definition levels of a webcam
+
+| Gear  | Resolution  | Frame rate  | Bit rate range (kbps) |
+|:---:|:---|:-:|:---:|
+| SD  | L1: 640*360  | 15 | 400 - 800 |
+| HD  | L2: 1280*720  | 15  | 1130 - 2260 |
+| Ultra HD  | L3: 1920*1080  | 15  | 1130 - 4160 |
+
+### API reference
+
+- [rtc_log_level_e](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#abccb8cb27efdca58bafccf4092ccc868)
+
+- [enum audio_codec_type_e](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a307c5bae03eb9a318e247a97e6fb5d88)
+
+- [agora_rtc_set_bwe_param](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#ae274291aadd1afb9974a4672ed6c2bb8)
+
+- [on_target_bitrate_changed](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html#af3ef06a16cd4cf3aa585dd6ad13ada0b)
+
+- [on_user_mute_audio](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html#ab749491e46ce8d06aa69507ebb630bf9)
+
+- [on_user_mute_video](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html#a7ba3bed4e4d97a4e39096f07d2333311)
+
+- [agora_rtc_mute_local_audio](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a28c1dae086be4014ad732a07db248b16)
+
+- [agora_rtc_mute_local_video](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a47f116e271b78c0659fcd68a96d34224)
+
+- [agora_rtc_mute_remote_audio](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a8ad8bfa0e0a46a0c5e7fae11449ab575)
+
+- [agora_rtc_mute_remote_video](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a894f5a102c66b20c408bb495ac424efa)
+
+- [agora_rtc_request_video_key_frame](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a74fbf2ac33a8cefce0f02de3eacc2577)
+
+</PlatformStructured>
