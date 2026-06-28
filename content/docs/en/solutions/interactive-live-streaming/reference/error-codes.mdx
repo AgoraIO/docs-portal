@@ -4,45 +4,881 @@ description: "List of commonly encountered API errors and their causes."
 ---
 
 <PlatformStructured platform="android">
-<include>./_error-codes-native.mdx</include>
+When interacting with the Agora API, the Video SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+
+This page provides descriptions for common error codes, their causes, and suggested solutions. For error codes without predefined solutions, [contact technical support](https://agora-ticket.agora.io/) for assistance.
+
+The error codes listed in this section apply to Agora RTC v4.x SDK on native platforms and third-party frameworks, including Android, iOS, macOS, Windows, Electron, Unity, React Native, Flutter, Unreal Engine, and Unreal Blueprint.
+
+During operation, error codes may be returned in the following ways:
+
+- In the return value of a failed method call.
+- Through the `onError` callback.
+
+:::note
+When the SDK returns an error code, it may return a negative number. This negative number corresponds to the positive integer in the error code. For example, if it returns `-2`, it corresponds to `2` in the error code.
+
+The API names in this article are based on the C++ API. API names for other platforms may be different. Refer to the API documentation for the corresponding platform.
+:::
+
+## Common error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1` | General error with no clearly categorized cause. Call the method again. |
+| `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Reset the parameters. |
+| `3` | The SDK is not ready. Possible reasons include failed `RtcEngine` initialization, calling a method before joining a channel, calling a method after leaving a channel, the audio module not being enabled, or incomplete assembly. |
+| `4` | The current state of `RtcEngine` does not support this operation. Possible reasons include an incorrect built-in encryption mode or a failed external encryption library load. |
+| `5` | The method call is rejected. Possible reasons include failed `RtcEngine` initialization, an empty channel name, or reusing an existing channel name in a multi-channel use case. |
+| `6` | The buffer size is not large enough to hold the returned data. |
+| `7` | The method is called before `RtcEngine` is initialized. Create and initialize the `RtcEngine` object before calling the method. |
+| `8` | The current state is invalid. Check the SDK callback logs to find the exact reason. |
+| `9` | There is no permission to operate. Check whether the user has granted the app permission to use audio or video devices. |
+| `10` | Method call timed out. Some method calls require the SDK to return results, and this error occurs if the SDK does not return for more than 10 seconds. |
+| `17` | Joining a channel is rejected. The user may already be in the channel, or an echo test may still be running. Use `onConnectionStateChanged` to determine whether the user is in the channel, and call `stopEchoTest` before joining after an echo test. |
+| `18` | Failed to leave the channel. The user may already have left the channel, or the leave method may have been called before the user joined. |
+| `19` | The resource is occupied and cannot be reused. |
+| `20` | The SDK abandons the request, possibly due to too many requests. |
+| `21` | Specific firewall settings on Windows cause `RtcEngine` initialization to fail and then crash. |
+| `22` | The SDK failed to allocate resources, possibly because the app uses too many resources or system resources are exhausted. |
+| `101` | The App ID is invalid. Rejoin the channel with a valid App ID. |
+| `102` | The channel name is invalid. Check whether the parameter data type is correct and rejoin with a valid channel name. |
+| `103` | The SDK cannot get server resources for the current region. Specify a different region when initializing `RtcEngine`. |
+| `109` | The current token has expired. Generate a new token on the server and call `renewToken` to update it. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_TOKEN_EXPIRED(9)` in `onConnectionStateChanged` instead. |
+| `110` | The token is invalid. Possible reasons include enabling the App Certificate without using App ID plus token authentication, or using a token whose `uid` does not match the `uid` used to join the channel. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_INVALID_TOKEN(8)` in `onConnectionStateChanged` instead. |
+| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
+| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+| `119` | The user failed to switch roles. Try joining the channel again. |
+| `120` | Decryption failed. The user may have used the wrong password when joining the channel. Check the password or ask the user to rejoin. |
+| `121` | The user ID is invalid. |
+| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
+| `134` | The user account is invalid, possibly because invalid parameters are set. |
+
+## Audio-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1005` | An unspecified error occurred in the audio device. Check if the audio device is occupied by another application or re-enter the channel. |
+| `1008` | An error occurred while initializing the playback device. Check if the playback device is occupied by another application or re-enter the channel. |
+| `1009` | Error starting the playback device. Check whether the playback device is working properly. |
+| `1010` | Error stopping the playback device. |
+| `1011` | Error initializing the recording device. Check whether the recording device is working properly or re-enter the channel. |
+| `1012` | Error starting the recording device. Check whether the recording device is working properly. |
+| `1013` | Error stopping the recording device. |
+
+## Data stream-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `113` | The user was not in the channel when `sendStreamMessage` was called. |
+| `114` | The length of the data sent by `sendStreamMessage` was greater than 1024 bytes. |
+| `115` | The frequency of sending data exceeded the limit of 6 KB/s when calling `sendStreamMessage`. |
+| `116` | The number of data streams exceeded the limit of 5 when `createDataStream` was called. |
+| `117` | Data stream send timeout. If the receiver does not receive reliable or ordered data within 5 seconds, or detects missing data, `onStreamMessageError` is triggered on the receiving end. |
+
+## Other error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `130` | The SDK does not support pushing encrypted streams to a CDN. |
+| `1001` | Failed to load the media engine. |
+| `1501` | There is no permission to use the camera. Check whether camera permission is enabled. |
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
-<include>./_error-codes-native.mdx</include>
+When interacting with the Agora API, the Video SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+
+This page provides descriptions for common error codes, their causes, and suggested solutions. For error codes without predefined solutions, [contact technical support](https://agora-ticket.agora.io/) for assistance.
+
+The error codes listed in this section apply to Agora RTC v4.x SDK on native platforms and third-party frameworks, including Android, iOS, macOS, Windows, Electron, Unity, React Native, Flutter, Unreal Engine, and Unreal Blueprint.
+
+During operation, error codes may be returned in the following ways:
+
+- In the return value of a failed method call.
+- Through the `onError` callback.
+
+:::note
+When the SDK returns an error code, it may return a negative number. This negative number corresponds to the positive integer in the error code. For example, if it returns `-2`, it corresponds to `2` in the error code.
+
+The API names in this article are based on the C++ API. API names for other platforms may be different. Refer to the API documentation for the corresponding platform.
+:::
+
+## Common error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1` | General error with no clearly categorized cause. Call the method again. |
+| `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Reset the parameters. |
+| `3` | The SDK is not ready. Possible reasons include failed `RtcEngine` initialization, calling a method before joining a channel, calling a method after leaving a channel, the audio module not being enabled, or incomplete assembly. |
+| `4` | The current state of `RtcEngine` does not support this operation. Possible reasons include an incorrect built-in encryption mode or a failed external encryption library load. |
+| `5` | The method call is rejected. Possible reasons include failed `RtcEngine` initialization, an empty channel name, or reusing an existing channel name in a multi-channel use case. |
+| `6` | The buffer size is not large enough to hold the returned data. |
+| `7` | The method is called before `RtcEngine` is initialized. Create and initialize the `RtcEngine` object before calling the method. |
+| `8` | The current state is invalid. Check the SDK callback logs to find the exact reason. |
+| `9` | There is no permission to operate. Check whether the user has granted the app permission to use audio or video devices. |
+| `10` | Method call timed out. Some method calls require the SDK to return results, and this error occurs if the SDK does not return for more than 10 seconds. |
+| `17` | Joining a channel is rejected. The user may already be in the channel, or an echo test may still be running. Use `onConnectionStateChanged` to determine whether the user is in the channel, and call `stopEchoTest` before joining after an echo test. |
+| `18` | Failed to leave the channel. The user may already have left the channel, or the leave method may have been called before the user joined. |
+| `19` | The resource is occupied and cannot be reused. |
+| `20` | The SDK abandons the request, possibly due to too many requests. |
+| `21` | Specific firewall settings on Windows cause `RtcEngine` initialization to fail and then crash. |
+| `22` | The SDK failed to allocate resources, possibly because the app uses too many resources or system resources are exhausted. |
+| `101` | The App ID is invalid. Rejoin the channel with a valid App ID. |
+| `102` | The channel name is invalid. Check whether the parameter data type is correct and rejoin with a valid channel name. |
+| `103` | The SDK cannot get server resources for the current region. Specify a different region when initializing `RtcEngine`. |
+| `109` | The current token has expired. Generate a new token on the server and call `renewToken` to update it. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_TOKEN_EXPIRED(9)` in `onConnectionStateChanged` instead. |
+| `110` | The token is invalid. Possible reasons include enabling the App Certificate without using App ID plus token authentication, or using a token whose `uid` does not match the `uid` used to join the channel. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_INVALID_TOKEN(8)` in `onConnectionStateChanged` instead. |
+| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
+| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+| `119` | The user failed to switch roles. Try joining the channel again. |
+| `120` | Decryption failed. The user may have used the wrong password when joining the channel. Check the password or ask the user to rejoin. |
+| `121` | The user ID is invalid. |
+| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
+| `134` | The user account is invalid, possibly because invalid parameters are set. |
+
+## Audio-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1005` | An unspecified error occurred in the audio device. Check if the audio device is occupied by another application or re-enter the channel. |
+| `1008` | An error occurred while initializing the playback device. Check if the playback device is occupied by another application or re-enter the channel. |
+| `1009` | Error starting the playback device. Check whether the playback device is working properly. |
+| `1010` | Error stopping the playback device. |
+| `1011` | Error initializing the recording device. Check whether the recording device is working properly or re-enter the channel. |
+| `1012` | Error starting the recording device. Check whether the recording device is working properly. |
+| `1013` | Error stopping the recording device. |
+
+## Data stream-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `113` | The user was not in the channel when `sendStreamMessage` was called. |
+| `114` | The length of the data sent by `sendStreamMessage` was greater than 1024 bytes. |
+| `115` | The frequency of sending data exceeded the limit of 6 KB/s when calling `sendStreamMessage`. |
+| `116` | The number of data streams exceeded the limit of 5 when `createDataStream` was called. |
+| `117` | Data stream send timeout. If the receiver does not receive reliable or ordered data within 5 seconds, or detects missing data, `onStreamMessageError` is triggered on the receiving end. |
+
+## Other error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `130` | The SDK does not support pushing encrypted streams to a CDN. |
+| `1001` | Failed to load the media engine. |
+| `1501` | There is no permission to use the camera. Check whether camera permission is enabled. |
 </PlatformStructured>
 
 <PlatformStructured platform="macos">
-<include>./_error-codes-native.mdx</include>
+When interacting with the Agora API, the Video SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+
+This page provides descriptions for common error codes, their causes, and suggested solutions. For error codes without predefined solutions, [contact technical support](https://agora-ticket.agora.io/) for assistance.
+
+The error codes listed in this section apply to Agora RTC v4.x SDK on native platforms and third-party frameworks, including Android, iOS, macOS, Windows, Electron, Unity, React Native, Flutter, Unreal Engine, and Unreal Blueprint.
+
+During operation, error codes may be returned in the following ways:
+
+- In the return value of a failed method call.
+- Through the `onError` callback.
+
+:::note
+When the SDK returns an error code, it may return a negative number. This negative number corresponds to the positive integer in the error code. For example, if it returns `-2`, it corresponds to `2` in the error code.
+
+The API names in this article are based on the C++ API. API names for other platforms may be different. Refer to the API documentation for the corresponding platform.
+:::
+
+## Common error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1` | General error with no clearly categorized cause. Call the method again. |
+| `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Reset the parameters. |
+| `3` | The SDK is not ready. Possible reasons include failed `RtcEngine` initialization, calling a method before joining a channel, calling a method after leaving a channel, the audio module not being enabled, or incomplete assembly. |
+| `4` | The current state of `RtcEngine` does not support this operation. Possible reasons include an incorrect built-in encryption mode or a failed external encryption library load. |
+| `5` | The method call is rejected. Possible reasons include failed `RtcEngine` initialization, an empty channel name, or reusing an existing channel name in a multi-channel use case. |
+| `6` | The buffer size is not large enough to hold the returned data. |
+| `7` | The method is called before `RtcEngine` is initialized. Create and initialize the `RtcEngine` object before calling the method. |
+| `8` | The current state is invalid. Check the SDK callback logs to find the exact reason. |
+| `9` | There is no permission to operate. Check whether the user has granted the app permission to use audio or video devices. |
+| `10` | Method call timed out. Some method calls require the SDK to return results, and this error occurs if the SDK does not return for more than 10 seconds. |
+| `17` | Joining a channel is rejected. The user may already be in the channel, or an echo test may still be running. Use `onConnectionStateChanged` to determine whether the user is in the channel, and call `stopEchoTest` before joining after an echo test. |
+| `18` | Failed to leave the channel. The user may already have left the channel, or the leave method may have been called before the user joined. |
+| `19` | The resource is occupied and cannot be reused. |
+| `20` | The SDK abandons the request, possibly due to too many requests. |
+| `21` | Specific firewall settings on Windows cause `RtcEngine` initialization to fail and then crash. |
+| `22` | The SDK failed to allocate resources, possibly because the app uses too many resources or system resources are exhausted. |
+| `101` | The App ID is invalid. Rejoin the channel with a valid App ID. |
+| `102` | The channel name is invalid. Check whether the parameter data type is correct and rejoin with a valid channel name. |
+| `103` | The SDK cannot get server resources for the current region. Specify a different region when initializing `RtcEngine`. |
+| `109` | The current token has expired. Generate a new token on the server and call `renewToken` to update it. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_TOKEN_EXPIRED(9)` in `onConnectionStateChanged` instead. |
+| `110` | The token is invalid. Possible reasons include enabling the App Certificate without using App ID plus token authentication, or using a token whose `uid` does not match the `uid` used to join the channel. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_INVALID_TOKEN(8)` in `onConnectionStateChanged` instead. |
+| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
+| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+| `119` | The user failed to switch roles. Try joining the channel again. |
+| `120` | Decryption failed. The user may have used the wrong password when joining the channel. Check the password or ask the user to rejoin. |
+| `121` | The user ID is invalid. |
+| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
+| `134` | The user account is invalid, possibly because invalid parameters are set. |
+
+## Audio-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1005` | An unspecified error occurred in the audio device. Check if the audio device is occupied by another application or re-enter the channel. |
+| `1008` | An error occurred while initializing the playback device. Check if the playback device is occupied by another application or re-enter the channel. |
+| `1009` | Error starting the playback device. Check whether the playback device is working properly. |
+| `1010` | Error stopping the playback device. |
+| `1011` | Error initializing the recording device. Check whether the recording device is working properly or re-enter the channel. |
+| `1012` | Error starting the recording device. Check whether the recording device is working properly. |
+| `1013` | Error stopping the recording device. |
+
+## Data stream-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `113` | The user was not in the channel when `sendStreamMessage` was called. |
+| `114` | The length of the data sent by `sendStreamMessage` was greater than 1024 bytes. |
+| `115` | The frequency of sending data exceeded the limit of 6 KB/s when calling `sendStreamMessage`. |
+| `116` | The number of data streams exceeded the limit of 5 when `createDataStream` was called. |
+| `117` | Data stream send timeout. If the receiver does not receive reliable or ordered data within 5 seconds, or detects missing data, `onStreamMessageError` is triggered on the receiving end. |
+
+## Other error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `130` | The SDK does not support pushing encrypted streams to a CDN. |
+| `1001` | Failed to load the media engine. |
+| `1501` | There is no permission to use the camera. Check whether camera permission is enabled. |
 </PlatformStructured>
 
 <PlatformStructured platform="web">
-<include>./_error-codes-web.mdx</include>
+When interacting with the Agora API, the Video SDK for Web may throw an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+
+For asynchronous methods, the SDK returns a Promise and throws the appropriate error code when the Promise is rejected. When a synchronous method call fails, the SDK throws an error code directly. The SDK may also throw network-related error codes during internal operation.
+
+The SDK error object `AgoraRTCError` inherits from the browser [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) object. Print the error code with `AgoraRTCError.code`, because directly printing the `AgoraRTCError` object only shows the error message.
+
+## Common error codes
+
+| Error code | Description | Resolution |
+| :--- | :--- | :--- |
+| `UNEXPECTED_ERROR` | An unhandled, unexpected error. Usually, this error includes a specific error message. | Refer to the specific error message. |
+| `UNEXPECTED_RESPONSE` | The server returned an unexpected response. This is usually thrown when a network problem causes the client state to be inconsistent with the server state. | Wait for the network to stabilize and retry the operation. |
+| `INVALID_PARAMS` | Illegal parameters. | Follow the specific prompts and pass the correct parameters according to the documentation. |
+| `NOT_SUPPORTED` | The browser does not support the feature. | Use a supported browser or feature fallback. |
+| `INVALID_OPERATION` | Illegal operation. This usually occurs because the operation cannot be performed in the current state. | Confirm the order of operations. For example, join the channel before publishing. |
+| `OPERATION_ABORTED` | The operation is aborted, usually due to poor network quality or disconnection from the Agora server. | Confirm the local network status through `AgoraRTCClient.on("user-joined")` and retry the operation. |
+| `WEB_SECURITY_RESTRICT` | Browser security policy restriction. | Make sure the page runs in a [secure context](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts). |
+| `NO_ACTIVE_STATUS` | The Agora project is inactive or disabled. | Go to Agora Console and confirm that the project is enabled. |
+
+## Request-related error codes
+
+| Error code | Description | Resolution |
+| :--- | :--- | :--- |
+| `NETWORK_TIMEOUT` | The request times out, usually because communication with the Agora server fails due to poor network quality or a broken connection. | Confirm local network conditions and retry the operation. |
+| `NETWORK_RESPONSE_ERROR` | Response error, typically an illegal status code. | Verify that the operation parameters are correct. |
+| `NETWORK_ERROR` | Unlocatable network error. | Retry after the network stabilizes. |
+| `WS_ABORT` | WebSocket disconnected during a request to the Agora server. | Listen to `AgoraRTCClient.on("connection-state-change")` and retry after the connection state changes to `CONNECTED`. |
+| `WS_DISCONNECT` | WebSocket disconnected before requesting the Agora server. | Listen to `AgoraRTCClient.on("connection-state-change")` and retry after the connection state changes to `CONNECTED`. |
+| `WS_ERR` | An error occurred in the WebSocket connection. | Check the current browser support for WebSocket. |
+
+## Device and track error codes
+
+| Error code | Description | Resolution |
+| :--- | :--- | :--- |
+| `ENUMERATE_DEVICES_FAILED` | Failed to enumerate local devices, usually due to browser limitations. | Check browser permissions and device availability. |
+| `DEVICE_NOT_FOUND` | The specified device could not be found. | Pass the correct device ID. |
+| `TRACK_IS_DISABLED` | The track is disabled, usually because `Track.setEnabled()` is set to `false`. | Call `Track.setEnabled(true)` before proceeding. |
+| `SHARE_AUDIO_NOT_ALLOWED` | The end user did not click **Share Audio** when the audio pop-up was presented. | Prompt the end user to select **Share Audio** in the screen sharing pop-up. |
+| `MEDIA_OPTION_INVALID` | Unsupported parameters for media capture. | Modify the media capture parameters or use a preset SDK configuration. |
+| `CONSTRAINT_NOT_SATISFIED` | Unsupported parameters for media capture. | Modify the media capture parameters or use a preset SDK configuration. |
+| `PERMISSION_DENIED` | Permission to obtain a media device was denied. | Select **Allow** in the device permissions pop-up. |
+| `NOT_READABLE` | The user is authorized, but the media device is not accessible. | Check the current capture device and driver. |
+
+## Client error codes
+
+| Error code | Description | Resolution |
+| :--- | :--- | :--- |
+| `UID_CONFLICT` | Duplicate UIDs exist in the same channel. | Use a different UID to enter the channel. |
+| `INVALID_UINT_UID_FROM_STRING_UID` | The string UID allocation service returned an illegal integer UID. | Use a different UID to enter the channel. |
+| `CAN_NOT_GET_PROXY_SERVER` | Unable to get the cloud proxy service address. | Check the proxy configuration and retry. |
+| `CAN_NOT_GET_GATEWAY_SERVER` | Unable to get the Agora server address. | Check the network and retry. |
+| `INVALID_LOCAL_TRACK` | An illegal `LocalTrack` was passed in. | Check the incoming track and pass a valid `LocalTrack`. |
+| `CAN_NOT_PUBLISH_MULTIPLE_VIDEO_TRACKS` | A client publishes multiple video tracks. | A client can publish only one video track at a time. To publish multiple video tracks, create multiple clients. |
+| `INVALID_REMOTE_USER` | The remote user is not in the channel or has not published any media tracks. | Subscribe only after receiving `AgoraRTCClient.on("user-published")`. |
+| `REMOTE_USER_IS_NOT_PUBLISHED` | The remote user has published an audio or video track that does not match the type specified in your subscribe operation. | Ensure that the subscribe operation track type matches the published track type. |
+| `ERR_TOO_MANY_BROADCASTERS` | The number of hosts in the channel exceeds the limit. | Control the number of hosts. Switch a user role to host only when the user needs to publish. |
+| `ERR_TOO_MANY_SUBSCRIBERS` | The number of hosts subscribed to by the current user exceeds the limit. | Subscribe to hosts on demand. |
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
-<include>./_error-codes-native.mdx</include>
+When interacting with the Agora API, the Video SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+
+This page provides descriptions for common error codes, their causes, and suggested solutions. For error codes without predefined solutions, [contact technical support](https://agora-ticket.agora.io/) for assistance.
+
+The error codes listed in this section apply to Agora RTC v4.x SDK on native platforms and third-party frameworks, including Android, iOS, macOS, Windows, Electron, Unity, React Native, Flutter, Unreal Engine, and Unreal Blueprint.
+
+During operation, error codes may be returned in the following ways:
+
+- In the return value of a failed method call.
+- Through the `onError` callback.
+
+:::note
+When the SDK returns an error code, it may return a negative number. This negative number corresponds to the positive integer in the error code. For example, if it returns `-2`, it corresponds to `2` in the error code.
+
+The API names in this article are based on the C++ API. API names for other platforms may be different. Refer to the API documentation for the corresponding platform.
+:::
+
+## Common error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1` | General error with no clearly categorized cause. Call the method again. |
+| `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Reset the parameters. |
+| `3` | The SDK is not ready. Possible reasons include failed `RtcEngine` initialization, calling a method before joining a channel, calling a method after leaving a channel, the audio module not being enabled, or incomplete assembly. |
+| `4` | The current state of `RtcEngine` does not support this operation. Possible reasons include an incorrect built-in encryption mode or a failed external encryption library load. |
+| `5` | The method call is rejected. Possible reasons include failed `RtcEngine` initialization, an empty channel name, or reusing an existing channel name in a multi-channel use case. |
+| `6` | The buffer size is not large enough to hold the returned data. |
+| `7` | The method is called before `RtcEngine` is initialized. Create and initialize the `RtcEngine` object before calling the method. |
+| `8` | The current state is invalid. Check the SDK callback logs to find the exact reason. |
+| `9` | There is no permission to operate. Check whether the user has granted the app permission to use audio or video devices. |
+| `10` | Method call timed out. Some method calls require the SDK to return results, and this error occurs if the SDK does not return for more than 10 seconds. |
+| `17` | Joining a channel is rejected. The user may already be in the channel, or an echo test may still be running. Use `onConnectionStateChanged` to determine whether the user is in the channel, and call `stopEchoTest` before joining after an echo test. |
+| `18` | Failed to leave the channel. The user may already have left the channel, or the leave method may have been called before the user joined. |
+| `19` | The resource is occupied and cannot be reused. |
+| `20` | The SDK abandons the request, possibly due to too many requests. |
+| `21` | Specific firewall settings on Windows cause `RtcEngine` initialization to fail and then crash. |
+| `22` | The SDK failed to allocate resources, possibly because the app uses too many resources or system resources are exhausted. |
+| `101` | The App ID is invalid. Rejoin the channel with a valid App ID. |
+| `102` | The channel name is invalid. Check whether the parameter data type is correct and rejoin with a valid channel name. |
+| `103` | The SDK cannot get server resources for the current region. Specify a different region when initializing `RtcEngine`. |
+| `109` | The current token has expired. Generate a new token on the server and call `renewToken` to update it. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_TOKEN_EXPIRED(9)` in `onConnectionStateChanged` instead. |
+| `110` | The token is invalid. Possible reasons include enabling the App Certificate without using App ID plus token authentication, or using a token whose `uid` does not match the `uid` used to join the channel. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_INVALID_TOKEN(8)` in `onConnectionStateChanged` instead. |
+| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
+| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+| `119` | The user failed to switch roles. Try joining the channel again. |
+| `120` | Decryption failed. The user may have used the wrong password when joining the channel. Check the password or ask the user to rejoin. |
+| `121` | The user ID is invalid. |
+| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
+| `134` | The user account is invalid, possibly because invalid parameters are set. |
+
+## Audio-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1005` | An unspecified error occurred in the audio device. Check if the audio device is occupied by another application or re-enter the channel. |
+| `1008` | An error occurred while initializing the playback device. Check if the playback device is occupied by another application or re-enter the channel. |
+| `1009` | Error starting the playback device. Check whether the playback device is working properly. |
+| `1010` | Error stopping the playback device. |
+| `1011` | Error initializing the recording device. Check whether the recording device is working properly or re-enter the channel. |
+| `1012` | Error starting the recording device. Check whether the recording device is working properly. |
+| `1013` | Error stopping the recording device. |
+
+## Data stream-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `113` | The user was not in the channel when `sendStreamMessage` was called. |
+| `114` | The length of the data sent by `sendStreamMessage` was greater than 1024 bytes. |
+| `115` | The frequency of sending data exceeded the limit of 6 KB/s when calling `sendStreamMessage`. |
+| `116` | The number of data streams exceeded the limit of 5 when `createDataStream` was called. |
+| `117` | Data stream send timeout. If the receiver does not receive reliable or ordered data within 5 seconds, or detects missing data, `onStreamMessageError` is triggered on the receiving end. |
+
+## Other error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `130` | The SDK does not support pushing encrypted streams to a CDN. |
+| `1001` | Failed to load the media engine. |
+| `1501` | There is no permission to use the camera. Check whether camera permission is enabled. |
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
-<include>./_error-codes-native.mdx</include>
+When interacting with the Agora API, the Video SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+
+This page provides descriptions for common error codes, their causes, and suggested solutions. For error codes without predefined solutions, [contact technical support](https://agora-ticket.agora.io/) for assistance.
+
+The error codes listed in this section apply to Agora RTC v4.x SDK on native platforms and third-party frameworks, including Android, iOS, macOS, Windows, Electron, Unity, React Native, Flutter, Unreal Engine, and Unreal Blueprint.
+
+During operation, error codes may be returned in the following ways:
+
+- In the return value of a failed method call.
+- Through the `onError` callback.
+
+:::note
+When the SDK returns an error code, it may return a negative number. This negative number corresponds to the positive integer in the error code. For example, if it returns `-2`, it corresponds to `2` in the error code.
+
+The API names in this article are based on the C++ API. API names for other platforms may be different. Refer to the API documentation for the corresponding platform.
+:::
+
+## Common error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1` | General error with no clearly categorized cause. Call the method again. |
+| `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Reset the parameters. |
+| `3` | The SDK is not ready. Possible reasons include failed `RtcEngine` initialization, calling a method before joining a channel, calling a method after leaving a channel, the audio module not being enabled, or incomplete assembly. |
+| `4` | The current state of `RtcEngine` does not support this operation. Possible reasons include an incorrect built-in encryption mode or a failed external encryption library load. |
+| `5` | The method call is rejected. Possible reasons include failed `RtcEngine` initialization, an empty channel name, or reusing an existing channel name in a multi-channel use case. |
+| `6` | The buffer size is not large enough to hold the returned data. |
+| `7` | The method is called before `RtcEngine` is initialized. Create and initialize the `RtcEngine` object before calling the method. |
+| `8` | The current state is invalid. Check the SDK callback logs to find the exact reason. |
+| `9` | There is no permission to operate. Check whether the user has granted the app permission to use audio or video devices. |
+| `10` | Method call timed out. Some method calls require the SDK to return results, and this error occurs if the SDK does not return for more than 10 seconds. |
+| `17` | Joining a channel is rejected. The user may already be in the channel, or an echo test may still be running. Use `onConnectionStateChanged` to determine whether the user is in the channel, and call `stopEchoTest` before joining after an echo test. |
+| `18` | Failed to leave the channel. The user may already have left the channel, or the leave method may have been called before the user joined. |
+| `19` | The resource is occupied and cannot be reused. |
+| `20` | The SDK abandons the request, possibly due to too many requests. |
+| `21` | Specific firewall settings on Windows cause `RtcEngine` initialization to fail and then crash. |
+| `22` | The SDK failed to allocate resources, possibly because the app uses too many resources or system resources are exhausted. |
+| `101` | The App ID is invalid. Rejoin the channel with a valid App ID. |
+| `102` | The channel name is invalid. Check whether the parameter data type is correct and rejoin with a valid channel name. |
+| `103` | The SDK cannot get server resources for the current region. Specify a different region when initializing `RtcEngine`. |
+| `109` | The current token has expired. Generate a new token on the server and call `renewToken` to update it. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_TOKEN_EXPIRED(9)` in `onConnectionStateChanged` instead. |
+| `110` | The token is invalid. Possible reasons include enabling the App Certificate without using App ID plus token authentication, or using a token whose `uid` does not match the `uid` used to join the channel. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_INVALID_TOKEN(8)` in `onConnectionStateChanged` instead. |
+| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
+| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+| `119` | The user failed to switch roles. Try joining the channel again. |
+| `120` | Decryption failed. The user may have used the wrong password when joining the channel. Check the password or ask the user to rejoin. |
+| `121` | The user ID is invalid. |
+| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
+| `134` | The user account is invalid, possibly because invalid parameters are set. |
+
+## Audio-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1005` | An unspecified error occurred in the audio device. Check if the audio device is occupied by another application or re-enter the channel. |
+| `1008` | An error occurred while initializing the playback device. Check if the playback device is occupied by another application or re-enter the channel. |
+| `1009` | Error starting the playback device. Check whether the playback device is working properly. |
+| `1010` | Error stopping the playback device. |
+| `1011` | Error initializing the recording device. Check whether the recording device is working properly or re-enter the channel. |
+| `1012` | Error starting the recording device. Check whether the recording device is working properly. |
+| `1013` | Error stopping the recording device. |
+
+## Data stream-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `113` | The user was not in the channel when `sendStreamMessage` was called. |
+| `114` | The length of the data sent by `sendStreamMessage` was greater than 1024 bytes. |
+| `115` | The frequency of sending data exceeded the limit of 6 KB/s when calling `sendStreamMessage`. |
+| `116` | The number of data streams exceeded the limit of 5 when `createDataStream` was called. |
+| `117` | Data stream send timeout. If the receiver does not receive reliable or ordered data within 5 seconds, or detects missing data, `onStreamMessageError` is triggered on the receiving end. |
+
+## Other error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `130` | The SDK does not support pushing encrypted streams to a CDN. |
+| `1001` | Failed to load the media engine. |
+| `1501` | There is no permission to use the camera. Check whether camera permission is enabled. |
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
-<include>./_error-codes-native.mdx</include>
+When interacting with the Agora API, the Video SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+
+This page provides descriptions for common error codes, their causes, and suggested solutions. For error codes without predefined solutions, [contact technical support](https://agora-ticket.agora.io/) for assistance.
+
+The error codes listed in this section apply to Agora RTC v4.x SDK on native platforms and third-party frameworks, including Android, iOS, macOS, Windows, Electron, Unity, React Native, Flutter, Unreal Engine, and Unreal Blueprint.
+
+During operation, error codes may be returned in the following ways:
+
+- In the return value of a failed method call.
+- Through the `onError` callback.
+
+:::note
+When the SDK returns an error code, it may return a negative number. This negative number corresponds to the positive integer in the error code. For example, if it returns `-2`, it corresponds to `2` in the error code.
+
+The API names in this article are based on the C++ API. API names for other platforms may be different. Refer to the API documentation for the corresponding platform.
+:::
+
+## Common error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1` | General error with no clearly categorized cause. Call the method again. |
+| `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Reset the parameters. |
+| `3` | The SDK is not ready. Possible reasons include failed `RtcEngine` initialization, calling a method before joining a channel, calling a method after leaving a channel, the audio module not being enabled, or incomplete assembly. |
+| `4` | The current state of `RtcEngine` does not support this operation. Possible reasons include an incorrect built-in encryption mode or a failed external encryption library load. |
+| `5` | The method call is rejected. Possible reasons include failed `RtcEngine` initialization, an empty channel name, or reusing an existing channel name in a multi-channel use case. |
+| `6` | The buffer size is not large enough to hold the returned data. |
+| `7` | The method is called before `RtcEngine` is initialized. Create and initialize the `RtcEngine` object before calling the method. |
+| `8` | The current state is invalid. Check the SDK callback logs to find the exact reason. |
+| `9` | There is no permission to operate. Check whether the user has granted the app permission to use audio or video devices. |
+| `10` | Method call timed out. Some method calls require the SDK to return results, and this error occurs if the SDK does not return for more than 10 seconds. |
+| `17` | Joining a channel is rejected. The user may already be in the channel, or an echo test may still be running. Use `onConnectionStateChanged` to determine whether the user is in the channel, and call `stopEchoTest` before joining after an echo test. |
+| `18` | Failed to leave the channel. The user may already have left the channel, or the leave method may have been called before the user joined. |
+| `19` | The resource is occupied and cannot be reused. |
+| `20` | The SDK abandons the request, possibly due to too many requests. |
+| `21` | Specific firewall settings on Windows cause `RtcEngine` initialization to fail and then crash. |
+| `22` | The SDK failed to allocate resources, possibly because the app uses too many resources or system resources are exhausted. |
+| `101` | The App ID is invalid. Rejoin the channel with a valid App ID. |
+| `102` | The channel name is invalid. Check whether the parameter data type is correct and rejoin with a valid channel name. |
+| `103` | The SDK cannot get server resources for the current region. Specify a different region when initializing `RtcEngine`. |
+| `109` | The current token has expired. Generate a new token on the server and call `renewToken` to update it. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_TOKEN_EXPIRED(9)` in `onConnectionStateChanged` instead. |
+| `110` | The token is invalid. Possible reasons include enabling the App Certificate without using App ID plus token authentication, or using a token whose `uid` does not match the `uid` used to join the channel. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_INVALID_TOKEN(8)` in `onConnectionStateChanged` instead. |
+| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
+| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+| `119` | The user failed to switch roles. Try joining the channel again. |
+| `120` | Decryption failed. The user may have used the wrong password when joining the channel. Check the password or ask the user to rejoin. |
+| `121` | The user ID is invalid. |
+| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
+| `134` | The user account is invalid, possibly because invalid parameters are set. |
+
+## Audio-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1005` | An unspecified error occurred in the audio device. Check if the audio device is occupied by another application or re-enter the channel. |
+| `1008` | An error occurred while initializing the playback device. Check if the playback device is occupied by another application or re-enter the channel. |
+| `1009` | Error starting the playback device. Check whether the playback device is working properly. |
+| `1010` | Error stopping the playback device. |
+| `1011` | Error initializing the recording device. Check whether the recording device is working properly or re-enter the channel. |
+| `1012` | Error starting the recording device. Check whether the recording device is working properly. |
+| `1013` | Error stopping the recording device. |
+
+## Data stream-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `113` | The user was not in the channel when `sendStreamMessage` was called. |
+| `114` | The length of the data sent by `sendStreamMessage` was greater than 1024 bytes. |
+| `115` | The frequency of sending data exceeded the limit of 6 KB/s when calling `sendStreamMessage`. |
+| `116` | The number of data streams exceeded the limit of 5 when `createDataStream` was called. |
+| `117` | Data stream send timeout. If the receiver does not receive reliable or ordered data within 5 seconds, or detects missing data, `onStreamMessageError` is triggered on the receiving end. |
+
+## Other error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `130` | The SDK does not support pushing encrypted streams to a CDN. |
+| `1001` | Failed to load the media engine. |
+| `1501` | There is no permission to use the camera. Check whether camera permission is enabled. |
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
-<include>./_error-codes-native.mdx</include>
+When interacting with the Agora API, the Video SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+
+This page provides descriptions for common error codes, their causes, and suggested solutions. For error codes without predefined solutions, [contact technical support](https://agora-ticket.agora.io/) for assistance.
+
+The error codes listed in this section apply to Agora RTC v4.x SDK on native platforms and third-party frameworks, including Android, iOS, macOS, Windows, Electron, Unity, React Native, Flutter, Unreal Engine, and Unreal Blueprint.
+
+During operation, error codes may be returned in the following ways:
+
+- In the return value of a failed method call.
+- Through the `onError` callback.
+
+:::note
+When the SDK returns an error code, it may return a negative number. This negative number corresponds to the positive integer in the error code. For example, if it returns `-2`, it corresponds to `2` in the error code.
+
+The API names in this article are based on the C++ API. API names for other platforms may be different. Refer to the API documentation for the corresponding platform.
+:::
+
+## Common error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1` | General error with no clearly categorized cause. Call the method again. |
+| `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Reset the parameters. |
+| `3` | The SDK is not ready. Possible reasons include failed `RtcEngine` initialization, calling a method before joining a channel, calling a method after leaving a channel, the audio module not being enabled, or incomplete assembly. |
+| `4` | The current state of `RtcEngine` does not support this operation. Possible reasons include an incorrect built-in encryption mode or a failed external encryption library load. |
+| `5` | The method call is rejected. Possible reasons include failed `RtcEngine` initialization, an empty channel name, or reusing an existing channel name in a multi-channel use case. |
+| `6` | The buffer size is not large enough to hold the returned data. |
+| `7` | The method is called before `RtcEngine` is initialized. Create and initialize the `RtcEngine` object before calling the method. |
+| `8` | The current state is invalid. Check the SDK callback logs to find the exact reason. |
+| `9` | There is no permission to operate. Check whether the user has granted the app permission to use audio or video devices. |
+| `10` | Method call timed out. Some method calls require the SDK to return results, and this error occurs if the SDK does not return for more than 10 seconds. |
+| `17` | Joining a channel is rejected. The user may already be in the channel, or an echo test may still be running. Use `onConnectionStateChanged` to determine whether the user is in the channel, and call `stopEchoTest` before joining after an echo test. |
+| `18` | Failed to leave the channel. The user may already have left the channel, or the leave method may have been called before the user joined. |
+| `19` | The resource is occupied and cannot be reused. |
+| `20` | The SDK abandons the request, possibly due to too many requests. |
+| `21` | Specific firewall settings on Windows cause `RtcEngine` initialization to fail and then crash. |
+| `22` | The SDK failed to allocate resources, possibly because the app uses too many resources or system resources are exhausted. |
+| `101` | The App ID is invalid. Rejoin the channel with a valid App ID. |
+| `102` | The channel name is invalid. Check whether the parameter data type is correct and rejoin with a valid channel name. |
+| `103` | The SDK cannot get server resources for the current region. Specify a different region when initializing `RtcEngine`. |
+| `109` | The current token has expired. Generate a new token on the server and call `renewToken` to update it. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_TOKEN_EXPIRED(9)` in `onConnectionStateChanged` instead. |
+| `110` | The token is invalid. Possible reasons include enabling the App Certificate without using App ID plus token authentication, or using a token whose `uid` does not match the `uid` used to join the channel. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_INVALID_TOKEN(8)` in `onConnectionStateChanged` instead. |
+| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
+| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+| `119` | The user failed to switch roles. Try joining the channel again. |
+| `120` | Decryption failed. The user may have used the wrong password when joining the channel. Check the password or ask the user to rejoin. |
+| `121` | The user ID is invalid. |
+| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
+| `134` | The user account is invalid, possibly because invalid parameters are set. |
+
+## Audio-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1005` | An unspecified error occurred in the audio device. Check if the audio device is occupied by another application or re-enter the channel. |
+| `1008` | An error occurred while initializing the playback device. Check if the playback device is occupied by another application or re-enter the channel. |
+| `1009` | Error starting the playback device. Check whether the playback device is working properly. |
+| `1010` | Error stopping the playback device. |
+| `1011` | Error initializing the recording device. Check whether the recording device is working properly or re-enter the channel. |
+| `1012` | Error starting the recording device. Check whether the recording device is working properly. |
+| `1013` | Error stopping the recording device. |
+
+## Data stream-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `113` | The user was not in the channel when `sendStreamMessage` was called. |
+| `114` | The length of the data sent by `sendStreamMessage` was greater than 1024 bytes. |
+| `115` | The frequency of sending data exceeded the limit of 6 KB/s when calling `sendStreamMessage`. |
+| `116` | The number of data streams exceeded the limit of 5 when `createDataStream` was called. |
+| `117` | Data stream send timeout. If the receiver does not receive reliable or ordered data within 5 seconds, or detects missing data, `onStreamMessageError` is triggered on the receiving end. |
+
+## Other error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `130` | The SDK does not support pushing encrypted streams to a CDN. |
+| `1001` | Failed to load the media engine. |
+| `1501` | There is no permission to use the camera. Check whether camera permission is enabled. |
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
-<include>./_error-codes-native.mdx</include>
+When interacting with the Agora API, the Video SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+
+This page provides descriptions for common error codes, their causes, and suggested solutions. For error codes without predefined solutions, [contact technical support](https://agora-ticket.agora.io/) for assistance.
+
+The error codes listed in this section apply to Agora RTC v4.x SDK on native platforms and third-party frameworks, including Android, iOS, macOS, Windows, Electron, Unity, React Native, Flutter, Unreal Engine, and Unreal Blueprint.
+
+During operation, error codes may be returned in the following ways:
+
+- In the return value of a failed method call.
+- Through the `onError` callback.
+
+:::note
+When the SDK returns an error code, it may return a negative number. This negative number corresponds to the positive integer in the error code. For example, if it returns `-2`, it corresponds to `2` in the error code.
+
+The API names in this article are based on the C++ API. API names for other platforms may be different. Refer to the API documentation for the corresponding platform.
+:::
+
+## Common error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1` | General error with no clearly categorized cause. Call the method again. |
+| `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Reset the parameters. |
+| `3` | The SDK is not ready. Possible reasons include failed `RtcEngine` initialization, calling a method before joining a channel, calling a method after leaving a channel, the audio module not being enabled, or incomplete assembly. |
+| `4` | The current state of `RtcEngine` does not support this operation. Possible reasons include an incorrect built-in encryption mode or a failed external encryption library load. |
+| `5` | The method call is rejected. Possible reasons include failed `RtcEngine` initialization, an empty channel name, or reusing an existing channel name in a multi-channel use case. |
+| `6` | The buffer size is not large enough to hold the returned data. |
+| `7` | The method is called before `RtcEngine` is initialized. Create and initialize the `RtcEngine` object before calling the method. |
+| `8` | The current state is invalid. Check the SDK callback logs to find the exact reason. |
+| `9` | There is no permission to operate. Check whether the user has granted the app permission to use audio or video devices. |
+| `10` | Method call timed out. Some method calls require the SDK to return results, and this error occurs if the SDK does not return for more than 10 seconds. |
+| `17` | Joining a channel is rejected. The user may already be in the channel, or an echo test may still be running. Use `onConnectionStateChanged` to determine whether the user is in the channel, and call `stopEchoTest` before joining after an echo test. |
+| `18` | Failed to leave the channel. The user may already have left the channel, or the leave method may have been called before the user joined. |
+| `19` | The resource is occupied and cannot be reused. |
+| `20` | The SDK abandons the request, possibly due to too many requests. |
+| `21` | Specific firewall settings on Windows cause `RtcEngine` initialization to fail and then crash. |
+| `22` | The SDK failed to allocate resources, possibly because the app uses too many resources or system resources are exhausted. |
+| `101` | The App ID is invalid. Rejoin the channel with a valid App ID. |
+| `102` | The channel name is invalid. Check whether the parameter data type is correct and rejoin with a valid channel name. |
+| `103` | The SDK cannot get server resources for the current region. Specify a different region when initializing `RtcEngine`. |
+| `109` | The current token has expired. Generate a new token on the server and call `renewToken` to update it. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_TOKEN_EXPIRED(9)` in `onConnectionStateChanged` instead. |
+| `110` | The token is invalid. Possible reasons include enabling the App Certificate without using App ID plus token authentication, or using a token whose `uid` does not match the `uid` used to join the channel. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_INVALID_TOKEN(8)` in `onConnectionStateChanged` instead. |
+| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
+| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+| `119` | The user failed to switch roles. Try joining the channel again. |
+| `120` | Decryption failed. The user may have used the wrong password when joining the channel. Check the password or ask the user to rejoin. |
+| `121` | The user ID is invalid. |
+| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
+| `134` | The user account is invalid, possibly because invalid parameters are set. |
+
+## Audio-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1005` | An unspecified error occurred in the audio device. Check if the audio device is occupied by another application or re-enter the channel. |
+| `1008` | An error occurred while initializing the playback device. Check if the playback device is occupied by another application or re-enter the channel. |
+| `1009` | Error starting the playback device. Check whether the playback device is working properly. |
+| `1010` | Error stopping the playback device. |
+| `1011` | Error initializing the recording device. Check whether the recording device is working properly or re-enter the channel. |
+| `1012` | Error starting the recording device. Check whether the recording device is working properly. |
+| `1013` | Error stopping the recording device. |
+
+## Data stream-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `113` | The user was not in the channel when `sendStreamMessage` was called. |
+| `114` | The length of the data sent by `sendStreamMessage` was greater than 1024 bytes. |
+| `115` | The frequency of sending data exceeded the limit of 6 KB/s when calling `sendStreamMessage`. |
+| `116` | The number of data streams exceeded the limit of 5 when `createDataStream` was called. |
+| `117` | Data stream send timeout. If the receiver does not receive reliable or ordered data within 5 seconds, or detects missing data, `onStreamMessageError` is triggered on the receiving end. |
+
+## Other error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `130` | The SDK does not support pushing encrypted streams to a CDN. |
+| `1001` | Failed to load the media engine. |
+| `1501` | There is no permission to use the camera. Check whether camera permission is enabled. |
 </PlatformStructured>
 
 <PlatformStructured platform="unreal">
-<include>./_error-codes-native.mdx</include>
+When interacting with the Agora API, the Video SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+
+This page provides descriptions for common error codes, their causes, and suggested solutions. For error codes without predefined solutions, [contact technical support](https://agora-ticket.agora.io/) for assistance.
+
+The error codes listed in this section apply to Agora RTC v4.x SDK on native platforms and third-party frameworks, including Android, iOS, macOS, Windows, Electron, Unity, React Native, Flutter, Unreal Engine, and Unreal Blueprint.
+
+During operation, error codes may be returned in the following ways:
+
+- In the return value of a failed method call.
+- Through the `onError` callback.
+
+:::note
+When the SDK returns an error code, it may return a negative number. This negative number corresponds to the positive integer in the error code. For example, if it returns `-2`, it corresponds to `2` in the error code.
+
+The API names in this article are based on the C++ API. API names for other platforms may be different. Refer to the API documentation for the corresponding platform.
+:::
+
+## Common error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1` | General error with no clearly categorized cause. Call the method again. |
+| `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Reset the parameters. |
+| `3` | The SDK is not ready. Possible reasons include failed `RtcEngine` initialization, calling a method before joining a channel, calling a method after leaving a channel, the audio module not being enabled, or incomplete assembly. |
+| `4` | The current state of `RtcEngine` does not support this operation. Possible reasons include an incorrect built-in encryption mode or a failed external encryption library load. |
+| `5` | The method call is rejected. Possible reasons include failed `RtcEngine` initialization, an empty channel name, or reusing an existing channel name in a multi-channel use case. |
+| `6` | The buffer size is not large enough to hold the returned data. |
+| `7` | The method is called before `RtcEngine` is initialized. Create and initialize the `RtcEngine` object before calling the method. |
+| `8` | The current state is invalid. Check the SDK callback logs to find the exact reason. |
+| `9` | There is no permission to operate. Check whether the user has granted the app permission to use audio or video devices. |
+| `10` | Method call timed out. Some method calls require the SDK to return results, and this error occurs if the SDK does not return for more than 10 seconds. |
+| `17` | Joining a channel is rejected. The user may already be in the channel, or an echo test may still be running. Use `onConnectionStateChanged` to determine whether the user is in the channel, and call `stopEchoTest` before joining after an echo test. |
+| `18` | Failed to leave the channel. The user may already have left the channel, or the leave method may have been called before the user joined. |
+| `19` | The resource is occupied and cannot be reused. |
+| `20` | The SDK abandons the request, possibly due to too many requests. |
+| `21` | Specific firewall settings on Windows cause `RtcEngine` initialization to fail and then crash. |
+| `22` | The SDK failed to allocate resources, possibly because the app uses too many resources or system resources are exhausted. |
+| `101` | The App ID is invalid. Rejoin the channel with a valid App ID. |
+| `102` | The channel name is invalid. Check whether the parameter data type is correct and rejoin with a valid channel name. |
+| `103` | The SDK cannot get server resources for the current region. Specify a different region when initializing `RtcEngine`. |
+| `109` | The current token has expired. Generate a new token on the server and call `renewToken` to update it. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_TOKEN_EXPIRED(9)` in `onConnectionStateChanged` instead. |
+| `110` | The token is invalid. Possible reasons include enabling the App Certificate without using App ID plus token authentication, or using a token whose `uid` does not match the `uid` used to join the channel. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_INVALID_TOKEN(8)` in `onConnectionStateChanged` instead. |
+| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
+| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+| `119` | The user failed to switch roles. Try joining the channel again. |
+| `120` | Decryption failed. The user may have used the wrong password when joining the channel. Check the password or ask the user to rejoin. |
+| `121` | The user ID is invalid. |
+| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
+| `134` | The user account is invalid, possibly because invalid parameters are set. |
+
+## Audio-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1005` | An unspecified error occurred in the audio device. Check if the audio device is occupied by another application or re-enter the channel. |
+| `1008` | An error occurred while initializing the playback device. Check if the playback device is occupied by another application or re-enter the channel. |
+| `1009` | Error starting the playback device. Check whether the playback device is working properly. |
+| `1010` | Error stopping the playback device. |
+| `1011` | Error initializing the recording device. Check whether the recording device is working properly or re-enter the channel. |
+| `1012` | Error starting the recording device. Check whether the recording device is working properly. |
+| `1013` | Error stopping the recording device. |
+
+## Data stream-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `113` | The user was not in the channel when `sendStreamMessage` was called. |
+| `114` | The length of the data sent by `sendStreamMessage` was greater than 1024 bytes. |
+| `115` | The frequency of sending data exceeded the limit of 6 KB/s when calling `sendStreamMessage`. |
+| `116` | The number of data streams exceeded the limit of 5 when `createDataStream` was called. |
+| `117` | Data stream send timeout. If the receiver does not receive reliable or ordered data within 5 seconds, or detects missing data, `onStreamMessageError` is triggered on the receiving end. |
+
+## Other error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `130` | The SDK does not support pushing encrypted streams to a CDN. |
+| `1001` | Failed to load the media engine. |
+| `1501` | There is no permission to use the camera. Check whether camera permission is enabled. |
 </PlatformStructured>
 
 <PlatformStructured platform="blueprint">
-<include>./_error-codes-native.mdx</include>
+When interacting with the Agora API, the Video SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+
+This page provides descriptions for common error codes, their causes, and suggested solutions. For error codes without predefined solutions, [contact technical support](https://agora-ticket.agora.io/) for assistance.
+
+The error codes listed in this section apply to Agora RTC v4.x SDK on native platforms and third-party frameworks, including Android, iOS, macOS, Windows, Electron, Unity, React Native, Flutter, Unreal Engine, and Unreal Blueprint.
+
+During operation, error codes may be returned in the following ways:
+
+- In the return value of a failed method call.
+- Through the `onError` callback.
+
+:::note
+When the SDK returns an error code, it may return a negative number. This negative number corresponds to the positive integer in the error code. For example, if it returns `-2`, it corresponds to `2` in the error code.
+
+The API names in this article are based on the C++ API. API names for other platforms may be different. Refer to the API documentation for the corresponding platform.
+:::
+
+## Common error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1` | General error with no clearly categorized cause. Call the method again. |
+| `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Reset the parameters. |
+| `3` | The SDK is not ready. Possible reasons include failed `RtcEngine` initialization, calling a method before joining a channel, calling a method after leaving a channel, the audio module not being enabled, or incomplete assembly. |
+| `4` | The current state of `RtcEngine` does not support this operation. Possible reasons include an incorrect built-in encryption mode or a failed external encryption library load. |
+| `5` | The method call is rejected. Possible reasons include failed `RtcEngine` initialization, an empty channel name, or reusing an existing channel name in a multi-channel use case. |
+| `6` | The buffer size is not large enough to hold the returned data. |
+| `7` | The method is called before `RtcEngine` is initialized. Create and initialize the `RtcEngine` object before calling the method. |
+| `8` | The current state is invalid. Check the SDK callback logs to find the exact reason. |
+| `9` | There is no permission to operate. Check whether the user has granted the app permission to use audio or video devices. |
+| `10` | Method call timed out. Some method calls require the SDK to return results, and this error occurs if the SDK does not return for more than 10 seconds. |
+| `17` | Joining a channel is rejected. The user may already be in the channel, or an echo test may still be running. Use `onConnectionStateChanged` to determine whether the user is in the channel, and call `stopEchoTest` before joining after an echo test. |
+| `18` | Failed to leave the channel. The user may already have left the channel, or the leave method may have been called before the user joined. |
+| `19` | The resource is occupied and cannot be reused. |
+| `20` | The SDK abandons the request, possibly due to too many requests. |
+| `21` | Specific firewall settings on Windows cause `RtcEngine` initialization to fail and then crash. |
+| `22` | The SDK failed to allocate resources, possibly because the app uses too many resources or system resources are exhausted. |
+| `101` | The App ID is invalid. Rejoin the channel with a valid App ID. |
+| `102` | The channel name is invalid. Check whether the parameter data type is correct and rejoin with a valid channel name. |
+| `103` | The SDK cannot get server resources for the current region. Specify a different region when initializing `RtcEngine`. |
+| `109` | The current token has expired. Generate a new token on the server and call `renewToken` to update it. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_TOKEN_EXPIRED(9)` in `onConnectionStateChanged` instead. |
+| `110` | The token is invalid. Possible reasons include enabling the App Certificate without using App ID plus token authentication, or using a token whose `uid` does not match the `uid` used to join the channel. This error code is deprecated; the SDK returns `CONNECTION_CHANGED_INVALID_TOKEN(8)` in `onConnectionStateChanged` instead. |
+| `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
+| `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+| `119` | The user failed to switch roles. Try joining the channel again. |
+| `120` | Decryption failed. The user may have used the wrong password when joining the channel. Check the password or ask the user to rejoin. |
+| `121` | The user ID is invalid. |
+| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
+| `134` | The user account is invalid, possibly because invalid parameters are set. |
+
+## Audio-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `1005` | An unspecified error occurred in the audio device. Check if the audio device is occupied by another application or re-enter the channel. |
+| `1008` | An error occurred while initializing the playback device. Check if the playback device is occupied by another application or re-enter the channel. |
+| `1009` | Error starting the playback device. Check whether the playback device is working properly. |
+| `1010` | Error stopping the playback device. |
+| `1011` | Error initializing the recording device. Check whether the recording device is working properly or re-enter the channel. |
+| `1012` | Error starting the recording device. Check whether the recording device is working properly. |
+| `1013` | Error stopping the recording device. |
+
+## Data stream-related error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `113` | The user was not in the channel when `sendStreamMessage` was called. |
+| `114` | The length of the data sent by `sendStreamMessage` was greater than 1024 bytes. |
+| `115` | The frequency of sending data exceeded the limit of 6 KB/s when calling `sendStreamMessage`. |
+| `116` | The number of data streams exceeded the limit of 5 when `createDataStream` was called. |
+| `117` | Data stream send timeout. If the receiver does not receive reliable or ordered data within 5 seconds, or detects missing data, `onStreamMessageError` is triggered on the receiving end. |
+
+## Other error codes
+
+| Error code | Description |
+| :--: | :--- |
+| `130` | The SDK does not support pushing encrypted streams to a CDN. |
+| `1001` | Failed to load the media engine. |
+| `1501` | There is no permission to use the camera. Check whether camera permission is enabled. |
 </PlatformStructured>
