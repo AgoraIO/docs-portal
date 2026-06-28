@@ -42,6 +42,7 @@ const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
 const DOCS_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
 const DOCS_FILL_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)]';
+const ENABLED_DOCS_CHROME_LOCALES = new Set<AppLocale>([DEFAULT_LOCALE]);
 const mobileSidebarGroupLabelClassName =
   'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
 const mobileTabLinkClassName =
@@ -157,6 +158,9 @@ export function DocsShell({
   const desktopGridClassName = contentFillsWidth
     ? DOCS_FILL_DESKTOP_GRID_CLASS_NAME
     : DOCS_DESKTOP_GRID_CLASS_NAME;
+  const docsChromeLocaleLinks = localeLinks.filter((item) =>
+    ENABLED_DOCS_CHROME_LOCALES.has(item.locale),
+  );
 
   return (
     <SidebarProvider
@@ -168,18 +172,20 @@ export function DocsShell({
           className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-xl"
           ref={headerRef}
         >
-          <nav aria-label="Alternate languages" className="sr-only">
-            {localeLinks.map((item) => (
-              <a
-                aria-current={item.isActive ? 'page' : undefined}
-                href={item.href}
-                hrefLang={item.locale}
-                key={item.locale}
-              >
-                {item.locale}
-              </a>
-            ))}
-          </nav>
+          {docsChromeLocaleLinks.length > 1 ? (
+            <nav aria-label="Alternate languages" className="sr-only">
+              {docsChromeLocaleLinks.map((item) => (
+                <a
+                  aria-current={item.isActive ? 'page' : undefined}
+                  href={item.href}
+                  hrefLang={item.locale}
+                  key={item.locale}
+                >
+                  {item.locale}
+                </a>
+              ))}
+            </nav>
+          ) : null}
           <div
             className={cn(
               'mx-auto flex h-[52px] w-full items-center gap-3 px-4 sm:px-7',
