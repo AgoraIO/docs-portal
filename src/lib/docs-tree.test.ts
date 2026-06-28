@@ -1327,6 +1327,34 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('maps an external page-tree item to an external sidebar node', () => {
+    const folder = {
+      $id: 'voice-video-group',
+      type: 'folder',
+      name: 'Voice & Video',
+      children: [
+        {
+          $id: 'vv-android',
+          type: 'page',
+          name: 'Android',
+          url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/index.html',
+          external: true,
+        },
+      ],
+    } as unknown as Parameters<typeof pageTreeNodeToSidebarNodes>[0];
+
+    const nodes = pageTreeNodeToSidebarNodes(folder);
+    const section = nodes.find((node) => node.type === 'section');
+    const child = section && 'children' in section ? section.children[0] : undefined;
+
+    expect(child).toMatchObject({
+      type: 'page',
+      external: true,
+      href: 'https://api-ref.agora.io/en/video-sdk/android/4.x/index.html',
+      title: 'Android',
+    });
+  });
+
   it('treats an unnamed separator as a section boundary without creating an empty section', () => {
     expect(
       mapSidebarEntriesToTree([
@@ -1499,6 +1527,54 @@ describe('docs tree helpers', () => {
         id: 'folder-build-folder',
         title: 'Build',
         type: 'section',
+      },
+    ]);
+  });
+
+  it('carries defaultOpen:false from a folder so a hub section stays collapsed when active', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'faq-folder',
+        defaultOpen: false,
+        children: [
+          {
+            $id: 'faq-integration',
+            name: 'Integration',
+            type: 'page',
+            url: '/en/api-reference/faq/integration',
+          },
+        ],
+        index: {
+          $id: 'faq-index',
+          name: 'FAQ',
+          type: 'page',
+          url: '/en/api-reference/faq',
+        },
+        name: 'FAQ',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/en/api-reference/faq',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/api-reference/faq',
+          },
+          {
+            id: '/en/api-reference/faq/integration',
+            title: 'Integration',
+            type: 'page',
+            url: '/en/api-reference/faq/integration',
+          },
+        ],
+        collapsible: true,
+        defaultOpen: false,
+        id: 'folder-faq-folder',
+        title: 'FAQ',
+        type: 'section',
+        url: '/en/api-reference/faq',
       },
     ]);
   });

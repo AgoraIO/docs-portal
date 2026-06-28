@@ -130,8 +130,9 @@ function SidebarSection({
 }) {
   const defaultOpen =
     !node.collapsible ||
-    node.children.some((child) => isNodeActive(child, activePath)) ||
-    shouldDefaultOpenSection(node.title, activePath);
+    (node.defaultOpen !== false &&
+      (node.children.some((child) => isNodeActive(child, activePath)) ||
+        shouldDefaultOpenSection(node.title, activePath)));
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const splitIndex = node.nestedQuickstartGroup
     ? Math.max(
@@ -150,6 +151,7 @@ function SidebarSection({
       <SidebarLinkedSection
         activePath={activePath}
         collapsible={node.collapsible}
+        defaultOpen={node.defaultOpen}
         icon={node.icon}
         items={node.children}
         onSelectPath={onSelectPath}
@@ -273,6 +275,7 @@ function SidebarSection({
 function SidebarLinkedSection({
   activePath,
   collapsible,
+  defaultOpen: defaultOpenProp,
   icon,
   items,
   onSelectPath,
@@ -281,6 +284,7 @@ function SidebarLinkedSection({
 }: {
   activePath: string;
   collapsible?: boolean;
+  defaultOpen?: boolean;
   icon?: string;
   items: DocsSidebarNode[];
   onSelectPath: () => void;
@@ -289,8 +293,9 @@ function SidebarLinkedSection({
 }) {
   const defaultOpen =
     !collapsible ||
-    items.some((child) => isNodeActive(child, activePath)) ||
-    url === activePath;
+    (defaultOpenProp !== false &&
+      (items.some((child) => isNodeActive(child, activePath)) ||
+        url === activePath));
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   if (items.length === 0) {
@@ -455,8 +460,9 @@ function SidebarNestedSection({
 }) {
   const defaultOpen =
     !node.collapsible ||
-    node.children.some((child) => isNodeActive(child, activePath)) ||
-    shouldDefaultOpenSection(node.title, activePath);
+    (node.defaultOpen !== false &&
+      (node.children.some((child) => isNodeActive(child, activePath)) ||
+        shouldDefaultOpenSection(node.title, activePath)));
   const [isOpen, setIsOpen] = useState(defaultOpen);
   return (
     <div className="w-full">

@@ -2315,7 +2315,7 @@ Web body
     );
   });
 
-  it('groups API reference products under a RESTful API heading on the overview page', async () => {
+  it('renders the catalog page without the legacy "RESTful API" grouping when the api-ref folder is hidden', async () => {
     const page = createPage();
     mockedGetPage.mockReturnValue({
       ...page,
@@ -2336,7 +2336,7 @@ Web body
       node.$id === 'api-reference-api-ref-folder'
         ? ({
             data: {
-              navScope: {},
+              sidebarHidden: true,
               sidebarIndexTitle: 'Overview',
               title: 'API Reference',
             },
@@ -2352,150 +2352,17 @@ Web body
       throw new Error('expected a docs page payload');
     }
 
-    expect(payload.sidebar).toEqual([
-      {
-        id: '/en/api-reference/api-ref',
-        title: 'Overview',
-        type: 'page',
-        url: '/en/api-reference/api-ref',
-      },
-      {
-        children: [
-          {
-            id: '/en/api-reference/api-ref/conversational-ai',
-            title: 'Conversational AI',
-            type: 'page',
-            url: '/en/api-reference/api-ref/conversational-ai',
-          },
-          {
-            id: '/en/api-reference/api-ref/rtc',
-            title: 'Voice & Video Calling',
-            type: 'page',
-            url: '/en/api-reference/api-ref/rtc',
-          },
-          {
-            id: '/en/api-reference/api-ref/broadcast-streaming',
-            title: 'Broadcast Streaming',
-            type: 'page',
-            url: '/en/api-reference/api-ref/broadcast-streaming',
-          },
-          {
-            id: '/en/api-reference/api-ref/im',
-            title: 'Chat',
-            type: 'page',
-            url: '/en/api-reference/api-ref/im',
-          },
-          {
-            id: '/en/api-reference/api-ref/signaling',
-            title: 'Signaling',
-            type: 'page',
-            url: '/en/api-reference/api-ref/signaling',
-          },
-          {
-            id: '/en/api-reference/api-ref/cloud-recording',
-            title: 'Cloud Recording',
-            type: 'page',
-            url: '/en/api-reference/api-ref/cloud-recording',
-          },
-          {
-            id: '/en/api-reference/api-ref/cloud-transcoding',
-            title: 'Cloud Transcoding',
-            type: 'page',
-            url: '/en/api-reference/api-ref/cloud-transcoding',
-          },
-          {
-            id: '/en/api-reference/api-ref/speech-to-text',
-            title: 'Speech-to-Text',
-            type: 'page',
-            url: '/en/api-reference/api-ref/speech-to-text',
-          },
-          {
-            id: '/en/api-reference/api-ref/rtmp-gateway',
-            title: 'Media Gateway',
-            type: 'page',
-            url: '/en/api-reference/api-ref/rtmp-gateway',
-          },
-          {
-            id: '/en/api-reference/api-ref/whiteboard',
-            title: 'Interactive Whiteboard REST API',
-            type: 'page',
-            url: '/en/api-reference/api-ref/whiteboard',
-          },
-          {
-            id: '/en/api-reference/api-ref/uikit-sdk',
-            title: 'Fastboard API',
-            type: 'page',
-            url: '/en/api-reference/api-ref/uikit-sdk',
-          },
-          {
-            id: '/en/api-reference/api-ref/media-pull',
-            title: 'Media Pull',
-            type: 'page',
-            url: '/en/api-reference/api-ref/media-pull',
-          },
-          {
-            id: '/en/api-reference/api-ref/media-push',
-            title: 'Media Push',
-            type: 'page',
-            url: '/en/api-reference/api-ref/media-push',
-          },
-          {
-            id: '/en/api-reference/api-ref/on-premise-recording',
-            title: 'On-Premise Recording',
-            type: 'page',
-            url: '/en/api-reference/api-ref/on-premise-recording',
-          },
-        ],
-        collapsible: false,
-        id: 'api-reference-restful-api',
-        title: 'RESTful API',
-        type: 'section',
-      },
-    ]);
-    const restfulApiSection = payload.sidebar[1];
-    if (restfulApiSection?.type !== 'section') {
-      throw new Error('expected RESTful API sidebar section');
-    }
+    // The legacy "All SDK versions"/"RESTful API" grouping is gone: nothing
+    // wraps the lanes under a synthesized "RESTful API" section anymore.
     expect(
-      restfulApiSection.children.every((node) => node.type === 'page'),
-    ).toBe(true);
-    expect(restfulApiSection.children.map((node) => node.id)).toEqual([
-      '/en/api-reference/api-ref/conversational-ai',
-      '/en/api-reference/api-ref/rtc',
-      '/en/api-reference/api-ref/broadcast-streaming',
-      '/en/api-reference/api-ref/im',
-      '/en/api-reference/api-ref/signaling',
-      '/en/api-reference/api-ref/cloud-recording',
-      '/en/api-reference/api-ref/cloud-transcoding',
-      '/en/api-reference/api-ref/speech-to-text',
-      '/en/api-reference/api-ref/rtmp-gateway',
-      '/en/api-reference/api-ref/whiteboard',
-      '/en/api-reference/api-ref/uikit-sdk',
-      '/en/api-reference/api-ref/media-pull',
-      '/en/api-reference/api-ref/media-push',
-      '/en/api-reference/api-ref/on-premise-recording',
-    ]);
+      payload.sidebar.find((node) => node.title === 'RESTful API'),
+    ).toBeUndefined();
     expect(
-      restfulApiSection.children.findIndex(
-        (node) => node.id === '/en/api-reference/api-ref/uikit-sdk',
+      payload.sidebar.find(
+        (node) =>
+          node.type === 'section' && node.id === 'api-reference-restful-api',
       ),
-    ).toBe(
-      restfulApiSection.children.findIndex(
-        (node) => node.id === '/en/api-reference/api-ref/whiteboard',
-      ) + 1,
-    );
-    expect(payload.sidebar).not.toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ title: 'Video Calling' }),
-        expect.objectContaining({ title: 'Voice Calling' }),
-      ]),
-    );
-    expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
-      expect.arrayContaining([
-        '/en/api-reference/api-ref/video',
-        '/en/api-reference/api-ref/voice',
-      ]),
-    );
+    ).toBeUndefined();
   });
 
   it('redirects moved Realtime Media API reference pages to the API Reference tab', async () => {
@@ -3376,9 +3243,7 @@ Web body
       ),
     ).toBe(true);
     const tenAgentSection = softwareReferenceSection.children.find(
-      (node) =>
-        node.type === 'section' &&
-        node.title === 'TEN Agent',
+      (node) => node.type === 'section' && node.title === 'TEN Agent',
     );
 
     if (!tenAgentSection || tenAgentSection.type !== 'section') {

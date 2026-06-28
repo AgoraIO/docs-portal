@@ -42,6 +42,10 @@ export type DocsSidebarPageNode = {
 export type DocsSidebarSectionNode = {
   children: DocsSidebarNode[];
   collapsible?: boolean;
+  // When explicitly `false`, the section starts collapsed even when it (or one of
+  // its children) is the active page — used for hub folders like FAQ whose landing
+  // page already lists its children, so auto-expanding the sidebar is redundant.
+  defaultOpen?: boolean;
   icon?: string;
   id: string;
   title: string;
@@ -427,6 +431,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     {
       children,
       collapsible: true,
+      // Honor an explicit `defaultOpen: false` from the folder's meta so hub
+      // folders (e.g. FAQ) stay collapsed even when active.
+      ...(node.defaultOpen === false ? { defaultOpen: false } : {}),
       ...(icon ? { icon } : {}),
       // Rule: a folder whose index matches its title links the header to it.
       ...(indexLinksHeader && node.index ? { url: node.index.url } : {}),

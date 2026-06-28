@@ -1121,15 +1121,7 @@ async function getDocsSidebarNodes({
     return restoreRecipesSidebarSections(openApiSidebar);
   }
 
-  if (isApiReferenceOverviewPath(activePath)) {
-    return groupApiReferenceOverviewSidebar(openApiSidebar);
-  }
-
   return openApiSidebar;
-}
-
-function isApiReferenceOverviewPath(path?: string) {
-  return path === '/en/api-reference/api-ref';
 }
 
 const REALTIME_MEDIA_API_REFERENCE_LINKS = [
@@ -1305,101 +1297,6 @@ function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
   }
 }
 
-function groupApiReferenceOverviewSidebar(
-  nodes: DocsSidebarNode[],
-): DocsSidebarNode[] {
-  if (nodes.length <= 1) {
-    return nodes;
-  }
-
-  const [indexNode, ...apiReferenceNodes] = nodes;
-  const groupedApiReferenceNodes =
-    createApiReferenceOverviewPageNodes(apiReferenceNodes);
-
-  return [
-    indexNode,
-    {
-      children: groupedApiReferenceNodes,
-      collapsible: false,
-      id: 'api-reference-restful-api',
-      title: 'RESTful API',
-      type: 'section',
-    },
-  ];
-}
-
-function createApiReferenceOverviewPageNodes(
-  nodes: DocsSidebarNode[],
-): DocsSidebarPageNode[] {
-  return nodes.flatMap((node) => {
-    const nodeUrl = getApiReferenceOverviewNodeUrl(node);
-    if (
-      !nodeUrl ||
-      nodeUrl === '/en/api-reference/api-ref/video' ||
-      nodeUrl === '/en/api-reference/api-ref/voice'
-    ) {
-      return [];
-    }
-
-    const title =
-      nodeUrl === '/en/api-reference/api-ref/rtc'
-        ? 'Voice & Video Calling'
-        : node.title;
-
-    return [
-      {
-        id: nodeUrl,
-        title,
-        type: 'page',
-        url: nodeUrl,
-      },
-    ];
-  });
-}
-
-function getApiReferenceOverviewNodeUrl(node: DocsSidebarNode) {
-  if (node.type === 'page') {
-    return node.url;
-  }
-
-  if (node.url) {
-    return node.url;
-  }
-
-  const firstChildPageUrl = findFirstSidebarPageUrl(node.children);
-  return firstChildPageUrl
-    ? getApiReferenceProductRootUrl(firstChildPageUrl)
-    : undefined;
-}
-
-function findFirstSidebarPageUrl(nodes: DocsSidebarNode[]): string | undefined {
-  for (const node of nodes) {
-    if (node.type === 'page') {
-      return node.url;
-    }
-
-    const childUrl = findFirstSidebarPageUrl(node.children);
-    if (childUrl) {
-      return childUrl;
-    }
-  }
-
-  return undefined;
-}
-
-function getApiReferenceProductRootUrl(url: string) {
-  const segments = url.split('/').filter(Boolean);
-  if (
-    segments[0] !== 'en' ||
-    segments[1] !== 'api-reference' ||
-    segments[2] !== 'api-ref' ||
-    !segments[3]
-  ) {
-    return url;
-  }
-
-  return `/${segments.slice(0, 4).join('/')}`;
-}
 function isRecipesApiReferencePath(path?: string) {
   return (
     path?.startsWith('/en/api-reference/recipes') ||
@@ -2073,13 +1970,13 @@ async function appendEndpointPagesToOpenApiParent(
     (item) =>
       item.tab === tab &&
       getOpenApiLaneLocales(item).includes(locale) &&
-      // A linked-header section (rule 2 from docs-tree) carries the parent URL
-      // on node.url instead of emitting it as a child page.
-      (node.url === item.parentUrl[locale] ||
-        children.some(
-          (child) =>
-            child.type === 'page' && child.url === item.parentUrl[locale],
-        )),
+      // Only a section that genuinely REPRESENTS the lane gets its endpoint
+      // pages appended. A linked-header section (rule 2 from docs-tree) carries
+      // the lane's parent URL on node.url. We deliberately do NOT match a
+      // section that merely *links* to the lane via a child page (e.g. a
+      // product group whose "REST API" cross-link points at the lane landing),
+      // otherwise that group would absorb the whole lane's endpoints inline.
+      node.url === item.parentUrl[locale],
   );
 
   if (lane) {
