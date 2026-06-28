@@ -94,6 +94,15 @@ export function deriveInstallCommand(
       }
       return null;
     }
+    case 'pkg.go.dev': {
+      // /<module-path>[@<version>] — the module path itself contains slashes,
+      // so take the whole pathname (minus the leading slash) as the module spec.
+      const modulePath = url.pathname.replace(/^\//, '');
+      if (!modulePath) {
+        return null;
+      }
+      return { tool: 'Go', command: `go get ${modulePath}` };
+    }
     default:
       return null;
   }

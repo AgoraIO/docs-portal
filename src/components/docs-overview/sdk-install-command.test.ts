@@ -102,6 +102,28 @@ describe('deriveInstallCommand', () => {
     ).toEqual({ tool: 'pip', command: 'pip install agora-python-server-sdk' });
   });
 
+  it('derives a Go command from a versioned pkg.go.dev URL', () => {
+    expect(
+      deriveInstallCommand(
+        v('https://pkg.go.dev/github.com/AgoraIO/agora-agents-go/v2@v2.3.1'),
+      ),
+    ).toEqual({
+      tool: 'Go',
+      command: 'go get github.com/AgoraIO/agora-agents-go/v2@v2.3.1',
+    });
+  });
+
+  it('derives an unpinned Go command from a bare pkg.go.dev URL', () => {
+    expect(
+      deriveInstallCommand(
+        v('https://pkg.go.dev/github.com/AgoraIO/agora-agents-go/v2'),
+      ),
+    ).toEqual({
+      tool: 'Go',
+      command: 'go get github.com/AgoraIO/agora-agents-go/v2',
+    });
+  });
+
   it('returns null for github release/source pages', () => {
     expect(
       deriveInstallCommand(v('https://github.com/AgoraIO/AgoraChat_iOS.git')),
