@@ -1,26 +1,12 @@
 'use client';
 
-import { Link, useNavigate } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  LanguagesIcon,
-  MenuIcon,
-  MoonIcon,
-  SunIcon,
-} from 'lucide-react';
+import { MenuIcon, MoonIcon, SunIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Sheet,
@@ -35,16 +21,13 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
 import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
-import { replaceDocLocale } from '@/lib/docs-routing';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
   normalizeLocale,
-  SUPPORTED_LOCALES,
 } from '@/lib/i18n/i18n-config';
-import { useLocale } from '@/lib/i18n/use-locale';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
@@ -125,8 +108,6 @@ export function DocsShell({
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const t = i18n.getFixedT(currentLocale, 'common');
   const { resolvedTheme, setTheme } = useTheme();
-  const navigate = useNavigate();
-  const { setLocale } = useLocale();
   const isDarkTheme = resolvedTheme === 'dark';
   const themeLabel = `${t('controls.theme.label')}: ${
     isDarkTheme ? t('controls.theme.dark') : t('controls.theme.light')
@@ -230,16 +211,6 @@ export function DocsShell({
                     activeTab={activeTab}
                     currentLocale={currentLocale}
                     isDarkTheme={isDarkTheme}
-                    localeLinks={localeLinks}
-                    onSelectLocale={async (nextLocale) => {
-                      await setLocale(nextLocale);
-                      setIsMobileSheetOpen(false);
-                      await navigate({
-                        to:
-                          localeLinks.find((item) => item.locale === nextLocale)
-                            ?.href ?? replaceDocLocale(activePath, nextLocale),
-                      });
-                    }}
                     onSelectPath={() => setIsMobileSheetOpen(false)}
                     sidebar={sidebar}
                     sidebarHeader={sidebarHeader}
@@ -286,19 +257,6 @@ export function DocsShell({
                     tabs={tabs}
                   />
                 </div>
-                <LocaleSwitcher
-                  currentLocale={currentLocale}
-                  localeLinks={localeLinks}
-                  onSelect={async (nextLocale) => {
-                    await setLocale(nextLocale);
-                    await navigate({
-                      to:
-                        localeLinks.find((item) => item.locale === nextLocale)
-                          ?.href ?? replaceDocLocale(activePath, nextLocale),
-                    });
-                  }}
-                  variant="desktop"
-                />
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
@@ -431,148 +389,11 @@ function GithubMarkIcon() {
   );
 }
 
-function LocaleSwitcher({
-  currentLocale,
-  localeLinks,
-  onSelect,
-  variant = 'all',
-}: {
-  currentLocale: AppLocale;
-  localeLinks: LocaleLink[];
-  onSelect: (locale: AppLocale) => Promise<void>;
-  variant?: 'all' | 'desktop' | 'mobile';
-}) {
-  const { i18n } = useTranslation('common');
-  const t = i18n.getFixedT(currentLocale, 'common');
-  const currentSiteLabel =
-    currentLocale === 'zh-CN'
-      ? t('controls.site.china')
-      : t('controls.site.global');
-
-  return (
-    <>
-      {variant !== 'mobile' ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              aria-label={t('controls.site.label')}
-              className="h-8 gap-1.5 rounded-md border border-transparent px-2.5 text-[13px] text-muted-foreground hover:border-border hover:bg-accent hover:text-accent-foreground data-[state=open]:border-border data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
-              size="sm"
-              variant="ghost"
-            >
-              <LanguagesIcon data-icon="inline-start" />
-              <span>{currentSiteLabel}</span>
-              <ChevronDownIcon aria-hidden="true" className="opacity-60" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            aria-label={t('controls.site.label')}
-            className="w-56 rounded-lg p-1"
-          >
-            <div className="px-2.5 py-2 text-xs leading-5 text-muted-foreground">
-              {t('controls.site.description')}
-            </div>
-            <LocaleOptions
-              currentLocale={currentLocale}
-              localeLinks={localeLinks}
-              onSelect={onSelect}
-              scopeKey="desktop"
-            />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : null}
-      {variant !== 'desktop' ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              aria-label={t('controls.site.label')}
-              className="data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
-              size="icon"
-              variant="ghost"
-            >
-              <LanguagesIcon />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="start"
-            aria-label={t('controls.site.label')}
-            className="w-56 rounded-lg p-1"
-          >
-            <div className="px-2.5 py-2 text-xs leading-5 text-muted-foreground">
-              {t('controls.site.description')}
-            </div>
-            <LocaleOptions
-              currentLocale={currentLocale}
-              localeLinks={localeLinks}
-              onSelect={onSelect}
-              scopeKey="mobile"
-            />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : null}
-    </>
-  );
-}
-
-function LocaleOptions({
-  currentLocale,
-  localeLinks,
-  onSelect,
-  scopeKey,
-}: {
-  currentLocale: AppLocale;
-  localeLinks: LocaleLink[];
-  onSelect: (locale: AppLocale) => Promise<void>;
-  scopeKey: string;
-}) {
-  const { i18n } = useTranslation('common');
-  const t = i18n.getFixedT(currentLocale, 'common');
-
-  return (
-    <DropdownMenuGroup>
-      {SUPPORTED_LOCALES.map((locale) => {
-        const isActive = currentLocale === locale;
-        const href =
-          localeLinks.find((item) => item.locale === locale)?.href ??
-          replaceDocLocale('/', locale);
-        const label =
-          locale === 'zh-CN'
-            ? t('controls.site.china')
-            : t('controls.site.global');
-
-        return (
-          <DropdownMenuItem
-            asChild
-            className="min-h-8 cursor-pointer justify-between rounded-md px-2.5 text-[13px]"
-            key={`${scopeKey}-${locale}`}
-          >
-            <a
-              aria-current={isActive ? 'page' : undefined}
-              href={href}
-              hrefLang={locale}
-              onClick={(event) => {
-                event.preventDefault();
-                void onSelect(locale);
-              }}
-            >
-              <span className="min-w-0 truncate">{label}</span>
-              {isActive ? <CheckIcon className="opacity-80" /> : null}
-            </a>
-          </DropdownMenuItem>
-        );
-      })}
-    </DropdownMenuGroup>
-  );
-}
-
 function MobileSidebar({
   activePath,
   activeTab,
   currentLocale,
   isDarkTheme,
-  localeLinks,
-  onSelectLocale,
   onSelectPath,
   sidebar,
   sidebarHeader,
@@ -584,8 +405,6 @@ function MobileSidebar({
   activeTab: string;
   currentLocale: AppLocale;
   isDarkTheme: boolean;
-  localeLinks: LocaleLink[];
-  onSelectLocale: (locale: AppLocale) => Promise<void>;
   onSelectPath: () => void;
   sidebar: DocsSidebarNode[];
   sidebarHeader?: DocsSidebarHeader;
@@ -649,12 +468,6 @@ function MobileSidebar({
           </div>
           <div className="flex flex-col gap-2 border-t border-border pt-4">
             <div className="flex items-center gap-2">
-              <LocaleSwitcher
-                currentLocale={currentLocale}
-                localeLinks={localeLinks}
-                onSelect={onSelectLocale}
-                variant="desktop"
-              />
               <Button
                 aria-label={themeLabel}
                 aria-pressed={isDarkTheme}
