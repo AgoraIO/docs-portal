@@ -48,9 +48,15 @@ const SdksCatalog = lazy(() =>
   })),
 );
 
-const FaqCatalog = lazy(() =>
-  import('../faq/FaqCatalog').then((module) => ({
-    default: module.FaqCatalog,
+const FaqLanding = lazy(() =>
+  import('../faq/FaqLanding').then((module) => ({
+    default: module.FaqLanding,
+  })),
+);
+
+const FaqCategory = lazy(() =>
+  import('../faq/FaqCategory').then((module) => ({
+    default: module.FaqCategory,
   })),
 );
 
@@ -58,7 +64,8 @@ export function getOverviewMDXComponents(): MDXComponents {
   return {
     CardGrid,
     FeatureCard,
-    FaqCatalog,
+    FaqLanding,
+    FaqCategory,
     CapabilityGroupCard,
     CapabilityGroupGrid,
     CapabilityMatrix,
