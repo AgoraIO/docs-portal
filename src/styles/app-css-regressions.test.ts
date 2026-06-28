@@ -70,7 +70,10 @@ describe('app prose CSS regressions', () => {
       '.prose :where(table):not(:where(.not-prose, .not-prose *))',
     );
     const wrappedTable = getRuleBody(
-      '.prose :where(.prose-no-margin > table):not(:where(.not-prose, .not-prose *))',
+      `.prose
+        :where(.prose-no-margin.overflow-auto > table):not(
+          :where(.not-prose, .not-prose *)
+        )`,
     );
     const cells = getRuleBody(
       '.prose :where(th, td):not(:where(.not-prose, .not-prose *))',
@@ -107,7 +110,11 @@ describe('app prose CSS regressions', () => {
       ':where(html) .prose :where(table):not(:where(.not-prose, .not-prose *))',
     );
     const wrappedTableOverflowOverride = getRuleBody(
-      ':where(html) .prose :where(.prose-no-margin > table):not(:where(.not-prose, .not-prose *))',
+      `:where(html)
+        .prose
+        :where(.prose-no-margin.overflow-auto > table):not(
+          :where(.not-prose, .not-prose *)
+        )`,
     );
 
     expect(table.rule.nodes).toContainEqual(
@@ -205,6 +212,10 @@ describe('app prose CSS regressions', () => {
         prop: 'overflow',
         value: 'visible',
       }),
+    );
+    expect(table.sourceStart).toBeLessThan(wrappedTable.sourceStart);
+    expect(tableOverflowOverride.sourceStart).toBeLessThan(
+      wrappedTableOverflowOverride.sourceStart,
     );
     expect(cells.rule.nodes).toContainEqual(
       expect.objectContaining({

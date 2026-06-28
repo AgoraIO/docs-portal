@@ -636,7 +636,9 @@
   }
 
   .prose
-    :where(.prose-no-margin > table):not(:where(.not-prose, .not-prose *)) {
+    :where(.prose-no-margin.overflow-auto > table):not(
+      :where(.not-prose, .not-prose *)
+    ) {
     display: table;
     width: auto;
     max-width: none;
@@ -1136,7 +1138,9 @@
    handles horizontal scrolling. */
 :where(html)
   .prose
-  :where(.prose-no-margin > table):not(:where(.not-prose, .not-prose *)) {
+  :where(.prose-no-margin.overflow-auto > table):not(
+    :where(.not-prose, .not-prose *)
+  ) {
   display: table;
   width: auto;
   max-width: none;
