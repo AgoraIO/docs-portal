@@ -1218,7 +1218,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 
 ### Sample projects
@@ -1239,7 +1239,7 @@ Download the projects or view the source code for more detailed examples.
 ### API reference
 
 * [API reference](/en/api-reference/api-ref/signaling)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
@@ -2374,7 +2374,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 
 ### Sample projects
@@ -2388,11 +2388,11 @@ Agora provides the following open source sample projects on GitHub for your refe
 
 **Swift**
 * [API reference](/en/api-reference/api-ref/signaling)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 
 **Objective-C**
 * [API reference](/en/api-reference/api-ref/signaling)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>
 
 <PlatformStructured platform="web">
@@ -2778,7 +2778,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 ### Sample project
 
@@ -2787,7 +2787,7 @@ Explore and experiment with the [Signaling Online demo](https://digitallysavvy.g
 ### API reference
 
 * [API reference](/en/api-reference/api-ref/signaling)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
@@ -3010,7 +3010,7 @@ void main() async {
 
 Follow the implementation steps to understand the core API calls in the sample code or to build the demo step-by-step.
 
-### Initialize the Signaling engine​
+### Initialize the Signaling engine
 
 Before calling any other Signaling SDK API, initialize an `RtmClient` object instance. Add the following code to the `lib/main.dart` file. 
 
@@ -3046,7 +3046,7 @@ void main() async {
 }
 ```
 
-### Add an event listener​
+### Add an event listener
 
 The event listener enables you to implement the processing logic in response to Signaling events. Use the following code to handle event notifications or display received messages:
 
@@ -3065,7 +3065,7 @@ rtmClient.addListener(
   });
 ```
 
-### Log in to Signaling​
+### Log in to Signaling
 
 To connect to Signaling and access Signaling network resources, such as sending messages, and subscribing to channels, call `login`.
 
@@ -3086,7 +3086,7 @@ try {
 }
 ```
 
-### Send a message​
+### Send a message
 
 To distribute a message to all subscribers of a message channel, call `publish`. The following code sends a string type message every second for 100 seconds.
 
@@ -3113,7 +3113,7 @@ for (var i = 0; i < 100; i++) {
 }
 ```
 
-### Subscribe and unsubscribe​
+### Subscribe and unsubscribe
 
 To receive messages sent to a channel, call `subscribe` to subscribe to channel messages:
 
@@ -3151,14 +3151,14 @@ try {
 
 For more information about subscribing and sending messages, see [Message channels](/en/realtime-media/rtm/build/work-with-channels/message-channel) and [Stream channels](/en/realtime-media/rtm/build/work-with-channels/stream-channel).
 
-### Log out of Signaling​
+### Log out of Signaling
 
 When a user no longer needs to use Signaling, call `logout`. Logging out means closing the connection between the client and Signaling. The user is automatically logged out or unsubscribed from all message and stream channels. Other users in the channel receive an `onPresenceEvent` notification of the user leaving the channel.
 
 ```dart
-// Paste the following code snippet below the "Log out of Signaling​" comment
+// Paste the following code snippet below the "Log out of Signaling" comment
 try {
-  // Log out of Signaling​
+  // Log out of Signaling
   var (status,response) = await rtmClient.logout();
   if (status.error == true) {
       print('${status.operation} failed due to ${status.reason}, error code: ${status.errorCode}');
@@ -3218,7 +3218,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 ### Sample project
 
@@ -3227,7 +3227,7 @@ Agora provides an open source [sample project](https://github.com/AgoraIO/RTM2/t
 ### API reference
 
 * [API reference](/en/api-reference/api-ref/signaling)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>
 
 <PlatformStructured platform="linux-cpp">
@@ -3750,7 +3750,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 ### Sample project
 
@@ -3759,7 +3759,7 @@ Agora provides an open source [sample project](https://github.com/AgoraIO/RTM2/t
 ### API reference
 
 * [API reference](/en/api-reference/api-ref/signaling)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
@@ -4607,10 +4607,10 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 ### API reference
 
 - [API reference](/en/api-reference/api-ref/signaling)
-- [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+- [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>

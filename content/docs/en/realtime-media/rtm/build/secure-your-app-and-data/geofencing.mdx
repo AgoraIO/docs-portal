@@ -1,0 +1,449 @@
+---
+title: "Restrict media zones"
+description: "Control and customize Signaling data routing in your app"
+---
+
+<PlatformStructured platform="web">
+
+To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN® zones that users can connect to.
+
+## Understand the tech
+
+When you set area codes in your client configuration, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user.
+
+The following zones are available:
+
+- **GLOB**: Global (Default)
+- **NA**: North America
+- **CN**: Mainland China.
+- **AS**: Asia excluding mainland China.
+- **EU**: Europe
+- **IN** India
+- **JP**: Japan
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/quickstart) in your project.
+
+## Configure geographical zones
+
+To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
+
+```js
+// Set whitelist and blacklist areas
+AgoraRTM.setArea({ areaCodes: ["GLOBAL"], excludedArea: "CHINA" })
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+* [Initialization](/en/api-reference/api-ref/signaling#initialization)
+* [`RtmConfig`](/en/api-reference/api-ref/signaling#configrtmpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN® zones that users can connect to.
+
+## Understand the tech
+
+When you set area codes in your client configuration, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user.
+
+The following zones are available:
+
+- **GLOB**: Global (Default)
+- **NA**: North America
+- **CN**: Mainland China.
+- **AS**: Asia excluding mainland China.
+- **EU**: Europe
+- **IN** India
+- **JP**: Japan
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/quickstart) in your project.
+
+## Configure geographical zones
+
+To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
+
+```java tab="Java"
+RtmConfig rtmConfig = new RtmConfig.Builder("<your_app_id>", "<your_user_Id>")
+    .areaCode(EnumSet.of(RtmConstants.RtmAreaCode.AS, RtmConstants.RtmAreaCode.CN))
+    .eventListener(eventListener)
+    .build();
+```
+
+```kotlin tab="Kotlin"
+val rtmConfig = RtmConfig.Builder("appid", "userId")
+    .areaCode(EnumSet.of(RtmConstants.RtmAreaCode.AS, RtmConstants.RtmAreaCode.CN))
+    .eventListener(eventListener)
+    .build()
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+* [`RtmConfig`](/en/api-reference/api-ref/signaling#configrtmpropsag_platform)
+* [`RtmClient.create`](/en/api-reference/api-ref/signaling#configcreatepropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN® zones that users can connect to.
+
+## Understand the tech
+
+When you set area codes in your client configuration, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user.
+
+The following zones are available:
+
+- **GLOB**: Global (Default)
+- **NA**: North America
+- **CN**: Mainland China.
+- **AS**: Asia excluding mainland China.
+- **EU**: Europe
+- **IN** India
+- **JP**: Japan
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/quickstart) in your project.
+
+## Configure geographical zones
+
+To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
+
+```swift tab="Swift"
+{`let config = AgoraRtmClientConfig(appId: "<your_app_id>", userId: "<your_user_id>")
+config.areaCode = [.CN, .NA]`}
+```
+
+```c tab="Objective-C"
+{`AgoraRtmClientConfig *rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"<your_app_id>" userId:@"<your_user_id>"];
+rtm_cfg.areaCode = AgoraRtmAreaCodeNA;`}
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+* [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#configrtmpropsag_platform)
+* [Initialize](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#create-an-instance)
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+* [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#configrtmpropsag_platform)
+* [`initWithConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#create-an-instance)
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN® zones that users can connect to.
+
+## Understand the tech
+
+When you set area codes in your client configuration, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user.
+
+The following zones are available:
+
+- **GLOB**: Global (Default)
+- **NA**: North America
+- **CN**: Mainland China.
+- **AS**: Asia excluding mainland China.
+- **EU**: Europe
+- **IN** India
+- **JP**: Japan
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/quickstart) in your project.
+
+## Configure geographical zones
+
+To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
+
+```swift tab="Swift"
+{`let config = AgoraRtmClientConfig(appId: "<your_app_id>", userId: "<your_user_id>")
+config.areaCode = [.CN, .NA]`}
+```
+
+```c tab="Objective-C"
+{`AgoraRtmClientConfig *rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"<your_app_id>" userId:@"<your_user_id>"];
+rtm_cfg.areaCode = AgoraRtmAreaCodeNA;`}
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+* [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#configrtmpropsag_platform)
+* [Initialize](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#create-an-instance)
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+* [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#configrtmpropsag_platform)
+* [`initWithConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#create-an-instance)
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN® zones that users can connect to.
+
+## Understand the tech
+
+When you set area codes in your client configuration, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user.
+
+The following zones are available:
+
+- **GLOB**: Global (Default)
+- **NA**: North America
+- **CN**: Mainland China.
+- **AS**: Asia excluding mainland China.
+- **EU**: Europe
+- **IN** India
+- **JP**: Japan
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/quickstart) in your project.
+
+## Configure geographical zones
+
+To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
+
+```dart
+// Create a Set containing specific RtmAreaCode values
+Set<RtmAreaCode> areaCodes = {RtmAreaCode.na, RtmAreaCode.eu};
+
+// Use the areaCodes in RtmConfig
+RtmConfig config = RtmConfig(
+  areaCode: areaCodes
+);
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+* [`RtmConfig`](/en/api-reference/api-ref/signaling#configrtmpropsag_platform)
+* [`RTM()`](/en/api-reference/api-ref/signaling#initialization)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN® zones that users can connect to.
+
+## Understand the tech
+
+When you set area codes in your client configuration, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user.
+
+The following zones are available:
+
+- **GLOB**: Global (Default)
+- **NA**: North America
+- **CN**: Mainland China.
+- **AS**: Asia excluding mainland China.
+- **EU**: Europe
+- **IN** India
+- **JP**: Japan
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/quickstart) in your project.
+
+## Configure geographical zones
+
+To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
+
+```ts
+
+const client = createAgoraRtmClient(
+ new RtmConfig({
+   userId: '<your_user_id>',
+   appId: '<your_app_id>',
+   useStringUserId: true,
+   areaCode: RtmAreaCode.as | RtmAreaCode.cn, // Multiple areas using bitwise OR
+   // Or use a single area:
+   // areaCode: RtmAreaCode.as,
+ })
+);
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+* [`createAgoraRtmClient`](https://api-ref.agora.io/en/signaling-sdk/react-native/2.x#createagorartmclient)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN® zones that users can connect to.
+
+## Understand the tech
+
+When you set area codes in your client configuration, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user.
+
+The following zones are available:
+
+- **GLOB**: Global (Default)
+- **NA**: North America
+- **CN**: Mainland China.
+- **AS**: Asia excluding mainland China.
+- **EU**: Europe
+- **IN** India
+- **JP**: Japan
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/quickstart) in your project.
+
+## Configure geographical zones
+
+To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
+
+```cpp
+rtmConfig.areaCode = RTM_AREA_CODE_NA;
+int ret = signalingEngine->initialize(rtmConfig);
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+* [`createAgoraRtmClient`](/en/api-reference/api-ref/signaling#configcreatepropsag_platform)
+* [`RtmConfig`](/en/api-reference/api-ref/signaling#configrtmpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-cpp">
+
+To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN® zones that users can connect to.
+
+## Understand the tech
+
+When you set area codes in your client configuration, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user.
+
+The following zones are available:
+
+- **GLOB**: Global (Default)
+- **NA**: North America
+- **CN**: Mainland China.
+- **AS**: Asia excluding mainland China.
+- **EU**: Europe
+- **IN** India
+- **JP**: Japan
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/quickstart) in your project.
+
+## Configure geographical zones
+
+To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
+
+```cpp
+rtmConfig.areaCode = RTM_AREA_CODE_NA;
+int ret = signalingEngine->initialize(rtmConfig);
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+* [`createAgoraRtmClient`](/en/api-reference/api-ref/signaling#configcreatepropsag_platform)
+* [`RtmConfig`](/en/api-reference/api-ref/signaling#configrtmpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN® zones that users can connect to.
+
+## Understand the tech
+
+When you set area codes in your client configuration, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user.
+
+The following zones are available:
+
+- **GLOB**: Global (Default)
+- **NA**: North America
+- **CN**: Mainland China.
+- **AS**: Asia excluding mainland China.
+- **EU**: Europe
+- **IN** India
+- **JP**: Japan
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/quickstart) in your project.
+
+## Configure geographical zones
+
+To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
+
+```cpp
+rtmConfig.areaCode = Agora.Rtm.RTM_AREA_CODE.NA;
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`RtmConfig`](/en/api-reference/api-ref/signaling#configrtmpropsag_platform)
+- [`CreateAgoraRtmClient`](/en/api-reference/api-ref/signaling#configcreatepropsag_platform)
+
+</PlatformStructured>

@@ -3,6 +3,8 @@ title: "Stream channels"
 description: "Stream messages to and from a room."
 ---
 
+<PlatformStructured platform="web">
+
 Stream channels are based on the room model. In Signaling, communication through stream channels requires use of specific APIs. This page shows you how to join, leave, and send messages in stream channels.
 
 ## Understand the tech
@@ -15,110 +17,262 @@ To use stream channels, you first create a stream channel object instance. The c
 * Send messages
 * Destroy the channel instance
 
-After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics.mdx). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations.md).
+After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
 
 ## Prerequisites
 
 Ensure that you have:
 
-* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../index.mdx) page.
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
 
 * Activated the stream channel capability.
 
-:::warning
+    :::warning[Important]
+
     **Stream channel activation requirements**
 
-        Please note that the activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
+    Please note that the activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
 
-        - Submit a formal request to [support@agora.io](mailto:support@agora.io).
-        - Specifically request activation of the 128-host feature.
-        - Wait for confirmation before implementing Stream Channel features.
+    - Submit a formal request to [support@agora.io](mailto:support@agora.io).
+    - Specifically request activation of the 128-host feature.
+    - Wait for confirmation before implementing Stream Channel features.
 
-        For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+    For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+    :::
 
-:::
-
-    
 ## Implement communication in a stream channel
 
 This section shows you how to use the Signaling SDK to implement stream channel communication in your app.
 
 ### Create a stream channel
 
-To use stream channel functionality, call `createStreamChannel` to create a `StreamChannel` object instance. 
+To use stream channel functionality, call `createStreamChannel` to create a `RTMStreamChannel` object instance.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+```javascript
+const channelName = "chat_room";
+const streamChannel = rtmClient.createStreamChannel(channelName);
+```
 
-<CodeBlockTab value="java">
+This method creates only one `RTMStreamChannel` instance at a time. If you need to create multiple instances, call the method multiple times.
 
-```java
+```javascript
+// Create the first instance
+const streamChannel = rtmClient.createStreamChannel("chat_room_1");
+// Create the second instance
+const streamChannel = rtmClient.createStreamChannel("chat_room_2");
+```
+
+:::info
+Signaling enables you to create unlimited stream channel instances in a single app. However, best practice is to create channels based on your actual requirements to maintain optimal client-side performance. For instance, if you hold multiple stream channel instances, destroy the ones that are no longer in use to prevent resource blocking, and recreate them when they are needed again.
+:::
+
+### Join a stream channel
+
+Call the `join` method on the `RTMStreamChannel` instance with appropriate options as follows:
+
+```javascript
+const options = {
+  token: "your_token",
+  withPresence: true,
+  withLock: true,
+  withMetadata: true
+};
+try {
+  const result = await streamChannel.join(options);
+} catch (status) {
+  const { operation, reason, errorCode } = status;
+  console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console.
+
+```js
+const options = {
+    token: "your_token",
+    withPresence: true,
+    withLock: true,
+    withMetadata: true
+};
+try {
+    const result = await streamChannel.join(options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics) for more information.
+
+### Send a message
+
+To send a message to a stream channel:
+
+- Create a `RTMStreamChannel` instance.
+- Use the `join` method to join a channel.
+- Call `joinTopic` to register as a message publisher for the specified topic. See [Topics](topics).
+
+Call `publishTopicMessage` to publish a message to a topic. This method sends a message to a single topic at a time. To deliver messages to multiple topics, call the method separately for each topic.
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+    ```javascript
+    // Sending a string message
+    const payload = "Hello Agora!"; // Message content
+    const topicName = "chat_topic"; // Topic to which the message is sent
+    const options = { customType: "PlainTxt" }; // Options for sending the message
+    try {
+      const result = await streamChannel.publishTopicMessage(topicName, payload, options); // Sending the message asynchronously
+    } catch (status) {
+      const { operation, reason, errorCode } = status;
+      console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`); // Logging error information if message sending fails
+    }
+    ```
+
+* Binary message
+
+    ```javascript
+    // Sending a binary message
+    const message = "Hello Agora!"; // Binary message content
+    const payload = new TextEncoder().encode(message); // Encoding message to binary data
+    const topicName = "chat_topic"; // Topic to which the message is sent
+    const options = { customType: "ByteArray" }; // Options for sending the message
+    try {
+      const result = await streamChannel.publishTopicMessage(topicName, payload, options); // Sending the message asynchronously
+    } catch (status) {
+      const { operation, reason, errorCode } = status;
+      console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`); // Logging error information if message sending fails
+    }
+    ```
+
+In Signaling, a user may register as a message publisher for up to 8 topics concurrently. However, there are no limitations on the number of users a single topic can accommodate. You can achieve a message transmission frequency to a topic of up to 120 QPS. This capability is useful in use-cases that demand high-frequency and high-concurrency data processing, such as Metaverse location status synchronization, collaborative office sketchpad applications, and parallel control operation-instructions transmission.
+
+### Leave a stream channel
+
+To leave a channel, call the `leave` method on the `RTMStreamChannel` instance:
+
+```javascript
+try {
+  const result = await streamChannel.leave();
+} catch (status) {
+  const { operation, reason, errorCode } = status;
+  console.log(`${operation} failed, ErrorCode ${errorCode}, due to: ${reason}.`);
+}
+```
+
+To rejoin a stream channel, call the `join` method again. You can join and leave as long as the corresponding `RTMStreamChannel` instance remains active and has not been destroyed.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message packet size
+
+Signaling SDK imposes size limits on message payload packets sent in message type channels and stream type channels: 32 KB for message type channels and 1 KB for stream type channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you will receive an error message.
+
+```javascript
+// Status
+{
+    error = true;
+    errorCode = -11010;
+    Operation = "PublishTopicMessageOperation";   // Or "PublishOperation"
+    Reason = "Publish too long message.";
+}
+```
+
+To avoid sending failure due to message payload packet size exceeding the limit, check the packet size before sending.
+
+### API reference
+
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
+- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
+- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+Stream channels are based on the room model. In Signaling, communication through stream channels requires use of specific APIs. This page shows you how to join, leave, and send messages in stream channels.
+
+## Understand the tech
+
+To use stream channels, you first create a stream channel object instance. The channel instance gives you access to all stream channel management methods. Use the stream channel instance to:
+
+* Join and leave a channel
+* Join and leave topics
+* Subscribe to and unsubscribe from topics
+* Send messages
+* Destroy the channel instance
+
+After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+## Prerequisites
+
+Ensure that you have:
+
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+* Activated the stream channel capability.
+
+    :::warning[Important]
+
+    **Stream channel activation requirements**
+
+    Please note that the activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
+
+    - Submit a formal request to [support@agora.io](mailto:support@agora.io).
+    - Specifically request activation of the 128-host feature.
+    - Wait for confirmation before implementing Stream Channel features.
+
+    For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+    :::
+
+## Implement communication in a stream channel
+
+This section shows you how to use the Signaling SDK to implement stream channel communication in your app.
+
+### Create a stream channel
+
+To use stream channel functionality, call `createStreamChannel` to create a `StreamChannel` object instance.
+
+```java tab="Java"
 // Create a StreamChannel instance
 StreamChannel mStreamChannel = mRtmClient.createStreamChannel("chat_room");
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 // Create a StreamChannel instance
 val mStreamChannel = mRtmClient.createStreamChannel("chat_room")
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 This method creates only one `StreamChannel` instance at a time. If you need to create multiple instances, call the method multiple times.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 // Create the first instance
 StreamChannel mStreamChannel1 = mRtmClient.createStreamChannel("chat_room1");
 // Create the second instance
 StreamChannel mStreamChannel2 = mRtmClient.createStreamChannel("chat_room2");
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 // Create the first instance
 val mStreamChannel1 = mRtmClient.createStreamChannel("chat_room1")
 // Create the second instance
 val mStreamChannel2 = mRtmClient.createStreamChannel("chat_room2")
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 :::info
 Signaling enables you to create unlimited stream channel instances in a single app. However, best practice is to create channels based on your actual requirements to maintain optimal client-side performance. For instance, if you hold multiple stream channel instances, destroy the ones that are no longer in use to prevent resource blocking, and recreate them when they are needed again.
-
 :::
 
 ### Join a stream channel
 
 Call the `join` method on the `StreamChannel` instance with appropriate options as follows:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 JoinChannelOptions options = new JoinChannelOptions();
 options.setToken("your_token");
 options.setWithPresence(true);
@@ -137,11 +291,8 @@ mStreamChannel.join(options, new ResultCallback<Void>() {
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val options = JoinChannelOptions().apply {
     token = "your_token"
     withPresence = true
@@ -159,21 +310,10 @@ mStreamChannel.join(options, object : ResultCallback<Void> {
     }
 })
 ```
-</CodeBlockTab>
 
-</CodeBlockTabs>
+When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console.
 
-When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console. 
-
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 JoinChannelOptions options = new JoinChannelOptions("your_token", true, true, true);
 mStreamChannel.join(options, new ResultCallback<Void>() {
     @Override
@@ -187,11 +327,8 @@ mStreamChannel.join(options, new ResultCallback<Void>() {
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val options = JoinChannelOptions("your_token", true, true, true)
 
 mStreamChannel.join(options, object : ResultCallback<Void> {
@@ -204,19 +341,16 @@ mStreamChannel.join(options, object : ResultCallback<Void> {
     }
 })
 ```
-</CodeBlockTab>
 
-</CodeBlockTabs>
+In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics) for more information.
 
-In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics.mdx) for more information.
-
-### Send a message 
+### Send a message
 
 To send a message to a stream channel:
 
 - Create a `StreamChannel` instance.
 - Use the `join` method to join a channel.
-- Call `joinTopic` to register as a message publisher for the specified topic. See [Topics](topics.mdx).
+- Call `joinTopic` to register as a message publisher for the specified topic. See [Topics](topics).
 
 Call `publishTopicMessage` to publish a message to a topic. This method sends a message to a single topic at a time. To deliver messages to multiple topics, call the method separately for each topic.
 
@@ -224,123 +358,95 @@ Refer to the following sample code for sending messages:
 
 * String message
 
-    <CodeBlockTabs defaultValue="java">
-    <CodeBlockTabsList>
-      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
-      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-    </CodeBlockTabsList>
+```java tab="Java"
+// Send a string message
+    String message = "Hello Agora!"; // Message content
+    String topicName = "chat_topic"; // Topic name for publishing
+    var options = new TopicMessageOptions(); // Topic message sending options
+    options.customType = "PlainTxt"; // Set a custom type for the message
+    mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void responseInfo) {
+            // Log success
+            log(CALLBACK, "publish topic message success");
+        }
 
-    <CodeBlockTab value="java">
-    ```java
-    // Send a string message
-        String message = "Hello Agora!"; // Message content
-        String topicName = "chat_topic"; // Topic name for publishing
-        var options = new TopicMessageOptions(); // Topic message sending options
-        options.customType = "PlainTxt"; // Set a custom type for the message
-        mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
-            @Override
-            public void onSuccess(Void responseInfo) {
-                // Log success
-                log(CALLBACK, "publish topic message success"); 
-            }
-    
-            @Override
-            public void onFailure(ErrorInfo errorInfo) {
-                // Log failure
-                log(ERROR, errorInfo.toString()); 
-            }
-        });
-    ```
-    </CodeBlockTab>
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            // Log failure
+            log(ERROR, errorInfo.toString());
+        }
+    });
+```
 
-    <CodeBlockTab value="kotlin">
-    ```kotlin
-    // Send a string message
-        val message = "Hello Agora!" // Message content
-        val topicName = "chat_topic" // Topic name for publishing
-        val options = TopicMessageOptions() // Topic message sending options
-        options.customType = "PlainTxt" // Set a custom type for the message
-        mStreamChannel.publishTopicMessage(topicName, message, options, object : ResultCallback<Void> {
-            override fun onSuccess(responseInfo: Void?) {
-                // Log success
-                log(CALLBACK, "publish topic message success") 
-            }
-    
-            override fun onFailure(errorInfo: ErrorInfo) {
-                // Log failure
-                log(ERROR, errorInfo.toString()) 
-            }
-        })
-    ```
-    </CodeBlockTab>
-    </CodeBlockTabs>
+```kotlin tab="Kotlin"
+// Send a string message
+    val message = "Hello Agora!" // Message content
+    val topicName = "chat_topic" // Topic name for publishing
+    val options = TopicMessageOptions() // Topic message sending options
+    options.customType = "PlainTxt" // Set a custom type for the message
+    mStreamChannel.publishTopicMessage(topicName, message, options, object : ResultCallback<Void> {
+        override fun onSuccess(responseInfo: Void?) {
+            // Log success
+            log(CALLBACK, "publish topic message success")
+        }
+
+        override fun onFailure(errorInfo: ErrorInfo) {
+            // Log failure
+            log(ERROR, errorInfo.toString())
+        }
+    })
+```
+
 * Binary message
 
-    <CodeBlockTabs defaultValue="java">
-    <CodeBlockTabsList>
-      <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
-      <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-    </CodeBlockTabsList>
+```java tab="Java"
+// Send a binary message
+    byte[] message = new byte[] { 00, 01, 35, 196 }; // Binary message content
+    String topicName = "chat_topic"; // Topic name for publishing
+    var options = new TopicMessageOptions(); // Topic message sending options
+    options.customType = "ByteArray"; // Set a custom type for the message
+    mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void responseInfo) {
+            // Log success
+            log(CALLBACK, "publish topic message success");
+        }
 
-    <CodeBlockTab value="java">
-    ```java
-    // Send a binary message
-        byte[] message = new byte[] { 00, 01, 35, 196 }; // Binary message content
-        String topicName = "chat_topic"; // Topic name for publishing
-        var options = new TopicMessageOptions(); // Topic message sending options
-        options.customType = "ByteArray"; // Set a custom type for the message
-        mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
-            @Override
-            public void onSuccess(Void responseInfo) {
-                // Log success
-                log(CALLBACK, "publish topic message success"); 
-            }
-    
-            @Override
-            public void onFailure(ErrorInfo errorInfo) {
-                // Log failure
-                log(ERROR, errorInfo.toString()); 
-            }
-        });
-    ```
-    </CodeBlockTab>
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            // Log failure
+            log(ERROR, errorInfo.toString());
+        }
+    });
+```
 
-    <CodeBlockTab value="kotlin">
-    ```kotlin
-    // Send a binary message
-        val message = byteArrayOf(0, 1, 35, 196) // Binary message content
-        val topicName = "chat_topic" // Topic name for publishing
-        val options = TopicMessageOptions() // Topic message sending options
-        options.customType = "ByteArray" // Set a custom type for the message
-        mStreamChannel.publishTopicMessage(topicName, message, options, object : ResultCallback<Void> {
-            override fun onSuccess(responseInfo: Void?) {
-                // Log success
-                log(CALLBACK, "publish topic message success") 
-            }
-    
-            override fun onFailure(errorInfo: ErrorInfo) {
-                // Log failure
-                log(ERROR, errorInfo.toString()) 
-            }
-        })
-    ```
-    </CodeBlockTab>
-    </CodeBlockTabs>
+```kotlin tab="Kotlin"
+// Send a binary message
+    val message = byteArrayOf(0, 1, 35, 196) // Binary message content
+    val topicName = "chat_topic" // Topic name for publishing
+    val options = TopicMessageOptions() // Topic message sending options
+    options.customType = "ByteArray" // Set a custom type for the message
+    mStreamChannel.publishTopicMessage(topicName, message, options, object : ResultCallback<Void> {
+        override fun onSuccess(responseInfo: Void?) {
+            // Log success
+            log(CALLBACK, "publish topic message success")
+        }
+
+        override fun onFailure(errorInfo: ErrorInfo) {
+            // Log failure
+            log(ERROR, errorInfo.toString())
+        }
+    })
+```
+
 In Signaling, a user may register as a message publisher for up to 8 topics concurrently. However, there are no limitations on the number of users a single topic can accommodate. You can achieve a message transmission frequency to a topic of up to 120 QPS. This capability is useful in use-cases that demand high-frequency and high-concurrency data processing, such as Metaverse location status synchronization, collaborative office sketchpad applications, and parallel control operation-instructions transmission.
 
 ### Leave a stream channel
 
 To leave a channel, call the `leave` method on the `StreamChannel` instance:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 mStreamChannel.leave(new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -353,11 +459,8 @@ mStreamChannel.leave(new ResultCallback<Void>() {
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 mStreamChannel.leave(object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
         log(CALLBACK, "leave stream channel success")
@@ -368,9 +471,6 @@ mStreamChannel.leave(object : ResultCallback<Void> {
     }
 })
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 To rejoin a stream channel, call the `join` method again. You can join and leave as long as the corresponding `StreamChannel` instance remains active and has not been destroyed.
 
@@ -378,31 +478,16 @@ To rejoin a stream channel, call the `join` method again. You can join and leave
 
 To destroy a stream channel instance, call `release`:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 mStreamChannel.release();
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 mStreamChannel.release()
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 :::info
 Destroying a stream channel removes the `StreamChannel` instance from your app. This action is local to your app and does not affect other users or the Signaling channel.
-
 :::
 
 ## Reference
@@ -425,8 +510,1621 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling)
-- [`join`](/en/api-reference/api-ref/signaling)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling)
-- [`leave`](/en/api-reference/api-ref/signaling)
-- [`release`](/en/api-reference/api-ref/signaling)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
+- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
+- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
+- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+Stream channels are based on the room model. In Signaling, communication through stream channels requires use of specific APIs. This page shows you how to join, leave, and send messages in stream channels.
+
+## Understand the tech
+
+To use stream channels, you first create a stream channel object instance. The channel instance gives you access to all stream channel management methods. Use the stream channel instance to:
+
+* Join and leave a channel
+* Join and leave topics
+* Subscribe to and unsubscribe from topics
+* Send messages
+* Destroy the channel instance
+
+After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+## Prerequisites
+
+Ensure that you have:
+
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+* Activated the stream channel capability.
+
+    :::warning[Important]
+
+    **Stream channel activation requirements**
+
+    Please note that the activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
+
+    - Submit a formal request to [support@agora.io](mailto:support@agora.io).
+    - Specifically request activation of the 128-host feature.
+    - Wait for confirmation before implementing Stream Channel features.
+
+    For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+    :::
+
+## Implement communication in a stream channel
+
+This section shows you how to use the Signaling SDK to implement stream channel communication in your app.
+
+### Create a stream channel
+
+To use stream channel functionality, call `createStreamChannel` to create a `AgoraRtmStreamChannel` object instance.
+
+```swift tab="Swift"
+do {
+    let streamChannel = try rtmClient.createStreamChannel("exampleChannel")
+    print("Stream channel created successfully: \\(streamChannel)")
+    // You can now use the streamChannel instance
+} catch {
+    print("Failed to create stream channel: \\(error)")
+}
+```
+
+```objc tab="Objective-C"
+NSError* create_error = nil;
+AgoraRtmStreamChannel* stream_channel = [rtm createStreamChannel:@"your_channel" error:&create_error];
+```
+
+This method creates only one `AgoraRtmStreamChannel` instance at a time. If you need to create multiple instances, call the method multiple times.
+
+```swift tab="Swift"
+do {
+    let stream_channel = try RtmClient?.createStreamChannel(channelName1)
+    if stream_channel != nil {
+        print("create stream channel success");
+    }
+ } catch let error {
+    print("error\\(error)")
+}
+
+do {
+    let stream_channel = try RtmClient?.createStreamChannel(channelName2)
+    if stream_channel != nil {
+        print("create stream channel success");
+    }
+ } catch let error {
+    print("error\\(error)")
+}
+```
+
+```objc tab="Objective-C"
+NSError* create_error = nil;
+// Create the first instance
+AgoraRtmStreamChannel* stream_channel1 = [rtm createStreamChannel:@"your_channel1" error:&create_error];
+// Create the second instance
+AgoraRtmStreamChannel* stream_channel2 = [rtm createStreamChannel:@"your_channel2" error:&create_error];
+```
+
+:::info
+Signaling enables you to create unlimited stream channel instances in a single app. However, best practice is to create channels based on your actual requirements to maintain optimal client-side performance. For instance, if you hold multiple stream channel instances, destroy the ones that are no longer in use to prevent resource blocking, and recreate them when they are needed again.
+:::
+
+### Join a stream channel
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+Call the `join` method on the `AgoraRtmStreamChannel` instance with appropriate options as follows:
+
+```swift
+let join_option = AgoraRtmJoinChannelOption();
+join_option.token = "your_token"
+stream_channel.join(join_option, completion: { (res, error) in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+    })
+```
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+Call the `joinWithOption` method on the `AgoraRtmStreamChannel` instance with appropriate options as follows:
+
+```objc
+AgoraRtmJoinChannelOption* join_opt =  [[AgoraRtmJoinChannelOption alloc] init];
+join_opt.token =  @"your_token";
+[stream_channel joinWithOption:join_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"join channel success!!");
+    } else {
+        NSLog(@"join channel failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</TabsContent>
+</Tabs>
+
+When joining a channel, set the `token` parameter in `AgoraRtmJoinChannelOption` to a valid temporary token string. For testing purposes, use the [Token Builder ](https://agora-token-generator-demo.vercel.app/).
+
+```swift tab="Swift"
+let join_option = AgoraRtmJoinChannelOption();
+join_option.token = "your_token"
+join_option.features = [.presence, .storage]
+stream_channel.join(join_option, completion: { (res, error) in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+    })
+```
+
+```objc tab="Objective-C"
+AgoraRtmJoinChannelOption* join_opt =  [[AgoraRtmJoinChannelOption alloc] init];
+join_opt.token =  @"your_token";
+join_opt.features = join_opt.features | AgoraRtmJoinChannelFeatureLock;
+[stream_channel joinWithOption:join_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"join channel success!!");
+    } else {
+        NSLog(@"join channel failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics) for more information.
+
+### Send a message
+
+To send a message to a stream channel:
+
+- Create an `AgoraRtmStreamChannel` instance.
+- Join a stream channel.
+- Call `joinTopic` to register as a message publisher for the specified topic. See [Topics](topics).
+
+Call `publishTopicMessage` to publish a message to a topic. This method sends a message to a single topic at a time. To deliver messages to multiple topics, call the method separately for each topic.
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+```swift tab="Swift"
+let message = "Hello Agora!"
+
+    streamChannel.publishTopicMessage("your_topic", message: message, option: nil) { response, errorInfo in
+        if errorInfo == nil {
+            print("publish success!!")
+        } else {
+            print("publish failed, errorCode \\(errorInfo!.errorCode), reason \\(errorInfo!.reason)")
+        }
+    }
+```
+
+```objc tab="Objective-C"
+// Send a string message
+    NSString* message = @"Hello Agora!"; // Message content
+    [stream_channel publishTopicMessage:@"your_topic" message:message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"publish success!!");
+        } else {
+            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+* Binary message
+
+```swift tab="Swift"
+let bytes: [UInt8] = [ /* your raw values */ ]
+    let rawMessage = Data(bytes: bytes, count: bytes.count)
+
+    streamChannel.publishTopicMessage("your_topic", data: rawMessage, option: nil) { response, errorInfo in
+        if errorInfo == nil {
+            print("publish success!!")
+        } else {
+            print("publish failed, errorCode \\(errorInfo!.errorCode), reason \\(errorInfo!.reason)")
+        }
+    }
+```
+
+```objc tab="Objective-C"
+// Send a binary message
+    unsigned char bytes[32] = { /* your raw values */ }; // Binary message content
+    NSData* raw_message = [[NSData alloc] initWithBytes:bytes length:32]; // Creating NSData object with binary message
+    [stream_channel publishTopicMessage:@"your_topic" data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"publish success!!");
+        } else {
+            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+In Signaling, a user may register as a message publisher for up to 8 topics concurrently. However, there is no limit on the number of users a single topic can accommodate. You can achieve a message transmission frequency to a topic of up to 120 QPS. This capability is useful in use-cases that demand high-frequency and high-concurrency data processing, such as Metaverse location status synchronization, collaborative office sketchpad applications, and parallel control operation-instructions transmission.
+
+### Leave a stream channel
+
+To leave a channel, call the `leave` method on the `AgoraRtmStreamChannel` instance:
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+```swift
+stream_channel.leave({ res, error in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+To rejoin a stream channel, call the `join` method again. You can join and leave as long as the corresponding `AgoraRtmStreamChannel` instance remains active and is not destroyed.
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+```objc
+[stream_channel leave:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"leave channel success!!");
+    } else {
+        NSLog(@"leave channel failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+To rejoin a stream channel, call the `joinWithOption` method again. You can join and leave as long as the corresponding `AgoraRtmStreamChannel` instance remains active and has not been destroyed.
+
+</TabsContent>
+</Tabs>
+
+### Destroy the stream channel instance
+
+To destroy the stream channel instance, call `destroy`:
+
+```swift tab="Swift"
+stream_channel.destroy();
+stream_channel = nil;
+```
+
+```objc tab="Objective-C"
+[stream_channel destroy];
+stream_channel = nil;
+```
+
+:::info
+Destroying a stream channel removes the `AgoraRtmStreamChannel` instance from your app. This action is local to your app and does not affect other users or the Signaling channel.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message packet size
+
+Signaling SDK imposes size limits on message payload packets sent in Message channels and Stream channels. The limit is 32 KB for Message channels and 1 KB for Stream channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
+
+```objc tab="Swift"
+// errorInfo
+{
+    errorInfo.errorCode = .channelMessageLengthExceedLimitation
+    errorInfo.reason = "Publish too long message."
+    errorInfo.operation = "publish"; // or "publishTopicMessage
+}
+```
+
+```objc tab="Objective-C"
+// errorInfo
+{
+    errorInfo.errorCode = AgoraRtmErrorChannelMessageLengthExceedLimitation;
+    errorInfo.reason = @"Publish too long message.";
+    errorInfo.Operation = @"publish"; // or "publishTopicMessage"
+}
+```
+
+To avoid sending failure due to message payload packet size exceeding the limit, check the packet size before sending.
+
+### API reference
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelcreatepropsag_platform)
+- [`join`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channeljoinpropsag_platform)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicpublishpropsag_platform)
+- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelleavepropsag_platform)
+- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelreleasepropsag_platform)
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelcreatepropsag_platform)
+- [`joinWithOption`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channeljoinpropsag_platform)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicpublishpropsag_platform)
+- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelleavepropsag_platform)
+- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelreleasepropsag_platform)
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+Stream channels are based on the room model. In Signaling, communication through stream channels requires use of specific APIs. This page shows you how to join, leave, and send messages in stream channels.
+
+## Understand the tech
+
+To use stream channels, you first create a stream channel object instance. The channel instance gives you access to all stream channel management methods. Use the stream channel instance to:
+
+* Join and leave a channel
+* Join and leave topics
+* Subscribe to and unsubscribe from topics
+* Send messages
+* Destroy the channel instance
+
+After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+## Prerequisites
+
+Ensure that you have:
+
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+* Activated the stream channel capability.
+
+    :::warning[Important]
+
+    **Stream channel activation requirements**
+
+    Please note that the activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
+
+    - Submit a formal request to [support@agora.io](mailto:support@agora.io).
+    - Specifically request activation of the 128-host feature.
+    - Wait for confirmation before implementing Stream Channel features.
+
+    For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+    :::
+
+## Implement communication in a stream channel
+
+This section shows you how to use the Signaling SDK to implement stream channel communication in your app.
+
+### Create a stream channel
+
+To use stream channel functionality, call `createStreamChannel` to create a `AgoraRtmStreamChannel` object instance.
+
+```swift tab="Swift"
+do {
+    let streamChannel = try rtmClient.createStreamChannel("exampleChannel")
+    print("Stream channel created successfully: \\(streamChannel)")
+    // You can now use the streamChannel instance
+} catch {
+    print("Failed to create stream channel: \\(error)")
+}
+```
+
+```objc tab="Objective-C"
+NSError* create_error = nil;
+AgoraRtmStreamChannel* stream_channel = [rtm createStreamChannel:@"your_channel" error:&create_error];
+```
+
+This method creates only one `AgoraRtmStreamChannel` instance at a time. If you need to create multiple instances, call the method multiple times.
+
+```swift tab="Swift"
+do {
+    let stream_channel = try RtmClient?.createStreamChannel(channelName1)
+    if stream_channel != nil {
+        print("create stream channel success");
+    }
+ } catch let error {
+    print("error\\(error)")
+}
+
+do {
+    let stream_channel = try RtmClient?.createStreamChannel(channelName2)
+    if stream_channel != nil {
+        print("create stream channel success");
+    }
+ } catch let error {
+    print("error\\(error)")
+}
+```
+
+```objc tab="Objective-C"
+NSError* create_error = nil;
+// Create the first instance
+AgoraRtmStreamChannel* stream_channel1 = [rtm createStreamChannel:@"your_channel1" error:&create_error];
+// Create the second instance
+AgoraRtmStreamChannel* stream_channel2 = [rtm createStreamChannel:@"your_channel2" error:&create_error];
+```
+
+:::info
+Signaling enables you to create unlimited stream channel instances in a single app. However, best practice is to create channels based on your actual requirements to maintain optimal client-side performance. For instance, if you hold multiple stream channel instances, destroy the ones that are no longer in use to prevent resource blocking, and recreate them when they are needed again.
+:::
+
+### Join a stream channel
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+Call the `join` method on the `AgoraRtmStreamChannel` instance with appropriate options as follows:
+
+```swift
+let join_option = AgoraRtmJoinChannelOption();
+join_option.token = "your_token"
+stream_channel.join(join_option, completion: { (res, error) in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+    })
+```
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+Call the `joinWithOption` method on the `AgoraRtmStreamChannel` instance with appropriate options as follows:
+
+```objc
+AgoraRtmJoinChannelOption* join_opt =  [[AgoraRtmJoinChannelOption alloc] init];
+join_opt.token =  @"your_token";
+[stream_channel joinWithOption:join_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"join channel success!!");
+    } else {
+        NSLog(@"join channel failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</TabsContent>
+</Tabs>
+
+When joining a channel, set the `token` parameter in `AgoraRtmJoinChannelOption` to a valid temporary token string. For testing purposes, use the [Token Builder ](https://agora-token-generator-demo.vercel.app/).
+
+```swift tab="Swift"
+let join_option = AgoraRtmJoinChannelOption();
+join_option.token = "your_token"
+join_option.features = [.presence, .storage]
+stream_channel.join(join_option, completion: { (res, error) in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+    })
+```
+
+```objc tab="Objective-C"
+AgoraRtmJoinChannelOption* join_opt =  [[AgoraRtmJoinChannelOption alloc] init];
+join_opt.token =  @"your_token";
+join_opt.features = join_opt.features | AgoraRtmJoinChannelFeatureLock;
+[stream_channel joinWithOption:join_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"join channel success!!");
+    } else {
+        NSLog(@"join channel failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics) for more information.
+
+### Send a message
+
+To send a message to a stream channel:
+
+- Create an `AgoraRtmStreamChannel` instance.
+- Join a stream channel.
+- Call `joinTopic` to register as a message publisher for the specified topic. See [Topics](topics).
+
+Call `publishTopicMessage` to publish a message to a topic. This method sends a message to a single topic at a time. To deliver messages to multiple topics, call the method separately for each topic.
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+```swift tab="Swift"
+let message = "Hello Agora!"
+
+    streamChannel.publishTopicMessage("your_topic", message: message, option: nil) { response, errorInfo in
+        if errorInfo == nil {
+            print("publish success!!")
+        } else {
+            print("publish failed, errorCode \\(errorInfo!.errorCode), reason \\(errorInfo!.reason)")
+        }
+    }
+```
+
+```objc tab="Objective-C"
+// Send a string message
+    NSString* message = @"Hello Agora!"; // Message content
+    [stream_channel publishTopicMessage:@"your_topic" message:message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"publish success!!");
+        } else {
+            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+* Binary message
+
+```swift tab="Swift"
+let bytes: [UInt8] = [ /* your raw values */ ]
+    let rawMessage = Data(bytes: bytes, count: bytes.count)
+
+    streamChannel.publishTopicMessage("your_topic", data: rawMessage, option: nil) { response, errorInfo in
+        if errorInfo == nil {
+            print("publish success!!")
+        } else {
+            print("publish failed, errorCode \\(errorInfo!.errorCode), reason \\(errorInfo!.reason)")
+        }
+    }
+```
+
+```objc tab="Objective-C"
+// Send a binary message
+    unsigned char bytes[32] = { /* your raw values */ }; // Binary message content
+    NSData* raw_message = [[NSData alloc] initWithBytes:bytes length:32]; // Creating NSData object with binary message
+    [stream_channel publishTopicMessage:@"your_topic" data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"publish success!!");
+        } else {
+            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+In Signaling, a user may register as a message publisher for up to 8 topics concurrently. However, there is no limit on the number of users a single topic can accommodate. You can achieve a message transmission frequency to a topic of up to 120 QPS. This capability is useful in use-cases that demand high-frequency and high-concurrency data processing, such as Metaverse location status synchronization, collaborative office sketchpad applications, and parallel control operation-instructions transmission.
+
+### Leave a stream channel
+
+To leave a channel, call the `leave` method on the `AgoraRtmStreamChannel` instance:
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+```swift
+stream_channel.leave({ res, error in
+    if error != nil {
+        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+To rejoin a stream channel, call the `join` method again. You can join and leave as long as the corresponding `AgoraRtmStreamChannel` instance remains active and is not destroyed.
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+```objc
+[stream_channel leave:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"leave channel success!!");
+    } else {
+        NSLog(@"leave channel failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+To rejoin a stream channel, call the `joinWithOption` method again. You can join and leave as long as the corresponding `AgoraRtmStreamChannel` instance remains active and has not been destroyed.
+
+</TabsContent>
+</Tabs>
+
+### Destroy the stream channel instance
+
+To destroy the stream channel instance, call `destroy`:
+
+```swift tab="Swift"
+stream_channel.destroy();
+stream_channel = nil;
+```
+
+```objc tab="Objective-C"
+[stream_channel destroy];
+stream_channel = nil;
+```
+
+:::info
+Destroying a stream channel removes the `AgoraRtmStreamChannel` instance from your app. This action is local to your app and does not affect other users or the Signaling channel.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message packet size
+
+Signaling SDK imposes size limits on message payload packets sent in Message channels and Stream channels. The limit is 32 KB for Message channels and 1 KB for Stream channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
+
+```objc tab="Swift"
+// errorInfo
+{
+    errorInfo.errorCode = .channelMessageLengthExceedLimitation
+    errorInfo.reason = "Publish too long message."
+    errorInfo.operation = "publish"; // or "publishTopicMessage
+}
+```
+
+```objc tab="Objective-C"
+// errorInfo
+{
+    errorInfo.errorCode = AgoraRtmErrorChannelMessageLengthExceedLimitation;
+    errorInfo.reason = @"Publish too long message.";
+    errorInfo.Operation = @"publish"; // or "publishTopicMessage"
+}
+```
+
+To avoid sending failure due to message payload packet size exceeding the limit, check the packet size before sending.
+
+### API reference
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelcreatepropsag_platform)
+- [`join`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channeljoinpropsag_platform)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicpublishpropsag_platform)
+- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelleavepropsag_platform)
+- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelreleasepropsag_platform)
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelcreatepropsag_platform)
+- [`joinWithOption`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channeljoinpropsag_platform)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicpublishpropsag_platform)
+- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelleavepropsag_platform)
+- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelreleasepropsag_platform)
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+Stream channels are based on the room model. In Signaling, communication through stream channels requires use of specific APIs. This page shows you how to join, leave, and send messages in stream channels.
+
+## Understand the tech
+
+To use stream channels, you first create a stream channel object instance. The channel instance gives you access to all stream channel management methods. Use the stream channel instance to:
+
+* Join and leave a channel
+* Join and leave topics
+* Subscribe to and unsubscribe from topics
+* Send messages
+* Destroy the channel instance
+
+After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+## Prerequisites
+
+Ensure that you have:
+
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+* Activated the stream channel capability.
+
+    :::warning[Important]
+
+    **Stream channel activation requirements**
+
+    Please note that the activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
+
+    - Submit a formal request to [support@agora.io](mailto:support@agora.io).
+    - Specifically request activation of the 128-host feature.
+    - Wait for confirmation before implementing Stream Channel features.
+
+    For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+    :::
+
+## Implement communication in a stream channel
+
+This section shows you how to use the Signaling SDK to implement stream channel communication in your app.
+
+### Create a stream channel
+
+To use stream channel functionality, call `createStreamChannel` to create a `StreamChannel` object instance.
+
+```dart
+final channel = 'stream_room';
+late StreamChannel streamChannel;
+try {
+    var (status, channel) = await rtmClient.createStreamChannel(channel);
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        streamChannel = channel ;
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+This method creates only one `StreamChannel` instance at a time. If you need to create multiple instances, call the method multiple times.
+
+:::info
+Signaling enables you to create unlimited stream channel instances in a single app. However, best practice is to create channels based on your actual requirements to maintain optimal client-side performance. For instance, if you hold multiple stream channel instances, destroy the ones that are no longer in use to prevent resource blocking, and recreate them when they are needed again.
+:::
+
+### Join a stream channel
+
+Call the `join` method on the `StreamChannel` instance with appropriate options as follows:
+
+```dart
+var (status, response) = await streamChannel.join(
+    token: 'your_streamChannel_token',
+    withMetadata: true, // Subscribe to storage event notifications
+    withPresence: true, // Subscribe to the presence event notifications
+    withLock: true, // Subscribe to Lock event notifications in this channel
+    beQuiet: false); // Whether to subscribe to the channel silently
+if (status.error == true ){
+    print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+} else {
+    print('${status.operation} success!');
+    print(response);
+}
+```
+
+When joining a channel, set the `token` parameter to a temporary token from Agora Console.
+
+### Send a message
+
+In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics) for more information.
+
+To send a message to a stream channel:
+
+- Create a `StreamChannel` instance.
+- Use the `join` method to join a channel.
+- Call `joinTopic` to register as a message publisher for the specified topic. See [Topics](topics).
+
+Call `publishTopicMessage` to publish a message to a topic. This method sends a message to a single topic at a time. To deliver messages to multiple topics, call the method separately for each topic.
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+    ```dart
+    // Send a string message
+    final topicName = 'chat_topic';
+    var payload = 'hello RTM';
+
+    try {
+        var (status, response) = await streamChannel.publishTextMessage(
+            topicName,
+            payload,
+            customType: 'PlainText');
+
+        if (status.error == true ){
+        print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+        } else {
+            print('${status.operation} success!');
+        }
+    } catch (e) {
+        print('something went wrong: $e');
+    }
+    ```
+
+* Binary message
+
+    ```dart
+    // Send a binary message
+    final topicName = 'chat_topic';
+    var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
+
+    try {
+        var (status, response) = await streamChannel.publishBinaryMessage(
+            topicName,
+            payload,
+            customType: 'Uint8List');
+
+        if (status.error == true ){
+        print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+        } else {
+            print('${status.operation} success!');
+        }
+    } catch (e) {
+        print('something went wrong: $e');
+    }
+    ```
+
+In Signaling, a user may register as a message publisher for up to 8 topics concurrently. However, there are no limitations on the number of users a single topic can accommodate. You can achieve a message transmission frequency to a topic of up to 120 QPS. This capability is useful in use-cases that demand high-frequency and high-concurrency data processing, such as Metaverse location status synchronization, collaborative office sketchpad applications, and parallel control operation-instructions transmission.
+
+### Leave a stream channel
+
+To leave a channel, call the `leave` method on the `StreamChannel` instance:
+
+```dart
+try {
+    var (status, response) = await streamChannel.leave();
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+To rejoin a stream channel, call the `join` method again. You can join and leave as long as the corresponding `StreamChannel` instance remains active and has not been destroyed.
+
+### Destroy the stream channel instance
+
+To destroy a stream channel instance, call `release`:
+
+```dart
+try {
+    var status = await streamChannel.release();
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+:::info
+Destroying a stream channel removes the `StreamChannel` instance from your app. This action is local to your app and does not affect other users or the Signaling channel.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message packet size
+
+Signaling SDK imposes size limits on message payload packets sent in Message channels and Stream channels. The limit is 32 KB for Message channels and 1 KB for Stream channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
+
+```dart
+{
+    error = true;
+    errorCode = -11010;
+    operation = "PublishTopicMessageOperation";   // Or "PublishOperation"
+    reason = "rtmErrorChannelMessageLengthExceedLimitation";
+}
+```
+
+To avoid sending failure due to message payload packet size exceeding the limit, check the packet size before sending.
+
+### API reference
+
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
+- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
+- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
+- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+Stream channels are based on the room model. In Signaling, communication through stream channels requires use of specific APIs. This page shows you how to join, leave, and send messages in stream channels.
+
+## Understand the tech
+
+To use stream channels, you first create a stream channel object instance. The channel instance gives you access to all stream channel management methods. Use the stream channel instance to:
+
+* Join and leave a channel
+* Join and leave topics
+* Subscribe to and unsubscribe from topics
+* Send messages
+* Destroy the channel instance
+
+After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+## Prerequisites
+
+Ensure that you have:
+
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+* Activated the stream channel capability.
+
+    :::warning[Important]
+
+    **Stream channel activation requirements**
+
+    Please note that the activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
+
+    - Submit a formal request to [support@agora.io](mailto:support@agora.io).
+    - Specifically request activation of the 128-host feature.
+    - Wait for confirmation before implementing Stream Channel features.
+
+    For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+    :::
+
+## Implement communication in a stream channel
+
+This section shows you how to use the Signaling SDK to implement stream channel communication in your app.
+
+### Create a stream channel
+
+To use stream channel functionality, call `createStreamChannel` to create an `IStreamChannel` object instance.
+
+```cpp
+int errorCode = 0;
+IStreamChannel* stream_channel = rtm_client->createStreamChannel("channel_name", errorCode);
+if (stream_channel == nullptr || errorCode != 0) {
+    printf("create stream channel failed");
+} else {
+    printf("create stream channel success");
+}
+```
+
+This method creates only one `IStreamChannel` instance at a time. If you need to create multiple instances, call the method multiple times.
+
+```cpp
+int errorCode = 0;
+IStreamChannel* stream_channel1 = rtm_client->createStreamChannel("chat_room1", errorCode);
+if (stream_channel1 == nullptr || errorCode != 0) {
+    printf("create stream channel failed");
+} else {
+    printf("create stream channel success");
+}
+
+IStreamChannel* stream_channel2 = rtm_client->createStreamChannel("chat_room2", errorCode);
+if (stream_channel2 == nullptr || errorCode != 0) {
+    printf("create stream channel failed");
+} else {
+    printf("create stream channel success");
+}
+```
+
+:::info
+Signaling enables you to create unlimited stream channel instances in a single app. However, best practice is to create channels based on your actual requirements to maintain optimal client-side performance. For instance, if you hold multiple stream channel instances, destroy the ones that are no longer in use to prevent resource blocking, and recreate them when they are needed again.
+:::
+
+### Join a stream channel
+
+Call the `join` method on the `IStreamChannel` instance with appropriate options as follows:
+
+```cpp
+JoinChannelOptions options;
+options.token = "your_token";
+
+uint64_t requestId;
+stream_channel->join(options, requestId);
+```
+
+When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console. When you call this method, the SDK triggers the `onJoinResult` callback and returns the call result.
+
+```cpp
+// Triggered when you call the join method
+class RtmEventHandler : public IRtmEventHandler {
+    void onJoinResult(const uint64_t requestId, const char *channelName, const char *userId, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("join rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("join rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+When joining a channel, set the notification subscription parameters in `JoinChannelOptions`:
+
+```cpp
+JoinChannelOptions options;
+options.token = "your_token";
+options.withLock = false;  // Disable lock event notifications
+options.withMetadata = false; // Disable storage event notifications
+options.withPresence = true; // Subscribe to presence event notifications
+
+uint64_t requestId;
+stream_channel->join(options, requestId);
+```
+
+In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics) for more information.
+
+### Send a message
+
+To send a message to a stream channel:
+
+- Create an `IStreamChannel` instance.
+- Use the `join` method to join a channel.
+- Call `joinTopic` to register as a message publisher for the specified topic. See [Topics](topics).
+
+Call `publishTopicMessage` to publish a message to a topic. This method sends a message to a single topic at a time. To deliver messages to multiple topics, call the method separately for each topic.
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+    ```cpp
+    // Sending a string message
+    std::string message = "Hello Agora!";
+    TopicMessageOptions options;
+    options.messageType = RTM_MESSAGE_TYPE_STRING;
+    options.customType = "PainTxt";
+    uint64_t requestId;
+    streamChannel.publishTopicMessage("topicName", message.c_str(), message.size(), options, requestId);
+    ```
+
+* Binary message
+
+    ```cpp
+    // Sending a binary message
+    char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
+
+    TopicMessageOptions options;
+    options.messageType = RTM_MESSAGE_TYPE_BINARY;
+    options.customType = "ByteArray";
+    uint64_t requestId;
+    streamChannel.publishTopicMessage("topicName", message, 5, options, requestId);
+    ```
+
+When you this method, the SDK triggers the `onPublishTopicMessageResult` callback and returns the API call result.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onPublishTopicMessageResult(const uint64_t requestId, const char* channelName, const char* topic, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            // publish topic message failed
+        } else {
+            // publish topic message success
+        }
+    }
+};
+```
+
+In Signaling, a user may register as a message publisher for up to 8 topics concurrently. However, there are no limitations on the number of users a single topic can accommodate. You can achieve a message transmission frequency to a topic of up to 120 QPS. This capability is useful in use-cases that demand high-frequency and high-concurrency data processing, such as Metaverse location status synchronization, collaborative office sketchpad applications, and parallel control operation-instructions transmission.
+
+### Leave a stream channel
+
+To leave a channel, call the `leave` method on the `IStreamChannel` instance:
+
+```cpp
+// Leave the channel
+uint64_t requestId;
+streamChannel->leave(requestId);
+```
+
+When you call this method, the SDK triggers the `onLeaveResult` callback and returns the call result.
+
+```cpp
+// Triggered when you call the leave method
+class RtmEventHandler : public IRtmEventHandler {
+    void onLeaveResult(const uint64_t requestId, const char *channelName, const char *userId, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("leave rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("leave rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+To rejoin a stream channel, call the `join` method again. You can join and leave as long as the corresponding `IStreamChannel` instance remains active and has not been destroyed.
+
+### Destroy the stream channel instance
+
+To destroy a stream channel instance, call `release`:
+
+```cpp
+stream_channel->release();
+stream_channel = null;
+```
+
+:::info
+Destroying a stream channel removes the `IStreamChannel` instance from your app. This action is local to your app and does not affect other users or the Signaling channel.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message packet size
+
+Signaling SDK imposes size limits on message payload packets sent in message type channels and stream type channels: 32 KB for message type channels and 1 KB for stream type channels. The message payload packet size includes the message payload itself plus the size of the customType field. If the message payload package size exceeds the limit, you will receive an error message.
+
+To avoid sending failure due to message payload packet size exceeding the limit, check the packet size before sending.
+
+### API reference
+
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
+- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
+- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
+- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-cpp">
+
+Stream channels are based on the room model. In Signaling, communication through stream channels requires use of specific APIs. This page shows you how to join, leave, and send messages in stream channels.
+
+## Understand the tech
+
+To use stream channels, you first create a stream channel object instance. The channel instance gives you access to all stream channel management methods. Use the stream channel instance to:
+
+* Join and leave a channel
+* Join and leave topics
+* Subscribe to and unsubscribe from topics
+* Send messages
+* Destroy the channel instance
+
+After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+## Prerequisites
+
+Ensure that you have:
+
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+* Activated the stream channel capability.
+
+    :::warning[Important]
+
+    **Stream channel activation requirements**
+
+    Please note that the activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
+
+    - Submit a formal request to [support@agora.io](mailto:support@agora.io).
+    - Specifically request activation of the 128-host feature.
+    - Wait for confirmation before implementing Stream Channel features.
+
+    For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+    :::
+
+## Implement communication in a stream channel
+
+This section shows you how to use the Signaling SDK to implement stream channel communication in your app.
+
+### Create a stream channel
+
+To use stream channel functionality, call `createStreamChannel` to create an `IStreamChannel` object instance.
+
+```cpp
+int errorCode = 0;
+IStreamChannel* stream_channel = rtm_client->createStreamChannel("channel_name", errorCode);
+if (stream_channel == nullptr || errorCode != 0) {
+    printf("create stream channel failed");
+} else {
+    printf("create stream channel success");
+}
+```
+
+This method creates only one `IStreamChannel` instance at a time. If you need to create multiple instances, call the method multiple times.
+
+```cpp
+int errorCode = 0;
+IStreamChannel* stream_channel1 = rtm_client->createStreamChannel("chat_room1", errorCode);
+if (stream_channel1 == nullptr || errorCode != 0) {
+    printf("create stream channel failed");
+} else {
+    printf("create stream channel success");
+}
+
+IStreamChannel* stream_channel2 = rtm_client->createStreamChannel("chat_room2", errorCode);
+if (stream_channel2 == nullptr || errorCode != 0) {
+    printf("create stream channel failed");
+} else {
+    printf("create stream channel success");
+}
+```
+
+:::info
+Signaling enables you to create unlimited stream channel instances in a single app. However, best practice is to create channels based on your actual requirements to maintain optimal client-side performance. For instance, if you hold multiple stream channel instances, destroy the ones that are no longer in use to prevent resource blocking, and recreate them when they are needed again.
+:::
+
+### Join a stream channel
+
+Call the `join` method on the `IStreamChannel` instance with appropriate options as follows:
+
+```cpp
+JoinChannelOptions options;
+options.token = "your_token";
+
+uint64_t requestId;
+stream_channel->join(options, requestId);
+```
+
+When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console. When you call this method, the SDK triggers the `onJoinResult` callback and returns the call result.
+
+```cpp
+// Triggered when you call the join method
+class RtmEventHandler : public IRtmEventHandler {
+    void onJoinResult(const uint64_t requestId, const char *channelName, const char *userId, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("join rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("join rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+When joining a channel, set the notification subscription parameters in `JoinChannelOptions`:
+
+```cpp
+JoinChannelOptions options;
+options.token = "your_token";
+options.withLock = false;  // Disable lock event notifications
+options.withMetadata = false; // Disable storage event notifications
+options.withPresence = true; // Subscribe to presence event notifications
+
+uint64_t requestId;
+stream_channel->join(options, requestId);
+```
+
+In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics) for more information.
+
+### Send a message
+
+To send a message to a stream channel:
+
+- Create an `IStreamChannel` instance.
+- Use the `join` method to join a channel.
+- Call `joinTopic` to register as a message publisher for the specified topic. See [Topics](topics).
+
+Call `publishTopicMessage` to publish a message to a topic. This method sends a message to a single topic at a time. To deliver messages to multiple topics, call the method separately for each topic.
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+    ```cpp
+    // Sending a string message
+    std::string message = "Hello Agora!";
+    TopicMessageOptions options;
+    options.messageType = RTM_MESSAGE_TYPE_STRING;
+    options.customType = "PainTxt";
+    uint64_t requestId;
+    streamChannel.publishTopicMessage("topicName", message.c_str(), message.size(), options, requestId);
+    ```
+
+* Binary message
+
+    ```cpp
+    // Sending a binary message
+    char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
+
+    TopicMessageOptions options;
+    options.messageType = RTM_MESSAGE_TYPE_BINARY;
+    options.customType = "ByteArray";
+    uint64_t requestId;
+    streamChannel.publishTopicMessage("topicName", message, 5, options, requestId);
+    ```
+
+When you this method, the SDK triggers the `onPublishTopicMessageResult` callback and returns the API call result.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onPublishTopicMessageResult(const uint64_t requestId, const char* channelName, const char* topic, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            // publish topic message failed
+        } else {
+            // publish topic message success
+        }
+    }
+};
+```
+
+In Signaling, a user may register as a message publisher for up to 8 topics concurrently. However, there are no limitations on the number of users a single topic can accommodate. You can achieve a message transmission frequency to a topic of up to 120 QPS. This capability is useful in use-cases that demand high-frequency and high-concurrency data processing, such as Metaverse location status synchronization, collaborative office sketchpad applications, and parallel control operation-instructions transmission.
+
+### Leave a stream channel
+
+To leave a channel, call the `leave` method on the `IStreamChannel` instance:
+
+```cpp
+// Leave the channel
+uint64_t requestId;
+streamChannel->leave(requestId);
+```
+
+When you call this method, the SDK triggers the `onLeaveResult` callback and returns the call result.
+
+```cpp
+// Triggered when you call the leave method
+class RtmEventHandler : public IRtmEventHandler {
+    void onLeaveResult(const uint64_t requestId, const char *channelName, const char *userId, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("leave rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("leave rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+To rejoin a stream channel, call the `join` method again. You can join and leave as long as the corresponding `IStreamChannel` instance remains active and has not been destroyed.
+
+### Destroy the stream channel instance
+
+To destroy a stream channel instance, call `release`:
+
+```cpp
+stream_channel->release();
+stream_channel = null;
+```
+
+:::info
+Destroying a stream channel removes the `IStreamChannel` instance from your app. This action is local to your app and does not affect other users or the Signaling channel.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message packet size
+
+Signaling SDK imposes size limits on message payload packets sent in message type channels and stream type channels: 32 KB for message type channels and 1 KB for stream type channels. The message payload packet size includes the message payload itself plus the size of the customType field. If the message payload package size exceeds the limit, you will receive an error message.
+
+To avoid sending failure due to message payload packet size exceeding the limit, check the packet size before sending.
+
+### API reference
+
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
+- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
+- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
+- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+Stream channels are based on the room model. In Signaling, communication through stream channels requires use of specific APIs. This page shows you how to join, leave, and send messages in stream channels.
+
+## Understand the tech
+
+To use stream channels, you first create a stream channel object instance. The channel instance gives you access to all stream channel management methods. Use the stream channel instance to:
+
+* Join and leave a channel
+* Join and leave topics
+* Subscribe to and unsubscribe from topics
+* Send messages
+* Destroy the channel instance
+
+After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+## Prerequisites
+
+Ensure that you have:
+
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+* Activated the stream channel capability.
+
+    :::warning[Important]
+
+    **Stream channel activation requirements**
+
+    Please note that the activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
+
+    - Submit a formal request to [support@agora.io](mailto:support@agora.io).
+    - Specifically request activation of the 128-host feature.
+    - Wait for confirmation before implementing Stream Channel features.
+
+    For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+    :::
+
+## Implement communication in a stream channel
+
+This section shows you how to use the Signaling SDK to implement stream channel communication in your app.
+
+### Create a stream channel
+
+To use stream channel functionality, call `CreateStreamChannel` to create a `IStreamChannel` object instance.
+
+```csharp
+IStreamChannel streamChannel = rtmClient.CreateStreamChannel("chat_room");
+```
+This method creates only one `IStreamChannel` instance at a time. If you need to create multiple instances, call the method multiple times.
+
+```csharp
+// Create the first instance
+IStreamChannel streamChannel1 = rtmClient.CreateStreamChannel("chat_room1");
+// Create the second instance
+IStreamChannel streamChannel2 = rtmClient.CreateStreamChannel("chat_room2");
+```
+
+:::info
+Signaling enables you to create unlimited stream channel instances in a single app. However, best practice is to create channels based on your actual requirements to maintain optimal client-side performance. For instance, if you hold multiple stream channel instances, destroy the ones that are no longer in use to prevent resource blocking, and recreate them when they are needed again.
+:::
+
+### Join a stream channel
+
+Call the `JoinAsync` method on the `IStreamChannel` instance with appropriate options as follows:
+
+```csharp
+var options = new JoinChannelOptions();
+options.token = "your_token";
+var (status,response) = await streamChannel.JoinAsync(options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+}
+```
+
+When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console.
+
+```csharp
+var options = new JoinChannelOptions();
+options.token = "your_token";
+options.withLock = true;
+
+var (status,response) = await streamChannel.JoinAsync(options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed,The error code is {1},because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+}
+```
+
+In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics) for more information.
+
+### Send a message
+
+To send a message to a stream channel:
+
+- Create an `IStreamChannel` instance.
+- Use the `JoinAsync` method to join a channel.
+- Call `JoinTopicAsync` to register as a message publisher for the specified topic. See [Topics](topics).
+
+Call `PublishTopicMessageAsync` to publish a message to a topic. This method sends a message to a single topic at a time. To deliver messages to multiple topics, call the method separately for each topic.
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+    ```csharp
+    // Send a string message
+    string message = "left"; // Message content
+    string topic = "Motion"; // Topic to which the message is sent
+    var options = new TopicMessageOptions(); // Options for sending the message
+    options.customType = "PlainTxt"; // Set the custom message type to "PlainTxt"
+    var (status, response) = await streamChannel.PublishTopicMessageAsync(topic, message, options); // Send the message asynchronously
+    if (status.Error)
+    {
+        Debug.Log(string.Format("{0} is failed, ErrorCode {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason)); // Log error information if message send fails
+    }
+    ```
+
+* Binary message
+
+    ```csharp
+    // Send a binary message
+    byte[] message = new byte[] { 00, 01, 35, 196 }; // Binary message content
+    string topic = "Motion"; // Topic to which the message is sent
+    var options = new TopicMessageOptions(); // Options for sending the message
+    options.customType = "ByteArray"; // Set the custom message type to "ByteArray"
+    var (status, response) = await streamChannel.PublishTopicMessageAsync(topic, message, options); // Send the message asynchronously
+    if (status.Error)
+    {
+        Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason)); // Log error information if message send fails
+    }
+    ```
+
+In Signaling, a user may register as a message publisher for up to 8 topics concurrently. However, there are no limitations on the number of users a single topic can accommodate. You can achieve a message transmission frequency to a topic of up to 120 QPS. This capability is useful in use-cases that demand high-frequency and high-concurrency data processing, such as Metaverse location status synchronization, collaborative office sketchpad applications, and parallel control operation-instructions transmission.
+
+### Leave a stream channel
+
+To leave a channel, call the `LeaveAsync` method on the `IStreamChannel` instance:
+
+```csharp
+var (status,response) = await streamChannel.LeaveAsync();
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+}
+```
+
+To rejoin a stream channel, call the `JoinAsync` method again. You can join and leave as long as the corresponding `IStreamChannel` instance remains active and has not been destroyed.
+
+### Destroy the stream channel instance
+
+To destroy a stream channel instance, call `Dispose`:
+
+```csharp
+var status = streamChannel.Dispose();
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log("Dispose Channel Success!");
+}
+```
+
+:::info
+Destroying a stream channel removes the `IStreamChannel` instance from your app. This action is local to your app and does not affect other users or the Signaling channel.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message packet size
+
+Signaling SDK imposes size limits on message payload packets sent in message type channels and stream type channels: 32 KB for message type channels and 1 KB for stream type channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you will receive an error message.
+
+```csharp
+// Status
+{
+    Error = true;
+    ErrorCode =  -11010;
+    Operation = "PublishTopicMessageOperation";
+    Reason = "CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION";
+}
+```
+To avoid sending failure due to message payload packet size exceeding the limit, check the packet size before sending.
+
+### API reference
+
+- [`CreateStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
+- [`JoinAsync`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
+- [`PublishTopicMessageAsync`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
+- [`LeaveAsync`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
+- [`Dispose`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+
+</PlatformStructured>

@@ -3,6 +3,8 @@ title: "Message payload structuring"
 description: "Build parsable and extensible message payloads."
 ---
 
+<PlatformStructured platform="web">
+
 In Signaling, the built-in functionality enables you to send only string and binary messages. Although the SDK does not provide a built-in parsable and extensible message data structure, you can build your own structured message payload according to your business needs.
 
 Some commonly used message types in Signaling use-cases are:
@@ -38,179 +40,6 @@ The `type` field enables you to identify the message format and parse the data i
 
 Signaling also provides the `customType` field in the `publish` method for sending additional custom message type information to the receiving end, along with the message. Use the `customType` field to identify the message type and parse the data in the message event.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="objc">Objective-C</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="cpp">C++</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
-String message = "{"
-    + "\"type\": \"image\","
-    + "\"asset_url\": \"https://my.app/image.png\","
-    + "\"thumb_url\": \"https://my.app/thumbnail/image.png\","
-    + "\"mentionedUsers\": [\"Tony\",\"Lily\"],"
-    + "\"sender\": \"Max\""
-    + "}";
-
-// Send message with customType
-PublishOptions options = new PublishOptions();
-options.customType = "image";
-mRtmClient.publish("channel_name", message, options, new ResultCallback<Void>() {
-    @Override
-    public void onSuccess(Void responseInfo) {
-        log(CALLBACK, "send message success");
-    }
-
-    @Override
-    public void onFailure(ErrorInfo errorInfo) {
-        log(ERROR, errorInfo.toString());
-    }
-});
-
-// When receiving a message, use the customType field to parse the message type
-new RtmEventListener() {
-    @Override
-    public void onMessageEvent(MessageEvent event) {
-        log(INFO, "onMessageEvent");
-        if ("image".equals(event.customType)) {
-            log(INFO, "It is an image message!");
-            // process message
-            log(INFO, "message: " + event.message.getData());
-        }
-    }
-};
-```
-</CodeBlockTab>
-
-<CodeBlockTab value="kotlin">
-
-```kotlin
-val message = """
-    {
-        "type": "image",
-        "asset_url": "https://my.app/image.png",
-        "thumb_url": "https://my.app/thumbnail/image.png",
-        "mentionedUsers": ["Tony","Lily"],
-        "sender": "Max"
-    }
-""".trimIndent()
-
-// Send message with customType
-val options = PublishOptions().apply {
-    customType = "image"
-}
-mRtmClient.publish("channel_name", message, options, object : ResultCallback<Void> {
-    override fun onSuccess(responseInfo: Void?) {
-        log(CALLBACK, "send message success")
-    }
-
-    override fun onFailure(errorInfo: ErrorInfo) {
-        log(ERROR, errorInfo.toString())
-    }
-})
-
-// When receiving a message, use the customType field to parse the message type
-object : RtmEventListener {
-    override fun onMessageEvent(event: MessageEvent) {
-        log(INFO, "onMessageEvent")
-        if (event.customType == "image") {
-            log(INFO, "It is an image message!")
-            // process message
-            log(INFO, "message: ${event.message.data}")
-        }
-    }
-}
-```
-</CodeBlockTab>
-
-<CodeBlockTab value="swift">
-
-```swift
-let option = AgoraRtmPublishOptions();
-option.customType = "image"
-let message = "{
-    \"type\": \"image\",
-    \"asset_url\": \"https://my.app/image.png\",
-    \"thumb_url\": \"https://my.app/thumbnail/image.png\",
-    \"mentionedUsers\": [\"Tony\",\"Lily\"],
-    \"sender\": \"Max\"
-    }"
-
-rtm.publish(channelName: channel, message: message, option: option, completion: { res, error in
-    if error != nil {
-        print("\(error?.operation) failed! error reason is \(error?.reason)")
-    } else {
-        print("success")
-    }
-})
-
-class RtmListenerEx: NSObject, AgoraRtmClientDelegate {
-    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
-        print("message event")
-        if event.customType == "image" {
-            // process message
-            print("message: \(event.message.stringData)")
-        }
-    }
-}
-```
-</CodeBlockTab>
-
-<CodeBlockTab value="objc">
-
-```objc
--(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
-    NSLog(@"didReceiveMessageEvent");
-    if (event.customType == @"image") {
-        NSLog(@"It is a image message!");
-        // process message
-        NSLog(@"message: %@", event.message.stringData);
-    }
-}
-```
-</CodeBlockTab>
-
-<CodeBlockTab value="cpp">
-
-```cpp
-PublishOptions options;
-options.messageType = RTM_MESSAGE_TYPE_STRING;
-options.customType = "image";
-
-std::string message = R"({
-    "type": "image",
-    "asset_url": "https://my.app/image.png",
-    "thumb_url": "https://my.app/thumbnail/image.png",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-})";
-
-uint64_t requestId;
-rtmClient->publish("channelName", message.c_str(), message.size(), options, requestId);
-
-// When receiving a message, use the customType field to parse the message type
-class RtmHandler: public IRtmEventHandler {
-    void onMessageEvent(const MessageEvent &event) override {
-        printf("onMessageEvent\n");
-        if (strcmp(event.customType, "image") == 0) {
-            // Process message
-            printf("%s", event.message);
-        }
-    }
-};
-```
-</CodeBlockTab>
-
-<CodeBlockTab value="web">
-
 ```js
 // Define message structure
 const message = {
@@ -238,50 +67,6 @@ rtm.addEventListener("message", event => {
     }
 });
 ```
-</CodeBlockTab>
-
-<CodeBlockTab value="flutter">
-
-```dart
-import 'dart:convert';
-
-final channelName = 'chat_room';
-var message = {
-    type: 'image',
-    asset_url: 'https://my.app/image.png',
-    thumb_url: 'https://my.app/thumbnail/image.png',
-    mentionedUsers: ['Tony','Lily'],
-    sender: 'Max'
-}
-// Message string serialization
-var payload = jsonEncode(message);
-// Send message with customType set
-try {
-    var (status, response) = await rtmClient.publish(
-        channelName,
-        payload,
-        customType: 'image');
-
-    if (status.error == true ){
-       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
-    } else {
-        print('${status.operation} success!');
-    }
-} catch (e) {
-    print('something went wrong: $e');
-}
-// When receiving a message, use the customType field to parse the message type.
-// Handle message event
-rtm.addListener( message: (MessageEvent event) {
-    if (event.customType == "image" ) {
-        print("It is a image message!");
-        Map<String, dynamic> data = jsonDecode(utf8.decode(event.message!));
-    }
-});
-```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 ## Sample message payload structures
 
@@ -304,7 +89,7 @@ This section provides some examples of parsable and extensible message structure
 {
   "type": "translation",
   "message": {
-    "en": "Hello",    
+    "en": "Hello",
     "zh": "你好",
     "jp": "こんにちは"
   },
@@ -416,3 +201,1266 @@ This section provides some examples of parsable and extensible message structure
   "sender": "Max"
 }
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+In Signaling, the built-in functionality enables you to send only string and binary messages. Although the SDK does not provide a built-in parsable and extensible message data structure, you can build your own structured message payload according to your business needs.
+
+Some commonly used message types in Signaling use-cases are:
+
+- **Plain text message**: Contains text only.
+- **Text message**: Contains text and attachment URLs for images or files.
+- **Video file message**: Contains text description, video address, thumbnail address, and other related information.
+- **Questionnaire and answer messages**: Contains a question and preset answer options.
+- **Invitation message**: Invitation to join a private or group chat.
+- **Signaling message**: Invitation containing instructions to initiate a video or audio chat.
+- **Command message**: A control command message to a device in parallel driving, or a device status message uploaded by a sensor or an IoT application.
+- **State synchronization messages**: Position, viewpoint, or current status messages of a player in a game or metaverse.
+
+## Understand the tech
+
+The message payload structure should be readable and extensible to reduce the cost of building and maintaining the app. A well-designed payload structure also facilitates compatibility between old and new versions during upgrades.
+
+Consider an example where you send and receive the following types of message payloads through your Signaling app:
+
+- `"This is a message!"`
+- `{message: "https://cdn.agora.io/assets/avatar.png"}`
+- `{message: { x = 10, y = 100, z = 55 } }`
+
+If your app receives a large number of such messages, it becomes difficult to determine if a particular message contains just text, a URL, or location information. If you scan all messages and check for substrings like `https` or `x = `, this approach becomes inefficient as the number of app users, message types, and the number of messages increase. To solve this problem, introduce predefined fields into your message payload structure to increase parsability and scalability. For example, add a `type` and other relevant fields to each message structure as follows:
+
+| Original message | Structured message |
+|:---|:---------------|
+| `"Hello, this is a message!"` | `{type: "text", message: "Hello, this is a message!"}` |
+| `{message: "https://cdn.agora.io/assets/avatar.png"}` | `{type: "image", url: "https://cdn.agora.io/assets/avatar.png"}` |
+| `{message: { x = 10, y = 100, z = 55 }}` | `{type: "position", coordinates: { x: 10, y: 100, z: 55 }}` |
+
+The `type` field enables you to identify the message format and parse the data in the message payload for different message types appropriately.
+
+Signaling also provides the `customType` field in the `publish` method for sending additional custom message type information to the receiving end, along with the message. Use the `customType` field to identify the message type and parse the data in the message event.
+
+```java tab="Java" tabGroup="language"
+String message = "{"
+    + "\"type\": \"image\","
+    + "\"asset_url\": \"https://my.app/image.png\","
+    + "\"thumb_url\": \"https://my.app/thumbnail/image.png\","
+    + "\"mentionedUsers\": [\"Tony\",\"Lily\"],"
+    + "\"sender\": \"Max\""
+    + "}";
+
+// Send message with customType
+PublishOptions options = new PublishOptions();
+options.customType = "image";
+mRtmClient.publish("channel_name", message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+
+// When receiving a message, use the customType field to parse the message type
+new RtmEventListener() {
+    @Override
+    public void onMessageEvent(MessageEvent event) {
+        log(INFO, "onMessageEvent");
+        if ("image".equals(event.customType)) {
+            log(INFO, "It is an image message!");
+            // process message
+            log(INFO, "message: " + event.message.getData());
+        }
+    }
+};
+```
+
+```kotlin tab="Kotlin" tabGroup="language"
+val message = """
+    {
+        "type": "image",
+        "asset_url": "https://my.app/image.png",
+        "thumb_url": "https://my.app/thumbnail/image.png",
+        "mentionedUsers": ["Tony","Lily"],
+        "sender": "Max"
+    }
+""".trimIndent()
+
+// Send message with customType
+val options = PublishOptions().apply {
+    customType = "image"
+}
+mRtmClient.publish("channel_name", message, options, object : ResultCallback<Void> {
+    override fun onSuccess(responseInfo: Void?) {
+        log(CALLBACK, "send message success")
+    }
+
+    override fun onFailure(errorInfo: ErrorInfo) {
+        log(ERROR, errorInfo.toString())
+    }
+})
+
+// When receiving a message, use the customType field to parse the message type
+object : RtmEventListener {
+    override fun onMessageEvent(event: MessageEvent) {
+        log(INFO, "onMessageEvent")
+        if (event.customType == "image") {
+            log(INFO, "It is an image message!")
+            // process message
+            log(INFO, "message: $\{event.message.data\}")
+        }
+    }
+}
+```
+
+## Sample message payload structures
+
+This section provides some examples of parsable and extensible message structures commonly used in application use-cases. Customize these structures according to your business needs.
+
+### Text message
+
+```js
+{
+  "type": "text",
+  "message": "This is a message",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Multilingual message
+
+```js
+{
+  "type": "translation",
+  "message": {
+    "en": "Hello",
+    "zh": "你好",
+    "jp": "こんにちは"
+  },
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Image attachment message
+
+```js
+{
+  "type": "attachment",
+  "text": "Here is a image below!",
+  "attachments": [
+    {
+      "type": "image",
+      "asset_url": "https://bit.ly/2K74TaG",
+      "thumb_url": "https://bit.ly/2Uumxti",
+      "myCustomField": 123
+    }
+  ],
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Picture message
+
+```js
+{
+  "type": "image",
+  "asset_url": "https://my.app/image.png",
+  "thumb_url": "https://my.app/thumbnail/image.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Video message
+
+```js
+{
+  "type": "video",
+  "asset_url": "https://my.app/video.mp4",
+  "thumb_url": "https://my.app/thumbnail/video.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Action prompt message
+
+```js
+{
+  "type": "action",
+  "event": "Inputting",
+  "sender": "Max"
+}
+```
+
+### Chat invitation message
+
+```js
+{
+  "type": "chatInvite",
+  "channel": "this is the channel you are being invited to",
+  "message": "Hi Tony, welcome to the team!"
+}
+```
+
+### Video call message
+
+```js
+{
+  "type": "chatInvite",
+  "session": "your_video_session",
+  "message": "Hi Tony, welcome to the video chat!",
+  "sender": "Max"
+}
+```
+
+### Questionnaire message
+
+```js
+{
+  "type": "poll",
+  "question": "Which option is right?",
+  "answers":{
+    "A": "Apple",
+    "B": "Banana",
+    "C": "Blackberry"
+  },
+  "sender": "Max"
+}
+```
+
+### Status synchronization message
+
+```js
+{
+  "type": "position",
+  "question": "Which option is right?",
+  "data":{
+    "coordinate": { "x": 10, "y": 100, "z": 55 },
+    "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+  },
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+In Signaling, the built-in functionality enables you to send only string and binary messages. Although the SDK does not provide a built-in parsable and extensible message data structure, you can build your own structured message payload according to your business needs.
+
+Some commonly used message types in Signaling use-cases are:
+
+- **Plain text message**: Contains text only.
+- **Text message**: Contains text and attachment URLs for images or files.
+- **Video file message**: Contains text description, video address, thumbnail address, and other related information.
+- **Questionnaire and answer messages**: Contains a question and preset answer options.
+- **Invitation message**: Invitation to join a private or group chat.
+- **Signaling message**: Invitation containing instructions to initiate a video or audio chat.
+- **Command message**: A control command message to a device in parallel driving, or a device status message uploaded by a sensor or an IoT application.
+- **State synchronization messages**: Position, viewpoint, or current status messages of a player in a game or metaverse.
+
+## Understand the tech
+
+The message payload structure should be readable and extensible to reduce the cost of building and maintaining the app. A well-designed payload structure also facilitates compatibility between old and new versions during upgrades.
+
+Consider an example where you send and receive the following types of message payloads through your Signaling app:
+
+- `"This is a message!"`
+- `{message: "https://cdn.agora.io/assets/avatar.png"}`
+- `{message: { x = 10, y = 100, z = 55 } }`
+
+If your app receives a large number of such messages, it becomes difficult to determine if a particular message contains just text, a URL, or location information. If you scan all messages and check for substrings like `https` or `x = `, this approach becomes inefficient as the number of app users, message types, and the number of messages increase. To solve this problem, introduce predefined fields into your message payload structure to increase parsability and scalability. For example, add a `type` and other relevant fields to each message structure as follows:
+
+| Original message | Structured message |
+|:---|:---------------|
+| `"Hello, this is a message!"` | `{type: "text", message: "Hello, this is a message!"}` |
+| `{message: "https://cdn.agora.io/assets/avatar.png"}` | `{type: "image", url: "https://cdn.agora.io/assets/avatar.png"}` |
+| `{message: { x = 10, y = 100, z = 55 }}` | `{type: "position", coordinates: { x: 10, y: 100, z: 55 }}` |
+
+The `type` field enables you to identify the message format and parse the data in the message payload for different message types appropriately.
+
+Signaling also provides the `customType` field in the `publish` method for sending additional custom message type information to the receiving end, along with the message. Use the `customType` field to identify the message type and parse the data in the message event.
+
+```swift tab="Swift" tabGroup="language"
+let option = AgoraRtmPublishOptions();
+option.customType = "image"
+let message = "{
+    \"type\": \"image\",
+    \"asset_url\": \"https://my.app/image.png\",
+    \"thumb_url\": \"https://my.app/thumbnail/image.png\",
+    \"mentionedUsers\": [\"Tony\",\"Lily\"],
+    \"sender\": \"Max\"
+    }"
+
+rtm.publish(channelName: channel, message: message, option: option, completion: { res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+
+class RtmListenerEx: NSObject, AgoraRtmClientDelegate {
+    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+        print("message event")
+        if event.customType == "image" {
+            // process message
+            print("message: \(event.message.stringData)")
+        }
+    }
+}
+```
+
+```objc tab="Objective-C" tabGroup="language"
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+    NSLog(@"didReceiveMessageEvent");
+    if (event.customType == @"image") {
+        NSLog(@"It is a image message!");
+        // process message
+        NSLog(@"message: %@", event.message.stringData);
+    }
+}
+```
+
+## Sample message payload structures
+
+This section provides some examples of parsable and extensible message structures commonly used in application use-cases. Customize these structures according to your business needs.
+
+### Text message
+
+```js
+{
+  "type": "text",
+  "message": "This is a message",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Multilingual message
+
+```js
+{
+  "type": "translation",
+  "message": {
+    "en": "Hello",
+    "zh": "你好",
+    "jp": "こんにちは"
+  },
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Image attachment message
+
+```js
+{
+  "type": "attachment",
+  "text": "Here is a image below!",
+  "attachments": [
+    {
+      "type": "image",
+      "asset_url": "https://bit.ly/2K74TaG",
+      "thumb_url": "https://bit.ly/2Uumxti",
+      "myCustomField": 123
+    }
+  ],
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Picture message
+
+```js
+{
+  "type": "image",
+  "asset_url": "https://my.app/image.png",
+  "thumb_url": "https://my.app/thumbnail/image.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Video message
+
+```js
+{
+  "type": "video",
+  "asset_url": "https://my.app/video.mp4",
+  "thumb_url": "https://my.app/thumbnail/video.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Action prompt message
+
+```js
+{
+  "type": "action",
+  "event": "Inputting",
+  "sender": "Max"
+}
+```
+
+### Chat invitation message
+
+```js
+{
+  "type": "chatInvite",
+  "channel": "this is the channel you are being invited to",
+  "message": "Hi Tony, welcome to the team!"
+}
+```
+
+### Video call message
+
+```js
+{
+  "type": "chatInvite",
+  "session": "your_video_session",
+  "message": "Hi Tony, welcome to the video chat!",
+  "sender": "Max"
+}
+```
+
+### Questionnaire message
+
+```js
+{
+  "type": "poll",
+  "question": "Which option is right?",
+  "answers":{
+    "A": "Apple",
+    "B": "Banana",
+    "C": "Blackberry"
+  },
+  "sender": "Max"
+}
+```
+
+### Status synchronization message
+
+```js
+{
+  "type": "position",
+  "question": "Which option is right?",
+  "data":{
+    "coordinate": { "x": 10, "y": 100, "z": 55 },
+    "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+  },
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+In Signaling, the built-in functionality enables you to send only string and binary messages. Although the SDK does not provide a built-in parsable and extensible message data structure, you can build your own structured message payload according to your business needs.
+
+Some commonly used message types in Signaling use-cases are:
+
+- **Plain text message**: Contains text only.
+- **Text message**: Contains text and attachment URLs for images or files.
+- **Video file message**: Contains text description, video address, thumbnail address, and other related information.
+- **Questionnaire and answer messages**: Contains a question and preset answer options.
+- **Invitation message**: Invitation to join a private or group chat.
+- **Signaling message**: Invitation containing instructions to initiate a video or audio chat.
+- **Command message**: A control command message to a device in parallel driving, or a device status message uploaded by a sensor or an IoT application.
+- **State synchronization messages**: Position, viewpoint, or current status messages of a player in a game or metaverse.
+
+## Understand the tech
+
+The message payload structure should be readable and extensible to reduce the cost of building and maintaining the app. A well-designed payload structure also facilitates compatibility between old and new versions during upgrades.
+
+Consider an example where you send and receive the following types of message payloads through your Signaling app:
+
+- `"This is a message!"`
+- `{message: "https://cdn.agora.io/assets/avatar.png"}`
+- `{message: { x = 10, y = 100, z = 55 } }`
+
+If your app receives a large number of such messages, it becomes difficult to determine if a particular message contains just text, a URL, or location information. If you scan all messages and check for substrings like `https` or `x = `, this approach becomes inefficient as the number of app users, message types, and the number of messages increase. To solve this problem, introduce predefined fields into your message payload structure to increase parsability and scalability. For example, add a `type` and other relevant fields to each message structure as follows:
+
+| Original message | Structured message |
+|:---|:---------------|
+| `"Hello, this is a message!"` | `{type: "text", message: "Hello, this is a message!"}` |
+| `{message: "https://cdn.agora.io/assets/avatar.png"}` | `{type: "image", url: "https://cdn.agora.io/assets/avatar.png"}` |
+| `{message: { x = 10, y = 100, z = 55 }}` | `{type: "position", coordinates: { x: 10, y: 100, z: 55 }}` |
+
+The `type` field enables you to identify the message format and parse the data in the message payload for different message types appropriately.
+
+Signaling also provides the `customType` field in the `publish` method for sending additional custom message type information to the receiving end, along with the message. Use the `customType` field to identify the message type and parse the data in the message event.
+
+```swift tab="Swift" tabGroup="language"
+let option = AgoraRtmPublishOptions();
+option.customType = "image"
+let message = "{
+    \"type\": \"image\",
+    \"asset_url\": \"https://my.app/image.png\",
+    \"thumb_url\": \"https://my.app/thumbnail/image.png\",
+    \"mentionedUsers\": [\"Tony\",\"Lily\"],
+    \"sender\": \"Max\"
+    }"
+
+rtm.publish(channelName: channel, message: message, option: option, completion: { res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+
+class RtmListenerEx: NSObject, AgoraRtmClientDelegate {
+    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+        print("message event")
+        if event.customType == "image" {
+            // process message
+            print("message: \(event.message.stringData)")
+        }
+    }
+}
+```
+
+```objc tab="Objective-C" tabGroup="language"
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+    NSLog(@"didReceiveMessageEvent");
+    if (event.customType == @"image") {
+        NSLog(@"It is a image message!");
+        // process message
+        NSLog(@"message: %@", event.message.stringData);
+    }
+}
+```
+
+## Sample message payload structures
+
+This section provides some examples of parsable and extensible message structures commonly used in application use-cases. Customize these structures according to your business needs.
+
+### Text message
+
+```js
+{
+  "type": "text",
+  "message": "This is a message",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Multilingual message
+
+```js
+{
+  "type": "translation",
+  "message": {
+    "en": "Hello",
+    "zh": "你好",
+    "jp": "こんにちは"
+  },
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Image attachment message
+
+```js
+{
+  "type": "attachment",
+  "text": "Here is a image below!",
+  "attachments": [
+    {
+      "type": "image",
+      "asset_url": "https://bit.ly/2K74TaG",
+      "thumb_url": "https://bit.ly/2Uumxti",
+      "myCustomField": 123
+    }
+  ],
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Picture message
+
+```js
+{
+  "type": "image",
+  "asset_url": "https://my.app/image.png",
+  "thumb_url": "https://my.app/thumbnail/image.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Video message
+
+```js
+{
+  "type": "video",
+  "asset_url": "https://my.app/video.mp4",
+  "thumb_url": "https://my.app/thumbnail/video.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Action prompt message
+
+```js
+{
+  "type": "action",
+  "event": "Inputting",
+  "sender": "Max"
+}
+```
+
+### Chat invitation message
+
+```js
+{
+  "type": "chatInvite",
+  "channel": "this is the channel you are being invited to",
+  "message": "Hi Tony, welcome to the team!"
+}
+```
+
+### Video call message
+
+```js
+{
+  "type": "chatInvite",
+  "session": "your_video_session",
+  "message": "Hi Tony, welcome to the video chat!",
+  "sender": "Max"
+}
+```
+
+### Questionnaire message
+
+```js
+{
+  "type": "poll",
+  "question": "Which option is right?",
+  "answers":{
+    "A": "Apple",
+    "B": "Banana",
+    "C": "Blackberry"
+  },
+  "sender": "Max"
+}
+```
+
+### Status synchronization message
+
+```js
+{
+  "type": "position",
+  "question": "Which option is right?",
+  "data":{
+    "coordinate": { "x": 10, "y": 100, "z": 55 },
+    "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+  },
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+In Signaling, the built-in functionality enables you to send only string and binary messages. Although the SDK does not provide a built-in parsable and extensible message data structure, you can build your own structured message payload according to your business needs.
+
+Some commonly used message types in Signaling use-cases are:
+
+- **Plain text message**: Contains text only.
+- **Text message**: Contains text and attachment URLs for images or files.
+- **Video file message**: Contains text description, video address, thumbnail address, and other related information.
+- **Questionnaire and answer messages**: Contains a question and preset answer options.
+- **Invitation message**: Invitation to join a private or group chat.
+- **Signaling message**: Invitation containing instructions to initiate a video or audio chat.
+- **Command message**: A control command message to a device in parallel driving, or a device status message uploaded by a sensor or an IoT application.
+- **State synchronization messages**: Position, viewpoint, or current status messages of a player in a game or metaverse.
+
+## Understand the tech
+
+The message payload structure should be readable and extensible to reduce the cost of building and maintaining the app. A well-designed payload structure also facilitates compatibility between old and new versions during upgrades.
+
+Consider an example where you send and receive the following types of message payloads through your Signaling app:
+
+- `"This is a message!"`
+- `{message: "https://cdn.agora.io/assets/avatar.png"}`
+- `{message: { x = 10, y = 100, z = 55 } }`
+
+If your app receives a large number of such messages, it becomes difficult to determine if a particular message contains just text, a URL, or location information. If you scan all messages and check for substrings like `https` or `x = `, this approach becomes inefficient as the number of app users, message types, and the number of messages increase. To solve this problem, introduce predefined fields into your message payload structure to increase parsability and scalability. For example, add a `type` and other relevant fields to each message structure as follows:
+
+| Original message | Structured message |
+|:---|:---------------|
+| `"Hello, this is a message!"` | `{type: "text", message: "Hello, this is a message!"}` |
+| `{message: "https://cdn.agora.io/assets/avatar.png"}` | `{type: "image", url: "https://cdn.agora.io/assets/avatar.png"}` |
+| `{message: { x = 10, y = 100, z = 55 }}` | `{type: "position", coordinates: { x: 10, y: 100, z: 55 }}` |
+
+The `type` field enables you to identify the message format and parse the data in the message payload for different message types appropriately.
+
+Signaling also provides the `customType` field in the `publish` method for sending additional custom message type information to the receiving end, along with the message. Use the `customType` field to identify the message type and parse the data in the message event.
+
+```dart
+
+final channelName = 'chat_room';
+var message = {
+    type: 'image',
+    asset_url: 'https://my.app/image.png',
+    thumb_url: 'https://my.app/thumbnail/image.png',
+    mentionedUsers: ['Tony','Lily'],
+    sender: 'Max'
+}
+// Message string serialization
+var payload = jsonEncode(message);
+// Send message with customType set
+try {
+    var (status, response) = await rtmClient.publish(
+        channelName,
+        payload,
+        customType: 'image');
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+// When receiving a message, use the customType field to parse the message type.
+// Handle message event
+rtm.addListener( message: (MessageEvent event) {
+    if (event.customType == "image" ) {
+        print("It is a image message!");
+        Map<String, dynamic> data = jsonDecode(utf8.decode(event.message!));
+    }
+});
+```
+
+## Sample message payload structures
+
+This section provides some examples of parsable and extensible message structures commonly used in application use-cases. Customize these structures according to your business needs.
+
+### Text message
+
+```js
+{
+  "type": "text",
+  "message": "This is a message",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Multilingual message
+
+```js
+{
+  "type": "translation",
+  "message": {
+    "en": "Hello",
+    "zh": "你好",
+    "jp": "こんにちは"
+  },
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Image attachment message
+
+```js
+{
+  "type": "attachment",
+  "text": "Here is a image below!",
+  "attachments": [
+    {
+      "type": "image",
+      "asset_url": "https://bit.ly/2K74TaG",
+      "thumb_url": "https://bit.ly/2Uumxti",
+      "myCustomField": 123
+    }
+  ],
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Picture message
+
+```js
+{
+  "type": "image",
+  "asset_url": "https://my.app/image.png",
+  "thumb_url": "https://my.app/thumbnail/image.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Video message
+
+```js
+{
+  "type": "video",
+  "asset_url": "https://my.app/video.mp4",
+  "thumb_url": "https://my.app/thumbnail/video.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Action prompt message
+
+```js
+{
+  "type": "action",
+  "event": "Inputting",
+  "sender": "Max"
+}
+```
+
+### Chat invitation message
+
+```js
+{
+  "type": "chatInvite",
+  "channel": "this is the channel you are being invited to",
+  "message": "Hi Tony, welcome to the team!"
+}
+```
+
+### Video call message
+
+```js
+{
+  "type": "chatInvite",
+  "session": "your_video_session",
+  "message": "Hi Tony, welcome to the video chat!",
+  "sender": "Max"
+}
+```
+
+### Questionnaire message
+
+```js
+{
+  "type": "poll",
+  "question": "Which option is right?",
+  "answers":{
+    "A": "Apple",
+    "B": "Banana",
+    "C": "Blackberry"
+  },
+  "sender": "Max"
+}
+```
+
+### Status synchronization message
+
+```js
+{
+  "type": "position",
+  "question": "Which option is right?",
+  "data":{
+    "coordinate": { "x": 10, "y": 100, "z": 55 },
+    "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+  },
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-cpp">
+
+In Signaling, the built-in functionality enables you to send only string and binary messages. Although the SDK does not provide a built-in parsable and extensible message data structure, you can build your own structured message payload according to your business needs.
+
+Some commonly used message types in Signaling use-cases are:
+
+- **Plain text message**: Contains text only.
+- **Text message**: Contains text and attachment URLs for images or files.
+- **Video file message**: Contains text description, video address, thumbnail address, and other related information.
+- **Questionnaire and answer messages**: Contains a question and preset answer options.
+- **Invitation message**: Invitation to join a private or group chat.
+- **Signaling message**: Invitation containing instructions to initiate a video or audio chat.
+- **Command message**: A control command message to a device in parallel driving, or a device status message uploaded by a sensor or an IoT application.
+- **State synchronization messages**: Position, viewpoint, or current status messages of a player in a game or metaverse.
+
+## Understand the tech
+
+The message payload structure should be readable and extensible to reduce the cost of building and maintaining the app. A well-designed payload structure also facilitates compatibility between old and new versions during upgrades.
+
+Consider an example where you send and receive the following types of message payloads through your Signaling app:
+
+- `"This is a message!"`
+- `{message: "https://cdn.agora.io/assets/avatar.png"}`
+- `{message: { x = 10, y = 100, z = 55 } }`
+
+If your app receives a large number of such messages, it becomes difficult to determine if a particular message contains just text, a URL, or location information. If you scan all messages and check for substrings like `https` or `x = `, this approach becomes inefficient as the number of app users, message types, and the number of messages increase. To solve this problem, introduce predefined fields into your message payload structure to increase parsability and scalability. For example, add a `type` and other relevant fields to each message structure as follows:
+
+| Original message | Structured message |
+|:---|:---------------|
+| `"Hello, this is a message!"` | `{type: "text", message: "Hello, this is a message!"}` |
+| `{message: "https://cdn.agora.io/assets/avatar.png"}` | `{type: "image", url: "https://cdn.agora.io/assets/avatar.png"}` |
+| `{message: { x = 10, y = 100, z = 55 }}` | `{type: "position", coordinates: { x: 10, y: 100, z: 55 }}` |
+
+The `type` field enables you to identify the message format and parse the data in the message payload for different message types appropriately.
+
+Signaling also provides the `customType` field in the `publish` method for sending additional custom message type information to the receiving end, along with the message. Use the `customType` field to identify the message type and parse the data in the message event.
+
+```cpp
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+options.customType = "image";
+
+std::string message = R"({
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+})";
+
+uint64_t requestId;
+rtmClient->publish("channelName", message.c_str(), message.size(), options, requestId);
+
+// When receiving a message, use the customType field to parse the message type
+class RtmHandler: public IRtmEventHandler {
+    void onMessageEvent(const MessageEvent &event) override {
+        printf("onMessageEvent\n");
+        if (strcmp(event.customType, "image") == 0) {
+            // Process message
+            printf("%s", event.message);
+        }
+    }
+};
+```
+
+## Sample message payload structures
+
+This section provides some examples of parsable and extensible message structures commonly used in application use-cases. Customize these structures according to your business needs.
+
+### Text message
+
+```js
+{
+  "type": "text",
+  "message": "This is a message",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Multilingual message
+
+```js
+{
+  "type": "translation",
+  "message": {
+    "en": "Hello",
+    "zh": "你好",
+    "jp": "こんにちは"
+  },
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Image attachment message
+
+```js
+{
+  "type": "attachment",
+  "text": "Here is a image below!",
+  "attachments": [
+    {
+      "type": "image",
+      "asset_url": "https://bit.ly/2K74TaG",
+      "thumb_url": "https://bit.ly/2Uumxti",
+      "myCustomField": 123
+    }
+  ],
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Picture message
+
+```js
+{
+  "type": "image",
+  "asset_url": "https://my.app/image.png",
+  "thumb_url": "https://my.app/thumbnail/image.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Video message
+
+```js
+{
+  "type": "video",
+  "asset_url": "https://my.app/video.mp4",
+  "thumb_url": "https://my.app/thumbnail/video.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Action prompt message
+
+```js
+{
+  "type": "action",
+  "event": "Inputting",
+  "sender": "Max"
+}
+```
+
+### Chat invitation message
+
+```js
+{
+  "type": "chatInvite",
+  "channel": "this is the channel you are being invited to",
+  "message": "Hi Tony, welcome to the team!"
+}
+```
+
+### Video call message
+
+```js
+{
+  "type": "chatInvite",
+  "session": "your_video_session",
+  "message": "Hi Tony, welcome to the video chat!",
+  "sender": "Max"
+}
+```
+
+### Questionnaire message
+
+```js
+{
+  "type": "poll",
+  "question": "Which option is right?",
+  "answers":{
+    "A": "Apple",
+    "B": "Banana",
+    "C": "Blackberry"
+  },
+  "sender": "Max"
+}
+```
+
+### Status synchronization message
+
+```js
+{
+  "type": "position",
+  "question": "Which option is right?",
+  "data":{
+    "coordinate": { "x": 10, "y": 100, "z": 55 },
+    "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+  },
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+In Signaling, the built-in functionality enables you to send only string and binary messages. Although the SDK does not provide a built-in parsable and extensible message data structure, you can build your own structured message payload according to your business needs.
+
+Some commonly used message types in Signaling use-cases are:
+
+- **Plain text message**: Contains text only.
+- **Text message**: Contains text and attachment URLs for images or files.
+- **Video file message**: Contains text description, video address, thumbnail address, and other related information.
+- **Questionnaire and answer messages**: Contains a question and preset answer options.
+- **Invitation message**: Invitation to join a private or group chat.
+- **Signaling message**: Invitation containing instructions to initiate a video or audio chat.
+- **Command message**: A control command message to a device in parallel driving, or a device status message uploaded by a sensor or an IoT application.
+- **State synchronization messages**: Position, viewpoint, or current status messages of a player in a game or metaverse.
+
+## Understand the tech
+
+The message payload structure should be readable and extensible to reduce the cost of building and maintaining the app. A well-designed payload structure also facilitates compatibility between old and new versions during upgrades.
+
+Consider an example where you send and receive the following types of message payloads through your Signaling app:
+
+- `"This is a message!"`
+- `{message: "https://cdn.agora.io/assets/avatar.png"}`
+- `{message: { x = 10, y = 100, z = 55 } }`
+
+If your app receives a large number of such messages, it becomes difficult to determine if a particular message contains just text, a URL, or location information. If you scan all messages and check for substrings like `https` or `x = `, this approach becomes inefficient as the number of app users, message types, and the number of messages increase. To solve this problem, introduce predefined fields into your message payload structure to increase parsability and scalability. For example, add a `type` and other relevant fields to each message structure as follows:
+
+| Original message | Structured message |
+|:---|:---------------|
+| `"Hello, this is a message!"` | `{type: "text", message: "Hello, this is a message!"}` |
+| `{message: "https://cdn.agora.io/assets/avatar.png"}` | `{type: "image", url: "https://cdn.agora.io/assets/avatar.png"}` |
+| `{message: { x = 10, y = 100, z = 55 }}` | `{type: "position", coordinates: { x: 10, y: 100, z: 55 }}` |
+
+The `type` field enables you to identify the message format and parse the data in the message payload for different message types appropriately.
+
+Signaling also provides the `customType` field in the `PublishAsync` method for sending additional custom message type information to the receiving end, along with the message. Use the `customType` field to identify the message type and parse the data in the message event.
+
+## Sample message payload structures
+
+This section provides some examples of parsable and extensible message structures commonly used in application use-cases. Customize these structures according to your business needs.
+
+### Text message
+
+```js
+{
+  "type": "text",
+  "message": "This is a message",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Multilingual message
+
+```js
+{
+  "type": "translation",
+  "message": {
+    "en": "Hello",
+    "zh": "你好",
+    "jp": "こんにちは"
+  },
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Image attachment message
+
+```js
+{
+  "type": "attachment",
+  "text": "Here is a image below!",
+  "attachments": [
+    {
+      "type": "image",
+      "asset_url": "https://bit.ly/2K74TaG",
+      "thumb_url": "https://bit.ly/2Uumxti",
+      "myCustomField": 123
+    }
+  ],
+  "mentionedUsers": ["Tony", "Lily"],
+  "sender": "Max"
+}
+```
+
+### Picture message
+
+```js
+{
+  "type": "image",
+  "asset_url": "https://my.app/image.png",
+  "thumb_url": "https://my.app/thumbnail/image.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Video message
+
+```js
+{
+  "type": "video",
+  "asset_url": "https://my.app/video.mp4",
+  "thumb_url": "https://my.app/thumbnail/video.png",
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+### Action prompt message
+
+```js
+{
+  "type": "action",
+  "event": "Inputting",
+  "sender": "Max"
+}
+```
+
+### Chat invitation message
+
+```js
+{
+  "type": "chatInvite",
+  "channel": "this is the channel you are being invited to",
+  "message": "Hi Tony, welcome to the team!"
+}
+```
+
+### Video call message
+
+```js
+{
+  "type": "chatInvite",
+  "session": "your_video_session",
+  "message": "Hi Tony, welcome to the video chat!",
+  "sender": "Max"
+}
+```
+
+### Questionnaire message
+
+```js
+{
+  "type": "poll",
+  "question": "Which option is right?",
+  "answers":{
+    "A": "Apple",
+    "B": "Banana",
+    "C": "Blackberry"
+  },
+  "sender": "Max"
+}
+```
+
+### Status synchronization message
+
+```js
+{
+  "type": "position",
+  "question": "Which option is right?",
+  "data":{
+    "coordinate": { "x": 10, "y": 100, "z": 55 },
+    "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+  },
+  "mentionedUsers": ["Tony","Lily"],
+  "sender": "Max"
+}
+```
+
+</PlatformStructured>
