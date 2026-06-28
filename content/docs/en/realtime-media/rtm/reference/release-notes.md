@@ -3,11 +3,11 @@ title: "Release notes"
 description: "Information about changes in each release of Signaling."
 ---
 
-The Agora Signaling SDK provides a streamlined and stable messaging mechanism for you to quickly implement real-time messaging for various use-cases. See [product overview](../product-overview.md) for more information.
+The Agora Signaling SDK provides a streamlined and stable messaging mechanism for you to quickly implement real-time messaging for various use-cases. See [Product overview](/en/realtime-media/rtm) for more information.
 
 This page contains information on the following releases:
 
-### Known issues and limitations
+## Known issues and limitations
 
 Starting from v2.2.0, the Signaling SDK and Video/Voice SDK (version 4.3.0 or later) both include the `libaosl.so` library. If you use both SDKs, take the following steps to avoid conflicts:
 
@@ -23,11 +23,11 @@ For more information, see [How do I handle issues when integrating the Signaling
 - Signaling SDK v2.2.1 `libaosl.so` version: 1.0.11.
 - Signaling SDK v2.2.0 `libaosl.so` version: 1.0.0.17.
 
-### v2.2.8
+## v2.2.8
 
 Released on February 24, 2026.
 
-#### Improvements
+### Improvements
 
 Included in this release:
 
@@ -43,7 +43,7 @@ Included in this release:
     implementation 'io.agora.rtm:rtm-sdk-lite:2.2.8'
     ```
 
-#### Issues fixed
+### Issues fixed
 
 This release fixed the following issues:
 
@@ -51,33 +51,33 @@ This release fixed the following issues:
 - In some cases, event notifications failed to be delivered properly after setting a temporary user presence state with Presence.
 - On some device models running Android 16, the permission request occasionally exceeded the necessary scope.
 
-### v2.2.6
+## v2.2.6
 
 Released on November 15, 2025.
 
-#### New features
+### New features
 
 **Support for IoT device domain allowlist**
 
 In IoT scenarios, devices may be restricted by Internet Service Providers (ISPs). To address this limitation, this version adds the `ispPolicyEnabled` field to [`RtmConfig`](/en/api-reference/api-ref/signaling). When you set this field to `true`, the SDK connects only to servers whose domain names or IP addresses have been registered with the ISP and are included in the allowlist.
 
-#### Improvements
+### Improvements
 
 **New reconnection timeout configuration**
 
 This version adds the `reconnectTimeout` field to [`RtmConfig`](/en/api-reference/api-ref/signaling). Use this field to configure the timeout period in seconds for the SDK to return a timeout error during login or reconnection. When the login or reconnection exceeds the configured duration, the SDK reports the current connection state and reason through a callback.
 
-#### Issues fixed
+### Issues fixed
 
 - In some scenarios, the token expiration notification was triggered multiple times.
 - In some scenarios, a peer-to-peer message was delivered to the recipient but the sender received a timeout error.
 - In private deployment scenarios, frequent network switching caused abnormal connection states.
 
-### v2.2.4
+## v2.2.4
 
 v2.2.4 was released on April 10, 2025.
 
-#### Improvements
+### Improvements
 
 - New link state change reason
 
@@ -98,18 +98,18 @@ v2.2.4 was released on April 10, 2025.
     - Improved selection of access nodes to enhance connection speed.
     - Further optimized the response time of the login service.
 
-#### Issues fixed
+### Issues fixed
 
 - The subscription service occasionally did not recover during reconnection.
 - Query results for users in some channels included information about abnormally offline users.
 - Uncaught exceptions in callback functions could cause the SDK to crash.
 - Subscribing to a topic could sometimes return an error indicating that the user was not in the channel.
 
-### v2.2.2
+## v2.2.2
 
 v2.2.2 was released on December 13, 2024.
 
-#### Compatibility changes
+### Compatibility changes
 
 1. SNAPSHOT state trigger timing changes
 
@@ -119,7 +119,7 @@ v2.2.2 was released on December 13, 2024.
 
     This release modifies the calculation rule of the lock (Lock) timeout. Starting from this version, the lock timeout is calculated from the time when the server determines that the user is offline.
 
-#### New features
+### New features
 
 1. SDK connection state change reason
 
@@ -129,11 +129,11 @@ v2.2.2 was released on December 13, 2024.
 
     Starting from Android 15, the system supports a 16 KB page size. For more information, see [Support 16 KB page size](https://developer.android.com/guide/practices/page-sizes). Starting from this version, the SDK supports a 16 KB page size to ensure seamless operation on devices using 4 KB and 16 KB page sizes, improving compatibility and avoiding crashes.
 
-#### Improvements
+### Improvements
 
 This release improves the performance of the basic messaging service during exceptions, avoiding service unavailability caused by the failure of some services.
 
-#### Fixed issues
+### Fixed issues
 
 This release fixed the following issues:
 - In some use-cases, incorrect token types cause exceptions.
@@ -143,11 +143,11 @@ This release fixed the following issues:
 - When the specified service is not activated, joining a channel does not return an error.
 - In some use-cases, abnormal property values may cause crashes.
 
-### v2.2.1
+## v2.2.1
 
 v2.2.1 was released on August 9, 2024.
 
-#### Compatibility changes
+### Compatibility changes
 
 This release optimizes the implementation of the following features, which involves renaming, deleting, or modifying the behavior of some APIs. To ensure the proper functioning of your project, modify your implementation after upgrading the SDK.
 
@@ -170,7 +170,7 @@ This release optimizes the implementation of the following features, which invol
 
 - Adds `CERTIFICATION_VERIFY_FAILURE(22)` in [`RtmConnectionChangeReason`](/en/api-reference/api-ref/signaling). The values of `STREAM_CHANNEL_NOT_AVAILABLE` and `INCONSISTENT_APPID` change to 23 and 24, respectively.
 
-#### New features
+### New features
 
 1. Private deployment capability
 
@@ -192,7 +192,7 @@ This release optimizes the implementation of the following features, which invol
 
     This release adds the `beQuiet` property in [`SubscribeOptions`](/en/api-reference/api-ref/signaling) and [`JoinChannelOptions`](/en/api-reference/api-ref/signaling) to enable quiet mode when subscribing or joining a channel. Once you enable the quiet mode, other users in the channel cannot receive your presence event notifications.
 
-#### Improvements
+### Improvements
 
 1. Connection state management
 
@@ -233,22 +233,22 @@ This release optimizes the implementation of the following features, which invol
 
     This release also enhances the underlying algorithm capability to improve the data synchronization speed.
 
-#### Fixed issues
+### Fixed issues
 
 This release fixed the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
 
-### v2.1.12
+## v2.1.12
 
 v2.1.12 was released on July 2, 2024.
 
-#### Improvements
+### Improvements
 
 This release includes the following improvements:
 
 - For data synchronization errors caused by network issues, this release introduces a user logout mechanism, which ensures that the SDK automatically logs out of the Signaling system.
 - Unsubscribing from a message channel during network disconnection will no longer return an error.
 
-#### Fixed issues
+### Fixed issues
 
 This release fixed the following issues:
 
@@ -258,15 +258,15 @@ This release fixed the following issues:
 - After reconnecting from a disconnection, the SDK occasionally failed to restore subscription relationships in the stream channel.
 - Occasional failure to receive topic messages from web clients.
 
-### v2.1.11
+## v2.1.11
 
 v2.1.11 was released on May 13, 2024.
 
-#### Improvements
+### Improvements
 
 This release optimizes the response mechanism when subscribing to or joining channels with the `withPresence=true` setting. If the user does not receive the `SNAPSHOT` type of `onPresenceEvent` event notification within 5 seconds, the SDK will report the `CHANNEL_PRESENCE_NOT_READY` error code in the `resultCallback` parameter.
 
-#### Fixed issues
+### Fixed issues
 
 This release fixed the following issues:
 
@@ -274,22 +274,22 @@ This release fixed the following issues:
 - In cases where the connection was lost due to network issues and then restored, if the local user actively called the `leave` method to leave the channel, the remote user occasionally did not receive the `REMOTE_TIMEOUT` type of the `onPresenceEvent` event notification.
 - Occasional failures occurred when frequently calling the `subscribe` and `unsubscribe` methods.
 
-### v2.1.10
+## v2.1.10
 
 v2.1.10 was released on March 11, 2024.
 
-#### Fixed issues
+### Fixed issues
 
 This release fixed the following issues:
 
 - When sending messages frequently, message sending occasionally timed out.
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
 
-### v2.1.9
+## v2.1.9
 
 v2.1.9 was released on February 22, 2024.
 
-#### Compatibility changes
+### Compatibility changes
 
 This release improves message publishing options as follows:
 
@@ -298,22 +298,28 @@ This release improves message publishing options as follows:
 
 Make sure to modify the implementation of the relevant features after upgrading the SDK.
 
-#### Improvements
+### Improvements
 
 This release adds the following improvements:
 
-- Adds error codes: `INVALID_CHANNEL_TYPE`, `RTM_ERROR_INVALID_ENCRYPTION_PARAMETER`, and `RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
+- Adds the following error codes. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
+
+  ```text
+  INVALID_CHANNEL_TYPE
+  RTM_ERROR_INVALID_ENCRYPTION_PARAMETER
+  RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION
+  ```
 - Optimizes the handling logic for expired user status data during reconnection.
 
-#### Fixed issues
+### Fixed issues
 
 This release fixed the occasional crash issue when calling the `getOnlineUsers` method to retrieve paginated results.
 
-### v2.1.7
+## v2.1.7
 
 v2.1.7 was released on January 22, 2024.
 
-#### New features
+### New features
 
 1. Stream Channel
 

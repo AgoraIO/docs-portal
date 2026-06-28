@@ -26,7 +26,7 @@ Signaling is widely used by more than 3000 customers in the following fields:
 - Parallel control
 - Smart city
 
-To learn more about specific use-cases, [contact](mailto:rtm-support@agora.io.md) the Agora Signaling team.
+To learn more about specific use-cases, [contact](mailto:rtm-support@agora.io) the Agora Signaling team.
 
 ## Getting started
 
