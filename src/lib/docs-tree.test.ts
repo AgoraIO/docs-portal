@@ -1531,6 +1531,54 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('carries defaultOpen:false from a folder so a hub section stays collapsed when active', () => {
+    expect(
+      pageTreeNodeToSidebarNodes({
+        $id: 'faq-folder',
+        defaultOpen: false,
+        children: [
+          {
+            $id: 'faq-integration',
+            name: 'Integration',
+            type: 'page',
+            url: '/en/api-reference/faq/integration',
+          },
+        ],
+        index: {
+          $id: 'faq-index',
+          name: 'FAQ',
+          type: 'page',
+          url: '/en/api-reference/faq',
+        },
+        name: 'FAQ',
+        type: 'folder',
+      }),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/en/api-reference/faq',
+            title: 'Overview',
+            type: 'page',
+            url: '/en/api-reference/faq',
+          },
+          {
+            id: '/en/api-reference/faq/integration',
+            title: 'Integration',
+            type: 'page',
+            url: '/en/api-reference/faq/integration',
+          },
+        ],
+        collapsible: true,
+        defaultOpen: false,
+        id: 'folder-faq-folder',
+        title: 'FAQ',
+        type: 'section',
+        url: '/en/api-reference/faq',
+      },
+    ]);
+  });
+
   it('builds a breadcrumb for a linked section index page', () => {
     expect(
       getSidebarBreadcrumb(
