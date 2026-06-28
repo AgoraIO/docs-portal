@@ -759,6 +759,12 @@ function createRealtimeMediaApiReferenceJumpPageTree(): Root {
                 $id: 'realtime-media-video-folder',
                 children: [
                   {
+                    $id: 'realtime-media-video-quickstart',
+                    name: 'Quickstart',
+                    type: 'page',
+                    url: '/en/realtime-media/video/get-started-sdk',
+                  },
+                  {
                     $id: 'realtime-media-video-reference-separator',
                     name: 'Reference',
                     type: 'separator',
@@ -2037,6 +2043,14 @@ Web body
     });
   });
 
+  it('redirects the legacy video quickstart path to the get-started-sdk path', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', ['video', 'quickstart']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/video/get-started-sdk',
+    });
+  });
+
   it('falls back locale links to the target tab entry when the same slug is missing', async () => {
     const page = createPage();
     const zhPageTree: Root = {
@@ -2770,6 +2784,9 @@ Web body
 
     mockedGetPage.mockReturnValue(videoPage);
     mockedGetPages.mockReturnValue([videoPage]);
+    mockedGetPageTree.mockReturnValue(
+      createRealtimeMediaApiReferenceJumpPageTree(),
+    );
     mockedGetNodeMeta.mockImplementation((node) =>
       node.$id === 'realtime-media-video-folder'
         ? ({
@@ -2808,6 +2825,52 @@ Web body
     );
     expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
       '/en/api-reference/api-ref/video',
+    );
+  });
+
+  it('uses the get-started-sdk page as the video quickstart sidebar entry', async () => {
+    const basePage = createPage();
+    const videoPage = {
+      ...basePage,
+      data: {
+        ...basePage.data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/realtime-media/video/get-started-sdk.mdx',
+          path: 'en/realtime-media/video/get-started-sdk.mdx',
+        },
+        title: 'Quickstart',
+      },
+      path: 'en/realtime-media/video/get-started-sdk.mdx',
+      slugs: ['en', 'realtime-media', 'video', 'get-started-sdk'],
+      url: '/en/realtime-media/video/get-started-sdk',
+    };
+
+    mockedGetPage.mockReturnValue(videoPage);
+    mockedGetPages.mockReturnValue([videoPage]);
+    mockedGetPageTree.mockReturnValue(
+      createRealtimeMediaApiReferenceJumpPageTree(),
+    );
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'realtime-media-video-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Video Calling',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const videoPayload = unwrapPayload(
+      await loadDocsPagePayload('en', 'realtime-media', ['video']),
+    );
+
+    expect(flattenSidebarPageUrls(videoPayload.sidebar)).toContain(
+      '/en/realtime-media/video/get-started-sdk',
+    );
+    expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
+      '/en/realtime-media/video/quickstart',
     );
   });
 

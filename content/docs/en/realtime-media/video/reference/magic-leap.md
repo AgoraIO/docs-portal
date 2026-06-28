@@ -24,7 +24,7 @@ To test the code used on this page, you need:
 - An Agora [account](../manage-agora-account.mdx) and [project](../manage-agora-account.mdx)
 - A computer with Internet access
 - A network environment where no firewall blocks required communication
-- The [SDK quickstart](../index.mdx) implemented in your project
+- The [SDK quickstart](/en/realtime-media/video/get-started-sdk) implemented in your project
 - [ML Hub](https://developer-docs.magicleap.cloud/docs/guides/getting-started/install-the-tools)
 - [Unity Hub](https://unity.com/download)
 - [Install and configure the Unity Editor required to develop for Magic Leap 2](https://developer-docs.magicleap.cloud/docs/guides/unity/getting-started/install-the-tools)

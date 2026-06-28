@@ -791,6 +791,7 @@ function resolveRealtimeMediaRedirect(
     'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/build-from-scratch': `/${locale}/realtime-media/rtc/quick-start/android/build-from-scratch`,
+    'video/quickstart': `/${locale}/realtime-media/video/get-started-sdk`,
   };
 
   return redirects[normalizedPath] ?? null;
